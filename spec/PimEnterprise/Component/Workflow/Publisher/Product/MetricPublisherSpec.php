@@ -21,11 +21,4 @@ class MetricPublisherSpec extends ObjectBehavior
     {
         $this->supports($value)->shouldBe(true);
     }
-
-    function it_publishes_metric(MetricInterface $value)
-    {
-        $this
-            ->publish($value)
-            ->shouldReturnAnInstanceOf('PimEnterprise\Component\Workflow\Model\PublishedProductMetric');
-    }
 }

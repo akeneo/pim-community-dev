@@ -26,9 +26,9 @@ class DatabaseCommand extends BaseDatabaseCommand
     /**
      * {@inheritdoc}
      */
-    protected function launchCommands(InputInterface $input, OutputInterface $output)
+    protected function launchCommands()
     {
-        parent::launchCommands($input, $output);
+        parent::launchCommands();
 
         $this->commandExecutor->runCommand('pimee:installer:clean-category-accesses');
 

@@ -136,45 +136,4 @@ class ValuePublisherSpec extends ObjectBehavior
         $published->getLocale()->shouldReturn(null);
         $published->getScope()->shouldReturn('ecommerce');
     }
-
-    public function it_publishes_a_price_product_value(
-        ProductValueInterface $productValue,
-        AttributeInterface $attribute,
-        ProductPriceInterface $price1,
-        ProductPriceInterface $price2,
-        $publisher
-    ) {
-
-        $attribute->getBackendType()->willReturn('prices');
-        $attribute->isBackendTypeReferenceData()->willReturn(false);
-
-        $productValue->getAttribute()->willReturn($attribute);
-        $productValue->getLocale()->willReturn(null);
-        $productValue->getScope()->willReturn(null);
-        $productValue->getEntity()->willReturn(null);
-
-        $price1->getCurrency()->willReturn('USD');
-        $price2->getCurrency()->willReturn('EUR');
-
-        $price1->setValue(Argument::any())->shouldBeCalled();
-        $price2->setValue(Argument::any())->shouldBeCalled();
-
-        $prices = new ArrayCollection();
-        $prices->add($price1);
-        $prices->add($price2);
-
-        $publisher->publish(Argument::any(), Argument::any())->willReturn($price1, $price2);
-
-        $productValue->getData()->willReturn($prices);
-
-        $published = $this->publish($productValue);
-
-        $published->shouldHaveType('PimEnterprise\Component\Workflow\Model\PublishedProductValue');
-
-        $prices = $published->getData()->toArray();
-        $prices->shouldReturn(['EUR' => $price2, 'USD' => $price1]);
-        $published->getAttribute()->shouldReturn($attribute);
-        $published->getLocale()->shouldReturn(null);
-        $published->getScope()->shouldReturn(null);
-    }
 }

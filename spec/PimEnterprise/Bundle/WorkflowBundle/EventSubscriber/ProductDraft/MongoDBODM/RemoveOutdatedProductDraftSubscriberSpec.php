@@ -13,6 +13,7 @@ use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager
+ * @requre \MongoId
  */
 class RemoveOutdatedProductDraftSubscriberSpec extends ObjectBehavior
 {

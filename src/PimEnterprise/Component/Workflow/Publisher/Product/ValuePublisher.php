@@ -12,6 +12,7 @@
 namespace PimEnterprise\Component\Workflow\Publisher\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Component\Workflow\Model\PublishedProductValueInterface;
 use PimEnterprise\Component\Workflow\Publisher\PublisherInterface;
@@ -53,7 +54,7 @@ class ValuePublisher implements PublisherInterface
         $copiedData = null;
         $options = ['product' => $object->getEntity(), 'value' => $object];
 
-        if ($originalData instanceof \Doctrine\Common\Collections\Collection) {
+        if ($originalData instanceof Collection) {
             if (count($originalData) > 0) {
                 $copiedData = new ArrayCollection();
                 foreach ($originalData as $object) {
