@@ -65,3 +65,5 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.attribute'
+            - '@pim_api.pagination.paginator'
+            - '@pim_api.pagination.parameter_validator'

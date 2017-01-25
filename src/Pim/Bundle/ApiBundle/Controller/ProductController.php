@@ -3,6 +3,9 @@
 namespace Pim\Bundle\ApiBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Component\Api\Exception\PaginationParametersException;
+use Pim\Component\Api\Pagination\HalPaginator;
+use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
@@ -34,25 +37,39 @@ class ProductController
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var HalPaginator */
+    protected $paginator;
+
+    /** @var ParameterValidatorInterface */
+    protected $parameterValidator;
+
     /**
      * @param ProductQueryBuilderFactoryInterface   $pqbFactory
      * @param NormalizerInterface                   $normalizer
      * @param IdentifiableObjectRepositoryInterface $channelRepository
      * @param IdentifiableObjectRepositoryInterface $localeRepository
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param HalPaginator                          $paginator
+     * @param ParameterValidatorInterface           $parameterValidator
+     * @param ProductQueryBuilderFactoryInterface   $pqbFactory
+     * @param NormalizerInterface                   $normalizer
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
         IdentifiableObjectRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        HalPaginator $paginator,
+        ParameterValidatorInterface $parameterValidator
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->paginator = $paginator;
+        $this->parameterValidator = $parameterValidator;
     }
 
     /**
@@ -64,6 +81,16 @@ class ProductController
      */
     public function listAction(Request $request)
     {
+        $queryParameters = [];
+        $queryParameters['page'] = $request->query->get('page', 1);
+        $queryParameters['limit'] = $request->query->get('limit', 10); // limit will be put in config in an other PR
+
+        try {
+            $this->parameterValidator->validate($queryParameters);
+        } catch (PaginationParametersException $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        }
+
         $normalizerOptions = [];
         $channel = null;
 
@@ -96,10 +123,21 @@ class ProductController
         // for the moment, set an empty array
         $this->setPQBFilters($pqb, [], $channel);
 
-        $pqb->getQueryBuilder()->setMaxResults($request->query->getInt('limit', 10)); // limit will be put in config in an other PR
-        $productStandard = $this->normalizer->normalize($pqb->execute(), 'external_api', $normalizerOptions);
+        $pqb->getQueryBuilder()
+            ->setMaxResults($queryParameters['limit'])
+            ->setFirstResult(($queryParameters['page'] - 1) * $queryParameters['limit']);
 
-        return new JsonResponse($productStandard);
+        $standardProducts = $this->normalizer->normalize($pqb->execute(), 'external_api', $normalizerOptions);
+        $paginatedProducts = $this->paginator->paginate(
+            $standardProducts,
+            array_merge($request->query->all(), $queryParameters),
+            1000,
+            'pim_api_product_list',
+            'pim_api_product_list',
+            'identifier'
+        );
+
+        return new JsonResponse($paginatedProducts);
     }
 
     /**
