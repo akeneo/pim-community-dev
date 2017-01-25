@@ -17,6 +17,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
+ * Run project calculations for all enrichment projects.
+ * Use this command to run the project calculation by cron task.
+ *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
 class ProjectRecalculationCommand extends ContainerAwareCommand
