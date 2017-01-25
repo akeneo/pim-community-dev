@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Api\Pagination;
 
-use Pim\Component\Api\Exception\ValidationException;
+use Pim\Component\Api\Exception\PaginationParametersException;
 
 /**
  * Interface to validate the pagination parameters.
@@ -18,7 +18,7 @@ interface ParameterValidatorInterface
      *
      * @param array $parameters
      *
-     * @throws ValidationException
+     * @throws PaginationParametersException
      */
     public function validate(array $parameters);
 }
