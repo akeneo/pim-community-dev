@@ -83,7 +83,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
     protected function setData(AttributeInterface $attribute, $field, $data)
     {
         switch ($field) {
-            case 'attribute_type':
+            case 'type':
                 $this->setType($attribute, $data);
                 break;
             case 'labels':
@@ -216,7 +216,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
     protected function setType($attribute, $data)
     {
         if (('' === $data) || (null === $data)) {
-            throw InvalidPropertyException::valueNotEmptyExpected('attribute_type', static::class);
+            throw InvalidPropertyException::valueNotEmptyExpected('type', static::class);
         }
 
         try {
@@ -226,7 +226,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
             $attribute->setUnique($attributeType->isUnique());
         } catch (\LogicException $exception) {
             throw InvalidPropertyException::validEntityCodeExpected(
-                'attribute_type',
+                'type',
                 'attribute type',
                 'The attribute type does not exist',
                 static::class,
