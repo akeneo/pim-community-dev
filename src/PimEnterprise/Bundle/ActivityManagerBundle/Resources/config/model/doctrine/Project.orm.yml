@@ -27,6 +27,9 @@ PimEnterprise\Component\ActivityManager\Model\Project:
         productFilters:
             type: array
             nullable: true
+        isCreated:
+            type: boolean
+            nullable: true
     manyToOne:
         owner:
             targetEntity: Pim\Bundle\UserBundle\Entity\UserInterface

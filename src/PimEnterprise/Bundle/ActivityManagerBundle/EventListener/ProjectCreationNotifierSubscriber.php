@@ -11,17 +11,15 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\EventListener;
 
-use Akeneo\Component\Localization\Presenter\PresenterInterface;
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
+use PimEnterprise\Bundle\ActivityManagerBundle\Notification\NotificationChecker;
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCreatedNotificationFactory;
-use Symfony\Component\Security\Core\User\UserInterface;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvent;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
-use PimEnterprise\Component\ActivityManager\Repository\NotificationHistoryRepositoryInterface;
-use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Repository\ProjectStatusRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -41,49 +39,43 @@ class ProjectCreationNotifierSubscriber implements EventSubscriberInterface
     /** @var UserRepositoryInterface */
     protected $userRepository;
 
-    /** @var PresenterInterface */
-    protected $datePresenter;
+    /** @var NotificationChecker */
+    protected $notificationChecker;
 
-    /** @var ProjectCompletenessRepositoryInterface */
-    protected $projectCompletenessRepository;
+    /** @var ProjectStatusRepositoryInterface */
+    protected $projectStatusRepository;
+
+    /** @var ProjectRepositoryInterface */
+    protected $projectRepository;
 
     /** @var SaverInterface */
-    protected $notificationHistorySaver;
-
-    /** @var SimpleFactoryInterface */
-    protected $notificationHistoryFactory;
-
-    /** @var NotificationHistoryRepositoryInterface */
-    protected $notificationHistoryRepository;
+    protected $projectSaver;
 
     /**
-     * @param ProjectCreatedNotificationFactory      $notificationFactory
-     * @param NotifierInterface                      $notifier
-     * @param UserRepositoryInterface                $userRepository
-     * @param PresenterInterface                     $datePresenter
-     * @param ProjectCompletenessRepositoryInterface $projectCompletenessRepository
-     * @param NotificationHistoryRepositoryInterface $notificationHistoryRepository
-     * @param SaverInterface                         $notificationHistorySaver
-     * @param SimpleFactoryInterface                 $notificationHistoryFactory
+     * @param ProjectCreatedNotificationFactory $notificationFactory
+     * @param NotifierInterface                 $notifier
+     * @param UserRepositoryInterface           $userRepository
+     * @param NotificationChecker               $notificationChecker
+     * @param ProjectStatusRepositoryInterface  $projectStatusRepository
+     * @param ProjectRepositoryInterface        $projectRepository
+     * @param SaverInterface                    $projectSaver
      */
     public function __construct(
         ProjectCreatedNotificationFactory $notificationFactory,
         NotifierInterface $notifier,
         UserRepositoryInterface $userRepository,
-        PresenterInterface $datePresenter,
-        ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
-        NotificationHistoryRepositoryInterface $notificationHistoryRepository,
-        SaverInterface $notificationHistorySaver,
-        SimpleFactoryInterface $notificationHistoryFactory
+        NotificationChecker $notificationChecker,
+        ProjectStatusRepositoryInterface $projectStatusRepository,
+        ProjectRepositoryInterface $projectRepository,
+        SaverInterface $projectSaver
     ) {
         $this->notificationFactory = $notificationFactory;
         $this->notifier = $notifier;
         $this->userRepository = $userRepository;
-        $this->datePresenter = $datePresenter;
-        $this->projectCompletenessRepository = $projectCompletenessRepository;
-        $this->notificationHistorySaver = $notificationHistorySaver;
-        $this->notificationHistoryFactory = $notificationHistoryFactory;
-        $this->notificationHistoryRepository = $notificationHistoryRepository;
+        $this->notificationChecker = $notificationChecker;
+        $this->projectStatusRepository = $projectStatusRepository;
+        $this->projectRepository = $projectRepository;
+        $this->projectSaver = $projectSaver;
     }
 
     /**
@@ -97,7 +89,7 @@ class ProjectCreationNotifierSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Notify a user when a project is created.
+     * Notify a contributor when a project is created.
      *
      * @param ProjectEvent $event
      */
@@ -107,43 +99,21 @@ class ProjectCreationNotifierSubscriber implements EventSubscriberInterface
         $users = $this->userRepository->findContributorsToNotify($project);
 
         foreach ($users as $user) {
-            $completeness = $this->projectCompletenessRepository->getProjectCompleteness($project, $user);
-
-            if (!$completeness->isComplete()) {
-                if (!$this->notificationHistoryRepository->hasBeenNotifiedForProjectCreation($project, $user)) {
-                    $userLocale = $user->getUiLocale();
-                    $formattedDate = $this->datePresenter->present(
-                        $project->getDueDate(),
-                        ['locale' => $userLocale->getCode()]
-                    );
-
-                    $parameters['due_date'] = $formattedDate;
-                    $parameters['project_label'] = $project->getLabel();
-                    $parameters['project_code'] = $project->getCode();
-
-                    $this->addToNotificationHistory($project, $user);
-                    $notification = $this->notificationFactory->create($parameters);
-                    $this->notifier->notify($notification, [$user]);
-                }
+            if ($this->notificationChecker->isNotifiableForProjectCreation($project, $user)) {
+                $notification = $this->notificationFactory->create($project, $user);
+                $this->notifier->notify($notification, [$user]);
+                $this->projectStatusRepository->setProjectStatus($project, $user, false);
+                $this->setProjectCreated($project);
             }
         }
     }
 
     /**
-     * @param ProjectInterface $project
-     * @param UserInterface    $user
+     * {@inheritdoc}
      */
-    protected function addToNotificationHistory($project, $user)
+    protected function setProjectCreated(ProjectInterface $project)
     {
-        $notificationHistory = $this->notificationHistoryRepository->findNotificationHistory($project, $user);
-
-        if (null === $notificationHistory) {
-            $notificationHistory = $this->notificationHistoryFactory->create();
-            $notificationHistory->setUser($user);
-            $notificationHistory->setProject($project);
-        }
-
-        $notificationHistory->setNotificationProjectCreation(true);
-        $this->notificationHistorySaver->save($notificationHistory);
+        $project->setIsCreated(true);
+        $this->projectSaver->save($project);
     }
 }

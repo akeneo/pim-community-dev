@@ -11,37 +11,27 @@
 
 namespace PimEnterprise\Component\ActivityManager\Repository;
 
-use PimEnterprise\Component\ActivityManager\Model\NotificationHistoryInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectStatusInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-interface NotificationHistoryRepositoryInterface
+interface ProjectStatusRepositoryInterface
 {
-
     /**
      * @param ProjectInterface $project
      * @param UserInterface    $user
      *
-     * @return NotificationHistoryInterface
+     * @return ProjectStatusInterface
      */
-    public function findNotificationHistory($project, $user);
-
-    /**
-     * @param $project
-     * @param $user
-     *
-     * @return bool
-     */
-    public function hasBeenNotifiedForProjectCreation($project, $user);
+    public function findProjectStatus(ProjectInterface $project, UserInterface $user);
 
     /**
      * @param ProjectInterface $project
      * @param UserInterface    $user
-     *
-     * @return bool
+     * @param bool             $isComplete
      */
-    public function hasBeenNotifiedForProjectFinished($project, $user);
+    public function setProjectStatus(ProjectInterface $project, UserInterface $user, $isComplete);
 }

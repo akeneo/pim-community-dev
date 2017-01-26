@@ -23,7 +23,7 @@ use Pim\Component\Catalog\Model\LocaleInterface;
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
 interface ProjectRepositoryInterface extends
-    ObjectRepository ,
+    ObjectRepository,
     IdentifiableObjectRepositoryInterface,
     SearchableRepositoryInterface,
     CursorableRepositoryInterface

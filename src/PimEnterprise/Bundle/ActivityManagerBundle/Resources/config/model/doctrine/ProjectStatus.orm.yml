@@ -1,7 +1,7 @@
-PimEnterprise\Component\ActivityManager\Model\NotificationHistory:
+PimEnterprise\Component\ActivityManager\Model\ProjectStatus:
     type: entity
-    table: pimee_activity_manager_notification_history
-    repositoryClass: PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\NotificationHistoryRepository
+    table: pimee_activity_manager_project_status
+    repositoryClass: PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\ProjectStatusRepository
     changeTrackingPolicy: DEFERRED_EXPLICIT
     fields:
         id:
@@ -9,10 +9,7 @@ PimEnterprise\Component\ActivityManager\Model\NotificationHistory:
             id: true
             generator:
                 strategy: AUTO
-        notificationProjectCreation:
-            type: boolean
-            nullable: true
-        notificationProjectFinished:
+        isComplete:
             type: boolean
             nullable: true
     manyToOne:

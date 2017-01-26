@@ -3,7 +3,7 @@
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2016 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2017 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,7 +11,10 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Notification;
 
+use Akeneo\Component\Localization\Presenter\DatePresenter;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Factory that creates a notification once the project is created. It notifies users that the project is ready to use.
@@ -24,21 +27,37 @@ class ProjectCreatedNotificationFactory
     /** @var string */
     protected $notificationClass;
 
+    /** @var DatePresenter */
+    protected $datePresenter;
+
     /**
-     * @param string $notificationClass
+     * @param DatePresenter $datePresenter
+     * @param string        $notificationClass
      */
-    public function __construct($notificationClass)
+    public function __construct(DatePresenter $datePresenter, $notificationClass)
     {
         $this->notificationClass = $notificationClass;
+        $this->datePresenter = $datePresenter;
     }
 
     /**
-     * @param array $parameters
+     * @param ProjectInterface $project
+     * @param UserInterface    $user
      *
      * @return NotificationInterface
      */
-    public function create($parameters)
+    public function create(ProjectInterface $project, UserInterface $user)
     {
+        $userLocale = $user->getUiLocale();
+        $formattedDate = $this->datePresenter->present(
+            $project->getDueDate(),
+            ['locale' => $userLocale->getCode()]
+        );
+
+        $parameters['due_date'] = $formattedDate;
+        $parameters['project_label'] = $project->getLabel();
+        $parameters['project_code'] = $project->getCode();
+
         $notification = new $this->notificationClass();
 
         $notification
