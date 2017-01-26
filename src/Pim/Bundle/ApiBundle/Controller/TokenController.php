@@ -54,7 +54,7 @@ class TokenController
     protected function getErrorMessage($errorCode)
     {
         $messages = [
-            OAuth2::ERROR_INVALID_REQUEST     => 'Parameter "grant_type", "username" or "password" is missing or empty',
+            OAuth2::ERROR_INVALID_REQUEST     => 'Parameter "grant_type", "username" or "password" is missing, empty or invalid',
             OAuth2::ERROR_INVALID_CLIENT      => 'Parameter "client_id" is missing or does not match any client, or secret is invalid',
             OAuth2::ERROR_UNAUTHORIZED_CLIENT => 'This grant type is not authorized for this client',
             OAuth2::ERROR_INVALID_GRANT       => 'No user found for the given username and password',

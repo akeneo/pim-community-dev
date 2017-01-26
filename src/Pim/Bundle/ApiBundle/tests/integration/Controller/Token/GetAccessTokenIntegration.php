@@ -83,12 +83,38 @@ class GetAccessTokenIntegration extends TestCase
         $responseBody = json_decode($response->getContent(), true);
 
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertSame('Parameter "grant_type", "username" or "password" is missing or empty', $responseBody['message']);
+        $this->assertSame('Parameter "grant_type", "username" or "password" is missing, empty or invalid', $responseBody['message']);
         $this->assertArrayNotHasKey('access_token', $responseBody);
         $this->assertArrayNotHasKey('refresh_token', $responseBody);
     }
 
     public function testInvalidGrantType()
+    {
+        $client = static::createClient();
+
+        $client->request('POST', 'api/oauth/v1/token',
+            [
+                'username'   => 'admin',
+                'password'   => 'admin',
+                'grant_type' => 'passwordd',
+            ],
+            [],
+            [
+                'PHP_AUTH_USER' => $this->clientId,
+                'PHP_AUTH_PW'   => $this->secret,
+            ]
+        );
+
+        $response = $client->getResponse();
+        $responseBody = json_decode($response->getContent(), true);
+
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame('Parameter "grant_type", "username" or "password" is missing, empty or invalid', $responseBody['message']);
+        $this->assertArrayNotHasKey('access_token', $responseBody);
+        $this->assertArrayNotHasKey('refresh_token', $responseBody);
+    }
+
+    public function testUnauthorizedGrantType()
     {
         $client = static::createClient();
 
@@ -186,7 +212,7 @@ class GetAccessTokenIntegration extends TestCase
         $responseBody = json_decode($response->getContent(), true);
 
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertSame('Parameter "grant_type", "username" or "password" is missing or empty', $responseBody['message']);
+        $this->assertSame('Parameter "grant_type", "username" or "password" is missing, empty or invalid', $responseBody['message']);
         $this->assertArrayNotHasKey('access_token', $responseBody);
         $this->assertArrayNotHasKey('refresh_token', $responseBody);
     }
@@ -211,7 +237,7 @@ class GetAccessTokenIntegration extends TestCase
         $responseBody = json_decode($response->getContent(), true);
 
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertSame('Parameter "grant_type", "username" or "password" is missing or empty', $responseBody['message']);
+        $this->assertSame('Parameter "grant_type", "username" or "password" is missing, empty or invalid', $responseBody['message']);
         $this->assertArrayNotHasKey('access_token', $responseBody);
         $this->assertArrayNotHasKey('refresh_token', $responseBody);
     }
