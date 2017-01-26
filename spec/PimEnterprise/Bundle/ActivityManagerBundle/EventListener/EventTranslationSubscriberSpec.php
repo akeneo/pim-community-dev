@@ -12,7 +12,6 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -41,33 +40,8 @@ class EventTranslationSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_events()
     {
         $this::getSubscribedEvents()->shouldReturn([
-            StorageEvents::POST_SAVE => 'projectSaved',
             EventInterface::AFTER_JOB_EXECUTION => 'projectCalculated',
         ]);
-    }
-
-    function it_dispatches_an_event_when_the_project_is_saved(
-        $eventDispatcher,
-        GenericEvent $event,
-        ProjectInterface $project
-    ) {
-        $event->getSubject()->willReturn($project);
-
-        $eventDispatcher->dispatch(
-            ProjectEvents::PROJECT_SAVED,
-            Argument::type(ProjectEvent::class)
-        )->shouldBeCalled();
-
-        $this->projectSaved($event)->shouldReturn(null);
-    }
-
-    function it_only_dispatches_events_if_a_project_is_saved($eventDispatcher, GenericEvent $event)
-    {
-        $event->getSubject()->willReturn(new \stdClass());
-
-        $eventDispatcher->dispatch(Argument::cetera())->shouldNotBeCalled();
-
-        $this->projectSaved($event)->shouldReturn(null);
     }
 
     function it_dispatches_an_event_when_the_project_is_calculated(
