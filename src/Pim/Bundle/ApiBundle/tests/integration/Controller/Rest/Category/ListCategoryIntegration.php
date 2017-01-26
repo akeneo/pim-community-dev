@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Rest\Category;
+namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Rest\Category;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
