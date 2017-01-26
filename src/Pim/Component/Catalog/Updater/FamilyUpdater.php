@@ -369,7 +369,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
             $family->setAttributeAsLabel($attribute);
         } else {
             throw InvalidPropertyException::validEntityCodeExpected(
-                'attributes',
+                'attribute_as_label',
                 'code',
                 'The attribute does not exist',
                 static::class,

@@ -353,7 +353,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
-                'attributes',
+                'attribute_as_label',
                 'code',
                 'The attribute does not exist',
                 'Pim\Component\Catalog\Updater\FamilyUpdater',
@@ -398,8 +398,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_attribute_as_label_does_not_exist(
         $attributeRepository,
-        FamilyInterface $family,
-        AttributeInterface $priceAttribute
+        FamilyInterface $family
     ) {
         $data = [
             'attribute_as_label'     => 'unknown',
