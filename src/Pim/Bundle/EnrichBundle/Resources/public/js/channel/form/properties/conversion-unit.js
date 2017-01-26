@@ -100,7 +100,7 @@ define([
                     data.conversion_units = {};
                 }
 
-                if (value !== "no_conversion") {
+                if (value !== 'no_conversion') {
                     data.conversion_units[attribute] = value;
                 } else {
                     delete data.conversion_units[attribute];
