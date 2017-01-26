@@ -9,7 +9,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
  * Updates a channel
@@ -29,7 +28,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     protected $currencyRepository;
 
-    /** @var AttributeRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
     /** @var MeasureManager */
@@ -68,7 +67,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      *     },
      *     'locales': ['en_US'],
      *     'currencies': ['EUR', 'USD'],
-     *     'conversion_units': ["weight" => "GRAM", "display_diagnoal" => "METER"],
+     *     'conversion_units': ["weight" => "GRAM", "display_diagonal" => "METER"],
      *     'category_tree': 'master'
      * }
      */
@@ -215,10 +214,9 @@ class ChannelUpdater implements ObjectUpdaterInterface
      * @param ChannelInterface $channel
      * @param array            $conversionUnits
      *
-     * @internal param $convertionUnits
-     *
+     * @throws InvalidPropertyException
      */
-    protected function setConversionUnits($channel, $conversionUnits)
+    protected function setConversionUnits(ChannelInterface $channel, $conversionUnits)
     {
         foreach ($conversionUnits as $attributeCode => $conversionUnit) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
