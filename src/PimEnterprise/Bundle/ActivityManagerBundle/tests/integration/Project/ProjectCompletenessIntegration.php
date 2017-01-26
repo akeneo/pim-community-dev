@@ -18,6 +18,7 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
 {
     /**
      * Family: tshirt (3 products + 1 uncategorized product)
+     *
      * Channel: ecommerce
      * Locale: en_US
      */
@@ -30,8 +31,6 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
                 'value'    => ['tshirt'],
             ],
         ]);
-
-        $this->calculateProject($project);
 
         /**
          * Julia is a project creator, she creates a project on the "tshirt" family
@@ -57,15 +56,18 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
         $this->checkProductSelectionCount($projectCompleteness, 0, 'Peter');
 
         /**
-         * Katy is media manager, she can edit products in the "Clothing" category but they don't not have any media property
+         * Katy
+         *      - is media manager
+         *      - she can edit products in the "Clothing" category but they don't not have any media property
          */
         $projectCompleteness = $this->getProjectCompleteness($project, 'Katy');
 
         $this->checkProductSelectionCount($projectCompleteness, 0, 'Katy');
 
         /**
-         * Teddy is technical "High-Tech" contributor, he can not see the clothing category
-         * One t-shirt is in the category "High-Tech"
+         * Teddy
+         *      - is technical "High-Tech" contributor
+         *      - he can not see the clothing category
          */
         $projectCompleteness = $this->getProjectCompleteness($project, 'Teddy');
 
@@ -76,7 +78,6 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
          * Claude
          *      - is technical contributor (technical clothing attribute group),
          *      - can access to "Clothing" category
-         * The property "material" is only filled for one product for the ecommerce channel.
          */
         $projectCompleteness = $this->getProjectCompleteness($project, 'Claude');
 
@@ -87,7 +88,6 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
          * Marc
          *      - is technical contributor (technical clothing attribute group),
          *      - can access to "Clothing" and "High Tech" category
-         * The property "material" is only filled for one product for the ecommerce channel.
          */
         $projectCompleteness = $this->getProjectCompleteness($project, 'Marc');
 
@@ -97,7 +97,8 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
 
     /**
      * Family: tshirt(3 products + 1 uncategorized product) and usb_keys (2 products)
-     * The hight tech and clothing category share a common product
+     * Note: The hight tech and clothing category share a common product
+     *
      * Channel: ecommerce
      * Locale: en_US
      */
@@ -110,8 +111,6 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
                 'value'    => ['tshirt', 'usb_keys'],
             ],
         ]);
-
-        $this->calculateProject($project);
 
         /**
          * Julia is a project creator, she creates a project on the "tshirt" family
@@ -126,7 +125,6 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
          * Marc
          *      - is technical contributor (technical clothing attribute gcroup),
          *      - can access to "Clothing" and "High Tech" category
-         * The property "material" is only filled for one product for the ecommerce channel.
          */
         $projectCompleteness = $this->getProjectCompleteness($project, 'Marc');
 
@@ -146,7 +144,6 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
          * Claude
          *      - is technical contributor (technical clothing attribute group),
          *      - can access to "Clothing" category
-         * The property "material" is only filled for one product for the ecommerce channel.
          */
         $projectCompleteness = $this->getProjectCompleteness($project, 'Claude');
 
@@ -159,7 +156,7 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
      *
      * Family: tshirt (3 products + 1 uncategorized product)
      * Channel: mobile
-     * Locale: en_US
+     * Locale: fr_FR
      */
     public function testCreateAProjectOnTheTshirtFamilyButWithAnotherChannel()
     {
@@ -180,7 +177,7 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
          */
         $projectCompleteness = $this->getProjectCompleteness($project);
         $this->checkProductSelectionCount($projectCompleteness, 4, 'Julia');
-        $this->checkProjectCompleteness($projectCompleteness, 0, 3, 1, 'Julia');
+        $this->checkProjectCompleteness($projectCompleteness, 0, 4, 0, 'Julia');
 
         /**
          * Mary is a project contributor, she can edit the marking attribute group
@@ -188,7 +185,7 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
         $projectCompleteness = $this->getProjectCompleteness($project, 'Mary');
 
         $this->checkProductSelectionCount($projectCompleteness, 4, 'Mary');
-        $this->checkProjectCompleteness($projectCompleteness, 2, 1, 1, 'Mary');
+        $this->checkProjectCompleteness($projectCompleteness, 0, 3, 1, 'Mary');
 
         /**
          * Peter is administrator, he does not enrich product but he can see products
@@ -198,42 +195,43 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
         $this->checkProductSelectionCount($projectCompleteness, 0, 'Peter');
 
         /**
-         * Katy is media manager, she can edit products in the "Clothing" category but they don't not have any media property
+         * Katy
+         *      - is media manager
+         *      - she can edit products in the "Clothing" category but they don't not have any media property
          */
         $projectCompleteness = $this->getProjectCompleteness($project, 'Katy');
 
         $this->checkProductSelectionCount($projectCompleteness, 0, 'Katy');
 
         /**
-         * Teddy is technical "High-Tech" contributor, he can not see the clothing category
-         * One t-shirt is in the category "High-Tech"
+         * Teddy
+         *      - is technical "High-Tech" contributor
+         *      - he can not see the clothing category
          */
         $projectCompleteness = $this->getProjectCompleteness($project, 'Teddy');
 
         $this->checkProductSelectionCount($projectCompleteness, 2, 'Teddy');
-        $this->checkProjectCompleteness($projectCompleteness, 2, 0, 0, 'Teddy');
+        $this->checkProjectCompleteness($projectCompleteness, 1, 0, 1, 'Teddy');
 
         /**
          * Claude
          *      - is technical contributor (technical clothing attribute group),
          *      - can access to "Clothing" category
-         * The property "material" is only filled for one product for the ecommerce channel.
          */
         $projectCompleteness = $this->getProjectCompleteness($project, 'Claude');
 
         $this->checkProductSelectionCount($projectCompleteness, 4, 'Claude');
-        $this->checkProjectCompleteness($projectCompleteness, 3, 0, 1, 'Claude');
+        $this->checkProjectCompleteness($projectCompleteness, 2, 0, 2, 'Claude');
 
         /**
          * Marc
          *      - is technical contributor (technical clothing attribute group),
          *      - can access to "Clothing" and "High Tech" category
-         * The property "material" is only filled for one product for the ecommerce channel.
          */
         $projectCompleteness = $this->getProjectCompleteness($project, 'Marc');
 
         $this->checkProductSelectionCount($projectCompleteness, 4, 'Marc');
-        $this->checkProjectCompleteness($projectCompleteness, 3, 0, 1, 'Marc');
+        $this->checkProjectCompleteness($projectCompleteness, 2, 0, 2, 'Marc');
     }
 
     /**
@@ -253,9 +251,9 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
         $username
     ) {
         $this->assertEquals(
-            $projectCompleteness->getProductsCountDone(),
-            $expectedDone,
-            sprintf('Product count done are invalid for %s', $username)
+            $projectCompleteness->getProductsCountTodo(),
+            $expectedTodo,
+            sprintf('Product count to do are invalid for %s', $username)
         );
 
         $this->assertEquals(
@@ -265,9 +263,9 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
         );
 
         $this->assertEquals(
-            $projectCompleteness->getProductsCountTodo(),
-            $expectedTodo,
-            sprintf('Product count to do are invalid for %s', $username)
+            $projectCompleteness->getProductsCountDone(),
+            $expectedDone,
+            sprintf('Product count done are invalid for %s', $username)
         );
     }
 
