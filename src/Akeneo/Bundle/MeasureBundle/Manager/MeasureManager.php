@@ -47,16 +47,29 @@ class MeasureManager
     }
 
     /**
-     * Check if unit exists in the given family
+     * Check if the unit symbol (like 'g' for GRAM) exists for the given family
      *
-     * @param string $unit   the unit to check
-     * @param string $family the measure family
+     * @param string $unitSymbol the unit symbol to check
+     * @param string $family     the measure family
      *
      * @return bool
      */
-    public function unitExistsInFamily($unit, $family)
+    public function unitSymbolExistsInFamily($unitSymbol, $family)
     {
-        return in_array($unit, $this->getUnitSymbolsForFamily($family));
+        return in_array($unitSymbol, $this->getUnitSymbolsForFamily($family));
+    }
+
+    /**
+     * Check if the unit code (like 'GRAM' or 'KILOMETER') exists for the given family
+     *
+     * @param string $unitCode the unit code to check
+     * @param string $family   the measure family
+     *
+     * @return bool
+     */
+    public function unitCodeExistsInFamily($unitCode, $family)
+    {
+        return in_array($unitCode, $this->getUnitsForFamily($family));
     }
 
     /**
@@ -90,5 +103,24 @@ class MeasureManager
         }
 
         return $this->config[$family];
+    }
+
+    /**
+     * Get unit codes for a measure family
+     *
+     * @param string $family the measure family
+     *
+     * @return array the measure units code
+     */
+    protected function getUnitsForFamily($family)
+    {
+        $familyConfig = $this->getFamilyConfig($family);
+        $units = [];
+
+        foreach ($familyConfig['units'] as $unit => $unitData) {
+            $units[] = $unit;
+        }
+
+        return $units;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -31,22 +32,28 @@ class ChannelUpdater implements ObjectUpdaterInterface
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var MeasureManager */
+    protected $measureManager;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $categoryRepository
      * @param IdentifiableObjectRepositoryInterface $localeRepository
      * @param IdentifiableObjectRepositoryInterface $currencyRepository
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param MeasureManager                        $measureManager
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $categoryRepository,
         IdentifiableObjectRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $currencyRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        MeasureManager $measureManager
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->localeRepository = $localeRepository;
         $this->currencyRepository = $currencyRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->measureManager = $measureManager;
     }
 
     /**
@@ -214,24 +221,24 @@ class ChannelUpdater implements ObjectUpdaterInterface
     protected function setConversionUnits($channel, $conversionUnits)
     {
         foreach ($conversionUnits as $attributeCode => $conversionUnit) {
-            $isValidAttribute = false;
-            $isValidMetricCode = false;
+            $isConversionMetricValid = false;
 
-            if (is_string($attributeCode)) {
-                $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-                $isValidAttribute = (null !== $attribute) ? true : false;
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+
+            if ($attribute !== null &&
+                $this->measureManager->unitCodeExistsInFamily($conversionUnit, $attribute->getMetricFamily())
+            ) {
+                $isConversionMetricValid = true;
             }
 
-            $isValidMetricCode = true;
-
-            if (!$isValidAttribute || !$isValidMetricCode) {
+            if (!$isConversionMetricValid) {
                 throw InvalidPropertyException::validEntityCodeExpected(
                     'conversionUnits',
                     'attributeCode and metric code',
                     'the attribute code does not exists',
                     'updater',
                     'channel',
-                    [$attributeCode => $conversionUnits]
+                    sprintf('(%s, %s)', $attributeCode, $conversionUnit)
                 );
             }
         }

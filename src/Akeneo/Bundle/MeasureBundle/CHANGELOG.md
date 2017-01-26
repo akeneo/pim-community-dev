@@ -1,3 +1,7 @@
+# 0.5.1 (2017-01-21)
+ - rename unitExistsInFamily to unitSymbolExistsInFamily
+ - Add unitCodeExistsInFamily in the MeasureManager
+
 # 0.5.0 (2016-04-30)
  - Use phpspec and not phpunit anymore, thanks to @fitn
  - Fix missing family constants, thanks to @danielsan80

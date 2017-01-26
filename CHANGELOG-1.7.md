@@ -22,6 +22,7 @@
 - Add Energy measure family and conversions cheers @JulienDotDev!
 - Complete Duration measure family with week, month, year and related conversions cheers @JulienDotDev!
 - Add CaseBox measure family and conversions, cheers @gplanchat!
+- Add history support for the channel conversion units.
 
 ## Technical improvements
 
