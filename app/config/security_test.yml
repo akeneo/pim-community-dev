@@ -1,10 +1,14 @@
 security:
     firewalls:
+        api:
+            pattern:        ^/api
+            security:       false
+
         main:
             http_basic:
-                realm: "Secured REST Area"
-            provider: oro_user
-            form_login: false
-            logout: false
-            remember_me: false
-            anonymous: true
+                realm:      "Secured REST Area"
+            provider:       oro_user
+            form_login:     false
+            logout:         false
+            remember_me:    false
+            anonymous:      true

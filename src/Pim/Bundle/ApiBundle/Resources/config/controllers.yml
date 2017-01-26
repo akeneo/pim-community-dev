@@ -3,6 +3,7 @@ parameters:
     pim_api.controller.rest.family.class: Pim\Bundle\ApiBundle\Controller\Rest\FamilyController
     pim_api.controller.rest.attribute.class: Pim\Bundle\ApiBundle\Controller\Rest\AttributeController
     pim_api.controller.rest.attribute_option.class: Pim\Bundle\ApiBundle\Controller\Rest\AttributeOptionController
+    pim_api.controller.token.class: Pim\Bundle\ApiBundle\Controller\TokenController
 
 services:
     pim_api.controller.rest.category:
@@ -36,3 +37,9 @@ services:
             - '@pim_catalog.repository.attribute_option'
             - '@pim_serializer'
             - ['pim_catalog_simpleselect', 'pim_catalog_multiselect']
+
+    pim_api.controller.token:
+        scope: request
+        class: '%pim_api.controller.token.class%'
+        arguments:
+            - '@fos_oauth_server.server'
