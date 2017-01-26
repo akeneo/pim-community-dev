@@ -82,6 +82,25 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
     }
 
     /**
+     * Remove access to a group for all attribute groups
+     *
+     * @param Group[] $groups
+     *
+     * @return int
+     */
+    public function revokeAccessToGroups(array $groups)
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        $qb
+            ->delete()
+            ->where($qb->expr()->in('a.userGroup', ':groups'))
+            ->setParameter('groups', $groups);
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
      * Get granted attribute group query builder
      *
      * @param UserInterface $user
