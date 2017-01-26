@@ -93,7 +93,7 @@ class ProductSaverIntegration extends TestCase
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => ['amount' => '987.0000', 'unit' => 'KILOWATT'],
+                        'data'   => ['amount' => '987654321987.1234', 'unit' => 'KILOWATT'],
                     ],
                 ],
                 'a_metric_without_decimal' => [
@@ -255,11 +255,13 @@ class ProductSaverIntegration extends TestCase
             'a_metric' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
-                        'amount' => '987.0000',
+                        'amount' => '987654321987.1234',
                         'unit'   => 'KILOWATT',
-                        // TODO: wrong but makes the test pass
-                        'base_data' => null,
-                        'base_unit' => null,
+                        // TODO: here maybe we should have a "987654321987123.4", but the measure converter
+                        // TODO: returns a double that is too big, and we didn't change that
+                        // TODO: see TIP-695
+                        'base_data' => 9.8765432198712e+14,
+                        'base_unit' => 'WATT',
                         'family'    => 'Power',
                     ]
                 ],
@@ -267,11 +269,10 @@ class ProductSaverIntegration extends TestCase
             'a_metric_without_decimal' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
-                        'amount' => 98,
-                        'unit'   => 'CENTIMETER',
-                        // TODO: wrong but makes the test pass
-                        'base_data' => null,
-                        'base_unit' => null,
+                        'amount'    => 98,
+                        'unit'      => 'CENTIMETER',
+                        'base_data' => 0.98,
+                        'base_unit' => 'METER',
                         'family'    => 'Length',
                     ],
                 ],
@@ -279,11 +280,10 @@ class ProductSaverIntegration extends TestCase
             'a_metric_without_decimal_negative' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
-                        'amount' => -20,
-                        'unit'   => 'CELSIUS',
-                        // TODO: wrong but makes the test pass
-                        'base_data' => null,
-                        'base_unit' => null,
+                        'amount'    => -20,
+                        'unit'      => 'CELSIUS',
+                        'base_data' => 253.15,
+                        'base_unit' => 'KELVIN',
                         'family'    => 'Temperature',
                     ],
                 ],
@@ -291,11 +291,13 @@ class ProductSaverIntegration extends TestCase
             'a_metric_negative' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
-                        'amount' => '-20.5000',
-                        'unit'   => 'CELSIUS',
-                        // TODO: wrong but makes the test pass
-                        'base_data' => null,
-                        'base_unit' => null,
+                        'amount'    => '-20.5000',
+                        'unit'      => 'CELSIUS',
+                        // TODO: here maybe we should have a string, but the measure converter returns a double,
+                        // TODO: and we didn't change that
+                        // TODO: see TIP-695
+                        'base_data' => 252.65,
+                        'base_unit' => 'KELVIN',
                         'family'    => 'Temperature',
                     ],
                 ],

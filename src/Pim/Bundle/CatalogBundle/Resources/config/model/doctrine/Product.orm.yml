@@ -59,15 +59,6 @@ Pim\Component\Catalog\Model\Product:
                 - persist
                 - refresh
                 - detach
-        values:
-            targetEntity: Pim\Component\Catalog\Model\ProductValueInterface
-            orphanRemoval: true
-            mappedBy: entity
-            cascade:
-                - remove
-                - persist
-                - refresh
-                - detach
         completenesses:
             targetEntity: Pim\Component\Catalog\Model\CompletenessInterface
             mappedBy: product
