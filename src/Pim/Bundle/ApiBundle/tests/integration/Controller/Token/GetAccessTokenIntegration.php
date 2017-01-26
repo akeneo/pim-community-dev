@@ -4,7 +4,6 @@ namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Token;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use OAuth2\OAuth2;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -40,13 +39,18 @@ class GetAccessTokenIntegration extends TestCase
     {
         $client = static::createClient();
 
-        $client->request('GET', 'api/oauth/v1/token', [
-            'client_id'     => $this->clientId,
-            'client_secret' => $this->secret,
-            'username'      => 'admin',
-            'password'      => 'admin',
-            'grant_type'    => 'password',
-        ]);
+        $client->request('POST', 'api/oauth/v1/token',
+            [
+               'username'   => 'admin',
+               'password'   => 'admin',
+               'grant_type' => 'password',
+            ],
+            [],
+            [
+                'PHP_AUTH_USER' => $this->clientId,
+                'PHP_AUTH_PW'   => $this->secret,
+            ]
+        );
 
         $response = $client->getResponse();
         $responseBody = json_decode($response->getContent(), true);
@@ -63,12 +67,17 @@ class GetAccessTokenIntegration extends TestCase
     {
         $client = static::createClient();
 
-        $client->request('GET', 'api/oauth/v1/token', [
-            'client_id'     => $this->clientId,
-            'client_secret' => $this->secret,
-            'username'      => 'admin',
-            'password'      => 'admin',
-        ]);
+        $client->request('POST', 'api/oauth/v1/token',
+            [
+                'username'   => 'admin',
+                'password'   => 'admin',
+            ],
+            [],
+            [
+                'PHP_AUTH_USER' => $this->clientId,
+                'PHP_AUTH_PW'   => $this->secret,
+            ]
+        );
 
         $response = $client->getResponse();
         $responseBody = json_decode($response->getContent(), true);
@@ -83,13 +92,18 @@ class GetAccessTokenIntegration extends TestCase
     {
         $client = static::createClient();
 
-        $client->request('GET', 'api/oauth/v1/token', [
-            'client_id'     => $this->clientId,
-            'client_secret' => $this->secret,
-            'username'      => 'admin',
-            'password'      => 'admin',
-            'grant_type'    => 'token',
-        ]);
+        $client->request('POST', 'api/oauth/v1/token',
+            [
+                'username'   => 'admin',
+                'password'   => 'admin',
+                'grant_type' => 'token',
+            ],
+            [],
+            [
+                'PHP_AUTH_USER' => $this->clientId,
+                'PHP_AUTH_PW'   => $this->secret,
+            ]
+        );
 
         $response = $client->getResponse();
         $responseBody = json_decode($response->getContent(), true);
@@ -104,13 +118,18 @@ class GetAccessTokenIntegration extends TestCase
     {
         $client = static::createClient();
 
-        $client->request('GET', 'api/oauth/v1/token', [
-            'client_id'     => 'michel_id',
-            'client_secret' => $this->secret,
-            'username'      => 'admin',
-            'password'      => 'admin',
-            'grant_type'    => 'password',
-        ]);
+        $client->request('POST', 'api/oauth/v1/token',
+            [
+                'username'   => 'admin',
+                'password'   => 'admin',
+                'grant_type' => 'password',
+            ],
+            [],
+            [
+                'PHP_AUTH_USER' => 'michel_id',
+                'PHP_AUTH_PW'   => $this->secret,
+            ]
+        );
 
         $response = $client->getResponse();
         $responseBody = json_decode($response->getContent(), true);
@@ -125,13 +144,18 @@ class GetAccessTokenIntegration extends TestCase
     {
         $client = static::createClient();
 
-        $client->request('GET', 'api/oauth/v1/token', [
-            'client_id'     => $this->clientId,
-            'client_secret' => 'michel_secret',
-            'username'      => 'admin',
-            'password'      => 'admin',
-            'grant_type'    => 'password',
-        ]);
+        $client->request('POST', 'api/oauth/v1/token',
+            [
+                'username'   => 'admin',
+                'password'   => 'admin',
+                'grant_type' => 'password',
+            ],
+            [],
+            [
+                'PHP_AUTH_USER' => $this->clientId,
+                'PHP_AUTH_PW'   => 'michel_secret',
+            ]
+        );
 
         $response = $client->getResponse();
         $responseBody = json_decode($response->getContent(), true);
@@ -146,12 +170,17 @@ class GetAccessTokenIntegration extends TestCase
     {
         $client = static::createClient();
 
-        $client->request('GET', 'api/oauth/v1/token', [
-            'client_id'     => $this->clientId,
-            'client_secret' => $this->secret,
-            'password'      => 'admin',
-            'grant_type'    => 'password',
-        ]);
+        $client->request('POST', 'api/oauth/v1/token',
+            [
+                'password'   => 'admin',
+                'grant_type' => 'password',
+            ],
+            [],
+            [
+                'PHP_AUTH_USER' => $this->clientId,
+                'PHP_AUTH_PW'   => $this->secret,
+            ]
+        );
 
         $response = $client->getResponse();
         $responseBody = json_decode($response->getContent(), true);
@@ -166,12 +195,17 @@ class GetAccessTokenIntegration extends TestCase
     {
         $client = static::createClient();
 
-        $client->request('GET', 'api/oauth/v1/token', [
-            'client_id'     => $this->clientId,
-            'client_secret' => $this->secret,
-            'username'      => 'admin',
-            'grant_type'    => 'password',
-        ]);
+        $client->request('POST', 'api/oauth/v1/token',
+            [
+                'username'   => 'admin',
+                'grant_type' => 'password',
+            ],
+            [],
+            [
+                'PHP_AUTH_USER' => $this->clientId,
+                'PHP_AUTH_PW'   => $this->secret,
+            ]
+        );
 
         $response = $client->getResponse();
         $responseBody = json_decode($response->getContent(), true);
@@ -186,13 +220,18 @@ class GetAccessTokenIntegration extends TestCase
     {
         $client = static::createClient();
 
-        $client->request('GET', 'api/oauth/v1/token', [
-            'client_id'     => $this->clientId,
-            'client_secret' => $this->secret,
-            'username'      => 'michel',
-            'password'      => 'michelpwd',
-            'grant_type'    => 'password',
-        ]);
+        $client->request('POST', 'api/oauth/v1/token',
+            [
+                'username'   => 'michel',
+                'password'   => 'michelpwd',
+                'grant_type' => 'password',
+            ],
+            [],
+            [
+                'PHP_AUTH_USER' => $this->clientId,
+                'PHP_AUTH_PW'   => $this->secret,
+            ]
+        );
 
         $response = $client->getResponse();
         $responseBody = json_decode($response->getContent(), true);
