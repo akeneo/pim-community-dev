@@ -3,12 +3,12 @@
 namespace tests\integration\Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Akeneo\Test\Integration\TestCase;
 
 class LoadProductValuesSubscriberIntegration extends TestCase
 {
@@ -79,8 +79,8 @@ class LoadProductValuesSubscriberIntegration extends TestCase
     }
 
     /**
-     * @return ProductValueInterface[]
      * @throws \Exception
+     * @return ProductValueInterface[]
      */
     private function getValuesForProductWithAllAttributes()
     {

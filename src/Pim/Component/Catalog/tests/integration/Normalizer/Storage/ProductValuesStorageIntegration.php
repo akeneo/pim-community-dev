@@ -58,8 +58,8 @@ class ProductValuesStorageIntegration extends TestCase
             'a_metric_without_decimal' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
-                        'amount' => 98,
-                        'unit'   => 'CENTIMETER',
+                        'amount'    => 98,
+                        'unit'      => 'CENTIMETER',
                         'base_data' => 0.98,
                         'base_unit' => 'METER',
                         'family'    => 'Length',
@@ -69,8 +69,8 @@ class ProductValuesStorageIntegration extends TestCase
             'a_metric_without_decimal_negative' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
-                        'amount' => -20,
-                        'unit'   => 'CELSIUS',
+                        'amount'    => -20,
+                        'unit'      => 'CELSIUS',
                         'base_data' => 253.15,
                         'base_unit' => 'KELVIN',
                         'family'    => 'Temperature',
