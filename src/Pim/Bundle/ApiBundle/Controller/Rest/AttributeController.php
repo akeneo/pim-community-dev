@@ -177,9 +177,11 @@ class AttributeController
 
     /**
      * @param AttributeInterface $attribute
-     * @param                    $data
+     * @param array              $data
+     *
+     * @throws DocumentedHttpException
      */
-    protected function updateAttribute(AttributeInterface $attribute, $data)
+    protected function updateAttribute(AttributeInterface $attribute, array $data)
     {
         try {
             $this->updater->update($attribute, $data);
