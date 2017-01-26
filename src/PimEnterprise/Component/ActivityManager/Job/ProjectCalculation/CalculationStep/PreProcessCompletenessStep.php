@@ -119,6 +119,8 @@ class PreProcessCompletenessStep implements CalculationStepInterface
                 continue;
             }
 
+            // TODO do not check value for attribute not require by the family
+
             if ($this->productValueChecker->isComplete($value, $project->getChannel(), $project->getLocale())) {
                 $filledAttributes[$attribute->getGroup()->getId()][] = $attribute->getCode();
             }

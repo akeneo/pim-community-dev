@@ -62,6 +62,8 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
     {
         $parameters = [
             'project_id' => $project->getId(),
+            'channel_id' => $project->getChannel()->getId(),
+            'locale_id'  => $project->getLocale()->getId(),
         ];
 
         if (null !== $username) {
@@ -147,25 +149,23 @@ FROM (
     SELECT 
 		SUM(`completeness_per_attribute_group`.`has_at_least_one_required_attribute_filled`) AS `attribute_group_in_progress`,
 		SUM(`completeness_per_attribute_group`.`is_complete`) AS `attribute_group_done`,
-		COUNT(`project_product`.`product_id`) AS `total_attribute_group`
-	FROM `@pimee_activity_manager.model.project@` AS `project`
-	INNER JOIN `@pimee_activity_manager.project_product@` AS `project_product`
-		ON `project`.`id` = `project_product`.`project_id`
-    INNER JOIN `pimee_activity_manager_completeness_per_attribute_group` AS `completeness_per_attribute_group`
-        ON `completeness_per_attribute_group`.`product_id` IN (
-            SELECT DISTINCT `project_product`.`product_id`
-            FROM `pimee_activity_manager_project_product` AS `project_product`
-            LEFT JOIN `$this->productCategoryLink` AS `category_product`
-                ON `project_product`.`product_id` = `category_product`.`product_id`
-            LEFT JOIN `pimee_security_product_category_access` AS `product_category_access`
-                ON `category_product`.`category_id` = `product_category_access`.`category_id`
-            $filterByCategoryPermissionJoins
-            WHERE `project_product`.`project_id` = :project_id
-            AND (`product_category_access`.`edit_items` = 1 OR `product_category_access`.`edit_items` IS NULL)
-            $filterByCategoryPermissionByConditions
-        )
-        $filterByAttributeGroupPermissions
-
+		COUNT(`completeness_per_attribute_group`.`product_id`) AS `total_attribute_group`
+    FROM `pimee_activity_manager_completeness_per_attribute_group` AS `completeness_per_attribute_group`
+    WHERE `completeness_per_attribute_group`.`channel_id` = :channel_id
+    AND `completeness_per_attribute_group`.`locale_id` = :locale_id
+    AND `completeness_per_attribute_group`.`product_id` IN (
+        SELECT DISTINCT `project_product`.`product_id`
+        FROM `pimee_activity_manager_project_product` AS `project_product`
+        LEFT JOIN `$this->productCategoryLink` AS `category_product`
+            ON `project_product`.`product_id` = `category_product`.`product_id`
+        LEFT JOIN `pimee_security_product_category_access` AS `product_category_access`
+            ON `category_product`.`category_id` = `product_category_access`.`category_id`
+        $filterByCategoryPermissionJoins
+        WHERE `project_product`.`project_id` = :project_id
+        AND (`product_category_access`.`edit_items` = 1 OR `product_category_access`.`edit_items` IS NULL)
+        $filterByCategoryPermissionByConditions
+    )
+    $filterByAttributeGroupPermissions
 	GROUP BY `completeness_per_attribute_group`.`product_id`
 ) `completeness`
 SQL;
