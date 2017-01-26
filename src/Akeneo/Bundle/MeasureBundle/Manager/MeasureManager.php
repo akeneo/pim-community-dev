@@ -69,7 +69,7 @@ class MeasureManager
      */
     public function unitCodeExistsInFamily($unitCode, $family)
     {
-        return in_array($unitCode, $this->getUnitsForFamily($family));
+        return in_array($unitCode, $this->getUnitCodesForFamily($family));
     }
 
     /**
@@ -84,6 +84,20 @@ class MeasureManager
         $familyConfig = $this->getFamilyConfig($family);
 
         return $familyConfig['standard'];
+    }
+
+    /**
+     * Get unit codes for a measure family
+     *
+     * @param string $family the measure family
+     *
+     * @return array the measure units code
+     */
+    public function getUnitCodesForFamily($family)
+    {
+        $familyConfig = $this->getFamilyConfig($family);
+
+        return array_keys($familyConfig['units']);
     }
 
     /**
@@ -103,24 +117,5 @@ class MeasureManager
         }
 
         return $this->config[$family];
-    }
-
-    /**
-     * Get unit codes for a measure family
-     *
-     * @param string $family the measure family
-     *
-     * @return array the measure units code
-     */
-    protected function getUnitsForFamily($family)
-    {
-        $familyConfig = $this->getFamilyConfig($family);
-        $units = [];
-
-        foreach ($familyConfig['units'] as $unit => $unitData) {
-            $units[] = $unit;
-        }
-
-        return $units;
     }
 }

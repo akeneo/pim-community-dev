@@ -221,28 +221,31 @@ class ChannelUpdater implements ObjectUpdaterInterface
     protected function setConversionUnits($channel, $conversionUnits)
     {
         foreach ($conversionUnits as $attributeCode => $conversionUnit) {
-            $isConversionMetricValid = false;
-
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
-            if ($attribute !== null &&
-                $this->measureManager->unitCodeExistsInFamily($conversionUnit, $attribute->getMetricFamily())
-            ) {
-                $isConversionMetricValid = true;
-            }
-
-            if (!$isConversionMetricValid) {
+            if ($attribute === null) {
                 throw InvalidPropertyException::validEntityCodeExpected(
                     'conversionUnits',
-                    'attributeCode and metric code',
+                    'attributeCode',
                     'the attribute code does not exists',
                     'updater',
                     'channel',
-                    sprintf('(%s, %s)', $attributeCode, $conversionUnit)
+                    $attributeCode
                 );
             }
-        }
 
-        $channel->setConversionUnits($conversionUnits);
+            if (!$this->measureManager->unitCodeExistsInFamily($conversionUnit, $attribute->getMetricFamily())) {
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'conversionUnits',
+                    'conversionUnit',
+                    'the metric unit does not exists',
+                    'updater',
+                    'channel',
+                    $conversionUnit
+                );
+            }
+
+            $channel->setConversionUnits($conversionUnits);
+        }
     }
 }

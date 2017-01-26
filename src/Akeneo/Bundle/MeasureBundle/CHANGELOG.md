@@ -1,6 +1,14 @@
-# 0.5.1 (2017-01-21)
- - rename unitExistsInFamily to unitSymbolExistsInFamily
- - Add unitCodeExistsInFamily in the MeasureManager
+# 0.6.0 (2017-01-21)
+
+## Functional improvements
+ - The measure manager is now able to return the list the unit codes for a given family
+ - The measure manager is now able to tell if a unit code exists in a given family
+
+## BC breaks
+ - remove `unitExistsInFamily` from `Akeneo\Bundle\MeasureBundle\Manager\MeasureManager`
+ - Add `unitSymbolExistsInFamily` `Akeneo\Bundle\MeasureBundle\Manager\MeasureManager`
+ - Add `unitCodeExistsInFamily` in `Akeneo\Bundle\MeasureBundle\Manager\MeasureManager`
+ - Add `getUnitCodesForFamily` in `Akeneo\Bundle\MeasureBundle\Manager\MeasureManager`
 
 # 0.5.0 (2016-04-30)
  - Use phpspec and not phpunit anymore, thanks to @fitn
