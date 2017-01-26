@@ -4,9 +4,9 @@ namespace Pim\Bundle\ApiBundle\Controller;
 
 use OAuth2\OAuth2;
 use OAuth2\OAuth2ServerException;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
@@ -29,6 +29,8 @@ class TokenController
     /**
      * @param Request $request
      *
+     * @throws UnprocessableEntityHttpException
+     *
      * @return Response
      */
     public function tokenAction(Request $request)
@@ -38,13 +40,7 @@ class TokenController
         } catch (OAuth2ServerException $e) {
             $message = $this->getErrorMessage($e->getMessage());
 
-            return new JsonResponse(
-                [
-                    'code'    => Response::HTTP_UNPROCESSABLE_ENTITY,
-                    'message' => null !== $message ? $message : $e->getDescription(),
-                ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
+            throw new UnprocessableEntityHttpException(null !== $message ? $message : $e->getDescription());
         }
     }
 
