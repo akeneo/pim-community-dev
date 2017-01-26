@@ -139,10 +139,6 @@ class CategoryController
     {
         $data = $this->getDecodedContent($request->getContent());
 
-        if (isset($data['code']) && null !== $this->repository->findOneByIdentifier($data['code'])) {
-            throw new UnprocessableEntityHttpException(sprintf('Category "%s" already exists.', $data['code']));
-        }
-
         $category = $this->factory->create();
         $this->updateCategory($category, $data);
 

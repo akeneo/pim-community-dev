@@ -151,6 +151,38 @@ class FamilyController
     }
 
     /**
+     * @param Request $request
+     *
+     * @throws BadRequestHttpException
+     * @throws UnprocessableEntityHttpException
+     *
+     * @return JsonResponse
+     */
+    public function partialUpdateAction(Request $request, $code)
+    {
+        $data = $this->getDecodedContent($request->getContent());
+
+        $isCreation = false;
+        $family = $this->repository->findOneByIdentifier($code);
+
+        if (null === $family) {
+            $isCreation = true;
+            $this->validateCodeConsistency($code, $data);
+            $data['code'] = $code;
+            $family = $this->factory->create();
+        }
+
+        $this->updateFamily($family, $data);
+        $this->validateFamily($family);
+
+        $this->saver->save($family);
+
+        $response = $isCreation ? $this->getCreateResponse($family) : $this->getUpdateResponse($family);
+
+        return $response;
+    }
+
+    /**
      * Get the JSON decoded content. If the content is not a valid JSON, it throws an error 400.
      *
      * @param string $content content of a request to decode
@@ -230,5 +262,45 @@ class FamilyController
         $response->headers->set('Location', $route);
 
         return $response;
+    }
+
+    /**
+     * Get a response with HTTP code 204 when an object is updated.
+     *
+     * @param FamilyInterface $family
+     *
+     * @return Response
+     */
+    protected function getUpdateResponse(FamilyInterface $family)
+    {
+        $response = new Response(null, Response::HTTP_NO_CONTENT);
+        $route = $this->router->generate('pim_api_rest_family_get', ['code' => $family->getCode()], true);
+        $response->headers->set('Location', $route);
+
+        return $response;
+    }
+
+    /**
+     * Throw an exception if the code provided in the url and the code provided in the request body
+     * are not equals when creating a family with a PATCH or PUT method.
+     *
+     * The code in the request body is optional when we create a resource with PATCH or PUT.
+     *
+     * @param string $code code provided in the url
+     * @param array  $data code provided in the request body
+     *
+     * @throws UnprocessableEntityHttpException
+     */
+    protected function validateCodeConsistency($code, array $data)
+    {
+        if (isset($data['code']) && $code !== $data['code']) {
+            throw new UnprocessableEntityHttpException(
+                sprintf(
+                    'The code "%s" provided in the request body must match the code "%s" provided in the url.',
+                    $data['code'],
+                    $code
+                )
+            );
+        }
     }
 }
