@@ -391,8 +391,14 @@ class ProductRepository extends EntityRepository implements
     {
         $pqb = $this->queryBuilderFactory->create();
         $qb = $pqb->getQueryBuilder();
-        $attribute = $this->getIdentifierAttribute();
-        $pqb->addFilter($attribute->getCode(), Operators::EQUALS, $identifier);
+
+        // TODO: TEMPORARY dirty trick to find products by their identifier
+        // TODO: currently, we can't find by values (PQB filters do not work with the JSON field),
+        // TODO: nor by identifier (we don't have the identifier column yet).
+        // TODO: TIP-676, will be resolved by the next coming PR https://github.com/jjanvier/pim-community-dev/pull/10
+        $rootAlias = current($qb->getRootAliases());
+        $qb->where($rootAlias . '.rawValues LIKE :identifierCriteria');
+        $qb->setParameter('identifierCriteria', '%' . $identifier . '%');
         $result = $qb->getQuery()->execute();
 
         if (empty($result)) {
