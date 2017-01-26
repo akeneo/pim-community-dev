@@ -11,7 +11,7 @@ Feature: Export of metric values
 
   @javascript
   Scenario: Successfully display metric conversion configuration for a channel
-    Given I visit the "tablet" channel
+    Given I am on the "tablet" channel page
     Then I should see "Pick a conversion unit for each metric attribute that will be used during product export" fields:
       | Washing temperature |
       | Weight              |

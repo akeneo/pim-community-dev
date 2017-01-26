@@ -92,19 +92,7 @@ class NavigationContext extends BaseNavigationContext
             assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $url, $actualFullUrl));
 
             return true;
-        }, 'Spining to assert address');
-    }
-
-    /**
-     * @todo remove when all routes will use `code` for identifier
-     * @param string $identifier
-     *
-     * @Given /^I visit the "([^"]*)" channel$/
-     * @Given /^I visit the "([^"]*)" channel page$/
-     */
-    public function iEditTheChannel($identifier)
-    {
-        $this->openPage(sprintf('%s edit', 'Channel'), ['code' => $identifier]);
+        }, "Expected to be redirected to channel '%s'", $url);
     }
 
     /**

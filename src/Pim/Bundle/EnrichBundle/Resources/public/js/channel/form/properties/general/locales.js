@@ -27,7 +27,8 @@ define([
         return BaseForm.extend({
             className: 'AknFieldContainer',
             template: _.template(template),
-            currentLocales: null,
+            initialLocales: null,
+            locales: null,
 
             /**
              * Configures this extension.
@@ -38,7 +39,7 @@ define([
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.render.bind(this));
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_save', this.setCurrentLocales.bind(this));
 
-                this.currentLocales = this.getFormData().locales;
+                this.initialLocales = this.getFormData().locales;
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -52,6 +53,7 @@ define([
                 }
 
                 FetcherRegistry.getFetcher('locale').fetchAll().then(function (locales) {
+                    this.locales = locales;
                     this.$el.html(this.template({
                         currentLocales: this.getFormData().locales,
                         locales: locales,
@@ -62,7 +64,6 @@ define([
 
                     this.$('.select2').select2().on('change', this.updateState.bind(this));
 
-                    this.delegateEvents();
                     this.renderExtensions();
                 }.bind(this));
 
@@ -75,21 +76,27 @@ define([
              * @param {Object} event
              */
             updateState: function (event) {
-                this.setLocales(event.val);
+                var localesToSet = [];
+
+                _.each(event.val, function (code) {
+                    localesToSet.push(
+                        _.find(this.locales, function (locale) {
+                            return locale.code === code;
+                        })
+                    );
+                }.bind(this));
+
+                this.setLocales(localesToSet);
             },
 
             /**
              * Sets specified locales into root model.
              *
-             * @param {Array} codes
+             * @param {Array} locales
              */
-            setLocales: function (codes) {
-                if (null === codes) {
-                    codes = [];
-                }
+            setLocales: function (locales) {
                 var data = this.getFormData();
-
-                data.locales = codes;
+                data.locales = locales;
                 this.setData(data);
             },
 
@@ -97,14 +104,13 @@ define([
              * Sets current locales
              */
             setCurrentLocales: function () {
-                var oldLocales = this.currentLocales;
+                var oldLocales = this.initialLocales;
                 var newLocales = this.getFormData().locales;
 
                 if (!_.isEqual(oldLocales, newLocales)) {
-                    this.currentLocales = newLocales;
                     this.getRoot().trigger('pim_enrich:form:entity:locales_updated');
 
-                    this.currentLocales = newLocales;
+                    this.initialLocales = newLocales;
                 }
 
             }

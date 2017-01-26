@@ -50,7 +50,7 @@ define([
 
                 this.listenTo(
                     this.getRoot(),
-                    'pim_enrich:form:entity:post_fetch',
+                    'pim_enrich:form:entity:pre_save',
                     this.resetValidationErrors.bind(this)
                 );
 
@@ -118,6 +118,7 @@ define([
 
             resetValidationErrors: function () {
                 this.errors = {};
+                this.render();
             }
         });
     }
