@@ -16,7 +16,7 @@ use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-interface NotificationHistoryInterface
+interface ProjectStatusInterface
 {
     /**
      * {@inheritdoc}
@@ -34,26 +34,6 @@ interface NotificationHistoryInterface
     public function setUser(UserInterface $user);
 
     /**
-     * @return bool
-     */
-    public function isNotificationProjectFinished();
-
-    /**
-     * @param bool $notificationProjectFinished
-     */
-    public function setNotificationProjectFinished($notificationProjectFinished);
-
-    /**
-     * @return bool
-     */
-    public function isNotificationProjectCreation();
-
-    /**
-     * @param bool $notificationProjectCreation
-     */
-    public function setNotificationProjectCreation($notificationProjectCreation);
-
-    /**
      * @return ProjectInterface
      */
     public function getProject();
@@ -62,4 +42,14 @@ interface NotificationHistoryInterface
      * @param ProjectInterface $project
      */
     public function setProject(ProjectInterface $project);
+
+    /**
+     * @return bool
+     */
+    public function isComplete();
+
+    /**
+     * @param bool $isComplete
+     */
+    public function setIsComplete($isComplete);
 }

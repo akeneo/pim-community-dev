@@ -16,7 +16,7 @@ use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 /**
  * @author Soulet Olivier <olivier.soulet@akeneo.com>
  */
-class NotificationHistory implements NotificationHistoryInterface
+class ProjectStatus implements ProjectStatusInterface
 {
     /** @var int */
     protected $id;
@@ -32,6 +32,9 @@ class NotificationHistory implements NotificationHistoryInterface
 
     /** @var bool */
     protected $notificationProjectFinished;
+
+    /** @var bool */
+    protected $isComplete;
 
     /**
      * {@inheritdoc}
@@ -60,38 +63,6 @@ class NotificationHistory implements NotificationHistoryInterface
     /**
      * {@inheritdoc}
      */
-    public function isNotificationProjectFinished()
-    {
-        return $this->notificationProjectFinished;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setNotificationProjectFinished($notificationProjectFinished)
-    {
-        $this->notificationProjectFinished = $notificationProjectFinished;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isNotificationProjectCreation()
-    {
-        return $this->notificationProjectCreation;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setNotificationProjectCreation($notificationProjectCreation)
-    {
-        $this->notificationProjectCreation = $notificationProjectCreation;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getProject()
     {
         return $this->project;
@@ -103,5 +74,21 @@ class NotificationHistory implements NotificationHistoryInterface
     public function setProject(ProjectInterface $project)
     {
         $this->project = $project;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isComplete()
+    {
+        return $this->isComplete;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIsComplete($isComplete)
+    {
+        $this->isComplete = $isComplete;
     }
 }

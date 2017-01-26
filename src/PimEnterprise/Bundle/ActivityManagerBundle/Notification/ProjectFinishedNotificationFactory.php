@@ -11,7 +11,9 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Notification;
 
+use Akeneo\Component\Localization\Presenter\DatePresenter;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 /**
  * Factory that creates a notification for contributors once the project is finished.
@@ -23,22 +25,39 @@ class ProjectFinishedNotificationFactory
     /** @var string */
     protected $notificationClass;
 
+    /** @var DatePresenter */
+    protected $datePresenter;
+
     /**
-     * @param string $notificationClass
+     * @param DatePresenter $datePresenter
+     * @param string        $notificationClass
      */
-    public function __construct($notificationClass)
+    public function __construct(DatePresenter $datePresenter, $notificationClass)
     {
         $this->notificationClass = $notificationClass;
+        $this->datePresenter = $datePresenter;
     }
 
     /**
-     * @param string $message
-     * @param array  $parameters
+     * @param ProjectInterface $project
+     * @param string           $message
      *
      * @return NotificationInterface
      */
-    public function create($message, $parameters)
+    public function create(ProjectInterface $project, $message)
     {
+        $userLocale = $project->getOwner()->getUiLocale();
+        $formattedDate = $this->datePresenter->present(
+            $project->getDueDate(),
+            ['locale' => $userLocale->getCode()]
+        );
+
+        $parameters = [
+            '%project_label%' => '"' . $project->getLabel() . '"',
+            '%due_date%' => '"' . $formattedDate . '"',
+            'project_code' => $project->getCode(),
+        ];
+
         $notification = new $this->notificationClass();
 
         $notification
