@@ -288,7 +288,7 @@ class CategoryController
      * The code in the request body is optional when we create a resource with PATCH or PUT.
      *
      * @param string $code code provided in the url
-     * @param array  $data code provided in the request body
+     * @param array  $data body of the request already decoded
      *
      * @throws UnprocessableEntityHttpException
      */
