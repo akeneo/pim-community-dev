@@ -1,8 +1,8 @@
 # 0.6.0 (2017-01-21)
 
 ## Functional improvements
- - The measure manager is now able to return the list the unit codes for a given family
- - The measure manager is now able to tell if a unit code exists in a given family
+ - The measure manager is now able to return the list of unit codes for a given family
+ - The measure manager is now able to tell if a unit code exists for a given family
 
 ## BC breaks
  - remove `unitExistsInFamily` from `Akeneo\Bundle\MeasureBundle\Manager\MeasureManager`

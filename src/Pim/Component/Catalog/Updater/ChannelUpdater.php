@@ -227,7 +227,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
                 throw InvalidPropertyException::validEntityCodeExpected(
                     'conversionUnits',
                     'attributeCode',
-                    'the attribute code does not exists',
+                    'the attribute code for the conversion unit does not exist',
                     'updater',
                     'channel',
                     $attributeCode
@@ -237,8 +237,8 @@ class ChannelUpdater implements ObjectUpdaterInterface
             if (!$this->measureManager->unitCodeExistsInFamily($conversionUnit, $attribute->getMetricFamily())) {
                 throw InvalidPropertyException::validEntityCodeExpected(
                     'conversionUnits',
-                    'conversionUnit',
-                    'the metric unit does not exists',
+                    'unitCode',
+                    'the metric unit code for the conversion unit does not exist',
                     'updater',
                     'channel',
                     $conversionUnit
