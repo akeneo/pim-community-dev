@@ -24,5 +24,6 @@ class EnterpriseCatalogConfigurationContext extends CatalogConfigurationContext
             $this->getContainer()->getParameter('kernel.environment')
         );
         $launcher->executeForeground('pimee:installer:clean-category-accesses');
+        $launcher->executeForeground('pimee:installer:clean-attribute-group-accesses');
     }
 }
