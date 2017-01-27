@@ -67,8 +67,8 @@ class ProjectFinishedNotificationFactory
             ->setRoute('activity_manager_project_show')
             ->setRouteParams(['identifier' => $parameters['project_code']])
             ->setContext([
-                'actionType'     => 'project_finished',
-                'buttonLabel'    => sprintf('activity_manager.notification.%s.show', 'project_finished')
+                'actionType'  => 'project_finished',
+                'buttonLabel' => 'activity_manager.notification.project_finished.show',
             ]);
 
         return $notification;

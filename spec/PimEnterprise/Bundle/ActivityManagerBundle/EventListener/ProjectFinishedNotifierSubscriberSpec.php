@@ -2,20 +2,23 @@
 
 namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\EventListener;
 
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\EventListener\ProjectFinishedNotifierSubscriber;
+use PimEnterprise\Bundle\ActivityManagerBundle\Notification\NotificationChecker;
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectFinishedNotificationFactory;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvent;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
-use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Repository\ProjectStatusRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
-use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ProjectFinishedNotifierSubscriberSpec extends ObjectBehavior
@@ -24,10 +27,20 @@ class ProjectFinishedNotifierSubscriberSpec extends ObjectBehavior
         ProjectFinishedNotificationFactory $factory,
         NotifierInterface $notifier,
         UserRepositoryInterface $userRepository,
-        PresenterInterface $datePresenter,
-        ProjectCompletenessRepositoryInterface $projectCompletenessRepository
+        NotificationChecker $notificationChecker,
+        ProjectStatusRepositoryInterface $projectStatusRepository,
+        ProjectRepositoryInterface $projectRepository,
+        SaverInterface $projectSaver
     ) {
-        $this->beConstructedWith($factory, $notifier, $userRepository, $datePresenter, $projectCompletenessRepository);
+        $this->beConstructedWith(
+            $factory,
+            $notifier,
+            $userRepository,
+            $notificationChecker,
+            $projectStatusRepository,
+            $projectRepository,
+            $projectSaver
+        );
     }
 
     function it_is_initializable()
@@ -47,115 +60,92 @@ class ProjectFinishedNotifierSubscriberSpec extends ObjectBehavior
         ]);
     }
 
-    function it_notifies_users_when_the_project_is_finished(
+    function it_notifies_the_owner_and_not_the_contributors_when_the_project_is_notifiable(
         $factory,
-        $userRepository,
         $notifier,
-        $datePresenter,
-        $projectCompletenessRepository,
+        $projectSaver,
+        $notificationChecker,
+        $projectStatusRepository,
+        $userRepository,
         ProjectEvent $event,
         ProjectInterface $project,
-        UserInterface $user,
         UserInterface $owner,
-        NotificationInterface $notification,
-        LocaleInterface $locale,
-        ProjectCompleteness $projectCompleteness
+        NotificationInterface $notification
     ) {
-        $datetime = new \DateTime('2019-12-23');
         $event->getProject()->willReturn($project);
-        $project->getDueDate()->willReturn($datetime);
-        $project->getLabel()->willReturn('project label');
-        $project->getCode()->willReturn('project-label-en_US-mobile');
         $project->getOwner()->willReturn($owner);
-
-        $datePresenter->present($datetime, ['locale' => 'en_US'])->willReturn('2019-12-23');
-
-        $owner->getUiLocale()->willReturn($locale);
-        $locale->getCode()->willReturn('en_US');
-
-        $projectCompletenessRepository->getProjectCompleteness($project)->willReturn($projectCompleteness);
-        $projectCompleteness->isComplete()->willReturn(true);
-
-        $factory->create(
-            'activity_manager.notification.project_finished.owner',
-            [
-                '%project_label%' => '"project label"',
-                '%due_date%' => '"2019-12-23"',
-                'project_code' => 'project-label-en_US-mobile'
-            ]
-        )->willReturn($notification);
-
+        $notificationChecker->isNotifiableForProjectFinished($project, $owner)->willReturn(true);
+        $project->setIsCreated(true)->shouldBeCalled();
+        $projectSaver->save($project)->shouldBeCalled();
+        $factory->create($project, 'activity_manager.notification.project_finished.owner')->willReturn($notification);
         $notifier->notify($notification, [$owner])->shouldBeCalled();
-
-
-        $userRepository->findContributorsToNotify($project)->willReturn([$user]);
-        $projectCompletenessRepository->getProjectCompleteness($project, $user)->willReturn($projectCompleteness);
-
-        $factory->create(
-            'activity_manager.notification.project_finished.contributor',
-            [
-                '%project_label%' => '"project label"',
-                'project_code' => 'project-label-en_US-mobile'
-            ]
-        )->willReturn($notification);
-
-        $notifier->notify($notification, [$user])->shouldBeCalled();
+        $projectStatusRepository->setProjectStatus($project, $owner, true)->shouldBeCalled();
+        $userRepository->findContributorsToNotify($project)->willReturn([]);
 
         $this->projectFinished($event)->shouldReturn(null);
     }
 
-    function it_notifies_contributors_when_the_project_is_done_for_them(
-        $factory,
+    function it_does_not_notifies_the_owner_and_not_the_contributors_if_the_project_is_not_notifiable(
         $notifier,
+        $notificationChecker,
         $userRepository,
-        $datePresenter,
-        $projectCompletenessRepository,
         ProjectEvent $event,
         ProjectInterface $project,
-        UserInterface $user,
         UserInterface $owner,
-        NotificationInterface $notification,
-        LocaleInterface $locale,
-        ProjectCompleteness $projectCompleteness,
-        ProjectCompleteness $contributorCompleteness
+        UserInterface $contributor
     ) {
-        $datetime = new \DateTime('2019-12-23');
         $event->getProject()->willReturn($project);
-        $project->getDueDate()->willReturn($datetime);
-        $project->getLabel()->willReturn('project label');
-        $project->getCode()->willReturn('project-label-en_US-mobile');
         $project->getOwner()->willReturn($owner);
+        $notificationChecker->isNotifiableForProjectFinished($project, $owner)->willReturn(false);
+        $userRepository->findContributorsToNotify($project)->willReturn([$contributor]);
+        $notificationChecker->isNotifiableForProjectFinished($project, $contributor)->willReturn(false);
+        $notifier->notify(Argument::any(), Argument::any())->shouldNotBeCalled();
 
-        $datePresenter->present($datetime, ['locale' => 'en_US'])->willReturn('2019-12-23');
+        $this->projectFinished($event)->shouldReturn(null);
+    }
 
-        $owner->getUiLocale()->willReturn($locale);
-        $locale->getCode()->willReturn('en_US');
+    function it_notifies_contributors_and_not_the_owner_when_the_project_is_notifiable(
+        $factory,
+        $notifier,
+        $notificationChecker,
+        $projectStatusRepository,
+        $userRepository,
+        ProjectEvent $event,
+        ProjectInterface $project,
+        UserInterface $owner,
+        UserInterface $contributor,
+        NotificationInterface $notification
+    ) {
+        $event->getProject()->willReturn($project);
+        $project->getOwner()->willReturn($owner);
+        $notificationChecker->isNotifiableForProjectFinished($project, $owner)->willReturn(false);
+        $userRepository->findContributorsToNotify($project)->willReturn([$contributor,]);
+        $notificationChecker->isNotifiableForProjectFinished($project, $contributor)->willReturn(true);
+        $factory->create($project, 'activity_manager.notification.project_finished.contributor')
+            ->willReturn($notification);
+        $notifier->notify($notification, [$contributor])->shouldBeCalled();
+        $projectStatusRepository->setProjectStatus($project, $contributor, true)->shouldBeCalled();
 
-        $projectCompletenessRepository->getProjectCompleteness($project)->willReturn($projectCompleteness);
-        $projectCompleteness->isComplete()->willReturn(false);
+        $this->projectFinished($event)->shouldReturn(null);
+    }
 
-        $factory->create(
-            'activity_manager.notification.project_finished.owner',
-            [
-                '%project_label%' => '"project label"',
-                '%due_date%' => '"2019-12-23"',
-                'project_code' => 'project-label-en_US-mobile'
-            ]
-        )->shouldNotBeCalled();
-
-        $userRepository->findContributorsToNotify($project)->willReturn([$user]);
-        $projectCompletenessRepository->getProjectCompleteness($project, $user)->willReturn($contributorCompleteness);
-        $contributorCompleteness->isComplete()->willReturn(true);
-
-        $factory->create(
-            'activity_manager.notification.project_finished.contributor',
-            [
-                '%project_label%' => '"project label"',
-                'project_code' => 'project-label-en_US-mobile'
-            ]
-        )->willReturn($notification);
-
-        $notifier->notify($notification, [$user])->shouldBeCalled();
+    function it_does_not_notifies_contributors_and_not_the_owner_when_the_project_is_not_notifiable(
+        $notifier,
+        $notificationChecker,
+        $projectStatusRepository,
+        $userRepository,
+        ProjectEvent $event,
+        ProjectInterface $project,
+        UserInterface $owner,
+        UserInterface $contributor
+    ) {
+        $event->getProject()->willReturn($project);
+        $project->getOwner()->willReturn($owner);
+        $notificationChecker->isNotifiableForProjectFinished($project, $owner)->willReturn(false);
+        $userRepository->findContributorsToNotify($project)->willReturn([$contributor,]);
+        $notificationChecker->isNotifiableForProjectFinished($project, $contributor)->willReturn(false);
+        $notifier->notify(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $projectStatusRepository->setProjectStatus($project, $contributor, true)->shouldNotBeCalled();
 
         $this->projectFinished($event)->shouldReturn(null);
     }
