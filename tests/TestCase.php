@@ -2,7 +2,7 @@
 
 namespace Akeneo\Test\Integration;
 
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class TestCase extends KernelTestCase
+abstract class TestCase extends WebTestCase
 {
     /** @var int Count of test inside the same test class */
     protected static $count = 0;
