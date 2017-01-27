@@ -78,6 +78,8 @@ parameters:
 
     pim_catalog.saver.product.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Saver\ProductSaver
 
+    pim_catalog.mongodb.cursor.socket_timeout_ms: 30000
+
 services:
     pim_catalog.object_manager.product:
         alias: doctrine.odm.mongodb.document_manager
@@ -317,16 +319,16 @@ services:
     pim_catalog.event_subscriber.mongodb.update_normalized_product_data:
         class: '%pim_catalog.event_subscriber.mongodb.update_normalized_product_data.class%'
         arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
-            - '%pim_catalog.entity.product.class%'
+            - '@pim_catalog.command_launcher'
+            - '%kernel.root_dir%/logs/product-update-normalized-data.log'
         tags:
             - { name: doctrine.event_subscriber, priority: 50 }
 
     pim_catalog.event_subscriber.mongodb.product_related_entity_removal:
         class: '%pim_catalog.event_subscriber.mongodb.product_related_entity_removal.class%'
         arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
-            - '%pim_catalog.entity.product.class%'
+            - '@pim_catalog.command_launcher'
+            - '%kernel.root_dir%/logs/product-related-entity-removal.log'
         tags:
             - { name: doctrine.event_subscriber, priority: 100 }
 
@@ -453,8 +455,8 @@ services:
     pim_catalog.event_subscriber.remove_outdated_products_from_associations:
         class: '%pim_catalog.event_subscriber.remove_outdated_products_from_associations.class%'
         arguments:
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.association_type'
+            - '@pim_catalog.command_launcher'
+            - '%kernel.root_dir%/logs/product-from-association-removal.log'
         tags:
             - { name: kernel.event_subscriber }
 

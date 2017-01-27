@@ -186,3 +186,11 @@
 - Change route `pim_enrich_channel_edit` to use `code` identifier instead of `id`
 - Change method `indexAction` of `Pim\Bundle\EnrichBundle\Controller\Rest\LocaleController` to return all locales by default and only activated if `activated` parameter `true`
 - Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\ChannelNormalizer` to add `Pim\Bundle\VersioningBundle\Manager\VersionManager` and `Symfony\Component\Serializer\Normalizer\NormalizerInterface`
+- Change the constructor of `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\ProductRelatedEntityRemovalSubscriber`
+    to replace `Doctrine\Common\Persistence\ManagerRegistry` argument by `Akeneo\Component\Console\CommandLauncher`,
+    and replace the product class parameter by `ProductRelatedEntityRemovalCommand` logfile path.
+- Change the constructor of `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\RemoveOutdatedProductsFromAssociationsSubscriber`
+    to replace `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface` argument by `Akeneo\Component\Console\CommandLauncher`
+    and `Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface` argument by `RemoveOutdatedProductsFromAssociationsCommand` logfile path.
+- Change the constructor of `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\UpdateNormalizedProductDataSubscriber`
+    to replace `Doctrine\Common\Persistence\ManagerRegistry` argument by `Akeneo\Component\Console\CommandLauncher` and add `UpdateNormalizedProductDataCommand` logfile path as third argument.

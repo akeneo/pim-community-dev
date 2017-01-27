@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
+use Akeneo\Component\Console\CommandLauncher;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
+use Doctrine\ORM\Events;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\NormalizedDataQueryGeneratorInterface;
 
 /**
@@ -17,6 +18,12 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\NormalizedDataQu
  */
 class UpdateNormalizedProductDataSubscriber implements EventSubscriber
 {
+    /** @var CommandLauncher */
+    protected $commandLauncher;
+
+    /** @var string */
+    protected $logFile;
+
     /** @var array */
     protected $queryGenerators = [];
 
@@ -27,27 +34,22 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
      */
     protected $scheduledQueries = [];
 
-    /** @var ManagerRegistry */
-    protected $registry;
-
-    /** @var string */
-    protected $productClass;
-
     /**
-     * @param ManagerRegistry $registry
-     * @param string          $productClass
+     * @param CommandLauncher $commandLauncher
+     * @param string          $logFile
      */
-    public function __construct(ManagerRegistry $registry, $productClass)
+    public function __construct(CommandLauncher $commandLauncher, $logFile)
     {
-        $this->registry = $registry;
-        $this->productClass = $productClass;
+        $this->commandLauncher = $commandLauncher;
+        $this->logFile = $logFile;
     }
+
     /**
      * {@inheritdoc}
      */
     public function getSubscribedEvents()
     {
-        return ['onFlush', 'postFlush'];
+        return [Events::onFlush, Events::postFlush];
     }
 
     /**
@@ -157,14 +159,17 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
      */
     protected function executeQueries()
     {
-        $collection = $this->registry
-            ->getManagerForClass($this->productClass)
-            ->getDocumentCollection($this->productClass);
-
-        foreach ($this->scheduledQueries as $query) {
-            list($query, $compObject, $options) = $query;
-
-            $collection->update($query, $compObject, $options);
+        if (empty($this->scheduledQueries)) {
+            return;
         }
+
+        $scheduledQueries = json_encode($this->scheduledQueries);
+
+        $command = sprintf(
+            'pim:product:update-normalized-data \'%s\'',
+            $scheduledQueries
+        );
+
+        $this->commandLauncher->executeBackground($command, $this->logFile);
     }
 }
