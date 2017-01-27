@@ -10,17 +10,17 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\NativeQueryBuilder;
 use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\PreProcessingRepository;
 use PimEnterprise\Component\ActivityManager\Model\AttributeGroupCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
-use Prophecy\Argument;
 
 class PreProcessingRepositorySpec extends ObjectBehavior
 {
-    function let(EntityManager $entityManager, Connection $connection)
+    function let(EntityManager $entityManager, NativeQueryBuilder $nativeQueryBuilder, Connection $connection)
     {
-        $this->beConstructedWith($entityManager);
+        $this->beConstructedWith($entityManager, $nativeQueryBuilder);
 
         $entityManager->getConnection()->willReturn($connection);
     }
@@ -37,6 +37,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
     function it_adds_the_pre_processed_completeness_for_product(
         $connection,
+        $nativeQueryBuilder,
         ProductInterface $product,
         ProjectInterface $project,
         ChannelInterface $channel,
@@ -49,6 +50,9 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         $locale->getId()->willreturn(37);
 
         $product->getId()->willreturn(42);
+
+        $nativeQueryBuilder->getTableName('pimee_activity_manager.completeness_per_attribute_group')
+            ->willReturn('pimee_activity_manager_completeness_per_attribute_group');
 
         $connection->delete(
             'pimee_activity_manager_completeness_per_attribute_group',
@@ -91,6 +95,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
     function it_adds_products_to_a_project(
         $entityManager,
+        $nativeQueryBuilder,
         Connection $connection,
         ProjectInterface $project,
         ProductInterface $product
@@ -100,6 +105,9 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
         $entityManager->getConnection()->willReturn($connection);
 
+        $nativeQueryBuilder->getTableName('pimee_activity_manager.project_product')
+            ->willReturn('pimee_activity_manager_project_product');
+
         $connection->insert('pimee_activity_manager_project_product', [
             'project_id' => 13,
             'product_id' => 37,
@@ -108,9 +116,15 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         $this->addProduct($project, $product);
     }
 
-    function it_prepare_the_project_calculation_by_deleting_associated_products($connection, ProjectInterface $project)
-    {
+    function it_prepare_the_project_calculation_by_deleting_associated_products(
+        $connection,
+        $nativeQueryBuilder,
+        ProjectInterface $project
+    ) {
         $project->getId()->willReturn(40);
+
+        $nativeQueryBuilder->getTableName('pimee_activity_manager.project_product')
+            ->willReturn('pimee_activity_manager_project_product');
 
         $connection->delete('pimee_activity_manager_project_product', [
             'project_id' => 40,
@@ -121,6 +135,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
     function it_links_between_product_and_category(
         $connection,
+        $nativeQueryBuilder,
         ProductInterface $product,
         CategoryInterface $category,
         CategoryInterface $otherCategory,
@@ -136,6 +151,9 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         $category->getId()->willReturn(40);
         $otherCategory->getId()->willReturn(33);
         $product->getId()->willReturn('fdsqf121s3s'); // mongo
+
+        $nativeQueryBuilder->getTableName('pimee_activity_manager.product_category')
+            ->willReturn('pimee_activity_manager_product_category');
 
         $connection->delete('pimee_activity_manager_product_category', [
             'product_id' => 'fdsqf121s3s'
