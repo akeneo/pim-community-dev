@@ -1,4 +1,5 @@
 parameters:
+    pimee_activity_manager.native_query_builder.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\NativeQueryBuilder'
     pimee_activity_manager.repository.user.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\UserRepository'
     pimee_activity_manager.repository.product.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\ProductRepository'
     pimee_activity_manager.repository.family_requirement.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\FamilyRequirementRepository'
@@ -11,6 +12,12 @@ parameters:
     pimee_activity_manager.converter.filter.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\FilterConverter'
 
 services:
+    pimee_activity_manager.native_query_builder:
+        class: '%pimee_activity_manager.native_query_builder.class%'
+        arguments:
+            - '@akeneo_storage_utils.doctrine.table_name_builder'
+            - '%pimee_activity_manager.pre_processing.tables%'
+
     ### Repositories
     pimee_activity_manager.repository.user:
         class: '%pimee_activity_manager.repository.user.class%'
@@ -40,7 +47,7 @@ services:
         class: '%pimee_activity_manager.repository.pre_processing.class%'
         arguments:
             - '@doctrine.orm.default_entity_manager'
-            - 'pimee_activity_manager_completeness_per_attribute_group'
+            - '@pimee_activity_manager.native_query_builder'
 
     ### Notifications
     pimee_activity_manager.factory.project_calculation_notification:
