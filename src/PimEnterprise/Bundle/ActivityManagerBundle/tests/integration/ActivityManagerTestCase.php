@@ -14,7 +14,6 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
-use Pim\Behat\Context\DBALPurger;
 use PimEnterprise\Bundle\InstallerBundle\Command\CleanCategoryAccessesCommand;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
@@ -23,29 +22,22 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class ActivityManagerTestCase extends TestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function purgeDatabase()
+    public function setUp()
     {
-        $purger = new DBALPurger(
-            $this->get('database_connection'),
-            [
-                'pimee_activity_manager_completeness_per_attribute_group',
-                'pimee_activity_manager_project_product',
-            ]
-        );
+        parent::setUp();
 
-        $purger->purge();
-
-        parent::purgeDatabase();
+        $configuration = $this->getConfiguration();
+        if ($configuration->isDatabasePurgedForEachTest() || 1 === self::$count) {
+            $this->cleanCategoryAccesses();
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function doAfterFixtureImport(Application $application)
+    protected function cleanCategoryAccesses()
     {
+        $application = new Application();
         $extraCommand = $application->add(new CleanCategoryAccessesCommand());
         $extraCommand->setContainer($this->container);
         $command = new CommandTester($extraCommand);
@@ -53,8 +45,16 @@ class ActivityManagerTestCase extends TestCase
         $exitCode = $command->execute([]);
 
         if (0 !== $exitCode) {
-            throw new \Exception(sprintf('Catalog not installable! "%s"', $command->getDisplay()));
+            throw new \Exception(sprintf('Failed to clean category accesses. "%s"', $command->getDisplay()));
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDatabasePurger()
+    {
+        return new DatabasePurger($this->container);
     }
 
     /**
