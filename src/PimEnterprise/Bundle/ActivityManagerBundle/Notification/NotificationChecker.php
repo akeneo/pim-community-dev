@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\Notification;
 use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\ProjectStatusRepository;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
+use PimEnterprise\Component\ActivityManager\Repository\ProjectStatusRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -21,7 +22,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class NotificationChecker
+class NotificationChecker implements NotificationCheckerInterface
 {
     /** @var ProjectCompletenessRepositoryInterface */
     protected $projectCompletenessRepository;
@@ -31,11 +32,11 @@ class NotificationChecker
 
     /**
      * @param ProjectCompletenessRepositoryInterface $projectCompletenessRepository
-     * @param ProjectStatusRepository                $projectStatusRepository
+     * @param ProjectStatusRepositoryInterface       $projectStatusRepository
      */
     public function __construct(
         ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
-        ProjectStatusRepository $projectStatusRepository
+        ProjectStatusRepositoryInterface $projectStatusRepository
     ) {
         $this->projectCompletenessRepository = $projectCompletenessRepository;
         $this->projectStatusRepository = $projectStatusRepository;
@@ -63,7 +64,7 @@ class NotificationChecker
             return false;
         }
 
-        if (!$previousCompleteness && $actualCompleteness->isComplete()) {
+        if (!$previousCompleteness && $actualCompleteness->isComplete() && !$project->isCreated()) {
             $this->projectStatusRepository->setProjectStatus($project, $user, true);
             return true;
         }
@@ -73,6 +74,6 @@ class NotificationChecker
             return false;
         }
 
-        return $actualCompleteness->isComplete() && $project->isCreated();
+        return $actualCompleteness->isComplete() && !$project->isCreated();
     }
 }

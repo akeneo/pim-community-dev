@@ -9,31 +9,25 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ActivityManager\Repository;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\Notification;
 
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
-use PimEnterprise\Component\ActivityManager\Model\ProjectStatusInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * Checks if an user should be notified or not.
+ *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-interface ProjectStatusRepositoryInterface
+interface NotificationCheckerInterface
 {
     /**
      * @param ProjectInterface $project
      * @param UserInterface    $user
      *
-     * @return ProjectStatusInterface
+     * @return bool
      */
-    public function findProjectStatus(ProjectInterface $project, UserInterface $user);
-
-    /**
-     * @param ProjectInterface $project
-     * @param UserInterface    $user
-     * @param bool             $isComplete
-     */
-    public function setProjectStatus(ProjectInterface $project, UserInterface $user, $isComplete);
+    public function isNotifiableForProjectCreation(ProjectInterface $project, UserInterface $user);
 
     /**
      * @param ProjectInterface $project
@@ -41,5 +35,5 @@ interface ProjectStatusRepositoryInterface
      *
      * @return bool
      */
-    public function wasComplete(ProjectInterface $project, UserInterface $user);
+    public function isNotifiableForProjectFinished(ProjectInterface $project, UserInterface $user);
 }

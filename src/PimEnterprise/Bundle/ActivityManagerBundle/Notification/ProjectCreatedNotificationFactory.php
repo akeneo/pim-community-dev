@@ -54,20 +54,16 @@ class ProjectCreatedNotificationFactory
             ['locale' => $userLocale->getCode()]
         );
 
-        $parameters['due_date'] = $formattedDate;
-        $parameters['project_label'] = $project->getLabel();
-        $parameters['project_code'] = $project->getCode();
-
         $notification = new $this->notificationClass();
 
         $notification
             ->setType('success')
             ->setMessage('activity_manager.notification.message')
             ->setMessageParams(
-                ['%project_label%' => $parameters['project_label'], '%due_date%' => $parameters['due_date']]
+                ['%project_label%' => $project->getLabel(), '%due_date%' => $formattedDate]
             )
             ->setRoute('activity_manager_project_show')
-            ->setRouteParams(['identifier' => $parameters['project_code']])
+            ->setRouteParams(['identifier' => $project->getCode()])
             ->setContext([
                 'actionType'     => 'project_calculation',
                 'buttonLabel'    => sprintf('activity_manager.notification.%s.start', 'project_calculation')
