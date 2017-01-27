@@ -22,6 +22,7 @@
 - Add Energy measure family and conversions cheers @JulienDotDev!
 - Complete Duration measure family with week, month, year and related conversions cheers @JulienDotDev!
 - Add CaseBox measure family and conversions, cheers @gplanchat!
+- Add history support for the channel conversion units.
 
 ## Technical improvements
 
@@ -36,6 +37,7 @@
 - GITHUB-5455: Redo channel edit form using backbonejs architecture and internal REST API, implement `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\ChannelRemover` and move validation logic from controller to newly created remover
 
 ## BC breaks
+- Change the constructor of `Pim\Component\Catalog\Updater\ChannelUpdater` to add `Pim\Component\Catalog\Repositor\AttributeRepositoryInterface` and add `Akeneo\Bundle\MeasureBundle\Manager\MeasureManager`
 - Change the constructor of `Pim\Component\Catalog\Denormalizer\Standard\ProductValueDenormalizer` to add `Pim\Component\Catalog\Factory\ProductValueFactory`
 - Change the constructor of `Pim\Component\Catalog\Builder\ProductBuilder` to add `Pim\Component\Catalog\Factory\ProductValueFactory`
 - Add `getAllChildrenCodes` to `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface`
