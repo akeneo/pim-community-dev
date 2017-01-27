@@ -232,6 +232,22 @@ pim_enrich:
                 updated_by: Updated by
             btn:
                 save: Save
+        channel:
+            info:
+                deletion_successful: Channel successfully deleted.
+                deletion_failed: Channel could not be deleted.
+                update_successful: Channel successfully updated.
+                update_failed: The channel could not be updated.
+                create_successful: Channel successfully created.
+                create_failed: The channel could not be created.
+                field_not_ready: The channel cannot be saved right now. The following fields are not ready: {{ fields }}
+            meta:
+                created: Created
+                created_by: Created by
+                updated: Updated
+                updated_by: Updated by
+            btn:
+                save: Save
         attribute_option:
             code: Code
             label: Label
@@ -353,6 +369,22 @@ pim_enrich:
                     label_translations: Label translations
                 history:
                     title: History
+        channel:
+            tab:
+                history:
+                    title: History
+                properties:
+                    title: Properties
+                    general: General
+                    code: Code
+                    currencies: Currencies
+                    locales: Locales
+                    category_tree: Category tree
+                    label_translations: Label translations
+                    label_conversion_units: Pick a conversion unit for each metric attribute that will be used during product export
+                    conversion_unit:
+                        do_not_convert: Do not convert
+
         attribute_option:
             flash:
                 option_created: Attribute option successfully created

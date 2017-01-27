@@ -445,24 +445,18 @@ class Form extends Base
      */
     public function findFieldInTabSection($groupField, $field)
     {
-        $tabSection = $this->find(
-            'css',
-            sprintf('.tabsection-title:contains("%s")', $groupField)
-        );
-
-        if (!$tabSection) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not find tab section "%s"', $groupField)
+        $tabSection = $this->spin(function () use ($groupField) {
+            return $this->find(
+                'css',
+                sprintf('.tabsection-title:contains("%s")', $groupField)
             );
-        }
+        }, sprintf('Could not find tab section "%s"', $groupField));
 
         $accordionContent = $tabSection->getParent()->find('css', '.tabsection-content');
 
-        if (!$accordionContent->findField($field)) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not find a "%s" field inside the %s accordion group', $field, $groupField)
-            );
-        }
+        $this->spin(function () use ($accordionContent, $field) {
+            return $accordionContent->findField($field);
+        }, sprintf('Could not find a "%s" field inside the %s accordion group', $field, $groupField));
     }
 
     /**

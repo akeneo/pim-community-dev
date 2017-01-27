@@ -10,7 +10,7 @@ Feature: Import channels
     And the following CSV file to import:
       """
       code;label;currencies;locales;tree;conversion_units
-      site;Site;USD,EUR;de_DE,en_US,hy_AM;2014_collection;"weight: GRAM, maximum_scan_size: KILOMETER, display_diagonal: DEKAMETER, viewing_area: DEKAMETER"
+      site;Site;USD,EUR;de_DE,en_US,hy_AM;2014_collection;"weight: GRAM, length: MILLIMETER, volume: LITER"
       """
     And the following job "csv_footwear_channel_import" configuration:
       | filePath | %file to import% |
@@ -18,8 +18,8 @@ Feature: Import channels
     And I launch the import job
     And I wait for the "csv_footwear_channel_import" job to finish
     Then there should be the following channels:
-      | code | label | currencies | locales           | tree            | conversion_units                                                                                 |
-      | site | Site  | EUR,USD    | de_DE,en_US,hy_AM | 2014_collection | weight: GRAM, maximum_scan_size: KILOMETER, display_diagonal: DEKAMETER, viewing_area: DEKAMETER |
+      | code | label | currencies | locales           | tree            | conversion_units                                |
+      | site | Site  | EUR,USD    | de_DE,en_US,hy_AM | 2014_collection | weight: GRAM, length: MILLIMETER, volume: LITER |
 
   @jira https://akeneo.atlassian.net/browse/PIM-6041
   Scenario: Successfully import channel do not create empty conversion unit

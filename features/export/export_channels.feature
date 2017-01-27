@@ -27,7 +27,7 @@ Feature: Export channels
     And the following job "csv_footwear_channel_export" configuration:
       | filePath | %tmp%/channel_export/channel_export.csv |
     And I am logged in as "Julia"
-    And I edit the "mobile" channel
+    And I am on the "mobile" channel page
     And I press the "Save" button
     And I am on the "csv_footwear_channel_export" export job page
     When I launch the export job

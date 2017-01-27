@@ -2,6 +2,20 @@
 
 ## Bug fixes
 
+- PIM-6113: Fix wrong context switch on association groups
+- PIM-6062: Fix potential Unix commands injection
+- PIM-5085: Fix update of the normalized data on family update (mongodb)
+
+# 1.6.9 (2017-01-17)
+
+## Bug fixes
+
+- PIM-6110: Saving a product value clears the saved associations
+
+# 1.6.8 (2017-01-05)
+
+## Bug fixes
+
 - PIM-6033: Fix validation issue when you add a blank attribute option line
 - PIM-6042: Successfully import product associations without removing already existing associations when option "compare values" is set to true
 - PIM-6041: Fix wrong conversion units output for channel export profiles csv and xlsx
