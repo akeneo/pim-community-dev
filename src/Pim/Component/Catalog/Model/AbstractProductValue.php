@@ -21,9 +21,6 @@ abstract class AbstractProductValue implements ProductValueInterface
     /** @var mixed */
     protected $data;
 
-    /** @var ProductInterface */
-    protected $product;
-
     /**
      * Locale code
      *
@@ -128,18 +125,16 @@ abstract class AbstractProductValue implements ProductValueInterface
     protected $prices;
 
     /**
-     * @param ProductInterface   $product
      * @param AttributeInterface $attribute
      * @param string             $channel
      * @param string             $locale
      * @param mixed              $data
      */
-    public function __construct(ProductInterface $product, AttributeInterface $attribute, $channel, $locale, $data)
+    public function __construct(AttributeInterface $attribute, $channel, $locale, $data)
     {
         $this->options = new ArrayCollection();
         $this->prices = new PriceCollection();
 
-        $this->setProduct($product);
         $this->setAttribute($attribute);
         $this->setScope($channel);
         $this->setLocale($locale);
@@ -176,14 +171,6 @@ abstract class AbstractProductValue implements ProductValueInterface
     public function getScope()
     {
         return $this->scope;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProduct()
-    {
-        return $this->product;
     }
 
     /**
@@ -278,7 +265,9 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function isEqual(ProductValueInterface $productValue)
     {
-        return $this->data === $this->getData();
+        return $this->getData() === $productValue->getData() &&
+            $this->scope === $productValue->getScope() &&
+            $this->locale === $productValue->getLocale();
     }
 
     /**
@@ -288,7 +277,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     {
         $data = $this->getData();
 
-        if ($data instanceof \DateTime) {
+        if ($data instanceof \DateTimeInterface) {
             $data = $data->format(\DateTime::ISO8601);
         }
 
@@ -348,18 +337,6 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function isRemovable()
-    {
-        if (null === $this->product) {
-            return true;
-        }
-
-        return $this->product->isAttributeRemovable($this->attribute);
-    }
-
-    /**
      * Set attribute
      *
      * @param AttributeInterface $attribute
@@ -376,21 +353,6 @@ abstract class AbstractProductValue implements ProductValueInterface
             );
         }
         $this->attribute = $attribute;
-
-        return $this;
-    }
-
-    /**
-     * Set product
-     *
-     * @param ProductInterface $product
-     *
-     * @return ProductValueInterface
-     */
-    protected function setProduct(ProductInterface $product = null)
-    {
-        $this->product = $product;
-        $product->addValue($this);
 
         return $this;
     }

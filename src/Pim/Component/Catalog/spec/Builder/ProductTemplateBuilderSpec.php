@@ -53,7 +53,6 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         $colorValue->getAttribute()->willReturn($color);
         $colorValue->getScope()->willReturn(null);
         $colorValue->getLocale()->willReturn(null);
-        $colorValue->setProduct(Argument::type(Product::class))->shouldBeCalled();
 
         $options = ['locale' => 'en_US', 'disable_grouping_separator' => true];
         $template->getValuesData()->willReturn(['color' => 'bar']);

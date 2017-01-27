@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Converter;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Pim\Component\Catalog\Factory\MetricFactory;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -20,17 +20,17 @@ class MetricConverter
     /** @var MeasureConverter */
     protected $converter;
 
-    /** @var MetricFactory */
-    protected $factory;
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
 
     /**
-     * @param MeasureConverter $converter
-     * @param MetricFactory    $factory
+     * @param MeasureConverter        $converter
+     * @param ProductBuilderInterface $productBuilder
      */
-    public function __construct(MeasureConverter $converter, MetricFactory $factory)
+    public function __construct(MeasureConverter $converter, ProductBuilderInterface $productBuilder)
     {
         $this->converter = $converter;
-        $this->factory = $factory;
+        $this->productBuilder = $productBuilder;
     }
 
     /**
@@ -56,9 +56,13 @@ class MetricConverter
                     ->setFamily($measureFamily)
                     ->convert($data->getUnit(), $channelUnit, $data->getData());
 
-                $metric = $this->factory->createMetric($measureFamily, $channelUnit, $amount);
-
-                $value->setMetric($metric);
+                $this->productBuilder->addProductValue(
+                    $product,
+                    $attribute,
+                    $value->getLocale(),
+                    $value->getScope(),
+                    ['amount' => $amount, 'unit' => $channelUnit]
+                );
             }
         }
     }

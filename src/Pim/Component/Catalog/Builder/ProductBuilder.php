@@ -183,7 +183,8 @@ class ProductBuilder implements ProductBuilderInterface
             $product->removeValue($productValue);
         }
 
-        $productValue = $this->productValueFactory->create($product, $attribute, $scope, $locale, $data);
+        $productValue = $this->productValueFactory->create($attribute, $scope, $locale, $data);
+        $product->addValue($productValue);
 
         return $productValue;
     }
@@ -242,11 +243,12 @@ class ProductBuilder implements ProductBuilderInterface
      */
     protected function addMissingPricesToProduct(ProductInterface $product)
     {
+        $activeCurrencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
+
         foreach ($product->getValues() as $value) {
             $attribute = $value->getAttribute();
             if (AttributeTypes::PRICE_COLLECTION === $attribute->getAttributeType()) {
                 $prices = [];
-                $activeCurrencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
 
                 foreach ($value->getPrices() as $price) {
                     if (in_array($price->getCurrency(), $activeCurrencyCodes)) {

@@ -71,13 +71,6 @@ interface ProductValueInterface
     public function getAttribute();
 
     /**
-     * Get product
-     *
-     * @return ProductInterface
-     */
-    public function getProduct();
-
-    /**
      * Get prices
      *
      * @return PriceCollectionInterface
@@ -127,11 +120,6 @@ interface ProductValueInterface
      * @return null|ProductPriceInterface
      */
     public function getPrice($currency);
-
-    /**
-     * @return bool
-     */
-    public function isRemovable();
 
     /**
      * Get used scope

@@ -53,7 +53,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
         $product->getIdentifier()->shouldBeCalled()->willReturn($productValue);
         $product->getId()->willReturn(10);
-        $productValue->getData()->shouldBeCalled();
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn([]);

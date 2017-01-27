@@ -3,13 +3,16 @@
 namespace spec\Pim\Component\Catalog\Builder;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\PriceFactory;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
+use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValue;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
@@ -22,10 +25,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProductBuilderSpec extends ObjectBehavior
 {
-    const PRODUCT_CLASS = 'Pim\Component\Catalog\Model\Product';
-    const VALUE_CLASS = 'Pim\Component\Catalog\Model\ProductValue';
-    const PRICE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\ProductPrice';
-    const ASSOCIATION_CLASS = 'Pim\Component\Catalog\Model\Association';
+    const PRODUCT_CLASS = Product::class;
+    const ASSOCIATION_CLASS = Association::class;
 
     function let(
         AttributeRepositoryInterface $attributeRepository,
@@ -34,12 +35,11 @@ class ProductBuilderSpec extends ObjectBehavior
         AssociationTypeRepositoryInterface $assocTypeRepository,
         EventDispatcherInterface $eventDispatcher,
         AttributeValuesResolver $valuesResolver,
-        ProductValueFactory $productValueFactory,
-        PriceFactory $priceFactory
+        ProductValueFactory $productValueFactory
     ) {
         $entityConfig = [
             'product' => self::PRODUCT_CLASS,
-            'association' => self::ASSOCIATION_CLASS
+            'association' => self::ASSOCIATION_CLASS,
         ];
 
         $this->beConstructedWith(
@@ -50,7 +50,6 @@ class ProductBuilderSpec extends ObjectBehavior
             $eventDispatcher,
             $valuesResolver,
             $productValueFactory,
-            $priceFactory,
             $entityConfig
         );
     }
@@ -59,7 +58,7 @@ class ProductBuilderSpec extends ObjectBehavior
     {
         $eventDispatcher->dispatch(ProductEvents::CREATE, Argument::any())->shouldBeCalled();
 
-        $this->createProduct()->shouldBeAnInstanceOf(self::PRODUCT_CLASS);
+        $this->createProduct()->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
     }
 
     function it_creates_product_with_a_family_and_an_identifier(
@@ -89,7 +88,8 @@ class ProductBuilderSpec extends ObjectBehavior
         AttributeInterface $desc,
         ProductValueInterface $skuValue
     ) {
-        $valueClass = self::VALUE_CLASS;
+        $valueClass = ProductValue::class;
+        $attributeClass = Attribute::class;
 
         $sku->getCode()->willReturn('sku');
         $sku->getAttributeType()->willReturn('pim_catalog_identifier');
@@ -167,9 +167,15 @@ class ProductBuilderSpec extends ObjectBehavior
         // Create 6 empty product values and add them to the product
         $product->getValue(Argument::cetera())->shouldBeCalledTimes(6)->willReturn(null);
         $product->removeValue(Argument::any())->shouldNotBeCalled();
+
+        $attribute = new $attributeClass();
+        $attribute->setCode('attribute');
+        $attribute->setBackendType('text');
+
         $productValueFactory->create(Argument::cetera())
             ->shouldBeCalledTimes(6)
-            ->willReturn(new $valueClass());
+            ->willReturn(new $valueClass($attribute, null, null, null));
+
         $product->addValue(Argument::any())->shouldBeCalledTimes(6);
 
         $this->addMissingProductValues($product);

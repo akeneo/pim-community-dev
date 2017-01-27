@@ -3,11 +3,11 @@
 namespace Pim\Component\ReferenceData\Factory\ProductValue;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 
 /**
@@ -95,19 +95,19 @@ class ReferenceDataProductValueFactory implements ProductValueFactoryInterface
     /**
      * Finds a reference data by code.
      *
-     * @param AttributeInterface                    $attribute
-     * @param IdentifiableObjectRepositoryInterface $repository
-     * @param string                                $referenceDataCode
+     * @param AttributeInterface               $attribute
+     * @param ReferenceDataRepositoryInterface $repository
+     * @param string                           $referenceDataCode
      *
      * @throws InvalidPropertyException
      * @return ReferenceDataInterface
      */
     protected function getReferenceData(
         AttributeInterface $attribute,
-        IdentifiableObjectRepositoryInterface $repository,
+        ReferenceDataRepositoryInterface $repository,
         $referenceDataCode
     ) {
-        $referenceData = $repository->findOneByIdentifier($referenceDataCode);
+        $referenceData = $repository->findOneBy(['code' => $referenceDataCode]);
 
         if (null === $referenceData) {
             throw InvalidPropertyException::validEntityCodeExpected(

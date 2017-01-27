@@ -39,6 +39,10 @@ class ProductValueUpdateGuesser implements UpdateGuesserInterface
         }
 
         $pendings = [];
+
+        // TODO: To be fixed by TIP-687
+        return $pendings;
+
         if ($entity instanceof ProductValueInterface) {
             if ($product = $entity->getEntity()) {
                 $pendings[] = $product;
