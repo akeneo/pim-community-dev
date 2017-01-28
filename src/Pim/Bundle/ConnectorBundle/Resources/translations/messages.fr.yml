@@ -180,6 +180,7 @@ job_execution.summary:
     title: 'Encodage du fichier :'
     skipped: ignoré(s), extension dans la liste blanche
   product_skipped_no_diff: produit(s) ignoré(s) (aucune différence)
+  product_skipped_no_associations: produit(s) ignoré(s) (aucune association détectée)
 batch_jobs:
   csv_product_export:
     label: Export des produits en CSV
