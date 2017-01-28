@@ -53,9 +53,9 @@ TERAWATT: Terawatt
 WATT: Watt
 Speed: Velocità
 FOOT_PER_SECOND: Piedi al secondo
-FOOT_PER_HOUR: "Piedi all'ora"
-KILOMETER_PER_HOUR: "Chilometri all'ora"
-METER_PER_HOUR: "Metri all'ora"
+FOOT_PER_HOUR: Piedi all'ora
+KILOMETER_PER_HOUR: Chilometri all'ora
+METER_PER_HOUR: Metri all'ora
 METER_PER_MINUTE: Metri al minuto
 METER_PER_SECOND: Metri al secondo
 MILE_PER_HOUR: Miglia orarie

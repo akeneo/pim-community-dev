@@ -8,25 +8,25 @@ pim_user:
       business_unit.title: Geschäftsbereich
       email_synchronization.title: Einstellungen für E-Mail Synchronisierung
 oro.user.controller:
-  group.message.saved: Gruppe gespeichert
-  role.message.saved: Rolle gespeichert
-  user.message.saved: Benutzer gespeichert
-  status.message.saved: Status gespeichert
+  group.message.saved: "Gruppe gespeichert"
+  role.message.saved: "Rolle gespeichert"
+  user.message.saved: "Benutzer gespeichert"
+  status.message.saved: "Status gespeichert"
 oro.user.grid.users:
   columns:
-    username: Benutzername
-    email: E-Mail
-    firstName: Vorname
-    lastName: Nachname
-    createdAt: Angelegt am
-    updatedAt: Aktualisiert am
-    enabled: Status
+    username: "Benutzername"
+    email: "E-Mail"
+    firstName: "Vorname"
+    lastName: "Nachname"
+    createdAt: "Erstellt am"
+    updatedAt: "Aktualisiert am"
+    enabled: "Status"
 oro.user.grid.roles:
   columns:
-    label: Bezeichnung
+    label: "Bezeichnung"
 oro.user.grid.groups:
   columns:
-    name: Name
+    name: "Name"
 pim_title:
   user.index: Benutzer
   user_role.index: Rollen

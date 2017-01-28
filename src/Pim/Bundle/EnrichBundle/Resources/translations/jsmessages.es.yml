@@ -125,7 +125,7 @@ pim_enrich:
         from: De
         modified: Modificado
         property: Propiedad
-        old_values: Viejos valores
+        old_values: Valores anteriores
         new_values: Nuevos valores
         actions: Acciones
       info:
@@ -200,7 +200,7 @@ pim_enrich:
             none_exist: No existe ningún tipo de asociación.
             show_products: Mostrar Productos
             show_groups: Mostrar grupos
-            number_of_associations: '{{ productCount }} productos y {{ groupCount }} grupos'
+            number_of_associations: "{{ productCount }} productos y {{ groupCount }} grupos"
         attributes:
           title: Atributos
           btn:
@@ -209,7 +209,7 @@ pim_enrich:
           info:
             search_attributes: Buscar
             no_available_attributes: No hay más atributos para agregar
-            attributes_selected: '{{ attributeCount }} atributo(s) seleccionado(s)'
+            attributes_selected: "{{ attributeCount }} atributo(s) seleccionado(s)"
         categories:
           title: Categorías
       panel:

@@ -8,25 +8,25 @@ pim_user:
       business_unit.title: Jednostki biznesowe
       email_synchronization.title: Ustawienia synchronizacji poczty e-mail
 oro.user.controller:
-  group.message.saved: Grupa zapisana
-  role.message.saved: Rola zapisana
-  user.message.saved: Użytkownik zapisany
-  status.message.saved: Status zapisany
+  group.message.saved: "Grupa zapisana"
+  role.message.saved: "Rola zapisana"
+  user.message.saved: "Użytkownik zapisany"
+  status.message.saved: "Status zapisany"
 oro.user.grid.users:
   columns:
-    username: Nazwa użytkownika
-    email: Adres e-mail
-    firstName: Imię
-    lastName: Nazwisko
-    createdAt: Data utworzenia
-    updatedAt: Data aktualizacji
-    enabled: Status
+    username: "Nazwa użytkownika"
+    email: "Adres e-mail"
+    firstName: "Imię"
+    lastName: "Nazwisko"
+    createdAt: "Data utworzenia"
+    updatedAt: "Data aktualizacji"
+    enabled: "Status"
 oro.user.grid.roles:
   columns:
-    label: Etykieta
+    label: "Etykieta"
 oro.user.grid.groups:
   columns:
-    name: Nazwa
+    name: "Nazwa"
 pim_title:
   user.index: Użytkownicy
   user_role.index: Role
@@ -59,7 +59,6 @@ Business Units: Jednostki biznesowe
 Email synchronization settings: Ustawienia synchronizacji poczty e-mail
 Host: Host
 Port: Port
-Ssl: SSL
 Last logged in: Ostatnio zalogowany
 Login count: Liczba logowań
 Additional Information: Dodatkowe informacje
@@ -136,5 +135,5 @@ Username or Email: Login lub E-mail
 Forgot Password: Zapomniałem hasła
 Request: Żądanie
 Check Email: Sprawdź Email
-password_reset_email_sent: 'Wiadomość e-mail została wysłana na adres %email%. Zawiera ona link który należy kliknąć, aby zresetować hasło.'
+password_reset_email_sent: Wiadomość e-mail została wysłana na adres %email%. Zawiera ona link który należy kliknąć, aby zresetować hasło.
 Go to homepage: Przejdź do strony głównej
