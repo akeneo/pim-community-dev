@@ -8,10 +8,9 @@ pim_connector:
       selector:
         modal:
           title: Categorie selectie
-          cancel: Annuleer
-          confirm: Bevestig
+          cancel: Annuleren
         label: "{0} alle producten |{1} één categorie geselecteerd |] 1, Inf [{{ count }} categorieën geselecteerd"
-        edit: Wijzig
+        edit: Bewerken
         title: Selecteer categorieën
     locales:
       validation:

@@ -6,7 +6,7 @@ pim_dashboard:
       date: Päivämäärä
       type: Tyyppi
       profile name: Profiilinimi
-      details: Yksityiskohdat
+      details: Lisätiedot
       job_type:
         import: Tuonti
         export: Vienti

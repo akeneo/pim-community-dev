@@ -1,7 +1,7 @@
 confirmation:
   remove:
     item: Êtes-vous certain(e) de vouloir supprimer cet élément ?
-    association type: Êtes-vous sûr(e) de que vouloir supprimer ce type d'association ?
+    association_type: Êtes-vous sûr(e) de que vouloir supprimer ce type d'association ?
     attribute: Êtes-vous sûr(e) de que vouloir supprimer cet attribut ?
     family: Êtes-vous sûr(e) de que vouloir supprimer cette famille ?
     product: Êtes-vous sûr(e) de que vouloir supprimer ce produit ?
@@ -24,21 +24,26 @@ pim_datagrid:
       confirm_content: Êtes-vous sûr(e) de vouloir supprimer les produits sélectionnés ?
       success: Les produits sélectionnés ont été supprimés.
       error: Une erreur s'est produite lors de la suppression des produits sélectionnés, merci d'essayer à nouveau.
+  view_selector:
+    view: Vues
+    create_view_modal:
+      confirm: OK
+      cancel: Annuler
 flash:
   item:
     removed: Elément supprimé avec succès
-  association type:
-    removed: Le type d'association a bien été supprimé
+  association_type:
+    removed: Le type d'association est supprimé avec succès
   attribute:
-    removed: L'attribut a bien été supprimé
+    removed: Attribut supprimé avec succès
   family:
-    removed: La famille a bien été supprimée
+    removed: Famille supprimée avec succès
   product:
-    removed: Le produit a bien été supprimé
+    removed: Produit supprimé avec succès
   channel:
-    removed: Le canal a bien été supprimé
+    removed: Canal supprimé avec succès
   group:
-    removed: Le groupe a bien été supprimé
+    removed: Groupe supprimé avec succès
   variant group:
     removed: Le groupe de variantes a bien été supprimé
   group type:
@@ -48,13 +53,15 @@ flash:
   export profile:
     removed: Le profil d'export a bien été supprimé
   user:
-    removed: L'utilisateur a bien été supprimé
+    removed: Utilisateur supprimé avec succès
   role:
     removed: Le rôle a bien été supprimé
 error:
+  creating:
+    product: Aucun attribut n'est configuré comme identifiant produit ou vous n'avez pas les droits pour le modifier.
   removing:
     item: Impossible de supprimer cet élément
-    association type: Impossible de supprimer ce type d'association
+    association_type: Impossible de supprimer ce type d'association
     attribute: Impossible de supprimer cet attribut
     family: Impossible de supprimer cette famille
     product: Impossible de supprimer ce produit
@@ -84,7 +91,7 @@ label:
   attribute_option:
     add_option: Ajouter une option
 Code: Code
-Edit: Éditer
+Edit: Modifier
 Delete: Supprimer
 Edit attributes of the product: Modifier les attributs du produit
 Classify the product: Classer le produit
@@ -128,7 +135,7 @@ pim_enrich:
       btn:
         enable: Activer
         enabled: Activé
-        disable: Desactiver
+        disable: Désactiver
         disabled: Désactivé
         download_pdf: PDF
         compare_translate: Comparer / traduire
@@ -138,7 +145,7 @@ pim_enrich:
       history:
         version: Version
         author: Auteur
-        logged_at: Connecté le
+        logged_at: Connecté(e) le
         more: Plus
         less: Moins
         from: De
@@ -199,9 +206,44 @@ pim_enrich:
           family: Choisir une famille
           save: Enregistrer
           cancel: Annuler
+    association_type:
+      info:
+        deletion_successful: Le type d'association a été créé avec succès.
+        deletion_failed: Le type d’association n’a pas pu être supprimé.
+        update_successful: Le type d'association a été mis à jour avec succès.
+        update_failed: Le type d’association n’a pas pu être modifié.
+        field_not_ready:
+          The association type cannot be saved right now. The following fields are not ready:
+            - champs
+      meta:
+        created: Créé
+        created_by: Créé par
+        updated: Mis à jour
+        updated_by: Mis à jour par
+      btn:
+        save: Enregistrer
+    channel:
+      info:
+        deletion_successful: Le canal a bien été supprimé.
+        deletion_failed: Le canal ne peut pas être supprimé.
+        update_successful: Le canal a bien été mis à jour.
+        update_failed: Le canal ne peut pas être mis à jour.
+        create_successful: Canal créé avec succès.
+        create_failed: Le canal ne peut pas être créé.
+        field_not_ready:
+          The channel cannot be saved right now. The following fields are not ready:
+            - champs
+      meta:
+        created: Créé
+        created_by: Créé par
+        updated: Mis à jour
+        updated_by: Mis à jour par
+      btn:
+        save: Enregistrer
     attribute_option:
       code: Code
       label: Libellé
+      actions: Actions
     variant_group:
       title: Groupe de variantes
       info:
@@ -222,14 +264,35 @@ pim_enrich:
         created_by: Créé par
         updated: Mis à jour
         updated_by: Mis à jour par
+    group:
+      title: Groupe
+      info:
+        deletion_successful: Groupe supprimé avec succès.
+        deletion_failed: Le groupe n'a pas pu être supprimé.
+        update_successful: Groupe mis à jour avec succès.
+        update_failed: Le groupe n'a pas pu être mis à jour.
+        field_not_ready:
+          The group cannot be saved right now. The following fields are not ready:
+            - champs
+      btn:
+        save: Enregistrer
+      meta:
+        product_count: Produits
+        created: Créé
+        created_by: Créé par
+        updated: Mis à jour
+        updated_by: Mis à jour par
+    job_instance:
+      info:
+        update_failed: Le profil n'a pas pu être mis à jour.
   confirmation:
     leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
     discard_changes: Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.
     delete_item: Supprimer l'élément.
     delete:
-      attribute: Êtes-vous sûr(e) de que vouloir supprimer cet attribut du produit ?
+      attribute: Êtes-vous sûr de que vouloir supprimer cet attribut du produit ?
   info:
-    not_applicable: Inconnu
+    not_applicable: N/A
     entity:
       updated: Des modifications n'ont pas encore été sauvegardées.
   error:
@@ -293,6 +356,30 @@ pim_enrich:
       mass_edit:
         select_attributes: Sélectionnez les attributs
         select: Sélectionner
+    association_type:
+      tab:
+        properties:
+          title: Propriétés
+          general: Propriétés générales
+          code: Code
+          label_translations: Traduction des libellés
+        history:
+          title: Historique
+    channel:
+      tab:
+        history:
+          title: Historique
+        properties:
+          title: Propriétés
+          general: Général
+          code: Code
+          currencies: Devises
+          locales: Locales
+          category_tree: Arborescence
+          label_translations: Traduction des libellés
+          label_conversion_units: Choisissez une unité de conversion pour chaque unité de mesure. Elle sera utilisée lors de l'export du produit
+          conversion_unit:
+            do_not_convert: Ne pas convertir
     attribute_option:
       flash:
         option_created: L'option d'attribut a été créée avec succès.
@@ -320,6 +407,18 @@ pim_enrich:
           title: Produits
         attributes:
           title: Attributs
+    group:
+      tab:
+        properties:
+          title: Propriétés
+          general: Propriétés générales
+          code: Code
+          type: Type
+          label_translations: Traduction des libellés
+        history:
+          title: Historique
+        products:
+          title: Produits
     common:
       tab:
         attributes:
@@ -330,9 +429,81 @@ pim_enrich:
             search_attributes: Rechercher...
             no_available_attributes: Il n'y a plus d'attributs disponibles
     job_instance:
+      fail:
+        launch: Impossible de lancer le profil. Assurez-vous qu'il est valide et que vous avez les droits pour le lancer.
+        save: Impossible de sauvegarder le profil. Assurez-vous que vous avez les droits pour l'éditer.
+      title:
+        import: Profil d'import
+        export: Profil d'export
+      button:
+        edit.title: Modifier
+        export.title: Exporter maintenant
+        import.launch: Importer maintenant
+        import.upload: Télécharger et importer maintenant
+      meta:
+        job: Tâche
+        connector: Connecteur
       tab:
         content:
           title: Contenu
+        properties:
+          title: Propriétés générales
+          code:
+            title: Code
+          label:
+            title: Libellé
+          decimal_separator:
+            title: Séparateur de décimales
+            help: Détermine le séparateur de décimale
+          date_format:
+            title: Format de date
+            help: Déterminer le format des champs de type date
+          file_path:
+            title: Chemin du fichier
+            help: Emplacement du fichier généré sur le serveur
+          delimiter:
+            title: Délimiteur
+            help: Caractère unique utilisé pour délimiter les valeurs
+          enclosure:
+            title: Caractère d'encadrement
+            help: Caractère unique utilisé pour encadrer les champs
+          with_header:
+            title: Avec en-tête
+            help: Définit si la première ligne du fichier contient les libellés des colonnes
+          with_media:
+            title: Exporter les fichiers et les images
+            help: Exporter ou non les fichiers produits et les images
+          lines_per_file:
+            title: Nombre de lignes par fichier
+            help: Définit la limite de nombre de lignes par fichier
+          upload_allowed:
+            title: Autoriser l'envoi de fichier sur le serveur
+            help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
+          categories_column:
+            title: Colonne des catégories
+            help: Nom de la colonne qui contient les catégories
+          escape:
+            title: Échappement
+            help: Le caractère utilisé pour échapper les champs
+          family_column:
+            title: Colonne de la famille
+            help: Nom de la colonne qui contient la famille du produit
+          groups_column:
+            title: Colonne des groupes
+            help: Nom de la colonne qui contient les groupes du produit
+          enabled:
+            title: Activer le produit
+            help: Activer automatiquement les produits importés
+          enabled_comparison:
+            title: Comparer les valeurs
+            help: Permettre la comparaison entre les valeurs d'origine et les valeurs importées. Permet d'accélérer les importations si les valeurs importées sont très similaires aux valeurs d'origine
+          real_time_versioning:
+            title: Mise à jour de l'historique en temps réel
+            help: Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances
+        history:
+          title: Historique
+  job:
+    upload: Glissez et déposer un fichier ou cliquez ici
   export:
     product:
       data:
@@ -467,7 +638,10 @@ pim_enrich:
             "<": Inférieur à
             EMPTY: Est vide
             NOT EMPTY: N'est pas vide
-
+      properties:
+        title: Propriétés
+      global_settings:
+        title: Paramètres généraux
   mass_edit_action:
     edit_common_attributes:
       description: Les attributs des produits sélectionnés vont être édités avec les données suivantes pour la locale <span class="highlight">{{ locale }}</span> et le canal <span class="highlight">{{ channel }}</span>, choisis dans la grille des produits.
