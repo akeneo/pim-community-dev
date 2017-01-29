@@ -851,6 +851,7 @@ job_execution.summary:
   skip: Ignoré
   skipped_products: Produits ignorés
   skipped_attributes: Attributs ignorés
+  skipped_families: Familles ignorées
 pim_mass_edit_execution_show: Exécutions des éditions en masse | Détails
 edit_common_attributes.steps.edit_common_attributes_processor.title: Modifier les attributs communs
 update_product_value.steps.update_product_value_processor.title: Mise à jour de la valeur du produit
