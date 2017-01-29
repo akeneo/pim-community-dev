@@ -17,7 +17,7 @@ pim_dashboard:
       empty: Geen bewerkingen beschikbaar
       status: Status
       date: Datum
-      type: Soort
+      type: Type
       "profile name": Profielnaam
       details: Details
       job_type:

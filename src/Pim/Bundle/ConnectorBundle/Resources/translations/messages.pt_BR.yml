@@ -28,138 +28,9 @@ pim_connector:
     variant_group_writer.title: Armazenamento de Grupo Variante
     writer.title: Armazenamento de Entidade
     csv_writer.title: Escritor de CSV
-  export:
-    csv:
-      delimiter:
-        label: Limitador
-        help: Um caracter usado para delimitar o campo
-      enclosure:
-        label: Invólucro
-        help: Caractere usado para definir o invólucro do campo
-      withHeader:
-        label: Com Cabeçalho
-        help: Imprimir ou não o nome da coluna
-      filePath:
-        label: Caminho do arquivo
-        help: Local no sistema onde o arquivo gerado deve ser gravado
-      decimalSeparator:
-        label: Separador decimal
-        help: Determinar o separator decimal
-      dateFormat:
-        label: Formato da data
-        help: Determinar o formato dos campos da data
-    xlsx:
-      lines_per_files:
-        label: Número de linhas por ficheiro
-        help: Definir o número limite de linhas por ficheiro
-      withHeader:
-        label: Com Cabeçalho
-        help: Imprimir ou não o nome da coluna
-      filePath:
-        label: Caminho do arquivo
-        help: Local no sistema onde o arquivo gerado deve ser gravado
-      decimalSeparator:
-        label: Separador decimal
-        help: Determinar o separator decimal
-      dateFormat:
-        label: Formato da data
-        help: Determinar o formato dos campos da data
-    yml:
-      filePath:
-        label: Caminho do arquivo
-        help: Local no sistema onde o arquivo gerado deve ser gravado
-  import:
-    csv:
-      enabled:
-        label: Habilitar produto
-        help: Habilitar ou não os produtos importados
-      categoriesColumn:
-        label: Coluna de categorias
-        help: Nome da coluna de categorias
-      familyColumn:
-        label: Coluna de famílias
-        help: Nome da coluna de famílias
-      groupsColumn:
-        label: Coluna de grupos
-        help: Nome da coluna de grupos
-      filePath:
-        label: Arquivo
-        help: O Arquivo CSV a ser importado
-      uploadAllowed:
-        label: Permitir envio de arquivos
-        help: Permitir ou não o upload direto do arquivo
-      delimiter:
-        label: Limitador
-        help: Caractere usado para definir o delimitador de campo para arquivo CSV
-      enclosure:
-        label: Invólucro
-        help: Caractere usado para definir o invólucro do campo
-      escape:
-        label: Escapar
-        help: Um caractere usado para definir o campo de escape
-      circularRefsChecked:
-        label: Verificar referências circulares
-        help: Se sim, os dados serão processados para verificar se não há nenhuma referência circular entre as categorias
-      realTimeVersioning:
-        label: Atualização de histórico em tempo real
-        help: Significa que o histórico do produto é atualizado automaticamente, pode ser desligado para melhorar a velocidade
-      copyValuesToProducts:
-        label: Copiar Valores do Grupo Variante para Produtos
-        help: Significa que os produtos serão atualizados automaticamente com os valores do Grupo Variante, pode ser trocado para apenas atualizar o Grupo Variante
-      enabledComparison:
-        label: Comparar Valores
-        help: Permitir a comparação entre os valores originais e importados. Pode acelerar a importação se os valores importados forem muito semelhantes aos valores originais
-      decimalSeparator:
-        label: Separador decimal
-        help: Caractere usado para definir o separador de campo para decimal
-      dateFormat:
-        label: Formato da data
-    xlsx:
-      enabled:
-        label: Habilitar produto
-        help: Habilitar ou não os produtos importados
-      categoriesColumn:
-        label: Coluna de categorias
-        help: Nome da coluna de categorias
-      familyColumn:
-        label: Coluna de famílias
-        help: Nome da coluna de famílias
-      groupsColumn:
-        label: Coluna de grupos
-        help: Nome da coluna de grupos
-      filePath:
-        label: Arquivo
-      uploadAllowed:
-        label: Permitir envio de arquivos
-        help: Permitir ou não o upload direto do arquivo
-      circularRefsChecked:
-        label: Verificar referências circulares
-        help: Se sim, os dados serão processados para verificar se não há nenhuma referência circular entre as categorias
-      realTimeVersioning:
-        label: Atualização de histórico em tempo real
-        help: Significa que o histórico do produto é atualizado automaticamente, pode ser desligado para melhorar a velocidade
-      copyValuesToProducts:
-        label: Copiar Valores do Grupo Variante para Produtos
-        help: Significa que os produtos serão atualizados automaticamente com os valores do Grupo Variante, pode ser trocado para apenas atualizar o Grupo Variante
-      enabledComparison:
-        label: Comparar Valores
-        help: Permitir a comparação entre os valores originais e importados. Pode acelerar a importação se os valores importados forem muito semelhantes aos valores originais
-      decimalSeparator:
-        label: Separador decimal
-        help: Caractere usado para definir o separador de campo para decimal
-      dateFormat:
-        label: Formato da data
-    yml:
-      filePath:
-        label: Arquivo
-        help: O arquivo YML a ser importado
-      uploadAllowed:
-        label: Permitir envio de arquivos
-        help: Permitir ou não o upload direto do arquivo
 job_execution.summary:
   read: ler
-  read_lines: ler linhas
-  write: escrito
+  write: escrever
   skip: pulado
   create: criado
   process: processado
@@ -171,6 +42,7 @@ job_execution.summary:
     title: 'Codificação do arquivo:'
     skipped: pulado, extensão na lista branca
   product_skipped_no_diff: produto pulado (nenhuma diferença)
+  item_position: ler linhas
 batch_jobs:
   csv_product_export:
     label: Exportação de produto em CSV
@@ -229,19 +101,14 @@ batch_jobs:
     label: Importar grupo variante em CSV
     validation.label: Validação de arquivo
     import.label: Importação de Grupo Variante
-  csv_currency_export:
-    export.label: Exportação de moeda
   csv_channel_import:
     validation.label: Validação de arquivo
-    import.label: Importação de canal
   csv_locale_import:
     validation.label: Validação de arquivo
   csv_attribute_group_import:
     validation.label: Validação de arquivo
   csv_currency_import:
-    label: Importar moeda em CSV
     validation.label: Validação de arquivo
-    import.label: Importação de moeda
   csv_group_type_import:
     validation.label: Validação de arquivo
   xlsx_category_import:
@@ -301,10 +168,6 @@ batch_jobs:
   xlsx_association_type_export:
     label: Exportação de tipos de associação em XLSX
     export.label: Exportação de tipos de associação em XLSX
-  xlsx_channel_export:
-    export.label: Exportação de canal
-  xlsx_currency_export:
-    label: Exportar moeda em CSV
   xlsx_channel_import:
     validation.label: Validação de arquivo
   xlsx_locale_import:
@@ -313,6 +176,5 @@ batch_jobs:
     validation.label: Validação de arquivo
   xlsx_currency_import:
     validation.label: Validação de arquivo
-    import.label: Importação de moeda
   xlsx_group_type_import:
     validation.label: Validação de arquivo

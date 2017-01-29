@@ -95,6 +95,9 @@ SECOND: Segon
 MINUTE: Minut
 HOUR: Hora
 DAY: Dia
+WEEK: Setmana
+MONTH: Mes
+YEAR: Any
 Speed: Velocitat
 FOOT_PER_SECOND: Peu per segon
 FOOT_PER_HOUR: Peu per hora
@@ -146,3 +149,9 @@ ATM: Atmosfera
 PSI: Lliura per polzada quadrada
 TORR: Torr
 MMHG: mil·límetre de Mercuri
+Energy: Energia
+KILOCALORIE: quilocalories
+KILOJOULE: kilojoule
+CaseBox: Embalatge
+PIECE: Peça
+DOZEN: Dotzena

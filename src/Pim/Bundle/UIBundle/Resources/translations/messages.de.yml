@@ -38,3 +38,9 @@ Most Viewed: Am meisten angesehen
 "Yes": "Ja"
 "No": "Nein"
 required: (erforderlich)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Nachrichten laden aktivieren
+    loading_message_enabled.tooltip: Zeige benutzerfreundliche Nachrichten während eine Seite geladen wird
+  group:
+    loading_message.title: Nachrichten werden geladen
