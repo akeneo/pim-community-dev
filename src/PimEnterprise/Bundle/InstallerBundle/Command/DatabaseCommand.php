@@ -31,6 +31,7 @@ class DatabaseCommand extends BaseDatabaseCommand
         parent::launchCommands($input, $output);
 
         $this->commandExecutor->runCommand('pimee:installer:clean-category-accesses');
+        $this->commandExecutor->runCommand('pimee:installer:clean-attribute-group-accesses');
 
         return $this;
     }
