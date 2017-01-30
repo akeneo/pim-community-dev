@@ -67,7 +67,6 @@ class DetachProductPostPublishSubscriber implements EventSubscriberInterface
 
         foreach ($published->getValues() as $publishedValue) {
             $this->objectManager->detach($publishedValue);
-            $this->detachSpecificValues($publishedValue);
         }
 
         $this->objectManager->detach($published);
@@ -84,34 +83,6 @@ class DetachProductPostPublishSubscriber implements EventSubscriberInterface
         }
         foreach ($product->getCompletenesses() as $comp) {
             $this->objectManager->detach($comp);
-        }
-    }
-
-    /**
-     * Detach specific values
-     *
-     * @param ProductValueInterface $publishedValue
-     */
-    protected function detachSpecificValues(ProductValueInterface $publishedValue)
-    {
-        switch ($publishedValue->getAttribute()->getBackendType()) {
-            case AttributeTypes::BACKEND_TYPE_MEDIA:
-                if (null !== $publishedValue->getMedia()) {
-                    $this->entityManager->detach($publishedValue->getMedia());
-                }
-                break;
-            case AttributeTypes::BACKEND_TYPE_METRIC:
-                if (null !== $publishedValue->getMetric()) {
-                    $this->objectManager->detach($publishedValue->getMetric());
-                }
-                break;
-            case AttributeTypes::BACKEND_TYPE_PRICE:
-                if ($publishedValue->getPrices()->count() > 0) {
-                    foreach ($publishedValue->getPrices() as $price) {
-                        $this->objectManager->detach($price);
-                    }
-                }
-                break;
         }
     }
 }

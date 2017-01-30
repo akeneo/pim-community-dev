@@ -42,7 +42,6 @@ class ValuePublisherSpec extends ObjectBehavior
         $productValue->getAttribute()->willReturn($attribute);
         $productValue->getLocale()->willReturn('en_US');
         $productValue->getScope()->willReturn('ecommerce');
-        $productValue->getEntity()->willReturn(null);
 
         $productValue->getData()->willReturn(true);
 
@@ -68,7 +67,6 @@ class ValuePublisherSpec extends ObjectBehavior
         $productValue->getAttribute()->willReturn($attribute);
         $productValue->getLocale()->willReturn('en_US');
         $productValue->getScope()->willReturn('ecommerce');
-        $productValue->getEntity()->willReturn(null);
 
         $productValue->getData()->willReturn(false);
 
@@ -92,7 +90,6 @@ class ValuePublisherSpec extends ObjectBehavior
         $productValue->getAttribute()->willReturn($attribute);
         $productValue->getLocale()->willReturn(null);
         $productValue->getScope()->willReturn(null);
-        $productValue->getEntity()->willReturn(null);
 
         $productValue->getData()->willReturn('string_product_value');
 
@@ -111,7 +108,6 @@ class ValuePublisherSpec extends ObjectBehavior
         AttributeInterface $attribute,
         $publisher
     ) {
-
         $attribute->getBackendType()->willReturn('boolean');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
         $attribute->isScopable()->willReturn(true);
@@ -119,7 +115,6 @@ class ValuePublisherSpec extends ObjectBehavior
         $productValue->getAttribute()->willReturn($attribute);
         $productValue->getLocale()->willReturn(null);
         $productValue->getScope()->willReturn('ecommerce');
-        $productValue->getEntity()->willReturn(null);
 
         $object = new \StdClass();
 
@@ -127,7 +122,7 @@ class ValuePublisherSpec extends ObjectBehavior
 
         $productValue->getData()->willReturn($object);
 
-        $published = $this->publish($productValue);
+        $published = $this->publish($productValue, ['product' => null]);
 
         $published->shouldHaveType('PimEnterprise\Component\Workflow\Model\PublishedProductValue');
 

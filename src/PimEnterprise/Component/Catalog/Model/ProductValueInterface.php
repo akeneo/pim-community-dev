@@ -13,7 +13,6 @@ namespace PimEnterprise\Component\Catalog\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\ProductValueInterface as BaseProductValueInterface;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 /**
  * Enterprise override of the Community product value interface
@@ -28,25 +27,4 @@ interface ProductValueInterface extends BaseProductValueInterface
      * @return ArrayCollection
      */
     public function getAssets();
-
-    /**
-     * @param ArrayCollection $assets
-     *
-     * @return ProductValueInterface
-     */
-    public function setAssets(ArrayCollection $assets);
-
-    /**
-     * @param AssetInterface $asset
-     *
-     * @return ProductValueInterface
-     */
-    public function addAsset(AssetInterface $asset);
-
-    /**
-     * @param AssetInterface $asset
-     *
-     * @return ProductValueInterface
-     */
-    public function removeAsset(AssetInterface $asset);
 }
