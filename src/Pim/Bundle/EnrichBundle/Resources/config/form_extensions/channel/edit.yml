@@ -1,0 +1,143 @@
+extensions:
+    pim-channel-edit-form:
+        module: pim/form/common/edit-form
+
+    pim-channel-edit-form-cache-invalidator:
+        module: pim/cache-invalidator
+        parent: pim-channel-edit-form
+        position: 1000
+
+    pim-channel-edit-form-form-tabs:
+        module: pim/form/common/form-tabs
+        parent: pim-channel-edit-form
+        targetZone: content
+        position: 90
+
+    pim-channel-edit-form-label:
+        module: pim/form/common/label
+        parent: pim-channel-edit-form
+        targetZone: title
+        position: 110
+
+    pim-channel-edit-form-back-to-grid:
+        module: pim/form/common/back-to-grid
+        parent: pim-channel-edit-form
+        targetZone: back
+        aclResourceId: pim_enrich_channel_index
+        position: 80
+        config:
+            backUrl: pim_enrich_channel_index
+
+    pim-channel-edit-form-delete:
+        module: pim/channel-edit-form/delete
+        parent: pim-channel-edit-form
+        targetZone: buttons
+        aclResourceId: pim_enrich_channel_remove
+        position: 100
+        config:
+            trans:
+                title: confirmation.remove.channel
+                content: pim_enrich.confirmation.delete_item
+                success: flash.channel.removed
+                fail: error.removing.channel
+            redirect: pim_enrich_channel_index
+
+    pim-channel-edit-form-save-buttons:
+        module: pim/form/common/save-buttons
+        parent: pim-channel-edit-form
+        targetZone: buttons
+        position: 100
+
+    pim-channel-edit-form-save:
+        module: pim/channel-edit-form/save
+        parent: pim-channel-edit-form
+        targetZone: buttons
+        position: 0
+        config:
+            redirectUrl: pim_enrich_channel_edit
+
+    pim-channel-edit-form-state:
+        module: pim/form/common/state
+        parent: pim-channel-edit-form
+        targetZone: state
+        position: 900
+        config:
+            entity: pim_enrich.entity.channel.title
+
+    pim-channel-edit-form-created:
+        module: pim/form/common/meta/created
+        parent: pim-channel-edit-form
+        targetZone: meta
+        position: 90
+        config:
+            label: pim_enrich.entity.channel.meta.created
+            labelBy: pim_enrich.entity.channel.meta.created_by
+
+    pim-channel-edit-form-updated:
+        module: pim/form/common/meta/updated
+        parent: pim-channel-edit-form
+        targetZone: meta
+        position: 100
+        config:
+            label: pim_enrich.entity.channel.meta.updated
+            labelBy: pim_enrich.entity.channel.meta.updated_by
+
+    pim-channel-edit-form-properties:
+        module: pim/common/tab/properties
+        parent: pim-channel-edit-form-form-tabs
+        targetZone: container
+        position: 100
+        config:
+            label: 'pim_enrich.form.channel.tab.properties.title'
+
+    pim-channel-edit-form-properties-general:
+        module: pim/channel-edit-form/properties/general
+        parent: pim-channel-edit-form-properties
+        targetZone: accordion
+        position: 100
+
+    pim-channel-edit-form-properties-general-currencies:
+        module: pim/channel-edit-form/properties/general/currencies
+        parent: pim-channel-edit-form-properties-general
+        targetZone: general-select-fields
+        position: 110
+
+    pim-channel-edit-form-properties-general-locales:
+        module: pim/channel-edit-form/properties/general/locales
+        parent: pim-channel-edit-form-properties-general
+        targetZone: general-select-fields
+        position: 120
+
+    pim-channel-edit-form-properties-general-category-tree:
+        module: pim/channel-edit-form/properties/general/category-tree
+        parent: pim-channel-edit-form-properties-general
+        targetZone: general-select-fields
+        position: 130
+
+    pim-channel-edit-form-properties-translation:
+        module: pim/common/properties/translation
+        parent: pim-channel-edit-form-properties
+        targetZone: accordion
+        position: 140
+        config:
+            label: 'pim_enrich.form.channel.tab.properties.label_translations'
+            fieldBaseId: 'pim_enrich_channel_form_label_'
+
+    pim-channel-edit-form-properties-conversion-unit:
+        module: pim/channel-edit-form/properties/conversion-unit
+        parent: pim-channel-edit-form-properties
+        targetZone: accordion
+        position: 150
+        config:
+            label: 'pim_enrich.form.channel.tab.properties.label_conversion_units'
+            fieldBaseId: 'pim_enrich_channel_form_conversion_unit_'
+
+    pim-channel-edit-form-history:
+        module: pim/common/tab/history
+        parent: pim-channel-edit-form-form-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_channel_history
+        position: 170
+        config:
+            class: 'channel'
+            title: 'pim_enrich.form.channel.tab.history.title'

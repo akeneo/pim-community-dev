@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Prophecy\Argument;
@@ -14,9 +15,17 @@ class ChannelNormalizerSpec extends ObjectBehavior
     function let(
         NormalizerInterface $channelNormalizer,
         NormalizerInterface $localeNormalizer,
-        CollectionFilterInterface $collectionFilter
+        CollectionFilterInterface $collectionFilter,
+        VersionManager $versionManager,
+        NormalizerInterface $versionNormalizer
     ) {
-        $this->beConstructedWith($channelNormalizer, $localeNormalizer, $collectionFilter);
+        $this->beConstructedWith(
+            $channelNormalizer,
+            $localeNormalizer,
+            $versionManager,
+            $versionNormalizer,
+            $collectionFilter
+        );
     }
 
     function it_is_a_normalizer()
@@ -33,6 +42,7 @@ class ChannelNormalizerSpec extends ObjectBehavior
         LocaleInterface $locale2
     ) {
         $channel->getLocales()->willReturn([$locale1, $locale2]);
+        $channel->getId()->willReturn(10);
         $collectionFilter->filterCollection([$locale1, $locale2], 'pim.internal_api.locale.view')
             ->willReturn([$locale1]);
         $localeNormalizer->normalize($locale1, 'standard')->willReturn([
@@ -50,6 +60,13 @@ class ChannelNormalizerSpec extends ObjectBehavior
                 'locales' => [
                     ['code' => 'fr_FR', 'label' => 'French']
                 ],
+
+                'meta' => [
+                    'id' => 10,
+                    'form' => 'pim-channel-edit-form',
+                    'created' => null,
+                    'updated' => null,
+                ]
             ]
         );
     }

@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -27,19 +28,31 @@ class ChannelUpdater implements ObjectUpdaterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     protected $currencyRepository;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var MeasureManager */
+    protected $measureManager;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $categoryRepository
      * @param IdentifiableObjectRepositoryInterface $localeRepository
      * @param IdentifiableObjectRepositoryInterface $currencyRepository
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param MeasureManager                        $measureManager
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $categoryRepository,
         IdentifiableObjectRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $currencyRepository
+        IdentifiableObjectRepositoryInterface $currencyRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        MeasureManager $measureManager
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->localeRepository = $localeRepository;
         $this->currencyRepository = $currencyRepository;
+        $this->attributeRepository = $attributeRepository;
+        $this->measureManager = $measureManager;
     }
 
     /**
@@ -54,6 +67,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      *     },
      *     'locales': ['en_US'],
      *     'currencies': ['EUR', 'USD'],
+     *     'conversion_units': ["weight" => "GRAM", "display_diagonal" => "METER"],
      *     'category_tree': 'master'
      * }
      */
@@ -96,7 +110,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
                 $this->setCurrencies($channel, $data);
                 break;
             case 'conversion_units':
-                $channel->setConversionUnits($data);
+                $this->setConversionUnits($channel, $data);
                 break;
             case 'labels':
                 $this->setLabels($channel, $data);
@@ -191,6 +205,45 @@ class ChannelUpdater implements ObjectUpdaterInterface
             $channel->setLocale($localeCode);
             $translation = $channel->getTranslation();
             $translation->setLabel($label);
+        }
+    }
+
+    /**
+     * Validates the list of conversion units passed in before updating the channel object with.
+     *
+     * @param ChannelInterface $channel
+     * @param array            $conversionUnits
+     *
+     * @throws InvalidPropertyException
+     */
+    protected function setConversionUnits(ChannelInterface $channel, $conversionUnits)
+    {
+        foreach ($conversionUnits as $attributeCode => $conversionUnit) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+
+            if ($attribute === null) {
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'conversionUnits',
+                    'attributeCode',
+                    'the attribute code for the conversion unit does not exist',
+                    'updater',
+                    'channel',
+                    $attributeCode
+                );
+            }
+
+            if (!$this->measureManager->unitCodeExistsInFamily($conversionUnit, $attribute->getMetricFamily())) {
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'conversionUnits',
+                    'unitCode',
+                    'the metric unit code for the conversion unit does not exist',
+                    'updater',
+                    'channel',
+                    $conversionUnit
+                );
+            }
+
+            $channel->setConversionUnits($conversionUnits);
         }
     }
 }

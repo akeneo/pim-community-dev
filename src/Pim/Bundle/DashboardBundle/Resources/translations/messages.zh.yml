@@ -1,5 +1,5 @@
 pim_dashboard:
-  title: 仪表台
+  title: 监控面板
   version: 版本
   link.label:
     product: 管理产品

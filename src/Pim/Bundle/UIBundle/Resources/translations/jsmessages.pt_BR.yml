@@ -37,7 +37,7 @@ Action: Ação
 Unit: Unidade
 Currency: Moeda
 jstree:
-  all: Todos os Produtos
+  all: Todos os produtos
   unclassified: Produtos não classificados
   product:
     all: Todos os produtos
@@ -88,7 +88,7 @@ datetimepicker:
     Feb: Fev
     Mar: Mar
     Apr: Abr
-    May: Mai
+    May: Maio
     Jun: Jun
     Jul: Jul
     Aug: Ago

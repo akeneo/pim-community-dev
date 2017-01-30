@@ -80,15 +80,6 @@ services:
     pim_enrich.controller.channel:
         scope: request
         class: '%pim_enrich.controller.channel.class%'
-        arguments:
-            - '@request'
-            - '@router'
-            - '@translator'
-            - '@pim_enrich.form.handler.channel'
-            - '@pim_enrich.form.channel'
-            - '@pim_catalog.remover.channel'
-            - '@pim_catalog.saver.locale'
-            - '@pim_catalog.repository.channel'
 
     pim_enrich.controller.currency:
         scope: request
@@ -344,6 +335,11 @@ services:
         arguments:
             - '@pim_catalog.repository.channel'
             - '@pim_internal_api_serializer'
+            - '@pim_catalog.updater.channel'
+            - '@pim_catalog.saver.channel'
+            - '@pim_catalog.remover.channel'
+            - '@pim_catalog.factory.channel'
+            - '@validator'
 
     pim_enrich.controller.rest.completeness:
         class: '%pim_enrich.controller.rest.completeness.class%'

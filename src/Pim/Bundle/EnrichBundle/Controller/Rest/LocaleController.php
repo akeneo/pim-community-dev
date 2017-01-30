@@ -2,9 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -43,14 +45,29 @@ class LocaleController
     /**
      * Get the list of all locales
      *
-     * @return JsonResponse all activated locales
+     * @param Request $request
+     *
+     * @return JsonResponse
      */
-    public function indexAction()
+    public function indexAction(Request $request)
+    {
+        $locales = $request->get('activated', false) ?
+            $this->getActivated() : $this->localeRepository->findAll();
+        $normalizedLocales = $this->normalizer->normalize($locales, 'internal_api');
+
+        return new JsonResponse($normalizedLocales);
+    }
+
+    /**
+     * Get activated locales
+     *
+     * @return mixed
+     */
+    protected function getActivated()
     {
         $locales = $this->localeRepository->getActivatedLocales();
         $filteredLocales = $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view');
-        $normalizedLocales = $this->normalizer->normalize($filteredLocales, 'internal_api');
 
-        return new JsonResponse($normalizedLocales);
+        return $filteredLocales;
     }
 }
