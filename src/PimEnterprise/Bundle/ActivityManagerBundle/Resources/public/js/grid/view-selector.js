@@ -29,7 +29,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            configure: function (gridAlias) {
+            configure: function () {
                 this.listenTo(this.getRoot(), 'grid:view-selector:project-edited', this.onProjectEdited.bind(this));
                 this.listenTo(this.getRoot(), 'grid:view-selector:project-removed', this.onProjectRemoved.bind(this));
 
@@ -59,7 +59,7 @@ define(
                     return;
                 }
 
-                this.$('.current-view-type').html(this.$('[data-value="'+viewType+'"]').html());
+                this.$('.current-view-type').html(this.$('[data-value="' + viewType + '"]').html());
                 this.$('.select2-selection-label-view .current').html(
                     __('activity_manager.grid.view_selector.loading')
                 );
@@ -135,11 +135,12 @@ define(
              */
             postFetchDatagridView: function (view) {
                 if ('project' === view.type) {
-                    return FetcherRegistry.getFetcher('project').fetch(view.label).then(function (project) {
-                        view.text = project.label;
+                    return FetcherRegistry.getFetcher('project')
+                        .fetch(view.label).then(function (project) {
+                            view.text = project.label;
 
-                        return view;
-                    });
+                            return view;
+                        });
                 }
 
                 return ViewSelector.prototype.postFetchDatagridView.apply(this, arguments);

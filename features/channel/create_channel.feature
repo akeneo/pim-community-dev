@@ -14,7 +14,11 @@ Feature: Create a channel
       | Category tree           | 2014 collection |
       | Currencies              | EUR             |
       | Locales                 | French          |
-    And  I visit the "Asset transformations" tab
-    Then I should see "No transformation found"
+    And I should not see the "Asset transformations" tab
     And I press the "Save" button
-    Then I should see the flash message "Channel successfully saved"
+    Then I should be redirected to the "foo" channel page
+    And I should not see the text "There are unsaved changes."
+    And I should see the "Asset transformations" tab
+    Then I visit the "Asset transformations" tab
+    And I should see the text "TRANSFORMATION"
+    And I should see the text "OPTIONS"

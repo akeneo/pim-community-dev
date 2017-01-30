@@ -1,10 +1,10 @@
 parameters:
-    pim_enrich.controller.category_tree.class:    PimEnterprise\Bundle\EnrichBundle\Controller\CategoryTreeController
-    pim_enrich.controller.product.class:          PimEnterprise\Bundle\EnrichBundle\Controller\ProductController
-    pim_enrich.controller.sequential_edit.class:  PimEnterprise\Bundle\EnrichBundle\Controller\SequentialEditController
-    pim_enrich.controller.locale.class:           PimEnterprise\Bundle\EnrichBundle\Controller\LocaleController
-    pimee_enrich.controller.rule_relation.class:  PimEnterprise\Bundle\EnrichBundle\Controller\RuleRelationController
-    pimee_enrich.controller.channel_transformation.class: PimEnterprise\Bundle\EnrichBundle\Controller\ChannelTransformationController
+    pim_enrich.controller.category_tree.class:              PimEnterprise\Bundle\EnrichBundle\Controller\CategoryTreeController
+    pim_enrich.controller.product.class:                    PimEnterprise\Bundle\EnrichBundle\Controller\ProductController
+    pim_enrich.controller.sequential_edit.class:            PimEnterprise\Bundle\EnrichBundle\Controller\SequentialEditController
+    pim_enrich.controller.locale.class:                     PimEnterprise\Bundle\EnrichBundle\Controller\LocaleController
+    pimee_enrich.controller.rule_relation.class:            PimEnterprise\Bundle\EnrichBundle\Controller\RuleRelationController
+    pimee_enrich.controller.channel.class:                  PimEnterprise\Bundle\EnrichBundle\Controller\Rest\ChannelController
 
     pim_enrich.controller.rest.product_category.class: PimEnterprise\Bundle\EnrichBundle\Controller\Rest\ProductCategoryController
 
@@ -98,10 +98,11 @@ services:
             - '@pim_enrich.provider.default_image'
             - ['catalogStorage', 'assetStorage']
 
-    pimee_enrich.controller.channel_transformation:
-        class: '%pimee_enrich.controller.channel_transformation.class%'
+    pimee_enrich.controller.rest.channel:
+        class: '%pimee_enrich.controller.channel.class%'
         arguments:
             - '@pimee_product_asset.repository.channel_configuration'
+            - '@pim_internal_api_serializer'
 
     pim_enrich.controller.rest.product_category:
         class: '%pim_enrich.controller.rest.product_category.class%'

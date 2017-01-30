@@ -53,7 +53,9 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         $connection->delete(
             'pimee_activity_manager_completeness_per_attribute_group',
             [
-                'product_id' => 42
+                'product_id' => 42,
+                'channel_id' => 13,
+                'locale_id' => 37,
             ]
         )->shouldBeCalled();
 

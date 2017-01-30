@@ -6,7 +6,7 @@ pimee_locale:
     prefix: /configuration/locale
 
 pimee_channel_transformation:
-    resource: '@PimEnterpriseEnrichBundle/Resources/config/routing/pimee_channel_transformation.yml'
+    resource: '@PimEnterpriseEnrichBundle/Resources/config/routing/pimee_channel.yml'
     prefix: /channel_transformation
 
 pimee_rule_relation:

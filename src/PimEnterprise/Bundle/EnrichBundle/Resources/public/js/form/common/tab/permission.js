@@ -46,7 +46,11 @@ define([
                     label: __(this.config.title)
                 });
 
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.updateOriginalPermissions.bind(this));
+                this.listenTo(
+                    this.getRoot(),
+                    'pim_enrich:form:entity:post_fetch',
+                    this.updateOriginalPermissions.bind(this)
+                );
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -122,10 +126,14 @@ define([
             ) {
                 var result = _.extend({}, modelPermissions);
                 if (modelPermissions[permissionActionToUpdate].length > newValue.length) {
-                    var removed = _.difference(modelPermissions[permissionActionToUpdate], newValue);
+                    var removed = _.difference(
+                        modelPermissions[permissionActionToUpdate],
+                        newValue
+                    );
 
                     result = _.each(result, function (value, key) {
-                        result[key] = permissionsOrder.indexOf(key) >= permissionsOrder.indexOf(permissionActionToUpdate) ?
+                        result[key] = permissionsOrder.indexOf(key) >= permissionsOrder
+                                .indexOf(permissionActionToUpdate) ?
                             _.difference(value, removed) :
                             value;
                     });
@@ -133,7 +141,8 @@ define([
                     var added = _.difference(newValue, modelPermissions[permissionActionToUpdate]);
 
                     result = _.each(result, function (value, key) {
-                        result[key] = permissionsOrder.indexOf(key) <= permissionsOrder.indexOf(permissionActionToUpdate) ?
+                        result[key] = permissionsOrder
+                                .indexOf(key) <= permissionsOrder.indexOf(permissionActionToUpdate) ?
                             _.union(value, added) :
                             value;
                     });
@@ -160,18 +169,18 @@ define([
                             return {
                                 group: value,
                                 permission: key
-                            }
+                            };
                         })
-                    )
+                    );
                     changes.removed = _.union(
                         changes.removed,
                         _.map(_.difference(value, newPermissions[key]), function (value) {
                             return {
                                 group: value,
                                 permission: key
-                            }
+                            };
                         })
-                    )
+                    );
                 });
 
                 return changes;
