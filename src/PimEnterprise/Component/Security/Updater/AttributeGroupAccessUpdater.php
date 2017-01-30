@@ -87,8 +87,7 @@ class AttributeGroupAccessUpdater implements ObjectUpdaterInterface
                         'attribute_group',
                         'attribute group code',
                         'The attribute group does not exist',
-                        'updater',
-                        'attribute group access',
+                        static::class,
                         $data
                     );
                 }
@@ -101,8 +100,7 @@ class AttributeGroupAccessUpdater implements ObjectUpdaterInterface
                         'user_group',
                         'group code',
                         'The group does not exist',
-                        'updater',
-                        'attribute group access',
+                        static::class,
                         $data
                     );
                 }

@@ -179,8 +179,7 @@ class AssetUpdater implements ObjectUpdaterInterface
             throw InvalidPropertyException::dateExpected(
                 'end_of_use',
                 'yyyy-mm-dd',
-                'updater',
-                'asset',
+                static::class,
                 $data
             );
         }
@@ -189,8 +188,7 @@ class AssetUpdater implements ObjectUpdaterInterface
             throw InvalidPropertyException::dateExpected(
                 'end_of_use',
                 'yyyy-mm-dd',
-                'updater',
-                'asset',
+                static::class,
                 $data
             );
         }
@@ -212,8 +210,7 @@ class AssetUpdater implements ObjectUpdaterInterface
                 'tags',
                 'tag code',
                 'The tag does not exist',
-                'updater',
-                'asset',
+                static::class,
                 $tagCode
             );
         }
@@ -237,8 +234,7 @@ class AssetUpdater implements ObjectUpdaterInterface
                 'categories',
                 'category code',
                 'The category does not exist',
-                'updater',
-                'asset',
+                static::class,
                 $categoryCode
             );
         }
