@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\NativeQueryBuilder;
+use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\TableNameMapper;
 use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\PreProcessingRepository;
 use PimEnterprise\Component\ActivityManager\Model\AttributeGroupCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
@@ -18,7 +18,7 @@ use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryIn
 
 class PreProcessingRepositorySpec extends ObjectBehavior
 {
-    function let(EntityManager $entityManager, NativeQueryBuilder $nativeQueryBuilder, Connection $connection)
+    function let(EntityManager $entityManager, TableNameMapper $nativeQueryBuilder, Connection $connection)
     {
         $this->beConstructedWith($entityManager, $nativeQueryBuilder);
 
@@ -116,7 +116,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         $this->addProduct($project, $product);
     }
 
-    function it_prepare_the_project_calculation_by_deleting_associated_products(
+    function it_prepares_the_project_calculation_by_deleting_associated_products(
         $connection,
         $nativeQueryBuilder,
         ProjectInterface $project

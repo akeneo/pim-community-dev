@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\NativeQueryBuilder;
+use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\TableNameMapper;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
 
@@ -28,13 +28,13 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
     /** @var EntityManagerInterface */
     protected $entityManager;
 
-    /** @var NativeQueryBuilder */
+    /** @var TableNameMapper */
     protected $nativeQueryBuilder;
 
     /**
      * @param EntityManagerInterface $objectManager
      */
-    public function __construct(EntityManagerInterface $objectManager, NativeQueryBuilder $nativeQueryBuilder)
+    public function __construct(EntityManagerInterface $objectManager, TableNameMapper $nativeQueryBuilder)
     {
         $this->entityManager = $objectManager;
         $this->nativeQueryBuilder = $nativeQueryBuilder;

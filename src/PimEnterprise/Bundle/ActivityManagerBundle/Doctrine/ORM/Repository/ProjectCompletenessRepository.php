@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManager;
-use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\NativeQueryBuilder;
+use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\TableNameMapper;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
@@ -25,13 +25,13 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
     /** @var EntityManager */
     protected $entityManger;
 
-    /** @var NativeQueryBuilder */
+    /** @var TableNameMapper */
     protected $nativeQueryBuilder;
 
     /**
      * @param EntityManager $entityManager
      */
-    public function __construct(EntityManager $entityManager, NativeQueryBuilder $nativeQueryBuilder)
+    public function __construct(EntityManager $entityManager, TableNameMapper $nativeQueryBuilder)
     {
         $this->entityManger = $entityManager;
         $this->nativeQueryBuilder = $nativeQueryBuilder;
