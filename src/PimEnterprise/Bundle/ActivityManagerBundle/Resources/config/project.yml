@@ -60,7 +60,7 @@ services:
         class: '%pimee_activity_manager.repository.project_completeness.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pimee_activity_manager.native_query_builder'
+            - '@pimee_activity_manager.table_name_mapper'
 
     ### Updater
     pimee_activity_manager.updater.project:
