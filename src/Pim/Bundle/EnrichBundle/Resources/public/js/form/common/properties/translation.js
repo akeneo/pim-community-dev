@@ -26,6 +26,7 @@ define([
                 'change .label-field': 'updateModel'
             },
             validationErrors: {},
+            locales: null,
 
             /**
              * {@inheritdoc}
@@ -40,8 +41,23 @@ define([
              * {@inheritdoc}
              */
             configure: function () {
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', this.onPreSave);
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.onValidationError);
+                this.listenTo(
+                    this.getRoot(),
+                    'pim_enrich:form:entity:pre_save',
+                    this.onPreSave
+                );
+
+                this.listenTo(
+                    this.getRoot(),
+                    'pim_enrich:form:entity:bad_request',
+                    this.onValidationError
+                );
+
+                this.listenTo(
+                    this.getRoot(),
+                    'pim_enrich:form:entity:locales_updated',
+                    this.onLocalesUpdated.bind(this)
+                );
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -70,16 +86,24 @@ define([
              * {@inheritdoc}
              */
             render: function () {
-                FetcherRegistry.getFetcher('locale').fetchAll().then(function (locales) {
-                    this.$el.html(this.template({
-                        model: this.getFormData(),
-                        locales: locales,
-                        errors: this.validationErrors,
-                        label: this.config.label,
-                        fieldBaseId: this.config.fieldBaseId
-                    }));
-                    this.delegateEvents();
-                }.bind(this));
+                if (!this.locales) {
+                    FetcherRegistry.getFetcher('locale')
+                        .search({'activated': true, 'cached': true})
+                        .then(function (locales) {
+                            this.locales = locales;
+                            this.render();
+                        }.bind(this));
+                }
+
+                this.$el.html(this.template({
+                    model: this.getFormData(),
+                    locales: this.locales,
+                    errors: this.validationErrors,
+                    label: this.config.label,
+                    fieldBaseId: this.config.fieldBaseId
+                }));
+
+                this.delegateEvents();
 
                 this.renderExtensions();
             },
@@ -93,6 +117,21 @@ define([
                 data.labels[event.target.dataset.locale] = event.target.value;
 
                 this.setData(data);
+            },
+
+            /**
+             * Updates locales if were updated
+             */
+            onLocalesUpdated: function () {
+                FetcherRegistry.getFetcher('locale')
+                    .search({'activated': true, 'cached': false})
+                    .then(function (locales) {
+                        if (!_.isEqual(this.locales, locales)) {
+                            this.locales = locales;
+                            return this.render();
+                        }
+
+                    }.bind(this));
             }
         });
     }

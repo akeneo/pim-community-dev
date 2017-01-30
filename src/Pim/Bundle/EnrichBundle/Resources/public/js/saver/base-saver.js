@@ -20,9 +20,10 @@ define([
              *
              * @return {Promise}
              */
-            save: function (code, data) {
+            save: function (code, data, method) {
                 return $.ajax({
-                    type: 'POST',
+                    /* todo: remove ternary when all instances using this module will provide method parameter */
+                    type: 'undefined' === typeof method ? 'POST' : method,
                     url: this.getUrl(code),
                     data: JSON.stringify(data)
                 }).then(function (entity) {

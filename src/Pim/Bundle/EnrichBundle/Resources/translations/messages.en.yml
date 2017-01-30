@@ -37,12 +37,6 @@ pim_enrich:
     group_type:
         tab:
             property.title: Properties
-    # Channel
-    channel:
-        pick_conversion_unit: Pick a conversion unit for each metric attribute that will be used during product export
-        tab:
-            property.title: Properties
-            history.title:  History
     # Category
     category:
         tab:
@@ -428,10 +422,8 @@ confirmation:
         category:         Are you sure you want to delete the category %name%?
         family:           Are you sure you want to delete the family %name%?
         product:          Are you sure you want to delete the product %name%?
-        channel:          Are you sure you want to delete the channel %name%?
         group:            Are you sure you want to delete the group %name%?
         variant group:    Are you sure you want to delete the variant group %name%?
-        association type: Are you sure you want to delete the association type %name%?
         group type:       Are you sure you want to delete the group type %name%?
         user:             Are you sure you want to delete the user %name%?
     attribute group:
@@ -471,10 +463,6 @@ flash:
         updated: Tree successfully updated
         removed: Tree successfully removed
         not removable: Trees associated to channels cannot be removed.
-    channel:
-        saved:   Channel successfully saved
-        removed: Channel successfully removed
-        not removable: The last channel cannot be removed
     currency:
         updated: Currency successfully updated
         error.linked_to_channel: You cannot disable a currency linked to a channel.

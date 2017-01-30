@@ -8,7 +8,7 @@ confirmation:
 flash:
   comment:
     create:
-      success: Ihr Kommentar wurde erfolgreich erstellt.
+      success: Ihr Kommentar wurde  erfolgreich erstellt.
       error: Bei der Erstellung Ihres Kommentars ist ein Fehler aufgetreten.
     delete:
       success: Ihr Kommentar wurde erfolgreich gelöscht.
@@ -20,7 +20,7 @@ comment:
   index:
     empty: Kein Kommentar vorhanden
   placeholder:
-    new: Einen neuen Kommentar erstellen...
+    new: Einen neuen Kommentar schreiben...
     reply: Auf diesen Kommentar antworten...
 pim_comment:
   product.panel.comment.title: Kommentare

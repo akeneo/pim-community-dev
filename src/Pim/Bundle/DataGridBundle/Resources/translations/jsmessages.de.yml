@@ -69,5 +69,19 @@ pim.grid.action.show.title: Anzeigen
 Please select view: Bitte Ansicht auswählen
 Loading...: Lädt...
 View: Ansehen
-from: Von
-to: An
+from: von
+to: bis
+grid.view_selector:
+  default_view: Standardansicht
+  save_changes: Diese Ansicht speichern
+  remove: Diese Ansicht löschen
+  create_view: Ansicht erstellen
+  create: Anlegen
+  search: Suche
+  views: Ansichten
+  placeholder: Name der neuen Ansicht
+  choose_label: Wählen Sie eine Bezeichnung für die Ansicht
+  confirmation:
+    remove: Sind Sie sicher, dass Sie diese Tabellen-Ansicht löschen möchten?
+    delete: Löschbestätigung
+grid.view_selector.flash.updated: Tabellen-Ansicht erfolgreich aktualisiert

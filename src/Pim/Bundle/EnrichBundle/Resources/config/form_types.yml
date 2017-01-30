@@ -1,6 +1,5 @@
 parameters:
     pim_enrich.form.type.attribute.class:        Pim\Bundle\EnrichBundle\Form\Type\AttributeType
-    pim_enrich.form.type.channel.class:          Pim\Bundle\EnrichBundle\Form\Type\ChannelType
     pim_enrich.form.type.group.class:            Pim\Bundle\EnrichBundle\Form\Type\GroupType
     pim_enrich.form.type.variant_group.class:    Pim\Bundle\EnrichBundle\Form\Type\VariantGroupType
     pim_enrich.form.type.family.class:           Pim\Bundle\EnrichBundle\Form\Type\FamilyType
@@ -13,7 +12,6 @@ parameters:
 
     pim_enrich.form.type.product_grid_filter_choice.class: Pim\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType
 
-    pim_enrich.form.type.conversion_units.class:                    Pim\Bundle\EnrichBundle\Form\Type\ConversionUnitsType
     pim_enrich.form.type.attribute_option.class:                    Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionType
     pim_enrich.form.type.attribute_option_create.class:             Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionCreateType
     pim_enrich.form.type.attribute_option_value.class:              Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionValueType
@@ -118,18 +116,6 @@ services:
         tags:
             - { name: form.type, alias: pim_category }
 
-    pim_enrich.form.type.channel:
-        class: '%pim_enrich.form.type.channel.class%'
-        arguments:
-            - '@pim_catalog.repository.locale'
-            - '@pim_catalog.helper.locale'
-            - '@pim_enrich.repository.category'
-            - '%pim_catalog.entity.category.class%'
-            - '%pim_catalog.entity.channel.class%'
-            - '%pim_catalog.entity.channel_translation.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_channel }
-
     pim_enrich.form.type.localized_collection:
         class: '%pim_enrich.form.type.localized_collection.class%'
         tags:
@@ -195,15 +181,6 @@ services:
             - '%pim_catalog.entity.association.class%'
         tags:
             - { name: form.type, alias: pim_enrich_association }
-
-    pim_enrich.form.type.conversion_units:
-        class: '%pim_enrich.form.type.conversion_units.class%'
-        arguments:
-            - '@akeneo_measure.manager'
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.attribute.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_conversion_units }
 
     pim_enrich.form.type.light_entity:
         class: '%pim_enrich.form.type.light_entity.class%'

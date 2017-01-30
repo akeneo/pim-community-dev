@@ -121,7 +121,7 @@ Feature: Edit a product with attribute options
     Then I should see the text "DE8"
     And I should see the text "DE14"
     And I should see the text "DE19"
-    But I should not see the text "DE30"
+    And I should not see the text "DE30"
 
   @ce @jira https://akeneo.atlassian.net/browse/PIM-5993
   Scenario: I edit a simpleselect attribute with localized options
