@@ -28,3 +28,4 @@ customs_tax;Customs tax;Customs tax;Taxe de douanes;Zollsteuer;pim_catalog_price
 under_european_law;Under European law;Under European law;Sous la loi Européenne;Nach europäischem Recht;pim_catalog_boolean;general;1;;;4;0;;;;;;;;;;;de_DE,fr_FR
 datasheet;Datasheet;Datasheet;Fiche technique;Datenblatt;pim_catalog_file;internal;;;;4;;;;10;txt,pdf,doc,docx,csv,rtf;;;;;;;
 attachment;Attachment;Attachment;Attachements;Befestigung;pim_catalog_file;internal;;;;5;;;;10;zip,rar,7z,txt,pdf,doc,docx,csv,rtf;;;;;;;
+localizable_image;Localizable image;Localizable image;Image localisée;Lokalisiertes Bild;pim_catalog_image;media;;;;3;1;;;1;gif,png,jpeg,jpg;;;;;;;
