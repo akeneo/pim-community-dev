@@ -9,7 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration\Project;
+
+use PimEnterprise\Bundle\ActivityManagerBundle\tests\integration\ActivityManagerTestCase;
 
 class CreateProjectIntegration extends ActivityManagerTestCase
 {
