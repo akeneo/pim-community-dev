@@ -72,7 +72,7 @@ class AttributeController
         $context = ['include_group' => true];
 
         if ($request->request->has('identifiers')) {
-            $options['identifiers'] = explode(',', $request->request->get('identifiers'));
+            $options['identifiers'] = explode(',', $request->get('identifiers'));
             $context['include_group'] = false;
         }
 
