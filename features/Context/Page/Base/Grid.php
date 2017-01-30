@@ -755,8 +755,8 @@ class Grid extends Index
     }
 
     /**
-     * @param NodeElement $row
-     * @param int         $position
+     * @param NodeElement|null $row
+     * @param int              $position
      *
      * @throws \InvalidArgumentException
      *
@@ -764,6 +764,10 @@ class Grid extends Index
      */
     protected function getRowCell($row, $position)
     {
+        if (null === $row) {
+            throw new \InvalidArgumentException('Row should not be null');
+        }
+
         // $row->findAll('css', 'td') will not work in the case of nested table (like proposals changes)
         // because we only need to find the direct children cells
         $cells = $row->findAll('xpath', './td');

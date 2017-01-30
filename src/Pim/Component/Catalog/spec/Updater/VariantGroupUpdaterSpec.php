@@ -265,6 +265,17 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
                     'scope'  => 'ecommerce',
                     'data'   => 'original description de_DE'
                 ]
+            ],
+            'image' => [
+                [
+                    'locale' => 'en_US',
+                    'scope'  => null,
+                    'data'   => [
+                        'originalFilename' => 'originalFilename',
+                        'filePath' => 'originalFilepath',
+                        'hash' => 'originalhash',
+                    ]
+                ]
             ]
         ];
 
@@ -281,6 +292,26 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
                     'data'   => 'new description fr_FR'
                 ]
 
+            ],
+            'image' => [
+                [
+                    'locale' => 'en_US',
+                    'scope'  => null,
+                    'data'   => [
+                        'originalFilename' => 'originalFilename',
+                        'filePath' => 'originalFilepath',
+                        'hash' => 'originalhash',
+                    ]
+                ],
+                [
+                    'locale' => 'de_DE',
+                    'scope'  => null,
+                    'data'   => [
+                        'originalFilename' => 'newFilename',
+                        'filePath' => 'newFilepath',
+                        'hash' => 'newhash',
+                    ]
+                ]
             ]
         ];
 
@@ -300,6 +331,26 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
                     'locale' => 'fr_FR',
                     'scope'  => 'ecommerce',
                     'data'   => 'new description fr_FR'
+                ]
+            ],
+            'image' => [
+                [
+                    'locale' => 'en_US',
+                    'scope'  => null,
+                    'data'   => [
+                        'originalFilename' => 'originalFilename',
+                        'filePath' => 'originalFilepath',
+                        'hash' => 'originalhash',
+                    ]
+                ],
+                [
+                    'locale' => 'de_DE',
+                    'scope'  => null,
+                    'data'   => [
+                        'originalFilename' => 'newFilename',
+                        'filePath' => 'newFilepath',
+                        'hash' => 'newhash',
+                    ]
                 ]
             ]
         ];

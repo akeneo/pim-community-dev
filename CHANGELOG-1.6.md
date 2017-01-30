@@ -5,12 +5,14 @@
 - PIM-6113: Fix wrong context switch on association groups
 - PIM-6062: Fix potential Unix commands injection
 - PIM-5085: Fix update of the normalized data on family update (mongodb)
+- PIM-6080: Fix simple and multi select removal on product export builder
 
 # 1.6.9 (2017-01-17)
 
 ## Bug fixes
 
 - PIM-6110: Saving a product value clears the saved associations
+- PIM-6086: Command that removes obsolete relations and migrates normalizedData for MongoDB documents.
 
 # 1.6.8 (2017-01-05)
 
