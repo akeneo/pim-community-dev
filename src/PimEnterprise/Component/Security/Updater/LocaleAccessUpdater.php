@@ -87,8 +87,7 @@ class LocaleAccessUpdater implements ObjectUpdaterInterface
                         'locale',
                         'locale code',
                         'The locale does not exist',
-                        'updater',
-                        'locale access',
+                        static::class,
                         $data
                     );
                 }
@@ -101,8 +100,7 @@ class LocaleAccessUpdater implements ObjectUpdaterInterface
                         'user_group',
                         'group code',
                         'The group does not exist',
-                        'updater',
-                        'locale access',
+                        static::class,
                         $data
                     );
                 }

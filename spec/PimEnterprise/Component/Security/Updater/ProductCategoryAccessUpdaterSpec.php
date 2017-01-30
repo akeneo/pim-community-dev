@@ -77,8 +77,7 @@ class ProductCategoryAccessUpdaterSpec extends ObjectBehavior
                 'user_group',
                 'group code',
                 'The group does not exist',
-                'updater',
-                'product category access',
+                'PimEnterprise\Component\Security\Updater\ProductCategoryAccessUpdater',
                 'foo'
             )
         )->during('update', [$categoryAccess, ['user_group' => 'foo']]);
@@ -95,8 +94,7 @@ class ProductCategoryAccessUpdaterSpec extends ObjectBehavior
                 'category',
                 'category code',
                 'The category does not exist',
-                'updater',
-                'product category access',
+                'PimEnterprise\Component\Security\Updater\ProductCategoryAccessUpdater',
                 'foo'
             )
         )->during('update', [$categoryAccess, ['category' => 'foo']]);

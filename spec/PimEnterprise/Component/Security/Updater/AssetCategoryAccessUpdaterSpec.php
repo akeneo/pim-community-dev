@@ -77,8 +77,7 @@ class AssetCategoryAccessUpdaterSpec extends ObjectBehavior
                 'user_group',
                 'group code',
                 'The group does not exist',
-                'updater',
-                'asset category access',
+                'PimEnterprise\Component\Security\Updater\AssetCategoryAccessUpdater',
                 'foo'
             )
         )->during('update', [$categoryAccess, ['user_group' => 'foo']]);
@@ -95,8 +94,7 @@ class AssetCategoryAccessUpdaterSpec extends ObjectBehavior
                 'category',
                 'category code',
                 'The category does not exist',
-                'updater',
-                'asset category access',
+                'PimEnterprise\Component\Security\Updater\AssetCategoryAccessUpdater',
                 'foo'
             )
         )->during('update', [$categoryAccess, ['category' => 'foo']]);
