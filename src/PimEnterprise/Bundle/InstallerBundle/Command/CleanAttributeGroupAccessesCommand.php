@@ -30,7 +30,7 @@ class CleanAttributeGroupAccessesCommand extends ContainerAwareCommand
     {
         $this
             ->setName('pimee:installer:clean-attribute-group-accesses')
-            ->setDescription('Removing the grou p "ALL" from attribute group\' permissions after a clean installation.');
+            ->setDescription('Removing the group "ALL" from attribute groups\' permissions after a clean installation.');
     }
 
     /**
@@ -38,7 +38,7 @@ class CleanAttributeGroupAccessesCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Removing the group "ALL" from attribute group\' permissions...');
+        $output->writeln('Removing the group "ALL" from attribute groups\' permissions...');
         $groupAll = $this->getUserGroupRepository()->getDefaultUserGroup();
         $this->getProductCategoryAccessRepository()->revokeAccessToGroups([$groupAll]);
         $output->writeln('<info>done !</info>');
