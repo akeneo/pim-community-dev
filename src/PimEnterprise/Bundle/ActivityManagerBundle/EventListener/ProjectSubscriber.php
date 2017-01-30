@@ -68,7 +68,7 @@ class ProjectSubscriber implements EventSubscriberInterface
         );
 
         $project->setCode($projectCode);
-        $datagridView->setLabel($projectCode);
+        $datagridView->setLabel((string)$projectCode);
     }
 
     /**
