@@ -360,6 +360,9 @@ services:
             - '@pim_catalog.repository.family'
             - '@pim_internal_api_serializer'
             - '@pim_enrich.repository.family.search'
+            - '@pim_catalog.updater.family'
+            - '@pim_catalog.saver.family'
+            - '@validator'
 
     pim_enrich.controller.rest.form_extension:
         scope: request

@@ -2,17 +2,26 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
+use Pim\Component\Catalog\Updater\FamilyUpdater;
+use Pim\Component\Catalog\Updater\Remover\RemoverInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Family controller
  *
  * @author    Julien Sanchez <julien@akeneo.com>
+ * @author    Alexandr Jeliuc <alex@jeliuc.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -27,19 +36,43 @@ class FamilyController
     /** @var FamilySearchableRepository */
     protected $familySearchableRepo;
 
+    /** @var FamilyUpdater */
+    protected $updater;
+
+    /** @var SaverInterface */
+    protected $saver;
+
+    /** @var RemoverInterface */
+    protected $remover;
+
+    /** @var ValidatorInterface */
+    protected $validator;
+
     /**
      * @param FamilyRepositoryInterface  $familyRepository
      * @param NormalizerInterface        $normalizer
      * @param FamilySearchableRepository $familySearchableRepo
+     * @param FamilyUpdater              $updater
+     * @param SaverInterface             $saver
+     * @param RemoverInterface           $remover
+     * @param ValidatorInterface         $validator
      */
     public function __construct(
         FamilyRepositoryInterface $familyRepository,
         NormalizerInterface $normalizer,
-        FamilySearchableRepository $familySearchableRepo
+        FamilySearchableRepository $familySearchableRepo,
+        FamilyUpdater $updater,
+        SaverInterface $saver,
+        RemoverInterface $remover,
+        ValidatorInterface $validator
     ) {
         $this->familyRepository = $familyRepository;
         $this->normalizer = $normalizer;
         $this->familySearchableRepo = $familySearchableRepo;
+        $this->updater = $updater;
+        $this->saver = $saver;
+        $this->remover = $remover;
+        $this->validator = $validator;
     }
 
     /**
@@ -64,7 +97,7 @@ class FamilyController
 
         $normalizedFamilies = [];
         foreach ($families as $family) {
-            $normalizedFamilies[$family->getCode()] = $this->normalizer->normalize($family, 'standard');
+            $normalizedFamilies[$family->getCode()] = $this->normalizer->normalize($family, 'internal_api');
         }
 
         return new JsonResponse($normalizedFamilies);
@@ -85,6 +118,92 @@ class FamilyController
             throw new NotFoundHttpException(sprintf('Family with code "%s" not found', $identifier));
         }
 
-        return new JsonResponse($this->normalizer->normalize($family, 'standard'));
+        return new JsonResponse($this->normalizer->normalize($family, 'internal_api'));
+    }
+
+    /**
+     * Updates family
+     *
+     * @param Request $request
+     * @param string  $code
+     *
+     * @return JsonResponse
+     */
+    public function putAction(Request $request, $code)
+    {
+        // todo-a2x implement
+    }
+
+    /**
+     * Removes given family
+     *
+     * @param Request $request
+     * @param string  $code
+     *
+     * @return JsonResponse
+     */
+    public function removeAction(Request $request, $code)
+    {
+        // todo-a2x implement
+    }
+
+    /**
+     * Gets family
+     *
+     * @param $code
+     *
+     * @throws HttpExceptionInterface
+     *
+     * @return object
+     */
+    protected function getFamily($code)
+    {
+        $family = $this->familyRepository->findOneBy(['code' => $code]);
+
+        if (null === $family) {
+            throw new NotFoundHttpException(
+                sprintf('Channel with code %s does not exist.', $code)
+            );
+        }
+
+        return $family;
+    }
+
+    /**
+     * Saves family
+     *
+     * @param Request         $request
+     * @param FamilyInterface $family
+     *
+     * @throws ObjectUpdaterException
+     *
+     * @return JsonResponse
+     */
+    protected function saveFamily(Request $request, FamilyInterface $family)
+    {
+        $data = json_decode($request->getContent(), true);
+        $this->updater->update($family, $data);
+
+        $violations = $this->validator->validate($family);
+
+        if (0 < $violations->count()) {
+            $errors = [];
+            foreach ($violations as $violation) {
+                $errors[$violation->getPropertyPath()] = [
+                    'message' => $violation->getMessage()
+                ];
+            }
+
+            return new JsonResponse($errors, Response::HTTP_CONFLICT);
+        }
+
+        $this->saver->save($family);
+
+        return new JsonResponse(
+            $this->normalizer->normalize(
+                $family,
+                'internal_api'
+            )
+        );
     }
 }

@@ -9,7 +9,7 @@ pim_enrich_family_create:
     defaults: { _controller: pim_enrich.controller.family:createAction }
 
 pim_enrich_family_edit:
-    path: /{id}/edit
+    path: /{code}/edit
     defaults: { _controller: pim_enrich.controller.family:editAction }
     requirements:
         id: \d+

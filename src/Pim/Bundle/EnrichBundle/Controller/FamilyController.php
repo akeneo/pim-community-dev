@@ -47,7 +47,6 @@ class FamilyController
     protected $formFactory;
 
     /** @var EngineInterface */
-    protected $templating;
 
     /** @var TranslatorInterface */
     protected $translator;
@@ -90,7 +89,7 @@ class FamilyController
 
     /**
      * @param Request                      $request
-     * @param EngineInterface              $templating
+
      * @param RouterInterface              $router
      * @param FormFactoryInterface         $formFactory
      * @param TranslatorInterface          $translator
@@ -109,7 +108,6 @@ class FamilyController
      */
     public function __construct(
         Request $request,
-        EngineInterface $templating,
         RouterInterface $router,
         FormFactoryInterface $formFactory,
         TranslatorInterface $translator,
@@ -127,7 +125,6 @@ class FamilyController
         $familyClass
     ) {
         $this->request = $request;
-        $this->templating = $templating;
         $this->router = $router;
         $this->formFactory = $formFactory;
         $this->translator = $translator;
@@ -179,7 +176,10 @@ class FamilyController
 
             $response = [
                 'status' => 1,
-                'url'    => $this->router->generate('pim_enrich_family_edit', ['id' => $family->getId()])
+                'url'    => $this->router->generate(
+                    'pim_enrich_family_edit',
+                    ['code' => $family->getCode()]
+                )
             ];
 
             return new Response(json_encode($response));
@@ -193,198 +193,17 @@ class FamilyController
     /**
      * Edit a family
      *
-     * @param int $id
+     * @param int $code
      *
      * @Template
      * @AclAncestor("pim_enrich_family_index")
      *
-     * @return array
+     * @return array|Response
      */
-    public function editAction($id)
+    public function editAction($code)
     {
-        $family = $this->familyRepository->find($id);
-
-        if (null === $family) {
-            throw new NotFoundHttpException(sprintf('%s entity not found', $this->familyClass));
-        }
-
-        if ($this->familyHandler->process($family)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.family.updated'));
-        }
-
         return [
-            'form'            => $this->familyForm->createView(),
-            'attributesForm'  => $this->getAvailableAttributesForm(
-                $family->getAttributes()->toArray()
-            )->createView(),
-            'channels' => $this->channelRepository->findAll()
+            'code' => $code,
         ];
-    }
-
-    /**
-     * History of a family
-     *
-     * @param int $id
-     *
-     * @AclAncestor("pim_enrich_family_history")
-     *
-     * @return Response
-     */
-    public function historyAction($id)
-    {
-        $family = $this->familyRepository->find($id);
-
-        if (null === $family) {
-            throw new NotFoundHttpException(sprintf('%s entity not found', $this->familyClass));
-        }
-
-        return $this->templating->renderResponse(
-            'PimEnrichBundle:Family:_history.html.twig',
-            [
-                'family' => $family
-            ]
-        );
-    }
-
-    /**
-     * Remove a family
-     *
-     * @param int $id
-     *
-     * @AclAncestor("pim_enrich_family_remove")
-     *
-     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function removeAction($id)
-    {
-        $family = $this->familyRepository->find($id);
-
-        if (null === $family) {
-            throw new NotFoundHttpException(sprintf('%s entity not found', $this->familyClass));
-        }
-
-        $this->familyRemover->remove($family);
-
-        if ($this->request->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return new RedirectResponse($this->router->generate('pim_enrich_family_index'));
-        }
-    }
-
-    /**
-     * Add attributes to a family
-     *
-     * @param int $id
-     *
-     * @AclAncestor("pim_enrich_family_edit_attributes")
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function addAttributesAction($id)
-    {
-        $family = $this->familyRepository->find($id);
-
-        if (null === $family) {
-            throw new NotFoundHttpException(sprintf('%s entity not found', $this->familyClass));
-        }
-
-        $availableAttributes = new AvailableAttributes();
-        $attributesForm = $this->getAvailableAttributesForm(
-            $family->getAttributes()->toArray(),
-            $availableAttributes
-        );
-
-        $attributesForm->submit($this->request);
-        foreach ($availableAttributes->getAttributes() as $attribute) {
-            $family->addAttribute($attribute);
-        }
-
-        $errors = $this->validator->validate($family);
-        if (count($errors) > 0) {
-            foreach ($errors as $error) {
-                $this->request->getSession()->getFlashBag()->add('error', new Message($error->getMessage()));
-            }
-        } else {
-            $this->familySaver->save($family);
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.family.attributes added'));
-        }
-
-        return new RedirectResponse($this->router->generate('pim_enrich_family_edit', ['id' => $family->getId()]));
-    }
-
-    /**
-     * Remove an attribute
-     *
-     * @param int $familyId
-     * @param int $attributeId
-     *
-     * @AclAncestor("pim_enrich_family_edit_attributes")
-     *
-     * @throws DeleteException
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function removeAttributeAction($familyId, $attributeId)
-    {
-        $family = $this->familyRepository->find($familyId);
-
-        if (null === $family) {
-            throw new NotFoundHttpException(sprintf('%s entity not found', $this->familyClass));
-        }
-
-        $attribute = $this->attributeRepo->find($attributeId);
-
-        if (null === $attribute) {
-            throw new NotFoundHttpException(sprintf('%s entity not found', $this->attributeClass));
-        }
-
-        if (false === $family->hasAttribute($attribute)) {
-            throw new DeleteException($this->translator->trans('flash.family.attribute not found'));
-        } elseif (AttributeTypes::IDENTIFIER === $attribute->getType()) {
-            throw new DeleteException($this->translator->trans('flash.family.identifier not removable'));
-        } elseif ($attribute === $family->getAttributeAsLabel()) {
-            throw new DeleteException($this->translator->trans('flash.family.label attribute not removable'));
-        } else {
-            $family->removeAttribute($attribute);
-
-            foreach ($family->getAttributeRequirements() as $requirement) {
-                if ($requirement->getAttribute() === $attribute) {
-                    $family->removeAttributeRequirement($requirement);
-                    $this->doctrine->getManagerForClass(ClassUtils::getClass($requirement))->remove($requirement);
-                }
-            }
-
-            $errors = $this->validator->validate($family);
-            if (count($errors) > 0) {
-                throw new DeleteException($errors[0]->getMessage());
-            }
-
-            $this->familySaver->save($family);
-        }
-        if ($this->request->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return new RedirectResponse($this->router->generate('pim_enrich_family_edit', ['id' => $family->getId()]));
-        }
-    }
-
-    /**
-     * Get the AvailableAttributes form
-     *
-     * @param array               $attributes          The attributes
-     * @param AvailableAttributes $availableAttributes The available attributes container
-     *
-     * @return \Symfony\Component\Form\Form
-     */
-    protected function getAvailableAttributesForm(
-        array $attributes = [],
-        AvailableAttributes $availableAttributes = null
-    ) {
-        return $this->formFactory->create(
-            'pim_available_attributes',
-            $availableAttributes ?: new AvailableAttributes(),
-            ['excluded_attributes' => $attributes]
-        );
     }
 }

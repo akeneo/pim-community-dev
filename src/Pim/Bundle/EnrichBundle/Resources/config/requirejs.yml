@@ -217,7 +217,8 @@ config:
         # Remover
         pim/remover/base:                pimenrich/js/remover/base-remover
         pim/remover/association-type:    pimenrich/js/remover/association-type-remover
-        pim/remover/channel:            pimenrich/js/remover/channel
+        pim/remover/channel:             pimenrich/js/remover/channel
+        pim/remover/family:              pimenrich/js/remover/family
         pim/remover/product:             pimenrich/js/remover/product-remover
         pim/remover/variant-group:       pimenrich/js/remover/variant-group-remover
         pim/remover/group:               pimenrich/js/remover/group-remover
@@ -227,7 +228,8 @@ config:
         # Saver
         pim/saver/base:                pimenrich/js/saver/base-saver
         pim/saver/association-type:    pimenrich/js/saver/association-type-saver
-        pim/saver/channel:          pimenrich/js/saver/channel
+        pim/saver/channel:             pimenrich/js/saver/channel
+        pim/saver/family:              pimenrich/js/saver/family
         pim/saver/product:             pimenrich/js/saver/product-saver
         pim/saver/variant-group:       pimenrich/js/saver/variant-group-saver
         pim/saver/group:               pimenrich/js/saver/group-saver
@@ -258,6 +260,17 @@ config:
         pim/channel-edit-form/properties/general/locales:       pimenrich/js/channel/form/properties/general/locales
         pim/channel-edit-form/properties/general/category:      pimenrich/js/channel/form/properties/general/category
         pim/channel-edit-form/properties/conversion-unit:       pimenrich/js/channel/form/properties/conversion-unit
+
+        # Family
+        pim/family-edit-form/delete:                                      pimenrich/js/family/form/delete
+        pim/family-edit-form/save:                                        pimenrich/js/family/form/save
+        pim/family-edit-form/properties/general:                          pimenrich/js/family/form/properties/general
+        pim/family-edit-form/properties/general/code:                     pimenrich/js/family/form/properties/general/code
+        pim/family-edit-form/properties/general/attribute-as-label:       pimenrich/js/family/form/properties/general/attribute-as-label
+        pim/family-edit-form/attributes/toolbar:                          pimenrich/js/family/form/attributes/toolbar
+        pim/family-edit-form/attributes/toolbar/attribute-dropdown:       pimenrich/js/family/form/attributes/toolbar/attribute-dropdown
+        pim/family-edit-form/attributes/toolbar/attribute-group-dropdown: pimenrich/js/family/form/attributes/toolbar/attribute-group-dropdown
+        pim/family-edit-form/attributes/attributes:                       pimenrich/js/family/form/attributes/attributes
 
         # Variant group
         pim/variant-group-edit-form/save: pimenrich/js/variant-group/form/save
