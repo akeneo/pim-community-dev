@@ -102,6 +102,7 @@ abstract class ApiTestCase extends WebTestCase
                 [
                     'PHP_AUTH_USER' => $clientId,
                     'PHP_AUTH_PW'   => $secret,
+                    'CONTENT_TYPE'  => 'application/json',
                 ]
             );
 
