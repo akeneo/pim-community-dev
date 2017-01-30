@@ -50,8 +50,11 @@ class BooleanFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_a_boolean()
     {
-        $this->shouldThrow(InvalidArgumentException::booleanExpected('enabled', 'filter', 'boolean', gettype('fuu')))
-            ->during('addFieldFilter', ['enabled', '=', 'fuu']);
+        $this->shouldThrow(InvalidArgumentException::booleanExpected(
+            'enabled',
+            'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BooleanFilter',
+            gettype('fuu')
+        ))->during('addFieldFilter', ['enabled', '=', 'fuu']);
     }
 
     function it_adds_an_equal_filter_on_a_field_in_the_query(

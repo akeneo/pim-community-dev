@@ -81,8 +81,7 @@ class MultiSelectAttributeAdderSpec extends ObjectBehavior
             InvalidArgumentException::arrayStringValueExpected(
                 'attributeCode',
                 'foo',
-                'adder',
-                'multi select',
+                'Pim\Component\Catalog\Updater\Adder\MultiSelectAttributeAdder',
                 'array'
             )
         )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -107,8 +106,7 @@ class MultiSelectAttributeAdderSpec extends ObjectBehavior
                 'attributeCode',
                 'code',
                 'The option does not exist',
-                'adder',
-                'multi select',
+                'Pim\Component\Catalog\Updater\Adder\MultiSelectAttributeAdder',
                 'unknown code'
             )
         )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);

@@ -60,7 +60,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'media');
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
         $this->checkData($attribute, $data);
 
         if (null === $data) {
@@ -107,7 +107,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         }
 
         if (!is_string($data)) {
-            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'setter', 'media', gettype($data));
+            throw InvalidArgumentException::stringExpected($attribute->getCode(), static::class, gettype($data));
         }
     }
 
@@ -133,8 +133,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
             throw InvalidArgumentException::expected(
                 $attribute->getCode(),
                 'a valid pathname',
-                'setter',
-                'media',
+                static::class,
                 $data
             );
         }

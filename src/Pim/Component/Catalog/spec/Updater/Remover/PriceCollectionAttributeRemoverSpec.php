@@ -45,9 +45,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $attrValidatorHelper,
         $currencyRepository,
         AttributeInterface $attribute,
-        ProductInterface $product,
-        ProductValueInterface $priceValue,
-        ProductPriceInterface $price
+        ProductInterface $product
     ) {
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
@@ -99,7 +97,11 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $data = 'not an array';
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected('attributeCode', 'remover', 'prices collection', gettype($data))
+            InvalidArgumentException::arrayExpected(
+                'attributeCode',
+                'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
+                gettype($data)
+            )
         )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
@@ -114,8 +116,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::arrayOfArraysExpected(
                 'attributeCode',
-                'remover',
-                'prices collection',
+                'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
                 gettype($data)
             )
         )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -133,8 +134,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
             InvalidArgumentException::arrayKeyExpected(
                 'attributeCode',
                 'amount',
-                'remover',
-                'prices collection',
+                'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
                 print_r($data, true)
             )
         )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -152,8 +152,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
             InvalidArgumentException::arrayKeyExpected(
                 'attributeCode',
                 'currency',
-                'remover',
-                'prices collection',
+                'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
                 print_r($data, true)
             )
         )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -175,8 +174,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
                 'attributeCode',
                 'currency',
                 'The currency does not exist',
-                'remover',
-                'prices collection',
+                'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
                 'invalid currency'
             )
         )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);

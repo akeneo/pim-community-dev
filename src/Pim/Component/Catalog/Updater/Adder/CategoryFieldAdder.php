@@ -49,8 +49,7 @@ class CategoryFieldAdder extends AbstractFieldAdder
                 throw InvalidArgumentException::expected(
                     $field,
                     'existing category code',
-                    'adder',
-                    'category',
+                    static::class,
                     $categoryCode
                 );
             }
@@ -72,8 +71,7 @@ class CategoryFieldAdder extends AbstractFieldAdder
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $field,
-                'adder',
-                'category',
+                static::class,
                 gettype($data)
             );
         }
@@ -83,8 +81,7 @@ class CategoryFieldAdder extends AbstractFieldAdder
                 throw InvalidArgumentException::arrayStringValueExpected(
                     $field,
                     $key,
-                    'adder',
-                    'category',
+                    static::class,
                     gettype($value)
                 );
             }

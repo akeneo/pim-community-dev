@@ -49,11 +49,10 @@ abstract class AbstractAttributeRemover implements AttributeRemoverInterface
      * @param AttributeInterface $attribute
      * @param string             $locale
      * @param string             $scope
-     * @param string             $type
      *
      * @throws InvalidArgumentException
      */
-    protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope, $type)
+    protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope)
     {
         try {
             $this->attrValidatorHelper->validateLocale($attribute, $locale);
@@ -62,8 +61,7 @@ abstract class AbstractAttributeRemover implements AttributeRemoverInterface
             throw InvalidArgumentException::expectedFromPreviousException(
                 $e,
                 $attribute->getCode(),
-                'remover',
-                $type
+                static::class
             );
         }
     }

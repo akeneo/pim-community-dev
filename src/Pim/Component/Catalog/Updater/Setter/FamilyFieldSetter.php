@@ -46,8 +46,7 @@ class FamilyFieldSetter extends AbstractFieldSetter
                 throw InvalidArgumentException::expected(
                     $field,
                     'existing family code',
-                    'setter',
-                    'family',
+                    static::class,
                     $data
                 );
             }
@@ -68,8 +67,7 @@ class FamilyFieldSetter extends AbstractFieldSetter
         if (!is_string($data) && null !== $data && '' !== $data) {
             throw InvalidArgumentException::stringExpected(
                 $field,
-                'setter',
-                'family',
+                static::class,
                 gettype($data)
             );
         }

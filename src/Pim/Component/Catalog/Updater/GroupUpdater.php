@@ -125,8 +125,7 @@ class GroupUpdater implements ObjectUpdaterInterface
                 'type',
                 'group type',
                 'The group type does not exist',
-                'updater',
-                'group',
+                static::class,
                 $type
             );
         }
@@ -135,8 +134,7 @@ class GroupUpdater implements ObjectUpdaterInterface
             throw InvalidPropertyException::validGroupTypeExpected(
                 'type',
                 'Cannot process variant group, only groups are supported',
-                'updater',
-                'group',
+                static::class,
                 $group->getCode()
             );
         }
@@ -173,8 +171,7 @@ class GroupUpdater implements ObjectUpdaterInterface
                     'axis',
                     'attribute code',
                     'The attribute does not exist',
-                    'updater',
-                    'group',
+                    static::class,
                     $attributeCode
                 );
             }

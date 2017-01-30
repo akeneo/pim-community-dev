@@ -105,12 +105,11 @@ class AttributeGroupUpdaterSpec extends ObjectBehavior
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
-               'attributes',
-               'attribute code',
-               'The attribute does not exist',
-               'updater',
-               'attribute group',
-               'foo'
+                'attributes',
+                'attribute code',
+                'The attribute does not exist',
+                'Pim\Component\Catalog\Updater\AttributeGroupUpdater',
+                'foo'
             ))
             ->during('update', [$attributeGroup, $values]);
     }

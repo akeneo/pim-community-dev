@@ -47,8 +47,7 @@ class GroupFieldRemover extends AbstractFieldRemover
                 throw InvalidArgumentException::expected(
                     $field,
                     'existing group code',
-                    'remover',
-                    'groups',
+                    static::class,
                     $groupCode
                 );
             }
@@ -56,8 +55,7 @@ class GroupFieldRemover extends AbstractFieldRemover
                 throw InvalidArgumentException::expected(
                     $field,
                     'non variant group code',
-                    'remover',
-                    'groups',
+                    static::class,
                     $groupCode
                 );
             }
@@ -80,8 +78,7 @@ class GroupFieldRemover extends AbstractFieldRemover
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $field,
-                'remover',
-                'groups',
+                static::class,
                 gettype($data)
             );
         }
@@ -91,8 +88,7 @@ class GroupFieldRemover extends AbstractFieldRemover
                 throw InvalidArgumentException::arrayStringValueExpected(
                     $field,
                     $key,
-                    'remover',
-                    'groups',
+                    static::class,
                     gettype($value)
                 );
             }

@@ -64,11 +64,8 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
      * @param AttributeInterface $attribute
      * @param string             $locale
      * @param string             $scope
-     * @param string             $type
-     *
-     * @throws InvalidArgumentException
      */
-    protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope, $type)
+    protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope)
     {
         try {
             $this->attrValidatorHelper->validateLocale($attribute, $locale);
@@ -77,8 +74,7 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
             throw InvalidArgumentException::expectedFromPreviousException(
                 $e,
                 $attribute->getCode(),
-                'copier',
-                $type
+                static::class
             );
         }
     }

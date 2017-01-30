@@ -73,12 +73,11 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
             throw InvalidArgumentException::expectedFromPreviousException(
                 $e,
                 $attribute->getCode(),
-                'filter',
-                'reference data simple select'
+                static::class
             );
         }
 
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'reference_data');
+        $this->checkLocaleAndScope($attribute, $locale, $scope);
 
         if (Operators::IS_EMPTY !== $operator) {
             $field = $options['field'];
@@ -181,10 +180,10 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
      */
     protected function checkValue($field, $values)
     {
-        FieldFilterHelper::checkArray($field, $values, 'reference_data');
+        FieldFilterHelper::checkArray($field, $values, static::class);
 
         foreach ($values as $value) {
-            FieldFilterHelper::checkIdentifier($field, $value, 'reference_data');
+            FieldFilterHelper::checkIdentifier($field, $value, static::class);
         }
     }
 
@@ -203,8 +202,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
                 $attribute->getCode(),
                 'code',
                 $e->getMessage(),
-                'setter',
-                'reference data',
+                static::class,
                 implode(',', $value)
             );
         }

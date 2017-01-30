@@ -164,15 +164,14 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     protected function checkValue(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'filter', 'price', gettype($data));
+            throw InvalidArgumentException::arrayExpected($attribute->getCode(), static::class, gettype($data));
         }
 
         if (!array_key_exists('amount', $data)) {
             throw InvalidArgumentException::arrayKeyExpected(
                 $attribute->getCode(),
                 'amount',
-                'filter',
-                'price',
+                static::class,
                 print_r($data, true)
             );
         }
@@ -181,8 +180,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
             throw InvalidArgumentException::arrayKeyExpected(
                 $attribute->getCode(),
                 'currency',
-                'filter',
-                'price',
+                static::class,
                 print_r($data, true)
             );
         }
@@ -191,8 +189,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
             throw InvalidArgumentException::arrayNumericKeyExpected(
                 $attribute->getCode(),
                 'amount',
-                'filter',
-                'price',
+                static::class,
                 gettype($data['amount'])
             );
         }
@@ -201,8 +198,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
             throw InvalidArgumentException::arrayStringKeyExpected(
                 $attribute->getCode(),
                 'currency',
-                'filter',
-                'price',
+                static::class,
                 gettype($data['currency'])
             );
         }
@@ -212,8 +208,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
                 $attribute->getCode(),
                 'currency',
                 'The currency does not exist',
-                'filter',
-                'price',
+                static::class,
                 $data['currency']
             );
         }

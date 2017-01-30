@@ -37,8 +37,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::arrayExpected(
                 'associations',
-                'adder',
-                'association',
+                'Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder',
                 'string'
             )
         )->during('addFieldData', [$product, 'associations', 'not an array']);
@@ -152,8 +151,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'associations',
                 'existing association type code',
-                'adder',
-                'association',
+                'Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder',
                 'non valid association type code'
             )
         )->during(
@@ -182,8 +180,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'associations',
                 'existing product identifier',
-                'adder',
-                'association',
+                'Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder',
                 'not existing product'
             )
         )->during(
@@ -212,8 +209,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'associations',
                 'existing group code',
-                'adder',
-                'association',
+                'Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder',
                 'not existing group'
             )
         )->during(

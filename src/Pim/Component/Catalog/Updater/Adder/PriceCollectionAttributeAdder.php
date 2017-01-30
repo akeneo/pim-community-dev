@@ -61,7 +61,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'prices collection');
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
         $this->checkData($attribute, $data);
 
         $this->addPrices($product, $attribute, $data, $options['locale'], $options['scope']);
@@ -80,8 +80,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $attribute->getCode(),
-                'adder',
-                'prices collection',
+                static::class,
                 gettype($data)
             );
         }
@@ -90,8 +89,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
             if (!is_array($price)) {
                 throw InvalidArgumentException::arrayOfArraysExpected(
                     $attribute->getCode(),
-                    'adder',
-                    'prices collection',
+                    static::class,
                     gettype($data)
                 );
             }
@@ -100,8 +98,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
                 throw InvalidArgumentException::arrayKeyExpected(
                     $attribute->getCode(),
                     'amount',
-                    'adder',
-                    'prices collection',
+                    static::class,
                     print_r($data, true)
                 );
             }
@@ -110,8 +107,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
                 throw InvalidArgumentException::arrayKeyExpected(
                     $attribute->getCode(),
                     'currency',
-                    'adder',
-                    'prices collection',
+                    static::class,
                     print_r($data, true)
                 );
             }
@@ -120,8 +116,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
                 throw InvalidArgumentException::arrayNumericKeyExpected(
                     $attribute->getCode(),
                     'amount',
-                    'adder',
-                    'prices collection',
+                    static::class,
                     gettype($price['amount'])
                 );
             }
@@ -131,8 +126,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
                     $attribute->getCode(),
                     'currency',
                     'The currency does not exist',
-                    'adder',
-                    'prices collection',
+                    static::class,
                     $price['currency']
                 );
             }

@@ -174,8 +174,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
                 'type',
                 'group type',
                 'The group type does not exist',
-                'updater',
-                'variant group',
+                static::class,
                 $type
             );
         }
@@ -208,7 +207,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
                 throw ImmutablePropertyException::immutableProperty(
                     'axes',
                     implode(',', $axes),
-                    'updater',
+                    static::class,
                     'variant group'
                 );
             }
@@ -223,8 +222,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
                     'axes',
                     'attribute code',
                     'The attribute does not exist',
-                    'updater',
-                    'variant group',
+                    static::class,
                     $axis
                 );
             }

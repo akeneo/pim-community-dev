@@ -49,7 +49,7 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
         $data,
         array $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'reference data collection');
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
         $this->checkData($attribute, $data);
 
         $refDataCollection = [];
@@ -67,8 +67,7 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
                         $attribute->getReferenceDataName(),
                         $referenceDataCode
                     ),
-                    'setter',
-                    'reference data collection',
+                    static::class,
                     $referenceDataCode
                 );
             }
@@ -96,8 +95,7 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $attribute->getCode(),
-                'setter',
-                'reference data collection',
+                static::class,
                 gettype($data)
             );
         }
@@ -107,8 +105,7 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
                 throw InvalidArgumentException::arrayStringKeyExpected(
                     $attribute->getCode(),
                     $key,
-                    'setter',
-                    'reference data collection',
+                    static::class,
                     gettype($value)
                 );
             }

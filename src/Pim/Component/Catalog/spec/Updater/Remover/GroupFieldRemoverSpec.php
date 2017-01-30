@@ -66,8 +66,7 @@ class GroupFieldRemoverSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'groups',
                 'existing group code',
-                'remover',
-                'groups',
+                'Pim\Component\Catalog\Updater\Remover\GroupFieldRemover',
                 'not valid code'
             )
         )->during('removeFieldData', [$product, 'groups', ['pack', 'not valid code']]);
@@ -78,8 +77,7 @@ class GroupFieldRemoverSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::arrayExpected(
                 'groups',
-                'remover',
-                'groups',
+                'Pim\Component\Catalog\Updater\Remover\GroupFieldRemover',
                 'string'
             )
         )->during('removeFieldData', [$product, 'groups', 'not an array']);
@@ -88,8 +86,7 @@ class GroupFieldRemoverSpec extends ObjectBehavior
             InvalidArgumentException::arrayStringValueExpected(
                 'groups',
                 0,
-                'remover',
-                'groups',
+                'Pim\Component\Catalog\Updater\Remover\GroupFieldRemover',
                 'array'
             )
         )->during('removeFieldData', [$product, 'groups', [['array of array']]]);
@@ -114,8 +111,7 @@ class GroupFieldRemoverSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'groups',
                 'non variant group code',
-                'remover',
-                'groups',
+                'Pim\Component\Catalog\Updater\Remover\GroupFieldRemover',
                 'variant'
             )
         )->during('removeFieldData', [$product, 'groups', ['pack', 'variant']]);

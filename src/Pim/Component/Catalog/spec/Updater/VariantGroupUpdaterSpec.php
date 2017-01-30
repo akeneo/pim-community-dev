@@ -192,8 +192,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
                 'type',
                 'group type',
                 'The group type does not exist',
-                'updater',
-                'variant group',
+                'Pim\Component\Catalog\Updater\VariantGroupUpdater',
                 'UNKNOWN'
             )
         )->during('update', [$variantGroup, $values, []]);
@@ -214,8 +213,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
                 'axes',
                 'attribute code',
                 'The attribute does not exist',
-                'updater',
-                'variant group',
+                'Pim\Component\Catalog\Updater\VariantGroupUpdater',
                 'unknown'
             )
         )->during('update', [$variantGroup, $values, []]);
@@ -238,7 +236,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
             ImmutablePropertyException::immutableProperty(
                 'axes',
                 'main_color',
-                'updater',
+                'Pim\Component\Catalog\Updater\VariantGroupUpdater',
                 'variant group'
             )
         )->during('update', [$variantGroup, $values, []]);

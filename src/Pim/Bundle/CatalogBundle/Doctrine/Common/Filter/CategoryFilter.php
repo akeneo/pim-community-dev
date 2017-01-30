@@ -147,10 +147,10 @@ class CategoryFilter implements FieldFilterInterface
      */
     protected function checkValue($field, $values)
     {
-        FieldFilterHelper::checkArray($field, $values, 'category');
+        FieldFilterHelper::checkArray($field, $values, static::class);
 
         foreach ($values as $value) {
-            FieldFilterHelper::checkIdentifier($field, $value, 'category');
+            FieldFilterHelper::checkIdentifier($field, $value, static::class);
         }
     }
 

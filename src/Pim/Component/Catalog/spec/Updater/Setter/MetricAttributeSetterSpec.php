@@ -77,7 +77,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $data = 'Not an array';
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'metric', gettype($data))
+            InvalidArgumentException::arrayExpected('attributeCode', 'Pim\Component\Catalog\Updater\Setter\MetricAttributeSetter', gettype($data))
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
@@ -93,8 +93,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
             InvalidArgumentException::arrayKeyExpected(
                 'attributeCode',
                 'amount',
-                'setter',
-                'metric',
+                'Pim\Component\Catalog\Updater\Setter\MetricAttributeSetter',
                 print_r($data, true)
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -109,8 +108,12 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $data = ['amount' => 'data value'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'unit', 'setter', 'metric',
-                print_r($data, true))
+            InvalidArgumentException::arrayKeyExpected(
+                'attributeCode',
+                'unit',
+                'Pim\Component\Catalog\Updater\Setter\MetricAttributeSetter',
+                print_r($data, true)
+            )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 

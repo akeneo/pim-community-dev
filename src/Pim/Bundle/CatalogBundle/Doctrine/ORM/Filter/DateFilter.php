@@ -45,7 +45,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'date');
+        $this->checkLocaleAndScope($attribute, $locale, $scope);
 
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $value = $this->formatValues($attribute->getCode(), $value);
@@ -100,8 +100,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
             throw InvalidArgumentException::expected(
                 $type,
                 'array with 2 elements, string or \DateTime',
-                'filter',
-                'date',
+                static::class,
                 print_r($value, true)
             );
         }
@@ -144,8 +143,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
                 throw InvalidArgumentException::expected(
                     $type,
                     'a string with the format yyyy-mm-dd',
-                    'filter',
-                    'date',
+                    static::class,
                     $value
                 );
             }
@@ -156,8 +154,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
         throw InvalidArgumentException::expected(
             $type,
             'array with 2 elements, string or \DateTime',
-            'filter',
-            'date',
+            static::class,
             print_r($value, true)
         );
     }

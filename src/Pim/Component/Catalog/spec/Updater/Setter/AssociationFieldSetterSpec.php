@@ -40,8 +40,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::arrayExpected(
                 'associations',
-                'setter',
-                'association',
+                'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
                 'string'
             )
         )->during('setFieldData', [$product, 'associations', 'not an array']);
@@ -153,8 +152,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'associations',
                 'existing association type code',
-                'setter',
-                'association',
+                'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
                 'non valid association type code'
             )
         )->during(
@@ -189,8 +187,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'associations',
                 'existing product identifier',
-                'setter',
-                'association',
+                'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
                 'not existing product'
             )
         )->during(
@@ -223,8 +220,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'associations',
                 'existing group code',
-                'setter',
-                'association',
+                'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
                 'not existing group'
             )
         )->during(

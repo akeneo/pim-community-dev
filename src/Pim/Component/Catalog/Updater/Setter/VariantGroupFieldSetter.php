@@ -45,8 +45,7 @@ class VariantGroupFieldSetter extends AbstractFieldSetter
                 throw InvalidArgumentException::expected(
                     $field,
                     'existing variant group code',
-                    'setter',
-                    'variant_group',
+                    static::class,
                     $data
                 );
             }
@@ -55,8 +54,7 @@ class VariantGroupFieldSetter extends AbstractFieldSetter
                 throw InvalidArgumentException::expected(
                     $field,
                     'variant group code',
-                    'setter',
-                    'variant_group',
+                    static::class,
                     $data
                 );
             }
@@ -85,8 +83,7 @@ class VariantGroupFieldSetter extends AbstractFieldSetter
         if (!is_string($data) && null !== $data) {
             throw InvalidArgumentException::stringExpected(
                 $field,
-                'setter',
-                'variant_group',
+                static::class,
                 gettype($data)
             );
         }

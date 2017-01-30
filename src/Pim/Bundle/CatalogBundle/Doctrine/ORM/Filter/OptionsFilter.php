@@ -64,12 +64,11 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
             throw InvalidArgumentException::expectedFromPreviousException(
                 $e,
                 $attribute->getCode(),
-                'filter',
-                'options'
+                static::class
             );
         }
 
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'options');
+        $this->checkLocaleAndScope($attribute, $locale, $scope);
 
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($options['field'], $value);
@@ -162,10 +161,10 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
      */
     protected function checkValue($field, $values)
     {
-        FieldFilterHelper::checkArray($field, $values, 'options');
+        FieldFilterHelper::checkArray($field, $values, static::class);
 
         foreach ($values as $value) {
-            FieldFilterHelper::checkIdentifier($field, $value, 'options');
+            FieldFilterHelper::checkIdentifier($field, $value, static::class);
         }
     }
 

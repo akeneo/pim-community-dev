@@ -37,8 +37,7 @@ class GroupFieldAdderSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::arrayExpected(
                 'groups',
-                'adder',
-                'groups',
+                'Pim\Component\Catalog\Updater\Adder\GroupFieldAdder',
                 'string'
             )
         )->during('addFieldData', [$product, 'groups', 'not an array']);
@@ -47,8 +46,7 @@ class GroupFieldAdderSpec extends ObjectBehavior
             InvalidArgumentException::arrayStringValueExpected(
                 'groups',
                 0,
-                'adder',
-                'groups',
+                'Pim\Component\Catalog\Updater\Adder\GroupFieldAdder',
                 'array'
             )
         )->during('addFieldData', [$product, 'groups', [['array of array']]]);
@@ -92,8 +90,7 @@ class GroupFieldAdderSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'groups',
                 'existing group code',
-                'adder',
-                'groups',
+                'Pim\Component\Catalog\Updater\Adder\GroupFieldAdder',
                 'not valid code'
             )
         )->during('addFieldData', [$product, 'groups', ['pack', 'not valid code']]);
@@ -118,8 +115,7 @@ class GroupFieldAdderSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'groups',
                 'non variant group code',
-                'adder',
-                'groups',
+                'Pim\Component\Catalog\Updater\Adder\GroupFieldAdder',
                 'variant'
             )
         )->during('addFieldData', [$product, 'groups', ['pack', 'variant']]);

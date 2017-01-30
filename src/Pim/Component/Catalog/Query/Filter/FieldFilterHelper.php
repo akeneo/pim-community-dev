@@ -65,12 +65,12 @@ class FieldFilterHelper
      *
      * @param string $field
      * @param mixed  $value
-     * @param string $filter
+     * @param string $className
      */
-    public static function checkArray($field, $value, $filter)
+    public static function checkArray($field, $value, $className)
     {
         if (!is_array($value)) {
-            throw InvalidArgumentException::arrayExpected(static::getCode($field), 'filter', $filter, gettype($value));
+            throw InvalidArgumentException::arrayExpected(static::getCode($field), $className, gettype($value));
         }
     }
 
@@ -79,16 +79,15 @@ class FieldFilterHelper
      *
      * @param string $field
      * @param mixed  $value
-     * @param string $filter
+     * @param string $className
      */
-    public static function checkIdentifier($field, $value, $filter)
+    public static function checkIdentifier($field, $value, $className)
     {
         $invalidIdField = static::hasProperty($field) && static::getProperty($field) === 'id' && !is_numeric($value);
         if ($invalidIdField) {
             throw InvalidArgumentException::numericExpected(
                 static::getCode($field),
-                'filter',
-                $filter,
+                $className,
                 gettype($value)
             );
         }
@@ -98,7 +97,7 @@ class FieldFilterHelper
             !is_string($value) && !is_numeric($value);
 
         if ($invalidDefaultField || $invalidStringField) {
-            throw InvalidArgumentException::stringExpected(static::getCode($field), 'filter', $filter, gettype($value));
+            throw InvalidArgumentException::stringExpected(static::getCode($field), $className, gettype($value));
         }
     }
 }

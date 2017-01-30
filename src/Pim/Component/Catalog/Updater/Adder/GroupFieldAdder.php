@@ -47,16 +47,14 @@ class GroupFieldAdder extends AbstractFieldAdder
                 throw InvalidArgumentException::expected(
                     $field,
                     'existing group code',
-                    'adder',
-                    'groups',
+                    static::class,
                     $groupCode
                 );
             } elseif ($group->getType()->isVariant()) {
                 throw InvalidArgumentException::expected(
                     $field,
                     'non variant group code',
-                    'adder',
-                    'groups',
+                    static::class,
                     $groupCode
                 );
             } else {
@@ -80,8 +78,7 @@ class GroupFieldAdder extends AbstractFieldAdder
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $field,
-                'adder',
-                'groups',
+                static::class,
                 gettype($data)
             );
         }
@@ -91,8 +88,7 @@ class GroupFieldAdder extends AbstractFieldAdder
                 throw InvalidArgumentException::arrayStringValueExpected(
                     $field,
                     $key,
-                    'adder',
-                    'groups',
+                    static::class,
                     gettype($value)
                 );
             }

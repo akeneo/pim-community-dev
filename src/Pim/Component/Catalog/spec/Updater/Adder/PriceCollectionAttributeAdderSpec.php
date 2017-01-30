@@ -74,7 +74,11 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
         $data = 'not an array';
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected('attributeCode', 'adder', 'prices collection', gettype($data))
+            InvalidArgumentException::arrayExpected(
+                'attributeCode',
+                'Pim\Component\Catalog\Updater\Adder\PriceCollectionAttributeAdder',
+                gettype($data)
+            )
         )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
@@ -89,8 +93,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::arrayOfArraysExpected(
                 'attributeCode',
-                'adder',
-                'prices collection',
+                'Pim\Component\Catalog\Updater\Adder\PriceCollectionAttributeAdder',
                 gettype($data)
             )
         )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -108,8 +111,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
             InvalidArgumentException::arrayKeyExpected(
                 'attributeCode',
                 'amount',
-                'adder',
-                'prices collection',
+                'Pim\Component\Catalog\Updater\Adder\PriceCollectionAttributeAdder',
                 print_r($data, true)
             )
         )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -127,8 +129,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
             InvalidArgumentException::arrayNumericKeyExpected(
                 'attributeCode',
                 'amount',
-                'adder',
-                'prices collection',
+                'Pim\Component\Catalog\Updater\Adder\PriceCollectionAttributeAdder',
                 gettype('text')
             )
         )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -146,8 +147,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
             InvalidArgumentException::arrayKeyExpected(
                 'attributeCode',
                 'currency',
-                'adder',
-                'prices collection',
+                'Pim\Component\Catalog\Updater\Adder\PriceCollectionAttributeAdder',
                 print_r($data, true)
             )
         )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -169,8 +169,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
                 'attributeCode',
                 'currency',
                 'The currency does not exist',
-                'adder',
-                'prices collection',
+                'Pim\Component\Catalog\Updater\Adder\PriceCollectionAttributeAdder',
                 'invalid currency'
             )
         )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);

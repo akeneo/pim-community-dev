@@ -66,11 +66,8 @@ abstract class AbstractAttributeAdder implements AttributeAdderInterface
      * @param AttributeInterface $attribute
      * @param string             $locale
      * @param string             $scope
-     * @param string             $type
-     *
-     * @throws InvalidArgumentException
      */
-    protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope, $type)
+    protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope)
     {
         try {
             $this->attrValidatorHelper->validateLocale($attribute, $locale);
@@ -79,8 +76,7 @@ abstract class AbstractAttributeAdder implements AttributeAdderInterface
             throw InvalidArgumentException::expectedFromPreviousException(
                 $e,
                 $attribute->getCode(),
-                'setter',
-                $type
+                static::class
             );
         }
     }
