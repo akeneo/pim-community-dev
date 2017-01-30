@@ -3,14 +3,14 @@
 namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Rest\Family;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
+use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetFamilyIntegration extends TestCase
+class GetFamilyIntegration extends ApiTestCase
 {
     public function testGetAFamily()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/families/familyA');
         $standardFamily = [
@@ -91,7 +91,7 @@ class GetFamilyIntegration extends TestCase
 
     public function testNotFoundFamily()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/families/not_found');
 

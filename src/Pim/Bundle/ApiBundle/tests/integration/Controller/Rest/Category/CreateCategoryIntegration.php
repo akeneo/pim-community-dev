@@ -3,15 +3,16 @@
 namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Rest\Category;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
+use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Pim\Bundle\CatalogBundle\Version;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateCategoryIntegration extends TestCase
+class CreateCategoryIntegration extends ApiTestCase
 {
     public function testHttpHeadersInResponseWhenACategoryIsCreated()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
+
         $data =
 <<<JSON
     {
@@ -30,7 +31,8 @@ JSON;
 
     public function testFormatStandardWhenACategoryIsCreatedButUncompleted()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
+
         $data =
 <<<JSON
     {
@@ -55,7 +57,8 @@ JSON;
 
     public function testCompleteCategoryCreation()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
+
         $data =
 <<<JSON
     {
@@ -87,7 +90,8 @@ JSON;
 
     public function testResponseWhenContentIsNotValid()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
+
         $data = '';
 
         $expectedContent = [
@@ -103,7 +107,8 @@ JSON;
 
     public function testResponseWhenCategoryCodeAlreadyExists()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
+
         $data =
 <<<JSON
     {
@@ -126,7 +131,8 @@ JSON;
 
     public function testResponseWhenValidationFailed()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
+
         $data =
 <<<JSON
     {
@@ -154,7 +160,8 @@ JSON;
 
     public function testResponseWhenAPropertyIsNotExpected()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
+
         $data =
 <<<JSON
     {
@@ -183,7 +190,8 @@ JSON;
 
     public function testResponseWhenLabelsIsNull()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
+
         $data =
 <<<JSON
     {

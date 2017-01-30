@@ -3,14 +3,14 @@
 namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Rest\Family;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
+use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class ListFamilyIntegration extends TestCase
+class ListFamilyIntegration extends ApiTestCase
 {
     public function testListFamilies()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/families');
 
@@ -94,7 +94,7 @@ class ListFamilyIntegration extends TestCase
 
     public function testOutOfRangeListFamilies()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/families?limit=10&page=2');
 
