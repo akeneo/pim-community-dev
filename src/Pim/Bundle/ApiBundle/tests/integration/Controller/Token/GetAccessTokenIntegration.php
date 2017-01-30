@@ -3,13 +3,13 @@
 namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Token;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
+use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetAccessTokenIntegration extends TestCase
+class GetAccessTokenIntegration extends ApiTestCase
 {
     /** @var string */
     protected $clientId;

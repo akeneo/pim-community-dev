@@ -3,14 +3,14 @@
 namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Rest\Category;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
+use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetCategoryIntegration extends TestCase
+class GetCategoryIntegration extends ApiTestCase
 {
     public function testGetACategory()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/categories/master');
 
@@ -27,7 +27,7 @@ class GetCategoryIntegration extends TestCase
 
     public function testGetACompleteCategory()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/categories/categoryA');
 
@@ -47,7 +47,7 @@ class GetCategoryIntegration extends TestCase
 
     public function testNotFoundACategory()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/categories/not_found');
 

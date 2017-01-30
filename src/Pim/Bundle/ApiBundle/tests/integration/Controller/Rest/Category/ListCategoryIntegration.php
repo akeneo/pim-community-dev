@@ -3,14 +3,14 @@
 namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Rest\Category;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
+use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class ListCategoryIntegration extends TestCase
+class ListCategoryIntegration extends ApiTestCase
 {
     public function testListCategories()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/categories');
 
@@ -52,7 +52,7 @@ class ListCategoryIntegration extends TestCase
 
     public function testOutOfRangeListCategories()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/categories?limit=10&page=2');
 

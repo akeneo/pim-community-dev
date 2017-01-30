@@ -1,9 +1,5 @@
 security:
     firewalls:
-        api:
-            pattern:        ^/api
-            security:       false
-
         main:
             http_basic:
                 realm:      "Secured REST Area"
