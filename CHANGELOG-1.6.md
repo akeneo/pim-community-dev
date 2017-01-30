@@ -1,3 +1,9 @@
+# 1.6.x
+
+## Bug fixes
+
+- PIM-6079: Add 'All' permissions for new attribute groups
+
 # 1.6.9 (2017-01-17)
 
 # 1.6.8 (2017-01-05)
