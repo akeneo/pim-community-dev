@@ -45,8 +45,8 @@ Feature: Import products with an assets collection
     And I wait for the "csv_clothing_product_import" job to finish
     Then I should see "created 1"
     And I should see "skipped 2"
-    And I should see "Attribute or field \"gallery\" expects an array with valid data for the key \"code\". No reference data \"assets\" with code \"foo\" has been found, \"foo\" given (for setter reference data collection)."
-    And I should see "Attribute or field \"gallery\" expects an array with valid data for the key \"code\". No reference data \"assets\" with code \"bar\" has been found, \"bar\" given (for setter reference data collection)."
+    And I should see "Attribute or field \"gallery\" expects an array with valid data for the key \"code\". No reference data \"assets\" with code \"foo\" has been found, \"foo\" given."
+    And I should see "Attribute or field \"gallery\" expects an array with valid data for the key \"code\". No reference data \"assets\" with code \"bar\" has been found, \"bar\" given."
     Then there should be 1 products
     And the product "pant-2" should have the following values:
       | gallery | minivan |
