@@ -27,15 +27,15 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
     protected $entityManger;
 
     /** @var TableNameMapper */
-    protected $nativeQueryBuilder;
+    protected $tableNameMapper;
 
     /**
      * @param EntityManager $entityManager
      */
-    public function __construct(EntityManager $entityManager, TableNameMapper $nativeQueryBuilder)
+    public function __construct(EntityManager $entityManager, TableNameMapper $tableNameMapper)
     {
         $this->entityManger = $entityManager;
-        $this->nativeQueryBuilder = $nativeQueryBuilder;
+        $this->tableNameMapper = $tableNameMapper;
     }
 
     /**
@@ -156,7 +156,7 @@ FROM (
     AND `completeness_per_attribute_group`.`product_id` IN (
         SELECT DISTINCT `project_product`.`product_id`
         FROM `pimee_activity_manager_project_product` AS `project_product`
-        LEFT JOIN `$this->productCategoryLink` AS `category_product`
+        LEFT JOIN `@pimee_activity_manager.product_category@` AS `category_product`
             ON `project_product`.`product_id` = `category_product`.`product_id`
         LEFT JOIN `pimee_security_product_category_access` AS `product_category_access`
             ON `category_product`.`category_id` = `product_category_access`.`category_id`
@@ -170,6 +170,6 @@ FROM (
 ) `completeness`
 SQL;
 
-        return $this->nativeQueryBuilder->createQuery($sql);
+        return $this->tableNameMapper->createQuery($sql);
     }
 }
