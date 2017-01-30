@@ -53,10 +53,10 @@ class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
         ], '{"code": "my_category"}');
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_NOT_ACCEPTABLE, $response->getStatusCode(), 'Header is not acceptable');
+        $this->assertSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE, $response->getStatusCode(), 'Header is not acceptable');
         $content = json_decode($response->getContent(), true);
         $this->assertCount(2, $content, 'Error response contains 2 items');
-        $this->assertSame(Response::HTTP_NOT_ACCEPTABLE, $content['code']);
+        $this->assertSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE, $content['code']);
         $this->assertSame('"application/xml" in "Content-Type" header is not valid. Only "application/json" is allowed.', $content['message']);
     }
 
@@ -67,18 +67,6 @@ class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
         $client->request('POST', 'api/rest/v1/categories', [], [], [
             'CONTENT_TYPE' => 'application/json',
         ], '{"code": "my_category"}');
-
-        $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode(), 'Header is acceptable');
-    }
-
-    public function testSuccessIfContentTypeHeaderIsEmpty()
-    {
-        $client = $this->createAuthentifiedClient();
-
-        $client->request('POST', 'api/rest/v1/categories', [], [], [
-            'CONTENT_TYPE' => 'application/json'
-        ], '{"code": "my_category_1"}');
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode(), 'Header is acceptable');

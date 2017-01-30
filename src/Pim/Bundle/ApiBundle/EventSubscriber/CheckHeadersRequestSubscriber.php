@@ -8,6 +8,7 @@ use FOS\RestBundle\Util\StopFormatListenerException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
+use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -78,10 +79,17 @@ class CheckHeadersRequestSubscriber implements EventSubscriberInterface
 
             if (in_array($request->getMethod(), ['PUT', 'PATCH', 'POST'])) {
                 $contentType = $request->headers->get('content-type');
-                if (null !== $contentType &&
-                    !in_array($contentType, ['application/x-www-form-urlencoded', $best->getValue()])
-                ) {
-                    throw new NotAcceptableHttpException(
+                if (null === $contentType) {
+                    throw new UnsupportedMediaTypeHttpException(
+                        sprintf(
+                            'The "Content-Type" header is missing. "%s" has to be specified as value.',
+                            $best->getValue()
+                        )
+                    );
+                }
+
+                if ($contentType !== $best->getValue()) {
+                    throw new UnsupportedMediaTypeHttpException(
                         sprintf(
                             '"%s" in "Content-Type" header is not valid. Only "%s" is allowed.',
                             $contentType,
