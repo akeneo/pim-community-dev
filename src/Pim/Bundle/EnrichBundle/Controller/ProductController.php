@@ -182,25 +182,6 @@ class ProductController
     }
 
     /**
-     * Switch case to redirect after saving a product from the edit form
-     *
-     * @param array $params
-     *
-     * @return Response
-     */
-    protected function redirectAfterEdit($params)
-    {
-        switch ($request->get('action')) {
-            case self::CREATE:
-                $route = 'pim_enrich_product_edit';
-                $params['create_popin'] = true;
-                break;
-        }
-
-        return $this->redirectToRoute($route, $params);
-    }
-
-    /**
      * List categories associated with the provided product and descending from the category
      * defined by the parent parameter.
      *
