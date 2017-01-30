@@ -49,6 +49,7 @@ class GetAccessTokenIntegration extends ApiTestCase
             [
                 'PHP_AUTH_USER' => $this->clientId,
                 'PHP_AUTH_PW'   => $this->secret,
+                'CONTENT_TYPE'  => 'application/json',
             ]
         );
 
@@ -76,6 +77,7 @@ class GetAccessTokenIntegration extends ApiTestCase
             [
                 'PHP_AUTH_USER' => $this->clientId,
                 'PHP_AUTH_PW'   => $this->secret,
+                'CONTENT_TYPE'  => 'application/json',
             ]
         );
 
@@ -102,6 +104,7 @@ class GetAccessTokenIntegration extends ApiTestCase
             [
                 'PHP_AUTH_USER' => $this->clientId,
                 'PHP_AUTH_PW'   => $this->secret,
+                'CONTENT_TYPE'  => 'application/json',
             ]
         );
 
@@ -128,6 +131,7 @@ class GetAccessTokenIntegration extends ApiTestCase
             [
                 'PHP_AUTH_USER' => $this->clientId,
                 'PHP_AUTH_PW'   => $this->secret,
+                'CONTENT_TYPE'  => 'application/json',
             ]
         );
 
@@ -154,6 +158,7 @@ class GetAccessTokenIntegration extends ApiTestCase
             [
                 'PHP_AUTH_USER' => 'michel_id',
                 'PHP_AUTH_PW'   => $this->secret,
+                'CONTENT_TYPE'  => 'application/json',
             ]
         );
 
@@ -180,6 +185,7 @@ class GetAccessTokenIntegration extends ApiTestCase
             [
                 'PHP_AUTH_USER' => $this->clientId,
                 'PHP_AUTH_PW'   => 'michel_secret',
+                'CONTENT_TYPE'  => 'application/json',
             ]
         );
 
@@ -205,6 +211,7 @@ class GetAccessTokenIntegration extends ApiTestCase
             [
                 'PHP_AUTH_USER' => $this->clientId,
                 'PHP_AUTH_PW'   => $this->secret,
+                'CONTENT_TYPE'  => 'application/json',
             ]
         );
 
@@ -230,6 +237,7 @@ class GetAccessTokenIntegration extends ApiTestCase
             [
                 'PHP_AUTH_USER' => $this->clientId,
                 'PHP_AUTH_PW'   => $this->secret,
+                'CONTENT_TYPE'  => 'application/json',
             ]
         );
 
@@ -256,6 +264,7 @@ class GetAccessTokenIntegration extends ApiTestCase
             [
                 'PHP_AUTH_USER' => $this->clientId,
                 'PHP_AUTH_PW'   => $this->secret,
+                'CONTENT_TYPE'  => 'application/json',
             ]
         );
 
