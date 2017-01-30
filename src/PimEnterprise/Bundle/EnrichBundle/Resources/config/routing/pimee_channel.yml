@@ -1,0 +1,5 @@
+pimee_enrich_channel_asset_transformation:
+    path: /rest/{id}/asset-transformation
+    defaults: { _controller: pimee_enrich.controller.rest.channel:assetTransformationAction, _format: json }
+    requirements:
+        id: \d+

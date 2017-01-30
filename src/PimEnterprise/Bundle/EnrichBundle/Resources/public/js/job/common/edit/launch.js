@@ -8,17 +8,21 @@
  */
 define(
     [
+        'underscore',
         'pim/job/common/edit/launch',
         'pim/fetcher-registry'
     ],
-    function (BaseLaunch, FetcherRegistry) {
+    function (_, BaseLaunch, FetcherRegistry) {
         return BaseLaunch.extend({
             /**
              * {@inheritdoc}
              */
             isVisible: function () {
                 return FetcherRegistry.getFetcher('permission').fetchAll().then(function (permissions) {
-                    var permission = _.findWhere(permissions.job_instances, {code: this.getFormData().code})
+                    var permission = _.findWhere(
+                        permissions.job_instances,
+                        {code: this.getFormData().code}
+                    );
 
                     return permission.execute;
                 }.bind(this));

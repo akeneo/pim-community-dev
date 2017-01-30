@@ -9,9 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration;
+namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration\PreProcessing;
 
-class LinkProductCategoryIntegration extends ActivityManagerTestCase
+use PimEnterprise\Bundle\ActivityManagerBundle\tests\integration\ActivityManagerTestCase;
+
+class ProductCategoryIntegration extends ActivityManagerTestCase
 {
     /**
      * Product : categoryless, tshirt-the-witcher-3
@@ -20,22 +22,13 @@ class LinkProductCategoryIntegration extends ActivityManagerTestCase
      */
     public function testTheLinkBetweenProductAndCategory()
     {
-        $project = $this->createProject([
-            'label'           => 'categoriesless-project',
-            'locale'          => 'en_US',
-            'owner'           => 'admin',
-            'channel'         => 'ecommerce',
-            'product_filters' => [
-                [
-                    'field'    => 'sku',
-                    'operator' => 'IN',
-                    'value'    => ['categoriesless', 'tshirt-the-witcher-3'],
-                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
-                ],
+        $project = $this->createProject('categoriesless-project', 'admin', 'en_US', 'ecommerce', [
+            [
+                'field'    => 'sku',
+                'operator' => 'IN',
+                'value'    => ['categoriesless', 'tshirt-the-witcher-3'],
             ],
         ]);
-
-        $this->calculateProject($project);
 
         $productId = $this->get('pim_catalog.repository.product')
             ->findOneByIdentifier('tshirt-the-witcher-3')

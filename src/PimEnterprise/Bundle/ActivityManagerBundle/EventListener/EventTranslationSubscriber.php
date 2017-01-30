@@ -14,10 +14,8 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\EventListener;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\StorageEvents;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvent;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
-use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -59,25 +57,8 @@ class EventTranslationSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::POST_SAVE            => 'projectSaved',
             EventInterface::AFTER_JOB_EXECUTION => 'projectCalculated',
         ];
-    }
-
-    /**
-     * After saving the project in the database a "project_saved" event is dispatched.
-     *
-     * @param GenericEvent $event
-     */
-    public function projectSaved(GenericEvent $event)
-    {
-        $project = $event->getSubject();
-
-        if (!$project instanceof ProjectInterface) {
-            return;
-        }
-
-        $this->eventDispatcher->dispatch(ProjectEvents::PROJECT_SAVED, new ProjectEvent($project));
     }
 
     /**

@@ -21,37 +21,21 @@ class RemoveProjectIntegration extends ActivityManagerTestCase
      */
     public function testThatProjectRemovalRemovesPreProcessingEntriesAndMappedProducts()
     {
-        $highTechProject = $this->createProject([
-            'label'           => 'High-Tech project',
-            'locale'          => 'en_US',
-            'owner'           => 'admin',
-            'channel'         => 'ecommerce',
-            'product_filters' => [
-                [
-                    'field'    => 'categories',
-                    'operator' => 'IN',
-                    'value'    => ['high_tech'],
-                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
-                ],
+        $highTechProject = $this->createProject('High-Tech project', 'admin', 'en_US', 'ecommerce', [
+            [
+                'field'    => 'categories',
+                'operator' => 'IN',
+                'value'    => ['high_tech'],
             ],
         ]);
-        $this->calculateProject($highTechProject);
 
-        $clothingProject = $this->createProject([
-            'label'           => 'Clothing project',
-            'locale'          => 'en_US',
-            'owner'           => 'admin',
-            'channel'         => 'ecommerce',
-            'product_filters' => [
-                [
-                    'field'    => 'categories',
-                    'operator' => 'IN',
-                    'value'    => ['clothing'],
-                    'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce'],
-                ],
+        $this->createProject('Clothing project', 'admin', 'en_US', 'ecommerce', [
+            [
+                'field'    => 'categories',
+                'operator' => 'IN',
+                'value'    => ['clothing'],
             ],
         ]);
-        $this->calculateProject($clothingProject);
 
         $projectId = $highTechProject->getId();
         $this->removeProject($highTechProject);
@@ -65,22 +49,14 @@ class RemoveProjectIntegration extends ActivityManagerTestCase
      */
     public function testThatProjectRemovalRemovesAssociatedDatagridView()
     {
-        $project = $this->createProject([
-            'label' => 'High-Tech project',
-            'locale' => 'en_US',
-            'owner'=> 'admin',
-            'channel' => 'ecommerce',
-            'product_filters' =>[
-                [
-                    'field' => 'categories',
-                    'operator' => 'IN',
-                    'value' => ['high_tech'],
-                    'context' => ['locale' => 'en_US', 'scope' => 'ecommerce'],
-                ],
+        $project = $this->createProject('High-Tech project', 'admin', 'en_US', 'ecommerce', [
+            [
+                'field'    => 'categories',
+                'operator' => 'IN',
+                'value'    => ['high_tech'],
             ],
         ]);
 
-        $this->calculateProject($project);
         $viewId = $project->getDatagridView()->getId();
 
         $this->get('pimee_activity_manager.remover.project')->remove($project);

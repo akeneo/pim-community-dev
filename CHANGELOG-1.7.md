@@ -7,6 +7,8 @@
 ## Technical improvements
 
 - Update to Symfony 2.7.23
+- Update spec to be independent from actual developer timezone
+- GITHUB-5455: Redo channel's form `Asset transformations` tab to fit new form implementation based on internal REST API
 
 ## BC breaks
 
@@ -28,3 +30,4 @@
 - Change the constructor of `PimEnterprise\Bundle\CatalogRuleBundle\Twig\RuleExtension` to add `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository`
 - Change the constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\FilePresenter` to add `Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface`
 - Update classes and services to use the interface `Pim\Component\User\Model\GroupInterface`in place of `Oro\Bundle\UserBundle\Entity\Group`
+- Remove `PimEnterprise\Bundle\EnrichBundle\Controller\ChannelTransformationController.php`
