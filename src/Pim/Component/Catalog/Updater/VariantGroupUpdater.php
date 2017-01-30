@@ -350,7 +350,8 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         $this->productUpdater->update($product, ['values' => $arrayValues]);
 
         $values = $product->getValues();
-        $values->remove($product->getIdentifier());
+        // TODO: dirty remove of the identifier, will be performed correctly in TIP-697
+        $values->removeKey(sprintf('%s-<all_channels>-<all_locales>', $this->attributeRepository->getIdentifierCode()));
 
         return $values;
     }

@@ -83,6 +83,7 @@ services:
         class: '%pim_catalog.event_subscriber.compute_product_raw_values.class%'
         arguments:
             - '@pim_serializer'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: kernel.event_subscriber }
 

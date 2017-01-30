@@ -84,6 +84,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         \ArrayIterator $valuesIterator
     ) {
         $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
+        $attributeRepository->getIdentifierCode()->willReturn('code');
         $attributeRepository->findOneByIdentifier('main_color')->willReturn($attribute);
         $attributeRepository->findOneByIdentifier('secondary_color')->willReturn($attribute);
         $pqbFactory->create()->willReturn($pqb);
@@ -111,10 +112,9 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
 
         $productBuilder->createProduct()->willReturn($product);
         $product->getValues()->willReturn($values);
-        $product->getIdentifier()->willReturn($identifierValue);
 
+        $values->removeKey('code-<all_channels>-<all_locales>')->willReturn($identifierValue);
         $values->getIterator()->willReturn($valuesIterator);
-        $values->remove($identifierValue)->shouldBeCalled();
         $valuesIterator->rewind()->shouldBeCalled();
         $valuesIterator->valid()->willReturn(true, true, false);
         $valuesIterator->current()->willReturn($productValue, $identifierValue);
@@ -143,6 +143,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
     }
 
     function it_updates_an_empty_variant_group(
+        $attributeRepository,
         $groupTypeRepository,
         $productBuilder,
         $pqbFactory,
@@ -156,6 +157,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         \ArrayIterator $valuesIterator
     ) {
         $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
+        $attributeRepository->getIdentifierCode()->willReturn('code');
         $pqbFactory->create()->shouldNotBeCalled();
 
         $variantGroup->setCode('mycode')->shouldBeCalled();
@@ -174,8 +176,8 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         $product->getValues()->willReturn($values);
         $product->getIdentifier()->willReturn($identifierValue);
 
+        $values->removeKey('code-<all_channels>-<all_locales>')->willReturn($identifierValue);
         $values->getIterator()->willReturn($valuesIterator);
-        $values->remove($identifierValue)->shouldBeCalled();
         $valuesIterator->rewind()->shouldBeCalled();
         $valuesIterator->valid()->willReturn(true, true, false);
         $valuesIterator->current()->willReturn($productValue, $identifierValue);
@@ -261,6 +263,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
     }
 
     function it_merges_original_and_new_values(
+        $attributeRepository,
         GroupInterface $variantGroup,
         ProductTemplateInterface $template,
         ProductBuilderInterface $productBuilder,
@@ -269,6 +272,8 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         ProductValueCollection $values,
         \ArrayIterator $valuesIterator
     ) {
+        $attributeRepository->getIdentifierCode()->willReturn('code');
+
         $originalValues = [
             'description' => [
                 [
@@ -325,8 +330,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
 
         $productBuilder->createProduct()->willReturn($product);
         $product->getValues()->willReturn($values);
-        $product->getIdentifier()->willReturn($identifier);
-        $values->remove($identifier)->shouldBeCalled();
+        $values->removeKey('code-<all_channels>-<all_locales>')->willReturn($identifier);
 
         $values->getIterator()->willReturn($valuesIterator);
         $valuesIterator->rewind()->shouldBeCalled();

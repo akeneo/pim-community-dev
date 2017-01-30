@@ -6,15 +6,16 @@ use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Bundle\CatalogBundle\EventSubscriber\ComputeProductRawValuesSubscriber;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ComputeProductRawValuesSubscriberSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $serializer)
+    function let(NormalizerInterface $serializer, AttributeRepositoryInterface $attributeRepository)
     {
-        $this->beConstructedWith($serializer);
+        $this->beConstructedWith($serializer, $attributeRepository);
     }
 
     function it_is_initializable()
@@ -41,8 +42,20 @@ class ComputeProductRawValuesSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($product);
         $product->getValues()->willReturn(['value1', 'value2']);
 
-        $serializer->normalize(['value1', 'value2'], 'storage')->willReturn(['storage_value1', 'storage_value2']);
-        $product->setRawValues(['storage_value1', 'storage_value2'])->shouldBeCalled();
+        $serializer->normalize(['value1', 'value2'], 'storage')->willReturn(['storage_value1' => 'data1', 'storage_value2' => 'data2']);
+        $product->setRawValues(['storage_value1' => 'data1', 'storage_value2' => 'data2'])->shouldBeCalled();
+
+        $this->computeRawValues($event);
+    }
+
+    function it_compute_raw_values_of_a_product_and_removes_the_identifier_value($serializer, $attributeRepository, ProductInterface $product, GenericEvent $event)
+    {
+        $event->getSubject()->willReturn($product);
+        $product->getValues()->willReturn(['value1', 'sku', 'value2']);
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
+
+        $serializer->normalize(['value1', 'sku', 'value2'], 'storage')->willReturn(['storage_value1' => 'data1', 'sku' => 'data sku', 'storage_value2' => 'data2']);
+        $product->setRawValues(['storage_value1' => 'data1', 'storage_value2' => 'data2'])->shouldBeCalled();
 
         $this->computeRawValues($event);
     }

@@ -76,6 +76,9 @@ abstract class AbstractProduct implements ProductInterface
     /** @var ArrayCollection $completenesses */
     protected $completenesses;
 
+    /** @var string */
+    protected $identifier;
+
     /**
      * Constructor
      */
@@ -285,13 +288,17 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getIdentifier()
     {
-        foreach ($this->values as $value) {
-            if (AttributeTypes::IDENTIFIER === $value->getAttribute()->getAttributeType()) {
-                return $value;
-            }
-        }
+        return $this->identifier;
+    }
 
-        throw new MissingIdentifierException($this);
+    /**
+     * {@inheritdoc}
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
+
+        return $this;
     }
 
     /**
@@ -316,6 +323,8 @@ abstract class AbstractProduct implements ProductInterface
     public function setValues(ProductValueCollectionInterface $values)
     {
         $this->values = $values;
+
+        return $this;
     }
 
     /**
@@ -358,7 +367,7 @@ abstract class AbstractProduct implements ProductInterface
             }
         }
 
-        return (string) $this->getIdentifier()->getData();
+        return (string) $this->getIdentifier();
     }
 
     /**
@@ -654,6 +663,6 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getReference()
     {
-        return $this->getIdentifier()->getData();
+        return $this->getIdentifier();
     }
 }

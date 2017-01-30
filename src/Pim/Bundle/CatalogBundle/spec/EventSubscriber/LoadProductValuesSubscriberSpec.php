@@ -6,16 +6,31 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\EventSubscriber\LoadProductValuesSubscriber;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\ProductValueCollectionFactory;
+use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class LoadProductValuesSubscriberSpec extends ObjectBehavior
 {
-    function let(ContainerInterface $container)
-    {
+    function let(
+        ContainerInterface $container,
+        NormalizerInterface $serializer,
+        ProductValueFactory $valueFactory,
+        ProductValueCollectionFactory $valueCollectionFactory,
+        AttributeRepositoryInterface $attributeRepository
+    ) {
         $this->beConstructedWith($container);
+
+        $container->get('pim_serializer')->willReturn($serializer);
+        $container->get('pim_catalog.factory.product_value')->willReturn($valueFactory);
+        $container->get('pim_catalog.factory.product_value_collection')->willReturn($valueCollectionFactory);
+        $container->get('pim_catalog.repository.attribute')->willReturn($attributeRepository);
     }
 
     function it_is_initializable()
@@ -29,17 +44,27 @@ class LoadProductValuesSubscriberSpec extends ObjectBehavior
     }
 
     function it_loads_values_of_a_product(
-        $container,
+        $serializer,
+        $valueFactory,
+        $valueCollectionFactory,
+        $attributeRepository,
         LifecycleEventArgs $event,
         ProductInterface $product,
-        ProductValueCollectionFactory $factory,
-        ProductValueCollectionInterface $values
+        AttributeInterface $sku,
+        ProductValueCollectionInterface $values,
+        ProductValueInterface $skuValue
     ) {
         $event->getObject()->willReturn($product);
+        $attributeRepository->getIdentifier()->willReturn($sku);
+        $product->getIdentifier()->willReturn('foo');
 
-        $container->get('pim_catalog.factory.product_value_collection')->willReturn($factory);
+        $valueFactory->create($sku, null, null, 'foo')->willReturn($skuValue);
+        $serializer->normalize($skuValue, 'storage')->willReturn(['raw_identifier_value']);
+
         $product->getRawValues()->willReturn(['raw_values']);
-        $factory->createFromStorageFormat(['raw_values'])->willReturn($values);
+        $rawValues = array_merge(['raw_identifier_value'], ['raw_values']);
+
+        $valueCollectionFactory->createFromStorageFormat($rawValues)->willReturn($values);
         $product->setValues($values)->shouldBeCalled();
 
         $this->postLoad($event);

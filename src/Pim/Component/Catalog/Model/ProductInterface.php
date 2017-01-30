@@ -44,11 +44,17 @@ interface ProductInterface extends
     /**
      * Get the identifier of the product
      *
-     * @throws MissingIdentifierException if no identifier could be found
-     *
-     * @return ProductValueInterface the identifier of the product
+     * @return string
      */
     public function getIdentifier();
+
+    /**
+     * @param string $identifier
+     *
+     * @return ProductInterface
+     *
+     */
+    public function setIdentifier($identifier);
 
     /**
      * @return array
@@ -58,7 +64,7 @@ interface ProductInterface extends
     /**
      * @param array $rawValues
      *
-     * @return ProductValueInterface
+     * @return ProductInterface
      */
     public function setRawValues(array $rawValues);
 
@@ -73,6 +79,8 @@ interface ProductInterface extends
      * Set values
      *
      * @param ProductValueCollectionInterface $values
+     *
+     * @return ProductInterface
      */
     public function setValues(ProductValueCollectionInterface $values);
 

@@ -211,7 +211,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function getIdentifierProperties()
     {
-        return [$this->attributeRepository->getIdentifierCode()];
+        return ['identifier'];
     }
 
     /**
@@ -389,23 +389,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneByIdentifier($identifier)
     {
-        $pqb = $this->queryBuilderFactory->create();
-        $qb = $pqb->getQueryBuilder();
-
-        // TODO: TEMPORARY dirty trick to find products by their identifier
-        // TODO: currently, we can't find by values (PQB filters do not work with the JSON field),
-        // TODO: nor by identifier (we don't have the identifier column yet).
-        // TODO: TIP-676, will be resolved by the next coming PR https://github.com/jjanvier/pim-community-dev/pull/10
-        $rootAlias = current($qb->getRootAliases());
-        $qb->where($rootAlias . '.rawValues LIKE :identifierCriteria');
-        $qb->setParameter('identifierCriteria', '%' . $identifier . '%');
-        $result = $qb->getQuery()->execute();
-
-        if (empty($result)) {
-            return null;
-        }
-
-        return reset($result);
+        return $this->findOneBy(['identifier' => $identifier]);
     }
 
     /**
