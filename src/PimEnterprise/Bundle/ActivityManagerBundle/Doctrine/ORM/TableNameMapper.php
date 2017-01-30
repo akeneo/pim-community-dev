@@ -14,9 +14,13 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 
 /**
+ * Ease overriding entities managing with DBAL support avoiding hard-coded table names.
+ *
+ * @see Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder.
+ *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class NativeQueryBuilder
+class TableNameMapper
 {
     /** @var TableNameBuilder */
     protected $tableNameBuilder;
@@ -28,16 +32,21 @@ class NativeQueryBuilder
      * @param TableNameBuilder $tableNameBuilder
      * @param string[]         $preProcessingTables
      */
-    public function __construct(TableNameBuilder $tableNameBuilder, $preProcessingTables)
+    public function __construct(TableNameBuilder $tableNameBuilder, array $preProcessingTables)
     {
         $this->tableNameBuilder = $tableNameBuilder;
         $this->preProcessingTables = $preProcessingTables;
     }
 
     /**
+     * Analyse a native query to update the sql table names (they are found in the doctrine mapping).
+     *
+     * "@pim_user.entity.user@" will find the SQL table name for the entity user (container parameter: pim_user.entity.user.class)
+     * "@pim_user.entity.user#groups@" same logic but the join SQL table name (N-N between user and group)
+     *
      * @param string $sql
      *
-     * @throws \LogicException
+     * @throws \LogicException if a SQL table name cannot be found depending the given key
      *
      * @return string
      */
@@ -59,10 +68,12 @@ class NativeQueryBuilder
     }
 
     /**
-     * @param string $key
-     * @param string $targetEntity
+     * Get the table name from the entity parameter name
      *
-     * @throws \LogicException
+     * @param string      $key
+     * @param string|null $targetEntity
+     *
+     * @throws \LogicException if a SQL table name cannot be found depending the given key
      *
      * @return string
      */

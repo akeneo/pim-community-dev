@@ -3,10 +3,10 @@
 namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
-use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\NativeQueryBuilder;
+use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\TableNameMapper;
 use PhpSpec\ObjectBehavior;
 
-class NativeQueryBuilderSpec extends ObjectBehavior
+class TableNameMapperSpec extends ObjectBehavior
 {
     function let(TableNameBuilder $tableNameBuilder)
     {
@@ -15,10 +15,10 @@ class NativeQueryBuilderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(NativeQueryBuilder::class);
+        $this->shouldHaveType(TableNameMapper::class);
     }
 
-    function it_create_a_sql_query($tableNameBuilder)
+    function it_creates_a_sql_query($tableNameBuilder)
     {
         $tableNameBuilder->getTableName('model.category.class', null)->willReturn('pim_catalog_category');
         $tableNameBuilder->getTableName('model.user.class', 'group')->willReturn('oro_user_access_group');
@@ -35,7 +35,7 @@ class NativeQueryBuilderSpec extends ObjectBehavior
         $this->getTableName('model.product')->shouldReturn('pim_catalog_product');
     }
 
-    function it_throw_an_exception_if_it_cannot_find_the_table($tableNameBuilder)
+    function it_throws_an_exception_if_it_cannot_find_the_table($tableNameBuilder)
     {
         $tableNameBuilder->getTableName('model.value', null)->willThrow(\Exception::class);
 
