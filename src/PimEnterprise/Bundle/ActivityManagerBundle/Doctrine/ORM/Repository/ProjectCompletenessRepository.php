@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManager;
+use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\TableNameMapper;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
@@ -24,12 +25,16 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
     /** @var EntityManager */
     protected $entityManger;
 
+    /** @var TableNameMapper */
+    protected $nativeQueryBuilder;
+
     /**
      * @param EntityManager $entityManager
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, TableNameMapper $nativeQueryBuilder)
     {
         $this->entityManger = $entityManager;
+        $this->nativeQueryBuilder = $nativeQueryBuilder;
     }
 
     /**
@@ -39,7 +44,6 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
     {
         $query = $this->buildSqlQuery($username);
         $parameters = $this->buildQueryParameters($project, $username);
-
         $completeness = $this->entityManger->getConnection()->fetchAssoc($query, $parameters);
 
         return new ProjectCompleteness($completeness['todo'], $completeness['in_progress'], $completeness['done']);
@@ -81,13 +85,13 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
 
         if (null !== $username) {
             $extraTableJoins = <<<'SQL'
-INNER JOIN `pimee_security_attribute_group_access` AS `attribute_group_access`
+INNER JOIN `@pimee_security.entity.attribute_group_access@` AS `attribute_group_access`
     ON `attribute_group_access`.`attribute_group_id` = `completeness_per_attribute_group`.`attribute_group_id`
-INNER JOIN `oro_user_access_group` AS `user_group`
+INNER JOIN `@pim_user.entity.user#groups@` AS `user_group`
     ON `user_group`.`group_id` = `attribute_group_access`.`user_group_id`
-INNER JOIN `pimee_activity_manager_project_user_group` AS `project_contributor_group`
+INNER JOIN `@pimee_activity_manager.model.project#userGroups@` AS `project_contributor_group`
     ON `project`.`id` = `project_contributor_group`.`project_id` AND `project_contributor_group`.`user_group_id` = `user_group`.`group_id`
-INNER JOIN `oro_user` AS `user`
+INNER JOIN `@pim_user.entity.user@` AS `user`
     ON `user_group`.`user_id` = `user`.`id`
 SQL;
 
@@ -97,7 +101,7 @@ AND `attribute_group_access`.`edit_attributes` = 1
 SQL;
         }
 
-        return <<<SQL
+        $sql = <<<SQL
 SELECT
     COALESCE(
         SUM(
@@ -131,10 +135,10 @@ FROM (
 		SUM(`completeness_per_attribute_group`.`has_at_least_one_required_attribute_filled`) AS `attribute_group_in_progress`,
 		SUM(`completeness_per_attribute_group`.`is_complete`) AS `attribute_group_done`,
 		COUNT(`project_product`.`product_id`) AS `total_attribute_group`
-	FROM `pimee_activity_manager_project` AS `project`
-	INNER JOIN `pimee_activity_manager_project_product` AS `project_product`
+	FROM `@pimee_activity_manager.model.project@` AS `project`
+	INNER JOIN `@pimee_activity_manager.project_product@` AS `project_product`
 		ON `project`.`id` = `project_product`.`project_id`
-	INNER JOIN `pimee_activity_manager_completeness_per_attribute_group` AS `completeness_per_attribute_group`
+	INNER JOIN `@pimee_activity_manager.completeness_per_attribute_group@` AS `completeness_per_attribute_group`
 		ON `project_product`.`product_id` = `completeness_per_attribute_group`.`product_id`
     $extraTableJoins
 	WHERE `project`.`id` = :project_id
@@ -144,5 +148,7 @@ FROM (
 	GROUP BY `project_product`.`product_id`
 ) `completeness`
 SQL;
+
+        return $this->nativeQueryBuilder->createQuery($sql);
     }
 }
