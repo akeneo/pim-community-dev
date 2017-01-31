@@ -12,6 +12,9 @@ PimEnterprise\Component\ActivityManager\Model\ProjectStatus:
         isComplete:
             type: boolean
             nullable: true
+        hasBeenNotified:
+            type: boolean
+            nullable: true
     manyToOne:
         user:
             targetEntity: Pim\Bundle\UserBundle\Entity\UserInterface

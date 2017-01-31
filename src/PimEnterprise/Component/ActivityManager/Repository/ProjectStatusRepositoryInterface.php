@@ -31,15 +31,9 @@ interface ProjectStatusRepositoryInterface
     /**
      * @param ProjectInterface $project
      * @param UserInterface    $user
-     * @param bool             $isComplete
      */
-    public function setProjectStatus(ProjectInterface $project, UserInterface $user, $isComplete);
-
-    /**
-     * @param ProjectInterface $project
-     * @param UserInterface    $user
-     *
-     * @return bool
-     */
-    public function wasComplete(ProjectInterface $project, UserInterface $user);
+    public function setHasBeenNotified(
+        ProjectInterface $project,
+        UserInterface $user
+    );
 }

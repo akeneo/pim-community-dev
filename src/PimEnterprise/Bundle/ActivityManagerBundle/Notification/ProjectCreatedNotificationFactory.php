@@ -65,8 +65,8 @@ class ProjectCreatedNotificationFactory
             ->setRoute('activity_manager_project_show')
             ->setRouteParams(['identifier' => $project->getCode()])
             ->setContext([
-                'actionType'     => 'project_calculation',
-                'buttonLabel'    => sprintf('activity_manager.notification.%s.start', 'project_calculation')
+                'actionType'  => 'project_calculation',
+                'buttonLabel' => 'activity_manager.notification.project_calculation.start'
             ]);
 
         return $notification;
