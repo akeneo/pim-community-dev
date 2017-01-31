@@ -172,12 +172,12 @@ Feature: Execute a job
       sku;UPSELL-products
       SKU-001;SKU-003
       """
-    And the following job "csv_footwear_product_import" configuration:
+    And the following job "footwear_product_import" configuration:
       | filePath          | %file to import% |
       | enabledComparison | yes              |
-    When I am on the "csv_footwear_product_import" import job page
+    When I am on the "footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "csv_footwear_product_import" job to finish
+    And I wait for the "footwear_product_import" job to finish
     Then the product "SKU-001" should have the following associations:
       | type   | products |
       | X_SELL | SKU-002  |
