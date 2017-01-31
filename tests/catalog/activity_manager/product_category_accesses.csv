@@ -1,5 +1,5 @@
 category;view_items;edit_items;own_items
-default;Read Only,Marketing,Technical Clothing,Technical High-Tech,Media manager,Catalog Manager;Marketing,Technical Clothing,Technical High-Tech,Media manager,Catalog Manager;Catalog Manager
-clothing;Read Only,Marketing,Technical Clothing,Media manager,Catalog Manager;Marketing,Technical Clothing,Media manager,Catalog Manager;Catalog Manager
-high_tech;Read Only,Marketing,Technical High-Tech,Media manager,Catalog Manager;Marketing,Technical High-Tech,Media manager,Catalog Manager;Catalog Manager
-decoration;Read Only,Marketing,Media manager,Catalog Manager;Marketing,Media manager,Catalog Manager;Catalog Manager
+default;Read Only,Marketing,Technical Clothing,Technical High-Tech,Media manager,Catalog Manager;Marketing,Technical Clothing,Technical High-Tech,Media manager;Catalog Manager
+clothing;Read Only,Marketing,Technical Clothing,Media manager,Catalog Manager;Marketing,Technical Clothing,Media manager;Catalog Manager
+high_tech;Read Only,Marketing,Technical High-Tech,Media manager,Catalog Manager;Marketing,Technical High-Tech,Media manager;Catalog Manager
+decoration;Read Only,Marketing,Media manager,Catalog Manager;Marketing,Media manager;Catalog Manager

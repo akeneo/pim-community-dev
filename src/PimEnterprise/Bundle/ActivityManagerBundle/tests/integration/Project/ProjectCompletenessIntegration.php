@@ -67,7 +67,7 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
         /**
          * Teddy
          *      - is technical "High-Tech" contributor
-         *      - he can not see the clothing category
+         *      - he cannot see the clothing category
          */
         $projectCompleteness = $this->getProjectCompleteness($project, 'Teddy');
 
@@ -206,7 +206,7 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
         /**
          * Teddy
          *      - is technical "High-Tech" contributor
-         *      - he can not see the clothing category
+         *      - he cannot see the clothing category
          */
         $projectCompleteness = $this->getProjectCompleteness($project, 'Teddy');
 
@@ -251,20 +251,20 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
         $username
     ) {
         $this->assertEquals(
-            $projectCompleteness->getProductsCountTodo(),
             $expectedTodo,
+            $projectCompleteness->getProductsCountTodo(),
             sprintf('Product count to do are invalid for %s', $username)
         );
 
         $this->assertEquals(
-            $projectCompleteness->getProductsCountInProgress(),
             $expectedInProgress,
+            $projectCompleteness->getProductsCountInProgress(),
             sprintf('Product count in progress are invalid for %s', $username)
         );
 
         $this->assertEquals(
-            $projectCompleteness->getProductsCountDone(),
             $expectedDone,
+            $projectCompleteness->getProductsCountDone(),
             sprintf('Product count done are invalid for %s', $username)
         );
     }

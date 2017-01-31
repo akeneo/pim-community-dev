@@ -89,9 +89,9 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
         if (null !== $username) {
             // Filter on the categories the user can edit
             $filterByCategoryPermissionJoins = <<<FILTER_USER
-LEFT JOIN `oro_user_access_group` AS `user_group`
+LEFT JOIN `@pim_user.entity.user#groups@` AS `user_group`
     ON `product_category_access`.`user_group_id` = `user_group`.`group_id` 
-LEFT JOIN `oro_user` AS `user`
+LEFT JOIN `@pim_user.entity.user@` AS `user`
     ON `user_group`.`user_id` = `user`.`id`
 FILTER_USER;
 
@@ -102,16 +102,17 @@ FILTER_USER;
             // Filter on the attribute groups the user can edit
             $filterByAttributeGroupPermissions = <<<ATTRIBUTE_GROUP_FILTER
 AND `completeness_per_attribute_group`.`attribute_group_id` IN (
-    SELECT `attribute_group_access`.`attribute_group_id`
-    FROM `pimee_activity_manager_project_user_group` AS `project_contributor_group`
-    INNER JOIN `pimee_security_attribute_group_access` AS `attribute_group_access`
+    SELECT DISTINCT `attribute_group_access`.`attribute_group_id`
+    FROM `@pimee_activity_manager.model.project#userGroups@` AS `project_contributor_group`
+    INNER JOIN `@pimee_security.entity.attribute_group_access@` AS `attribute_group_access`
         ON `project_contributor_group`.`user_group_id` = `attribute_group_access`.`user_group_id`
-    INNER JOIN `oro_user_access_group` AS `user_group`
+    INNER JOIN `@pim_user.entity.user#groups@` AS `user_group`
         ON `user_group`.`group_id` = `project_contributor_group`.`user_group_id`
-    INNER JOIN `oro_user` AS `user`
-        ON `user_group`.`user_id` = `user`.`id` AND  `user`.`username` = :username
+    INNER JOIN `@pim_user.entity.user@` AS `user`
+        ON `user_group`.`user_id` = `user`.`id`
     WHERE `project_contributor_group`.`project_id` = :project_id
     AND `attribute_group_access`.`edit_attributes` = 1
+    AND  `user`.`username` = :username 
 )
 ATTRIBUTE_GROUP_FILTER;
         }
@@ -150,15 +151,15 @@ FROM (
 		SUM(`completeness_per_attribute_group`.`has_at_least_one_required_attribute_filled`) AS `attribute_group_in_progress`,
 		SUM(`completeness_per_attribute_group`.`is_complete`) AS `attribute_group_done`,
 		COUNT(`completeness_per_attribute_group`.`product_id`) AS `total_attribute_group`
-    FROM `pimee_activity_manager_completeness_per_attribute_group` AS `completeness_per_attribute_group`
+    FROM `@pimee_activity_manager.completeness_per_attribute_group@` AS `completeness_per_attribute_group`
     WHERE `completeness_per_attribute_group`.`channel_id` = :channel_id
     AND `completeness_per_attribute_group`.`locale_id` = :locale_id
     AND `completeness_per_attribute_group`.`product_id` IN (
         SELECT DISTINCT `project_product`.`product_id`
-        FROM `pimee_activity_manager_project_product` AS `project_product`
-        LEFT JOIN `@pimee_activity_manager.product_category@` AS `category_product`
+        FROM `@pimee_activity_manager.project_product@` AS `project_product`
+        LEFT JOIN `@pim_catalog.entity.product#categories@` AS `category_product`
             ON `project_product`.`product_id` = `category_product`.`product_id`
-        LEFT JOIN `pimee_security_product_category_access` AS `product_category_access`
+        LEFT JOIN `@pimee_security.entity.product_category_access@` AS `product_category_access`
             ON `category_product`.`category_id` = `product_category_access`.`category_id`
         $filterByCategoryPermissionJoins
         WHERE `project_product`.`project_id` = :project_id
