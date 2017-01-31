@@ -46,7 +46,7 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 1"
-    And I should see "Attribute or field \"sleeve_color\" expects a valid code. No reference data \"color\" with code \"red\" has been found, \"red,orange\" given (for setter reference data)"
-    And I should see "Attribute or field \"sleeve_fabric\" expects a valid code. No reference data \"fabrics\" with code \"kevlar\" has been found, \"kevlar,chiffon\" given (for setter reference data)"
-    And I should see "Attribute or field \"sleeve_color\" expects a valid code. No reference data \"color\" with code \"green\" has been found, \"green\" given (for setter reference data)"
-    And I should see "Attribute or field \"sleeve_fabric\" expects an array with valid data for the key \"code\". No reference data \"fabrics\" with code \"kevlar\" has been found, \"kevlar\" given (for setter reference data collection)"
+    And I should see "Attribute or field \"sleeve_color\" expects a valid code. No reference data \"color\" with code \"red\" has been found, \"red,orange\" given"
+    And I should see "Attribute or field \"sleeve_fabric\" expects a valid code. No reference data \"fabrics\" with code \"kevlar\" has been found, \"kevlar,chiffon\" given"
+    And I should see "Attribute or field \"sleeve_color\" expects a valid code. No reference data \"color\" with code \"green\" has been found, \"green\" given"
+    And I should see "Attribute or field \"sleeve_fabric\" expects an array with valid data for the key \"code\". No reference data \"fabrics\" with code \"kevlar\" has been found, \"kevlar\" given"

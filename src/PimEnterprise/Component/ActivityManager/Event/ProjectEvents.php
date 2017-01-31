@@ -19,11 +19,6 @@ namespace PimEnterprise\Component\ActivityManager\Event;
 final class ProjectEvents
 {
     /**
-     * This event is dispatched after saving the project in database.
-     */
-    const PROJECT_SAVED = 'activity_manager.project_saved';
-
-    /**
      * This event is dispatched after the end of the job which calculates the project.
      * For instance, we need to calculate the user group affected the project.
      */

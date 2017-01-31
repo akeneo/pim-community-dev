@@ -75,8 +75,7 @@ class LocaleAccessUpdaterSpec extends ObjectBehavior
                 'user_group',
                 'group code',
                 'The group does not exist',
-                'updater',
-                'locale access',
+                'PimEnterprise\Component\Security\Updater\LocaleAccessUpdater',
                 'foo'
             )
         )->during('update', [$localeAccess, ['user_group' => 'foo']]);
@@ -93,8 +92,7 @@ class LocaleAccessUpdaterSpec extends ObjectBehavior
                 'locale',
                 'locale code',
                 'The locale does not exist',
-                'updater',
-                'locale access',
+                'PimEnterprise\Component\Security\Updater\LocaleAccessUpdater',
                 'foo'
             )
         )->during('update', [$localeAccess, ['locale' => 'foo']]);

@@ -131,10 +131,8 @@ class ProjectUpdater implements ObjectUpdaterInterface
             throw InvalidArgumentException::expected(
                 $field,
                 'a string with the format yyyy-mm-dd',
-                'setter',
-                'date',
-                gettype($data),
-                $data
+                static::class,
+                gettype($data)
             );
         }
     }

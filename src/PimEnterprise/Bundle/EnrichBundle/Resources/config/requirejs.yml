@@ -21,6 +21,11 @@ config:
                         warmup: false
                         urls:
                             list: pimee_security_permissions_rest
+                channel-tranformation:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            get: pimee_enrich_channel_asset_transformation
 
     map:
         '*':
@@ -54,6 +59,7 @@ config:
         pimee/product-edit-form/categories:                           pimenterpriseenrich/js/product/form/categories
         pimee/product-edit-form/associations:                         pimenterpriseenrich/js/product/form/associations
         pimee/product-edit-form/status-switcher:                      pimenterpriseenrich/js/product/form/status-switcher
+        pim/common/tab/asset-transformation:                          pimenterpriseenrich/js/channel/tab/asset-transformation
 
         # Common
         pimee/common/tab/permission:  pimenterpriseenrich/js/form/common/tab/permission
@@ -68,3 +74,4 @@ config:
         pimee/template/product/panel/history/revert:          pimenterpriseenrich/templates/product/panel/history/revert.html
         pimee/template/product/tab/attribute/smart-attribute: pimenterpriseenrich/templates/product/tab/attributes/smart-attribute.html
         pimee/template/form/tab/permission:                   pimenterpriseenrich/templates/form/tab/permission.html
+        pimee/template/channel/tab/asset-transformation:      pimenterpriseenrich/templates/channel/tab/asset-transformation.html

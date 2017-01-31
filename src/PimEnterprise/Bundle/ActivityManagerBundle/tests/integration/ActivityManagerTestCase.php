@@ -14,7 +14,6 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
-use Pim\Behat\Context\DBALPurger;
 use PimEnterprise\Bundle\InstallerBundle\Command\CleanCategoryAccessesCommand;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
@@ -23,29 +22,22 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class ActivityManagerTestCase extends TestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function purgeDatabase()
+    public function setUp()
     {
-        $purger = new DBALPurger(
-            $this->get('database_connection'),
-            [
-                'pimee_activity_manager_completeness_per_attribute_group',
-                'pimee_activity_manager_project_product',
-            ]
-        );
+        parent::setUp();
 
-        $purger->purge();
-
-        parent::purgeDatabase();
+        $configuration = $this->getConfiguration();
+        if ($configuration->isDatabasePurgedForEachTest() || 1 === self::$count) {
+            $this->cleanCategoryAccesses();
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function doAfterFixtureImport(Application $application)
+    protected function cleanCategoryAccesses()
     {
+        $application = new Application();
         $extraCommand = $application->add(new CleanCategoryAccessesCommand());
         $extraCommand->setContainer($this->container);
         $command = new CommandTester($extraCommand);
@@ -53,8 +45,16 @@ class ActivityManagerTestCase extends TestCase
         $exitCode = $command->execute([]);
 
         if (0 !== $exitCode) {
-            throw new \Exception(sprintf('Catalog not installable! "%s"', $command->getDisplay()));
+            throw new \Exception(sprintf('Failed to clean category accesses. "%s"', $command->getDisplay()));
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDatabasePurger()
+    {
+        return new DatabasePurger($this->container);
     }
 
     /**
@@ -72,18 +72,39 @@ class ActivityManagerTestCase extends TestCase
     /**
      * Create a project in database and run the project calculation
      *
-     * @param array $projectData
+     * @param string $label
+     * @param string $owner
+     * @param string $locale
+     * @param string $channel
+     * @param array  $filters
+     *
+     * @return ProjectInterface
      */
-    protected function createProject(array $projectData)
+    protected function createProject($label, $owner, $locale, $channel, array $filters)
     {
         $projectData = array_merge([
-            'description'   => 'An awesome description',
-            'due_date'      => '2020-01-19',
-            'datagrid_view' => ['filters' => '', 'columns' => 'sku,label,family'],
-        ], $projectData);
+            'label'           => $label,
+            'locale'          => $locale,
+            'owner'           => $owner,
+            'channel'         => $channel,
+            'product_filters' => $filters,
+            'description'     => 'An awesome description',
+            'due_date'        => '2020-01-19',
+            'datagrid_view'   => ['filters' => '', 'columns' => 'sku,label,family'],
+        ]);
+
+        if (isset($projectData['product_filters'])) {
+            foreach ($projectData['product_filters'] as $key => $filter) {
+                $projectData['product_filters'][$key] = array_merge($filter, [
+                    'context'  => ['locale' => $projectData['locale'], 'scope' => $projectData['channel']],
+                ]);
+            }
+        }
 
         $project = $this->get('pimee_activity_manager.factory.project')->create($projectData);
         $this->get('pimee_activity_manager.saver.project')->save($project);
+
+        $this->calculateProject($project);
 
         return $project;
     }
@@ -102,19 +123,6 @@ class ActivityManagerTestCase extends TestCase
         $this->isCompleteJobExecution($numberOfExecutedJob);
     }
 
-    /**
-     * re run the project calculation
-     *
-     * @param ProjectInterface $project
-     */
-    protected function reCalculateProject(ProjectInterface $project)
-    {
-        $numberOfExecutedJob = $this->findJobExecutionCount();
-
-        $this->get('pimee_activity_manager.launcher.job.project_calculation')->launch($project);
-
-        $this->isCompleteJobExecution($numberOfExecutedJob);
-    }
 
     /**
      * @param ProjectInterface $project

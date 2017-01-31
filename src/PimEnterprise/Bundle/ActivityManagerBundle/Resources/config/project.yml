@@ -20,6 +20,11 @@ parameters:
 
     pimee_activity_manager.factory.project_cursor.page_size: 10
 
+    pimee_activity_manager.pre_processing.tables:
+        pimee_activity_manager.completeness_per_attribute_group: 'pimee_activity_manager_completeness_per_attribute_group'
+        pimee_activity_manager.project_product: 'pimee_activity_manager_project_product'
+        pimee_activity_manager.product_category: 'pimee_activity_manager_product_category'
+
 services:
     ### Normalizer
     pimee_activity_manager.normalizer.project:
@@ -55,6 +60,7 @@ services:
         class: '%pimee_activity_manager.repository.project_completeness.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@pimee_activity_manager.table_name_mapper'
 
     ### Updater
     pimee_activity_manager.updater.project:
