@@ -29,6 +29,12 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_serializer'
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@validator'
+            - '@pim_catalog.saver.attribute'
+            - '@router'
+            - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute'
 
     pim_api.controller.rest.attribute_option:
         class: '%pim_api.controller.rest.attribute_option.class%'

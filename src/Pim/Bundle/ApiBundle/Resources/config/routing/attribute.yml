@@ -3,6 +3,11 @@ pim_api_rest_attribute_list:
     defaults: { _controller: pim_api.controller.rest.attribute:listAction, _format: json }
     methods: [GET]
 
+pim_api_rest_attribute_create:
+    path: /attributes
+    defaults: { _controller: pim_api.controller.rest.attribute:createAction, _format: json }
+    methods: [POST]
+
 pim_api_rest_attribute_get:
     path: /attributes/{code}
     defaults: { _controller: pim_api.controller.rest.attribute:getAction, _format: json }
