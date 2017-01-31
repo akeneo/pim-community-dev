@@ -3,12 +3,15 @@
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AssociationInterface;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Prophecy\Promise\ReturnPromise;
 
 class AssociationFieldSetterSpec extends ObjectBehavior
 {
@@ -89,17 +92,24 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         ProductInterface $assocProductTwo,
         ProductInterface $assocProductThree,
         GroupInterface $assocGroupOne,
-        GroupInterface $assocGroupTwo
+        GroupInterface $assocGroupTwo,
+        AssociationTypeInterface $xsellAssociationType,
+        AssociationTypeInterface $upsellAssociationType
     ) {
-        $product->getAssociations()->willReturn([$xsellAssociation, $upsellAssociation]);
-        $productBuilder->addMissingAssociations($product)->shouldBeCalled();
+        $xsellAssociation->getAssociationType()->willReturn($xsellAssociationType);
+        $xsellAssociation->getGroups()->willReturn(new ArrayCollection());
+        $xsellAssociation->getProducts()->willReturn(new ArrayCollection());
+        $upsellAssociation->getAssociationType()->willReturn($upsellAssociationType);
+        $upsellAssociation->getGroups()->willReturn(new ArrayCollection());
+        $upsellAssociation->getProducts()->willReturn(new ArrayCollection());
 
+        $product->getAssociations()->willReturn(
+            new ArrayCollection([$xsellAssociation->getWrappedObject(), $upsellAssociation->getWrappedObject()])
+        );
+
+        $productBuilder->addMissingAssociations($product)->shouldBeCalled();
         $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
-        $xsellAssociation->getGroups()->willReturn([]);
-        $xsellAssociation->getProducts()->willReturn([]);
         $product->getAssociationForTypeCode('upsell')->willReturn($upsellAssociation);
-        $upsellAssociation->getGroups()->willReturn([]);
-        $upsellAssociation->getProducts()->willReturn([]);
 
         $productRepository->findOneByIdentifier('assocProductOne')->willReturn($assocProductOne);
         $productRepository->findOneByIdentifier('assocProductTwo')->willReturn($assocProductTwo);
@@ -135,7 +145,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $productBuilder,
         ProductInterface $product
     ) {
-        $product->getAssociations()->willReturn([]);
+        $product->getAssociations()->willReturn(new ArrayCollection());
         $productBuilder->addMissingAssociations($product)->shouldBeCalled();
         $product->getAssociationForTypeCode('non valid association type code')->willReturn(null);
 
@@ -161,13 +171,17 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $productBuilder,
         $productRepository,
         ProductInterface $product,
-        AssociationInterface $xsellAssociation
+        AssociationInterface $xsellAssociation,
+        AssociationTypeInterface $associationType
     ) {
-        $product->getAssociations()->willReturn([$xsellAssociation]);
+        $xsellAssociation->getAssociationType()->willReturn($associationType);
+        $xsellAssociation->getGroups()->willReturn(new ArrayCollection());
+        $xsellAssociation->getProducts()->willReturn(new ArrayCollection());
+
+        $product->getAssociations()->willReturn(new ArrayCollection([$xsellAssociation->getWrappedObject()]));
+
         $productBuilder->addMissingAssociations($product)->shouldBeCalled();
         $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
-        $xsellAssociation->getGroups()->willReturn([]);
-        $xsellAssociation->getProducts()->willReturn([]);
 
         $productRepository->findOneByIdentifier('not existing product')->willReturn(null);
 
@@ -193,13 +207,15 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $productBuilder,
         $groupRepository,
         ProductInterface $product,
-        AssociationInterface $xsellAssociation
+        AssociationInterface $xsellAssociation,
+        AssociationTypeInterface $associationType
     ) {
-        $product->getAssociations()->willReturn([$xsellAssociation]);
+        $xsellAssociation->getAssociationType()->willReturn($associationType);
+        $xsellAssociation->getGroups()->willReturn(new ArrayCollection([]));
+        $xsellAssociation->getProducts()->willReturn(new ArrayCollection([]));
+        $product->getAssociations()->willReturn(new ArrayCollection([$xsellAssociation->getWrappedObject()]));
         $productBuilder->addMissingAssociations($product)->shouldBeCalled();
         $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
-        $xsellAssociation->getGroups()->willReturn([]);
-        $xsellAssociation->getProducts()->willReturn([]);
 
         $groupRepository->findOneByIdentifier('not existing group')->willReturn(null);
 
@@ -217,6 +233,79 @@ class AssociationFieldSetterSpec extends ObjectBehavior
                 $product,
                 'associations',
                 ['xsell' => ['groups' => ['not existing group'], 'products' => []]]
+            ]
+        );
+    }
+
+    function it_should_clear_concerned_associations(
+        $productBuilder,
+        ProductInterface $product,
+        AssociationInterface $xsellAssociation,
+        AssociationInterface $upsellAssociation,
+        AssociationTypeInterface $upsellAssociationType,
+        AssociationTypeInterface $xsellAssociationType,
+        ArrayCollection $xsellProducts,
+        ArrayCollection $upsellGroups,
+        \ArrayIterator $xsellProductIterator,
+        \ArrayIterator $upsellGroupIterator,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        GroupInterface $group1,
+        GroupInterface $group2
+    ) {
+        $xsellProductIterator->rewind()->shouldBeCalled();
+        $xsellProductCount = 2;
+        $xsellProductIterator->valid()->will(
+            function () use (&$xsellProductCount) {
+                return $xsellProductCount-- > 0;
+            }
+        );
+        $xsellProductIterator->next()->shouldBeCalled();
+        $xsellProductIterator->current()->will(new ReturnPromise([$product1, $product2]));
+        $xsellProducts->getIterator()->willReturn($xsellProductIterator);
+
+        $xsellAssociationType->getCode()->willReturn('xsell');
+        $xsellAssociation->getAssociationType()->willReturn($xsellAssociationType);
+        $xsellAssociation->getProducts()->willReturn($xsellProducts);
+
+        $upsellGroupIterator->rewind()->shouldBeCalled();
+        $upsellGroupCount = 2;
+        $upsellGroupIterator->valid()->will(
+            function () use (&$upsellGroupCount) {
+                return $upsellGroupCount-- > 0;
+            }
+        );
+        $upsellGroupIterator->next()->shouldBeCalled();
+        $upsellGroupIterator->current()->will(new ReturnPromise([$group1, $group2]));
+        $upsellGroups->getIterator()->willReturn($upsellGroupIterator);
+
+        $upsellAssociationType->getCode()->willReturn('upsell');
+        $upsellAssociation->getAssociationType()->willReturn($upsellAssociationType);
+        $upsellAssociation->getGroups()->willReturn($upsellGroups);
+
+        $product->getAssociations()->willReturn(
+            new ArrayCollection([$xsellAssociation->getWrappedObject(), $upsellAssociation->getWrappedObject()])
+        );
+
+        $xsellAssociation->removeProduct($product1)->shouldBeCalled();
+        $xsellAssociation->removeProduct($product2)->shouldBeCalled();
+        $upsellAssociation->removeGroup($group1)->shouldBeCalled();
+        $upsellAssociation->removeGroup($group2)->shouldBeCalled();
+
+        $productBuilder->addMissingAssociations($product)->shouldBeCalled();
+        $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
+        $product->getAssociationForTypeCode('upsell')->willReturn($upsellAssociation);
+
+        $this->setFieldData(
+            $product,
+            'associations',
+            [
+                'xsell' => [
+                    'products' => [],
+                ],
+                'upsell' => [
+                    'groups' => []
+                ]
             ]
         );
     }
