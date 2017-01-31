@@ -10,7 +10,7 @@ class GetCategoryIntegration extends ApiTestCase
 {
     public function testGetACategory()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/categories/master');
 
@@ -27,7 +27,7 @@ class GetCategoryIntegration extends ApiTestCase
 
     public function testGetACompleteCategory()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/categories/categoryA');
 
@@ -47,7 +47,7 @@ class GetCategoryIntegration extends ApiTestCase
 
     public function testNotFoundACategory()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/categories/not_found');
 

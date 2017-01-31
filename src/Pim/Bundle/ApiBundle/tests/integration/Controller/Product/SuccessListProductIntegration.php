@@ -105,7 +105,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
      */
     public function testListProductsWithoutParameter()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products');
         $expected = [
@@ -286,7 +286,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
      */
     public function testListProductsWithEcommerceChannel()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?channel=ecommerce');
         $expected = [
@@ -414,7 +414,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
      */
     public function testListProductsWithTabletChannel()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?channel=tablet');
         $expected = [
@@ -544,7 +544,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
      */
     public function testListProductsWithTabletChannelAndFRLocale()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?channel=tablet&locales=fr_FR');
         $expected = [
@@ -672,7 +672,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
      */
     public function testListProductsWithEcommerceChinaChannel()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?channel=ecommerce_china');
         $expected = [
@@ -735,7 +735,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
      */
     public function testListProductsWithENAndCNLocales()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?locales=en_US,zh_CN');
         $expected = [
@@ -906,7 +906,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
 
     public function testListProductsWithFilteredAttributes()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?attributes=a_text');
         $expected = [
@@ -1027,7 +1027,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
 
     public function testListProductsWithChannelLocalesAndAttributesParams()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?channel=tablet&locales=fr_FR&attributes=a_scopable_price,a_metric,a_localized_and_scopable_text_area');
         $expected = [
@@ -1137,7 +1137,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
 
     public function testTheSecondPageOfTheListOfProducts()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?attributes=a_text&page=2&limit=2');
         $expected = [
@@ -1192,7 +1192,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
 
     public function testOutOfRangeProductsList()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?page=2');
         $expected = [

@@ -11,7 +11,7 @@ class PartialUpdateCategoryIntegration extends ApiTestCase
 {
     public function testHttpHeadersInResponseWhenACategoryIsUpdated()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -31,7 +31,7 @@ JSON;
 
     public function testHttpHeadersInResponseWhenACategoryIsCreated()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -52,7 +52,7 @@ JSON;
 
     public function testStandardFormatWhenACategoryIsCreatedButUncompleted()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -78,7 +78,7 @@ JSON;
 
     public function testStandardFormatWhenACategoryIsCreatedWithAnEmptyContent()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data = '{}';
 
@@ -99,7 +99,7 @@ JSON;
 
     public function testCompleteCategoryCreationWithCodeProvided()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -132,7 +132,7 @@ JSON;
 
     public function testCompleteCategoryCreationWithoutCodeProvided()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -164,7 +164,7 @@ JSON;
 
     public function testPartialUpdateWithAnEmptyContent()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data = '{}';
 
@@ -188,7 +188,7 @@ JSON;
 
     public function testPartialUpdateWithCodeProvided()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -220,7 +220,7 @@ JSON;
 
     public function testPartialUpdateWithoutCodeProvided()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -251,7 +251,7 @@ JSON;
 
     public function testResponseWhenContentIsEmpty()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data = '';
 
@@ -268,7 +268,7 @@ JSON;
 
     public function testResponseWhenContentIsNotValid()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data = '{';
 
@@ -285,7 +285,7 @@ JSON;
 
     public function testResponseWhenValidationFailed()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -314,7 +314,7 @@ JSON;
 
     public function testResponseWhenAPropertyIsNotExpected()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -343,7 +343,7 @@ JSON;
 
     public function testResponseWhenLabelsIsNull()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -372,7 +372,7 @@ JSON;
 
     public function testResponseWhenACategoryIsCreatedWithInconsistentCodes()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
