@@ -236,7 +236,7 @@ define(
                         deferred.resolve(this.getDefaultView());
                     } else {
                         FetcherRegistry.getFetcher('datagrid-view')
-                            .fetch(activeViewId, {alias: this.gridAlias})
+                            .fetch(activeViewId, {alias: this.gridAlias, cached: false})
                             .then(this.postFetchDatagridView.bind(this))
                             .then(function (view) {
                                 deferred.resolve(view);

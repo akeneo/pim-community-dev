@@ -57,6 +57,23 @@ Feature: Datagrid views
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
 
+  Scenario: Successfully update columns of a view
+    Given I am on the products page
+    When I filter by "family" with operator "in list" and value "Sneakers"
+    And I create the view:
+      | new-view-label | Some shoes |
+    Then I should be on the products page
+    And I should see the flash message "Datagrid view successfully created"
+    And I should see the text "Some shoes"
+    When I display the columns SKU, Name, Family and Manufacturer
+    Then I should see the text "Nike"
+    When I update the view
+    And I apply the "Some shoes" view
+    Then I should be on the products page
+    And I should see the text "Some shoes"
+    And I should see products purple-sneakers and black-sneakers
+    And I should see the text "Nike"
+
   Scenario: Successfully delete a view
     Given I am on the products page
     And I filter by "family" with operator "in list" and value "Boots"
