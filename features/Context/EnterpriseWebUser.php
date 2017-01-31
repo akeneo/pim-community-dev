@@ -116,15 +116,9 @@ class EnterpriseWebUser extends BaseWebUser
             $tags = $this->convertCommaSeparatedToArray($tags);
         }
 
-        $select2 = $this->getCurrentPage()->findField($field);
-        $search  = $this->getCurrentPage()->find('css', '.select2-results');
+        $search = $this->getCurrentPage()->find('css', '.select2-results');
         foreach ($tags as $tag) {
-            $select2->click();
-            // Impossible to use NodeElement::setValue() since the Selenium2 implementation emulates the change event
-            // by hitting the TAB key, which results in closing select2 choices
-            $this->getSession()->executeScript(
-                sprintf('$(\'.select2-search-field .select2-input\').val(\'%s\').trigger(\'paste\');', $tag)
-            );
+            $this->iFillTheFollowingTextInTheSelect2($field, $tag);
 
             $item = $this->spin(function () use ($search, $tag) {
                 return $search->find(
@@ -134,6 +128,23 @@ class EnterpriseWebUser extends BaseWebUser
             });
             $item->click();
         }
+    }
+
+    /**
+     * @param $field
+     * @param $text
+     *
+     * @Given /^I fill the following text in the "([^"]+)" select2 : ([^"]+)$/
+     */
+    public function iFillTheFollowingTextInTheSelect2($field, $text)
+    {
+        $this->getCurrentPage()->findField($field)->click();
+
+        // Impossible to use NodeElement::setValue() since the Selenium2 implementation emulates the change event
+        // by hitting the TAB key, which results in closing select2 choices
+        $this->getSession()->executeScript(
+            sprintf('$(\'.select2-search-field .select2-input\').val(\'%s\').trigger(\'paste\');', $text)
+        );
     }
 
     /**
