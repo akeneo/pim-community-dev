@@ -199,15 +199,17 @@ Feature: Import attributes
       type;code;label-de_DE;label-en_US;label-fr_FR;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;available_locales;sort_order;max_characters;validation_rule;validation_regexp;wysiwyg_enabled;number_min;number_max;decimals_allowed;negative_allowed;date_min;date_max;metric_family;default_metric_unit;max_file_size;allowed_extensions
       pim_catalog_image;media_code;Meine große Code;My awesome code;Mon super code;marketing;0;1;;family;;;0;0;en_US,fr_FR;3;300;validation_rule;;1;3;5;true;true;2000-08-08;2015-08-08;;EUR;not an int;jpg
       pim_catalog_image;media_code;Meine große Code;My awesome code;Mon super code;not a group;0;1;;family;;;0;0;en_US,fr_FR;3;300;validation_rule;;1;3;5;true;true;2000-08-08;2015-08-08;;EUR;not an int;jpg
+      pim_catalog_image;media_code_2;Meine große Code;My awesome code;Mon super code;not a group;0;1;;family;;;0;0;en_US,fr_FR;3;300;validation_rule;;1;3;5;true;true;2000-08-08;2015-08-08;;EUR;not an int;jpg
       """
     And the following job "csv_footwear_attribute_import" configuration:
       | filePath | %file to import% |
     When I am on the "csv_footwear_attribute_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_attribute_import" job to finish
-    Then I should see "read lines 2"
-    Then I should see "skipped 2"
+    Then I should see "read lines 3"
+    Then I should see "skipped 3"
     Then I should see "maxFileSize: This value should be a valid number.: not an int"
+    Then I should see "An item with the identifier \"media_code\" has already been processed."
     Then I should see "Property \"group\" expects a valid code. The attribute group does not exist, \"not a group\" given (for updater attribute)."
 
   Scenario: Successfully import new attribute

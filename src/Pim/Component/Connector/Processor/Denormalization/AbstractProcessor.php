@@ -8,6 +8,7 @@ use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Component\Connector\BulkIdentifierBag;
 use Pim\Component\Connector\Exception\InvalidItemFromViolationsException;
 use Pim\Component\Connector\Exception\MissingIdentifierException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -123,5 +124,26 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface
             0,
             $previousException
         );
+    }
+
+    /**
+     * Stores an identifier in the bag "bulk_identifier_bag" in order to check duplications.
+     * The bag should be reset after each bulk is processed.
+     *
+     * @param array  $item
+     * @param string $identifier
+     */
+    protected function checkIdentifierDuplication(array $item, $identifier)
+    {
+        if (null === $bag = $this->stepExecution->getExecutionContext()->get('bulk_identifier_bag')) {
+            $bag = new BulkIdentifierBag();
+            $this->stepExecution->getExecutionContext()->put('bulk_identifier_bag', $bag);
+        }
+
+        if ($bag->has($identifier)) {
+            $this->skipItemWithMessage($item, sprintf('An item with the identifier "%s" has already been processed.'));
+        }
+
+        $bag->add($identifier);
     }
 }
