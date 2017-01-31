@@ -174,18 +174,6 @@ class ProductBuilder implements ProductBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function removeAttributeFromProduct(ProductInterface $product, AttributeInterface $attribute)
-    {
-        foreach ($product->getValues() as $value) {
-            if ($attribute === $value->getAttribute()) {
-                $product->removeValue($value);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function addPriceForCurrency(ProductValueInterface $value, $currency, $amount = null)
     {
         if (!$this->hasPriceForCurrency($value, $currency)) {

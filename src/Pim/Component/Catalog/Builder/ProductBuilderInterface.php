@@ -62,18 +62,6 @@ interface ProductBuilderInterface
     public function addAttributeToProduct(ProductInterface $product, AttributeInterface $attribute);
 
     /**
-     * Deletes values that link an attribute to a product
-     *
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     *
-     * @return bool
-     *
-     * @deprecated will be removed in 1.7
-     */
-    public function removeAttributeFromProduct(ProductInterface $product, AttributeInterface $attribute);
-
-    /**
      * Add a product price with currency and data to the value. If the price
      * already exists, its data is updated and it is returned.
      *
