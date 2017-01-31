@@ -5,7 +5,6 @@ namespace spec\PimEnterprise\Component\ActivityManager\Job\ProjectCalculation;
 use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
 use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\ProjectCalculationTasklet;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
-use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProductRepositoryInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -21,7 +20,6 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
     function let(
         ProductRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $projectRepository,
-        PreProcessingRepositoryInterface $preProcessingRepository,
         CalculationStepInterface $chainCalculationStep,
         SaverInterface $projectSaver,
         ObjectDetacherInterface $objectDetacher
@@ -30,7 +28,6 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
             $productRepository,
             $projectRepository,
             $chainCalculationStep,
-            $preProcessingRepository,
             $projectSaver,
             $objectDetacher
         );
@@ -57,7 +54,6 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
         $chainCalculationStep,
         $projectSaver,
         $objectDetacher,
-        $preProcessingRepository,
         StepExecution $stepExecution,
         ProjectInterface $project,
         ProductInterface $product,
@@ -75,6 +71,8 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
 
         $chainCalculationStep->execute($product, $project);
         $chainCalculationStep->execute($otherProduct, $project);
+
+        $stepExecution->incrementSummaryInfo('processed_products')->shouldBeCalledTimes(2);
 
         $objectDetacher->detach($product)->shouldBeCalled();
         $objectDetacher->detach($otherProduct)->shouldBeCalled();
