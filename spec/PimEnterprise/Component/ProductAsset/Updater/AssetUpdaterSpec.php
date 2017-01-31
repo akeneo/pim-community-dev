@@ -117,8 +117,7 @@ class AssetUpdaterSpec extends ObjectBehavior
                     'tags',
                     'tag code',
                     'The tag does not exist',
-                    'updater',
-                    'asset',
+                    'PimEnterprise\Component\ProductAsset\Updater\AssetUpdater',
                     'dog'
                 )
             )
@@ -160,8 +159,7 @@ class AssetUpdaterSpec extends ObjectBehavior
                     'categories',
                     'category code',
                     'The category does not exist',
-                    'updater',
-                    'asset',
+                    'PimEnterprise\Component\ProductAsset\Updater\AssetUpdater',
                     'cat1'
                 )
             )
@@ -212,8 +210,7 @@ class AssetUpdaterSpec extends ObjectBehavior
                 InvalidPropertyException::dateExpected(
                     'end_of_use',
                     'yyyy-mm-dd',
-                    'updater',
-                    'asset',
+                    'PimEnterprise\Component\ProductAsset\Updater\AssetUpdater',
                     '2018/02/01'
                 )
             )

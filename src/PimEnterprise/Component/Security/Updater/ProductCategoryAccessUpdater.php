@@ -88,8 +88,7 @@ class ProductCategoryAccessUpdater implements ObjectUpdaterInterface
                         'category',
                         'category code',
                         'The category does not exist',
-                        'updater',
-                        'product category access',
+                        static::class,
                         $data
                     );
                 }
@@ -102,8 +101,7 @@ class ProductCategoryAccessUpdater implements ObjectUpdaterInterface
                         'user_group',
                         'group code',
                         'The group does not exist',
-                        'updater',
-                        'product category access',
+                        static::class,
                         $data
                     );
                 }

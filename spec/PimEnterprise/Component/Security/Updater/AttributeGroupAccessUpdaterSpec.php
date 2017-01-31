@@ -75,8 +75,7 @@ class AttributeGroupAccessUpdaterSpec extends ObjectBehavior
                 'user_group',
                 'group code',
                 'The group does not exist',
-                'updater',
-                'attribute group access',
+                'PimEnterprise\Component\Security\Updater\AttributeGroupAccessUpdater',
                 'foo'
             )
         )->during('update', [$groupAccess, ['user_group' => 'foo']]);
@@ -93,8 +92,7 @@ class AttributeGroupAccessUpdaterSpec extends ObjectBehavior
                 'attribute_group',
                 'attribute group code',
                 'The attribute group does not exist',
-                'updater',
-                'attribute group access',
+                'PimEnterprise\Component\Security\Updater\AttributeGroupAccessUpdater',
                 'foo'
             )
         )->during('update', [$groupAccess, ['attribute_group' => 'foo']]);

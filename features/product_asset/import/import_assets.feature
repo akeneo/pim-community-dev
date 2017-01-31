@@ -176,7 +176,7 @@ Feature: Import assets
     When I am on the "csv_clothing_asset_import" import job page
     And I launch the import job
     And I wait for the "csv_clothing_asset_import" job to finish
-    Then I should see the text "Property \"end_of_use\" expects a string with the format \"yyyy-mm-dd\" as data, \"2006/05/12\" given (for updater asset)"
+    Then I should see the text "Property \"end_of_use\" expects a string with the format \"yyyy-mm-dd\" as data, \"2006/05/12\" given"
     And I should see the text "read lines 1"
     And I should see the text "Skipped 1"
 
@@ -197,8 +197,8 @@ Feature: Import assets
     Then I should see the text "read lines 2"
     And I should see the text "created 4"
     And I should see the text "skipped 2"
-    And I should see the text "Property \"categories\" expects a valid category code. The category does not exist, \"wrong\" given (for updater asset)."
-    And I should see the text "Property \"categories\" expects a valid category code. The category does not exist, \"not a category\" given (for updater asset)."
+    And I should see the text "Property \"categories\" expects a valid category code. The category does not exist, \"wrong\" given."
+    And I should see the text "Property \"categories\" expects a valid category code. The category does not exist, \"not a category\" given."
 
   Scenario: Import assets with several categories
     Given the "clothing" catalog configuration
@@ -239,7 +239,7 @@ Feature: Import assets
     And I wait for the "csv_clothing_asset_import" job to finish
     Then I should see the text "read lines 1"
     And I should see the text "skipped 1"
-    And I should see the text "Property \"categories\" expects a valid category code. The category does not exist, \"nonexistent\" given (for updater asset)."
+    And I should see the text "Property \"categories\" expects a valid category code. The category does not exist, \"nonexistent\" given."
 
   Scenario: Import assets with tags from XLSX
     Given the "clothing" catalog configuration

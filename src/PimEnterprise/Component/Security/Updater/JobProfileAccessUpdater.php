@@ -87,8 +87,7 @@ class JobProfileAccessUpdater implements ObjectUpdaterInterface
                         'job_profile',
                         'job profile code',
                         'The job profile does not exist',
-                        'updater',
-                        'job profile access',
+                        static::class,
                         $data
                     );
                 }
@@ -101,8 +100,7 @@ class JobProfileAccessUpdater implements ObjectUpdaterInterface
                         'user_group',
                         'group code',
                         'The group does not exist',
-                        'updater',
-                        'job profile access',
+                        static::class,
                         $data
                     );
                 }
