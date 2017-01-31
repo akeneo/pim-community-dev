@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -20,7 +21,8 @@ use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
  */
 class CategoryRepository extends NestedTreeRepository implements
     IdentifiableObjectRepositoryInterface,
-    CategoryRepositoryInterface
+    CategoryRepositoryInterface,
+    CursorableRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -415,6 +417,20 @@ class CategoryRepository extends NestedTreeRepository implements
         $queryBuilder = $queryBuilder->orderBy('c.root')->addOrderBy('c.left');
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * @param array $categoriesIds of the entities
+     *
+     * @return array
+     */
+    public function findByIds(array $categoriesIds)
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb->andWhere('c.id IN (:categories_ids)');
+        $qb->setParameter(':categories_ids', $categoriesIds);
+
+        return $qb->getQuery()->execute();
     }
 
     /**

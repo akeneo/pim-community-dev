@@ -1,6 +1,8 @@
 parameters:
     pim_catalog.query.product_query_builder_factory.class:      Pim\Component\Catalog\Query\ProductQueryBuilderFactory
+    pim_catalog.query.query_builder_factory.class:      Pim\Component\Catalog\Query\QueryBuilderFactory
     pim_catalog.query.product_query_builder.class:              Pim\Component\Catalog\Query\ProductQueryBuilder
+    pim_catalog.query.query_builder.class:              Pim\Component\Catalog\Query\QueryBuilder
     pim_catalog.query.filter.registry.class:                    Pim\Component\Catalog\Query\Filter\FilterRegistry
     pim_catalog.query.sorter.registry.class:                    Pim\Component\Catalog\Query\Sorter\SorterRegistry
     pim_catalog.query.filter.field_dumper.class:                Pim\Bundle\CatalogBundle\Command\ProductQueryHelp\FieldFilterDumper
@@ -18,6 +20,16 @@ services:
             - '@pim_catalog.object_manager.product'
             - '%pim_catalog.entity.product.class%'
             - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_cursor'
+
+    pim_catalog.query.category_query_builder_factory:
+        class: '%pim_catalog.query.query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.query_builder.class%'
+            - '@doctrine.orm.default_entity_manager'
+            - '%pim_catalog.entity.category.class%'
             - '@pim_catalog.query.filter.registry'
             - '@pim_catalog.query.sorter.registry'
             - '@pim_catalog.factory.product_cursor'
@@ -229,6 +241,14 @@ services:
     # PQB common sorter definitions (implement either in ORM or MongoDB ODM)
     pim_catalog.doctrine.query.sorter.base:
         class: '%pim_catalog.doctrine.query.sorter.base.class%'
+        tags:
+            - { name: 'pim_catalog.doctrine.query.sorter', priority: 20 }
+
+    pim_catalog.doctrine.query.category.sorter.base:
+        class: '%pim_catalog.doctrine.query.sorter.base.class%'
+        arguments:
+            - []
+            - ['root', 'left']
         tags:
             - { name: 'pim_catalog.doctrine.query.sorter', priority: 20 }
 

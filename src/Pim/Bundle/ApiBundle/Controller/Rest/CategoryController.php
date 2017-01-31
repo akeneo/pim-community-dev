@@ -12,6 +12,7 @@ use Pim\Bundle\CatalogBundle\Version;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\Query\QueryBuilderFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,6 +53,10 @@ class CategoryController
 
     /** @var string */
     protected $urlDocumentation;
+    /**
+     * @var QueryBuilderFactory
+     */
+    private $queryBuilderFactory;
 
     /**
      * @param CategoryRepositoryInterface $repository
@@ -62,6 +67,7 @@ class CategoryController
      * @param SaverInterface              $saver
      * @param RouterInterface             $router
      * @param string                      $urlDocumentation
+     * @param QueryBuilderFactory         $queryBuilderFactory
      */
     public function __construct(
         CategoryRepositoryInterface $repository,
@@ -71,7 +77,8 @@ class CategoryController
         ValidatorInterface $validator,
         SaverInterface $saver,
         RouterInterface $router,
-        $urlDocumentation
+        $urlDocumentation,
+        QueryBuilderFactory $queryBuilderFactory
     ) {
         $this->repository = $repository;
         $this->normalizer = $normalizer;
@@ -81,6 +88,8 @@ class CategoryController
         $this->saver = $saver;
         $this->router = $router;
         $this->urlDocumentation = sprintf($urlDocumentation, substr(Version::VERSION, 0, 3));
+        $this->urlDocumentation = $urlDocumentation;
+        $this->queryBuilderFactory = $queryBuilderFactory;
     }
 
     /**
@@ -110,6 +119,12 @@ class CategoryController
      */
     public function listAction(Request $request)
     {
+        $cqb = $this->queryBuilderFactory->create([]);
+        $cqb->addSorter('root', 'ASC')
+            ->addSorter('left', 'ASC');
+
+        $categories = $cqb->execute();
+
         //@TODO limit will be set in configuration in an other PR
         $limit = $request->query->get('limit', 10);
         $page = $request->query->get('page', 1);
@@ -117,8 +132,6 @@ class CategoryController
         //@TODO add parameterValidator to validate limit and page
 
         $offset = $limit * ($page - 1);
-
-        $categories = $this->repository->findBy([], ['root' => 'ASC', 'left' => 'ASC'], $limit, $offset);
 
         $categoriesStandard = $this->normalizer->normalize($categories, 'external_api');
 
