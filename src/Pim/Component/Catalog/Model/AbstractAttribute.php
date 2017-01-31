@@ -521,22 +521,10 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function getAvailableLocales()
-    {
-        return $this->availableLocales->isEmpty() ? null : $this->availableLocales;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getLocaleSpecificCodes()
     {
-        if ($this->getAvailableLocales() === null) {
-            return [];
-        }
-
         $codes = [];
-        foreach ($this->getAvailableLocales() as $locale) {
+        foreach ($this->availableLocales as $locale) {
             $codes[] = $locale->getCode();
         }
 
@@ -1013,9 +1001,11 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     public function isLocaleSpecific()
     {
-        $availableLocale = $this->getAvailableLocales();
-
-        return !empty($availableLocale);
+        if ($this->availableLocales->isEmpty()) {
+            return false;
+        } else {
+            return !empty($this->availableLocales);
+        }
     }
 
     /**
