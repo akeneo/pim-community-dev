@@ -3,16 +3,16 @@
 namespace Pim\Bundle\ApiBundle\tests\integration\EventSubscriber;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
+use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckHeadersRequestSubscriberIntegration extends TestCase
+class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
 {
     protected $purgeDatabaseForEachTest = false;
 
     public function testErrorIfAcceptHeaderIsXml()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/categories/master', [], [], ['HTTP_ACCEPT' => 'application/xml']);
 
@@ -26,7 +26,7 @@ class CheckHeadersRequestSubscriberIntegration extends TestCase
 
     public function testSuccessIfAcceptHeaderIsJson()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/categories/master', [], [], ['HTTP_ACCEPT' => 'application/json']);
 
@@ -36,7 +36,7 @@ class CheckHeadersRequestSubscriberIntegration extends TestCase
 
     public function testSuccessIfAcceptHeaderIsEmpty()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/categories/master');
 
@@ -46,7 +46,7 @@ class CheckHeadersRequestSubscriberIntegration extends TestCase
 
     public function testErrorIfContentTypeHeaderIsXml()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('POST', 'api/rest/v1/categories', [], [], [
             'CONTENT_TYPE' => 'application/xml',
@@ -62,7 +62,7 @@ class CheckHeadersRequestSubscriberIntegration extends TestCase
 
     public function testSuccessIfContentTypeHeaderIsJson()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('POST', 'api/rest/v1/categories', [], [], [
             'CONTENT_TYPE' => 'application/json',
@@ -74,7 +74,7 @@ class CheckHeadersRequestSubscriberIntegration extends TestCase
 
     public function testSuccessIfContentTypeHeaderIsEmpty()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('POST', 'api/rest/v1/categories', [], [], [
             'CONTENT_TYPE' => 'application/json'
@@ -86,7 +86,7 @@ class CheckHeadersRequestSubscriberIntegration extends TestCase
 
     public function testSuccessWhenRouteIsOutsideTheAPI()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', '/');
 

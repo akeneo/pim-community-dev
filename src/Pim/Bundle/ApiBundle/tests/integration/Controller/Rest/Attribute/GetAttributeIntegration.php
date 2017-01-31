@@ -3,14 +3,14 @@
 namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Rest\Attribute;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
+use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetAttributeIntegration extends TestCase
+class GetAttributeIntegration extends ApiTestCase
 {
     public function testGetAnAttribute()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/attributes/sku');
 
@@ -50,7 +50,7 @@ class GetAttributeIntegration extends TestCase
 
     public function testNotFoundAnAttribute()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/attributes/not_found');
 

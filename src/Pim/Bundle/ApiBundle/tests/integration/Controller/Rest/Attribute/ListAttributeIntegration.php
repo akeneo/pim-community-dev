@@ -3,14 +3,14 @@
 namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Rest\Attribute;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
+use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class ListAttributeIntegration extends TestCase
+class ListAttributeIntegration extends ApiTestCase
 {
     public function testListAttributes()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/attributes');
 
@@ -312,7 +312,7 @@ class ListAttributeIntegration extends TestCase
 
     public function testListAttributesWithLimitAndPage()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/attributes?limit=5&page=2');
         $standardAttributes = [
@@ -464,7 +464,7 @@ class ListAttributeIntegration extends TestCase
 
     public function testOutOfRangeListAttributes()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/attributes?limit=100&page=2');
 

@@ -3,14 +3,14 @@
 namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Rest\AttributeOption;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
+use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetAttributeOptionIntegration extends TestCase
+class GetAttributeOptionIntegration extends ApiTestCase
 {
     public function testGetAnAttributeOption()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/attributes/a_multi_select/options/optionA');
 
@@ -30,7 +30,7 @@ class GetAttributeOptionIntegration extends TestCase
 
     public function testNotFoundAnAttribute()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/attributes/not_found/options/not_found');
 
@@ -44,7 +44,7 @@ class GetAttributeOptionIntegration extends TestCase
 
     public function testNotSupportedOptionsAttribute()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/attributes/sku/options/sku');
 
@@ -61,7 +61,7 @@ class GetAttributeOptionIntegration extends TestCase
 
     public function testNotExistingOptionsAttribute()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/attributes/a_multi_select/options/not_existing_option');
         $response = $client->getResponse();
