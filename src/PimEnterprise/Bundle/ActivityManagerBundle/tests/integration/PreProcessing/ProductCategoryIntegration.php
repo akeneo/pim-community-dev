@@ -39,11 +39,14 @@ class ProductCategoryIntegration extends ActivityManagerTestCase
             ->getId();
 
         $sql = <<<SQL
-SELECT `product_category`.`product_id`, `product_category`.`category_id` FROM `pimee_activity_manager_product_category` AS `product_category`
-INNER JOIN `pimee_activity_manager_project_product` AS `project_product`
+SELECT `product_category`.`product_id`, `product_category`.`category_id` 
+FROM `@pim_catalog.entity.product#categories@` AS `product_category`
+INNER JOIN `@pimee_activity_manager.project_product@` AS `project_product`
 	ON `product_category`.`product_id` = `project_product`.`product_id`
 WHERE `project_id` = :project_id
 SQL;
+
+        $sql = $this->get('pimee_activity_manager.table_name_mapper')->createQuery($sql);
 
         $result = $this->getConnection()->fetchAll($sql, [
             'project_id' => $project->getId(),
