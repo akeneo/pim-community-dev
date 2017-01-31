@@ -35,11 +35,6 @@ services:
         tags:
             - { name: pim_versioning.update_guesser }
 
-    pim_versioning.update_guesser.product_value:
-        class: '%pim_versioning.update_guesser.product_value.class%'
-        tags:
-            - { name: pim_versioning.update_guesser }
-
     pim_versioning.update_guesser.translations:
         class: '%pim_versioning.update_guesser.translations.class%'
         arguments:
