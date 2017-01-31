@@ -116,7 +116,7 @@ class CategoryUpdaterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidPropertyTypeException::scalarExpected('code', 'update', 'category', [])
+                InvalidPropertyTypeException::scalarExpected('code', 'Akeneo\Component\Classification\Updater\CategoryUpdater', [])
             )
             ->during('update', [$category, $values, []]);
     }
@@ -129,7 +129,7 @@ class CategoryUpdaterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidPropertyTypeException::scalarExpected('parent', 'update', 'category', [])
+                InvalidPropertyTypeException::scalarExpected('parent', 'Akeneo\Component\Classification\Updater\CategoryUpdater', [])
             )
             ->during('update', [$category, $values, []]);
     }
@@ -142,7 +142,7 @@ class CategoryUpdaterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidPropertyTypeException::arrayExpected('labels', 'update', 'category', 'foo')
+                InvalidPropertyTypeException::arrayExpected('labels', 'Akeneo\Component\Classification\Updater\CategoryUpdater', 'foo')
             )
             ->during('update', [$category, $values, []]);
     }
@@ -161,8 +161,7 @@ class CategoryUpdaterSpec extends ObjectBehavior
                 InvalidPropertyTypeException::validArrayStructureExpected(
                     'labels',
                     'one of the labels is not a scalar',
-                    'update',
-                    'category',
+                    'Akeneo\Component\Classification\Updater\CategoryUpdater',
                     $values['labels']
                 )
             )

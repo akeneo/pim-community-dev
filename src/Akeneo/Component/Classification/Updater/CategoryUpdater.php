@@ -71,7 +71,7 @@ class CategoryUpdater implements ObjectUpdaterInterface
     {
         if ('labels' === $field) {
             if (!is_array($data)) {
-                throw InvalidPropertyTypeException::arrayExpected('labels', 'update', 'category', $data);
+                throw InvalidPropertyTypeException::arrayExpected('labels', static::class, $data);
             }
 
             foreach ($data as $localeCode => $label) {
@@ -79,15 +79,14 @@ class CategoryUpdater implements ObjectUpdaterInterface
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         'labels',
                         'one of the labels is not a scalar',
-                        'update',
-                        'category',
+                        static::class,
                         $data
                     );
                 }
             }
         } elseif (in_array($field, ['code', 'parent'])) {
             if (null !== $data && !is_scalar($data)) {
-                throw InvalidPropertyTypeException::scalarExpected($field, 'update', 'category', $data);
+                throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
             }
         } else {
             throw UnknownPropertyException::unknownProperty($field);

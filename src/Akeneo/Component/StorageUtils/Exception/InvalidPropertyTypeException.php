@@ -23,38 +23,43 @@ class InvalidPropertyTypeException extends ObjectUpdaterException
     /** @var mixed */
     protected $propertyValue;
 
+    /** @var string */
+    protected $className;
+
     /**
      * @param string          $propertyName
      * @param mixed           $propertyValue
+     * @param string          $className
      * @param string          $message
      * @param int             $code
      * @param \Exception|null $previous
      */
-    public function __construct($propertyName, $propertyValue, $message = '', $code = 0, \Exception $previous = null)
+    public function __construct($propertyName, $propertyValue, $className, $message = '', $code = 0, \Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
         $this->propertyName  = $propertyName;
         $this->propertyValue = $propertyValue;
+        $this->className = $className;
     }
 
     /**
      * Build an exception when the data is not a scalar value.
      *
      * @param string $propertyName
-     * @param string $action
-     * @param string $type
+     * @param string $className
      * @param mixed  $propertyValue a value that is not a scalar (array, object, null)
      *
      * @return InvalidPropertyTypeException
      */
-    public static function scalarExpected($propertyName, $action, $type, $propertyValue)
+    public static function scalarExpected($propertyName, $className, $propertyValue)
     {
-        $message = 'Property "%s" expects a scalar (for %s %s).';
+        $message = 'Property "%s" expects a scalar.';
 
         return new self(
             $propertyName,
+            $className,
             $propertyValue,
-            sprintf($message, $propertyName, $action, $type),
+            sprintf($message, $propertyName),
             self::SCALAR_EXPECTED_CODE
         );
     }
@@ -63,20 +68,20 @@ class InvalidPropertyTypeException extends ObjectUpdaterException
      * Build an exception when the data is not an array value.
      *
      * @param string $propertyName
-     * @param string $action
-     * @param string $type
+     * @param string $className
      * @param mixed  $propertyValue a value that is not an array (scalar, object, null)
      *
      * @return InvalidPropertyTypeException
      */
-    public static function arrayExpected($propertyName, $action, $type, $propertyValue)
+    public static function arrayExpected($propertyName, $className, $propertyValue)
     {
-        $message = 'Property "%s" expects an array (for %s %s).';
+        $message = 'Property "%s" expects an array.';
 
         return new self(
             $propertyName,
+            $className,
             $propertyValue,
-            sprintf($message, $propertyName, $action, $type),
+            sprintf($message, $propertyName),
             self::ARRAY_EXPECTED_CODE
         );
     }
@@ -87,20 +92,20 @@ class InvalidPropertyTypeException extends ObjectUpdaterException
      *
      * @param string $propertyName
      * @param string $because
-     * @param string $action
-     * @param string $type
+     * @param string $className
      * @param array  $propertyValue
      *
      * @return InvalidPropertyTypeExceptionn
      */
-    public static function validArrayStructureExpected($propertyName, $because, $action, $type, array $propertyValue)
+    public static function validArrayStructureExpected($propertyName, $because, $className, array $propertyValue)
     {
-        $message = 'Property "%s" expects a valid array, %s (for %s %s).';
+        $message = 'Property "%s" expects a valid array, %s.';
 
         return new self(
             $propertyName,
+            $className,
             $propertyValue,
-            sprintf($message, $propertyName, $because, $action, $type),
+            sprintf($message, $propertyName, $because),
             self::ARRAY_EXPECTED_CODE
         );
     }
