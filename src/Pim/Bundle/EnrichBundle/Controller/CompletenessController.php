@@ -63,7 +63,7 @@ class CompletenessController
      */
     public function completenessAction($id)
     {
-        $product = $this->productRepository->getFullProduct($id);
+        $product = $this->productRepository->find($id);
         $channels = $this->channelRepository->getFullChannels();
         $locales = $this->userContext->getUserLocales();
 
