@@ -10,7 +10,7 @@ class GetAttributeIntegration extends ApiTestCase
 {
     public function testGetAnAttribute()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/attributes/sku');
 
@@ -50,7 +50,7 @@ class GetAttributeIntegration extends ApiTestCase
 
     public function testNotFoundAnAttribute()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/attributes/not_found');
 

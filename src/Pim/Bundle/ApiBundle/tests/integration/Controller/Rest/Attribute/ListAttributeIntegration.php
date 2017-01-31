@@ -10,7 +10,7 @@ class ListAttributeIntegration extends ApiTestCase
 {
     public function testListAttributes()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/attributes');
 
@@ -312,7 +312,7 @@ class ListAttributeIntegration extends ApiTestCase
 
     public function testListAttributesWithLimitAndPage()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/attributes?limit=5&page=2');
         $standardAttributes = [
@@ -464,7 +464,7 @@ class ListAttributeIntegration extends ApiTestCase
 
     public function testOutOfRangeListAttributes()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/attributes?limit=100&page=2');
 

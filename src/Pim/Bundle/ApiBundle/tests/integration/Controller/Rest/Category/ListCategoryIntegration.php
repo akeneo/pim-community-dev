@@ -10,7 +10,7 @@ class ListCategoryIntegration extends ApiTestCase
 {
     public function testListCategories()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/categories');
 
@@ -57,7 +57,7 @@ class ListCategoryIntegration extends ApiTestCase
 
     public function testOutOfRangeListCategories()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/categories?limit=10&page=2');
 

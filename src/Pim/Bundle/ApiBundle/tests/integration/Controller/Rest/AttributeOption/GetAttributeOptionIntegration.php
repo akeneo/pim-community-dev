@@ -10,7 +10,7 @@ class GetAttributeOptionIntegration extends ApiTestCase
 {
     public function testGetAnAttributeOption()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/attributes/a_multi_select/options/optionA');
 
@@ -30,7 +30,7 @@ class GetAttributeOptionIntegration extends ApiTestCase
 
     public function testNotFoundAnAttribute()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/attributes/not_found/options/not_found');
 
@@ -44,7 +44,7 @@ class GetAttributeOptionIntegration extends ApiTestCase
 
     public function testNotSupportedOptionsAttribute()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/attributes/sku/options/sku');
 
@@ -61,7 +61,7 @@ class GetAttributeOptionIntegration extends ApiTestCase
 
     public function testNotExistingOptionsAttribute()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/attributes/a_multi_select/options/not_existing_option');
         $response = $client->getResponse();

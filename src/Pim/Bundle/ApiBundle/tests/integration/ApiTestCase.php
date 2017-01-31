@@ -22,14 +22,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 abstract class ApiTestCase extends WebTestCase
 {
+    const USERNAME = 'admin';
+    const PASSWORD = 'admin';
+
     /** @var int Count of executed tests inside the same test class */
     protected static $count = 0;
 
-    /** @var ContainerInterface */
-    protected $container;
+    /** @var string */
+    protected static $accessToken;
 
     /** @var string */
-    protected $accessToken;
+    protected static $refreshToken;
+
+    /** @var ContainerInterface */
+    protected $container;
 
     /**
      * {@inheritdoc}
@@ -37,6 +43,8 @@ abstract class ApiTestCase extends WebTestCase
     public static function setUpBeforeClass()
     {
         self::$count = 0;
+        self::$accessToken = null;
+        self::$refreshToken = null;
     }
 
     /**
@@ -75,47 +83,78 @@ abstract class ApiTestCase extends WebTestCase
      *
      * @return Client
      */
-    protected function createAuthentifiedClient(array $options = [], array $server = [])
+    protected function createAuthenticatedClient(array $options = [], array $server = [])
     {
-        if (null === $this->accessToken) {
-            $consoleApp = new Application(self::$kernel);
-            $consoleApp->setAutoExit(false);
+        if (null === self::$accessToken || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
+            list($clientId, $secret) = $this->createOAuthClient();
 
-            $input  = new ArrayInput(['command' => 'pim:oauth-server:create-client']);
-            $output = new BufferedOutput();
-
-            $consoleApp->run($input, $output);
-
-            $content = $output->fetch();
-            preg_match('/client_id: (.+)\nsecret: (.+)$/', $content, $matches);
-            $clientId = $matches[1];
-            $secret   = $matches[2];
-
-            $oauthClient = self::createClient();
-            $oauthClient->request('POST', 'api/oauth/v1/token',
-                [
-                    'username'   => 'admin',
-                    'password'   => 'admin',
-                    'grant_type' => 'password',
-                ],
-                [],
-                [
-                    'PHP_AUTH_USER' => $clientId,
-                    'PHP_AUTH_PW'   => $secret,
-                    'CONTENT_TYPE'  => 'application/json',
-                ]
-            );
-
-            $response = $oauthClient->getResponse();
-            $responseBody = json_decode($response->getContent(), true);
-            $this->accessToken = $responseBody['access_token'];
+            $tokens = $this->authenticate($clientId, $secret, static::USERNAME, static::PASSWORD);
+            self::$accessToken = $tokens[0];
+            self::$refreshToken = $tokens[1];
         }
 
         $client = self::createClient($options, $server);
-        $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer '.$this->accessToken);
+        $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer '.self::$accessToken);
         $client->setServerParameter('CONTENT_TYPE', 'application/json');
 
         return $client;
+    }
+
+    /**
+     * Creates a new OAuth client and returns its client id and secret.
+     *
+     * @return array
+     */
+    protected function createOAuthClient()
+    {
+        $consoleApp = new Application(self::$kernel);
+        $consoleApp->setAutoExit(false);
+
+        $input  = new ArrayInput(['command' => 'pim:oauth-server:create-client']);
+        $output = new BufferedOutput();
+
+        $consoleApp->run($input, $output);
+
+        $content = $output->fetch();
+        preg_match('/client_id: (.+)\nsecret: (.+)$/', $content, $matches);
+
+        return [$matches[1], $matches[2]];
+    }
+
+    /**
+     * Authenticates a user by calling the token route and returns the access token and the refresh token.
+     *
+     * @param string $clientId
+     * @param string $secret
+     * @param string $username
+     * @param string $password
+     *
+     * @return array
+     */
+    protected function authenticate($clientId, $secret, $username, $password)
+    {
+        $webClient = self::createClient();
+        $webClient->request('POST', 'api/oauth/v1/token',
+            [
+                'username'   => $username,
+                'password'   => $password,
+                'grant_type' => 'password',
+            ],
+            [],
+            [
+                'PHP_AUTH_USER' => $clientId,
+                'PHP_AUTH_PW'   => $secret,
+                'CONTENT_TYPE'  => 'application/json',
+            ]
+        );
+
+        $response = $webClient->getResponse();
+        $responseBody = json_decode($response->getContent(), true);
+
+        return [
+            $responseBody['access_token'],
+            $responseBody['refresh_token']
+        ];
     }
 
     /**

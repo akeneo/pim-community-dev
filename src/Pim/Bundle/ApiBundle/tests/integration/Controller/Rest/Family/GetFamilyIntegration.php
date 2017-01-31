@@ -10,7 +10,7 @@ class GetFamilyIntegration extends ApiTestCase
 {
     public function testGetAFamily()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/families/familyA');
         $standardFamily = [
@@ -94,7 +94,7 @@ class GetFamilyIntegration extends ApiTestCase
 
     public function testNotFoundFamily()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/families/not_found');
 

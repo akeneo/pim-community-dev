@@ -9,7 +9,7 @@ class GetProductIntegration extends AbstractProductTestCase
 {
     public function testGetACompleteProduct()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products/foo');
 
@@ -191,7 +191,7 @@ class GetProductIntegration extends AbstractProductTestCase
 
     public function testNotFoundAProduct()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products/not_found');
 

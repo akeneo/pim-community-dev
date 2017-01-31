@@ -11,7 +11,7 @@ class CreateAttributeIntegration extends ApiTestCase
 {
     public function testHttpHeadersInResponseWhenACategoryIsCreated()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -34,7 +34,7 @@ JSON;
 
     public function testFormatStandardWhenAnAttributeIsCreatedButUncompleted()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -87,7 +87,7 @@ JSON;
 
     public function testCompleteAttributeCreation()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -163,7 +163,7 @@ JSON;
 
     public function testResponseWhenContentIsNotValid()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data = '';
 
@@ -180,7 +180,7 @@ JSON;
 
     public function testResponseWhenAttributeCodeAlreadyExists()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -211,7 +211,7 @@ JSON;
 
     public function testResponseWhenAttributeCodeIsNotScalar()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -240,7 +240,7 @@ JSON;
 
     public function testResponseWhenAttributeGroupIsNotValid()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -271,7 +271,7 @@ JSON;
 
     public function testResponseWhenAttributeTypeIsEmpty()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -300,7 +300,7 @@ JSON;
 
     public function testResponseWhenAttributeTypeIsNotValid()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -331,7 +331,7 @@ JSON;
 
     public function testResponseWhenAPropertyIsNotExpected()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -363,7 +363,7 @@ JSON;
 
     public function testResponseWhenADateIsNotValid()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -394,7 +394,7 @@ JSON;
 
     public function testResponseWhenAvailableLocalesIsNotValid()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -423,7 +423,7 @@ JSON;
 
     public function testResponseWhenArrayExpectedValueHasAnInvalidStructure()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -454,7 +454,7 @@ JSON;
 
     public function testResponseWhenAllowedExtensionsIsNullCreation()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -484,7 +484,7 @@ JSON;
 
     public function testResponseWhenLabelsIsNull()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -514,7 +514,7 @@ JSON;
 
     public function testResponseWhenAvailableLocalesIsNull()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
