@@ -6,6 +6,7 @@
 - PIM-6062: Fix potential Unix commands injection
 - PIM-5085: Fix update of the normalized data on family update (mongodb)
 - PIM-6080: Fix simple and multi select removal on product export builder
+- PIM-6140: Fix 'equals to' filters on job tracker page
 
 # 1.6.9 (2017-01-17)
 
