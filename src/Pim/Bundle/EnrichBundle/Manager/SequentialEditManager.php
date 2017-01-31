@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Manager;
 
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository;
 use Pim\Bundle\EnrichBundle\Entity\SequentialEdit;
 use Pim\Bundle\EnrichBundle\Factory\SequentialEditFactory;
@@ -18,7 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SequentialEditManager implements SaverInterface, RemoverInterface
+class SequentialEditManager
 {
     /** @var SequentialEditRepository */
     protected $repository;
@@ -29,43 +27,21 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /** @var SaverInterface */
-    protected $saver;
-
-    /** @var RemoverInterface */
-    protected $remover;
-
     /**
      * Constructor
      *
      * @param SequentialEditRepository   $repository
      * @param SequentialEditFactory      $factory
      * @param ProductRepositoryInterface $productRepository
-     * @param SaverInterface             $saver
-     * @param RemoverInterface           $remover
      */
     public function __construct(
         SequentialEditRepository $repository,
         SequentialEditFactory $factory,
-        ProductRepositoryInterface $productRepository,
-        SaverInterface $saver,
-        RemoverInterface $remover
+        ProductRepositoryInterface $productRepository
     ) {
         $this->repository = $repository;
         $this->factory = $factory;
         $this->productRepository = $productRepository;
-        $this->saver = $saver;
-        $this->remover = $remover;
-    }
-
-    /**
-    * {@inheritdoc}
-    *
-    * @deprecated will be removed in 1.7 please use SaverInterface::save
-    */
-    public function save($object, array $options = [])
-    {
-        $this->saver->save($object, $options);
     }
 
     /**
@@ -79,16 +55,6 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
     public function createEntity(array $objectSet, UserInterface $user)
     {
         return $this->factory->create($objectSet, $user);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.7 please use RemoverInterface::remove
-     */
-    public function remove($object, array $options = [])
-    {
-        $this->remover->remove($object, $options);
     }
 
     /**

@@ -8,5 +8,3 @@ services:
             - '@pim_enrich.repository.sequential_edit'
             - '@pim_enrich.factory.sequential_edit'
             - '@pim_catalog.repository.product'
-            - '@pim_enrich.saver.sequential_edit'
-            - '@pim_enrich.remover.sequential_edit'
