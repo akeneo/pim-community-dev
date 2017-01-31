@@ -101,8 +101,7 @@ class CategoryUpdaterSpec extends ObjectBehavior
                     'parent',
                     'category code',
                     'The category does not exist',
-                    'updater',
-                    'category',
+                    'Akeneo\Component\Classification\Updater\CategoryUpdater',
                     'unknown'
                 )
             )
