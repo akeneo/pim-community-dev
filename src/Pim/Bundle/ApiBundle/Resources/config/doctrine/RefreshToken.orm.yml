@@ -14,3 +14,9 @@ Pim\Bundle\ApiBundle\Entity\RefreshToken:
                 user:
                     referencedColumnName: id
                     onDelete: CASCADE
+        client:
+            targetEntity: Pim\Bundle\ApiBundle\Entity\Client
+            joinColumns:
+                client:
+                    referencedColumnName: id
+                    onDelete: CASCADE
