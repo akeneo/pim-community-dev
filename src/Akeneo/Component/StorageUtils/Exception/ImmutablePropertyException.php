@@ -17,39 +17,49 @@ class ImmutablePropertyException extends ObjectUpdaterException
     /** @var string */
     protected $propertyValue;
 
+    /** @var string */
+    protected $className;
+
     /**
      * @param string          $propertyName
      * @param string          $propertyValue
+     * @param string          $className
      * @param string          $message
      * @param int             $code
      * @param \Exception|null $previous
      */
-    public function __construct($propertyName, $propertyValue, $message = '', $code = 0, \Exception $previous = null)
-    {
+    public function __construct(
+        $propertyName,
+        $propertyValue,
+        $className,
+        $message = '',
+        $code = 0,
+        \Exception $previous = null
+    ) {
         parent::__construct($message, $code, $previous);
+
         $this->propertyName  = $propertyName;
         $this->propertyValue = $propertyValue;
+        $this->className = $className;
     }
 
     /**
      * @param string $propertyName
      * @param string $propertyValue
-     * @param string $action
-     * @param string $type
+     * @param string $className
      *
      * @return ImmutablePropertyException
      */
-    public static function immutableProperty($propertyName, $propertyValue, $action, $type)
+    public static function immutableProperty($propertyName, $propertyValue, $className)
     {
         return new self(
             $propertyName,
             $propertyValue,
+            $className,
             sprintf(
-                'Property "%s" cannot be modified, "%s" given (for %s %s).',
+                'Property "%s" cannot be modified, "%s" given.',
                 $propertyName,
-                $propertyValue,
-                $action,
-                $type
+                $propertyValue
             )
         );
     }
@@ -68,5 +78,13 @@ class ImmutablePropertyException extends ObjectUpdaterException
     public function getPropertyValue()
     {
         return $this->propertyValue;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClassName()
+    {
+        return $this->className;
     }
 }

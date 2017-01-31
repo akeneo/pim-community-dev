@@ -139,8 +139,7 @@ class CategoryUpdater implements ObjectUpdaterInterface
                 'parent',
                 'category code',
                 'The category does not exist',
-                'updater',
-                'category',
+                static::class,
                 $data
             );
         }

@@ -81,8 +81,7 @@ class MultiSelectAttributeSetterSpec extends ObjectBehavior
             InvalidArgumentException::arrayStringValueExpected(
                 'attributeCode',
                 'foo',
-                'setter',
-                'multi select',
+                'Pim\Component\Catalog\Updater\Setter\MultiSelectAttributeSetter',
                 'array'
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -107,8 +106,7 @@ class MultiSelectAttributeSetterSpec extends ObjectBehavior
                 'attributeCode',
                 'code',
                 'The option does not exist',
-                'setter',
-                'multi select',
+                'Pim\Component\Catalog\Updater\Setter\MultiSelectAttributeSetter',
                 'unknown code'
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);

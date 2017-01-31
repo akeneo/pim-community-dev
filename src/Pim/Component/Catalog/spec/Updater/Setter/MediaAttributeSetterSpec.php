@@ -90,7 +90,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $data = new \stdClass();
 
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected('attributeCode', 'setter', 'media', gettype($data))
+            InvalidArgumentException::stringExpected('attributeCode', 'Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter', gettype($data))
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
@@ -106,8 +106,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'attributeCode',
                 'a valid pathname',
-                'setter',
-                'media',
+                'Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter',
                 'path/to/unknown/file'
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);

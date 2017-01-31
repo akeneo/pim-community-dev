@@ -50,7 +50,7 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'multi-select');
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
         $this->checkData($attribute, $data);
 
         $attributeOptions = [];
@@ -61,8 +61,7 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
                     $attribute->getCode(),
                     'code',
                     'The option does not exist',
-                    'remover',
-                    'multi select',
+                    static::class,
                     $optionCode
                 );
             }
@@ -107,8 +106,7 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $attribute->getCode(),
-                'remover',
-                'multi select',
+                static::class,
                 gettype($data)
             );
         }
@@ -118,8 +116,7 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
                 throw InvalidArgumentException::arrayStringValueExpected(
                     $attribute->getCode(),
                     $key,
-                    'remover',
-                    'multi select',
+                    static::class,
                     gettype($value)
                 );
             }

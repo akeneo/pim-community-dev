@@ -52,7 +52,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
         switch ($operator) {
             case Operators::SINCE_LAST_JOB:
                 if (!is_string($value)) {
-                    throw InvalidArgumentException::stringExpected($field, 'filter', 'updated', gettype($value));
+                    throw InvalidArgumentException::stringExpected($field, static::class, gettype($value));
                 }
 
                 $this->addUpdatedSinceLastJob($field, $value);
@@ -60,7 +60,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
 
             case Operators::SINCE_LAST_N_DAYS:
                 if (!is_numeric($value)) {
-                    throw InvalidArgumentException::numericExpected($field, 'filter', 'updated', gettype($value));
+                    throw InvalidArgumentException::numericExpected($field, static::class, gettype($value));
                 }
 
                 $this->addSinceLastNDays($field, $value);
@@ -162,8 +162,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
             throw InvalidArgumentException::expected(
                 $type,
                 'array with 2 elements, string or \DateTime',
-                'filter',
-                'date',
+                static::class,
                 print_r($value, true)
             );
         }
@@ -207,8 +206,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
                 throw InvalidArgumentException::expected(
                     $type,
                     'a string with the format yyyy-mm-dd H:i:s',
-                    'filter',
-                    'date',
+                    static::class,
                     $value
                 );
             }
@@ -219,8 +217,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
         throw InvalidArgumentException::expected(
             $type,
             'array with 2 elements, string or \DateTime',
-            'filter',
-            'date',
+            static::class,
             print_r($value, true)
         );
     }

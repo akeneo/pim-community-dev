@@ -48,8 +48,7 @@ class GroupFieldSetter extends AbstractFieldSetter
                 throw InvalidArgumentException::expected(
                     $field,
                     'existing group code',
-                    'setter',
-                    'groups',
+                    static::class,
                     $groupCode
                 );
             } else {
@@ -78,8 +77,7 @@ class GroupFieldSetter extends AbstractFieldSetter
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $field,
-                'setter',
-                'groups',
+                static::class,
                 gettype($data)
             );
         }
@@ -89,8 +87,7 @@ class GroupFieldSetter extends AbstractFieldSetter
                 throw InvalidArgumentException::arrayStringValueExpected(
                     $field,
                     $key,
-                    'setter',
-                    'groups',
+                    static::class,
                     gettype($value)
                 );
             }

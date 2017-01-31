@@ -43,10 +43,10 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'number');
+        $this->checkLocaleAndScope($attribute, $locale, $scope);
 
         if (null !== $value && !is_numeric($value)) {
-            throw InvalidArgumentException::numericExpected($attribute->getCode(), 'filter', 'number', gettype($value));
+            throw InvalidArgumentException::numericExpected($attribute->getCode(), static::class, gettype($value));
         }
 
         $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());

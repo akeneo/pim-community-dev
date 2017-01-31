@@ -15,4 +15,4 @@ pim_dashboard:
     completeness:
       load_more: 'Carrega''n més...'
     header:
-      view_all: Mostra tots
+      view_all: Veure tots

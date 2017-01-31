@@ -126,8 +126,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
                 'group',
                 'code',
                 'The attribute group does not exist',
-                'updater',
-                'attribute',
+                'Pim\Component\Catalog\Updater\AttributeUpdater',
                 'marketing'
             )
         )->during(
@@ -139,11 +138,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
     function it_throws_an_exception_if_it_attribute_type_is_empty(AttributeInterface $attribute)
     {
         $this->shouldThrow(
-            InvalidPropertyException::valueNotEmptyExpected(
-                'attribute_type',
-                'updater',
-                'attribute'
-            )
+            InvalidPropertyException::valueNotEmptyExpected('attribute_type', 'Pim\Component\Catalog\Updater\AttributeUpdater')
         )->during(
             'update',
             [$attribute, ['attribute_type' => '']]
@@ -159,8 +154,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
                 'attribute_type',
                 'attribute type',
                 'The attribute type does not exist',
-                'updater',
-                'attribute',
+                'Pim\Component\Catalog\Updater\AttributeUpdater',
                 'unknown_type'
             )
         )->during('update', [$attribute, ['attribute_type' => 'unknown_type']]);
@@ -172,8 +166,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
             InvalidPropertyException::dateExpected(
                 'date_min',
                 'yyyy-mm-dd',
-                'updater',
-                'attribute',
+                'Pim\Component\Catalog\Updater\AttributeUpdater',
                 'not a date'
             )
         )->during(
@@ -188,8 +181,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
             InvalidPropertyException::dateExpected(
                 'date_min',
                 'yyyy-mm-dd',
-                'updater',
-                'attribute',
+                'Pim\Component\Catalog\Updater\AttributeUpdater',
                 '45/45/2016'
             )
         )->during(
@@ -204,8 +196,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
             InvalidPropertyException::dateExpected(
                 'date_min',
                 'yyyy-mm-dd',
-                'updater',
-                'attribute',
+                'Pim\Component\Catalog\Updater\AttributeUpdater',
                 '2016/12/12'
             )
         )->during(
@@ -239,8 +230,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
                 'available_locales',
                 'locale code',
                 'The locale does not exist',
-                'updater',
-                'attribute',
+                'Pim\Component\Catalog\Updater\AttributeUpdater',
                 'foo'
             )
         )->during('update', [$attribute, $values, []]);

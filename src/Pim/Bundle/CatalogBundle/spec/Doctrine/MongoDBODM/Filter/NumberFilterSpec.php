@@ -153,7 +153,7 @@ class NumberFilterSpec extends ObjectBehavior
     {
         $attribute->getCode()->willReturn('number_code');
 
-        $this->shouldThrow(InvalidArgumentException::numericExpected('number_code', 'filter', 'number', gettype('WRONG')))
+        $this->shouldThrow(InvalidArgumentException::numericExpected('number_code', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\NumberFilter', gettype('WRONG')))
             ->during('addAttributeFilter', [$attribute, '=', 'WRONG']);
     }
 }

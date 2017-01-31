@@ -70,7 +70,11 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         $data = 'not an array';
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'prices collection', gettype($data))
+            InvalidArgumentException::arrayExpected(
+                'attributeCode',
+                'Pim\Component\Catalog\Updater\Setter\PriceCollectionAttributeSetter',
+                gettype($data)
+            )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
@@ -85,8 +89,7 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::arrayOfArraysExpected(
                 'attributeCode',
-                'setter',
-                'prices collection',
+                'Pim\Component\Catalog\Updater\Setter\PriceCollectionAttributeSetter',
                 gettype($data)
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -104,8 +107,7 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
             InvalidArgumentException::arrayKeyExpected(
                 'attributeCode',
                 'amount',
-                'setter',
-                'prices collection',
+                'Pim\Component\Catalog\Updater\Setter\PriceCollectionAttributeSetter',
                 print_r($data, true)
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -123,8 +125,7 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
             InvalidArgumentException::arrayKeyExpected(
                 'attributeCode',
                 'currency',
-                'setter',
-                'prices collection',
+                'Pim\Component\Catalog\Updater\Setter\PriceCollectionAttributeSetter',
                 print_r($data, true)
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);

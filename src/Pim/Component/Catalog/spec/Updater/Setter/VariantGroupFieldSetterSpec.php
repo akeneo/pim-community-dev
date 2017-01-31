@@ -37,8 +37,7 @@ class VariantGroupFieldSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::stringExpected(
                 'variant_group',
-                'setter',
-                'variant_group',
+                'Pim\Component\Catalog\Updater\Setter\VariantGroupFieldSetter',
                 'array'
             )
         )->during('setFieldData', [$product, 'variant_group', ['not a string']]);
@@ -85,8 +84,7 @@ class VariantGroupFieldSetterSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'variant_group',
                 'variant group code',
-                'setter',
-                'variant_group',
+                'Pim\Component\Catalog\Updater\Setter\VariantGroupFieldSetter',
                 'pack'
             )
         )->during('setFieldData', [$product, 'variant_group', 'pack']);
@@ -106,8 +104,7 @@ class VariantGroupFieldSetterSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'variant_group',
                 'existing variant group code',
-                'setter',
-                'variant_group',
+                'Pim\Component\Catalog\Updater\Setter\VariantGroupFieldSetter',
                 'not valid code'
             )
         )->during('setFieldData', [$product, 'variant_group', 'not valid code']);

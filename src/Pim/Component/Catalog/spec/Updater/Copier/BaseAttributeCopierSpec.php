@@ -358,7 +358,7 @@ class BaseAttributeCopierSpec extends ObjectBehavior
         $fromAttribute->isLocalizable()->willReturn(true);
         $attrValidatorHelper->validateLocale($fromAttribute, null)->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'base')
+            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'Pim\Component\Catalog\Updater\Copier\BaseAttributeCopier')
         )->during('copyAttributeData', [$product, $product, $fromAttribute, $toAttribute, []]);
     }
 
@@ -373,7 +373,7 @@ class BaseAttributeCopierSpec extends ObjectBehavior
         $fromAttribute->isLocalizable()->willReturn(false);
         $attrValidatorHelper->validateLocale($fromAttribute, 'en_US')->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'base')
+            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'Pim\Component\Catalog\Updater\Copier\BaseAttributeCopier')
         )->during(
             'copyAttributeData',
             [$product, $product, $fromAttribute, $toAttribute, ['from_locale' => 'en_US', 'from_scope' => 'ecommerce']]
@@ -391,7 +391,7 @@ class BaseAttributeCopierSpec extends ObjectBehavior
         $fromAttribute->isLocalizable()->willReturn(true);
         $attrValidatorHelper->validateLocale($fromAttribute, 'uz-UZ')->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'base')
+            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'Pim\Component\Catalog\Updater\Copier\BaseAttributeCopier')
         )->during(
             'copyAttributeData',
             [$product, $product, $fromAttribute, $toAttribute, ['from_locale' => 'uz-UZ', 'from_scope' => 'ecommerce']]
@@ -411,7 +411,7 @@ class BaseAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($fromAttribute, null)->shouldBeCalled();
         $attrValidatorHelper->validateScope($fromAttribute, null)->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'base')
+            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'Pim\Component\Catalog\Updater\Copier\BaseAttributeCopier')
         )->during(
             'copyAttributeData',
             [$product, $product, $fromAttribute, $toAttribute, ['from_locale' => null, 'from_scope' => null]]
@@ -431,7 +431,7 @@ class BaseAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($fromAttribute, null)->shouldBeCalled();
         $attrValidatorHelper->validateScope($fromAttribute, 'ecommerce')->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'base')
+            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'Pim\Component\Catalog\Updater\Copier\BaseAttributeCopier')
         )->during(
             'copyAttributeData',
             [$product, $product, $fromAttribute, $toAttribute, ['from_locale' => null, 'from_scope' => 'ecommerce']]
@@ -451,7 +451,7 @@ class BaseAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($fromAttribute, null)->shouldBeCalled();
         $attrValidatorHelper->validateScope($fromAttribute, 'ecommerce')->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'base')
+            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'Pim\Component\Catalog\Updater\Copier\BaseAttributeCopier')
         )->during(
             'copyAttributeData',
             [$product, $product, $fromAttribute, $toAttribute, ['from_locale' => null, 'from_scope' => 'ecommerce']]

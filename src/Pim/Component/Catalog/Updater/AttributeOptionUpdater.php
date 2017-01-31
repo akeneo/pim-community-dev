@@ -88,8 +88,7 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
                     'attribute',
                     'attribute code',
                     'The attribute does not exist',
-                    'updater',
-                    'attribute option',
+                    static::class,
                     $data
                 );
             }

@@ -1,7 +1,7 @@
 confirmation:
   remove:
-    item: Tem a certeza que pretende eliminar este item?
-    association type: Tem certeza que deseja eliminar este tipo de associação?
+    item: Tem a certeza que pretende remover este item?
+    association_type: Tem certeza que deseja eliminar este tipo de associação?
     attribute: Tem certeza que deseja eliminar este atributo?
     family: Tem certeza que deseja eliminar esta família?
     product: Tem certeza que deseja eliminar este produto?
@@ -22,10 +22,15 @@ pim_datagrid:
       confirm_content: Tem certeza que deseja eliminar os produtos selecionados?
       success: Produtos selecionados eliminados com sucesso.
       error: Ocorreu um erro ao tentar eliminar os produtos seleccionados, por favor tente novamente.
+  view_selector:
+    view: Visualizações
+    create_view_modal:
+      confirm: OK
+      cancel: Cancelar
 flash:
   item:
     removed: Item removido com sucesso
-  association type:
+  association_type:
     removed: Tipo de associação removido com sucesso
   attribute:
     removed: Atributo removido com sucesso
@@ -52,7 +57,7 @@ flash:
 error:
   removing:
     item: Não é possível eliminar este item
-    association type: Não é possível eliminar este tipo de associação
+    association_type: Não é possível eliminar este tipo de associação
     attribute: Não é possível eliminar este atributo
     family: Não é possível eliminar esta família
     product: Não é possível eliminar este produto
@@ -132,7 +137,6 @@ pim_enrich:
         from: De
         modified: Modificado
         property: Propriedade
-        actions: Ações
       info:
         deletion_successful: Produto eliminado com sucesso.
         deletion_failed: Não foi possível eliminar o produto.
@@ -185,6 +189,26 @@ pim_enrich:
           family: Escolha uma família
           save: Guardar
           cancel: Cancelar
+    association_type:
+      info:
+        field_not_ready:
+          The association type cannot be saved right now. The following fields are not ready:
+            - campos
+      meta:
+        created: Criado
+        updated: Atualizado
+      btn:
+        save: Guardar
+    channel:
+      info:
+        field_not_ready:
+          The channel cannot be saved right now. The following fields are not ready:
+            - campos
+      meta:
+        created: Criado
+        updated: Atualizado
+      btn:
+        save: Guardar
     attribute_option:
       code: Código
       label: Rótulo
@@ -195,6 +219,18 @@ pim_enrich:
             - campos
         already_in_upload: Um ficheiro já se encntra em upload para este atributo na linguagem "{{ locale }}" e âmbito "{{ scope }}"
         no_attributes: Este grupo variante ainda não tem atributos
+      btn:
+        save: Guardar
+      meta:
+        product_count: Produtos
+        created: Criado
+        updated: Atualizado
+    group:
+      title: Grupo
+      info:
+        field_not_ready:
+          The group cannot be saved right now. The following fields are not ready:
+            - campos
       btn:
         save: Guardar
       meta:
@@ -269,6 +305,30 @@ pim_enrich:
       mass_edit:
         select_attributes: Selecionar atributos
         select: Selecionar
+    association_type:
+      tab:
+        properties:
+          title: Propriedades
+          general: Propriedades gerais
+          code: Código
+          label_translations: Traduções de rótulo
+        history:
+          title: Histórico
+    channel:
+      tab:
+        history:
+          title: Histórico
+        properties:
+          title: Propriedades
+          general: Geral
+          code: Código
+          currencies: Moedas
+          locales: Linguagens
+          category_tree: Árvore de categoria
+          label_translations: Traduções de rótulo
+          label_conversion_units: Escolher uma unidade de conversão para cada atributo métrico que será usado durante a exportação de produto
+          conversion_unit:
+            do_not_convert: Não converter
     attribute_option:
       flash:
         option_created: Opção de atributo criada com sucesso
@@ -296,6 +356,18 @@ pim_enrich:
           title: Produtos
         attributes:
           title: Atributos
+    group:
+      tab:
+        properties:
+          title: Propriedades
+          general: Propriedades gerais
+          code: Código
+          type: Tipo
+          label_translations: Traduções de rótulo
+        history:
+          title: Histórico
+        products:
+          title: Produtos
     common:
       tab:
         attributes:
@@ -305,6 +377,71 @@ pim_enrich:
           info:
             search_attributes: Pesquisar...
             no_available_attributes: Não há mais atributos para adicionar
+    job_instance:
+      button:
+        edit.title: Editar
+        export.title: Exportar agora
+        import.launch: Importar agora
+        import.upload: Enviar e importar agora
+      meta:
+        job: Tarefa
+        connector: Conector
+      tab:
+        content:
+          title: Conteúdo
+        properties:
+          title: Propriedades gerais
+          code:
+            title: Código
+          label:
+            title: Rótulo
+          decimal_separator:
+            title: Separador decimal
+            help: Determinar o separador decimal
+          date_format:
+            title: Formato de data
+            help: Determinar o formato dos campos de data
+          file_path:
+            title: Caminho do ficheiro
+            help: Onde escrever o ficheiro gerado no sistema de ficheiros
+          delimiter:
+            title: Delimitador
+            help: Um carácter usado para definir o delimitador de campo
+          enclosure:
+            title: Invólucro
+            help: Caractere usado para definir o invólucro do campo
+          with_header:
+            title: Com o cabeçalho
+            help: Imprimir ou não o nome da coluna
+          lines_per_file:
+            title: Número de linhas por ficheiro
+            help: Definir o número limite de linhas por ficheiro
+          upload_allowed:
+            title: Permitir o upload do ficheiro
+            help: Deve ou não permitir o upload to ficheiro diretamente
+          categories_column:
+            title: Coluna das categorias
+            help: Nome da coluna das categorias
+          escape:
+            title: Escape
+            help: Um caractere usado para definir o campo de escape
+          family_column:
+            title: Coluna da família
+            help: Nome da coluna da família
+          groups_column:
+            title: Coluna dos groupos
+            help: Nome da coluna dos grupos
+          enabled:
+            title: Ativar o produto
+            help: Ativar ou não o produto importado
+          enabled_comparison:
+            title: Comparar valores
+            help: Permitir a comparação entre os valores originais e importados. Pode acelerar a importação se os valores importados forem muito semelhantes aos valores originais
+          real_time_versioning:
+            title: Atulização do histórico a tempo real
+            help: Signifca que a história do produto é atualizada automaticmente, pode ser desligado para melhorar a performance
+        history:
+          title: Histórico
   export:
     product:
       structure:
@@ -348,6 +485,10 @@ pim_enrich:
         string:
           operators:
             ALL: Tudo
+      properties:
+        title: Propriedades
+      global_settings:
+        title: Definições Gerais
   mass_edit_action:
     edit_common_attributes:
       description: Os atributos dos produtos selecionados serão editados com os seguintes dados para a linguagem <span class="highlight">{{ locale }}</span> e o canal <span class="highlight">{{ channel }}</span>, escolhidos na grelha de produtos.

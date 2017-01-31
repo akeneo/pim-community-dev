@@ -334,7 +334,12 @@ class DateFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('release_date');
 
         $this->shouldThrow(
-            InvalidArgumentException::expected('release_date', 'array with 2 elements, string or \DateTime', 'filter', 'date', print_r(123, true))
+            InvalidArgumentException::expected(
+                'release_date',
+                'array with 2 elements, string or \DateTime',
+                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateFilter',
+                print_r(123, true)
+            )
         )->during('addAttributeFilter', [$attribute, '>', 123]);
     }
 
@@ -343,7 +348,12 @@ class DateFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('release_date');
 
         $this->shouldThrow(
-            InvalidArgumentException::expected('release_date', 'a string with the format yyyy-mm-dd', 'filter', 'date', 'not a valid date format')
+            InvalidArgumentException::expected(
+                'release_date',
+                'a string with the format yyyy-mm-dd',
+                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateFilter',
+                'not a valid date format'
+            )
         )->during('addAttributeFilter', [$attribute, '>', ['not a valid date format', 'WRONG']]);
     }
 
@@ -355,8 +365,7 @@ class DateFilterSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'release_date',
                 'array with 2 elements, string or \DateTime',
-                'filter',
-                'date',
+                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateFilter',
                 123
             )
         )->during('addAttributeFilter', [$attribute, '>', [123, 123]]);
@@ -370,8 +379,7 @@ class DateFilterSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'release_date',
                 'array with 2 elements, string or \DateTime',
-                'filter',
-                'date',
+                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateFilter',
                 print_r([123, 123, 'three'], true)
             )
         )->during('addAttributeFilter', [$attribute, '>', [123, 123, 'three']]);

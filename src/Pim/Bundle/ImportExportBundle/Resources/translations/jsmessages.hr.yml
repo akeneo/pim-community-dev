@@ -1,6 +1,6 @@
 job_execution:
   summary:
-    display_item: Prikaz stavke
+    display_item: Prikaži stavku
     hide_item: Sakrij stavku
 pim_connector:
   export:

@@ -36,8 +36,7 @@ class CategoryFieldSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::arrayExpected(
                 'categories',
-                'setter',
-                'category',
+                'Pim\Component\Catalog\Updater\Setter\CategoryFieldSetter',
                 'string'
             )
         )->during('setFieldData', [$product, 'categories', 'not an array']);
@@ -46,8 +45,7 @@ class CategoryFieldSetterSpec extends ObjectBehavior
             InvalidArgumentException::arrayStringValueExpected(
                 'categories',
                 0,
-                'setter',
-                'category',
+                'Pim\Component\Catalog\Updater\Setter\CategoryFieldSetter',
                 'array'
             )
         )->during('setFieldData', [$product, 'categories', [['array of array']]]);
@@ -86,8 +84,7 @@ class CategoryFieldSetterSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'categories',
                 'existing category code',
-                'setter',
-                'category',
+                'Pim\Component\Catalog\Updater\Setter\CategoryFieldSetter',
                 'non valid category code'
             )
         )->during('setFieldData', [$product, 'categories', ['mug', 'non valid category code']]);

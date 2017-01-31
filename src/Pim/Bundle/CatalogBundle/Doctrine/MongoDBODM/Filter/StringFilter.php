@@ -57,8 +57,7 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
             throw InvalidArgumentException::expectedFromPreviousException(
                 $e,
                 $attribute->getCode(),
-                'filter',
-                'string'
+                static::class
             );
         }
 
@@ -165,7 +164,7 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected function checkScalarValue($field, $value)
     {
         if (!is_string($value) && null !== $value) {
-            throw InvalidArgumentException::stringExpected($field, 'filter', 'string', gettype($value));
+            throw InvalidArgumentException::stringExpected($field, static::class, gettype($value));
         }
     }
 

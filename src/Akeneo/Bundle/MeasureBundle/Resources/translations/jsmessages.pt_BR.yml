@@ -18,8 +18,8 @@ SQUARE_MILE: Milha quadrada
 SQUARE_MILLIMETER: Milímetro quadrado
 SQUARE_YARD: Jarda quadrada
 Binary: Binário
-BIT: Bit
-BYTE: Byte
+BIT: Bit (0-1)
+BYTE: Byte (B)
 KILOBYTE: Kilobyte (KB)
 MEGABYTE: Megabyte (MB)
 GIGABYTE: Gigabyte (GB)

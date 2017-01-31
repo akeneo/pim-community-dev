@@ -48,9 +48,11 @@ class CategoryFieldRemoverSpec extends ObjectBehavior
         $categoryRepository->findOneByIdentifier('unknown_category')->willReturn(null);
 
         $this->shouldThrow(
-            new InvalidArgumentException(
-                'Attribute or field "categories" expects existing category code as data, "unknown_category" given (for remover category).',
-                InvalidArgumentException::EXPECTED_CODE
+            InvalidArgumentException::expected(
+                'categories',
+                'existing category code',
+                'Pim\Component\Catalog\Updater\Remover\CategoryFieldRemover',
+                'unknown_category'
             )
         )->duringRemoveFieldData($bookProduct, 'categories', ['unknown_category']);
     }
@@ -58,16 +60,19 @@ class CategoryFieldRemoverSpec extends ObjectBehavior
     function it_throws_an_exception_if_data_are_invalid(ProductInterface $bookProduct)
     {
         $this->shouldThrow(
-            new InvalidArgumentException(
-                'Attribute or field "categories" expects an array as data, "string" given (for remover category).',
-                InvalidArgumentException::ARRAY_EXPECTED_CODE
+            InvalidArgumentException::arrayExpected(
+                'categories',
+                'Pim\Component\Catalog\Updater\Remover\CategoryFieldRemover',
+                'string'
             )
         )->duringRemoveFieldData($bookProduct, 'categories', 'category_code');
 
         $this->shouldThrow(
-            new InvalidArgumentException(
-                'Attribute or field "categories" expects an array with a string value for the key "0", "integer" given (for remover category).',
-                InvalidArgumentException::ARRAY_STRING_VALUE_EXPECTED_CODE
+            InvalidArgumentException::arrayStringValueExpected(
+                'categories',
+                0,
+                'Pim\Component\Catalog\Updater\Remover\CategoryFieldRemover',
+                'integer'
             )
         )->duringRemoveFieldData($bookProduct, 'categories', [42]);
     }

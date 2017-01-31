@@ -129,8 +129,7 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
                     'attributes',
                     'attribute code',
                     'The attribute does not exist',
-                    'updater',
-                    'attribute group',
+                    static::class,
                     $attributeCode
                 );
             }

@@ -105,8 +105,7 @@ class ReferenceDataSetterSpec extends ObjectBehavior
             'lace_fabric',
             'code',
             'No reference data "customMaterials" with code "hulk_retriever" has been found',
-            'setter',
-            'reference data',
+            'Pim\Component\ReferenceData\Updater\Setter\ReferenceDataSetter',
             'hulk_retriever'
         );
 

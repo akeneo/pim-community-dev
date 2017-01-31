@@ -47,8 +47,8 @@ Feature: Import categories
     When I am on the "csv_footwear_category_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_category_import" job to finish
-    Then I should see "Property \"parent\" expects a valid category code. The category does not exist, \"clothes\" given (for updater category)."
-    And I should see "Property \"parent\" expects a valid category code. The category does not exist, \"tshirts\" given (for updater category)."
+    Then I should see "Property \"parent\" expects a valid category code. The category does not exist, \"clothes\" given."
+    And I should see "Property \"parent\" expects a valid category code. The category does not exist, \"tshirts\" given."
     And there should be the following categories:
       | code        | label       | parent    |
       | computers   | Computers   |           |
