@@ -245,7 +245,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidPropertyTypeException::scalarExpected('code', 'update', 'attribute', [])
+                InvalidPropertyTypeException::scalarExpected('code', 'Pim\Component\Catalog\Updater\AttributeUpdater', [])
             )
             ->during('update', [$attribute, $values, []]);
     }
@@ -258,7 +258,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidPropertyTypeException::arrayExpected('labels', 'update', 'attribute', 'not_an_array')
+                InvalidPropertyTypeException::arrayExpected('labels', 'Pim\Component\Catalog\Updater\AttributeUpdater', 'not_an_array')
             )
             ->during('update', [$attribute, $values, []]);
     }
@@ -271,7 +271,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidPropertyTypeException::arrayExpected('available_locales', 'update', 'attribute', 'not_an_array')
+                InvalidPropertyTypeException::arrayExpected('available_locales', 'Pim\Component\Catalog\Updater\AttributeUpdater', 'not_an_array')
             )
             ->during('update', [$attribute, $values, []]);
     }
@@ -284,7 +284,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidPropertyTypeException::arrayExpected('allowed_extensions', 'update', 'attribute', 'not_an_array')
+                InvalidPropertyTypeException::arrayExpected('allowed_extensions', 'Pim\Component\Catalog\Updater\AttributeUpdater', 'not_an_array')
             )
             ->during('update', [$attribute, $values, []]);
     }

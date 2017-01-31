@@ -67,7 +67,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $field => $value) {
-            $this->validateDatatype($field, $value);
+            $this->validateDataType($field, $value);
             $this->setData($attribute, $field, $value);
         }
 
@@ -83,11 +83,11 @@ class AttributeUpdater implements ObjectUpdaterInterface
      * @throws InvalidPropertyTypeException
      * @throws UnknownPropertyException
      */
-    protected function validateDatatype($field, $data)
+    protected function validateDataType($field, $data)
     {
         if (in_array($field, ['labels', 'available_locales', 'allowed_extensions'])) {
             if (!is_array($data)) {
-                throw InvalidPropertyTypeException::arrayExpected($field, 'update', 'attribute', $data);
+                throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
             }
 
             foreach ($data as $key => $value) {
@@ -95,8 +95,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $field,
                         sprintf('one of the "%s" values is not a scalar', $field),
-                        'update',
-                        'attribute',
+                        static::class,
                         $data
                     );
                 }
@@ -130,7 +129,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
             ]
         )) {
             if (null !== $data && !is_scalar($data)) {
-                throw InvalidPropertyTypeException::scalarExpected($field, 'update', 'attribute', $data);
+                throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
             }
         } else {
             throw UnknownPropertyException::unknownProperty($field);
