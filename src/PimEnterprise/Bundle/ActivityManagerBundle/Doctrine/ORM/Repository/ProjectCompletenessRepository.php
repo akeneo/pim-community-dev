@@ -84,7 +84,8 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
     {
         $filterByCategoryPermissionJoins =
         $filterByCategoryPermissionByConditions =
-        $filterByAttributeGroupPermissions = '';
+        $filterByAttributeGroupPermissions =
+        $filterByLocalePermissions = '';
 
         if (null !== $username) {
             // Filter on the categories the user can edit
@@ -115,6 +116,23 @@ AND `completeness_per_attribute_group`.`attribute_group_id` IN (
     AND  `user`.`username` = :username 
 )
 ATTRIBUTE_GROUP_FILTER;
+
+            // Filter on the locale the user can edit
+            $filterByLocalePermissions = <<<LOCALE_FILTER
+AND `completeness_per_attribute_group`.`locale_id` IN (
+    SELECT DISTINCT `locale_access`.`locale_id`
+    FROM `@pimee_activity_manager.model.project#userGroups@` AS `project_contributor_group`
+    INNER JOIN `@pimee_security.entity.locale_access@` AS `locale_access`
+        ON `project_contributor_group`.`user_group_id` = `locale_access`.`user_group_id`
+    INNER JOIN `@pim_user.entity.user#groups@` AS `user_group`
+        ON `user_group`.`group_id` = `project_contributor_group`.`user_group_id`
+    INNER JOIN `@pim_user.entity.user@` AS `user`
+        ON `user_group`.`user_id` = `user`.`id`
+    WHERE `project_contributor_group`.`project_id` = :project_id
+    AND `locale_access`.`edit_products` = 1
+    AND  `user`.`username` = :username 
+)
+LOCALE_FILTER;
         }
 
         $sql = <<<SQL
@@ -167,6 +185,7 @@ FROM (
         $filterByCategoryPermissionByConditions
     )
     $filterByAttributeGroupPermissions
+    $filterByLocalePermissions
 	GROUP BY `completeness_per_attribute_group`.`product_id`
 ) `completeness`
 SQL;

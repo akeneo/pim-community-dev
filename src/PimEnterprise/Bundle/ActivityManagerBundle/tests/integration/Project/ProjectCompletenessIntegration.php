@@ -152,7 +152,7 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
     }
 
     /**
-     * Check that the complete is computed with the right locale and the right channel.
+     * Check that the project completeness is computed with the right locale and the right channel.
      *
      * Family: tshirt (3 products + 1 uncategorized product)
      * Channel: mobile
@@ -165,7 +165,6 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
                 'field'    => 'family',
                 'operator' => 'IN',
                 'value'    => ['tshirt'],
-                'context'  => ['locale' => 'fr_FR', 'scope' => 'mobile'],
             ],
         ]);
 
@@ -232,6 +231,90 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
 
         $this->checkProductSelectionCount($projectCompleteness, 4, 'Marc');
         $this->checkProjectCompleteness($projectCompleteness, 2, 0, 2, 'Marc');
+    }
+
+
+    /**
+     * Check that the project completeness is computed depending on the locale accesses.
+     *
+     * Family: tshirt (3 products + 1 uncategorized product)
+     * Channel: mobile
+     * Locale: en_ES
+     */
+    public function testCreateAProjectOnTheTshirtFamilyButWithAnotherChannelAndLocale()
+    {
+        $project = $this->createProject('Tshirt - print', 'Julia', 'es_ES', 'mobile', [
+            [
+                'field'    => 'family',
+                'operator' => 'IN',
+                'value'    => ['tshirt'],
+            ],
+        ]);
+
+        $this->calculateProject($project);
+
+        /**
+         * Julia is a project creator, she creates a project on the "tshirt" family
+         * She can access to all categories and attributes groups (for all products at least one attribute group is not done)
+         */
+        $projectCompleteness = $this->getProjectCompleteness($project);
+        $this->checkProductSelectionCount($projectCompleteness, 4, 'Julia');
+        $this->checkProjectCompleteness($projectCompleteness, 0, 4, 0, 'Julia');
+
+        /**
+         * Mary is a project contributor, she can edit the marking attribute group
+         */
+        $projectCompleteness = $this->getProjectCompleteness($project, 'Mary');
+
+        $this->checkProductSelectionCount($projectCompleteness, 4, 'Mary');
+        $this->checkProjectCompleteness($projectCompleteness, 4, 0, 0, 'Mary');
+
+        /**
+         * Peter is administrator, he does not enrich product but he can see products
+         */
+        $projectCompleteness = $this->getProjectCompleteness($project, 'Peter');
+
+        $this->checkProductSelectionCount($projectCompleteness, 0, 'Peter');
+
+        /**
+         * Katy
+         *      - is media manager
+         *      - she can edit products in the "Clothing" category but they don't not have any media property
+         *      - cannot access to the es_ES locale
+         */
+        $projectCompleteness = $this->getProjectCompleteness($project, 'Katy');
+
+        $this->checkProductSelectionCount($projectCompleteness, 0, 'Katy');
+
+        /**
+         * Teddy
+         *      - is technical "High-Tech" contributor
+         *      - he cannot see the clothing category
+         *      - cannot access to the es_ES locale
+         */
+        $projectCompleteness = $this->getProjectCompleteness($project, 'Teddy');
+
+        $this->checkProductSelectionCount($projectCompleteness, 0, 'Teddy');
+
+        /**
+         * Claude
+         *      - is technical contributor (technical clothing attribute group),
+         *      - can access to "Clothing" category
+         *      - cannot access to the es_ES locale
+         */
+        $projectCompleteness = $this->getProjectCompleteness($project, 'Claude');
+
+        $this->checkProductSelectionCount($projectCompleteness, 0, 'Claude');
+
+        /**
+         * Marc
+         *      - is technical contributor (technical clothing attribute group),
+         *      - can access to "Clothing" and "High Tech" category
+         *      - cannot access to the es_ES locale
+         */
+        $projectCompleteness = $this->getProjectCompleteness($project, 'Marc');
+
+        $this->checkProductSelectionCount($projectCompleteness, 0, 'Marc');
     }
 
     /**
