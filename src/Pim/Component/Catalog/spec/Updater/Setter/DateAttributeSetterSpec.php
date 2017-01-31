@@ -79,8 +79,7 @@ class DateAttributeSetterSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'attributeCode',
                 'a string with the format yyyy-mm-dd',
-                'setter',
-                'date',
+                'Pim\Component\Catalog\Updater\Setter\DateAttributeSetter',
                 gettype($data)
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -98,8 +97,7 @@ class DateAttributeSetterSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'attributeCode',
                 'a string with the format yyyy-mm-dd',
-                'setter',
-                'date',
+                'Pim\Component\Catalog\Updater\Setter\DateAttributeSetter',
                 gettype($data)
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -131,9 +129,8 @@ class DateAttributeSetterSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'attributeCode',
                 'datetime or string',
-                gettype($data),
-                'setter',
-                'date'
+                'Pim\Component\Catalog\Updater\Setter\DateAttributeSetter',
+                gettype($data)
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }

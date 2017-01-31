@@ -54,7 +54,7 @@ class MetricAttributeSetter extends AbstractAttributeSetter
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'metric');
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
 
         if (null === $data) {
             $data = ['amount' => null, 'unit' => null];
@@ -77,15 +77,14 @@ class MetricAttributeSetter extends AbstractAttributeSetter
     protected function checkData(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'metric', gettype($data));
+            throw InvalidArgumentException::arrayExpected($attribute->getCode(), static::class, gettype($data));
         }
 
         if (!array_key_exists('amount', $data)) {
             throw InvalidArgumentException::arrayKeyExpected(
                 $attribute->getCode(),
                 'amount',
-                'setter',
-                'metric',
+                static::class,
                 print_r($data, true)
             );
         }
@@ -94,8 +93,7 @@ class MetricAttributeSetter extends AbstractAttributeSetter
             throw InvalidArgumentException::arrayKeyExpected(
                 $attribute->getCode(),
                 'unit',
-                'setter',
-                'metric',
+                static::class,
                 print_r($data, true)
             );
         }

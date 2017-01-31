@@ -303,8 +303,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 'attributes',
                 'code',
                 'The attribute does not exist',
-                'updater',
-                'family',
+                'Pim\Component\Catalog\Updater\FamilyUpdater',
                 'sku'
             )
         )->during('update', [$family, $data]);
@@ -338,8 +337,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 'attribute_requirements',
                 'code',
                 'The attribute does not exist',
-                'updater',
-                'family',
+                'Pim\Component\Catalog\Updater\FamilyUpdater',
                 'sku'
             )
         )->during('update', [$family, $data]);
@@ -371,8 +369,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 'attributes',
                 'code',
                 'The attribute does not exist',
-                'updater',
-                'family',
+                'Pim\Component\Catalog\Updater\FamilyUpdater',
                 'unknown'
             )
         )->during('update', [$family, $data]);
@@ -406,8 +403,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 'attribute_requirements',
                 'code',
                 'The channel does not exist',
-                'updater',
-                'family',
+                'Pim\Component\Catalog\Updater\FamilyUpdater',
                 'mobile'
             )
         )->during('update', [$family, $data]);

@@ -36,8 +36,7 @@ class FamilyFieldSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::stringExpected(
                 'family',
-                'setter',
-                'family',
+                'Pim\Component\Catalog\Updater\Setter\FamilyFieldSetter',
                 'array'
             )
         )->during('setFieldData', [$product, 'family', ['not a string']]);
@@ -54,11 +53,7 @@ class FamilyFieldSetterSpec extends ObjectBehavior
         $this->setFieldData($product, 'family', 'shirt');
     }
 
-    function it_empty_family_field(
-        $familyRepository,
-        ProductInterface $product,
-        FamilyInterface $shirt
-    ) {
+    function it_empty_family_field(ProductInterface $product) {
         $product->setFamily(null)->shouldBeCalled();
         $this->setFieldData($product, 'family', null);
     }
@@ -73,8 +68,7 @@ class FamilyFieldSetterSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'family',
                 'existing family code',
-                'setter',
-                'family',
+                'Pim\Component\Catalog\Updater\Setter\FamilyFieldSetter',
                 'shirt'
             )
         )->during('setFieldData', [$product, 'family', 'shirt']);

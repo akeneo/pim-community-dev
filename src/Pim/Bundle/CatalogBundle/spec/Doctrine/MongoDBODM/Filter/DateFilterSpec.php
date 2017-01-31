@@ -195,8 +195,7 @@ class DateFilterSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'release_date',
                 'array with 2 elements, string or \DateTime',
-                'filter',
-                'date',
+                'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
                 print_r(123, true)
             )
         )->during('addAttributeFilter', [$date, '>', 123]);
@@ -210,8 +209,7 @@ class DateFilterSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'release_date',
                 'a string with the format yyyy-mm-dd',
-                'filter',
-                'date',
+                'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
                 'not a valid date format'
             )
         )->during('addAttributeFilter', [$date, '>', ['not a valid date format', 'WRONG']]);
@@ -225,8 +223,7 @@ class DateFilterSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'release_date',
                 'array with 2 elements, string or \DateTime',
-                'filter',
-                'date',
+                'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
                 123
             )
         )->during('addAttributeFilter', [$date, '>', [123, 123]]);
@@ -240,8 +237,7 @@ class DateFilterSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'release_date',
                 'array with 2 elements, string or \DateTime',
-                'filter',
-                'date',
+                'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
                 print_r([123, 123, 'three'], true)
             )
         )->during('addAttributeFilter', [$date, '>', [123, 123, 'three']]);

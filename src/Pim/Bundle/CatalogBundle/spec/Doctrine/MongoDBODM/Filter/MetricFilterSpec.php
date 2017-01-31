@@ -250,25 +250,45 @@ class MetricFilterSpec extends ObjectBehavior
 
         $value = ['unit' => 'foo'];
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('metric_code', 'amount', 'filter', 'metric', print_r($value, true))
+            InvalidArgumentException::arrayKeyExpected(
+                'metric_code',
+                'amount',
+                'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MetricFilter',
+                print_r($value, true)
+            )
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
 
         $value = ['amount' => 459];
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('metric_code', 'unit', 'filter', 'metric', print_r($value, true))
+            InvalidArgumentException::arrayKeyExpected(
+                'metric_code',
+                'unit',
+                'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MetricFilter',
+                print_r($value, true)
+            )
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
 
         $value = ['amount' => 'foo', 'unit' => 'foo'];
         $this->shouldThrow(
-            InvalidArgumentException::arrayNumericKeyExpected('metric_code', 'amount', 'filter', 'metric', 'string')
+            InvalidArgumentException::arrayNumericKeyExpected(
+                'metric_code',
+                'amount',
+                'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MetricFilter',
+                'string'
+            )
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
 
         $value = ['amount' => 132, 'unit' => 42];
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringKeyExpected('metric_code', 'unit', 'filter', 'metric', 'integer')
+            InvalidArgumentException::arrayStringKeyExpected(
+                'metric_code',
+                'unit',
+                'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MetricFilter',
+                'integer'
+            )
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
     }
@@ -287,8 +307,7 @@ class MetricFilterSpec extends ObjectBehavior
                 'metric_code',
                 'unit',
                 'The unit does not exist in the attribute\'s family "length"',
-                'filter',
-                'metric',
+                'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MetricFilter',
                 'foo'
             )
         )->during('addAttributeFilter', [$attribute, '=', $value]);

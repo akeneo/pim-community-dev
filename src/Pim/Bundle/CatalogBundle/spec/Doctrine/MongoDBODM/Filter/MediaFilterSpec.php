@@ -156,7 +156,11 @@ class MediaFilterSpec extends ObjectBehavior
         $image->getCode()->willReturn('media_code');
         $value = ['amount' => 132, 'unit' => 'foo'];
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected('media_code', 'filter', 'media', gettype($value))
+            InvalidArgumentException::stringExpected(
+                'media_code',
+                'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MediaFilter',
+                gettype($value)
+            )
         )->during('addAttributeFilter', [$image, '=', $value]);
     }
 }

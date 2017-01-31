@@ -79,8 +79,7 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::arrayExpected(
                 'attributeCode',
-                'remover',
-                'multi select',
+                'Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover',
                 gettype($data)
             )
         )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -97,8 +96,7 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
             InvalidArgumentException::arrayStringValueExpected(
                 'attributeCode',
                 0,
-                'remover',
-                'multi select',
+                'Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover',
                 gettype($data[0])
             )
         )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);

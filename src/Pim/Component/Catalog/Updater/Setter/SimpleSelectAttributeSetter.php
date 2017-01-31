@@ -51,7 +51,7 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'text');
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
         $this->checkData($attribute, $data);
 
         if (null === $data) {
@@ -63,8 +63,7 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
                     $attribute->getCode(),
                     'code',
                     'The option does not exist',
-                    'setter',
-                    'simple select',
+                    static::class,
                     $data
                 );
             }
@@ -88,8 +87,7 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
         if (!is_string($data) && !is_numeric($data)) {
             throw InvalidArgumentException::stringExpected(
                 $attribute->getCode(),
-                'setter',
-                'simple select',
+                static::class,
                 gettype($data)
             );
         }

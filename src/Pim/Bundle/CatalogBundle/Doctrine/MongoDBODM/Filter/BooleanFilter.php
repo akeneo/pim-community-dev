@@ -72,8 +72,7 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
         if (!is_bool($value)) {
             throw InvalidArgumentException::booleanExpected(
                 $attribute->getCode(),
-                'filter',
-                'boolean',
+                static::class,
                 gettype($value)
             );
         }
@@ -91,7 +90,7 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         if (!is_bool($value)) {
-            throw InvalidArgumentException::booleanExpected($field, 'filter', 'boolean', gettype($value));
+            throw InvalidArgumentException::booleanExpected($field, static::class, gettype($value));
         }
 
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);

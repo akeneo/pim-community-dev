@@ -119,8 +119,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
             throw InvalidArgumentException::expected(
                 $type,
                 'array with 2 elements, string or \DateTime',
-                'filter',
-                'date',
+                static::class,
                 print_r($value, true)
             );
         }
@@ -163,8 +162,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
                 throw InvalidArgumentException::expected(
                     $type,
                     'a string with the format yyyy-mm-dd',
-                    'filter',
-                    'date',
+                    static::class,
                     $value
                 );
             }
@@ -177,8 +175,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
         throw InvalidArgumentException::expected(
             $type,
             'array with 2 elements, string or \DateTime',
-            'filter',
-            'date',
+            static::class,
             print_r($value, true)
         );
     }

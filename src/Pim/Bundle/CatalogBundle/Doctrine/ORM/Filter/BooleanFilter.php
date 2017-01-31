@@ -50,13 +50,12 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'boolean');
+        $this->checkLocaleAndScope($attribute, $locale, $scope);
 
         if (!is_bool($value)) {
             throw InvalidArgumentException::booleanExpected(
                 $attribute->getCode(),
-                'filter',
-                'boolean',
+                static::class,
                 gettype($value)
             );
         }
@@ -82,7 +81,7 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         if (!is_bool($value)) {
-            throw InvalidArgumentException::booleanExpected($field, 'filter', 'boolean', gettype($value));
+            throw InvalidArgumentException::booleanExpected($field, static::class, gettype($value));
         }
 
         $field = current($this->qb->getRootAliases()) . '.' . FieldFilterHelper::getCode($field);

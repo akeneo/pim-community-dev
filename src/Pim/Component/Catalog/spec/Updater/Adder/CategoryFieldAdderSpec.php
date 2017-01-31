@@ -36,8 +36,7 @@ class CategoryFieldAdderSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::arrayExpected(
                 'categories',
-                'adder',
-                'category',
+                'Pim\Component\Catalog\Updater\Adder\CategoryFieldAdder',
                 'string'
             )
         )->during('addFieldData', [$product, 'categories', 'not an array']);
@@ -46,8 +45,7 @@ class CategoryFieldAdderSpec extends ObjectBehavior
             InvalidArgumentException::arrayStringValueExpected(
                 'categories',
                 0,
-                'adder',
-                'category',
+                'Pim\Component\Catalog\Updater\Adder\CategoryFieldAdder',
                 'array'
             )
         )->during('addFieldData', [$product, 'categories', [['array of array']]]);
@@ -84,8 +82,7 @@ class CategoryFieldAdderSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'categories',
                 'existing category code',
-                'adder',
-                'category',
+                'Pim\Component\Catalog\Updater\Adder\CategoryFieldAdder',
                 'non valid category code'
             )
         )->during('addFieldData', [$product, 'categories', ['mug', 'non valid category code']]);

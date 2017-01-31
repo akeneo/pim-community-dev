@@ -136,7 +136,9 @@ class NumberFilterSpec extends ObjectBehavior
     function it_throws_an_exception_if_value_is_not_a_numeric(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('number_code');
-        $this->shouldThrow(InvalidArgumentException::numericExpected('number_code', 'filter', 'number', gettype('WRONG')))
-            ->during('addAttributeFilter', [$attribute, '=', 'WRONG']);
+        $this->shouldThrow(InvalidArgumentException::numericExpected(
+            'number_code', 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\NumberFilter',
+            gettype('WRONG')
+        ))->during('addAttributeFilter', [$attribute, '=', 'WRONG']);
     }
 }

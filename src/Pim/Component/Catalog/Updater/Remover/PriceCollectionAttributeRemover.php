@@ -59,7 +59,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'prices collection');
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
         $this->checkData($attribute, $data);
 
         $this->removePrices($product, $attribute, $data, $options['locale'], $options['scope']);
@@ -100,8 +100,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $attribute->getCode(),
-                'remover',
-                'prices collection',
+                static::class,
                 gettype($data)
             );
         }
@@ -110,8 +109,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
             if (!is_array($price)) {
                 throw InvalidArgumentException::arrayOfArraysExpected(
                     $attribute->getCode(),
-                    'remover',
-                    'prices collection',
+                    static::class,
                     gettype($data)
                 );
             }
@@ -120,8 +118,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
                 throw InvalidArgumentException::arrayKeyExpected(
                     $attribute->getCode(),
                     'amount',
-                    'remover',
-                    'prices collection',
+                    static::class,
                     print_r($data, true)
                 );
             }
@@ -130,8 +127,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
                 throw InvalidArgumentException::arrayKeyExpected(
                     $attribute->getCode(),
                     'currency',
-                    'remover',
-                    'prices collection',
+                    static::class,
                     print_r($data, true)
                 );
             }
@@ -141,8 +137,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
                     $attribute->getCode(),
                     'currency',
                     'The currency does not exist',
-                    'remover',
-                    'prices collection',
+                    static::class,
                     $price['currency']
                 );
             }

@@ -90,8 +90,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
                 throw InvalidArgumentException::expected(
                     'associations',
                     'existing association type code',
-                    'adder',
-                    'association',
+                    static::class,
                     $typeCode
                 );
             }
@@ -112,8 +111,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
                 throw InvalidArgumentException::expected(
                     'associations',
                     'existing product identifier',
-                    'adder',
-                    'association',
+                    static::class,
                     $productIdentifier
                 );
             }
@@ -133,8 +131,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
                 throw InvalidArgumentException::expected(
                     'associations',
                     'existing group code',
-                    'adder',
-                    'association',
+                    static::class,
                     $groupCode
                 );
             }
@@ -155,8 +152,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $field,
-                'adder',
-                'association',
+                static::class,
                 gettype($data)
             );
         }

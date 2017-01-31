@@ -213,8 +213,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
                     'attribute_requirements',
                     'code',
                     'The attribute does not exist',
-                    'updater',
-                    'family',
+                    static::class,
                     $attributeCode
                 );
             }
@@ -269,8 +268,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
                 'attribute_requirements',
                 'code',
                 'The channel does not exist',
-                'updater',
-                'family',
+                static::class,
                 $channelCode
             );
         }
@@ -309,8 +307,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
                     'attributes',
                     'code',
                     'The attribute does not exist',
-                    'updater',
-                    'family',
+                    static::class,
                     $attributeCode
                 );
             }
@@ -332,8 +329,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
                 'attributes',
                 'code',
                 'The attribute does not exist',
-                'updater',
-                'family',
+                static::class,
                 $data
             );
         }

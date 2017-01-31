@@ -48,8 +48,7 @@ class CategoryFieldSetter extends AbstractFieldSetter
                 throw InvalidArgumentException::expected(
                     $field,
                     'existing category code',
-                    'setter',
-                    'category',
+                    static::class,
                     $categoryCode
                 );
             } else {
@@ -78,8 +77,7 @@ class CategoryFieldSetter extends AbstractFieldSetter
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $field,
-                'setter',
-                'category',
+                static::class,
                 gettype($data)
             );
         }
@@ -89,8 +87,7 @@ class CategoryFieldSetter extends AbstractFieldSetter
                 throw InvalidArgumentException::arrayStringValueExpected(
                     $field,
                     $key,
-                    'setter',
-                    'category',
+                    static::class,
                     gettype($value)
                 );
             }

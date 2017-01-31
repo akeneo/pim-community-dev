@@ -53,7 +53,7 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'prices collection');
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
         $this->checkData($attribute, $data);
 
         $this->setPrices($product, $attribute, $data, $options['locale'], $options['scope']);
@@ -72,8 +72,7 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $attribute->getCode(),
-                'setter',
-                'prices collection',
+                static::class,
                 gettype($data)
             );
         }
@@ -82,8 +81,7 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
             if (!is_array($price)) {
                 throw InvalidArgumentException::arrayOfArraysExpected(
                     $attribute->getCode(),
-                    'setter',
-                    'prices collection',
+                    static::class,
                     gettype($data)
                 );
             }
@@ -92,8 +90,7 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
                 throw InvalidArgumentException::arrayKeyExpected(
                     $attribute->getCode(),
                     'amount',
-                    'setter',
-                    'prices collection',
+                    static::class,
                     print_r($data, true)
                 );
             }
@@ -102,8 +99,7 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
                 throw InvalidArgumentException::arrayKeyExpected(
                     $attribute->getCode(),
                     'currency',
-                    'setter',
-                    'prices collection',
+                    static::class,
                     print_r($data, true)
                 );
             }

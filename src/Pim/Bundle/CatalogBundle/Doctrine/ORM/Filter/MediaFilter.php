@@ -43,7 +43,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'media');
+        $this->checkLocaleAndScope($attribute, $locale, $scope);
 
         if ($operator === Operators::IS_EMPTY || $operator === Operators::IS_NOT_EMPTY) {
             $this->addEmptyTypeFilter($attribute, $operator, $locale, $scope);
@@ -188,7 +188,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     protected function checkValue(AttributeInterface $attribute, $value)
     {
         if (!is_string($value)) {
-            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'filter', 'media', gettype($value));
+            throw InvalidArgumentException::stringExpected($attribute->getCode(), static::class, gettype($value));
         }
     }
 }

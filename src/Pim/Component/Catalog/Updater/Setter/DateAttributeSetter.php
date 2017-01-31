@@ -43,7 +43,7 @@ class DateAttributeSetter extends AbstractAttributeSetter
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'date');
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
         $data = $this->formatData($attribute, $data);
 
         $this->setData($product, $attribute, $data, $options['locale'], $options['scope']);
@@ -69,10 +69,8 @@ class DateAttributeSetter extends AbstractAttributeSetter
             throw InvalidArgumentException::expected(
                 $attribute->getCode(),
                 'datetime or string',
-                gettype($data),
-                'setter',
-                'date',
-                $data
+                static::class,
+                gettype($data)
             );
         }
 
@@ -97,10 +95,8 @@ class DateAttributeSetter extends AbstractAttributeSetter
             throw InvalidArgumentException::expected(
                 $attribute->getCode(),
                 'a string with the format yyyy-mm-dd',
-                'setter',
-                'date',
-                gettype($data),
-                $data
+                static::class,
+                gettype($data)
             );
         }
     }

@@ -135,8 +135,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
                 throw InvalidArgumentException::expected(
                     'associations',
                     'existing association type code',
-                    'setter',
-                    'association',
+                    static::class,
                     $typeCode
                 );
             }
@@ -161,8 +160,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
                 throw InvalidArgumentException::expected(
                     'associations',
                     'existing product identifier',
-                    'setter',
-                    'association',
+                    static::class,
                     $productIdentifier
                 );
             }
@@ -182,8 +180,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
                 throw InvalidArgumentException::expected(
                     'associations',
                     'existing group code',
-                    'setter',
-                    'association',
+                    static::class,
                     $groupCode
                 );
             }
@@ -204,8 +201,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $field,
-                'setter',
-                'association',
+                static::class,
                 gettype($data)
             );
         }

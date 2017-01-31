@@ -51,7 +51,7 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'multi select');
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
         $this->checkData($attribute, $data);
 
         $attributeOptions = [];
@@ -62,8 +62,7 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
                     $attribute->getCode(),
                     'code',
                     'The option does not exist',
-                    'adder',
-                    'multi select',
+                    static::class,
                     $optionCode
                 );
             }
@@ -85,8 +84,7 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $attribute->getCode(),
-                'adder',
-                'multi select',
+                static::class,
                 gettype($data)
             );
         }
@@ -96,8 +94,7 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
                 throw InvalidArgumentException::arrayStringValueExpected(
                     $attribute->getCode(),
                     $key,
-                    'adder',
-                    'multi select',
+                    static::class,
                     gettype($value)
                 );
             }

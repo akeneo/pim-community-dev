@@ -37,8 +37,7 @@ class GroupFieldSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::arrayExpected(
                 'groups',
-                'setter',
-                'groups',
+                'Pim\Component\Catalog\Updater\Setter\GroupFieldSetter',
                 'string'
             )
         )->during('setFieldData', [$product, 'groups', 'not an array']);
@@ -47,8 +46,7 @@ class GroupFieldSetterSpec extends ObjectBehavior
             InvalidArgumentException::arrayStringValueExpected(
                 'groups',
                 0,
-                'setter',
-                'groups',
+                'Pim\Component\Catalog\Updater\Setter\GroupFieldSetter',
                 'array'
             )
         )->during('setFieldData', [$product, 'groups', [['array of array']]]);
@@ -98,8 +96,7 @@ class GroupFieldSetterSpec extends ObjectBehavior
             InvalidArgumentException::expected(
                 'groups',
                 'existing group code',
-                'setter',
-                'groups',
+                'Pim\Component\Catalog\Updater\Setter\GroupFieldSetter',
                 'not valid code'
             )
         )->during('setFieldData', [$product, 'groups', ['pack', 'not valid code']]);

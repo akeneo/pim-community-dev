@@ -49,7 +49,7 @@ class MultiSelectAttributeSetter extends AbstractAttributeSetter
         $data,
         array $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'multi select');
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
         $this->checkData($attribute, $data);
 
         $attributeOptions = [];
@@ -60,8 +60,7 @@ class MultiSelectAttributeSetter extends AbstractAttributeSetter
                     $attribute->getCode(),
                     'code',
                     'The option does not exist',
-                    'setter',
-                    'multi select',
+                    static::class,
                     $optionCode
                 );
             }
@@ -83,8 +82,7 @@ class MultiSelectAttributeSetter extends AbstractAttributeSetter
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $attribute->getCode(),
-                'setter',
-                'multi select',
+                static::class,
                 gettype($data)
             );
         }
@@ -94,8 +92,7 @@ class MultiSelectAttributeSetter extends AbstractAttributeSetter
                 throw InvalidArgumentException::arrayStringValueExpected(
                     $attribute->getCode(),
                     $key,
-                    'setter',
-                    'multi select',
+                    static::class,
                     gettype($value)
                 );
             }

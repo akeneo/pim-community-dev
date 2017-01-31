@@ -42,7 +42,7 @@ class NumberAttributeSetter extends AbstractAttributeSetter
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'number');
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
 
         $this->setData($product, $attribute, $data, $options['locale'], $options['scope']);
     }

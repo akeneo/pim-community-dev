@@ -49,7 +49,7 @@ class ReferenceDataSetter extends AbstractAttributeSetter
         $data,
         array $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'reference data');
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
         $this->checkData($attribute, $data);
 
         if (empty($data)) {
@@ -67,8 +67,7 @@ class ReferenceDataSetter extends AbstractAttributeSetter
                         $attribute->getReferenceDataName(),
                         $data
                     ),
-                    'setter',
-                    'reference data',
+                    static::class,
                     $data
                 );
             }
@@ -92,8 +91,7 @@ class ReferenceDataSetter extends AbstractAttributeSetter
         if (!is_string($data)) {
             throw InvalidArgumentException::stringExpected(
                 $attribute->getCode(),
-                'setter',
-                'reference data',
+                static::class,
                 gettype($data)
             );
         }

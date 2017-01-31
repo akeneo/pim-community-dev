@@ -174,8 +174,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
                     'available_locales',
                     'locale code',
                     'The locale does not exist',
-                    'updater',
-                    'attribute',
+                    static::class,
                     $localeCode
                 );
             }
@@ -200,8 +199,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 'group',
                 'code',
                 'The attribute group does not exist',
-                'updater',
-                'attribute',
+                static::class,
                 $data
             );
         }
@@ -218,11 +216,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
     protected function setType($attribute, $data)
     {
         if (('' === $data) || (null === $data)) {
-            throw InvalidPropertyException::valueNotEmptyExpected(
-                'attribute_type',
-                'updater',
-                'attribute'
-            );
+            throw InvalidPropertyException::valueNotEmptyExpected('attribute_type', static::class);
         }
 
         try {
@@ -235,8 +229,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 'attribute_type',
                 'attribute type',
                 'The attribute type does not exist',
-                'updater',
-                'attribute',
+                static::class,
                 $data
             );
         }
@@ -266,23 +259,11 @@ class AttributeUpdater implements ObjectUpdaterInterface
         try {
             new \DateTime($data);
         } catch (\Exception $e) {
-            throw InvalidPropertyException::dateExpected(
-                $field,
-                'yyyy-mm-dd',
-                'updater',
-                'attribute',
-                $data
-            );
+            throw InvalidPropertyException::dateExpected($field, 'yyyy-mm-dd', static::class, $data);
         }
 
         if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
-            throw InvalidPropertyException::dateExpected(
-                $field,
-                'yyyy-mm-dd',
-                'updater',
-                'attribute',
-                $data
-            );
+            throw InvalidPropertyException::dateExpected($field, 'yyyy-mm-dd', static::class, $data);
         }
     }
 

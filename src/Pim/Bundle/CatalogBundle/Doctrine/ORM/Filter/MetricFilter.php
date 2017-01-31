@@ -57,7 +57,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'metric');
+        $this->checkLocaleAndScope($attribute, $locale, $scope);
 
         if (Operators::IS_EMPTY === $operator || Operators::IS_NOT_EMPTY === $operator) {
             $this->addEmptyTypeFilter($attribute, $operator, $locale, $scope);
@@ -147,15 +147,14 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected function checkValue(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'filter', 'metric', gettype($data));
+            throw InvalidArgumentException::arrayExpected($attribute->getCode(), static::class, gettype($data));
         }
 
         if (!array_key_exists('amount', $data)) {
             throw InvalidArgumentException::arrayKeyExpected(
                 $attribute->getCode(),
                 'amount',
-                'filter',
-                'metric',
+                static::class,
                 print_r($data, true)
             );
         }
@@ -164,8 +163,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             throw InvalidArgumentException::arrayKeyExpected(
                 $attribute->getCode(),
                 'unit',
-                'filter',
-                'metric',
+                static::class,
                 print_r($data, true)
             );
         }
@@ -174,8 +172,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             throw InvalidArgumentException::arrayNumericKeyExpected(
                 $attribute->getCode(),
                 'amount',
-                'filter',
-                'metric',
+                static::class,
                 gettype($data['amount'])
             );
         }
@@ -184,8 +181,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             throw InvalidArgumentException::arrayStringKeyExpected(
                 $attribute->getCode(),
                 'unit',
-                'filter',
-                'metric',
+                static::class,
                 gettype($data['unit'])
             );
         }
@@ -201,8 +197,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
                     'The unit does not exist in the attribute\'s family "%s"',
                     $attribute->getMetricFamily()
                 ),
-                'filter',
-                'metric',
+                static::class,
                 $data['unit']
             );
         }

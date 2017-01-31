@@ -47,8 +47,7 @@ class CategoryFieldRemover extends AbstractFieldRemover
                 throw InvalidArgumentException::expected(
                     $field,
                     'existing category code',
-                    'remover',
-                    'category',
+                    static::class,
                     $categoryCode
                 );
             }
@@ -71,8 +70,7 @@ class CategoryFieldRemover extends AbstractFieldRemover
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $field,
-                'remover',
-                'category',
+                static::class,
                 gettype($data)
             );
         }
@@ -82,8 +80,7 @@ class CategoryFieldRemover extends AbstractFieldRemover
                 throw InvalidArgumentException::arrayStringValueExpected(
                     $field,
                     $key,
-                    'remover',
-                    'category',
+                    static::class,
                     gettype($value)
                 );
             }
