@@ -40,7 +40,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findContributorsToNotify(ProjectInterface $project)
+    public function findUsersToNotify(ProjectInterface $project)
     {
         $qb = $this->createQueryBuilder('u');
 
@@ -51,7 +51,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         }
 
         $qb->leftJoin('u.groups', 'g')
-            ->where($qb->expr()->neq('u.id', $project->getOwner()->getId()))
+//            ->where($qb->expr()->neq('u.id', $project->getOwner()->getId()))
             ->andWhere($qb->expr()->in('g.id', $groupIdentifiers));
 
         return $qb->getQuery()->getResult();

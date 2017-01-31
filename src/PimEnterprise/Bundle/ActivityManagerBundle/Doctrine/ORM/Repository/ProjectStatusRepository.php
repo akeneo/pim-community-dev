@@ -14,8 +14,8 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Component\ActivityManager\Factory\ProjectStatusFactoryInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectStatusRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -28,25 +28,16 @@ class ProjectStatusRepository extends EntityRepository implements ProjectStatusR
     /** @var SaverInterface */
     protected $projectStatusSaver;
 
-    /** @var ProjectStatusFactoryInterface */
-    protected $projectStatusFactory;
-
     /**
-     * @param EntityManager                 $em
-     * @param SaverInterface                $projectStatusSaver
-     * @param ProjectStatusFactoryInterface $projectStatusFactory
-     * @param ClassMetadata                 $class
+     * @param EntityManager  $em
+     * @param SaverInterface $projectStatusSaver
+     * @param ClassMetadata  $class
      */
-    public function __construct(
-        EntityManager $em,
-        SaverInterface $projectStatusSaver,
-        ProjectStatusFactoryInterface $projectStatusFactory,
-        $class
-    ) {
+    public function __construct(EntityManager $em, SaverInterface $projectStatusSaver, $class)
+    {
         parent::__construct($em, $em->getClassMetadata($class));
 
         $this->projectStatusSaver = $projectStatusSaver;
-        $this->projectStatusFactory = $projectStatusFactory;
     }
 
     /**
@@ -60,29 +51,17 @@ class ProjectStatusRepository extends EntityRepository implements ProjectStatusR
     /**
      * {@inheritdoc}
      */
-    public function wasComplete(ProjectInterface $project, UserInterface $user)
-    {
-        $projectStatus = $this->findOneBy(['project' => $project, 'user' => $user]);
-
-        if (null === $projectStatus) {
-            return false;
-        }
-
-        return $projectStatus->isComplete();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProjectStatus(ProjectInterface $project, UserInterface $user, $isComplete)
-    {
+    public function setHasBeenNotified(
+        ProjectInterface $project,
+        UserInterface $user
+    ) {
         $projectStatus = $this->findProjectStatus($project, $user);
 
         if (null === $projectStatus) {
-            $projectStatus = $this->projectStatusFactory->create($project, $user);
+            throw new EntityNotFoundException();
         }
-        $projectStatus->setIsComplete($isComplete);
 
+        $projectStatus->setHasBeenNotified(true);
         $this->projectStatusSaver->save($projectStatus);
     }
 }

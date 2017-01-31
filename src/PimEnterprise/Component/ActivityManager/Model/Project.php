@@ -56,9 +56,6 @@ class Project implements ProjectInterface
     /** @var string */
     protected $productFilters;
 
-    /** @var bool */
-    protected $isCreated;
-
     public function __construct()
     {
         $this->userGroups = new ArrayCollection();
@@ -248,21 +245,5 @@ class Project implements ProjectInterface
     public function setProductFilters(array $productFilters)
     {
         $this->productFilters = $productFilters;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setIsCreated($isCreated)
-    {
-        $this->isCreated = $isCreated;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCreated()
-    {
-        return $this->productFilters;
     }
 }

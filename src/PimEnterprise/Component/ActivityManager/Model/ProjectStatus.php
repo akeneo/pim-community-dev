@@ -28,13 +28,10 @@ class ProjectStatus implements ProjectStatusInterface
     protected $project;
 
     /** @var bool */
-    protected $notificationProjectCreation;
-
-    /** @var bool */
-    protected $notificationProjectFinished;
-
-    /** @var bool */
     protected $isComplete;
+
+    /** @var bool */
+    protected $hasBeenNotified;
 
     /**
      * {@inheritdoc}
@@ -90,5 +87,21 @@ class ProjectStatus implements ProjectStatusInterface
     public function setIsComplete($isComplete)
     {
         $this->isComplete = $isComplete;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasBeenNotified()
+    {
+        return $this->hasBeenNotified;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setHasBeenNotified($hasBeenNotified)
+    {
+        $this->hasBeenNotified = $hasBeenNotified;
     }
 }

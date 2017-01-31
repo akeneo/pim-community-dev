@@ -52,4 +52,14 @@ interface ProjectStatusInterface
      * @param bool $isComplete
      */
     public function setIsComplete($isComplete);
+
+    /**
+     * @return bool
+     */
+    public function hasBeenNotified();
+
+    /**
+     * @param bool $hasBeenNotified
+     */
+    public function setHasBeenNotified($hasBeenNotified);
 }

@@ -9,11 +9,9 @@ parameters:
     pimee_activity_manager.factory.project_calculation_notification.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCalculationNotificationFactory'
     pimee_activity_manager.factory.project_created_notification.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCreatedNotificationFactory'
     pimee_activity_manager.factory.project_finished_notification.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectFinishedNotificationFactory'
-    pimee_activity_manager.event_subscriber.project_creation_notifier.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\ProjectCreationNotifierSubscriber'
-    pimee_activity_manager.event_subscriber.project_finished_notifier.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\ProjectFinishedNotifierSubscriber'
     pimee_activity_manager.event_subscriber.catalog_updates.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\CatalogUpdatesSubscriber'
     pimee_activity_manager.converter.filter.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\FilterConverter'
-    pimee_activity_manager.checker.notification.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\NotificationChecker'
+    pimee_activity_manager.event_subscriber.history_notification_system.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\HistoryNotificationSystemSubscriber'
 
 services:
     pimee_activity_manager.table_name_mapper:
@@ -58,7 +56,6 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@pimee_activity_manager.saver.project_status'
-            - '@pimee_activity_manager.factory.project_status'
             - '%pimee_activity_manager.model.project_status.class%'
 
     ### Notifications
@@ -83,39 +80,25 @@ services:
             - '@pim_catalog.localization.presenter.date'
             - '%pim_notification.entity.notification.class%'
 
-    pimee_activity_manager.event_subscriber.project_creation_notifier:
-        class: '%pimee_activity_manager.event_subscriber.project_creation_notifier.class%'
+    pimee_activity_manager.event_subscriber.history_notification_system:
+        class: '%pimee_activity_manager.event_subscriber.history_notification_system.class%'
         arguments:
-            - '@pimee_activity_manager.factory.project_created_notification'
-            - '@pim_notification.notifier'
             - '@pimee_activity_manager.repository.user'
-            - '@pimee_activity_manager.checker.notification'
-            - '@pimee_activity_manager.repository.project_status'
-            - '@pimee_activity_manager.repository.project'
-            - '@pimee_activity_manager.saver.project'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    pimee_activity_manager.checker.notification:
-        class: '%pimee_activity_manager.checker.notification.class%'
-        arguments:
-            - '@pimee_activity_manager.repository.project_completeness'
+            - '@pimee_activity_manager.factory.project_status'
             - '@pimee_activity_manager.repository.project_status'
             - '@pimee_activity_manager.saver.project_status'
-            - '@pimee_activity_manager.factory.project_status'
-
-    pimee_activity_manager.event_subscriber.project_finished_notifier:
-        class: '%pimee_activity_manager.event_subscriber.project_finished_notifier.class%'
-        arguments:
+            - '@pimee_activity_manager.repository.project_completeness'
+            - '@pimee_activity_manager.factory.project_created_notification'
             - '@pimee_activity_manager.factory.project_finished_notification'
             - '@pim_notification.notifier'
-            - '@pimee_activity_manager.repository.user'
-            - '@pimee_activity_manager.checker.notification'
-            - '@pimee_activity_manager.repository.project_status'
-            - '@pimee_activity_manager.repository.project'
-            - '@pimee_activity_manager.saver.project'
         tags:
-            - { name: kernel.event_subscriber }
+            - { name: kernel.event_subscriber}
+
+    ### Datagrid
+    pimee_activity_manager.converter.filter:
+        class: '%pimee_activity_manager.converter.filter.class%'
+        arguments:
+            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
 
     pimee_activity_manager.event_subscriber.catalog_updates:
         class: '%pimee_activity_manager.event_subscriber.catalog_updates.class%'
@@ -123,9 +106,3 @@ services:
             - '@pimee_activity_manager.project_remover.chained'
         tags:
             - { name: kernel.event_subscriber }
-
-    ### Datagrid
-    pimee_activity_manager.converter.filter:
-        class: '%pimee_activity_manager.converter.filter.class%'
-        arguments:
-            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'

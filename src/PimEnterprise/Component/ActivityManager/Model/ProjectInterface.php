@@ -148,14 +148,4 @@ interface ProjectInterface
      * @param array $productFilters
      */
     public function setProductFilters(array $productFilters);
-
-    /**
-     * @param bool $isCreated
-     */
-    public function setIsCreated($isCreated);
-
-    /**
-     * @return bool
-     */
-    public function isCreated();
 }
