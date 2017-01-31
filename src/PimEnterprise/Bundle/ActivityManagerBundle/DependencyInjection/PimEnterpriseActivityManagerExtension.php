@@ -40,6 +40,7 @@ class PimEnterpriseActivityManagerExtension extends Extension
         } else {
             $preProcessingTables = $containerBuilder->getParameter('pimee_activity_manager.pre_processing.tables');
             $preProcessingTables['pim_catalog.entity.product#categories'] = 'pimee_activity_manager_product_category';
+            $preProcessingTables['pimee_activity_manager.product_category'] = 'pimee_activity_manager_product_category';
             $containerBuilder->setParameter('pimee_activity_manager.pre_processing.tables', $preProcessingTables);
         }
     }

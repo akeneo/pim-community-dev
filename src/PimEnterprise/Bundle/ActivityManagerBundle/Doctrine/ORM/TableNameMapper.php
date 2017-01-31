@@ -79,8 +79,13 @@ class TableNameMapper
      */
     public function getTableName($key, $targetEntity = null)
     {
-        if (isset($this->preProcessingTables[$key])) {
-            return $this->preProcessingTables[$key];
+        $completeKey = $key;
+        if (null !== $targetEntity) {
+            $completeKey = sprintf('%s#%s', $key, $targetEntity);
+        }
+
+        if (isset($this->preProcessingTables[$completeKey])) {
+            return $this->preProcessingTables[$completeKey];
         }
 
         try {
