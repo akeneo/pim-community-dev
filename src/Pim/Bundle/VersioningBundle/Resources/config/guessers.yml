@@ -4,7 +4,6 @@ parameters:
     pim_versioning.update_guesser.chained.class:           Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser
     pim_versioning.update_guesser.contains_products.class: Pim\Bundle\VersioningBundle\UpdateGuesser\ContainsProductsUpdateGuesser
     pim_versioning.update_guesser.variant_group.class:     Pim\Bundle\VersioningBundle\UpdateGuesser\VariantGroupUpdateGuesser
-    pim_versioning.update_guesser.product_value.class:     Pim\Bundle\VersioningBundle\UpdateGuesser\ProductValueUpdateGuesser
     pim_versioning.update_guesser.translations.class:      Pim\Bundle\VersioningBundle\UpdateGuesser\TranslationsUpdateGuesser
     pim_versioning.update_guesser.versionable.class:       Pim\Bundle\VersioningBundle\UpdateGuesser\VersionableUpdateGuesser
 
