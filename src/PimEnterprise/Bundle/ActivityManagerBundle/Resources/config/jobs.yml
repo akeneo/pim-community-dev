@@ -24,7 +24,6 @@ services:
             - '@pimee_activity_manager.repository.product'
             - '@pimee_activity_manager.repository.project'
             - '@pimee_activity_manager.calculation_step.chained'
-            - '@pimee_activity_manager.repository.pre_processing'
             - '@pimee_activity_manager.saver.project'
             - '@akeneo_storage_utils.doctrine.object_detacher'
         public: false
@@ -49,7 +48,7 @@ services:
     pimee_activity_manager.step.prepare_project_calculation:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
-            - '%pimee_activity_manager.project_calculation.tasklet_name%'
+            - '%pimee_activity_manager.prepare_project_calculation.tasklet_name%'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_activity_manager.tasklet.prepare_project_calculation'
