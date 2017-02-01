@@ -113,11 +113,7 @@
                             });
                         };
 
-                        if (hasDefaultView &&
-                                null === state.view &&
-                                null === state.filters &&
-                                null === state.columns
-                        ) {
+                        if (hasDefaultView && ('0' === state.view || null === state.view)) {
                             {% if hasDefaultView %}
                             applyView({{ defaultView.id }});
                             applyFilters('{{ defaultView.filters|raw }}');
