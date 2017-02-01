@@ -26,10 +26,10 @@ JSON;
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertArrayHasKey('location', $response->headers->all());
         $this->assertSame('http://localhost/api/rest/v1/categories/new_category_headers', $response->headers->get('location'));
-        $this->assertSame([], json_decode($response->getContent(), true));
+        $this->assertSame(null, json_decode($response->getContent(), true));
     }
 
-    public function testFormatStandardWhenACategoryIsCreatedButUncompleted()
+    public function testStandardFormatWhenACategoryIsCreatedButUncompleted()
     {
         $client = $this->createAuthentifiedClient();
 
@@ -88,7 +88,7 @@ JSON;
         $this->assertSame($categoryStandard, $normalizer->normalize($category));
     }
 
-    public function testResponseWhenContentIsNotValid()
+    public function testResponseWhenContentIsEmpty()
     {
         $client = $this->createAuthentifiedClient();
 
@@ -96,7 +96,24 @@ JSON;
 
         $expectedContent = [
             'code'    => 400,
-            'message' => 'JSON is not valid.',
+            'message' => 'Invalid json message received',
+        ];
+
+        $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+    }
+
+    public function testResponseWhenContentIsNotValid()
+    {
+        $client = $this->createAuthentifiedClient();
+
+        $data = '{';
+
+        $expectedContent = [
+            'code'    => 400,
+            'message' => 'Invalid json message received',
         ];
 
         $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
@@ -118,7 +135,13 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Category "categoryA" already exists.',
+            'message' => 'Validation failed.',
+            'errors'  => [
+                [
+                    'field'   => 'code',
+                    'message' => 'This value is already used.',
+                ]
+            ],
         ];
 
         $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
@@ -127,7 +150,6 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
-
 
     public function testResponseWhenValidationFailed()
     {
