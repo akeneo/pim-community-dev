@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-interface NotifierInterface
+interface ProjectNotifierInterface
 {
     /**
      * Notify the user about project event.

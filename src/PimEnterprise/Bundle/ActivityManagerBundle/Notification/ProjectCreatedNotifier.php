@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Notification;
 
-use Pim\Bundle\NotificationBundle\Notifier;
+use Pim\Bundle\NotificationBundle\NotifierInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -20,21 +20,21 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ProjectCreatedNotifier implements NotifierInterface
+class ProjectCreatedNotifier implements ProjectNotifierInterface
 {
     /** @var ProjectCreatedNotificationFactory */
     protected $projectCreatedNotificationFactory;
 
-    /** @var Notifier */
+    /** @var NotifierInterface */
     protected $notifier;
 
     /**
      * @param ProjectCreatedNotificationFactory $projectCreatedNotificationFactory
-     * @param Notifier                          $notifier
+     * @param NotifierInterface                 $notifier
      */
     public function __construct(
         ProjectCreatedNotificationFactory $projectCreatedNotificationFactory,
-        Notifier $notifier
+        NotifierInterface $notifier
     ) {
         $this->projectCreatedNotificationFactory = $projectCreatedNotificationFactory;
         $this->notifier = $notifier;
