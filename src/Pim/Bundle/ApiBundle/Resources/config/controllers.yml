@@ -68,3 +68,4 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_api.pagination.paginator'
             - '@pim_api.pagination.parameter_validator'
+            - '@pim_catalog.remover.product'
