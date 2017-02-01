@@ -5,11 +5,11 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\DateSanitizer;
 use Akeneo\Test\Integration\MediaSanitizer;
-use Akeneo\Test\Integration\TestCase;
 use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class SuccessListProductIntegration extends TestCase
+class SuccessListProductIntegration extends ApiTestCase
 {
     /** @var Collection */
     private $products;
@@ -109,7 +109,7 @@ class SuccessListProductIntegration extends TestCase
      */
     public function testListProductsWithoutParameter()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/products');
         $expected = [
@@ -290,7 +290,7 @@ class SuccessListProductIntegration extends TestCase
      */
     public function testListProductsWithEcommerceChannel()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/products?channel=ecommerce');
         $expected = [
@@ -418,7 +418,7 @@ class SuccessListProductIntegration extends TestCase
      */
     public function testListProductsWithTabletChannel()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/products?channel=tablet');
         $expected = [
@@ -548,7 +548,7 @@ class SuccessListProductIntegration extends TestCase
      */
     public function testListProductsWithTabletChannelAndFRLocale()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/products?channel=tablet&locales=fr_FR');
         $expected = [
@@ -676,7 +676,7 @@ class SuccessListProductIntegration extends TestCase
      */
     public function testListProductsWithEcommerceChinaChannel()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/products?channel=ecommerce_china');
         $expected = [
@@ -739,7 +739,7 @@ class SuccessListProductIntegration extends TestCase
      */
     public function testListProductsWithENAndCNLocales()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/products?locales=en_US,zh_CN');
         $expected = [
@@ -910,7 +910,7 @@ class SuccessListProductIntegration extends TestCase
 
     public function testListProductsWithFilteredAttributes()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/products?attributes=a_text');
         $expected = [
@@ -1031,7 +1031,7 @@ class SuccessListProductIntegration extends TestCase
 
     public function testListProductsWithChannelLocalesAndAttributesParams()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/products?channel=tablet&locales=fr_FR&attributes=a_scopable_price,a_metric,a_localized_and_scopable_text_area');
         $expected = [
@@ -1141,7 +1141,7 @@ class SuccessListProductIntegration extends TestCase
 
     public function testTheSecondPageOfTheListOfProducts()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/products?attributes=a_text&page=2&limit=2');
         $expected = [
@@ -1196,7 +1196,7 @@ class SuccessListProductIntegration extends TestCase
 
     public function testOutOfRangeProductsList()
     {
-        $client = static::createClient();
+        $client = $this->createAuthentifiedClient();
 
         $client->request('GET', 'api/rest/v1/products?page=2');
         $expected = [
