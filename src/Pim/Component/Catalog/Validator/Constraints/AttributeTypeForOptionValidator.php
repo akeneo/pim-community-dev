@@ -26,7 +26,7 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
         if ($attributeOption instanceof AttributeOptionInterface) {
             $attribute = $attributeOption->getAttribute();
             $authorizedTypes = [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::OPTION_MULTI_SELECT];
-            if (!in_array($attribute->getAttributeType(), $authorizedTypes)) {
+            if (null !== $attribute && !in_array($attribute->getAttributeType(), $authorizedTypes)) {
                 $this->addInvalidAttributeViolation($constraint, $attributeOption);
             }
         }
