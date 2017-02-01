@@ -6,6 +6,7 @@ def features = "features,vendor/akeneo/pim-community-dev/features"
 def automaticBranches = ["1.4", "1.5", "1.6", "master"]
 def behatAttempts = 5
 
+
 stage('build') {
     if (!automaticBranches.contains(env.BRANCH_NAME)) {
         userInput = input(message: 'Launch tests?', parameters: [
