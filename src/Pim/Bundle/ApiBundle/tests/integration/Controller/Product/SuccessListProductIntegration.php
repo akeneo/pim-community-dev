@@ -2,14 +2,10 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\DateSanitizer;
-use Akeneo\Test\Integration\MediaSanitizer;
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class SuccessListProductIntegration extends ApiTestCase
+class SuccessListProductIntegration extends AbstractProductTestCase
 {
     /** @var Collection */
     private $products;
@@ -1217,17 +1213,6 @@ class SuccessListProductIntegration extends ApiTestCase
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            false
-        );
-    }
-
-    /**
      * @param Response $response
      * @param array    $expected
      */
@@ -1246,51 +1231,5 @@ class SuccessListProductIntegration extends ApiTestCase
         }
 
         $this->assertSame($expected, $result);
-    }
-
-    /**
-     * @param string $identifier
-     * @param array  $data
-     */
-    private function createProduct($identifier, array $data = [])
-    {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $this->get('pim_catalog.saver.product')->save($product);
-    }
-
-    /**
-     * Replaces dates fields (created/updated) in the $data array by self::DATE_FIELD_COMPARISON.
-     *
-     * @param array $data
-     *
-     * @return array
-     */
-    private function sanitizeDateFields(array $data)
-    {
-        $data['created'] = DateSanitizer::sanitize($data['created']);
-        $data['updated'] = DateSanitizer::sanitize($data['updated']);
-
-        return $data;
-    }
-
-    /**
-     * Replaces media attributes data in the $data array by self::MEDIA_ATTRIBUTE_DATA_COMPARISON.
-     *
-     * @param array $data
-     *
-     * @return array
-     */
-    private function sanitizeMediaAttributeData(array $data)
-    {
-        foreach ($data['values'] as $attributeCode => $values) {
-            if (1 === preg_match('/.*(file|image).*/', $attributeCode)) {
-                foreach ($values as $index => $value) {
-                    $data['values'][$attributeCode][$index]['data'] = MediaSanitizer::sanitize($value['data']);
-                }
-            }
-        }
-
-        return $data;
     }
 }

@@ -13,6 +13,7 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -147,6 +148,26 @@ class ProductController
         );
 
         return new JsonResponse($paginatedProducts);
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $code
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return JsonResponse
+     */
+    public function getAction(Request $request, $code)
+    {
+        $product = $this->productRepository->findOneByIdentifier($code);
+        if (null === $product) {
+            throw new NotFoundHttpException(sprintf('Product "%s" does not exist.', $code));
+        }
+
+        $standardizedProduct = $this->normalizer->normalize($product, 'external_api');
+
+        return new JsonResponse($standardizedProduct);
     }
 
     /**
