@@ -102,6 +102,7 @@ abstract class ApiTestCase extends WebTestCase
                 [
                     'PHP_AUTH_USER' => $clientId,
                     'PHP_AUTH_PW'   => $secret,
+                    'CONTENT_TYPE'  => 'application/json',
                 ]
             );
 
@@ -112,6 +113,7 @@ abstract class ApiTestCase extends WebTestCase
 
         $client = self::createClient($options, $server);
         $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer '.$this->accessToken);
+        $client->setServerParameter('CONTENT_TYPE', 'application/json');
 
         return $client;
     }
