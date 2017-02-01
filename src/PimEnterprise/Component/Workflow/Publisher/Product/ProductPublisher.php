@@ -161,7 +161,7 @@ class ProductPublisher implements PublisherInterface
     protected function copyValues(ProductInterface $product, PublishedProductInterface $published)
     {
         foreach ($product->getValues() as $originalValue) {
-            $publishedValue = $this->publisher->publish($originalValue);
+            $publishedValue = $this->publisher->publish($originalValue, ['product' => $product]);
             $published->addValue($publishedValue);
         }
     }

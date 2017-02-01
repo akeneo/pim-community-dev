@@ -14,6 +14,7 @@ namespace AcmeEnterprise\Bundle\AppBundle\Model;
 use AcmeEnterprise\Bundle\AppBundle\Entity\Color;
 use AcmeEnterprise\Bundle\AppBundle\Entity\Fabric;
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use PimEnterprise\Component\Workflow\Model\PublishedProductValue as PimPublishedProductValue;
 use PimEnterprise\Component\Workflow\Model\PublishedProductValueInterface;
 
@@ -30,9 +31,6 @@ class PublishedProductValue extends PimPublishedProductValue implements Publishe
     /** @var ArrayCollection */
     protected $fabrics;
 
-    /** @var array (used only in MongoDB implementation) */
-    protected $fabricIds;
-
     /** @var Color */
     protected $color;
 
@@ -40,11 +38,14 @@ class PublishedProductValue extends PimPublishedProductValue implements Publishe
     protected $myNewField;
 
     /**
-     * constructor
+     * @param AttributeInterface $attribute
+     * @param string             $channel
+     * @param string             $locale
+     * @param string             $data
      */
-    public function __construct()
+    public function __construct(AttributeInterface $attribute, $channel, $locale, $data)
     {
-        parent::__construct();
+        parent::__construct($attribute, $channel, $locale, $data);
 
         $this->fabrics = new ArrayCollection();
         $this->myNewField = rand();
@@ -59,43 +60,11 @@ class PublishedProductValue extends PimPublishedProductValue implements Publishe
     }
 
     /**
-     * @param ArrayCollection $fabrics
-     */
-    public function setFabrics(ArrayCollection $fabrics)
-    {
-        $this->fabrics = $fabrics;
-    }
-
-    /**
-     * @param Fabric $fabric
-     */
-    public function addFabric(Fabric $fabric)
-    {
-        $this->fabrics->add($fabric);
-    }
-
-    /**
-     * @param Fabric $fabric
-     */
-    public function removeFabric(Fabric $fabric)
-    {
-        $this->fabrics->removeElement($fabric);
-    }
-
-    /**
      * @return Color
      */
     public function getColor()
     {
         return $this->color;
-    }
-
-    /**
-     * @param Color $color
-     */
-    public function setColor(Color $color = null)
-    {
-        $this->color = $color;
     }
 
     /**
@@ -107,9 +76,25 @@ class PublishedProductValue extends PimPublishedProductValue implements Publishe
     }
 
     /**
+     * @param ArrayCollection $fabrics
+     */
+    protected function setFabrics(ArrayCollection $fabrics)
+    {
+        $this->fabrics = $fabrics;
+    }
+
+    /**
+     * @param Color $color
+     */
+    protected function setColor(Color $color = null)
+    {
+        $this->color = $color;
+    }
+
+    /**
      * @param string $myNewField
      */
-    public function setMyNewField($myNewField)
+    protected function setMyNewField($myNewField)
     {
         $this->myNewField = $myNewField;
     }

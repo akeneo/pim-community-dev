@@ -12,30 +12,28 @@
 namespace PimEnterprise\Component\Catalog\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValue as BaseProductValue;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 /**
  * Enterprise override of the Community product value
  *
- * @author    Julien Janvier <jjanvier@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
 class ProductValue extends BaseProductValue implements ProductValueInterface
 {
     /** @var ArrayCollection */
     protected $assets;
 
-    /** @var array (used only in MongoDB implementation) */
-    protected $assetIds;
-
     /**
-     * constructor
+     * @param AttributeInterface $attribute
+     * @param string             $channel
+     * @param string             $locale
+     * @param mixed              $data
      */
-    public function __construct()
+    public function __construct(AttributeInterface $attribute, $channel, $locale, $data)
     {
-        parent::__construct();
+        parent::__construct($attribute, $channel, $locale, $data);
 
         $this->assets = new ArrayCollection();
     }
@@ -51,29 +49,9 @@ class ProductValue extends BaseProductValue implements ProductValueInterface
     /**
      * {@inheritdoc}
      */
-    public function setAssets(ArrayCollection $assets)
+    protected function setAssets(ArrayCollection $assets)
     {
         $this->assets = $assets;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addAsset(AssetInterface $asset)
-    {
-        $this->assets->add($asset);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeAsset(AssetInterface $asset)
-    {
-        $this->assets->removeElement($asset);
 
         return $this;
     }

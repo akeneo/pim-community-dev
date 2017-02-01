@@ -13,6 +13,9 @@ namespace PimEnterprise\Component\Workflow\Publisher\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Component\Workflow\Model\PublishedProductValueInterface;
 use PimEnterprise\Component\Workflow\Publisher\PublisherInterface;
@@ -45,14 +48,10 @@ class ValuePublisher implements PublisherInterface
      */
     public function publish($object, array $options = [])
     {
-        $publishedValue = $this->createNewPublishedProductValue();
-        $publishedValue->setAttribute($object->getAttribute());
-        $publishedValue->setLocale($object->getLocale());
-        $publishedValue->setScope($object->getScope());
-
         $originalData = $object->getData();
         $copiedData = null;
-        $options = ['product' => $object->getEntity(), 'value' => $object];
+
+        $options['value'] = $object;
 
         if ($originalData instanceof Collection) {
             if (count($originalData) > 0) {
@@ -68,9 +67,12 @@ class ValuePublisher implements PublisherInterface
             $copiedData = $originalData;
         }
 
-        if (null !== $copiedData) {
-            $publishedValue->setData($copiedData);
-        }
+        $publishedValue = $this->createNewPublishedProductValue(
+            $object->getAttribute(),
+            $object->getScope(),
+            $object->getLocale(),
+            $copiedData
+        );
 
         return $publishedValue;
     }
@@ -84,10 +86,17 @@ class ValuePublisher implements PublisherInterface
     }
 
     /**
+     * @todo TIP-692: This should used a PublishedProductValueFactory.
+     *
+     * @param AttributeInterface $attribute
+     * @param string             $channel
+     * @param string             $locale
+     * @param string|null        $data
+     *
      * @return PublishedProductValueInterface
      */
-    protected function createNewPublishedProductValue()
+    protected function createNewPublishedProductValue(AttributeInterface $attribute, $channel, $locale, $data)
     {
-        return new $this->publishClassName();
+        return new $this->publishClassName($attribute, $channel, $locale, $data);
     }
 }

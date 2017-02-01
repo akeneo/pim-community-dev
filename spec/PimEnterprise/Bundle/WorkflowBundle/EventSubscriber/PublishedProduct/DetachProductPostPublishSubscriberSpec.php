@@ -8,6 +8,8 @@ use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Model\Metric;
+use Pim\Component\Catalog\Model\PriceCollection;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValue;
 use PimEnterprise\Component\Workflow\Event\PublishedProductEvent;
@@ -27,100 +29,32 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
         ]);
     }
 
-    function it_detachs_products_with_metric_value(
+    function it_detachs_products_with_value(
         $productManager,
         PublishedProductEvent $event,
         ProductInterface $product,
         ProductInterface $publishedProduct
     ) {
-        $metric = new ProductValue();
         $attribute = new Attribute();
-        $attribute->setBackendType(AttributeTypes::BACKEND_TYPE_METRIC);
-        $metric->setAttribute($attribute);
+        $attribute->setBackendType(AttributeTypes::BACKEND_TYPE_TEXT);
 
-        $product->getValues()->willReturn([$metric]);
+        $value = new ProductValue($attribute, null, null, null);
+
+        $product->getValues()->willReturn([$value]);
         $product->getCompletenesses()->willReturn(new ArrayCollection());
         $product->getAssociations()->willReturn(new ArrayCollection());
         $event->getProduct()->willReturn($product);
 
-        $publishedMetric = new ProductValue();
-        $attribute = new Attribute();
-        $attribute->setBackendType(AttributeTypes::BACKEND_TYPE_METRIC);
-        $publishedMetric->setAttribute($attribute);
-        $publishedProduct->getValues()->willReturn([$publishedMetric]);
+        $publishedValue = new ProductValue($attribute, null, null, null);
+
+        $publishedProduct->getValues()->willReturn([$publishedValue]);
         $publishedProduct->getCompletenesses()->willReturn(new ArrayCollection());
         $publishedProduct->getAssociations()->willReturn(new ArrayCollection());
         $event->getPublishedProduct()->willReturn($publishedProduct);
 
-        $productManager->detach($publishedMetric)->shouldBeCalled();
+        $productManager->detach($publishedValue)->shouldBeCalled();
         $productManager->detach($publishedProduct)->shouldBeCalled();
-        $productManager->detach($metric)->shouldBeCalled();
-        $productManager->detach($product)->shouldBeCalled();
-
-        $this->detachProductPostPublish($event);
-    }
-
-    function it_detachs_products_with_media_value(
-        $productManager,
-        PublishedProductEvent $event,
-        ProductInterface $product,
-        ProductInterface $publishedProduct
-    ) {
-        $media = new ProductValue();
-        $attribute = new Attribute();
-        $attribute->setBackendType(AttributeTypes::BACKEND_TYPE_MEDIA);
-        $media->setAttribute($attribute);
-
-        $product->getValues()->willReturn([$media]);
-        $product->getCompletenesses()->willReturn(new ArrayCollection());
-        $product->getAssociations()->willReturn(new ArrayCollection());
-        $event->getProduct()->willReturn($product);
-
-        $publishedMedia = new ProductValue();
-        $attribute = new Attribute();
-        $attribute->setBackendType(AttributeTypes::BACKEND_TYPE_MEDIA);
-        $publishedMedia->setAttribute($attribute);
-        $publishedProduct->getValues()->willReturn([$publishedMedia]);
-        $publishedProduct->getCompletenesses()->willReturn(new ArrayCollection());
-        $publishedProduct->getAssociations()->willReturn(new ArrayCollection());
-        $event->getPublishedProduct()->willReturn($publishedProduct);
-
-        $productManager->detach($publishedMedia)->shouldBeCalled();
-        $productManager->detach($publishedProduct)->shouldBeCalled();
-        $productManager->detach($media)->shouldBeCalled();
-        $productManager->detach($product)->shouldBeCalled();
-
-        $this->detachProductPostPublish($event);
-    }
-
-    function it_detachs_products_with_prices_values(
-        $productManager,
-        PublishedProductEvent $event,
-        ProductInterface $product,
-        ProductInterface $publishedProduct
-    ) {
-        $price = new ProductValue();
-        $attribute = new Attribute();
-        $attribute->setBackendType(AttributeTypes::BACKEND_TYPE_METRIC);
-        $price->setAttribute($attribute);
-
-        $product->getValues()->willReturn([$price]);
-        $product->getCompletenesses()->willReturn(new ArrayCollection());
-        $product->getAssociations()->willReturn(new ArrayCollection());
-        $event->getProduct()->willReturn($product);
-
-        $publishedPrice = new ProductValue();
-        $attribute = new Attribute();
-        $attribute->setBackendType(AttributeTypes::BACKEND_TYPE_METRIC);
-        $publishedPrice->setAttribute($attribute);
-        $publishedProduct->getValues()->willReturn([$publishedPrice]);
-        $publishedProduct->getCompletenesses()->willReturn(new ArrayCollection());
-        $publishedProduct->getAssociations()->willReturn(new ArrayCollection());
-        $event->getPublishedProduct()->willReturn($publishedProduct);
-
-        $productManager->detach($publishedPrice)->shouldBeCalled();
-        $productManager->detach($publishedProduct)->shouldBeCalled();
-        $productManager->detach($price)->shouldBeCalled();
+        $productManager->detach($value)->shouldBeCalled();
         $productManager->detach($product)->shouldBeCalled();
 
         $this->detachProductPostPublish($event);

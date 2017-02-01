@@ -56,15 +56,6 @@ PimEnterprise\Component\Workflow\Model\PublishedProduct:
                 - persist
                 - refresh
                 - detach
-        values:
-            targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductValueInterface
-            orphanRemoval: true
-            mappedBy: entity
-            cascade:
-                - remove
-                - persist
-                - refresh
-                - detach
         completenesses:
             targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductCompletenessInterface
             mappedBy: product

@@ -11,65 +11,13 @@
 
 namespace PimEnterprise\Component\Workflow\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\AbstractProductValue;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\Catalog\Model\ProductValue;
 
 /**
  * Published product value
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class PublishedProductValue extends AbstractProductValue implements PublishedProductValueInterface
+class PublishedProductValue extends ProductValue implements PublishedProductValueInterface
 {
-    /** @var ArrayCollection */
-    protected $assets;
-
-    /** @var array (used only in MongoDB implementation) */
-    protected $assetIds;
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->assets = new ArrayCollection();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAssets()
-    {
-        return $this->assets;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setAssets(ArrayCollection $assets)
-    {
-        $this->assets = $assets;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addAsset(AssetInterface $asset)
-    {
-        $this->assets->add($asset);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeAsset(AssetInterface $asset)
-    {
-        $this->assets->removeElement($asset);
-
-        return $this;
-    }
 }
