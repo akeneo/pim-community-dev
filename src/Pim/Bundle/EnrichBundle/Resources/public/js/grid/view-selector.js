@@ -80,28 +80,20 @@ define(
                 this.listenTo(this.getRoot(), 'grid:view-selector:close-selector', this.closeSelect2.bind(this));
                 this.listenTo(this.getRoot(), 'grid:product-grid:state_changed', this.onGridStateChange.bind(this));
 
-                return $.when(
-                    FetcherRegistry.getFetcher('datagrid-view').defaultColumns(this.gridAlias),
-                    FetcherRegistry.getFetcher('datagrid-view').defaultUserView(this.gridAlias)
-                ).then(function (columns, defaultView) {
-                    this.defaultColumns = columns;
-                    this.defaultUserView = defaultView.view;
+                return FetcherRegistry.getFetcher('datagrid-view')
+                    .defaultColumns(this.gridAlias)
+                    .then(function (columns) {
+                        this.defaultColumns = columns;
 
-                    return BaseForm.prototype.configure.apply(this, arguments);
-                }.bind(this));
+                        return BaseForm.prototype.configure.apply(this, arguments);
+                    }.bind(this));
             },
 
             /**
              * {@inheritdoc}
              */
             render: function () {
-                var deferred = $.Deferred().resolve();
-
-                if (null === this.currentView) {
-                    deferred = this.initializeSelection();
-                }
-
-                deferred.then(function () {
+                this.initializeSelection().then(function () {
                     this.initializeViewTypes();
 
                     this.$el.html(this.template({
@@ -228,26 +220,27 @@ define(
              */
             initializeSelection: function () {
                 var activeViewId = DatagridState.get(this.gridAlias, 'view');
-                var userDefaultView = this.defaultUserView;
+                var isDefaultView = ('0' === activeViewId);
                 var deferred = $.Deferred();
 
-                if (activeViewId) {
-                    if ('0' === activeViewId) {
-                        deferred.resolve(this.getDefaultView());
-                    } else {
+                this.getUserDefaultView().then(function (userDefaultView) {
+                    if (userDefaultView && (!activeViewId || isDefaultView)) {
+                        // User is on default view but has a custom default one
+                        userDefaultView.text = userDefaultView.label;
+                        deferred.resolve(userDefaultView);
+                    } else if (activeViewId && !isDefaultView) {
+                        // User is on an existing view
                         FetcherRegistry.getFetcher('datagrid-view')
                             .fetch(activeViewId, {alias: this.gridAlias, cached: false})
                             .then(this.postFetchDatagridView.bind(this))
                             .then(function (view) {
                                 deferred.resolve(view);
                             });
+                    } else {
+                        // Other, set the default view
+                        deferred.resolve(this.getDefaultView());
                     }
-                } else if (userDefaultView) {
-                    userDefaultView.text = userDefaultView.label;
-                    deferred.resolve(userDefaultView);
-                } else {
-                    deferred.resolve(this.getDefaultView());
-                }
+                }.bind(this));
 
                 deferred.then(function (initView) {
                     var datagridState = DatagridState.get(this.gridAlias, ['filters', 'columns']);
@@ -295,6 +288,21 @@ define(
                     type: 'view',
                     filters: ''
                 };
+            },
+
+            /**
+             * Return the default user view object.
+             *
+             * @return {Object}
+             */
+            getUserDefaultView: function () {
+                return FetcherRegistry.getFetcher('datagrid-view')
+                    .defaultUserView(this.gridAlias)
+                    .then(function (defaultUserView) {
+                        this.defaultUserView = defaultUserView.view;
+
+                        return defaultUserView.view;
+                    }.bind(this));
             },
 
             /**
