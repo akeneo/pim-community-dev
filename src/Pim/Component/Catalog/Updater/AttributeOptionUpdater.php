@@ -4,6 +4,8 @@ namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -56,14 +58,50 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
 
         $isNew = $attributeOption->getId() === null;
         $readOnlyFields = ['attribute', 'code'];
-        foreach ($data as $field => $data) {
+        foreach ($data as $field => $value) {
+            $this->validateDataType($field, $value);
             $isReadOnlyField = in_array($field, $readOnlyFields);
             if ($isNew || !$isReadOnlyField) {
-                $this->setData($attributeOption, $field, $data);
+                $this->setData($attributeOption, $field, $value);
             }
         }
 
         return $this;
+    }
+
+    /**
+     * Validate the data type of a field.
+     *
+     * @param string $field
+     * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
+     * @throws UnknownPropertyException
+     */
+    protected function validateDataType($field, $data)
+    {
+        if ('labels' === $field) {
+            if (!is_array($data)) {
+                throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
+            }
+
+            foreach ($data as $localeCode => $label) {
+                if (null !== $label && !is_scalar($label)) {
+                    throw InvalidPropertyTypeException::validArrayStructureExpected(
+                        'labels',
+                        'one of the labels is not a scalar',
+                        static::class,
+                        $data
+                    );
+                }
+            }
+        } elseif (in_array($field, ['attribute', 'code', 'sort_order'])) {
+            if (null !== $data && !is_scalar($data)) {
+                throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
+            }
+        } else {
+            throw UnknownPropertyException::unknownProperty($field);
+        }
     }
 
     /**
