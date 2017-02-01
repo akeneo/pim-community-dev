@@ -27,7 +27,11 @@ class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterf
         $normalizedElements = [];
 
         foreach ($elements as $element) {
-            $normalizedElements[] = $this->serializer->normalize($element, $format, $context);
+            // an element can be false in mongo because of a bug in the cursor
+            // TODO: to fix with API-115
+            if (false !== $element) {
+                $normalizedElements[] = $this->serializer->normalize($element, $format, $context);
+            }
         }
 
         return $normalizedElements;
