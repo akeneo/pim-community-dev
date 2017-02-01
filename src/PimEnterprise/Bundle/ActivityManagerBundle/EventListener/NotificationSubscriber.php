@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\ActivityManagerBundle\EventListener;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use PimEnterprise\Bundle\ActivityManagerBundle\Notification\NotifierInterface;
+use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectNotifierInterface;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvent;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
 use PimEnterprise\Component\ActivityManager\Factory\ProjectStatusFactoryInterface;
@@ -47,10 +47,10 @@ class NotificationSubscriber implements EventSubscriberInterface
     /** @var ProjectCompletenessRepositoryInterface */
     protected $projectCompletenessRepository;
 
-    /** @var NotifierInterface */
+    /** @var ProjectNotifierInterface */
     protected $projectCreatedNotifier;
 
-    /** @var NotifierInterface */
+    /** @var ProjectNotifierInterface */
     protected $projectFinishedNotifier;
 
     /**
@@ -59,8 +59,8 @@ class NotificationSubscriber implements EventSubscriberInterface
      * @param ProjectStatusRepositoryInterface       $projectStatusRepository
      * @param SaverInterface                         $projectStatusSaver
      * @param ProjectCompletenessRepositoryInterface $projectCompletenessRepository
-     * @param NotifierInterface                      $projectCreatedNotifier
-     * @param NotifierInterface                      $projectFinishedNotifier
+     * @param ProjectNotifierInterface               $projectCreatedNotifier
+     * @param ProjectNotifierInterface               $projectFinishedNotifier
      */
     public function __construct(
         UserRepositoryInterface $userRepository,
@@ -68,8 +68,8 @@ class NotificationSubscriber implements EventSubscriberInterface
         ProjectStatusRepositoryInterface $projectStatusRepository,
         SaverInterface $projectStatusSaver,
         ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
-        NotifierInterface $projectCreatedNotifier,
-        NotifierInterface $projectFinishedNotifier
+        ProjectNotifierInterface $projectCreatedNotifier,
+        ProjectNotifierInterface $projectFinishedNotifier
     ) {
         $this->userRepository = $userRepository;
         $this->projectStatusFactory = $projectStatusFactory;
@@ -102,6 +102,12 @@ class NotificationSubscriber implements EventSubscriberInterface
             $projectCompleteness = $this->projectCompletenessRepository->getProjectCompleteness($project, $user);
             $projectStatus = $this->projectStatusRepository->findProjectStatus($project, $user);
 
+            if (null === $projectStatus) {
+                $projectStatus = $this->projectStatusFactory->create($project, $user);
+                $projectStatus->setHasBeenNotified(false);
+                $projectStatus->setIsComplete($projectCompleteness->isComplete());
+            }
+
             $this->checksAndNotifyConcernedUsed($projectStatus, $project, $user, $projectCompleteness);
         }
     }
@@ -120,12 +126,6 @@ class NotificationSubscriber implements EventSubscriberInterface
         UserInterface $user,
         ProjectCompleteness $projectCompleteness
     ) {
-        if (null === $projectStatus) {
-            $projectStatus = $this->projectStatusFactory->create($project, $user);
-            $projectStatus->setHasBeenNotified(false);
-            $projectStatus->setIsComplete($projectCompleteness->isComplete());
-        }
-
         if (!$projectStatus->hasBeenNotified() && !$projectCompleteness->isComplete()) {
             $this->projectCreatedNotifier->notifyUser($user, $project);
             $projectStatus->setHasBeenNotified(true);
