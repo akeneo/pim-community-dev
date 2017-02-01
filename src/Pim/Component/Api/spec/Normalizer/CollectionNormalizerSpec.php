@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class SimpleCollectionNormalizerSpec extends ObjectBehavior
+class CollectionNormalizerSpec extends ObjectBehavior
 {
     function let(SerializerInterface $serializer)
     {
@@ -41,7 +41,7 @@ class SimpleCollectionNormalizerSpec extends ObjectBehavior
         $familyIterator->current()->willReturn($familyA, $familyB);
         $familyIterator->next()->shouldBeCalled();
 
-        $serializer->normalize($familyA, 'standard', [])->willReturn(
+        $serializer->normalize($familyA, 'external_api', [])->willReturn(
             [
                 'code' => 'familyA',
                 'attributes' => [
@@ -61,7 +61,7 @@ class SimpleCollectionNormalizerSpec extends ObjectBehavior
                 'labels' => [],
             ]
         );
-        $serializer->normalize($familyB, 'standard', [])->willReturn(
+        $serializer->normalize($familyB, 'external_api', [])->willReturn(
             [
                 'code' => 'familyB',
                 'attributes' => [

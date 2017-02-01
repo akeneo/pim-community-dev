@@ -6,6 +6,7 @@ use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositor
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\UnexpectedResultException;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -587,6 +588,27 @@ class ProductRepository extends EntityRepository implements
         }
 
         return $this->groupRepository->hasAttribute($groupIds, $attributeCode);
+    }
+
+    /**
+     * TODO: to remove with API-114
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return int
+     */
+    public function count(QueryBuilder $qb)
+    {
+        try {
+            return (int) $qb->select('COUNT(DISTINCT o.id)')
+                ->setMaxResults(null)
+                ->setFirstResult(null)
+                ->resetDQLPart('orderBy')
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (UnexpectedResultException $e) {
+            return 0;
+        }
     }
 
     /**

@@ -33,7 +33,7 @@ class HalPaginator implements PaginatorInterface
     public function paginate(array $items, array $parameters, $count, $listRouteName, $itemRouteName, $itemIdentifier)
     {
         $data = [
-            'current_page' => $parameters['page'],
+            'current_page' => (int) $parameters['page'],
             'pages_count'  => $this->getLastPage($parameters['limit'], $count),
             'items_count'  => $count,
         ];

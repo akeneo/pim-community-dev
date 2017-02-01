@@ -1,15 +1,13 @@
 <?php
 
-namespace tests\integration\Pim\Component\Catalog\Normalizer\Standard;
-
-use Pim\Component\Catalog\tests\integration\Normalizer\Standard\AbstractStandardNormalizerTestCase;
+namespace Pim\Component\Api\tests\integration\Normalizer;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
- * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyIntegration extends AbstractStandardNormalizerTestCase
+class FamilyIntegration extends AbstractNormalizerTestCase
 {
     public function testFamily()
     {
@@ -90,7 +88,7 @@ class FamilyIntegration extends AbstractStandardNormalizerTestCase
         $repository = $this->get('pim_catalog.repository.family');
         $serializer = $this->get('pim_serializer');
 
-        $result = $serializer->normalize($repository->findOneByIdentifier('familyA'), 'standard');
+        $result = $serializer->normalize($repository->findOneByIdentifier('familyA'), 'external_api');
 
         $this->assertSame($expected, $result);
     }

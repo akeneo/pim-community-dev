@@ -4,6 +4,7 @@ parameters:
     pim_api.controller.rest.attribute.class: Pim\Bundle\ApiBundle\Controller\Rest\AttributeController
     pim_api.controller.rest.attribute_option.class: Pim\Bundle\ApiBundle\Controller\Rest\AttributeOptionController
     pim_api.controller.token.class: Pim\Bundle\ApiBundle\Controller\TokenController
+    pim_api.controller.product.class: Pim\Bundle\ApiBundle\Controller\ProductController
 
 services:
     pim_api.controller.rest.category:
@@ -55,3 +56,15 @@ services:
         class: '%pim_api.controller.token.class%'
         arguments:
             - '@fos_oauth_server.server'
+
+    pim_api.controller.product:
+        class: '%pim_api.controller.product.class%'
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_serializer'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.product'
+            - '@pim_api.pagination.paginator'
+            - '@pim_api.pagination.parameter_validator'
