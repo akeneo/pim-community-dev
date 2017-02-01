@@ -127,108 +127,47 @@ class FamilyUpdater implements ObjectUpdaterInterface
 
     /**
      * @param FamilyInterface $family
-     * @param array           $data
+     * @param array           $newRequirements
      */
-    protected function setAttributeRequirements(FamilyInterface $family, array $data)
+    protected function setAttributeRequirements(FamilyInterface $family, array $newRequirements)
     {
-        $oldRequirements = $family->getAttributeRequirements();
-
-        $requirements = $this->getExistingIdentifierRequirements($family);
-        foreach ($data as $channelCode => $attributeCodes) {
-            $requirements = array_merge(
-                $requirements,
-                $this->createAttributeRequirementsByChannel($family, $attributeCodes, $channelCode)
-            );
-        }
-
-        $requirements = $this->addMissingIdentifierRequirements($family, $requirements);
-
-        $this->removeRequirements($family, $requirements, $oldRequirements);
-
-        $family->setAttributeRequirements($requirements);
-    }
-
-    /**
-     * @param FamilyInterface $family
-     *
-     * @return AttributeRequirementInterface[]
-     */
-    protected function getExistingIdentifierRequirements(FamilyInterface $family)
-    {
-        $identifierReqs = [];
-        $existingRequirements = $family->getAttributeRequirements();
-        foreach ($existingRequirements as $requirement) {
-            if (AttributeTypes::IDENTIFIER === $requirement->getAttribute()->getAttributeType()) {
-                $identifierReqs[] = $requirement;
+        foreach ($family->getAttributeRequirements() as $requirement) {
+            $channelCode = $requirement->getChannelCode();
+            if (array_key_exists($channelCode, $newRequirements)) {
+                $attribute = $requirement->getAttribute();
+                $key = array_search($attribute->getCode(), $newRequirements[$channelCode], true);
+                if (false === $key && AttributeTypes::IDENTIFIER !== $attribute->getAttributeType()) {
+                    $family->removeAttributeRequirement($requirement);
+                } elseif (false !== $key) {
+                    unset($newRequirements[$channelCode][$key]);
+                }
             }
         }
 
-        return $identifierReqs;
+        foreach ($newRequirements as $channelCode => $requirements) {
+            foreach ($requirements as $attributeCode) {
+                $newRequirement = $this->createAttributeRequirement($family, $attributeCode, $channelCode);
+                $family->addAttributeRequirement($newRequirement);
+            }
+        }
     }
 
     /**
-     * Creates attribute requirements for the given channel but skip identifiers
-     *
      * @param FamilyInterface $family
-     * @param array           $attributeCodes
+     * @param string          $attributeCode
      * @param string          $channelCode
-     *
-     * @return array
-     */
-    protected function createAttributeRequirementsByChannel(
-        FamilyInterface $family,
-        array $attributeCodes,
-        $channelCode
-    ) {
-        $requirements = [];
-        foreach ($attributeCodes as $attributeCode) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-            if (null === $attribute) {
-                throw new \InvalidArgumentException(
-                    sprintf('Attribute with "%s" code does not exist', $attributeCode)
-                );
-            }
-            if (AttributeTypes::IDENTIFIER !== $attribute->getAttributeType()) {
-                $requirements[] = $this->createAttributeRequirement($family, $attribute, $channelCode);
-            }
-        }
-
-        return $requirements;
-    }
-
-    /**
-     * @param FamilyInterface                 $family
-     * @param AttributeRequirementInterface[] $requirements
-     *
-     * @return AttributeRequirementInterface[]
-     */
-    protected function addMissingIdentifierRequirements(FamilyInterface $family, array $requirements)
-    {
-        $channelCodes = $this->channelRepository->getChannelCodes();
-        $existingChannelCode = [];
-        foreach ($requirements as $requirement) {
-            if (AttributeTypes::IDENTIFIER === $requirement->getAttribute()->getAttributeType()) {
-                $existingChannelCode[] = $requirement->getChannelCode();
-            }
-        }
-        $missingChannelCodes = array_diff($channelCodes, $existingChannelCode);
-        $identifier = $this->attributeRepository->getIdentifier();
-        foreach ($missingChannelCodes as $channelCode) {
-            $requirements[] = $this->createAttributeRequirement($family, $identifier, $channelCode);
-        }
-
-        return $requirements;
-    }
-
-    /**
-     * @param FamilyInterface    $family
-     * @param AttributeInterface $attribute
-     * @param string             $channelCode
      *
      * @return AttributeRequirementInterface
      */
-    protected function createAttributeRequirement(FamilyInterface $family, AttributeInterface $attribute, $channelCode)
+    protected function createAttributeRequirement(FamilyInterface $family, $attributeCode, $channelCode)
     {
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        if (null === $attribute) {
+            throw new \InvalidArgumentException(
+                sprintf('Attribute with "%s" code does not exist', $attributeCode)
+            );
+        }
+
         $channel = $this->channelRepository->findOneByIdentifier($channelCode);
         if (null === $channel) {
             throw new \InvalidArgumentException(
@@ -243,8 +182,6 @@ class FamilyUpdater implements ObjectUpdaterInterface
         if (null === $requirement) {
             $requirement = $this->attrRequiFactory->createAttributeRequirement($attribute, $channel, true);
         }
-
-        $requirement->setRequired(true);
 
         return $requirement;
     }
@@ -287,24 +224,6 @@ class FamilyUpdater implements ObjectUpdaterInterface
             throw new \InvalidArgumentException(
                 sprintf('Attribute with "%s" code does not exist', $data)
             );
-        }
-    }
-
-    /**
-     * @param FamilyInterface $family
-     * @param array           $requirements
-     * @param array           $oldRequirements
-     */
-    protected function removeRequirements(
-        FamilyInterface $family,
-        array $requirements,
-        array $oldRequirements
-    ) {
-        $checkRequirements = new ArrayCollection($requirements);
-        foreach ($oldRequirements as $requirement) {
-            if (!$checkRequirements->contains($requirement)) {
-                $family->removeAttributeRequirement($requirement);
-            }
         }
     }
 }
