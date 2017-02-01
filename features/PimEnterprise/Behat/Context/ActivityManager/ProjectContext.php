@@ -12,6 +12,7 @@
 namespace PimEnterprise\Behat\Context\ActivityManager;
 
 use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\Gherkin\Node\TableNode;
 use Pim\Behat\Context\PimContext;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
@@ -117,6 +118,14 @@ class ProjectContext extends PimContext
     }
 
     /**
+     * @Given /^I run computation of the project "([^"]*)"$/
+     */
+    public function iComputeTheProject($projectCode)
+    {
+        $this->generateProject($projectCode);
+    }
+
+    /**
      * Launch the project calculation job for the given project
      *
      * @param string $projectCode
@@ -131,15 +140,18 @@ class ProjectContext extends PimContext
         $batchJobCommand->setContainer($this->getMainContext()->getContainer());
         $command = new CommandTester($batchJobCommand);
 
+        $this->getService('doctrine.orm.entity_manager')->clear();
+
         $jobInstance = $this->getService('akeneo_batch.job.job_instance_repository')
             ->findOneByIdentifier('project_calculation');
+
         $exitCode = $command->execute(
             [
-                'command'    => $batchJobCommand->getName(),
-                'code'       => $jobInstance->getCode(),
-                '--config'   => json_encode(['project_code' => $projectCode]),
-                '--no-log'   => true,
-                '-v'         => true
+                'command'     => $batchJobCommand->getName(),
+                'code'        => $jobInstance->getCode(),
+                '--config'    => json_encode(['project_code' => $projectCode]),
+                '--no-log'    => true,
+                '-v'          => true
             ]
         );
 
