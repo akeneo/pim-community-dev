@@ -27,13 +27,4 @@ interface ProjectStatusRepositoryInterface
      * @return ProjectStatusInterface
      */
     public function findProjectStatus(ProjectInterface $project, UserInterface $user);
-
-    /**
-     * @param ProjectInterface $project
-     * @param UserInterface    $user
-     */
-    public function setHasBeenNotified(
-        ProjectInterface $project,
-        UserInterface $user
-    );
 }
