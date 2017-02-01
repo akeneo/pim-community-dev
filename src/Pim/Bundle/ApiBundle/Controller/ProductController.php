@@ -10,6 +10,7 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -37,6 +38,9 @@ class ProductController
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
+
     /** @var HalPaginator */
     protected $paginator;
 
@@ -49,6 +53,7 @@ class ProductController
      * @param IdentifiableObjectRepositoryInterface $channelRepository
      * @param IdentifiableObjectRepositoryInterface $localeRepository
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param ProductRepositoryInterface            $productRepository
      * @param HalPaginator                          $paginator
      * @param ParameterValidatorInterface           $parameterValidator
      * @param ProductQueryBuilderFactoryInterface   $pqbFactory
@@ -60,6 +65,7 @@ class ProductController
         IdentifiableObjectRepositoryInterface $channelRepository,
         IdentifiableObjectRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
+        ProductRepositoryInterface $productRepository,
         HalPaginator $paginator,
         ParameterValidatorInterface $parameterValidator
     ) {
@@ -68,6 +74,7 @@ class ProductController
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->productRepository = $productRepository;
         $this->paginator = $paginator;
         $this->parameterValidator = $parameterValidator;
     }
@@ -123,6 +130,8 @@ class ProductController
         // for the moment, set an empty array
         $this->setPQBFilters($pqb, [], $channel);
 
+        $count = $this->productRepository->count($pqb->getQueryBuilder());
+
         $pqb->getQueryBuilder()
             ->setMaxResults($queryParameters['limit'])
             ->setFirstResult(($queryParameters['page'] - 1) * $queryParameters['limit']);
@@ -131,7 +140,7 @@ class ProductController
         $paginatedProducts = $this->paginator->paginate(
             $standardProducts,
             array_merge($request->query->all(), $queryParameters),
-            1000,
+            $count,
             'pim_api_product_list',
             'pim_api_product_list',
             'identifier'
