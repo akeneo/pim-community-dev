@@ -59,9 +59,7 @@ class VersionManagerIntegration extends TestCase
     {
         $product = $this->productRepository->findOneByIdentifier('bar');
         $this->productSaver->save($product);
-        $this->versionRepository = $this->get('pim_versioning.repository.version');
-        $productVersions = $this->versionRepository
-            ->getLogEntries(ClassUtils::getClass($product), $product->getId());
+        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), $product->getId());
         $this->assertEmpty($productVersions);
     }
 
@@ -70,8 +68,7 @@ class VersionManagerIntegration extends TestCase
         $product = $this->get('pim_catalog.builder.product')->createProduct('versioned-product');
         $this->productSaver->save($product);
 
-        $productVersions = $this->get('pim_versioning.repository.version')
-            ->getLogEntries(ClassUtils::getClass($product), $product->getId());
+        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), $product->getId());
 
         $this->assertCount(1, $productVersions);
 
@@ -98,8 +95,8 @@ class VersionManagerIntegration extends TestCase
             ],
             'enabled' => [
                 'old' => '',
-                'new' => 1
-            ]
+                'new' => 1,
+            ],
         ]);
     }
 
@@ -108,7 +105,7 @@ class VersionManagerIntegration extends TestCase
         $updates = [
             'groups' => ['groupB'],
             'values' => [
-                'a_date'         => [
+                'a_date' => [
                     ['locale' => null, 'scope' => null, 'data' => '2017-02-01'],
                 ],
             ],
@@ -118,8 +115,7 @@ class VersionManagerIntegration extends TestCase
         $this->productUpdater->update($product, $updates);
         $this->productSaver->save($product);
 
-        $productVersions = $this->get('pim_versioning.repository.version')
-            ->getLogEntries(ClassUtils::getClass($product), $product->getId());
+        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), $product->getId());
 
         $this->assertCount(2, $productVersions);
 
@@ -129,20 +125,20 @@ class VersionManagerIntegration extends TestCase
         $this->assertEquals($version->getResourceId(), $product->getId());
         $this->assertNotNull($version->getLoggedAt());
         $this->assertEquals($version->getSnapshot(), [
-            'sku'            => 'versioned-product',
-            'family'         => '',
-            'groups'         => 'groupB',
-            'categories'     => '',
-            'a_date'         => '2017-02-01',
-            'enabled'        => 1,
+            'sku'        => 'versioned-product',
+            'family'     => '',
+            'groups'     => 'groupB',
+            'categories' => '',
+            'a_date'     => '2017-02-01',
+            'enabled'    => 1,
         ]);
 
         $this->assertEquals($version->getChangeset(), [
-            'groups'         => [
+            'groups' => [
                 'old' => '',
                 'new' => 'groupB',
             ],
-            'a_date'         => [
+            'a_date' => [
                 'old' => '',
                 'new' => '2017-02-01',
             ],
@@ -156,8 +152,7 @@ class VersionManagerIntegration extends TestCase
         $product->removeValue($productValue);
         $this->productSaver->save($product);
 
-        $productVersions = $this->get('pim_versioning.repository.version')
-            ->getLogEntries(ClassUtils::getClass($product), $product->getId());
+        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), $product->getId());
 
         $this->assertCount(3, $productVersions);
 
@@ -167,11 +162,11 @@ class VersionManagerIntegration extends TestCase
         $this->assertEquals($version->getResourceId(), $product->getId());
         $this->assertNotNull($version->getLoggedAt());
         $this->assertEquals($version->getSnapshot(), [
-            'sku'            => 'versioned-product',
-            'family'         => '',
-            'groups'         => 'groupB',
-            'categories'     => '',
-            'enabled'        => 1,
+            'sku'        => 'versioned-product',
+            'family'     => '',
+            'groups'     => 'groupB',
+            'categories' => '',
+            'enabled'    => 1,
         ]);
         $this->assertEquals($version->getChangeset(), [
             'a_date' => [
