@@ -108,23 +108,6 @@ class EnterpriseWebUser extends BaseWebUser
     }
 
     /**
-     * @param $field
-     * @param $text
-     *
-     * @Given /^I fill the following text in the "([^"]+)" select2 : ([^"]+)$/
-     */
-    public function iFillTheFollowingTextInTheSelect2($field, $text)
-    {
-        $this->getCurrentPage()->findField($field)->click();
-
-        // Impossible to use NodeElement::setValue() since the Selenium2 implementation emulates the change event
-        // by hitting the TAB key, which results in closing select2 choices
-        $this->getSession()->executeScript(
-            sprintf('$(\'.select2-search-field .select2-input\').val(\'%s\').trigger(\'paste\');', $text)
-        );
-    }
-
-    /**
      * @params string       $field
      * $params string|array $tags
      *
@@ -141,13 +124,32 @@ class EnterpriseWebUser extends BaseWebUser
             $this->iFillTheFollowingTextInTheSelect2($field, $tag);
 
             $item = $this->spin(function () use ($search, $tag) {
-                return $search->find(
-                    'css',
-                    sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', $tag)
-                );
-            }, sprintf('Cannot find tag "%s" in select2', $tag));
+                $options = $search->findAll('css', '.select2-result:not(.select2-selected) .select2-result-label');
+                foreach($options as $option) {
+                    if ($option->getText() === $tag) {
+                        return $option;
+                    }
+                }
+            }, sprintf('Unable to find an option with the text "%s"', $tag));
             $item->click();
         }
+    }
+
+    /**
+     * @param $field
+     * @param $text
+     *
+     * @Given /^I fill the following text in the "([^"]+)" select2 : ([^"]+)$/
+     */
+    public function iFillTheFollowingTextInTheSelect2($field, $text)
+    {
+        $this->getCurrentPage()->findField($field)->click();
+
+        // Impossible to use NodeElement::setValue() since the Selenium2 implementation emulates the change event
+        // by hitting the TAB key, which results in closing select2 choices
+        $this->getSession()->executeScript(
+            sprintf('$(\'.select2-search-field .select2-input\').val(\'%s\').trigger(\'paste\');', $text)
+        );
     }
 
     /**
