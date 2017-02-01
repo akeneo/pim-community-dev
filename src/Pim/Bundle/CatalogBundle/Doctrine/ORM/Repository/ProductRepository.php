@@ -555,6 +555,9 @@ class ProductRepository extends EntityRepository implements
     {
         $qb = $this->createQueryBuilder('Product');
 
+        //TODO - TIP-697: make the variant groups work again
+        return $qb;
+
         $qb
             ->where(':variantGroup MEMBER OF Product.groups')
             ->setParameter('variantGroup', $variantGroup);
