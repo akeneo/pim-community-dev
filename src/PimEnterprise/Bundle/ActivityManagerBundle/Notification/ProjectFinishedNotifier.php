@@ -45,14 +45,11 @@ class ProjectFinishedNotifier implements ProjectNotifierInterface
      */
     public function notifyUser(UserInterface $user, ProjectInterface $project)
     {
-        $message = 'activity_manager.notification.project_finished.contributor';
+        $message = $user->getUsername() === $project->getOwner()->getUsername()
+            ? 'activity_manager.notification.project_finished.owner'
+            : 'activity_manager.notification.project_finished.contributor';
 
-        if ($user->getUsername() === $project->getOwner()->getUsername()) {
-            $message = 'activity_manager.notification.project_finished.owner';
-        }
-
-        $notification = $this->projectFinishedNotificationFactory
-            ->create($project, $message);
+        $notification = $this->projectFinishedNotificationFactory->create($project, $message);
 
         $this->notifier->notify($notification, [$user]);
     }

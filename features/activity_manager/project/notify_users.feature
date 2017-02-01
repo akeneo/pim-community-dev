@@ -367,7 +367,7 @@ Feature: Notify users after a project creation
     Then I should see the text "Julia"
     Then I should have 1 new notification
 
-  Scenario: Successfully notify users if blabla
+  Scenario: Successfully notify users
     Given the following product values:
       | product        | attribute   | value | locale | scope     |
       | my-awesome-car | description |       | en_US  | ecommerce |

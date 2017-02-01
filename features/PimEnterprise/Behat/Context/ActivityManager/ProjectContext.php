@@ -147,11 +147,11 @@ class ProjectContext extends PimContext
 
         $exitCode = $command->execute(
             [
-                'command'     => $batchJobCommand->getName(),
-                'code'        => $jobInstance->getCode(),
-                '--config'    => json_encode(['project_code' => $projectCode]),
-                '--no-log'    => true,
-                '-v'          => true
+                'command'  => $batchJobCommand->getName(),
+                'code'     => $jobInstance->getCode(),
+                '--config' => json_encode(['project_code' => $projectCode]),
+                '--no-log' => true,
+                '-v'       => true
             ]
         );
 
