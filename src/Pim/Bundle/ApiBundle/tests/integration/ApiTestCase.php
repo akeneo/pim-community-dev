@@ -43,8 +43,8 @@ abstract class ApiTestCase extends WebTestCase
     public static function setUpBeforeClass()
     {
         self::$count = 0;
-        self::$accessToken = null;
-        self::$refreshToken = null;
+        static::$accessToken = null;
+        static::$refreshToken = null;
     }
 
     /**
@@ -62,9 +62,9 @@ abstract class ApiTestCase extends WebTestCase
         $this->container = static::$kernel->getContainer();
         $configuration = $this->getConfiguration();
 
-        self::$count++;
+        static::$count++;
 
-        if ($configuration->isDatabasePurgedForEachTest() || 1 === self::$count) {
+        if ($configuration->isDatabasePurgedForEachTest() || 1 === static::$count) {
             $databasePurger = $this->getDatabasePurger();
             $databasePurger->purge();
 
@@ -83,18 +83,20 @@ abstract class ApiTestCase extends WebTestCase
      *
      * @return Client
      */
-    protected function createAuthenticatedClient(array $options = [], array $server = [])
+    protected function createAuthenticatedClient(array $options = [], array $server = [], $clientId = null, $secret = null)
     {
-        if (null === self::$accessToken || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            list($clientId, $secret) = $this->createOAuthClient();
+        if (null === static::$accessToken || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
+            if (null === $clientId || null === $secret) {
+                list($clientId, $secret) = $this->createOAuthClient();
+            }
 
             $tokens = $this->authenticate($clientId, $secret, static::USERNAME, static::PASSWORD);
-            self::$accessToken = $tokens[0];
-            self::$refreshToken = $tokens[1];
+            static::$accessToken = $tokens[0];
+            static::$refreshToken = $tokens[1];
         }
 
-        $client = self::createClient($options, $server);
-        $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer '.self::$accessToken);
+        $client = static::createClient($options, $server);
+        $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer '.static::$accessToken);
         $client->setServerParameter('CONTENT_TYPE', 'application/json');
 
         return $client;
@@ -107,7 +109,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function createOAuthClient()
     {
-        $consoleApp = new Application(self::$kernel);
+        $consoleApp = new Application(static::$kernel);
         $consoleApp->setAutoExit(false);
 
         $input  = new ArrayInput(['command' => 'pim:oauth-server:create-client']);
@@ -133,7 +135,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function authenticate($clientId, $secret, $username, $password)
     {
-        $webClient = self::createClient();
+        $webClient = static::createClient();
         $webClient->request('POST', 'api/oauth/v1/token',
             [
                 'username'   => $username,
