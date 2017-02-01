@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Rest\AttributeOption;
+namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Rest\AttributeOption;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;

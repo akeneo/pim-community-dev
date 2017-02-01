@@ -1,91 +1,106 @@
 <?php
 
-namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Rest\Category;
+namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Rest\Family;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Pim\Bundle\CatalogBundle\Version;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateCategoryIntegration extends ApiTestCase
+class CreateFamilyIntegration extends ApiTestCase
 {
-    public function testHttpHeadersInResponseWhenACategoryIsCreated()
+    public function testHttpHeadersInResponseWhenAFamilyIsCreated()
     {
         $client = $this->createAuthentifiedClient();
 
         $data =
 <<<JSON
     {
-        "code": "new_category_headers"
+        "code": "new_family_headers"
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertArrayHasKey('location', $response->headers->all());
-        $this->assertSame('http://localhost/api/rest/v1/categories/new_category_headers', $response->headers->get('location'));
-        $this->assertSame(null, json_decode($response->getContent(), true));
+        $this->assertSame('http://localhost/api/rest/v1/families/new_family_headers', $response->headers->get('location'));
+        $this->assertSame('', $response->getContent());
     }
 
-    public function testStandardFormatWhenACategoryIsCreatedButUncompleted()
+    public function testFormatStandardWhenAFamilyIsCreatedButUncompleted()
     {
         $client = $this->createAuthentifiedClient();
 
         $data =
 <<<JSON
     {
-        "code": "new_category_uncompleted"
+        "code": "new_family_uncompleted"
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
 
-        $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('new_category_uncompleted');
-        $categoryStandard = [
-            'code'   => 'new_category_uncompleted',
-            'parent' => null,
-            'labels' => [],
+        $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('new_family_uncompleted');
+        $familyStandard = [
+            'code'                   => 'new_family_uncompleted',
+            'attributes'             => ['sku'],
+            'attribute_as_label'     => 'sku',
+            'attribute_requirements' => [
+                'ecommerce' => ['sku'],
+                'tablet'    => ['sku'],
+            ],
+            'labels'                 => [],
         ];
-        $normalizer = $this->get('pim_catalog.normalizer.standard.category');
+        $normalizer = $this->get('pim_catalog.normalizer.standard.family');
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
-        $this->assertSame($categoryStandard, $normalizer->normalize($category));
+        $this->assertSame($familyStandard, $normalizer->normalize($family));
     }
 
-    public function testCompleteCategoryCreation()
+    public function testCompleteFamilyCreation()
     {
         $client = $this->createAuthentifiedClient();
 
         $data =
 <<<JSON
     {
-        "code": "categoryC",
-        "parent": "master",
+        "code": "complete_family_creation",
+        "attributes": ["an_image", "a_metric", "a_price"],
+        "attribute_as_label": "sku",
+        "attribute_requirements": {
+            "ecommerce": ["sku", "a_metric"],
+            "tablet": ["sku", "a_price"]
+        },
         "labels": {
-            "en_US": "Category C",
-            "fr_FR": "Catégorie C"
+            "en_US": "Complete Family creation",
+            "fr_FR": "Création complète famille"
         }
     }
 JSON;
-        $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
 
-        $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryC');
-        $categoryStandard = [
-            'code'   => 'categoryC',
-            'parent' => 'master',
-            'labels' => [
-                'en_US' => 'Category C',
-                'fr_FR' => 'Catégorie C',
+        $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('complete_family_creation');
+        $familyStandard = [
+            'code'                   => 'complete_family_creation',
+            'attributes'             => ['a_metric', 'a_price', 'an_image', 'sku'],
+            'attribute_as_label'     => 'sku',
+            'attribute_requirements' => [
+                'ecommerce' => ['a_metric', 'sku'],
+                'tablet'    => ['a_price', 'sku'],
+            ],
+            'labels'                 => [
+                'en_US' => 'Complete Family creation',
+                'fr_FR' => 'Création complète famille',
             ],
         ];
-        $normalizer = $this->get('pim_catalog.normalizer.standard.category');
+        $normalizer = $this->get('pim_catalog.normalizer.standard.family');
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
-        $this->assertSame($categoryStandard, $normalizer->normalize($category));
+        $this->assertSame($familyStandard, $normalizer->normalize($family));
     }
 
     public function testResponseWhenContentIsEmpty()
@@ -99,7 +114,7 @@ JSON;
             'message' => 'Invalid json message received',
         ];
 
-        $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
@@ -116,20 +131,20 @@ JSON;
             'message' => 'Invalid json message received',
         ];
 
-        $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
-    public function testResponseWhenCategoryCodeAlreadyExists()
+    public function testResponseWhenFamilyCodeAlreadyExists()
     {
         $client = $this->createAuthentifiedClient();
 
         $data =
 <<<JSON
     {
-        "code": "categoryA"
+        "code": "familyA"
     }
 JSON;
 
@@ -140,11 +155,11 @@ JSON;
                 [
                     'field'   => 'code',
                     'message' => 'This value is already used.',
-                ]
+                ],
             ],
         ];
 
-        $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -173,7 +188,7 @@ JSON;
             ],
         ];
 
-        $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -187,7 +202,7 @@ JSON;
         $data =
 <<<JSON
     {
-        "code": "sales",
+        "code": "new_family",
         "extra_property": ""
     }
 JSON;
@@ -198,12 +213,12 @@ JSON;
             'message' => 'Property "extra_property" does not exist. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#category', $version),
+                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#family', $version),
                 ],
             ],
         ];
 
-        $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -227,12 +242,12 @@ JSON;
             'message' => 'Property "labels" expects an array. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#category', $version),
+                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#family', $version),
                 ],
             ],
         ];
 
-        $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
+        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
