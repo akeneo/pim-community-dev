@@ -14,7 +14,6 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\EntityRepository;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectStatusRepositoryInterface;
