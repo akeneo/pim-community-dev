@@ -185,4 +185,5 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
             - Length:
                 max: 255
         attribute:
+            - NotBlank: ~
             - Valid: ~
