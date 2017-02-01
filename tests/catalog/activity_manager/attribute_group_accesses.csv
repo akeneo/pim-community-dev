@@ -1,6 +1,6 @@
 attribute_group;view_attributes;edit_attributes
-marketing;Technical Clothing,Technical High-Tech,Read Only,Media manager;Marketing
-technical;Marketing,Read Only;Technical Clothing,Technical High-Tech
-media;Marketing,Technical Clothing,Technical High-Tech,Read Only;Media manager
-other;Read Only,Media manager;Marketing,Technical Clothing,Technical High-Tech
-general;Technical Clothing,Technical High-Tech,Read Only,Media manager;Marketing
+general;Technical Clothing,Technical High-Tech,Read Only,Media manager,Catalog Manager,Marketing;Catalog Manager
+marketing;Technical Clothing,Technical High-Tech,Read Only,Media manager,Catalog Manager,Marketing;Catalog Manager,Marketing
+technical;Marketing,Read Only,Catalog Manager,Technical Clothing,Technical High-Tech;Catalog Manager,Technical Clothing,Technical High-Tech
+media;Marketing,Technical Clothing,Technical High-Tech,Read Only,Catalog Manager,Media manager;Catalog Manager,Media manager
+other;Read Only,Media manager,Catalog Manager,Marketing,Technical Clothing,Technical High-Tech;Catalog Manager,Marketing

@@ -10,9 +10,9 @@ use PhpSpec\ObjectBehavior;
 
 class ProjectCompletenessRepositorySpec extends ObjectBehavior
 {
-    function let(EntityManager $entityManager, TableNameMapper $nativeQueryBuilder)
+    function let(EntityManager $entityManager, TableNameMapper $tableNameMapper)
     {
-        $this->beConstructedWith($entityManager, $nativeQueryBuilder);
+        $this->beConstructedWith($entityManager, $tableNameMapper);
     }
 
     function it_is_initializable()
