@@ -71,10 +71,12 @@ class ProductValuesDenormalizer implements DenormalizerInterface
                 if (isset($productValues[$valueKey])) {
                     $value = $productValues[$valueKey];
                 } else {
-                    $value = new $this->valueClass();
-                    $value->setAttribute($attribute);
-                    $value->setLocale($attributeInfos['locale_code']);
-                    $value->setScope($attributeInfos['scope_code']);
+                    $value = new $this->valueClass(
+                        $attribute,
+                        $attributeInfos['locale_code'],
+                        $attributeInfos['scope_code'],
+                        null
+                    );
                 }
 
                 $productValues[$valueKey] = $this->valueDenormalizer->denormalize(

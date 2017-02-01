@@ -3,11 +3,10 @@
 namespace Pim\Component\ReferenceData\Factory\ProductValue;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\ReferenceData\MethodNameGuesser;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
@@ -42,12 +41,6 @@ class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryI
         $productValueClass,
         $supportedAttributeType
     ) {
-        if (!class_exists($productValueClass)) {
-            throw new \InvalidArgumentException(
-                sprintf('The product value class "%s" does not exist.', $productValueClass)
-            );
-        }
-
         $this->repositoryResolver = $repositoryResolver;
         $this->productValueClass = $productValueClass;
         $this->supportedAttributeType = $supportedAttributeType;
@@ -60,17 +53,16 @@ class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryI
     {
         $this->checkData($attribute, $data);
 
-        $value = new $this->productValueClass();
-        $value->setAttribute($attribute);
-        $value->setScope($channelCode);
-        $value->setLocale($localeCode);
-
-        $adder = $this->getAdderName($value, $attribute);
-        $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
-
-        foreach ($data as $referenceDataCode) {
-            $value->$adder($this->getReferenceData($attribute, $repository, $referenceDataCode));
+        if (null === $data) {
+            $data = [];
         }
+
+        $value = new $this->productValueClass(
+            $attribute,
+            $channelCode,
+            $localeCode,
+            $this->getReferenceDataCollection($attribute, $data)
+        );
 
         return $value;
     }
@@ -93,6 +85,10 @@ class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryI
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
+        if (null === $data || [] === $data) {
+            return;
+        }
+
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $attribute->getCode(),
@@ -113,6 +109,27 @@ class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryI
                 );
             }
         }
+    }
+
+    /**
+     * Gets a collection of reference data from an array of codes.
+     *
+     * @param AttributeInterface $attribute
+     * @param array              $referenceDataCodes
+     *
+     * @return ArrayCollection
+     */
+    protected function getReferenceDataCollection(AttributeInterface $attribute, array $referenceDataCodes)
+    {
+        $collection = new ArrayCollection();
+
+        $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
+
+        foreach ($referenceDataCodes as $referenceDataCode) {
+            $collection->add($this->getReferenceData($attribute, $repository, $referenceDataCode));
+        }
+
+        return $collection;
     }
 
     /**
@@ -148,26 +165,5 @@ class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryI
         }
 
         return $referenceData;
-    }
-
-    /**
-     * @param ProductValueInterface $value
-     * @param AttributeInterface    $attribute
-     *
-     * @return string
-     */
-    private function getAdderName(
-        ProductValueInterface $value,
-        AttributeInterface $attribute
-    ) {
-        $method = MethodNameGuesser::guess('add', $attribute->getReferenceDataName(), true);
-
-        if (!method_exists($value, $method)) {
-            throw new \LogicException(
-                sprintf('ProductValue method "%s" is not implemented', true)
-            );
-        }
-
-        return $method;
     }
 }

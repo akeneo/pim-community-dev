@@ -3,8 +3,10 @@
 namespace Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue;
 
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Price collection flat denormalizer used for attribute type:
@@ -19,15 +21,23 @@ class PricesDenormalizer extends AbstractValueDenormalizer
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
     /**
      * @param string[]                $supportedTypes
      * @param ProductBuilderInterface $productBuilder
+     * @param NormalizerInterface     $normalizer
      */
-    public function __construct(array $supportedTypes, ProductBuilderInterface $productBuilder)
-    {
+    public function __construct(
+        array $supportedTypes,
+        ProductBuilderInterface $productBuilder,
+        NormalizerInterface $normalizer
+    ) {
         parent::__construct($supportedTypes);
 
         $this->productBuilder = $productBuilder;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -42,10 +52,10 @@ class PricesDenormalizer extends AbstractValueDenormalizer
         $context = $resolver->resolve($context);
 
         $value = $context['value'];
+        $product = $context['product'];
         $prices = $this->extractPrices($data, $context);
-        foreach ($prices as $price) {
-            $this->addPriceForCurrency($value, $price['data'], $price['currency']);
-        }
+
+        $value = $this->addPriceForCurrency($product, $value, $prices);
 
         return $value->getPrices();
     }
@@ -60,15 +70,19 @@ class PricesDenormalizer extends AbstractValueDenormalizer
      */
     protected function extractPrices($pricesData, $context)
     {
+        if (null === $pricesData) {
+            return [];
+        }
+
         $prices = [];
         $matches = [];
         $singleFieldPattern = '/(?P<data>\d+(.\d+)?) (?P<currency>\w+)/';
 
         if (preg_match_all($singleFieldPattern, $pricesData, $matches) === 0) {
-            $prices[] = ['data' => $pricesData, 'currency' => $context['price_currency']];
+            $prices[] = ['amount' => $pricesData, 'currency' => $context['price_currency']];
         } else {
             foreach ($matches['data'] as $indData => $data) {
-                $prices[] = ['data' => $data, 'currency' => $matches['currency'][$indData]];
+                $prices[] = ['amount' => $data, 'currency' => $matches['currency'][$indData]];
             }
         }
 
@@ -76,14 +90,46 @@ class PricesDenormalizer extends AbstractValueDenormalizer
     }
 
     /**
+     * @param ProductInterface      $product
      * @param ProductValueInterface $value
-     * @param mixed                 $data
-     * @param string                $currency
+     * @param array                 $prices
+     *
+     * @return ProductValueInterface
      */
-    protected function addPriceForCurrency(ProductValueInterface $value, $data, $currency)
+    protected function addPriceForCurrency(ProductInterface $product, ProductValueInterface $value, array $prices)
     {
-        $priceValue = $this->productBuilder->addPriceForCurrency($value, $currency, $data);
-        $value->addPrice($priceValue);
+        $originalPrices = $this->normalizer->normalize($value->getPrices(), 'standard');
+
+        $priceValue = $this->productBuilder->addProductValue(
+            $product,
+            $value->getAttribute(),
+            $value->getLocale(),
+            $value->getScope(),
+            !empty($prices) ? $this->replaceOriginalPrices($originalPrices, $prices) : null
+        );
+
+        return $priceValue;
+    }
+
+    /**
+     * Replaces a price by another one for the same currency.
+     *
+     * @param array $originalPrices
+     * @param array $prices
+     *
+     * @return array
+     */
+    protected function replaceOriginalPrices(array $originalPrices, array $prices)
+    {
+        foreach ($originalPrices as $key => $originalPrice) {
+            foreach ($prices as $price) {
+                if ($originalPrice['currency'] === $price['currency']) {
+                    $originalPrices[$key]['amount'] = $price['amount'];
+                }
+            }
+        }
+
+        return $originalPrices;
     }
 
     /**

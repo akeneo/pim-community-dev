@@ -36,7 +36,6 @@ class ProductValueUpdateGuesserSpec extends ObjectBehavior
         ProductInterface $product,
         ProductValueInterface $value
     ) {
-        $value->getEntity()->willReturn($product);
-        $this->guessUpdates($em, $value, UpdateGuesserInterface::ACTION_UPDATE_ENTITY)->shouldReturn([$product]);
+        $this->guessUpdates($em, $value, UpdateGuesserInterface::ACTION_UPDATE_ENTITY)->shouldReturn([]);
     }
 }

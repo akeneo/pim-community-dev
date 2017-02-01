@@ -10,7 +10,6 @@ use Pim\Component\Catalog\Model\ProductValue;
 use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductValuesNormalizerSpec extends ObjectBehavior
@@ -34,8 +33,10 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
 
     function it_supports_standard_format_and_collection_values()
     {
-        $realValue = new ProductValue();
-        $realValue->setAttribute(new Attribute());
+        $attribute = new Attribute();
+        $attribute->setCode('attribute');
+        $attribute->setBackendType('text');
+        $realValue = new ProductValue($attribute, null, null, null);
 
         $valuesCollection = new ProductValueCollection([$realValue]);
         $valuesArray = [$realValue];

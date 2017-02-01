@@ -21,20 +21,20 @@ class MetricProductValueFactory implements ProductValueFactoryInterface
     protected $metricFactory;
 
     /** @var string */
-    protected $metricProductValueClass;
+    protected $productValueClass;
 
     /** @var string */
     protected $supportedAttributeType;
 
     /**
      * @param MetricFactory $metricFactory
-     * @param string        $metricProductValueClass
+     * @param string        $productValueClass
      * @param string        $supportedAttributeType
      */
-    public function __construct(MetricFactory $metricFactory, $metricProductValueClass, $supportedAttributeType)
+    public function __construct(MetricFactory $metricFactory, $productValueClass, $supportedAttributeType)
     {
         $this->metricFactory = $metricFactory;
-        $this->metricProductValueClass = $metricProductValueClass;
+        $this->productValueClass = $productValueClass;
         $this->supportedAttributeType = $supportedAttributeType;
     }
 
@@ -45,16 +45,19 @@ class MetricProductValueFactory implements ProductValueFactoryInterface
     {
         $this->checkData($attribute, $data);
 
-        $value = new $this->metricProductValueClass();
-        $value->setAttribute($attribute);
-        $value->setScope($channelCode);
-        $value->setLocale($localeCode);
-
-        if (null !== $data) {
-            $value->setMetric(
-                $this->metricFactory->createMetric($attribute->getMetricFamily(), $data['unit'], $data['amount'])
-            );
+        if (null === $data) {
+            $data = [
+                'amount' => null,
+                'unit'   => null,
+            ];
         }
+
+        $value = new $this->productValueClass(
+            $attribute,
+            $channelCode,
+            $localeCode,
+            $this->metricFactory->createMetric($attribute->getMetricFamily(), $data['unit'], $data['amount'])
+        );
 
         return $value;
     }

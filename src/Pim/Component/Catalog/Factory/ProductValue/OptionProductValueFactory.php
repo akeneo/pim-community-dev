@@ -50,14 +50,11 @@ class OptionProductValueFactory implements ProductValueFactoryInterface
     {
         $this->checkData($attribute, $data);
 
-        $value = new $this->productValueClass();
-        $value->setAttribute($attribute);
-        $value->setScope($channelCode);
-        $value->setLocale($localeCode);
-
-        if (null !== $option = $this->getOption($attribute, $data)) {
-            $value->setOption($option);
+        if (null !== $data) {
+            $data = $this->getOption($attribute, $data);
         }
+
+        $value = new $this->productValueClass($attribute, $channelCode, $localeCode, $data);
 
         return $value;
     }

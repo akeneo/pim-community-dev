@@ -4,7 +4,9 @@ namespace spec\Pim\Component\ReferenceData\Factory\ProductValue;
 
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Model\ProductValue;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataProductValueFactory;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
@@ -35,13 +37,6 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
         $this->supports('pim_reference_data_catalog_multiselect')->shouldReturn(false);
     }
 
-    function it_throws_an_exception_when_product_value_class_is_wrong($repositoryResolver)
-    {
-        $this
-            ->shouldThrow(new \InvalidArgumentException('The product value class "foobar" does not exist.'))
-            ->during('__construct', [$repositoryResolver, 'foobar', 'pim_reference_data_catalog_simpleselect']);
-    }
-
     function it_creates_an_empty_simple_select_reference_data_product_value(
         $repositoryResolver,
         AttributeInterface $attribute
@@ -61,19 +56,6 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
             null,
             null,
             null
-        );
-
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
-        $productValue->shouldHaveAttribute('reference_data_simple_select_attribute');
-        $productValue->shouldNotBeLocalizable();
-        $productValue->shouldNotBeScopable();
-        $productValue->shouldBeEmpty();
-
-        $productValue = $this->create(
-            $attribute,
-            null,
-            null,
-            ''
         );
 
         $productValue->shouldReturnAnInstanceOf(ProductValue::class);
@@ -111,21 +93,6 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldBeScopable();
         $productValue->shouldHaveChannel('ecommerce');
         $productValue->shouldBeEmpty();
-
-        $productValue = $this->create(
-            $attribute,
-            'ecommerce',
-            'en_US',
-            ''
-        );
-
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
-        $productValue->shouldHaveAttribute('reference_data_simple_select_attribute');
-        $productValue->shouldBeLocalizable();
-        $productValue->shouldHaveLocale('en_US');
-        $productValue->shouldBeScopable();
-        $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldBeEmpty();
     }
 
     function it_creates_a_simple_select_reference_data_product_value(
@@ -142,8 +109,8 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('color');
 
-        $repositoryResolver->resolve('color')->shouldBeCalled()->willReturn($referenceDataRepository);
-        $referenceDataRepository->findOneBy(['code' => 'blue'])->shouldBeCalled()->willReturn($color);
+        $repositoryResolver->resolve('color')->willReturn($referenceDataRepository);
+        $referenceDataRepository->findOneBy(['code' => 'blue'])->willReturn($color);
 
         $productValue = $this->create(
             $attribute,
@@ -173,8 +140,8 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('color');
 
-        $repositoryResolver->resolve('color')->shouldBeCalled()->willReturn($referenceDataRepository);
-        $referenceDataRepository->findOneBy(['code' => 'blue'])->shouldBeCalled()->willReturn($color);
+        $repositoryResolver->resolve('color')->willReturn($referenceDataRepository);
+        $referenceDataRepository->findOneBy(['code' => 'blue'])->willReturn($color);
 
         $productValue = $this->create(
             $attribute,
@@ -190,6 +157,54 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldBeScopable();
         $productValue->shouldHaveChannel('ecommerce');
         $productValue->shouldHaveReferenceData($color);
+    }
+
+    function it_throws_an_exception_when_provided_data_is_not_an_array(AttributeInterface $attribute)
+    {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('reference_data_simple_select_attribute');
+        $attribute->getAttributeType()->willReturn('pim_reference_data_catalog_simpleselect');
+        $attribute->getBackendType()->willReturn('reference_data_option');
+        $attribute->isBackendTypeReferenceData()->willReturn(true);
+        $attribute->getReferenceDataName()->willReturn('color');
+
+        $exception = InvalidArgumentException::stringExpected(
+            'reference_data_simple_select_attribute',
+            'reference data',
+            'factory',
+            'array'
+        );
+
+        $this->shouldThrow($exception)->during('create', [$attribute, null, null, []]);
+    }
+
+    function it_throws_an_exception_when_provided_data_is_not_an_existing_reference_data_code(
+        $repositoryResolver,
+        ReferenceDataRepositoryInterface $referenceDataRepository,
+        AttributeInterface $attribute
+    ) {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('reference_data_simple_select_attribute');
+        $attribute->getAttributeType()->willReturn('pim_reference_data_catalog_simpleselect');
+        $attribute->getBackendType()->willReturn('reference_data_option');
+        $attribute->isBackendTypeReferenceData()->willReturn(true);
+        $attribute->getReferenceDataName()->willReturn('color');
+
+        $repositoryResolver->resolve('color')->willReturn($referenceDataRepository);
+        $referenceDataRepository->findOneBy(['code' => 'foobar'])->willReturn(null);
+
+        $exception = InvalidPropertyException::validEntityCodeExpected(
+            'reference_data_simple_select_attribute',
+            'code',
+            'No reference data "color" with code "foobar" has been found',
+            'reference data',
+            'factory',
+            'foobar'
+        );
+
+        $this->shouldThrow($exception)->during('create', [$attribute, null, null, 'foobar']);
     }
 
     public function getMatchers()

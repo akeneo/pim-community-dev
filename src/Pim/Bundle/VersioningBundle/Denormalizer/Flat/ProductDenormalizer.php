@@ -30,7 +30,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     const FIELD_GROUPS = 'groups';
 
     /** @var AttributeColumnInfoExtractor */
-    protected $attrFieldExtractor;
+    protected $attFieldExtractor;
 
     /** @var AssociationColumnsResolver */
     protected $assocFieldResolver;

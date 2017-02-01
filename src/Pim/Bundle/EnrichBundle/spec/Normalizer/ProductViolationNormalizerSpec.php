@@ -129,12 +129,14 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
             ->duringNormalize($violation, 'internal_api');
     }
 
-    function it_throws_an_exception_if_product_argument_is_not_a_product(ConstraintViolationInterface $violation)
-    {
+    function it_throws_an_exception_if_product_argument_is_not_a_product(
+        ConstraintViolationInterface $violation,
+        ProductValueInterface $productValue
+    ) {
         $violation->getPropertyPath()->willReturn('values[price].float');
 
         $this
             ->shouldThrow(new \InvalidArgumentException('Expects a product or a product template as context'))
-            ->duringNormalize($violation, 'internal_api', ['product' => new ProductValue()]);
+            ->duringNormalize($violation, 'internal_api', ['product' => $productValue]);
     }
 }

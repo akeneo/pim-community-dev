@@ -187,7 +187,6 @@ abstract class AbstractProduct implements ProductInterface
     public function addValue(ProductValueInterface $value)
     {
         $this->values->add($value);
-        $value->setProduct($this);
 
         return $this;
     }

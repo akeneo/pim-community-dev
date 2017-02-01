@@ -4,8 +4,10 @@ namespace spec\Pim\Component\ReferenceData\Factory\ProductValue;
 
 use Acme\Bundle\AppBundle\Entity\Fabric;
 use Acme\Bundle\AppBundle\Model\ProductValue;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataCollectionProductValueFactory;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
@@ -36,13 +38,6 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $this->supports('pim_reference_data_catalog_multiselect')->shouldReturn(true);
     }
 
-    function it_throws_an_exception_when_product_value_class_is_wrong($repositoryResolver)
-    {
-        $this
-            ->shouldThrow(new \InvalidArgumentException('The product value class "foobar" does not exist.'))
-            ->during('__construct', [$repositoryResolver, 'foobar', 'pim_reference_data_catalog_simpleselect']);
-    }
-
     function it_creates_an_empty_reference_data_multi_select_product_value(
         $repositoryResolver,
         AttributeInterface $attribute,
@@ -56,14 +51,14 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('fabrics');
 
-        $repositoryResolver->resolve('fabrics')->shouldBeCalled()->willReturn($referenceDataRepository);
+        $repositoryResolver->resolve('fabrics')->willReturn($referenceDataRepository);
         $referenceDataRepository->findOneBy(Argument::any())->shouldNotBeCalled();
 
         $productValue = $this->create(
             $attribute,
             null,
             null,
-            []
+            null
         );
 
         $productValue->shouldReturnAnInstanceOf(ProductValue::class);
@@ -86,14 +81,14 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('fabrics');
 
-        $repositoryResolver->resolve('fabrics')->shouldBeCalled()->willReturn($referenceDataRepository);
+        $repositoryResolver->resolve('fabrics')->willReturn($referenceDataRepository);
         $referenceDataRepository->findOneBy(Argument::any())->shouldNotBeCalled();
 
         $productValue = $this->create(
             $attribute,
             'ecommerce',
             'en_US',
-            []
+            null
         );
 
         $productValue->shouldReturnAnInstanceOf(ProductValue::class);
@@ -120,9 +115,9 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('fabrics');
 
-        $repositoryResolver->resolve('fabrics')->shouldBeCalled()->willReturn($referenceDataRepository);
-        $referenceDataRepository->findOneBy(['code' => 'silk'])->shouldBeCalled()->willReturn($silk);
-        $referenceDataRepository->findOneBy(['code' => 'cotton'])->shouldBeCalled()->willReturn($cotton);
+        $repositoryResolver->resolve('fabrics')->willReturn($referenceDataRepository);
+        $referenceDataRepository->findOneBy(['code' => 'silk'])->willReturn($silk);
+        $referenceDataRepository->findOneBy(['code' => 'cotton'])->willReturn($cotton);
 
         $productValue = $this->create(
             $attribute,
@@ -153,9 +148,9 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('fabrics');
 
-        $repositoryResolver->resolve('fabrics')->shouldBeCalled()->willReturn($referenceDataRepository);
-        $referenceDataRepository->findOneBy(['code' => 'silk'])->shouldBeCalled()->willReturn($silk);
-        $referenceDataRepository->findOneBy(['code' => 'cotton'])->shouldBeCalled()->willReturn($cotton);
+        $repositoryResolver->resolve('fabrics')->willReturn($referenceDataRepository);
+        $referenceDataRepository->findOneBy(['code' => 'silk'])->willReturn($silk);
+        $referenceDataRepository->findOneBy(['code' => 'cotton'])->willReturn($cotton);
 
         $productValue = $this->create(
             $attribute,
@@ -171,6 +166,75 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldBeScopable();
         $productValue->shouldHaveChannel('ecommerce');
         $productValue->shouldHaveReferenceData([$silk, $cotton]);
+    }
+
+    function it_throws_an_exception_when_provided_data_is_not_an_array(AttributeInterface $attribute)
+    {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('reference_data_multi_select_attribute');
+        $attribute->getAttributeType()->willReturn('pim_reference_data_catalog_multiselect');
+        $attribute->getBackendType()->willReturn('reference_data_options');
+        $attribute->isBackendTypeReferenceData()->willReturn(true);
+        $attribute->getReferenceDataName()->willReturn('fabrics');
+
+        $exception = InvalidArgumentException::arrayExpected(
+            'reference_data_multi_select_attribute',
+            'reference data collection',
+            'factory',
+            'boolean'
+        );
+
+        $this->shouldThrow($exception)->during('create', [$attribute, null, null, true]);
+    }
+
+    function it_throws_an_exception_when_provided_data_is_not_an_array_of_string(AttributeInterface $attribute)
+    {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('reference_data_multi_select_attribute');
+        $attribute->getAttributeType()->willReturn('pim_reference_data_catalog_multiselect');
+        $attribute->getBackendType()->willReturn('reference_data_options');
+        $attribute->isBackendTypeReferenceData()->willReturn(true);
+        $attribute->getReferenceDataName()->willReturn('fabrics');
+
+        $exception = InvalidArgumentException::arrayStringKeyExpected(
+            'reference_data_multi_select_attribute',
+            'foo',
+            'reference data collection',
+            'factory',
+            'array'
+        );
+
+        $this->shouldThrow($exception)->during('create', [$attribute, null, null, ['foo' => ['bar']]]);
+    }
+
+    function it_throws_an_exception_when_provided_data_is_not_an_existing_reference_data_code(
+        $repositoryResolver,
+        ReferenceDataRepositoryInterface $referenceDataRepository,
+        AttributeInterface $attribute
+    ) {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('reference_data_multi_select_attribute');
+        $attribute->getAttributeType()->willReturn('pim_reference_data_catalog_multiselect');
+        $attribute->getBackendType()->willReturn('reference_data_options');
+        $attribute->isBackendTypeReferenceData()->willReturn(true);
+        $attribute->getReferenceDataName()->willReturn('fabrics');
+
+        $repositoryResolver->resolve('fabrics')->willReturn($referenceDataRepository);
+        $referenceDataRepository->findOneBy(['code' => 'foobar'])->willReturn(null);
+
+        $exception = InvalidPropertyException::validEntityCodeExpected(
+            'reference_data_multi_select_attribute',
+            'code',
+            'No reference data "fabrics" with code "foobar" has been found',
+            'reference data collection',
+            'factory',
+            'foobar'
+        );
+
+        $this->shouldThrow($exception)->during('create', [$attribute, null, null, ['foobar']]);
     }
 
     public function getMatchers()

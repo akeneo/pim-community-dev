@@ -34,8 +34,10 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
 
     function it_supports_storage_format_and_collection_values()
     {
-        $realValue = new ProductValue();
-        $realValue->setAttribute(new Attribute());
+        $attribute = new Attribute();
+        $attribute->setCode('attribute');
+        $attribute->setBackendType('text');
+        $realValue = new ProductValue($attribute, null, null, null);
 
         $valuesCollection = new ProductValueCollection([$realValue]);
         $valuesArray = [$realValue];

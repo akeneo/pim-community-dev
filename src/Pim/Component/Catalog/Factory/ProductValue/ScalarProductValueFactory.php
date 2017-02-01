@@ -40,14 +40,11 @@ class ScalarProductValueFactory implements ProductValueFactoryInterface
     {
         $this->checkData($attribute, $data);
 
-        $value = new $this->productValueClass();
-        $value->setAttribute($attribute);
-        $value->setScope($channelCode);
-        $value->setLocale($localeCode);
-
         if (null !== $data) {
-            $value->setData($this->convertData($attribute, $data));
+            $data = $this->convertData($attribute, $data);
         }
+
+        $value = new $this->productValueClass($attribute, $channelCode, $localeCode, $data);
 
         return $value;
     }

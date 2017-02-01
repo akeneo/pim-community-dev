@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\VersioningBundle\Denormalizer\Flat;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValuesDenormalizer;
+use Pim\Component\Catalog\Model\ProductValue;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -12,7 +13,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 class ProductValuesDenormalizerSpec extends ObjectBehavior
 {
     const FORMAT_CSV = 'csv';
-    const VALUE_CLASS = 'Pim\Component\Catalog\Model\ProductValue';
+    const VALUE_CLASS = ProductValue::class;
 
     function let(DenormalizerInterface $valueDenormalizer, AttributeColumnInfoExtractor $fieldExtractor)
     {
@@ -51,6 +52,9 @@ class ProductValuesDenormalizerSpec extends ObjectBehavior
         $description->getCode()->willReturn('description');
         $description->isLocalizable()->willReturn(true);
         $description->isScopable()->willReturn(true);
+        $description->getAttributeType()->willReturn('pim_catalog_textarea');
+        $description->getBackendType()->willReturn('varchar');
+        $description->isBackendTypeReferenceData()->willReturn(false);
 
         $valueDenormalizer->denormalize(
             'My en_US desc',

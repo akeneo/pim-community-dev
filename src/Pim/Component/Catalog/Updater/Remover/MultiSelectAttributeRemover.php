@@ -2,10 +2,9 @@
 
 namespace Pim\Component\Catalog\Updater\Remover;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
@@ -18,22 +17,22 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 class MultiSelectAttributeRemover extends AbstractAttributeRemover
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attrOptionRepository;
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
 
     /**
-     * @param AttributeValidatorHelper              $attrValidatorHelper
-     * @param IdentifiableObjectRepositoryInterface $attrOptionRepository
-     * @param string[]                              $supportedTypes
+     * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param ProductBuilderInterface  $productBuilder
+     * @param string[]                 $supportedTypes
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        IdentifiableObjectRepositoryInterface $attrOptionRepository,
+        ProductBuilderInterface $productBuilder,
         array $supportedTypes
     ) {
         parent::__construct($attrValidatorHelper);
 
-        $this->attrOptionRepository = $attrOptionRepository;
+        $this->productBuilder = $productBuilder;
         $this->supportedTypes = $supportedTypes;
     }
 
@@ -50,49 +49,36 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'multi-select');
         $this->checkData($attribute, $data);
 
-        $attributeOptions = [];
-        foreach ($data as $optionCode) {
-            $option = $this->getOption($attribute, $optionCode);
-            if (null === $option) {
-                throw InvalidArgumentException::arrayInvalidKey(
-                    $attribute->getCode(),
-                    'code',
-                    'The option does not exist',
-                    'remover',
-                    'multi select',
-                    $optionCode
-                );
-            }
-
-            $attributeOptions[] = $option;
-        }
-
-        $this->removeOptions($product, $attribute, $attributeOptions, $options['locale'], $options['scope']);
+        $this->removeOptions($product, $attribute, $data, $options['locale'], $options['scope']);
     }
 
     /**
      * @param ProductInterface   $product
      * @param AttributeInterface $attribute
-     * @param array              $attributeOptions
+     * @param string[]           $optionCodes
      * @param string|null        $locale
      * @param string|null        $scope
      */
     protected function removeOptions(
         ProductInterface $product,
         AttributeInterface $attribute,
-        $attributeOptions,
+        $optionCodes,
         $locale,
         $scope
     ) {
         $productValue = $product->getValue($attribute->getCode(), $locale, $scope);
 
         if (null !== $productValue) {
-            foreach ($attributeOptions as $attributeOption) {
-                $productValue->removeOption($attributeOption);
+            $newOptionCodes = [];
+            foreach ($productValue->getData() as $originalOption) {
+                if (!in_array($originalOption->getCode(), $optionCodes)) {
+                    $newOptionCodes[] = $originalOption->getCode();
+                }
             }
+
+            $this->productBuilder->addProductValue($product, $attribute, $locale, $scope, $newOptionCodes);
         }
     }
 
@@ -124,19 +110,5 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
                 );
             }
         }
-    }
-
-    /**
-     * @param AttributeInterface $attribute
-     * @param string             $optionCode
-     *
-     * @return AttributeOptionInterface|null
-     */
-    protected function getOption(AttributeInterface $attribute, $optionCode)
-    {
-        $identifier = $attribute->getCode() . '.' . $optionCode;
-        $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
-
-        return $option;
     }
 }
