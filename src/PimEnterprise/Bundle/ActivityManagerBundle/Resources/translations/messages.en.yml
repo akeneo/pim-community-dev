@@ -17,3 +17,9 @@ batch_jobs:
     project_calculation:
         project_calculation:
             label: Project calculation
+        prepare_project_calculation:
+            label: Prepare the project calculation
+
+job_execution:
+    summary:
+        processed_products: Processed products
