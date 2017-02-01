@@ -29,15 +29,12 @@ class ProjectStatusRepository extends EntityRepository implements ProjectStatusR
     protected $projectStatusSaver;
 
     /**
-     * @param EntityManager  $em
-     * @param SaverInterface $projectStatusSaver
-     * @param ClassMetadata  $class
+     * @param EntityManager $em
+     * @param ClassMetadata $class
      */
-    public function __construct(EntityManager $em, SaverInterface $projectStatusSaver, $class)
+    public function __construct(EntityManager $em, $class)
     {
         parent::__construct($em, $em->getClassMetadata($class));
-
-        $this->projectStatusSaver = $projectStatusSaver;
     }
 
     /**
@@ -46,22 +43,5 @@ class ProjectStatusRepository extends EntityRepository implements ProjectStatusR
     public function findProjectStatus(ProjectInterface $project, UserInterface $user)
     {
         return $this->findOneBy(['project' => $project, 'user' => $user]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setHasBeenNotified(
-        ProjectInterface $project,
-        UserInterface $user
-    ) {
-        $projectStatus = $this->findProjectStatus($project, $user);
-
-        if (null === $projectStatus) {
-            throw new EntityNotFoundException();
-        }
-
-        $projectStatus->setHasBeenNotified(true);
-        $this->projectStatusSaver->save($projectStatus);
     }
 }
