@@ -27,6 +27,7 @@ Feature: Mass delete assets
 
   Scenario: Successfully mass delete visible assets
     Given I sort by "code" value ascending
+    And I change the page size to 10
     And I select all visible entities
     When I press "Delete" on the "Bulk Actions" dropdown button
     Then I should see "Are you sure you want to delete selected assets?"
