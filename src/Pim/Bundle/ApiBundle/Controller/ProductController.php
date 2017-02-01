@@ -149,7 +149,7 @@ class ProductController
             array_merge($request->query->all(), $queryParameters),
             $count,
             'pim_api_product_list',
-            'pim_api_product_list',
+            'pim_api_product_get',
             'identifier'
         );
 

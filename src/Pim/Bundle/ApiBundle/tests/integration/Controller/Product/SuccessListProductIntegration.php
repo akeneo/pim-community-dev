@@ -121,7 +121,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                 'items' => [
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=simple']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/simple']
                         ],
                         'identifier'    => 'simple',
                         'family'        => null,
@@ -154,7 +154,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=localizable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/localizable']
                         ],
                         'identifier'    => 'localizable',
                         'family'        => null,
@@ -175,7 +175,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=scopable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/scopable']
                         ],
                         'identifier'    => 'scopable',
                         'family'        => null,
@@ -211,7 +211,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=localizable_and_scopable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/localizable_and_scopable']
                         ],
                         'identifier'    => 'localizable_and_scopable',
                         'family'        => null,
@@ -234,7 +234,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=product_china']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/product_china']
                         ],
                         'identifier'    => 'product_china',
                         'family'        => null,
@@ -249,7 +249,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=product_without_category']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/product_without_category']
                         ],
                         'identifier'    => 'product_without_category',
                         'family'        => null,
@@ -302,7 +302,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                 'items' => [
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=simple']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/simple']
                         ],
                         'identifier'    => 'simple',
                         'family'        => null,
@@ -335,7 +335,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=localizable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/localizable']
                         ],
                         'identifier'    => 'localizable',
                         'family'        => null,
@@ -354,7 +354,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=scopable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/scopable']
                         ],
                         'identifier'    => 'scopable',
                         'family'        => null,
@@ -381,7 +381,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=localizable_and_scopable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/localizable_and_scopable']
                         ],
                         'identifier'    => 'localizable_and_scopable',
                         'family'        => null,
@@ -430,7 +430,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                 'items' => [
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=simple']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/simple']
                         ],
                         'identifier'    => 'simple',
                         'family'        => null,
@@ -463,7 +463,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=localizable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/localizable']
                         ],
                         'identifier'    => 'localizable',
                         'family'        => null,
@@ -483,7 +483,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=scopable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/scopable']
                         ],
                         'identifier'    => 'scopable',
                         'family'        => null,
@@ -510,7 +510,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=localizable_and_scopable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/localizable_and_scopable']
                         ],
                         'identifier'    => 'localizable_and_scopable',
                         'family'        => null,
@@ -560,7 +560,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                 'items' => [
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=simple']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/simple']
                         ],
                         'identifier'    => 'simple',
                         'family'        => null,
@@ -593,7 +593,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=localizable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/localizable']
                         ],
                         'identifier'    => 'localizable',
                         'family'        => null,
@@ -612,7 +612,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=scopable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/scopable']
                         ],
                         'identifier'    => 'scopable',
                         'family'        => null,
@@ -639,7 +639,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=localizable_and_scopable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/localizable_and_scopable']
                         ],
                         'identifier'    => 'localizable_and_scopable',
                         'family'        => null,
@@ -688,7 +688,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                 'items' => [
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=localizable_and_scopable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/localizable_and_scopable']
                         ],
                         'identifier'    => 'localizable_and_scopable',
                         'family'        => null,
@@ -707,7 +707,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=product_china']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/product_china']
                         ],
                         'identifier'    => 'product_china',
                         'family'        => null,
@@ -751,7 +751,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                 'items' => [
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=simple']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/simple']
                         ],
                         'identifier'    => 'simple',
                         'family'        => null,
@@ -784,7 +784,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=localizable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/localizable']
                         ],
                         'identifier'    => 'localizable',
                         'family'        => null,
@@ -804,7 +804,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=scopable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/scopable']
                         ],
                         'identifier'    => 'scopable',
                         'family'        => null,
@@ -840,7 +840,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=localizable_and_scopable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/localizable_and_scopable']
                         ],
                         'identifier'    => 'localizable_and_scopable',
                         'family'        => null,
@@ -861,7 +861,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=product_china']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/product_china']
                         ],
                         'identifier'    => 'product_china',
                         'family'        => null,
@@ -876,7 +876,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=product_without_category']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/product_without_category']
                         ],
                         'identifier'    => 'product_without_category',
                         'family'        => null,
@@ -922,7 +922,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                 'items' => [
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=simple']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/simple']
                         ],
                         'identifier'    => 'simple',
                         'family'        => null,
@@ -945,7 +945,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=localizable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/localizable']
                         ],
                         'identifier'    => 'localizable',
                         'family'        => null,
@@ -960,7 +960,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=scopable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/scopable']
                         ],
                         'identifier'    => 'scopable',
                         'family'        => null,
@@ -975,7 +975,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=localizable_and_scopable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/localizable_and_scopable']
                         ],
                         'identifier'    => 'localizable_and_scopable',
                         'family'        => null,
@@ -990,7 +990,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=product_china']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/product_china']
                         ],
                         'identifier'    => 'product_china',
                         'family'        => null,
@@ -1005,7 +1005,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=product_without_category']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/product_without_category']
                         ],
                         'identifier'    => 'product_without_category',
                         'family'        => null,
@@ -1043,7 +1043,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                 'items' => [
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=simple']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/simple']
                         ],
                         'identifier'    => 'simple',
                         'family'        => null,
@@ -1069,7 +1069,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=localizable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/localizable']
                         ],
                         'identifier'    => 'localizable',
                         'family'        => null,
@@ -1084,7 +1084,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=scopable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/scopable']
                         ],
                         'identifier'    => 'scopable',
                         'family'        => null,
@@ -1111,7 +1111,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=localizable_and_scopable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/localizable_and_scopable']
                         ],
                         'identifier'    => 'localizable_and_scopable',
                         'family'        => null,
@@ -1155,7 +1155,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                 'items' => [
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=scopable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/scopable']
                         ],
                         'identifier'    => 'scopable',
                         'family'        => null,
@@ -1170,7 +1170,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                     ],
                     [
                         '_links' => [
-                            'self' => ['href' => 'http://localhost/api/rest/v1/products?code=localizable_and_scopable']
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/localizable_and_scopable']
                         ],
                         'identifier'    => 'localizable_and_scopable',
                         'family'        => null,
