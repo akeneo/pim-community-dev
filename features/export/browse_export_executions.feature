@@ -18,7 +18,7 @@ Feature: Browse export executions
     And I launch the "csv_footwear_product_export" export job
     Then I am on the export executions page
     And the grid should contain 4 elements
-    And I should see the columns Code, Label, Job, Date and Status
+    And I should see the columns Code, Label, Job, Date, Status and Warnings
     And I should see entities csv_footwear_product_export, csv_footwear_attribute_export, csv_footwear_category_export and csv_footwear_product_export
     And the rows should be sorted descending by Date
     And I should be able to sort the rows by Code, Label, Job, Date and Status
@@ -27,6 +27,6 @@ Feature: Browse export executions
       | code      | contains  | product                                     | csv_footwear_product_export, csv_footwear_product_export                                              |
       | label     | contains  | category                                    | csv_footwear_category_export                                                                          |
       | job_name  |           | Attribute export in CSV                     | csv_footwear_attribute_export                                                                         |
-      | status    |           | STOPPING                                    |                                                                                                       |
+      | status    |           | Stopping                                    |                                                                                                       |
       | date      | more than | 09/01/2015 05:00 PM                         | footwear_product_export, footwear_category_export, footwear_attribute_export, footwear_product_export |
       | date      | between   | 09/01/2050 05:00 PM and 09/01/2100 05:00 AM |                                                                                                       |
