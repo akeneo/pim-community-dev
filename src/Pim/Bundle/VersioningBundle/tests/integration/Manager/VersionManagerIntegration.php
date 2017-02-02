@@ -102,6 +102,8 @@ class VersionManagerIntegration extends TestCase
 
     public function testCreateProductVersionOnUpdate()
     {
+        // Prevent from creating versions logged at the same time
+        sleep(1);
         $updates = [
             'groups' => ['groupB'],
             'values' => [
@@ -147,6 +149,8 @@ class VersionManagerIntegration extends TestCase
 
     public function testCreateProductVersionOnAttributeAndFieldDeletion()
     {
+        // Prevent from creating versions logged at the same time
+        sleep(1);
         $product = $this->productRepository->findOneByIdentifier('versioned-product');
         $productValue = $product->getValue('a_date');
         $product->removeValue($productValue);
