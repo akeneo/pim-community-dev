@@ -14,7 +14,7 @@ use Akeneo\Component\Localization\Model\TranslatableInterface;
 class TranslatableUpdater
 {
     /**
-     * Update data to translate label
+     * Update data to translate label.
      *
      * @param TranslatableInterface $object
      * @param array                 $data
@@ -24,7 +24,12 @@ class TranslatableUpdater
         foreach ($data as $localeCode => $label) {
             $object->setLocale($localeCode);
             $translation = $object->getTranslation();
-            $translation->setLabel($label);
+
+            if (null === $label || '' === $label) {
+                $object->removeTranslation($translation);
+            } else {
+                $translation->setLabel($label);
+            }
         }
     }
 }
