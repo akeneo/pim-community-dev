@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Saver;
 
 use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\Versioning\BulkVersionBuilderInterface;
 use Doctrine\MongoDB\Collection;

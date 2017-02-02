@@ -1,3 +1,11 @@
+# 1.5.18 (2017-02-01)
+
+## Bug fixes
+
+- PIM-6038: Fix product imports that do not change the product update date correctly (mongodb)
+- PIM-6042: Successfully import product associations without removing already existing associations when option "compare values" is set to true
+- PIM-6110: Saving a product value clears the saved associations
+
 # 1.5.17 (2017-01-18)
 
 ## Bug fixes
