@@ -2,12 +2,10 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
-use Akeneo\Test\Integration\Configuration;
-use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
-class ErrorListProductIntegration extends ApiTestCase
+class ErrorListProductIntegration extends AbstractProductTestCase
 {
     public function testNotFoundChannel()
     {
@@ -79,17 +77,6 @@ class ErrorListProductIntegration extends ApiTestCase
 
         $client->request('GET', 'api/rest/v1/products?limit=101');
         $this->assert($client, 'You cannot request more than 100 items.');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            false
-        );
     }
 
     /**

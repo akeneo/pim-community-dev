@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ApiBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Pagination\HalPaginator;
@@ -13,6 +14,8 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -47,6 +50,9 @@ class ProductController
     /** @var ParameterValidatorInterface */
     protected $parameterValidator;
 
+    /** @var RemoverInterface */
+    protected $remover;
+
     /**
      * @param ProductQueryBuilderFactoryInterface   $pqbFactory
      * @param NormalizerInterface                   $normalizer
@@ -56,8 +62,7 @@ class ProductController
      * @param ProductRepositoryInterface            $productRepository
      * @param HalPaginator                          $paginator
      * @param ParameterValidatorInterface           $parameterValidator
-     * @param ProductQueryBuilderFactoryInterface   $pqbFactory
-     * @param NormalizerInterface                   $normalizer
+     * @param RemoverInterface                      $remover
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -67,7 +72,8 @@ class ProductController
         IdentifiableObjectRepositoryInterface $attributeRepository,
         ProductRepositoryInterface $productRepository,
         HalPaginator $paginator,
-        ParameterValidatorInterface $parameterValidator
+        ParameterValidatorInterface $parameterValidator,
+        RemoverInterface $remover
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->normalizer = $normalizer;
@@ -77,6 +83,7 @@ class ProductController
         $this->productRepository = $productRepository;
         $this->paginator = $paginator;
         $this->parameterValidator = $parameterValidator;
+        $this->remover = $remover;
     }
 
     /**
@@ -142,11 +149,51 @@ class ProductController
             array_merge($request->query->all(), $queryParameters),
             $count,
             'pim_api_product_list',
-            'pim_api_product_list',
+            'pim_api_product_get',
             'identifier'
         );
 
         return new JsonResponse($paginatedProducts);
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $code
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return JsonResponse
+     */
+    public function getAction(Request $request, $code)
+    {
+        $product = $this->productRepository->findOneByIdentifier($code);
+        if (null === $product) {
+            throw new NotFoundHttpException(sprintf('Product "%s" does not exist.', $code));
+        }
+
+        $standardizedProduct = $this->normalizer->normalize($product, 'external_api');
+
+        return new JsonResponse($standardizedProduct);
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $code
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return JsonResponse
+     */
+    public function deleteAction(Request $request, $code)
+    {
+        $product = $this->productRepository->findOneByIdentifier($code);
+        if (null === $product) {
+            throw new NotFoundHttpException(sprintf('Product "%s" does not exist.', $code));
+        }
+
+        $this->remover->remove($product);
+
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
