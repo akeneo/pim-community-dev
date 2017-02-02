@@ -7,7 +7,7 @@ Feature: Join a document to a product
   Background:
     Given the "default" catalog configuration
     And the following attribute:
-      | label       | type | allowed extensions |
+      | label       | type | allowed_extensions |
       | Description | file | txt                |
     And a "Car" product
     And the "Car" product has the "Description" attribute
