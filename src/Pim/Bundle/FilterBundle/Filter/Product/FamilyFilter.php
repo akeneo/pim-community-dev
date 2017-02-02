@@ -25,9 +25,8 @@ class FamilyFilter extends AjaxChoiceFilter
         if (!$data) {
             return false;
         }
-
-        if (Operators::IS_EMPTY === strtoupper($data['type'])) {
-            $this->util->applyFilter($dataSource, 'family', Operators::IS_EMPTY, null);
+        if (in_array(strtoupper($data['type']), [Operators::IS_EMPTY, Operators::IS_NOT_EMPTY])) {
+            $this->util->applyFilter($dataSource, 'family', strtoupper($data['type']), null);
         } else {
             $this->util->applyFilter($dataSource, 'family', Operators::IN_LIST, $data['value']);
         }

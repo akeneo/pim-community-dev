@@ -7,6 +7,7 @@ use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -67,15 +68,20 @@ class NumberFilter extends OroNumberFilter
     public function getOperator($type)
     {
         $operatorTypes = [
-            NumberFilterType::TYPE_EQUAL         => '=',
-            NumberFilterType::TYPE_GREATER_EQUAL => '>=',
-            NumberFilterType::TYPE_GREATER_THAN  => '>',
-            NumberFilterType::TYPE_LESS_EQUAL    => '<=',
-            NumberFilterType::TYPE_LESS_THAN     => '<',
-            FilterType::TYPE_EMPTY               => 'EMPTY',
+            NumberFilterType::TYPE_EQUAL         => Operators::EQUALS,
+            NumberFilterType::TYPE_GREATER_EQUAL => Operators::GREATER_OR_EQUAL_THAN,
+            NumberFilterType::TYPE_GREATER_THAN  => Operators::GREATER_THAN,
+            NumberFilterType::TYPE_LESS_EQUAL    => Operators::LOWER_OR_EQUAL_THAN,
+            NumberFilterType::TYPE_LESS_THAN     => Operators::LOWER_THAN,
+            FilterType::TYPE_EMPTY               => Operators::IS_EMPTY,
+            FilterType::TYPE_NOT_EMPTY           => Operators::IS_NOT_EMPTY,
         ];
 
-        return isset($operatorTypes[$type]) ? $operatorTypes[$type] : '=';
+        if (!isset($operatorTypes[$type])) {
+            throw new InvalidArgumentException(sprintf('Operator "%s" is undefined', $type));
+        }
+
+        return $operatorTypes[$type];
     }
 
     /**
@@ -86,7 +92,10 @@ class NumberFilter extends OroNumberFilter
         if (!is_array($data)
             || !array_key_exists('value', $data)
             || !array_key_exists('type', $data)
-            || (!is_numeric($data['value']) && FilterType::TYPE_EMPTY !== $data['type'])) {
+            || (
+                !is_numeric($data['value']) &&
+                !in_array($data['type'], [FilterType::TYPE_EMPTY, FilterType::TYPE_NOT_EMPTY])
+            )) {
             return false;
         }
 
