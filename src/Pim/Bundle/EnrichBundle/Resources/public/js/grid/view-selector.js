@@ -80,6 +80,8 @@ define(
                 this.listenTo(this.getRoot(), 'grid:view-selector:close-selector', this.closeSelect2.bind(this));
                 this.listenTo(this.getRoot(), 'grid:product-grid:state_changed', this.onGridStateChange.bind(this));
 
+                Backbone.Router.prototype.on('route', this.unbindEvents.bind(this));
+
                 return FetcherRegistry.getFetcher('datagrid-view')
                     .defaultColumns(this.gridAlias)
                     .then(function (columns) {
@@ -87,6 +89,13 @@ define(
 
                         return BaseForm.prototype.configure.apply(this, arguments);
                     }.bind(this));
+            },
+
+            /**
+             * Detach event listeners
+             */
+            unbindEvents: function () {
+                this.off();
             },
 
             /**
