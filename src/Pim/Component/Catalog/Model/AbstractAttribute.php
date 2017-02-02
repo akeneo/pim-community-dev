@@ -911,7 +911,7 @@ abstract class AbstractAttribute implements AttributeInterface
     public function getTranslation($locale = null)
     {
         $locale = ($locale) ? $locale : $this->locale;
-        if (!$locale) {
+        if (null === $locale) {
             return null;
         }
         foreach ($this->getTranslations() as $translation) {
