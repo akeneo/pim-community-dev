@@ -29,6 +29,8 @@ Pim\Bundle\CatalogBundle\Entity\GroupTranslation:
         label:
             - Length:
                 max: 100
+        locale:
+            - Pim\Component\Catalog\Validator\Constraints\Locale: {}
 
 Pim\Bundle\CatalogBundle\Entity\ProductTemplate:
     getters:

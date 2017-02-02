@@ -21,3 +21,5 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation:
         label:
             - Length:
                 max: 100
+        locale:
+            - Pim\Component\Catalog\Validator\Constraints\Locale: {}
