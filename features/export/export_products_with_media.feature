@@ -40,7 +40,7 @@ Feature: Export products with media
   @jira https://akeneo.atlassian.net/browse/PIM-3785
   Scenario: Successfully export products with nullable media
     Given the following attributes:
-      | code    | label-en_US | type              | allowed extensions | group |
+      | code    | label-en_US | type              | allowed_extensions | group |
       | picture | Picture     | pim_catalog_image | jpg                | other |
     And the following family:
       | code     | requirements-tablet | requirements-mobile | attributes |
