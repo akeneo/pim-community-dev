@@ -161,6 +161,85 @@ JSON;
         $this->assertSame($attributeStandard, $normalizer->normalize($attribute));
     }
 
+    public function testAttributeCreationWithEmptyLabels()
+    {
+        $client = $this->createAuthentifiedClient();
+
+        $data =
+<<<JSON
+    {
+        "code":"empty_label_attribute",
+        "type":"pim_catalog_text",
+        "group":"attributeGroupA",
+        "unique":false,
+        "useable_as_grid_filter":false,
+        "allowed_extensions":[],
+        "metric_family":null,
+        "default_metric_unit":null,
+        "reference_data_name":null,
+        "available_locales":[],
+        "max_characters":null,
+        "validation_rule":null,
+        "validation_regexp":null,
+        "wysiwyg_enabled":false,
+        "number_min":null,
+        "number_max":null,
+        "decimals_allowed":false,
+        "negative_allowed":false,
+        "date_min":null,
+        "date_max":null,
+        "max_file_size":null,
+        "minimum_input_length":0,
+        "sort_order":12,
+        "localizable":false,
+        "scopable":false,
+        "labels": {
+            "en_US": null,
+            "fr_FR": ""
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+
+        $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('empty_label_attribute');
+
+        $attributeStandard = [
+            'code'                   => 'empty_label_attribute',
+            'type'                   => 'pim_catalog_text',
+            'group'                  => 'attributeGroupA',
+            'unique'                 => false,
+            'useable_as_grid_filter' => false,
+            'allowed_extensions'     => [],
+            'metric_family'          => null,
+            'default_metric_unit'    => null,
+            'reference_data_name'    => null,
+            'available_locales'      => [],
+            'max_characters'         => null,
+            'validation_rule'        => null,
+            'validation_regexp'      => null,
+            'wysiwyg_enabled'        => false,
+            'number_min'             => null,
+            'number_max'             => null,
+            'decimals_allowed'       => false,
+            'negative_allowed'       => false,
+            'date_min'               => null,
+            'date_max'               => null,
+            'max_file_size'          => null,
+            'minimum_input_length'   => 0,
+            'sort_order'             => 12,
+            'localizable'            => false,
+            'scopable'               => false,
+            'labels'                 => [],
+        ];
+        $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSame($attributeStandard, $normalizer->normalize($attribute));
+    }
+
     public function testResponseWhenContentIsEmpty()
     {
         $client = $this->createAuthentifiedClient();

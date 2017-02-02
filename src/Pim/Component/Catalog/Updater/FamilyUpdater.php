@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\Localization\TranslatableUpdater;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -49,19 +50,24 @@ class FamilyUpdater implements ObjectUpdaterInterface
     /** @var AttributeRequirementRepositoryInterface */
     protected $requirementRepo;
 
+    /** @var TranslatableUpdater */
+    protected $translatableUpdater;
+
     /**
      * @param IdentifiableObjectRepositoryInterface   $familyRepository
      * @param AttributeRepositoryInterface            $attributeRepository
      * @param ChannelRepositoryInterface              $channelRepository
      * @param AttributeRequirementFactory             $attrRequiFactory
      * @param AttributeRequirementRepositoryInterface $requirementRepo
+     * @param TranslatableUpdater                     $translatableUpdater
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $attrRequiFactory,
-        AttributeRequirementRepositoryInterface $requirementRepo
+        AttributeRequirementRepositoryInterface $requirementRepo,
+        TranslatableUpdater $translatableUpdater
     ) {
         $this->accessor = PropertyAccess::createPropertyAccessor();
         $this->familyRepository = $familyRepository;
@@ -69,6 +75,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
         $this->channelRepository = $channelRepository;
         $this->attrRequiFactory = $attrRequiFactory;
         $this->requirementRepo = $requirementRepo;
+        $this->translatableUpdater = $translatableUpdater;
     }
 
     /**
@@ -184,7 +191,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
     {
         switch ($field) {
             case 'labels':
-                $this->setLabels($family, $data);
+                $this->translatableUpdater->update($family, $data);
                 break;
             case 'attribute_requirements':
                 $this->setAttributeRequirements($family, $data);
@@ -213,19 +220,6 @@ class FamilyUpdater implements ObjectUpdaterInterface
             $this->accessor->setValue($attribute, $field, $data);
         } catch (NoSuchPropertyException $e) {
             throw UnknownPropertyException::unknownProperty($field, $e);
-        }
-    }
-
-    /**
-     * @param FamilyInterface $family
-     * @param array           $data
-     */
-    protected function setLabels(FamilyInterface $family, array $data)
-    {
-        foreach ($data as $localeCode => $label) {
-            $family->setLocale($localeCode);
-            $translation = $family->getTranslation();
-            $translation->setLabel($label);
         }
     }
 

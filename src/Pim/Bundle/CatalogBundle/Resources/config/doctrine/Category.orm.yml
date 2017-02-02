@@ -48,6 +48,7 @@ Pim\Bundle\CatalogBundle\Entity\Category:
         translations:
             targetEntity: Pim\Component\Catalog\Model\CategoryTranslationInterface
             mappedBy: foreignKey
+            orphanRemoval: true
             cascade:
                 - persist
                 - detach

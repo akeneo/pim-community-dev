@@ -105,6 +105,47 @@ JSON;
         $this->assertSame($familyStandard, $normalizer->normalize($family));
     }
 
+    public function testCategoryCreationWithEmptyLabels()
+    {
+        $client = $this->createAuthentifiedClient();
+
+        $data =
+<<<JSON
+    {
+        "code": "empty_label_family",
+        "attributes": ["an_image", "a_metric", "a_price"],
+        "attribute_as_label": "sku",
+        "attribute_requirements": {
+            "ecommerce": ["sku", "a_metric"],
+            "tablet": ["sku", "a_price"]
+        },
+        "labels": {
+            "en_US": "",
+            "fr_FR": null
+        }
+    }
+JSON;
+        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
+
+        $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('empty_label_family');
+        $familyStandard = [
+            'code'                   => 'empty_label_family',
+            'attributes'             => ['a_metric', 'a_price', 'an_image', 'sku'],
+            'attribute_as_label'     => 'sku',
+            'attribute_requirements' => [
+                'ecommerce'       => ['a_metric', 'sku'],
+                'ecommerce_china' => ['sku'],
+                'tablet'          => ['a_price', 'sku'],
+            ],
+            'labels'                 => [],
+        ];
+        $normalizer = $this->get('pim_catalog.normalizer.standard.family');
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSame($familyStandard, $normalizer->normalize($family));
+    }
+
     public function testResponseWhenContentIsEmpty()
     {
         $client = $this->createAuthentifiedClient();

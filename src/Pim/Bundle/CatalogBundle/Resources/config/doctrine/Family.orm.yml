@@ -40,6 +40,7 @@ Pim\Bundle\CatalogBundle\Entity\Family:
     oneToMany:
         translations:
             targetEntity: Pim\Component\Catalog\Model\FamilyTranslationInterface
+            orphanRemoval: true
             mappedBy: foreignKey
             cascade:
                 - persist
