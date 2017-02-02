@@ -20,6 +20,7 @@ use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\DatagridViewTypes;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
@@ -134,36 +135,16 @@ class ProjectContext extends PimContext
      */
     private function generateProject($projectCode)
     {
-        $application = new Application();
-        $application->add(new BatchCommand());
-        $batchJobCommand = $application->find('akeneo:batch:job');
-        $batchJobCommand->setContainer($this->getMainContext()->getContainer());
-        $command = new CommandTester($batchJobCommand);
+        $pathFinder = new PhpExecutableFinder();
 
-        $this->getService('doctrine.orm.entity_manager')->clear();
-
-        $jobInstance = $this->getService('akeneo_batch.job.job_instance_repository')
-            ->findOneByIdentifier('project_calculation');
-
-        $exitCode = $command->execute(
-            [
-                'command'  => $batchJobCommand->getName(),
-                'code'     => $jobInstance->getCode(),
-                '--config' => json_encode(['project_code' => $projectCode]),
-                '--no-log' => true,
-                '-v'       => true
-            ]
+        exec(
+            sprintf(
+                '%s %s/console akeneo:batch:job project_calculation --env=behat -c {\"project_code\":\"%s\"}',
+                $pathFinder->find(),
+                $this->getMainContext()->getContainer()->getParameter('kernel.root_dir'),
+                $projectCode
+            )
         );
-
-        if (0 !== $exitCode) {
-            throw new \Exception(
-                sprintf(
-                    'An error happened during the "project_calculation" job of "%s" project: "%s"',
-                    $projectCode,
-                    $command->getDisplay()
-                )
-            );
-        }
     }
 
     /**
