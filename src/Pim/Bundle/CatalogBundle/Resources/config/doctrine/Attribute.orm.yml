@@ -142,6 +142,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 sortOrder: ASC
         translations:
             targetEntity: Pim\Component\Catalog\Model\AttributeTranslationInterface
+            orphanRemoval: true
             mappedBy: foreignKey
             cascade:
                 - persist

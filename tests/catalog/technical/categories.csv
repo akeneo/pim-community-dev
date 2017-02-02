@@ -1,7 +1,7 @@
 code;parent;label-en_US;label-fr_FR
 master;;;
 categoryA;master;Category A;Catégorie A
-categoryA1;categoryA
-categoryA2;categoryA
-categoryB;master
+categoryA1;categoryA;Category A1 US;
+categoryA2;categoryA;Category A2 US;
+categoryB;master;Category B;
 master_china;;;
