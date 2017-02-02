@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductValueCollection;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\Model\ProductValueKeyGenerator;
 
 /**
  * Product template model, contains common product values as raw data
@@ -20,40 +20,18 @@ class ProductTemplate implements ProductTemplateInterface
     /** @var int $id */
     protected $id;
 
+    /** @var ProductValueCollectionInterface */
+    protected $values;
+
     /** @var array */
     protected $valuesData = [];
 
-    /** @var array of ProductValueInterface */
-    protected $values = [];
-
     /**
-     * {@inheritdoc}
+     * Creates a new product template with empty values by default.
      */
-    public function setValues($values)
+    public function __construct()
     {
-        $tmp = new ArrayCollection();
-
-        foreach ($values as $value) {
-            $tmp[ProductValueKeyGenerator::getKey($value, '_')] = $value;
-        }
-
-        $this->values = $tmp;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getValues()
-    {
-        $values = new ArrayCollection();
-
-        foreach ($this->values as $value) {
-            $values[ProductValueKeyGenerator::getKey($value, '_')] = $value;
-        }
-
-        return $values;
+        $this->values = new ProductValueCollection();
     }
 
     /**
@@ -62,6 +40,24 @@ class ProductTemplate implements ProductTemplateInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValues()
+    {
+        return $this->values;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setValues(ProductValueCollectionInterface $values)
+    {
+        $this->values = $values;
+
+        return $this;
     }
 
     /**

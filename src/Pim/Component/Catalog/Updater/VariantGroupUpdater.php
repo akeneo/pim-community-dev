@@ -8,9 +8,10 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -31,11 +32,8 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     /** @var GroupTypeRepositoryInterface */
     protected $groupTypeRepository;
 
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
-
-    /** @var ObjectUpdaterInterface */
-    protected $productUpdater;
+    /** @var ProductValueFactory */
+    protected $productValueFactory;
 
     /** @var ProductQueryBuilderFactoryInterface */
     protected $productQueryBuilderFactory;
@@ -46,23 +44,20 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     /**
      * @param AttributeRepositoryInterface        $attributeRepository
      * @param GroupTypeRepositoryInterface        $groupTypeRepository
-     * @param ProductBuilderInterface             $productBuilder
-     * @param ObjectUpdaterInterface              $productUpdater
+     * @param ProductValueFactory                 $productValueFactory
      * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
      * @param string                              $productTemplateClass
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         GroupTypeRepositoryInterface $groupTypeRepository,
-        ProductBuilderInterface $productBuilder,
-        ObjectUpdaterInterface $productUpdater,
+        ProductValueFactory $productValueFactory,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         $productTemplateClass
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->groupTypeRepository = $groupTypeRepository;
-        $this->productBuilder = $productBuilder;
-        $this->productUpdater = $productUpdater;
+        $this->productValueFactory = $productValueFactory;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
         $this->productTemplateClass = $productTemplateClass;
     }
@@ -234,17 +229,17 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      * @param GroupInterface $variantGroup
      * @param array          $newValues
      */
-    public function setValues(GroupInterface $variantGroup, array $newValues)
+    protected function setValues(GroupInterface $variantGroup, array $newValues)
     {
         $template = $this->getProductTemplate($variantGroup);
-        $originalValues = $template->getValuesData();
-        $mergedValuesData = $this->mergeValues($originalValues, $newValues);
+        $originalValues = $template->getValues();
 
-        $mergedValues = $this->transformArrayToValues($mergedValuesData);
-        $mergedValuesData = $this->replaceMediaLocalPathsByStoredPaths($mergedValues, $mergedValuesData);
+        if (null === $originalValues) {
+            $originalValues = new ProductValueCollection();
+        }
+        $mergedValues = $this->mergeValues($originalValues, $newValues);
 
         $template->setValues($mergedValues);
-        $template->setValuesData($mergedValuesData);
 
         $variantGroup->setProductTemplate($template);
     }
@@ -254,103 +249,60 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      * Iterates on every new attribute and then on every localized and/or scoped value to compare it
      * with the original values.
      *
-     * Example :
+     * New values respect the standard format:
      *
-     * Given $originalValues =
-     *     "description": [
-     *          {
-     *              "locale": "fr_FR",
-     *              "scope": "ecommerce",
-     *              "data": "original description fr_FR",
-     *          },
-     *          {
-     *              "locale": "en_US",
-     *              "scope": "ecommerce",
-     *              "data": "original descriptionen_US",
-     *          }
-     *      ]
+     * $newValues = [
+     *     'code'        => [
+     *         [
+     *             'locale' => null,
+     *             'scope'  => null,
+     *             'data'   => 'a_unique_code',
+     *         ],
+     *     ],
+     *     'description' => [
+     *         [
+     *             'locale' => 'en_US',
+     *             'scope'  => 'ecommerce',
+     *             'data'   => 'A new description in english',
+     *         ],
+     *         [
+     *             'locale' => 'de_DE',
+     *             'scope'  => 'ecommerce',
+     *             'data'   => 'Eine neue deutsche Beschreibung',
+     *         ],
+     *     ]
+     * ];
      *
-     * And $newValues =
-     *     "description": [
-     *          {
-     *              "locale": "de_DE",
-     *              "scope": "ecommerce",
-     *              "data": "new description de_DE",
-     *          },
-     *          {
-     *              "locale": "en_US",
-     *              "scope": "ecommerce",
-     *              "data": "new descriptionen_US",
-     *          }
-     *      ]
-     *
-     * Then $mergedValues will be =
-     *     "description": [
-     *          {
-     *              "locale": "fr_FR",
-     *              "scope": "ecommerce",
-     *              "data": "original description fr_FR",
-     *          },
-     *          {
-     *              "locale": "de_DE",
-     *              "scope": "ecommerce",
-     *              "data": "new description de_DE",
-     *          },
-     *          {
-     *              "locale": "en_US",
-     *              "scope": "ecommerce",
-     *              "data": "new descriptionen_US",
-     *          }
-     *      ]
-     *
-     * @param array $originalValues
-     * @param array $newValues
-     *
-     * @return array
-     */
-    protected function mergeValues(array $originalValues, array $newValues)
-    {
-        $mergedValues = $originalValues;
-
-        foreach ($newValues as $newValueCode => $newValueArray) {
-            foreach ($newValueArray as $newValue) {
-                $originalValueFound = false;
-
-                if (isset($originalValues[$newValueCode])) {
-                    foreach ($originalValues[$newValueCode] as $originalValueIndex => $originalValue) {
-                        if ($newValue['locale'] === $originalValue['locale'] &&
-                            $newValue['scope'] === $originalValue['scope']
-                        ) {
-                            $originalValueFound = true;
-                            $mergedValues[$newValueCode][$originalValueIndex]['data'] = $newValue['data'];
-                        }
-                    }
-                }
-
-                if (!$originalValueFound) {
-                    $mergedValues[$newValueCode][] = $newValue;
-                }
-            }
-        }
-
-        return $mergedValues;
-    }
-
-    /**
-     * Transform an array of values to ProductValues
-     *
-     * @param array $arrayValues
+     * @param ProductValueCollectionInterface $values
+     * @param array                           $newValues
      *
      * @return ProductValueCollectionInterface
      */
-    protected function transformArrayToValues(array $arrayValues)
+    protected function mergeValues(ProductValueCollectionInterface $values, array $newValues)
     {
-        $product = $this->productBuilder->createProduct();
-        $this->productUpdater->update($product, ['values' => $arrayValues]);
+        foreach ($newValues as $attributeCode => $newValueArray) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
-        $values = $product->getValues();
-        // TODO: dirty remove of the identifier, will be performed correctly in TIP-697
-        $values->removeKey(sprintf('%s-<all_channels>-<all_locales>', $this->attributeRepository->getIdentifierCode()));
+            foreach ($newValueArray as $newValue) {
+                $key = sprintf(
+                    '%s-%s-%s',
+                    $attributeCode,
+                    null !== $newValue['scope'] ? $newValue['scope'] : '<all_channels>',
+                    null !== $newValue['locale'] ? $newValue['locale'] : '<all_locales>'
+                );
+
+                if ($values->containsKey($key)) {
+                    $values->removeKey($key);
+                }
+
+                $values->add($this->productValueFactory->create(
+                    $attribute,
+                    $newValue['scope'],
+                    $newValue['locale'],
+                    $newValue['data']
+                ));
+            }
+        }
 
         return $values;
     }
@@ -384,36 +336,6 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         }
 
         return $data;
-    }
-
-    /**
-     * Replace media local paths by stored paths in the merged values data as
-     * the file has already been stored during the construction of the product values
-     * (in the method transformArrayToValues).
-     *
-     * @param ProductValueCollectionInterface $mergedValues
-     * @param array                           $mergedValuesData
-     *
-     * @return array
-     */
-    protected function replaceMediaLocalPathsByStoredPaths(
-        ProductValueCollectionInterface $mergedValues,
-        array $mergedValuesData
-    ) {
-        foreach ($mergedValues as $value) {
-            if (null !== $value->getMedia()) {
-                $attributeCode = $value->getAttribute()->getCode();
-                foreach ($mergedValuesData[$attributeCode] as $index => $mergedValuesDataValues) {
-                    if ($value->getLocale() === $mergedValuesDataValues['locale'] &&
-                        $value->getScope() === $mergedValuesDataValues['scope']
-                    ) {
-                        $mergedValuesData[$attributeCode][$index]['data'] = $value->getMedia()->getKey();
-                    }
-                }
-            }
-        }
-
-        return $mergedValuesData;
     }
 
     /**
