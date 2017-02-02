@@ -88,6 +88,74 @@ JSON;
         $this->assertSame($categoryStandard, $normalizer->normalize($category));
     }
 
+    public function testCategoryCreationWithNullLabel()
+    {
+        $client = $this->createAuthentifiedClient();
+
+        $data =
+            <<<JSON
+                {
+        "code": "null_label_category",
+        "parent": "master",
+        "labels": {
+            "en_US": "US label",
+            "fr_FR": "FR label",
+            "de_DE": null
+        }
+    }
+JSON;
+        $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
+
+        $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('null_label_category');
+        $categoryStandard = [
+            'code'   => 'null_label_category',
+            'parent' => 'master',
+            'labels' => [
+                'en_US' => 'US label',
+                'fr_FR' => 'FR label',
+            ],
+        ];
+        $normalizer = $this->get('pim_catalog.normalizer.standard.category');
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSame($categoryStandard, $normalizer->normalize($category));
+    }
+
+    public function testCategoryCreationWithEmptyLabel()
+    {
+        $client = $this->createAuthentifiedClient();
+
+        $data =
+            <<<JSON
+                {
+        "code": "empty_label_category",
+        "parent": "master",
+        "labels": {
+            "en_US": "US label",
+            "fr_FR": "FR label",
+            "de_DE": "" 
+        }
+    }
+JSON;
+        $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
+
+        $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('empty_label_category');
+        $categoryStandard = [
+            'code'   => 'empty_label_category',
+            'parent' => 'master',
+            'labels' => [
+                'en_US' => 'US label',
+                'fr_FR' => 'FR label',
+            ],
+        ];
+        $normalizer = $this->get('pim_catalog.normalizer.standard.category');
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSame($categoryStandard, $normalizer->normalize($category));
+    }
+
     public function testResponseWhenContentIsEmpty()
     {
         $client = $this->createAuthentifiedClient();
@@ -228,6 +296,71 @@ JSON;
             '_links'  => [
                 'documentation' => [
                     'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#category', $version),
+                ],
+            ],
+        ];
+
+        $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+    }
+
+    public function testResponseWhenLocaleCodeInLabelsIsEmpty()
+    {
+        $client = $this->createAuthentifiedClient();
+
+        $data =
+<<<JSON
+    {
+        "code": "test_locale_empty",
+        "labels": {
+            "": "label"
+         }
+    }
+JSON;
+
+        $version = substr(Version::VERSION, 0, 3);
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Validation failed.',
+            'errors'  => [
+                [
+                    'field'   => 'translations[0].locale',
+                    'message' => 'The locale you specified does not exist.',
+                ],
+            ],
+        ];
+
+        $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+    }
+
+    public function testResponseWhenLocaleCodeDoesNotExist()
+    {
+        $client = $this->createAuthentifiedClient();
+
+        $data =
+<<<JSON
+    {
+        "code": "test_locale_empty",
+        "labels": {
+            "foo": "label"
+         }
+    }
+JSON;
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Validation failed.',
+            'errors'  => [
+                [
+                    'field'   => 'translations[0].locale.foo',
+                    'message' => 'The locale you specified does not exist.',
                 ],
             ],
         ];
