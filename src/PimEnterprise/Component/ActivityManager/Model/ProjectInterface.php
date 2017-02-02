@@ -148,4 +148,19 @@ interface ProjectInterface
      * @param array $productFilters
      */
     public function setProductFilters(array $productFilters);
+
+    /**
+     * @param ProjectStatusInterface $projectStatus
+     */
+    public function addProjectStatus(ProjectStatusInterface $projectStatus);
+
+    /**
+     * Reset the project statuses
+     */
+    public function resetProjectStatus();
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getProjectStatus();
 }

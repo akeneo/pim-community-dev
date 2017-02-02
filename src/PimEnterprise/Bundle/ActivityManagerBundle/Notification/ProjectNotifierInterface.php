@@ -11,7 +11,9 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Notification;
 
+use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectStatusInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -22,8 +24,17 @@ interface ProjectNotifierInterface
     /**
      * Notify the user about project event.
      *
-     * @param UserInterface    $user
-     * @param ProjectInterface $project
+     * @param UserInterface          $user
+     * @param ProjectInterface       $project
+     * @param ProjectStatusInterface $projectStatus
+     * @param ProjectCompleteness    $projectCompleteness
+     *
+     * @return bool
      */
-    public function notifyUser(UserInterface $user, ProjectInterface $project);
+    public function notifyUser(
+        UserInterface $user,
+        ProjectInterface $project,
+        ProjectStatusInterface $projectStatus,
+        ProjectCompleteness $projectCompleteness
+    );
 }

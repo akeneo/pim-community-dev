@@ -24,12 +24,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class ProjectStatusRepository extends EntityRepository implements ProjectStatusRepositoryInterface
 {
-    /** @var SaverInterface */
-    protected $projectStatusSaver;
-
     /**
      * @param EntityManager $em
-     * @param ClassMetadata $class
+     * @param string        $class
      */
     public function __construct(EntityManager $em, $class)
     {
