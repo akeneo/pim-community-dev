@@ -7,7 +7,7 @@ Feature: Edit common attributes of many products at once
   Background:
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code        | label-en_US | type               | metric family | default metric unit | group |
+      | code        | label-en_US | type               | metric_family | default_metric_unit | group |
       | weight      | Weight      | pim_catalog_metric | Weight        | GRAM                | other |
       | heel_height | Heel Height | pim_catalog_metric | Length        | CENTIMETER          | other |
     And the following family:
