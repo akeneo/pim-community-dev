@@ -33,8 +33,12 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria, array $orderBy = ['code' => 'ASC'])
+    public function findOneBy(array $criteria, array $orderBy = null)
     {
+        if (null === $orderBy) {
+            $orderBy = ['code' => 'ASC'];
+        }
+
         return parent::findOneBy($criteria, $orderBy);
     }
 
