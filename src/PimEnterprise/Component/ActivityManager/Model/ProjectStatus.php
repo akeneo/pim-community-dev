@@ -28,10 +28,10 @@ class ProjectStatus implements ProjectStatusInterface
     protected $project;
 
     /** @var bool */
-    protected $isComplete;
+    protected $isComplete = 0;
 
     /** @var bool */
-    protected $hasBeenNotified;
+    protected $hasBeenNotified = 0;
 
     /**
      * {@inheritdoc}

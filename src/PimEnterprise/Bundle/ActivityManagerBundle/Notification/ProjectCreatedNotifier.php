@@ -11,8 +11,11 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Notification;
 
+use Akeneo\Component\Localization\Presenter\DatePresenter;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectStatusInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -22,32 +25,65 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class ProjectCreatedNotifier implements ProjectNotifierInterface
 {
-    /** @var ProjectCreatedNotificationFactory */
-    protected $projectCreatedNotificationFactory;
+    /** @var ProjectNotificationFactory */
+    protected $projectNotificationFactory;
 
     /** @var NotifierInterface */
     protected $notifier;
 
+    /** @var DatePresenter */
+    protected $datePresenter;
+
     /**
-     * @param ProjectCreatedNotificationFactory $projectCreatedNotificationFactory
-     * @param NotifierInterface                 $notifier
+     * @param ProjectNotificationFactory $projectNotificationFactory
+     * @param NotifierInterface          $notifier
+     * @param DatePresenter              $datePresenter
      */
     public function __construct(
-        ProjectCreatedNotificationFactory $projectCreatedNotificationFactory,
-        NotifierInterface $notifier
+        ProjectNotificationFactory $projectNotificationFactory,
+        NotifierInterface $notifier,
+        DatePresenter $datePresenter
     ) {
-        $this->projectCreatedNotificationFactory = $projectCreatedNotificationFactory;
+        $this->projectNotificationFactory = $projectNotificationFactory;
         $this->notifier = $notifier;
+        $this->datePresenter = $datePresenter;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function notifyUser(UserInterface $user, ProjectInterface $project)
-    {
-        if ($user->getUsername() !== $project->getOwner()->getUsername()) {
-            $notification = $this->projectCreatedNotificationFactory->create($project, $user);
-            $this->notifier->notify($notification, [$user]);
+    public function notifyUser(
+        UserInterface $user,
+        ProjectInterface $project,
+        ProjectStatusInterface $projectStatus,
+        ProjectCompleteness $projectCompleteness
+    ) {
+        if (!$projectStatus->hasBeenNotified() && !$projectCompleteness->isComplete()) {
+            $userLocale = $user->getUiLocale();
+            $formattedDate = $this->datePresenter->present(
+                $project->getDueDate(),
+                ['locale' => $userLocale->getCode()]
+            );
+
+            $context = [
+                'actionType'  => 'project_calculation',
+                'buttonLabel' => 'activity_manager.notification.project_calculation.start'
+            ];
+
+            if ($user->getUsername() !== $project->getOwner()->getUsername()) {
+                $notification = $this->projectNotificationFactory->create(
+                    ['identifier' => $project->getCode()],
+                    ['%project_label%' => $project->getLabel(), '%due_date%' => $formattedDate],
+                    $context,
+                    'activity_manager.notification.message'
+                );
+
+                $this->notifier->notify($notification, [$user]);
+
+                return true;
+            }
         }
+
+        return false;
     }
 }

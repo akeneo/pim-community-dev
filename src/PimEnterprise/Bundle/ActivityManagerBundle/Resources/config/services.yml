@@ -7,8 +7,7 @@ parameters:
     pimee_activity_manager.repository.pre_processing.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\PreProcessingRepository'
     pimee_activity_manager.repository.project_status.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\ProjectStatusRepository'
     pimee_activity_manager.factory.project_calculation_notification.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCalculationNotificationFactory'
-    pimee_activity_manager.factory.project_created_notification.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCreatedNotificationFactory'
-    pimee_activity_manager.factory.project_finished_notification.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectFinishedNotificationFactory'
+    pimee_activity_manager.factory.project_notification.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectNotificationFactory'
     pimee_activity_manager.event_subscriber.catalog_updates.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\CatalogUpdatesSubscriber'
     pimee_activity_manager.converter.filter.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\FilterConverter'
     pimee_activity_manager.event_subscriber.notification.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\NotificationSubscriber'
@@ -69,29 +68,24 @@ services:
         tags:
             - { name: pim_notification.factory.notification }
 
-    pimee_activity_manager.factory.project_created_notification:
-        class: '%pimee_activity_manager.factory.project_created_notification.class%'
+    pimee_activity_manager.factory.project_notification:
+        class: '%pimee_activity_manager.factory.project_notification.class%'
         arguments:
-            - '@pim_catalog.localization.presenter.date'
             - '%pim_notification.entity.notification.class%'
 
     pimee_activity_manager.notifier.project_created:
         class: '%pimee_activity_manager.notifier.project_created.class%'
         arguments:
-            - '@pimee_activity_manager.factory.project_created_notification'
+            - '@pimee_activity_manager.factory.project_notification'
             - '@pim_notification.notifier'
+            - '@pim_catalog.localization.presenter.date'
 
     pimee_activity_manager.notifier.project_finished:
         class: '%pimee_activity_manager.notifier.project_finished.class%'
         arguments:
-            - '@pimee_activity_manager.factory.project_finished_notification'
+            - '@pimee_activity_manager.factory.project_notification'
             - '@pim_notification.notifier'
-
-    pimee_activity_manager.factory.project_finished_notification:
-        class: '%pimee_activity_manager.factory.project_finished_notification.class%'
-        arguments:
             - '@pim_catalog.localization.presenter.date'
-            - '%pim_notification.entity.notification.class%'
 
     pimee_activity_manager.event_subscriber.notification:
         class: '%pimee_activity_manager.event_subscriber.notification.class%'

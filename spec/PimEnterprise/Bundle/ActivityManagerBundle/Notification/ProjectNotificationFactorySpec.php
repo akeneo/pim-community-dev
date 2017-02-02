@@ -3,17 +3,18 @@
 namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Notification;
 
 use Akeneo\Component\Localization\Presenter\DatePresenter;
+use Pim\Bundle\NotificationBundle\Entity\Notification;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectFinishedNotificationFactory;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
-class ProjectFinishedNotificationFactorySpec extends ObjectBehavior
+class ProjectNotificationFactorySpec extends ObjectBehavior
 {
     function let(DatePresenter $datePresenter)
     {
-        $this->beConstructedWith($datePresenter, 'Pim\Bundle\NotificationBundle\Entity\Notification');
+        $this->beConstructedWith($datePresenter, Notification::class);
     }
 
     function it_is_initializable()
@@ -39,8 +40,9 @@ class ProjectFinishedNotificationFactorySpec extends ObjectBehavior
             ['locale' => 'en_US']
         )->willReturn('07/01/2030');
 
-        $this->create($project, 'activity_manager.notification.project_finished.owner')
-            ->shouldReturnAnInstanceOf('Pim\Bundle\NotificationBundle\Entity\Notification');
+        $notification = $this->create($project, 'activity_manager.notification.project_finished.owner');
+        $notification->shouldBeAnInstanceOf(Notification::class);
+        $notification->getMessage()->shouldReturn();
     }
 
     function it_creates_a_notification_for_contributor(
@@ -61,7 +63,8 @@ class ProjectFinishedNotificationFactorySpec extends ObjectBehavior
             ['locale' => 'en_US']
         )->willReturn('07/01/2030');
 
-        $this->create($project, 'activity_manager.notification.project_finished.contributor')
-            ->shouldReturnAnInstanceOf('Pim\Bundle\NotificationBundle\Entity\Notification');
+        $notification = $this->create($project, 'activity_manager.notification.project_finished.contributor');
+        $notification->shouldBeAnInstanceOf(Notification::class);
+        $notification->getMessage()->shouldReturn();
     }
 }
