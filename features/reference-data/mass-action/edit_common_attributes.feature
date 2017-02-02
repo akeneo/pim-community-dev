@@ -10,7 +10,7 @@ Feature: Mass edit common attributes for reference data
       | code           | attributes                                             |
       | platform_shoes | sku, name, description, color, heel_color, sole_fabric |
     And the following attributes:
-      | code        | label       | type   | metric family | default metric unit | families       |
+      | code        | label       | type   | metric_family | default_metric_unit | families       |
       | heel_height | Heel height | metric | Length        | CENTIMETER          | platform_shoes |
     And the following "heel_color" attribute reference data: Red, Green, Light green, Blue, Yellow, Cyan, Magenta, Black, White
     And the following "sole_fabric" attribute reference data: PVC, Nylon, Neoprene, Spandex, Wool, Kevlar, Jute

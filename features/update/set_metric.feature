@@ -6,11 +6,11 @@ Feature: Update metric fields
   Scenario: Successfully update a metric field
     Given a "default" catalog configuration
     And the following attributes:
-      | code   | type   | localizable | scopable | metricFamily | defaultMetricUnit |
-      | weight | metric | yes         | no       | Weight       | KILOGRAM          |
-      | width  | metric | no          | yes      | Length       | METER             |
-      | height | metric | yes         | yes      | Length       | METER             |
-      | depth  | metric | no          | no       | Length       | METER             |
+      | code   | type   | localizable | scopable | metric_family | default_metric_unit |
+      | weight | metric | yes         | no       | Weight       | KILOGRAM             |
+      | width  | metric | no          | yes      | Length       | METER                |
+      | height | metric | yes         | yes      | Length       | METER                |
+      | depth  | metric | no          | no       | Length       | METER                |
     And the following products:
       | sku  |
       | BOX1 |

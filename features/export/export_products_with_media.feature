@@ -43,7 +43,7 @@ Feature: Export products with media
       | code      | requirements-tablet | requirements-mobile |
       | flipflop  | sku                 | sku                 |
     And the following attributes:
-      | code    | label   | type  | allowed extensions | families  |
+      | code    | label   | type  | allowed_extensions | families  |
       | picture | Picture | image | jpg                | flipflop  |
     And the following products:
       | sku         | categories        | price          | size | color    | name-en_US | family    |

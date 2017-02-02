@@ -10,7 +10,7 @@ Feature: Remove a product
       | code       | attributes                                                       |
       | high_heels | sku, name, description, price, rating, size, color, manufacturer |
     And the following attributes:
-      | code        | label       | type   | metric family | default metric unit | families                 |
+      | code        | label       | type   | metric_family | default_metric_unit | families                 |
       | weight      | Weight      | metric | Weight        | GRAM                | boots, sneakers, sandals |
       | heel_height | Heel Height | metric | Length        | CENTIMETER          | high_heels               |
     And the following products:

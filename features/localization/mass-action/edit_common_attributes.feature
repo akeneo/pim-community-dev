@@ -10,7 +10,7 @@ Feature: Edit common localized attributes of many products at once
       | code       | attributes                                                       |
       | high_heels | sku, name, description, price, rating, size, color, manufacturer |
     And the following attributes:
-      | code    | label  | type   | metric family | default metric unit | families       | decimals_allowed |
+      | code    | label  | type   | metric_family | default_metric_unit | families       | decimals_allowed |
       | weight  | Weight | metric | Weight        | GRAM                | boots, sandals | yes              |
       | time    | Time   | number |               |                     | boots, sandals | yes              |
       | date    | Date   | date   |               |                     | boots, sandals |                  |
