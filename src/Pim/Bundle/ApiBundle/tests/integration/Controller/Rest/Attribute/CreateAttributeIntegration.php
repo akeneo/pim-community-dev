@@ -32,7 +32,7 @@ JSON;
         $this->assertSame('', $response->getContent());
     }
 
-    public function testFormatStandardWhenAnAttributeIsCreatedButUncompleted()
+    public function testFormatStandardWhenAnAttributeIsCreatedButIncompleted()
     {
         $client = $this->createAuthentifiedClient();
 
@@ -161,7 +161,7 @@ JSON;
         $this->assertSame($attributeStandard, $normalizer->normalize($attribute));
     }
 
-    public function testResponseWhenContentIsNotValid()
+    public function testResponseWhenContentIsEmpty()
     {
         $client = $this->createAuthentifiedClient();
 
@@ -169,7 +169,24 @@ JSON;
 
         $expectedContent = [
             'code'    => 400,
-            'message' => 'Invalid json message received.',
+            'message' => 'Invalid json message received',
+        ];
+
+        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+    }
+
+    public function testResponseWhenContentIsNotValid()
+    {
+        $client = $this->createAuthentifiedClient();
+
+        $data = '{';
+
+        $expectedContent = [
+            'code'    => 400,
+            'message' => 'Invalid json message received',
         ];
 
         $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
@@ -538,6 +555,118 @@ JSON;
             ],
         ];
 
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+    }
+
+    public function testResponseWhenLocaleCodeInLabelsIsEmpty()
+    {
+        $client = $this->createAuthentifiedClient();
+
+        $data =
+<<<JSON
+    {
+        "code":"unknown_locale",
+        "type":"pim_catalog_text",
+        "group":"attributeGroupA",
+        "unique":false,
+        "useable_as_grid_filter":false,
+        "allowed_extensions":[],
+        "metric_family":null,
+        "default_metric_unit":null,
+        "reference_data_name":null,
+        "available_locales":[],
+        "max_characters":null,
+        "validation_rule":null,
+        "validation_regexp":null,
+        "wysiwyg_enabled":false,
+        "number_min":null,
+        "number_max":null,
+        "decimals_allowed":false,
+        "negative_allowed":false,
+        "date_min":null,
+        "date_max":null,
+        "max_file_size":null,
+        "minimum_input_length":0,
+        "sort_order":12,
+        "localizable":false,
+        "scopable":false,
+        "labels": {
+            "":"label"
+        }
+    }
+JSON;
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Validation failed.',
+            'errors'  => [
+                [
+                    'field'   => 'translations[0].locale',
+                    'message' => 'The locale "" does not exist.',
+                ],
+            ],
+        ];
+
+        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+    }
+
+    public function testResponseWhenLocaleCodeDoesNotExist()
+    {
+        $client = $this->createAuthentifiedClient();
+
+        $data =
+<<<JSON
+    {
+        "code":"unknown_locale",
+        "type":"pim_catalog_text",
+        "group":"attributeGroupA",
+        "unique":false,
+        "useable_as_grid_filter":false,
+        "allowed_extensions":[],
+        "metric_family":null,
+        "default_metric_unit":null,
+        "reference_data_name":null,
+        "available_locales":[],
+        "max_characters":null,
+        "validation_rule":null,
+        "validation_regexp":null,
+        "wysiwyg_enabled":false,
+        "number_min":null,
+        "number_max":null,
+        "decimals_allowed":false,
+        "negative_allowed":false,
+        "date_min":null,
+        "date_max":null,
+        "max_file_size":null,
+        "minimum_input_length":0,
+        "sort_order":12,
+        "localizable":false,
+        "scopable":false,
+        "labels": {
+            "foo": "label"
+        }
+    }
+JSON;
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Validation failed.',
+            'errors'  => [
+                [
+                    'field'   => 'translations[0].locale',
+                    'message' => 'The locale "foo" does not exist.',
+                ],
+            ],
+        ];
+
+        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+
+        $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }

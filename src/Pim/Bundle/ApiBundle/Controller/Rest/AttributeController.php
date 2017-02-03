@@ -169,7 +169,7 @@ class AttributeController
         $decodedContent = json_decode($content, true);
 
         if (null === $decodedContent) {
-            throw new BadRequestHttpException('Invalid json message received.');
+            throw new BadRequestHttpException('Invalid json message received');
         }
 
         return $decodedContent;

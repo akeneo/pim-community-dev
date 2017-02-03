@@ -50,22 +50,22 @@ JSON;
         $this->assertSame(null, json_decode($response->getContent(), true));
     }
 
-    public function testStandardFormatWhenACategoryIsCreatedButUncompleted()
+    public function testStandardFormatWhenACategoryIsCreatedButIncompleted()
     {
         $client = $this->createAuthentifiedClient();
 
         $data =
 <<<JSON
     {
-        "code": "new_category_uncompleted"
+        "code": "new_category_incompleted"
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/categories/new_category_uncompleted', [], [], [], $data);
+        $client->request('PATCH', 'api/rest/v1/categories/new_category_incompleted', [], [], [], $data);
 
-        $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('new_category_uncompleted');
+        $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('new_category_incompleted');
         $categoryStandard = [
-            'code'   => 'new_category_uncompleted',
+            'code'   => 'new_category_incompleted',
             'parent' => null,
             'labels' => [],
         ];

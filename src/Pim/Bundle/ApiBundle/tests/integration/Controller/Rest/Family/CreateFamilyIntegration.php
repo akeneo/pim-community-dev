@@ -29,22 +29,22 @@ JSON;
         $this->assertSame('', $response->getContent());
     }
 
-    public function testFormatStandardWhenAFamilyIsCreatedButUncompleted()
+    public function testFormatStandardWhenAFamilyIsCreatedButIncompleted()
     {
         $client = $this->createAuthentifiedClient();
 
         $data =
 <<<JSON
     {
-        "code": "new_family_uncompleted"
+        "code": "new_family_incompleted"
     }
 JSON;
 
         $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
 
-        $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('new_family_uncompleted');
+        $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('new_family_incompleted');
         $familyStandard = [
-            'code'                   => 'new_family_uncompleted',
+            'code'                   => 'new_family_incompleted',
             'attributes'             => ['sku'],
             'attribute_as_label'     => 'sku',
             'attribute_requirements' => [
@@ -245,6 +245,70 @@ JSON;
             '_links'  => [
                 'documentation' => [
                     'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#family', $version),
+                ],
+            ],
+        ];
+
+        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+    }
+
+    public function testResponseWhenLocaleCodeInLabelsIsEmpty()
+    {
+        $client = $this->createAuthentifiedClient();
+
+        $data =
+<<<JSON
+    {
+        "code": "test_empty_locale",
+        "labels": {
+            "" : "label"
+         }
+    }
+JSON;
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Validation failed.',
+            'errors'  => [
+                [
+                    'field'   => 'translations[0].locale',
+                    'message' => 'The locale "" does not exist.',
+                ],
+            ],
+        ];
+
+        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+    }
+
+    public function testResponseWhenLocaleCodeDoesNotExist()
+    {
+        $client = $this->createAuthentifiedClient();
+
+        $data =
+<<<JSON
+    {
+        "code": "test_unknown_localee",
+        "labels": {
+            "foo" : "label"
+         }
+    }
+JSON;
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Validation failed.',
+            'errors'  => [
+                [
+                    'field'   => 'translations[0].locale',
+                    'message' => 'The locale "foo" does not exist.',
                 ],
             ],
         ];
