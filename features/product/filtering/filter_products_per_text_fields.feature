@@ -54,9 +54,11 @@ Feature: Filter products by text field
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter      | operator | value | result          |
-      | name        | is empty |       | book and mug    |
-      | description | is empty |       | postit and book |
+      | filter      | operator     | value | result          |
+      | name        | is empty     |       | book and mug    |
+      | name        | is not empty |       | postit          |
+      | description | is empty     |       | postit and book |
+      | description | is not empty |       | mug             |
 
   Scenario: Successfully filter products by empty value for localizable text attribute
     Given the following attributes:
@@ -71,8 +73,9 @@ Feature: Filter products by text field
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter | operator | value | result       |
-      | name   | is empty |       | book and mug |
+      | filter | operator     | value | result       |
+      | name   | is empty     |       | book and mug |
+      | name   | is not empty |       | postit       |
 
   Scenario: Successfully filter products by empty value for scopable text attribute
     Given the following attributes:
@@ -87,8 +90,9 @@ Feature: Filter products by text field
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter | operator | value | result       |
-      | name   | is empty |       | book and mug |
+      | filter | operator     | value | result       |
+      | name   | is empty     |       | book and mug |
+      | name   | is not empty |       | postit       |
 
   Scenario: Successfully filter products by empty value for scopable and localizable text attribute
     Given I add the "english" locale to the "mobile" channel
@@ -104,5 +108,6 @@ Feature: Filter products by text field
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter | operator | value | result       |
-      | name   | is empty |       | book and mug |
+      | filter | operator     | value | result       |
+      | name   | is empty     |       | book and mug |
+      | name   | is not empty |       | postit       |

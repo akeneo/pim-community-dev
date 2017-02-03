@@ -29,7 +29,7 @@ class MetricDecorator extends ElementDecorator
         $unitDropdown = $dropdowns[1];
 
         // We set the value
-        if ('is empty' !== $operator) {
+        if (!in_array($operator, ['is empty', 'is not empty'])) {
             list($numericValue, $unitValue) = explode(' ', $value);
 
             $this->find('css', 'input[name="value"]')->setValue($numericValue);

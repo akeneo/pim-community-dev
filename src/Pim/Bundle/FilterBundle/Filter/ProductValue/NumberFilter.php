@@ -63,7 +63,13 @@ class NumberFilter extends OroNumberFilter
     }
 
     /**
-     * {@inheritdoc}
+     * Get operator string
+     *
+     * @param int $type
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return string
      */
     public function getOperator($type)
     {
@@ -78,7 +84,7 @@ class NumberFilter extends OroNumberFilter
         ];
 
         if (!isset($operatorTypes[$type])) {
-            throw new InvalidArgumentException(sprintf('Operator "%s" is undefined', $type));
+            throw new \InvalidArgumentException(sprintf('Operator "%s" is undefined', $type));
         }
 
         return $operatorTypes[$type];

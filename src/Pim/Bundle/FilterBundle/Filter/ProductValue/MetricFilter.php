@@ -160,7 +160,7 @@ class MetricFilter extends OroNumberFilter
         ];
 
         if (!isset($operatorTypes[$type])) {
-            throw new InvalidArgumentException(sprintf('Operator "%s" is undefined', $type));
+            throw new \InvalidArgumentException(sprintf('Operator "%s" is undefined', $type));
         }
 
         return $operatorTypes[$type];
