@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Manager;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository;
 use Pim\Bundle\EnrichBundle\Entity\SequentialEdit;
 use Pim\Bundle\EnrichBundle\Factory\SequentialEditFactory;
@@ -27,21 +28,27 @@ class SequentialEditManager
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
+    /** @var RemoverInterface */
+    protected $remover;
+
     /**
      * Constructor
      *
      * @param SequentialEditRepository   $repository
      * @param SequentialEditFactory      $factory
      * @param ProductRepositoryInterface $productRepository
+     * @param RemoverInterface           $remover
      */
     public function __construct(
         SequentialEditRepository $repository,
         SequentialEditFactory $factory,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        RemoverInterface $remover
     ) {
         $this->repository = $repository;
         $this->factory = $factory;
         $this->productRepository = $productRepository;
+        $this->remover = $remover;
     }
 
     /**
