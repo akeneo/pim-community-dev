@@ -664,31 +664,26 @@ class ProductRepository extends DocumentRepository implements
     {
         $mongoRef = [
             '$ref' => $this->dm->getClassMetadata($this->documentName)->getCollection(),
-            '$id'  => new \MongoId($productId),
-            '$db'  => $this->dm->getConfiguration()->getDefaultDB(),
+            '$id'  => new \MongoId($productId)
         ];
 
         $collection = $this->dm->getDocumentCollection($this->documentName);
 
-        // we iterate over the number of association types because the query removes only the product that
-        // belongs to the first association (instead of removing it in existing associations)
-        for ($i = 0; $i < $assocTypeCount; $i++) {
-            $collection->update(
-                [
-                    'associations' => [
-                        '$elemMatch' => [
-                            'products' => $mongoRef
-                        ]
-                    ]
-                ],
-                [
-                    '$pull' => [
-                        'associations.$.products' => $mongoRef
-                    ]
-                ],
-                [ 'multiple' => 1 ]
-            );
-        }
+        $findQuery = [
+            'associations.products' => [
+                '$elemMatch' => $mongoRef
+            ]
+        ];
+
+        $updateQuery = [
+            '$pull' => [
+                'associations.$.products' => $mongoRef
+            ]
+        ];
+
+        $updateOptions = [ 'multiple' => true ];
+
+        $collection->update($findQuery, $updateQuery, $updateOptions);
     }
 
     /**

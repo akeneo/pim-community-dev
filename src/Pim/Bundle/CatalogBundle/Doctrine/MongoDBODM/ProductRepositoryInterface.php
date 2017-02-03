@@ -85,6 +85,8 @@ interface ProductRepositoryInterface extends BaseProductRepositoryInterface, Ass
     /**
      * @param int $productId
      * @param int $assocTypeCount
+     *
+     * @TODO Remove the useless parameter $assocTypeCount on master
      */
     public function removeAssociatedProduct($productId, $assocTypeCount);
 }

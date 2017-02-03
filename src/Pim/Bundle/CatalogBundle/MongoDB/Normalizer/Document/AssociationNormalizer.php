@@ -66,7 +66,10 @@ class AssociationNormalizer implements NormalizerInterface
         $data = [];
 
         foreach ($products as $product) {
-            $data[] = $this->mongoFactory->createMongoDBRef($productCollection, $product->getId());
+            $data[] = $this->mongoFactory->createMongoDBRef(
+                $productCollection,
+                $this->mongoFactory->createMongoId($product->getId())
+            );
         }
 
         return $data;
