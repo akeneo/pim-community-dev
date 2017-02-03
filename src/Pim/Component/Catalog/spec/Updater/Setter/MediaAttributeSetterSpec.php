@@ -166,7 +166,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
 
         $data = realpath(__DIR__.'/../../../../../../../features/Context/fixtures/akeneo.jpg');
 
-        $builder->addProductValue($product, $attribute, Argument::cetera())->shouldBeCalled()->willReturn($value);
+        $builder->addOrReplaceProductValue($product, $attribute, Argument::cetera())->shouldBeCalled()->willReturn($value);
         $repository->findOneByIdentifier(Argument::any())->willReturn(null);
         $storer->store(Argument::cetera())->willReturn($fileInfo);
 

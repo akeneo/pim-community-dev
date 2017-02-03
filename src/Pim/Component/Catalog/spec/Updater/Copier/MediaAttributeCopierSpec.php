@@ -193,7 +193,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product->getValue('toAttributeCode', $toLocale, $toScope)->willReturn(null);
 
-        $builder->addProductValue($product, $toAttribute, $toLocale, $toScope)->willReturn($toProductValue);
+        $builder->addOrReplaceProductValue($product, $toAttribute, $toLocale, $toScope)->willReturn($toProductValue);
         $toProductValue->getMedia()->willReturn($toMedia);
 
         $toProductValue->setMedia($fileInfo)->shouldBeCalled();

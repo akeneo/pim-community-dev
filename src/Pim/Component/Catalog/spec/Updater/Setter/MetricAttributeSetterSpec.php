@@ -141,7 +141,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $metric->setData($data['amount'])->shouldBeCalled();
 
         $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->addOrReplaceProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
 
         $factory->createMetric('Weight')->shouldBeCalledTimes(3)->willReturn($metric);
@@ -178,7 +178,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $metric->setUnit('KILOGRAM')->shouldBeCalled();
         $metric->setData($data['amount'])->shouldBeCalled();
 
-        $builder->addProductValue($product2, $attribute, $locale, $scope)
+        $builder->addOrReplaceProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
 
         $factory->createMetric('Weight')->shouldBeCalledTimes(3)->willReturn($metric);
