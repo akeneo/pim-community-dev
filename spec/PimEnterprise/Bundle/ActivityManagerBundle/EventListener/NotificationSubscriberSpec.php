@@ -11,7 +11,6 @@ use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
 use PimEnterprise\Component\ActivityManager\Factory\ProjectStatusFactoryInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
-use PimEnterprise\Component\ActivityManager\Model\ProjectStatus;
 use PimEnterprise\Component\ActivityManager\Model\ProjectStatusInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectStatusRepositoryInterface;
@@ -58,13 +57,13 @@ class NotificationSubscriberSpec extends ObjectBehavior
         ]);
     }
 
-    function it_notifies_users_once_project_is_created_and_not_complete(
+    function it_notifies_users(
+        $projectStatusRepository,
         $userRepository,
         $projectCompletenessRepository,
-        $projectStatusRepository,
-        $projectCreatedNotifier,
         $projectStatusFactory,
         $projectFinishedNotifier,
+        $projectCreatedNotifier,
         $projectStatusSaver,
         UserInterface $user,
         ProjectEvent $event,
@@ -77,81 +76,17 @@ class NotificationSubscriberSpec extends ObjectBehavior
         $projectCompletenessRepository->getProjectCompleteness($project, $user)->willReturn($projectCompleteness);
         $projectStatusRepository->findProjectStatus($project, $user)->willReturn(null);
 
-        $projectStatusFactory->create($project, $user)->willReturn($projectStatus);
         $projectCompleteness->isComplete()->willReturn(false);
-        $projectStatus->setIsComplete(false)->shouldBeCalled();
+        $projectStatusFactory->create($project, $user)->willReturn($projectStatus);
         $projectStatus->setHasBeenNotified(false)->shouldBeCalled();
-        $projectStatus->hasBeenNotified()->willReturn(false);
         $projectStatus->setIsComplete(false)->shouldBeCalled();
 
-        $projectCreatedNotifier->notifyUser($user, $project)->shouldBeCalled();
-        $projectFinishedNotifier->notifyUser($user, $project)->shouldNotBeCalled();
+        $projectCreatedNotifier->notifyUser($user, $project, $projectStatus, $projectCompleteness)->willReturn(true);
         $projectStatus->setHasBeenNotified(true)->shouldBeCalled();
         $projectStatus->setIsComplete(false)->shouldBeCalled();
-
         $projectStatusSaver->save($projectStatus)->shouldBeCalled();
 
-        $this->notify($event);
-    }
-
-    function it_notifies_users_once_project_is_finished(
-        $userRepository,
-        $projectCompletenessRepository,
-        $projectStatusRepository,
-        $projectCreatedNotifier,
-        $projectFinishedNotifier,
-        $projectStatusSaver,
-        UserInterface $user,
-        ProjectEvent $event,
-        ProjectInterface $project,
-        ProjectCompleteness $projectCompleteness,
-        ProjectStatusInterface $projectStatus
-    ) {
-        $event->getProject()->willReturn($project);
-        $userRepository->findUsersToNotify($project)->willReturn([$user]);
-        $projectCompletenessRepository->getProjectCompleteness($project, $user)->willReturn($projectCompleteness);
-        $projectStatusRepository->findProjectStatus($project, $user)->willReturn($projectStatus);
-        $projectStatus->hasBeenNotified()->willReturn(true);
-
-        $projectCompleteness->isComplete()->willReturn(true);
-        $projectStatus->isComplete()->willReturn(false);
-        $projectStatus->setIsComplete(true)->shouldBeCalled();
-
-        $projectCreatedNotifier->notifyUser($user, $project)->shouldNotBeCalled();
-        $projectFinishedNotifier->notifyUser($user, $project)->shouldBeCalled();
-
-        $projectStatusSaver->save($projectStatus)->shouldBeCalled();
-
-        $this->notify($event);
-    }
-
-    function it_does_not_notify_users_once_project_is_finished(
-        $userRepository,
-        $projectCompletenessRepository,
-        $projectStatusRepository,
-        $projectCreatedNotifier,
-        $projectFinishedNotifier,
-        $projectStatusSaver,
-        UserInterface $user,
-        ProjectEvent $event,
-        ProjectInterface $project,
-        ProjectCompleteness $projectCompleteness,
-        ProjectStatusInterface $projectStatus
-    ) {
-        $event->getProject()->willReturn($project);
-        $userRepository->findUsersToNotify($project)->willReturn([$user]);
-        $projectCompletenessRepository->getProjectCompleteness($project, $user)->willReturn($projectCompleteness);
-        $projectStatusRepository->findProjectStatus($project, $user)->willReturn($projectStatus);
-        $projectStatus->hasBeenNotified()->willReturn(true);
-        $projectStatus->isComplete()->willReturn(true);
-
-        $projectCompleteness->isComplete()->willReturn(false);
-        $projectStatus->setIsComplete(false)->shouldBeCalled();
-
-        $projectCreatedNotifier->notifyUser($user, $project)->shouldNotBeCalled();
-        $projectFinishedNotifier->notifyUser($user, $project)->shouldNotBeCalled();
-
-        $projectStatusSaver->save($projectStatus)->shouldBeCalled();
+        $projectFinishedNotifier->notifyUser($user, $project, $projectStatus, $projectCompleteness)->willReturn(true);
 
         $this->notify($event);
     }
