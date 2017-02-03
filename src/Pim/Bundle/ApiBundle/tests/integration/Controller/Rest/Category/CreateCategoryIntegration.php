@@ -29,22 +29,22 @@ JSON;
         $this->assertSame(null, json_decode($response->getContent(), true));
     }
 
-    public function testStandardFormatWhenACategoryIsCreatedButUncompleted()
+    public function testStandardFormatWhenACategoryIsCreatedButIncompleted()
     {
         $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
     {
-        "code": "new_category_uncompleted"
+        "code": "new_category_incompleted"
     }
 JSON;
 
         $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
 
-        $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('new_category_uncompleted');
+        $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('new_category_incompleted');
         $categoryStandard = [
-            'code'   => 'new_category_uncompleted',
+            'code'   => 'new_category_incompleted',
             'parent' => null,
             'labels' => [],
         ];
@@ -228,6 +228,70 @@ JSON;
             '_links'  => [
                 'documentation' => [
                     'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#category', $version),
+                ],
+            ],
+        ];
+
+        $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+    }
+
+    public function testResponseWhenLocaleCodeInLabelsIsEmpty()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "code": "test_empty_locale",
+        "labels": {
+            "": "label"
+         }
+    }
+JSON;
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Validation failed.',
+            'errors'  => [
+                [
+                    'field'   => 'translations[0].locale',
+                    'message' => 'The locale "" does not exist.',
+                ],
+            ],
+        ];
+
+        $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+    }
+
+    public function testResponseWhenLocaleCodeDoesNotExist()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "code": "test_unknown_locale",
+        "labels": {
+            "foo": "label"
+         }
+    }
+JSON;
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Validation failed.',
+            'errors'  => [
+                [
+                    'field'   => 'translations[0].locale',
+                    'message' => 'The locale "foo" does not exist.',
                 ],
             ],
         ];

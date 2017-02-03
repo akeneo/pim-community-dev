@@ -49,22 +49,22 @@ JSON;
         $this->assertSame('', $response->getContent());
     }
 
-    public function testFormatStandardWhenAFamilyIsCreatedButUncompleted()
+    public function testFormatStandardWhenAFamilyIsCreatedButIncompleted()
     {
         $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
     {
-        "code": "new_family_uncompleted"
+        "code": "new_family_incompleted"
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/families/new_family_uncompleted', [], [], [], $data);
+        $client->request('PATCH', 'api/rest/v1/families/new_family_incompleted', [], [], [], $data);
 
-        $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('new_family_uncompleted');
+        $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('new_family_incompleted');
         $familyStandard = [
-            'code'                   => 'new_family_uncompleted',
+            'code'                   => 'new_family_incompleted',
             'attributes'             => ['sku'],
             'attribute_as_label'     => 'sku',
             'attribute_requirements' => [
