@@ -2,22 +2,27 @@
 
 namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Notification;
 
+use Akeneo\Component\Localization\Presenter\DatePresenter;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectNotificationFactory;
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectNotifierInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCreatedNotificationFactory;
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCreatedNotifier;
+use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectStatusInterface;
 
 class ProjectCreatedNotifierSpec extends ObjectBehavior
 {
     function let(
-        ProjectCreatedNotificationFactory $projectCreatedNotificationFactory,
-        NotifierInterface $notifier
+        ProjectNotificationFactory $projectNotificationFactory,
+        NotifierInterface $notifier,
+        DatePresenter $datePresenter
     ) {
-        $this->beConstructedWith($projectCreatedNotificationFactory, $notifier);
+        $this->beConstructedWith($projectNotificationFactory, $notifier, $datePresenter);
     }
 
     function it_is_initializable()
@@ -31,42 +36,60 @@ class ProjectCreatedNotifierSpec extends ObjectBehavior
     }
 
     function it_does_not_notify_owner_that_a_project_is_created(
-        $projectCreatedNotificationFactory,
-        $notifier,
-        NotificationInterface $notification,
         UserInterface $owner,
-        ProjectInterface $project
+        ProjectInterface $project,
+        ProjectStatusInterface $projectStatus,
+        ProjectCompleteness $projectCompleteness
     ) {
-        $owner->getUsername()->willReturn('boby');
-        $project->getOwner()->willReturn($owner);
+        $projectStatus->hasBeenNotified()->willReturn(true);
+        $projectCompleteness->isComplete()->willReturn(true);
 
-        $projectCreatedNotificationFactory
-            ->create($project, $owner)
-            ->shouldNotBeCalled();
-
-        $notifier->notify($notification, [$owner])->shouldNotBeCalled();
-
-        $this->notifyUser($owner, $project);
+        $this->notifyUser($owner, $project, $projectStatus, $projectCompleteness)->shouldReturn(false);
     }
 
-    function it_notifies_contributor_that_a_project_is_created(
-        $projectCreatedNotificationFactory,
+    function it_notifies_contributors_that_a_project_is_created(
+        $projectNotificationFactory,
         $notifier,
+        $datePresenter,
         NotificationInterface $notification,
         UserInterface $contributor,
         UserInterface $owner,
-        ProjectInterface $project
+        ProjectInterface $project,
+        ProjectStatusInterface $projectStatus,
+        ProjectCompleteness $projectCompleteness,
+        LocaleInterface $locale
     ) {
+        $projectCompleteness->isComplete()->willReturn(false);
+        $projectStatus->hasBeenNotified()->willReturn(false);
+
+        $project->getOwner()->willReturn($owner);
+        $contributor->getUiLocale()->willReturn($locale);
+        $locale->getCode()->willReturn('en_US');
+        $datePresenter->present('01/12/2030', ['locale' => 'en_US'])->willReturn('12/01/2030');
+        $project->getLabel()->willReturn('Project label');
+        $project->getCode()->willReturn('project-code');
+        $project->getDueDate()->willReturn('01/12/2030');
+
         $contributor->getUsername()->willReturn('boby');
         $owner->getUsername()->willReturn('claude');
         $project->getOwner()->willReturn($owner);
 
-        $projectCreatedNotificationFactory
-            ->create($project, $contributor)
-            ->willReturn($notification);
+        $context = [
+            'actionType'  => 'project_calculation',
+            'buttonLabel' => 'activity_manager.notification.project_calculation.start'
+        ];
+
+        $parameters = ['%project_label%' => 'Project label', '%due_date%' => '12/01/2030'];
+
+        $projectNotificationFactory->create(
+            ['identifier' => 'project-code'],
+            $parameters,
+            $context,
+            'activity_manager.notification.message'
+        )->willReturn($notification);
 
         $notifier->notify($notification, [$contributor])->shouldBeCalled();
 
-        $this->notifyUser($contributor, $project);
+        $this->notifyUser($contributor, $project, $projectStatus, $projectCompleteness)->shouldReturn(true);
     }
 }
