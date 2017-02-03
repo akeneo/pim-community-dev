@@ -182,26 +182,3 @@ Feature: Execute a job
       | type   | products |
       | X_SELL | SKU-002  |
       | UPSELL | SKU-003  |
-
-  @jira https://akeneo.atlassian.net/browse/PIM-6146
-  Scenario: Successfully import product with deleted association
-    Given the following CSV file to import:
-      """
-      sku;family;groups;categories;X_SELL-groups;X_SELL-products;name-en_US;description-en_US-tablet
-      first_product;boots;CROSS;winter_boots;CROSS;second_product;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
-      second_product;sneakers;;winter_boots;;;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-      """
-    And the following job "footwear_product_import" configuration:
-      | filePath | %file to import% |
-    And I am on the "footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
-    And I should see the text "Association import COMPLETED"
-    And I edit the "second_product" product
-    And I press the "Delete" button
-    And I confirm the deletion
-    And I am on the "footwear_product_import" import job page
-    When I launch the import job
-    And I wait for the "footwear_product_import" job to finish
-    Then I should see the text "Association import COMPLETED"
-

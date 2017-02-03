@@ -682,9 +682,13 @@ class ProductRepository extends DocumentRepository implements
             ]
         ];
 
-        $updateOptions = [ 'multiple' => true ];
+        $updateOptions = [ 'multiple' => 1 ];
 
-        $collection->update($findQuery, $updateQuery, $updateOptions);
+        // we iterate over the number of association types because the query removes only the product that
+        // belongs to the first association (instead of removing it in existing associations)
+        for ($i = 0; $i < $assocTypeCount; $i++) {
+            $collection->update($findQuery, $updateQuery, $updateOptions);
+        }
     }
 
     /**
