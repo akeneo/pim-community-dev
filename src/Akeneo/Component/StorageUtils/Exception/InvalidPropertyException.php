@@ -3,7 +3,7 @@
 namespace Akeneo\Component\StorageUtils\Exception;
 
 /**
- * Exception and updater can throw when updating a property which is invalid.
+ * Exception an updater can throw when updating a property which is invalid.
  *
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
