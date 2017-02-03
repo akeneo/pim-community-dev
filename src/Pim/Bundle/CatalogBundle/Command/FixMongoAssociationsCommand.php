@@ -80,7 +80,6 @@ class FixMongoAssociationsCommand extends ContainerAwareCommand
             ->setDescription('Fix associated products for Mongo databases.');
     }
 
-
     /**
      * {@inheritdoc}
      *
@@ -161,7 +160,7 @@ class FixMongoAssociationsCommand extends ContainerAwareCommand
     protected function updateProducts($products)
     {
         $newProducts = [];
-        foreach($products as $product) {
+        foreach ($products as $product) {
             $newProducts[] = $this->updateProduct($product);
         }
 
