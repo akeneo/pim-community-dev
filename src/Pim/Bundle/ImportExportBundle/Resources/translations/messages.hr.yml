@@ -5,15 +5,6 @@ pim_import_export:
   connector: Priključak
   status:
     - Spreman
-  batch_status:
-    1: ZAVRŠEN
-    2: ZAPOČINJANJE
-    3: POČEO
-    4: ZAUSTAVLJANJE
-    5: ZAUSTAVLJEN
-    6: NIJE USPJELO
-    7: OBUSTAVLJENO
-    8: NEPOZNATO
   download_archive:
     archive: preuzimanje generirane arhive|preuzimanje generiranih arhiva
     output: preuzimanje generirane datoteke|preuzimanje generiranih datoteka
@@ -156,12 +147,4 @@ Summary: Sažetak
 Start: Početak
 End: Kraj
 set_attribute_requirements: Postavi zahtjeve za atribute
-COMPLETED: ZAVRŠEN
-STARTING: ZAPOČINJANJE
-STARTED: POČEO
-STOPPING: ZAUSTAVLJANJE
-STOPPED: ZAUSTAVLJEN
-FAILED: NIJE USPJELO
-ABANDONED: OBUSTAVLJENO
-UNKNOWN: NEPOZNATO
 warning.label: Upozorenje
