@@ -114,9 +114,25 @@ interface AttributeInterface extends
     /**
      * Get available locale codes
      *
+     * @deprecated Will be removed in 1.8. Please use getAvailableLocaleCodes() instead.
+     *
      * @return array
      */
     public function getLocaleSpecificCodes();
+
+    /**
+     * Get available locale
+     *
+     * @return array
+     */
+    public function getAvailableLocales();
+
+    /**
+     * Get available locale codes
+     *
+     * @return array
+     */
+    public function getAvailableLocaleCodes();
 
     /**
      * Test if the attribute have the given locale specific available
