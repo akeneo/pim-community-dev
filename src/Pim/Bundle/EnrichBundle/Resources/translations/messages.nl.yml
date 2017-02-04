@@ -150,6 +150,7 @@ pim_enrich:
       add_to_groups: Product toevoegen aan groepen
       add_to_variant_group: Voeg product toe aan een variant groep
       mass_edit: Product massabewerken acties
+      comment: Geef commentaar op producten
       download: Download het product als PDF
       history: Bekijk productgeschiedenis
     category:
@@ -182,17 +183,20 @@ pim_enrich:
       sort: Attribuutgroepen sorteren
       add_attribute: Attribuut toevoegen aan een groep
       remove_attribute: Attribuut verwijderen van een groep
+      history: Bekijk geschiedenis attribuutgroep
     attribute:
       index: Attributen weergeven
       create: Attribuut aanmaken
       edit: Attribuut bewerken
       remove: Attribuut verwijderen
       sort: Sorteer attributen binnen attribuutgroepen
+      history: Bekijk attribuutgeschiedenis
     group:
       index: Groepen weergeven
       create: Groep aanmaken
       edit: Groep wijzigen
       remove: Groep verwijderen
+      history: Bekijk groep geschiedenis
     group_type:
       index: Groepstypes weergeven
       create: Groepstype aanmaken
@@ -448,6 +452,7 @@ info:
   completeness:
     not calculated: Nog niet berekend
 color:
+  title: Kleur
   gray: Grijs
   white: Wit
   yellow: Geel
@@ -511,6 +516,7 @@ Choose a color: Kies een kleur
 Search: Zoeken
 Choose the attribute type: Kies het attribuuttype
 Choose the attribute group: Kies een attribuutgroep
+Drop a file or click here: Plaats een bestand of klik hier
 Drop an image or click here: Plaats een bestand of klik hier
 Automatic option sorting: Automatische optie-sortering
 save_attribute_before_manage_option: Om opties te beheren sla het attribuut eerst op
@@ -556,43 +562,46 @@ Default: Standaard
 Attributes: Attributen
 Title: Titel
 pim_title.attribute_group:
-  index: Attribuutgroepen
-  create: Attribuutgroepen | Aanmaken
-  edit: Attribuutgroepen %group.label% | Bewerken
+  index: "Attribuutgroepen"
+  create: "Attribuutgroepen | Aanmaken"
+  edit: "Attribuutgroepen %group.label% | Bewerken"
 pim_title.category:
-  index: Categorie boomstructuren
-  create: Categoriestructuren|Aanmaken
-  edit: Categoriestructuren %category.label% | Bewerken
+  index: "Categorie boomstructuren"
+  create: "Categoriestructuren|Aanmaken"
+  edit: "Categoriestructuren %category.label% | Bewerken"
 pim_title.attribute:
-  index: Attributen
-  create: Attributen | Aanmaken
-  edit: Attributen %attribute.label% | Bewerken
+  index: "Attributen"
+  create: "Attributen | Aanmaken"
+  edit: "Attributen %attribute.label% | Bewerken"
 pim_title.product:
-  index: Producten
-  edit: Producten %product.sku% | Bewerken
+  index: "Producten"
+  edit: "Producten %product.sku% | Bewerken"
 pim_title.family:
-  index: Families
-  edit: Families %family.label%|Bewerken
+  index: "Families"
+  edit: "Families %family.label%|Bewerken"
 pim_title.channel:
-  index: Kanalen
-  create: Kanalen | Aanmaken
-  edit: Kanalen %channel.label% | Bewerken
+  index: "Kanalen"
+  create: "Kanalen | Aanmaken"
+  edit: "Kanalen %channel.label% | Bewerken"
 pim_title.currency:
-  index: Valuta
+  index: "Valuta"
 pim_title.locale:
-  index: Lokalisaties
+  index: "Lokalisaties"
 pim_title.group:
-  index: Groepen
-  edit: Groepen %group.label% | Bewerken
+  index: "Groepen"
+  edit: "Groepen %group.label% | Bewerken"
 pim_title.variant_group:
-  index: Variantgroepen
-  edit: Variantgroepen %group.label%|Bewerken
+  index: "Variantgroepen"
+  edit: "Variantgroepen %group.label%|Bewerken"
 pim_title.association_type:
-  index: Associatietypes
-  edit: Associatietypes %association type.label% | Bewerken
+  index: "Associatietypes"
+  edit: "Associatietypes %association type.label% | Bewerken"
 pim_title.group_type:
-  index: Groepstypen
-  edit: Groupstypen %group type.label% | Bewerken
+  index: "Groepstypen"
+  edit: "Groupstypen %group type.label% | Bewerken"
+pim_title.mass_edit_action:
+  choose: "Massa bewerken | Kies"
+  configure: "Massa bewerken | Configureren"
 pim_title.dashboard: "Dashboard"
 pim_catalog_identifier: Id
 pim_catalog_text: Tekst
@@ -734,23 +743,23 @@ Currency: Valuta
 oro.locale:
   address_format:
     region_name_type:
-      parish: parish
-      state: staat
-      island: eiland
-      county: county
-      area: oppervlakte
-      prefecture: prefectuur
-      department: departement
-      district: district
-      province: provincie
+      parish: "parish"
+      state: "staat"
+      island: "eiland"
+      county: "county"
+      area: "oppervlakte"
+      prefecture: "prefectuur"
+      department: "departement"
+      district: "district"
+      province: "provincie"
   form:
     tooltip:
-      locale: Selecteer de locale optie voor het opmaken van getallen, adressen, namen en datums
-      location: Locatie zal gebruikt worden voor het opmaken van adressen wanneer 'Adres opmaken op basis van land' is uitgeschakeld
-      format_address_by_address_country: Met deze optie ingeschakeld zullen adressen opgemaakt worden op basis van het land waar ze in liggen. Wanneer deze optie uitgeschakeld is zullen de adressen opgemaakt worden aan de hand van de opmaak van adressen in uw locatie
-      language: Selecteer de taal van het systeem die u wenst te gebruiken
-      timezone: Selecteer de tijdzone voor datum- en tijdweergave
-      currency: Selecteer de standaardvaluta
+      locale: "Selecteer de locale optie voor het opmaken van getallen, adressen, namen en datums"
+      location: "Locatie zal gebruikt worden voor het opmaken van adressen wanneer 'Adres opmaken op basis van land' is uitgeschakeld"
+      format_address_by_address_country: "Met deze optie ingeschakeld zullen adressen opgemaakt worden op basis van het land waar ze in liggen. Wanneer deze optie uitgeschakeld is zullen de adressen opgemaakt worden aan de hand van de opmaak van adressen in uw locatie"
+      language: "Selecteer de taal van het systeem die u wenst te gebruiken"
+      timezone: "Selecteer de tijdzone voor datum- en tijdweergave"
+      currency: "Selecteer de standaardvaluta"
 Selected products successfully deleted: Geselecteerde producten succesvol verwijderd
 job_execution.summary:
   skip: Overgeslagen

@@ -90,16 +90,16 @@ pim.grid.mass_action.delete: Usuń
 pim.grid.mass_action.mass_edit: Edycja masowa
 pim.grid.mass_action.sequential_edit: Sekwencyjna Edycja
 jstree.create: Utwórz
-switch_on: Tak
-switch_off: Nie
+switch_on: "Tak"
+switch_off: "Nie"
 pim_enrich:
   item:
     list:
       delete.label: Usuń
       delete.error: Błąd podczas usuwania elementu
     delete:
-      confirm.content: 'Czy na pewno chcesz usunąć ten {{ itemName }}? Operacji nie można cofnąć'
-      confirm.title: 'Usunąć ten {{ itemName }}'
+      confirm.content: Czy na pewno chcesz usunąć ten {{ itemName }}? Operacji nie można cofnąć
+      confirm.title: Usunąć ten {{ itemName }}
   navigation:
     link:
       back_to_grid: Wróć do tabelki
@@ -127,6 +127,7 @@ pim_enrich:
         property: Właściwości
         old_values: Poprzednie wartości
         new_values: Nowe wartości
+        actions: Działania
       info:
         deletion_successful: Produkt pomyślnie usunięty.
         deletion_failed: Produktu nie można usunąć.
@@ -148,7 +149,7 @@ pim_enrich:
         groups:
           title: Grupy
           modal:
-            title: 'Grupa {{ group }}'
+            title: Grupa {{ group }}
             view_group: Zobacz grupę
             group_label: Etykieta
             more_products: '{{ count }} więcej produktów...'
@@ -172,7 +173,7 @@ pim_enrich:
       label: Etykieta
   confirmation:
     leave: Czy na pewno chcesz opuścić tę stronę?
-    discard_changes: 'Utracisz wszystkie zmiany w {{ entity }}, jeśli opuścisz tę stronę.'
+    discard_changes: Utracisz wszystkie zmiany w {{ entity }}, jeśli opuścisz tę stronę.
     delete_item: Potwiedź usunięcie
     delete:
       product_attribute: Czy na pewno chcesz usunąć ten atrybut z produktu?
@@ -194,15 +195,16 @@ pim_enrich:
             none_exist: Brak typów powiązań.
             show_products: Pokaż produkty
             show_groups: Pokaż grupy
-            number_of_associations: '{{ productCount }} produktów i {{ groupCount }} grup'
+            number_of_associations: "{{ productCount }} produktów i {{ groupCount }} grup"
         attributes:
           title: Atrybuty
           btn:
             add: Dodaj
             add_attributes: Dodaj atrybuty
           info:
+            search_attributes: Szukaj
             no_available_attributes: Nie ma więcej atrybutów do dodania
-            attributes_selected: '{{ attributeCount }} atrybut(ów) wybrany(ch)'
+            attributes_selected: "{{ attributeCount }} atrybut(ów) wybrany(ch)"
         categories:
           title: Kategorie
       panel:
@@ -219,8 +221,8 @@ pim_enrich:
       sequential_edit:
         info:
           products: produkty
-          previous: 'Przejdź z powrotem do {{ product }} bez zapisywania.'
-          next: 'Przejdź do {{ product }} bez zapisywania.'
+          previous: Przejdź z powrotem do {{ product }} bez zapisywania.
+          next: Przejdź do {{ product }} bez zapisywania.
         btn:
           save_and_next: Zapisz i przejdź dalej
           save_and_finish: Zapisz i zakończ
@@ -245,4 +247,4 @@ pim_enrich:
         confirm: Dodaj
         cancel: Anuluj
 pim_enrich.error:
-  exception.title: 'O rany! Wystąpił błąd {{ status_code }}...'
+  exception.title: O rany! Wystąpił błąd {{ status_code }}...
