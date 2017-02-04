@@ -200,7 +200,7 @@ pim_enrich:
             none_exist: Ne postoji tip pridruživanja.
             show_products: Prikaži proizvode
             show_groups: Prikaži grupe
-            number_of_associations: '{{ productCount }} proizvoda i {{ groupCount }} grupe'
+            number_of_associations: "{{ productCount }} proizvoda i {{ groupCount }} grupe"
         attributes:
           title: Atributi
           btn:
@@ -209,7 +209,7 @@ pim_enrich:
           info:
             search_attributes: Pretraživanje
             no_available_attributes: Nema više atributa koje se može dodati
-            attributes_selected: '{{ attributeCount }} atributa odabrano'
+            attributes_selected: "{{ attributeCount }} atributa odabrano"
         categories:
           title: Kategorije
       panel:

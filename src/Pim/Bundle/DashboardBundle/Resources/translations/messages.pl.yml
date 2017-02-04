@@ -9,15 +9,16 @@ pim_dashboard:
   widget:
     error:
       title: Wystąpił błąd podczas ładowania widżetu
-      message: "Widżet '%alias%' nie istnieje"
+      message: Widżet '%alias%' nie istnieje
     completeness:
       title: Kompletność dla kanałów oraz ustawień regionalnych
     last_operations:
       title: Ostatnie operacje
       empty: Nie znaleziono żadnych operacji
       status: Status
+      date: Data
       type: Typ
-      profile name: Nazwa profilu
+      "profile name": Nazwa profilu
       details: Szczegóły
       job_type:
         import: Import
