@@ -99,7 +99,7 @@ class ProductBuilder implements ProductBuilderInterface
         $product = new $this->productClass();
 
         $identifierAttribute = $this->attributeRepository->getIdentifier();
-        $productValue = $this->addProductValue($product, $identifierAttribute, null, null);
+        $productValue = $this->addOrReplaceProductValue($product, $identifierAttribute, null, null);
 
         if (null !== $identifier) {
             $productValue->setData($identifier);
@@ -134,7 +134,7 @@ class ProductBuilder implements ProductBuilderInterface
         );
 
         foreach ($missingValues as $value) {
-            $this->addProductValue($product, $attributes[$value['attribute']], $value['locale'], $value['scope']);
+            $this->addOrReplaceProductValue($product, $attributes[$value['attribute']], $value['locale'], $value['scope']);
         }
 
         $this->addMissingPricesToProduct($product);
@@ -167,7 +167,7 @@ class ProductBuilder implements ProductBuilderInterface
         $requiredValues = $this->valuesResolver->resolveEligibleValues([$attribute]);
 
         foreach ($requiredValues as $value) {
-            $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);
+            $this->addOrReplaceProductValue($product, $attribute, $value['locale'], $value['scope']);
         }
     }
 
@@ -227,11 +227,24 @@ class ProductBuilder implements ProductBuilderInterface
         $locale = null,
         $scope = null
     ) {
+        return $this->addOrReplaceProductValue($product, $attribute, $locale, $scope);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addOrReplaceProductValue(
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        $locale = null,
+        $scope = null
+    ) {
         $productValue = $this->productValueFactory->create($attribute, $scope, $locale);
         $product->addValue($productValue);
 
         return $productValue;
     }
+
     /**
      * {@inheritdoc}
      */

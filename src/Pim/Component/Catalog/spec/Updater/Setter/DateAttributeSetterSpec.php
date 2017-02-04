@@ -151,7 +151,7 @@ class DateAttributeSetterSpec extends ObjectBehavior
         $productValue->setData(Argument::type('\Datetime'))->shouldBeCalled();
 
         $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->addOrReplaceProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
 
         $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
@@ -177,7 +177,7 @@ class DateAttributeSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
         $productValue->setData(Argument::type('\Datetime'))->shouldBeCalled();
         $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->addOrReplaceProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
         $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);

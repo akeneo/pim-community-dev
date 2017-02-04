@@ -137,7 +137,7 @@ class MultiSelectAttributeAdderSpec extends ObjectBehavior
         $productValue->addOption($attributeOption)->shouldBeCalled();
 
         $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->addOrReplaceProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
 
         $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);

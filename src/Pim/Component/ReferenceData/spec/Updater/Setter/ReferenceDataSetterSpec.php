@@ -178,7 +178,7 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         $product2->getValue('custom_material', $locale, $scope)->willReturn($productValue2);
         $product3->getValue('custom_material', $locale, $scope)->willReturn($productValue3);
 
-        $builder->addProductValue($product1, $attribute, $locale, $scope)
+        $builder->addOrReplaceProductValue($product1, $attribute, $locale, $scope)
             ->shouldBeCalled()
             ->willReturn($productValue1);
 
@@ -214,7 +214,7 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         $product1->getValue('custom_material', $locale, $scope)->willReturn(null);
         $product2->getValue('custom_material', $locale, $scope)->willReturn($productValue2);
 
-        $builder->addProductValue($product1, $attribute, $locale, $scope)
+        $builder->addOrReplaceProductValue($product1, $attribute, $locale, $scope)
             ->shouldBeCalled()
             ->willReturn($productValue1);
 
