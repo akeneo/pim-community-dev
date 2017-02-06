@@ -64,7 +64,11 @@ class CommandExecutor
             $errorMessage = sprintf('The command terminated with an error code: %u.', $exitCode);
             $this->output->writeln("<error>$errorMessage</error>");
             $e = new \Exception($errorMessage, $exitCode);
-            throw $e;
+            // TODO TIP-688: here we allow the catalog to be installed with errors
+            // TODO TIP-688: currently the attributes fails to be imported because we disabled the reference data
+            // TODO TIP-688: (but all other attributes are well imported)
+            // TODO TIP-688: revert this whole commit//
+//            throw $e;
         }
 
         return $this;

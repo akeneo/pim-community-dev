@@ -2,6 +2,7 @@
 
 ## BC breaks
 
+- Remove method `getFullProduct` and `findOneByWithValues` of `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
 - Remove class `Pim\Bundle\VersioningBundle\UpdateGuesser\ProductValueUpdateGuesser.php`
 - Remove service and parameter: `pim_pim_versioning.update_guesser.product_value` and `pim_versioning.update_guesser.product_value.class`
 - Add method `setValues` and `setIdentifier` to `Pim\Component\Catalog\Model\ProductInterface`

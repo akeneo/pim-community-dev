@@ -166,7 +166,6 @@ class ProductRepository extends EntityRepository implements
     public function findByIds(array $productIds)
     {
         $qb = $this->createQueryBuilder('Product');
-        $this->addJoinToValueTables($qb);
         $rootAlias = current($qb->getRootAliases());
         $qb->andWhere(
             $qb->expr()->in($rootAlias.'.id', ':product_ids')
@@ -184,26 +183,6 @@ class ProductRepository extends EntityRepository implements
         $qb = $this->findAllForVariantGroupQB($variantGroup, $criteria);
 
         return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFullProduct($id)
-    {
-        return $this
-            ->createQueryBuilder('p')
-            ->select('p, f, v, pr, m, o, os')
-            ->leftJoin('p.family', 'f')
-            ->leftJoin('p.values', 'v')
-            ->leftJoin('v.prices', 'pr')
-            ->leftJoin('v.media', 'm')
-            ->leftJoin('v.option', 'o')
-            ->leftJoin('v.options', 'os')
-            ->where('p.id=:id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getOneOrNullResult();
     }
 
     /**
@@ -317,6 +296,8 @@ class ProductRepository extends EntityRepository implements
      */
     public function valueExists(ProductValueInterface $value)
     {
+        return false;
+
         $criteria = [
             'attribute'                              => $value->getAttribute(),
             $value->getAttribute()->getBackendType() => $value->getData()
@@ -407,30 +388,6 @@ class ProductRepository extends EntityRepository implements
         }
 
         return reset($result);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneByWithValues($id)
-    {
-        $productQb = $this->queryBuilderFactory->create();
-        $qb = $productQb->getQueryBuilder();
-        $rootAlias = current($qb->getRootAliases());
-        $this->addJoinToValueTables($qb);
-        $qb->leftJoin('Attribute.availableLocales', 'AttributeLocales');
-        $qb->addSelect('Value');
-        $qb->addSelect('Attribute');
-        $qb->addSelect('AttributeLocales');
-        $qb->leftJoin('Attribute.group', 'AttributeGroup');
-        $qb->addSelect('AttributeGroup');
-        $qb->andWhere(
-            $qb->expr()->eq($rootAlias.'.id', $id)
-        );
-
-        return $qb
-            ->getQuery()
-            ->getOneOrNullResult();
     }
 
     /**
@@ -599,6 +556,9 @@ class ProductRepository extends EntityRepository implements
     protected function findAllForVariantGroupQB(GroupInterface $variantGroup, array $criteria = [])
     {
         $qb = $this->createQueryBuilder('Product');
+
+        //TODO - TIP-697: make the variant groups work again
+        return $qb;
 
         $qb
             ->where(':variantGroup MEMBER OF Product.groups')

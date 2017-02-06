@@ -21,17 +21,6 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 interface ProductRepositoryInterface extends ObjectRepository
 {
     /**
-     * Load a product entity with related attribute values
-     *
-     * @param int $id
-     *
-     * @throws NonUniqueResultException
-     *
-     * @return ProductInterface|null
-     */
-    public function findOneByWithValues($id);
-
-    /**
      * @param ChannelInterface $channel
      *
      * @return mixed
@@ -54,15 +43,6 @@ interface ProductRepositoryInterface extends ObjectRepository
      * @return array
      */
     public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = []);
-
-    /**
-     * Returns a full product with all relations
-     *
-     * @param int $id
-     *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
-     */
-    public function getFullProduct($id);
 
     /**
      * Returns true if a ProductValue with the provided value alread exists,

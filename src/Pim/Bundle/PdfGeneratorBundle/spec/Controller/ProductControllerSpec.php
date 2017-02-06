@@ -22,7 +22,7 @@ class ProductControllerSpec extends ObjectBehavior
         $rendererRegistry,
         $productRepository
     ) {
-        $productRepository->findOneByWithValues(12)->willReturn($blender);
+        $productRepository->find(12)->willReturn($blender);
 
         $request->get('dataLocale', null)->willReturn('fr_FR');
         $request->get('dataScope', null)->willReturn('mobile');
@@ -42,7 +42,7 @@ class ProductControllerSpec extends ObjectBehavior
         $rendererRegistry,
         $productRepository
     ) {
-        $productRepository->findOneByWithValues(12)->willReturn($blender);
+        $productRepository->find(12)->willReturn($blender);
 
         $request->get('dataLocale', null)->willReturn('fr_FR');
         $request->get('dataScope', null)->willReturn('mobile');
@@ -64,7 +64,7 @@ class ProductControllerSpec extends ObjectBehavior
         $rendererRegistry,
         $productRepository
     ) {
-        $productRepository->findOneByWithValues(12)->willReturn(null);
+        $productRepository->find(12)->willReturn(null);
 
         $this
             ->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')

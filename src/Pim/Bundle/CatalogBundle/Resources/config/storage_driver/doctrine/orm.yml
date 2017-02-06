@@ -70,12 +70,6 @@ services:
         tags:
             - { name: 'pim_repository' }
 
-    pim_catalog.repository.product_value_counter:
-        class: '%pim_catalog.repository.product_value_counter.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.product_value.class%'
-
     pim_catalog.repository.product_mass_action:
         class: '%pim_catalog.repository.product_mass_action.class%'
         arguments:
