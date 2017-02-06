@@ -11,7 +11,7 @@ class PartialUpdateFamilyIntegration extends ApiTestCase
 {
     public function testHttpHeadersInResponseWhenAFamilyIsUpdated()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -31,7 +31,7 @@ JSON;
 
     public function testHttpHeadersInResponseWhenAFamilyIsCreated()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -51,7 +51,7 @@ JSON;
 
     public function testFormatStandardWhenAFamilyIsCreatedButUncompleted()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -83,7 +83,7 @@ JSON;
 
     public function testFormatStandardWhenAFamilyIsCreatedWithAnEmptyContent()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data = '{}';
 
@@ -110,7 +110,7 @@ JSON;
 
     public function testCompleteFamilyCreationWithCodeProvided()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -155,7 +155,7 @@ JSON;
 
     public function testCompleteFamilyCreationWithoutCodeProvided()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -199,7 +199,7 @@ JSON;
 
     public function testPartialUpdateWithAnEmptyContent()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data = '{}';
 
@@ -226,7 +226,7 @@ JSON;
 
     public function testPartialUpdateWithCodeProvided()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -270,7 +270,7 @@ JSON;
 
     public function testPartialUpdateWithoutCodeProvided()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -311,7 +311,7 @@ JSON;
 
     public function testResponseWhenContentIsEmpty()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data = '';
 
@@ -328,7 +328,7 @@ JSON;
 
     public function testResponseWhenContentIsNotValid()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data = '{';
 
@@ -345,7 +345,7 @@ JSON;
 
     public function testResponseWhenValidationFailed()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
         $data =
 <<<JSON
     {
@@ -377,7 +377,7 @@ JSON;
 
     public function testResponseWhenAPropertyIsNotExpected()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -406,7 +406,7 @@ JSON;
 
     public function testResponseWhenLabelsIsNull()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON

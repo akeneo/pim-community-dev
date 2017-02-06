@@ -11,7 +11,7 @@ class CreateFamilyIntegration extends ApiTestCase
 {
     public function testHttpHeadersInResponseWhenAFamilyIsCreated()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -31,7 +31,7 @@ JSON;
 
     public function testFormatStandardWhenAFamilyIsCreatedButUncompleted()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -63,7 +63,7 @@ JSON;
 
     public function testCompleteFamilyCreation()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -107,7 +107,7 @@ JSON;
 
     public function testResponseWhenContentIsEmpty()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data = '';
 
@@ -124,7 +124,7 @@ JSON;
 
     public function testResponseWhenContentIsNotValid()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data = '{';
 
@@ -141,7 +141,7 @@ JSON;
 
     public function testResponseWhenFamilyCodeAlreadyExists()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -170,7 +170,7 @@ JSON;
 
     public function testResponseWhenValidationFailed()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -199,7 +199,7 @@ JSON;
 
     public function testResponseWhenAPropertyIsNotExpected()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
@@ -229,7 +229,7 @@ JSON;
 
     public function testResponseWhenLabelsIsNull()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON

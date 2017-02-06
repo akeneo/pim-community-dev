@@ -38,7 +38,8 @@ class TokenController
         try {
             return $this->oauthServer->grantAccessToken($request);
         } catch (OAuth2ServerException $e) {
-            $message = $this->getErrorMessage($e->getMessage());
+            $grantType = $request->request->get('grant_type');
+            $message = $this->getErrorMessage($e->getMessage(), $grantType);
 
             throw new UnprocessableEntityHttpException(null !== $message ? $message : $e->getDescription());
         }
@@ -48,10 +49,11 @@ class TokenController
      * Wraps the mapping between FOS OAuth server error messages (which are actually kind of codes) and our messages.
      *
      * @param string $errorCode
+     * @param string $grantType
      *
-     * @return string|null
+     * @return null|string
      */
-    protected function getErrorMessage($errorCode)
+    protected function getErrorMessage($errorCode, $grantType)
     {
         $messages = [
             OAuth2::ERROR_INVALID_REQUEST     => 'Parameter "grant_type", "username" or "password" is missing, empty or invalid',
@@ -59,6 +61,11 @@ class TokenController
             OAuth2::ERROR_UNAUTHORIZED_CLIENT => 'This grant type is not authorized for this client',
             OAuth2::ERROR_INVALID_GRANT       => 'No user found for the given username and password',
         ];
+
+        if (OAuth2::GRANT_TYPE_REFRESH_TOKEN === $grantType) {
+            $messages[OAuth2::ERROR_INVALID_REQUEST] = 'Parameter "grant_type" or "refresh_token" is missing or empty';
+            $messages[OAuth2::ERROR_INVALID_GRANT]   = 'Refresh token is invalid or has expired';
+        }
 
         return isset($messages[$errorCode]) ? $messages[$errorCode] : null;
     }

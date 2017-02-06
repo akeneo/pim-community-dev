@@ -12,7 +12,7 @@ class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
 
     public function testErrorIfAcceptHeaderIsXml()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/categories/master', [], [], ['HTTP_ACCEPT' => 'application/xml']);
 
@@ -26,7 +26,7 @@ class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
 
     public function testSuccessIfAcceptHeaderIsJson()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/categories/master', [], [], ['HTTP_ACCEPT' => 'application/json']);
 
@@ -36,7 +36,7 @@ class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
 
     public function testSuccessIfAcceptHeaderIsEmpty()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/categories/master');
 
@@ -46,7 +46,7 @@ class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
 
     public function testErrorIfContentTypeHeaderIsXml()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('POST', 'api/rest/v1/categories', [], [], [
             'CONTENT_TYPE' => 'application/xml',
@@ -62,7 +62,7 @@ class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
 
     public function testSuccessIfContentTypeHeaderIsJson()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('POST', 'api/rest/v1/categories', [], [], [
             'CONTENT_TYPE' => 'application/json',
@@ -74,7 +74,7 @@ class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
 
     public function testSuccessWhenRouteIsOutsideTheAPI()
     {
-        $client = $this->createAuthentifiedClient();
+        $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/');
 

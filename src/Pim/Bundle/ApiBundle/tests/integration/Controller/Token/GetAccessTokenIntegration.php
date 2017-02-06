@@ -4,51 +4,25 @@ namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Token;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetAccessTokenIntegration extends ApiTestCase
 {
-    /** @var string */
-    protected $clientId;
-
-    /** @var string */
-    protected $secret;
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $consoleApp = new Application(self::$kernel);
-        $consoleApp->setAutoExit(false);
-
-        $input = new ArrayInput(['command' => 'pim:oauth-server:create-client']);
-        $output = new BufferedOutput();
-
-        $consoleApp->run($input, $output);
-
-        $content = $output->fetch();
-        preg_match('/client_id: (.+)\nsecret: (.+)$/', $content, $matches);
-        $this->clientId = $matches[1];
-        $this->secret = $matches[2];
-    }
-
     public function testGetAccessToken()
     {
         $client = static::createClient();
+        list($clientId, $secret) = $this->createOAuthClient();
 
         $client->request('POST', 'api/oauth/v1/token',
             [
-               'username'   => 'admin',
-               'password'   => 'admin',
+               'username'   => static::USERNAME,
+               'password'   => static::PASSWORD,
                'grant_type' => 'password',
             ],
             [],
             [
-                'PHP_AUTH_USER' => $this->clientId,
-                'PHP_AUTH_PW'   => $this->secret,
+                'PHP_AUTH_USER' => $clientId,
+                'PHP_AUTH_PW'   => $secret,
                 'CONTENT_TYPE'  => 'application/json',
             ]
         );
@@ -67,16 +41,17 @@ class GetAccessTokenIntegration extends ApiTestCase
     public function testMissingGrantType()
     {
         $client = static::createClient();
+        list($clientId, $secret) = $this->createOAuthClient();
 
         $client->request('POST', 'api/oauth/v1/token',
             [
-                'username'   => 'admin',
-                'password'   => 'admin',
+                'username'   => static::USERNAME,
+                'password'   => static::PASSWORD,
             ],
             [],
             [
-                'PHP_AUTH_USER' => $this->clientId,
-                'PHP_AUTH_PW'   => $this->secret,
+                'PHP_AUTH_USER' => $clientId,
+                'PHP_AUTH_PW'   => $secret,
                 'CONTENT_TYPE'  => 'application/json',
             ]
         );
@@ -93,17 +68,18 @@ class GetAccessTokenIntegration extends ApiTestCase
     public function testInvalidGrantType()
     {
         $client = static::createClient();
+        list($clientId, $secret) = $this->createOAuthClient();
 
         $client->request('POST', 'api/oauth/v1/token',
             [
-                'username'   => 'admin',
-                'password'   => 'admin',
+                'username'   => static::USERNAME,
+                'password'   => static::PASSWORD,
                 'grant_type' => 'passwordd',
             ],
             [],
             [
-                'PHP_AUTH_USER' => $this->clientId,
-                'PHP_AUTH_PW'   => $this->secret,
+                'PHP_AUTH_USER' => $clientId,
+                'PHP_AUTH_PW'   => $secret,
                 'CONTENT_TYPE'  => 'application/json',
             ]
         );
@@ -120,17 +96,18 @@ class GetAccessTokenIntegration extends ApiTestCase
     public function testUnauthorizedGrantType()
     {
         $client = static::createClient();
+        list($clientId, $secret) = $this->createOAuthClient();
 
         $client->request('POST', 'api/oauth/v1/token',
             [
-                'username'   => 'admin',
-                'password'   => 'admin',
+                'username'   => static::USERNAME,
+                'password'   => static::PASSWORD,
                 'grant_type' => 'token',
             ],
             [],
             [
-                'PHP_AUTH_USER' => $this->clientId,
-                'PHP_AUTH_PW'   => $this->secret,
+                'PHP_AUTH_USER' => $clientId,
+                'PHP_AUTH_PW'   => $secret,
                 'CONTENT_TYPE'  => 'application/json',
             ]
         );
@@ -147,17 +124,18 @@ class GetAccessTokenIntegration extends ApiTestCase
     public function testInvalidClientId()
     {
         $client = static::createClient();
+        list($clientId, $secret) = $this->createOAuthClient();
 
         $client->request('POST', 'api/oauth/v1/token',
             [
-                'username'   => 'admin',
-                'password'   => 'admin',
+                'username'   => static::USERNAME,
+                'password'   => static::PASSWORD,
                 'grant_type' => 'password',
             ],
             [],
             [
                 'PHP_AUTH_USER' => 'michel_id',
-                'PHP_AUTH_PW'   => $this->secret,
+                'PHP_AUTH_PW'   => $secret,
                 'CONTENT_TYPE'  => 'application/json',
             ]
         );
@@ -174,16 +152,17 @@ class GetAccessTokenIntegration extends ApiTestCase
     public function testInvalidSecret()
     {
         $client = static::createClient();
+        list($clientId, $secret) = $this->createOAuthClient();
 
         $client->request('POST', 'api/oauth/v1/token',
             [
-                'username'   => 'admin',
-                'password'   => 'admin',
+                'username'   => static::USERNAME,
+                'password'   => static::PASSWORD,
                 'grant_type' => 'password',
             ],
             [],
             [
-                'PHP_AUTH_USER' => $this->clientId,
+                'PHP_AUTH_USER' => $clientId,
                 'PHP_AUTH_PW'   => 'michel_secret',
                 'CONTENT_TYPE'  => 'application/json',
             ]
@@ -201,16 +180,17 @@ class GetAccessTokenIntegration extends ApiTestCase
     public function testMissingUsername()
     {
         $client = static::createClient();
+        list($clientId, $secret) = $this->createOAuthClient();
 
         $client->request('POST', 'api/oauth/v1/token',
             [
-                'password'   => 'admin',
+                'password'   => static::PASSWORD,
                 'grant_type' => 'password',
             ],
             [],
             [
-                'PHP_AUTH_USER' => $this->clientId,
-                'PHP_AUTH_PW'   => $this->secret,
+                'PHP_AUTH_USER' => $clientId,
+                'PHP_AUTH_PW'   => $secret,
                 'CONTENT_TYPE'  => 'application/json',
             ]
         );
@@ -227,16 +207,17 @@ class GetAccessTokenIntegration extends ApiTestCase
     public function testMissingPassword()
     {
         $client = static::createClient();
+        list($clientId, $secret) = $this->createOAuthClient();
 
         $client->request('POST', 'api/oauth/v1/token',
             [
-                'username'   => 'admin',
+                'username'   => static::USERNAME,
                 'grant_type' => 'password',
             ],
             [],
             [
-                'PHP_AUTH_USER' => $this->clientId,
-                'PHP_AUTH_PW'   => $this->secret,
+                'PHP_AUTH_USER' => $clientId,
+                'PHP_AUTH_PW'   => $secret,
                 'CONTENT_TYPE'  => 'application/json',
             ]
         );
@@ -253,6 +234,7 @@ class GetAccessTokenIntegration extends ApiTestCase
     public function testUserNotFound()
     {
         $client = static::createClient();
+        list($clientId, $secret) = $this->createOAuthClient();
 
         $client->request('POST', 'api/oauth/v1/token',
             [
@@ -262,8 +244,8 @@ class GetAccessTokenIntegration extends ApiTestCase
             ],
             [],
             [
-                'PHP_AUTH_USER' => $this->clientId,
-                'PHP_AUTH_PW'   => $this->secret,
+                'PHP_AUTH_USER' => $clientId,
+                'PHP_AUTH_PW'   => $secret,
                 'CONTENT_TYPE'  => 'application/json',
             ]
         );
