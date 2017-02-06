@@ -192,9 +192,11 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
      */
     public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = [])
     {
+        $identifier = isset($options['type']) && 'code' === $options['type'] ? 'code' : 'id';
+
         $selectDQL = sprintf(
             'o.%s as id, COALESCE(NULLIF(t.label, \'\'), CONCAT(\'[\', o.code, \']\')) as text',
-            isset($options['type']) && 'code' === $options['type'] ? 'code' : 'id'
+            $identifier
         );
 
         $qb = $this->createQueryBuilder('o')
@@ -211,7 +213,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
         if (isset($options['ids'])) {
             $qb
                 ->andWhere(
-                    $qb->expr()->in('o.id', ':ids')
+                    $qb->expr()->in(sprintf('o.%s', $identifier), ':ids')
                 )
                 ->setParameter('ids', $options['ids']);
         }
