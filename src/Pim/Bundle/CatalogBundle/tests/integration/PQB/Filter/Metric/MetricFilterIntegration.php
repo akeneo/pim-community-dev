@@ -17,7 +17,7 @@ class MetricFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count) {
+        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
             $this->createProduct('product_one', [
                 'values' => [
                     'a_metric' => [

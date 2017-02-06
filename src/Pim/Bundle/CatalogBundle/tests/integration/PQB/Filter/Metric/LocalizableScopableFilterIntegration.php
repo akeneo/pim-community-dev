@@ -18,7 +18,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count) {
+        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
             $this->createAttribute([
                 'code'                => 'a_scopable_localizable_metric',
                 'attribute_type'      => AttributeTypes::METRIC,
