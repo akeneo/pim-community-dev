@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\UIBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
@@ -24,7 +24,7 @@ class AjaxOptionControllerSpec extends ObjectBehavior
         $doctrine,
         Request $request,
         ParameterBag $query,
-        OptionRepositoryInterface $repository
+        AttributeOptionRepository $repository
     ) {
         $request->query = $query;
         $query->get('search')->willReturn('hello');

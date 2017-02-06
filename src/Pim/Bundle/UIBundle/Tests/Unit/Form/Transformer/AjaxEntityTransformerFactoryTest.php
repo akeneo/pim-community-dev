@@ -24,7 +24,7 @@ class AjaxEntityTransformerFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('getRepository')
             ->with($this->equalTo('class'))
             ->will(
-                $this->returnValue($this->createMock('Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface'))
+                $this->returnValue($this->createMock('Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository'))
             );
 
         $factory = new AjaxEntityTransformerFactory($doctrine, $transformerClass);

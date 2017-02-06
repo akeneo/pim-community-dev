@@ -547,25 +547,6 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
-     * @param TableNode $table
-     *
-     * @return Then[]
-     *
-     * @Then /^the following pages should have the following titles:$/
-     */
-    public function theFollowingPagesShouldHaveTheFollowingTitles($table)
-    {
-        $steps = [];
-
-        foreach ($table->getHash() as $item) {
-            $steps[] = new Then(sprintf('I am on the %s page', $item['page']));
-            $steps[] = new Then(sprintf('I should see the title "%s"', $item['title']));
-        }
-
-        return $steps;
-    }
-
-    /**
      * @param int $count
      *
      * @Then /^I should have (\d+) new notifications?$/
