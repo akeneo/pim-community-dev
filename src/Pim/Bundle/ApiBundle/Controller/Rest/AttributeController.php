@@ -141,16 +141,42 @@ class AttributeController
 
         $attribute = $this->factory->create();
         $this->updateAttribute($attribute, $data);
-
-        $violations = $this->validator->validate($attribute);
-
-        if (0 !== $violations->count()) {
-            throw new ViolationHttpException($violations);
-        }
+        $this->validateAttribute($attribute);
 
         $this->saver->save($attribute);
 
-        $response = $this->getCreateResponse($attribute);
+        $response = $this->getResponse($attribute, Response::HTTP_CREATED);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $code
+     *
+     * @return Response
+     */
+    public function partialUpdateAction(Request $request, $code)
+    {
+        $data = $this->getDecodedContent($request->getContent());
+
+        $isCreation = false;
+        $attribute = $this->repository->findOneByIdentifier($code);
+
+        if (null === $attribute) {
+            $isCreation = true;
+            $this->validateCodeConsistency($code, $data);
+            $data['code'] = $code;
+            $attribute = $this->factory->create();
+        }
+
+        $this->updateAttribute($attribute, $data);
+        $this->validateAttribute($attribute);
+
+        $this->saver->save($attribute);
+
+        $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
+        $response = $this->getResponse($attribute, $status);
 
         return $response;
     }
@@ -206,17 +232,58 @@ class AttributeController
     }
 
     /**
-     * Get a response with HTTP code 201 when an object is created.
+     * Validate an attribute. It throws an error 422 with every violated constraints if
+     * the validation failed.
      *
      * @param AttributeInterface $attribute
      *
+     * @throws ViolationHttpException
+     */
+    protected function validateAttribute(AttributeInterface $attribute)
+    {
+        $violations = $this->validator->validate($attribute);
+        if (0 !== $violations->count()) {
+            throw new ViolationHttpException($violations);
+        }
+    }
+
+    /**
+     * Throw an exception if the code provided in the url and the code provided in the request body
+     * are not equals when creating a category with a PATCH method.
+     *
+     * The code in the request body is optional when we create a resource with PATCH.
+     *
+     * @param string $code code provided in the url
+     * @param array  $data body of the request already decoded
+     *
+     * @throws UnprocessableEntityHttpException
+     */
+    protected function validateCodeConsistency($code, array $data)
+    {
+        if (isset($data['code']) && $code !== $data['code']) {
+            throw new UnprocessableEntityHttpException(
+                sprintf(
+                    'The code "%s" provided in the request body must match the code "%s" provided in the url.',
+                    $data['code'],
+                    $code
+                )
+            );
+        }
+    }
+
+    /**
+     * Get a response with HTTP code when an object is created.
+     *
+     * @param AttributeInterface $attribute
+     * @param int                $status
+     *
      * @return Response
      */
-    protected function getCreateResponse(AttributeInterface $attribute)
+    protected function getResponse(AttributeInterface $attribute, $status)
     {
-        $response = new Response(null, Response::HTTP_CREATED);
-        $route = $this->router->generate('pim_api_rest_attribute_get', ['code' => $attribute->getCode()], true);
-        $response->headers->set('Location', $route);
+        $response = new Response(null, $status);
+        $url = $this->router->generate('pim_api_rest_attribute_get', ['code' => $attribute->getCode()], true);
+        $response->headers->set('Location', $url);
 
         return $response;
     }

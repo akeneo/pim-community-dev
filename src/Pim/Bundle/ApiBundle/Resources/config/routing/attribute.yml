@@ -8,6 +8,11 @@ pim_api_rest_attribute_create:
     defaults: { _controller: pim_api.controller.rest.attribute:createAction, _format: json }
     methods: [POST]
 
+pim_api_rest_attribute_update:
+    path: /attributes/{code}
+    defaults: { _controller: pim_api.controller.rest.attribute:partialUpdateAction, _format: json }
+    methods: [PATCH]
+
 pim_api_rest_attribute_get:
     path: /attributes/{code}
     defaults: { _controller: pim_api.controller.rest.attribute:getAction, _format: json }
