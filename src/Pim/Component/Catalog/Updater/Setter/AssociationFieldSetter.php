@@ -2,9 +2,10 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -126,15 +127,18 @@ class AssociationFieldSetter extends AbstractFieldSetter
      * Set products and groups to associations
      *
      * @param ProductInterface $product
+     *
+     * @throws InvalidPropertyException
      */
     protected function setProductsAndGroupsToAssociations(ProductInterface $product, $data)
     {
         foreach ($data as $typeCode => $items) {
             $association = $product->getAssociationForTypeCode($typeCode);
             if (null === $association) {
-                throw InvalidArgumentException::expected(
+                throw InvalidPropertyException::validEntityCodeExpected(
                     'associations',
-                    'existing association type code',
+                    'association type code',
+                    'The association type does not exist',
                     static::class,
                     $typeCode
                 );
@@ -151,15 +155,18 @@ class AssociationFieldSetter extends AbstractFieldSetter
     /**
      * @param AssociationInterface $association
      * @param array                $productsIdentifiers
+     *
+     * @throws InvalidPropertyException
      */
     protected function setAssociatedProducts(AssociationInterface $association, $productsIdentifiers)
     {
         foreach ($productsIdentifiers as $productIdentifier) {
             $associatedProduct = $this->productRepository->findOneByIdentifier($productIdentifier);
-            if (!$associatedProduct) {
-                throw InvalidArgumentException::expected(
+            if (null === $associatedProduct) {
+                throw InvalidPropertyException::validEntityCodeExpected(
                     'associations',
-                    'existing product identifier',
+                    'product identifier',
+                    'The product does not exist',
                     static::class,
                     $productIdentifier
                 );
@@ -171,15 +178,18 @@ class AssociationFieldSetter extends AbstractFieldSetter
     /**
      * @param AssociationInterface $association
      * @param array                $groupsCodes
+     *
+     * @throws InvalidPropertyException
      */
     protected function setAssociatedGroups(AssociationInterface $association, $groupsCodes)
     {
         foreach ($groupsCodes as $groupCode) {
             $associatedGroup = $this->groupRepository->findOneByIdentifier($groupCode);
-            if (!$associatedGroup) {
-                throw InvalidArgumentException::expected(
+            if (null === $associatedGroup) {
+                throw InvalidPropertyException::validEntityCodeExpected(
                     'associations',
-                    'existing group code',
+                    'group code',
+                    'The group does not exist',
                     static::class,
                     $groupCode
                 );
@@ -194,15 +204,15 @@ class AssociationFieldSetter extends AbstractFieldSetter
      * @param string $field
      * @param mixed  $data
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData($field, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected(
+            throw InvalidPropertyTypeException::arrayExpected(
                 $field,
                 static::class,
-                gettype($data)
+                $data
             );
         }
 
@@ -217,33 +227,44 @@ class AssociationFieldSetter extends AbstractFieldSetter
      * @param string $assocTypeCode
      * @param mixed  $items
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyTypeException
      */
     protected function checkAssociationData($field, array $data, $assocTypeCode, $items)
     {
         if (!is_array($items) || !is_string($assocTypeCode) ||
             (!isset($items['products']) && !isset($items['groups']))
         ) {
-            throw InvalidArgumentException::associationFormatExpected($field, $data);
+            throw InvalidPropertyTypeException::validArrayStructureExpected(
+                $field,
+                sprintf('association format is not valid for the association type "%s".', $assocTypeCode),
+                static::class,
+                $data
+            );
         }
 
         foreach ($items as $itemData) {
-            $this->checkAssociationItems($field, $data, $itemData);
+            $this->checkAssociationItems($field, $assocTypeCode, $data, $itemData);
         }
     }
 
     /**
      * @param string $field
+     * @param string $assocTypeCode
      * @param array  $data
      * @param array  $items
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyTypeException
      */
-    protected function checkAssociationItems($field, array $data, array $items)
+    protected function checkAssociationItems($field, $assocTypeCode, array $data, array $items)
     {
         foreach ($items as $code) {
             if (!is_string($code)) {
-                throw InvalidArgumentException::associationFormatExpected($field, $data);
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
+                    $field,
+                    sprintf('association format is not valid for the association type "%s".', $assocTypeCode),
+                    static::class,
+                    $data
+                );
             }
         }
     }

@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
@@ -79,10 +81,10 @@ class SimpleSelectAttributeSetterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidArgumentException::stringExpected(
+                InvalidPropertyTypeException::stringExpected(
                     'attributeCode',
                     'Pim\Component\Catalog\Updater\Setter\SimpleSelectAttributeSetter',
-                    gettype($data)
+                    $data
                 )
             )
             ->duringSetAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
@@ -102,10 +104,10 @@ class SimpleSelectAttributeSetterSpec extends ObjectBehavior
 
         $this
             ->shouldNotThrow(
-                InvalidArgumentException::stringExpected(
+                InvalidPropertyTypeException::stringExpected(
                     'attributeCode',
                     'Pim\Component\Catalog\Updater\Setter\SimpleSelectAttributeSetter',
-                    gettype($data)
+                    $data
                 )
             )
             ->duringSetAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
@@ -121,12 +123,12 @@ class SimpleSelectAttributeSetterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidArgumentException::validEntityCodeExpected(
+                InvalidPropertyException::validEntityCodeExpected(
                     'attributeCode',
                     'code',
                     'The option does not exist',
                     'Pim\Component\Catalog\Updater\Setter\SimpleSelectAttributeSetter',
-                    $data
+                    'unknown code'
                 )
             )
             ->duringSetAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);

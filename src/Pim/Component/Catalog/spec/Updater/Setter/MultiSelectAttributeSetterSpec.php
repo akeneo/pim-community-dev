@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
@@ -78,12 +80,12 @@ class MultiSelectAttributeSetterSpec extends ObjectBehavior
         $data = ['foo' => ['bar' => 'baz']];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringValueExpected(
-                'attributeCode',
-                'foo',
-                'Pim\Component\Catalog\Updater\Setter\MultiSelectAttributeSetter',
-                'array'
-            )
+           InvalidPropertyTypeException::validArrayStructureExpected(
+               'attributeCode',
+               'one of the options is not a string, "array" given',
+               'Pim\Component\Catalog\Updater\Setter\MultiSelectAttributeSetter',
+               $data
+           )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
@@ -102,7 +104,7 @@ class MultiSelectAttributeSetterSpec extends ObjectBehavior
             ->willReturn(null);
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayInvalidKey(
+            InvalidPropertyException::validEntityCodeExpected(
                 'attributeCode',
                 'code',
                 'The option does not exist',
