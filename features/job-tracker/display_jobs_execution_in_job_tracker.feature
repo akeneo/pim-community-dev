@@ -68,3 +68,19 @@ Feature: Display jobs execution in job tracker
     And I should see the columns Type, Job, User, Status and Started at
     And the grid should contain 1 element
     And I should see entity Footwear category import
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6140
+  Scenario: Successfully filter job executions with "equals to" filter
+    Given I am on the exports page
+    And I launch the "footwear_product_export" export job
+    And I logout
+    And I am logged in as "admin"
+    And I am on the exports page
+    And I launch the "footwear_category_export" export job
+    When I am on the job tracker page
+    Then I should be able to use the following filters:
+      | filter   | operator    | value                   | result                                            |
+      | Job      | is equal to | Footwear product export | Footwear product export                           |
+      | User     | is equal to | Julia                   | Footwear product export                           |
+      | Type     | is equal to | import                  |                                                   |
+      | Type     | is equal to | export                  | Footwear product export, Footwear category export |

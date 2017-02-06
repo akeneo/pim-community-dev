@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-6146: Fix product import after associated product deletion (MongoDB)
+- PIM-6140: Fix 'equals to' filters on job tracker page
 
 # 1.5.18 (2017-02-01)
 
