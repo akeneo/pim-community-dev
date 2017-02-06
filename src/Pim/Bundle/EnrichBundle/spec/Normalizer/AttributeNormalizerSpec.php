@@ -33,7 +33,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $price->isWysiwygEnabled()->willReturn(false);
         $price->getAttributeType()->willReturn('pim_catalog_text');
         $price->isLocaleSpecific()->willReturn(false);
-        $price->getLocaleSpecificCodes()->willReturn([]);
+        $price->getAvailableLocaleCodes()->willReturn([]);
 
         $price->getDateMin()->willReturn(null);
         $price->getDateMax()->willReturn(null);
@@ -96,7 +96,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->isWysiwygEnabled()->willReturn(true);
         $attribute->getAttributeType()->willReturn('pim_catalog_textarea');
         $attribute->isLocaleSpecific()->willReturn(false);
-        $attribute->getLocaleSpecificCodes()->willReturn([]);
+        $attribute->getAvailableLocaleCodes()->willReturn([]);
 
         $attribute->getDateMin()->willReturn(null);
         $attribute->getDateMax()->willReturn(null);
