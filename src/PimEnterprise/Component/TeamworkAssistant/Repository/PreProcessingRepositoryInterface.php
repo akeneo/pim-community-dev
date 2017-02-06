@@ -62,4 +62,14 @@ interface PreProcessingRepositoryInterface
      * @param ProjectInterface $project
      */
     public function remove(ProjectInterface $project);
+
+    /**
+     * TODO
+     *
+     * @param ProductInterface $product
+     * @param ProjectInterface $project
+     *
+     * @return boolean
+     */
+    public function isPreProcessable(ProductInterface $product, ProjectInterface $project);
 }
