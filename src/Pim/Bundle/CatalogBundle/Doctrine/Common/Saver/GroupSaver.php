@@ -104,13 +104,9 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group, $options));
 
-        $this->persistGroup($group, $options);
+        $this->persistGroupAndSaveAssociatedProducts($group, $options);
 
         $this->objectManager->flush();
-
-        if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
-            $this->copyVariantGroupValues($group);
-        }
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
     }
@@ -133,7 +129,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group, $options));
 
-            $this->persistGroup($group, $options);
+            $this->persistGroupAndSaveAssociatedProducts($group, $options);
         }
 
         $this->objectManager->flush();
@@ -207,7 +203,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
      * @param       $group
      * @param array $options
      */
-    protected function persistGroup($group, array $options)
+    protected function persistGroupAndSaveAssociatedProducts($group, array $options)
     {
         $context = $this->productClassName;
         $this->versionContext->addContextInfo(
