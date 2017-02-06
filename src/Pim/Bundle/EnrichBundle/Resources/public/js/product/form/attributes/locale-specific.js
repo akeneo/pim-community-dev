@@ -34,7 +34,7 @@ define(
                     return;
                 }
 
-                if (!_.contains(field.attribute.available_locale_codes, field.context.locale)) {
+                if (!_.contains(field.attribute.available_locales, field.context.locale)) {
                     this.updateFieldElements(field);
                 }
 
