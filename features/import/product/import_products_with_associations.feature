@@ -57,7 +57,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
-    And I should see "Attribute or field \"associations\" expects existing product identifier as data, \"SKU-002\" given"
+    And I should see "Property \"associations\" expects a valid product identifier. The product does not exist, \"SKU-002\" given."
 
   Scenario: Successfully import a csv file with associations between invalid but existing products
     Given the following products:
