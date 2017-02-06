@@ -12,6 +12,10 @@ activity_manager:
             success: <strong>%label%</strong> finished
             start:   Start
         message: You have new products to enrich for "%project_label%". Due date is "%due_date%".
+        project_finished:
+            contributor: Congrats! You're 100% of done product done with %project_label%.
+            owner: %project_label% for the %due_date% is finished.'
+            show: Show
 
 batch_jobs:
     project_calculation:

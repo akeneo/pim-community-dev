@@ -81,7 +81,7 @@ Feature: Notify users after a project creation
       | usb-key-big          | usb_keys | high_tech          | USB Key Big 64Go          |            | 1            | OUNCE             | 2016-08-13         | 2016-10-13         |                |          |               |
       | usb-key-small        | usb_keys | high_tech          |                           |            | 1            | OUNCE             |                    |                    |                | 8        | GIGABYTE      |
       | poster-movie-contact | posters  | decoration         | Movie poster "Contact"    | A1         |              |                   |                    |                    |                |          |               |
-      | my-awesome-car       | car      | decoration         | Awesome car               |            |              |                   |                    |                    |                |          |               |
+      | my-awesome-car       | car      |                    | Awesome car               |            |              |                   |                    |                    |                |          |               |
 
   Scenario: Successfully notify users when creating a project on clothing
     Given I am logged in as "Julia"
@@ -331,10 +331,8 @@ Feature: Notify users after a project creation
       | my-awesome-car | description | My awesome description for ecommerce | en_US  | ecommerce |
     And I am logged in as "admin"
     Then I am on the products page
-    And I filter by "category" with operator "" and value "decoration"
     And I filter by "family" with operator "in list" and value "Car"
-    And I open the view selector
-    And I click on "Create project" action in the dropdown
+    And I click on the create project button
     And I fill in the following information in the popin:
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |
@@ -354,10 +352,8 @@ Feature: Notify users after a project creation
       | my-awesome-car | description |       | en_US  | ecommerce |
     When I am logged in as "admin"
     And I am on the products page
-    And I filter by "category" with operator "" and value "decoration"
     And I filter by "family" with operator "in list" and value "Car"
-    And I open the view selector
-    And I click on "Create project" action in the dropdown
+    And I click on the create project button
     And I fill in the following information in the popin:
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |
@@ -370,3 +366,70 @@ Feature: Notify users after a project creation
     And I am logged in as "Julia"
     Then I should see the text "Julia"
     Then I should have 1 new notification
+
+  Scenario: Successfully notify users
+    Given the following product values:
+      | product        | attribute   | value | locale | scope     |
+      | my-awesome-car | description |       | en_US  | ecommerce |
+    When I am logged in as "admin"
+    And I am on the products page
+    And I filter by "family" with operator "in list" and value "Car"
+    And I click on the create project button
+    And I fill in the following information in the popin:
+      | project-label       | 2016 summer collection |
+      | project-description | 2016 summer collection |
+      | project-due-date    | 12/13/2018             |
+    And I press the "Save" button
+    Then I should be on the products page
+    And I go on the last executed job resume of "project_calculation"
+    And I wait for the "project_calculation" job to finish
+    And I am on the homepage
+    # Is notified for the end of the project computation
+    Then I should have 1 new notification
+    Then I open the notification panel
+    And I should see the text "Project calculation finished"
+    When I logout
+    And I am logged in as "Julia"
+    And I am on the homepage
+    # Is notified because she has products to enrich
+    Then I should have 1 new notification
+    Then I open the notification panel
+    And I should see the text "You have new products to enrich for \"2016 summer collection\". Due date is \"12/13/2018\"."
+    And I am on the products page
+    And I am on the "my-awesome-car" product page
+    And I fill in the following information:
+      | Description | It is a car |
+    Then I save the product
+    And I am on the products page
+    And I run computation of the project "2016-summer-collection-ecommerce-en-us"
+    And I am on the homepage
+    # Is notified because she finished her project
+    Then I should have 2 new notification
+    Then I open the notification panel
+    And I should see the text "Congrats! You're 100% of done product done with \"2016 summer collection\"."
+    And I am on the products page
+    And I am on the "my-awesome-car" product page
+    And I fill in the following information:
+      | Description | |
+    Then I save the product
+    And I am on the products page
+    And I run computation of the project "2016-summer-collection-ecommerce-en-us"
+    And I am on the homepage
+    # Is not notified because she has already been notified for the project creation
+    Then I should have 2 new notification
+    And I am on the products page
+    And I am on the "my-awesome-car" product page
+    And I fill in the following information:
+      | Description | It is a car |
+    Then I save the product
+    And I am on the products page
+    And I run computation of the project "2016-summer-collection-ecommerce-en-us"
+    And I am on the homepage
+    # Is notified for project finished because the project was not to 100%
+    Then I should have 3 new notification
+    Then I open the notification panel
+    And I should see the text "Congrats! You're 100% of done product done with \"2016 summer collection\"."
+    And I run computation of the project "2016-summer-collection-ecommerce-en-us"
+    And I am on the homepage
+    # Is not notified because she was already at 100% just before and nothing changed between.
+    Then I should have 3 new notification

@@ -1,6 +1,7 @@
 parameters:
     pimee_activity_manager.model.project.class: 'PimEnterprise\Component\ActivityManager\Model\Project'
     pimee_activity_manager.model.project.interface: 'PimEnterprise\Component\ActivityManager\Model\ProjectInterface'
+    pimee_activity_manager.model.project_status.class: 'PimEnterprise\Component\ActivityManager\Model\ProjectStatus'
 
     pimee_activity_manager.normalizer.project.class: 'PimEnterprise\Component\ActivityManager\Normalizer\ProjectNormalizer'
     pimee_activity_manager.normalizer.project_completeness.class: 'PimEnterprise\Component\ActivityManager\Normalizer\ProjectCompletenessNormalizer'
@@ -17,6 +18,7 @@ parameters:
     pimee_activity_manager.doctrine.cursor_factory.project.class: 'Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\CursorFactory'
     pimee_activity_manager.doctrine.cursor.project.class: 'Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor'
     pimee_activity_manager.validator.project_identifier.class: 'PimEnterprise\Component\ActivityManager\Validator\ProjectIdentifierValidator'
+    pimee_activity_manager.factory.project_status.class: 'PimEnterprise\Component\ActivityManager\Factory\ProjectStatusFactory'
 
     pimee_activity_manager.factory.project_cursor.page_size: 10
 
@@ -78,6 +80,11 @@ services:
             - '@pim_datagrid.updater.datagrid_view'
             - '%pimee_activity_manager.model.project.class%'
 
+    pimee_activity_manager.factory.project_status:
+        class: '%pimee_activity_manager.factory.project_status.class%'
+        arguments:
+            - '%pimee_activity_manager.model.project_status.class%'
+
     pimee_activity_manager.factory.project_cursor:
         class: '%pimee_activity_manager.doctrine.cursor_factory.project.class%'
         arguments:
@@ -92,6 +99,13 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
             - '%pimee_activity_manager.model.project.interface%'
+
+    pimee_activity_manager.saver.project_status:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pimee_activity_manager.model.project_status.class%'
 
     ### Subscribers
     pimee_activity_manager.event_listener.event_translation:
