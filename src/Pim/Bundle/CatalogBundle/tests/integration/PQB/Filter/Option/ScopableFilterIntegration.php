@@ -99,7 +99,7 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
      * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
      * @expectedExceptionMessage Attribute or field "a_select_scopable_simple_select" expects valid data, scope and locale. Attribute "a_select_scopable_simple_select" expects an existing scope, "NOT_FOUND" given.
      */
-    public function testLocaleNotFound()
+    public function testScopeNotFound()
     {
         $this->execute([['a_select_scopable_simple_select', Operators::IN_LIST, ['orange'], ['scope' => 'NOT_FOUND']]]);
     }

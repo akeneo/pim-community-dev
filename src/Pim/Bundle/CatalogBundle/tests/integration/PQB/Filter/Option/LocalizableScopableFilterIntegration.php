@@ -64,7 +64,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
     public function testOperatorIn()
     {
         $result = $this->execute([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange'], ['locale' => 'fr_FR', 'scope' => 'tablet']]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['a_localizable_scopable_simple_select', Operators::IN_LIST, ['orange'], ['locale' => 'fr_FR', 'scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one']);

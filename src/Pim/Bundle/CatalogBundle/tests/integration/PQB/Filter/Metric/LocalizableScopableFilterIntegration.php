@@ -61,7 +61,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
             ['amount' => 10, 'unit' => 'KILOWATT'],
             ['locale' => 'en_US', 'scope' => 'tablet']
         ]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([[
             'a_scopable_localizable_metric',
@@ -107,7 +107,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
             ['amount' => -5, 'unit' => 'KILOWATT'],
             ['locale' => 'en_US', 'scope' => 'tablet']
         ]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([[
             'a_scopable_localizable_metric',
@@ -126,7 +126,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
             ['amount' => -5, 'unit' => 'KILOWATT'],
             ['locale' => 'en_US', 'scope' => 'ecommerce']
         ]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([[
             'a_scopable_localizable_metric',
