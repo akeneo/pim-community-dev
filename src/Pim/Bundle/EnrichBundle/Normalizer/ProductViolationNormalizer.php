@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -34,31 +32,24 @@ class ProductViolationNormalizer implements NormalizerInterface
      */
     public function normalize($violation, $format = null, array $context = [])
     {
-        $path = $violation->getPropertyPath();
+        $propertyPath = $violation->getPropertyPath();
 
-        if (0 === strpos($path, 'values')) {
+        if (0 === strpos($propertyPath, 'values')) {
             if (!isset($context['product'])) {
                 throw new \InvalidArgumentException('Expects a product context');
             }
 
-            $product = $context['product'];
-
-            if (!$product instanceof ProductInterface && !$product instanceof ProductTemplateInterface) {
-                throw new \InvalidArgumentException('Expects a product or a product template as context');
-            }
-
-            $codeStart = strpos($path, '[') + 1;
-            $codeLength = strpos($path, ']') - $codeStart;
-            $attributePath = substr($path, $codeStart, $codeLength);
-            $productValue = $product->getValues()[$attributePath];
+            $codeStart = strpos($propertyPath, '[') + 1;
+            $codeLength = strpos($propertyPath, ']') - $codeStart;
+            $attributeProperties = json_decode(substr($propertyPath, $codeStart, $codeLength), true);
 
             $normalizedViolation = [
-                'attribute' => $productValue->getAttribute()->getCode(),
-                'locale'    => $productValue->getLocale(),
-                'scope'     => $productValue->getScope(),
+                'attribute' => $attributeProperties['code'],
+                'locale'    => $attributeProperties['locale'],
+                'scope'     => $attributeProperties['scope'],
                 'message'   => $violation->getMessage(),
             ];
-        } elseif ('identifier' === $path) {
+        } elseif ('identifier' === $propertyPath) {
             $normalizedViolation = [
                 'attribute' => $this->attributeRepository->getIdentifierCode(),
                 'locale'    => null,
