@@ -126,6 +126,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 'sort_order',
                 'localizable',
                 'scopable',
+                'required',
             ]
         )) {
             if (null !== $data && !is_scalar($data)) {
