@@ -17,7 +17,7 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count) {
+        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
             $this->createAttribute([
                 'code'                => 'a_localizable_date',
                 'attribute_type'      => AttributeTypes::DATE,
@@ -71,10 +71,10 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
     public function testOperatorSuperior()
     {
         $result = $this->execute([['a_localizable_date', Operators::GREATER_THAN, '2016-09-23', ['locale' => 'en_US']]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['a_localizable_date', Operators::GREATER_THAN, '2016-09-23', ['locale' => 'fr_FR']]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['a_localizable_date', Operators::GREATER_THAN, '2016-09-22', ['locale' => 'en_US']]]);
         $this->assert($result, ['product_two']);

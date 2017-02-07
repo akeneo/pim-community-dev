@@ -17,7 +17,7 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count) {
+        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
             $this->createAttribute([
                 'code'                => 'a_scopable_multi_select',
                 'attribute_type'      => AttributeTypes::OPTION_MULTI_SELECT,

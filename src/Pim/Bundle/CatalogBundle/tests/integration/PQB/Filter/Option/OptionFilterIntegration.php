@@ -16,7 +16,7 @@ class OptionFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count) {
+        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
             $this->createAttributeOption([
                'attribute' => 'a_simple_select',
                'code'      => 'orange'
