@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
@@ -30,14 +31,16 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
     function let(
         AttributeRepositoryInterface $attributeRepository,
         GroupTypeRepositoryInterface $groupTypeRepository,
-        ProductValueFactory $productValueFactory,
+        ProductBuilderInterface $productBuilder,
+        ObjectUpdaterInterface $productUpdater,
         ProductQueryBuilderFactoryInterface $pqbFactory,
         $productTemplateClass
     ) {
         $this->beConstructedWith(
             $attributeRepository,
             $groupTypeRepository,
-            $productValueFactory,
+            $productBuilder,
+            $productUpdater,
             $pqbFactory,
             $productTemplateClass
         );
@@ -70,7 +73,8 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         $attributeRepository,
         $groupTypeRepository,
         $pqbFactory,
-        $productValueFactory,
+        $productBuilder,
+        $productUpdater,
         GroupInterface $variantGroup,
         AttributeInterface $mainColor,
         AttributeInterface $secondaryColor,
@@ -80,8 +84,9 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         ProductInterface $addedProduct,
         ProductTemplateInterface $productTemplate,
         ProductQueryBuilderInterface $pqb,
-        ProductValueInterface $whiteValue,
-        ProductValueCollectionInterface $productValueCollection
+        ProductValueCollectionInterface $originalValueCollection,
+        ProductValueCollectionInterface $newValueCollection,
+        ProductInterface $tmpProduct
     ) {
         $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
         $attributeRepository->getIdentifierCode()->willReturn('code');
@@ -103,47 +108,53 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         $variantGroup->addProduct($addedProduct)->shouldBeCalled();
         $variantGroup->getProducts()->willReturn([$removedProduct]);
 
-        $variantGroup->getProductTemplate()->willReturn($productTemplate);
-        $productTemplate->getValues()->willReturn($productValueCollection);
-        $productValueCollection->containsKey('main_color-<all_channels>-<all_locales>')->willReturn(false);
-        $productValueCollection->removeKey(Argument::any())->shouldNotBeCalled();
-        $productValueFactory->create($mainColor, null, null, 'white')->willReturn($whiteValue);
+        $values = [
+            'main_color'   => [
+                [
+                    'locale' => null,
+                    'scope'  => null,
+                    'data'   => 'white',
+                ]
+            ]
+        ];
 
-        $productValueCollection->add($whiteValue)->shouldBeCalled();
-        $productTemplate->setValues($productValueCollection)->shouldBeCalled();
+        $variantGroup->getProductTemplate()->willReturn($productTemplate);
+        $productTemplate->getValues()->willReturn($originalValueCollection);
+
+        $productBuilder->createProduct()->willReturn($tmpProduct);
+        $tmpProduct->setValues($originalValueCollection)->shouldBeCalled();
+        $productUpdater->update($tmpProduct, ['values' => $values])->shouldBeCalled();
+
+        $tmpProduct->getValues()->willReturn($newValueCollection);
+        $productTemplate->setValues($newValueCollection)->shouldBeCalled();
         $variantGroup->setProductTemplate($productTemplate)->shouldBeCalled();
 
-        $values = [
+        $data = [
             'code'         => 'mycode',
             'axes'         => ['main_color', 'secondary_color'],
             'type'         => 'VARIANT',
             'labels'       => [
                 'fr_FR' => 'T-shirt super beau',
             ],
-            'values' => [
-                'main_color'   => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => 'white',
-                    ]
-                ]
-            ],
+            'values' => $values,
             'products' => [2]
         ];
 
-        $this->update($variantGroup, $values, []);
+        $this->update($variantGroup, $data, []);
     }
 
     function it_updates_an_empty_variant_group(
         $attributeRepository,
         $groupTypeRepository,
         $pqbFactory,
-        $productValueFactory,
+        $productBuilder,
+        $productUpdater,
         GroupInterface $variantGroup,
         GroupTypeInterface $type,
         ProductTemplateInterface $productTemplate,
-        ProductValueCollectionInterface $productValueCollection
+        ProductValueCollectionInterface $originalValueCollection,
+        ProductValueCollectionInterface $newValueCollection,
+        ProductInterface $tmpProduct
     ) {
         $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
         $attributeRepository->getIdentifierCode()->willReturn('code');
@@ -156,14 +167,14 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         $variantGroup->getId()->willReturn(null);
         $variantGroup->getProducts()->willReturn([]);
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
-        $productTemplate->getValues()->willReturn($productValueCollection);
+        $productTemplate->getValues()->willReturn($originalValueCollection);
 
-        $productValueCollection->containsKey(Argument::any())->shouldNotBeCalled();
-        $productValueCollection->removeKey(Argument::any())->shouldNotBeCalled();
-        $productValueFactory->create(Argument::any())->shouldNotBeCalled();
-        $productValueCollection->add(Argument::any())->shouldNotBeCalled();
+        $productBuilder->createProduct()->willReturn($tmpProduct);
+        $tmpProduct->setValues($originalValueCollection)->shouldBeCalled();
+        $productUpdater->update($tmpProduct, ['values' => []])->shouldBeCalled();
 
-        $productTemplate->setValues($productValueCollection)->shouldBeCalled();
+        $tmpProduct->getValues()->willReturn($newValueCollection);
+        $productTemplate->setValues($newValueCollection)->shouldBeCalled();
         $variantGroup->setProductTemplate($productTemplate)->shouldBeCalled();
 
 
@@ -242,62 +253,5 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
                 'variant group'
             )
         )->during('update', [$variantGroup, $values, []]);
-    }
-
-    function it_merges_original_and_new_values(
-        $attributeRepository,
-        $productValueFactory,
-        GroupInterface $variantGroup,
-        ProductTemplateInterface $template,
-        ProductBuilderInterface $productBuilder,
-        ProductInterface $product,
-        ProductValueInterface $originalDescription,
-        ProductValueInterface $newDescriptionEn,
-        ProductValueInterface $newDescriptionFr,
-        ProductValueCollection $values,
-        AttributeInterface $attribute
-    ) {
-        $variantGroup->getProductTemplate()->willReturn($template);
-        $template->getValues()->willReturn($values);
-
-        $productBuilder->createProduct()->willReturn($product);
-        $product->getValues()->willReturn($values);
-
-        $attributeRepository->findOneByIdentifier('description')->willReturn($attribute);
-
-        $values->containsKey('description-ecommerce-en_US')->willReturn(true);
-        $values->removeKey('description-ecommerce-en_US')->willReturn($originalDescription);
-        $productValueFactory
-            ->create($attribute, 'ecommerce', 'en_US', 'new description en_US')
-            ->willReturn($newDescriptionEn);
-        $values->add($newDescriptionEn)->shouldBeCalled();
-
-        $values->containsKey('description-ecommerce-fr_FR')->willReturn(false);
-        $values->removeKey('description-ecommerce-fr_FR')->shouldNotBeCalled();
-        $productValueFactory
-            ->create($attribute, 'ecommerce', 'fr_FR', 'new description fr_FR')
-            ->willReturn($newDescriptionFr);
-        $values->add($newDescriptionFr)->shouldBeCalled();
-
-        $template->setValues($values)->shouldBeCalled();
-        $variantGroup->setProductTemplate($template)->shouldBeCalled();
-
-        $newData = [
-            'description' => [
-                [
-                    'locale' => 'en_US',
-                    'scope'  => 'ecommerce',
-                    'data'   => 'new description en_US'
-                ],
-                [
-                    'locale' => 'fr_FR',
-                    'scope'  => 'ecommerce',
-                    'data'   => 'new description fr_FR'
-                ]
-
-            ]
-        ];
-
-        $this->update($variantGroup, ['values' => $newData]);
     }
 }

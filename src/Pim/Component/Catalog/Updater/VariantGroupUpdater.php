@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValueCollection;
@@ -32,8 +32,11 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     /** @var GroupTypeRepositoryInterface */
     protected $groupTypeRepository;
 
-    /** @var ProductValueFactory */
-    protected $productValueFactory;
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
+
+    /** @var ObjectUpdaterInterface */
+    protected $productUpdater;
 
     /** @var ProductQueryBuilderFactoryInterface */
     protected $productQueryBuilderFactory;
@@ -44,20 +47,23 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     /**
      * @param AttributeRepositoryInterface        $attributeRepository
      * @param GroupTypeRepositoryInterface        $groupTypeRepository
-     * @param ProductValueFactory                 $productValueFactory
+     * @param ProductBuilderInterface             $productBuilder
+     * @param ObjectUpdaterInterface              $productUpdater
      * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
      * @param string                              $productTemplateClass
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         GroupTypeRepositoryInterface $groupTypeRepository,
-        ProductValueFactory $productValueFactory,
+        ProductBuilderInterface $productBuilder,
+        ObjectUpdaterInterface $productUpdater,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         $productTemplateClass
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->groupTypeRepository = $groupTypeRepository;
-        $this->productValueFactory = $productValueFactory;
+        $this->productBuilder = $productBuilder;
+        $this->productUpdater = $productUpdater;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
         $this->productTemplateClass = $productTemplateClass;
     }
@@ -237,7 +243,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         if (null === $originalValues) {
             $originalValues = new ProductValueCollection();
         }
-        $mergedValues = $this->mergeValues($originalValues, $newValues);
+        $mergedValues = $this->updateTemplateValues($originalValues, $newValues);
 
         $template->setValues($mergedValues);
 
@@ -245,66 +251,24 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * Merges original and new values (keeping original ones if missing in the new ones)
-     * Iterates on every new attribute and then on every localized and/or scoped value to compare it
-     * with the original values.
+     * Update the values of the variant group product template.
      *
-     * New values respect the standard format:
-     *
-     * $newValues = [
-     *     'code'        => [
-     *         [
-     *             'locale' => null,
-     *             'scope'  => null,
-     *             'data'   => 'a_unique_code',
-     *         ],
-     *     ],
-     *     'description' => [
-     *         [
-     *             'locale' => 'en_US',
-     *             'scope'  => 'ecommerce',
-     *             'data'   => 'A new description in english',
-     *         ],
-     *         [
-     *             'locale' => 'de_DE',
-     *             'scope'  => 'ecommerce',
-     *             'data'   => 'Eine neue deutsche Beschreibung',
-     *         ],
-     *     ]
-     * ];
+     * New values respect the standard format, so we can use the product updater
+     * on a temporary product.
      *
      * @param ProductValueCollectionInterface $values
      * @param array                           $newValues
      *
      * @return ProductValueCollectionInterface
      */
-    protected function mergeValues(ProductValueCollectionInterface $values, array $newValues)
+    protected function updateTemplateValues(ProductValueCollectionInterface $values, array $newValues)
     {
-        foreach ($newValues as $attributeCode => $newValueArray) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        $product = $this->productBuilder->createProduct();
+        $product->setValues($values);
 
-            foreach ($newValueArray as $newValue) {
-                $key = sprintf(
-                    '%s-%s-%s',
-                    $attributeCode,
-                    null !== $newValue['scope'] ? $newValue['scope'] : '<all_channels>',
-                    null !== $newValue['locale'] ? $newValue['locale'] : '<all_locales>'
-                );
+        $this->productUpdater->update($product, ['values' => $newValues]);
 
-                if ($values->containsKey($key)) {
-                    $values->removeKey($key);
-                }
-
-                $values->add($this->productValueFactory->create(
-                    $attribute,
-                    $newValue['scope'],
-                    $newValue['locale'],
-                    $newValue['data']
-                ));
-            }
-        }
-
-        return $values;
+        return $product->getValues();
     }
 
     /**
