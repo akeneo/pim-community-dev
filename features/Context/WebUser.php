@@ -1686,10 +1686,13 @@ class WebUser extends RawMinkContext
      * @param string $code
      *
      * @When /^I wait for the "([^"]*)" job to finish$/
+     *
+     * @throws \Exception
      */
     public function iWaitForTheJobToFinish($code)
     {
-        $condition = '$("#status").length && /(Completed|Stopped|Failed|TERMINÉ|ARRÊTÉ|EN ÉCHEC)$/.test($("#status").text().trim())';
+        $condition = '$("#status").length && '.
+            '/(completed|stopped|failed|terminé|arrêté|en échec)$/.test($("#status").text().trim().toLowerCase())';
 
         try {
             $this->wait($condition);

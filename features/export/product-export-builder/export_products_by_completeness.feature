@@ -10,8 +10,8 @@ Feature: Export products according to a completeness policy
       | code | type     | localizable | label |
       | name | textarea | yes         | Name  |
     And the following family:
-      | code      | requirements-ecommerce |
-      | localized | sku, name              |
+      | code      | requirements-ecommerce | attributes |
+      | localized | sku, name              | sku, name  |
     And the following products:
       | sku        | categories | family    | name-fr_FR | name-en_US |
       | french     | default    | localized | French     |            |
@@ -63,8 +63,8 @@ Feature: Export products according to a completeness policy
     And I wait for the "csv_product_export" job to finish
     Then exported file of "csv_product_export" should contain:
       """
-      sku;categories;enabled;family;groups
-      empty;default;1;localized;
+      sku;categories;enabled;family;groups;name-en_US;name-fr_FR
+      empty;default;1;localized;;;
       """
 
   @ce
