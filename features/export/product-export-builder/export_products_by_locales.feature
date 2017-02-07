@@ -11,8 +11,8 @@ Feature: Export products according to a locale policy
       | name     | textarea | yes         | Name     | fr_FR,en_US       |
       | baguette | text     | yes         | Baguette | fr_FR             |
     And the following family:
-      | code      | requirements-ecommerce |
-      | localized | sku, name              |
+      | code      | requirements-ecommerce | attributes |
+      | localized | sku, name              | sku, name  |
     And the following products:
       | sku        | categories | family    | name-fr_FR | name-en_US | baguette-fr_FR |
       | french     | default    | localized | French     |            | Yes            |
