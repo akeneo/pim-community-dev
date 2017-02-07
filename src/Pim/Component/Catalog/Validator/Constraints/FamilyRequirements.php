@@ -18,7 +18,14 @@ class FamilyRequirements extends Constraint
      *
      * @var string
      */
-    public $message = 'Family "%family%" should have requirements for identifier "%id%" and channel(s) "%channels%"';
+    public $messageChannel = 'Family "%family%" should have requirements for identifier "%id%" and channel(s) '.
+        '"%channels%"';
+
+    /**
+     * @var string
+     */
+    public $messageAttribute = 'The attribute "%attribute%" cannot be an attribute required for the channel '.
+        '"%channel%" as it does not belong to this family';
 
     /**
      * {@inheritdoc}

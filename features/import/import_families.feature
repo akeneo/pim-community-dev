@@ -95,4 +95,5 @@ Feature: Import families
     And I launch the import job
     And I wait for the "csv_footwear_family_import" job to finish
     Then I should see the text "Skipped 1"
-    And I should see the text "The attribute \"wrong_family\" cannot be an attribute required for the family as it does not belong to the family."
+    And I should see the text "The attribute \"description\" cannot be an attribute required for the channel \"tablet\" as it does not belong to this family: Wrong Family"
+    And I should see the text "The attribute \"description\" cannot be an attribute required for the channel \"mobile\" as it does not belong to this family: Wrong Family"
