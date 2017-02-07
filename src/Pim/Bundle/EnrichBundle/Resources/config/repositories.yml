@@ -6,19 +6,20 @@ parameters:
     pim_enrich.repository.attribute_option.search.class: Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeOptionSearchableRepository
 
     ## Default UI repositories
-    pim_enrich.repository.category.class:         Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\CategoryRepository
-    pim_enrich.repository.group.class:            Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\GroupRepository
-    pim_enrich.repository.group_type.class:       Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\GroupTypeRepository
-    pim_enrich.repository.association_type.class: Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AssociationTypeRepository
-    pim_enrich.repository.attribute.class:        Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeRepository
-    pim_enrich.repository.family.class:           Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyRepository
-    pim_enrich.repository.locale.class:           Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\LocaleRepository
-    pim_enrich.repository.channel.class:          Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\ChannelRepository
-    pim_enrich.repository.currency.class:         Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\CurrencyRepository
-    pim_enrich.repository.attribute_group.class:  Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeGroupRepository
-    pim_enrich.repository.job_instance.class:     Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobInstanceRepository
-    pim_enrich.repository.job_execution.class:    Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository
-    pim_enrich.repository.job_tracker.class:      Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobTrackerRepository
+    pim_enrich.repository.category.class:                Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\CategoryRepository
+    pim_enrich.repository.group.class:                   Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\GroupRepository
+    pim_enrich.repository.group_type.class:              Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\GroupTypeRepository
+    pim_enrich.repository.association_type.class:        Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AssociationTypeRepository
+    pim_enrich.repository.attribute.class:               Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeRepository
+    pim_enrich.repository.family.class:                  Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyRepository
+    pim_enrich.repository.locale.class:                  Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\LocaleRepository
+    pim_enrich.repository.channel.class:                 Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\ChannelRepository
+    pim_enrich.repository.currency.class:                Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\CurrencyRepository
+    pim_enrich.repository.attribute_group.class:         Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeGroupRepository
+    pim_enrich.repository.attribute_group.search.class:  Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeGroupSearchableRepository
+    pim_enrich.repository.job_instance.class:            Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobInstanceRepository
+    pim_enrich.repository.job_execution.class:           Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository
+    pim_enrich.repository.job_tracker.class:             Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobTrackerRepository
 
 services:
     pim_enrich.repository.sequential_edit:
@@ -106,6 +107,12 @@ services:
         class: '%pim_enrich.repository.attribute_group.class%'
         arguments:
             - '@pim_user.context.user'
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.attribute_group.class%'
+
+    pim_enrich.repository.attribute_group.search:
+        class: '%pim_enrich.repository.attribute_group.search.class%'
+        arguments:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.attribute_group.class%'
 

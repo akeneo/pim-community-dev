@@ -248,6 +248,17 @@ pim_enrich:
                 updated_by: Updated by
             btn:
                 save: Save
+        family:
+            info:
+                update_successful: Family successfully updated.
+                create_successful: Channel successfully created.
+            meta:
+                created: Created
+                created_by: Created by
+                updated: Updated
+                updated_by: Updated by
+            btn:
+                save: Save
         attribute_option:
             code: Code
             label: Label
@@ -384,6 +395,24 @@ pim_enrich:
                     label_conversion_units: Pick a conversion unit for each metric attribute that will be used during product export
                     conversion_unit:
                         do_not_convert: Do not convert
+        family:
+            tab:
+                properties:
+                    title: Properties
+                    general: General
+                    code: Code
+                    attribute_as_label: Attribute used as label
+                    label_translations: Label translations
+                attributes:
+                    title: Attributes
+                    label_label: Label
+                    toolbox:
+                        select_attributes_by_groups: Add by groups
+                        select_attributes: Add attributes
+                        add: Add
+                        attributes_groups_selected: '{{ itemsCount }} group(s) selected'
+                history:
+                    title: History
 
         attribute_option:
             flash:
