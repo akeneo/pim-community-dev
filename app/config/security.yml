@@ -66,4 +66,4 @@ security:
 
     access_control:
         - { path: ^/admin/, role: ROLE_ADMIN }
-        - { path: ^/api/, role: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/, role: pim_api_overall_access }

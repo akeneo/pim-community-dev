@@ -49,7 +49,7 @@ class Configuration
 
         $defaultFixturePath = self::getRootDirectory() . DIRECTORY_SEPARATOR . 'tests' .
             DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR;
-        $this->fixtureDirectories [] = $defaultFixturePath;
+        $this->fixtureDirectories[] = $defaultFixturePath;
 
         foreach ($this->fixtureDirectories as $fixtureDirectory) {
             if (!is_dir($fixtureDirectory)) {
