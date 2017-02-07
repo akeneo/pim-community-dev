@@ -28,11 +28,11 @@ abstract class ApiTestCase extends WebTestCase
     /** @var int Count of executed tests inside the same test class */
     protected static $count = 0;
 
-    /** @var string */
-    protected static $accessToken;
+    /** @var string[] */
+    protected static $accessTokens;
 
-    /** @var string */
-    protected static $refreshToken;
+    /** @var string[] */
+    protected static $refreshTokens;
 
     /** @var ContainerInterface */
     protected $container;
@@ -43,8 +43,8 @@ abstract class ApiTestCase extends WebTestCase
     public static function setUpBeforeClass()
     {
         self::$count = 0;
-        static::$accessToken = null;
-        static::$refreshToken = null;
+        static::$accessTokens = [];
+        static::$refreshTokens = [];
     }
 
     /**
@@ -62,9 +62,9 @@ abstract class ApiTestCase extends WebTestCase
         $this->container = static::$kernel->getContainer();
         $configuration = $this->getConfiguration();
 
-        static::$count++;
+        self::$count++;
 
-        if ($configuration->isDatabasePurgedForEachTest() || 1 === static::$count) {
+        if ($configuration->isDatabasePurgedForEachTest() || 1 === self::$count) {
             $databasePurger = $this->getDatabasePurger();
             $databasePurger->purge();
 
@@ -76,27 +76,35 @@ abstract class ApiTestCase extends WebTestCase
     /**
      * Adds a valid access token to the client, so it is included in all its requests.
      *
-     * @param array $options
-     * @param array $server
-     *
-     * @throws \Exception
+     * @param array  $options
+     * @param array  $server
+     * @param string $clientId
+     * @param string $secret
+     * @param string $username
+     * @param string $password
      *
      * @return Client
      */
-    protected function createAuthenticatedClient(array $options = [], array $server = [], $clientId = null, $secret = null)
-    {
-        if (null === static::$accessToken || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
+    protected function createAuthenticatedClient(
+        array $options = [],
+        array $server = [],
+        $clientId = null,
+        $secret = null,
+        $username = self::USERNAME,
+        $password = self::PASSWORD
+    ) {
+        if (!isset(static::$accessTokens[$username]) || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
             if (null === $clientId || null === $secret) {
                 list($clientId, $secret) = $this->createOAuthClient();
             }
 
-            $tokens = $this->authenticate($clientId, $secret, static::USERNAME, static::PASSWORD);
-            static::$accessToken = $tokens[0];
-            static::$refreshToken = $tokens[1];
+            $tokens = $this->authenticate($clientId, $secret, $username, $password);
+            static::$accessTokens[$username] = $tokens[0];
+            static::$refreshTokens[$username] = $tokens[1];
         }
 
         $client = static::createClient($options, $server);
-        $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer '.static::$accessToken);
+        $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer '.static::$accessTokens[$username]);
         $client->setServerParameter('CONTENT_TYPE', 'application/json');
 
         return $client;

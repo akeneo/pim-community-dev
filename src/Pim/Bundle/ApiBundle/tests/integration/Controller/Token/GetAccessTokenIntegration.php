@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Token;
+namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Token;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;

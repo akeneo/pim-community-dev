@@ -1,0 +1,11 @@
+parameters:
+    pim_api.security.voter.action_acl.class: Pim\Bundle\ApiBundle\Security\ActionAclVoter
+
+services:
+    pim_api.security.acl.voter.overall_access:
+        class: '%pim_api.security.voter.action_acl.class%'
+        arguments:
+            - '@security.acl.voter.basic_permissions'
+            - 'pim_api_overall_access'
+        tags:
+            - { name: security.voter, priority: 200 }

@@ -28,6 +28,7 @@ class PimApiExtension extends Extension
         $loader->load('hateoas.yml');
         $loader->load('normalizers.yml');
         $loader->load('repositories.yml');
+        $loader->load('security.yml');
         $loader->load('serializers.yml');
     }
 }
