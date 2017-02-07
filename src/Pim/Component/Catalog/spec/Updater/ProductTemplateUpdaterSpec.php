@@ -6,12 +6,14 @@ use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductValueCollection;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductTemplateUpdaterSpec extends ObjectBehavior
 {
-    function let(PropertySetterInterface $productFieldUpdater)
+    function let(PropertySetterInterface $propertySetter, NormalizerInterface $normalizer)
     {
-        $this->beConstructedWith($productFieldUpdater);
+        $this->beConstructedWith($propertySetter, $normalizer);
     }
 
     function it_is_initializable()
@@ -25,9 +27,11 @@ class ProductTemplateUpdaterSpec extends ObjectBehavior
     }
 
     function it_updates_products_with_variant_group_template_values_using_product_updater(
-        $productFieldUpdater,
+        $propertySetter,
+        $normalizer,
         ProductTemplateInterface $template,
-        ProductInterface $product
+        ProductInterface $product,
+        ProductValueCollection $values
     ) {
         $updates = [
             'description' => [
@@ -68,12 +72,22 @@ class ProductTemplateUpdaterSpec extends ObjectBehavior
             ]
         ];
 
-        $template->getValuesData()->willReturn($updates);
+        $template->getValues()->willReturn($values);
+        $normalizer->normalize($values, 'standard')->willReturn($updates);
 
-        $productFieldUpdater->setData($product, 'description', 'Foo', ['locale' => 'en_US', 'scope' => 'ecommerce'])->shouldBeCalled();
-        $productFieldUpdater->setData($product, 'description', 'Bar', ['locale' => 'en_US', 'scope' => 'mobile'])->shouldBeCalled();
-        $productFieldUpdater->setData($product, 'color', 'red', ['locale' => null, 'scope' => null])->shouldBeCalled();
-        $productFieldUpdater
+        $propertySetter
+            ->setData($product, 'description', 'Foo', ['locale' => 'en_US', 'scope' => 'ecommerce'])
+            ->shouldBeCalled();
+
+        $propertySetter
+            ->setData($product, 'description', 'Bar', ['locale' => 'en_US', 'scope' => 'mobile'])
+            ->shouldBeCalled();
+
+        $propertySetter
+            ->setData($product, 'color', 'red', ['locale' => null, 'scope' => null])
+            ->shouldBeCalled();
+
+        $propertySetter
             ->setData(
                 $product,
                 'price',
@@ -81,13 +95,9 @@ class ProductTemplateUpdaterSpec extends ObjectBehavior
                 ['locale' => 'fr_FR', 'scope' => null]
             )
             ->shouldBeCalled();
-        $productFieldUpdater
-            ->setData(
-                $product,
-                'image',
-                '/uploads/image.jpg',
-                ['locale' => null, 'scope' => 'mobile']
-            )
+
+        $propertySetter
+            ->setData($product, 'image', '/uploads/image.jpg', ['locale' => null, 'scope' => 'mobile'])
             ->shouldBeCalled();
 
         $this->update($template, [$product]);
