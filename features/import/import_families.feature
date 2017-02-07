@@ -78,3 +78,21 @@ Feature: Import families
     Then the row "pretty-shoe" should contain:
       | column | value   |
       | Family | [heels] |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6127
+  Scenario: Successfully raise an error when required attribute is not in the family
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And the following CSV file to import:
+      """
+      code;label-en_US;attributes;attribute_as_label;requirements-tablet;requirements-mobile
+      boots;Boots;sku,name,manufacturer,description,weather_conditions,price,rating,side_view,top_view,size,color,lace_color;name;sku,name,description,weather_conditions,price,rating,side_view,size,color;sku,name,price,size,color
+      wrong_family;Wrong Family;sku,name;name;description;description
+      """
+    And the following job "csv_footwear_family_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_family_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_family_import" job to finish
+    Then I should see the text "Skipped 1"
+    And I should see the text "The attribute \"wrong_family\" cannot be an attribute required for the family as it does not belong to the family."
