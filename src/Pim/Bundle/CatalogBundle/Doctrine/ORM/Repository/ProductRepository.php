@@ -558,6 +558,9 @@ class ProductRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('Product');
 
         //TODO - TIP-697: make the variant groups work again
+        $qb->where('Product.identifier = :no_identifier');
+        $qb->setParameter('no_identifier', 'THERE_IS_NO_SKU_LIKE_DAT');
+
         return $qb;
 
         $qb
