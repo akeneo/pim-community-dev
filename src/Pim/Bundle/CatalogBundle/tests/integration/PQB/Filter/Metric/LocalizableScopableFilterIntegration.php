@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Metric;
 
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
