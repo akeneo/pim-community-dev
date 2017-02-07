@@ -7,6 +7,7 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
@@ -163,7 +164,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
 
         $productUpdater
             ->update($product, $filteredData)
-            ->willThrow(new \InvalidArgumentException('association does not exists'));
+            ->willThrow(new InvalidPropertyException('associations', 'value', 'className', 'association does not exists'));
 
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
         $this->setStepExecution($stepExecution);
