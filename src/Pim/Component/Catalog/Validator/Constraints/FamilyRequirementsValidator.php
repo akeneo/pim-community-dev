@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
@@ -89,7 +88,7 @@ class FamilyRequirementsValidator extends ConstraintValidator
                 $this->context
                     ->buildViolation($constraint->messageAttribute, [
                         '%attribute%' => $attributeRequirement->getAttributeCode(),
-                        '%channel%' => $attributeRequirement->getChannelCode(),
+                        '%channel%'   => $attributeRequirement->getChannelCode(),
                     ])
                     ->addViolation();
             }

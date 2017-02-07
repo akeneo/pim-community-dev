@@ -39,6 +39,7 @@ class FamilyRequirementsValidatorSpec extends ObjectBehavior
         AttributeRequirementInterface $requirementMobile
     ) {
         $family->getAttributeRequirements()->willReturn([$requirementEcommerce, $requirementMobile]);
+        $family->getAttributeCodes()->willReturn(['sku','ecommerce']);
         $attributeRepository->getIdentifierCode()->willReturn('sku');
         $requirementEcommerce->getAttributeCode()->willReturn('sku');
         $requirementEcommerce->getChannelCode()->willReturn('ecommerce');
@@ -63,6 +64,7 @@ class FamilyRequirementsValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $violation
     ) {
         $family->getAttributeRequirements()->willReturn([$requirementEcommerce, $requirementMobile]);
+        $family->getAttributeCodes()->willReturn(['sku','ecommerce']);
         $attributeRepository->getIdentifierCode()->willReturn('sku');
         $requirementEcommerce->getAttributeCode()->willReturn('sku');
         $requirementEcommerce->getChannelCode()->willReturn('ecommerce');
@@ -72,6 +74,25 @@ class FamilyRequirementsValidatorSpec extends ObjectBehavior
         $channelRepository->getChannelCodes()->willReturn(['ecommerce', 'mobile', 'print']);
 
         $family->getCode()->willReturn('familyCode');
+        $context->buildViolation(Argument::any(), Argument::any())
+            ->willReturn($violation)
+            ->shouldBeCalled();
+
+        $this->validate($family, $minimumRequirements);
+    }
+
+    function it_does_not_validate_family_with_required_attribute_not_present(
+        $channelRepository,
+        $context,
+        $minimumRequirements,
+        FamilyInterface $family,
+        AttributeRequirementInterface $attributeRequirement,
+        ConstraintViolationBuilderInterface $violation
+    ) {
+        $family->getCode()->willReturn('familyCode');
+        $family->getAttributeRequirements()->willReturn([$attributeRequirement]);
+        $family->getAttributeCodes()->willReturn([]);
+        $channelRepository->getChannelCodes()->willReturn(['ecommerce']);
         $context->buildViolation(Argument::any(), Argument::any())
             ->willReturn($violation)
             ->shouldBeCalled();
