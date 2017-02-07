@@ -70,7 +70,7 @@ Feature: Notify users after a project creation
     And the following families:
       | code     | label-en_US | attributes                                                   | requirements-ecommerce                 | requirements-mobile                    |
       | tshirt   | TShirts     | sku, name, description, size, weight, release_date, material | sku, name, size, description, material | sku, name, size, description, material |
-      | usb_keys | USB Keys    | sku, name, description, weight, release_date, capacity       | sku, name, size, description, capacity | sku, name, size, description, capacity |
+      | usb_keys | USB Keys    | sku, name, description, size, weight, release_date, capacity | sku, name, size, description, capacity | sku, name, size, description, capacity |
       | posters  | Posters     | sku, name, description, size, release_date, picture          | sku, name, size, description, picture  | sku, name, size, description, picture  |
       | car      | Car         | sku, description                                             | sku, description                       | sku, description                       |
     And the following products:
