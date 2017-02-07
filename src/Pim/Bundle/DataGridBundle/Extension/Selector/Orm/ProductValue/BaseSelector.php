@@ -33,19 +33,20 @@ class BaseSelector implements SelectorInterface
             $path = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::DISPLAYED_ATTRIBUTES_KEY);
             $attributeIds = $configuration->offsetGetByPath($path);
 
-            $datasource->getQueryBuilder()
-                ->leftJoin(
-                    $rootAlias.'.values',
-                    'values',
-                    'WITH',
-                    'values.attribute IN (:attributeIds) '
-                    .'AND (values.locale = :dataLocale OR values.locale IS NULL) '
-                    .'AND (values.scope = :scopeCode OR values.scope IS NULL)'
-                )
-                ->addSelect('values')
-                ->leftJoin('values.attribute', 'attribute')
-                ->addSelect('attribute')
-                ->setParameter('attributeIds', $attributeIds);
+            // TODO: TIP-664: make the datagrid work again
+//            $datasource->getQueryBuilder()
+//                ->leftJoin(
+//                    $rootAlias.'.values',
+//                    'values',
+//                    'WITH',
+//                    'values.attribute IN (:attributeIds) '
+//                    .'AND (values.locale = :dataLocale OR values.locale IS NULL) '
+//                    .'AND (values.scope = :scopeCode OR values.scope IS NULL)'
+//                )
+//                ->addSelect('values')
+//                ->leftJoin('values.attribute', 'attribute')
+//                ->addSelect('attribute')
+//                ->setParameter('attributeIds', $attributeIds);
         }
         $this->applied = true;
     }

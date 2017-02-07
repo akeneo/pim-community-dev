@@ -91,3 +91,14 @@ fos_oauth_server:
     auth_code_class:          Pim\Bundle\ApiBundle\Entity\AuthCode
     service:
         user_provider:        pim_user.provider.user
+
+pim_reference_data:
+    fabrics:
+        class: Acme\Bundle\AppBundle\Entity\Fabric
+        type: multi
+    color:
+        class: Acme\Bundle\AppBundle\Entity\Color
+        type: simple
+
+akeneo_storage_utils:
+    mapping_overrides: ~
