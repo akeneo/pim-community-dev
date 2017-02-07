@@ -13,19 +13,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class FamilyTypeSpec extends ObjectBehavior
 {
     function let(
-        AddAttributeRequirementsSubscriber $requireSubscriber,
-        DisableFamilyFieldsSubscriber $disableSubscriber,
-        AddAttributeAsLabelSubscriber $attributeAsLabelSubscriber,
         FormBuilderInterface $builder
     ) {
         $builder->addEventSubscriber(Argument::any())->willReturn($builder);
         $builder->add(Argument::cetera())->willReturn($builder);
 
         $this->beConstructedWith(
-            $requireSubscriber,
-            $disableSubscriber,
-            $attributeAsLabelSubscriber,
-            'Pim\Bundle\CatalogBundle\Entity\Attribute',
             'Pim\Bundle\CatalogBundle\Entity\Family'
         );
     }
@@ -44,25 +37,12 @@ class FamilyTypeSpec extends ObjectBehavior
     {
         $this->buildForm($builder, []);
         $builder->add(Argument::cetera())->shouldHaveBeenCalled();
-        $builder->addEventSubscriber(Argument::cetera())->shouldHaveBeenCalled();
     }
 
     function it_adds_code_field_to_the_form($builder)
     {
         $this->buildForm($builder, []);
         $builder->add('code')->shouldHaveBeenCalled();
-    }
-
-    function it_adds_label_to_the_form($builder)
-    {
-        $this->buildForm($builder, []);
-        $builder->add('label', 'pim_translatable_field', Argument::any())->shouldHaveBeenCalled();
-    }
-
-    function it_adds_attribute_requirements_to_the_form($builder)
-    {
-        $this->buildForm($builder, []);
-        $builder->add('attributeRequirements', 'collection', Argument::any())->shouldHaveBeenCalled();
     }
 
     function it_sets_the_default_form_data_class(OptionsResolver $resolver)

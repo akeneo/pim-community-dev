@@ -3,12 +3,12 @@
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Pim\Component\Catalog\Updater\FamilyUpdater;
-use Pim\Component\Catalog\Updater\Remover\RemoverInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -131,7 +131,9 @@ class FamilyController
      */
     public function putAction(Request $request, $code)
     {
-        // todo-a2x implement
+        $family = $this->getFamily($code);
+
+        return $this->saveFamily($request, $family);
     }
 
     /**
@@ -144,7 +146,10 @@ class FamilyController
      */
     public function removeAction(Request $request, $code)
     {
-        // todo-a2x implement
+        $family = $this->getFamily($code);
+        $this->remover->remove($family);
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -154,7 +159,7 @@ class FamilyController
      *
      * @throws HttpExceptionInterface
      *
-     * @return object
+     * @return FamilyInterface|object
      */
     protected function getFamily($code)
     {

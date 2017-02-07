@@ -43,103 +43,30 @@ class FamilyController
     /** @var RouterInterface */
     protected $router;
 
-    /** @var FormFactoryInterface */
-    protected $formFactory;
-
-    /** @var EngineInterface */
-
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /** @var ManagerRegistry */
-    protected $doctrine;
-
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
-
     /** @var FamilyFactory */
     protected $familyFactory;
 
     /** @var HandlerInterface */
     protected $familyHandler;
 
-    /** @var Form */
-    protected $familyForm;
-
-    /** @var string */
-    protected $attributeClass;
-
-    /** @var SaverInterface */
-    protected $familySaver;
-
-    /** @var RemoverInterface */
-    protected $familyRemover;
-
-    /** @var string */
-    protected $familyClass;
-
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepo;
-
-    /** @var FamilyRepositoryInterface */
-    protected $familyRepository;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
     /**
      * @param Request                      $request
-
      * @param RouterInterface              $router
-     * @param FormFactoryInterface         $formFactory
-     * @param TranslatorInterface          $translator
-     * @param ManagerRegistry              $doctrine
-     * @param ChannelRepositoryInterface   $channelRepository
      * @param FamilyFactory                $familyFactory
      * @param HandlerInterface             $familyHandler
-     * @param Form                         $familyForm
-     * @param SaverInterface               $familySaver
-     * @param RemoverInterface             $familyRemover
-     * @param AttributeRepositoryInterface $attributeRepo
-     * @param FamilyRepositoryInterface    $familyRepository
-     * @param ValidatorInterface           $validator
-     * @param string                       $attributeClass
-     * @param string                       $familyClass
      */
     public function __construct(
         Request $request,
         RouterInterface $router,
-        FormFactoryInterface $formFactory,
-        TranslatorInterface $translator,
-        ManagerRegistry $doctrine,
-        ChannelRepositoryInterface $channelRepository,
         FamilyFactory $familyFactory,
         HandlerInterface $familyHandler,
-        Form $familyForm,
-        SaverInterface $familySaver,
-        RemoverInterface $familyRemover,
-        AttributeRepositoryInterface $attributeRepo,
-        FamilyRepositoryInterface $familyRepository,
-        ValidatorInterface $validator,
-        $attributeClass,
-        $familyClass
+        Form $familyForm
     ) {
         $this->request = $request;
         $this->router = $router;
-        $this->formFactory = $formFactory;
-        $this->translator = $translator;
-        $this->doctrine = $doctrine;
-        $this->channelRepository = $channelRepository;
         $this->familyFactory = $familyFactory;
         $this->familyHandler = $familyHandler;
         $this->familyForm = $familyForm;
-        $this->attributeClass = $attributeClass;
-        $this->familySaver = $familySaver;
-        $this->familyRemover = $familyRemover;
-        $this->familyClass = $familyClass;
-        $this->attributeRepo = $attributeRepo;
-        $this->familyRepository = $familyRepository;
-        $this->validator = $validator;
     }
 
     /**
@@ -161,7 +88,7 @@ class FamilyController
      * @Template
      * @AclAncestor("pim_enrich_family_create")
      *
-     * @return array
+     * @return Response|array
      */
     public function createAction()
     {

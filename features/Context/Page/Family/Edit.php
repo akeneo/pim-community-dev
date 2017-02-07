@@ -19,7 +19,7 @@ class Edit extends Form
     /**
      * @var string
      */
-    protected $path = '/configuration/family/{id}/edit';
+    protected $path = '/configuration/family/{code}/edit';
 
     /**
      * {@inheritdoc}
@@ -33,6 +33,14 @@ class Edit extends Form
             [
                 'Attributes'                 => ['css' => '.tab-pane.tab-attribute table'],
                 'Attribute as label choices' => ['css' => '#pim_enrich_family_form_attributeAsLabel'],
+                'Available attributes button'     => ['css' => '.add-attribute a.select2-choice'],
+                'Available attributes'            => [
+                    'css'        => '.add-attribute',
+                    'decorators' => ['Pim\Behat\Decorator\Common\AddAttributeDecorator']
+                ],
+                'Available attributes list'       => ['css' => '.add-attribute .select2-results'],
+                'Available attributes search'     => ['css' => '.add-attribute .select2-search input[type="text"]'],
+                'Select2 dropmask'                => ['css' => '.select2-drop-mask'],
             ]
         );
     }
@@ -148,8 +156,8 @@ class Edit extends Form
      */
     public function isAttributeRequired($attributeCode, $channelCode)
     {
-        $selector = '#pim_enrich_family_form_attributeRequirements_%s_%s_required';
-        $checkbox = $this->find('css', sprintf($selector, $attributeCode, $channelCode));
+        $selector = '.attribute-requirement [data-channel="%s"][data-attribute="%s"]';
+        $checkbox = $this->find('css', sprintf($selector, $channelCode, $attributeCode));
         if (!$checkbox) {
             throw new \RuntimeException(
                 sprintf(
@@ -191,20 +199,18 @@ class Edit extends Form
      */
     protected function getAttributeRequirementCell($attribute, $channel)
     {
-        $attributesTable = $this->getElement('Attributes');
-        $columnIdx       = 0;
-
-        foreach ($attributesTable->findAll('css', 'thead th') as $index => $header) {
-            if ($header->getText() === strtoupper($channel)) {
-                $columnIdx = $index;
-                break;
+        $columnIdx = $this->spin(function () use ($channel) {
+            $attributesTable = $this->getElement('Attributes');
+            foreach ($attributesTable->findAll('css', 'thead th') as $index => $header) {
+                if ($header->getText() === strtoupper($channel)) {
+                    return $index;
+                }
             }
-        }
 
-        if (0 === $columnIdx) {
-            throw new \Exception(sprintf('An error occured when trying to get the "%s" header', $channel));
-        }
+            return false;
+        }, "You're fired");
 
+        $attributesTable = $this->getElement('Attributes');
         $cells = $attributesTable->findAll('css', sprintf('tbody tr:contains("%s") td', $attribute));
 
         if (count($cells) < $columnIdx) {
@@ -212,5 +218,68 @@ class Edit extends Form
         }
 
         return $cells[$columnIdx];
+    }
+
+    /**
+     * @param string $attribute
+     * @param string $group
+     *
+     * @return NodeElement|null
+     */
+    public function findAvailableAttributeInGroup($attribute, $group)
+    {
+        $searchSelector = $this->elements['Available attributes search']['css'];
+
+        $selector = $this->spin(function () {
+            return $this->find('css', $this->elements['Available attributes button']['css']);
+        }, sprintf('Cannot find element "%s"', $this->elements['Available attributes button']['css']));
+
+        // Open select2
+        $selector->click();
+
+        $list = $this->spin(function () {
+            return $this->getElement('Available attributes list');
+        }, 'Cannot find the attribute list element');
+
+        // We NEED to fill the search field with jQuery to avoid the TAB key press (because of mink),
+        // because select2 selects the first element on TAB key press.
+        $this->getSession()->evaluateScript(
+            "jQuery('" . $searchSelector . "').val('" . $attribute . "').trigger('input');"
+        );
+
+        $groupLabels = $this->spin(function () use ($list, $group) {
+            return $list->findAll('css', sprintf('li .group-label:contains("%s"), li.select2-no-results', $group));
+        }, 'Cannot find element in the attribute list');
+
+        // Maybe a "No matches found"
+        $firstResult = $groupLabels[0];
+        $text = $firstResult->getText();
+        $results = [];
+
+        if ('No matches found' !== $text) {
+            foreach ($groupLabels as $groupLabel) {
+                $li = $groupLabel->getParent();
+                $results[$li->find('css', '.attribute-label')->getText()] = $li;
+            }
+        }
+
+        // Close select2
+        $this->find('css', '#select2-drop-mask')->click();
+
+        return isset($results[$attribute]) ? $results[$attribute] : null;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * TODO: Used with the new 'add-attributes' module. The method should be in the Form parent
+     * when legacy stuff is removed.
+     */
+    public function addAvailableAttributes(array $attributes = [])
+    {
+        $availableAttribute = $this->spin(function () {
+            return $this->getElement('Available attributes');
+        }, 'Cannot find the add attribute element');
+        $availableAttribute->addAttributes($attributes);
     }
 }
