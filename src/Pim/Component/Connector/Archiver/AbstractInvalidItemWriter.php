@@ -98,7 +98,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
             $currentLineNumber++;
 
             if ($invalidLineNumbers->contains($currentLineNumber)) {
-                $itemsToWrite[] = array_combine($headers, $readItem);
+                $itemsToWrite[] = array_combine($headers, array_slice($readItem, 0, count($headers)));
                 $invalidLineNumbers->removeElement($currentLineNumber);
             }
 

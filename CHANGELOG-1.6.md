@@ -4,6 +4,10 @@
 
 - PIM-6149: Remove version number displayed on login page
 
+## Bug fixes
+
+- PIM-6152: Fix fatal error on import in case of wrong column count
+
 # 1.6.10 (2017-02-02)
 
 ## Bug fixes
