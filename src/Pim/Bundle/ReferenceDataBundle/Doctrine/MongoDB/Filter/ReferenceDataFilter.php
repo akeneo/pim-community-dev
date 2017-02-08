@@ -62,7 +62,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'number');
 
-        if (Operators::IS_EMPTY !== $operator) {
+        if (!in_array($operator, [Operators::IS_EMPTY, Operators::IS_NOT_EMPTY])) {
             $field = $options['field'];
             $this->checkValue($field, $value);
 
@@ -93,6 +93,9 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     {
         if (Operators::IS_EMPTY === $operator) {
             $expr = $this->qb->expr()->field($field)->exists(false);
+            $this->qb->addAnd($expr);
+        } elseif (Operators::IS_NOT_EMPTY === $operator) {
+            $expr = $this->qb->expr()->field($field)->exists(true);
             $this->qb->addAnd($expr);
         } else {
             $value = array_map('intval', $value);

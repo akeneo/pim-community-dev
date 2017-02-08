@@ -25,6 +25,7 @@
 - Add CaseBox measure family and conversions, cheers @gplanchat!
 - Add history support for the channel conversion units.
 - Add warning count on export execution grid and dashboard
+- Add not empty filter operator on product grid and product export builder
 
 ## Technical improvements
 

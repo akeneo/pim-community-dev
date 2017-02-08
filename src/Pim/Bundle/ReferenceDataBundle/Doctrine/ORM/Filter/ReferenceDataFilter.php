@@ -78,8 +78,10 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         }
 
         $this->checkLocaleAndScope($attribute, $locale, $scope);
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
+        $joinCondition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
 
-        if (Operators::IS_EMPTY !== $operator) {
+        if (!in_array($operator, [Operators::IS_EMPTY, Operators::IS_NOT_EMPTY])) {
             $field = $options['field'];
             $this->checkValue($field, $value);
 
@@ -87,79 +89,33 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
                 $value = $this->valueCodesToIds($attribute, $value);
             }
 
-            $this->addNonEmptyFilter($attribute, $operator, $value, $locale, $scope);
+            $join = 'innerJoin';
         } else {
-            $this->addEmptyFilter($attribute, $locale, $scope);
+            $join = 'leftJoin';
+            $value = null;
+        }
+
+        $this->qb->$join(
+            current($this->qb->getRootAliases()) . '.values',
+            $joinAlias,
+            'WITH',
+            $joinCondition
+        );
+
+        $referenceDataName = $attribute->getReferenceDataName();
+        $joinAliasOpt = $this->getUniqueAlias('reference_data' . $referenceDataName);
+        $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
+
+        $whereCondition = $this->prepareCriteriaCondition($backendField, $operator, $value);
+
+        if (!in_array($operator, [Operators::IS_EMPTY, Operators::IS_NOT_EMPTY])) {
+            $this->qb->$join($joinAlias . '.' . $referenceDataName, $joinAliasOpt, 'WITH', $whereCondition);
+        } else {
+            $this->qb->$join($joinAlias . '.' . $referenceDataName, $joinAliasOpt);
+            $this->qb->andWhere($whereCondition);
         }
 
         return $this;
-    }
-
-    /**
-     * Add empty filter to the qb
-     *
-     * @param AttributeInterface $attribute
-     * @param string             $locale
-     * @param string             $scope
-     */
-    protected function addEmptyFilter(
-        AttributeInterface $attribute,
-        $locale = null,
-        $scope = null
-    ) {
-        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
-
-        // inner join to value
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
-
-        $this->qb->leftJoin(
-            current($this->qb->getRootAliases()) . '.values',
-            $joinAlias,
-            'WITH',
-            $condition
-        );
-
-        $referenceDataName = $attribute->getReferenceDataName();
-        $joinAliasOpt = $this->getUniqueAlias('reference_data' . $referenceDataName);
-        $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
-        $condition = $this->prepareCriteriaCondition($backendField, Operators::IS_EMPTY, null);
-        $this->qb->leftJoin($joinAlias . '.' . $referenceDataName, $joinAliasOpt);
-        $this->qb->andWhere($condition);
-    }
-
-    /**
-     * Add non empty filter to the query
-     *
-     * @param AttributeInterface $attribute
-     * @param string             $operator
-     * @param string             $value
-     * @param string             $locale
-     * @param string             $scope
-     */
-    protected function addNonEmptyFilter(
-        AttributeInterface $attribute,
-        $operator,
-        $value,
-        $locale = null,
-        $scope = null
-    ) {
-        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
-
-        // inner join to value
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
-
-        $this->qb->innerJoin(
-            current($this->qb->getRootAliases()) . '.values',
-            $joinAlias,
-            'WITH',
-            $condition
-        );
-
-        $referenceDataName = $attribute->getReferenceDataName();
-        $joinAliasOpt = $this->getUniqueAlias('reference_data' . $referenceDataName);
-        $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
-        $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
-        $this->qb->innerJoin($joinAlias . '.' . $referenceDataName, $joinAliasOpt, 'WITH', $condition);
     }
 
     /**

@@ -145,14 +145,14 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 $value = '%' . $value . '%';
                 break;
             case Operators::DOES_NOT_CONTAIN:
-                $operator = Operators::NOT_LIKE;
+                $operator = Operators::IS_NOT_LIKE;
                 $value = '%' . $value . '%';
                 break;
             case Operators::EQUALS:
                 $operator = Operators::IS_LIKE;
                 break;
             case Operators::NOT_EQUAL:
-                $operator = Operators::NOT_LIKE;
+                $operator = Operators::IS_NOT_LIKE;
                 break;
         }
 

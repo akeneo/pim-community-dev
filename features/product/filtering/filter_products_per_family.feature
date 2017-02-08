@@ -27,11 +27,12 @@ Feature: Filter products per family
     And the grid should contain 7 elements
     Then I should see the filter family
     And I should be able to use the following filters:
-      | filter | operator | value            | result                               |
-      | family | in list  | computers        | PC and Laptop                        |
-      | family | in list  | hi_fi, computers | Amplifier, CD changer, PC and Laptop |
-      | family | in list  | washing_machines | Whirlpool and Electrolux             |
-      | family | is empty |                  | Mug                                  |
+      | filter | operator     | value            | result                                                      |
+      | family | in list      | computers        | PC and Laptop                                               |
+      | family | in list      | hi_fi, computers | Amplifier, CD changer, PC and Laptop                        |
+      | family | in list      | washing_machines | Whirlpool and Electrolux                                    |
+      | family | is empty     |                  | Mug                                                         |
+      | family | is not empty |                  | PC, Amplifier, CD changer, Whirlpool, Electrolux and Laptop |
 
   Scenario: Successfully filter 20 first families on search input
     Given the following families:
