@@ -24,7 +24,10 @@ define([
                     return FetcherRegistry.getFetcher('family')
                         .fetch(entity.family)
                         .then(function (family) {
-                            return _.union(_.keys(entity.values), family.attributes);
+                            return _.union(
+                                _.keys(entity.values),
+                                _.pluck(family.attributes, 'code')
+                            );
                         });
                 }
             },
@@ -67,7 +70,7 @@ define([
                     promise.resolve(false);
                 } else if (undefined !== product.family && null !== product.family) {
                     promise = FetcherRegistry.getFetcher('family').fetch(product.family).then(function (family) {
-                        return !_.contains(family.attributes, attribute.code);
+                        return !_.contains(_.pluck(family.attributes, 'code'), attribute.code);
                     });
                 } else {
                     promise.resolve(true);

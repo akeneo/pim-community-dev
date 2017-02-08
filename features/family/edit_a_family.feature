@@ -33,6 +33,7 @@ Feature: Edit a family
     When I fill in the following information:
       | Attribute used as label | String |
     And I save the family
+    And I should not see the text "There are unsaved changes."
     When I am on the products page
     And I should see "Elixir"
 
@@ -80,5 +81,5 @@ Feature: Edit a family
     When I am on the "sneakers" family page
     And I visit the "Attributes" tab
     Then attribute "name" should be required in channels mobile and tablet
-    When I switch the attribute "Name" requirement in channel "Tablet"
+    When I switch the attribute "name" requirement in channel "tablet"
     Then attribute "name" should be required in channels mobile and tablet

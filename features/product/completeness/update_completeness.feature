@@ -47,9 +47,10 @@ Feature: Display the completeness of a product
   Scenario: Update completeness when family requirements change
     Given I am on the "sneakers" family page
     And I visit the "Attributes" tab
-    And I switch the attribute "Rating" requirement in channel "Mobile"
+    And I switch the attribute "rating" requirement in channel "mobile"
     And I save the family
     And I should see "Family successfully updated"
+    And I should not see the text "There are unsaved changes."
     And I am on the "sneakers" product page
     When I open the "Completeness" panel
     Then I should see the completeness:
