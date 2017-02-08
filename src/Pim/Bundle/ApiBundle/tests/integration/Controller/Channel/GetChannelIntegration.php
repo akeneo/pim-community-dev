@@ -15,12 +15,12 @@ class GetChannelIntegration extends ApiTestCase
         $client->request('GET', 'api/rest/v1/channels/ecommerce');
 
         $standardChannel = [
-            'code'       => 'ecommerce',
+            'code' => 'ecommerce',
             'currencies' => ['USD', 'EUR'],
-            'locales'    => ['en_US'],
+            'locales' => ['en_US'],
             'category_tree' => 'master',
             'conversion_units' => [],
-            'labels'     => [
+            'labels' => [
                 'en_US' => 'Ecommerce',
                 'fr_FR' => 'Ecommerce',
             ],
