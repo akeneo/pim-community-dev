@@ -16,7 +16,7 @@ Feature: Import proposals with decimals
       | SKU-006 | summer_collection |
       | SKU-007 | summer_collection |
     And the following attributes:
-      | code           | label          | type   | decimals_allowed | metric_family | default metric unit | useable_as_grid_filter |
+      | code           | label          | type   | decimals_allowed | metric_family | default_metric_unit | useable_as_grid_filter |
       | decimal_length | Decimal_length | metric | yes              | Length        | CENTIMETER          | yes                    |
     And I am logged in as "Julia"
 
