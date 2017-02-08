@@ -13,3 +13,6 @@ pim_api.acl_group.category:
 pim_api.acl_group.family:
     order: 20
     permission_group: api
+pim_api.acl_group.channel:
+    order: 20
+    permission_group: api
