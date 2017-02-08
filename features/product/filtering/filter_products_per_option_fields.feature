@@ -53,3 +53,12 @@ Feature: Filter products per option
     And I filter by "color" with operator "in list" and value "Black, White"
     And I should see entities Shoes
     Then I should see options "[Black], [White]" in filter "color"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6150
+  Scenario: Successfully keep the option filter on page reload
+    Given I am on the products page
+    And the grid should contain 3 elements
+    When I show the filter "color"
+    And I filter by "color" with operator "in list" and value "Black, White"
+    And I reload the page
+    Then I should see the text "Color: \"[Black], [White]\""
