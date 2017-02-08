@@ -79,15 +79,17 @@ class ProjectDueDateNotifier implements ProjectDueDateNotifierInterface
                 ];
             $routeParams = ['identifier' => $project->getCode()];
 
-
-
             $message = $user->getUsername() === $project->getOwner()->getUsername()
                 ? 'activity_manager.notification.due_date.owner'
                 : 'activity_manager.notification.due_date.contributor';
 
             $notification = $this->projectNotificationFactory->create($routeParams, $parameters, $context, $message);
             $this->notifier->notify($notification, [$user]);
+
+            return true;
         }
+
+        return false;
     }
 
     /**
