@@ -12,12 +12,12 @@ class ChannelNormalizerIntegration extends AbstractNormalizerTestCase
     public function testChannelNormalization()
     {
         $expected = [
-            'code' => 'ecommerce',
-            'currencies' => ['USD', 'EUR'],
-            'locales' => ['en_US'],
-            'category_tree' => 'master',
+            'code'             => 'ecommerce',
+            'currencies'       => ['USD', 'EUR'],
+            'locales'          => ['en_US'],
+            'category_tree'    => 'master',
             'conversion_units' => [],
-            'labels' => [
+            'labels'           => [
                 'en_US' => 'Ecommerce',
                 'fr_FR' => 'Ecommerce',
             ],
