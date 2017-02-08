@@ -281,8 +281,7 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should see the text "skipped 3"
     And I should see the text "conditions[0]: Attribute or field \"weather_conditions\" expects an array as data, \"string\" given."
-    And I should see the text "actions[0]: Attribute or field \"weather_conditions\" expects an array as data, \"string\" given."
-    And I should see the text "actions[0]: Attribute or field \"weather_conditions\" expects an array as data, \"string\" given."
+    And I should see the text "actions[0]: Property \"weather_conditions\" expects an array as data, \"string\" given."
     When I am on the "weather_conditions" attribute page
     And I visit the "Rules" tab
     Then I should see the text "dry"
@@ -390,7 +389,7 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should see the text "skipped 2"
     And I should see the text "conditions[0]: Attribute or field \"price\" expects an array as data, \"string\" given."
-    And I should see the text "actions[0]: Attribute or field \"price\" expects an array as data, \"string\" given."
+    And I should see the text "actions[0]: Property \"price\" expects an array as data, \"string\" given."
     When I am on the "price" attribute page
     And I visit the "Rules" tab
     Then I should see the text "€3.00"
@@ -441,7 +440,7 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should see the text "skipped 2"
     And I should see the text "conditions[0]: Attribute or field \"length\" expects an array as data, \"string\" given."
-    And I should see the text "actions[0]: Attribute or field \"length\" expects an array as data, \"string\" given."
+    And I should see the text "actions[0]: Property \"length\" expects an array as data, \"string\" given."
     When I am on the "length" attribute page
     And I visit the "Rules" tab
     Then I should see the text "3"
@@ -598,7 +597,7 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should see the text "skipped 2"
     And I should see the text "conditions[0]: Attribute or field \"release_date\" expects a string with the format yyyy-mm-dd as data, \"invalid\" given."
-    And I should see the text "actions[0]: Attribute or field \"release_date\" expects a string with the format yyyy-mm-dd as data, \"string\" given."
+    And I should see the text "actions[0]: Property \"release_date\" expects a string with the format \"yyyy-mm-dd\" as data, \"invalid\" given."
     When I am on the "release_date" attribute page
     And I visit the "Rules" tab
     Then I should see the text "01/01/1970"
@@ -649,7 +648,7 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should see the text "skipped 2"
     And I should see the text "conditions[0]: Attribute or field \"side_view\" expects a string as data, \"array\" given.: PimEnterprise\Component\CatalogRule\Model\ProductCondition"
-    And I should see the text "actions[0]: Attribute or field \"side_view\" expects a valid pathname as data, \"invalid/path/to/image\" given.: PimEnterprise\Component\CatalogRule\Model\ProductSetAction"
+    And I should see the text "actions[0]: Property \"side_view\" expects a valid pathname as data, \"invalid/path/to/image\" given.: PimEnterprise\Component\CatalogRule\Model\ProductSetAction"
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
     Then I should see the text "SNKRS-1R"
@@ -699,7 +698,7 @@ Feature: Import rules
     Then I should see the text "skipped 2"
     And I should see the text "conditions[0]: The key \"value\" is missing or empty."
     And I should see the text "conditions[0]: Attribute or field \"side_view\" expects a string as data"
-    And I should see the text "actions[0]: Attribute or field \"side_view\" expects a string as data, \"array\" given"
+    And I should see the text "actions[0]: Property \"side_view\" expects a string as data, \"array\" given"
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
     Then I should see the text "SNKRS-1R"
