@@ -140,7 +140,7 @@ pim_enrich:
       error:
         upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
       meta:
-        created: Angelegt
+        created: Erstellt
         created_by: durch
         updated_by: durch
         updated: Letzte Aktualisierung
@@ -200,7 +200,7 @@ pim_enrich:
             none_exist: Es gibt keine Verbindungstypen.
             show_products: Produkte anzeigen
             show_groups: Gruppen anzeigen
-            number_of_associations: '{{ productCount }} Produkte und {{ groupCount }} Gruppen'
+            number_of_associations: "{{ productCount }} Produkte und {{ groupCount }} Gruppen"
         attributes:
           title: Attribute
           btn:
@@ -209,7 +209,7 @@ pim_enrich:
           info:
             search_attributes: Suche
             no_available_attributes: Es können keine weiteren Attribute hinzugefügt werden
-            attributes_selected: '{{ attributeCount }} Attribute ausgewählt'
+            attributes_selected: "{{ attributeCount }} Attribute ausgewählt"
         categories:
           title: Kategorien
       panel:

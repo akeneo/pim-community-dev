@@ -1,0 +1,26 @@
+btn:
+  post: 添加新评论
+  reply: 回复
+  cancel: 取消
+confirmation:
+  remove:
+    comment: 您确定要删除此评论吗？
+flash:
+  comment:
+    create:
+      success: 您的评论已经成功创建。
+      error: 创建评论时发生错误。
+    delete:
+      success: 已成功删除您的评论。
+      error: 删除评论时发生错误。
+    reply:
+      success: 您的回复已经成功创建。
+      error: 创建回复时出错。
+comment:
+  index:
+    empty: 当前无评论
+  placeholder:
+    new: 撰写一个新评论...
+    reply: 回复此评论...
+pim_comment:
+  product.panel.comment.title: 评论

@@ -200,7 +200,7 @@ pim_enrich:
             none_exist: Титпы ассоциаций отсутствуют.
             show_products: Показать продукты
             show_groups: Показать группы
-            number_of_associations: '{{ productCount }} продуктов и {{ groupCount }} групп'
+            number_of_associations: "{{ productCount }} продуктов и {{ groupCount }} групп"
         attributes:
           title: Атрибуты
           btn:
@@ -209,7 +209,7 @@ pim_enrich:
           info:
             search_attributes: Поиск
             no_available_attributes: Нет больше атрибутов для добавления
-            attributes_selected: Выбран(o) {{ attributeCount }} атрибут(ов)
+            attributes_selected: "Выбран(o) {{ attributeCount }} атрибут(ов)"
         categories:
           title: Категории
       panel:
