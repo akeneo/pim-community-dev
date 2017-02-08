@@ -1212,6 +1212,87 @@ class SuccessListProductIntegration extends AbstractProductTestCase
         $this->assertResponse($client->getResponse(), $expected);
     }
 
+    public function testListProductsWithSearch()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $search = '{"a_metric":[{"operator":">","value":{"amount":"9","unit":"KILOWATT"}}]}';
+        $client->request('GET', 'api/rest/v1/products?search=' . $search);
+        $expected = [
+            '_links'       => [
+                'self'  => ['href' => 'http://localhost/api/rest/v1/products?search=' . urlencode($search) . '&page=1&limit=10'],
+                'first' => ['href' => 'http://localhost/api/rest/v1/products?search=' . urlencode($search) . '&page=1&limit=10'],
+                'last'  => ['href' => 'http://localhost/api/rest/v1/products?search=' . urlencode($search) . '&page=1&limit=10'],
+            ],
+            'current_page' => 1,
+            'pages_count'  => 1,
+            'items_count'  => 1,
+            '_embedded'    => [
+                'items' => [
+                    [
+                        '_links' => [
+                            'self' => ['href' => 'http://localhost/api/rest/v1/products/simple']
+                        ],
+                        'identifier'    => 'simple',
+                        'family'        => null,
+                        'groups'        => [],
+                        'variant_group' => null,
+                        'categories'    => ['master'],
+                        'enabled'       => true,
+                        'values'        => [
+                            'a_metric' => [
+                                [
+                                    'locale' => null,
+                                    'scope'  => null,
+                                    'data'   => [
+                                        'amount' => '10.0000',
+                                        'unit'   => 'KILOWATT'
+                                    ]
+                                ]
+                            ],
+                            'a_text' => [
+                                [
+                                    'locale' => null,
+                                    'scope'  => null,
+                                    'data'   => 'Text'
+                                ]
+                            ]
+                        ],
+                        'created'       => '2017-01-23T11:44:25+01:00',
+                        'updated'       => '2017-01-23T11:44:25+01:00',
+                        'associations'  => [],
+                    ]
+                ]
+            ]
+        ];
+
+        $this->assertResponse($client->getResponse(), $expected);
+    }
+
+    public function testListProductsWithMultiplePQBFilters()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $search = '{"categories":[{"operator":"IN", "value":["categoryB"]}], "a_yes_no":[{"operator":"=","value":true}]}';
+        $client->request('GET', 'api/rest/v1/products?search=' . $search);
+        $expected = [
+            '_links'       => [
+                'self'  => ['href' => 'http://localhost/api/rest/v1/products?search=' . urlencode($search) . '&page=1&limit=10'],
+                'first' => ['href' => 'http://localhost/api/rest/v1/products?search=' . urlencode($search) . '&page=1&limit=10'],
+                'last'  => ['href' => 'http://localhost/api/rest/v1/products?search=' . urlencode($search) . '&page=1&limit=10'],
+            ],
+            'current_page' => 1,
+            'pages_count'  => 1,
+            'items_count'  => 0,
+            '_embedded'    => [
+                'items' => []
+            ]
+        ];
+
+        $this->assertResponse($client->getResponse(), $expected);
+    }
+
+
     /**
      * @param Response $response
      * @param array    $expected
