@@ -59,10 +59,9 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
      */
     public function read()
     {
-        $filePath = null;
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $filePath = $jobParameters->get('filePath');
         if (null === $this->fileIterator) {
-            $jobParameters = $this->stepExecution->getJobParameters();
-            $filePath = $jobParameters->get('filePath');
             $delimiter = $jobParameters->get('delimiter');
             $enclosure = $jobParameters->get('enclosure');
             $defaultOptions = [
