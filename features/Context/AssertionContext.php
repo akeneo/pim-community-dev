@@ -42,7 +42,7 @@ class AssertionContext extends RawMinkContext
     /**
      * Checks, that page does not contain specified text.
      *
-     * @Then /^I should not see the text "([^"]*)"$/
+     * @Then /^I should not see the text "(?P<text>(?:[^"]|\\")*)"$/
      */
     public function assertPageNotContainsText($text)
     {
