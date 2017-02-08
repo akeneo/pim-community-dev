@@ -25,15 +25,16 @@ class FamilyAttributeAsLabelValidator extends ConstraintValidator
      */
     public function validate($family, Constraint $constraint)
     {
-        if ($family instanceof FamilyInterface) {
-            if (!$this->isAttributeAsLabelPresent($family)) {
-                $this->context->buildViolation(
-                    $constraint->messageAttribute, ['%attribute%' => $family->getAttributeAsLabel()->getCode()]
-                )->addViolation();
-            }
-            if (!$this->isAttributeAsLabelTypeValid($family)) {
-                $this->context->buildViolation($constraint->messageAttributeType)->addViolation();
-            }
+        if (!($family instanceof FamilyInterface)) {
+            return;
+        }
+
+        if (!$this->doesAttributeAsLabelBelongToFamily($family)) {
+            $this->context->buildViolation($constraint->messageAttribute)->addViolation();
+        }
+
+        if (!$this->isAttributeAsLabelTypeValid($family)) {
+            $this->context->buildViolation($constraint->messageAttributeType)->addViolation();
         }
     }
 
@@ -42,16 +43,9 @@ class FamilyAttributeAsLabelValidator extends ConstraintValidator
      *
      * @return bool
      */
-    protected function isAttributeAsLabelPresent(FamilyInterface $family)
+    protected function doesAttributeAsLabelBelongToFamily(FamilyInterface $family)
     {
-        $attributeAsLabelCode = $family->getAttributeAsLabel()->getCode();
-        foreach ($family->getAttributeCodes() as $attributeCode) {
-            if ($attributeCode === $attributeAsLabelCode) {
-                return true;
-            }
-        }
-
-        return false;
+        return in_array($family->getAttributeAsLabel()->getCode(), $family->getAttributeCodes());
     }
 
     /**

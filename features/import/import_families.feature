@@ -114,7 +114,7 @@ Feature: Import families
     And I launch the import job
     And I wait for the "csv_footwear_family_import" job to finish
     Then I should see the text "Skipped 1"
-    And I should see the text "The attribute \"name\" does not belong to the family, thus it cannot be used as an \"attribute as label\" for this family: Wrong Family"
+    And I should see the text "Property 'attribute_as_label' must belong to the family: Wrong Family"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6125
   Scenario: Successfully raise an error when attribute_as_label is not an identifier nor a text type
@@ -133,5 +133,5 @@ Feature: Import families
     And I launch the import job
     And I wait for the "csv_footwear_family_import" job to finish
     Then I should see the text "Skipped 2"
-    And I should see the text "Only text and identifier attribute types can be used as \"attribute as label\" for this family: Wrong Family1"
-    And I should see the text "Only text and identifier attribute types can be used as \"attribute as label\" for this family: Wrong Family2"
+    And I should see the text "Property 'attribute_as_label' only supports 'pim_catalog_text' and 'pim_catalog_identifier' attribute types for the family: Wrong Family1"
+    And I should see the text "Property 'attribute_as_label' only supports 'pim_catalog_text' and 'pim_catalog_identifier' attribute types for the family: Wrong Family2"

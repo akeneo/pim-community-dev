@@ -49,9 +49,7 @@ class FamilyAttributeAsLabelValidatorSpec extends ObjectBehavior
         $family->getAttributeCodes()->willReturn(['anotherAttribute']);
         $attributeAsLabel->getAttributeType()->willReturn('pim_catalog_text');
 
-        $context->buildViolation(
-            Argument::any(), ['%attribute%' => 'attributeAsLabelCode']
-        )->willReturn($violation)->shouldBeCalled();
+        $context->buildViolation(Argument::any())->willReturn($violation)->shouldBeCalled();
 
         $this->validate($family, $minimumRequirements);
     }

@@ -11,16 +11,14 @@ use Symfony\Component\Validator\Constraint;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class FamilyAttributeAsLabel extends Constraint
 {
     /** @var string */
-    public $messageAttribute = 'The attribute "%attribute%" does not belong to the family, thus it cannot be used as '.
-        'an "attribute as label" for this family';
+    public $messageAttribute = "Property 'attribute_as_label' must belong to the family";
 
     /** @var string */
-    public $messageAttributeType = 'Only text and identifier attribute types can be used as "attribute as label" '.
-        'for this family';
+    public $messageAttributeType = "Property 'attribute_as_label' only supports 'pim_catalog_text' and ".
+        "'pim_catalog_identifier' attribute types for the family";
 
     /**
      * {@inheritdoc}
