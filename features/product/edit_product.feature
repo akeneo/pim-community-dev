@@ -13,7 +13,7 @@ Feature: Edit a product
       | name        | text     | no          |                 | Name        | no       |
       | other_name  | text     | yes         |                 | Other Name  | yes      |
     And the following attributes:
-      | code        | label      | type   | metric family | default metric unit |
+      | code        | label      | type   | metric_family | default_metric_unit |
       | length      | Shoes size | metric | Length        | CENTIMETER          |
     And the following products:
       | sku    |

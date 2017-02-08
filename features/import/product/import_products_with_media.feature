@@ -7,7 +7,7 @@ Feature: Import media with products
   Background:
     Given the "footwear" catalog configuration
     And the following attributes:
-      | label       | type  | allowed extensions | max file size |
+      | label       | type  | allowed_extensions | max_file_size |
       | Front view  | image | gif, jpg           | 1             |
       | User manual | file  | txt, pdf           | 1             |
       | Warranty    | file  | txt, pdf           | 1             |

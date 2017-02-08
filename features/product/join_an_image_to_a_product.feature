@@ -8,7 +8,7 @@ Feature: Join an image to a product
     Given the "default" catalog configuration
     And a "Car" product
     And the following attribute:
-      | label  | type  | allowed extensions |
+      | label  | type  | allowed_extensions |
       | Visual | image | jpg,gif            |
     And the "Car" product has the "visual" attribute
     And I am logged in as "Mary"
