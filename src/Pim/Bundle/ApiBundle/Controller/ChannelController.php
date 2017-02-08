@@ -72,9 +72,9 @@ class ChannelController
     /**
      * @param Request $request
      *
+     * @throws UnprocessableEntityHttpException
      * @return JsonResponse
      *
-     * @throws UnprocessableEntityHttpException
      */
     public function listAction(Request $request)
     {
