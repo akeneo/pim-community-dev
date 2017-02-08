@@ -12,7 +12,7 @@
 
 ## BC breaks
 
-- Add `applyCategoriesFilter` to `PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface` 
+- Add `applyCategoriesFilter` to `PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface`
 - Replace `Pim\Component\Catalog\Query\Filter\FieldFilterInterface` in `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid\AssetCategoryAccessSubscriber` by `PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface`
 - Remove `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter` of `PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter\ProductAssetFilterUtility`
 - Remove WebServiceBundle
@@ -33,3 +33,4 @@
 - Remove `PimEnterprise\Bundle\EnrichBundle\Controller\ChannelTransformationController.php`
 - Remove class `PimEnterprise\Bundle\EnrichBundle\Form\View\ViewUpdater\DraftViewUpdater` and associated service `pimee_enrich.form.view.view_updater.draft`
 - Remove class `PimEnterprise\Bundle\EnrichBundle\Form\View\ViewUpdater\SmartViewUpdater` and associated service `pimee_enrich.form.view.view_updater.smart`
+- Change constructor of `PimEnterprise\Bundle\ProductAssetBundle\Workflow\Presenter\AssetsCollectionPresenter` to add `Symfony\Component\Routing\RouterInterface`.

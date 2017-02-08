@@ -6,5 +6,6 @@ services:
         class: '%pimee_product_asset.workflow.presenter.assets_collection.class%'
         arguments:
             - '@pimee_product_asset.repository.asset'
+            - '@router'
         tags:
             - { name: pimee_workflow.presenter }
