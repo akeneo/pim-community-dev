@@ -29,12 +29,12 @@ class ListChannelIntegration extends ApiTestCase
                         '_links' => [
                             'self' => ['href' => 'http://localhost/api/rest/v1/channels/ecommerce']
                         ],
-                        'code'       => 'ecommerce',
+                        'code' => 'ecommerce',
                         'currencies' => ['USD', 'EUR'],
-                        'locales'    => ['en_US'],
+                        'locales' => ['en_US'],
                         'category_tree' => 'master',
                         'conversion_units' => [],
-                        'labels'     => [
+                        'labels' => [
                             'en_US' => 'Ecommerce',
                             'fr_FR' => 'Ecommerce',
                         ],
@@ -43,12 +43,12 @@ class ListChannelIntegration extends ApiTestCase
                         '_links' => [
                             'self' => ['href' => 'http://localhost/api/rest/v1/channels/ecommerce_china']
                         ],
-                        'code'       => 'ecommerce_china',
+                        'code' => 'ecommerce_china',
                         'currencies' => ['CNY'],
-                        'locales'    => ['en_US', 'zh_CN'],
+                        'locales' => ['en_US', 'zh_CN'],
                         'category_tree' => 'master_china',
                         'conversion_units' => [],
-                        'labels'     => [
+                        'labels' => [
                             'en_US' => 'Ecommerce china',
                             'fr_FR' => 'Ecommerce chine',
                         ],
@@ -57,12 +57,12 @@ class ListChannelIntegration extends ApiTestCase
                         '_links' => [
                             'self' => ['href' => 'http://localhost/api/rest/v1/channels/tablet']
                         ],
-                        'code'       => 'tablet',
+                        'code' => 'tablet',
                         'currencies' => ['USD', 'EUR'],
-                        'locales'    => ['de_DE', 'en_US', 'fr_FR'],
+                        'locales' => ['de_DE', 'en_US', 'fr_FR'],
                         'category_tree' => 'master',
                         'conversion_units' => [],
-                        'labels'     => [
+                        'labels' => [
                             'en_US' => 'Tablet',
                             'fr_FR' => 'Tablette',
                         ],
@@ -84,15 +84,15 @@ class ListChannelIntegration extends ApiTestCase
         $client->request('GET', 'api/rest/v1/channels?page=2&limit=10');
 
         $standardChannels = [
-            '_links'       => [
+            '_links' => [
                 'self'  => ['href' => 'http://localhost/api/rest/v1/channels?page=2&limit=10'],
                 'first' => ['href' => 'http://localhost/api/rest/v1/channels?page=1&limit=10'],
                 'last'  => ['href' => 'http://localhost/api/rest/v1/channels?page=1&limit=10'],
             ],
             'current_page' => 2,
-            'pages_count'  => 1,
-            'items_count'  => 3,
-            '_embedded'    => [
+            'pages_count' => 1,
+            'items_count' => 3,
+            '_embedded' => [
                 'items' => []
             ]
         ];
