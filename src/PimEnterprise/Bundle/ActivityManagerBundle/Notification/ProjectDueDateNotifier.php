@@ -18,7 +18,7 @@ use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Notify User for the due date.
+ * Notify User when a project due date is close;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
@@ -34,21 +34,24 @@ class ProjectDueDateNotifier implements ProjectDueDateNotifierInterface
     protected $datePresenter;
 
     /** @var array */
-    protected $reminders = [7, 3, 1];
+    protected $reminders;
 
     /**
      * @param ProjectNotificationFactory $projectNotificationFactory
      * @param NotifierInterface          $notifier
      * @param DatePresenter              $datePresenter
+     * @param array                      $reminders
      */
     public function __construct(
         ProjectNotificationFactory $projectNotificationFactory,
         NotifierInterface $notifier,
-        DatePresenter $datePresenter
+        DatePresenter $datePresenter,
+        array $reminders
     ) {
         $this->projectNotificationFactory = $projectNotificationFactory;
         $this->notifier = $notifier;
         $this->datePresenter = $datePresenter;
+        $this->reminders = $reminders;
     }
 
     /**
@@ -59,45 +62,45 @@ class ProjectDueDateNotifier implements ProjectDueDateNotifierInterface
         ProjectInterface $project,
         ProjectCompleteness $projectCompleteness
     ) {
-        if (!$projectCompleteness->isComplete() && $this->checkDates($project->getDueDate())) {
-            $userLocale = $user->getUiLocale();
-            $formattedDate = $this->datePresenter->present(
-                $project->getDueDate(),
-                ['locale' => $userLocale->getCode()]
-            );
-
-            $context = [
-                'actionType'  => 'project_due_date',
-                'buttonLabel' => 'activity_manager.notification.due_date.start',
-            ];
-
-            $parameters =
-                [
-                    '%project_label%' => $project->getLabel(),
-                    '%due_date%'      => $formattedDate,
-                    '%percent%'       => $projectCompleteness->getRatioForDone(),
-                ];
-            $routeParams = ['identifier' => $project->getCode()];
-
-            $message = $user->getUsername() === $project->getOwner()->getUsername()
-                ? 'activity_manager.notification.due_date.owner'
-                : 'activity_manager.notification.due_date.contributor';
-
-            $notification = $this->projectNotificationFactory->create($routeParams, $parameters, $context, $message);
-            $this->notifier->notify($notification, [$user]);
-
-            return true;
+        if ($projectCompleteness->isComplete() || !$this->checkDates($project->getDueDate())) {
+            return false;
         }
 
-        return false;
+        $userLocale = $user->getUiLocale();
+        $formattedDate = $this->datePresenter->present(
+            $project->getDueDate(),
+            ['locale' => $userLocale->getCode()]
+        );
+
+        $context = [
+            'actionType'  => 'project_due_date',
+            'buttonLabel' => 'activity_manager.notification.due_date.start',
+        ];
+
+        $parameters =
+            [
+                '%project_label%' => $project->getLabel(),
+                '%due_date%'      => $formattedDate,
+                '%percent%'       => $projectCompleteness->getRatioForDone(),
+            ];
+        $routeParams = ['identifier' => $project->getCode()];
+
+        $message = $user->getUsername() === $project->getOwner()->getUsername()
+            ? 'activity_manager.notification.due_date.owner'
+            : 'activity_manager.notification.due_date.contributor';
+
+        $notification = $this->projectNotificationFactory->create($routeParams, $parameters, $context, $message);
+        $this->notifier->notify($notification, [$user]);
+
+        return true;
     }
 
     /**
-     * @param $dueDate
+     * @param \DateTime $dueDate
      *
      * @return bool
      */
-    protected function checkDates($dueDate)
+    protected function checkDates(\DateTime $dueDate)
     {
         $dateOfTheDay = new \DateTime();
 

@@ -17,8 +17,8 @@ activity_manager:
             owner: %project_label% for the %due_date% is finished.'
             show: Show
         due_date:
-            contributor: You're %percent%% of done product done with project_label. Don't forget, to fill in the last products for the Due date.
-            owner: Project label for the Due date is not 100% done.
+            contributor: You're %percent%% of product done with %project_label%. Don't forget, to fill in the last products for the %due_date%.
+            owner: %project_label% for the %due_date% is not 100% done.
             start: Start
 
 batch_jobs:

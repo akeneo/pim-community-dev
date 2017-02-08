@@ -20,7 +20,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * It sends a notification to user to inform them the due date is close.
+ * It sends a notification to user to inform them the due date for a project is close.
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */

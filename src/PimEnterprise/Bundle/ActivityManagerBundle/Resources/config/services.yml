@@ -94,6 +94,7 @@ services:
             - '@pimee_activity_manager.factory.project_notification'
             - '@pim_notification.notifier'
             - '@pim_catalog.localization.presenter.date'
+            - [7, 3, 1]
 
     pimee_activity_manager.event_subscriber.notification:
         class: '%pimee_activity_manager.event_subscriber.notification.class%'

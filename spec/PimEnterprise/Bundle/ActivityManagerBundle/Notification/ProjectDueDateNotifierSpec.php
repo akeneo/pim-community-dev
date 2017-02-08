@@ -22,7 +22,7 @@ class ProjectDueDateNotifierSpec extends ObjectBehavior
         NotifierInterface $notifier,
         DatePresenter $datePresenter
     ) {
-        $this->beConstructedWith($projectNotificationFactory, $notifier, $datePresenter);
+        $this->beConstructedWith($projectNotificationFactory, $notifier, $datePresenter, [7, 3, 1]);
     }
 
     function it_is_initializable()
@@ -35,7 +35,7 @@ class ProjectDueDateNotifierSpec extends ObjectBehavior
         $this->shouldImplement(ProjectDueDateNotifierInterface::class);
     }
 
-    function it_does_not_notify_user_is_the_project_is_complete(
+    function it_does_not_notify_user_if_the_project_is_complete(
         UserInterface $user,
         ProjectInterface $project,
         ProjectCompleteness $projectCompleteness

@@ -16,12 +16,14 @@ use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * Notify the user when the project due date is close.
+ *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 interface ProjectDueDateNotifierInterface
 {
     /**
-     * Notify the user about project event.
+     * Notify the user when the project due date is close.
      *
      * @param UserInterface          $user
      * @param ProjectInterface       $project
