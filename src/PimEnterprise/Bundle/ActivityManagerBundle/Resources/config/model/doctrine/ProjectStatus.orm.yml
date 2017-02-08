@@ -28,3 +28,4 @@ PimEnterprise\Component\ActivityManager\Model\ProjectStatus:
                 project_id:
                     nullable: false
                     referencedColumnName: id
+                    onDelete: CASCADE
