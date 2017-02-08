@@ -51,7 +51,7 @@ class VersionManagerIntegration extends TestCase
     {
         return new Configuration(
             [Configuration::getTechnicalSqlCatalogPath()],
-            false
+            true
         );
     }
 
@@ -102,8 +102,9 @@ class VersionManagerIntegration extends TestCase
 
     public function testCreateProductVersionOnUpdate()
     {
-        // Prevent from creating versions logged at the same time
-        sleep(1);
+        $product = $this->get('pim_catalog.builder.product')->createProduct('versioned-product');
+        $this->productSaver->save($product);
+
         $updates = [
             'groups' => ['groupB'],
             'values' => [
@@ -113,7 +114,6 @@ class VersionManagerIntegration extends TestCase
             ],
         ];
 
-        $product = $this->productRepository->findOneByIdentifier('versioned-product');
         $this->productUpdater->update($product, $updates);
         $this->productSaver->save($product);
 
@@ -149,19 +149,29 @@ class VersionManagerIntegration extends TestCase
 
     public function testCreateProductVersionOnAttributeAndFieldDeletion()
     {
-        // Prevent from creating versions logged at the same time
-        sleep(1);
-        $product = $this->productRepository->findOneByIdentifier('versioned-product');
+        $product = $this->get('pim_catalog.builder.product')->createProduct('versioned-product');
+        $updates = [
+            'groups' => ['groupB'],
+            'values' => [
+                'a_date' => [
+                    ['locale' => null, 'scope' => null, 'data' => '2017-02-01'],
+                ],
+            ],
+        ];
+
+        $this->productUpdater->update($product, $updates);
+        $this->productSaver->save($product);
+
         $productValue = $product->getValue('a_date');
         $product->removeValue($productValue);
         $this->productSaver->save($product);
 
         $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), $product->getId());
 
-        $this->assertCount(3, $productVersions);
+        $this->assertCount(2, $productVersions);
 
         $version = current($productVersions);
-        $this->assertEquals($version->getVersion(), 3);
+        $this->assertEquals($version->getVersion(), 2);
         $this->assertEquals($version->getResourceName(), ClassUtils::getClass($product));
         $this->assertEquals($version->getResourceId(), $product->getId());
         $this->assertNotNull($version->getLoggedAt());
