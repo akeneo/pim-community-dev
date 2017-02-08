@@ -104,3 +104,26 @@ Feature: Products datagrid projects
     When I filter by "size" with operator "contains" and value ""
     And I filter by "family" with operator "in list" and value ""
     Then the grid should contain 6 elements
+
+  Scenario: A project is not seen as modified if only columns change
+    Given I am logged in as "Julia"
+    And I am on the products page
+    And I filter by "family" with operator "in list" and value "TShirts"
+    And I show the filter "size"
+    And I filter by "size" with operator "contains" and value "M"
+    And I click on the create project button
+    When I fill in the following information in the popin:
+      | project-label    | My TShirts Project |
+      | project-due-date | 01/25/2077         |
+    And I press the "Save" button
+    Then I should be on the products page
+    And I go on the last executed job resume of "project_calculation"
+    And I wait for the "project_calculation" job to finish
+    When I am on the products page
+    And I switch view selector type to "Projects"
+    Then I should see the text "My TShirts Project"
+    When I display in the products grid the columns sku, name, groups
+    Then I should be on the products page
+    And the grid should contain 2 elements
+    And I should see the text "My TShirts Project"
+    But I should not see the text "My TShirts Project *"
