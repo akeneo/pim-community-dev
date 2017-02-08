@@ -33,7 +33,7 @@ class DateTimeFilterIntegration extends AbstractFilterTestCase
     public function testOperatorEquals()
     {
         $result = $this->execute([['updated', Operators::EQUALS, '2016-08-04 01:28:52']]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['updated', Operators::EQUALS, '2016-08-04 01:28:51']]);
         $this->assert($result, ['bar']);

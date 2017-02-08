@@ -29,7 +29,7 @@ class GroupsFilterIntegration extends AbstractFilterTestCase
     public function testOperatorIn()
     {
         $result = $this->execute([['groups', Operators::IN_LIST, ['groupC']]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['groups', Operators::IN_LIST, ['groupB', 'groupA']]]);
         $this->assert($result, ['foo']);

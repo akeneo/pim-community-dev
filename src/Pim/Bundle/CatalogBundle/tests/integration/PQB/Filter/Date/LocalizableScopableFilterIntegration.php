@@ -138,10 +138,28 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
 
     /**
      * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Attribute or field "a_localizable_scopable_date" expects valid data, scope and locale. Attribute "a_localizable_scopable_date" expects a scope, none given.
+     */
+    public function testErrorMetricScopable()
+    {
+        $this->execute([['a_localizable_scopable_date', Operators::NOT_EQUAL, '2016-09-23', ['locale' => 'en_US']]]);
+    }
+
+    /**
+     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
      * @expectedExceptionMessage Attribute or field "a_localizable_scopable_date" expects valid data, scope and locale. Attribute "a_localizable_scopable_date" expects an existing and activated locale, "NOT_FOUND" given.
      */
     public function testLocaleNotFound()
     {
         $this->execute([['a_localizable_scopable_date', Operators::NOT_EQUAL, '2016-09-23', ['locale' => 'NOT_FOUND']]]);
+    }
+
+    /**
+     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Attribute or field "a_localizable_scopable_date" expects valid data, scope and locale. Attribute "a_localizable_scopable_date" expects an existing scope, "NOT_FOUND" given.
+     */
+    public function testNotFoundScope()
+    {
+        $this->execute([['a_localizable_scopable_date', Operators::NOT_EQUAL, '2016-09-23', ['locale' => 'en_US', 'scope' => 'NOT_FOUND']]]);
     }
 }
