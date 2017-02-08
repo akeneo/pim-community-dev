@@ -20,9 +20,11 @@ class LabelSelector implements SelectorInterface
      */
     public function apply(DatasourceInterface $datasource, DatagridConfiguration $configuration)
     {
-        $rootAlias = $datasource->getQueryBuilder()->getRootAlias();
+        $esQb = $datasource->getQueryBuilder();
+        $qb = $esQb->getStorageQb();
+        $rootAlias = $qb->getRootAlias();
 
-        $datasource->getQueryBuilder()
+        $qb
             ->leftJoin($rootAlias.'.family', 'plFamily')
             ->leftJoin('plFamily.attributeAsLabel', 'attributeAsLabel')
             ->addSelect('attributeAsLabel.code AS attributeCodeAsLabel');
