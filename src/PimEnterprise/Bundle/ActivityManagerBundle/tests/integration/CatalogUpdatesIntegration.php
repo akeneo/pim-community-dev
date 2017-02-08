@@ -49,7 +49,7 @@ class CatalogUpdatesIntegration extends ActivityManagerTestCase
         $channelRepository = $this->get('pim_catalog.repository.channel');
         $channelSaver = $this->get('pim_catalog.saver.channel');
         $projectRepository = $this->get('pimee_activity_manager.repository.project');
-        $project = $this->createProject('High-Tech project',  'admin', 'en_US', 'mobile', [
+        $project = $this->createProject('High-Tech project', 'admin', 'en_US', 'mobile', [
             [
                 'field'    => 'categories',
                 'operator' => 'IN',
