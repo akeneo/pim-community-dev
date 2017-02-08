@@ -13,6 +13,7 @@ parameters:
     pim_catalog.validator.constraint.variant_group_axis.class:             Pim\Component\Catalog\Validator\Constraints\VariantGroupAxisValidator
     pim_catalog.validator.constraint.has_variant_axes.class:               Pim\Component\Catalog\Validator\Constraints\HasVariantAxesValidator
     pim_catalog.validator.constraint.family_requirements.class:            Pim\Component\Catalog\Validator\Constraints\FamilyRequirementsValidator
+    pim_catalog.validator.constraint.family_attribute_as_label.class:      Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsLabelValidator
     pim_catalog.validator.constraint.scopable_value.class:                 Pim\Component\Catalog\Validator\Constraints\ScopableValueValidator
     pim_catalog.validator.constraint.localizable_value.class:              Pim\Component\Catalog\Validator\Constraints\LocalizableValueValidator
     pim_catalog.validator.constraint.attribute_type_for_option.class:      Pim\Component\Catalog\Validator\Constraints\AttributeTypeForOptionValidator
@@ -135,6 +136,11 @@ services:
             - '@pim_catalog.repository.channel'
         tags:
             - { name: validator.constraint_validator, alias: pim_family_requirements_validator }
+
+    pim_catalog.validator.constraint.family_attribute_as_label:
+        class: '%pim_catalog.validator.constraint.family_attribute_as_label.class%'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_family_attribute_as_label_validator }
 
     pim_catalog.validator.constraint.scopable_value:
         class: '%pim_catalog.validator.constraint.scopable_value.class%'
