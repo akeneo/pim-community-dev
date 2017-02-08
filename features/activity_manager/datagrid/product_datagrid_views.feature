@@ -87,8 +87,6 @@ Feature: Products datagrid views
     Then I should see the text "Sneakers only"
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
-    When I press the "Reset" button
-    Then I should see products black-boots, purple-sneakers and black-sneakers
 
   Scenario: A contributor can remove his default products datagrid view from his profile
     Given I filter by "family" with operator "in list" and value "Sneakers"
