@@ -26,6 +26,7 @@
     <script type="text/javascript">
         require(
             [
+                'underscore',
                 'jquery',
                 'routing',
                 'oro/datagrid-builder',
@@ -34,6 +35,7 @@
                 'oro/datafilter/product_category-filter'
             ],
             function (
+                _,
                 $,
                 Routing,
                 datagridBuilder,
@@ -77,9 +79,18 @@
                         };
 
                         var applyFilters = function (rawFilters) {
-                            var collection = new PageableCollection();
-                            var filters    = collection.decodeStateData(rawFilters);
+                            var filters = PageableCollection.prototype.decodeStateData(rawFilters);
+                            var options = {};
 
+                            if (!_.isEmpty(filters.filters)) {
+                                options = {
+                                    state: {
+                                        filters: _.omit(filters.filters, 'scope')
+                                    }
+                                };
+                            }
+
+                            var collection = new PageableCollection(null, options);
                             collection.processFiltersParams(urlParams, filters, '{{ name }}[_filter]');
 
                             for (var column in filters.sorters) {
