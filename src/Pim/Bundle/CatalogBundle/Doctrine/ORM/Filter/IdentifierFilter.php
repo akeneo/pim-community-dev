@@ -54,7 +54,7 @@ class IdentifierFilter extends StringFilter implements AttributeFilterInterface,
         $scope = null,
         $options = []
     ) {
-        $this->addFieldFilter(current($this->supportedFields), $options, $value, $locale, $scope, $options);
+        $this->addFieldFilter(current($this->supportedFields), $operator, $value, $locale, $scope, $options);
 
         return $this;
     }
