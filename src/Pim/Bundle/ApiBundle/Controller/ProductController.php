@@ -14,6 +14,7 @@ use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Api\Pagination\HalPaginator;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
+use Pim\Component\Catalog\Exception\UnsupportedFilterException;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -160,9 +161,7 @@ class ProductController
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
 
-        $normalizerOptions = [];
         $channel = null;
-
         if ($request->query->has('channel')) {
             $channel = $this->channelRepository->findOneByIdentifier($request->query->get('channel'));
             if (null === $channel) {
@@ -170,27 +169,18 @@ class ProductController
                     sprintf('Channel "%s" does not exist.', $request->query->get('channel'))
                 );
             }
-
-            $normalizerOptions['channels'] = [$channel->getCode()];
-            $normalizerOptions['locales'] = $channel->getLocaleCodes();
         }
 
-        if ($request->query->has('locales')) {
-            $this->checkLocalesParameters($request->query->get('locales'), $channel);
-
-            $normalizerOptions['locales'] = explode(',', $request->query->get('locales'));
-        }
-
-        if ($request->query->has('attributes')) {
-            $this->checkAttributesParameters($request->query->get('attributes'));
-
-            $normalizerOptions['attributes'] = explode(',', $request->query->get('attributes'));
-        }
+        $normalizerOptions = $this->getNormalizerOptions($request, $channel);
 
         $pqb = $this->pqbFactory->create([]);
-        // TODO: be able to use the PQB filters (will be done in API-65).
-        // for the moment, set an empty array
-        $this->setPQBFilters($pqb, [], $channel);
+        try {
+            $this->setPQBFilters($pqb, $request, $channel);
+        } catch (PropertyException $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        } catch (UnsupportedFilterException $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        }
 
         $count = $this->productRepository->count($pqb->getQueryBuilder());
 
@@ -362,16 +352,33 @@ class ProductController
      * If a channel is requested, add a filter to return only products linked to its category tree
      *
      * @param ProductQueryBuilderInterface $pqb
-     * @param array                        $pqbFilters
+     * @param Request                      $request
      * @param ChannelInterface|null        $channel
+     *
+     * @throws UnprocessableEntityHttpException
      */
     protected function setPQBFilters(
         ProductQueryBuilderInterface $pqb,
-        array $pqbFilters,
+        Request $request,
         ChannelInterface $channel = null
     ) {
-        if (null !== $channel) {
-            $pqbFilters['categories'] = [
+        $search = [];
+
+        if ($request->query->has('search')) {
+            $search = json_decode($request->query->get('search'), true);
+            if (null === $search) {
+                throw new UnprocessableEntityHttpException('Search query parameter should be valid JSON.');
+            }
+
+            if (!is_array($search)) {
+                throw new UnprocessableEntityHttpException(
+                    sprintf('Search query parameter has to be an array, "%s" given.', gettype($search))
+                );
+            }
+        }
+
+        if (null !== $channel && !isset($search['categories'])) {
+            $search['categories'] = [
                 [
                     'operator' => Operators::IN_CHILDREN_LIST,
                     'value'    => [$channel->getCategory()->getCode()]
@@ -379,11 +386,67 @@ class ProductController
             ];
         }
 
-        foreach ($pqbFilters as $attributeCode => $filters) {
+        foreach ($search as $propertyCode => $filters) {
+            if (!is_array($filters) || !isset($filters[0])) {
+                throw new UnprocessableEntityHttpException(
+                    sprintf(
+                        'Structure of filter "%s" should respect this structure: %s',
+                        $propertyCode,
+                        sprintf('{"%s":[{"operator": "my_operator", "value": "my_value"}]}', $propertyCode)
+                    )
+                );
+            }
+
             foreach ($filters as $filter) {
-                $pqb->addFilter($attributeCode, $filter['operator'], $filter['value']);
+                if (!isset($filter['operator'])) {
+                    throw new UnprocessableEntityHttpException(
+                        sprintf('Operator is missing for the property "%s".', $propertyCode)
+                    );
+                }
+
+                if (!is_string($filter['operator'])) {
+                    throw new UnprocessableEntityHttpException(
+                        sprintf('Operator has to be a string, "%s" given.', gettype($filter['operator']))
+                    );
+                }
+
+                $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $request->query->get('search_locale');
+                $context['scope'] = isset($filter['scope']) ? $filter['scope'] : $request->query->get('search_channel');
+                $value = isset($filter['value']) ? $filter['value'] : null;
+
+                $pqb->addFilter($propertyCode, $filter['operator'], $value, $context);
             }
         }
+    }
+
+    /**
+     * @param Request               $request
+     * @param ChannelInterface|null $channel
+     *
+     * @return array
+     */
+    protected function getNormalizerOptions(Request $request, ChannelInterface $channel = null)
+    {
+        $normalizerOptions = [];
+
+        if ($request->query->has('channel')) {
+            $normalizerOptions['channels'] = [$channel->getCode()];
+            $normalizerOptions['locales'] = $channel->getLocaleCodes();
+        }
+
+        if ($request->query->has('locales')) {
+            $this->checkLocalesParameters($request->query->get('locales'), $channel);
+
+            $normalizerOptions['locales'] = explode(',', $request->query->get('locales'));
+        }
+
+        if ($request->query->has('attributes')) {
+            $this->checkAttributesParameters($request->query->get('attributes'));
+
+            $normalizerOptions['attributes'] = explode(',', $request->query->get('attributes'));
+        }
+
+        return $normalizerOptions;
     }
 
     /**

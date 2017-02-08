@@ -3,8 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Component\Catalog\Exception\ProductQueryException;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -36,7 +37,7 @@ class CriteriaCondition
      * @param string|array $operator the operator used to filter
      * @param string|array $value    the value(s) to filter
      *
-     * @throws ProductQueryException
+     * @throws PropertyException
      *
      * @return string
      */
@@ -56,14 +57,15 @@ class CriteriaCondition
      * @param array $operator the operator used to filter
      * @param array $value    the value(s) to filter
      *
-     * @throws ProductQueryException
+     * @throws InvalidPropertyTypeException
+     * @throws InvalidPropertyException
      *
      * @return string
      */
     protected function prepareMultiCriteriaCondition($field, $operator, $value)
     {
         if (!is_array($value)) {
-            throw new ProductQueryException('Values must be array');
+            throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
         }
 
         if (!is_array($field)) {
@@ -77,7 +79,13 @@ class CriteriaCondition
         if (array_diff(array_keys($field), array_keys($operator))
             || array_diff(array_keys($field), array_keys($value))
         ) {
-            throw new ProductQueryException('Field, operator and value arrays must have the same keys');
+            throw new InvalidPropertyException(
+                $field,
+                $value,
+                static::class,
+                'Field, operator and value arrays must have the same keys',
+                InvalidPropertyException::EXPECTED_CODE
+            );
         }
 
         $conditions = [];
@@ -95,9 +103,8 @@ class CriteriaCondition
      * @param string       $operator the operator used to filter
      * @param string|array $value    the value(s) to filter
      *
-     * @throws ProductQueryException
-     * @throws \InvalidArgumentException
      * @throws InvalidPropertyException
+     * @throws InvalidPropertyTypeException
      *
      * @return string
      */
@@ -115,8 +122,12 @@ class CriteriaCondition
         ];
         if (array_key_exists($operator, $operators)) {
             if (!is_scalar($value)) {
-                throw new \InvalidArgumentException(
-                    sprintf('Only scalar values are allowed for operators %s.', implode(', ', $operators))
+                throw new InvalidPropertyTypeException(
+                    $field,
+                    $value,
+                    static::class,
+                    sprintf('Only scalar values are allowed for operators %s.', implode(', ', $operators)),
+                    InvalidPropertyTypeException::SCALAR_EXPECTED_CODE
                 );
             }
             $method = $operators[$operator];
@@ -140,8 +151,12 @@ class CriteriaCondition
         $operators = [Operators::IN_LIST => 'in', Operators::NOT_IN_LIST => 'notIn'];
         if (array_key_exists($operator, $operators)) {
             if (!is_array($value)) {
-                throw new \InvalidArgumentException(
-                    sprintf('Only array values are allowed for operators %s.', implode(', ', $operators))
+                throw new InvalidPropertyTypeException(
+                    $field,
+                    $value,
+                    static::class,
+                    sprintf('Only array values are allowed for operators %s.', implode(', ', $operators)),
+                    InvalidPropertyTypeException::ARRAY_EXPECTED_CODE
                 );
             }
 
@@ -156,7 +171,13 @@ class CriteriaCondition
 
         if (Operators::BETWEEN === $operator) {
             if (!is_array($value)) {
-                throw new \InvalidArgumentException(sprintf('Only array values are allowed for operator BETWEEN'));
+                throw new InvalidPropertyTypeException(
+                    $field,
+                    $value,
+                    static::class,
+                    'Only array values are allowed for operators BETWEEN.',
+                    InvalidPropertyTypeException::ARRAY_EXPECTED_CODE
+                );
             }
 
             return sprintf(
@@ -167,6 +188,12 @@ class CriteriaCondition
             );
         }
 
-        throw new ProductQueryException('operator '.$operator.' is not supported');
+        throw new InvalidPropertyException(
+            $field,
+            $value,
+            static::class,
+            sprintf('Operator "%s" is not supported', $operator),
+            InvalidPropertyException::EXPECTED_CODE
+        );
     }
 }
