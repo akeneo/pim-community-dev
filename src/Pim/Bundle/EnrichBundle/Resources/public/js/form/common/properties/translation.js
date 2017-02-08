@@ -114,6 +114,10 @@ define([
             updateModel: function (event) {
                 var data = this.getFormData();
 
+                if (Array.isArray(data.labels)) {
+                    data.labels = {};
+                }
+
                 data.labels[event.target.dataset.locale] = event.target.value;
 
                 this.setData(data);

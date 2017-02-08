@@ -29,10 +29,9 @@ define([
         template
     ) {
         return BaseForm.extend({
-            className: 'select',
+            className: 'AknFieldContainer',
             template: _.template(template),
             errors: [],
-            attributes: null,
             catalogLocale: UserContext.get('catalogLocale'),
 
             /**
@@ -57,23 +56,15 @@ define([
                     return this;
                 }
 
-                if (!this.attributes) {
-                    $.when(
-                        FetcherRegistry.getFetcher('attribute').search({
-                            types: 'pim_catalog_identifier,pim_catalog_text'
-                        })
-                    ).then(function (attributes) {
-                        this.attributes = attributes;
-                        return this.render();
-                    }.bind(this));
-
-                    return this;
-                }
-
                 this.$el.html(this.template({
                     i18n: i18n,
                     catalogLocale: this.catalogLocale,
-                    attributes: this.attributes,
+                    attributes: _.filter(
+                        this.getFormData().attributes,
+                        function (attribute) {
+                            return attribute.type === 'pim_catalog_text' ||
+                                attribute.type === 'pim_catalog_identifier';
+                    }),
                     currentAttribute: this.getFormData().attribute_as_label,
                     fieldBaseId: this.config.fieldBaseId,
                     errors: this.errors,

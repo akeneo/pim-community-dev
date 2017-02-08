@@ -44,7 +44,6 @@ define(
                 delete family.meta;
 
                 var notReadyFields = FieldManager.getNotReadyFields();
-
                 if (0 < notReadyFields.length) {
                     var fieldLabels = _.map(notReadyFields, function (field) {
                         return i18n.getLabel(

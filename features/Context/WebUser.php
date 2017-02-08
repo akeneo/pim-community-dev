@@ -910,6 +910,7 @@ class WebUser extends RawMinkContext
     {
         $this->wait();
         $this->getCurrentPage()->addAvailableAttributes($this->listToArray($attributes));
+        $this->wait();
     }
 
     /**
@@ -1872,7 +1873,7 @@ class WebUser extends RawMinkContext
         $expectation = $not === '';
         foreach ($this->listToArray($channels) as $channel) {
             $this->spin(function () use ($attribute, $channel, $expectation) {
-                return $expectation !== $this->getCurrentPage()->isAttributeRequired($attribute, $channel);
+                return $expectation === $this->getCurrentPage()->isAttributeRequired($attribute, $channel);
             }, sprintf(
                 'Attribute %s should be%s required in channel %s',
                 $attribute,
