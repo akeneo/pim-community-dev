@@ -15,6 +15,7 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\CurrencyInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 
@@ -81,20 +82,16 @@ class CurrencyProjectRemover implements ProjectRemoverInterface
      */
     protected function hasToBeRemoved(ProjectInterface $project, ChannelInterface $channel)
     {
-        $currencies = $channel->getCurrencies();
-        $channelCurrenciesCode = [];
-        foreach ($currencies as $currency) {
-            $channelCurrenciesCode[] = $currency->getCode();
-        }
+        $currencies = $channel->getCurrencies()->map(function (CurrencyInterface $currency) {
+            return $currency->getCode();
+        });
 
-        $filteredCurrencies = [];
         foreach ($project->getProductFilters() as $filter) {
-            if (isset($filter['value']['currency'])) {
-                $filteredCurrencies[] = $filter['value']['currency'];
+            if (isset($filter['value']['currency']) && !$currencies->contains($filter['value']['currency'])) {
+                return true;
             }
         }
-        $usedButRemovedCurrencies = array_diff(array_unique($filteredCurrencies), $channelCurrenciesCode);
 
-        return !empty($usedButRemovedCurrencies);
+        return false;
     }
 }
