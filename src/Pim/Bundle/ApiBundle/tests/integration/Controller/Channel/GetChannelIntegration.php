@@ -14,7 +14,7 @@ class GetChannelIntegration extends ApiTestCase
 
         $client->request('GET', 'api/rest/v1/channels/ecommerce');
 
-        $standardChannel = [
+        $apiChannel = [
             'code'             => 'ecommerce',
             'currencies'       => ['USD', 'EUR'],
             'locales'          => ['en_US'],
@@ -28,7 +28,7 @@ class GetChannelIntegration extends ApiTestCase
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertSame($standardChannel, json_decode($response->getContent(), true));
+        $this->assertSame($apiChannel, json_decode($response->getContent(), true));
     }
 
     public function testNotFoundAChannel()

@@ -64,9 +64,9 @@ class ChannelController
             throw new NotFoundHttpException(sprintf('Channel "%s" does not exist.', $code));
         }
 
-        $channelStandard = $this->normalizer->normalize($channel, 'external_api');
+        $channelApi = $this->normalizer->normalize($channel, 'external_api');
 
-        return new JsonResponse($channelStandard);
+        return new JsonResponse($channelApi);
     }
 
     /**
@@ -94,10 +94,10 @@ class ChannelController
 
         $channels = $this->repository->findBy([], ['code' => 'ASC'], $queryParameters['limit'], $offset);
 
-        $channelsStandard = $this->normalizer->normalize($channels, 'external_api');
+        $channelsApi = $this->normalizer->normalize($channels, 'external_api');
 
         $paginatedChannels = $this->paginator->paginate(
-            $channelsStandard,
+            $channelsApi,
             array_merge($request->query->all(), $queryParameters),
             $count,
             'pim_api_rest_channel_list',
