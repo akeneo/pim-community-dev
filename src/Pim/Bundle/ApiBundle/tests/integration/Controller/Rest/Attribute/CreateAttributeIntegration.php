@@ -240,7 +240,7 @@ JSON;
         $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "code" expects a scalar. Check the standard format documentation.',
+            'message' => 'Property "code" expects a scalar as data, "array" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute', $version),
@@ -454,7 +454,7 @@ JSON;
         $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "available_locales" expects a valid array, one of the "available_locales" values is not a scalar. Check the standard format documentation.',
+            'message' => 'Property "available_locales" expects an array with valid data, one of the "available_locales" values is not a scalar. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute', $version),
@@ -487,7 +487,7 @@ JSON;
         $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "allowed_extensions" expects an array. Check the standard format documentation.',
+            'message' => 'Property "allowed_extensions" expects an array as data, "NULL" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute', $version),
@@ -517,7 +517,7 @@ JSON;
         $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "labels" expects an array. Check the standard format documentation.',
+            'message' => 'Property "labels" expects an array as data, "NULL" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute', $version),
@@ -547,7 +547,7 @@ JSON;
         $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "available_locales" expects an array. Check the standard format documentation.',
+            'message' => 'Property "available_locales" expects an array as data, "NULL" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute', $version),
