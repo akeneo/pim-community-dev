@@ -64,7 +64,7 @@ class NumberFilterIntegration extends AbstractFilterTestCase
     public function testOperatorEquals()
     {
         $result = $this->execute([['a_number_float_negative', Operators::EQUALS, 15.5]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['a_number_float_negative', Operators::EQUALS, -15.5]]);
         $this->assert($result, ['product_one']);
