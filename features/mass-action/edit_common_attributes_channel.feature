@@ -15,7 +15,7 @@ Feature: Edit common attributes of many products at once
       | heel_height  | Heel Height | metric | Length        | CENTIMETER          | high_heels, sandals      |
       | buckle_color | Buckle      | text   |               |                     | high_heels               |
     And the following product groups:
-      | code          | label         | axis  | type    |
+      | code          | label-en_US   | axis  | type    |
       | variant_heels | Variant Heels | color | VARIANT |
     And the following variant group values:
       | group         | attribute   | value         |

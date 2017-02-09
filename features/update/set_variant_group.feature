@@ -6,34 +6,34 @@ Feature: Update variant group fields
   Scenario: Successfully update the variant group field
     Given a "footwear" catalog configuration
     And the following products:
-      | sku                              |
-      | tshirt1                          |
-      | tshirt2                          |
+      | sku     |
+      | tshirt1 |
+      | tshirt2 |
     And the following product groups:
-      | code    | label         | type    | axis |
+      | code    | label-en_US   | type    | axis |
       | TSHIRT1 | First tshirt  | VARIANT | size |
       | TSHIRT2 | Second tshirt | VARIANT | size |
       | TSHIRT3 | Third tshirt  | VARIANT | size |
     Then I should get the following products after apply the following updater to it:
-      | product             | actions                                                                                                                                | result                       |
-      | tshirt1             | [{"type": "set_data", "field": "variant_group", "data": "TSHIRT1"}]                                                                    | {"variant_group": "TSHIRT1"} |
-      | tshirt1             | [{"type": "set_data", "field": "variant_group", "data": null}]                                                                         | {"variant_group": ""}        |
-      | tshirt2             | [{"type": "set_data", "field": "variant_group", "data": "TSHIRT2"}]                                                                    | {"variant_group": "TSHIRT2"} |
-      | tshirt2             | [{"type": "set_data", "field": "variant_group", "data": "TSHIRT1"}, {"type": "set_data", "field": "variant_group", "data": "TSHIRT3"}] | {"variant_group": "TSHIRT3"} |
+      | product | actions                                                                                                                                | result                       |
+      | tshirt1 | [{"type": "set_data", "field": "variant_group", "data": "TSHIRT1"}]                                                                    | {"variant_group": "TSHIRT1"} |
+      | tshirt1 | [{"type": "set_data", "field": "variant_group", "data": null}]                                                                         | {"variant_group": ""}        |
+      | tshirt2 | [{"type": "set_data", "field": "variant_group", "data": "TSHIRT2"}]                                                                    | {"variant_group": "TSHIRT2"} |
+      | tshirt2 | [{"type": "set_data", "field": "variant_group", "data": "TSHIRT1"}, {"type": "set_data", "field": "variant_group", "data": "TSHIRT3"}] | {"variant_group": "TSHIRT3"} |
 
   Scenario: Successfully update the variant group field and the group field
     Given a "footwear" catalog configuration
     And the following products:
-      | sku                              |
-      | tshirt1                          |
-      | tshirt2                          |
-      | tshirt3                          |
-      | tshirt4                          |
+      | sku     |
+      | tshirt1 |
+      | tshirt2 |
+      | tshirt3 |
+      | tshirt4 |
     Given the following group type:
       | code |
       | PACK |
     And the following product groups:
-      | code    | label         | type    | axis |
+      | code    | label-en_US   | type    | axis |
       | TSHIRT1 | First tshirt  | VARIANT | size |
       | TSHIRT2 | Second tshirt | VARIANT | size |
       | TSHIRT3 | Third tshirt  | VARIANT | size |

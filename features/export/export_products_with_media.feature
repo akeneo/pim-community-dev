@@ -39,12 +39,12 @@ Feature: Export products with media
 
   @jira https://akeneo.atlassian.net/browse/PIM-3785
   Scenario: Successfully export products with nullable media
-    Given the following family:
-      | code      | requirements-tablet | requirements-mobile |
-      | flipflop  | sku                 | sku                 |
-    And the following attributes:
-      | code    | label   | type  | allowed extensions | families  |
-      | picture | Picture | image | jpg                | flipflop  |
+    Given the following attributes:
+      | code    | label   | type  | allowed extensions |
+      | picture | Picture | image | jpg                |
+    And the following family:
+      | code      | attributes  | requirements-tablet | requirements-mobile |
+      | flipflop  | sku,picture | sku                 | sku                 |
     And the following products:
       | sku         | categories        | price          | size | color    | name-en_US | family    |
       | FLIPFLOP-1R | summer_collection | 50 EUR, 70 USD | 45   | red      | Model 1    | flipflop  |

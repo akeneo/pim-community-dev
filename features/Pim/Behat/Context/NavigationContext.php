@@ -220,12 +220,12 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      * @param string $identifier
      * @param string $page
      *
-     * @Given /^I edit the "([^"]*)" (\w+)$/
+     * @Given /^I edit the "([^"]*)" ([\w ]+)$/
      * @Given /^I am on the "([^"]*)" ((?!channel)\w+) page$/
      */
     public function iAmOnTheEntityEditPage($identifier, $page)
     {
-        $page   = ucfirst($page);
+        $page   = preg_replace('/ /', '', ucwords($page));
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);

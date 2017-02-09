@@ -7,8 +7,8 @@ Feature: Execute an import with scopable or localizable data
   Background:
     Given the "apparel" catalog configuration
     And the following product groups:
-      | code   | label  | axis        | type    |
-      | SANDAL | Sandal | size, color | VARIANT |
+      | code   | label-en_US | axis        | type    |
+      | SANDAL | Sandal      | size, color | VARIANT |
     And I am logged in as "Julia"
 
   Scenario: Avoid data loss when importing variant group localizable/scopable values

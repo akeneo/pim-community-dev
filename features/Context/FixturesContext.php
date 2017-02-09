@@ -17,12 +17,9 @@ use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
@@ -33,13 +30,11 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
-use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
@@ -205,20 +200,57 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFollowingAttributeGroups(TableNode $table)
     {
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute_group');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute_group');
+        $writer = $this->getContainer()->get('pim_catalog.saver.attribute_group');
+
         foreach ($table->getHash() as $data) {
-            $this->createAttributeGroup($data);
+            $convertedData = $converter->convert($data);
+            $attributeGroup = $processor->process($convertedData);
+            $writer->save($attributeGroup);
         }
     }
 
     /**
+     * @Warning This method accepts the same format than CSV, but "type" uses a corresponsance array
+     * $this->attributeTypes to declare shorter behats.
+     *
      * @param TableNode $table
      *
      * @Given /^the following attributes?:$/
      */
     public function theFollowingAttributes(TableNode $table)
     {
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute');
+        $writer = $this->getContainer()->get('pim_connector.writer.database.attribute');
+
         foreach ($table->getHash() as $data) {
-            $this->createAttribute($data);
+            $data = $this->normalizeTable($data, [
+                'localizable', 'scopable', 'useable_as_grid_filter', 'decimals_allowed', 'unique'
+            ]);
+
+            // TODO Remove all these autofill magic methods
+            if (isset($data['type'])) {
+                $data['type'] = $this->attributeTypes[$data['type']];
+            } else {
+                $data['type'] = $this->attributeTypes['text'];
+            }
+            if (!isset($data['group']) || '' === $data['group']) {
+                $data['group'] = 'other';
+            }
+            $data['label-en_US'] = isset($data['label-en_US']) ?
+                $data['label-en_US'] :
+                (isset($data['label']) ? $data['label'] : $data['code']);
+            $data['code'] = isset($data['code']) ? $data['code'] : $this->camelize($data['label']); // YOLO!
+
+            $attribute = $processor->process($converter->convert($data));
+
+            // We can not import it ! TODO Change all the behat with "unique" column.
+            if (isset($data['unique'])) {
+                $attribute->setUnique('1' === $data['unique']);
+            }
+            $writer->write([$attribute]);
         }
     }
 
@@ -421,13 +453,28 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $family = $this->getFamily($data['code']);
-            $requirement = $this->normalizeRequirements($family);
+            unset($data['code']);
 
-            assertEquals($data['attributes'], implode(',', $family->getAttributeCodes()));
-            assertEquals($data['attribute_as_label'], $family->getAttributeAsLabel()->getCode());
-            assertEquals($data['requirements-mobile'], $requirement['requirements-mobile']);
-            assertEquals($data['requirements-tablet'], $requirement['requirements-tablet']);
-            assertEquals($data['label-en_US'], $family->getTranslation('en_US')->getLabel());
+            foreach ($data as $key => $expectedValue) {
+                $matches = null;
+                if ('attributes' === $key) {
+                    assertEquals($expectedValue, implode(',', $family->getAttributeCodes()));
+                } elseif ('attribute_as_label' === $key) {
+                    assertEquals($expectedValue, $family->getAttributeAsLabel()->getCode());
+                } elseif (preg_match('/^requirements-(?P<channel>.+)$/', $key, $matches)) {
+                    $requiredAttributes = [];
+                    foreach ($family->getAttributeRequirements() as $attributeRequirement) {
+                        if ($matches['channel'] === $attributeRequirement->getChannelCode()) {
+                            $requiredAttributes[] = $attributeRequirement->getAttributeCode();
+                        }
+                    }
+                    assertEquals(join(',',$requiredAttributes), $expectedValue);
+                } elseif (preg_match('/^label-(?P<locale>.+)$/', $key, $matches)) {
+                    assertEquals($expectedValue, $family->getTranslation($matches['locale'])->getLabel());
+                } else {
+                    throw new \InvalidArgumentException(sprintf('Unknown column name "%s" on family check', $key));
+                }
+            }
         }
     }
 
@@ -468,42 +515,37 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $channel = $this->getChannel($data['code']);
+            unset($data['code']);
 
-            if (isset($data['label-en_US'])) {
-                assertEquals($data['label-en_US'], $channel->getTranslation('en_US')->getLabel());
-            }
-
-            if (isset($data['label-de_DE'])) {
-                assertEquals($data['label-de_DE'], $channel->getTranslation('de_DE')->getLabel());
-            }
-
-            if (isset($data['label-fr_FR'])) {
-                assertEquals($data['label-fr_FR'], $channel->getTranslation('fr_FR')->getLabel());
-            }
-
-            assertEquals($data['tree'], $channel->getCategory()->getCode());
-
-            $locales = $channel->getLocaleCodes();
-            asort($locales);
-            assertEquals($data['locales'], implode(',', $locales));
-
-            $currencies = $channel->getCurrencies();
-            $currencyCodes = [];
-            foreach ($currencies as $currency) {
-                $currencyCodes[] = $currency->getCode();
-            }
-            asort($currencyCodes);
-            assertEquals($data['currencies'], implode(',', $currencyCodes));
-
-            if ('' !== $data['conversion_units']) {
-                $units = explode(',', $data['conversion_units']);
-                $formattedUnits = [];
-                foreach ($units as $unit) {
-                    list($key, $value) = explode(':', trim($unit));
-                    $formattedUnits[trim($key)] = trim($value);
+            foreach ($data as $key => $expectedValue) {
+                if ('tree' === $key) {
+                    assertEquals($expectedValue, $channel->getCategory()->getCode());
+                } elseif ('locales' === $key) {
+                    $locales = $channel->getLocaleCodes();
+                    asort($locales);
+                    assertEquals($expectedValue, implode(',', $locales));
+                } elseif ('currencies' === $key) {
+                    $currencyCodes = [];
+                    foreach ($channel->getCurrencies() as $currency) {
+                        $currencyCodes[] = $currency->getCode();
+                    }
+                    asort($currencyCodes);
+                    assertEquals($expectedValue, implode(',', $currencyCodes));
+                } elseif ('conversion_units' === $key) {
+                    if ('' !== $expectedValue) {
+                        $units = explode(',', $expectedValue);
+                        $formattedUnits = [];
+                        foreach ($units as $unit) {
+                            list($key, $value) = explode(':', trim($unit));
+                            $formattedUnits[trim($key)] = trim($value);
+                        }
+                        assertEquals($formattedUnits, $channel->getConversionUnits());
+                    }
+                } elseif (preg_match('/^label-(?P<locale>.+)$/', $key, $matches)) {
+                    assertEquals($expectedValue, $channel->getTranslation($matches['locale'])->getLabel());
+                } else {
+                    throw new \InvalidArgumentException(sprintf('Unknown column name "%s" on channel check', $key));
                 }
-
-                assertEquals($formattedUnits, $channel->getConversionUnits());
             }
         }
     }
@@ -517,9 +559,17 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $groupType = $this->getGroupType($data['code']);
+            unset($data['code']);
 
-            assertEquals($data['label-en_US'], $groupType->getTranslation('en_US')->getLabel());
-            assertEquals($data['is_variant'], (int)$groupType->isVariant());
+            foreach ($data as $key => $expectedValue) {
+                if ('is_variant' === $key) {
+                    assertEquals($expectedValue, (int)$groupType->isVariant());
+                } elseif (preg_match('/^label-(?P<locale>.+)$/', $key, $matches)) {
+                    assertEquals($expectedValue, $groupType->getTranslation($matches['locale'])->getLabel());
+                } else {
+                    throw new \InvalidArgumentException(sprintf('Unknown column name "%s" on group type check', $key));
+                }
+            }
         }
     }
 
@@ -531,48 +581,28 @@ class FixturesContext extends BaseFixturesContext
     public function thereShouldBeTheFollowingAttributeGroups(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            /** @var AttributeGroup $group */
             $group = $this->getAttributeGroup($data['code']);
+            unset($data['code']);
 
-            assertEquals($data['label-en_US'], $group->getTranslation('en_US')->getLabel());
-            assertEquals($data['sort_order'], $group->getSortOrder());
-
-            $attributes = $group->getAttributes();
-            $codes = [];
-            foreach ($attributes as $attribute) {
-                $codes[] = $attribute->getCode();
-            }
-            asort($codes);
-            assertEquals($data['attributes'], implode(',', $codes));
-        }
-    }
-
-    /**
-     * Normalize the requirements
-     *
-     * @param FamilyInterface $family
-     *
-     * @return array
-     */
-    protected function normalizeRequirements(FamilyInterface $family)
-    {
-        $required = [];
-        $flat     = [];
-        foreach ($family->getAttributeRequirements() as $requirement) {
-            $channelCode = $requirement->getChannel()->getCode();
-            if (!isset($required['requirements-' . $channelCode])) {
-                $required['requirements-' . $channelCode] = [];
-            }
-            if ($requirement->isRequired()) {
-                $required['requirements-' . $channelCode][] = $requirement->getAttribute()->getCode();
+            foreach ($data as $key => $expectedValue) {
+                if ('sort_order' === $key) {
+                    assertEquals($expectedValue, $group->getSortOrder());
+                } elseif ('attributes' === $key) {
+                    $codes = [];
+                    foreach ($group->getAttributes() as $attribute) {
+                        $codes[] = $attribute->getCode();
+                    }
+                    asort($codes);
+                    assertEquals($expectedValue, implode(',', $codes));
+                } elseif (preg_match('/^label-(?P<locale>.+)$/', $key, $matches)) {
+                    assertEquals($expectedValue, $group->getTranslation($matches['locale'])->getLabel());
+                } else {
+                    throw new \InvalidArgumentException(
+                        sprintf('Unknown column name "%s" on attribute type check', $key)
+                    );
+                }
             }
         }
-
-        foreach ($required as $key => $attributes) {
-            $flat[$key] = implode(',', $attributes);
-        }
-
-        return $flat;
     }
 
     /**
@@ -588,11 +618,18 @@ class FixturesContext extends BaseFixturesContext
                 'AttributeOption',
                 ['code' => $data['code'], 'attribute' => $attribute]
             );
-            $option->setLocale('en_US');
-            assertEquals($data['label-en_US'], (string) $option);
+            unset($data['attribute']);
+            unset($data['code']);
 
-            if (isset($data['sort_order'])) {
-                assertEquals($data['sort_order'], (string) $option->getSortOrder());
+            foreach ($data as $key => $expectedValue) {
+                if ('sort_order' === $key) {
+                    assertEquals($expectedValue, (string) $option->getSortOrder());
+                } elseif (preg_match('/^label-(?P<locale>.+)$/', $key, $matches)) {
+                    $option->setLocale($matches['locale']);
+                    assertEquals($expectedValue, (string) $option);
+                } else {
+                    throw new \InvalidArgumentException(sprintf('Unknown column name "%s" on option check', $key));
+                }
             }
         }
     }
@@ -606,11 +643,20 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $category = $this->getCategory($data['code']);
-            assertEquals($data['label'], $category->getTranslation('en_US')->getLabel());
-            if (empty($data['parent'])) {
-                assertNull($category->getParent());
-            } else {
-                assertEquals($data['parent'], $category->getParent()->getCode());
+            unset ($data['code']);
+
+            foreach ($data as $key => $expectedValue) {
+                if ('parent' === $key) {
+                    if (empty($expectedValue)) {
+                        assertNull($category->getParent());
+                    } else {
+                        assertEquals($expectedValue, $category->getParent()->getCode());
+                    }
+                } elseif (preg_match('/^label-(?P<locale>.+)$/', $key, $matches)) {
+                    assertEquals($expectedValue, $category->getTranslation($matches['locale'])->getLabel());
+                } else {
+                    throw new \InvalidArgumentException(sprintf('Unknown column name "%s" on category check', $key));
+                }
             }
         }
     }
@@ -624,8 +670,17 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $associationType = $this->getAssociationType($data['code']);
-            assertEquals($data['label-en_US'], $associationType->getTranslation('en_US')->getLabel());
-            assertEquals($data['label-fr_FR'], $associationType->getTranslation('fr_FR')->getLabel());
+            unset ($data['code']);
+
+            foreach ($data as $key => $expectedValue) {
+                if (preg_match('/^label-(?P<locale>.+)$/', $key, $matches)) {
+                    assertEquals($expectedValue, $associationType->getTranslation($matches['locale'])->getLabel());
+                } else {
+                    throw new \InvalidArgumentException(
+                        sprintf('Unknown column name "%s" on association type check', $key)
+                    );
+                }
+            }
         }
     }
 
@@ -639,20 +694,27 @@ class FixturesContext extends BaseFixturesContext
         $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $group = $this->getProductGroup($data['code']);
+            unset($data['code']);
             $this->refresh($group);
 
-            assertEquals($data['label-en_US'], $group->getTranslation('en_US')->getLabel());
-            assertEquals($data['label-fr_FR'], $group->getTranslation('fr_FR')->getLabel());
-            assertEquals($data['type'], $group->getType()->getCode());
-
-            if ($group->getType()->isVariant()) {
-                $attributes = [];
-                foreach ($group->getAxisAttributes() as $attribute) {
-                    $attributes[] = $attribute->getCode();
+            foreach ($data as $key => $expectedValue) {
+                if ('type' === $key) {
+                    assertEquals($expectedValue, $group->getType()->getCode());
+                } elseif ('axis' === $key) {
+                    if ($group->getType()->isVariant()) {
+                        $attributes = [];
+                        foreach ($group->getAxisAttributes() as $attribute) {
+                            $attributes[] = $attribute->getCode();
+                        }
+                        asort($attributes);
+                        $attributes = implode(',', $attributes);
+                        assertEquals($data['axis'], $attributes);
+                    }
+                } elseif (preg_match('/^label-(?P<locale>.+)$/', $key, $matches)) {
+                    assertEquals($expectedValue, $group->getTranslation($matches['locale'])->getLabel());
+                } else {
+                    throw new \InvalidArgumentException(sprintf('Unknown column name "%s" on group check', $key));
                 }
-                asort($attributes);
-                $attributes = implode(',', $attributes);
-                assertEquals($data['axis'], $attributes);
             }
         }
     }
@@ -664,8 +726,14 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFollowingChannels(TableNode $table)
     {
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.channel');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.channel');
+        $writer = $this->getContainer()->get('pim_catalog.saver.channel');
+
         foreach ($table->getHash() as $data) {
-            $this->createChannel($data);
+            $convertedData = $converter->convert($data);
+            $channel = $processor->process($convertedData);
+            $writer->save($channel);
         }
     }
 
@@ -691,7 +759,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $locale
      * @param string $channel
      *
-     * @return Step[]
+     * @return Step\SubstepInterface[]
      *
      * @Given /^I set the "([^"]*)" locales? to the "([^"]*)" channel$/
      */
@@ -727,17 +795,28 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFollowingProductGroups(TableNode $table)
     {
+        $groupConverter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.group');
+        $groupProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.group');
+        $variantGroupConverter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.variant_group');
+        $variantGroupProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.variant_group');
+        $writer = $this->getContainer()->get('pim_catalog.saver.group');
+
         foreach ($table->getHash() as $data) {
-            $code  = $data['code'];
-            $label = $data['label'];
-            $type  = $data['type'];
+            $group = null;
+            if ('VARIANT' === $data['type']) {
+                // TODO Remove this magic methods
+                $data['axis'] = preg_replace('/, /',',',$data['axis']);
 
-            $attributes = (!isset($data['axis']) || $data['axis'] == '')
-                ? [] : explode(', ', $data['axis']);
-
-            $products = (isset($data['products'])) ? explode(', ', $data['products']) : [];
-
-            $this->createProductGroup($code, $label, $type, $attributes, $products);
+                $group = $variantGroupProcessor->process($variantGroupConverter->convert($data));
+            } else {
+                /**
+                 * TODO A better way is to create 2 different methods: create group and variant group. For now, the
+                 *      $table mixes both, so we need to remove the column to be valid.
+                 */
+                unset($data['axis']);
+                $group = $groupProcessor->process($groupConverter->convert($data));
+            }
+            $writer->save($group);
         }
     }
 
@@ -748,11 +827,14 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFollowingAssociationTypes(TableNode $table)
     {
-        foreach ($table->getHash() as $data) {
-            $code  = $data['code'];
-            $label = isset($data['label']) ? $data['label'] : null;
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.association_type');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.association_type');
+        $writer = $this->getContainer()->get('pim_catalog.saver.association_type');
 
-            $this->createAssociationType($code, $label);
+        foreach ($table->getHash() as $data) {
+            $convertedData = $converter->convert($data);
+            $associationType = $processor->process($convertedData);
+            $writer->save($associationType);
         }
     }
 
@@ -763,12 +845,17 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFollowingGroupTypes(TableNode $table)
     {
-        foreach ($table->getHash() as $data) {
-            $code      = $data['code'];
-            $label     = isset($data['label']) ? $data['label'] : null;
-            $isVariant = isset($data['variant']) ? $data['variant'] : 0;
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.group_type');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.group_type');
+        $writer = $this->getContainer()->get('pim_catalog.saver.group_type');
 
-            $this->createGroupType($code, $label, $isVariant);
+        foreach ($table->getHash() as $data) {
+            // TODO Remove this
+            $data['label-en_US'] = isset($data['label-en_US']) ? $data['label-en_US'] : $data['label'];
+
+            $convertedData = $converter->convert($data);
+            $groupType = $processor->process($convertedData);
+            $writer->save($groupType);
         }
     }
 
@@ -1395,7 +1482,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param string $product
+     * @param string $identifier
      * @param string $family
      *
      * @Given /^I set product "([^"]*)" family to "([^"]*)"$/
@@ -1633,115 +1720,6 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param string $code
-     * @param string $label
-     * @param bool   $isVariant
-     *
-     * @return \Pim\Component\Catalog\Model\GroupTypeInterface
-     */
-    protected function createGroupType($code, $label, $isVariant)
-    {
-        $type = new GroupType();
-        $type->setCode($code);
-        $type->setVariant($isVariant);
-        $type->setLocale('en_US')->setLabel($label);
-
-        $this->validate($type);
-        $this->getContainer()->get('pim_catalog.saver.group_type')->save($type);
-
-        return $type;
-    }
-
-    /**
-     * @param string|array $data
-     *
-     * @return \Pim\Component\Catalog\Model\AttributeInterface
-     */
-    protected function createAttribute($data)
-    {
-        // TODO We should use the attribute reader service to avoid all these lines
-        if (is_string($data)) {
-            $data = [
-                'code'  => $data,
-                'group' => 'other',
-            ];
-        }
-
-        $data = array_merge(
-            [
-                'code'     => null,
-                'label'    => null,
-                'families' => null,
-                'locales'  => null,
-                'type'     => 'text',
-                'group'    => 'other',
-            ],
-            $data
-        );
-
-        if (isset($data['label']) && !isset($data['label-en_US'])) {
-            $data['label-en_US'] = $data['label'];
-        }
-
-        $data['code'] = $data['code'] ?: $this->camelize($data['label']);
-        unset($data['label']);
-
-        $families = $data['families'];
-        unset($data['families']);
-
-        $locales = $data['locales'];
-        unset($data['locales']);
-
-        $data['type'] = $this->getAttributeType($data['type']);
-
-        foreach ($data as $key => $element) {
-            if (in_array($element, ['yes', 'no'])) {
-                $element    = $element === 'yes';
-                $data[$key] = $element;
-            } elseif (in_array(
-                $key,
-                ['available_locales', 'date_min', 'date_max', 'number_min', 'number_max']
-            ) &&
-                '' === $element
-            ) {
-                unset($data[$key]);
-            }
-        }
-
-        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute');
-        $convertedData = $converter->convert($data);
-
-        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute');
-        $attribute = $processor->process($convertedData);
-
-        $familiesToPersist = [];
-        if ($families) {
-            foreach ($this->listToArray($families) as $familyCode) {
-                $family = $this->getFamily($familyCode);
-                $family->addAttribute($attribute);
-                $familiesToPersist[] = $family;
-            }
-        }
-
-        $this->validate($attribute);
-
-        if (null !== $locales) {
-            foreach ($this->listToArray($locales) as $localeCode) {
-                $attribute->addAvailableLocale($this->getLocale($localeCode));
-            }
-        }
-
-        $this->getContainer()->get('pim_catalog.saver.attribute')->save($attribute);
-
-        foreach ($familiesToPersist as $family) {
-            $this->validate($family);
-            $this->getFamilySaver()->save($family);
-        }
-
-        return $attribute;
-    }
-
-    /**
      * @param string $type
      *
      * @return string
@@ -1804,103 +1782,11 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param array $data
-     *
-     * @return Channel
-     */
-    protected function createChannel($data)
-    {
-        if (is_string($data)) {
-            $data = [['code' => $data]];
-        }
-
-        $data = array_merge(
-            [
-                'currencies' => null,
-                'locales'    => null,
-                'tree'       => null,
-            ],
-            $data
-        );
-
-        $channel = new Channel();
-
-        $channel->setCode($data['code']);
-
-        foreach ($this->listToArray($data['currencies']) as $currencyCode) {
-            $channel->addCurrency($this->getCurrency(['code' => explode(',', $currencyCode)]));
-        }
-
-        foreach ($this->listToArray($data['locales']) as $localeCode) {
-            $channel->addLocale($this->getLocale(['code' => explode(',', $localeCode)]));
-        }
-
-        if ($data['tree']) {
-            $channel->setCategory($this->getCategory($data['tree']));
-        }
-
-        foreach ($data as $key => $value) {
-            $matches = null;
-            if (preg_match('/label-(<?locale>\d+)/', $key, $matches)) {
-                $channel->setLocale($matches['locale']);
-                $channel->setLabel($value);
-            }
-        }
-
-        $this->validate($channel);
-        $this->getContainer()->get('pim_catalog.saver.channel')->save($channel);
-    }
-
-    /**
-     * @param string $code
-     * @param string $label
-     * @param string $type
-     * @param array  $attributeCodes
-     * @param array  $productIdentifiers
-     */
-    protected function createProductGroup($code, $label, $type, array $attributeCodes, array $productIdentifiers = [])
-    {
-        $group = $this->getGroupFactory()->createGroup($type);
-        $group->setCode($code);
-        $group->setLocale('en_US')->setLabel($label); // TODO translation refactoring
-
-        foreach ($attributeCodes as $attributeCode) {
-            $attribute = $this->getAttribute($attributeCode);
-            $group->addAxisAttribute($attribute);
-        }
-        $this->validate($group);
-        $this->getContainer()->get('pim_catalog.saver.group')->save($group);
-
-        foreach ($productIdentifiers as $sku) {
-            if (!empty($sku)) {
-                $product = $this->getProduct($sku);
-                $product->addGroup($group);
-                $this->validate($product);
-                $this->getProductSaver()->save($product);
-            }
-        }
-    }
-
-    /**
      * @return GroupFactory
      */
     protected function getGroupFactory()
     {
         return $this->getContainer()->get('pim_catalog.factory.group');
-    }
-
-    /**
-     * @param string $code
-     * @param string $label
-     */
-    protected function createAssociationType($code, $label)
-    {
-        $associationType = new AssociationType();
-        $associationType->setCode($code);
-        $associationType->setLocale('en_US')->setLabel($label);
-
-        $this->validate($associationType);
-        $this->getContainer()->get('pim_catalog.saver.association_type')->save($associationType);
     }
 
     /**
@@ -2036,28 +1922,6 @@ class FixturesContext extends BaseFixturesContext
         $this->getFamilySaver()->save($family);
 
         return $family;
-    }
-
-    /**
-     * Create an attribute group
-     *
-     * @param array|string $data
-     *
-     * @return \Pim\Component\Catalog\Model\AttributeGroupInterface
-     */
-    protected function createAttributeGroup($data)
-    {
-        if (is_string($data)) {
-            $data = ['code' => $data];
-        }
-
-        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute_group');
-        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute_group');
-        $convertedData = $converter->convert($data);
-        $attributeGroup = $processor->process($convertedData);
-        $this->getContainer()->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
-
-        return $attributeGroup;
     }
 
     /**
@@ -2243,5 +2107,24 @@ class FixturesContext extends BaseFixturesContext
     protected function getDocumentManager()
     {
         return $this->getContainer()->get('doctrine_mongodb')->getManager();
+    }
+
+    /**
+     * TODO Make doc
+     *
+     * @param array    $data
+     * @param string[] $booleanColumns
+     *
+     * @return array
+     */
+    protected function normalizeTable($data, $booleanColumns)
+    {
+        foreach ($booleanColumns as $booleanColumn) {
+            if (isset($data[$booleanColumn])) {
+                $data[$booleanColumn] = ('yes' === $data[$booleanColumn]) ? '1' : '0';
+            }
+        }
+
+        return $data;
     }
 }

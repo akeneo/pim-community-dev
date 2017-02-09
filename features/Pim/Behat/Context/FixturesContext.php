@@ -8,6 +8,7 @@ use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Inflector;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -28,8 +29,7 @@ class FixturesContext extends PimContext
         'Channel'          => 'PimCatalogBundle:Channel',
         'Currency'         => 'PimCatalogBundle:Currency',
         'Family'           => 'PimCatalogBundle:Family',
-        'Category'         => 'PimCatalogBundle:Category', // TODO: To remove
-        'ProductCategory'  => 'PimCatalogBundle:Category',
+        'Category'         => 'PimCatalogBundle:Category',
         'AssociationType'  => 'PimCatalogBundle:AssociationType',
         'JobInstance'      => 'Akeneo\Component\Batch\Model\JobInstance',
         'JobConfiguration' => 'Pim\Component\Connector\Model\JobConfiguration',

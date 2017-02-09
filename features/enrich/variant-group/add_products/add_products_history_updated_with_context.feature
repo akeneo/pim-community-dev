@@ -7,8 +7,8 @@ Feature: Add products to a variant group
   Background:
     Given the "footwear" catalog configuration
     And the following product groups:
-      | code   | label  | axis  | type    |
-      | SANDAL | Sandal | color | VARIANT |
+      | code   | label-en_US | axis  | type    |
+      | SANDAL | Sandal      | color | VARIANT |
     And the following variant group values:
       | group  | attribute    | value       | locale | scope |
       | SANDAL | manufacturer | Converse    |        |       |

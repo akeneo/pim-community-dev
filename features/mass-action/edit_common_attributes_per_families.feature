@@ -6,16 +6,19 @@ Feature: Edit common attributes of many products at once
 
   Background:
     Given a "footwear" catalog configuration
-    And the following family:
-      | code       | attributes                                                       |
-      | high_heels | sku, name, description, price, rating, size, color, manufacturer |
     And the following attributes:
-      | code         | label       | type   | metric family | default metric unit | families                 |
-      | weight       | Weight      | metric | Weight        | GRAM                | boots, sneakers, sandals |
-      | heel_height  | Heel Height | metric | Length        | CENTIMETER          | high_heels, sandals      |
-      | buckle_color | Buckle      | text   |               |                     | high_heels               |
+      | code         | label       | type   | metric family | default metric unit |
+      | weight       | Weight      | metric | Weight        | GRAM                |
+      | heel_height  | Heel Height | metric | Length        | CENTIMETER          |
+      | buckle_color | Buckle      | text   |               |                     |
+    And the following family:
+      | code       | attributes                                                                                                        |
+      | high_heels | sku,name,description,price,rating,size,color,manufacturer,heel_height,buckle_color                                |
+      | boots      | sku,name,manufacturer,description,weather_conditions,price,rating,side_view,top_view,size,color,lace_color,weight |
+      | sneakers   | sku,name,manufacturer,description,weather_conditions,price,rating,side_view,top_view,size,color,lace_color,weight |
+      | sandals    | sku,name,manufacturer,description,price,rating,side_view,size,color,weight                                        |
     And the following product groups:
-      | code          | label         | axis  | type    |
+      | code          | label-en_US   | axis  | type    |
       | variant_heels | Variant Heels | color | VARIANT |
     And the following variant group values:
       | group         | attribute   | value         |

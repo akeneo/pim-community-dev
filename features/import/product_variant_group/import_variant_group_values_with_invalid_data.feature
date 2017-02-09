@@ -36,9 +36,9 @@ Feature: Execute an import with invalid data
       | sandal2-red-37   | sandals | winter_collection | 37   | red   |
       | sandal2-red-38   | sandals | winter_collection | 38   | red   |
     And the following product groups:
-      | code    | label     | axis        | type    | products                                                                                       |
-      | SANDAL  | Sandal    | size, color | VARIANT | sandal-white-37, sandal-white-38, sandal-white-39, sandal-red-37, sandal-red-38, sandal-red-39 |
-      | SANDAL2 | SandalTwo | size, color | VARIANT | sandal2-white-37, sandal2-white-38, sandal2-red-37, sandal2-red-38                             |
+      | code    | label-en_US | axis        | type    | products                                                                                       |
+      | SANDAL  | Sandal      | size, color | VARIANT | sandal-white-37, sandal-white-38, sandal-white-39, sandal-red-37, sandal-red-38, sandal-red-39 |
+      | SANDAL2 | SandalTwo   | size, color | VARIANT | sandal2-white-37, sandal2-white-38, sandal2-red-37, sandal2-red-38                             |
     And the following attributes:
       | code        | label-en_US | type | scopable | max_characters | validation_rule | validation_regexp |
       | custom_desc | Desc        | text | no       |                |                 |                   |

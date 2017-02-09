@@ -12,7 +12,7 @@ Feature: Display product attributes in the grid
       | gray-boots   |
       | white-boots  |
     And the following product groups:
-      | code         | label          | type     | products                 |
+      | code         | label-en_US    | type     | products                 |
       | boots_akeneo | Akeneo Boots   | RELATED  | black-boots, white-boots |
       | no_label     |                | RELATED  | gray-boots, white-boots  |
     When I am logged in as "Julia"

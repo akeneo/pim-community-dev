@@ -39,19 +39,6 @@ class NavigationContext extends BaseNavigationContext
     }
 
     /**
-     * @param string $identifier
-     *
-     * @Given /^I edit the "([^"]*)" user group$/
-     */
-    public function iEditTheUserGroup($identifier)
-    {
-        $page   = 'UserGroup';
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('UserGroup edit', $page), ['id' => $entity->getId()]);
-    }
-
-    /**
      * @param string $label
      *
      * @Given /^I edit the "([^"]+)" user role$/
