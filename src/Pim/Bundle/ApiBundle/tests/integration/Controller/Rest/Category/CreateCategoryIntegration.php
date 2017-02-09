@@ -26,7 +26,7 @@ JSON;
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertArrayHasKey('location', $response->headers->all());
         $this->assertSame('http://localhost/api/rest/v1/categories/new_category_headers', $response->headers->get('location'));
-        $this->assertSame(null, json_decode($response->getContent(), true));
+        $this->assertSame('', $response->getContent());
     }
 
     public function testStandardFormatWhenACategoryIsCreatedButIncompleted()

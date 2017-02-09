@@ -8,6 +8,11 @@ pim_api_product_get:
     defaults: { _controller: pim_api.controller.product:getAction, _format: json }
     methods: [GET]
 
+pim_api_product_create:
+    path: /products
+    defaults: { _controller: pim_api.controller.product:createAction, _format: json }
+    methods: [POST]
+
 pim_api_product_delete:
     path: /products/{code}
     defaults: { _controller: pim_api.controller.product:deleteAction, _format: json }
