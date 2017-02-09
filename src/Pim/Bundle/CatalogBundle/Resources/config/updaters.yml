@@ -73,6 +73,7 @@ services:
             - '@pim_catalog.updater.product_property_setter'
             - '@pim_catalog.updater.product_template'
             - ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations']
+            - ['identifier', 'created', 'updated']
 
     pim_catalog.updater.product_property_setter:
         class: '%pim_catalog.updater.product_property_setter.class%'

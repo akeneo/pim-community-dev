@@ -225,11 +225,9 @@ class GetProductIntegration extends AbstractProductTestCase
         $result = $this->sanitizeDateFields($result);
         $result = $this->sanitizeMediaAttributeData($result);
 
-        if (!empty($expected)) {
-            $expected = $this->sanitizeDateFields($expected);
-            $expected = $this->sanitizeMediaAttributeData($expected);
-        }
+        $expected = $this->sanitizeDateFields($expected);
+        $expected = $this->sanitizeMediaAttributeData($expected);
 
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
     }
 }

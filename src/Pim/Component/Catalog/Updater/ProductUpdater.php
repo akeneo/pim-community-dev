@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -26,19 +27,25 @@ class ProductUpdater implements ObjectUpdaterInterface
     /** @var array */
     protected $supportedFields = [];
 
+    /** @var array */
+    protected $ignoredFields = [];
+
     /**
      * @param PropertySetterInterface         $propertySetter
      * @param ProductTemplateUpdaterInterface $templateUpdater
      * @param array                           $supportedFields
+     * @param array                           $ignoredFields
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
         ProductTemplateUpdaterInterface $templateUpdater,
-        array $supportedFields
+        array $supportedFields,
+        array $ignoredFields
     ) {
         $this->propertySetter = $propertySetter;
         $this->templateUpdater = $templateUpdater;
         $this->supportedFields = $supportedFields;
+        $this->ignoredFields = $ignoredFields;
     }
 
     /**
@@ -124,6 +131,8 @@ class ProductUpdater implements ObjectUpdaterInterface
                 $this->updateProductFields($product, $code, $values);
             } elseif ('values' === $code) {
                 $this->updateProductValues($product, $values);
+            } elseif (!in_array($code, $this->ignoredFields)) {
+                throw UnknownPropertyException::unknownProperty($code);
             }
         }
         $this->updateProductVariantValues($product, $data);

@@ -283,9 +283,9 @@ class CategoryController
 
     /**
      * Throw an exception if the code provided in the url and the code provided in the request body
-     * are not equals when creating a category with a PATCH or PUT method.
+     * are not equals when creating a category with a PATCH method.
      *
-     * The code in the request body is optional when we create a resource with PATCH or PUT.
+     * The code in the request body is optional when we create a resource with PATCH.
      *
      * @param string $code code provided in the url
      * @param array  $data body of the request already decoded

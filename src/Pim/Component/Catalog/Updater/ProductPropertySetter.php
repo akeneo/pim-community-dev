@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -52,7 +53,7 @@ class ProductPropertySetter implements PropertySetterInterface
 
         $setter = $this->setterRegistry->getSetter($field);
         if (null === $setter) {
-            throw new \LogicException(sprintf('No setter found for field "%s"', $field));
+            throw UnknownPropertyException::unknownProperty($field);
         }
 
         if ($setter instanceof AttributeSetterInterface) {
