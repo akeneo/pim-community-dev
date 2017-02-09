@@ -7,6 +7,7 @@ parameters:
     pim_api.normalizer.category.class: Pim\Component\Api\Normalizer\CategoryNormalizer
     pim_api.normalizer.attribute.class: Pim\Component\Api\Normalizer\AttributeNormalizer
     pim_api.normalizer.attribute_option.class: Pim\Component\Api\Normalizer\AttributeOptionNormalizer
+    pim_api.normalizer.channel.class: Pim\Component\Api\Normalizer\ChannelNormalizer
 
 services:
     fos_rest.serializer:
@@ -70,5 +71,12 @@ services:
         class: '%pim_api.normalizer.attribute_option.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.attribute_option'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.channel:
+        class: '%pim_api.normalizer.channel.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.channel'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }

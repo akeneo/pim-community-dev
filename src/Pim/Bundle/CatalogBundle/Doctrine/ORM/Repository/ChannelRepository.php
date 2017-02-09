@@ -45,7 +45,7 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     {
         $qb = $this->createQueryBuilder('c');
 
-        return $qb
+        return (int) $qb
             ->select('count(c.id)')
             ->getQuery()
             ->getSingleScalarResult();

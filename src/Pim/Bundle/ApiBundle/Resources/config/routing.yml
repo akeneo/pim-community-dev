@@ -10,6 +10,10 @@ attribute:
     resource: '@PimApiBundle/Resources/config/routing/attribute.yml'
     prefix: /rest/v1
 
+channel:
+    resource: '@PimApiBundle/Resources/config/routing/channel.yml'
+    prefix: /rest/v1
+
 product:
     resource: '@PimApiBundle/Resources/config/routing/product.yml'
     prefix: /rest/v1
