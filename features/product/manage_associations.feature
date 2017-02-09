@@ -19,18 +19,18 @@ Feature: Manage associations
     product_with_one_association;boots;CROSS;winter_boots;CROSS;deletable_product;Product with 1 association;
     deletable_product;sneakers;;winter_boots;;;Second Product;
     """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    And I am on the "footwear_product_import" import job page
+    And I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     And I should see the text "Association import COMPLETED"
     And I edit the "deletable_product" product
     And I press the "Delete" button
     And I confirm the deletion
-    And I am on the "footwear_product_import" import job page
+    And I am on the "csv_footwear_product_import" import job page
     When I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see the text "Association import COMPLETED"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6146
@@ -45,11 +45,11 @@ Feature: Manage associations
     product_without_association;boots;CROSS;winter_boots;CROSS;;;Product without association
     deletable_product;sneakers;;winter_boots;;;;Product to delete
     """
-    And the following job "footwear_product_import" configuration:
+    And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
-    And I am on the "footwear_product_import" import job page
+    And I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     And I should see the text "Association import COMPLETED"
     And I edit the "deletable_product" product
     And I press the "Delete" button
