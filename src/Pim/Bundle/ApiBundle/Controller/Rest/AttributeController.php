@@ -176,6 +176,8 @@ class AttributeController
     }
 
     /**
+     * Update an attribute. It throws an error 422 if a problem occurred during the update.
+     *
      * @param AttributeInterface $attribute
      * @param array              $data
      *
