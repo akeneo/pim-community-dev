@@ -46,7 +46,7 @@ class TableNameMapper
      *
      * @param string $sql
      *
-     * @throws \LogicException if a SQL table name cannot be found depending the given key
+     * @throws \LogicException if a SQL table name cannot be found depending on the given key
      *
      * @return string
      */
