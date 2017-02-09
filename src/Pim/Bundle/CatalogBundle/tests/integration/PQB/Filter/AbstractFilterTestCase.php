@@ -76,7 +76,7 @@ abstract class AbstractFilterTestCase extends TestCase
      * @param CursorInterface $result
      * @param array           $expected
      */
-    protected function assert($result, array $expected = [])
+    protected function assert($result, array $expected)
     {
         $products = [];
         foreach ($result as $product) {

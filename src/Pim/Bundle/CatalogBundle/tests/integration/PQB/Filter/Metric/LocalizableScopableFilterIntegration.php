@@ -61,7 +61,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
             ['amount' => 10, 'unit' => 'KILOWATT'],
             ['locale' => 'en_US', 'scope' => 'tablet']
         ]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([[
             'a_scopable_localizable_metric',
@@ -107,7 +107,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
             ['amount' => -5, 'unit' => 'KILOWATT'],
             ['locale' => 'en_US', 'scope' => 'tablet']
         ]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([[
             'a_scopable_localizable_metric',
@@ -126,7 +126,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
             ['amount' => -5, 'unit' => 'KILOWATT'],
             ['locale' => 'en_US', 'scope' => 'ecommerce']
         ]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([[
             'a_scopable_localizable_metric',
@@ -191,8 +191,35 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
      * @expectedExceptionMessage Attribute or field "a_scopable_localizable_metric" expects valid data, scope and locale. Attribute "a_scopable_localizable_metric" expects a locale, none given.
      */
-    public function testErrorMetricLocalizableAndScopable()
+    public function testErrorMetricLocalizable()
     {
         $this->execute([['a_scopable_localizable_metric', Operators::NOT_EQUAL, ['amount' => 250, 'unit' => 'KILOWATT']]]);
+    }
+
+    /**
+     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Attribute or field "a_scopable_localizable_metric" expects valid data, scope and locale. Attribute "a_scopable_localizable_metric" expects a scope, none given.
+     */
+    public function testErrorMetricScopable()
+    {
+        $this->execute([['a_scopable_localizable_metric', Operators::NOT_EQUAL, ['amount' => 250, 'unit' => 'KILOWATT'], ['locale' => 'fr_FR']]]);
+    }
+
+    /**
+     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Attribute or field "a_scopable_localizable_metric" expects valid data, scope and locale. Attribute "a_scopable_localizable_metric" expects an existing and activated locale, "NOT_FOUND" given.
+     */
+    public function testLocaleNotFound()
+    {
+        $this->execute([['a_scopable_localizable_metric', Operators::NOT_EQUAL, ['amount' => 250, 'unit' => 'KILOWATT'], ['locale' => 'NOT_FOUND']]]);
+    }
+
+    /**
+     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Attribute or field "a_scopable_localizable_metric" expects valid data, scope and locale. Attribute "a_scopable_localizable_metric" expects an existing scope, "NOT_FOUND" given.
+     */
+    public function testScopeNotFound()
+    {
+        $this->execute([['a_scopable_localizable_metric', Operators::NOT_EQUAL, ['amount' => 250, 'unit' => 'KILOWATT'], ['locale' => 'en_US', 'scope' => 'NOT_FOUND']]]);
     }
 }

@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Metric;
 
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -53,7 +52,7 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
     public function testOperatorInferior()
     {
         $result = $this->execute([['a_localizable_metric', Operators::LOWER_THAN, ['amount' => 1, 'unit' => 'METER'], ['locale' => 'fr_FR']]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['a_localizable_metric', Operators::LOWER_THAN, ['amount' => 20, 'unit' => 'METER'], ['locale' => 'en_US']]]);
         $this->assert($result, ['product_two']);
@@ -77,7 +76,7 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
     public function testOperatorEquals()
     {
         $result = $this->execute([['a_localizable_metric', Operators::EQUALS, ['amount' => 21, 'unit' => 'METER'], ['locale' => 'en_US']]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['a_localizable_metric', Operators::EQUALS, ['amount' => 21, 'unit' => 'METER'], ['locale' => 'fr_FR']]]);
         $this->assert($result, ['product_one']);
@@ -86,10 +85,10 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
     public function testOperatorSuperior()
     {
         $result = $this->execute([['a_localizable_metric', Operators::GREATER_THAN, ['amount' => 20, 'unit' => 'METER'], ['locale' => 'en_US']]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['a_localizable_metric', Operators::GREATER_THAN, ['amount' => 21, 'unit' => 'METER'], ['locale' => 'fr_FR']]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['a_localizable_metric', Operators::GREATER_THAN, ['amount' => 9, 'unit' => 'METER'], ['locale' => 'en_US']]]);
         $this->assert($result, ['product_one', 'product_two']);
@@ -98,7 +97,7 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
     public function testOperatorSuperiorOrEquals()
     {
         $result = $this->execute([['a_localizable_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 25, 'unit' => 'METER'], ['locale' => 'en_US']]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['a_localizable_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 20, 'unit' => 'METER'], ['locale' => 'en_US']]]);
         $this->assert($result, ['product_one']);

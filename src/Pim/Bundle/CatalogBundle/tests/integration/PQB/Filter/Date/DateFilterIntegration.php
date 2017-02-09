@@ -16,7 +16,7 @@ class DateFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count) {
+        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
             $this->createProduct('product_one', [
                 'values' => [
                     'a_date' => [
@@ -55,7 +55,7 @@ class DateFilterIntegration extends AbstractFilterTestCase
     public function testOperatorEquals()
     {
         $result = $this->execute([['a_date', Operators::EQUALS, '2017-02-01']]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['a_date', Operators::EQUALS, '2017-02-06']]);
         $this->assert($result, ['product_one']);
@@ -64,7 +64,7 @@ class DateFilterIntegration extends AbstractFilterTestCase
     public function testOperatorSuperior()
     {
         $result = $this->execute([['a_date', Operators::GREATER_THAN, '2017-03-05']]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['a_date', Operators::GREATER_THAN, '2017-02-05']]);
         $this->assert($result, ['product_one', 'product_two']);

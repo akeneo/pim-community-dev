@@ -26,7 +26,7 @@ class FamilyFilterIntegration extends AbstractFilterTestCase
     public function testOperatorIn()
     {
         $result = $this->execute([['family', Operators::IN_LIST, ['familyB']]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['family', Operators::IN_LIST, ['familyB', 'familyA']]]);
         $this->assert($result, ['foo']);

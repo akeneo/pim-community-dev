@@ -18,7 +18,7 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count) {
+        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
             $this->createAttribute([
                 'code'                => 'a_scopable_yes_no',
                 'attribute_type'      => AttributeTypes::BOOLEAN,
@@ -74,5 +74,14 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     public function testErrorScopable()
     {
         $this->execute([['a_scopable_yes_no', Operators::NOT_EQUAL, true]]);
+    }
+
+    /**
+     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Attribute or field "a_scopable_yes_no" expects valid data, scope and locale. Attribute "a_scopable_yes_no" expects an existing scope, "NOT_FOUND" given.
+     */
+    public function testScopeNotFound()
+    {
+        $this->execute([['a_scopable_yes_no', Operators::NOT_EQUAL, true, ['scope' => 'NOT_FOUND']]]);
     }
 }

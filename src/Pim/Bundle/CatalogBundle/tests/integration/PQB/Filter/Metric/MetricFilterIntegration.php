@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Metric;
 
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -41,7 +40,7 @@ class MetricFilterIntegration extends AbstractFilterTestCase
     public function testOperatorInferior()
     {
         $result = $this->execute([['a_metric', Operators::LOWER_THAN, ['amount' => 10.55, 'unit' => 'KILOWATT']]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['a_metric', Operators::LOWER_THAN, ['amount' => 10.5501, 'unit' => 'KILOWATT']]]);
         $this->assert($result, ['product_one']);
@@ -53,7 +52,7 @@ class MetricFilterIntegration extends AbstractFilterTestCase
     public function testOperatorInferiorOrEquals()
     {
         $result = $this->execute([['a_metric', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 10.4999, 'unit' => 'KILOWATT']]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['a_metric', Operators::LOWER_OR_EQUAL_THAN, ['amount' => 10.55, 'unit' => 'KILOWATT']]]);
         $this->assert($result, ['product_one']);
@@ -65,7 +64,7 @@ class MetricFilterIntegration extends AbstractFilterTestCase
     public function testOperatorEquals()
     {
         $result = $this->execute([['a_metric', Operators::EQUALS, ['amount' => 10.5501, 'unit' => 'KILOWATT']]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['a_metric', Operators::EQUALS, ['amount' => 10.55, 'unit' => 'KILOWATT']]]);
         $this->assert($result, ['product_one']);
@@ -74,7 +73,7 @@ class MetricFilterIntegration extends AbstractFilterTestCase
     public function testOperatorSuperior()
     {
         $result = $this->execute([['a_metric', Operators::GREATER_THAN, ['amount' => 15, 'unit' => 'KILOWATT']]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['a_metric', Operators::GREATER_THAN, ['amount' => 10.4999, 'unit' => 'KILOWATT']]]);
         $this->assert($result, ['product_one', 'product_two']);
@@ -83,7 +82,7 @@ class MetricFilterIntegration extends AbstractFilterTestCase
     public function testOperatorSuperiorOrEquals()
     {
         $result = $this->execute([['a_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 15.01, 'unit' => 'KILOWATT']]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['a_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 10.55, 'unit' => 'KILOWATT']]]);
         $this->assert($result, ['product_one', 'product_two']);
