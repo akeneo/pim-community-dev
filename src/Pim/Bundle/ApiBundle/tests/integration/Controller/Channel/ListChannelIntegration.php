@@ -14,7 +14,7 @@ class ListChannelIntegration extends ApiTestCase
 
         $client->request('GET', 'api/rest/v1/channels');
 
-        $standardChannels = [
+        $apiChannels = [
             '_links'       => [
                 'self'  => ['href' => 'http://localhost/api/rest/v1/channels?page=1&limit=10'],
                 'first' => ['href' => 'http://localhost/api/rest/v1/channels?page=1&limit=10'],
@@ -74,7 +74,7 @@ class ListChannelIntegration extends ApiTestCase
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
 
-        $this->assertSame($standardChannels, json_decode($response->getContent(), true));
+        $this->assertSame($apiChannels, json_decode($response->getContent(), true));
     }
 
     public function testOutOfRangeListChannels()
@@ -83,7 +83,7 @@ class ListChannelIntegration extends ApiTestCase
 
         $client->request('GET', 'api/rest/v1/channels?page=2&limit=5');
 
-        $standardChannels = [
+        $apiChannels = [
             '_links' => [
                 'self'  => ['href' => 'http://localhost/api/rest/v1/channels?page=2&limit=5'],
                 'first' => ['href' => 'http://localhost/api/rest/v1/channels?page=1&limit=5'],
@@ -99,7 +99,7 @@ class ListChannelIntegration extends ApiTestCase
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertSame($standardChannels, json_decode($response->getContent(), true));
+        $this->assertSame($apiChannels, json_decode($response->getContent(), true));
     }
 
     public function testPaginationListOfChannels()
@@ -108,7 +108,7 @@ class ListChannelIntegration extends ApiTestCase
 
         $client->request('GET', 'api/rest/v1/channels?page=2&limit=2');
 
-        $standardChannels = [
+        $apiChannels = [
             '_links' => [
                 'self'     => ['href' => 'http://localhost/api/rest/v1/channels?page=2&limit=2'],
                 'first'    => ['href' => 'http://localhost/api/rest/v1/channels?page=1&limit=2'],
@@ -140,7 +140,7 @@ class ListChannelIntegration extends ApiTestCase
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertSame($standardChannels, json_decode($response->getContent(), true));
+        $this->assertSame($apiChannels, json_decode($response->getContent(), true));
     }
 
     /**
