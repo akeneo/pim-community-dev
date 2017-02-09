@@ -135,3 +135,21 @@ Feature: Import families
     Then I should see the text "Skipped 2"
     And I should see the text "Property 'attribute_as_label' only supports 'pim_catalog_text' and 'pim_catalog_identifier' attribute types for the family: Wrong Family1"
     And I should see the text "Property 'attribute_as_label' only supports 'pim_catalog_text' and 'pim_catalog_identifier' attribute types for the family: Wrong Family2"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6124
+  Scenario: Import a family with missing requirements does not remove associated family requirements
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And the following CSV file to import:
+      """
+      code;attributes;attribute_as_label;requirements-mobile;label-en_US
+      heels;sku,name,manufacturer,heel_color;name;manufacturer;Heels
+      """
+    And the following job "csv_footwear_family_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_family_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_family_import" job to finish
+    Then there should be the following families:
+      | code     | attributes                       | attribute_as_label | requirements-mobile | requirements-tablet                                                   | label-en_US |
+      | heels    | sku,name,manufacturer,heel_color | name               | sku,manufacturer    | sku,name,description,price,side_view,size,color,heel_color,sole_color | Heels       |

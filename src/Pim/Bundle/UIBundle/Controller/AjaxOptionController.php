@@ -83,11 +83,9 @@ class AjaxOptionController
         if (
             $query->get('isCreatable') &&
             !empty($search) &&
-            !in_array($choices['results'], ['id' => $search, 'text' => $search])
+            !in_array(['id' => $search, 'text' => $search], $choices['results'])
         ) {
-            $choices['results'] = [
-                ['id' => $search, 'text' => $search]
-            ];
+            $choices['results'][] = ['id' => $search, 'text' => $search];
         }
 
         return new JsonResponse($choices);
