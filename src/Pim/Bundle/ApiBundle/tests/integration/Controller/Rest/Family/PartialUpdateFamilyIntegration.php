@@ -16,7 +16,7 @@ class PartialUpdateFamilyIntegration extends ApiTestCase
         $data =
 <<<JSON
     {
-        "attribute_as_label": "a_text"
+        "attribute_as_label": "sku"
     }
 JSON;
 
@@ -418,7 +418,7 @@ JSON;
         $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "labels" expects an array. Check the standard format documentation.',
+            'message' => 'Property "labels" expects an array as data, "NULL" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#family', $version),

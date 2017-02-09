@@ -20,7 +20,7 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
             $this->createAttribute([
                 'code'                => 'a_localizable_simple_select',
-                'attribute_type'      => AttributeTypes::OPTION_SIMPLE_SELECT,
+                'type'                => AttributeTypes::OPTION_SIMPLE_SELECT,
                 'localizable'         => true,
                 'scopable'            => false
             ]);
