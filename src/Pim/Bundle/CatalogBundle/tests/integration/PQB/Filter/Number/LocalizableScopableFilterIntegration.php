@@ -72,7 +72,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
     public function testOperatorEquals()
     {
         $result = $this->execute([['a_localizable_scopable_number', Operators::EQUALS, 15, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
-        $this->assert($result);
+        $this->assert($result, []);
 
         $result = $this->execute([['a_localizable_scopable_number', Operators::EQUALS, -15, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one']);
