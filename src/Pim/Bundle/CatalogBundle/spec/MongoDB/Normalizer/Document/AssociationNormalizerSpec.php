@@ -50,7 +50,7 @@ class AssociationNormalizerSpec extends ObjectBehavior
         $assoc->getAssociationType()->willReturn($assocType);
         $assoc->getProducts()->willReturn([]);
         $assoc->getGroups()->willReturn([]);
-        $context = ['_id' => '1234abc', 'collection_name' => 'product'];
+        $context = ['_id' => '1234abc', 'collection_name' => 'product', 'database_name' => 'dbname'];
         $mongoFactory->createMongoId()->willReturn($mongoId);
         $mongoFactory->createMongoDBRef('product', '1234abc')->willReturn($ownerRef);
 
@@ -78,11 +78,13 @@ class AssociationNormalizerSpec extends ObjectBehavior
         $assocType->getId()->willReturn(8);
         $assoc->getAssociationType()->willReturn($assocType);
         $assoc->getGroups()->willReturn([]);
-        $context = ['_id' => '1234abc', 'collection_name' => 'product'];
+        $context = ['_id' => '1234abc', 'collection_name' => 'product', 'database_name' => 'dbname'];
         $mongoFactory->createMongoId()->willReturn($mongoId);
+        $mongoFactory->createMongoId('product1')->willReturn('product1MongoId');
+        $mongoFactory->createMongoId('product2')->willReturn('product2MongoId');
         $mongoFactory->createMongoDBRef('product', '1234abc')->willReturn($ownerRef);
-        $mongoFactory->createMongoDBRef('product', 'product1')->willReturn($product1Ref);
-        $mongoFactory->createMongoDBRef('product', 'product2')->willReturn($product2Ref);
+        $mongoFactory->createMongoDBRef('product', 'product1MongoId', 'dbname')->willReturn($product1Ref);
+        $mongoFactory->createMongoDBRef('product', 'product2MongoId', 'dbname')->willReturn($product2Ref);
 
         $product1->getId()->willReturn('product1');
         $product2->getId()->willReturn('product2');
@@ -111,7 +113,7 @@ class AssociationNormalizerSpec extends ObjectBehavior
         $assocType->getId()->willReturn(8);
         $assoc->getProducts()->willReturn([]);
         $assoc->getAssociationType()->willReturn($assocType);
-        $context = ['_id' => '1234abc', 'collection_name' => 'product'];
+        $context = ['_id' => '1234abc', 'collection_name' => 'product', 'database_name' => 'dbname'];
         $mongoFactory->createMongoId()->willReturn($mongoId);
         $mongoFactory->createMongoDBRef('product', '1234abc')->willReturn($ownerRef);
 
@@ -145,11 +147,13 @@ class AssociationNormalizerSpec extends ObjectBehavior
     ) {
         $assocType->getId()->willReturn(8);
         $assoc->getAssociationType()->willReturn($assocType);
-        $context = ['_id' => '1234abc', 'collection_name' => 'product'];
+        $context = ['_id' => '1234abc', 'collection_name' => 'product', 'database_name' => 'dbname'];
         $mongoFactory->createMongoId()->willReturn($mongoId);
+        $mongoFactory->createMongoId('product1')->willReturn('product1MongoId');
+        $mongoFactory->createMongoId('product2')->willReturn('product2MongoId');
         $mongoFactory->createMongoDBRef('product', '1234abc')->willReturn($ownerRef);
-        $mongoFactory->createMongoDBRef('product', 'product1')->willReturn($product1Ref);
-        $mongoFactory->createMongoDBRef('product', 'product2')->willReturn($product2Ref);
+        $mongoFactory->createMongoDBRef('product', 'product1MongoId', 'dbname')->willReturn($product1Ref);
+        $mongoFactory->createMongoDBRef('product', 'product2MongoId', 'dbname')->willReturn($product2Ref);
 
         $product1->getId()->willReturn('product1');
         $product2->getId()->willReturn('product2');
