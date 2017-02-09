@@ -60,24 +60,14 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         ProductValueInterface $colorValue,
         AttributeInterface $name,
         AttributeInterface $color,
-        ProductValueCollectionInterface $values,
-        \ArrayIterator $valuesIterator
+        ProductValueCollectionInterface $values
     ) {
         $nameValue->getAttribute()->willReturn($name);
         $colorValue->getAttribute()->willReturn($color);
 
         $template->getValues()->willReturn($values);
 
-        $values->getIterator()->willReturn($valuesIterator);
-        $valuesIterator->rewind()->shouldBeCalled();
-        $valuesIterator->valid()->willReturn(true, true, false);
-        $valuesIterator->current()->willReturn($nameValue, $colorValue);
-        $valuesIterator->next()->shouldBeCalled();
-
-        $values->remove($colorValue)->shouldNotBeCalled();
-
-        $values->remove($nameValue)->willReturn($values);
-        $template->setValues($values)->shouldBeCalled();
+        $values->removeByAttribute($name)->shouldBeCalled();
 
         $this->removeAttribute($template, $name);
     }

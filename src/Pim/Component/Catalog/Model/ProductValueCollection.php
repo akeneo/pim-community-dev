@@ -124,6 +124,22 @@ class ProductValueCollection implements ProductValueCollectionInterface
     /**
      * {@inheritDoc}
      */
+    public function removeByAttribute(AttributeInterface $attribute)
+    {
+        $removed = false;
+        foreach ($this->values as $value) {
+            if ($attribute === $value->getAttribute()) {
+                $this->remove($value);
+                $removed = true;
+            }
+        }
+
+        return $removed;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function containsKey($key)
     {
         return array_key_exists($key, $this->values);

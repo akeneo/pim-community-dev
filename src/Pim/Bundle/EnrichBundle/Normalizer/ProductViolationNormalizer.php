@@ -34,19 +34,19 @@ class ProductViolationNormalizer implements NormalizerInterface
     {
         $propertyPath = $violation->getPropertyPath();
 
-        if (0 === strpos($propertyPath, 'values')) {
+        if (0 === strpos($propertyPath, 'values[')) {
             if (!isset($context['product'])) {
                 throw new \InvalidArgumentException('Expects a product context');
             }
 
             $codeStart = strpos($propertyPath, '[') + 1;
             $codeLength = strpos($propertyPath, ']') - $codeStart;
-            $attributeProperties = json_decode(substr($propertyPath, $codeStart, $codeLength), true);
+            $attribute = json_decode(substr($propertyPath, $codeStart, $codeLength), true);
 
             $normalizedViolation = [
-                'attribute' => $attributeProperties['code'],
-                'locale'    => $attributeProperties['locale'],
-                'scope'     => $attributeProperties['scope'],
+                'attribute' => $attribute['code'],
+                'locale'    => $attribute['locale'],
+                'scope'     => $attribute['scope'],
                 'message'   => $violation->getMessage(),
             ];
         } elseif ('identifier' === $propertyPath) {

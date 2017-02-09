@@ -53,15 +53,7 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
      */
     public function removeAttribute(ProductTemplateInterface $template, AttributeInterface $attribute)
     {
-        $values = $template->getValues();
-
-        foreach ($values as $value) {
-            if ($attribute === $value->getAttribute()) {
-                $values->remove($value);
-            }
-        }
-
-        $template->setValues($values);
+        $template->getValues()->removeByAttribute($attribute);
     }
 
     /**

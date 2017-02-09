@@ -181,6 +181,46 @@ class ProductValueCollectionSpec extends ObjectBehavior
         $this->getAttributesKeys()->shouldReturn(['length', 'price', 'description']);
     }
 
+    function it_removes_a_value_by_attribute_and_deletes_indexed_attribute(
+        $value2,
+        $value3,
+        $value4,
+        $value5,
+        $length
+    ) {
+        $this->removeByAttribute($length)->shouldReturn(true);
+
+        $this->toArray()->shouldReturn([
+            'price-<all_channels>-<all_locales>' => $value2,
+            'description-ecommerce-en_US' => $value3,
+            'description-ecommerce-fr_FR' => $value4,
+            'description-print-en_US' => $value5
+        ]);
+
+        $this->getAttributesKeys()->shouldReturn(['price', 'description']);
+    }
+
+    function it_does_not_removes_values_for_non_present_attribute(
+        $value1,
+        $value2,
+        $value3,
+        $value4,
+        $value5,
+        AttributeInterface $anotherAttribute
+    ) {
+        $this->removeByAttribute($anotherAttribute)->shouldReturn(false);
+
+        $this->toArray()->shouldReturn([
+            'length-<all_channels>-<all_locales>' => $value1,
+            'price-<all_channels>-<all_locales>' => $value2,
+            'description-ecommerce-en_US' => $value3,
+            'description-ecommerce-fr_FR' => $value4,
+            'description-print-en_US' => $value5
+        ]);
+
+        $this->getAttributesKeys()->shouldReturn(['length', 'price', 'description']);
+    }
+
     function it_contains_a_key()
     {
         $this->containsKey('nope')->shouldReturn(false);

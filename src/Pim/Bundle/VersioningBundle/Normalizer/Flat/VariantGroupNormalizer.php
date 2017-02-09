@@ -47,7 +47,7 @@ class VariantGroupNormalizer extends BaseNormalizer
             return [];
         }
 
-        $values  = $variantGroup->getProductTemplate()->getValues();
+        $values = $variantGroup->getProductTemplate()->getValues();
 
         $normalizedValues = [];
         foreach ($values as $value) {
