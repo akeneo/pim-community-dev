@@ -22,7 +22,7 @@ Feature: Import categories
     And I launch the import job
     And I wait for the "csv_footwear_category_import" job to finish
     Then there should be the following categories:
-      | code        | label       | parent    |
+      | code        | label-en_US | parent    |
       | computers   | Computers   |           |
       | laptops     | Laptops     | computers |
       | hard_drives | Hard drives | laptops   |
@@ -50,7 +50,7 @@ Feature: Import categories
     Then I should see "Property \"parent\" expects a valid category code. The category does not exist, \"clothes\" given."
     And I should see "Property \"parent\" expects a valid category code. The category does not exist, \"tshirts\" given."
     And there should be the following categories:
-      | code        | label       | parent    |
+      | code        | label-en_US | parent    |
       | computers   | Computers   |           |
       | laptops     | Laptops     | computers |
       | hard_drives | Hard drives | laptops   |
@@ -92,7 +92,7 @@ Feature: Import categories
     And I launch the import job
     And I wait for the "xlsx_footwear_category_import" job to finish
     Then there should be the following categories:
-      | code        | label       | parent    |
+      | code        | labelen_US  | parent    |
       | computers   | Computers   |           |
       | laptops     | Laptops     | computers |
       | hard_drives | Hard drives | laptops   |

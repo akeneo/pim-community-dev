@@ -28,7 +28,6 @@ class FixturesContext extends PimContext
         'Channel'          => 'PimCatalogBundle:Channel',
         'Currency'         => 'PimCatalogBundle:Currency',
         'Family'           => 'PimCatalogBundle:Family',
-        'Category'         => 'PimCatalogBundle:Category', // TODO: To remove
         'ProductCategory'  => 'PimCatalogBundle:Category',
         'AssociationType'  => 'PimCatalogBundle:AssociationType',
         'JobInstance'      => 'Akeneo\Component\Batch\Model\JobInstance',
