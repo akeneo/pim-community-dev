@@ -145,16 +145,16 @@ class GroupsFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_an_array()
     {
-        $this->shouldThrow(InvalidArgumentException::arrayExpected('groups', 'filter', 'groups', gettype('not an array')))
+        $this->shouldThrow(InvalidArgumentException::arrayExpected('groups', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter', gettype('not an array')))
             ->during('addFieldFilter', ['groups.id', 'IN', 'not an array']);
     }
 
     function it_throws_an_exception_if_content_of_array_is_not_string_or_numeric_or_empty()
     {
-        $this->shouldThrow(InvalidArgumentException::numericExpected('groups', 'filter', 'groups', gettype('WRONG')))
+        $this->shouldThrow(InvalidArgumentException::numericExpected('groups', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter', gettype('WRONG')))
             ->during('addFieldFilter', ['groups.id', 'IN', [1, 2, 'WRONG']]);
 
-        $this->shouldThrow(InvalidArgumentException::stringExpected('groups', 'filter', 'groups', gettype(false)))
+        $this->shouldThrow(InvalidArgumentException::stringExpected('groups', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter', gettype(false)))
             ->during('addFieldFilter', ['groups', 'IN', ['a_code', false]]);
     }
 

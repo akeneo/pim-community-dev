@@ -5,9 +5,9 @@ namespace spec\Pim\Component\Catalog\Updater\Setter;
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -63,11 +63,9 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $data = 'path/to/unknown/file';
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validPathExpected(
                 'attributeCode',
-                'a valid pathname',
-                'setter',
-                'media',
+                'Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter',
                 'path/to/unknown/file'
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);

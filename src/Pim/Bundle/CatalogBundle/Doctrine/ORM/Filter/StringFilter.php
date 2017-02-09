@@ -56,12 +56,11 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
             throw InvalidArgumentException::expectedFromPreviousException(
                 $e,
                 $attribute->getCode(),
-                'filter',
-                'string'
+                static::class
             );
         }
 
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'string');
+        $this->checkLocaleAndScope($attribute, $locale, $scope);
 
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($options['field'], $value);
@@ -146,14 +145,14 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 $value = '%' . $value . '%';
                 break;
             case Operators::DOES_NOT_CONTAIN:
-                $operator = Operators::NOT_LIKE;
+                $operator = Operators::IS_NOT_LIKE;
                 $value = '%' . $value . '%';
                 break;
             case Operators::EQUALS:
                 $operator = Operators::IS_LIKE;
                 break;
             case Operators::NOT_EQUAL:
-                $operator = Operators::NOT_LIKE;
+                $operator = Operators::IS_NOT_LIKE;
                 break;
         }
 
@@ -184,7 +183,7 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected function checkScalarValue($field, $value)
     {
         if (!is_string($value) && null !== $value) {
-            throw InvalidArgumentException::stringExpected($field, 'filter', 'string', gettype($value));
+            throw InvalidArgumentException::stringExpected($field, static::class, gettype($value));
         }
     }
 

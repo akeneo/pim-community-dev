@@ -192,8 +192,7 @@ class UserUpdater implements ObjectUpdaterInterface
                 'default_tree',
                 'category code',
                 'The category does not exist',
-                'updater',
-                'user',
+                static::class,
                 $code
             );
         }
@@ -218,8 +217,7 @@ class UserUpdater implements ObjectUpdaterInterface
                 $field,
                 'locale code',
                 'The locale does not exist',
-                'updater',
-                'user',
+                static::class,
                 $code
             );
         }
@@ -243,8 +241,7 @@ class UserUpdater implements ObjectUpdaterInterface
                 'catalog_scope',
                 'channel code',
                 'The channel does not exist',
-                'updater',
-                'user',
+                static::class,
                 $code
             );
         }
@@ -268,8 +265,7 @@ class UserUpdater implements ObjectUpdaterInterface
                 'roles',
                 'role',
                 'The role does not exist',
-                'updater',
-                'user',
+                static::class,
                 $code
             );
         }
@@ -293,8 +289,7 @@ class UserUpdater implements ObjectUpdaterInterface
                 'groups',
                 'group',
                 'The group does not exist',
-                'updater',
-                'user',
+                static::class,
                 $code
             );
         }

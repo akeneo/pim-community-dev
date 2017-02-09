@@ -111,8 +111,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         if (!is_string($value)) {
             throw InvalidArgumentException::stringExpected(
                 $attribute->getCode(),
-                'filter',
-                'media',
+                static::class,
                 gettype($value)
             );
         }

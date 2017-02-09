@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Copier;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValue;
@@ -119,7 +119,7 @@ class AttributeCopierSpec extends ObjectBehavior
         }
     }
 
-    function it_copies__a_date_value_to_a_product_value(
+    function it_copies_a_date_value_to_a_product_value(
         $builder,
         $attrValidatorHelper,
         $normalizer,
@@ -283,7 +283,11 @@ class AttributeCopierSpec extends ObjectBehavior
         $fromAttribute->isLocalizable()->willReturn(true);
         $attrValidatorHelper->validateLocale($fromAttribute, null)->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'base')
+            InvalidPropertyException::expectedFromPreviousException(
+                'attributeCode',
+                'Pim\Component\Catalog\Updater\Copier\AttributeCopier',
+                $e
+            )
         )->during('copyAttributeData', [$product, $product, $fromAttribute, $toAttribute, []]);
     }
 
@@ -298,7 +302,11 @@ class AttributeCopierSpec extends ObjectBehavior
         $fromAttribute->isLocalizable()->willReturn(false);
         $attrValidatorHelper->validateLocale($fromAttribute, 'en_US')->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'base')
+            InvalidPropertyException::expectedFromPreviousException(
+                'attributeCode',
+                'Pim\Component\Catalog\Updater\Copier\AttributeCopier',
+                $e
+            )
         )->during(
             'copyAttributeData',
             [$product, $product, $fromAttribute, $toAttribute, ['from_locale' => 'en_US', 'from_scope' => 'ecommerce']]
@@ -316,7 +324,11 @@ class AttributeCopierSpec extends ObjectBehavior
         $fromAttribute->isLocalizable()->willReturn(true);
         $attrValidatorHelper->validateLocale($fromAttribute, 'uz-UZ')->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'base')
+            InvalidPropertyException::expectedFromPreviousException(
+                'attributeCode',
+                'Pim\Component\Catalog\Updater\Copier\AttributeCopier',
+                $e
+            )
         )->during(
             'copyAttributeData',
             [$product, $product, $fromAttribute, $toAttribute, ['from_locale' => 'uz-UZ', 'from_scope' => 'ecommerce']]
@@ -336,7 +348,11 @@ class AttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($fromAttribute, null)->shouldBeCalled();
         $attrValidatorHelper->validateScope($fromAttribute, null)->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'base')
+            InvalidPropertyException::expectedFromPreviousException(
+                'attributeCode',
+                'Pim\Component\Catalog\Updater\Copier\AttributeCopier',
+                $e
+            )
         )->during(
             'copyAttributeData',
             [$product, $product, $fromAttribute, $toAttribute, ['from_locale' => null, 'from_scope' => null]]
@@ -356,7 +372,11 @@ class AttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($fromAttribute, null)->shouldBeCalled();
         $attrValidatorHelper->validateScope($fromAttribute, 'ecommerce')->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'base')
+            InvalidPropertyException::expectedFromPreviousException(
+                'attributeCode',
+                'Pim\Component\Catalog\Updater\Copier\AttributeCopier',
+                $e
+            )
         )->during(
             'copyAttributeData',
             [$product, $product, $fromAttribute, $toAttribute, ['from_locale' => null, 'from_scope' => 'ecommerce']]
@@ -376,7 +396,11 @@ class AttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($fromAttribute, null)->shouldBeCalled();
         $attrValidatorHelper->validateScope($fromAttribute, 'ecommerce')->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'base')
+            InvalidPropertyException::expectedFromPreviousException(
+                'attributeCode',
+                'Pim\Component\Catalog\Updater\Copier\AttributeCopier',
+                $e
+            )
         )->during(
             'copyAttributeData',
             [$product, $product, $fromAttribute, $toAttribute, ['from_locale' => null, 'from_scope' => 'ecommerce']]

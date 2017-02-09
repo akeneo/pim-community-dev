@@ -169,16 +169,26 @@ class ReferenceDataFilterSpec extends ObjectBehavior
     {
         $attribute->getId()->willReturn(1);
         $attribute->getCode()->willReturn('color');
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
 
         $value = 'string';
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected('color', 'filter', 'reference_data', $value)
+            InvalidArgumentException::arrayExpected(
+                'color',
+                'Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Filter\ReferenceDataFilter',
+                $value
+            )
         )
             ->during('addAttributeFilter', [$attribute, '=', $value, null, null, ['field' => 'color']]);
 
         $value = [false];
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected('color', 'filter', 'reference_data', 'boolean')
+            InvalidArgumentException::stringExpected(
+                'color',
+                'Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Filter\ReferenceDataFilter',
+                'boolean'
+            )
         )
             ->during('addAttributeFilter', [$attribute, '=', $value, null, null, ['field' => 'color']]);
     }

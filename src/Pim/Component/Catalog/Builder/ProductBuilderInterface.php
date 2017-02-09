@@ -6,7 +6,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
@@ -62,18 +61,6 @@ interface ProductBuilderInterface
     public function addAttributeToProduct(ProductInterface $product, AttributeInterface $attribute);
 
     /**
-     * Deletes values that link an attribute to a product
-     *
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     *
-     * @return bool
-     *
-     * @deprecated will be removed in 1.7
-     */
-    public function removeAttributeFromProduct(ProductInterface $product, AttributeInterface $attribute);
-
-    /**
      * Add a missing value to the product
      *
      * @param ProductInterface   $product
@@ -83,8 +70,29 @@ interface ProductBuilderInterface
      * @param mixed              $data
      *
      * @return ProductValueInterface
+     *
+     * @deprecated will be removed in 1.8. Please use "addOrReplaceProductValue" instead.
      */
     public function addProductValue(
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        $locale,
+        $scope,
+        $data
+    );
+
+    /**
+     * Add or replace a product value.
+     *
+     * @param ProductInterface   $product
+     * @param AttributeInterface $attribute
+     * @param string             $locale
+     * @param string             $scope
+     * @param mixed              $data
+     *
+     * @return ProductValueInterface
+     */
+    public function addOrReplaceProductValue(
         ProductInterface $product,
         AttributeInterface $attribute,
         $locale,

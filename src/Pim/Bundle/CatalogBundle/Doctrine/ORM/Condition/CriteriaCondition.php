@@ -110,7 +110,7 @@ class CriteriaCondition
             Operators::GREATER_THAN          => 'gt',
             Operators::GREATER_OR_EQUAL_THAN => 'gte',
             Operators::IS_LIKE               => 'like',
-            Operators::NOT_LIKE              => 'notLike'
+            Operators::IS_NOT_LIKE           => 'notLike'
         ];
         if (array_key_exists($operator, $operators)) {
             if (!is_scalar($value)) {

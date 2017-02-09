@@ -32,7 +32,11 @@ class ProductIdFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_a_numeric_or_an_array()
     {
-        $this->shouldThrow(InvalidArgumentException::expected('id', 'array or string value', 'filter', 'productId', 1234))
+        $this->shouldThrow(InvalidArgumentException::expected(
+            'id',
+            'array or string value',
+            'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\ProductIdFilter',
+            1234))
             ->during('addFieldFilter', ['id', '=', 1234]);
     }
 

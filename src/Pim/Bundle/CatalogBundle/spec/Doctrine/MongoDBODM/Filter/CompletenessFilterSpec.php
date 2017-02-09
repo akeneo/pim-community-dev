@@ -259,8 +259,11 @@ class CompletenessFilterSpec extends ObjectBehavior
     function it_throws_an_exception_if_value_is_not_an_integer()
     {
         $this->shouldThrow(
-            InvalidArgumentException::numericExpected('completeness', 'filter', 'completeness', gettype('123'))
-        )->during('addFieldFilter', ['completeness', '=', '12a3', 'fr_FR', 'mobile']);
+            InvalidArgumentException::numericExpected(
+                'completeness',
+                'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter',
+                gettype('123')
+            ))->during('addFieldFilter', ['completeness', '=', '12a3', 'fr_FR', 'mobile']);
     }
 
     function it_throws_an_exception_if_options_are_not_set_correctly()
@@ -270,8 +273,7 @@ class CompletenessFilterSpec extends ObjectBehavior
                 InvalidArgumentException::arrayKeyExpected(
                     'completeness',
                     'locales',
-                    'filter',
-                    'completeness',
+                    'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter',
                     print_r(['wrong_key'], true)
                 )
             )->during(
@@ -290,8 +292,7 @@ class CompletenessFilterSpec extends ObjectBehavior
             ->shouldThrow(
                 InvalidArgumentException::arrayOfArraysExpected(
                     'completeness',
-                    'filter',
-                    'completeness',
+                    'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter',
                     print_r(['locales' => 'en_US'], true)
                 )
             )->during(

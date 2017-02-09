@@ -61,6 +61,9 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
                 'stdClass',
                 'Pim\Component\Catalog\Model\GroupInterface'
             )
+        )->during(
+            'update',
+            [new \stdClass(), []]
         );
     }
 
@@ -210,8 +213,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
                 'type',
                 'group type',
                 'The group type does not exist',
-                'updater',
-                'variant group',
+                'Pim\Component\Catalog\Updater\VariantGroupUpdater',
                 'UNKNOWN'
             )
         )->during('update', [$variantGroup, $values, []]);
@@ -232,8 +234,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
                 'axes',
                 'attribute code',
                 'The attribute does not exist',
-                'updater',
-                'variant group',
+                'Pim\Component\Catalog\Updater\VariantGroupUpdater',
                 'unknown'
             )
         )->during('update', [$variantGroup, $values, []]);
@@ -256,7 +257,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
             ImmutablePropertyException::immutableProperty(
                 'axes',
                 'main_color',
-                'updater',
+                'Pim\Component\Catalog\Updater\VariantGroupUpdater',
                 'variant group'
             )
         )->during('update', [$variantGroup, $values, []]);
@@ -286,6 +287,17 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
                     'scope'  => 'ecommerce',
                     'data'   => 'original description de_DE'
                 ]
+            ],
+            'image' => [
+                [
+                    'locale' => 'en_US',
+                    'scope'  => null,
+                    'data'   => [
+                        'originalFilename' => 'originalFilename',
+                        'filePath' => 'originalFilepath',
+                        'hash' => 'originalhash',
+                    ]
+                ]
             ]
         ];
 
@@ -302,6 +314,26 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
                     'data'   => 'new description fr_FR'
                 ]
 
+            ],
+            'image' => [
+                [
+                    'locale' => 'en_US',
+                    'scope'  => null,
+                    'data'   => [
+                        'originalFilename' => 'originalFilename',
+                        'filePath' => 'originalFilepath',
+                        'hash' => 'originalhash',
+                    ]
+                ],
+                [
+                    'locale' => 'de_DE',
+                    'scope'  => null,
+                    'data'   => [
+                        'originalFilename' => 'newFilename',
+                        'filePath' => 'newFilepath',
+                        'hash' => 'newhash',
+                    ]
+                ]
             ]
         ];
 
@@ -321,6 +353,26 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
                     'locale' => 'fr_FR',
                     'scope'  => 'ecommerce',
                     'data'   => 'new description fr_FR'
+                ]
+            ],
+            'image' => [
+                [
+                    'locale' => 'en_US',
+                    'scope'  => null,
+                    'data'   => [
+                        'originalFilename' => 'originalFilename',
+                        'filePath' => 'originalFilepath',
+                        'hash' => 'originalhash',
+                    ]
+                ],
+                [
+                    'locale' => 'de_DE',
+                    'scope'  => null,
+                    'data'   => [
+                        'originalFilename' => 'newFilename',
+                        'filePath' => 'newFilepath',
+                        'hash' => 'newhash',
+                    ]
                 ]
             ]
         ];

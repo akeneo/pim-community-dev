@@ -150,8 +150,7 @@ class ChannelUpdaterSpec extends ObjectBehavior
                 'category_tree',
                 'code',
                 'The category does not exist',
-                'updater',
-                'channel',
+                'Pim\Component\Catalog\Updater\ChannelUpdater',
                 'unknown'
             )
         )->during(
@@ -183,8 +182,7 @@ class ChannelUpdaterSpec extends ObjectBehavior
                 'locales',
                 'code',
                 'The locale does not exist',
-                'updater',
-                'channel',
+                'Pim\Component\Catalog\Updater\ChannelUpdater',
                 'unknown'
             )
         )->during(
@@ -219,8 +217,7 @@ class ChannelUpdaterSpec extends ObjectBehavior
                 'currencies',
                 'code',
                 'The currency does not exist',
-                'updater',
-                'channel',
+                'Pim\Component\Catalog\Updater\ChannelUpdater',
                 'unknown'
             )
         )->during('update', [$channel, $values]);
@@ -256,8 +253,7 @@ class ChannelUpdaterSpec extends ObjectBehavior
                 'conversionUnits',
                 'attributeCode',
                 'the attribute code for the conversion unit does not exist',
-                'updater',
-                'channel',
+                'Pim\Component\Catalog\Updater\ChannelUpdater',
                 'unknown_attribute'
             )
         )->during('update', [$channel, $values]);
@@ -298,8 +294,7 @@ class ChannelUpdaterSpec extends ObjectBehavior
                 'conversionUnits',
                 'unitCode',
                 'the metric unit code for the conversion unit does not exist',
-                'updater',
-                'channel',
+                'Pim\Component\Catalog\Updater\ChannelUpdater',
                 'unknown_unit_code'
             )
         )->during('update', [$channel, $values]);

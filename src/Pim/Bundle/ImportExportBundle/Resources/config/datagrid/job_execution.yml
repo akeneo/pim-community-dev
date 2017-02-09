@@ -19,9 +19,17 @@ datagrid:
                 type: product_value_datetime
                 frontend_type: datetime
             status:
-                label:     Status
-                type:      translateable
-                data_name: statusLabel
+                label:         Status
+                template:      PimImportExportBundle:Property:status.html.twig
+                type:          twig
+                frontend_type: html
+                data_name:     statusLabel
+            warning:
+                label:         Warnings
+                template:      PimImportExportBundle:Property:warning.html.twig
+                type:          twig
+                frontend_type: html
+                data_name:     warningCount
         properties:
             id: ~
             show_link:
@@ -47,6 +55,8 @@ datagrid:
                     data_name: date
                 status:
                     data_name: statusLabel
+                warning:
+                    data_name: warningCount
             default:
                 date: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
@@ -75,3 +85,7 @@ datagrid:
                         field_options:
                             multiple: true
                             choices: '%akeneo_batch.job.batch_status.class%::getAllLabels()'
+                warning:
+                    type:             number
+                    data_name:        warningCount
+                    filter_by_having: true

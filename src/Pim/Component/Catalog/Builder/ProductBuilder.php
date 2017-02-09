@@ -164,20 +164,21 @@ class ProductBuilder implements ProductBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function removeAttributeFromProduct(ProductInterface $product, AttributeInterface $attribute)
+    public function addProductValue(ProductInterface $product, AttributeInterface $attribute, $locale, $scope, $data)
     {
-        foreach ($product->getValues() as $value) {
-            if ($attribute === $value->getAttribute()) {
-                $product->removeValue($value);
-            }
-        }
+        return $this->addOrReplaceProductValue($product, $attribute, $locale, $scope, $data);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addProductValue(ProductInterface $product, AttributeInterface $attribute, $locale, $scope, $data)
-    {
+    public function addOrReplaceProductValue(
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        $locale,
+        $scope,
+        $data
+    ) {
         $productValue = $product->getValue($attribute->getCode(), $locale, $scope);
         if (null !== $productValue) {
             $product->removeValue($productValue);

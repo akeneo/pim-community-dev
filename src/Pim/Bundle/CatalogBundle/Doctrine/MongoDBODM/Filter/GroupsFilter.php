@@ -62,10 +62,10 @@ class GroupsFilter extends AbstractFieldFilter implements FieldFilterInterface
      */
     protected function checkValue($field, $values)
     {
-        FieldFilterHelper::checkArray($field, $values, 'groups');
+        FieldFilterHelper::checkArray($field, $values, static::class);
 
         foreach ($values as $value) {
-            FieldFilterHelper::checkIdentifier($field, $value, 'groups');
+            FieldFilterHelper::checkIdentifier($field, $value, static::class);
         }
     }
 

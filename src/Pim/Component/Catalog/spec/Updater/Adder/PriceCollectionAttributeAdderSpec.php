@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Adder;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\PriceCollectionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -44,7 +44,11 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
         $data = 'not an array';
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected('attributeCode', 'adder', 'prices collection', gettype($data))
+            InvalidPropertyTypeException::arrayExpected(
+                'attributeCode',
+                'Pim\Component\Catalog\Updater\Adder\PriceCollectionAttributeAdder',
+                $data
+            )
         )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 

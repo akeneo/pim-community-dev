@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\GroupInterface;
@@ -35,21 +37,19 @@ class GroupFieldSetterSpec extends ObjectBehavior
     function it_checks_valid_data_format(ProductInterface $product)
     {
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected(
+            InvalidPropertyTypeException::arrayExpected(
                 'groups',
-                'setter',
-                'groups',
-                'string'
+                'Pim\Component\Catalog\Updater\Setter\GroupFieldSetter',
+                'not an array'
             )
         )->during('setFieldData', [$product, 'groups', 'not an array']);
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringValueExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'groups',
-                0,
-                'setter',
-                'groups',
-                'array'
+                'one of the group codes is not a string, "array" given',
+                'Pim\Component\Catalog\Updater\Setter\GroupFieldSetter',
+                [['array of array']]
             )
         )->during('setFieldData', [$product, 'groups', [['array of array']]]);
     }
@@ -95,11 +95,11 @@ class GroupFieldSetterSpec extends ObjectBehavior
         $groupRepository->findOneByIdentifier('not valid code')->willReturn(null);
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validEntityCodeExpected(
                 'groups',
-                'existing group code',
-                'setter',
-                'groups',
+                'group code',
+                'The group does not exist',
+                'Pim\Component\Catalog\Updater\Setter\GroupFieldSetter',
                 'not valid code'
             )
         )->during('setFieldData', [$product, 'groups', ['pack', 'not valid code']]);

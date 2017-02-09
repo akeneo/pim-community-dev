@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Remover;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
@@ -48,9 +50,12 @@ class CategoryFieldRemoverSpec extends ObjectBehavior
         $categoryRepository->findOneByIdentifier('unknown_category')->willReturn(null);
 
         $this->shouldThrow(
-            new InvalidArgumentException(
-                'Attribute or field "categories" expects existing category code as data, "unknown_category" given (for remover category).',
-                InvalidArgumentException::EXPECTED_CODE
+            InvalidPropertyException::validEntityCodeExpected(
+                'categories',
+                'category code',
+                'The category does not exist',
+                'Pim\Component\Catalog\Updater\Remover\CategoryFieldRemover',
+                'unknown_category'
             )
         )->duringRemoveFieldData($bookProduct, 'categories', ['unknown_category']);
     }
@@ -58,16 +63,19 @@ class CategoryFieldRemoverSpec extends ObjectBehavior
     function it_throws_an_exception_if_data_are_invalid(ProductInterface $bookProduct)
     {
         $this->shouldThrow(
-            new InvalidArgumentException(
-                'Attribute or field "categories" expects an array as data, "string" given (for remover category).',
-                InvalidArgumentException::ARRAY_EXPECTED_CODE
+            InvalidPropertyTypeException::arrayExpected(
+                'categories',
+                'Pim\Component\Catalog\Updater\Remover\CategoryFieldRemover',
+                'category_code'
             )
         )->duringRemoveFieldData($bookProduct, 'categories', 'category_code');
 
         $this->shouldThrow(
-            new InvalidArgumentException(
-                'Attribute or field "categories" expects an array with a string value for the key "0", "integer" given (for remover category).',
-                InvalidArgumentException::ARRAY_STRING_VALUE_EXPECTED_CODE
+            InvalidPropertyTypeException::validArrayStructureExpected(
+                'categories',
+                'one of the category codes is not a string, "integer" given',
+                'Pim\Component\Catalog\Updater\Remover\CategoryFieldRemover',
+                [42]
             )
         )->duringRemoveFieldData($bookProduct, 'categories', [42]);
     }

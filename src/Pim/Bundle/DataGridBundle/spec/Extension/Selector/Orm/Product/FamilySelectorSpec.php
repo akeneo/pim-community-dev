@@ -7,7 +7,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\ElasticSearchBundle\Query\QueryBuilder as EsQueryBuilder;
-use Prophecy\Argument;
+
 
 /**
  * @require Pim\Bundle\ElasticSearchBundle\Query\QueryBuilder
@@ -25,7 +25,7 @@ class FamilySelectorSpec extends ObjectBehavior
     }
 
     function it_applies_a_selector(
-        DatasourceInterface $datasource, 
+        DatasourceInterface $datasource,
         DatagridConfiguration $configuration,
         EsQueryBuilder $esQueryBuilder,
         QueryBuilder $queryBuilder

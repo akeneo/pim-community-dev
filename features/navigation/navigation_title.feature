@@ -4,11 +4,14 @@ Feature: Well display navigation titles
   As an administrator
   I need to be able to see title depending of the catalog page
 
-  Scenario: Successfully display the page titles
+  Scenario Outline: Successfully display the page titles
     Given a "footwear" catalog configuration
     And a "sandals" product
     And I am logged in as "Peter"
-    Then the following pages should have the following titles:
+    When I am on the <page> page
+    Then I should see the title "<title>"
+
+  Examples:
       | page                                          | title                                               |
       | association types                             | Association types                                   |
       | "X_SELL" association type                     | Association types Cross sell \| Edit                |

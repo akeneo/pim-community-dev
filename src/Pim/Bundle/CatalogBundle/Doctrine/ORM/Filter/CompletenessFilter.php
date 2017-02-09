@@ -85,11 +85,11 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
     protected function checkScopeAndValue($field, $scope, $value)
     {
         if (!is_numeric($value)) {
-            throw InvalidArgumentException::numericExpected($field, 'filter', 'completeness', gettype($value));
+            throw InvalidArgumentException::numericExpected($field, static::class, gettype($value));
         }
 
         if (null === $scope) {
-            throw InvalidArgumentException::scopeExpected($field, 'filter', 'completeness');
+            throw InvalidArgumentException::scopeExpected($field, static::class);
         }
     }
 
@@ -109,8 +109,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
             throw InvalidArgumentException::arrayKeyExpected(
                 $field,
                 'locales',
-                'filter',
-                'completeness',
+                static::class,
                 print_r($options, true)
             );
         }
@@ -118,8 +117,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
         if (!isset($options['locales']) || !is_array($options['locales'])) {
             throw InvalidArgumentException::arrayOfArraysExpected(
                 $field,
-                'filter',
-                'completeness',
+                static::class,
                 print_r($options, true)
             );
         }

@@ -6,6 +6,8 @@
 - GITHUB-5062: Fixed unit conversion for ElectricCharge, cheers @gplanchat!
 - GITHUB-5294: Fixed infinite loading if no attribute is configured as a product identifier, cheers @gplanchat!
 - GITHUB-5337: Fixed Widget Registry. Priority is now taken in account.
+- PIM-6127: In the family import, the attributes required should be in the family
+- PIM-6125: In the family import, the attribute_as_label has to be in the family and its type has to be identifier or text
 
 ## Deprecations
 
@@ -14,7 +16,6 @@
   In the next version, the deprecated filters will be removed.
 - As it's not needed anymore to convert `codes` to `ids` in order to filter products, `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver` and `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface` are now deprecated.
 - Creating a product value with the ProductBuilder (`Pim\Component\Catalog\Denormalizer\Standard\ProductValueDenormalizer`) using the `createProductValue` method is now deprecated. It is advised to use the ProductValueFactory (`Pim\Component\Catalog\Factory\ProductValueFactory`) instead.
-- Adding a price to a product value with the ProductBuilder (`Pim\Component\Catalog\Denormalizer\Standard\ProductValueDenormalizer`) using the `addPriceForCurrencyWithData` method is now deprecated. It is advised to use `addPriceForCurrency` instead.
 
 ## Functional improvements
 
@@ -23,6 +24,8 @@
 - Complete Duration measure family with week, month, year and related conversions cheers @JulienDotDev!
 - Add CaseBox measure family and conversions, cheers @gplanchat!
 - Add history support for the channel conversion units.
+- Add warning count on export execution grid and dashboard
+- Add not empty filter operator on product grid and product export builder
 
 ## Technical improvements
 
@@ -161,6 +164,14 @@
 - Remove useless class `Pim\Bundle\ImportExportBundle\Twig\NormalizeConfigurationExtension`
 - Remove useless class `Pim\Bundle\ImportExportBundle\ViewElement\Checker\JobNameVisibilityChecker`
 - Change exception `\InvalidArgumentException` by `Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException` thrown by `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface:update()`
+- Change exception `Pim\Component\Catalog\Exception\InvalidArgumentException` and `\RuntimeException` by `Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException` thrown by `Pim\Component\Catalog\Updater\Copier\AttributeCopierInterface:copyAttributeData()`
+- Change exception `Pim\Component\Catalog\Exception\InvalidArgumentException` and `\RuntimeException` by `Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException` thrown by `Pim\Component\Catalog\Updater\Copier\FieldCopierInterface:copyFieldData()`
+- Add exception `Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException` thrown by `Pim\Component\Catalog\Updater\Adder\AttributeAdderInterface:addAttributeData()`
+- Add exception `Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException` thrown by `Pim\Component\Catalog\Updater\Adder\FieldAdderInterface:addFieldData()`
+- Add exception `Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException` thrown by `Pim\Component\Catalog\Updater\Remover\AttributeRemoverInterface:removeAttributeData()`
+- Add exception `Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException` thrown by `Pim\Component\Catalog\Updater\Remover\FieldRemoverInterface:removeFieldData()`
+- Add exception `Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException` thrown by `Pim\Component\Catalog\Updater\Setter\AttributeSetterInterface:setAttributeData()`
+- Add exception `Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException` thrown by `Pim\Component\Catalog\Updater\Setter\FieldSetterInterface:setFieldData()`
 - Change the constructor of `Pim\Component\Catalog\Updater\AssociationTypeUpdater` to remove `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
 - Remove `createDatagridQueryBuilder` method from `Pim\Component\Catalog\Repository\CurrencyRepositoryInterface`
 - Remove `createDatagridQueryBuilder` method from `Pim\Component\Catalog\Repository\LocaleInterface`
@@ -180,7 +191,7 @@
 - Remove unused `Pim\Bundle\EnrichBundle\Form\Type\ProductCreateType`
 - Remove unused `Pim\Bundle\EnrichBundle\Form\Type\ChannelType`
 - Remove unused `Pim\Bundle\EnrichBundle\Form\Type\ConversionUnitsType`
-- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\ChannelController` to remove all dependencies  
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\ChannelController` to remove all dependencies
 - Remove `removeAction` method of `Pim\Bundle\EnrichBundle\Controller\ChannelController`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ChannelController` to add `Pim\Component\Catalog\Updater\ChannelUpdater`, `Akeneo\Component\StorageUtils\Saver\SaverInterface`, `Akeneo\Component\StorageUtils\Remover\RemoverInterface`, `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface`, `Symfony\Component\Validator\Validator\ValidatorInterface`
 - Change route `pim_enrich_channel_edit` to use `code` identifier instead of `id`
@@ -192,3 +203,12 @@
 - Remove useless class `Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterInterface`
 - Remove useless class `Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry`
 - Remove useless services `pim_enrich.form.view.view_updater.registry` and `pim_enrich.form.view.view_updater.variant`
+- Change the constructor of `Pim\Bundle\DataGridBundle\Manager\DatagridViewManager` to remove `Akeneo\Component\StorageUtils\Saver\SaverInterface` and `Akeneo\Component\StorageUtils\Remover\RemoverInterface`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Manager\SequentialEditManager` to remove `Akeneo\Component\StorageUtils\Saver\SaverInterface`
+- Remove deprecated method `getDeletedLocaleIdsForChannel` from `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ChannelRepository` and `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\SequentialEditController` to add `Akeneo\Component\StorageUtils\Saver\SaverInterface`
+- Remove deprecated class `Pim\Bundle\NotificationBundle\Manager\NotificationManager`
+- Remove deprecated interface `Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface`
+- Update constructor of `Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer` first parameter to `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository`
+- Remove deprecated method `removeAttributeFromProduct` from `Pim\Component\Catalog\Builder\ProductBuilder` and `Pim\Component\Catalog\Builder\ProductBuilderInterface`
+- Remove deprecated methods `addAttribute`, `removeAttribute`, `getAttributes`, `setAttributes` and `getAttributeIds` from `Pim\Bundle\CatalogBundle\Entity\Group` and `Pim\Component\Catalog\Model\GroupInterface`

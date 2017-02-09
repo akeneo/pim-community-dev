@@ -5,8 +5,8 @@ namespace Pim\Component\Catalog\Updater\Setter;
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -79,7 +79,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
-     * @throws InvalidArgumentException If an invalid filePath is provided
+     * @throws InvalidPropertyException If an invalid filePath is provided
      * @return FileInfoInterface|null
      */
     protected function storeFile(AttributeInterface $attribute, $data)
@@ -91,11 +91,9 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         $rawFile = new \SplFileInfo($data);
 
         if (!$rawFile->isFile()) {
-            throw InvalidArgumentException::expected(
+            throw InvalidPropertyException::validPathExpected(
                 $attribute->getCode(),
-                'a valid pathname',
-                'setter',
-                'media',
+                static::class,
                 $data
             );
         }

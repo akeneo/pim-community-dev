@@ -32,7 +32,7 @@ class ProductIdFilter extends AbstractFieldFilter implements FieldFilterInterfac
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         if (!is_numeric($value) && !is_array($value)) {
-            throw InvalidArgumentException::expected($field, 'array or numeric value', 'filter', 'productId', $value);
+            throw InvalidArgumentException::expected($field, 'array or numeric value', static::class, $value);
         }
 
         $field = current($this->qb->getRootAliases()) . '.' . $field;

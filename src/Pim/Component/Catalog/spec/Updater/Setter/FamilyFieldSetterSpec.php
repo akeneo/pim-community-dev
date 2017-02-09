@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -34,11 +36,10 @@ class FamilyFieldSetterSpec extends ObjectBehavior
     function it_checks_valid_data_format(ProductInterface $product)
     {
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected(
+            InvalidPropertyTypeException::stringExpected(
                 'family',
-                'setter',
-                'family',
-                'array'
+                'Pim\Component\Catalog\Updater\Setter\FamilyFieldSetter',
+                ['not a string']
             )
         )->during('setFieldData', [$product, 'family', ['not a string']]);
     }
@@ -54,11 +55,7 @@ class FamilyFieldSetterSpec extends ObjectBehavior
         $this->setFieldData($product, 'family', 'shirt');
     }
 
-    function it_empty_family_field(
-        $familyRepository,
-        ProductInterface $product,
-        FamilyInterface $shirt
-    ) {
+    function it_empty_family_field(ProductInterface $product) {
         $product->setFamily(null)->shouldBeCalled();
         $this->setFieldData($product, 'family', null);
     }
@@ -70,11 +67,11 @@ class FamilyFieldSetterSpec extends ObjectBehavior
         $familyRepository->findOneByIdentifier('shirt')->willReturn(null);
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validEntityCodeExpected(
                 'family',
-                'existing family code',
-                'setter',
-                'family',
+                'family code',
+                'The family does not exist',
+                'Pim\Component\Catalog\Updater\Setter\FamilyFieldSetter',
                 'shirt'
             )
         )->during('setFieldData', [$product, 'family', 'shirt']);
