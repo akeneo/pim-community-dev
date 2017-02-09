@@ -9,7 +9,7 @@ Feature: Remove groups fields
       | code |
       | PACK |
     And the following product groups:
-      | code  | label       | type |
+      | code  | label-en_US | type |
       | PACK1 | First pack  | PACK |
       | PACK2 | Second pack | PACK |
       | PACK3 | Third pack  | PACK |

@@ -7,9 +7,9 @@ Feature: Execute an import with invalid properties
   Background:
     Given the "footwear" catalog configuration
     And the following product groups:
-      | code   | label  | axis        | type    |
-      | SANDAL | Sandal | size, color | VARIANT |
-      | NOT_VG | Not VG |             | RELATED |
+      | code   | label-en_US | axis        | type    |
+      | SANDAL | Sandal      | size, color | VARIANT |
+      | NOT_VG | Not VG      |             | RELATED |
     And I am logged in as "Julia"
 
   Scenario: Stop the import if variant group code column is not provided

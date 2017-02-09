@@ -17,8 +17,7 @@ class FamilyAttributeAsLabel extends Constraint
     public $messageAttribute = "Property 'attribute_as_label' must belong to the family";
 
     /** @var string */
-    public $messageAttributeType = "Property 'attribute_as_label' only supports 'pim_catalog_text' and ".
-        "'pim_catalog_identifier' attribute types for the family";
+    public $messageAttributeType = "Property 'attribute_as_label' only supports 'pim_catalog_text' and 'pim_catalog_identifier' attribute types for the family";
 
     /**
      * {@inheritdoc}

@@ -226,11 +226,30 @@ class FixturesContext extends BaseFixturesContext
         $writer = $this->getContainer()->get('pim_connector.writer.database.attribute');
 
         foreach ($table->getHash() as $data) {
+            $data = $this->normalizeTable($data, [
+                'localizable', 'scopable', 'useable_as_grid_filter', 'decimals_allowed', 'unique'
+            ]);
+
+            // TODO Remove all these autofill magic methods
             if (isset($data['type'])) {
                 $data['type'] = $this->attributeTypes[$data['type']];
+            } else {
+                $data['type'] = $this->attributeTypes['text'];
             }
+            if (!isset($data['group']) || '' === $data['group']) {
+                $data['group'] = 'other';
+            }
+            $data['label-en_US'] = isset($data['label-en_US']) ?
+                $data['label-en_US'] :
+                (isset($data['label']) ? $data['label'] : $data['code']);
+            $data['code'] = isset($data['code']) ? $data['code'] : $this->camelize($data['label']); // YOLO!
 
             $attribute = $processor->process($converter->convert($data));
+
+            // We can not import it ! TODO Change all the behat with "unique" column.
+            if (isset($data['unique'])) {
+                $attribute->setUnique('1' === $data['unique']);
+            }
             $writer->write([$attribute]);
         }
     }
@@ -633,7 +652,6 @@ class FixturesContext extends BaseFixturesContext
                     } else {
                         assertEquals($expectedValue, $category->getParent()->getCode());
                     }
-                    assertEquals($expectedValue, (string) $option->getSortOrder());
                 } elseif (preg_match('/^label-(?P<locale>.+)$/', $key, $matches)) {
                     assertEquals($expectedValue, $category->getTranslation($matches['locale'])->getLabel());
                 } else {
@@ -682,14 +700,16 @@ class FixturesContext extends BaseFixturesContext
             foreach ($data as $key => $expectedValue) {
                 if ('type' === $key) {
                     assertEquals($expectedValue, $group->getType()->getCode());
-                } elseif (($group->getType()->isVariant()) && ('axis' === $key)) {
-                    $attributes = [];
-                    foreach ($group->getAxisAttributes() as $attribute) {
-                        $attributes[] = $attribute->getCode();
-                    }
-                    asort($attributes);
-                    $attributes = implode(',', $attributes);
+                } elseif ('axis' === $key) {
+                    if ($group->getType()->isVariant()) {
+                        $attributes = [];
+                        foreach ($group->getAxisAttributes() as $attribute) {
+                            $attributes[] = $attribute->getCode();
+                        }
+                        asort($attributes);
+                        $attributes = implode(',', $attributes);
                         assertEquals($data['axis'], $attributes);
+                    }
                 } elseif (preg_match('/^label-(?P<locale>.+)$/', $key, $matches)) {
                     assertEquals($expectedValue, $group->getTranslation($matches['locale'])->getLabel());
                 } else {
@@ -775,14 +795,28 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFollowingProductGroups(TableNode $table)
     {
-        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.group');
-        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.group');
+        $groupConverter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.group');
+        $groupProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.group');
+        $variantGroupConverter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.variant_group');
+        $variantGroupProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.variant_group');
         $writer = $this->getContainer()->get('pim_catalog.saver.group');
 
         foreach ($table->getHash() as $data) {
-            $convertedData = $converter->convert($data);
-            $productGroup = $processor->process($convertedData);
-            $writer->save($productGroup);
+            $group = null;
+            if ('VARIANT' === $data['type']) {
+                // TODO Remove this magic methods
+                $data['axis'] = preg_replace('/, /',',',$data['axis']);
+
+                $group = $variantGroupProcessor->process($variantGroupConverter->convert($data));
+            } else {
+                /**
+                 * TODO A better way is to create 2 different methods: create group and variant group. For now, the
+                 *      $table mixes both, so we need to remove the column to be valid.
+                 */
+                unset($data['axis']);
+                $group = $groupProcessor->process($groupConverter->convert($data));
+            }
+            $writer->save($group);
         }
     }
 
@@ -816,6 +850,9 @@ class FixturesContext extends BaseFixturesContext
         $writer = $this->getContainer()->get('pim_catalog.saver.group_type');
 
         foreach ($table->getHash() as $data) {
+            // TODO Remove this
+            $data['label-en_US'] = isset($data['label-en_US']) ? $data['label-en_US'] : $data['label'];
+
             $convertedData = $converter->convert($data);
             $groupType = $processor->process($convertedData);
             $writer->save($groupType);
@@ -1445,7 +1482,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param string $product
+     * @param string $identifier
      * @param string $family
      *
      * @Given /^I set product "([^"]*)" family to "([^"]*)"$/
@@ -1680,26 +1717,6 @@ class FixturesContext extends BaseFixturesContext
         }
 
         return $value;
-    }
-
-    /**
-     * @param string $code
-     * @param string $label
-     * @param bool   $isVariant
-     *
-     * @return \Pim\Component\Catalog\Model\GroupTypeInterface
-     */
-    protected function createGroupType($code, $label, $isVariant)
-    {
-        $type = new GroupType();
-        $type->setCode($code);
-        $type->setVariant($isVariant);
-        $type->setLocale('en_US')->setLabel($label);
-
-        $this->validate($type);
-        $this->getContainer()->get('pim_catalog.saver.group_type')->save($type);
-
-        return $type;
     }
 
     /**
@@ -2090,5 +2107,24 @@ class FixturesContext extends BaseFixturesContext
     protected function getDocumentManager()
     {
         return $this->getContainer()->get('doctrine_mongodb')->getManager();
+    }
+
+    /**
+     * TODO Make doc
+     *
+     * @param array    $data
+     * @param string[] $booleanColumns
+     *
+     * @return array
+     */
+    protected function normalizeTable($data, $booleanColumns)
+    {
+        foreach ($booleanColumns as $booleanColumn) {
+            if (isset($data[$booleanColumn])) {
+                $data[$booleanColumn] = ('yes' === $data[$booleanColumn]) ? '1' : '0';
+            }
+        }
+
+        return $data;
     }
 }

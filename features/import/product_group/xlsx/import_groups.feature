@@ -7,7 +7,7 @@ Feature: Import Xlsx groups
   Background:
     Given the "footwear" catalog configuration
     And the following product groups:
-      | code          | label          | type    | axis        |
+      | code          | label-en_US    | type    | axis        |
       | ORO_TSHIRT    | Oro T-shirt    | VARIANT | size, color |
       | AKENEO_TSHIRT | Akeneo T-shirt | VARIANT | size        |
       | ORO_XSELL     | Oro X          | XSELL   |             |
