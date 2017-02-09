@@ -54,7 +54,7 @@ class ProductAssetController
         $identifiers = ('' !== $identifiers) ? explode(',', $identifiers) : [];
 
         if (0 === count($identifiers)) {
-            $assets = $this->assetRepository->findAll();
+            $assets = [];
         } else {
             $assets = $this->assetRepository->findByIdentifiers($identifiers);
         }
