@@ -106,6 +106,8 @@ class NotificationSubscriber implements EventSubscriberInterface
                 $projectStatus = $this->projectStatusFactory->create($project, $user);
                 $projectStatus->setHasBeenNotified(false);
                 $projectStatus->setIsComplete($projectCompleteness->isComplete());
+
+                $this->projectStatusSaver->save($projectStatus);
             }
 
             $this->checksAndNotifyConcernedUsed($projectStatus, $project, $user, $projectCompleteness);
@@ -126,11 +128,13 @@ class NotificationSubscriber implements EventSubscriberInterface
         UserInterface $user,
         ProjectCompleteness $projectCompleteness
     ) {
-        if ($this->projectCreatedNotifier->notifyUser($user, $project, $projectStatus, $projectCompleteness)) {
+        if ($this->projectCreatedNotifier->notifyUser($user, $project, $projectCompleteness)) {
             $projectStatus->setHasBeenNotified(true);
+
+            $this->projectStatusSaver->save($projectStatus);
         }
 
-        $this->projectFinishedNotifier->notifyUser($user, $project, $projectStatus, $projectCompleteness);
+        $this->projectFinishedNotifier->notifyUser($user, $project, $projectCompleteness);
 
         $projectStatus->setIsComplete($projectCompleteness->isComplete());
 

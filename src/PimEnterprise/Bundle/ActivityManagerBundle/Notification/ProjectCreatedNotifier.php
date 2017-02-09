@@ -16,6 +16,7 @@ use Pim\Bundle\NotificationBundle\NotifierInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectStatusInterface;
+use PimEnterprise\Component\ActivityManager\Repository\ProjectStatusRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -34,19 +35,25 @@ class ProjectCreatedNotifier implements ProjectNotifierInterface
     /** @var DatePresenter */
     protected $datePresenter;
 
+    /** @var ProjectStatusRepositoryInterface */
+    protected $projectStatusRepository;
+
     /**
-     * @param ProjectNotificationFactory $projectNotificationFactory
-     * @param NotifierInterface          $notifier
-     * @param DatePresenter              $datePresenter
+     * @param ProjectNotificationFactory       $projectNotificationFactory
+     * @param NotifierInterface                $notifier
+     * @param DatePresenter                    $datePresenter
+     * @param ProjectStatusRepositoryInterface $projectStatusRepository
      */
     public function __construct(
         ProjectNotificationFactory $projectNotificationFactory,
         NotifierInterface $notifier,
-        DatePresenter $datePresenter
+        DatePresenter $datePresenter,
+        ProjectStatusRepositoryInterface $projectStatusRepository
     ) {
         $this->projectNotificationFactory = $projectNotificationFactory;
         $this->notifier = $notifier;
         $this->datePresenter = $datePresenter;
+        $this->projectStatusRepository = $projectStatusRepository;
     }
 
     /**
@@ -55,9 +62,10 @@ class ProjectCreatedNotifier implements ProjectNotifierInterface
     public function notifyUser(
         UserInterface $user,
         ProjectInterface $project,
-        ProjectStatusInterface $projectStatus,
         ProjectCompleteness $projectCompleteness
     ) {
+        $projectStatus = $this->projectStatusRepository->findProjectStatus($project, $user);
+
         if (!$projectStatus->hasBeenNotified() && !$projectCompleteness->isComplete()) {
             $userLocale = $user->getUiLocale();
             $formattedDate = $this->datePresenter->present(

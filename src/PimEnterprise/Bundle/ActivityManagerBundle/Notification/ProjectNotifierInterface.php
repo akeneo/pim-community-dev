@@ -26,7 +26,6 @@ interface ProjectNotifierInterface
      *
      * @param UserInterface          $user
      * @param ProjectInterface       $project
-     * @param ProjectStatusInterface $projectStatus
      * @param ProjectCompleteness    $projectCompleteness
      *
      * @return bool
@@ -34,7 +33,6 @@ interface ProjectNotifierInterface
     public function notifyUser(
         UserInterface $user,
         ProjectInterface $project,
-        ProjectStatusInterface $projectStatus,
         ProjectCompleteness $projectCompleteness
     );
 }

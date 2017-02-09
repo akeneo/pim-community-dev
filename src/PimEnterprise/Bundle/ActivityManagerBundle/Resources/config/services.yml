@@ -81,6 +81,7 @@ services:
             - '@pimee_activity_manager.factory.project_notification'
             - '@pim_notification.notifier'
             - '@pim_catalog.localization.presenter.date'
+            - '@pimee_activity_manager.repository.project_status'
 
     pimee_activity_manager.notifier.project_finished:
         class: '%pimee_activity_manager.notifier.project_finished.class%'
@@ -88,6 +89,7 @@ services:
             - '@pimee_activity_manager.factory.project_notification'
             - '@pim_notification.notifier'
             - '@pim_catalog.localization.presenter.date'
+            - '@pimee_activity_manager.repository.project_status'
 
     pimee_activity_manager.notifier.project_due_date_reminder:
         class: '%pimee_activity_manager.notifier.project_due_date_reminder.class%'
