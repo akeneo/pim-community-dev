@@ -75,7 +75,6 @@ class QueryProductCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $filters = json_decode($input->getArgument('json_filters'), true);
-        $this->warnDeprecatedMethod($filters);
 
         $pageSize = $input->getOption('page-size');
         $productQueryBuilder = $this->getProductQueryBuilder($filters);
@@ -148,24 +147,5 @@ class QueryProductCommand extends ContainerAwareCommand
         $factory = $this->getContainer()->get('pim_catalog.query.product_query_builder_factory');
 
         return $factory->create(['filters' => $filters]);
-    }
-
-    /**
-     * This temporary method warn the user for using deprecated argument format.
-     *
-     * @deprecated Will be removed in 1.7
-     *
-     * @param array $filters
-     */
-    protected function warnDeprecatedMethod(array $filters)
-    {
-        foreach ($filters as $filter) {
-            if (array_key_exists('locale', $filter) || array_key_exists('scope', $filter)) {
-                throw new \InvalidArgumentException(
-                    'The used filter format is deprecated. From version 1.6, the options "scope" and "locale" '.
-                    'must be declared in the "context" option.'
-                );
-            }
-        }
     }
 }

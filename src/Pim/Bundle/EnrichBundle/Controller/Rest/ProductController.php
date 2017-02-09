@@ -296,7 +296,11 @@ class ProductController
             throw new BadRequestHttpException();
         }
 
-        $this->productBuilder->removeAttributeFromProduct($product, $attribute);
+        foreach ($product->getValues() as $value) {
+            if ($attribute === $value->getAttribute()) {
+                $product->removeValue($value);
+            }
+        }
         $this->productSaver->save($product);
 
         return new JsonResponse();

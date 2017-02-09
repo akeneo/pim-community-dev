@@ -157,6 +157,14 @@ The following command helps to migrate references to Normalizer classes or servi
 
 Previously, to normalize an entity for versioning, formats allowed were `flat` and `csv`. To avoid confusion, only `flat` format will be allowed.
 
+#### Operator
+
+For concistency we changed the variable name of an operator. To update your project you can run this command
+
+```
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Operators::NOT_LIKE/Operators::IS_NOT_LIKE/g'
+```
+
 ### CSS Refactoring
 
 Akeneo 1.7 comes with a refactor of a large part of the CSS, with the implementation of [BEM methodology](http://getbem.com/introduction/).

@@ -37,3 +37,4 @@ Feature: Filter products per media
       | attachment | does not contain | neo        | shirt-two                 |
       | image      | is equal to      | akeneo.jpg | shirt-one                 |
       | attachment | is empty         |            | shirt-three               |
+      | attachment | is not empty     |            | shirt-one, shirt-two      |

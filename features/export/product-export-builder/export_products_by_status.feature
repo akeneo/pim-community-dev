@@ -7,8 +7,8 @@ Feature: Export products according to their statuses
   Background:
     Given an "footwear" catalog configuration
     And the following family:
-      | code    | requirements-mobile |
-      | rangers | sku, name           |
+      | code    | requirements-mobile | attributes |
+      | rangers | sku, name           | sku, name  |
     And the following products:
       | sku      | enabled | family  | categories        | name-en_US    |
       | SNKRS-1B | 1       | rangers | summer_collection | Black rangers |

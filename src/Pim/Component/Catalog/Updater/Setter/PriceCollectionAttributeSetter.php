@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
@@ -65,42 +65,42 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
-     * @return mixed
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected(
+            throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
                 static::class,
-                gettype($data)
+                $data
             );
         }
 
         foreach ($data as $price) {
             if (!is_array($price)) {
-                throw InvalidArgumentException::arrayOfArraysExpected(
+                throw InvalidPropertyTypeException::arrayOfArraysExpected(
                     $attribute->getCode(),
                     static::class,
-                    gettype($data)
+                    $data
                 );
             }
 
             if (!array_key_exists('amount', $price)) {
-                throw InvalidArgumentException::arrayKeyExpected(
+                throw InvalidPropertyTypeException::arrayKeyExpected(
                     $attribute->getCode(),
                     'amount',
                     static::class,
-                    print_r($data, true)
+                    $data
                 );
             }
 
             if (!array_key_exists('currency', $price)) {
-                throw InvalidArgumentException::arrayKeyExpected(
+                throw InvalidPropertyTypeException::arrayKeyExpected(
                     $attribute->getCode(),
                     'currency',
                     static::class,
-                    print_r($data, true)
+                    $data
                 );
             }
         }
@@ -120,7 +120,7 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
 
         if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+            $value = $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope);
         } else {
             $prices = $value->getPrices();
             foreach ($prices as $price) {

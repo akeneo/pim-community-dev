@@ -59,7 +59,7 @@ class BooleanAttributeSetter extends AbstractAttributeSetter
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
 
         if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+            $value = $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope);
         }
 
         if (1 === $data || '1' === $data || 0 === $data || '0' === $data) {

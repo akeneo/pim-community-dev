@@ -2,8 +2,9 @@
 
 namespace Pim\Component\Catalog\Updater\Remover;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -38,10 +39,7 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
     }
 
     /**
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     * @param array              $data
-     * @param array              $options
+     * {@inheritdoc}
      */
     public function removeAttributeData(
         ProductInterface $product,
@@ -57,9 +55,9 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
         foreach ($data as $optionCode) {
             $option = $this->getOption($attribute, $optionCode);
             if (null === $option) {
-                throw InvalidArgumentException::arrayInvalidKey(
+                throw InvalidPropertyException::validEntityCodeExpected(
                     $attribute->getCode(),
-                    'code',
+                    'option code',
                     'The option does not exist',
                     static::class,
                     $optionCode
@@ -100,24 +98,26 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
      *
      * @param AttributeInterface $attribute
      * @param mixed              $data
+     *
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected(
+            throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
                 static::class,
-                gettype($data)
+                $data
             );
         }
 
         foreach ($data as $key => $value) {
             if (!is_string($value)) {
-                throw InvalidArgumentException::arrayStringValueExpected(
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $attribute->getCode(),
-                    $key,
+                    sprintf('one of the option codes is not a string, "%s" given', gettype($value)),
                     static::class,
-                    gettype($value)
+                    $data
                 );
             }
         }

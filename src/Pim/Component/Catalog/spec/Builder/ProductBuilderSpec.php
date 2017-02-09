@@ -227,6 +227,6 @@ class ProductBuilderSpec extends ObjectBehavior
 
         $product->addValue(Argument::any())->shouldBeCalled();
 
-        $this->addProductValue($product, $size);
+        $this->addOrReplaceProductValue($product, $size);
     }
 }
