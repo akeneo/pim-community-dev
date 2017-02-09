@@ -142,8 +142,8 @@ Feature: Import families
     And I am logged in as "Julia"
     And the following CSV file to import:
       """
-      code;attributes;attribute_as_label;requirements-mobile;label-en_US
-      heels;sku,name,manufacturer,heel_color;name;manufacturer;Heels
+      code;attribute_as_label;requirements-mobile
+      heels;name;manufacturer
       """
     And the following job "csv_footwear_family_import" configuration:
       | filePath | %file to import% |
@@ -151,5 +151,5 @@ Feature: Import families
     And I launch the import job
     And I wait for the "csv_footwear_family_import" job to finish
     Then there should be the following families:
-      | code     | attributes                       | attribute_as_label | requirements-mobile | requirements-tablet                                                   | label-en_US |
-      | heels    | sku,name,manufacturer,heel_color | name               | sku,manufacturer    | sku,name,description,price,side_view,size,color,heel_color,sole_color | Heels       |
+      | code     | attribute_as_label | requirements-mobile | requirements-tablet                                                   |
+      | heels    | name               | sku,manufacturer    | sku,name,description,price,side_view,size,color,heel_color,sole_color |

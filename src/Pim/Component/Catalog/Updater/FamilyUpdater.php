@@ -146,6 +146,10 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
+     * Set the new attribute requirements.
+     * If a channel is not present in the requirement list, this method does not update the requirements of this
+     * channel.
+     *
      * @param FamilyInterface $family
      * @param array           $newRequirements The requirements for each channel. For example:
      *                                         ['mobile' => ['attr1', 'attr2'], 'tabled' => ['attr3']]
