@@ -207,11 +207,12 @@ class FamilyUpdaterSpec extends ObjectBehavior
             'code'                   => 'mycode'
         ];
         $family->getAttributeRequirements()->willReturn([
-            'sku_ecommerce' => $skuEcommerceRqrmt,
+            'sku_ecommerce'  => $skuEcommerceRqrmt,
             'name_ecommerce' => $nameEcommerceRqrmt,
-            'sku_mobile' => $skuMobileRqrmt
+            'sku_mobile'     => $skuMobileRqrmt
         ]);
 
+        $family->setCode('mycode')->shouldBeCalled();
         $skuEcommerceRqrmt->getChannelCode()->willReturn('ecommerce');
         $skuMobileRqrmt->getChannelCode()->willReturn('mobile');
         $nameEcommerceRqrmt->getChannelCode()->willReturn('ecommerce');
@@ -237,7 +238,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
         AttributeRequirementInterface $skuPrintRqrmt
     ) {
         $values = [
-            'requirements' => []
+            'attribute_requirements' => []
         ];
         $family->getAttributeRequirements()->willReturn([$skuMobileRqrmt, $skuPrintRqrmt]);
 
@@ -274,6 +275,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
             ]
         ];
 
+        $family->setCode('mycode')->shouldBeCalled();
         $family->getAttributeRequirements()->willReturn([$skuMobileRqrmt, $skuPrintRqrmt]);
 
         $skuMobileRqrmt->getChannelCode()->willReturn('mobile');
@@ -295,6 +297,8 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $printChannel->getId()->willReturn('1');
         $nameAttribute->getId()->willReturn('1');
         $descriptionAttribute->getId()->willReturn('2');
+        $nameAttribute->getAttributeType()->willReturn('text');
+        $descriptionAttribute->getAttributeType()->willReturn('text');
         $family->getId()->willReturn('1');
 
         $attributeRequirementRepo->findOneBy([
