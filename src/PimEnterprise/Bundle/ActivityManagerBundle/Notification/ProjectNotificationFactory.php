@@ -14,12 +14,11 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\Notification;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 
 /**
- * Factory that creates a notification once the project is created. It notifies users that the project is ready to use.
- * They could click on it and they will be redirected to the filtered grid.
+ * Factory that creates a notification.
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ProjectCreatedNotificationFactory
+class ProjectNotificationFactory
 {
     /** @var string */
     protected $notificationClass;
@@ -33,26 +32,24 @@ class ProjectCreatedNotificationFactory
     }
 
     /**
-     * @param array $parameters
+     * @param array  $routeParams
+     * @param array  $parameters
+     * @param array  $context
+     * @param string $message
      *
      * @return NotificationInterface
      */
-    public function create($parameters)
+    public function create(array $routeParams, array $parameters, array $context, $message)
     {
         $notification = new $this->notificationClass();
 
         $notification
             ->setType('success')
-            ->setMessage('activity_manager.notification.message')
-            ->setMessageParams(
-                ['%project_label%' => $parameters['project_label'], '%due_date%' => $parameters['due_date']]
-            )
+            ->setMessage($message)
+            ->setMessageParams($parameters)
             ->setRoute('activity_manager_project_show')
-            ->setRouteParams(['identifier' => $parameters['project_code']])
-            ->setContext([
-                'actionType'     => 'project_calculation',
-                'buttonLabel'    => sprintf('activity_manager.notification.%s.start', 'project_calculation')
-            ]);
+            ->setRouteParams($routeParams)
+            ->setContext($context);
 
         return $notification;
     }

@@ -70,7 +70,7 @@ Feature: Follow project completeness
     And the following families:
       | code     | label-en_US | attributes                                                   | requirements-ecommerce                 | requirements-mobile                    |
       | tshirt   | TShirts     | sku, name, description, size, weight, release_date, material | sku, name, size, description, material | sku, name, size, description, material |
-      | usb_keys | USB Keys    | sku, name, description, weight, release_date, capacity       | sku, name, size, description, capacity | sku, name, size, description, capacity |
+      | usb_keys | USB Keys    | sku, name, description, size, weight, release_date, capacity | sku, name, size, description, capacity | sku, name, size, description, capacity |
       | posters  | Posters     | sku, name, description, size, release_date, picture          | sku, name, size, description, picture  | sku, name, size, description, picture  |
     And the following products:
       | sku                  | family   | categories         | name-en_US                | size-en_US | weight-en_US | weight-en_US-unit | release_date-en_US | release_date-fr_FR | material-en_US | capacity | capacity-unit |
@@ -90,12 +90,12 @@ Feature: Follow project completeness
   Scenario: Successfully see the project with the nearest due date first
     Given I am on the dashboard page
     And I should see the text "Collection Winter 2030"
-    And I should see the text "[ecommerce] | English (United States)"
+    And I should see the text "E-Commerce | English (United States)"
     And I should see the text "Due date: 08/28/2030"
 
   Scenario: Successfully display completeness on widget
     Given I am on the dashboard page
-    And I should see the text "Collection Winter 2030 [ecommerce] | English (United States)"
+    And I should see the text "Collection Winter 2030 E-Commerce | English (United States)"
     And I should see the text "all contributors"
     And I should see the following activity manager completeness:
       | todo | in_progress | done |
@@ -106,7 +106,7 @@ Feature: Follow project completeness
     And I should see the text "Please do your best to finish before Winter."
     And I should see the text "Due date: 08/28/2030"
     When I select "Collection Summer 2030" project
-    Then I should see the text "Collection Summer 2030 [ecommerce] | English (United States)"
+    Then I should see the text "Collection Summer 2030 E-Commerce | English (United States)"
     And I should see the text "all contributors"
     And I should see the following activity manager completeness:
       | todo | in_progress | done |
@@ -117,14 +117,14 @@ Feature: Follow project completeness
     And I should see the text "Please do your best to finish before Summer."
     And I should see the text "Due date: 10/28/2030"
     When I select "Claude Yachifeur" contributor
-    Then I should see the text "Collection Summer 2030 [ecommerce] | English (United States)"
+    Then I should see the text "Collection Summer 2030 E-Commerce | English (United States)"
     And I should see the text "Claude Yachifeur"
     And I should see the following activity manager completeness:
       | todo | in_progress | done |
-      |    0 |           3 |    3 |
+      |    0 |           2 |    1 |
     And I should see the text "0% PRODUCTS TO ENRICH"
-    And I should see the text "50% PRODUCTS IN PROGRESS"
-    And I should see the text "50% PRODUCTS DONE"
+    And I should see the text "66.67% PRODUCTS IN PROGRESS"
+    And I should see the text "33.33% PRODUCTS DONE"
     And I should see the text "Please do your best to finish before Summer."
     And I should see the text "Due date: 10/28/2030"
 
@@ -132,5 +132,5 @@ Feature: Follow project completeness
     Given I am on the dashboard page
     When I select "Collection SpaceSuits so trendy 2030" project
     Then I should see the text "Collection SpaceSuits so trendy 2030"
-    And I should see the text "[ecommerce] | English (United States)"
+    And I should see the text "E-Commerce | English (United States)"
     And I should see the text "Due date: 08/28/2030"

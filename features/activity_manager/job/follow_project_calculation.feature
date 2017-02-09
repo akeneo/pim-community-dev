@@ -4,7 +4,7 @@ Feature: Follow project calculation job
   I need to be able to see the project calculation job in the process tracker
 
   @javascript
-  Scenario: A project creator can see the project calculatirm on job in the process tracker
+  Scenario: A project creator can see the project calculation on job in the process tracker
     Given the "activity_manager" catalog configuration
     And I am logged in as "Julia"
     When I am on the products page

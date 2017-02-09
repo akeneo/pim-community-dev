@@ -168,11 +168,29 @@ class FilterExtension extends BaseFilterExtension
             }
         }
 
+        $grantedAttributeGroupIds = $this->accessRepository->getGrantedAttributeGroupIds(
+            $this->userContext->getUser(),
+            Attributes::VIEW_ATTRIBUTES
+        );
+        $grantedAttributeCodes = $this->attributeRepository->findAttributeCodesUsableInGrid($grantedAttributeGroupIds);
+        $attributeCodes = $this->attributeRepository->findAttributeCodes();
+
         $useableFilters = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
         $defaultFilters = $config->offsetGetByPath(Configuration::DEFAULT_FILTERS_PATH, []);
-
         $filterBy = $this->requestParams->get(self::FILTER_ROOT_PARAM) ?: $defaultFilters;
-        $filterBy = array_replace($filterBy, $datagridViewFilters);
+
+        // Allow to empty a filter if the user has access to this filter
+        foreach ($datagridViewFilters as $column => $value) {
+            $isGrantedAttribute = in_array($column, $grantedAttributeCodes);
+            $isAField = !in_array($column, $attributeCodes);
+            $isEmptyFilter = !array_key_exists($column, $filterBy);
+
+            if (($isGrantedAttribute || $isAField) && $isEmptyFilter) {
+                unset($datagridViewFilters[$column]);
+            }
+        }
+
+        $filterBy = array_replace($datagridViewFilters, $filterBy);
 
         foreach ($filterBy as $column => $value) {
             if (isset($useableFilters[$column]) || 'category' === $column) {

@@ -11,14 +11,17 @@ define(
     [
         'oro/translator',
         'oro/messenger',
-        'pim/grid/view-selector/current'
+        'pim/grid/view-selector/current',
+        'text!activity-manager/templates/grid/view-selector/current'
     ],
     function (
         __,
         messenger,
-        BaseCurrent
+        BaseCurrent,
+        template
     ) {
         return BaseCurrent.extend({
+            template: _.template(template),
             notified: false,
 
             /**

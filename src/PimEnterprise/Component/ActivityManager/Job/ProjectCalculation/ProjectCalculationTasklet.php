@@ -36,9 +36,6 @@ class ProjectCalculationTasklet implements TaskletInterface
     /** @var CalculationStepInterface */
     protected $calculationStep;
 
-    /** @var PreProcessingRepositoryInterface */
-    protected $preProcessingRepository;
-
     /** @var SaverInterface */
     protected $projectSaver;
 
@@ -52,7 +49,6 @@ class ProjectCalculationTasklet implements TaskletInterface
      * @param ProductRepositoryInterface            $productRepository
      * @param IdentifiableObjectRepositoryInterface $projectRepository
      * @param CalculationStepInterface              $calculationStep
-     * @param PreProcessingRepositoryInterface      $preProcessingRepository
      * @param SaverInterface                        $projectSaver
      * @param ObjectDetacherInterface               $objectDetacher
      */
@@ -60,14 +56,12 @@ class ProjectCalculationTasklet implements TaskletInterface
         ProductRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $projectRepository,
         CalculationStepInterface $calculationStep,
-        PreProcessingRepositoryInterface $preProcessingRepository,
         SaverInterface $projectSaver,
         ObjectDetacherInterface $objectDetacher
     ) {
         $this->productRepository = $productRepository;
         $this->projectRepository = $projectRepository;
         $this->calculationStep = $calculationStep;
-        $this->preProcessingRepository = $preProcessingRepository;
         $this->projectSaver = $projectSaver;
         $this->objectDetacher = $objectDetacher;
     }
@@ -93,6 +87,7 @@ class ProjectCalculationTasklet implements TaskletInterface
         foreach ($products as $product) {
             $this->calculationStep->execute($product, $project);
             $this->objectDetacher->detach($product);
+            $this->stepExecution->incrementSummaryInfo('processed_products');
         }
 
         $this->projectSaver->save($project);
