@@ -138,6 +138,19 @@ class LocaleRepository extends EntityRepository implements LocaleRepositoryInter
             ->getQuery()
             ->getSingleScalarResult();
 
-        return $count;
+        return (int) $count;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countAll()
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        return (int) $qb
+            ->select('count(c.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

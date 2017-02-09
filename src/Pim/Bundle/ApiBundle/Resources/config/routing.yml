@@ -14,6 +14,10 @@ channel:
     resource: '@PimApiBundle/Resources/config/routing/channel.yml'
     prefix: /rest/v1
 
+locale:
+    resource: '@PimApiBundle/Resources/config/routing/locale.yml'
+    prefix: /rest/v1
+
 product:
     resource: '@PimApiBundle/Resources/config/routing/product.yml'
     prefix: /rest/v1

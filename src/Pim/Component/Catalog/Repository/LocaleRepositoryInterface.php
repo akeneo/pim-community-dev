@@ -59,4 +59,11 @@ interface LocaleRepositoryInterface extends IdentifiableObjectRepositoryInterfac
      * @return int
      */
     public function countAllActivated();
+
+    /**
+     * Returns the number of locales
+     *
+     * @return int
+     */
+    public function countAll();
 }
