@@ -12,6 +12,14 @@ PimEnterprise\Component\Workflow\Model\PublishedProduct:
         enabled:
             type: boolean
             column: is_enabled
+        identifier:
+            type: string
+            length: 255
+            unique: true
+            nullable: false
+        rawValues:
+          type: json_array
+          column: raw_values
         created:
             type: datetime
         updated:

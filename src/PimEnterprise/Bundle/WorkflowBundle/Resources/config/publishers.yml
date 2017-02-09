@@ -1,14 +1,9 @@
 parameters:
     pimee_workflow.publisher.chained.class:                     PimEnterprise\Component\Workflow\Publisher\ChainedPublisher
     pimee_workflow.publisher.product.class:                     PimEnterprise\Component\Workflow\Publisher\Product\ProductPublisher
-    pimee_workflow.publisher.product_value.class:               PimEnterprise\Component\Workflow\Publisher\Product\ValuePublisher
     pimee_workflow.publisher.product_association.class:         PimEnterprise\Component\Workflow\Publisher\Product\AssociationPublisher
     pimee_workflow.publisher.product_completeness.class:        PimEnterprise\Component\Workflow\Publisher\Product\CompletenessPublisher
-    pimee_workflow.publisher.product_metric.class:              PimEnterprise\Component\Workflow\Publisher\Product\MetricPublisher
-    pimee_workflow.publisher.product_file.class:                PimEnterprise\Component\Workflow\Publisher\Product\FileInfoPublisher
-    pimee_workflow.publisher.product_price.class:               PimEnterprise\Component\Workflow\Publisher\Product\PricePublisher
     pimee_workflow.publisher.datetime.class:                    PimEnterprise\Component\Workflow\Publisher\DateTimePublisher
-    pimee_workflow.publisher.attribute_option.class:            PimEnterprise\Component\Workflow\Publisher\AttributeOptionPublisher
     pimee_workflow.publisher.product_related_association.class: PimEnterprise\Component\Workflow\Publisher\Product\RelatedAssociationPublisher
     pimee_workflow.unpublisher.product.class:                   PimEnterprise\Component\Workflow\Publisher\Product\ProductUnpublisher
 
@@ -24,43 +19,13 @@ services:
             - '@pimee_workflow.publisher.product_related_association'
             - '@pim_versioning.manager.version'
             - '@pim_catalog.manager.completeness'
-        tags:
-            - { name: pimee_workflow.publisher }
-
-    pimee_workflow.publisher.product_value:
-        class: '%pimee_workflow.publisher.product_value.class%'
-        arguments:
-            - '%pimee_workflow.entity.published_product_value.class%'
-            - '@pimee_workflow.publisher.chained'
-        tags:
-            - { name: pimee_workflow.publisher }
-
-    pimee_workflow.publisher.product_metric:
-        class: '%pimee_workflow.publisher.product_metric.class%'
-        arguments:
-            - '%pimee_workflow.entity.published_product_metric.class%'
-        tags:
-            - { name: pimee_workflow.publisher }
-
-    pimee_workflow.publisher.product_file:
-        class: '%pimee_workflow.publisher.product_file.class%'
-        tags:
-            - { name: pimee_workflow.publisher }
-
-    pimee_workflow.publisher.product_price:
-        class: '%pimee_workflow.publisher.product_price.class%'
-        arguments:
-            - '%pimee_workflow.entity.published_product_price.class%'
+            - '@pim_serializer'
+            - '@pim_catalog.updater.product'
         tags:
             - { name: pimee_workflow.publisher }
 
     pimee_workflow.publisher.datetime:
         class: '%pimee_workflow.publisher.datetime.class%'
-        tags:
-            - { name: pimee_workflow.publisher }
-
-    pimee_workflow.publisher.attribute_option:
-        class: '%pimee_workflow.publisher.attribute_option.class%'
         tags:
             - { name: pimee_workflow.publisher }
 

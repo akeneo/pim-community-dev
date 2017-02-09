@@ -47,8 +47,6 @@ class ProductValue extends PimProductValue
     public function __construct(AttributeInterface $attribute, $channel, $locale, $data)
     {
         parent::__construct($attribute, $channel, $locale, $data);
-
-        $this->fabrics = new ArrayCollection();
     }
 
     /**

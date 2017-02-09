@@ -6,6 +6,13 @@ services:
     pimee_workflow.saver.working_copy_product:
         alias: pim_catalog.saver.product
 
+    pimee_workflow.saver.published_product:
+        class: '%pim_catalog.saver.product.class%'
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.manager.completeness'
+            - '@event_dispatcher'
+
     # product draft saver
     pimee_workflow.saver.product_draft:
         class: '%akeneo_storage_utils.saver.base.class%'
