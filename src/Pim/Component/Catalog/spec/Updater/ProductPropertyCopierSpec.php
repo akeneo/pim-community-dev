@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -67,6 +68,20 @@ class ProductPropertyCopierSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier(Argument::any())->willReturn(null);
         $this->shouldThrow(new \LogicException('No copier found for fields "unknown_field" and "to_field"'))->during(
             'copyData', [$product, $product, 'unknown_field', 'to_field', []]
+        );
+    }
+
+    function it_throws_an_exception_when_trying_to_copy_anything_else_than_a_product()
+    {
+        $this->shouldThrow(
+            new InvalidObjectException(
+                'stdClass',
+                ProductInterface::class,
+                'Expects a "Pim\Component\Catalog\Model\ProductInterface", "stdClass" and "stdClass" provided.'
+            )
+        )->during(
+            'copyData',
+            [new \stdClass(), new \stdClass(), 'from_category', 'from_category', []]
         );
     }
 }

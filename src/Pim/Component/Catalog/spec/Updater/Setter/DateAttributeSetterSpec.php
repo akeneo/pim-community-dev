@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
@@ -76,11 +77,11 @@ class DateAttributeSetterSpec extends ObjectBehavior
         $data = 'not a date';
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::dateExpected(
                 'attributeCode',
-                'a string with the format yyyy-mm-dd',
+                'yyyy-mm-dd',
                 'Pim\Component\Catalog\Updater\Setter\DateAttributeSetter',
-                gettype($data)
+                'not a date'
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -94,11 +95,11 @@ class DateAttributeSetterSpec extends ObjectBehavior
         $data = '1970-mm-01';
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::dateExpected(
                 'attributeCode',
-                'a string with the format yyyy-mm-dd',
+                'yyyy-mm-dd',
                 'Pim\Component\Catalog\Updater\Setter\DateAttributeSetter',
-                gettype($data)
+                '1970-mm-01'
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -126,11 +127,11 @@ class DateAttributeSetterSpec extends ObjectBehavior
         $data = 132654;
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::dateExpected(
                 'attributeCode',
-                'datetime or string',
+                'yyyy-mm-dd',
                 'Pim\Component\Catalog\Updater\Setter\DateAttributeSetter',
-                gettype($data)
+                'integer'
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }

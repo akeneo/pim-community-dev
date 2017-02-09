@@ -16,7 +16,7 @@ class BooleanFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count) {
+        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
             $this->createProduct('yes', [
                 'values' => [
                     'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]]

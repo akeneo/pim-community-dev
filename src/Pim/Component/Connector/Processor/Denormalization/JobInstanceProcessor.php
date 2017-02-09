@@ -88,8 +88,6 @@ class JobInstanceProcessor extends AbstractProcessor implements ItemProcessorInt
             $this->updater->update($entity, $item);
         } catch (ObjectUpdaterException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
-        } catch (\InvalidArgumentException $exception) {
-            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
         $violations = $this->validator->validate($entity);

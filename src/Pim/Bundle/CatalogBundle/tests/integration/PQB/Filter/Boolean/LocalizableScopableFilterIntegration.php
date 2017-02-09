@@ -17,7 +17,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count) {
+        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
             $this->createAttribute([
                 'code'                => 'a_localizable_scopable_yes_no',
                 'attribute_type'      => AttributeTypes::BOOLEAN,
@@ -79,5 +79,32 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
     public function testErrorLocalizable()
     {
         $this->execute([['a_localizable_scopable_yes_no', Operators::NOT_EQUAL, true]]);
+    }
+
+    /**
+     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Attribute or field "a_localizable_scopable_yes_no" expects valid data, scope and locale. Attribute "a_localizable_scopable_yes_no" expects a scope, none given.
+     */
+    public function testErrorScopable()
+    {
+        $this->execute([['a_localizable_scopable_yes_no', Operators::NOT_EQUAL, true, ['locale' => 'en_US']]]);
+    }
+
+    /**
+     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Attribute or field "a_localizable_scopable_yes_no" expects valid data, scope and locale. Attribute "a_localizable_scopable_yes_no" expects an existing and activated locale, "NOT_FOUND" given.
+     */
+    public function testLocaleNotFound()
+    {
+        $this->execute([['a_localizable_scopable_yes_no', Operators::NOT_EQUAL, true, ['locale' => 'NOT_FOUND']]]);
+    }
+
+    /**
+     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Attribute or field "a_localizable_scopable_yes_no" expects valid data, scope and locale. Attribute "a_localizable_scopable_yes_no" expects an existing scope, "NOT_FOUND" given.
+     */
+    public function testScopeNotFound()
+    {
+        $this->execute([['a_localizable_scopable_yes_no', Operators::NOT_EQUAL, true, ['locale' => 'fr_FR', 'scope' => 'NOT_FOUND']]]);
     }
 }

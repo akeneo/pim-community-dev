@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Component\ReferenceData\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
@@ -81,7 +83,15 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         ProductInterface $product,
         AttributeInterface $attribute
     ) {
-        $this->shouldThrow('InvalidArgumentException')->during('setAttributeData', [
+        $attribute->getCode()->willReturn('attribute_code');
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::stringExpected(
+                'attribute_code',
+                'Pim\Component\ReferenceData\Updater\Setter\ReferenceDataSetter',
+                ['shiny_metal']
+            )
+        )->during('setAttributeData', [
             $product, $attribute, ['shiny_metal'], ['locale' => 'fr_FR', 'scope' => 'mobile']
         ]);
     }
@@ -101,10 +111,10 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         $repositoryResolver->resolve('customMaterials')->willReturn($repository);
         $repository->findOneBy(['code' => 'hulk_retriever'])->willReturn(null);
 
-        $exception = InvalidArgumentException::validEntityCodeExpected(
+        $exception = InvalidPropertyException::validEntityCodeExpected(
             'lace_fabric',
-            'code',
-            'No reference data "customMaterials" with code "hulk_retriever" has been found',
+            'reference data code',
+            'The code of the reference data "customMaterials" does not exist',
             'Pim\Component\ReferenceData\Updater\Setter\ReferenceDataSetter',
             'hulk_retriever'
         );

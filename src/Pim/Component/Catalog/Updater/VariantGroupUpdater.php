@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -99,7 +100,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     public function update($variantGroup, array $data, array $options = [])
     {
         if (!$variantGroup instanceof GroupInterface) {
-            throw InvalidPropertyException::objectExpected(
+            throw InvalidObjectException::objectExpected(
                 ClassUtils::getClass($variantGroup),
                 GroupInterface::class
             );

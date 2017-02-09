@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\MetricFactory;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
@@ -77,7 +78,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $data = 'Not an array';
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected('attributeCode', 'Pim\Component\Catalog\Updater\Setter\MetricAttributeSetter', gettype($data))
+            InvalidPropertyTypeException::arrayExpected('attributeCode', 'Pim\Component\Catalog\Updater\Setter\MetricAttributeSetter', $data)
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
@@ -90,11 +91,11 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $data = ['unit' => 'KILOGRAM'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected(
+            InvalidPropertyTypeException::arrayKeyExpected(
                 'attributeCode',
                 'amount',
                 'Pim\Component\Catalog\Updater\Setter\MetricAttributeSetter',
-                print_r($data, true)
+                $data
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -108,11 +109,11 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $data = ['amount' => 'data value'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected(
+            InvalidPropertyTypeException::arrayKeyExpected(
                 'attributeCode',
                 'unit',
                 'Pim\Component\Catalog\Updater\Setter\MetricAttributeSetter',
-                print_r($data, true)
+                $data
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
