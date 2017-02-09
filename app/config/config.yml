@@ -102,3 +102,11 @@ pim_reference_data:
 
 akeneo_storage_utils:
     mapping_overrides: ~
+
+pim_elastic_search:
+    client:
+        product:
+            index_name: "%pim_es_index_name%"
+        config:
+            host: "%pim_es_host%"
+            port: "%pim_es_port%"
