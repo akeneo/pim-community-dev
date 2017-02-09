@@ -85,8 +85,8 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $repository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
         $storer->store(Argument::cetera())->shouldNotBeCalled();
 
-        $builder->addProductValue($product, $fileAttribute, null, null, null);
-        $builder->addProductValue($product, $imageAttribute, 'en_US', 'ecommerce', null);
+        $builder->addOrReplaceProductValue($product, $fileAttribute, null, null, null);
+        $builder->addOrReplaceProductValue($product, $imageAttribute, 'en_US', 'ecommerce', null);
 
         $this->setAttributeData($product, $fileAttribute, null, ['locale' => null, 'scope' => null]);
         $this->setAttributeData($product, $imageAttribute, null, ['locale' => 'en_US', 'scope' => 'ecommerce']);
@@ -107,7 +107,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $storer->store(Argument::cetera())->willReturn($fileInfo);
         $fileInfo->getKey()->willReturn($data);
 
-        $builder->addProductValue($product, $attribute, 'fr_FR', 'mobile', $data)->shouldBeCalled();
+        $builder->addOrReplaceProductValue($product, $attribute, 'fr_FR', 'mobile', $data)->shouldBeCalled();
 
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
@@ -130,7 +130,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $storer->store(Argument::cetera())->willReturn($fileInfo);
         $fileInfo->getKey()->willReturn($data);
 
-        $builder->addProductValue($product, $attribute, 'fr_FR', 'mobile', $data)->shouldBeCalled();
+        $builder->addOrReplaceProductValue($product, $attribute, 'fr_FR', 'mobile', $data)->shouldBeCalled();
 
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
@@ -153,7 +153,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $storer->store(Argument::cetera())->shouldNotBeCalled();
         $fileInfo->getKey()->willReturn($data);
 
-        $builder->addProductValue($product, $attribute, 'fr_FR', 'mobile', $data)->shouldBeCalled();
+        $builder->addOrReplaceProductValue($product, $attribute, 'fr_FR', 'mobile', $data)->shouldBeCalled();
 
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }

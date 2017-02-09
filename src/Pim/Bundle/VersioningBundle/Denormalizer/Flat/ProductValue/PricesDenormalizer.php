@@ -100,7 +100,7 @@ class PricesDenormalizer extends AbstractValueDenormalizer
     {
         $originalPrices = $this->normalizer->normalize($value->getPrices(), 'standard');
 
-        $priceValue = $this->productBuilder->addProductValue(
+        $priceValue = $this->productBuilder->addOrReplaceProductValue(
             $product,
             $value->getAttribute(),
             $value->getLocale(),

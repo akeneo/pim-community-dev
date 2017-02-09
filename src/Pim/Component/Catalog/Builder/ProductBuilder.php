@@ -124,7 +124,7 @@ class ProductBuilder implements ProductBuilderInterface
         );
 
         foreach ($missingValues as $value) {
-            $this->addProductValue($product, $attributes[$value['attribute']], $value['locale'], $value['scope'], null);
+            $this->addOrReplaceProductValue($product, $attributes[$value['attribute']], $value['locale'], $value['scope'], null);
         }
 
         $this->addMissingPricesToProduct($product);
@@ -157,16 +157,8 @@ class ProductBuilder implements ProductBuilderInterface
         $requiredValues = $this->valuesResolver->resolveEligibleValues([$attribute]);
 
         foreach ($requiredValues as $value) {
-            $this->addProductValue($product, $attribute, $value['locale'], $value['scope'], null);
+            $this->addOrReplaceProductValue($product, $attribute, $value['locale'], $value['scope'], null);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addProductValue(ProductInterface $product, AttributeInterface $attribute, $locale, $scope, $data)
-    {
-        return $this->addOrReplaceProductValue($product, $attribute, $locale, $scope, $data);
     }
 
     /**
@@ -263,7 +255,7 @@ class ProductBuilder implements ProductBuilderInterface
                     }
                 }
 
-                $this->addProductValue($product, $attribute, $value->getLocale(), $value->getScope(), $prices);
+                $this->addOrReplaceProductValue($product, $attribute, $value->getLocale(), $value->getScope(), $prices);
             }
         }
     }
@@ -292,7 +284,7 @@ class ProductBuilder implements ProductBuilderInterface
                 $requiredValues = $this->valuesResolver->resolveEligibleValues([$attribute]);
 
                 foreach ($requiredValues as $value) {
-                    $this->addProductValue($product, $attribute, $value['scope'], $value['locale'], false);
+                    $this->addOrReplaceProductValue($product, $attribute, $value['scope'], $value['locale'], false);
                 }
             }
         }

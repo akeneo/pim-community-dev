@@ -80,12 +80,12 @@ class MetricAttributeCopierSpec extends ObjectBehavior
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $builder
-            ->addProductValue($product1, $toAttribute, $toLocale, $toScope, ['amount' => 123, 'unit' => 'GRAM'])
+            ->addOrReplaceProductValue($product1, $toAttribute, $toLocale, $toScope, ['amount' => 123, 'unit' => 'GRAM'])
             ->willReturn($toProductValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder
-            ->addProductValue($product2, $toAttribute, $toLocale, $toScope, null)
+            ->addOrReplaceProductValue($product2, $toAttribute, $toLocale, $toScope, null)
             ->shouldNotBeCalled();
 
         $products = [$product1, $product2];

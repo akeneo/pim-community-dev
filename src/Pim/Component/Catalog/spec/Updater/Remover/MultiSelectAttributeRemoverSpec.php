@@ -66,7 +66,7 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
         $round->getCode()->willReturn('round');
         $vneck->getCode()->willReturn('vneck');
 
-        $productBuilder->addProductValue($product, $attribute, 'fr_FR', 'mobile', ['round'])->shouldBeCalled();
+        $productBuilder->addOrReplaceProductValue($product, $attribute, 'fr_FR', 'mobile', ['round'])->shouldBeCalled();
 
         $this->removeAttributeData($product, $attribute, ['vneck'], ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }

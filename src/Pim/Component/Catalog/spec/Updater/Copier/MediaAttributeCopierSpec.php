@@ -118,7 +118,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
 
         $normalizer->normalize($fileInfo, 'standard')->willReturn('key');
 
-        $builder->addProductValue($product, $toAttribute, $toLocale, $toScope, 'key');
+        $builder->addOrReplaceProductValue($product, $toAttribute, $toLocale, $toScope, 'key');
 
         $this->copyAttributeData(
             $product,
@@ -166,7 +166,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
 
         $normalizer->normalize(Argument::cetera())->shouldNotBeCalled();
 
-        $builder->addProductValue($product, $toAttribute, $toLocale, $toScope, null);
+        $builder->addOrReplaceProductValue($product, $toAttribute, $toLocale, $toScope, null);
 
         $this->copyAttributeData(
             $product,
@@ -228,7 +228,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
 
         $normalizer->normalize($fileInfo, 'standard')->willReturn('key');
 
-        $builder->addProductValue($product, $toAttribute, $toLocale, $toScope, $fileInfo);
+        $builder->addOrReplaceProductValue($product, $toAttribute, $toLocale, $toScope, $fileInfo);
 
         $this->copyAttributeData(
             $product,

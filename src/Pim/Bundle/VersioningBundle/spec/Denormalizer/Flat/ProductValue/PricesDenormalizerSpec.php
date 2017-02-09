@@ -60,7 +60,7 @@ class PricesDenormalizerSpec extends ObjectBehavior
             ['amount' => '42', 'currency' => 'USD'],
         ]);
 
-        $productBuilder->addProductValue(
+        $productBuilder->addOrReplaceProductValue(
             $product,
             $attribute,
             null,
@@ -71,7 +71,7 @@ class PricesDenormalizerSpec extends ObjectBehavior
             ]
         )->willReturn($firstNewPriceValue);
 
-        $productBuilder->addProductValue(
+        $productBuilder->addOrReplaceProductValue(
             $product,
             $attribute,
             null,
@@ -114,7 +114,7 @@ class PricesDenormalizerSpec extends ObjectBehavior
         $originalPriceValue->getLocale()->willReturn(null);
         $originalPriceValue->getScope()->willReturn(null);
 
-        $productBuilder->addProductValue(
+        $productBuilder->addOrReplaceProductValue(
             $product,
             $attribute,
             null,
@@ -156,7 +156,7 @@ class PricesDenormalizerSpec extends ObjectBehavior
         $originalPriceValue->getLocale()->willReturn(null);
         $originalPriceValue->getScope()->willReturn(null);
 
-        $productBuilder->addProductValue(
+        $productBuilder->addOrReplaceProductValue(
             $product,
             $attribute,
             null,

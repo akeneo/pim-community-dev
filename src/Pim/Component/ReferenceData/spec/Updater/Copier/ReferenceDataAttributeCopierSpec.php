@@ -75,12 +75,12 @@ class ReferenceDataAttributeCopierSpec extends ObjectBehavior
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $builder
-            ->addProductValue($product1, $toAttribute, $toLocale, $toScope, 'black')
+            ->addOrReplaceProductValue($product1, $toAttribute, $toLocale, $toScope, 'black')
             ->shouldBeCalled()
             ->willReturn($toProductValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
-        $builder->addProductValue($product2, Argument::cetera())->shouldNotBeCalled();
+        $builder->addOrReplaceProductValue($product2, Argument::cetera())->shouldNotBeCalled();
 
         $products = [$product1, $product2];
         foreach ($products as $product) {

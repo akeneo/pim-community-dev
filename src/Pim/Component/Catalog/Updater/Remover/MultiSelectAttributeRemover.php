@@ -75,7 +75,7 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
                 }
             }
 
-            $this->productBuilder->addProductValue($product, $attribute, $locale, $scope, $newOptionCodes);
+            $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope, $newOptionCodes);
         }
     }
 

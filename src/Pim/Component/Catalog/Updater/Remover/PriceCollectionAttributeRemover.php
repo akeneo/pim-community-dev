@@ -93,7 +93,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
                 }
             }
 
-            $this->productBuilder->addProductValue($product, $attribute, $scope, $locale, $prices);
+            $this->productBuilder->addOrReplaceProductValue($product, $attribute, $scope, $locale, $prices);
         }
     }
 

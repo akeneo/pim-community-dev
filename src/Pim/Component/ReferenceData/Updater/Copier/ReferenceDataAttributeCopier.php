@@ -105,7 +105,7 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         if (null !== $fromValue) {
             $fromDataGetter = $this->getValueGetterName($fromValue, $fromAttribute);
 
-            $this->productBuilder->addProductValue(
+            $this->productBuilder->addOrReplaceProductValue(
                 $toProduct,
                 $toAttribute,
                 $toLocale,

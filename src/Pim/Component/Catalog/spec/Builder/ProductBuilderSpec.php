@@ -225,8 +225,8 @@ class ProductBuilderSpec extends ObjectBehavior
         $product->addValue($sizeValue)->willReturn($product);
         $product->addValue($colorValue)->willReturn($product);
 
-        $this->addProductValue($product, $size, null, null, null);
-        $this->addProductValue($product, $color, 'en_US', 'ecommerce', null);
+        $this->addOrReplaceProductValue($product, $size, null, null, null);
+        $this->addOrReplaceProductValue($product, $color, 'en_US', 'ecommerce', null);
     }
 
     function it_adds_a_non_empty_product_value(
@@ -258,8 +258,8 @@ class ProductBuilderSpec extends ObjectBehavior
         $product->addValue($sizeValue)->willReturn($product);
         $product->addValue($colorValue)->willReturn($product);
 
-        $this->addProductValue($product, $size, null, null, null);
-        $this->addProductValue($product, $color, 'en_US', 'ecommerce', 'red');
+        $this->addOrReplaceProductValue($product, $size, null, null, null);
+        $this->addOrReplaceProductValue($product, $color, 'en_US', 'ecommerce', 'red');
     }
 
     function it_adds_a_product_value_if_there_was_not_a_previous_one(
@@ -281,6 +281,6 @@ class ProductBuilderSpec extends ObjectBehavior
 
         $product->addValue($value)->willReturn($product);
 
-        $this->addProductValue($product, $label, null, null, 'foobar');
+        $this->addOrReplaceProductValue($product, $label, null, null, 'foobar');
     }
 }

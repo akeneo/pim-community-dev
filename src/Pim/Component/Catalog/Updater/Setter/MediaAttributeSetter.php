@@ -64,7 +64,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
             $file = $this->storeFile($attribute, $data);
         }
 
-        $this->productBuilder->addProductValue(
+        $this->productBuilder->addOrReplaceProductValue(
             $product,
             $attribute,
             $options['locale'],

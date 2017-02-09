@@ -61,27 +61,6 @@ interface ProductBuilderInterface
     public function addAttributeToProduct(ProductInterface $product, AttributeInterface $attribute);
 
     /**
-     * Add a missing value to the product
-     *
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     * @param string             $locale
-     * @param string             $scope
-     * @param mixed              $data
-     *
-     * @return ProductValueInterface
-     *
-     * @deprecated will be removed in 1.8. Please use "addOrReplaceProductValue" instead.
-     */
-    public function addProductValue(
-        ProductInterface $product,
-        AttributeInterface $attribute,
-        $locale,
-        $scope,
-        $data
-    );
-
-    /**
      * Add or replace a product value.
      *
      * @param ProductInterface   $product
