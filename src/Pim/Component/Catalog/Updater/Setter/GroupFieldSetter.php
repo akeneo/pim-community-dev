@@ -2,8 +2,9 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -45,9 +46,10 @@ class GroupFieldSetter extends AbstractFieldSetter
             $group = $this->groupRepository->findOneByIdentifier($groupCode);
 
             if (null === $group) {
-                throw InvalidArgumentException::expected(
+                throw InvalidPropertyException::validEntityCodeExpected(
                     $field,
-                    'existing group code',
+                    'group code',
+                    'The group does not exist',
                     static::class,
                     $groupCode
                 );
@@ -71,24 +73,26 @@ class GroupFieldSetter extends AbstractFieldSetter
      *
      * @param string $field
      * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData($field, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected(
+            throw InvalidPropertyTypeException::arrayExpected(
                 $field,
                 static::class,
-                gettype($data)
+                $data
             );
         }
 
         foreach ($data as $key => $value) {
             if (!is_string($value)) {
-                throw InvalidArgumentException::arrayStringValueExpected(
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $field,
-                    $key,
+                    sprintf('one of the group codes is not a string, "%s" given', gettype($value)),
                     static::class,
-                    gettype($value)
+                    $data
                 );
             }
         }

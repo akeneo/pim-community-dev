@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\ReferenceData\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
@@ -95,7 +96,15 @@ class ReferenceDataCollectionSetterSpec extends ObjectBehavior
         ProductInterface $product,
         AttributeInterface $attribute
     ) {
-        $this->shouldThrow('InvalidArgumentException')->during('setAttributeData', [
+        $attribute->getCode()->willReturn('attribute_code');
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::arrayExpected(
+                'attribute_code',
+                'Pim\Component\ReferenceData\Updater\Setter\ReferenceDataCollectionSetter',
+                'shiny_metal'
+            )
+        )->during('setAttributeData', [
             $product, $attribute, 'shiny_metal', ['locale' => 'fr_FR', 'scope' => 'mobile']
         ]);
     }

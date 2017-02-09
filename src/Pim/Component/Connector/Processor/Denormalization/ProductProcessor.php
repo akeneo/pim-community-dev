@@ -111,9 +111,6 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         } catch (ObjectUpdaterException $exception) {
             $this->detachProduct($product);
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
-        } catch (\InvalidArgumentException $exception) {
-            $this->detachProduct($product);
-            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
         $violations = $this->validateProduct($product);

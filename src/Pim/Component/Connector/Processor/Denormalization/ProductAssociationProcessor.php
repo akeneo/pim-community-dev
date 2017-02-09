@@ -20,9 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAssociationProcessor extends AbstractProcessor implements
-    ItemProcessorInterface,
-    StepExecutionAwareInterface
+class ProductAssociationProcessor extends AbstractProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $repository;
@@ -106,9 +104,6 @@ class ProductAssociationProcessor extends AbstractProcessor implements
         try {
             $this->updateProduct($product, $item);
         } catch (ObjectUpdaterException $exception) {
-            $this->detachProduct($product);
-            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
-        } catch (\InvalidArgumentException $exception) {
             $this->detachProduct($product);
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }

@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -64,6 +65,19 @@ class ProductPropertySetterSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier(Argument::any())->willReturn(null);
         $this->shouldThrow(new \LogicException('No setter found for field "unknown_field"'))->during(
             'setData', [$product, 'unknown_field', 'data', ['locale' => 'fr_FR', 'scope' => 'ecommerce']]
+        );
+    }
+
+    function it_throws_an_exception_when_trying_to_set_anything_else_than_a_product()
+    {
+        $this->shouldThrow(
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                'Pim\Component\Catalog\Model\ProductInterface'
+            )
+        )->during(
+            'setData',
+            [new \stdClass(), 'category', []]
         );
     }
 }

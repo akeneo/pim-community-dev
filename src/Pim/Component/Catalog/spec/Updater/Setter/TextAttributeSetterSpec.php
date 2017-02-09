@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
@@ -117,7 +118,11 @@ class TextAttributeSetterSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $attrValidatorHelper->validateLocale($attribute, null)->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'Pim\Component\Catalog\Updater\Setter\TextAttributeSetter')
+           InvalidPropertyException::expectedFromPreviousException(
+               'attributeCode',
+               'Pim\Component\Catalog\Updater\Setter\TextAttributeSetter',
+               $e
+           )
         )->during('setAttributeData', [$product, $attribute, '', ['locale' => null, 'scope' => 'ecommerce']]);
     }
 
@@ -131,7 +136,11 @@ class TextAttributeSetterSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(false);
         $attrValidatorHelper->validateLocale($attribute, 'en_US')->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'Pim\Component\Catalog\Updater\Setter\TextAttributeSetter')
+            InvalidPropertyException::expectedFromPreviousException(
+                'attributeCode',
+                'Pim\Component\Catalog\Updater\Setter\TextAttributeSetter',
+                $e
+            )
         )->during('setAttributeData', [$product, $attribute, '', ['locale' => 'en_US', 'scope' => 'ecommerce']]);
     }
 
@@ -145,7 +154,11 @@ class TextAttributeSetterSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $attrValidatorHelper->validateLocale($attribute, 'uz-UZ')->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'Pim\Component\Catalog\Updater\Setter\TextAttributeSetter')
+            InvalidPropertyException::expectedFromPreviousException(
+                'attributeCode',
+                'Pim\Component\Catalog\Updater\Setter\TextAttributeSetter',
+                $e
+            )
         )->during('setAttributeData', [$product, $attribute, '', ['locale' => 'uz-UZ', 'scope' => 'ecommerce']]);
     }
 
@@ -161,7 +174,11 @@ class TextAttributeSetterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, null)->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'Pim\Component\Catalog\Updater\Setter\TextAttributeSetter')
+            InvalidPropertyException::expectedFromPreviousException(
+                'attributeCode',
+                'Pim\Component\Catalog\Updater\Setter\TextAttributeSetter',
+                $e
+            )
         )->during('setAttributeData', [$product, $attribute, '', ['locale' => null, 'scope' => null]]);
     }
 
@@ -177,7 +194,11 @@ class TextAttributeSetterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, 'ecommerce')->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'Pim\Component\Catalog\Updater\Setter\TextAttributeSetter')
+            InvalidPropertyException::expectedFromPreviousException(
+                'attributeCode',
+                'Pim\Component\Catalog\Updater\Setter\TextAttributeSetter',
+                $e
+            )
         )->during('setAttributeData', [$product, $attribute, '', ['locale' => null, 'scope' => 'ecommerce']]);
     }
 
@@ -193,7 +214,11 @@ class TextAttributeSetterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, 'ecommerce')->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'Pim\Component\Catalog\Updater\Setter\TextAttributeSetter')
+            InvalidPropertyException::expectedFromPreviousException(
+                'attributeCode',
+                'Pim\Component\Catalog\Updater\Setter\TextAttributeSetter',
+                $e
+            )
         )->during('setAttributeData', [$product, $attribute, '', ['locale' => null, 'scope' => 'ecommerce']]);
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -58,6 +58,8 @@ abstract class AbstractAttributeSetter implements AttributeSetterInterface
      * @param AttributeInterface $attribute
      * @param string             $locale
      * @param string             $scope
+     *
+     * @throws InvalidPropertyException
      */
     protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope)
     {
@@ -65,10 +67,10 @@ abstract class AbstractAttributeSetter implements AttributeSetterInterface
             $this->attrValidatorHelper->validateLocale($attribute, $locale);
             $this->attrValidatorHelper->validateScope($attribute, $scope);
         } catch (\LogicException $e) {
-            throw InvalidArgumentException::expectedFromPreviousException(
-                $e,
+            throw InvalidPropertyException::expectedFromPreviousException(
                 $attribute->getCode(),
-                static::class
+                static::class,
+                $e
             );
         }
     }
