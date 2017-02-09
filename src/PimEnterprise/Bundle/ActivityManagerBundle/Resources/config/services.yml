@@ -13,7 +13,8 @@ parameters:
     pimee_activity_manager.event_subscriber.notification.class: 'PimEnterprise\Bundle\ActivityManagerBundle\EventListener\NotificationSubscriber'
     pimee_activity_manager.notifier.project_created.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCreatedNotifier'
     pimee_activity_manager.notifier.project_finished.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectFinishedNotifier'
-    pimee_activity_manager.notifier.project_due_date.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectDueDateNotifier'
+    pimee_activity_manager.notifier.project_due_date_reminder.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectDueDateReminderNotifier'
+    pimee_activity_manager.reminder.days: [7, 3, 1]
 
 services:
     pimee_activity_manager.table_name_mapper:
@@ -88,13 +89,13 @@ services:
             - '@pim_notification.notifier'
             - '@pim_catalog.localization.presenter.date'
 
-    pimee_activity_manager.notifier.project_due_date:
-        class: '%pimee_activity_manager.notifier.project_due_date.class%'
+    pimee_activity_manager.notifier.project_due_date_reminder:
+        class: '%pimee_activity_manager.notifier.project_due_date_reminder.class%'
         arguments:
             - '@pimee_activity_manager.factory.project_notification'
             - '@pim_notification.notifier'
             - '@pim_catalog.localization.presenter.date'
-            - [7, 3, 1]
+            - '%pimee_activity_manager.reminder.days%'
 
     pimee_activity_manager.event_subscriber.notification:
         class: '%pimee_activity_manager.event_subscriber.notification.class%'

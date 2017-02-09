@@ -6,16 +6,15 @@ use Akeneo\Component\Localization\Presenter\DatePresenter;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectDueDateNotifier;
-use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectDueDateNotifierInterface;
+use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectDueDateReminderNotifier;
+use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectDueDateReminderNotifierInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectNotificationFactory;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
-use PimEnterprise\Component\ActivityManager\Model\ProjectStatusInterface;
 
-class ProjectDueDateNotifierSpec extends ObjectBehavior
+class ProjectDueDateReminderNotifierSpec extends ObjectBehavior
 {
     function let(
         ProjectNotificationFactory $projectNotificationFactory,
@@ -27,12 +26,12 @@ class ProjectDueDateNotifierSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProjectDueDateNotifier::class);
+        $this->shouldHaveType(ProjectDueDateReminderNotifier::class);
     }
 
     function it_is_a_notifier()
     {
-        $this->shouldImplement(ProjectDueDateNotifierInterface::class);
+        $this->shouldImplement(ProjectDueDateReminderNotifierInterface::class);
     }
 
     function it_does_not_notify_user_if_the_project_is_complete(

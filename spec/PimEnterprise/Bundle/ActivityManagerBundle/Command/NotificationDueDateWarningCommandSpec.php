@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Command;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\ActivityManagerBundle\Command\NotificationDueDateWarningCommand;
-use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectDueDateNotifierInterface;
+use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectDueDateReminderNotifierInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
@@ -26,7 +26,7 @@ class NotificationDueDateWarningCommandSpec extends ObjectBehavior
 
     function it_has_a_name()
     {
-        $this->getName()->shouldReturn('pim:activity_manager:due_date');
+        $this->getName()->shouldReturn('pimee:project:notify-before-due-date');
     }
 
     function it_is_a_container_aware_command()
@@ -40,7 +40,7 @@ class NotificationDueDateWarningCommandSpec extends ObjectBehavior
         ProjectRepositoryInterface $projectRepository,
         ProjectInterface $project,
         UserRepositoryInterface $userRepository,
-        ProjectDueDateNotifierInterface $projectDueDateNotifier,
+        ProjectDueDateReminderNotifierInterface $projectDueDateReminderNotifier,
         ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
         ProjectInterface $otherProject,
         ProjectCompleteness $projectCompleteness,
@@ -48,7 +48,8 @@ class NotificationDueDateWarningCommandSpec extends ObjectBehavior
         Application $application
     ) {
         $container->get('pimee_activity_manager.repository.project')->willReturn($projectRepository);
-        $container->get('pimee_activity_manager.notifier.project_due_date')->willReturn($projectDueDateNotifier);
+        $container->get('pimee_activity_manager.notifier.project_due_date_reminder')
+            ->willReturn($projectDueDateReminderNotifier);
         $container->get('pimee_activity_manager.repository.project_completeness')
             ->willReturn($projectCompletenessRepository);
         $container->get('pimee_activity_manager.repository.user')->willReturn($userRepository);
@@ -58,11 +59,11 @@ class NotificationDueDateWarningCommandSpec extends ObjectBehavior
         $projectCompletenessRepository->getProjectCompleteness($project, $user)->willReturn($projectCompleteness);
         $projectCompleteness->getRatioForDone()->willReturn(30);
         $projectCompleteness->isComplete()->willReturn(true);
-        $projectDueDateNotifier->notifyUser($user, $project, $projectCompleteness)->willReturn(true);
+        $projectDueDateReminderNotifier->notifyUser($user, $project, $projectCompleteness)->willReturn(true);
 
         $commandInput = new ArrayInput(
             [
-                'command'    => 'pim:activity_manager:due_date',
+                'command'    => 'pimee:project:notify-before-due-date',
                 '--no-debug' => true,
             ]
         );

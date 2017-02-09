@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ProjectDueDateNotifier implements ProjectDueDateNotifierInterface
+class ProjectDueDateReminderNotifier implements ProjectDueDateReminderNotifierInterface
 {
     /** @var ProjectNotificationFactory */
     protected $projectNotificationFactory;
@@ -96,6 +96,8 @@ class ProjectDueDateNotifier implements ProjectDueDateNotifierInterface
     }
 
     /**
+     * Checks if the number of days remaining before the due date are in the array
+     *
      * @param \DateTime $dueDate
      *
      * @return bool
@@ -104,11 +106,7 @@ class ProjectDueDateNotifier implements ProjectDueDateNotifierInterface
     {
         $dateOfTheDay = new \DateTime();
 
-        $datetime1 = strtotime($dateOfTheDay->format('Y-m-d'));
-        $datetime2 = strtotime($dueDate->format('Y-m-d'));
-
-        $secs = $datetime2 - $datetime1;
-        $days = $secs / 86400;
+        $days = $dateOfTheDay->diff($dueDate)->format('%a');
 
         if (in_array($days, $this->reminders)) {
             return true;

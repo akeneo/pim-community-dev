@@ -32,7 +32,7 @@ class NotificationDueDateWarningCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:activity_manager:due_date')
+            ->setName('pimee:project:notify-before-due-date')
             ->setDescription('Sends a notification to users with a close due date.');
     }
 

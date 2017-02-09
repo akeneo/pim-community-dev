@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-interface ProjectDueDateNotifierInterface
+interface ProjectDueDateReminderNotifierInterface
 {
     /**
      * Notify the user when the project due date is close.
