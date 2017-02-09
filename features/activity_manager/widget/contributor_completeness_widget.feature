@@ -114,7 +114,8 @@ Feature: Follow project completeness
   Scenario: Successfully display the widget without project
     Given I am logged in as "admin"
     And I am on the dashboard page
-    Then I should see the text "You have no current project"
+    Then I should see the text "You have no current project, start a new project."
     And I should not see the project selector
     And I should not see the contributor selector
-    And I should see the text "You have no current project."
+    When I follow "start a new project"
+    Then I should be on the products page
