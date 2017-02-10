@@ -23,7 +23,8 @@
     },
     "require": {
         "akeneo/pim-community-dev": "1.7.x-dev@dev",
-        "phpspec/php-diff": "1.0.2"
+        "phpspec/php-diff": "1.0.2",
+        "akeneo/elasticsearch-bundle": "dev-poc-single-storage"
     },
     "require-dev": {
         "behat/behat": "2.5.5",
@@ -48,13 +49,18 @@
         "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo",
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"
     },
-    "repositories": [
-        {
+    "repositories": {
+        "pim-community-dev": {
             "type": "vcs",
             "url": "https://github.com/akeneo/pim-community-dev.git",
             "branch": "master"
+        },
+        "elasticsearch": {
+            "type": "vcs",
+            "url": "https://github.com/akeneo/ElasticSearchBundle.git",
+            "branch": "master"
         }
-    ],
+    },
     "scripts": {
         "symfony-scripts": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",

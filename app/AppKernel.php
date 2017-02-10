@@ -29,7 +29,8 @@ class AppKernel extends Kernel
     {
         return [
             // your app bundles should be registered here
-            new AcmeEnterprise\Bundle\AppBundle\AcmeEnterpriseAppBundle()
+            new AcmeEnterprise\Bundle\AppBundle\AcmeEnterpriseAppBundle(),
+            new Pim\Bundle\ElasticSearchBundle\PimElasticSearchBundle(),
         ];
     }
 

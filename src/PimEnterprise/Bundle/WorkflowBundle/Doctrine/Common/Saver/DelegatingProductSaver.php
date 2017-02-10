@@ -184,12 +184,14 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     {
         $options['unitary'] = true;
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
-        $this->completenessManager->schedule($product);
+        //TODO: TIP-694 - reactivate completeness calculation
+//        $this->completenessManager->schedule($product);
 
         $this->objectManager->persist($product);
         if ($withFlush) {
             $this->objectManager->flush();
-            $this->completenessManager->generateMissingForProduct($product);
+            //TODO: TIP-694 - reactivate completeness calculation
+//            $this->completenessManager->generateMissingForProduct($product);
             $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
         }
     }

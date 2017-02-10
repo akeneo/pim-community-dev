@@ -68,8 +68,8 @@ class DelegatingProductSaverSpec extends ObjectBehavior
 
         $objectManager->persist($product)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
-        $completenessManager->schedule($product)->shouldBeCalled();
-        $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
+//        $completenessManager->schedule($product)->shouldBeCalled();
+//        $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
@@ -87,8 +87,8 @@ class DelegatingProductSaverSpec extends ObjectBehavior
 
         $objectManager->persist($product)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
-        $completenessManager->schedule($product)->shouldBeCalled();
-        $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
+//        $completenessManager->schedule($product)->shouldBeCalled();
+//        $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
@@ -207,8 +207,8 @@ class DelegatingProductSaverSpec extends ObjectBehavior
 
         $objectManager->persist($product)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
-        $completenessManager->schedule($product)->shouldBeCalled();
-        $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
+//        $completenessManager->schedule($product)->shouldBeCalled();
+//        $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
@@ -237,7 +237,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
 
         $objectManager->persist($ownedProduct)->shouldBeCalled();
-        $completenessManager->schedule($ownedProduct)->shouldBeCalled();
+//        $completenessManager->schedule($ownedProduct)->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
 
         $notOwnedProduct->getId()->willReturn(43);
