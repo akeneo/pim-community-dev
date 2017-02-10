@@ -9,11 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ActivityManagerBundle\Notification;
+namespace PimEnterprise\Component\ActivityManager\Notification;
 
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
-use PimEnterprise\Component\ActivityManager\Model\ProjectStatusInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -26,7 +25,6 @@ interface ProjectNotifierInterface
      *
      * @param UserInterface          $user
      * @param ProjectInterface       $project
-     * @param ProjectStatusInterface $projectStatus
      * @param ProjectCompleteness    $projectCompleteness
      *
      * @return bool
@@ -34,7 +32,6 @@ interface ProjectNotifierInterface
     public function notifyUser(
         UserInterface $user,
         ProjectInterface $project,
-        ProjectStatusInterface $projectStatus,
         ProjectCompleteness $projectCompleteness
     );
 }

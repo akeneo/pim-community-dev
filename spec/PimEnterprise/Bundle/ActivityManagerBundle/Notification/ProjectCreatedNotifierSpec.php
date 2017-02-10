@@ -7,22 +7,24 @@ use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectNotificationFactory;
-use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectNotifierInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCreatedNotifier;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectStatusInterface;
+use PimEnterprise\Component\ActivityManager\Notification\ProjectNotifierInterface;
+use PimEnterprise\Component\ActivityManager\Repository\ProjectStatusRepositoryInterface;
 
 class ProjectCreatedNotifierSpec extends ObjectBehavior
 {
     function let(
         ProjectNotificationFactory $projectNotificationFactory,
         NotifierInterface $notifier,
-        DatePresenter $datePresenter
+        DatePresenter $datePresenter,
+        ProjectStatusRepositoryInterface $projectStatusRepository
     ) {
-        $this->beConstructedWith($projectNotificationFactory, $notifier, $datePresenter);
+        $this->beConstructedWith($projectNotificationFactory, $notifier, $datePresenter, $projectStatusRepository);
     }
 
     function it_is_initializable()
@@ -36,19 +38,22 @@ class ProjectCreatedNotifierSpec extends ObjectBehavior
     }
 
     function it_does_not_notify_owner_that_a_project_is_created(
+        $projectStatusRepository,
         UserInterface $owner,
         ProjectInterface $project,
         ProjectStatusInterface $projectStatus,
         ProjectCompleteness $projectCompleteness
     ) {
+        $projectStatusRepository->findProjectStatus($project, $owner)->willReturn($projectStatus);
         $projectStatus->hasBeenNotified()->willReturn(true);
         $projectCompleteness->isComplete()->willReturn(true);
 
-        $this->notifyUser($owner, $project, $projectStatus, $projectCompleteness)->shouldReturn(false);
+        $this->notifyUser($owner, $project, $projectCompleteness)->shouldReturn(false);
     }
 
     function it_notifies_contributors_that_a_project_is_created(
         $projectNotificationFactory,
+        $projectStatusRepository,
         $notifier,
         $datePresenter,
         NotificationInterface $notification,
@@ -59,6 +64,7 @@ class ProjectCreatedNotifierSpec extends ObjectBehavior
         ProjectCompleteness $projectCompleteness,
         LocaleInterface $locale
     ) {
+        $projectStatusRepository->findProjectStatus($project, $contributor)->willReturn($projectStatus);
         $projectCompleteness->isComplete()->willReturn(false);
         $projectStatus->hasBeenNotified()->willReturn(false);
 
@@ -90,6 +96,6 @@ class ProjectCreatedNotifierSpec extends ObjectBehavior
 
         $notifier->notify($notification, [$contributor])->shouldBeCalled();
 
-        $this->notifyUser($contributor, $project, $projectStatus, $projectCompleteness)->shouldReturn(true);
+        $this->notifyUser($contributor, $project, $projectCompleteness)->shouldReturn(true);
     }
 }
