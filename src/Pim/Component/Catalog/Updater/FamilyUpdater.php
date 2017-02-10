@@ -7,7 +7,6 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
@@ -147,51 +146,40 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
+     * Set the new attribute requirements.
+     * If a channel is not present in the requirement list, this method does not update the requirements of this
+     * channel.
+     *
      * @param FamilyInterface $family
-     * @param array           $data
+     * @param array           $newRequirements The requirements for each channel. For example:
+     *                                         ['mobile' => ['attr1', 'attr2'], 'tabled' => ['attr3']]
      *
      * @throws InvalidPropertyException
      */
-    protected function setAttributeRequirements(FamilyInterface $family, array $data)
+    protected function setAttributeRequirements(FamilyInterface $family, array $newRequirements)
     {
-        $oldRequirements = $family->getAttributeRequirements();
-
-        $requirements = $this->getExistingIdentifierRequirements($family);
-        foreach ($data as $channelCode => $attributeCodes) {
-            $requirements = array_merge(
-                $requirements,
-                $this->createAttributeRequirementsByChannel($family, $attributeCodes, $channelCode)
-            );
-        }
-
-        $requirements = $this->addMissingIdentifierRequirements($family, $requirements);
-
-        $this->removeRequirements($family, $requirements, $oldRequirements);
-
-        $family->setAttributeRequirements($requirements);
-    }
-
-    /**
-     * @param FamilyInterface $family
-     *
-     * @return AttributeRequirementInterface[]
-     */
-    protected function getExistingIdentifierRequirements(FamilyInterface $family)
-    {
-        $identifierReqs = [];
-        $existingRequirements = $family->getAttributeRequirements();
-        foreach ($existingRequirements as $requirement) {
-            if (AttributeTypes::IDENTIFIER === $requirement->getAttribute()->getAttributeType()) {
-                $identifierReqs[] = $requirement;
+        foreach ($family->getAttributeRequirements() as $requirement) {
+            $channelCode = $requirement->getChannelCode();
+            if (array_key_exists($channelCode, $newRequirements)) {
+                $attribute = $requirement->getAttribute();
+                $key = array_search($attribute->getCode(), $newRequirements[$channelCode], true);
+                if (false === $key && AttributeTypes::IDENTIFIER !== $attribute->getAttributeType()) {
+                    $family->removeAttributeRequirement($requirement);
+                } elseif (false !== $key) {
+                    unset($newRequirements[$channelCode][$key]);
+                }
             }
         }
 
-        return $identifierReqs;
+        foreach ($newRequirements as $channelCode => $requirements) {
+            $createdRequirements = $this->createAttributeRequirementsByChannel($family, $requirements, $channelCode);
+            foreach ($createdRequirements as $createdRequirement) {
+                $family->addAttributeRequirement($createdRequirement);
+            }
+        }
     }
 
     /**
-     * Creates attribute requirements for the given channel but skip identifiers
-     *
      * @param FamilyInterface $family
      * @param array           $attributeCodes
      * @param string          $channelCode
@@ -226,32 +214,6 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param FamilyInterface                 $family
-     * @param AttributeRequirementInterface[] $requirements
-     *
-     * @throws InvalidPropertyException
-     *
-     * @return AttributeRequirementInterface[]
-     */
-    protected function addMissingIdentifierRequirements(FamilyInterface $family, array $requirements)
-    {
-        $channelCodes = $this->channelRepository->getChannelCodes();
-        $existingChannelCode = [];
-        foreach ($requirements as $requirement) {
-            if (AttributeTypes::IDENTIFIER === $requirement->getAttribute()->getAttributeType()) {
-                $existingChannelCode[] = $requirement->getChannelCode();
-            }
-        }
-        $missingChannelCodes = array_diff($channelCodes, $existingChannelCode);
-        $identifier = $this->attributeRepository->getIdentifier();
-        foreach ($missingChannelCodes as $channelCode) {
-            $requirements[] = $this->createAttributeRequirement($family, $identifier, $channelCode);
-        }
-
-        return $requirements;
-    }
-
-    /**
      * @param FamilyInterface    $family
      * @param AttributeInterface $attribute
      * @param string             $channelCode
@@ -280,8 +242,6 @@ class FamilyUpdater implements ObjectUpdaterInterface
         if (null === $requirement) {
             $requirement = $this->attrRequiFactory->createAttributeRequirement($attribute, $channel, true);
         }
-
-        $requirement->setRequired(true);
 
         return $requirement;
     }
@@ -332,24 +292,6 @@ class FamilyUpdater implements ObjectUpdaterInterface
                 static::class,
                 $data
             );
-        }
-    }
-
-    /**
-     * @param FamilyInterface $family
-     * @param array           $requirements
-     * @param array           $oldRequirements
-     */
-    protected function removeRequirements(
-        FamilyInterface $family,
-        array $requirements,
-        array $oldRequirements
-    ) {
-        $checkRequirements = new ArrayCollection($requirements);
-        foreach ($oldRequirements as $requirement) {
-            if (!$checkRequirements->contains($requirement)) {
-                $family->removeAttributeRequirement($requirement);
-            }
         }
     }
 }

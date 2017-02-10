@@ -27,14 +27,14 @@ class FamilyUpdaterSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $attrRequiFactory,
-        AttributeRequirementRepositoryInterface $attrRequiRepo
+        AttributeRequirementRepositoryInterface $attributeRequirementRepo
     ) {
         $this->beConstructedWith(
             $familyRepository,
             $attributeRepository,
             $channelRepository,
             $attrRequiFactory,
-            $attrRequiRepo
+            $attributeRequirementRepo
         );
     }
 
@@ -64,6 +64,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
     function it_updates_a_family(
         $attrRequiFactory,
         $channelRepository,
+        $attributeRequirementRepo,
         FamilyTranslation $translation,
         FamilyInterface $family,
         AttributeRepositoryInterface $attributeRepository,
@@ -107,49 +108,55 @@ class FamilyUpdaterSpec extends ObjectBehavior
 
         $skuMobileRqrmt->getAttribute()->willReturn($skuAttribute);
         $skuMobileRqrmt->getChannelCode()->willReturn('mobile');
+
+        $skuAttribute->getCode()->willReturn('sku');
+        $skuAttribute->getAttributeType()->willReturn(AttributeTypes::IDENTIFIER);
+
         $skuPrintRqrmt->getAttribute()->willReturn($skuAttribute);
         $skuPrintRqrmt->getChannelCode()->willReturn('print');
 
-        $attributeRepository->findOneByIdentifier('sku')->willReturn($skuAttribute);
+        $family->removeAttributeRequirement($skuMobileRqrmt)->shouldNotBeCalled();
+        $family->removeAttributeRequirement($skuPrintRqrmt)->shouldNotBeCalled();
+
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
         $attributeRepository->findOneByIdentifier('description')->willReturn($descAttribute);
-        $attributeRepository->findOneByIdentifier('price')->willReturn($priceAttribute);
-        $attributeRepository->getIdentifier()->willReturn($skuAttribute);
 
-        $skuAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
-        $nameAttribute->getAttributeType()->willReturn('pim_catalog_text');
-        $descAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $priceAttribute->getAttributeType()->willReturn('pim_catalog_price_collection');
-
-        $channelRepository->getChannelCodes()->willReturn(['mobile', 'print']);
         $channelRepository->findOneByIdentifier('mobile')->willReturn($mobileChannel);
         $channelRepository->findOneByIdentifier('print')->willReturn($printChannel);
 
-        $attrRequiFactory->createAttributeRequirement($nameAttribute, $mobileChannel, true)
-            ->willReturn($nameMobileRqrmt);
+        $mobileChannel->getId()->willReturn(1);
+        $printChannel->getId()->willReturn(2);
+
+        $attributeRequirementRepo->findOneBy([
+            'attribute' => 2,
+            'channel' => 1,
+            'family' => 42
+        ])->willReturn($nameMobileRqrmt);
+        $attributeRequirementRepo->findOneBy([
+            'attribute' => 2,
+            'channel' => 2,
+            'family' => 42
+        ])->willReturn(null);
+        $attributeRequirementRepo->findOneBy([
+            'attribute' => 3,
+            'channel' => 2,
+            'family' => 42
+        ])->willReturn($descPrintRqrmt);
+
         $attrRequiFactory->createAttributeRequirement($nameAttribute, $printChannel, true)->willReturn($namePrintRqrmt);
-        $attrRequiFactory->createAttributeRequirement($descAttribute, $printChannel, true)->willReturn($descPrintRqrmt);
 
-        $nameMobileRqrmt->getAttribute()->willReturn($nameAttribute);
-        $namePrintRqrmt->getAttribute()->willReturn($nameAttribute);
-        $descPrintRqrmt->getAttribute()->willReturn($descAttribute);
+        $family->addAttributeRequirement($nameMobileRqrmt)->shouldBeCalled();
+        $family->addAttributeRequirement($descPrintRqrmt)->shouldBeCalled();
+        $family->addAttributeRequirement($namePrintRqrmt)->shouldBeCalled();
 
-        $family
-            ->setAttributeRequirements(
-                [
-                    $skuMobileRqrmt,
-                    $skuPrintRqrmt,
-                    $nameMobileRqrmt,
-                    $namePrintRqrmt,
-                    $descPrintRqrmt,
-                ]
-            )
-            ->shouldBeCalled();
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($skuAttribute);
+        $attributeRepository->findOneByIdentifier('price')->willReturn($priceAttribute);
+
+        $nameAttribute->getAttributeType()->willReturn(AttributeTypes::TEXT);
+        $descAttribute->getAttributeType()->willReturn(AttributeTypes::TEXTAREA);
+        $priceAttribute->getAttributeType()->willReturn(AttributeTypes::PRICE_COLLECTION);
 
         $family->setCode('mycode')->shouldBeCalled();
-        $nameMobileRqrmt->setRequired(true)->shouldBeCalled();
-        $namePrintRqrmt->setRequired(true)->shouldBeCalled();
-        $descPrintRqrmt->setRequired(true)->shouldBeCalled();
 
         $family->addAttribute($skuAttribute)->shouldBeCalled();
         $family->addAttribute($nameAttribute)->shouldBeCalled();
@@ -173,7 +180,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $this->update($family, $values, []);
     }
 
-    public function it_should_not_remove_identifier_requirements_when_no_requirements_are_provided(
+    function it_does_not_remove_identifier_requirements_when_no_requirements_are_provided(
         FamilyInterface $family
     ) {
         $values = [
@@ -186,51 +193,79 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $this->update($family, $values, []);
     }
 
-    public function it_should_not_remove_identifier_requirements_when_empty_requirements_are_provided(
-        $channelRepository,
+    function it_does_not_remove_requirements_when_channel_column_is_missing(
         FamilyInterface $family,
-        AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $skuAttribute,
         AttributeRequirementInterface $skuMobileRqrmt,
-        AttributeRequirementInterface $skuPrintRqrmt,
-        ChannelInterface $mobileChannel,
-        ChannelInterface $printChannel
+        AttributeRequirementInterface $skuEcommerceRqrmt,
+        AttributeRequirementInterface $nameEcommerceRqrmt
     ) {
         $values = [
-            'code'                   => 'mycode',
-            'attribute_requirements' => []
+            'attribute_requirements' => [
+                'mobile' => ['sku']
+            ],
+            'code'                   => 'mycode'
         ];
-        $family->getAttributeRequirements()->willReturn([$skuMobileRqrmt, $skuPrintRqrmt]);
-        $skuMobileRqrmt->getAttribute()->willReturn($skuAttribute);
-        $skuPrintRqrmt->getAttribute()->willReturn($skuAttribute);
-        $skuMobileRqrmt->getChannelCode()->willReturn('mobile');
-        $skuPrintRqrmt->getChannelCode()->willReturn('print');
-        $skuAttribute->getAttributeType()->willReturn(AttributeTypes::IDENTIFIER);
-
-        $channelRepository->getChannelCodes()->willReturn(['mobile', 'print']);
-        $channelRepository->findOneByIdentifier('mobile')->willReturn($mobileChannel);
-        $channelRepository->findOneByIdentifier('print')->willReturn($printChannel);
-        $attributeRepository->getIdentifier()->willReturn($skuAttribute);
+        $family->getAttributeRequirements()->willReturn([
+            'sku_ecommerce'  => $skuEcommerceRqrmt,
+            'name_ecommerce' => $nameEcommerceRqrmt,
+            'sku_mobile'     => $skuMobileRqrmt
+        ]);
 
         $family->setCode('mycode')->shouldBeCalled();
-        $family->setAttributeRequirements([$skuMobileRqrmt, $skuPrintRqrmt])->shouldBeCalled();
+        $skuEcommerceRqrmt->getChannelCode()->willReturn('ecommerce');
+        $skuMobileRqrmt->getChannelCode()->willReturn('mobile');
+        $nameEcommerceRqrmt->getChannelCode()->willReturn('ecommerce');
+
+        $skuMobileRqrmt->getAttribute()->willReturn($skuAttribute);
+
+        $skuAttribute->getCode()->willReturn('sku');
+
+        $family->removeAttributeRequirement($nameEcommerceRqrmt)->shouldNotBeCalled();
+        $family->removeAttributeRequirement($skuEcommerceRqrmt)->shouldNotBeCalled();
+        $family->removeAttributeRequirement($skuMobileRqrmt)->shouldNotBeCalled();
+
+        $family->addAttributeRequirement($nameEcommerceRqrmt)->shouldNotBeCalled();
+        $family->addAttributeRequirement($skuEcommerceRqrmt)->shouldNotBeCalled();
+        $family->addAttributeRequirement($skuMobileRqrmt)->shouldNotBeCalled();
 
         $this->update($family, $values, []);
     }
 
-    public function it_should_not_remove_identifier_requirements_when_other_requirements_are_provided(
+    function it_does_not_remove_identifier_requirements_when_empty_requirements_are_provided(
+        FamilyInterface $family,
+        AttributeRequirementInterface $skuMobileRqrmt,
+        AttributeRequirementInterface $skuPrintRqrmt
+    ) {
+        $values = [
+            'attribute_requirements' => []
+        ];
+        $family->getAttributeRequirements()->willReturn([$skuMobileRqrmt, $skuPrintRqrmt]);
+
+        $skuMobileRqrmt->getChannelCode()->willReturn('mobile');
+        $skuPrintRqrmt->getChannelCode()->willReturn('print');
+
+        $family->removeAttributeRequirement($skuMobileRqrmt)->shouldNotBeCalled();
+        $family->removeAttributeRequirement($skuPrintRqrmt)->shouldNotBeCalled();
+        $family->addAttributeRequirement($skuMobileRqrmt)->shouldNotBeCalled();
+        $family->addAttributeRequirement($skuPrintRqrmt)->shouldNotBeCalled();
+
+        $this->update($family, $values, []);
+    }
+
+    function it_does_not_remove_identifier_requirements_when_other_requirements_are_provided(
         $attrRequiFactory,
         $channelRepository,
+        $attributeRepository,
+        $attributeRequirementRepo,
         FamilyInterface $family,
-        AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $skuAttribute,
         AttributeInterface $nameAttribute,
-        AttributeInterface $descAttribute,
+        AttributeInterface $descriptionAttribute,
         AttributeRequirementInterface $skuMobileRqrmt,
         AttributeRequirementInterface $skuPrintRqrmt,
         AttributeRequirementInterface $namePrintRqrmt,
         AttributeRequirementInterface $descPrintRqrmt,
-        ChannelInterface $mobileChannel,
         ChannelInterface $printChannel
     ) {
         $values = [
@@ -239,41 +274,58 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 'print' => ['name', 'description']
             ]
         ];
-        $family->getAttributeRequirements()->willReturn([$skuMobileRqrmt, $skuPrintRqrmt]);
-        $family->getId()->willReturn(42);
-        $skuMobileRqrmt->getAttribute()->willReturn($skuAttribute);
-        $skuPrintRqrmt->getAttribute()->willReturn($skuAttribute);
-        $skuMobileRqrmt->getChannelCode()->willReturn('mobile');
-        $skuPrintRqrmt->getChannelCode()->willReturn('print');
-        $skuAttribute->getAttributeType()->willReturn(AttributeTypes::IDENTIFIER);
-
-        $channelRepository->findOneByIdentifier('print')->willReturn($printChannel);
-        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
-        $attributeRepository->findOneByIdentifier('description')->willReturn($descAttribute);
-        $attrRequiFactory->createAttributeRequirement($nameAttribute, $printChannel, true)
-            ->willReturn($namePrintRqrmt);
-        $attrRequiFactory->createAttributeRequirement($descAttribute, $printChannel, true)
-            ->willReturn($descPrintRqrmt);
-        $namePrintRqrmt->getAttribute()->willReturn($nameAttribute);
-        $descPrintRqrmt->getAttribute()->willReturn($descAttribute);
-
-        $channelRepository->getChannelCodes()->willReturn(['mobile', 'print']);
-        $channelRepository->findOneByIdentifier('mobile')->willReturn($mobileChannel);
-        $channelRepository->findOneByIdentifier('print')->willReturn($printChannel);
-        $attributeRepository->getIdentifier()->willReturn($skuAttribute);
 
         $family->setCode('mycode')->shouldBeCalled();
-        $family->setAttributeRequirements(
-            [$skuMobileRqrmt, $skuPrintRqrmt, $namePrintRqrmt, $descPrintRqrmt]
-        )
-        ->shouldBeCalled();
-        $namePrintRqrmt->setRequired(true)->shouldBeCalled();
-        $descPrintRqrmt->setRequired(true)->shouldBeCalled();
+        $family->getAttributeRequirements()->willReturn([$skuMobileRqrmt, $skuPrintRqrmt]);
+
+        $skuMobileRqrmt->getChannelCode()->willReturn('mobile');
+
+        $skuPrintRqrmt->getChannelCode()->willReturn('print');
+        $skuPrintRqrmt->getAttribute()->willReturn($skuAttribute);
+
+        $skuAttribute->getCode()->willReturn('sku');
+        $skuAttribute->getAttributeType()->willReturn(AttributeTypes::IDENTIFIER);
+
+        $family->removeAttributeRequirement($skuMobileRqrmt)->shouldNotBeCalled();
+        $family->removeAttributeRequirement($skuPrintRqrmt)->shouldNotBeCalled();
+
+        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
+        $attributeRepository->findOneByIdentifier('description')->willReturn($descriptionAttribute);
+
+        $channelRepository->findOneByIdentifier('print')->willReturn($printChannel);
+
+        $printChannel->getId()->willReturn('1');
+        $nameAttribute->getId()->willReturn('1');
+        $descriptionAttribute->getId()->willReturn('2');
+        $nameAttribute->getAttributeType()->willReturn('text');
+        $descriptionAttribute->getAttributeType()->willReturn('text');
+        $family->getId()->willReturn('1');
+
+        $attributeRequirementRepo->findOneBy([
+            'attribute' => '1',
+            'channel' => '1',
+            'family' => '1'
+        ])->willReturn(null);
+        $attributeRequirementRepo->findOneBy([
+            'attribute' => '2',
+            'channel' => '1',
+            'family' => '1'
+        ])->willReturn(null);
+
+        $attrRequiFactory->createAttributeRequirement($nameAttribute, $printChannel, true)->willReturn($namePrintRqrmt);
+        $attrRequiFactory->createAttributeRequirement(
+            $descriptionAttribute,
+            $printChannel,
+            true
+        )->willReturn($descPrintRqrmt);
+
+        $family->addAttributeRequirement($namePrintRqrmt)->shouldBeCalled();
+        $family->addAttributeRequirement($descPrintRqrmt)->shouldBeCalled();
 
         $this->update($family, $values, []);
     }
 
-    public function it_throws_an_exception_if_attribute_does_not_exist(
+    function it_throws_an_exception_if_attribute_does_not_exist(
         $attributeRepository,
         FamilyInterface $family,
         AttributeInterface $priceAttribute
