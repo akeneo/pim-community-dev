@@ -7,8 +7,8 @@ Feature: Filter products by date field
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | label   | code    | type | localizable | scopable | useable_as_grid_filter |
-      | release | release | date | no          | no       | yes                    |
+      | label-en_US | code    | type             | localizable | scopable | useable_as_grid_filter | group |
+      | release     | release | pim_catalog_date | 0           | 0        | 1                      | other |
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products by empty value for date attribute

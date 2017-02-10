@@ -23,8 +23,8 @@ Feature: Display many datagrid filters
       | sku      | family |
       | les-paul | guitar |
     And the following attributes:
-      | code   | label  | type | useable_as_grid_filter |
-      | length | length | text | true                   |
+      | code   | label-en_US | type             | useable_as_grid_filter | group |
+      | length | length      | pim_catalog_text | 1                      | other |
     When I am logged in as "Mary"
     And I am on the products page
     And I refresh the grid
@@ -48,8 +48,8 @@ Feature: Display many datagrid filters
       | sku      | family |
       | les-paul | guitar |
     And the following attributes:
-      | code | label | type   | metric_family | default_metric_unit | useable_as_grid_filter |
-      | ID   | ID    | metric | Length        | CENTIMETER          | true                   |
+      | code | label-en_US | type               | metric_family | default_metric_unit | useable_as_grid_filter | group |
+      | ID   | ID          | pim_catalog_metric | Length        | CENTIMETER          | 1                      | other |
     When I am logged in as "Mary"
     And I am on the products page
     And I refresh the grid

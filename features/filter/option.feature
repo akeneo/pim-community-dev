@@ -23,9 +23,9 @@ Feature: Filter on select attributes
   Scenario: Successfully filter on select attributes that have the same option codes
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code            | label           | type         |
-      | main_color      | Main color      | simpleselect |
-      | secondary_color | Secondary color | simpleselect |
+      | code            | label-en_US     | type                     | group |
+      | main_color      | Main color      | pim_catalog_simpleselect | other |
+      | secondary_color | Secondary color | pim_catalog_simpleselect | other |
     And the following "main_color" attribute options: purple
     And the following "secondary_color" attribute options: purple
     And the following products:

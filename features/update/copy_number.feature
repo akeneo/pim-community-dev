@@ -6,9 +6,9 @@ Feature: Update number fields
   Scenario: Successfully update a number field
     Given a "apparel" catalog configuration
     And the following attributes:
-      | code       | type   |
-      | item_count | number |
-      | car_count  | number |
+      | code       | type               | group |
+      | item_count | pim_catalog_number | other |
+      | car_count  | pim_catalog_number | other |
     And the following products:
       | sku | item_count |
       | AKN | 123        |

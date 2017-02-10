@@ -7,8 +7,8 @@ Feature: Export products according to a completeness policy
   Background:
     Given a "default" catalog configuration
     And the following attributes:
-      | code | type     | localizable | label |
-      | name | textarea | yes         | Name  |
+      | code | type                 | localizable | label-en_US | group |
+      | name | pim_catalog_textarea | 1           | Name        | other |
     And the following family:
       | code      | requirements-ecommerce | attributes |
       | localized | sku,name               | sku,name   |

@@ -21,8 +21,8 @@ Feature: Edit a family
   @javascript
   Scenario: Successfully edit a family
     And the following attributes:
-      | label  | type | useable_as_grid_filter |
-      | String | text | yes                    |
+      | label-en_US | type             | useable_as_grid_filter | group | code   |
+      | String      | pim_catalog_text | 1                      | other | string |
     Given the following family:
       | code   | attributes      |
       | guitar | sku,name,string |

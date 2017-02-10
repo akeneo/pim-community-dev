@@ -10,9 +10,9 @@ Feature: Edit a product with localizable and scopable attribute options
       | sku        | categories      |
       | rick_morty | 2014_collection |
     And the following attributes:
-      | code   | label-en_US | label-fr_FR | label-de_DE | type         | group | scopable | localizable |
-      | multi  | Multi       | Multi       | Multi       | multiselect  | other | yes      | yes         |
-      | simple | Simple      | Simple      | Simple      | simpleselect | other | yes      | yes         |
+      | code   | label-en_US | label-fr_FR | label-de_DE | type                     | group | scopable | localizable |
+      | multi  | Multi       | Multi       | Multi       | pim_catalog_multiselect  | other | 1        | 1           |
+      | simple | Simple      | Simple      | Simple      | pim_catalog_simpleselect | other | 1        | 1           |
     And I am logged in as "Peter"
     And the following CSV file to import:
       """

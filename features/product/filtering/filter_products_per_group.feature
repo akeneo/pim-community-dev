@@ -11,8 +11,8 @@ Feature: Filter products
       | furniture |
       | library   |
     And the following attribute:
-      | code  | label | type         |
-      | color | Color | simpleselect |
+      | code  | label-en_US | type                     | group |
+      | color | Color       | pim_catalog_simpleselect | other |
     And the following "color" attribute options: Black and White
     And the following products:
       | sku    | family    | color |

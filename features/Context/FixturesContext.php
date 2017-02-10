@@ -22,7 +22,6 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
@@ -33,13 +32,11 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
-use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
@@ -234,65 +231,15 @@ class FixturesContext extends BaseFixturesContext
 
         foreach ($table->getHash() as $data) {
             // TODO Remove all this magic
-            if (!isset($data['group']) || '' === $data['group']) {
-                $data['group'] = 'other';
-            }
-            if (!isset($data['type']) || '' === $data['type']) {
-                $data['type'] = 'text';
-            }
-            $data['type'] = $this->getAttributeType($data['type']);
-            if (isset($data['label']) && !isset($data['label-en_US'])) {
-                $data['label-en_US'] = $data['label'];
-            }
-            if (!isset($data['code']) || '' === $data['code']) {
-                $data['code'] = $this->camelize($data['label']);
-            }
-            foreach ($data as $key => $value) {
-                if (in_array($key, [
-                    'localizable', 'scopable', 'decimals_allowed', 'useable_as_grid_filter', 'unique',
-                    'negative_allowed'
-                ])) {
-                    $data[$key] = ($value === 'yes' || $value === 'true') ? '1' : '0';
-                }
-            }
-            if (!isset($data['available_locales']) && isset($data['locales'])) {
-                $data['available_locales'] = preg_replace('/, /', ',', $data['locales']);
-            }
-
-            $families = '';
-            if (isset($data['families'])) {
-                $families = $data['families'];
-                unset($data['families']);
-            }
-
-            unset($data['label']);
-            unset($data['locales']);
-
-            $convertedData = $converter->convert($data);
-            $attribute = $processor->process($convertedData);
+            $attribute = $processor->process($converter->convert($data));
 
             if (isset($data['unique'])) {
                 // TODO Due to Pim/Component/Catalog/Updater/AttributeUpdater.php:226
                 $attribute->setUnique($data['unique'] === '1');
             }
 
-            $familiesToPersist = [];
-            if ('' !== $families) {
-                foreach ($this->listToArray($families) as $familyCode) {
-                    $family = $this->getFamily($familyCode);
-                    $family->addAttribute($attribute);
-                    $familiesToPersist[] = $family;
-                }
-            }
-
             $this->validate($attribute);
-
             $saver->save($attribute);
-
-            foreach ($familiesToPersist as $family) {
-                $this->validate($family);
-                $this->getFamilySaver()->save($family);
-            }
         }
     }
 

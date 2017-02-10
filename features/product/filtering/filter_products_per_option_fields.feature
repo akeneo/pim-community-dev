@@ -7,9 +7,9 @@ Feature: Filter products per option
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | label | type         | localizable | scopable | useable_as_grid_filter |
-      | color | multiselect  | no          | no       | yes                    |
-      | size  | simpleselect | no          | no       | yes                    |
+      | label-en_US | type                     | localizable | scopable | useable_as_grid_filter | group | code  |
+      | color       | pim_catalog_multiselect  | 0           | 0        | 1                      | other | color |
+      | size        | pim_catalog_simpleselect | 0           | 0        | 1                      | other | size  |
     And the following "color" attribute options: Black, White and Red
     And the following "size" attribute options: S, M and L
     And the following products:

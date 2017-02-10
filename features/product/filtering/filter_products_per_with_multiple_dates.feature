@@ -11,9 +11,9 @@ Feature: Filter products
       | furniture |
       | library   |
     And the following attributes:
-      | code     | label    | type | useable_as_grid_filter |
-      | delivery | Delivery | date | yes                    |
-      | supply   | Supply   | date | yes                    |
+      | code     | label-en_US | type             | useable_as_grid_filter | group |
+      | delivery | Delivery    | pim_catalog_date | 1                      | other |
+      | supply   | Supply      | pim_catalog_date | 1                      | other |
     And the following products:
       | sku    | family    | supply     | delivery   |
       | BOOK   | library   |            |            |

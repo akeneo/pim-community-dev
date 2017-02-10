@@ -7,9 +7,9 @@ Feature: Export products with only selected attributes
   Background:
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code                 | label-en_US          | type         | group  |
-      | high_heel_color      | High heel color      | simpleselect | colors |
-      | high_heel_color_sole | High heel color sole | simpleselect | colors |
+      | code                 | label-en_US          | type                     | group  |
+      | high_heel_color      | High heel color      | pim_catalog_simpleselect | colors |
+      | high_heel_color_sole | High heel color sole | pim_catalog_simpleselect | colors |
     And the following "high_heel_color" attribute options: Red, Blue
     And the following "high_heel_color_sole" attribute options: Green, Orange
     And the following products:

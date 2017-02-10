@@ -7,10 +7,10 @@ Feature: Browse product groups
   Scenario: Successfully view, sort and filter product groups
     Given the "default" catalog configuration
     And the following attributes:
-      | code  | label | type         |
-      | multi | Multi | multiselect  |
-      | color | Color | simpleselect |
-      | size  | Size  | simpleselect |
+      | code  | label-en_US | type                     | group |
+      | multi | Multi       | pim_catalog_multiselect  | other |
+      | color | Color       | pim_catalog_simpleselect | other |
+      | size  | Size        | pim_catalog_simpleselect | other |
     And the following product groups:
       | code          | label          | axis        | type    |
       | tshirt_akeneo | Akeneo T-Shirt | size, color | VARIANT |

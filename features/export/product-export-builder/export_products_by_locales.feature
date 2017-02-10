@@ -7,9 +7,9 @@ Feature: Export products according to a locale policy
   Background:
     Given a "default" catalog configuration
     And the following attributes:
-      | code     | type     | localizable | label    | available_locales |
-      | name     | textarea | yes         | Name     | fr_FR,en_US       |
-      | baguette | text     | yes         | Baguette | fr_FR             |
+      | code     | type                 | localizable | label-en_US | available_locales | group |
+      | name     | pim_catalog_textarea | 1           | Name        | fr_FR,en_US       | other |
+      | baguette | pim_catalog_text     | 1           | Baguette    | fr_FR             | other |
     And the following family:
       | code      | requirements-ecommerce | attributes |
       | localized | sku,name               | sku,name   |

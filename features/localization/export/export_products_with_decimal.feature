@@ -7,9 +7,9 @@ Feature: Export products with localized numbers
   Background:
     Given an "apparel" catalog configuration
     And the following attributes:
-      | code   | label             | type   | decimals_allowed | negative_allowed | default_metric_unit | metric_family | group |
-      | cotton | Percentage cotton | number | true             | false            |                     |               | other |
-      | metric | New metric        | metric | true             | true             | GRAM                | Weight        | other |
+      | code   | label-en_US       | type               | decimals_allowed | negative_allowed | default_metric_unit | metric_family | group |
+      | cotton | Percentage cotton | pim_catalog_number | 1                | 0                |                     |               | other |
+      | metric | New metric        | pim_catalog_metric | 1                | 1                | GRAM                | Weight        | other |
     And the following family:
       | code   | attributes    |
       | sandal | cotton,metric |

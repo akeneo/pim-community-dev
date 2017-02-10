@@ -6,9 +6,9 @@ Feature: Update simple select fields
   Scenario: Successfully update a simple select field
     Given a "default" catalog configuration
     And the following attributes:
-      | code        | type         |
-      | front_color | simpleselect |
-      | back_color  | simpleselect |
+      | code        | type                     | group |
+      | front_color | pim_catalog_simpleselect | other |
+      | back_color  | pim_catalog_simpleselect | other |
     And the following "front_color" attribute options: Red and Yellow
     And the following products:
       | sku                 | front_color |
