@@ -137,10 +137,13 @@ class DatagridViewController
     public function getAction($identifier)
     {
         $view = $this->datagridViewRepo->find($identifier);
-        $view = current($this->datagridViewFilter->filterCollection([$view], 'pim.internal_api.datagrid_view.view'));
-
         if (null === $view) {
-            return new NotFoundHttpException();
+            return new JsonResponse(null, 404);
+        }
+
+        $view = current($this->datagridViewFilter->filterCollection([$view], 'pim.internal_api.datagrid_view.view'));
+        if (null === $view) {
+            return new JsonResponse(null, 404);
         }
 
         $normalizedView = $this->normalizer->normalize($view, 'internal_api');
