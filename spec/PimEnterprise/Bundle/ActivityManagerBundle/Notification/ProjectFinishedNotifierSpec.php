@@ -7,22 +7,24 @@ use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectNotificationFactory;
-use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectNotifierInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectFinishedNotifier;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectStatusInterface;
+use PimEnterprise\Component\ActivityManager\Notification\ProjectNotifierInterface;
+use PimEnterprise\Component\ActivityManager\Repository\ProjectStatusRepositoryInterface;
 
 class ProjectFinishedNotifierSpec extends ObjectBehavior
 {
     function let(
         ProjectNotificationFactory $projectNotificationFactory,
         NotifierInterface $notifier,
-        DatePresenter $datePresenter
+        DatePresenter $datePresenter,
+        ProjectStatusRepositoryInterface $projectStatusRepository
     ) {
-        $this->beConstructedWith($projectNotificationFactory, $notifier, $datePresenter);
+        $this->beConstructedWith($projectNotificationFactory, $notifier, $datePresenter, $projectStatusRepository);
     }
 
     function it_is_initializable()
@@ -36,18 +38,21 @@ class ProjectFinishedNotifierSpec extends ObjectBehavior
     }
 
     function it_does_not_notify_users_if_a_project_pass_from_complete_to_in_progress(
+        $projectStatusRepository,
         UserInterface $owner,
         ProjectInterface $project,
         ProjectStatusInterface $projectStatus,
         ProjectCompleteness $projectCompleteness
     ) {
+        $projectStatusRepository->findProjectStatus($project, $owner)->willReturn($projectStatus);
         $projectCompleteness->isComplete()->willReturn(false);
         $projectStatus->isComplete()->willReturn(true);
 
-        $this->notifyUser($owner, $project, $projectStatus, $projectCompleteness)->shouldReturn(false);
+        $this->notifyUser($owner, $project, $projectCompleteness)->shouldReturn(false);
     }
 
     function it_notifies_owner_that_a_project_is_finished(
+        $projectStatusRepository,
         $projectNotificationFactory,
         $notifier,
         $datePresenter,
@@ -59,6 +64,7 @@ class ProjectFinishedNotifierSpec extends ObjectBehavior
         ProjectCompleteness $projectCompleteness,
         LocaleInterface $locale
     ) {
+        $projectStatusRepository->findProjectStatus($project, $user)->willReturn($projectStatus);
         $projectCompleteness->isComplete()->willReturn(true);
         $projectStatus->isComplete()->willReturn(false);
         $project->getOwner()->willReturn($owner);
@@ -93,10 +99,11 @@ class ProjectFinishedNotifierSpec extends ObjectBehavior
 
         $notifier->notify($notification, [$user])->shouldBeCalled();
 
-        $this->notifyUser($user, $project, $projectStatus, $projectCompleteness)->shouldReturn(true);
+        $this->notifyUser($user, $project, $projectCompleteness)->shouldReturn(true);
     }
 
     function it_notifies_contributors_that_a_project_is_finished(
+        $projectStatusRepository,
         $projectNotificationFactory,
         $notifier,
         $datePresenter,
@@ -108,6 +115,7 @@ class ProjectFinishedNotifierSpec extends ObjectBehavior
         ProjectCompleteness $projectCompleteness,
         LocaleInterface $locale
     ) {
+        $projectStatusRepository->findProjectStatus($project, $contributor)->willReturn($projectStatus);
         $projectCompleteness->isComplete()->willReturn(true);
         $projectStatus->isComplete()->willReturn(false);
         $project->getOwner()->willReturn($owner);
@@ -142,6 +150,6 @@ class ProjectFinishedNotifierSpec extends ObjectBehavior
 
         $notifier->notify($notification, [$contributor])->shouldBeCalled();
 
-        $this->notifyUser($contributor, $project, $projectStatus, $projectCompleteness)->shouldReturn(true);
+        $this->notifyUser($contributor, $project, $projectCompleteness)->shouldReturn(true);
     }
 }

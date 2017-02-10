@@ -6,7 +6,6 @@ use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Command\ProjectRecalculationCommand;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\ActivityManagerBundle\Job\ProjectCalculationJobLauncher;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -24,6 +23,7 @@ class ProjectRecalculationCommandSpec extends ObjectBehavior
     {
         $this->shouldHaveType(ProjectRecalculationCommand::class);
     }
+
     function it_has_a_name()
     {
         $this->getName()->shouldReturn('pimee:project:recalculate');

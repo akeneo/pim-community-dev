@@ -5,13 +5,13 @@ namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\EventListener;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\ActivityManagerBundle\EventListener\NotificationSubscriber;
-use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectNotifierInterface;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvent;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
 use PimEnterprise\Component\ActivityManager\Factory\ProjectStatusFactoryInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectStatusInterface;
+use PimEnterprise\Component\ActivityManager\Notification\ProjectNotifierInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectStatusRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
@@ -81,12 +81,12 @@ class NotificationSubscriberSpec extends ObjectBehavior
         $projectStatus->setHasBeenNotified(false)->shouldBeCalled();
         $projectStatus->setIsComplete(false)->shouldBeCalled();
 
-        $projectCreatedNotifier->notifyUser($user, $project, $projectStatus, $projectCompleteness)->willReturn(true);
+        $projectCreatedNotifier->notifyUser($user, $project, $projectCompleteness)->willReturn(true);
         $projectStatus->setHasBeenNotified(true)->shouldBeCalled();
         $projectStatus->setIsComplete(false)->shouldBeCalled();
         $projectStatusSaver->save($projectStatus)->shouldBeCalled();
 
-        $projectFinishedNotifier->notifyUser($user, $project, $projectStatus, $projectCompleteness)->willReturn(true);
+        $projectFinishedNotifier->notifyUser($user, $project, $projectCompleteness)->willReturn(true);
 
         $this->notify($event);
     }
