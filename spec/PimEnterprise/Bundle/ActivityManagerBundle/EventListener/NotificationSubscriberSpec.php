@@ -81,12 +81,12 @@ class NotificationSubscriberSpec extends ObjectBehavior
         $projectStatus->setHasBeenNotified(false)->shouldBeCalled();
         $projectStatus->setIsComplete(false)->shouldBeCalled();
 
-        $projectCreatedNotifier->notifyUser($user, $project, $projectStatus, $projectCompleteness)->willReturn(true);
+        $projectCreatedNotifier->notifyUser($user, $project, $projectCompleteness)->willReturn(true);
         $projectStatus->setHasBeenNotified(true)->shouldBeCalled();
         $projectStatus->setIsComplete(false)->shouldBeCalled();
         $projectStatusSaver->save($projectStatus)->shouldBeCalled();
 
-        $projectFinishedNotifier->notifyUser($user, $project, $projectStatus, $projectCompleteness)->willReturn(true);
+        $projectFinishedNotifier->notifyUser($user, $project, $projectCompleteness)->willReturn(true);
 
         $this->notify($event);
     }

@@ -14,7 +14,7 @@ class AssetsCollectionPresenterSpec extends ObjectBehavior
 {
     function let(AssetRepositoryInterface $assetRepository)
     {
-        $this->beConstructedWith($assetRepository);
+        $this->beConstructedWith($assetRepository, $router);
     }
 
     function it_is_a_presenter()
