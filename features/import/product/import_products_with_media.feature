@@ -126,7 +126,7 @@ Feature: Import media with products
       fanatic-freewave-37;Fanatic Freewave 37;
       """
     And the following job "csv_footwear_product_import" configuration:
-      | filePath          | %file to import% |
+      | filePath | %file to import% |
     And import directory of "csv_footwear_product_import" contains the following media:
       | bic-core-148.txt        |
       | fanatic-freewave-76.txt |

@@ -151,5 +151,5 @@ Feature: Import families
     And I launch the import job
     And I wait for the "csv_footwear_family_import" job to finish
     Then there should be the following family:
-      | code     | attribute_as_label | requirements-mobile | requirements-tablet                                                   |
-      | heels    | name               | sku,manufacturer    | sku,name,description,price,side_view,size,color,heel_color,sole_color |
+      | code  | attribute_as_label | requirements-mobile | requirements-tablet                                                   |
+      | heels | name               | sku,manufacturer    | sku,name,description,price,side_view,size,color,heel_color,sole_color |

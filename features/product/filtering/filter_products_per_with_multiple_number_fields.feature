@@ -33,18 +33,18 @@ Feature: Filter products with multiples number fields filters
   Scenario: Successfully filter products with the sames attributes
     Given I filter by "supplier" with operator "=" and value "03"
     And I should be able to use the following filters:
-      | filter    | operator | value | result                 |
-      | component | is empty |       | POST-1, POST-2         |
-      | component | is not empty |       | MUG-2, MUG-3 and MUG-4        |
-      | component | >        | 16    |                        |
-      | component | <        | 16    |                        |
-      | component | >        | 15    | MUG-2, MUG-3 and MUG-4 |
-      | component | <        | 17    | MUG-2, MUG-3 and MUG-4 |
-      | component | >=       | 16    | MUG-2, MUG-3 and MUG-4 |
-      | component | <=       | 16    | MUG-2, MUG-3 and MUG-4 |
-      | component | =        | 16    | MUG-2, MUG-3 and MUG-4 |
-      | component | =        | 0     |                        |
-      | component | >        | 0     | MUG-2, MUG-3 and MUG-4 |
+      | filter    | operator     | value | result                 |
+      | component | is empty     |       | POST-1, POST-2         |
+      | component | is not empty |       | MUG-2, MUG-3 and MUG-4 |
+      | component | >            | 16    |                        |
+      | component | <            | 16    |                        |
+      | component | >            | 15    | MUG-2, MUG-3 and MUG-4 |
+      | component | <            | 17    | MUG-2, MUG-3 and MUG-4 |
+      | component | >=           | 16    | MUG-2, MUG-3 and MUG-4 |
+      | component | <=           | 16    | MUG-2, MUG-3 and MUG-4 |
+      | component | =            | 16    | MUG-2, MUG-3 and MUG-4 |
+      | component | =            | 0     |                        |
+      | component | >            | 0     | MUG-2, MUG-3 and MUG-4 |
     And I hide the filter "supplier"
     And I hide the filter "component"
 

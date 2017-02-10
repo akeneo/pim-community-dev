@@ -139,7 +139,7 @@ Feature: Export products with only selected attributes
       | HEEL-1 | high_heels | The red heels  | Red             | Green                | 2014_collection |
       | HEEL-2 | high_heels | The blue heels | Blue            | Orange               | 2014_collection |
     And the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | filePath | %tmp%/product_export/product_export.csv                                                                                                                                                       |
       | filters  | {"structure": {"locales": ["en_US"], "scope": "mobile", "attributes": ["high_heel_color", "high_heel_color_sole"]}, "data": [{"field": "family", "operator": "IN", "value": ["high_heels"]}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job

@@ -44,11 +44,11 @@ Feature: Export products with localized numbers
       | filePath         | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
       | decimalSeparator | ,                                                           |
     And the following product values:
-      | product       | attribute   | value |
-      | sandal-white  | cotton      | 75.55 |
-      | sandal-black  | cotton      | 75    |
-      | sandal-yellow | cotton      |       |
-      | sandal-blue   | cotton      | 75.00 |
+      | product       | attribute | value |
+      | sandal-white  | cotton    | 75.55 |
+      | sandal-black  | cotton    | 75    |
+      | sandal-yellow | cotton    |       |
+      | sandal-blue   | cotton    | 75.00 |
     And I launched the completeness calculator
     When I am on the "ecommerce_product_export" export job page
     And I launch the export job

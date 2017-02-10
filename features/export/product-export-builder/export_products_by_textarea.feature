@@ -19,7 +19,7 @@ Feature: Export products according to textarea attribute filter
   @skip
   Scenario: Export products by filtering on textarea values without using the UI
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | filePath | %tmp%/product_export/product_export.csv                                                                                     |
       | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "description", "operator": "=", "value": "Awesome"}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job

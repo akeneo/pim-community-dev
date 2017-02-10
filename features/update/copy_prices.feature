@@ -10,7 +10,7 @@ Feature: Update price fields
       | price_winter | prices |
       | price_summer | prices |
     And the following products:
-      | sku     | price_winter   |
+      | sku     | price_winter          |
       | AKN_MUG | 5 GBP, 10 EUR, 15 USD |
     Then I should get the following products after apply the following updater to it:
       | product | actions                                                                           | result                                                                                                                                                                            |

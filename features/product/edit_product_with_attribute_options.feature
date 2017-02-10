@@ -95,7 +95,7 @@ Feature: Edit a product with attribute options
       hammer;MARTEAU;WURST;HAMMER;simple;36
       """
     And the following job "csv_footwear_option_import" configuration:
-      | filePath      | %file to import% |
+      | filePath | %file to import% |
     And I am on the "csv_footwear_option_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_option_import" job to finish

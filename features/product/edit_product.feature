@@ -13,8 +13,8 @@ Feature: Edit a product
       | name        | text     | no          |                 | Name        | no       |
       | other_name  | text     | yes         |                 | Other Name  | yes      |
     And the following attributes:
-      | code        | label      | type   | metric family | default metric unit |
-      | length      | Shoes size | metric | Length        | CENTIMETER          |
+      | code   | label      | type   | metric family | default metric unit |
+      | length | Shoes size | metric | Length        | CENTIMETER          |
     And the following products:
       | sku    |
       | sandal |

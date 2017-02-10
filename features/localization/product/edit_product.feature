@@ -19,8 +19,8 @@ Feature: Edit a product with localized attributes
       | code | label-en_US | attributes                   |
       | baz  | Baz         | sku,number,weight,price,date |
     And the following products:
-      | sku | family | number  | weight        | price-EUR | date       |
-      | foo | baz    | -12.5   | 150.8675 GRAM | 1000.50   | 2015-05-28 |
+      | sku | family | number | weight        | price-EUR | date       |
+      | foo | baz    | -12.5  | 150.8675 GRAM | 1000.50   | 2015-05-28 |
     And I am logged in as "Julien"
 
   Scenario: Successfully view and edit localized number

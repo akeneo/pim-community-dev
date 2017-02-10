@@ -11,8 +11,8 @@ Feature: Update simple select fields
       | back_color  | simpleselect |
     And the following "front_color" attribute options: Red and Yellow
     And the following products:
-      | sku                 | front_color  |
-      | MONOCHROMATIC_PAPER | Red          |
+      | sku                 | front_color |
+      | MONOCHROMATIC_PAPER | Red         |
     Then I should get the following products after apply the following updater to it:
       | product             | actions                                                                        | result                                        |
       | MONOCHROMATIC_PAPER | [{"type": "copy_data", "from_field": "front_color", "to_field": "back_color"}] | {"values": {"back_color": [{"data": "Red"}]}} |

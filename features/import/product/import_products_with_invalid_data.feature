@@ -319,9 +319,9 @@ Feature: Execute a job
     And the product "SKU-002" should have the following value:
       | handmade | 1 |
     And the product "SKU-003" should have the following value:
-      | handmade | |
+      | handmade |  |
     And the product "SKU-004" should have the following value:
-      | handmade | |
+      | handmade |  |
 
   Scenario: Skip new products with invalid metric during an import
     Given the following CSV file to import:
@@ -345,7 +345,7 @@ Feature: Execute a job
     And the product "honda-civic" should have the following value:
       | length | 2.0000 METER |
     And the product "fiat-panda" should have the following value:
-      | length | |
+      | length |  |
 
   Scenario: Skip new products with invalid metric (two columns) during an import
     Given the following CSV file to import:
@@ -366,7 +366,7 @@ Feature: Execute a job
     And the product "renault-kangoo" should have the following value:
       | length | 2500.0000 CENTIMETER |
     And the product "fiat-500" should have the following value:
-      | length | |
+      | length |  |
 
   Scenario: Skip new products with invalid price during an import
     Given the following attributes:

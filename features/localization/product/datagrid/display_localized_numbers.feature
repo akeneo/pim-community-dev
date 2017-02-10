@@ -10,8 +10,8 @@ Feature: Localize numbers in the product grid
       | code      | label     | type   | decimals_allowed | label-fr_FR | useable_as_grid_filter |
       | big_price | Big price | prices | yes              | Gros prix   | yes                    |
     And the following products:
-      | sku     | big_price                | rate_sale    | weight             |
-      | sandals | 1000.12 USD, 1000.01 EUR | 1000.1234    | 1000.3456 KILOGRAM |
+      | sku     | big_price                | rate_sale | weight             |
+      | sandals | 1000.12 USD, 1000.01 EUR | 1000.1234 | 1000.3456 KILOGRAM |
 
   Scenario: Successfully show English format numbers for English UI
     Given I am logged in as "Julia"

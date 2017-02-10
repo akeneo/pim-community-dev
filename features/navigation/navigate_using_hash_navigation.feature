@@ -45,9 +45,9 @@ Feature: Navigate the application in hash navigation mode
       | code       | attributes                                                |
       | high_heels | sku,name,description,price,rating,size,color,manufacturer |
     And the following products:
-      | sku            | family     | color  | groups        |
-      | boots          | boots      |        |               |
-      | sneakers       | sneakers   |        |               |
+      | sku      | family   | color | groups |
+      | boots    | boots    |       |        |
+      | sneakers | sneakers |       |        |
     And I am logged in as "Julia"
     And I am on the products page
     When I select rows boots and sneakers

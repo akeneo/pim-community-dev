@@ -21,13 +21,13 @@ Feature: Edit common attributes of many products at once
       | group         | attribute   | value         |
       | variant_heels | heel_height | 12 CENTIMETER |
     And the following products:
-      | sku            | family     | color  | groups        |
-      | boots          | boots      |        |               |
-      | sneakers       | sneakers   |        |               |
-      | sandals        | sandals    |        |               |
-      | pump           |            |        |               |
-      | highheels      | high_heels | red    | variant_heels |
-      | blue_highheels | high_heels | blue   | variant_heels |
+      | sku            | family     | color | groups        |
+      | boots          | boots      |       |               |
+      | sneakers       | sneakers   |       |               |
+      | sandals        | sandals    |       |               |
+      | pump           |            |       |               |
+      | highheels      | high_heels | red   | variant_heels |
+      | blue_highheels | high_heels | blue  | variant_heels |
     And I am logged in as "Julia"
     And I am on the products page
 

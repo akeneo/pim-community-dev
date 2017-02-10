@@ -14,8 +14,8 @@ Feature: Remove a product
       | weight      | Weight      | metric | Weight        | GRAM                | boots, sneakers, sandals |
       | heel_height | Heel Height | metric | Length        | CENTIMETER          | high_heels               |
     And the following products:
-      | sku       | family     |
-      | boots     | high_heels |
+      | sku   | family     |
+      | boots | high_heels |
     And I am logged in as "Julia"
 
   Scenario: Successfully delete a product from the grid

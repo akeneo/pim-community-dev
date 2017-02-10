@@ -27,8 +27,8 @@ Feature: Edit a family
       | code   | attributes      |
       | guitar | sku,name,string |
     And the following products:
-      | sku      | family   | name-en_US | string |
-      | les-paul | guitar   | Les Paul   | Elixir |
+      | sku      | family | name-en_US | string |
+      | les-paul | guitar | Les Paul   | Elixir |
     And I am on the "guitar" family page
     When I fill in the following information:
       | Attribute used as label | String |

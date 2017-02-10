@@ -12,11 +12,11 @@ Feature: Update boolean fields
       | pure    | boolean | yes         | yes      |
       | organic | boolean | no          | no       |
     And the following products:
-      | sku      |
-      | active   |
-      | awesome  |
-      | pure     |
-      | orgnanic |
+      | sku               |
+      | active            |
+      | awesome           |
+      | pure              |
+      | orgnanic          |
       | orgnanic_and_pure |
     Then I should get the following products after apply the following updater to it:
       | product           | actions                                                                                                                                                                            | result                                                                                                                                   |

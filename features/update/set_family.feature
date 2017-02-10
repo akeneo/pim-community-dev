@@ -6,9 +6,9 @@ Feature: Update family fields
   Scenario: Successfully update the family field
     Given a "default" catalog configuration
     And the following products:
-      | sku                              |
-      | tshirt1                          |
-      | tshirt2                          |
+      | sku     |
+      | tshirt1 |
+      | tshirt2 |
     And the following families:
       | code  | requirements-ecommerce | requirements-mobile |
       | shirt | sku                    | sku                 |

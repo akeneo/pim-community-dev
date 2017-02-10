@@ -7,8 +7,8 @@ Feature: Validate that validation is removed on correction
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | code    | label-en_US | type   | scopable | negative_allowed | decimals_allowed | number_min | number_max |
-      | cost    | Cost        | prices | no       | no               | no               |            |            |
+      | code | label-en_US | type   | scopable | negative_allowed | decimals_allowed | number_min | number_max |
+      | cost | Cost        | prices | no       | no               | no               |            |            |
     And the following family:
       | code | label-en_US | attributes |
       | baz  | Baz         | sku,cost   |

@@ -17,10 +17,10 @@ Feature: Proper completeness display for locale specific attributes
       | bar  | Bar         | sku,locale_specific_not_localizable,name,description  | locale_specific_not_localizable,name,description  |
       | bat  | Bat         | sku,name,description,thumbnail,legend,locale_specific | name,description,thumbnail,legend,locale_specific |
     And the following products:
-      | sku    | family |
-      | foo    | baz    |
-      | bar    | biz    |
-      | baz    | bat    |
+      | sku | family |
+      | foo | baz    |
+      | bar | biz    |
+      | baz | bat    |
     And I am logged in as "Mary"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4771

@@ -24,7 +24,7 @@ Feature: Edit a product with localizable and scopable attribute options
       2;FR2;DE2;US2;simple;2
       """
     And the following job "option_import" configuration:
-      | filePath      | %file to import% |
+      | filePath | %file to import% |
     And I am on the "option_import" import job page
     And I launch the import job
     And I wait for the "option_import" job to finish

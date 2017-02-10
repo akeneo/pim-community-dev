@@ -23,7 +23,7 @@ Feature: Export products according to their families
 
   Scenario: Export only products in boots family
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv                                                                                            |
+      | filePath | %tmp%/product_export/product_export.csv                                                                                       |
       | filters  | {"structure": {"locales": ["en_US"], "scope": "mobile"}, "data": [{"field": "family", "operator": "IN", "value": ["boots"]}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
@@ -37,7 +37,7 @@ Feature: Export products according to their families
 
   Scenario: Export only products in boots and high heels family
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | filePath | %tmp%/product_export/product_export.csv                                                                                                |
       | filters  | {"structure": {"locales": ["en_US"], "scope": "mobile"}, "data": [{"field": "family", "operator": "IN", "value": ["boots", "heels"]}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job

@@ -21,13 +21,13 @@ Feature: Edit common attributes of many products at once
       | group         | attribute   | value         |
       | variant_heels | heel_height | 12 CENTIMETER |
     And the following products:
-      | sku            | family     | color  | groups        |
-      | boots          | boots      |        |               |
-      | sneakers       | sneakers   |        |               |
-      | sandals        | sandals    |        |               |
-      | pump           |            |        |               |
-      | highheels      | high_heels | red    | variant_heels |
-      | blue_highheels | high_heels | blue   | variant_heels |
+      | sku            | family     | color | groups        |
+      | boots          | boots      |       |               |
+      | sneakers       | sneakers   |       |               |
+      | sandals        | sandals    |       |               |
+      | pump           |            |       |               |
+      | highheels      | high_heels | red   | variant_heels |
+      | blue_highheels | high_heels | blue  | variant_heels |
     And I am logged in as "Julia"
     And I am on the products page
 
@@ -46,10 +46,10 @@ Feature: Edit common attributes of many products at once
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the product "boots" should have the following values:
-      | name-en_US         | Product      |
+      | name-en_US         | Product       |
       | weather_conditions | [wet], [cold] |
     And the product "highheels" should have the following values:
-      | name-en_US | Product  |
+      | name-en_US | Product |
 
   @jira https://akeneo.atlassian.net/browse/PIM-2183
   Scenario: Allow edition on common attributes with value not in family and no value on family

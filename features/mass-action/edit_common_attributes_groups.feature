@@ -7,9 +7,9 @@ Feature: Edit common attributes of many products at once
   Background:
     Given a "footwear" catalog configuration
     And the following products:
-      | sku            | family     | color  | groups        |
-      | boots          | boots      |        |               |
-      | sandals        | sandals    |        |               |
+      | sku     | family  | color | groups |
+      | boots   | boots   |       |        |
+      | sandals | sandals |       |        |
     And I am logged in as "Julia"
 
   Scenario: Successfully translate groups and labels

@@ -6,8 +6,8 @@ Feature: Update price fields
   Scenario: Successfully update a price field
     Given a "default" catalog configuration
     And the following attributes:
-      | code   | type   | localizable | scopable |
-      | price  | prices | yes         | no       |
+      | code  | type   | localizable | scopable |
+      | price | prices | yes         | no       |
     And the following products:
       | sku  | price-fr_FR  |
       | BOX1 |              |

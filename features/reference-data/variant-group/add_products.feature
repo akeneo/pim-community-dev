@@ -9,10 +9,10 @@ Feature: Add products with reference data to a variant group
     And the following "sole_color" attribute reference data: Red, Yellow, Cyan, Magenta
     And the following "heel_color" attribute reference data: Green, Light green, Blue, Black, White
     And the following products:
-      | sku             | family  | categories        | size | sole_color |
-      | sandal-red-37   | sandals | winter_collection | 37   | Red        |
-      | sandal-red-38   | sandals | winter_collection | 38   | Red        |
-      | sandal-red-39   | sandals | winter_collection | 39   | Red        |
+      | sku           | family  | categories        | size | sole_color |
+      | sandal-red-37 | sandals | winter_collection | 37   | Red        |
+      | sandal-red-38 | sandals | winter_collection | 38   | Red        |
+      | sandal-red-39 | sandals | winter_collection | 39   | Red        |
     And the following product groups:
       | code   | label  | axis             | type    |
       | SANDAL | Sandal | size, sole_color | VARIANT |

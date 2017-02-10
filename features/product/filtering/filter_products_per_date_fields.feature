@@ -46,9 +46,9 @@ Feature: Filter products by date field
 
   Scenario: Filter products by date attributes and keep the appropriate default filter values
     Given the following products:
-      | sku    | release    |
-      | book   | 2014-05-02 |
-      | pen    | 2014-05-06 |
+      | sku  | release    |
+      | book | 2014-05-02 |
+      | pen  | 2014-05-06 |
     And I am on the products page
     And I show the filter "release"
     When I filter by "release" with operator "between" and value "05/01/2014 and 05/03/2014"

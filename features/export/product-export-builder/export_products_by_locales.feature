@@ -14,16 +14,16 @@ Feature: Export products according to a locale policy
       | code      | requirements-ecommerce | attributes |
       | localized | sku,name               | sku,name   |
     And the following products:
-      | sku        | categories | family    | name-fr_FR | name-en_US | baguette-fr_FR |
-      | french     | default    | localized | French     |            | Yes            |
-      | english    | default    | localized |            | English    | Yes            |
-      | complete   | default    | localized | Complete   | Complete   | Yes            |
-      | empty      | default    | localized |            |            | Yes            |
+      | sku      | categories | family    | name-fr_FR | name-en_US | baguette-fr_FR |
+      | french   | default    | localized | French     |            | Yes            |
+      | english  | default    | localized |            | English    | Yes            |
+      | complete | default    | localized | Complete   | Complete   | Yes            |
+      | empty    | default    | localized |            |            | Yes            |
     And the following jobs:
       | connector            | type   | alias              | code               | label              |
       | Akeneo CSV Connector | export | csv_product_export | csv_product_export | CSV product export |
     And the following job "csv_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | filePath | %tmp%/product_export/product_export.csv                                        |
       | filters  | {"structure": {"locales": ["fr_FR", "en_US"], "scope": "ecommerce"},"data":[]} |
     And I am logged in as "Julia"
 

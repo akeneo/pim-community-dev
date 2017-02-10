@@ -69,7 +69,7 @@ Feature: Validate unique attribute of a product
   @skip @info date picker does not work properly on CI
   Scenario: Validate the unique constraint of date attribute with a provided date
     Given the following product values:
-      | product | attribute |value       |
+      | product | attribute | value      |
       | postit  | date      | 2015-01-01 |
     Given I am on the "date2" product page
     And I change the Date to "2015/01/01"
