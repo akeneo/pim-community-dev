@@ -20,7 +20,7 @@ class LocaleNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(LocaleNormalizer::class);
     }
 
-    function it_supports_a_category(LocaleInterface $locale)
+    function it_supports_a_locale(LocaleInterface $locale)
     {
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'external_api')->shouldReturn(false);
@@ -28,7 +28,7 @@ class LocaleNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($locale, 'external_api')->shouldReturn(true);
     }
 
-    function it_normalizes_a_category($stdNormalizer, LocaleInterface $locale)
+    function it_normalizes_a_locale($stdNormalizer, LocaleInterface $locale)
     {
         $data = ['code' => 'en_US'];
 
