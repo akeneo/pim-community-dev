@@ -58,8 +58,8 @@ class AssetsCollectionPresenter implements PresenterInterface
         $afterCodes = $change['data'];
 
         return [
-            'before' => $this->presentAssets($afterCodes, $data->getLocale(), $data->getScope()),
-            'after'  => $this->presentAssets($beforeCodes, $data->getLocale(), $data->getScope())
+            'before' => $this->presentAssets($afterCodes),
+            'after'  => $this->presentAssets($beforeCodes)
         ];
     }
 
@@ -68,13 +68,13 @@ class AssetsCollectionPresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function presentAssets($assetCodes, $locale, $scope)
+    public function presentAssets($assetCodes)
     {
         if (null === $assetCodes) {
             return null;
         }
 
-        $result = [];
+        $result = '';
         $assets = $this->repository->findBy(['code' => $assetCodes]);
 
         foreach ($assets as $asset) {
