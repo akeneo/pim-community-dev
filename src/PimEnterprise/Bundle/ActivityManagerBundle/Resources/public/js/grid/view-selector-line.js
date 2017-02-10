@@ -68,7 +68,7 @@ define(
             prepareViewData: function () {
                 return {
                     view: this.datagridView,
-                    isCurrent: this.isCurrentView
+                    isCurrent: (this.currentViewId === this.datagridView.id)
                 };
             },
 
@@ -99,7 +99,7 @@ define(
                         project.channel.code
                     ),
                     localeLabel: project.locale.label,
-                    isCurrent: this.isCurrentView,
+                    isCurrent: (this.currentViewId === project.datagridView.id),
                     completionRatio: project.completeness.ratio_done,
                     completionStatus: completionStatus
                 };
