@@ -60,7 +60,7 @@ class TextAttributeSetter extends AbstractAttributeSetter
     {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
         if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+            $value = $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope);
         }
         if (is_string($data) && '' === trim($data)) {
             $data = null;

@@ -169,6 +169,8 @@ class ReferenceDataFilterSpec extends ObjectBehavior
     {
         $attribute->getId()->willReturn(1);
         $attribute->getCode()->willReturn('color');
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
 
         $value = 'string';
         $this->shouldThrow(

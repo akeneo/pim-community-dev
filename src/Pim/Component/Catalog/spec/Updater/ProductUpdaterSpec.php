@@ -38,6 +38,9 @@ class ProductUpdaterSpec extends ObjectBehavior
                 'stdClass',
                 'Pim\Component\Catalog\Model\ProductInterface'
             )
+        )->during(
+            'update',
+            [new \stdClass(), []]
         );
     }
 

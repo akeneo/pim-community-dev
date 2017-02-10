@@ -29,7 +29,7 @@ class Operators
     const IS_NULL = 'NULL';
     const IS_NOT_NULL = 'NOT NULL';
     const IS_LIKE = 'LIKE';
-    const NOT_LIKE = 'NOT LIKE';
+    const IS_NOT_LIKE = 'NOT LIKE';
     const GREATER_THAN = '>';
     const GREATER_OR_EQUAL_THAN = '>=';
     const LOWER_THAN = '<';

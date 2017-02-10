@@ -27,12 +27,13 @@ Feature: Filter products per metric
     And the grid should contain 4 elements
     And I should see products postit and book
     And I should be able to use the following filters:
-      | filter | operator | value         | result          |
-      | weight | >=       | 200 Gram      | book            |
-      | weight | >        | 120 Gram      | book            |
-      | weight | =        | 120 Gram      | postit          |
-      | weight | <        | 200 Gram      | postit          |
-      | weight | <=       | 120 Gram      | postit          |
-      | weight | <=       | 0.25 Kilogram | postit and book |
-      | weight | >        | 4 Kilogram    |                 |
-      | weight | is empty |               | mug and pen     |
+      | filter | operator     | value         | result          |
+      | weight | >=           | 200 Gram      | book            |
+      | weight | >            | 120 Gram      | book            |
+      | weight | =            | 120 Gram      | postit          |
+      | weight | <            | 200 Gram      | postit          |
+      | weight | <=           | 120 Gram      | postit          |
+      | weight | <=           | 0.25 Kilogram | postit and book |
+      | weight | >            | 4 Kilogram    |                 |
+      | weight | is empty     |               | mug and pen     |
+      | weight | is not empty |               | postit and book |

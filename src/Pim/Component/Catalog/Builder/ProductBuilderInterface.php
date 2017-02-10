@@ -62,18 +62,6 @@ interface ProductBuilderInterface
     public function addAttributeToProduct(ProductInterface $product, AttributeInterface $attribute);
 
     /**
-     * Deletes values that link an attribute to a product
-     *
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     *
-     * @return bool
-     *
-     * @deprecated will be removed in 1.7
-     */
-    public function removeAttributeFromProduct(ProductInterface $product, AttributeInterface $attribute);
-
-    /**
      * Add a product price with currency and data to the value. If the price
      * already exists, its data is updated and it is returned.
      *
@@ -82,6 +70,8 @@ interface ProductBuilderInterface
      * @param float|int|null        $amount
      *
      * @return null|ProductPriceInterface
+     *
+     * @deprecated will be removed in 1.8
      */
     public function addPriceForCurrency(ProductValueInterface $value, $currency, $amount = null);
 
@@ -96,7 +86,6 @@ interface ProductBuilderInterface
      * @return null|ProductPriceInterface
      *
      * @deprecated Will be removed in 1.8.
-     *             Please use "Pim\Component\Catalog\Builder\ProductBuilderInterface::addPriceForCurrency" instead.
      */
     public function addPriceForCurrencyWithData(ProductValueInterface $value, $currency, $amount);
 
@@ -106,7 +95,7 @@ interface ProductBuilderInterface
      * @param ProductValueInterface $value
      * @param array                 $currencies
      *
-     * @deprecated Will be removed in 1.8.
+     * @deprecated will be removed in 1.8.
      */
     public function removePricesNotInCurrency(ProductValueInterface $value, array $currencies);
 
@@ -116,6 +105,8 @@ interface ProductBuilderInterface
      * @param ProductValueInterface $value
      *
      * @return ProductValueInterface
+     *
+     * @deprecated will be removed in 1.8.
      */
     public function addMissingPrices(ProductValueInterface $value);
 
@@ -128,8 +119,27 @@ interface ProductBuilderInterface
      * @param string             $scope
      *
      * @return ProductValueInterface
+     *
+     * @deprecated will be removed in 1.8. Please use "addOrReplaceProductValue" instead.
      */
     public function addProductValue(
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        $locale = null,
+        $scope = null
+    );
+
+    /**
+     * Add or replace a product value.
+     *
+     * @param ProductInterface   $product
+     * @param AttributeInterface $attribute
+     * @param string             $locale
+     * @param string             $scope
+     *
+     * @return ProductValueInterface
+     */
+    public function addOrReplaceProductValue(
         ProductInterface $product,
         AttributeInterface $attribute,
         $locale = null,

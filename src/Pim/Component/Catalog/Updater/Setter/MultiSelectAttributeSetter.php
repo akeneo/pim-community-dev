@@ -2,9 +2,10 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
@@ -56,7 +57,7 @@ class MultiSelectAttributeSetter extends AbstractAttributeSetter
         foreach ($data as $optionCode) {
             $option = $this->getOption($attribute, $optionCode);
             if (null === $option) {
-                throw InvalidArgumentException::arrayInvalidKey(
+                throw InvalidPropertyException::validEntityCodeExpected(
                     $attribute->getCode(),
                     'code',
                     'The option does not exist',
@@ -76,24 +77,26 @@ class MultiSelectAttributeSetter extends AbstractAttributeSetter
      *
      * @param AttributeInterface $attribute
      * @param mixed              $data
+     *
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected(
+            throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
                 static::class,
-                gettype($data)
+                $data
             );
         }
 
         foreach ($data as $key => $value) {
             if (!is_string($value)) {
-                throw InvalidArgumentException::arrayStringValueExpected(
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $attribute->getCode(),
-                    $key,
+                    sprintf('one of the options is not a string, "%s" given', gettype($value)),
                     static::class,
-                    gettype($value)
+                    $data
                 );
             }
         }
@@ -117,7 +120,7 @@ class MultiSelectAttributeSetter extends AbstractAttributeSetter
     ) {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
         if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+            $value = $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope);
         }
 
         foreach ($value->getOptions() as $option) {

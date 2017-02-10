@@ -42,7 +42,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
 
         return $qb
             ->select('count(g.id)')
-            ->join('g.attributes', 'attributes')
+            ->join('g.axisAttributes', 'attributes')
             ->where(
                 $qb->expr()->in('attributes', ':attribute')
             )
@@ -125,7 +125,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     public function getVariantGroupsByAttributeIds(array $attributeIds)
     {
         $qb = $this->getAllVariantGroupsQB();
-        $variantGroups = $qb->innerJoin('g.attributes', 'attributes')
+        $variantGroups = $qb->innerJoin('g.axisAttributes', 'attributes')
             ->getQuery()->execute();
 
         // This block should be in the DQL query, but hard to do.
@@ -192,9 +192,11 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
      */
     public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = [])
     {
+        $identifier = isset($options['type']) && 'code' === $options['type'] ? 'code' : 'id';
+
         $selectDQL = sprintf(
             'o.%s as id, COALESCE(NULLIF(t.label, \'\'), CONCAT(\'[\', o.code, \']\')) as text',
-            isset($options['type']) && 'code' === $options['type'] ? 'code' : 'id'
+            $identifier
         );
 
         $qb = $this->createQueryBuilder('o')
@@ -211,7 +213,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
         if (isset($options['ids'])) {
             $qb
                 ->andWhere(
-                    $qb->expr()->in('o.id', ':ids')
+                    $qb->expr()->in(sprintf('o.%s', $identifier), ':ids')
                 )
                 ->setParameter('ids', $options['ids']);
         }
@@ -319,7 +321,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     protected function hasAttributeInAxisAttributes(array $ids, $attributeCode)
     {
         $queryBuilder = $this->createQueryBuilder('g')
-            ->leftJoin('g.attributes', 'a')
+            ->leftJoin('g.axisAttributes', 'a')
             ->leftJoin('g.type', 't')
             ->where('g.id IN (:ids)')
             ->andWhere('t.variant = :variant')

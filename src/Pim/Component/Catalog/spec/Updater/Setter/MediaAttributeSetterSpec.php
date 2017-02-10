@@ -5,6 +5,8 @@ namespace spec\Pim\Component\Catalog\Updater\Setter;
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
@@ -90,7 +92,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $data = new \stdClass();
 
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected('attributeCode', 'Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter', gettype($data))
+            InvalidPropertyTypeException::stringExpected('attributeCode', 'Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter', $data)
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
@@ -103,9 +105,8 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $data = 'path/to/unknown/file';
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validPathExpected(
                 'attributeCode',
-                'a valid pathname',
                 'Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter',
                 'path/to/unknown/file'
             )
@@ -166,7 +167,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
 
         $data = realpath(__DIR__.'/../../../../../../../features/Context/fixtures/akeneo.jpg');
 
-        $builder->addProductValue($product, $attribute, Argument::cetera())->shouldBeCalled()->willReturn($value);
+        $builder->addOrReplaceProductValue($product, $attribute, Argument::cetera())->shouldBeCalled()->willReturn($value);
         $repository->findOneByIdentifier(Argument::any())->willReturn(null);
         $storer->store(Argument::cetera())->willReturn($fileInfo);
 

@@ -1855,23 +1855,23 @@ class FixturesContext extends BaseFixturesContext
      * @param string $code
      * @param string $label
      * @param string $type
-     * @param array  $attributes
-     * @param array  $products
+     * @param array  $attributeCodes
+     * @param array  $productIdentifiers
      */
-    protected function createProductGroup($code, $label, $type, array $attributes, array $products = [])
+    protected function createProductGroup($code, $label, $type, array $attributeCodes, array $productIdentifiers = [])
     {
         $group = $this->getGroupFactory()->createGroup($type);
         $group->setCode($code);
         $group->setLocale('en_US')->setLabel($label); // TODO translation refactoring
 
-        foreach ($attributes as $attributeCode) {
+        foreach ($attributeCodes as $attributeCode) {
             $attribute = $this->getAttribute($attributeCode);
-            $group->addAttribute($attribute);
+            $group->addAxisAttribute($attribute);
         }
         $this->validate($group);
         $this->getContainer()->get('pim_catalog.saver.group')->save($group);
 
-        foreach ($products as $sku) {
+        foreach ($productIdentifiers as $sku) {
             if (!empty($sku)) {
                 $product = $this->getProduct($sku);
                 $product->addGroup($group);

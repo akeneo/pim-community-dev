@@ -5,8 +5,9 @@ namespace Pim\Component\Catalog\Updater\Setter;
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -90,7 +91,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
     ) {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
         if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+            $value = $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope);
         }
 
         $value->setMedia($fileInfo);
@@ -99,15 +100,13 @@ class MediaAttributeSetter extends AbstractAttributeSetter
     /**
      * @param AttributeInterface $attribute
      * @param mixed              $data
+     *
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
-        if (null === $data) {
-            return;
-        }
-
-        if (!is_string($data)) {
-            throw InvalidArgumentException::stringExpected($attribute->getCode(), static::class, gettype($data));
+        if (null !== $data && !is_string($data)) {
+            throw InvalidPropertyTypeException::stringExpected($attribute->getCode(), static::class, $data);
         }
     }
 
@@ -117,7 +116,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
-     * @throws InvalidArgumentException If an invalid filePath is provided
+     * @throws InvalidPropertyException If an invalid filePath is provided
      *
      * @return FileInfoInterface|null
      */
@@ -130,9 +129,8 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         $rawFile = new \SplFileInfo($data);
 
         if (!$rawFile->isFile()) {
-            throw InvalidArgumentException::expected(
+            throw InvalidPropertyException::validPathExpected(
                 $attribute->getCode(),
-                'a valid pathname',
                 static::class,
                 $data
             );

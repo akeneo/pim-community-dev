@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
@@ -55,7 +55,7 @@ class DateAttributeSetter extends AbstractAttributeSetter
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyException
      *
      * @return string
      */
@@ -66,9 +66,9 @@ class DateAttributeSetter extends AbstractAttributeSetter
         } elseif (is_string($data)) {
             $this->validateDateFormat($attribute, $data);
         } elseif (null !== $data && !is_string($data)) {
-            throw InvalidArgumentException::expected(
+            throw InvalidPropertyException::dateExpected(
                 $attribute->getCode(),
-                'datetime or string',
+                'yyyy-mm-dd',
                 static::class,
                 gettype($data)
             );
@@ -81,7 +81,7 @@ class DateAttributeSetter extends AbstractAttributeSetter
      * @param AttributeInterface $attribute
      * @param string             $data
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function validateDateFormat(AttributeInterface $attribute, $data)
     {
@@ -89,14 +89,19 @@ class DateAttributeSetter extends AbstractAttributeSetter
             new \DateTime($data);
 
             if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
-                throw new \Exception('Invalid date');
+                throw InvalidPropertyException::dateExpected(
+                    $attribute->getCode(),
+                    'yyyy-mm-dd',
+                    static::class,
+                    $data
+                );
             }
         } catch (\Exception $e) {
-            throw InvalidArgumentException::expected(
+            throw InvalidPropertyException::dateExpected(
                 $attribute->getCode(),
-                'a string with the format yyyy-mm-dd',
+                'yyyy-mm-dd',
                 static::class,
-                gettype($data)
+                $data
             );
         }
     }
@@ -114,7 +119,7 @@ class DateAttributeSetter extends AbstractAttributeSetter
     {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
         if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+            $value = $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope);
         }
 
         if (null !== $data) {

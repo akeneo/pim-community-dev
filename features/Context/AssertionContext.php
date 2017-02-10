@@ -42,7 +42,7 @@ class AssertionContext extends RawMinkContext
     /**
      * Checks, that page does not contain specified text.
      *
-     * @Then /^I should not see the text "([^"]*)"$/
+     * @Then /^I should not see the text "(?P<text>(?:[^"]|\\")*)"$/
      */
     public function assertPageNotContainsText($text)
     {
@@ -541,25 +541,6 @@ class AssertionContext extends RawMinkContext
             $steps[] = new Then(sprintf('I change the Code to "%s"', $item['code']));
             $steps[] = new Then(sprintf('I save the %s', $entity));
             $steps[] = new Then('I should see validation error "This code is not available"');
-        }
-
-        return $steps;
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @return Then[]
-     *
-     * @Then /^the following pages should have the following titles:$/
-     */
-    public function theFollowingPagesShouldHaveTheFollowingTitles($table)
-    {
-        $steps = [];
-
-        foreach ($table->getHash() as $item) {
-            $steps[] = new Then(sprintf('I am on the %s page', $item['page']));
-            $steps[] = new Then(sprintf('I should see the title "%s"', $item['title']));
         }
 
         return $steps;

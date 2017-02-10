@@ -92,7 +92,7 @@ class LastOperationsWidget implements WidgetInterface
                 $locale = $this->tokenStorage->getToken()->getUser()->getUiLocale()->getCode();
                 $operation['date'] = $this->presenter->present($operation['date'], ['locale' => $locale]);
             }
-            $operation['canSeeReport'] = in_array($operation['type'], ['import', 'export']) &&
+            $operation['canSeeReport'] = !in_array($operation['type'], ['import', 'export']) ||
                 $this->securityFacade->isGranted(sprintf('pim_importexport_%s_execution_show', $operation['type']));
         }
 

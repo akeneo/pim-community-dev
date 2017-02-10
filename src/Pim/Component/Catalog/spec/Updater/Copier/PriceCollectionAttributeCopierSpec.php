@@ -88,7 +88,7 @@ class PriceCollectionAttributeCopierSpec extends ObjectBehavior
         $product4->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product4->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
 
-        $builder->addProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
+        $builder->addOrReplaceProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
 
         $builder->addPriceForCurrency($toProductValue, 'USD', 123)->shouldBeCalled();
 
