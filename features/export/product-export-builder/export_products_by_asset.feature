@@ -18,7 +18,7 @@ Feature: Export products according to multi select reference data values
       | connector            | type   | alias              | code               | label              |
       | Akeneo CSV Connector | export | csv_product_export | csv_product_export | CSV product export |
     And the following job "csv_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | filePath | %tmp%/product_export/product_export.csv                                     |
       | filters  | {"structure": {"locales": ["fr_FR", "en_US"], "scope": "tablet"},"data":[]} |
 
   Scenario: Export only the product values with selected reference data value

@@ -6,8 +6,8 @@ Feature: Create a draft with a simple reference data fields
   Background:
     Given a "clothing" catalog configuration
     And the following attributes:
-      | code       | label       | type                        | reference_data_name |
-      | top_color  | Main color  | reference_data_simpleselect | color               |
+      | code      | label      | type                        | reference_data_name |
+      | top_color | Main color | reference_data_simpleselect | color               |
     And the following "top_color" attribute reference data: Red, Green, Light green, Blue, Yellow, Cyan
     And the following product:
       | sku           | categories |
@@ -18,10 +18,10 @@ Feature: Create a draft with a simple reference data fields
       | product       | actions                                                                                     | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "lace_color", "data": "Red", "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                                                                                                |
-      | akeneo_tshirt  | Mary     | {"values": {"lace_color": [{"locale": null, "scope": null, "data": "Red"}]}, "review_statuses": {"lace_color": [{"locale": null, "scope": null, "status": "draft"}]}} |
+      | product       | username | result                                                                                                                                                                |
+      | akeneo_tshirt | Mary     | {"values": {"lace_color": [{"locale": null, "scope": null, "data": "Red"}]}, "review_statuses": {"lace_color": [{"locale": null, "scope": null, "status": "draft"}]}} |
     And the product "akeneo_tshirt" should have the following values:
-      | lace_color | |
+      | lace_color |  |
 
   Scenario: Successfully add a draft without update attribute in product
     Given the following product values:
@@ -31,8 +31,8 @@ Feature: Create a draft with a simple reference data fields
       | product       | actions                                                                                      | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "lace_color", "data": "Blue", "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                                                                                                 |
-      | akeneo_tshirt  | Mary     | {"values": {"lace_color": [{"locale": null, "scope": null, "data": "Blue"}]}, "review_statuses": {"lace_color": [{"locale": null, "scope": null, "status": "draft"}]}} |
+      | product       | username | result                                                                                                                                                                 |
+      | akeneo_tshirt | Mary     | {"values": {"lace_color": [{"locale": null, "scope": null, "data": "Blue"}]}, "review_statuses": {"lace_color": [{"locale": null, "scope": null, "status": "draft"}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | lace_color | Green |
 

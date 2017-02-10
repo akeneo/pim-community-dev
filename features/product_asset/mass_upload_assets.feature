@@ -47,26 +47,26 @@ Feature: Mass uploads assets
   Scenario: Cannot add the same file two times
     And I am on the asset mass upload page
     And I select the assets to upload:
-    | name        |
-    | akeneo.jpg  |
+    | name       |
+    | akeneo.jpg |
     Then I should see "Added" status for asset "akeneo.jpg"
     And I start assets mass upload
     When I select the assets to upload:
-      | name        |
-      | akeneo.jpg  |
+      | name       |
+      | akeneo.jpg |
     Then I should see "Error" status for asset "akeneo.jpg"
 
   Scenario: Cancel uploads
     And I am on the asset mass upload page
     And I select the assets to upload:
-      | name        |
-      | akeneo.jpg  |
+      | name       |
+      | akeneo.jpg |
     And I cancel assets mass upload
     Then I should not see "akeneo.jpg"
     And The button "Import" should be disabled
     When I select the assets to upload:
-      | name        |
-      | akeneo.jpg  |
+      | name       |
+      | akeneo.jpg |
     And I start assets mass upload
     Then I should see "Success" status for asset "akeneo.jpg"
     And I should see "Import"
@@ -74,8 +74,8 @@ Feature: Mass uploads assets
     Then I should not see "akeneo.jpg"
     And The button "Import" should be disabled
     When I select the assets to upload:
-      | name              |
-      | akeneo.jpg        |
+      | name        |
+      | akeneo.jpg  |
       | akeneo2.jpg |
     And I start assets mass upload
     Then I should see "Success" status for asset "akeneo.jpg"

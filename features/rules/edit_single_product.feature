@@ -560,8 +560,8 @@ Feature: Read a single product by applying rules
       | sku       | family  | categories |
       | my-jacket | jackets | jackets    |
     And the following product values:
-      | product   | attribute          | value          | locale | scope  |
-      | my-jacket | weather_conditions | wet,cold       |        |        |
+      | product   | attribute          | value    | locale | scope |
+      | my-jacket | weather_conditions | wet,cold |        |       |
     And the following product rule definitions:
       """
       rule_sku_jacket:
@@ -586,7 +586,7 @@ Feature: Read a single product by applying rules
     And the category of "my-jacket" should be "jackets"
     And the product rule "rule_sku_jacket" is executed
     Then the product "my-jacket" should have the following values:
-      | weather_conditions       | Dry, Wet, Hot, Cold |
+      | weather_conditions | Dry, Wet, Hot, Cold |
     And the category of "my-jacket" should be "jackets, tshirts"
 
   @javascript

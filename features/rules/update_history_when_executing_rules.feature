@@ -88,9 +88,9 @@ Feature: Update product history when rules are executed
     And I open the history
     Then there should be 4 updates
     And I should see history:
-      | version | property                 | value                        |
-      | 3       | Description mobile fr    | Chaussures noires classiques |
-      | 4       | Name fr                  | Chaussures noires            |
+      | version | property              | value                        |
+      | 3       | Description mobile fr | Chaussures noires classiques |
+      | 4       | Name fr               | Chaussures noires            |
     And I should see:
     """
     Applied rule "set_description"

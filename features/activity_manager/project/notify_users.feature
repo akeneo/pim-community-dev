@@ -135,8 +135,8 @@ Feature: Notify users after a project creation
     # Claude can edit Clothing category and edit on Technical and Others attribute groups.
     Then I should have 1 new notification
     And I should see notification:
-      | type | message                                                                                     |
-      | success  | You have new products to enrich for "2016 summer collection". Due date is "12/13/2018". |
+      | type    | message                                                                                 |
+      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2018". |
     When I logout
     And I am logged in as "Marc"
     # Marc can edit Clothing category and edit on Technical and Others attribute groups.
@@ -315,8 +315,8 @@ Feature: Notify users after a project creation
     # Mary can edit Decoration category and edit Marketing attribute group.
     Then I should have 1 new notification
     And I should see notification:
-      | type     | message                                                                                 |
-      | success  | You have new products to enrich for "2016 summer collection". Due date is "12/13/2018". |
+      | type    | message                                                                                 |
+      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2018". |
     When I logout
     And I am logged in as "Kathy"
     # Kathy can edit Decoration category and edit Picture attribute group.
@@ -410,7 +410,7 @@ Feature: Notify users after a project creation
     And I am on the products page
     And I am on the "my-awesome-car" product page
     And I fill in the following information:
-      | Description | |
+      | Description |  |
     Then I save the product
     And I am on the products page
     And I run computation of the project "2016-summer-collection-ecommerce-en-us"

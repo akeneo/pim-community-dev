@@ -12,8 +12,8 @@ Feature: Filter product drafts
       | 2015_collection  | Manager    | edit   |
       | 2015_collection  | IT support | own    |
     And the following products:
-      | sku     | family   | categories      |
-      | tshirt  | tshirts  | 2015_collection |
+      | sku    | family  | categories      |
+      | tshirt | tshirts | 2015_collection |
     And the following product drafts:
       | product | status      | author | result                                                                    |
       | tshirt  | in progress | Sandra | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change1"}]}} |
@@ -22,9 +22,9 @@ Feature: Filter product drafts
       | Name        | Summer t-shirt             |
       | Description | Summer t-shirt description |
     And Julia proposed the following change to "tshirt":
-      | field       | value         | tab     |
-      | Name        | Autumn jacket | General |
-      | Price       | 10 USD        | Sales   |
+      | field | value         | tab     |
+      | Name  | Autumn jacket | General |
+      | Price | 10 USD        | Sales   |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully filter product drafts

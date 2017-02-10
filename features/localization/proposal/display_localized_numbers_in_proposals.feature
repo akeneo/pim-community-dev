@@ -18,8 +18,8 @@ Feature: Display localized numbers in proposals
       | 2014_collection  | Redactor   | edit   |
       | 2014_collection  | Manager    | own    |
     And the following products:
-      | sku     | family     | categories      |
-      | tshirt  | high_heels | 2014_collection |
+      | sku    | family     | categories      |
+      | tshirt | high_heels | 2014_collection |
     Given Mary proposed the following change to "tshirt":
       | tab                 | field          | value            |
       | Product information | decimal_number | 98.765           |

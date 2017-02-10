@@ -14,7 +14,7 @@ Feature: Unpublish many products at once
     And the following "main_fabric" attribute reference data: PVC, Nylon, Neoprene, Spandex, Wool, Kevlar, Jute
     And the following "main_color" attribute reference data: Red, Green, Light green, Blue, Yellow, Cyan, Magenta, Black, White
     And the following published product:
-      | sku          | main_color | main_fabric             |
+      | sku             | main_color | main_fabric             |
       | red-heels       | Red        | Spandex, Neoprene, Wool |
       | blue-sneakers   | Blue       | Nylon                   |
       | yellow-sneakers | Yellow     | Nylon                   |

@@ -14,10 +14,10 @@ Feature: Create a draft with a metric fields
       | product       | actions                                                                                                                     | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "length", "data": {"amount": 12.0000, "unit": "CENTIMETER"}, "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                                                                                                                            |
-      | akeneo_tshirt  | Mary     | {"values": {"length": [{"locale": null, "scope": null, "data": {"amount":"12.0000", "unit":"CENTIMETER"}}]}, "review_statuses": {"length": [{"locale": null, "scope": null, "status": "draft"}]}} |
+      | product       | username | result                                                                                                                                                                                            |
+      | akeneo_tshirt | Mary     | {"values": {"length": [{"locale": null, "scope": null, "data": {"amount":"12.0000", "unit":"CENTIMETER"}}]}, "review_statuses": {"length": [{"locale": null, "scope": null, "status": "draft"}]}} |
     And the product "akeneo_tshirt" should have the following values:
-      | length | |
+      | length |  |
 
   Scenario: Successfully add a draft without update attribute in product
     Given the following product values:
@@ -27,8 +27,8 @@ Feature: Create a draft with a metric fields
       | product       | actions                                                                                                                   | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "length", "data": {"amount":12.0000, "unit":"CENTIMETER"}, "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                                                                                                                            |
-      | akeneo_tshirt  | Mary     | {"values": {"length": [{"locale": null, "scope": null, "data": {"amount":"12.0000", "unit":"CENTIMETER"}}]}, "review_statuses": {"length": [{"locale": null, "scope": null, "status": "draft"}]}} |
+      | product       | username | result                                                                                                                                                                                            |
+      | akeneo_tshirt | Mary     | {"values": {"length": [{"locale": null, "scope": null, "data": {"amount":"12.0000", "unit":"CENTIMETER"}}]}, "review_statuses": {"length": [{"locale": null, "scope": null, "status": "draft"}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | length | 15.0000 CENTIMETER |
 

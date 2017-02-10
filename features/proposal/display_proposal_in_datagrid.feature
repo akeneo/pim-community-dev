@@ -26,8 +26,8 @@ Feature: Display proposals in datagrid
 
   Scenario: Successfully display only updated price attribute
     Given  Mary proposed the following change to "my-jacket":
-      | field | value  | tab       |
-      | Price | 5 USD  | Marketing |
+      | field | value | tab       |
+      | Price | 5 USD | Marketing |
     When I am logged in as "Julia"
     And I edit the "my-jacket" product
     And I visit the "Proposals" tab
@@ -40,8 +40,8 @@ Feature: Display proposals in datagrid
       | product   | attribute | value |
       | my-jacket | price     |       |
     And Mary proposed the following change to "my-jacket":
-      | field | value  | tab       |
-      | Price | 5 USD  | Marketing |
+      | field | value | tab       |
+      | Price | 5 USD | Marketing |
     When I am logged in as "Julia"
     And I edit the "my-jacket" product
     And I visit the "Proposals" tab

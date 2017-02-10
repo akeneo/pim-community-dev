@@ -28,14 +28,14 @@ Feature: Enforce no permissions for a locale
     And I am logged in as "Julia"
     When I am on the products page
     Then the grid locale switcher should contain the following items:
-      | language  | locale | flag    |
-      | en        | en_US  | flag-us |
-      | de        | de_DE  | flag-de |
+      | language | locale | flag    |
+      | en       | en_US  | flag-us |
+      | de       | de_DE  | flag-de |
     When I edit the "foo" product
     Then the locale switcher should contain the following items:
-      | language  | locale | flag    |
-      | English   | en_US  | flag-us |
-      | German    | de_DE  | flag-de |
+      | language | locale | flag    |
+      | English  | en_US  | flag-us |
+      | German   | de_DE  | flag-de |
 
   @javascript
   Scenario: Display product view or edit page depending on user's rights

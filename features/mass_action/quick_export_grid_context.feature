@@ -26,7 +26,7 @@ Feature: Quick export products according to the product grid context
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                     |
+      | type    | message                                                               |
       | success | Quick export CSV published product quick export grid context finished |
     When I go on the last executed job resume of "csv_published_product_grid_context_quick_export"
     Then I should see "COMPLETED"
@@ -48,7 +48,7 @@ Feature: Quick export products according to the product grid context
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                      |
+      | type    | message                                                                |
       | success | Quick export XLSX published product quick export grid context finished |
     When I go on the last executed job resume of "xlsx_published_product_grid_context_quick_export"
     Then I should see "COMPLETED"

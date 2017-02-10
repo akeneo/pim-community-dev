@@ -93,7 +93,7 @@ Feature: Follow project completeness
     And I should not see the contributor selector
     And I should see the following activity manager completeness:
       | todo | in_progress | done |
-      |    0 |           2 |    1 |
+      | 0    | 2           | 1    |
     And I should see the text "0% PRODUCTS TO ENRICH"
     And I should see the text "67% PRODUCTS IN PROGRESS"
     And I should see the text "33% PRODUCTS DONE"
@@ -104,7 +104,7 @@ Feature: Follow project completeness
     And I should not see the contributor selector
     And I should see the following activity manager completeness:
       | todo | in_progress | done |
-      |    0 |           2 |    1 |
+      | 0    | 2           | 1    |
     And I should see the text "0% PRODUCTS TO ENRICH"
     And I should see the text "67% PRODUCTS IN PROGRESS"
     And I should see the text "33% PRODUCTS DONE"

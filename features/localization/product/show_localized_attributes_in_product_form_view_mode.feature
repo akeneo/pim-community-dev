@@ -7,8 +7,8 @@ Feature: Show localized attributes in products form in view mode
   Background:
     Given the "default" catalog configuration
     And the following categories:
-      | code    | label-en_US | parent  |
-      | shoes   | shoes       | default |
+      | code  | label-en_US | parent  |
+      | shoes | shoes       | default |
     And the following product category accesses:
       | product category | user group | access |
       | shoes            | Redactor   | view   |

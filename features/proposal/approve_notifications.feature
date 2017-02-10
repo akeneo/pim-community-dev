@@ -11,8 +11,8 @@ Feature: Approve notifications
       | 2014_collection  | Redactor   | edit   |
       | 2014_collection  | Manager    | own    |
     And the following products:
-      | sku     | family   | categories      |
-      | tshirt  | jackets  | 2014_collection |
+      | sku    | family  | categories      |
+      | tshirt | jackets | 2014_collection |
     And Mary proposed the following change to "tshirt":
       | field | value          |
       | Name  | Summer t-shirt |
