@@ -2,19 +2,24 @@
 
 namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Workflow\Presenter;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
+use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes as AssetAttributeType;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
-use Prophecy\Argument;
+use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 class AssetsCollectionPresenterSpec extends ObjectBehavior
 {
-    function let(AssetRepositoryInterface $assetRepository)
+    function let(AssetRepositoryInterface $assetRepository, RouterInterface $router)
     {
-        $this->beConstructedWith($assetRepository);
+        $this->beConstructedWith($assetRepository, $router);
     }
 
     function it_is_a_presenter()
@@ -22,37 +27,89 @@ class AssetsCollectionPresenterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface');
     }
 
-    function it_supports_an_assets_collection()
+    function it_supports_an_assets_collection(ProductValueInterface $productValue, AttributeInterface $frontView)
     {
-        $this->supportsChange('pim_assets_collection')->shouldBe(true);
+        $productValue->getAttribute()->willReturn($frontView);
+        $frontView->getAttributeType()->willReturn(AssetAttributeType::ASSETS_COLLECTION);
+        $this->supports($productValue)->shouldBe(true);
     }
 
-    function it_does_not_support_other_attribute_types()
+    function it_does_not_support_other_attribute_types(ProductValueInterface $productValue, AttributeInterface $frontView)
     {
-        $this->supportsChange('pim_reference_data_simpleselect')->shouldBe(false);
+        $productValue->getAttribute()->willReturn($frontView);
+        $frontView->getAttributeType()->willReturn(AttributeTypes::PRICE_COLLECTION);
+        $this->supports($productValue)->shouldBe(false);
     }
 
-    function it_presents_assets_collection_change_using_the_injected_renderer(
+    function it_presents_assets_collection_changes(
         $assetRepository,
-        RendererInterface $renderer,
         ProductValueInterface $productValue,
         AttributeInterface $attribute,
         AssetInterface $leather,
         AssetInterface $neoprene,
-        AssetInterface $kevlar
+        AssetInterface $kevlar,
+        VariationInterface $leatherVariation,
+        VariationInterface $neopreneVariation,
+        VariationInterface $kevlarVariation,
+        ArrayCollection $collection,
+        ChannelInterface $ecommerce,
+        LocaleInterface $en,
+        $router
     ) {
-        $leather->__toString()->willReturn('Leather');
-        $neoprene->__toString()->willReturn('[Neoprene]');
-        $kevlar->__toString()->willReturn('Kevlar');
+        $assetRepository->findBy(['code' => ['leather', 'kevlar']])->willReturn([$leather, $kevlar]);
+        $assetRepository->findBy(['code' => ['leather', 'neoprene']])->willReturn([$leather, $neoprene]);
 
-        $assetRepository->findBy(['code' => ['Leather', 'Kevlar']])->willReturn([$leather, $kevlar]);
+        $leather->getVariations()->willReturn([$leatherVariation]);
+        $leather->getDescription()->willReturn('Awesome leather picture');
+        $leather->getCode()->willReturn('leather');
+        $leatherVariation->getChannel()->willReturn($ecommerce);
+        $ecommerce->getCode()->willReturn('ecommerce');
+        $leatherVariation->getLocale()->willReturn($en);
+        $en->getCode()->willReturn('en_US');
+        $router->generate('pimee_product_asset_thumbnail', [
+            'code' => 'leather',
+            'filter' => 'thumbnail',
+            'channelCode' => 'ecommerce',
+            'localeCode' => 'en_US'
+        ])->willReturn('leather/assetUrl');
 
-        $renderer->renderDiff(['Leather', '[Neoprene]'], ['Leather', 'Kevlar'])->willReturn('diff between two assets collection');
-        $this->setRenderer($renderer);
+        $neoprene->getVariations()->willReturn([$neopreneVariation]);
+        $neoprene->getDescription()->willReturn('Awesome neoprene picture');
+        $neoprene->getCode()->willReturn('neoprene');
+        $neopreneVariation->getChannel()->willReturn($ecommerce);
+        $ecommerce->getCode()->willReturn('ecommerce');
+        $neopreneVariation->getLocale()->willReturn($en);
+        $en->getCode()->willReturn('en_US');
+        $router->generate('pimee_product_asset_thumbnail', [
+            'code' => 'neoprene',
+            'filter' => 'thumbnail',
+            'channelCode' => 'ecommerce',
+            'localeCode' => 'en_US'
+        ])->willReturn('neoprene/assetUrl');
 
-        $productValue->getData()->willReturn([$leather, $neoprene]);
+        $kevlar->getVariations()->willReturn([$kevlarVariation]);
+        $kevlar->getDescription()->willReturn('Awesome kevlar picture');
+        $kevlar->getCode()->willReturn('kevlar');
+        $kevlarVariation->getChannel()->willReturn($ecommerce);
+        $ecommerce->getCode()->willReturn('ecommerce');
+        $kevlarVariation->getLocale()->willReturn($en);
+        $en->getCode()->willReturn('en_US');
+        $router->generate('pimee_product_asset_thumbnail', [
+            'code' => 'kevlar',
+            'filter' => 'thumbnail',
+            'channelCode' => 'ecommerce',
+            'localeCode' => 'en_US'
+        ])->willReturn('kevlar/assetUrl');
+
+        $productValue->getData()->willReturn($collection);
+        $collection->toArray()->willReturn([$leather, $neoprene]);
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('media');
-        $this->present($productValue, ['data' => ['Leather', 'Kevlar']])->shouldReturn('diff between two assets collection');
+        $this->present($productValue, ['data' => ['leather', 'kevlar']])->shouldReturn(
+            [
+                'before' => '<div class="asset-thumbnail AknThumbnail" style="background-image: url(\'leather/assetUrl\')"><span class="AknThumbnail-label">Awesome leather picture</span></div><div class="asset-thumbnail AknThumbnail" style="background-image: url(\'kevlar/assetUrl\')"><span class="AknThumbnail-label">Awesome kevlar picture</span></div>',
+                'after' => '<div class="asset-thumbnail AknThumbnail" style="background-image: url(\'leather/assetUrl\')"><span class="AknThumbnail-label">Awesome leather picture</span></div><div class="asset-thumbnail AknThumbnail" style="background-image: url(\'neoprene/assetUrl\')"><span class="AknThumbnail-label">Awesome neoprene picture</span></div>'
+            ]
+        );
     }
 }
