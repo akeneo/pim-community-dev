@@ -212,8 +212,12 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFollowingAttributeGroups(TableNode $table)
     {
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute_group');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute_group');
+        $saver     = $this->getContainer()->get('pim_catalog.saver.attribute_group');
+
         foreach ($table->getHash() as $data) {
-            $this->createAttributeGroup($data);
+            $saver->save($processor->process($converter->convert($data)));
         }
     }
 
@@ -224,8 +228,71 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFollowingAttributes(TableNode $table)
     {
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute');
+        $saver     = $this->getContainer()->get('pim_catalog.saver.attribute');
+
         foreach ($table->getHash() as $data) {
-            $this->createAttribute($data);
+            // TODO Remove all this magic
+            if (!isset($data['group']) || '' === $data['group']) {
+                $data['group'] = 'other';
+            }
+            if (!isset($data['type']) || '' === $data['type']) {
+                $data['type'] = 'text';
+            }
+            $data['type'] = $this->getAttributeType($data['type']);
+            if (isset($data['label']) && !isset($data['label-en_US'])) {
+                $data['label-en_US'] = $data['label'];
+            }
+            if (!isset($data['code']) || '' === $data['code']) {
+                $data['code'] = $this->camelize($data['label']);
+            }
+            foreach ($data as $key => $value) {
+                if (in_array($key, [
+                    'localizable', 'scopable', 'decimals_allowed', 'useable_as_grid_filter', 'unique',
+                    'negative_allowed'
+                ])) {
+                    $data[$key] = ($value === 'yes' || $value === 'true') ? '1' : '0';
+                }
+            }
+            if (!isset($data['available_locales']) && isset($data['locales'])) {
+                $data['available_locales'] = preg_replace('/, /', ',', $data['locales']);
+            }
+
+            $families = '';
+            if (isset($data['families'])) {
+                $families = $data['families'];
+                unset($data['families']);
+            }
+
+            unset($data['label']);
+            unset($data['locales']);
+
+            $convertedData = $converter->convert($data);
+            $attribute = $processor->process($convertedData);
+
+            if (isset($data['unique'])) {
+                // TODO Due to Pim/Component/Catalog/Updater/AttributeUpdater.php:226
+                $attribute->setUnique($data['unique'] === '1');
+            }
+
+            $familiesToPersist = [];
+            if ('' !== $families) {
+                foreach ($this->listToArray($families) as $familyCode) {
+                    $family = $this->getFamily($familyCode);
+                    $family->addAttribute($attribute);
+                    $familiesToPersist[] = $family;
+                }
+            }
+
+            $this->validate($attribute);
+
+            $saver->save($attribute);
+
+            foreach ($familiesToPersist as $family) {
+                $this->validate($family);
+                $this->getFamilySaver()->save($family);
+            }
         }
     }
 
@@ -446,6 +513,8 @@ class FixturesContext extends BaseFixturesContext
                         }
                     }
                     $this->assertArrayEquals(explode(',', $value), $requirements);
+                } else {
+                    throw new \InvalidArgumentException(sprintf('Can not check "%" attribute of the family', $key));
                 }
             }
         }
@@ -1645,95 +1714,6 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param string|array $data
-     *
-     * @return \Pim\Component\Catalog\Model\AttributeInterface
-     */
-    protected function createAttribute($data)
-    {
-        // TODO We should use the attribute reader service to avoid all these lines
-        if (is_string($data)) {
-            $data = [
-                'code'  => $data,
-                'group' => 'other',
-            ];
-        }
-
-        $data = array_merge(
-            [
-                'code'     => null,
-                'label'    => null,
-                'families' => null,
-                'locales'  => null,
-                'type'     => 'text',
-                'group'    => 'other',
-            ],
-            $data
-        );
-
-        if (isset($data['label']) && !isset($data['label-en_US'])) {
-            $data['label-en_US'] = $data['label'];
-        }
-
-        $data['code'] = $data['code'] ?: $this->camelize($data['label']);
-        unset($data['label']);
-
-        $families = $data['families'];
-        unset($data['families']);
-
-        $locales = $data['locales'];
-        unset($data['locales']);
-
-        $data['type'] = $this->getAttributeType($data['type']);
-
-        foreach ($data as $key => $element) {
-            if (in_array($element, ['yes', 'no'])) {
-                $element    = $element === 'yes';
-                $data[$key] = $element;
-            } elseif (in_array(
-                $key,
-                ['available_locales', 'date_min', 'date_max', 'number_min', 'number_max']
-            ) &&
-                '' === $element
-            ) {
-                unset($data[$key]);
-            }
-        }
-
-        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute');
-        $convertedData = $converter->convert($data);
-
-        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute');
-        $attribute = $processor->process($convertedData);
-
-        $familiesToPersist = [];
-        if ($families) {
-            foreach ($this->listToArray($families) as $familyCode) {
-                $family = $this->getFamily($familyCode);
-                $family->addAttribute($attribute);
-                $familiesToPersist[] = $family;
-            }
-        }
-
-        $this->validate($attribute);
-
-        if (null !== $locales) {
-            foreach ($this->listToArray($locales) as $localeCode) {
-                $attribute->addAvailableLocale($this->getLocale($localeCode));
-            }
-        }
-
-        $this->getContainer()->get('pim_catalog.saver.attribute')->save($attribute);
-
-        foreach ($familiesToPersist as $family) {
-            $this->validate($family);
-            $this->getFamilySaver()->save($family);
-        }
-
-        return $attribute;
-    }
-
-    /**
      * @param string $type
      *
      * @return string
@@ -1995,28 +1975,6 @@ class FixturesContext extends BaseFixturesContext
         $fabric->setName($label);
 
         return $fabric;
-    }
-
-    /**
-     * Create an attribute group
-     *
-     * @param array|string $data
-     *
-     * @return \Pim\Component\Catalog\Model\AttributeGroupInterface
-     */
-    protected function createAttributeGroup($data)
-    {
-        if (is_string($data)) {
-            $data = ['code' => $data];
-        }
-
-        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.attribute_group');
-        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.attribute_group');
-        $convertedData = $converter->convert($data);
-        $attributeGroup = $processor->process($convertedData);
-        $this->getContainer()->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
-
-        return $attributeGroup;
     }
 
     /**
