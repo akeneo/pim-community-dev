@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Factory\ProductValue;
 
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Factory\PriceFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\PriceCollection;
@@ -69,7 +69,7 @@ class PriceCollectionProductValueFactory implements ProductValueFactoryInterface
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
@@ -78,41 +78,37 @@ class PriceCollectionProductValueFactory implements ProductValueFactoryInterface
         }
 
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected(
+            throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
-                'prices collection',
-                'factory',
-                gettype($data)
+                static::class,
+                $data
             );
         }
 
         foreach ($data as $price) {
             if (!is_array($price)) {
-                throw InvalidArgumentException::arrayOfArraysExpected(
+                throw InvalidPropertyTypeException::arrayOfArraysExpected(
                     $attribute->getCode(),
-                    'prices collection',
-                    'factory',
-                    gettype($data).' of '.gettype($price)
+                    static::class,
+                    $data
                 );
             }
 
             if (!array_key_exists('amount', $price)) {
-                throw InvalidArgumentException::arrayKeyExpected(
+                throw InvalidPropertyTypeException::arrayKeyExpected(
                     $attribute->getCode(),
                     'amount',
-                    'prices collection',
-                    'factory',
-                    implode(', ', array_keys($price))
+                    static::class,
+                    $data
                 );
             }
 
             if (!array_key_exists('currency', $price)) {
-                throw InvalidArgumentException::arrayKeyExpected(
+                throw InvalidPropertyTypeException::arrayKeyExpected(
                     $attribute->getCode(),
                     'currency',
-                    'prices collection',
-                    'factory',
-                    implode(', ', array_keys($price))
+                    static::class,
+                    $data
                 );
             }
         }

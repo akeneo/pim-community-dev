@@ -3,8 +3,8 @@
 namespace Pim\Component\ReferenceData\Factory\ProductValue;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
@@ -81,7 +81,7 @@ class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryI
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
@@ -90,22 +90,20 @@ class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryI
         }
 
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected(
+            throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
-                'reference data collection',
-                'factory',
-                gettype($data)
+                static::class,
+                $data
             );
         }
 
         foreach ($data as $key => $value) {
             if (!is_string($value)) {
-                throw InvalidArgumentException::arrayStringKeyExpected(
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $attribute->getCode(),
-                    $key,
-                    'reference data collection',
-                    'factory',
-                    gettype($value)
+                    sprintf('array key "%s" expects a string as value, "%s" given', $key, gettype($value)),
+                    static::class,
+                    $data
                 );
             }
         }
@@ -152,14 +150,9 @@ class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryI
         if (null === $referenceData) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 $attribute->getCode(),
-                'code',
-                sprintf(
-                    'No reference data "%s" with code "%s" has been found',
-                    $attribute->getReferenceDataName(),
-                    $referenceDataCode
-                ),
-                'reference data collection',
-                'factory',
+                'reference data code',
+                'The reference data does not exists',
+                static::class,
                 $referenceDataCode
             );
         }

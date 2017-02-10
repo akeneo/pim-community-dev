@@ -5,8 +5,8 @@ namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\ProductValue\MediaProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValue;
@@ -307,11 +307,10 @@ class MediaProductValueFactorySpec extends ObjectBehavior
 
         $fileInfoRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
 
-        $exception = InvalidArgumentException::stringExpected(
+        $exception = InvalidPropertyTypeException::stringExpected(
             'image_attribute',
-            'media',
-            'factory',
-            'array'
+            MediaProductValueFactory::class,
+            []
         );
 
         $this
@@ -342,8 +341,7 @@ class MediaProductValueFactorySpec extends ObjectBehavior
             'image_attribute',
             'fileinfo key',
             'The media does not exist',
-            'media',
-            'factory',
+            MediaProductValueFactory::class,
             'foo/bar.txt'
         );
 

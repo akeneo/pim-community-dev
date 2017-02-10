@@ -3,7 +3,7 @@
 namespace Pim\Component\ReferenceData\Factory\ProductValue;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
@@ -75,6 +75,8 @@ class ReferenceDataProductValueFactory implements ProductValueFactoryInterface
      *
      * @param AttributeInterface $attribute
      * @param mixed              $data
+     *
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
@@ -83,11 +85,10 @@ class ReferenceDataProductValueFactory implements ProductValueFactoryInterface
         }
 
         if (!is_string($data)) {
-            throw InvalidArgumentException::stringExpected(
+            throw InvalidPropertyTypeException::stringExpected(
                 $attribute->getCode(),
-                'reference data',
-                'factory',
-                gettype($data)
+                static::class,
+                $data
             );
         }
     }
@@ -112,14 +113,9 @@ class ReferenceDataProductValueFactory implements ProductValueFactoryInterface
         if (null === $referenceData) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 $attribute->getCode(),
-                'code',
-                sprintf(
-                    'No reference data "%s" with code "%s" has been found',
-                    $attribute->getReferenceDataName(),
-                    $referenceDataCode
-                ),
-                'reference data',
-                'factory',
+                'reference data code',
+                'The reference data does not exists',
+                static::class,
                 $referenceDataCode
             );
         }

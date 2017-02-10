@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\PriceFactory;
 use Pim\Component\Catalog\Factory\ProductValue\PriceCollectionProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -157,11 +157,10 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('prices');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $exception = InvalidArgumentException::arrayExpected(
+        $exception = InvalidPropertyTypeException::arrayExpected(
             'price_collection_attribute',
-            'prices collection',
-            'factory',
-            'string'
+            PriceCollectionProductValueFactory::class,
+            'foobar'
         );
 
         $this
@@ -178,11 +177,10 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('prices');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $exception = InvalidArgumentException::arrayOfArraysExpected(
+        $exception = InvalidPropertyTypeException::arrayOfArraysExpected(
             'price_collection_attribute',
-            'prices collection',
-            'factory',
-            'array of string'
+            PriceCollectionProductValueFactory::class,
+            ['foobar']
         );
 
         $this
@@ -199,12 +197,11 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('prices');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $exception = InvalidArgumentException::arrayKeyExpected(
+        $exception = InvalidPropertyTypeException::arrayKeyExpected(
             'price_collection_attribute',
             'amount',
-            'prices collection',
-            'factory',
-            'foo, currency'
+            PriceCollectionProductValueFactory::class,
+            [['foo' => 42, 'currency' => 'EUR']]
         );
 
         $this
@@ -221,12 +218,11 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('prices');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $exception = InvalidArgumentException::arrayKeyExpected(
+        $exception = InvalidPropertyTypeException::arrayKeyExpected(
             'price_collection_attribute',
             'currency',
-            'prices collection',
-            'factory',
-            'amount, bar'
+            PriceCollectionProductValueFactory::class,
+            [['amount' => 42, 'bar' => 'EUR']]
         );
 
         $this

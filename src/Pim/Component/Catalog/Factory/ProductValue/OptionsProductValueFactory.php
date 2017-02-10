@@ -2,8 +2,9 @@
 
 namespace Pim\Component\Catalog\Factory\ProductValue;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
@@ -78,7 +79,7 @@ class OptionsProductValueFactory implements ProductValueFactoryInterface
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
@@ -87,22 +88,20 @@ class OptionsProductValueFactory implements ProductValueFactoryInterface
         }
 
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected(
+            throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
-                'multi select',
-                'factory',
-                gettype($data)
+                static::class,
+                $data
             );
         }
 
         foreach ($data as $key => $value) {
             if (!is_string($value)) {
-                throw InvalidArgumentException::arrayStringValueExpected(
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $attribute->getCode(),
-                    $key,
-                    'multi select',
-                    'factory',
-                    gettype($value)
+                    sprintf('one of the options is not a string, "%s" given', gettype($value)),
+                    static::class,
+                    $data
                 );
             }
         }
@@ -135,7 +134,7 @@ class OptionsProductValueFactory implements ProductValueFactoryInterface
      * @param AttributeInterface $attribute
      * @param string             $optionCode
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyException
      * @return AttributeOptionInterface|null
      */
     protected function getOption(AttributeInterface $attribute, $optionCode)
@@ -144,12 +143,11 @@ class OptionsProductValueFactory implements ProductValueFactoryInterface
         $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
 
         if (null === $option) {
-            throw InvalidArgumentException::arrayInvalidKey(
+            throw InvalidPropertyException::validEntityCodeExpected(
                 $attribute->getCode(),
                 'code',
                 'The option does not exist',
-                'multi select',
-                'factory',
+                static::class,
                 $optionCode
             );
         }
