@@ -1,3 +1,11 @@
+# 1.5.19 (2017-02-06)
+
+# 1.5.18 (2017-02-01)
+
+## Bug fixes
+
+- PIM-6145: Fix wrong query on asset similar codes
+
 # 1.5.17 (2017-01-18)
 
 ## Bug fixes
