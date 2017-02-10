@@ -12,7 +12,7 @@ Feature: Export products according to a locale policy
       | baguette | text     | yes         | Baguette | fr_FR             |
     And the following family:
       | code      | requirements-ecommerce | attributes |
-      | localized | sku, name              | sku, name  |
+      | localized | sku,name               | sku,name   |
     And the following products:
       | sku        | categories | family    | name-fr_FR | name-en_US | baguette-fr_FR |
       | french     | default    | localized | French     |            | Yes            |

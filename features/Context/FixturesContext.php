@@ -178,8 +178,12 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFollowingFamilies(TableNode $table)
     {
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.family');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.family');
+        $saver     = $this->getContainer()->get('pim_catalog.saver.family');
+
         foreach ($table->getHash() as $data) {
-            $this->createFamily($data);
+            $saver->save($processor->process($converter->convert($data)));
         }
     }
 
@@ -192,10 +196,13 @@ class FixturesContext extends BaseFixturesContext
      */
     public function generatedFamilies($familyNumber)
     {
+        $table = new TableNode();
+        $table->addRow(['code']);
         for ($i = 1; $i <= $familyNumber; $i++) {
             $familyCode = sprintf('family_%d', $i);
-            $this->createFamily($familyCode);
+            $table->addRow([$familyCode]);
         }
+        return $this->theFollowingFamilies($table);
     }
 
     /**
@@ -2010,39 +2017,6 @@ class FixturesContext extends BaseFixturesContext
         $fabric->setName($label);
 
         return $fabric;
-    }
-
-    /**
-     * Create a family
-     *
-     * @param array|string $data
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Family
-     */
-    protected function createFamily($data)
-    {
-        if (is_string($data)) {
-            $data = ['code' => $data];
-        }
-
-        if (isset($data['attributes'])) {
-            $data['attributes'] = str_replace(' ', '', $data['attributes']);
-        }
-
-        foreach ($data as $key => $value) {
-            if (false !== strpos($key, 'requirements-')) {
-                $data[$key] = str_replace(' ', '', $value);
-            }
-        }
-
-        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.family');
-        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.family');
-
-        $convertedData = $converter->convert($data);
-        $family = $processor->process($convertedData);
-        $this->getFamilySaver()->save($family);
-
-        return $family;
     }
 
     /**

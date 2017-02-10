@@ -11,7 +11,7 @@ Feature: Validate that validation is removed on correction
       | cost    | Cost        | prices | no       | no               | no               |            |            |
     And the following family:
       | code | label-en_US | attributes |
-      | baz  | Baz         | sku, cost  |
+      | baz  | Baz         | sku,cost   |
     And the following product:
       | sku | family |
       | foo | baz    |

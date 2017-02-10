@@ -7,8 +7,8 @@ Feature: Mass edit common attributes for reference data
   Background:
     Given a "footwear" catalog configuration
     And the following family:
-      | code           | attributes                                             |
-      | platform_shoes | sku, name, description, color, heel_color, sole_fabric |
+      | code           | attributes                                        |
+      | platform_shoes | sku,name,description,color,heel_color,sole_fabric |
     And the following attributes:
       | code        | label       | type   | metric family | default metric unit | families       |
       | heel_height | Heel height | metric | Length        | CENTIMETER          | platform_shoes |

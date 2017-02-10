@@ -24,8 +24,8 @@ Feature: Edit a family
       | label  | type | useable_as_grid_filter |
       | String | text | yes                    |
     Given the following family:
-      | code   | attributes        |
-      | guitar | sku, name, string |
+      | code   | attributes      |
+      | guitar | sku,name,string |
     And the following products:
       | sku      | family   | name-en_US | string |
       | les-paul | guitar   | Les Paul   | Elixir |

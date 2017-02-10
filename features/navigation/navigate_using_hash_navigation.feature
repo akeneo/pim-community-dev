@@ -42,8 +42,8 @@ Feature: Navigate the application in hash navigation mode
   Scenario: Reload a page in hash navigation mode
     Given a "footwear" catalog configuration
     And the following family:
-      | code       | attributes                                                       |
-      | high_heels | sku, name, description, price, rating, size, color, manufacturer |
+      | code       | attributes                                                |
+      | high_heels | sku,name,description,price,rating,size,color,manufacturer |
     And the following products:
       | sku            | family     | color  | groups        |
       | boots          | boots      |        |               |

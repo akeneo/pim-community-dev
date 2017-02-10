@@ -11,8 +11,8 @@ Feature: Validate image attributes of a product
       | image     | Image       | image | no       | 0.01          | jpg                |
       | thumbnail | Thumbnail   | image | yes      | 0.01          | jpg                |
     And the following family:
-      | code | label-en_US | attributes            |
-      | baz  | Baz         | sku, image, thumbnail |
+      | code | label-en_US | attributes          |
+      | baz  | Baz         | sku,image,thumbnail |
     And the following product:
       | sku | family |
       | foo | baz    |

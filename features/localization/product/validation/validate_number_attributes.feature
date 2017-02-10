@@ -16,8 +16,8 @@ Feature: Validate localized number attributes of a product
       | quality    | Qualité     | number | no       | no     | no               | yes              | 1          | 10         | other   |
       | popularity | Popularité  | number | yes      | no     | no               | no               | 1          | 10         | other   |
     And the following family:
-      | code | label-en_US | attributes                             | requirements-ecommerce | requirements-mobile |
-      | baz  | Baz         | sku, sold, rating, popularity, quality | sku                    | sku                 |
+      | code | label-en_US | attributes                         | requirements-ecommerce | requirements-mobile |
+      | baz  | Baz         | sku,sold,rating,popularity,quality | sku                    | sku                 |
     And the following products:
       | sku | family | popularity-mobile | popularity-ecommerce | rating |
       | foo | baz    | 4                 | 4                    | 1      |

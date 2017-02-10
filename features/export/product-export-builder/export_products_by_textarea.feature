@@ -8,7 +8,7 @@ Feature: Export products according to textarea attribute filter
     Given a "footwear" catalog configuration
     And the following family:
       | code    | requirements-mobile | attributes |
-      | rangers | sku, name           | sku, name  |
+      | rangers | sku,name            | sku,name   |
     And the following products:
       | sku      | enabled | family  | categories        | description-en_US-mobile |
       | SNKRS-1B | 1       | rangers | summer_collection | Awesome                  |

@@ -30,8 +30,8 @@ Feature: Validate editing common file attributes of multiple products
       | file      | File      | file     | gif                |            |                |
       | info      | Info      | textarea |                    |            | 25             |
     And the following family:
-      | code          | attributes                                                                                                             |
-      | master_family | sku, side_view, length, weather_conditions, number_in_stock, price, manufacturer, comment, available, date, file, info |
+      | code          | attributes                                                                                                  |
+      | master_family | sku,side_view,length,weather_conditions,number_in_stock,price,manufacturer,comment,available,date,file,info |
     And the following products:
       | sku      | family        |
       | boots    | master_family |

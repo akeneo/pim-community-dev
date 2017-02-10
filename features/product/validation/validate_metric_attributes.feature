@@ -13,8 +13,8 @@ Feature: Validate metric attributes of a product
       | power  | Power       | metric | no       | Power         | WATT                | yes              | yes              | -200       | -100       |
       | speed  | Speed       | metric | yes      | Speed         | YARD_PER_HOUR       | yes              | yes              | 5.50       | 100        |
     And the following family:
-      | code | label-en_US | attributes                      |
-      | baz  | Baz         | sku, area, length, power, speed |
+      | code | label-en_US | attributes                  |
+      | baz  | Baz         | sku,area,length,power,speed |
     And the following product:
       | sku | family |
       | foo | baz    |

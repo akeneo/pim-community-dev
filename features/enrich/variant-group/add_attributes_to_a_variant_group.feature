@@ -94,8 +94,8 @@ Feature: Add attributes to a variant group
     And the following "high_heel_main_color" attribute options: Red, Blue
     And the following "high_heel_main_fabric" attribute options: Leather, Silk
     And the following family:
-      | code       | requirements-mobile                              | requirements-tablet | attributes                                       |
-      | high_heels | sku, high_heel_main_color, high_heel_main_fabric | sku                 | sku, high_heel_main_color, high_heel_main_fabric |
+      | code       | requirements-mobile                            | requirements-tablet | attributes                                     |
+      | high_heels | sku,high_heel_main_color,high_heel_main_fabric | sku                 | sku,high_heel_main_color,high_heel_main_fabric |
     And the following product groups:
       | code       | label      | axis                                        | type    |
       | high_heels | High heels | high_heel_main_color, high_heel_main_fabric | VARIANT |

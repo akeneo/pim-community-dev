@@ -16,8 +16,8 @@ Feature: Edit a product with localized attributes
       | price  | Prix        | prices | no       | no     | no               | yes              | other |               |                     |
       | date   | Date        | date   | no       | no     | no               | no               | other |               |                     |
     And the following family:
-      | code | label-en_US | attributes                       |
-      | baz  | Baz         | sku, number, weight, price, date |
+      | code | label-en_US | attributes                   |
+      | baz  | Baz         | sku,number,weight,price,date |
     And the following products:
       | sku | family | number  | weight        | price-EUR | date       |
       | foo | baz    | -12.5   | 150.8675 GRAM | 1000.50   | 2015-05-28 |

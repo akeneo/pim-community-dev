@@ -12,8 +12,8 @@ Feature: Validate localized date attributes of a product
       | available | Dispo       | date | yes      | no     | 2013-01-01 | 2015-12-12 |
       | sold      | Solde       | date | no       | no     |            |            |
     And the following family:
-      | code | label-en_US | attributes                    | requirements-ecommerce | requirements-mobile |
-      | baz  | Baz         | sku, release, available, sold | sku                    | sku                 |
+      | code | label-en_US | attributes                 | requirements-ecommerce | requirements-mobile |
+      | baz  | Baz         | sku,release,available,sold | sku                    | sku                 |
     And the following products:
       | sku | family |
       | foo | baz    |

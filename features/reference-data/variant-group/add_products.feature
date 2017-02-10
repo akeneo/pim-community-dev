@@ -29,8 +29,8 @@ Feature: Add products with reference data to a variant group
 
   Scenario: Do not see a product already present in another variant group
     Given the following family:
-      | code       | attributes                  |
-      | high_heels | sku, sole_color, heel_color |
+      | code       | attributes                |
+      | high_heels | sku,sole_color,heel_color |
     And the following product groups:
       | code       | label      | axis                         | type    |
       | HIGH_HEELS | High heels | size, sole_color, heel_color | VARIANT |

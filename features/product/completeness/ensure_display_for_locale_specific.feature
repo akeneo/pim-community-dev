@@ -11,11 +11,11 @@ Feature: Proper completeness display for locale specific attributes
       | locale_specific                 | text | yes         | de_DE,fr_FR,en_US | Locale Specific |
       | locale_specific_not_localizable | text | no          | de_DE,fr_FR       |                 |
     And the following family:
-      | code | label-en_US | attributes                                                 | requirements-ecommerce                                |
-      | baz  | Baz         | sku, locale_specific, name                                 | locale_specific, name                                 |
-      | biz  | Biz         | sku, locale_specific_not_localizable, name                 | locale_specific_not_localizable, name                 |
-      | bar  | Bar         | sku, locale_specific_not_localizable, name, description    | locale_specific_not_localizable, name, description    |
-      | bat  | Bat         | sku, name, description, thumbnail, legend, locale_specific | name, description, thumbnail, legend, locale_specific |
+      | code | label-en_US | attributes                                            | requirements-ecommerce                            |
+      | baz  | Baz         | sku,locale_specific,name                              | locale_specific,name                              |
+      | biz  | Biz         | sku,locale_specific_not_localizable,name              | locale_specific_not_localizable,name              |
+      | bar  | Bar         | sku,locale_specific_not_localizable,name,description  | locale_specific_not_localizable,name,description  |
+      | bat  | Bat         | sku,name,description,thumbnail,legend,locale_specific | name,description,thumbnail,legend,locale_specific |
     And the following products:
       | sku    | family |
       | foo    | baz    |

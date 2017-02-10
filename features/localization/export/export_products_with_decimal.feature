@@ -11,8 +11,8 @@ Feature: Export products with localized numbers
       | cotton | Percentage cotton | number | true             | false            |                     |               | other |
       | metric | New metric        | metric | true             | true             | GRAM                | Weight        | other |
     And the following family:
-      | code   | attributes     |
-      | sandal | cotton, metric |
+      | code   | attributes    |
+      | sandal | cotton,metric |
     And the following products:
       | sku           | family  | categories                   | price                    |
       | sandal-white  | sandals | men_2013, men_2014, men_2015 | 10.90 EUR, 15 USD, 9 GBP |

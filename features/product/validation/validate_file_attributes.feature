@@ -11,8 +11,8 @@ Feature: Validate file attributes of a product
       | datasheet  | Datasheet   | file | no       | 0.01          | jpg                |
       | attachment | Attachment  | file | yes      | 0.01          | jpg                |
     And the following family:
-      | code | label-en_US | attributes                 |
-      | baz  | Baz         | sku, datasheet, attachment |
+      | code | label-en_US | attributes               |
+      | baz  | Baz         | sku,datasheet,attachment |
     And the following product:
       | sku | family |
       | foo | baz    |

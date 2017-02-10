@@ -11,8 +11,8 @@ Feature: Filter products per media
       | image      | Image       | image | yes                    | gif,png,jpeg,jpg  |
       | attachment | Attachment  | file  | yes                    | txt               |
     And the following family:
-      | code    | attributes             |
-      | tshirts | sku, image, attachment |
+      | code    | attributes           |
+      | tshirts | sku,image,attachment |
     And the following products:
       | sku         | family  |
       | shirt-one   | tshirts |

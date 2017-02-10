@@ -132,8 +132,8 @@ Feature: Export products with only selected attributes
   @jira https://akeneo.atlassian.net/browse/PIM-5994
   Scenario: Export the attributes only once
     Given the following family:
-      | code       | attributes                                 | requirements-mobile                        |
-      | high_heels | sku, high_heel_color, high_heel_color_sole | sku, high_heel_color, high_heel_color_sole |
+      | code       | attributes                               | requirements-mobile                      |
+      | high_heels | sku,high_heel_color,high_heel_color_sole | sku,high_heel_color,high_heel_color_sole |
     And the following products:
       | sku    | family     | name-en_US     | high_heel_color | high_heel_color_sole | categories      |
       | HEEL-1 | high_heels | The red heels  | Red             | Green                | 2014_collection |

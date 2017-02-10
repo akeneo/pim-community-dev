@@ -13,8 +13,8 @@ Feature: Validate localized price attributes of a product
       | tax     | Taxe        | prices | no       |                  | yes              | 10         | 100        |
       | customs | Douane      | prices | yes      |                  | yes              | 10         | 100        |
     And the following family:
-      | code | label-en_US | attributes                     |
-      | baz  | Baz         | sku, cost, price, tax, customs |
+      | code | label-en_US | attributes                 |
+      | baz  | Baz         | sku,cost,price,tax,customs |
     And the following product:
       | sku | family |
       | foo | baz    |

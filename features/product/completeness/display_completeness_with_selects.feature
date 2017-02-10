@@ -16,8 +16,8 @@ Feature: Display the completeness of a product with simple or multi selects
       | main_fabric  | Main fabric  | no          | yes      | multiselect  |
       | main_color   | Main color   | yes         | no       | simpleselect |
     And the following family:
-      | code      | attributes                                                           | requirements-tablet                        | requirements-mobile                       |
-      | highheels | sku, braid_color, braid_fabric, heel_fabric, main_fabric, main_color | sku, braid_color, braid_fabric, main_color | sku, heel_fabric, main_fabric, main_color |
+      | code      | attributes                                                      | requirements-tablet                     | requirements-mobile                    |
+      | highheels | sku,braid_color,braid_fabric,heel_fabric,main_fabric,main_color | sku,braid_color,braid_fabric,main_color | sku,heel_fabric,main_fabric,main_color |
     And I am logged in as "Julia"
     And the following "braid_fabric" attribute options: PVC, Nylon, Neoprene, Spandex, Wool, Kevlar, Jute
     And the following "braid_color" attribute options: Red, Green, Emerald, Blue, Yellow, Cyan, Magenta, Black, White

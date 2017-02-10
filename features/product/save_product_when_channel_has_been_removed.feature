@@ -10,8 +10,8 @@ Feature: Save a product when a channel has been removed
       | code        | type     | label-en_US | group |
       | description | textarea | Description | info  |
     And the following family:
-      | code      | attributes       |
-      | vegetable | sku, description |
+      | code      | attributes      |
+      | vegetable | sku,description |
     And the following products:
       | sku       | family    | description-en_US-tablet |
       | artichoke | vegetable | Yummy !                  |

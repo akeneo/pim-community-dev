@@ -19,8 +19,8 @@ Feature: Validate number attributes of a product
       | popularity | Popularity  | number | yes      | no     | no               | no               | 1          | 10         | other   |
       | random     | Random      | number | yes      | no     | no               | no               |            |            | general |
     And the following family:
-      | code | label-en_US | attributes                                                     | requirements-ecommerce | requirements-mobile |
-      | baz  | Baz         | sku, ref, sold, available, rating, popularity, quality, random | sku                    | sku                 |
+      | code | label-en_US | attributes                                              | requirements-ecommerce | requirements-mobile |
+      | baz  | Baz         | sku,ref,sold,available,rating,popularity,quality,random | sku                    | sku                 |
     And the following products:
       | sku | family | popularity-mobile | popularity-ecommerce | rating |
       | foo | baz    | 4                 | 4                    | 1      |

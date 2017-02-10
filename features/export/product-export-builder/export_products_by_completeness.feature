@@ -11,7 +11,7 @@ Feature: Export products according to a completeness policy
       | name | textarea | yes         | Name  |
     And the following family:
       | code      | requirements-ecommerce | attributes |
-      | localized | sku, name              | sku, name  |
+      | localized | sku,name               | sku,name   |
     And the following products:
       | sku        | categories | family    | name-fr_FR | name-en_US |
       | french     | default    | localized | French     |            |

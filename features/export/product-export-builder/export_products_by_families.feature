@@ -8,9 +8,9 @@ Feature: Export products according to their families
     Given an "footwear" catalog configuration
     And the following family:
       | code       | requirements-mobile | attributes |
-      | rangers    | sku, name           | sku, name  |
-      | boots      | sku, name           |            |
-      | heels      | sku, name           |            |
+      | rangers    | sku,name            | sku, name  |
+      | boots      | sku,name            |            |
+      | heels      | sku,name            |            |
     And the following products:
       | sku     | family  | categories        | name-en_US       |
       | SNKRS-1 | rangers | summer_collection | Black rangers    |

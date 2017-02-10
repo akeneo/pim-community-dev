@@ -14,8 +14,8 @@ Feature: Validate textarea attributes of a product
       | info             | Info            | textarea | no       | 5              | no              |
       | description      | Description     | textarea | yes      | 5              | no              |
     And the following family:
-      | code | label-en_US | attributes                                                     |
-      | baz  | Baz         | sku, info, long_info, description, long_description, long_text |
+      | code | label-en_US | attributes                                                |
+      | baz  | Baz         | sku,info,long_info,description,long_description,long_text |
     And the following product:
       | sku | family |
       | foo | baz    |
