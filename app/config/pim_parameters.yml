@@ -44,3 +44,6 @@ parameters:
     doctrine_migrations_dir: %kernel.root_dir%/../upgrades/schema
 
     pim_analytics_update_server_url: https://updates.akeneo.com
+
+    # Maximum number of items returned in the paginated responses of the API
+    api_pagination_limit_max: 100
