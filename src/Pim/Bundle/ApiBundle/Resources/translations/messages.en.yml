@@ -1,7 +1,11 @@
 pim_api:
     acl:
         rights: Web API permissions
+        channel.list: List channels through Web API
+        locale.list: List locales through Web API
     acl_group:
         overall_access: Overall Web API access
+        channel: Channel API access
+        locale: Locale API access
 
 rights.api: Web API permissions
