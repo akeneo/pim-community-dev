@@ -15,6 +15,7 @@ use Akeneo\Component\Localization\Presenter\DatePresenter;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Notification\ProjectNotifierInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -22,7 +23,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ProjectDueDateReminderNotifier implements ProjectDueDateReminderNotifierInterface
+class ProjectDueDateReminderNotifier implements ProjectNotifierInterface
 {
     /** @var ProjectNotificationFactory */
     protected $projectNotificationFactory;

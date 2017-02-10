@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Command;
 
-use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectDueDateNotifierInterface;
+use PimEnterprise\Component\ActivityManager\Notification\ProjectNotifierInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
@@ -65,11 +65,11 @@ class NotificationDueDateWarningCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return ProjectDueDateNotifierInterface
+     * @return ProjectNotifierInterface
      */
     protected function getNotifier()
     {
-        return $this->getContainer()->get('pimee_activity_manager.notifier.project_due_date');
+        return $this->getContainer()->get('pimee_activity_manager.notifier.project_due_date_reminder');
     }
 
     /**

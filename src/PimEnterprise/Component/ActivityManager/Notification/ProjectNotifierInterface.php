@@ -9,21 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ActivityManagerBundle\Notification;
+namespace PimEnterprise\Component\ActivityManager\Notification;
 
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Notify the user when the project due date is close.
- *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-interface ProjectDueDateReminderNotifierInterface
+interface ProjectNotifierInterface
 {
     /**
-     * Notify the user when the project due date is close.
+     * Notify the user about project event.
      *
      * @param UserInterface          $user
      * @param ProjectInterface       $project

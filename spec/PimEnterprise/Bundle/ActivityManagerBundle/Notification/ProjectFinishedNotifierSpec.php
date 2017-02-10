@@ -7,13 +7,13 @@ use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectNotificationFactory;
-use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectNotifierInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectFinishedNotifier;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectStatusInterface;
+use PimEnterprise\Component\ActivityManager\Notification\ProjectNotifierInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectStatusRepositoryInterface;
 
 class ProjectFinishedNotifierSpec extends ObjectBehavior

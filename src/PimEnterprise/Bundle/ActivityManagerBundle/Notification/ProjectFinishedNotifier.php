@@ -15,6 +15,7 @@ use Akeneo\Component\Localization\Presenter\DatePresenter;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Notification\ProjectNotifierInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectStatusRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 

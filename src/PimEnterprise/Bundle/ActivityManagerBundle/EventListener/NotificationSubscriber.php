@@ -12,13 +12,13 @@
 namespace PimEnterprise\Bundle\ActivityManagerBundle\EventListener;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectNotifierInterface;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvent;
 use PimEnterprise\Component\ActivityManager\Event\ProjectEvents;
 use PimEnterprise\Component\ActivityManager\Factory\ProjectStatusFactoryInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectStatusInterface;
+use PimEnterprise\Component\ActivityManager\Notification\ProjectNotifierInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectStatusRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;

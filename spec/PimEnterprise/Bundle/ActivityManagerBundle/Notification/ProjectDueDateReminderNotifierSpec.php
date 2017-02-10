@@ -7,12 +7,12 @@ use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectDueDateReminderNotifier;
-use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectDueDateReminderNotifierInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectNotificationFactory;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Notification\ProjectNotifierInterface;
 
 class ProjectDueDateReminderNotifierSpec extends ObjectBehavior
 {
@@ -31,7 +31,7 @@ class ProjectDueDateReminderNotifierSpec extends ObjectBehavior
 
     function it_is_a_notifier()
     {
-        $this->shouldImplement(ProjectDueDateReminderNotifierInterface::class);
+        $this->shouldImplement(ProjectNotifierInterface::class);
     }
 
     function it_does_not_notify_user_if_the_project_is_complete(

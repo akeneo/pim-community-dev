@@ -4,9 +4,9 @@ namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Command;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\ActivityManagerBundle\Command\NotificationDueDateWarningCommand;
-use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectDueDateReminderNotifierInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Notification\ProjectNotifierInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\UserRepositoryInterface;
@@ -40,7 +40,7 @@ class NotificationDueDateWarningCommandSpec extends ObjectBehavior
         ProjectRepositoryInterface $projectRepository,
         ProjectInterface $project,
         UserRepositoryInterface $userRepository,
-        ProjectDueDateReminderNotifierInterface $projectDueDateReminderNotifier,
+        ProjectNotifierInterface $projectDueDateReminderNotifier,
         ProjectCompletenessRepositoryInterface $projectCompletenessRepository,
         ProjectInterface $otherProject,
         ProjectCompleteness $projectCompleteness,
