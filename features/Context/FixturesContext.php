@@ -413,6 +413,8 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * TODO Make this method less hardcoded
+     *
      * @param TableNode $table
      *
      * @Then /^there should be the following families:$/
@@ -423,11 +425,16 @@ class FixturesContext extends BaseFixturesContext
             $family = $this->getFamily($data['code']);
             $requirement = $this->normalizeRequirements($family);
 
-            assertEquals($data['attributes'], implode(',', $family->getAttributeCodes()));
+            if (isset($data['attributes'])) {
+                assertEquals($data['attributes'], implode(',', $family->getAttributeCodes()));
+            }
             assertEquals($data['attribute_as_label'], $family->getAttributeAsLabel()->getCode());
+
             assertEquals($data['requirements-mobile'], $requirement['requirements-mobile']);
             assertEquals($data['requirements-tablet'], $requirement['requirements-tablet']);
-            assertEquals($data['label-en_US'], $family->getTranslation('en_US')->getLabel());
+            if (isset($data['label-en_US'])) {
+                assertEquals($data['label-en_US'], $family->getTranslation('en_US')->getLabel());
+            }
         }
     }
 

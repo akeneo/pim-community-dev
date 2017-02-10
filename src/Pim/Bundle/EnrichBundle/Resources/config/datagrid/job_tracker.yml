@@ -55,15 +55,15 @@ datagrid:
                 type:
                     type:      string
                     label:     Type
-                    data_name: type
+                    data_name: j.type
                 job:
                     type: string
                     label: Job
-                    data_name: jobLabel
+                    data_name: j.label
                 user:
                     type:      string
                     label:     User
-                    data_name: user
+                    data_name: e.user
                 started_at:
                     type:             datetime
                     data_name:        startTime
