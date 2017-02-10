@@ -7,9 +7,9 @@ Feature: Unpublish many products at once
   Background:
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code        | label       | type                        | reference_data_name |
-      | main_fabric | Main fabric | reference_data_multiselect  | fabrics             |
-      | main_color  | Main color  | reference_data_simpleselect | color               |
+      | code        | label-en_US | type                            | reference_data_name | group |
+      | main_fabric | Main fabric | pim_reference_data_multiselect  | fabrics             | other |
+      | main_color  | Main color  | pim_reference_data_simpleselect | color               | other |
     And I am logged in as "Julia"
     And the following "main_fabric" attribute reference data: PVC, Nylon, Neoprene, Spandex, Wool, Kevlar, Jute
     And the following "main_color" attribute reference data: Red, Green, Light green, Blue, Yellow, Cyan, Magenta, Black, White

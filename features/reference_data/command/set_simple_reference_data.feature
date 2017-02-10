@@ -6,8 +6,8 @@ Feature: Create a draft with a simple reference data fields
   Background:
     Given a "clothing" catalog configuration
     And the following attributes:
-      | code      | label      | type                        | reference_data_name |
-      | top_color | Main color | reference_data_simpleselect | color               |
+      | code      | label-en_US | type                            | reference_data_name | group |
+      | top_color | Main color  | pim_reference_data_simpleselect | color               | other |
     And the following "top_color" attribute reference data: Red, Green, Light green, Blue, Yellow, Cyan
     And the following product:
       | sku           | categories |

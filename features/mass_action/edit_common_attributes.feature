@@ -10,9 +10,9 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
       | code       | attributes                                     |
       | high_heels | sku,name,manufacturer,description,price,rating |
     And the following attribute group accesses:
-      | attribute group | user group | access |
-      | info            | Manager    | edit   |
-      | marketing       | Manager    | view   |
+      | attribute group | user group | access | group | type             |
+      | info            | Manager    | edit   | other | pim_catalog_text |
+      | marketing       | Manager    | view   | other | pim_catalog_text |
     And the following product:
       | sku       | family     | rating |
       | highheels | high_heels | 2      |

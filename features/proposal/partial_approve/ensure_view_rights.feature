@@ -28,9 +28,9 @@ Feature: Partial approve
       | field | value  | tab       |
       | Price | 10 USD | Marketing |
     And the following attribute group accesses:
-      | attribute group | user group | access |
-      | info            | Manager    | view   |
-      | marketing       | Manager    | none   |
+      | attribute group | user group | access | group | type             |
+      | info            | Manager    | view   | other | pim_catalog_text |
+      | marketing       | Manager    | none   | other | pim_catalog_text |
     And the following locale accesses:
       | locale | user group | access |
       | fr_FR  | Manager    | none   |

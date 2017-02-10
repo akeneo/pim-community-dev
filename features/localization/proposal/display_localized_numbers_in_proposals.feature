@@ -7,9 +7,9 @@ Feature: Display localized numbers in proposals
   Background:
     Given an "clothing" catalog configuration
     And the following attributes:
-      | code           | label          | type   | decimals_allowed | group | default_metric_unit | metric_family |
-      | decimal_number | decimal_number | number | yes              | info  |                     |               |
-      | weight         | Weight         | metric | yes              | info  | KILOGRAM            | Weight        |
+      | code           | label-en_US    | type               | decimals_allowed | group | default_metric_unit | metric_family |
+      | decimal_number | decimal_number | pim_catalog_number | 1                | info  |                     |               |
+      | weight         | Weight         | pim_catalog_metric | 1                | info  | KILOGRAM            | Weight        |
     And the following family:
       | code       | attributes                           |
       | high_heels | sku,name,price,decimal_number,weight |

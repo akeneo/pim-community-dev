@@ -7,9 +7,9 @@ Feature: Validate file attributes of a draft
   Background:
     Given the "clothing" catalog configuration
     And the following attributes:
-      | code       | label-en_US | type | scopable | max_file_size | allowed_extensions | group |
-      | brief      | Brief       | file | no       | 0.01          | jpg                | info  |
-      | attachment | Attachment  | file | yes      | 0.01          | jpg                | info  |
+      | code       | label-en_US | type             | scopable | max_file_size | allowed_extensions | group |
+      | brief      | Brief       | pim_catalog_file | 0        | 0.01          | jpg                | info  |
+      | attachment | Attachment  | pim_catalog_file | 1        | 0.01          | jpg                | info  |
     And the following family:
       | code | label-en_US | attributes           |
       | baz  | Baz         | sku,brief,attachment |

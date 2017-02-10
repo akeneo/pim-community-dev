@@ -79,13 +79,13 @@ Feature: List proposals
     And I am on the "additional_materials" attribute page
     And I visit the "Values" tab
     And I create the following attribute options:
-      | Code | en_US | fr_FR | de_DE |
-      | Blue | Blue  | Bleu  | Blau  |
+      | Code | en_US | fr_FR | de_DE | group | type             |
+      | Blue | Blue  | Bleu  | Blau  | other | pim_catalog_text |
     And I am on the "weather_conditions" attribute page
     And I visit the "Values" tab
     And I create the following attribute options:
-      | Code | en_US | fr_FR | de_DE |
-      | Blue | Blue  | Bleu  | Blau  |
+      | Code | en_US | fr_FR | de_DE | group | type             |
+      | Blue | Blue  | Bleu  | Blau  | other | pim_catalog_text |
     And I logout
     And Mary proposed the following change to "tshirt":
       | tab        | field              | value |

@@ -7,13 +7,13 @@ Feature: Validate text attributes of a draft
   Background:
     Given the "clothing" catalog configuration
     And the following attributes:
-      | code     | label-en_US | type | scopable | unique | max_characters | validation_rule | validation_regexp | group |
-      | barcode  | Barcode     | text | no       | yes    | 8              | regexp          | /^0\d*$/          | info  |
-      | email    | Email       | text | no       | yes    |                | email           |                   | info  |
-      | link     | Link        | text | no       | no     |                | url             |                   | info  |
-      | barcodes | Barcodes    | text | yes      | no     | 8              | regexp          | /^0\d*$/          | info  |
-      | emails   | Emails      | text | yes      | no     |                | email           |                   | info  |
-      | links    | Links       | text | yes      | no     |                | url             |                   | info  |
+      | code     | label-en_US | type             | scopable | unique | max_characters | validation_rule | validation_regexp | group |
+      | barcode  | Barcode     | pim_catalog_text | 0        | 1      | 8              | regexp          | /^0\d*$/          | info  |
+      | email    | Email       | pim_catalog_text | 0        | 1      |                | email           |                   | info  |
+      | link     | Link        | pim_catalog_text | 0        | 0      |                | url             |                   | info  |
+      | barcodes | Barcodes    | pim_catalog_text | 1        | 0      | 8              | regexp          | /^0\d*$/          | info  |
+      | emails   | Emails      | pim_catalog_text | 1        | 0      |                | email           |                   | info  |
+      | links    | Links       | pim_catalog_text | 1        | 0      |                | url             |                   | info  |
     And the following family:
       | code | label-en_US | attributes                                   |
       | baz  | Baz         | sku,barcode,email,link,barcodes,emails,links |

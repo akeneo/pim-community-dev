@@ -7,11 +7,11 @@ Feature: Validate metric attributes of a draft
   Background:
     Given the "clothing" catalog configuration
     And the following attributes:
-      | code       | label-en_US | type   | scopable | metric_family | default_metric_unit | negative_allowed | decimals_allowed | number_min | number_max | group |
-      | area       | Area        | metric | no       | Area          | HECTARE             | no               | no               |            |            | info  |
-      | max_length | Length      | metric | yes      | Length        | METER               | no               | no               |            |            | info  |
-      | power      | Power       | metric | no       | Power         | WATT                | yes              | yes              | -200       | -100       | info  |
-      | speed      | Speed       | metric | yes      | Speed         | YARD_PER_HOUR       | yes              | yes              | 5          | 100        | info  |
+      | code       | label-en_US | type               | scopable | metric_family | default_metric_unit | negative_allowed | decimals_allowed | number_min | number_max | group |
+      | area       | Area        | pim_catalog_metric | 0        | Area          | HECTARE             | 0                | 0                |            |            | info  |
+      | max_length | Length      | pim_catalog_metric | 1        | Length        | METER               | 0                | 0                |            |            | info  |
+      | power      | Power       | pim_catalog_metric | 0        | Power         | WATT                | 1                | 1                | -200       | -100       | info  |
+      | speed      | Speed       | pim_catalog_metric | 1        | Speed         | YARD_PER_HOUR       | 1                | 1                | 5          | 100        | info  |
     And the following family:
       | code | label-en_US | attributes                      |
       | baz  | Baz         | sku,area,max_length,power,speed |

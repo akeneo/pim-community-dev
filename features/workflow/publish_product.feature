@@ -37,22 +37,22 @@ Feature: Publish a product
   @skip @jira https://akeneo.atlassian.net/browse/PIM-4762
   Scenario: Successfully publish a product containing attributes
     Given the following attributes:
-      | code      | label-en_US | type | scopable | unique | date_min   | date_max   | group |
-      | release   | Release     | date | no       | yes    | 2013-01-01 | 2015-12-12 | info  |
-      | available | Available   | date | yes      | no     | 2013-01-01 | 2015-12-12 | info  |
+      | code      | label-en_US | type             | scopable | unique | date_min   | date_max   | group |
+      | release   | Release     | pim_catalog_date | 0        | 1      | 2013-01-01 | 2015-12-12 | info  |
+      | available | Available   | pim_catalog_date | 1        | 0      | 2013-01-01 | 2015-12-12 | info  |
     And the following attributes:
-      | code       | label-en_US | type   | scopable | metric_family | default_metric_unit | negative_allowed | decimals_allowed | number_min | number_max | group |
-      | max_length | Length      | metric | yes      | Length        | METER               | no               | no               |            |            | info  |
+      | code       | label-en_US | type               | scopable | metric_family | default_metric_unit | negative_allowed | decimals_allowed | number_min | number_max | group |
+      | max_length | Length      | pim_catalog_metric | 1        | Length        | METER               | 0                | 0                |            |            | info  |
     And the following attributes:
-      | code       | label-en_US | type   | scopable | unique | negative_allowed | decimals_allowed | number_min | number_max | group |
-      | popularity | Popularity  | number | yes      | no     | no               | no               | 1          | 10         | info  |
+      | code       | label-en_US | type               | scopable | unique | negative_allowed | decimals_allowed | number_min | number_max | group |
+      | popularity | Popularity  | pim_catalog_number | 1        | 0      | 0                | 0                | 1          | 10         | info  |
     And the following attributes:
-      | code    | label-en_US | type   | scopable | negative_allowed | decimals_allowed | number_min | number_max | group |
-      | customs | Customs     | prices | yes      |                  | yes              | 10         | 100        | info  |
+      | code    | label-en_US | type                         | scopable | negative_allowed | decimals_allowed | number_min | number_max | group |
+      | customs | Customs     | pim_catalog_price_collection | 1        |                  | 1                | 10         | 100        | info  |
     And the following attributes:
-      | code    | label-en_US | type  | allowed_extensions |
-      | picture | Picture     | image | jpg                |
-      | manual  | Manual      | file  | txt                |
+      | code    | label-en_US | type              | allowed_extensions | group |
+      | picture | Picture     | pim_catalog_image | jpg                | other |
+      | manual  | Manual      | pim_catalog_file  | txt                | other |
     And the following product:
       | sku       | family  | name-en_US |
       | my-jacket | jackets | Jackets    |
@@ -109,8 +109,8 @@ Feature: Publish a product
   @jira https://akeneo.atlassian.net/browse/PIM-5996
   Scenario: Successfully publish a product containing boolean attributes
     Given the following attributes:
-      | code       | label-en_US | type    |
-      | waterproof | Waterproof  | boolean |
+      | code       | label-en_US | type                | group |
+      | waterproof | Waterproof  | pim_catalog_boolean | other |
     And the following product:
       | sku       | family  | name-en_US |
       | my-jacket | jackets | Jackets    |
@@ -130,8 +130,8 @@ Feature: Publish a product
   @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Fail to delete attribute options if it's used by a published product
     Given the following attributes:
-      | code    | label   | type        | scopable | localizable | allowed_extensions | metric_family | default_metric_unit |
-      | climate | Climate | multiselect | no       | no          |                   |               |                     |
+      | code    | label-en_US | type                    | scopable | localizable | allowedExtensions | metric_family | default_metric_unit | group |
+      | climate | Climate     | pim_catalog_multiselect | 0        | 0           |                   |               |                     | other |
     And the following product:
       | sku       | family  | name-en_US |
       | my-jacket | jackets | Jackets    |
