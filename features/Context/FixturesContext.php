@@ -420,27 +420,33 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * TODO Make this method less hardcoded
-     *
      * @param TableNode $table
      *
-     * @Then /^there should be the following families:$/
+     * @Then /^there should be the following famil(?:y|ies):$/
      */
     public function thereShouldBeTheFollowingFamilies(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
             $family = $this->getFamily($data['code']);
-            $requirement = $this->normalizeRequirements($family);
+            unset($data['code']);
 
-            if (isset($data['attributes'])) {
-                assertEquals($data['attributes'], implode(',', $family->getAttributeCodes()));
-            }
-            assertEquals($data['attribute_as_label'], $family->getAttributeAsLabel()->getCode());
-
-            assertEquals($data['requirements-mobile'], $requirement['requirements-mobile']);
-            assertEquals($data['requirements-tablet'], $requirement['requirements-tablet']);
-            if (isset($data['label-en_US'])) {
-                assertEquals($data['label-en_US'], $family->getTranslation('en_US')->getLabel());
+            foreach ($data as $key => $value) {
+                $matches = null;
+                if ('attributes' === $key) {
+                    $this->assertArrayEquals(explode(',', $value), $family->getAttributeCodes());
+                } elseif ('attribute_as_label' === $key) {
+                    assertEquals($value, $family->getAttributeAsLabel()->getCode());
+                } elseif (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
+                    assertEquals($value, $family->getTranslation($matches['locale'])->getLabel());
+                } elseif (preg_match('/^requirements-(?P<channel>.*)$/', $key, $matches)) {
+                    $requirements = [];
+                    foreach ($family->getAttributeRequirements() as $requirement) {
+                        if ($matches['channel'] === $requirement->getChannel()->getCode()) {
+                            $requirements[] = $requirement->getAttribute()->getCode();
+                        }
+                    }
+                    $this->assertArrayEquals(explode(',', $value), $requirements);
+                }
             }
         }
     }
@@ -559,34 +565,6 @@ class FixturesContext extends BaseFixturesContext
             asort($codes);
             assertEquals($data['attributes'], implode(',', $codes));
         }
-    }
-
-    /**
-     * Normalize the requirements
-     *
-     * @param FamilyInterface $family
-     *
-     * @return array
-     */
-    protected function normalizeRequirements(FamilyInterface $family)
-    {
-        $required = [];
-        $flat     = [];
-        foreach ($family->getAttributeRequirements() as $requirement) {
-            $channelCode = $requirement->getChannel()->getCode();
-            if (!isset($required['requirements-' . $channelCode])) {
-                $required['requirements-' . $channelCode] = [];
-            }
-            if ($requirement->isRequired()) {
-                $required['requirements-' . $channelCode][] = $requirement->getAttribute()->getCode();
-            }
-        }
-
-        foreach ($required as $key => $attributes) {
-            $flat[$key] = implode(',', $attributes);
-        }
-
-        return $flat;
     }
 
     /**
@@ -2224,5 +2202,18 @@ class FixturesContext extends BaseFixturesContext
     protected function getDocumentManager()
     {
         return $this->getContainer()->get('doctrine_mongodb')->getManager();
+    }
+
+    /**
+     * Assert than 2 arrays are equal, regardless the order of the elements.
+     *
+     * @param $array1
+     * @param $array2
+     */
+    protected function assertArrayEquals($array1, $array2)
+    {
+        sort($array1);
+        sort($array2);
+        assertEquals(join(', ', $array1), join(', ', $array2));
     }
 }
