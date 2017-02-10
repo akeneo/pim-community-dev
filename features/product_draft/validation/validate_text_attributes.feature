@@ -15,8 +15,8 @@ Feature: Validate text attributes of a draft
       | emails   | Emails      | text | yes      | no     |                | email           |                   | info  |
       | links    | Links       | text | yes      | no     |                | url             |                   | info  |
     And the following family:
-      | code | label-en_US | attributes                                         |
-      | baz  | Baz         | sku, barcode, email, link, barcodes, emails, links |
+      | code | label-en_US | attributes                                   |
+      | baz  | Baz         | sku,barcode,email,link,barcodes,emails,links |
     And the following products:
       | sku | family | categories        | email           |
       | foo | baz    | summer_collection | foo@example.com |

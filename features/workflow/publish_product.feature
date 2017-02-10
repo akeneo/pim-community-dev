@@ -57,8 +57,8 @@ Feature: Publish a product
       | sku       | family  | name-en_US |
       | my-jacket | jackets | Jackets    |
     And the following family:
-      | code | label-en_US | attributes                                               |
-      | baz  | Baz         | sku, release, available, max_length, popularity, customs |
+      | code | label-en_US | attributes                                          |
+      | baz  | Baz         | sku,release,available,max_length,popularity,customs |
     And the following product values:
       | product   | attribute  | value                 | scope  |
       | my-jacket | release    | 2013-02-02            |        |
@@ -115,8 +115,8 @@ Feature: Publish a product
       | sku       | family  | name-en_US |
       | my-jacket | jackets | Jackets    |
     And the following family:
-      | code | label-en_US | attributes      |
-      | baz  | Baz         | sku, waterproof |
+      | code | label-en_US | attributes     |
+      | baz  | Baz         | sku,waterproof |
     And the following product values:
       | product   | attribute  | value |
       | my-jacket | handmade   | 1     |

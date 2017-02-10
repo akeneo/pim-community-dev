@@ -11,8 +11,8 @@ Feature: Validate image attributes of a draft
       | image     | Image       | image | no       | 0.01          | jpg                | info  |
       | thumbnail | Thumbnail   | image | yes      | 0.01          | jpg                | info  |
     And the following family:
-      | code | label-en_US | attributes            |
-      | baz  | Baz         | sku, image, thumbnail |
+      | code | label-en_US | attributes          |
+      | baz  | Baz         | sku,image,thumbnail |
     And the following product:
       | sku | family | categories        |
       | foo | baz    | summer_collection |

@@ -7,8 +7,8 @@ Feature: Save only filled fields after a save
   Background:
     Given a "clothing" catalog configuration
     Given the following family:
-      | code  | attributes                  |
-      | socks | sku, name, length, handmade |
+      | code  | attributes               |
+      | socks | sku,name,length,handmade |
     And the following product:
       | sku        | family | categories        | name-en_US |
       | sport-sock | socks  | summer_collection | Socks      |

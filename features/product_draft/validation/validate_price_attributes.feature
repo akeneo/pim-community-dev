@@ -13,8 +13,8 @@ Feature: Validate price attributes of a draft
       | tax       | Tax         | prices | no       |                  | yes              | 10         | 100        | info  |
       | customs   | Customs     | prices | yes      |                  | yes              | 10         | 100        | info  |
     And the following family:
-      | code | label-en_US | attributes                         |
-      | baz  | Baz         | sku, cost, net_price, tax, customs |
+      | code | label-en_US | attributes                     |
+      | baz  | Baz         | sku,cost,net_price,tax,customs |
     And the following product:
       | sku | family | categories        |
       | foo | baz    | summer_collection |

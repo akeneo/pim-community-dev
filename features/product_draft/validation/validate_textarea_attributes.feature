@@ -13,8 +13,8 @@ Feature: Validate textarea attributes of a draft
       | long_info        | Longinfo        | textarea | no       | 10             | yes             | info       |
       | long_description | Longdescription | textarea | yes      | 10             | yes             | marketing  |
     And the following family:
-      | code | label-en_US | attributes                                              |
-      | baz  | Baz         | sku, info, long_info, old_description, long_description |
+      | code | label-en_US | attributes                                          |
+      | baz  | Baz         | sku,info,long_info,old_description,long_description |
     And the following product:
       | sku | family | categories        |
       | foo | baz    | summer_collection |

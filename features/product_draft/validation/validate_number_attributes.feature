@@ -15,8 +15,8 @@ Feature: Validate number attributes of a draft
       | quality    | Quality     | number | no       | no     | no               | yes              | 1          | 10         | info  |
       | popularity | Popularity  | number | yes      | no     | no               | no               | 1          | 10         | info  |
     And the following family:
-      | code | label-en_US | attributes                                           |
-      | baz  | Baz         | sku, ref, sold, available, note, popularity, quality |
+      | code | label-en_US | attributes                                     |
+      | baz  | Baz         | sku,ref,sold,available,note,popularity,quality |
     And the following products:
       | sku | family | popularity-mobile | popularity-tablet | note | categories        | ref |
       | foo | baz    | 4                 | 4                 | 1    | summer_collection |     |

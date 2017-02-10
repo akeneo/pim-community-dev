@@ -11,8 +11,8 @@ Feature: Display localized numbers in proposals
       | decimal_number | decimal_number | number | yes              | info  |                     |               |
       | weight         | Weight         | metric | yes              | info  | KILOGRAM            | Weight        |
     And the following family:
-      | code       | attributes                               |
-      | high_heels | sku, name, price, decimal_number, weight |
+      | code       | attributes                           |
+      | high_heels | sku,name,price,decimal_number,weight |
     And the following product category accesses:
       | product category | user group | access |
       | 2014_collection  | Redactor   | edit   |

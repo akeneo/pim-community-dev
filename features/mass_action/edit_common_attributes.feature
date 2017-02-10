@@ -7,8 +7,8 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
   Background:
     Given a "footwear" catalog configuration
     And the following family:
-      | code       | attributes                                          |
-      | high_heels | sku, name, manufacturer, description, price, rating |
+      | code       | attributes                                     |
+      | high_heels | sku,name,manufacturer,description,price,rating |
     And the following attribute group accesses:
       | attribute group | user group | access |
       | info            | Manager    | edit   |

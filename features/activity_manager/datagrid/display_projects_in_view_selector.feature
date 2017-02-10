@@ -68,10 +68,10 @@ Feature: Display activity manager projects in the datagrid view selector
       | media           | Read Only           | view   |
       | media           | Media manager       | edit   |
     And the following families:
-      | code     | label-en_US | attributes                                                            | requirements-ecommerce                          | requirements-mobile                    |
-      | tshirt   | TShirts     | sku, name, description, size, weight, release_date, material          | sku, name, size, description, material          | sku, name, size, description, material |
-      | usb_keys | USB Keys    | sku, name, description, size, weight, release_date, capacity, picture | sku, name, size, description, capacity, picture | sku, name, size, description, capacity |
-      | posters  | Posters     | sku, name, description, size, release_date, picture                   | sku, name, size, description, picture           | sku, name, size, description, picture  |
+      | code     | label-en_US | attributes                                                     | requirements-ecommerce                     | requirements-mobile                |
+      | tshirt   | TShirts     | sku,name,description,size,weight,release_date,material         | sku,name,size,description,material         | sku,name,size,description,material |
+      | usb_keys | USB Keys    | sku,name,description,size,weight,release_date,capacity,picture | sku,name,size,description,capacity,picture | sku,name,size,description,capacity |
+      | posters  | Posters     | sku,name,description,size,release_date,picture                 | sku,name,size,description,picture          | sku,name,size,description,picture  |
     And the following products:
       | sku                  | family   | categories         | name-en_US                | size-en_US | weight-en_US | weight-en_US-unit | release_date-en_US | release_date-fr_FR | material-en_US | capacity | capacity-unit |
       | tshirt-the-witcher-3 | tshirt   | clothing           | T-Shirt "The Witcher III" | M          | 5            | OUNCE             | 2015-06-20         | 2015-06-20         | cotton         |          |               |

@@ -11,8 +11,8 @@ Feature: Validate date attributes of a draft
       | release   | Release     | date | no       | yes    | 2013-01-01 | 2015-12-12 | info  |
       | available | Available   | date | yes      | no     | 2013-01-01 | 2015-12-12 | info  |
     And the following family:
-      | code | label-en_US | attributes              |
-      | baz  | Baz         | sku, release, available |
+      | code | label-en_US | attributes            |
+      | baz  | Baz         | sku,release,available |
     And the following products:
       | sku | family | categories        |
       | foo | baz    | summer_collection |
