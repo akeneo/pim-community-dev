@@ -5,15 +5,6 @@ pim_import_export:
   connector: Wtyczka
   status:
     - Gotowe
-  batch_status:
-    1: WYKONANO
-    2: ROZPOCZYNANIE
-    3: ROZPOCZĘTE
-    4: ZATRZYMYWANIE
-    5: ZATRZYMANE
-    6: NIE POWIODŁO SIĘ
-    7: PORZUCONE
-    8: NIEZNANY
   download_archive:
     output: pobierz utworzony plik|pobierz utworzone pliki
     input: pobierz wczytany plik|pobierz wczytane pliki
@@ -149,11 +140,3 @@ Summary: Podsumowanie
 Start: Start
 End: Koniec
 set_attribute_requirements: Określ wymagania atrybutów
-COMPLETED: WYKONANO
-STARTING: ROZPOCZYNANIE
-STARTED: ROZPOCZĘTE
-STOPPING: ZATRZYMYWANIE
-STOPPED: ZATRZYMANE
-FAILED: NIE POWIODŁO SIĘ
-ABANDONED: PORZUCONE
-UNKNOWN: NIEZNANY

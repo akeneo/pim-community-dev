@@ -5,15 +5,6 @@ pim_import_export:
   connector: Connecteur
   status:
     - Prêt
-  batch_status:
-    1: TERMINÉ
-    2: DÉMARRAGE EN COURS
-    3: DÉMARRÉ
-    4: ARRÊT EN COURS
-    5: ARRÊTÉ
-    6: EN ÉCHEC
-    7: ABANDONNÉ
-    8: INCONNU
   download_archive:
     archive: Télécharger l'archive générée|Télécharger les archives générées
     output: Télécharger le fichier généré|Télécharger les fichiers générés
@@ -156,12 +147,4 @@ Summary: Résumé
 Start: Début
 End: Fin
 set_attribute_requirements: Choisir les attributs requis
-COMPLETED: TERMINÉ
-STARTING: DÉMARRAGE EN COURS
-STARTED: DÉMARRÉ
-STOPPING: ARRÊT EN COURS
-STOPPED: ARRÊTÉ
-FAILED: EN ÉCHEC
-ABANDONED: ABANDONNÉ
-UNKNOWN: INCONNU
 warning.label: Attention
