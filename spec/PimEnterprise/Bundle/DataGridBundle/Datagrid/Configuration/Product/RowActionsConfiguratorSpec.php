@@ -35,10 +35,10 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
-        $record->getValue('id')->willReturn(42);
+        $record->getValue('identifier')->willReturn('foo');
         $record->getValue('dataLocale')->willReturn('en_US');
         $localeRepository->findOneBy(['code' => 'en_US'])->willReturn($locale);
-        $productRepository->findOneById(42)->willReturn($product);
+        $productRepository->findOneByIdentifier('foo')->willReturn($product);
 
         $this->beConstructedWith($registry, $authorizationChecker, $productRepository, $localeRepository);
     }

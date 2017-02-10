@@ -116,3 +116,13 @@ akeneo_storage_utils:
         -
             original: Pim\Bundle\UserBundle\Entity\User
             override: PimEnterprise\Bundle\UserBundle\Entity\User
+
+pim_elastic_search:
+    client:
+        product:
+            index_name: "%pim_es_index_name%"
+        published_product:
+            index_name: "%pim_es_published_product_index%"
+        config:
+            host: "%pim_es_host%"
+            port: "%pim_es_port%"

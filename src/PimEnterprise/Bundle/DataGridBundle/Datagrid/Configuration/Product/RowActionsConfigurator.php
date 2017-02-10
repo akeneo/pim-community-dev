@@ -78,7 +78,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
-            $product = $this->productRepository->findOneById($record->getValue('id'));
+            $product = $this->productRepository->findOneByIdentifier($record->getValue('identifier'));
 
             $editGranted = $this->authorizationChecker->isGranted(Attributes::EDIT, $product);
             $ownershipGranted = $editGranted && $this->authorizationChecker->isGranted(Attributes::OWN, $product);
