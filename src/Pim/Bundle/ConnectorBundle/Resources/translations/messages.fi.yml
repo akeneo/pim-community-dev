@@ -5,7 +5,6 @@ pim_connector:
     entity_reader.title: Kohteen poisto
     csv_reader:
       title: CSV-lukija
-      invalid_item_columns_count: 'Odotit %totalColumnsCount% saraketta, sinulla on %itemColumnsCount% %csvPath%:%lineno%'
     csv_product_reader.title: CSV-tuotteen lukija
     csv_category_reader.title: CSV-kategorian lukija
     csv_variant_group .title: CSV-vaihtoehtojen ryhmälukija
