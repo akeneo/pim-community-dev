@@ -5,7 +5,7 @@ pim_dashboard:
       status: Status
       date: Päivämäärä
       type: Tyyppi
-      profile name: Profiilinimi
+      profile_name: Profiilinimi
       details: Lisätiedot
       job_type:
         import: Tuonti

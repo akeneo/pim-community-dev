@@ -5,15 +5,6 @@ pim_import_export:
   connector: Conector
   status:
     - Pronto
-  batch_status:
-    1: CONCLUÍDO
-    2: A COMEÇAR
-    3: COMEÇOU
-    4: A PARAR
-    5: PAROU
-    6: FALHOU
-    7: ABANDONADO
-    8: DESCONHECIDO
   download_archive:
     output: transferir ficheiro gerado | transferir ficheiros gerados
     input: transferir ficheiro lido| transferir ficheiros lidos
@@ -150,12 +141,4 @@ Summary: Resumo
 Start: Início
 End: Fim
 set_attribute_requirements: Estabelecer requisitos do atributo
-COMPLETED: CONCLUÍDO
-STARTING: A COMEÇAR
-STARTED: COMEÇOU
-STOPPING: A PARAR
-STOPPED: PAROU
-FAILED: FALHOU
-ABANDONED: ABANDONADO
-UNKNOWN: DESCONHECIDO
 warning.label: Aviso

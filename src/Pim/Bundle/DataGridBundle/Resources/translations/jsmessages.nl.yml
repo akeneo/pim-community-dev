@@ -40,8 +40,10 @@ oro_datagrid.select.all: "Alle"
 oro_datagrid.select.visible: "Alle zichtbare"
 oro_datagrid.select.none: "Geen"
 pim.grid.ajax_choice_filter.label_empty: is leeg
+pim.grid.ajax_choice_filter.label_not_empty: is niet leeg
 pim.grid.choice_filter:
   label_empty: is leeg
+  label_not_empty: is niet leeg
   label_in_list: in lijst
 Available Columns: Beschikbare kolommen
 Displayed Columns: Geselecteerde kolommen

@@ -5,7 +5,7 @@ pim_dashboard:
       status: Estat
       date: Data
       type: Tipus
-      profile name: Nom del perfil
+      profile_name: Nom del perfil
       details: Detalls
       job_type:
         import: Importar
