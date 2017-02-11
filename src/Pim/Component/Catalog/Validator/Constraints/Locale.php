@@ -15,4 +15,7 @@ class Locale extends Constraint
 {
     /** @var string */
     public $message = 'The locale "%locale%" does not exist.';
+
+    /** @var string */
+    public $propertyPath = null;
 }

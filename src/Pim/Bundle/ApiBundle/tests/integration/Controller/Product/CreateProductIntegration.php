@@ -771,7 +771,7 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'values[sku].varchar',
+                    'field'   => 'identifier',
                     'message' => 'This value should not be blank.',
                 ],
             ],
@@ -796,9 +796,65 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'values[sku].varchar',
+                    'field'   => 'identifier',
                     'message' => 'This value should not be blank.',
                 ],
+            ],
+        ];
+
+        $response = $client->getResponse();
+
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
+    public function testResponseWhenAttributeValidationFailed()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "identifier": "wrong_amount",
+        "values": {
+            "a_scopable_price": [{
+                "locale": null,
+                "scope": "ecommerce",
+                "data": [
+                    { "amount": "string", "currency": "EUR" },
+                    { "amount": 12, "currency": "USD" }
+                ]
+            }],
+            "a_number_float_negative":[{
+                "locale": null,
+                "scope": null,
+                "data": -300
+            }]
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Validation failed.',
+            'errors'  => [
+                [
+                    'field'     => 'values',
+                    'message'   => 'This value should be a valid number.',
+                    'attribute' => 'a_scopable_price',
+                    'locale'    => null,
+                    'scope'     => 'ecommerce',
+                    'currency'  => 'EUR'
+                ],
+                [
+                    'field'     => 'values',
+                    'message'   => 'This value should be -250 or more.',
+                    'attribute' => 'a_number_float_negative',
+                    'locale'    => null,
+                    'scope'     => null
+                ]
             ],
         ];
 
@@ -826,7 +882,7 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'values[sku]',
+                    'field'   => 'identifier',
                     'message' => 'The value simple is already set on another product for the unique attribute sku',
                 ],
             ],

@@ -33,6 +33,15 @@ class LocaleValidator extends ConstraintValidator
     {
         $locale = $this->localeRepository->findOneByIdentifier($value);
         if (null === $locale) {
+            if (null !== $constraint->propertyPath) {
+                $this->context->setNode(
+                    $value,
+                    $this->context->getObject(),
+                    $this->context->getMetadata(),
+                    $constraint->propertyPath
+                );
+            }
+
             $this->context->buildViolation(
                 $constraint->message,
                 ['%locale%' => $value]
