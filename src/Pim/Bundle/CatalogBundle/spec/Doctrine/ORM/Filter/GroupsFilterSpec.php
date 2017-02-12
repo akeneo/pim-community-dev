@@ -8,7 +8,6 @@ use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Prophecy\Argument;
 
 class GroupsFilterSpec extends ObjectBehavior
