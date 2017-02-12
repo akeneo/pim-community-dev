@@ -2,10 +2,11 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -183,10 +184,10 @@ class StringFilterSpec extends ObjectBehavior
     {
         $attribute->getCode()->willReturn('attributeCode');
 
-        $this->shouldThrow(InvalidArgumentException::stringExpected(
+        $this->shouldThrow(InvalidPropertyTypeException::stringExpected(
             'attributeCode',
             'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter',
-            gettype(123)
+            123
         ))->during('addAttributeFilter', [$attribute, '=', 123, null, null, ['field' => 'attributeCode']]);
     }
 
@@ -199,10 +200,10 @@ class StringFilterSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $attrValidatorHelper->validateLocale($attribute, null)->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException(
-                $e,
+            InvalidPropertyException::expectedFromPreviousException(
                 'attributeCode',
-                'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter'
+                'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter',
+                $e
             )
         )->during('addAttributeFilter', [$attribute, '=', 123, null, null, ['field' => 'attributeCode']]);
     }
@@ -216,7 +217,7 @@ class StringFilterSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(false);
         $attrValidatorHelper->validateLocale($attribute, 'en_US')->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter')
+            InvalidPropertyException::expectedFromPreviousException('attributeCode', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter', $e)
         )->during('addAttributeFilter', [$attribute, '=', 123, 'en_US', 'ecommerce', ['field' => 'attributeCode']]);
     }
 
@@ -229,7 +230,7 @@ class StringFilterSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $attrValidatorHelper->validateLocale($attribute, 'uz-UZ')->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter')
+            InvalidPropertyException::expectedFromPreviousException('attributeCode', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter', $e)
         )->during('addAttributeFilter', [$attribute, '=', 123, 'uz-UZ', 'ecommerce', ['field' => 'attributeCode']]);
     }
 
@@ -244,7 +245,7 @@ class StringFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, null)->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter')
+            InvalidPropertyException::expectedFromPreviousException('attributeCode', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter', $e)
         )->during('addAttributeFilter', [$attribute, '=', 123, null, null, ['field' => 'attributeCode']]);
     }
 
@@ -259,7 +260,7 @@ class StringFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, 'ecommerce')->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter')
+            InvalidPropertyException::expectedFromPreviousException('attributeCode', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter', $e)
         )->during('addAttributeFilter', [$attribute, '=', 123, null, 'ecommerce', ['field' => 'attributeCode']]);
     }
 
@@ -274,7 +275,7 @@ class StringFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, 'ecommerce')->willThrow($e);
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter')
+            InvalidPropertyException::expectedFromPreviousException('attributeCode', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter', $e)
         )->during('addAttributeFilter', [$attribute, '=', 123, null, 'ecommerce', ['field' => 'attributeCode']]);
     }
 }

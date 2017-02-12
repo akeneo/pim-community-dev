@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -136,9 +136,9 @@ class NumberFilterSpec extends ObjectBehavior
     function it_throws_an_exception_if_value_is_not_a_numeric(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('number_code');
-        $this->shouldThrow(InvalidArgumentException::numericExpected(
+        $this->shouldThrow(InvalidPropertyTypeException::numericExpected(
             'number_code', 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\NumberFilter',
-            gettype('WRONG')
+            'WRONG'
         ))->during('addAttributeFilter', [$attribute, '=', 'WRONG']);
     }
 }
