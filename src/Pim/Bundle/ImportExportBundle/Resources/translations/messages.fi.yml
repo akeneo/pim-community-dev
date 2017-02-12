@@ -5,15 +5,6 @@ pim_import_export:
   connector: Liitin
   status:
     - Valmis
-  batch_status:
-    1: VALMIS
-    2: ALKAEN
-    3: ALKOI
-    4: PYSÄYTYS
-    5: LOPETTANUT
-    6: EPÄONNISTUNUT
-    7: HYLÄTTY
-    8: TUNTEMATON
   download_archive:
     archive: lataa luotu arkisto|lataa luodut arkistot
     output: lataus loi tiedoston|latauksien luomat tiedostot
@@ -156,12 +147,4 @@ Summary: Yhteenveto
 Start: Aloitus
 End: Loppu
 set_attribute_requirements: Aseta attribuuttivaatimukset
-COMPLETED: VALMIS
-STARTING: ALKAEN
-STARTED: ALKOI
-STOPPING: PYSÄYTYS
-STOPPED: LOPETTANUT
-FAILED: EPÄONNISTUNUT
-ABANDONED: HYLÄTTY
-UNKNOWN: TUNTEMATON
 warning.label: Varoitus
