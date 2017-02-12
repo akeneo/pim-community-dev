@@ -99,9 +99,9 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
 
         foreach ($data as $key => $value) {
             if (!is_string($value)) {
-                throw InvalidPropertyTypeException::arrayStringKeyExpected(
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $attribute->getCode(),
-                    $key,
+                    sprintf('one of the "%s" values is not a scalar', $attribute->getCode()),
                     static::class,
                     $data
                 );

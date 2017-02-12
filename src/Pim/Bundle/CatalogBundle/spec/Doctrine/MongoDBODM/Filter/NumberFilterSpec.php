@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
@@ -153,7 +154,7 @@ class NumberFilterSpec extends ObjectBehavior
     {
         $attribute->getCode()->willReturn('number_code');
 
-        $this->shouldThrow(InvalidArgumentException::numericExpected('number_code', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\NumberFilter', gettype('WRONG')))
+        $this->shouldThrow(InvalidPropertyTypeException::numericExpected('number_code', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\NumberFilter', 'WRONG'))
             ->during('addAttributeFilter', [$attribute, '=', 'WRONG']);
     }
 }

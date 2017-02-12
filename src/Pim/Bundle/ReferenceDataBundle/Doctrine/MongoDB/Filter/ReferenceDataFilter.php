@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDB\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\AbstractAttributeFilter;
 use Pim\Bundle\CatalogBundle\ProductQueryUtility;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver;
@@ -60,7 +61,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'number');
+        $this->checkLocaleAndScope($attribute, $locale, $scope);
 
         if (!in_array($operator, [Operators::IS_EMPTY, Operators::IS_NOT_EMPTY])) {
             $field = $options['field'];
@@ -140,7 +141,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         try {
             $value = $this->idsResolver->resolve($attribute->getReferenceDataName(), $value);
         } catch (\LogicException $e) {
-            throw InvalidArgumentException::validEntityCodeExpected(
+            throw InvalidPropertyException::validEntityCodeExpected(
                 $attribute->getCode(),
                 'code',
                 $e->getMessage(),
