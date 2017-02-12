@@ -50,8 +50,8 @@ class BooleanFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_yes_no" expects a boolean as data, "string" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "a_yes_no" expects a boolean as data, "string" given.
      */
     public function testErrorDataIsMalformed()
     {
@@ -59,8 +59,8 @@ class BooleanFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_yes_no" expects a boolean as data, "NULL" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "a_yes_no" expects a boolean as data, "NULL" given.
      */
     public function testErrorDataIsNull()
     {

@@ -212,8 +212,8 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_scopable_localizable_price" expects valid data, scope and locale. Attribute "a_scopable_localizable_price" expects a locale, none given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Attribute "a_scopable_localizable_price" expects a locale, none given.
      */
     public function testErrorPriceLocalizableAndScopable()
     {
@@ -221,8 +221,8 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_scopable_localizable_price" expects valid data, scope and locale. Attribute "a_scopable_localizable_price" expects a scope, none given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Attribute "a_scopable_localizable_price" expects a scope, none given.
      */
     public function testErrorPriceLocalizable()
     {
@@ -230,8 +230,8 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_scopable_localizable_price" expects valid data, scope and locale. Attribute "a_scopable_localizable_price" expects an existing and activated locale, "NOT_FOUND" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Attribute "a_scopable_localizable_price" expects an existing and activated locale, "NOT_FOUND" given.
      */
     public function testLocaleNotFound()
     {
@@ -239,8 +239,8 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_scopable_localizable_price" expects valid data, scope and locale. Attribute "a_scopable_localizable_price" expects an existing scope, "NOT_FOUND" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Attribute "a_scopable_localizable_price" expects an existing scope, "NOT_FOUND" given.
      */
     public function testScopeNotFound()
     {

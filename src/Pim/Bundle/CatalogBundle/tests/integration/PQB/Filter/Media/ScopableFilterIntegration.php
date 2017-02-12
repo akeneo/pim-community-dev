@@ -123,8 +123,8 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_scopable_image" expects valid data, scope and locale. Attribute "a_scopable_image" expects an existing scope, "NOT_FOUND" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Attribute "a_scopable_image" expects an existing scope, "NOT_FOUND" given.
      */
     public function testScopeNotFound()
     {

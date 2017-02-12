@@ -137,8 +137,8 @@ class PriceFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_price" expects an array as data, "string" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "a_price" expects an array as data, "string" given.
      */
     public function testErrorDataIsMalformed()
     {
@@ -146,11 +146,8 @@ class PriceFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_price" expects an array with the key "amount" as data, "Array
-     * (
-     * [currency] => USD
-     * )" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "a_price" expects an array with the key "amount" as data.
      */
     public function testErrorAmountIsMissing()
     {
@@ -158,11 +155,8 @@ class PriceFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_price" expects an array with the key "currency" as data, "Array
-     * (
-     * [amount] =>
-     * )" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "a_price" expects an array with the key "currency" as data.
      */
     public function testErrorCurrencyIsMissing()
     {
@@ -170,8 +164,8 @@ class PriceFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_price" expects an array with valid data for the key "currency". The currency does not exist, "NOT_FOUND" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Property "a_price" expects a valid currency. The currency does not exist, "NOT_FOUND" given.
      */
     public function testErrorCurrencyNotFound()
     {

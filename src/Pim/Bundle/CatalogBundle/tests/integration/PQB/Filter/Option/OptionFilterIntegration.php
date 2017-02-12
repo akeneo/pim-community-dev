@@ -78,8 +78,8 @@ class OptionFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_simple_select" expects an array as data, "string" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "a_simple_select" expects an array as data, "string" given.
      */
     public function testErrorDataIsMalformed()
     {
