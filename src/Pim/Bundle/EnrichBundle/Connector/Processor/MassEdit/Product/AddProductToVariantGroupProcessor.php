@@ -3,7 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;

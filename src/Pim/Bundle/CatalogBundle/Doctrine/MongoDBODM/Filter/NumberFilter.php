@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Bundle\CatalogBundle\ProductQueryUtility;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
