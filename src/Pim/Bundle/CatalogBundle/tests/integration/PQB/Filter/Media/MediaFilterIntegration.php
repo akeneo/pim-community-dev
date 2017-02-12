@@ -101,8 +101,8 @@ class MediaFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "an_image" expects a string as data, "array" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "an_image" expects a string as data, "array" given.
      */
     public function testErrorDataIsMalformed()
     {
