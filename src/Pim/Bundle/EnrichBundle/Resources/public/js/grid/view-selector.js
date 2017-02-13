@@ -141,7 +141,7 @@ define(
                     formatResult: function (item, $container) {
                         FormBuilder.build('pim-grid-view-selector-line').then(function (form) {
                             form.setParent(this);
-                            form.setView(item, this.currentViewType, this.currentView.id === item.id);
+                            form.setView(item, this.currentViewType, this.currentView.id);
                             $container.append(form.render().$el);
                         }.bind(this));
                     }.bind(this),
@@ -244,7 +244,10 @@ define(
                             .then(this.postFetchDatagridView.bind(this))
                             .then(function (view) {
                                 deferred.resolve(view);
-                            });
+                            })
+                            .fail(function () {
+                                this.selectView(userDefaultView ? userDefaultView : this.getDefaultView());
+                            }.bind(this));
                     } else {
                         // Other, set the default view
                         deferred.resolve(this.getDefaultView());

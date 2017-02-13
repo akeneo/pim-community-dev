@@ -40,8 +40,10 @@ oro_datagrid.select.all: "Sve"
 oro_datagrid.select.visible: "Sve vidljive"
 oro_datagrid.select.none: "Niti jedan"
 pim.grid.ajax_choice_filter.label_empty: je prazan
+pim.grid.ajax_choice_filter.label_not_empty: nije prazan
 pim.grid.choice_filter:
   label_empty: je prazan
+  label_not_empty: nije prazan
   label_in_list: na popisu
 Available Columns: Dostupni stupci
 Displayed Columns: Odabrani stupci

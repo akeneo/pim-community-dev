@@ -5,15 +5,6 @@ pim_import_export:
   connector: Connector
   status:
     - Gereed
-  batch_status:
-    1: VOLTOOID
-    2: BEZIG MET STARTEN
-    3: GESTART
-    4: BEZIG MET STOPPEN
-    5: GESTOPT
-    6: MISLUKT
-    7: AFGEBROKEN
-    8: ONBEKEND
   download_archive:
     output: download gegenereerd bestand | download gegenereerde bestanden
     input: download ingelezen bestand | download ingelezen bestanden
@@ -154,12 +145,4 @@ Status: Status
 Summary: Samenvatting
 Start: Start
 End: Einde
-COMPLETED: VOLTOOID
-STARTING: BEZIG MET STARTEN
-STARTED: GESTART
-STOPPING: BEZIG MET STOPPEN
-STOPPED: GESTOPT
-FAILED: MISLUKT
-ABANDONED: AFGEBROKEN
-UNKNOWN: ONBEKEND
 warning.label: Waarschuwing
