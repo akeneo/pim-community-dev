@@ -303,7 +303,12 @@ class PriceFilterSpec extends ObjectBehavior
 
         $value = ['currency' => 'foo'];
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('price_code', 'amount', 'filter', 'price', print_r($value, true))
+            InvalidArgumentException::arrayKeyExpected(
+                'price_code',
+                'amount',
+                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter',
+                print_r($value, true)
+            )
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
 
@@ -312,8 +317,7 @@ class PriceFilterSpec extends ObjectBehavior
             InvalidArgumentException::arrayKeyExpected(
                 'price_code',
                 'currency',
-                'filter',
-                'price',
+                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter',
                 print_r($value, true)
             )
         )
@@ -321,13 +325,23 @@ class PriceFilterSpec extends ObjectBehavior
 
         $value = ['amount' => 'foo', 'currency' => 'foo'];
         $this->shouldThrow(
-            InvalidArgumentException::arrayNumericKeyExpected('price_code', 'amount', 'filter', 'price', 'string')
+            InvalidArgumentException::arrayNumericKeyExpected(
+                'price_code',
+                'amount',
+                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter',
+                'string'
+            )
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
 
         $value = ['amount' => 132, 'currency' => 42];
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringKeyExpected('price_code', 'currency', 'filter', 'price', 'integer')
+            InvalidArgumentException::arrayStringKeyExpected(
+                'price_code',
+                'currency',
+                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter',
+                'integer'
+            )
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
     }
@@ -343,8 +357,7 @@ class PriceFilterSpec extends ObjectBehavior
                 'price_code',
                 'currency',
                 'The currency does not exist',
-                'filter',
-                'price',
+                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter',
                 'FOO'
             )
         )->during('addAttributeFilter', [$attribute, '=', $value]);

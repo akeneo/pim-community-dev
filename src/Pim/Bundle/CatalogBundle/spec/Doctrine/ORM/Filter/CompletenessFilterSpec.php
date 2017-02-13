@@ -329,7 +329,7 @@ class CompletenessFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_a_integer()
     {
-        $this->shouldThrow(InvalidArgumentException::numericExpected('completeness', 'filter', 'completeness', gettype('123')))
+        $this->shouldThrow(InvalidArgumentException::numericExpected('completeness', 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter', gettype('123')))
             ->during('addFieldFilter', ['completeness', '=', '12z3', 'en_US', 'mobile']);
     }
 
@@ -340,8 +340,7 @@ class CompletenessFilterSpec extends ObjectBehavior
                 InvalidArgumentException::arrayKeyExpected(
                     'completeness',
                     'locales',
-                    'filter',
-                    'completeness',
+                    'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter',
                     print_r([], true)
                 )
             )
@@ -361,8 +360,7 @@ class CompletenessFilterSpec extends ObjectBehavior
             ->shouldThrow(
                 InvalidArgumentException::arrayOfArraysExpected(
                     'completeness',
-                    'filter',
-                    'completeness',
+                    'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter',
                     print_r(['locales' => 'fr_FR'], true)
                 )
             )

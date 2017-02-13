@@ -31,11 +31,11 @@ class Group implements GroupInterface
     /** @var GroupTypeInterface */
     protected $type;
 
-    /**  @var ArrayCollection $products */
+    /**  @var ArrayCollection */
     protected $products;
 
-    /**  @var ArrayCollection $attributes */
-    protected $attributes;
+    /**  @var ArrayCollection */
+    protected $axisAttributes;
 
     /**
      * Used locale to override Translation listener's locale
@@ -58,7 +58,7 @@ class Group implements GroupInterface
     {
         $this->products = new ArrayCollection();
         $this->translations = new ArrayCollection();
-        $this->attributes = new ArrayCollection();
+        $this->axisAttributes = new ArrayCollection();
     }
 
     /**
@@ -242,10 +242,10 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function addAxisAttribute(AttributeInterface $attribute)
+    public function addAxisAttribute(AttributeInterface $axisAttribute)
     {
-        if (!$this->attributes->contains($attribute)) {
-            $this->attributes[] = $attribute;
+        if (!$this->axisAttributes->contains($axisAttribute)) {
+            $this->axisAttributes[] = $axisAttribute;
         }
 
         return $this;
@@ -254,27 +254,11 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttribute(AttributeInterface $attribute)
+    public function removeAxisAttribute(AttributeInterface $axisAttribute)
     {
-        return $this->addAxisAttribute($attribute);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeAxisAttribute(AttributeInterface $attribute)
-    {
-        $this->attributes->removeElement($attribute);
+        $this->axisAttributes->removeElement($axisAttribute);
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeAttribute(AttributeInterface $attribute)
-    {
-        return $this->removeAxisAttribute($attribute);
     }
 
     /**
@@ -282,53 +266,24 @@ class Group implements GroupInterface
      */
     public function getAxisAttributes()
     {
-        return $this->attributes;
+        return $this->axisAttributes;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAttributes()
+    public function setAxisAttributes(array $newAxisAttributes = [])
     {
-        return $this->getAxisAttributes();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAttributeIds()
-    {
-        return array_map(
-            function ($attribute) {
-                return $attribute->getId();
-            },
-            $this->getAttributes()->toArray()
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setAxisAttributes(array $newAttributes = [])
-    {
-        foreach ($this->attributes as $attribute) {
-            if (!in_array($attribute, $newAttributes)) {
-                $this->removeAxisAttribute($attribute);
+        foreach ($this->axisAttributes as $axisAttribute) {
+            if (!in_array($axisAttribute, $newAxisAttributes)) {
+                $this->removeAxisAttribute($axisAttribute);
             }
         }
-        foreach ($newAttributes as $attribute) {
-            $this->addAxisAttribute($attribute);
+        foreach ($newAxisAttributes as $newAxisAttribute) {
+            $this->addAxisAttribute($newAxisAttribute);
         }
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setAttributes(array $attributes = [])
-    {
-        return $this->setAxisAttributes($attributes);
     }
 
     /**

@@ -124,7 +124,7 @@ class ProductBuilder implements ProductBuilderInterface
         );
 
         foreach ($missingValues as $value) {
-            $this->addProductValue($product, $attributes[$value['attribute']], $value['locale'], $value['scope'], null);
+            $this->addOrReplaceProductValue($product, $attributes[$value['attribute']], $value['locale'], $value['scope'], null);
         }
 
         $this->addMissingPricesToProduct($product);
@@ -157,27 +157,20 @@ class ProductBuilder implements ProductBuilderInterface
         $requiredValues = $this->valuesResolver->resolveEligibleValues([$attribute]);
 
         foreach ($requiredValues as $value) {
-            $this->addProductValue($product, $attribute, $value['locale'], $value['scope'], null);
+            $this->addOrReplaceProductValue($product, $attribute, $value['locale'], $value['scope'], null);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeAttributeFromProduct(ProductInterface $product, AttributeInterface $attribute)
-    {
-        foreach ($product->getValues() as $value) {
-            if ($attribute === $value->getAttribute()) {
-                $product->removeValue($value);
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addProductValue(ProductInterface $product, AttributeInterface $attribute, $locale, $scope, $data)
-    {
+    public function addOrReplaceProductValue(
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        $locale,
+        $scope,
+        $data
+    ) {
         $productValue = $product->getValue($attribute->getCode(), $locale, $scope);
         if (null !== $productValue) {
             $product->removeValue($productValue);
@@ -262,7 +255,7 @@ class ProductBuilder implements ProductBuilderInterface
                     }
                 }
 
-                $this->addProductValue($product, $attribute, $value->getLocale(), $value->getScope(), $prices);
+                $this->addOrReplaceProductValue($product, $attribute, $value->getLocale(), $value->getScope(), $prices);
             }
         }
     }
@@ -291,7 +284,7 @@ class ProductBuilder implements ProductBuilderInterface
                 $requiredValues = $this->valuesResolver->resolveEligibleValues([$attribute]);
 
                 foreach ($requiredValues as $value) {
-                    $this->addProductValue($product, $attribute, $value['scope'], $value['locale'], false);
+                    $this->addOrReplaceProductValue($product, $attribute, $value['scope'], $value['locale'], false);
                 }
             }
         }

@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Factory\ProductValue;
 
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Factory\MetricFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
@@ -76,7 +76,7 @@ class MetricProductValueFactory implements ProductValueFactoryInterface
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
@@ -85,31 +85,28 @@ class MetricProductValueFactory implements ProductValueFactoryInterface
         }
 
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected(
+            throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
-                'metric',
-                'factory',
-                gettype($data)
+                static::class,
+                $data
             );
         }
 
         if (!array_key_exists('amount', $data)) {
-            throw InvalidArgumentException::arrayKeyExpected(
+            throw InvalidPropertyTypeException::arrayKeyExpected(
                 $attribute->getCode(),
                 'amount',
-                'metric',
-                'factory',
-                implode(', ', array_keys($data))
+                static::class,
+                $data
             );
         }
 
         if (!array_key_exists('unit', $data)) {
-            throw InvalidArgumentException::arrayKeyExpected(
+            throw InvalidPropertyTypeException::arrayKeyExpected(
                 $attribute->getCode(),
                 'unit',
-                'metric',
-                'factory',
-                implode(', ', array_keys($data))
+                static::class,
+                $data
             );
         }
     }

@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Factory\ProductValue;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
@@ -63,7 +63,7 @@ class DateProductValueFactory implements ProductValueFactoryInterface
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
@@ -72,12 +72,10 @@ class DateProductValueFactory implements ProductValueFactoryInterface
         }
 
         if (!is_string($data)) {
-            throw InvalidArgumentException::expected(
+            throw InvalidPropertyTypeException::stringExpected(
                 $attribute->getCode(),
-                'datetime or string',
-                'date',
-                'factory',
-                gettype($data)
+                static::class,
+                $data
             );
         }
 
@@ -103,8 +101,7 @@ class DateProductValueFactory implements ProductValueFactoryInterface
         throw InvalidPropertyException::dateExpected(
             $attribute->getCode(),
             'yyyy-mm-dd',
-            'date',
-            'factory',
+            static::class,
             $data
         );
     }

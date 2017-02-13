@@ -65,8 +65,7 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
             throw InvalidArgumentException::expectedFromPreviousException(
                 $e,
                 $attribute->getCode(),
-                'filter',
-                'options'
+                static::class
             );
         }
 
@@ -101,10 +100,10 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
      */
     protected function checkValue($field, $values)
     {
-        FieldFilterHelper::checkArray($field, $values, 'options');
+        FieldFilterHelper::checkArray($field, $values, static::class);
 
         foreach ($values as $value) {
-            FieldFilterHelper::checkIdentifier($field, $value, 'options');
+            FieldFilterHelper::checkIdentifier($field, $value, static::class);
         }
     }
 

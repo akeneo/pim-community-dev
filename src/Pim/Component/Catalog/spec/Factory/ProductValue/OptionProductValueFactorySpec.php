@@ -3,8 +3,8 @@
 namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\ProductValue\OptionProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
@@ -155,18 +155,16 @@ class OptionProductValueFactorySpec extends ObjectBehavior
 
         $attrOptionRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
 
-        $booleanException = InvalidArgumentException::stringExpected(
+        $booleanException = InvalidPropertyTypeException::stringExpected(
             'simple_select_attribute',
-            'simple select',
-            'factory',
-            'boolean'
+            OptionProductValueFactory::class,
+            true
         );
 
-        $arrayException = InvalidArgumentException::stringExpected(
+        $arrayException = InvalidPropertyTypeException::stringExpected(
             'simple_select_attribute',
-            'simple select',
-            'factory',
-            'array'
+            OptionProductValueFactory::class,
+            []
         );
 
         $this
@@ -193,8 +191,7 @@ class OptionProductValueFactorySpec extends ObjectBehavior
             'simple_select_attribute',
             'code',
             'The option does not exist',
-            'simple select',
-            'factory',
+            OptionProductValueFactory::class,
             'foobar'
         );
 

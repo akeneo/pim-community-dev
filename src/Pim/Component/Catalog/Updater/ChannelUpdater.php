@@ -132,8 +132,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
                 'category_tree',
                 'code',
                 'The category does not exist',
-                'updater',
-                'channel',
+                static::class,
                 $treeCode
             );
         }
@@ -156,8 +155,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
                     'currencies',
                     'code',
                     'The currency does not exist',
-                    'updater',
-                    'channel',
+                    static::class,
                     $currencyCode
                 );
             }
@@ -184,8 +182,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
                     'locales',
                     'code',
                     'The locale does not exist',
-                    'updater',
-                    'channel',
+                    static::class,
                     $localeCode
                 );
             }
@@ -226,8 +223,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
                     'conversionUnits',
                     'attributeCode',
                     'the attribute code for the conversion unit does not exist',
-                    'updater',
-                    'channel',
+                    static::class,
                     $attributeCode
                 );
             }
@@ -237,8 +233,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
                     'conversionUnits',
                     'unitCode',
                     'the metric unit code for the conversion unit does not exist',
-                    'updater',
-                    'channel',
+                    static::class,
                     $conversionUnit
                 );
             }

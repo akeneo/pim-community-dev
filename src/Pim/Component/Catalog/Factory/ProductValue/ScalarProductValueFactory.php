@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Factory\ProductValue;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
@@ -61,7 +61,7 @@ class ScalarProductValueFactory implements ProductValueFactoryInterface
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
@@ -70,12 +70,10 @@ class ScalarProductValueFactory implements ProductValueFactoryInterface
         }
 
         if (!is_scalar($data)) {
-            throw InvalidArgumentException::expected(
+            throw InvalidPropertyTypeException::scalarExpected(
                 $attribute->getCode(),
-                'a scalar',
-                'simple',
-                'factory',
-                gettype($data)
+                static::class,
+                $data
             );
         }
     }

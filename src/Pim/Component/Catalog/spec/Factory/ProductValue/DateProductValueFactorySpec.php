@@ -3,8 +3,8 @@
 namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\ProductValue\DateProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValue;
@@ -132,12 +132,10 @@ class DateProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('date');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $exception = InvalidArgumentException::expected(
+        $exception = InvalidPropertyTypeException::stringExpected(
             'date_attribute',
-            'datetime or string',
-            'date',
-            'factory',
-            'array'
+            DateProductValueFactory::class,
+            []
         );
 
         $this
@@ -157,8 +155,7 @@ class DateProductValueFactorySpec extends ObjectBehavior
         $exception = InvalidPropertyException::dateExpected(
             'date_attribute',
             'yyyy-mm-dd',
-            'date',
-            'factory',
+            DateProductValueFactory::class,
             'foobar is no date'
         );
 
@@ -179,8 +176,7 @@ class DateProductValueFactorySpec extends ObjectBehavior
         $exception = InvalidPropertyException::dateExpected(
             'date_attribute',
             'yyyy-mm-dd',
-            'date',
-            'factory',
+            DateProductValueFactory::class,
             '03-04-2013'
         );
 

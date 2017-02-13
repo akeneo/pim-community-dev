@@ -23,7 +23,7 @@ Pim\Bundle\CatalogBundle\Entity\Group:
                     nullable: false
             orphanRemoval: false
     manyToMany:
-        attributes:
+        axisAttributes:
             targetEntity: Pim\Component\Catalog\Model\AttributeInterface
             joinTable:
                 name: pim_catalog_group_attribute

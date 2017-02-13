@@ -217,7 +217,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     And there should be 1 product
-    And I should see "Attribute or field \"frontView\" expects a valid pathname as data"
+    And I should see "Property \"frontView\" expects a valid pathname as data"
     And the product "fanatic-freewave-76" should have the following values:
       | name-en_US | Fanatic Freewave 76     |
       | frontView  | fanatic-freewave-76.gif |
@@ -249,7 +249,7 @@ Feature: Execute a job
     And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "skipped 1"
     And there should be 2 products
-    And I should see "Attribute or field \"frontView\" expects a valid pathname as data"
+    And I should see "Property \"frontView\" expects a valid pathname as data"
     And the product "fanatic-freewave-76" should have the following values:
       | frontView  | fanatic-freewave-76.gif |
       | userManual | fanatic-freewave-76.txt |
@@ -433,4 +433,23 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "skipped 1"
-    And I should see "Attribute or field \"associations\" expects existing product identifier as data, \"unknown\" given"
+    And I should see "Property \"associations\" expects a valid product identifier. The product does not exist, \"unknown\" given."
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6152
+  Scenario: Display the lines with wrong number of columns
+    Given the following CSV file to import:
+      """
+      sku;description-en_US-tablet
+      product_ok
+      product_notok1;Description;foo
+      product_notok2;Description;;foo
+      """
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
+    Then I should see the text "Status: COMPLETED"
+    And I should see the text "created 1"
+    And I should see the text "Expecting to have 2 columns, actually have 3"
+    And I should see the text "Expecting to have 2 columns, actually have 4"

@@ -152,13 +152,20 @@ class FamilyFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_an_array()
     {
-        $this->shouldThrow(InvalidArgumentException::arrayExpected('family', 'filter', 'family', gettype('not an array')))
-            ->during('addFieldFilter', ['family', 'IN', 'not an array']);
+        $this->shouldThrow(InvalidArgumentException::arrayExpected(
+            'family',
+            'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\FamilyFilter',
+            gettype('not an array')
+        ))->during('addFieldFilter', ['family', 'IN', 'not an array']);
     }
 
     function it_throws_an_exception_if_content_of_array_is_not_string_or_numeric_or_empty()
     {
-        $this->shouldThrow(InvalidArgumentException::stringExpected('family', 'filter', 'family', gettype(false)))
+        $this->shouldThrow(InvalidArgumentException::stringExpected(
+            'family',
+            'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\FamilyFilter',
+            gettype(false)
+        ))
             ->during('addFieldFilter', ['family', 'IN', ['a_code', false]]);
     }
 

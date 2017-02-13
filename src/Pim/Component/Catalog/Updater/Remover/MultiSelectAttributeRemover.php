@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater\Remover;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
@@ -37,10 +37,7 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
     }
 
     /**
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     * @param array              $data
-     * @param array              $options
+     * {@inheritdoc}
      */
     public function removeAttributeData(
         ProductInterface $product,
@@ -78,7 +75,7 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
                 }
             }
 
-            $this->productBuilder->addProductValue($product, $attribute, $locale, $scope, $newOptionCodes);
+            $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope, $newOptionCodes);
         }
     }
 
@@ -87,26 +84,26 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
      *
      * @param AttributeInterface $attribute
      * @param mixed              $data
+     *
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected(
+            throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
-                'remover',
-                'multi select',
-                gettype($data)
+                static::class,
+                $data
             );
         }
 
         foreach ($data as $key => $value) {
             if (!is_string($value)) {
-                throw InvalidArgumentException::arrayStringValueExpected(
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $attribute->getCode(),
-                    $key,
-                    'remover',
-                    'multi select',
-                    gettype($value)
+                    sprintf('one of the option codes is not a string, "%s" given', gettype($value)),
+                    static::class,
+                    $data
                 );
             }
         }

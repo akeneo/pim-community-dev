@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\Collection;
@@ -99,7 +100,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     public function update($variantGroup, array $data, array $options = [])
     {
         if (!$variantGroup instanceof GroupInterface) {
-            throw InvalidPropertyException::objectExpected(
+            throw InvalidObjectException::objectExpected(
                 ClassUtils::getClass($variantGroup),
                 GroupInterface::class
             );
@@ -174,8 +175,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
                 'type',
                 'group type',
                 'The group type does not exist',
-                'updater',
-                'variant group',
+                static::class,
                 $type
             );
         }
@@ -208,7 +208,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
                 throw ImmutablePropertyException::immutableProperty(
                     'axes',
                     implode(',', $axes),
-                    'updater',
+                    static::class,
                     'variant group'
                 );
             }
@@ -223,8 +223,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
                     'axes',
                     'attribute code',
                     'The attribute does not exist',
-                    'updater',
-                    'variant group',
+                    static::class,
                     $axis
                 );
             }
@@ -404,8 +403,12 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         foreach ($mergedValues as $value) {
             if (null !== $value->getMedia()) {
                 $attributeCode = $value->getAttribute()->getCode();
-                foreach (array_keys($mergedValuesData[$attributeCode]) as $index) {
-                    $mergedValuesData[$attributeCode][$index]['data'] = $value->getMedia()->getKey();
+                foreach ($mergedValuesData[$attributeCode] as $index => $mergedValuesDataValues) {
+                    if ($value->getLocale() === $mergedValuesDataValues['locale'] &&
+                        $value->getScope() === $mergedValuesDataValues['scope']
+                    ) {
+                        $mergedValuesData[$attributeCode][$index]['data'] = $value->getMedia()->getKey();
+                    }
                 }
             }
         }

@@ -4,6 +4,7 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'routing',
         'oro/datafilter/text-filter',
         'pim/formatter/choices/base',
@@ -12,7 +13,7 @@ define(
         'pim/initselect2',
         'jquery.select2'
     ],
-    function($, _, Routing, TextFilter, ChoicesFormatter, UserContext, template, initSelect2) {
+    function($, _, __, Routing, TextFilter, ChoicesFormatter, UserContext, template, initSelect2) {
         return TextFilter.extend({
             operatorChoices: [],
             choiceUrl: null,
@@ -47,7 +48,7 @@ define(
                 $(e.currentTarget).parent().addClass('active');
                 var parentDiv = $(e.currentTarget).parent().parent().parent();
 
-                if ($(e.currentTarget).attr('data-value') === 'empty') {
+                if (_.contains(['empty', 'not empty'], $(e.currentTarget).attr('data-value'))) {
                     this._disableInput();
                 } else {
                     this._enableInput();
@@ -102,7 +103,7 @@ define(
             _writeDOMValue: function(value) {
                 this.$('li .operator_choice[data-value="' + value.type + '"]').trigger('click');
                 var operator = this.$('li.active .operator_choice').data('value');
-                if ('empty' === operator) {
+                if (_.contains(['empty', 'not empty'], operator)) {
                     this._setInputValue(this.criteriaValueSelectors.value, []);
                 } else {
                     this._setInputValue(this.criteriaValueSelectors.value, value.value);
@@ -115,15 +116,16 @@ define(
                 var operator = this.emptyChoice ? this.$('li.active .operator_choice').data('value') : 'in';
 
                 return {
-                    value: operator === 'empty' ? {} : this._getInputValue(this.criteriaValueSelectors.value),
+                    value: _.contains(['empty', 'not empty'], operator) ? {} : this._getInputValue(this.criteriaValueSelectors.value),
                     type: operator
                 };
             },
 
             _renderCriteria: function(el) {
                 this.operatorChoices = {
-                    'in':    _.__('pim.grid.choice_filter.label_in_list'),
-                    'empty': _.__('pim.grid.choice_filter.label_empty')
+                    'in':        __('pim.grid.choice_filter.label_in_list'),
+                    'empty':     __('pim.grid.choice_filter.label_empty'),
+                    'not empty': __('pim.grid.choice_filter.label_not_empty')
                 };
 
                 $(el).append(
@@ -223,7 +225,7 @@ define(
 
             _getCriteriaHint: function() {
                 var operator = this.$('li.active .operator_choice').data('value');
-                if ('empty' === operator) {
+                if (_.contains(['empty', 'not empty'], operator)) {
                     return this.operatorChoices[operator];
                 }
 

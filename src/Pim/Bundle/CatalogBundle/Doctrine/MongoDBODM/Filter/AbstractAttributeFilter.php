@@ -44,11 +44,10 @@ abstract class AbstractAttributeFilter extends AbstractFilter implements Attribu
      * @param AttributeInterface $attribute
      * @param string             $locale
      * @param string             $scope
-     * @param string             $type
      *
      * @throws InvalidArgumentException
      */
-    protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope, $type)
+    protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope)
     {
         try {
             $this->attrValidatorHelper->validateLocale($attribute, $locale);
@@ -57,8 +56,7 @@ abstract class AbstractAttributeFilter extends AbstractFilter implements Attribu
             throw InvalidArgumentException::expectedFromPreviousException(
                 $e,
                 $attribute->getCode(),
-                'filter',
-                $type
+                static::class
             );
         }
     }

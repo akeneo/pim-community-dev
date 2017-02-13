@@ -60,7 +60,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
 
         if (Operators::SINCE_LAST_JOB === $operator) {
             if (!is_string($value)) {
-                throw InvalidArgumentException::stringExpected($field, 'filter', 'updated', gettype($value));
+                throw InvalidArgumentException::stringExpected($field, static::class, gettype($value));
             }
 
             $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($value);
@@ -75,7 +75,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
 
         if (Operators::SINCE_LAST_N_DAYS === $operator) {
             if (!is_numeric($value)) {
-                throw InvalidArgumentException::numericExpected($field, 'filter', 'updated', gettype($value));
+                throw InvalidArgumentException::numericExpected($field, static::class, gettype($value));
             }
 
             $fromDate = new \DateTime(sprintf('%s days ago', $value), new \DateTimeZone('UTC'));
@@ -149,8 +149,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
             throw InvalidArgumentException::expected(
                 $type,
                 'array with 2 elements, string or \DateTime',
-                'filter',
-                'date',
+                static::class,
                 print_r($value, true)
             );
         }
@@ -194,8 +193,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
                 throw InvalidArgumentException::expected(
                     $type,
                     'a string with the format yyyy-mm-dd H:i:s',
-                    'filter',
-                    'date',
+                    static::class,
                     $value
                 );
             }
@@ -206,8 +204,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
         throw InvalidArgumentException::expected(
             $type,
             'array with 2 elements, string or \DateTime',
-            'filter',
-            'date',
+            static::class,
             print_r($value, true)
         );
     }

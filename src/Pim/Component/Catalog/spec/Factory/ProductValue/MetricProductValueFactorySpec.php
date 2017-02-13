@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\MetricFactory;
 use Pim\Component\Catalog\Factory\ProductValue\MetricProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -173,11 +173,10 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->getMetricFamily()->shouldNotBeCalled();
         $metricFactory->createMetric(Argument::cetera())->shouldNotBeCalled();
 
-        $exception = InvalidArgumentException::arrayExpected(
+        $exception = InvalidPropertyTypeException::arrayExpected(
             'metric_attribute',
-            'metric',
-            'factory',
-            'string'
+            MetricProductValueFactory::class,
+            'foobar'
         );
 
         $this
@@ -197,12 +196,11 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->getMetricFamily()->shouldNotBeCalled();
         $metricFactory->createMetric(Argument::cetera())->shouldNotBeCalled();
 
-        $exception = InvalidArgumentException::arrayKeyExpected(
+        $exception = InvalidPropertyTypeException::arrayKeyExpected(
             'metric_attribute',
             'amount',
-            'metric',
-            'factory',
-            'foo, unit'
+            MetricProductValueFactory::class,
+            ['foo' => 42, 'unit' => 'GRAM']
         );
 
         $this
@@ -222,12 +220,11 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->getMetricFamily()->shouldNotBeCalled();
         $metricFactory->createMetric(Argument::cetera())->shouldNotBeCalled();
 
-        $exception = InvalidArgumentException::arrayKeyExpected(
+        $exception = InvalidPropertyTypeException::arrayKeyExpected(
             'metric_attribute',
             'unit',
-            'metric',
-            'factory',
-            'amount, bar'
+            MetricProductValueFactory::class,
+            ['amount' => 42, 'bar' => 'GRAM']
         );
 
         $this

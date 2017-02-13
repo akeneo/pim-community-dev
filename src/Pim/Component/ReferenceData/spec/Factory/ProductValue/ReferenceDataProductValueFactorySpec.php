@@ -5,8 +5,8 @@ namespace spec\Pim\Component\ReferenceData\Factory\ProductValue;
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Model\ProductValue;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataProductValueFactory;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
@@ -169,11 +169,10 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('color');
 
-        $exception = InvalidArgumentException::stringExpected(
+        $exception = InvalidPropertyTypeException::stringExpected(
             'reference_data_simple_select_attribute',
-            'reference data',
-            'factory',
-            'array'
+            ReferenceDataProductValueFactory::class,
+            []
         );
 
         $this->shouldThrow($exception)->during('create', [$attribute, null, null, []]);
@@ -197,10 +196,9 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
 
         $exception = InvalidPropertyException::validEntityCodeExpected(
             'reference_data_simple_select_attribute',
-            'code',
-            'No reference data "color" with code "foobar" has been found',
-            'reference data',
-            'factory',
+            'reference data code',
+            'The reference data does not exists',
+            ReferenceDataProductValueFactory::class,
             'foobar'
         );
 

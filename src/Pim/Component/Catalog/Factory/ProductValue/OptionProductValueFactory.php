@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Factory\ProductValue;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
@@ -73,7 +73,7 @@ class OptionProductValueFactory implements ProductValueFactoryInterface
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
@@ -82,11 +82,10 @@ class OptionProductValueFactory implements ProductValueFactoryInterface
         }
 
         if (!is_string($data) && !is_numeric($data)) {
-            throw InvalidArgumentException::stringExpected(
+            throw InvalidPropertyTypeException::stringExpected(
                 $attribute->getCode(),
-                'simple select',
-                'factory',
-                gettype($data)
+                static::class,
+                $data
             );
         }
     }
@@ -114,8 +113,7 @@ class OptionProductValueFactory implements ProductValueFactoryInterface
                 $attribute->getCode(),
                 'code',
                 'The option does not exist',
-                'simple select',
-                'factory',
+                static::class,
                 $optionCode
             );
         }

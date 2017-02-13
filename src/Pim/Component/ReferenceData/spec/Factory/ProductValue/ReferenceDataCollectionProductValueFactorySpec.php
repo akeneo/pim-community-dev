@@ -5,9 +5,9 @@ namespace spec\Pim\Component\ReferenceData\Factory\ProductValue;
 use Acme\Bundle\AppBundle\Entity\Fabric;
 use Acme\Bundle\AppBundle\Model\ProductValue;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataCollectionProductValueFactory;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
@@ -178,11 +178,10 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('fabrics');
 
-        $exception = InvalidArgumentException::arrayExpected(
+        $exception = InvalidPropertyTypeException::arrayExpected(
             'reference_data_multi_select_attribute',
-            'reference data collection',
-            'factory',
-            'boolean'
+            ReferenceDataCollectionProductValueFactory::class,
+            true
         );
 
         $this->shouldThrow($exception)->during('create', [$attribute, null, null, true]);
@@ -198,12 +197,11 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('fabrics');
 
-        $exception = InvalidArgumentException::arrayStringKeyExpected(
+        $exception = InvalidPropertyTypeException::validArrayStructureExpected(
             'reference_data_multi_select_attribute',
-            'foo',
-            'reference data collection',
-            'factory',
-            'array'
+            'array key "foo" expects a string as value, "array" given',
+            ReferenceDataCollectionProductValueFactory::class,
+            ['foo' => ['bar']]
         );
 
         $this->shouldThrow($exception)->during('create', [$attribute, null, null, ['foo' => ['bar']]]);
@@ -227,10 +225,9 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
 
         $exception = InvalidPropertyException::validEntityCodeExpected(
             'reference_data_multi_select_attribute',
-            'code',
-            'No reference data "fabrics" with code "foobar" has been found',
-            'reference data collection',
-            'factory',
+            'reference data code',
+            'The reference data does not exists',
+            ReferenceDataCollectionProductValueFactory::class,
             'foobar'
         );
 

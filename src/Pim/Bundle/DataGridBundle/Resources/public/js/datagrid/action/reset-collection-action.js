@@ -1,6 +1,6 @@
 /* global define */
-define(['oro/datagrid/abstract-action'],
-function(AbstractAction) {
+define(['underscore', 'oro/datagrid/abstract-action'],
+function(_, AbstractAction) {
     'use strict';
 
     /**
@@ -37,7 +37,13 @@ function(AbstractAction) {
          * Execute reset collection
          */
         execute: function() {
-            this.collection.updateState(this.collection.initialState);
+            var initialState = this.collection._initState;
+
+            if (_.has(initialState, 'filters')) {
+                initialState.filters = _.omit(initialState.filters, 'scope');
+            }
+
+            this.collection.updateState(initialState);
             this.collection.fetch();
         }
     });

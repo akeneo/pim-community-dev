@@ -38,6 +38,6 @@ class AttributeSetter extends AbstractAttributeSetter
     ) {
         $options = $this->resolver->resolve($options);
 
-        $this->productBuilder->addProductValue($product, $attribute, $options['locale'], $options['scope'], $data);
+        $this->productBuilder->addOrReplaceProductValue($product, $attribute, $options['locale'], $options['scope'], $data);
     }
 }

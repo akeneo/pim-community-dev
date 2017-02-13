@@ -103,8 +103,11 @@ class BooleanFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_a_boolean()
     {
-        $this->shouldThrow(InvalidArgumentException::booleanExpected('enabled', 'filter', 'boolean', gettype('not a boolean')))
-            ->during('addFieldFilter', ['enabled', '=', 'not a boolean']);
+        $this->shouldThrow(InvalidArgumentException::booleanExpected(
+            'enabled',
+            'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\BooleanFilter',
+            gettype('not a boolean')
+        ))->during('addFieldFilter', ['enabled', '=', 'not a boolean']);
     }
 
     function it_returns_supported_fields()

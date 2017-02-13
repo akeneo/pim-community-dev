@@ -79,8 +79,8 @@ class MediaAttributeCopier extends AbstractAttributeCopier
         $fromScope = $options['from_scope'];
         $toScope = $options['to_scope'];
 
-        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'media');
-        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'media');
+        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope);
+        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope);
 
         $this->copySingleValue(
             $fromProduct,
@@ -127,7 +127,7 @@ class MediaAttributeCopier extends AbstractAttributeCopier
                 $file->setOriginalFilename($fromValue->getMedia()->getOriginalFilename());
             }
 
-            $this->productBuilder->addProductValue(
+            $this->productBuilder->addOrReplaceProductValue(
                 $toProduct,
                 $toAttribute,
                 $toLocale,

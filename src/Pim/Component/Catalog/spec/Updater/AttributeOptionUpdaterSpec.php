@@ -86,8 +86,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
                 'attribute',
                 'attribute code',
                 'The attribute does not exist',
-                'updater',
-                'attribute option',
+                'Pim\Component\Catalog\Updater\AttributeOptionUpdater',
                 'myattribute'
             )
         )->during(

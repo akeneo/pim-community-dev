@@ -53,8 +53,8 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         $fromScope = $options['from_scope'];
         $toScope = $options['to_scope'];
 
-        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'reference data');
-        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'reference data');
+        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope);
+        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope);
 
         $this->copySingleValue(
             $fromProduct,
@@ -105,7 +105,7 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         if (null !== $fromValue) {
             $fromDataGetter = $this->getValueGetterName($fromValue, $fromAttribute);
 
-            $this->productBuilder->addProductValue(
+            $this->productBuilder->addOrReplaceProductValue(
                 $toProduct,
                 $toAttribute,
                 $toLocale,

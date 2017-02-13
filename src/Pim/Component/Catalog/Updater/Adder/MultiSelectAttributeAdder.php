@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater\Adder;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -41,11 +41,10 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
         $options = $this->resolver->resolve($options);
 
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected(
+            throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
-                'adder',
-                'multi select',
-                gettype($data)
+                static::class,
+                $data
             );
         }
 
@@ -75,6 +74,6 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
             }
         }
 
-        $this->productBuilder->addProductValue($product, $attribute, $locale, $scope, array_unique($optionCodes));
+        $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope, array_unique($optionCodes));
     }
 }

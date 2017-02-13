@@ -109,3 +109,16 @@ Feature: Export products according to simple select values
       sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
       BOOT-2;;;;1;boots;;;Converse;"The boot 2";;;;;;;
       """
+
+  Scenario: Successfully remove simple select filter
+    Given I am logged in as "Julia"
+    And I am on the "csv_footwear_product_export" export job edit page
+    And I visit the "Content" tab
+    And I add available attributes Manufacturer
+    And I filter by "manufacturer.code" with operator "Is empty" and value ""
+    And I press the "Save" button
+    And I should not see the text "There are unsaved changes"
+    And I am on the "csv_footwear_product_export" export job edit page
+    And I visit the "Content" tab
+    When I hide the filter "manufacturer.code"
+    Then I should not see the filter "manufacturer.code"

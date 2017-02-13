@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Factory\ProductValue;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
@@ -73,7 +73,7 @@ class MediaProductValueFactory implements ProductValueFactoryInterface
      * @param AttributeInterface $attribute
      * @param string             $data
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
@@ -82,11 +82,10 @@ class MediaProductValueFactory implements ProductValueFactoryInterface
         }
 
         if (!is_string($data)) {
-            throw InvalidArgumentException::stringExpected(
+            throw InvalidPropertyTypeException::stringExpected(
                 $attribute->getCode(),
-                'media',
-                'factory',
-                gettype($data)
+                static::class,
+                $data
             );
         }
     }
@@ -107,8 +106,7 @@ class MediaProductValueFactory implements ProductValueFactoryInterface
                 $attribute->getCode(),
                 'fileinfo key',
                 'The media does not exist',
-                'media',
-                'factory',
+                static::class,
                 $data
             );
         }

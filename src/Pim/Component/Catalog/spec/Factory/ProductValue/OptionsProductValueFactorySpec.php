@@ -2,9 +2,10 @@
 
 namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\ProductValue\OptionsProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
@@ -163,11 +164,10 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
 
         $attributeOptionRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
 
-        $exception = InvalidArgumentException::arrayExpected(
+        $exception = InvalidPropertyTypeException::arrayExpected(
             'multi_select_attribute',
-            'multi select',
-            'factory',
-            'string'
+            OptionsProductValueFactory::class,
+            'foobar'
         );
 
         $this
@@ -188,12 +188,11 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
 
         $attributeOptionRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
 
-        $exception = InvalidArgumentException::arrayStringValueExpected(
+        $exception = InvalidPropertyTypeException::validArrayStructureExpected(
             'multi_select_attribute',
-            '0',
-            'multi select',
-            'factory',
-            'integer'
+            'one of the options is not a string, "integer" given',
+            OptionsProductValueFactory::class,
+            [42]
         );
 
         $this
@@ -214,12 +213,11 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
 
         $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.foobar')->willReturn(null);
 
-        $exception = InvalidArgumentException::arrayInvalidKey(
+        $exception = InvalidPropertyException::validEntityCodeExpected(
             'multi_select_attribute',
             'code',
             'The option does not exist',
-            'multi select',
-            'factory',
+            OptionsProductValueFactory::class,
             'foobar'
         );
 

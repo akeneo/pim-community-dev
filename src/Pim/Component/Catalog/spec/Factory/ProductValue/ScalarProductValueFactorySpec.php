@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Factory\ProductValue;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Factory\ProductValue\ScalarProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValue;
@@ -614,12 +614,10 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $exception = InvalidArgumentException::expected(
+        $exception = InvalidPropertyTypeException::scalarExpected(
             'text_attribute',
-            'a scalar',
-            'simple',
-            'factory',
-            'array'
+            ScalarProductValueFactory::class,
+            ['foo' => 'bar']
         );
 
         $this
