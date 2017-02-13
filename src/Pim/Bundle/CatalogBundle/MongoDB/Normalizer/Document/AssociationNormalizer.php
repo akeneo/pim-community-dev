@@ -41,13 +41,14 @@ class AssociationNormalizer implements NormalizerInterface
     {
         $productId = $context[ProductNormalizer::MONGO_ID];
         $productCollection = $context[ProductNormalizer::MONGO_COLLECTION_NAME];
+        $databaseName = $context[ProductNormalizer::MONGO_DATABASE_NAME];
 
         $data = [];
         $data['_id'] = $this->mongoFactory->createMongoId();
         $data['associationType'] = $assoc->getAssociationType()->getId();
         $data['owner'] = $this->mongoFactory->createMongoDBRef($productCollection, $productId);
 
-        $data['products'] = $this->normalizeProducts($assoc->getProducts(), $productCollection);
+        $data['products'] = $this->normalizeProducts($assoc->getProducts(), $productCollection, $databaseName);
         $data['groupIds'] = $this->normalizeGroups($assoc->getGroups());
 
         return $data;
@@ -61,12 +62,16 @@ class AssociationNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    protected function normalizeProducts($products, $productCollection)
+    protected function normalizeProducts($products, $productCollection, $databaseName)
     {
         $data = [];
 
         foreach ($products as $product) {
-            $data[] = $this->mongoFactory->createMongoDBRef($productCollection, $product->getId());
+            $data[] = $this->mongoFactory->createMongoDBRef(
+                $productCollection,
+                $this->mongoFactory->createMongoId($product->getId()),
+                $databaseName
+            );
         }
 
         return $data;

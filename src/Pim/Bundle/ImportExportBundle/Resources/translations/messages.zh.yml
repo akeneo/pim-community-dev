@@ -5,15 +5,6 @@ pim_import_export:
   connector: 连接器
   status:
     - 就绪
-  batch_status:
-    1: 完成
-    2: 开始
-    3: 已开始
-    4: 正在停止
-    5: 已停止
-    6: 已失败
-    7: 被遗弃
-    8: 未知的
   download_archive:
     output: 下载生成的文件 | 下载生成的文件
     input: 下载文件 | 下载文件
@@ -153,12 +144,4 @@ Summary: 总结
 Start: 开始
 End: 结束
 set_attribute_requirements: 设置属性要求
-COMPLETED: 完成
-STARTING: 开始
-STARTED: 已开始
-STOPPING: 正在停止
-STOPPED: 已停止
-FAILED: 已失败
-ABANDONED: 被遗弃
-UNKNOWN: 未知的
 warning.label: 警告

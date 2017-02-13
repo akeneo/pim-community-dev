@@ -5,7 +5,7 @@ pim_dashboard:
       status: Status
       date: Datum
       type: Tip
-      profile name: Naziv profila
+      profile_name: Naziv profila
       details: Detalji
       job_type:
         import: Uvoz
