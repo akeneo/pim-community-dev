@@ -22,7 +22,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "1.7.x-dev@dev",
+        "akeneo/pim-community-dev": "dev-TIP-613-unified",
         "phpspec/php-diff": "1.0.2",
         "akeneo/elasticsearch-bundle": "dev-poc-single-storage"
     },
@@ -52,7 +52,7 @@
     "repositories": {
         "pim-community-dev": {
             "type": "vcs",
-            "url": "https://github.com/akeneo/pim-community-dev.git",
+            "url": "https://github.com/jjanvier/pim-community-dev.git",
             "branch": "master"
         },
         "elasticsearch": {
