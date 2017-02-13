@@ -41,5 +41,3 @@ Feature: Published products datagrid views
     Then I should see the text "Sneakers only"
     And I should see published products purple-sneakers and black-sneakers
     But I should not see product black-boots
-    Then I press the "Reset" button
-    Then I should see published products black-boots, purple-sneakers and black-sneakers

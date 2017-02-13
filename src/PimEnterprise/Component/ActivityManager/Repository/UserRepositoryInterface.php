@@ -21,13 +21,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 interface UserRepositoryInterface extends ObjectRepository
 {
     /**
-     * Return users who are AT LEAST in one of the given $groupIds and exclude the project owner.
+     * Return users who are AT LEAST in one of the given $groupIds.
      *
      * @param ProjectInterface $project
      *
      * @return UserInterface[]
      */
-    public function findContributorsToNotify(ProjectInterface $project);
+    public function findUsersToNotify(ProjectInterface $project);
 
     /**
      * @param ProjectInterface $project

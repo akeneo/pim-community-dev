@@ -89,8 +89,7 @@ class UserUpdater extends BaseUserUpdater
                 'defaultAssetTree',
                 'category code',
                 'The category does not exist',
-                'updater',
-                'user',
+                static::class,
                 $code
             );
         }

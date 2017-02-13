@@ -34,7 +34,8 @@ activity_manager:
         confirm: Save
         cancel: Cancel
     widget:
-        no_project: You have no current project.
+        no_project: You have no current project
+        no_project_create: start a new project
         description: Description
         due_date: Due date
         todo: TODO

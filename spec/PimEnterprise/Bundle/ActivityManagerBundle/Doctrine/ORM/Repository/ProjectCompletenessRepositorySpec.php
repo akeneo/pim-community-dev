@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 
+use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\TableNameMapper;
 use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository\ProjectCompletenessRepository;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessRepositoryInterface;
 use Doctrine\ORM\EntityManager;
@@ -9,9 +10,9 @@ use PhpSpec\ObjectBehavior;
 
 class ProjectCompletenessRepositorySpec extends ObjectBehavior
 {
-    function let(EntityManager $entityManager)
+    function let(EntityManager $entityManager, TableNameMapper $tableNameMapper)
     {
-        $this->beConstructedWith($entityManager);
+        $this->beConstructedWith($entityManager, $tableNameMapper);
     }
 
     function it_is_initializable()

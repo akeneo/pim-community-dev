@@ -43,7 +43,7 @@ Feature: Import categories
     When I am on the "csv_clothing_asset_category_import" import job page
     And I launch the import job
     And I wait for the "csv_clothing_asset_category_import" job to finish
-    Then I should see "Property \"parent\" expects a valid category code. The category does not exist, \"clothes\" given (for updater category)."
+    Then I should see "Property \"parent\" expects a valid category code. The category does not exist, \"clothes\" given."
 
   Scenario: Skip assets categories with empty code
     Given the "clothing" catalog configuration

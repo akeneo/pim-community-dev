@@ -61,6 +61,7 @@ config:
         activity-manager/templates/grid/view-selector/create-project: pimenterpriseactivitymanager/templates/grid/view-selector-create-project.html
         activity-manager/templates/grid/view-selector/edit-project: pimenterpriseactivitymanager/templates/grid/view-selector-edit-project.html
         activity-manager/templates/grid/view-selector/remove-project: pimenterpriseactivitymanager/templates/grid/view-selector-remove-project.html
+        activity-manager/templates/grid/view-selector/current: pimenterpriseactivitymanager/templates/grid/view-selector-current.html
         activity-manager/templates/widget/project-widget: pimenterpriseactivitymanager/templates/widget/project-widget.html
         activity-manager/templates/widget/project-widget-empty: pimenterpriseactivitymanager/templates/widget/project-widget-empty.html
         activity-manager/templates/widget/project-selector: pimenterpriseactivitymanager/templates/widget/project-selector.html

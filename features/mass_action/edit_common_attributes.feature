@@ -31,6 +31,7 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
     And I change the "Name" to "My product"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I should see the text "Clean temporary files"
     And I edit the "highheels" product
     And I visit the "Marketing" group
     Then I should see the text "2 stars"

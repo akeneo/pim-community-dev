@@ -98,8 +98,6 @@ class ProductDraftProcessor extends AbstractProcessor implements
             $this->updateProduct($product, $item);
         } catch (ObjectUpdaterException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
-        } catch (\InvalidArgumentException $exception) {
-            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
         $violations = $this->validateProduct($product);
@@ -171,7 +169,6 @@ class ProductDraftProcessor extends AbstractProcessor implements
      * @param array            $convertedItem
      *
      * @throws ObjectUpdaterException
-     * @throws \InvalidArgumentException
      */
     protected function updateProduct(ProductInterface $product, array $convertedItem)
     {

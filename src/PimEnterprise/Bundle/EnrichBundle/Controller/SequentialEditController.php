@@ -43,7 +43,7 @@ class SequentialEditController extends BaseSequentialEditController
                 )
             );
         }
-        $this->seqEditManager->save($sequentialEdit);
+        $this->saver->save($sequentialEdit);
 
         return new RedirectResponse(
             $this->router->generate(

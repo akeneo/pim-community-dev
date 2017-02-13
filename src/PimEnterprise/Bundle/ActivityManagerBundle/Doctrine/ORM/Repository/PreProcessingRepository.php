@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\Repository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Bundle\ActivityManagerBundle\Doctrine\ORM\TableNameMapper;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
 
@@ -27,12 +28,16 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
     /** @var EntityManagerInterface */
     protected $entityManager;
 
+    /** @var TableNameMapper */
+    protected $tableNameMapper;
+
     /**
      * @param EntityManagerInterface $objectManager
      */
-    public function __construct(EntityManagerInterface $objectManager)
+    public function __construct(EntityManagerInterface $objectManager, TableNameMapper $tableNameMapper)
     {
         $this->entityManager = $objectManager;
+        $this->tableNameMapper = $tableNameMapper;
     }
 
     /**
@@ -44,9 +49,10 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
         array $attributeGroupCompleteness
     ) {
         $connection = $this->entityManager->getConnection();
+        $sqlTable = $this->tableNameMapper->getTableName('pimee_activity_manager.completeness_per_attribute_group');
 
         $connection->delete(
-            'pimee_activity_manager_completeness_per_attribute_group',
+            $sqlTable,
             [
                 'product_id' => $product->getId(),
                 'channel_id' => $project->getChannel()->getId(),
@@ -56,7 +62,7 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
 
         foreach ($attributeGroupCompleteness as $attributeGroup) {
             $connection->insert(
-                'pimee_activity_manager_completeness_per_attribute_group',
+                $sqlTable,
                 [
                     'product_id'                                 => $product->getId(),
                     'channel_id'                                 => $project->getChannel()->getId(),
@@ -75,8 +81,9 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
     public function addProduct(ProjectInterface $project, ProductInterface $product)
     {
         $connection = $this->entityManager->getConnection();
+        $sqlTable = $this->tableNameMapper->getTableName('pimee_activity_manager.project_product');
 
-        $connection->insert('pimee_activity_manager_project_product', [
+        $connection->insert($sqlTable, [
             'project_id' => $project->getId(),
             'product_id' => $product->getId(),
         ]);
@@ -88,14 +95,15 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
     public function link(ProductInterface $product, Collection $categories)
     {
         $connection = $this->entityManager->getConnection();
+        $sqlTable = $this->tableNameMapper->getTableName('pimee_activity_manager.product_category');
         $productId = $product->getId();
 
-        $connection->delete('pimee_activity_manager_product_category', [
+        $connection->delete($sqlTable, [
             'product_id' => $productId
         ]);
 
         foreach ($categories as $category) {
-            $connection->insert('pimee_activity_manager_product_category', [
+            $connection->insert($sqlTable, [
                 'product_id'  => $productId,
                 'category_id' => $category->getId(),
             ]);
@@ -108,9 +116,10 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
     public function prepareProjectCalculation(ProjectInterface $project)
     {
         $connection = $this->entityManager->getConnection();
+        $sqlTable = $this->tableNameMapper->getTableName('pimee_activity_manager.project_product');
         $projectId = $project->getId();
 
-        $connection->delete('pimee_activity_manager_project_product', [
+        $connection->delete($sqlTable, [
             'project_id' => $projectId,
         ]);
     }
@@ -121,6 +130,7 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
     public function remove(ProjectInterface $project)
     {
         $connection = $this->entityManager->getConnection();
+        $sqlTable = $this->tableNameMapper->getTableName('pimee_activity_manager.project_product');
         $projectId = $project->getId();
         $query = <<<SQL
 DELETE completeness
@@ -133,7 +143,7 @@ WHERE project_product1.project_id = :project_id AND project_product2.product_id 
 SQL;
 
         $connection->executeUpdate($query, ['project_id' => $projectId]);
-        $connection->delete('pimee_activity_manager_project_product', [
+        $connection->delete($sqlTable, [
             'project_id' => $projectId,
         ]);
     }
