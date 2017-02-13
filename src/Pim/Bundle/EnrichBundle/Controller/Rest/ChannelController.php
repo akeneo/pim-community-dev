@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
-use Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException;
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
@@ -119,7 +119,7 @@ class ChannelController
      *
      * @param Request $request
      *
-     * @throws ObjectUpdaterException
+     * @throws PropertyException
      * @throws \LogicException
      * @throws \InvalidArgumentException
      *
@@ -141,7 +141,7 @@ class ChannelController
      * @param string  $code
      *
      * @throws HttpExceptionInterface
-     * @throws ObjectUpdaterException
+     * @throws PropertyException
      * @throws \LogicException
      * @throws \InvalidArgumentException
      *
@@ -203,7 +203,7 @@ class ChannelController
      * @param Request          $request
      *
      * @throws \LogicException
-     * @throws ObjectUpdaterException
+     * @throws PropertyException
      * @throws \InvalidArgumentException
      *
      * @return JsonResponse
