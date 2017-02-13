@@ -52,6 +52,7 @@ class FixturesLoader
         $this->loadSqlFiles($filesByType['sql']);
         $this->loadMongoDbFiles($filesByType['mongodb']);
         $this->loadImportFiles($filesByType['import']);
+        $this->loadReferenceData();
     }
 
     /**
@@ -141,6 +142,19 @@ class FixturesLoader
         }
 
         $jobLoader->deleteJobInstances();
+    }
+
+    /**
+     * Load the reference data into the database.
+     */
+    protected function loadReferenceData()
+    {
+        $bundles = $this->container->getParameter('kernel.bundles');
+        if (isset($bundles['AcmeAppBundle'])) {
+            $entityManager = $this->container->get('doctrine.orm.entity_manager');
+            $referenceDataLoader = new ReferenceDataLoader();
+            $referenceDataLoader->load($entityManager);
+        }
     }
 
     /**
