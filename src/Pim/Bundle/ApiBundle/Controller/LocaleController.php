@@ -8,6 +8,7 @@ use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -30,6 +31,9 @@ class LocaleController
 
     /** @var ParameterValidatorInterface */
     protected $parameterValidator;
+
+    /** @var string[] */
+    protected $authorizedFieldFilters = ['enabled'];
 
     /**
      * @param LocaleRepositoryInterface  $repository
@@ -74,10 +78,11 @@ class LocaleController
      *
      * @throws UnprocessableEntityHttpException
      * @return JsonResponse
-     *
      */
     public function listAction(Request $request)
     {
+        $criterias = $this->prepareSearchCriterias($request);
+
         $queryParameters = [];
         $queryParameters['page'] = $request->query->get('page', 1);
         $queryParameters['limit'] = $request->query->get('limit', 10);
@@ -89,8 +94,10 @@ class LocaleController
         }
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
 
-        $count = $this->repository->countAll();
-        $locales = $this->repository->findBy([], ['code' => 'ASC'], $queryParameters['limit'], $offset);
+        // TODO: count and full hydration for counting is temporary, will be done with API-114
+        $locales = $this->repository->findBy($criterias, ['code' => 'ASC']);
+        $count = count($locales);
+        $locales = array_slice($locales, $offset, $queryParameters['limit']);
 
         $localesApi = $this->normalizer->normalize($locales, 'external_api');
 
@@ -104,5 +111,73 @@ class LocaleController
         );
 
         return new JsonResponse($paginatedLocales);
+    }
+
+    /**
+     * Prepares criterias from search parameters
+     * It throws exceptions if search parameters are not correctly filled
+     * Only activated = filter is authorized today
+     *
+     * @param Request $request
+     *
+     * @throws UnprocessableEntityHttpException
+     * @throws BadRequestHttpException
+     * @return array
+     */
+    protected function prepareSearchCriterias(Request $request)
+    {
+        $criterias = [];
+        if (false === $request->query->has('search')) {
+            return $criterias;
+        }
+        $searchString = $request->query->get('search', '');
+        $searchParameters = json_decode($searchString, true);
+
+        if (null === $searchParameters) {
+            throw new BadRequestHttpException('Search query parameter should be valid JSON.');
+        }
+        foreach ($searchParameters as $searchKey => $searchParameter) {
+            if (0 === count($searchParameter)) {
+                throw new UnprocessableEntityHttpException(
+                    sprintf('Operator and value are missing for the property "%s".', $searchKey)
+                );
+            }
+
+            foreach ($searchParameter as $searchOperator) {
+                if (!isset($searchOperator['operator'])) {
+                    throw new UnprocessableEntityHttpException(
+                        sprintf('Operator is missing for the property "%s".', $searchKey)
+                    );
+                }
+                if (!isset($searchOperator['value'])) {
+                    throw new UnprocessableEntityHttpException(
+                        sprintf('Value is missing for the property "%s".', $searchKey)
+                    );
+                }
+
+                if (!in_array($searchKey, $this->authorizedFieldFilters) || '=' !== $searchOperator['operator']) {
+                    throw new UnprocessableEntityHttpException(
+                        sprintf(
+                            'Filter on property "%s" is not supported or does not support operator "%s".',
+                            $searchKey,
+                            $searchOperator['operator']
+                        )
+                    );
+                }
+                if (!is_bool($searchOperator['value'])) {
+                    throw new UnprocessableEntityHttpException(
+                        sprintf(
+                            'Filter "%s" with operator "%s" expects a boolean value',
+                            $searchKey,
+                            $searchOperator['operator']
+                        )
+                    );
+                }
+
+                $criterias['activated'] = $searchOperator['value'];
+            }
+        }
+
+        return $criterias;
     }
 }
