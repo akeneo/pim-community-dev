@@ -18,9 +18,9 @@ use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryIn
 
 class PreProcessingRepositorySpec extends ObjectBehavior
 {
-    function let(EntityManager $entityManager, TableNameMapper $nativeQueryBuilder, Connection $connection)
+    function let(EntityManager $entityManager, TableNameMapper $tableNameMapper, Connection $connection)
     {
-        $this->beConstructedWith($entityManager, $nativeQueryBuilder);
+        $this->beConstructedWith($entityManager, $tableNameMapper);
 
         $entityManager->getConnection()->willReturn($connection);
     }
@@ -37,7 +37,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
     function it_adds_the_pre_processed_completeness_for_product(
         $connection,
-        $nativeQueryBuilder,
+        $tableNameMapper,
         ProductInterface $product,
         ProjectInterface $project,
         ChannelInterface $channel,
@@ -51,7 +51,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
         $product->getId()->willreturn(42);
 
-        $nativeQueryBuilder->getTableName('pimee_activity_manager.completeness_per_attribute_group')
+        $tableNameMapper->getTableName('pimee_activity_manager.completeness_per_attribute_group')
             ->willReturn('pimee_activity_manager_completeness_per_attribute_group');
 
         $connection->delete(
@@ -95,7 +95,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
     function it_adds_products_to_a_project(
         $entityManager,
-        $nativeQueryBuilder,
+        $tableNameMapper,
         Connection $connection,
         ProjectInterface $project,
         ProductInterface $product
@@ -105,7 +105,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
         $entityManager->getConnection()->willReturn($connection);
 
-        $nativeQueryBuilder->getTableName('pimee_activity_manager.project_product')
+        $tableNameMapper->getTableName('pimee_activity_manager.project_product')
             ->willReturn('pimee_activity_manager_project_product');
 
         $connection->insert('pimee_activity_manager_project_product', [
@@ -118,12 +118,12 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
     function it_prepares_the_project_calculation_by_deleting_associated_products(
         $connection,
-        $nativeQueryBuilder,
+        $tableNameMapper,
         ProjectInterface $project
     ) {
         $project->getId()->willReturn(40);
 
-        $nativeQueryBuilder->getTableName('pimee_activity_manager.project_product')
+        $tableNameMapper->getTableName('pimee_activity_manager.project_product')
             ->willReturn('pimee_activity_manager_project_product');
 
         $connection->delete('pimee_activity_manager_project_product', [
@@ -135,7 +135,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
 
     function it_links_between_product_and_category(
         $connection,
-        $nativeQueryBuilder,
+        $tableNameMapper,
         ProductInterface $product,
         CategoryInterface $category,
         CategoryInterface $otherCategory,
@@ -152,7 +152,7 @@ class PreProcessingRepositorySpec extends ObjectBehavior
         $otherCategory->getId()->willReturn(33);
         $product->getId()->willReturn('fdsqf121s3s'); // mongo
 
-        $nativeQueryBuilder->getTableName('pimee_activity_manager.product_category')
+        $tableNameMapper->getTableName('pimee_activity_manager.product_category')
             ->willReturn('pimee_activity_manager_product_category');
 
         $connection->delete('pimee_activity_manager_product_category', [

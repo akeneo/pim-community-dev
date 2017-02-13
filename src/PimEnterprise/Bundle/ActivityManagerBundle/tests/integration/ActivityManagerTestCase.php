@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
+use PimEnterprise\Bundle\InstallerBundle\Command\CleanAttributeGroupAccessesCommand;
 use PimEnterprise\Bundle\InstallerBundle\Command\CleanCategoryAccessesCommand;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
@@ -22,30 +23,37 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class ActivityManagerTestCase extends TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();
 
         $configuration = $this->getConfiguration();
         if ($configuration->isDatabasePurgedForEachTest() || 1 === self::$count) {
-            $this->cleanCategoryAccesses();
+            $this->cleanRightAccesses();
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function cleanCategoryAccesses()
+    protected function cleanRightAccesses()
     {
         $application = new Application();
-        $extraCommand = $application->add(new CleanCategoryAccessesCommand());
-        $extraCommand->setContainer($this->container);
-        $command = new CommandTester($extraCommand);
+        $cleanCategoryRight = $application->add(new CleanCategoryAccessesCommand());
+        $cleanAttributeGroupRight = $application->add(new CleanAttributeGroupAccessesCommand());
+        $cleanCategoryRight->setContainer(static::$kernel->getContainer());
+        $cleanAttributeGroupRight->setContainer(static::$kernel->getContainer());
+        $cleanCategoryRightCommand = new CommandTester($cleanCategoryRight);
+        $cleanAttributeGroupRightCommand = new CommandTester($cleanAttributeGroupRight);
 
-        $exitCode = $command->execute([]);
+        $cleanCategoryRightCode = $cleanCategoryRightCommand->execute([]);
+        $cleanAttributeGroupRightCode = $cleanAttributeGroupRightCommand->execute([]);
 
-        if (0 !== $exitCode) {
-            throw new \Exception(sprintf('Failed to clean category accesses. "%s"', $command->getDisplay()));
+        if (0 !== $cleanCategoryRightCode && 0 !== $cleanAttributeGroupRightCode) {
+            throw new \Exception('Failed to clean accesses.');
         }
     }
 
@@ -54,7 +62,7 @@ class ActivityManagerTestCase extends TestCase
      */
     protected function getDatabasePurger()
     {
-        return new DatabasePurger($this->container);
+        return new DatabasePurger(static::$kernel->getContainer());
     }
 
     /**

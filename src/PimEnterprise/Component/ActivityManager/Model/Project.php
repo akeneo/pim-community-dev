@@ -56,9 +56,13 @@ class Project implements ProjectInterface
     /** @var string */
     protected $productFilters;
 
+    /** @var ArrayCollection */
+    protected $projectStatus;
+
     public function __construct()
     {
         $this->userGroups = new ArrayCollection();
+        $this->projectStatus = new ArrayCollection();
     }
 
     /**
@@ -245,5 +249,31 @@ class Project implements ProjectInterface
     public function setProductFilters(array $productFilters)
     {
         $this->productFilters = $productFilters;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addProjectStatus(ProjectStatusInterface $projectStatus)
+    {
+        if (!$this->projectStatus->contains($projectStatus)) {
+            $this->projectStatus[] = $projectStatus;
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function resetProjectStatus()
+    {
+        $this->projectStatus = new ArrayCollection();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProjectStatus()
+    {
+        return $this->projectStatus;
     }
 }

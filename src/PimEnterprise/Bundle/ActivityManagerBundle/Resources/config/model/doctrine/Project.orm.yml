@@ -57,6 +57,12 @@ PimEnterprise\Component\ActivityManager\Model\Project:
                 - persist
                 - detach
                 - remove
+    oneToMany:
+        projectStatus:
+            targetEntity: PimEnterprise\Component\ActivityManager\Model\ProjectStatus
+            mappedBy: project
+            cascade:
+                - remove
     manyToMany:
         userGroups:
             targetEntity: Oro\Bundle\UserBundle\Entity\Group

@@ -164,7 +164,7 @@ batch_jobs:
         label: Edit common attributes with permission check & rules application
         perform.label: Edit common attributes
         execute_rules.label: Rules execution
-        clean.label: Clean temporary files
+        cleaner.label: Clean temporary files
     add_to_variant_group_with_rules:
         label: Add products to variant group with rules application
         perform.label: Add products to variant group

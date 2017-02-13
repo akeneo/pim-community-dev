@@ -70,7 +70,7 @@ Feature: Follow project completeness
     And the following families:
       | code     | label-en_US | attributes                                                   | requirements-ecommerce                 | requirements-mobile                    |
       | tshirt   | TShirts     | sku, name, description, size, weight, release_date, material | sku, name, size, description, material | sku, name, size, description, material |
-      | usb_keys | USB Keys    | sku, name, description, weight, release_date, capacity       | sku, name, size, description, capacity | sku, name, size, description, capacity |
+      | usb_keys | USB Keys    | sku, name, description, size, weight, release_date, capacity | sku, name, size, description, capacity | sku, name, size, description, capacity |
       | posters  | Posters     | sku, name, description, size, release_date, picture          | sku, name, size, description, picture  | sku, name, size, description, picture  |
     And the following products:
       | sku                  | family   | categories         | name-en_US                | size-en_US | weight-en_US | weight-en_US-unit | release_date-en_US | release_date-fr_FR | material-en_US | capacity | capacity-unit |
@@ -89,7 +89,7 @@ Feature: Follow project completeness
     Given I am logged in as "Claude"
     And I am on the dashboard page
     Then I should see the Activity Manager widget
-    And I should see the text "Collection Winter 2030 [ecommerce] | English (United States)"
+    And I should see the text "Collection Winter 2030 E-Commerce | English (United States)"
     And I should not see the contributor selector
     And I should see the following activity manager completeness:
       | todo | in_progress | done |
@@ -100,21 +100,22 @@ Feature: Follow project completeness
     And I should see the text "Please do your best to finish before Winter."
     And I should see the text "Due date: 08/25/2030"
     When I select "Collection Summer 2030" project
-    Then I should see the text "Collection Summer 2030 [ecommerce] | English (United States)"
+    Then I should see the text "Collection Summer 2030 E-Commerce | English (United States)"
     And I should not see the contributor selector
     And I should see the following activity manager completeness:
       | todo | in_progress | done |
-      |    0 |           3 |    3 |
+      |    0 |           2 |    1 |
     And I should see the text "0% PRODUCTS TO ENRICH"
-    And I should see the text "50% PRODUCTS IN PROGRESS"
-    And I should see the text "50% PRODUCTS DONE"
+    And I should see the text "67% PRODUCTS IN PROGRESS"
+    And I should see the text "33% PRODUCTS DONE"
     And I should see the text "Please do your best to finish before Summer."
     And I should see the text "Due date: 10/25/2030"
 
   Scenario: Successfully display the widget without project
     Given I am logged in as "admin"
     And I am on the dashboard page
-    Then I should see the text "You have no current project"
+    Then I should see the text "You have no current project, start a new project."
     And I should not see the project selector
     And I should not see the contributor selector
-    And I should see the text "You have no current project."
+    When I follow "start a new project"
+    Then I should be on the products page

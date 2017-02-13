@@ -194,7 +194,7 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
             ->andWhere(sprintf('%s.code LIKE :pattern', $this->getAlias()))
             ->orWhere(sprintf('%s.code = :code', $this->getAlias()))
             ->setParameters([
-                ':pattern' => sprintf("%s_%s", $code, '%'),
+                ':pattern' => sprintf('%s\_%s', $code, '%'),
                 ':code'    => $code
             ]);
 

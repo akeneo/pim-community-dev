@@ -15,7 +15,8 @@ define(
         'text!activity-manager/templates/widget/project-widget-empty',
         'pim/user-context',
         'pim/fetcher-registry',
-        'oro/loading-mask'
+        'oro/loading-mask',
+        'routing'
     ],
     function (
         $,
@@ -26,7 +27,8 @@ define(
         templateEmpty,
         UserContext,
         FetcherRegistry,
-        LoadingMask
+        LoadingMask,
+        Routing
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -70,7 +72,11 @@ define(
 
                             this.renderExtensions();
                         } else {
-                            this.$el.html(this.templateEmpty({message: __('activity_manager.widget.no_project')}));
+                            this.$el.html(this.templateEmpty({
+                                message: __('activity_manager.widget.no_project'),
+                                messageCreate: __('activity_manager.widget.no_project_create'),
+                                url: Routing.generate('pim_enrich_product_index')
+                            }));
                         }
 
                         loadingMask.hide();

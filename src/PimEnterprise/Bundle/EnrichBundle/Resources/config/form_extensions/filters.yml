@@ -7,3 +7,4 @@ extensions:
             operators:
                 - IN
                 - EMPTY
+                - NOT EMPTY
