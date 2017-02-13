@@ -127,3 +127,44 @@ Feature: Products datagrid projects
     And the grid should contain 2 elements
     And I should see the text "My TShirts Project"
     But I should not see the text "My TShirts Project *"
+
+  Scenario: I fallback on my custom default view if the project I was working on has been deleted
+    Given I am logged in as "Julia"
+    And I am on the products page
+    And I filter by "family" with operator "in list" and value "Posters"
+    And I create the view:
+      | new-view-label | My posters |
+    Then I should be on the products page
+    And I should see the flash message "Datagrid view successfully created"
+    When I am on the User profile show page
+    And I press the "Edit" button
+    Then I should see the text "Edit user - Julia Stark"
+    When I visit the "Additional" tab
+    Then I should see the text "Default product grid view"
+    When I fill in the following information:
+      | Default product grid view | My posters |
+    And I press the "Save" button
+    Then I should not see the text "There are unsaved changes."
+    When I am on the products page
+    And I filter by "family" with operator "in list" and value "TShirts"
+    And I show the filter "size"
+    And I filter by "size" with operator "contains" and value "M"
+    And I click on the create project button
+    When I fill in the following information in the popin:
+      | project-label    | My TShirts Project |
+      | project-due-date | 01/25/2077         |
+    And I press the "Save" button
+    Then I should be on the products page
+    And I go on the last executed job resume of "project_calculation"
+    And I wait for the "project_calculation" job to finish
+    When I am on the products page
+    And I switch view selector type to "Projects"
+    Then I should see the text "My TShirts Project"
+    When  I am on the "ecommerce" channel page
+    And I change the "Locales" to "French (France)"
+    And I press the "Save" button
+    Then I should not see the text "There are unsaved changes."
+    When I am on the products page
+    Then I should see the text "My posters"
+    But I should not see the text "My TShirts Project"
+    And the grid should contain 1 element
