@@ -12,6 +12,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
@@ -311,56 +312,20 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getEligibleProductIdsForVariantGroup($variantGroupId)
+    public function getEligibleProductsForVariantGroup($variantGroupId)
     {
-        $sql = 'SELECT v.entity_id as product_id ' .
-            'FROM %product_table% p ' .
-            'INNER JOIN %product_value_table% v ON v.entity_id = p.id ' .
-            'INNER JOIN pim_catalog_group_attribute ga ON ga.attribute_id = v.attribute_id AND ga.group_id = :groupId ' .
-            'LEFT JOIN  pim_catalog_group_product gp ON gp.product_id = p.id ' .
-            'AND gp.group_id IN ( ' .
-            '    SELECT gr.id FROM pim_catalog_group gr ' .
-            '    JOIN pim_catalog_group_type gr_type ON gr_type.id = gr.type_id AND gr_type.code = "VARIANT") ' .
-            'WHERE gp.group_id = :groupId OR gp.group_id IS NULL ' .
-            'AND ( ' .
-            '    v.option_id IS NOT NULL ';
-
-
-        if (null !== $this->referenceDataRegistry) {
-            $references = $this->referenceDataRegistry->all();
-            if (!empty($references)) {
-                $valueMetadata = QueryBuilderUtility::getProductValueMetadata($this->_em, $this->_entityName);
-
-                foreach ($references as $code => $referenceData) {
-                    if (ConfigurationInterface::TYPE_SIMPLE === $referenceData->getType()) {
-                        if ($valueMetadata->isAssociationWithSingleJoinColumn($code)) {
-                            $sql .= sprintf(
-                                ' OR v.%s IS NOT NULL',
-                                $valueMetadata->getSingleAssociationJoinColumnName($code)
-                            );
-                        }
-                    }
-                }
-            }
+        $variantGroup = $this->groupRepository->find($variantGroupId);
+        if (null === $variantGroup || !$variantGroup->getType()->isVariant()) {
+            return [];
         }
 
-        $sql .= ') ' .
-            'GROUP BY v.entity_id ' .
-            'HAVING COUNT(ga.attribute_id) = ( SELECT COUNT(*) FROM pim_catalog_group_attribute WHERE group_id = :groupId) ';
+        $pqb = $this->queryBuilderFactory->create();
+        foreach ($variantGroup->getAxisAttributes() as $axisAttribute) {
+            $pqb->addFilter($axisAttribute->getCode(), Operators::IS_NOT_EMPTY, null);
+        }
+        $pqb->addFilter('variant_group', Operators::IS_EMPTY, null);
 
-        $sql = QueryBuilderUtility::prepareDBALQuery($this->_em, $this->_entityName, $sql);
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-        $stmt->bindValue('groupId', $variantGroupId);
-        $stmt->execute();
-        $results = $stmt->fetchAll();
-        $productIds = array_map(
-            function ($row) {
-                return $row['product_id'];
-            },
-            $results
-        );
-
-        return $productIds;
+        return $pqb->execute();
     }
 
     /**

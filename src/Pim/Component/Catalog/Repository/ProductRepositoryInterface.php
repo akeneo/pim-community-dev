@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Repository;
 
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -94,9 +95,9 @@ interface ProductRepositoryInterface extends ObjectRepository
     /**
      * @param int $variantGroupId
      *
-     * @return array product ids
+     * @return CursorInterface
      */
-    public function getEligibleProductIdsForVariantGroup($variantGroupId);
+    public function getEligibleProductsForVariantGroup($variantGroupId);
 
     /**
      * @param GroupInterface $group

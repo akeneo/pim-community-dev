@@ -2,16 +2,19 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\Statement;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Query\ProductQueryBuilder;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\GroupTypeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactory;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Prophecy\Argument;
@@ -22,12 +25,14 @@ class ProductRepositorySpec extends ObjectBehavior
         EntityManager $em,
         ClassMetadata $class,
         ConfigurationRegistryInterface $registry,
-        ProductQueryBuilderFactory $pqbFactory
+        ProductQueryBuilderFactory $pqbFactory,
+        GroupRepositoryInterface $groupRepository
     ) {
         $class->name = 'Pim\Component\Catalog\Model\Product';
         $this->beConstructedWith($em, $class);
         $this->setReferenceDataRegistry($registry);
         $this->setProductQueryBuilderFactory($pqbFactory);
+        $this->setGroupRepository($groupRepository);
     }
 
     function it_has_group_repository(GroupRepositoryInterface $groupRepository)
@@ -45,21 +50,37 @@ class ProductRepositorySpec extends ObjectBehavior
         $this->shouldImplement('Doctrine\Common\Persistence\ObjectRepository');
     }
 
-    function it_returns_eligible_products_for_variant_group($em, $class, Statement $statement, Connection $connection)
-    {
-        $em->getClassMetadata(Argument::any())->willReturn($class);
-        $em->getConnection()->willReturn($connection);
+    function it_returns_eligible_products_for_variant_group(
+        $groupRepository,
+        $pqbFactory,
+        ProductQueryBuilderInterface $pqb,
+        AttributeInterface $size,
+        AttributeInterface $color,
+        GroupInterface $variant,
+        GroupTypeInterface $groupType,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3
+    ) {
+        $groupRepository->find(10)->willReturn($variant);
+        $pqbFactory->create()->willReturn($pqb);
 
-        $variantGroupId = 10;
-        $connection->prepare(Argument::any())->willReturn($statement);
-        $statement->bindValue('groupId', $variantGroupId)->shouldBeCalled();
-        $statement->execute()->willReturn(null);
-        $statement->fetchAll()->willReturn([
-            ['product_id' => 1],
-            ['product_id' => 2],
-        ]);
+        $variant->getAxisAttributes()->willReturn([$size, $color]);
+        $variant->getType()->willReturn($groupType);
+        $groupType->isVariant()->willReturn(true);
+        $size->getCode()->willReturn('size');
+        $color->getCode()->willReturn('color');
 
-        $this->getEligibleProductIdsForVariantGroup($variantGroupId)->shouldReturn([1, 2]);
+        $pqb->addFilter('size', Operators::IS_NOT_EMPTY, Argument::any())->shouldBeCalled();
+        $pqb->addFilter('color', Operators::IS_NOT_EMPTY, Argument::any())->shouldBeCalled();
+        $pqb->addFilter('variant_group', Operators::IS_EMPTY, Argument::any())->shouldBeCalled();
+
+        $pqb->execute()->willReturn([$product1, $product2, $product3]);
+        $product1->getId()->willReturn(42);
+        $product2->getId()->willReturn(56);
+        $product3->getId()->willReturn(69);
+
+        $this->getEligibleProductsForVariantGroup(10)->shouldReturn([$product1, $product2, $product3]);
     }
 
     function it_checks_if_the_product_has_an_attribute_in_its_variant_group(
