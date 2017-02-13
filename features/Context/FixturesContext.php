@@ -670,8 +670,12 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFollowingChannels(TableNode $table)
     {
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.channel');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.channel');
+        $saver     = $this->getContainer()->get('pim_catalog.saver.channel');
+
         foreach ($table->getHash() as $data) {
-            $this->createChannel($data);
+            $saver->save($processor->process($converter->convert($data)));
         }
     }
 
@@ -697,7 +701,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $locale
      * @param string $channel
      *
-     * @return Step[]
+     * @return Step\SubstepInterface[]
      *
      * @Given /^I set the "([^"]*)" locales? to the "([^"]*)" channel$/
      */
@@ -1401,7 +1405,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param string $product
+     * @param string $identifier
      * @param string $family
      *
      * @Given /^I set product "([^"]*)" family to "([^"]*)"$/
@@ -1718,54 +1722,6 @@ class FixturesContext extends BaseFixturesContext
         }
 
         return $category;
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return Channel
-     */
-    protected function createChannel($data)
-    {
-        if (is_string($data)) {
-            $data = [['code' => $data]];
-        }
-
-        $data = array_merge(
-            [
-                'currencies' => null,
-                'locales'    => null,
-                'tree'       => null,
-            ],
-            $data
-        );
-
-        $channel = new Channel();
-
-        $channel->setCode($data['code']);
-
-        foreach ($this->listToArray($data['currencies']) as $currencyCode) {
-            $channel->addCurrency($this->getCurrency(['code' => explode(',', $currencyCode)]));
-        }
-
-        foreach ($this->listToArray($data['locales']) as $localeCode) {
-            $channel->addLocale($this->getLocale(['code' => explode(',', $localeCode)]));
-        }
-
-        if ($data['tree']) {
-            $channel->setCategory($this->getCategory($data['tree']));
-        }
-
-        foreach ($data as $key => $value) {
-            $matches = null;
-            if (preg_match('/label-(<?locale>\d+)/', $key, $matches)) {
-                $channel->setLocale($matches['locale']);
-                $channel->setLabel($value);
-            }
-        }
-
-        $this->validate($channel);
-        $this->getContainer()->get('pim_catalog.saver.channel')->save($channel);
     }
 
     /**
