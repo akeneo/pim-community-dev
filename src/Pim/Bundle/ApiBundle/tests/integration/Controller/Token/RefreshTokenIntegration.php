@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Token;
+namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Token;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
@@ -16,7 +16,7 @@ class RefreshTokenIntegration extends ApiTestCase
         $client->request('POST', 'api/oauth/v1/token',
             [
                 'grant_type'    => 'refresh_token',
-                'refresh_token' => static::$refreshToken,
+                'refresh_token' => static::$refreshTokens[self::USERNAME],
             ],
             [],
             [

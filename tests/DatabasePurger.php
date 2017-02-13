@@ -34,10 +34,25 @@ class DatabasePurger
             $purgers[] = new MongoDBPurger($this->container->get('doctrine_mongodb')->getManager());
         }
 
-        $purgers[] = new ORMPurger($this->container->get('doctrine')->getManager());
+        $em = $this->container->get('doctrine')->getManager();
+        $purgers[] = new ORMPurger($em);
 
         foreach ($purgers as $purger) {
             $purger->purge();
+        }
+
+        $connection = $em->getConnection();
+
+        foreach ([
+            'acl_classes',
+            'acl_entries',
+            'acl_object_identities',
+            'acl_object_identity_ancestors',
+            'acl_security_identities'
+        ] as $aclTableName) {
+            $connection->query('SET FOREIGN_KEY_CHECKS=0');
+            $connection->executeUpdate('TRUNCATE `'.$aclTableName.'`');
+            $connection->query('SET FOREIGN_KEY_CHECKS=1');
         }
     }
 }
