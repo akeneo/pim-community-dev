@@ -34,9 +34,6 @@ abstract class ApiTestCase extends WebTestCase
     /** @var string[] */
     protected static $refreshTokens;
 
-    /** @var ContainerInterface */
-    protected $container;
-
     /**
      * {@inheritdoc}
      */
@@ -59,7 +56,6 @@ abstract class ApiTestCase extends WebTestCase
     {
         static::bootKernel();
 
-        $this->container = static::$kernel->getContainer();
         $configuration = $this->getConfiguration();
 
         self::$count++;
@@ -174,7 +170,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function get($service)
     {
-        return $this->container->get($service);
+        return static::$kernel->getContainer()->get($service);
     }
 
     /**
@@ -184,7 +180,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function getParameter($service)
     {
-        return $this->container->getParameter($service);
+        return static::$kernel->getContainer()->getParameter($service);
     }
 
     /**
@@ -203,7 +199,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function getDatabasePurger()
     {
-        return new DatabasePurger($this->container);
+        return new DatabasePurger(static::$kernel->getContainer());
     }
 
     /**
@@ -213,7 +209,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function getFixturesLoader(Configuration $configuration)
     {
-        return new FixturesLoader($this->container, $configuration);
+        return new FixturesLoader(static::$kernel->getContainer(), $configuration);
     }
 
     /**
@@ -221,7 +217,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function getConnectionCloser()
     {
-        return new ConnectionCloser($this->container);
+        return new ConnectionCloser(static::$kernel->getContainer());
     }
 
     /**
