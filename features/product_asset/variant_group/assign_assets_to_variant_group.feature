@@ -7,7 +7,7 @@ Feature: Assign assets to a variant group
   Background:
     Given the "clothing" catalog configuration
     And the following product groups:
-      | code       | label                | axis | type    |
+      | code       | label-en_US          | axis | type    |
       | hh_jackets | Helly Hansen jackets | size | VARIANT |
     And the following products:
       | sku    | groups     | size |

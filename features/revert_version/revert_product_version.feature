@@ -101,7 +101,7 @@ Feature: Revert a product to a previous version
       | sku          | family  | size |
       | helly-hansen | Jackets | XS   |
     And the following product groups:
-      | code       | label                | axis | type    |
+      | code       | label-en_US          | axis | type    |
       | hh_jackets | Helly Hansen jackets | size | VARIANT |
     And the following variant group values:
       | group      | attribute | value | locale | scope |

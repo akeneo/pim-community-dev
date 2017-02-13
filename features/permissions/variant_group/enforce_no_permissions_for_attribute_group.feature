@@ -6,8 +6,8 @@ Feature: Enforce no permissions for an attribute group in variant group
   Background:
     Given a "footwear" catalog configuration
     And the following product groups:
-      | code   | label  | axis        | type    |
-      | SANDAL | Sandal | size, color | VARIANT |
+      | code   | label-en_US | axis       | type    |
+      | SANDAL | Sandal      | size,color | VARIANT |
     And the following variant group values:
       | group  | attribute | value | locale |
       | SANDAL | name      | bar   | en_US  |
