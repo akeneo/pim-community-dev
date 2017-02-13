@@ -48,6 +48,7 @@ security:
             pattern:                        ^/api
             fos_oauth:                      true
             stateless:                      true
+            access_denied_handler:          pim_api.security.access_denied_handler
 
         main:
             pattern:                        ^/
