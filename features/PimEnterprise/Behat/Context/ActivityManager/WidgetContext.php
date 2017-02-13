@@ -85,6 +85,36 @@ class WidgetContext extends PimContext
     }
 
     /**
+     * @Then /^I should( not)? see the "([^"]*)" project in the widget$/
+     *
+     * @param string $not
+     * @param string $projectName
+     *
+     * @throws \UnexpectedValueException
+     */
+    public function iShouldSeeTheProject($not, $projectName)
+    {
+        $values = $this->getActivityManagerWidget()->getProjectSelector()->getAvailableValues();
+        $found = false;
+
+        foreach ($values as $value) {
+            if (strpos($value, $projectName) !== false) {
+                $found = true;
+            }
+        }
+
+        if ($not && $found) {
+            throw new \UnexpectedValueException(
+                sprintf('Project "%s" should not be displayed.', $projectName)
+            );
+        } elseif (!$not && !$found) {
+            throw new \UnexpectedValueException(
+                sprintf('Project "%s" should be displayed.', $projectName)
+            );
+        }
+    }
+
+    /**
      * @When /^I click on the "([^"]*)" section of the activity manager widget$/
      *
      * @param string $sectionName
