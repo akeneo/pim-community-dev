@@ -12,11 +12,11 @@ Feature: Browse product groups
       | color | Color       | pim_catalog_simpleselect | other |
       | size  | Size        | pim_catalog_simpleselect | other |
     And the following product groups:
-      | code          | label          | axis        | type    |
-      | tshirt_akeneo | Akeneo T-Shirt | size, color | VARIANT |
-      | mug_akeneo    | Akeneo Mug     | color       | VARIANT |
-      | CROSS_SELL_1  | Cross Sell     |             | X_SELL  |
-      | CROSS_SELL_2  | Relational     |             | X_SELL  |
+      | code          | label-en_US    | axis       | type    |
+      | tshirt_akeneo | Akeneo T-Shirt | size,color | VARIANT |
+      | mug_akeneo    | Akeneo Mug     | color      | VARIANT |
+      | CROSS_SELL_1  | Cross Sell     |            | X_SELL  |
+      | CROSS_SELL_2  | Relational     |            | X_SELL  |
     And I am logged in as "Julia"
     And I am on the product groups page
     Then the grid should contain 2 elements

@@ -731,23 +731,38 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * TODO A better solution should be to use 2 different methods, becasue we have to make some magic column match
+     *      and convertor/processor choice before creating the entities:
+     * - ^the following product groups
+     * - ^the following variant groups
+     *
      * @param TableNode $table
      *
      * @Given /^the following product groups?:$/
      */
     public function theFollowingProductGroups(TableNode $table)
     {
+        $groupConverter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.group');
+        $groupProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.group');
+
+        $variantConverter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.variant_group');
+        $variantProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.variant_group');
+
+        $saver = $this->getContainer()->get('pim_catalog.saver.group');
+
         foreach ($table->getHash() as $data) {
-            $code  = $data['code'];
-            $label = $data['label'];
-            $type  = $data['type'];
+            if (isset($data['type'])) {
+                if ('VARIANT' === $data['type']) {
+                    $saver->save($variantProcessor->process($variantConverter->convert($data)));
 
-            $attributes = (!isset($data['axis']) || $data['axis'] == '')
-                ? [] : explode(', ', $data['axis']);
-
-            $products = (isset($data['products'])) ? explode(', ', $data['products']) : [];
-
-            $this->createProductGroup($code, $label, $type, $attributes, $products);
+                } else {
+                    if (isset($data['axis']) && ('' !== $data['axis'])) {
+                        throw new \InvalidArgumentException('Column "axis" should be empty for non-variant groups.');
+                    }
+                    unset($data['axis']);
+                    $saver->save($groupProcessor->process($groupConverter->convert($data)));
+                }
+            }
         }
     }
 
@@ -1722,36 +1737,6 @@ class FixturesContext extends BaseFixturesContext
         }
 
         return $category;
-    }
-
-    /**
-     * @param string $code
-     * @param string $label
-     * @param string $type
-     * @param array  $attributeCodes
-     * @param array  $productIdentifiers
-     */
-    protected function createProductGroup($code, $label, $type, array $attributeCodes, array $productIdentifiers = [])
-    {
-        $group = $this->getGroupFactory()->createGroup($type);
-        $group->setCode($code);
-        $group->setLocale('en_US')->setLabel($label); // TODO translation refactoring
-
-        foreach ($attributeCodes as $attributeCode) {
-            $attribute = $this->getAttribute($attributeCode);
-            $group->addAxisAttribute($attribute);
-        }
-        $this->validate($group);
-        $this->getContainer()->get('pim_catalog.saver.group')->save($group);
-
-        foreach ($productIdentifiers as $sku) {
-            if (!empty($sku)) {
-                $product = $this->getProduct($sku);
-                $product->addGroup($group);
-                $this->validate($product);
-                $this->getProductSaver()->save($product);
-            }
-        }
     }
 
     /**

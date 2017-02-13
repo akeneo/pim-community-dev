@@ -11,8 +11,8 @@ Feature: Import variant group involving reference data
       | color | red  | Red   |
       | color | blue | Blue  |
     And the following product groups:
-      | code   | label  | axis       | type    |
-      | jacket | Jacket | sole_color | VARIANT |
+      | code   | label-en_US | axis       | type    |
+      | jacket | Jacket      | sole_color | VARIANT |
     And the following products:
       | sku       | sole_color | groups |
       | my-jacket | red        | jacket |

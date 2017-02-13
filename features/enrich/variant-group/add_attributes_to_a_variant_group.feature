@@ -97,8 +97,8 @@ Feature: Add attributes to a variant group
       | code       | requirements-mobile                            | requirements-tablet | attributes                                     |
       | high_heels | sku,high_heel_main_color,high_heel_main_fabric | sku                 | sku,high_heel_main_color,high_heel_main_fabric |
     And the following product groups:
-      | code       | label      | axis                                        | type    |
-      | high_heels | High heels | high_heel_main_color, high_heel_main_fabric | VARIANT |
+      | code       | label-en_US | axis                                       | type    |
+      | high_heels | High heels  | high_heel_main_color,high_heel_main_fabric | VARIANT |
     And the following product:
       | sku     | family     | high_heel_main_color | high_heel_main_fabric |
       | heel001 | high_heels | Red                  | Silk                  |

@@ -16,13 +16,13 @@ Feature: Sort available products for a variant group
       | size  | Size        | pim_catalog_simpleselect | 1                      | other |
     And the following "color" attribute options: Yellow, Blue, Green and Red
     And the following "size" attribute options: XS, S, M, L and XL
-    And the following products:
-      | sku    | family    | color | size |
-      | MUG_1  | mug       | Red   | M    |
-      | POSTIT | furniture | Blue  | XL   |
     And the following product groups:
-      | code   | label  | axis        | products | type    |
-      | POSTIT | Postit | color, size | POSTIT   | VARIANT |
+      | code   | label-en_US | axis       | type    |
+      | POSTIT | Postit      | color,size | VARIANT |
+    And the following products:
+      | sku    | family    | color | size | groups |
+      | MUG_1  | mug       | Red   | M    |        |
+      | POSTIT | furniture | Blue  | XL   | POSTIT |
     And I am logged in as "Julia"
 
   Scenario: Successfully sort products

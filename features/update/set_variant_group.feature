@@ -10,7 +10,7 @@ Feature: Update variant group fields
       | tshirt1 |
       | tshirt2 |
     And the following product groups:
-      | code    | label         | type    | axis |
+      | code    | label-en_US   | type    | axis |
       | TSHIRT1 | First tshirt  | VARIANT | size |
       | TSHIRT2 | Second tshirt | VARIANT | size |
       | TSHIRT3 | Third tshirt  | VARIANT | size |
@@ -33,7 +33,7 @@ Feature: Update variant group fields
       | code |
       | PACK |
     And the following product groups:
-      | code    | label         | type    | axis |
+      | code    | label-en_US   | type    | axis |
       | TSHIRT1 | First tshirt  | VARIANT | size |
       | TSHIRT2 | Second tshirt | VARIANT | size |
       | TSHIRT3 | Third tshirt  | VARIANT | size |
