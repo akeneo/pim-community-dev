@@ -232,7 +232,7 @@ JSON;
 <<<JSON
     {
         "code": "familyA1",
-        "attributes": ["an_image"],
+        "attributes": ["sku", "a_date", "a_file", "a_localizable_image", "an_image"],
         "attribute_as_label": "sku",
         "attribute_requirements": {
             "ecommerce": ["sku", "an_image"]
@@ -249,12 +249,12 @@ JSON;
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('familyA1');
         $familyStandard = [
             'code'                   => 'familyA1',
-            'attributes'             => ['an_image', 'sku'],
+            'attributes'             => ['a_date', 'a_file', 'a_localizable_image', 'an_image', 'sku'],
             'attribute_as_label'     => 'sku',
             'attribute_requirements' => [
                 'ecommerce'       => ['an_image', 'sku'],
                 'ecommerce_china' => ['sku'],
-                'tablet'          => ['sku'],
+                'tablet'          => ['a_file', 'a_localizable_image', 'sku'],
             ],
             'labels'                 => [
                 'en_US' => 'Family A1 US',
@@ -294,7 +294,7 @@ JSON;
             'attributes'             => ['a_metric', 'sku'],
             'attribute_as_label'     => 'sku',
             'attribute_requirements' => [
-                'ecommerce'       => ['sku'],
+                'ecommerce'       => ['a_metric', 'sku'],
                 'ecommerce_china' => ['sku'],
                 'tablet'          => ['a_metric', 'sku'],
             ],
