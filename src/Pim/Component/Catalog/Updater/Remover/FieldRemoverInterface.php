@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Remover;
 
-use Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException;
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -22,7 +22,7 @@ interface FieldRemoverInterface extends RemoverInterface
      * @param mixed            $data    The data to remove
      * @param array            $options Options passed to the remover
      *
-     * @throws ObjectUpdaterException
+     * @throws PropertyException
      */
     public function removeFieldData(ProductInterface $product, $field, $data, array $options = []);
 

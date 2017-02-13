@@ -109,8 +109,8 @@ class StringFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_text" expects a string as data, "array" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "a_text" expects a string as data, "array" given.
      */
     public function testErrorDataIsMalformed()
     {

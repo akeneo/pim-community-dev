@@ -4,10 +4,11 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -139,44 +140,44 @@ class MetricFilterSpec extends ObjectBehavior
 
         $value = ['unit' => 'foo'];
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected(
+            InvalidPropertyTypeException::arrayKeyExpected(
                 'metric_code',
                 'amount',
                 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MetricFilter',
-                print_r($value, true)
+                $value
             )
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
 
         $value = ['amount' => 459];
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected(
+            InvalidPropertyTypeException::arrayKeyExpected(
                 'metric_code',
                 'unit',
                 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MetricFilter',
-                print_r($value, true)
+                $value
             )
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
 
         $value = ['amount' => 'foo', 'unit' => 'foo'];
         $this->shouldThrow(
-            InvalidArgumentException::arrayNumericKeyExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'metric_code',
-                'amount',
+                'key "amount" has to be a numeric, "string" given',
                 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MetricFilter',
-                'string'
+                $value
             )
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
 
         $value = ['amount' => 132, 'unit' => 42];
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringKeyExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'metric_code',
-                'unit',
+                'key "unit" has to be a string, "integer" given',
                 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MetricFilter',
-                'integer'
+                $value
             )
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
@@ -190,7 +191,7 @@ class MetricFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('metric_code');
         $value = ['amount' => 132, 'unit' => 'foo'];
         $this->shouldThrow(
-            InvalidArgumentException::arrayInvalidKey(
+            InvalidPropertyException::validEntityCodeExpected(
                 'metric_code',
                 'unit',
                 'The unit does not exist in the attribute\'s family "length"',

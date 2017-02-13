@@ -109,6 +109,24 @@ class ReferenceDataCollectionSetterSpec extends ObjectBehavior
         ]);
     }
 
+    function it_throws_an_exception_if_data_is_an_array_but_does_not_contain_a_string(
+        ProductInterface $product,
+        AttributeInterface $attribute
+    ) {
+        $attribute->getCode()->willReturn('attribute_code');
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::validArrayStructureExpected(
+                'attribute_code',
+                'one of the "attribute_code" values is not a scalar',
+                'Pim\Component\ReferenceData\Updater\Setter\ReferenceDataCollectionSetter',
+                ['string', 12]
+            )
+        )->during('setAttributeData', [
+            $product, $attribute, ['string', 12], ['locale' => 'fr_FR', 'scope' => 'mobile']
+        ]);
+    }
+
     function it_throws_an_exception_if_product_value_method_is_not_implemented(
         $repositoryResolver,
         ObjectRepository $repository,

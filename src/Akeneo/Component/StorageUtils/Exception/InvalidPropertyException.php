@@ -9,7 +9,7 @@ namespace Akeneo\Component\StorageUtils\Exception;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class InvalidPropertyException extends ObjectUpdaterException
+class InvalidPropertyException extends PropertyException
 {
     const EXPECTED_CODE = 100;
     const DATE_EXPECTED_CODE = 101;
@@ -20,6 +20,7 @@ class InvalidPropertyException extends ObjectUpdaterException
     const VALID_GROUP_TYPE_EXPECTED_CODE = 301;
     const VALID_GROUP_EXPECTED_CODE = 302;
     const VALID_PATH_EXPECTED_CODE = 304;
+    const VALID_DATA_EXPECTED_CODE = 305;
 
     /** @var string */
     protected $propertyName;
@@ -168,6 +169,28 @@ class InvalidPropertyException extends ObjectUpdaterException
     }
 
     /**
+     * Build an exception when a data is excepted.
+     *
+     * @param string $propertyName
+     * @param string $data
+     * @param string $className
+     *
+     * @return InvalidPropertyException
+     */
+    public static function dataExpected($propertyName, $data, $className)
+    {
+        $message = 'Property "%s" expects %s.';
+
+        return new self(
+            $propertyName,
+            null,
+            $className,
+            sprintf($message, $propertyName, $data),
+            self::VALID_DATA_EXPECTED_CODE
+        );
+    }
+
+    /**
      * Build an exception when the pathname is invalid.
      *
      * @param string $propertyName
@@ -200,13 +223,11 @@ class InvalidPropertyException extends ObjectUpdaterException
      */
     public static function expectedFromPreviousException($propertyName, $className, \Exception $exception)
     {
-        $message = 'Property "%s" expects valid data, scope and locale. %s';
-
         return new self(
             $propertyName,
             null,
             $className,
-            sprintf($message, $propertyName, $exception->getMessage()),
+            $exception->getMessage(),
             $exception->getCode(),
             $exception
         );
