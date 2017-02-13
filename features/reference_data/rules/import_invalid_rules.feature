@@ -46,7 +46,7 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 1"
-    And I should see "Attribute or field \"sleeve_color\" expects a valid code. No reference data \"color\" with code \"red\" has been found, \"red,orange\" given"
-    And I should see "Attribute or field \"sleeve_fabric\" expects a valid code. No reference data \"fabrics\" with code \"kevlar\" has been found, \"kevlar,chiffon\" given"
+    And I should see "Property \"sleeve_color\" expects a valid code. No reference data \"color\" with code \"red\" has been found, \"red,orange\" given"
+    And I should see "Property \"sleeve_fabric\" expects a valid code. No reference data \"fabrics\" with code \"kevlar\" has been found, \"kevlar,chiffon\" given"
     And I should see "Property \"sleeve_color\" expects a valid reference data code. The code of the reference data \"color\" does not exist, \"green\" given"
     And I should see "Property \"sleeve_fabric\" expects a valid reference data code. The code of the reference data \"fabrics\" does not exist, \"kevlar\" given"
