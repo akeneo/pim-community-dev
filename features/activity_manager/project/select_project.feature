@@ -142,5 +142,6 @@ Feature: Select a project to display products to enrich
     And I open the view selector
     When I apply the "2016 summer collection" project
     Then I should see products tshirt-skyrim and tshirt-the-witcher-3
+    And I should see the text "2016 summer collection"
     When I filter by "category" with operator "" and value "high_tech"
     Then I should see the text "You're leaving project scope."
