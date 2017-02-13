@@ -150,6 +150,7 @@ define(
              */
             validateDueDate: function (modelDueDate) {
                 var isDueDateInPast = false;
+                var isCreationMode = ('create' === this.formType);
 
                 if (modelDueDate) {
                     var today = new Date().setHours(0, 0, 0, 0);
@@ -158,7 +159,9 @@ define(
                     isDueDateInPast = today > dueDate;
                 }
 
-                if (isDueDateInPast) {
+                var fieldIsInvalid = (isCreationMode && isDueDateInPast);
+
+                if (fieldIsInvalid) {
                     this.validationErrors.push({
                         field: 'dueDate',
                         message: __('activity_manager.project.due_date_past')
@@ -168,7 +171,7 @@ define(
                 this.trigger(
                     'activity-manager:edit-project:field-validated',
                     'due_date',
-                    !isDueDateInPast
+                    !fieldIsInvalid
                 );
             },
 
