@@ -12,7 +12,7 @@ class GetAttributeOptionIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/attributes/a_multi_select/options/optionA');
+        $client->request('GET', '/api/rest/v1/attributes/a_multi_select/options/optionA');
 
         $standardAttributeOption = [
             'code'       => 'optionA',
@@ -32,7 +32,7 @@ class GetAttributeOptionIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/attributes/not_found/options/not_found');
+        $client->request('GET', '/api/rest/v1/attributes/not_found/options/not_found');
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
@@ -46,7 +46,7 @@ class GetAttributeOptionIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/attributes/sku/options/sku');
+        $client->request('GET', '/api/rest/v1/attributes/sku/options/sku');
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
@@ -63,7 +63,7 @@ class GetAttributeOptionIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/attributes/a_multi_select/options/not_existing_option');
+        $client->request('GET', '/api/rest/v1/attributes/a_multi_select/options/not_existing_option');
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
         $content = json_decode($response->getContent(), true);

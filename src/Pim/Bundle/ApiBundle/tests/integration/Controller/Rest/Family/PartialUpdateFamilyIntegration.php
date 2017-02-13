@@ -20,7 +20,7 @@ class PartialUpdateFamilyIntegration extends ApiTestCase
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/families/familyA1', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/families/familyA1', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
@@ -40,7 +40,7 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/families/new_family_headers', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/families/new_family_headers', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
@@ -60,7 +60,7 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/families/new_family_incompleted', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/families/new_family_incompleted', [], [], [], $data);
 
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('new_family_incompleted');
         $familyStandard = [
@@ -87,7 +87,7 @@ JSON;
 
         $data = '{}';
 
-        $client->request('PATCH', 'api/rest/v1/families/new_category_empty_content', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/families/new_category_empty_content', [], [], [], $data);
 
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('new_category_empty_content');
         $familyStandard = [
@@ -129,7 +129,7 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/families/complete_family_creation_code', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/families/complete_family_creation_code', [], [], [], $data);
 
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('complete_family_creation_code');
         $familyStandard = [
@@ -173,7 +173,7 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/families/complete_family_creation', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/families/complete_family_creation', [], [], [], $data);
 
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('complete_family_creation');
         $familyStandard = [
@@ -203,7 +203,7 @@ JSON;
 
         $data = '{}';
 
-        $client->request('PATCH', 'api/rest/v1/families/familyA2', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/families/familyA2', [], [], [], $data);
 
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('familyA2');
         $familyStandard = [
@@ -244,7 +244,7 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/families/familyA1', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/families/familyA1', [], [], [], $data);
 
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('familyA1');
         $familyStandard = [
@@ -286,7 +286,7 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/families/familyA2', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/families/familyA2', [], [], [], $data);
 
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('familyA2');
         $familyStandard = [
@@ -320,7 +320,7 @@ JSON;
             'message' => 'Invalid json message received',
         ];
 
-        $client->request('PATCH', 'api/rest/v1/families/familyA', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/families/familyA', [], [], [], $data);
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
@@ -337,7 +337,7 @@ JSON;
             'message' => 'Invalid json message received',
         ];
 
-        $client->request('PATCH', 'api/rest/v1/families/familyA', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/families/familyA', [], [], [], $data);
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
@@ -368,7 +368,7 @@ JSON;
             ],
         ];
 
-        $client->request('PATCH', 'api/rest/v1/families/familyA', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/families/familyA', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -397,7 +397,7 @@ JSON;
             ],
         ];
 
-        $client->request('PATCH', 'api/rest/v1/families/familyA', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/families/familyA', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -426,7 +426,7 @@ JSON;
             ],
         ];
 
-        $client->request('PATCH', 'api/rest/v1/families/familyA', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/families/familyA', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());

@@ -12,7 +12,7 @@ class ListCategoryIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/categories');
+        $client->request('GET', '/api/rest/v1/categories');
 
         $standardCategories = [
             [
@@ -59,7 +59,7 @@ class ListCategoryIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/categories?limit=10&page=2');
+        $client->request('GET', '/api/rest/v1/categories?limit=10&page=2');
 
         $standardCategories = [];
 

@@ -11,7 +11,7 @@ class GetProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products/foo');
+        $client->request('GET', '/api/rest/v1/products/foo');
 
         $standardProduct = [
             'identifier'    => 'foo',
@@ -193,7 +193,7 @@ class GetProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products/not_found');
+        $client->request('GET', '/api/rest/v1/products/not_found');
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());

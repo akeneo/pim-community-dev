@@ -11,7 +11,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?channel=not_found');
+        $client->request('GET', '/api/rest/v1/products?channel=not_found');
         $this->assert($client, 'Channel "not_found" does not exist.');
     }
 
@@ -19,7 +19,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?locales=not_found');
+        $client->request('GET', '/api/rest/v1/products?locales=not_found');
         $this->assert($client, 'Locale "not_found" does not exist.');
     }
 
@@ -27,7 +27,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?locales=not_found,jambon');
+        $client->request('GET', '/api/rest/v1/products?locales=not_found,jambon');
         $this->assert($client, 'Locales "not_found, jambon" do not exist.');
     }
 
@@ -35,7 +35,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?channel=ecommerce&locales=de_DE');
+        $client->request('GET', '/api/rest/v1/products?channel=ecommerce&locales=de_DE');
         $this->assert($client, 'Locale "de_DE" is not activated for the channel "ecommerce".');
     }
 
@@ -43,7 +43,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?channel=ecommerce&locales=de_DE,fr_FR');
+        $client->request('GET', '/api/rest/v1/products?channel=ecommerce&locales=de_DE,fr_FR');
         $this->assert($client, 'Locales "de_DE, fr_FR" are not activated for the channel "ecommerce".');
     }
 
@@ -51,7 +51,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?attributes=not_found');
+        $client->request('GET', '/api/rest/v1/products?attributes=not_found');
         $this->assert($client, 'Attribute "not_found" does not exist.');
     }
 
@@ -59,7 +59,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?attributes=not_found,jambon');
+        $client->request('GET', '/api/rest/v1/products?attributes=not_found,jambon');
         $this->assert($client, 'Attributes "not_found, jambon" do not exist.');
     }
 
@@ -67,7 +67,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?page=string');
+        $client->request('GET', '/api/rest/v1/products?page=string');
         $this->assert($client, '"string" is not a valid page number.');
     }
 
@@ -75,7 +75,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?limit=101');
+        $client->request('GET', '/api/rest/v1/products?limit=101');
         $this->assert($client, 'You cannot request more than 100 items.');
     }
 

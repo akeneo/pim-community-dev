@@ -12,7 +12,7 @@ class GetAttributeIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/attributes/sku');
+        $client->request('GET', '/api/rest/v1/attributes/sku');
 
         $standardAttribute = [
             'code'                   => 'sku',
@@ -52,7 +52,7 @@ class GetAttributeIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/attributes/not_found');
+        $client->request('GET', '/api/rest/v1/attributes/not_found');
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());

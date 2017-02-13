@@ -13,7 +13,7 @@ class RefreshTokenIntegration extends ApiTestCase
         list($clientId, $secret) = $this->createOAuthClient();
         $client = $this->createAuthenticatedClient([], [], $clientId, $secret);
 
-        $client->request('POST', 'api/oauth/v1/token',
+        $client->request('POST', '/api/oauth/v1/token',
             [
                 'grant_type'    => 'refresh_token',
                 'refresh_token' => static::$refreshToken,
@@ -41,7 +41,7 @@ class RefreshTokenIntegration extends ApiTestCase
         list($clientId, $secret) = $this->createOAuthClient();
         $client = $this->createAuthenticatedClient([], [], $clientId, $secret);
 
-        $client->request('POST', 'api/oauth/v1/token',
+        $client->request('POST', '/api/oauth/v1/token',
             [
                 'grant_type' => 'refresh_token'
             ],
@@ -66,7 +66,7 @@ class RefreshTokenIntegration extends ApiTestCase
         list($clientId, $secret) = $this->createOAuthClient();
         $client = $this->createAuthenticatedClient([], [], $clientId, $secret);
 
-        $client->request('POST', 'api/oauth/v1/token',
+        $client->request('POST', '/api/oauth/v1/token',
             [
                 'grant_type'    => 'refresh_token',
                 'refresh_token' => 'ihopeitwontbeafalsepositivesomeday',

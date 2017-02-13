@@ -14,7 +14,7 @@ class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/categories/master', [], [], ['HTTP_ACCEPT' => 'application/xml']);
+        $client->request('GET', '/api/rest/v1/categories/master', [], [], ['HTTP_ACCEPT' => 'application/xml']);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NOT_ACCEPTABLE, $response->getStatusCode(), 'Header is not acceptable');
@@ -28,7 +28,7 @@ class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/categories/master', [], [], ['HTTP_ACCEPT' => 'application/json']);
+        $client->request('GET', '/api/rest/v1/categories/master', [], [], ['HTTP_ACCEPT' => 'application/json']);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode(), 'Header is acceptable');
@@ -38,7 +38,7 @@ class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/categories/master');
+        $client->request('GET', '/api/rest/v1/categories/master');
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode(), 'Header is acceptable');
@@ -48,7 +48,7 @@ class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('POST', 'api/rest/v1/categories', [], [], [
+        $client->request('POST', '/api/rest/v1/categories', [], [], [
             'CONTENT_TYPE' => 'application/xml',
         ], '{"code": "my_category"}');
 
@@ -64,7 +64,7 @@ class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('POST', 'api/rest/v1/categories', [], [], [
+        $client->request('POST', '/api/rest/v1/categories', [], [], [
             'CONTENT_TYPE' => 'application/json',
         ], '{"code": "my_category"}');
 

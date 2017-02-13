@@ -20,7 +20,7 @@ class CreateFamilyIntegration extends ApiTestCase
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/families', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
@@ -40,7 +40,7 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/families', [], [], [], $data);
 
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('new_family_incompleted');
         $familyStandard = [
@@ -81,7 +81,7 @@ JSON;
         }
     }
 JSON;
-        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/families', [], [], [], $data);
 
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('complete_family_creation');
         $familyStandard = [
@@ -116,7 +116,7 @@ JSON;
             'message' => 'Invalid json message received',
         ];
 
-        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/families', [], [], [], $data);
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
@@ -133,7 +133,7 @@ JSON;
             'message' => 'Invalid json message received',
         ];
 
-        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/families', [], [], [], $data);
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
@@ -161,7 +161,7 @@ JSON;
             ],
         ];
 
-        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/families', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -190,7 +190,7 @@ JSON;
             ],
         ];
 
-        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/families', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -220,7 +220,7 @@ JSON;
             ],
         ];
 
-        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/families', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -249,7 +249,7 @@ JSON;
             ],
         ];
 
-        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/families', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -281,7 +281,7 @@ JSON;
             ],
         ];
 
-        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/families', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -313,7 +313,7 @@ JSON;
             ],
         ];
 
-        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/families', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
