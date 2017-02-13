@@ -22,7 +22,7 @@ class CreateAttributeIntegration extends ApiTestCase
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
 
         $response = $client->getResponse();
 
@@ -45,7 +45,7 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
 
         $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('an_incomplete_text');
 
@@ -121,7 +121,7 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
 
         $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('a_new_text');
 
@@ -172,7 +172,7 @@ JSON;
             'message' => 'Invalid json message received',
         ];
 
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
@@ -189,7 +189,7 @@ JSON;
             'message' => 'Invalid json message received',
         ];
 
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
@@ -219,7 +219,7 @@ JSON;
             ],
         ];
 
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -248,7 +248,7 @@ JSON;
             ]
         ];
 
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -279,7 +279,7 @@ JSON;
             ]
         ];
 
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -308,7 +308,7 @@ JSON;
             ]
         ];
 
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -339,7 +339,7 @@ JSON;
             ]
         ];
 
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -371,7 +371,7 @@ JSON;
             ],
         ];
 
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -402,7 +402,7 @@ JSON;
             ]
         ];
 
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -431,7 +431,7 @@ JSON;
             ]
         ];
 
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -462,7 +462,7 @@ JSON;
             ]
         ];
 
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -480,7 +480,7 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
 
         $response = $client->getResponse();
 
@@ -510,7 +510,7 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
 
         $response = $client->getResponse();
 
@@ -540,7 +540,7 @@ JSON;
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
 
         $response = $client->getResponse();
 
@@ -608,7 +608,7 @@ JSON;
             ],
         ];
 
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -664,7 +664,7 @@ JSON;
             ],
         ];
 
-        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+        $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());

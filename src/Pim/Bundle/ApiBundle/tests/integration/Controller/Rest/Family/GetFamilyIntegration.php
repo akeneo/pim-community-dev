@@ -12,7 +12,7 @@ class GetFamilyIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/families/familyA');
+        $client->request('GET', '/api/rest/v1/families/familyA');
         $standardFamily = [
             'code'       => 'familyA',
             'attributes' => [
@@ -96,7 +96,7 @@ class GetFamilyIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/families/not_found');
+        $client->request('GET', '/api/rest/v1/families/not_found');
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());

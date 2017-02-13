@@ -107,7 +107,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products');
+        $client->request('GET', '/api/rest/v1/products');
         $expected = [
             '_links'       => [
                 'self'  => ['href' => 'http://localhost/api/rest/v1/products?page=1&limit=10'],
@@ -288,7 +288,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?channel=ecommerce');
+        $client->request('GET', '/api/rest/v1/products?channel=ecommerce');
         $expected = [
             '_links'       => [
                 'self'  => ['href' => 'http://localhost/api/rest/v1/products?channel=ecommerce&page=1&limit=10'],
@@ -416,7 +416,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?channel=tablet');
+        $client->request('GET', '/api/rest/v1/products?channel=tablet');
         $expected = [
             '_links'       => [
                 'self'  => ['href' => 'http://localhost/api/rest/v1/products?channel=tablet&page=1&limit=10'],
@@ -546,7 +546,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?channel=tablet&locales=fr_FR');
+        $client->request('GET', '/api/rest/v1/products?channel=tablet&locales=fr_FR');
         $expected = [
             '_links'       => [
                 'self'  => ['href' => 'http://localhost/api/rest/v1/products?channel=tablet&locales=fr_FR&page=1&limit=10'],
@@ -674,7 +674,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?channel=ecommerce_china');
+        $client->request('GET', '/api/rest/v1/products?channel=ecommerce_china');
         $expected = [
             '_links'       => [
                 'self'  => ['href' => 'http://localhost/api/rest/v1/products?channel=ecommerce_china&page=1&limit=10'],
@@ -737,7 +737,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?locales=en_US,zh_CN');
+        $client->request('GET', '/api/rest/v1/products?locales=en_US,zh_CN');
         $expected = [
             '_links'       => [
                 'self'  => ['href' => 'http://localhost/api/rest/v1/products?locales=en_US%2Czh_CN&page=1&limit=10'],
@@ -908,7 +908,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?attributes=a_text');
+        $client->request('GET', '/api/rest/v1/products?attributes=a_text');
         $expected = [
             '_links'       => [
                 'self'  => ['href' => 'http://localhost/api/rest/v1/products?attributes=a_text&page=1&limit=10'],
@@ -1029,7 +1029,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?channel=tablet&locales=fr_FR&attributes=a_scopable_price,a_metric,a_localized_and_scopable_text_area');
+        $client->request('GET', '/api/rest/v1/products?channel=tablet&locales=fr_FR&attributes=a_scopable_price,a_metric,a_localized_and_scopable_text_area');
         $expected = [
             '_links'       => [
                 'self'  => ['href' => 'http://localhost/api/rest/v1/products?channel=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area&page=1&limit=10'],
@@ -1139,7 +1139,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?attributes=a_text&page=2&limit=2');
+        $client->request('GET', '/api/rest/v1/products?attributes=a_text&page=2&limit=2');
         $expected = [
             '_links'       => [
                 'self'     => ['href' => 'http://localhost/api/rest/v1/products?attributes=a_text&page=2&limit=2'],
@@ -1194,7 +1194,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?page=2');
+        $client->request('GET', '/api/rest/v1/products?page=2');
         $expected = [
             '_links'       => [
                 'self'     => ['href' => 'http://localhost/api/rest/v1/products?page=2&limit=10'],

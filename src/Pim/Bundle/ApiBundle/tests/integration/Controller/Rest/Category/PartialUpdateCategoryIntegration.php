@@ -20,7 +20,7 @@ class PartialUpdateCategoryIntegration extends ApiTestCase
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/categories/categoryA1', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/categories/categoryA1', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
@@ -41,7 +41,7 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/categories/new_category_headers', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/categories/new_category_headers', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
@@ -61,7 +61,7 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/categories/new_category_incompleted', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/categories/new_category_incompleted', [], [], [], $data);
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('new_category_incompleted');
         $categoryStandard = [
@@ -82,7 +82,7 @@ JSON;
 
         $data = '{}';
 
-        $client->request('PATCH', 'api/rest/v1/categories/new_category_empty_content', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/categories/new_category_empty_content', [], [], [], $data);
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('new_category_empty_content');
         $categoryStandard = [
@@ -112,7 +112,7 @@ JSON;
         }
     }
 JSON;
-        $client->request('PATCH', 'api/rest/v1/categories/categoryC', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/categories/categoryC', [], [], [], $data);
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryC');
         $categoryStandard = [
@@ -144,7 +144,7 @@ JSON;
         }
     }
 JSON;
-        $client->request('PATCH', 'api/rest/v1/categories/categoryD', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/categories/categoryD', [], [], [], $data);
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryD');
         $categoryStandard = [
@@ -168,7 +168,7 @@ JSON;
 
         $data = '{}';
 
-        $client->request('PATCH', 'api/rest/v1/categories/categoryA', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/categories/categoryA', [], [], [], $data);
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryA');
         $categoryStandard = [
@@ -200,7 +200,7 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/categories/categoryA', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/categories/categoryA', [], [], [], $data);
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryA');
         $categoryStandard = [
@@ -232,7 +232,7 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/categories/categoryA2', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/categories/categoryA2', [], [], [], $data);
 
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryA2');
         $categoryStandard = [
@@ -260,7 +260,7 @@ JSON;
             'message' => 'Invalid json message received',
         ];
 
-        $client->request('PATCH', 'api/rest/v1/categories/categoryA', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/categories/categoryA', [], [], [], $data);
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
@@ -277,7 +277,7 @@ JSON;
             'message' => 'Invalid json message received',
         ];
 
-        $client->request('PATCH', 'api/rest/v1/categories/categoryA', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/categories/categoryA', [], [], [], $data);
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
@@ -305,7 +305,7 @@ JSON;
             ],
         ];
 
-        $client->request('PATCH', 'api/rest/v1/categories/categoryA', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/categories/categoryA', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -334,7 +334,7 @@ JSON;
             ],
         ];
 
-        $client->request('PATCH', 'api/rest/v1/categories/categoryA', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/categories/categoryA', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -363,7 +363,7 @@ JSON;
             ],
         ];
 
-        $client->request('PATCH', 'api/rest/v1/categories/categoryA', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/categories/categoryA', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -386,7 +386,7 @@ JSON;
             'message' => 'The code "inconsistent_code2" provided in the request body must match the code "inconsistent_code1" provided in the url.',
         ];
 
-        $client->request('PATCH', 'api/rest/v1/categories/inconsistent_code1', [], [], [], $data);
+        $client->request('PATCH', '/api/rest/v1/categories/inconsistent_code1', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());

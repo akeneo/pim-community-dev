@@ -85,17 +85,18 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function createAuthenticatedClient(array $options = [], array $server = [], $clientId = null, $secret = null)
     {
+        $client = static::createClient($options, $server);
+
         if (null === static::$accessToken || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
             if (null === $clientId || null === $secret) {
                 list($clientId, $secret) = $this->createOAuthClient();
             }
 
-            $tokens = $this->authenticate($clientId, $secret, static::USERNAME, static::PASSWORD);
+            $tokens = $this->authenticate($client, $clientId, $secret, static::USERNAME, static::PASSWORD);
             static::$accessToken = $tokens[0];
             static::$refreshToken = $tokens[1];
         }
 
-        $client = static::createClient($options, $server);
         $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer '.static::$accessToken);
         $client->setServerParameter('CONTENT_TYPE', 'application/json');
 
@@ -133,10 +134,9 @@ abstract class ApiTestCase extends WebTestCase
      *
      * @return array
      */
-    protected function authenticate($clientId, $secret, $username, $password)
+    protected function authenticate($webClient, $clientId, $secret, $username, $password)
     {
-        $webClient = static::createClient();
-        $webClient->request('POST', 'api/oauth/v1/token',
+        $webClient->request('POST', '/api/oauth/v1/token',
             [
                 'username'   => $username,
                 'password'   => $password,

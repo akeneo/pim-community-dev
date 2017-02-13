@@ -12,7 +12,7 @@ class GetCategoryIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/categories/master');
+        $client->request('GET', '/api/rest/v1/categories/master');
 
         $standardCategory = [
             'code'   => 'master',
@@ -29,7 +29,7 @@ class GetCategoryIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/categories/categoryA');
+        $client->request('GET', '/api/rest/v1/categories/categoryA');
 
         $standardCategory = [
             'code'   => 'categoryA',
@@ -49,7 +49,7 @@ class GetCategoryIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/categories/not_found');
+        $client->request('GET', '/api/rest/v1/categories/not_found');
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());

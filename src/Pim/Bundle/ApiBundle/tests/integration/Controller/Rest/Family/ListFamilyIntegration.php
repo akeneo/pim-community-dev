@@ -12,7 +12,7 @@ class ListFamilyIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/families');
+        $client->request('GET', '/api/rest/v1/families');
 
         $standardFamilies = [
             [
@@ -148,7 +148,7 @@ class ListFamilyIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/families?limit=10&page=2');
+        $client->request('GET', '/api/rest/v1/families?limit=10&page=2');
 
         $standardFamilies = [];
 

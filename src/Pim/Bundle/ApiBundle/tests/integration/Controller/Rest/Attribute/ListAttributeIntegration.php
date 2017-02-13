@@ -12,7 +12,7 @@ class ListAttributeIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/attributes');
+        $client->request('GET', '/api/rest/v1/attributes');
 
         $standardAttributes = [
             0 => [
@@ -314,7 +314,7 @@ class ListAttributeIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/attributes?limit=5&page=2');
+        $client->request('GET', '/api/rest/v1/attributes?limit=5&page=2');
         $standardAttributes = [
             0 => [
                 'code'                   => 'a_metric_without_decimal',
@@ -466,7 +466,7 @@ class ListAttributeIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/attributes?limit=100&page=2');
+        $client->request('GET', '/api/rest/v1/attributes?limit=100&page=2');
 
         $standardAttributes = [];
 
