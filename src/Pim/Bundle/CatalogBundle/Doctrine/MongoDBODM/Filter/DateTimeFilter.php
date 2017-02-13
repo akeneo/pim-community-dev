@@ -4,9 +4,10 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\ProductQueryUtility;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
@@ -60,7 +61,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
 
         if (Operators::SINCE_LAST_JOB === $operator) {
             if (!is_string($value)) {
-                throw InvalidArgumentException::stringExpected($field, static::class, gettype($value));
+                throw InvalidPropertyTypeException::stringExpected($field, static::class, $value);
             }
 
             $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($value);
@@ -75,7 +76,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
 
         if (Operators::SINCE_LAST_N_DAYS === $operator) {
             if (!is_numeric($value)) {
-                throw InvalidArgumentException::numericExpected($field, static::class, gettype($value));
+                throw InvalidPropertyTypeException::numericExpected($field, static::class, $value);
             }
 
             $fromDate = new \DateTime(sprintf('%s days ago', $value), new \DateTimeZone('UTC'));
@@ -139,18 +140,18 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
      * @param string $type
      * @param mixed  $value
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyTypeException
      *
      * @return mixed $value
      */
     protected function formatValues($type, $value)
     {
         if (is_array($value) && 2 !== count($value)) {
-            throw InvalidArgumentException::expected(
+            throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $type,
-                'array with 2 elements, string or \DateTime',
+                'should contain 2 strings with the format "yyyy-mm-dd H:i:s"',
                 static::class,
-                print_r($value, true)
+                $value
             );
         }
 
@@ -171,7 +172,8 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
      * @param string $type
      * @param mixed  $value
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyException
+     * @throws InvalidPropertyTypeException
      *
      * @return integer
      */
@@ -183,6 +185,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
 
         if ($value instanceof \DateTime) {
             $value->setTimezone(new \DateTimeZone('UTC'));
+
             return $value->getTimestamp();
         }
 
@@ -190,9 +193,9 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
             $dateTime = \DateTime::createFromFormat(static::DATETIME_FORMAT, $value);
 
             if (!$dateTime || 0 < $dateTime->getLastErrors()['warning_count']) {
-                throw InvalidArgumentException::expected(
+                throw InvalidPropertyException::dateExpected(
                     $type,
-                    'a string with the format yyyy-mm-dd H:i:s',
+                    'yyyy-mm-dd H:i:s',
                     static::class,
                     $value
                 );
@@ -201,11 +204,6 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
             return $dateTime->getTimestamp();
         }
 
-        throw InvalidArgumentException::expected(
-            $type,
-            'array with 2 elements, string or \DateTime',
-            static::class,
-            print_r($value, true)
-        );
+        throw InvalidPropertyException::dateExpected($type, 'yyyy-mm-dd H:i:s', static::class, $value);
     }
 }

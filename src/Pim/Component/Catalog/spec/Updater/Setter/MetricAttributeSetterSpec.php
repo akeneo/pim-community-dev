@@ -6,7 +6,6 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\MetricFactory;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductInterface;

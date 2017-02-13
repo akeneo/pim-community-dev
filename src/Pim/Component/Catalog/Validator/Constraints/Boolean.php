@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraint;
 class Boolean extends Constraint
 {
     /** @var string */
-    public $message = 'Attribute or field "%attribute%" expects a boolean as data, "%givenType%" given.';
+    public $message = 'Property "%attribute%" expects a boolean as data, "%givenType%" given.';
 
     /**
      * {@inheritdoc}

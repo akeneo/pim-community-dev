@@ -67,8 +67,8 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_localizable_yes_no" expects valid data, scope and locale. Attribute "a_localizable_yes_no" expects a locale, none given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Attribute "a_localizable_yes_no" expects a locale, none given.
      */
     public function testErrorLocalizable()
     {
@@ -76,8 +76,8 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_localizable_yes_no" expects valid data, scope and locale. Attribute "a_localizable_yes_no" expects an existing and activated locale, "NOT_FOUND" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Attribute "a_localizable_yes_no" expects an existing and activated locale, "NOT_FOUND" given.
      */
     public function testLocaleNotFound()
     {

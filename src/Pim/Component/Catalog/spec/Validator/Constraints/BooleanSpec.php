@@ -13,7 +13,7 @@ class BooleanSpec extends ObjectBehavior
 
     function it_has_message()
     {
-        $this->message->shouldBe('Attribute or field "%attribute%" expects a boolean as data, "%givenType%" given.');
+        $this->message->shouldBe('Property "%attribute%" expects a boolean as data, "%givenType%" given.');
     }
 
     function it_is_a_validator_constraint()

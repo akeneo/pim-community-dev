@@ -119,10 +119,8 @@ class DateFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_date" expects array with 2 elements, string or \DateTime as data, "Array
-     * (
-     * )" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "a_date" expects an array with valid data, should contain 2 strings with the format "yyyy-mm-dd".
      */
     public function testErrorDataIsMalformedWithEmptyArray()
     {
@@ -130,8 +128,8 @@ class DateFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_date" expects a string with the format yyyy-mm-dd as data, "2016-12-12T00:00:00" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Property "a_date" expects a string with the format "yyyy-mm-dd" as data, "2016-12-12T00:00:00" given.
      */
     public function testErrorDataIsMalformedWithISODate()
     {

@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Boolean;
 
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -68,8 +67,8 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_scopable_yes_no" expects valid data, scope and locale. Attribute "a_scopable_yes_no" expects a scope, none given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Attribute "a_scopable_yes_no" expects a scope, none given.
      */
     public function testErrorScopable()
     {
@@ -77,8 +76,8 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_scopable_yes_no" expects valid data, scope and locale. Attribute "a_scopable_yes_no" expects an existing scope, "NOT_FOUND" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Attribute "a_scopable_yes_no" expects an existing scope, "NOT_FOUND" given.
      */
     public function testScopeNotFound()
     {

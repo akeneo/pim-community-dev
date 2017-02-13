@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Prophecy\Argument;
 
 class GroupsFilterSpec extends ObjectBehavior
@@ -149,19 +149,19 @@ class GroupsFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_an_array()
     {
-        $this->shouldThrow(InvalidArgumentException::arrayExpected(
+        $this->shouldThrow(InvalidPropertyTypeException::arrayExpected(
             'groups',
             'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\GroupsFilter',
-            gettype('WRONG')
+            'WRONG'
         ))->during('addFieldFilter', ['groups', 'IN', 'WRONG']);
     }
 
     function it_throws_an_exception_if_values_in_array_are_not_strings_or_numerics()
     {
-        $this->shouldThrow(InvalidArgumentException::stringExpected(
+        $this->shouldThrow(InvalidPropertyTypeException::stringExpected(
             'groups',
             'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\GroupsFilter',
-            gettype(false)
+            false
         ))->during('addFieldFilter', ['groups', 'IN', [false]]);
     }
 }

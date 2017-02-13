@@ -7,7 +7,6 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -79,7 +78,6 @@ class ChannelRemover implements RemoverInterface
     /**
      * @param $object
      *
-     * @throws InvalidArgumentException
      * @throws \LogicException
      */
     private function validateObject($object)

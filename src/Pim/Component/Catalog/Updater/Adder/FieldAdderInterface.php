@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Adder;
 
-use Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException;
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -22,7 +22,7 @@ interface FieldAdderInterface extends AdderInterface
      * @param mixed            $data    The data to add
      * @param array            $options Options passed to the adder
      *
-     * @throws ObjectUpdaterException
+     * @throws PropertyException
      */
     public function addFieldData(ProductInterface $product, $field, $data, array $options = []);
 
