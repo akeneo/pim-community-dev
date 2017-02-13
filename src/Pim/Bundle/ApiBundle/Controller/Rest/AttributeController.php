@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Version;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\ViolationHttpException;
@@ -90,6 +91,8 @@ class AttributeController
      * @throws NotFoundHttpException
      *
      * @return JsonResponse
+     *
+     * @AclAncestor("pim_api_attribute_list")
      */
     public function getAction(Request $request, $code)
     {
@@ -107,6 +110,8 @@ class AttributeController
      * @param Request $request
      *
      * @return JsonResponse
+     *
+     * @AclAncestor("pim_api_attribute_list")
      */
     public function listAction(Request $request)
     {
@@ -134,6 +139,8 @@ class AttributeController
      * @throws UnprocessableEntityHttpException
      *
      * @return Response
+     *
+     * @AclAncestor("pim_api_attribute_edit")
      */
     public function createAction(Request $request)
     {
