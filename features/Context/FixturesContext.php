@@ -448,10 +448,13 @@ class FixturesContext extends BaseFixturesContext
                 $matches = null;
                 if ('attributes' === $key) {
                     $this->assertArrayEquals(explode(',', $value), $family->getAttributeCodes());
+
                 } elseif ('attribute_as_label' === $key) {
                     assertEquals($value, $family->getAttributeAsLabel()->getCode());
+
                 } elseif (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
                     assertEquals($value, $family->getTranslation($matches['locale'])->getLabel());
+
                 } elseif (preg_match('/^requirements-(?P<channel>.*)$/', $key, $matches)) {
                     $requirements = [];
                     foreach ($family->getAttributeRequirements() as $requirement) {
@@ -460,8 +463,9 @@ class FixturesContext extends BaseFixturesContext
                         }
                     }
                     $this->assertArrayEquals(explode(',', $value), $requirements);
+
                 } else {
-                    throw new \InvalidArgumentException(sprintf('Can not check "%" attribute of the family', $key));
+                    throw new \InvalidArgumentException(sprintf('Can not check "%s" attribute of the family', $key));
                 }
             }
         }
@@ -504,42 +508,36 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $channel = $this->getChannel($data['code']);
+            unset($data['code']);
 
-            if (isset($data['label-en_US'])) {
-                assertEquals($data['label-en_US'], $channel->getTranslation('en_US')->getLabel());
-            }
+            foreach ($data as $key => $value) {
+                $matches = null;
+                if ('tree' === $key) {
+                    assertEquals($value, $channel->getCategory()->getCode());
 
-            if (isset($data['label-de_DE'])) {
-                assertEquals($data['label-de_DE'], $channel->getTranslation('de_DE')->getLabel());
-            }
+                } elseif (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
+                    assertEquals($value, $channel->getTranslation($matches['locale'])->getLabel());
 
-            if (isset($data['label-fr_FR'])) {
-                assertEquals($data['label-fr_FR'], $channel->getTranslation('fr_FR')->getLabel());
-            }
+                } elseif ('locales' === $key) {
+                    $this->assertArrayEquals(explode(',', $value), $channel->getLocaleCodes());
 
-            assertEquals($data['tree'], $channel->getCategory()->getCode());
+                } elseif ('currencies' === $key) {
+                    $currencyCodes = [];
+                    foreach ($channel->getCurrencies() as $currency) {
+                        $currencyCodes[] = $currency->getCode();
+                    }
+                    $this->assertArrayEquals(explode(',', $value), $currencyCodes);
 
-            $locales = $channel->getLocaleCodes();
-            asort($locales);
-            assertEquals($data['locales'], implode(',', $locales));
+                } elseif ('conversion_units' === $key) {
+                    $formattedUnits = [];
+                    foreach ($channel->getConversionUnits() as $attribute => $measure) {
+                        $formattedUnits[] = sprintf("%s:%s", $attribute, $measure);
+                    }
+                    $this->assertArrayEquals(explode(',', $value), $formattedUnits);
 
-            $currencies = $channel->getCurrencies();
-            $currencyCodes = [];
-            foreach ($currencies as $currency) {
-                $currencyCodes[] = $currency->getCode();
-            }
-            asort($currencyCodes);
-            assertEquals($data['currencies'], implode(',', $currencyCodes));
-
-            if ('' !== $data['conversion_units']) {
-                $units = explode(',', $data['conversion_units']);
-                $formattedUnits = [];
-                foreach ($units as $unit) {
-                    list($key, $value) = explode(':', trim($unit));
-                    $formattedUnits[trim($key)] = trim($value);
+                } else {
+                    throw new \InvalidArgumentException(sprintf('Can not check "%s" attribute of the channel', $key));
                 }
-
-                assertEquals($formattedUnits, $channel->getConversionUnits());
             }
         }
     }

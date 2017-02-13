@@ -18,8 +18,8 @@ Feature: Import channels
     And I launch the import job
     And I wait for the "xlsx_footwear_channel_import" job to finish
     Then there should be the following channels:
-      | code | label | color | currencies | locales           | tree            | conversion_units |
-      | site | Site  | blue  | EUR,USD    | de_DE,en_US,hy_AM | 2014_collection |                  |
+      | code | label-en_US | color | currencies | locales           | tree            | conversion_units |
+      | site | Site        | blue  | EUR,USD    | de_DE,en_US,hy_AM | 2014_collection |                  |
 
   Scenario: Successfully remove locales and currencies
     Given the "apparel" catalog configuration
@@ -38,5 +38,5 @@ Feature: Import channels
     And I launch the import job
     And I wait for the "xlsx_channel_import" job to finish
     Then there should be the following channels:
-      | code  | label | currencies | locales | tree            | conversion_units |
-      | print | Print | USD        | en_US   | 2015_collection |                  |
+      | code  | label-en_US | currencies | locales | tree            | conversion_units |
+      | print | Print       | USD        | en_US   | 2015_collection |                  |
