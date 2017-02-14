@@ -629,8 +629,19 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $associationType = $this->getAssociationType($data['code']);
-            assertEquals($data['label-en_US'], $associationType->getTranslation('en_US')->getLabel());
-            assertEquals($data['label-fr_FR'], $associationType->getTranslation('fr_FR')->getLabel());
+            unset($data['code']);
+
+            foreach ($data as $key => $value) {
+                $matches = null;
+                if (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
+                    assertEquals($value, $associationType->getTranslation($matches['locale'])->getLabel());
+
+                } else {
+                    throw new \InvalidArgumentException(
+                        sprintf('Can not check "%s" attribute of the association type', $key)
+                    );
+                }
+            }
         }
     }
 
@@ -769,10 +780,13 @@ class FixturesContext extends BaseFixturesContext
     public function theFollowingAssociationTypes(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $code  = $data['code'];
-            $label = isset($data['label']) ? $data['label'] : null;
+            $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.association_type');
+            $processor = $this->getContainer()->get('pim_connector.processor.denormalization.association_type');
+            $saver     = $this->getContainer()->get('pim_catalog.saver.association_type');
 
-            $this->createAssociationType($code, $label);
+            foreach ($table->getHash() as $data) {
+                $saver->save($processor->process($converter->convert($data)));
+            }
         }
     }
 
@@ -1693,16 +1707,6 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param string $code
-     *
-     * @return \Pim\Component\Catalog\Model\CategoryInterface
-     */
-    protected function createTree($code)
-    {
-        return $this->createCategory($code);
-    }
-
-    /**
      * @param array|string $data
      *
      * @return \Pim\Component\Catalog\Model\CategoryInterface
@@ -1732,28 +1736,6 @@ class FixturesContext extends BaseFixturesContext
         }
 
         return $category;
-    }
-
-    /**
-     * @return GroupFactory
-     */
-    protected function getGroupFactory()
-    {
-        return $this->getContainer()->get('pim_catalog.factory.group');
-    }
-
-    /**
-     * @param string $code
-     * @param string $label
-     */
-    protected function createAssociationType($code, $label)
-    {
-        $associationType = new AssociationType();
-        $associationType->setCode($code);
-        $associationType->setLocale('en_US')->setLabel($label);
-
-        $this->validate($associationType);
-        $this->getContainer()->get('pim_catalog.saver.association_type')->save($associationType);
     }
 
     /**
