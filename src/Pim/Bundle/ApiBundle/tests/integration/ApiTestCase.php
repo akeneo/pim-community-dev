@@ -109,7 +109,7 @@ abstract class ApiTestCase extends WebTestCase
     /**
      * Creates a new OAuth client and returns its client id and secret.
      *
-     * @return array
+     * @return string[]
      */
     protected function createOAuthClient()
     {
@@ -135,7 +135,7 @@ abstract class ApiTestCase extends WebTestCase
      * @param string $username
      * @param string $password
      *
-     * @return array
+     * @return string[]
      */
     protected function authenticate($clientId, $secret, $username, $password)
     {

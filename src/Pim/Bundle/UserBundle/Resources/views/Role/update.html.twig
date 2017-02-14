@@ -132,6 +132,7 @@
                 </div>
 
                 {% set groups = acl_groups() %}
+                {% set groupNames = acl_group_names() %}
 
                 {% for privilegeBlock, privilegeConfig in privilegesConfig %}
                     {% if groups[privilegeBlock] is defined %}
@@ -202,7 +203,7 @@
                                                 <h3 class="AknTabHeader-title">{{ 'System'|trans }}</h3>
                                             </div>
                                             <div class="AknFormContainer AknFormContainer--withPadding acl-group">
-                                                {% for child in form[privilegeBlock].children if child.vars.value.group not in groups and (child.vars.value.extensionKey != 'entity' or child.vars.value.identity.name == '(default)') %}
+                                                {% for child in form[privilegeBlock].children if child.vars.value.group not in groupNames and (child.vars.value.extensionKey != 'entity' or child.vars.value.identity.name == '(default)') %}
                                                     {{ form_widget(child) }}
                                                 {% endfor %}
                                             </div>

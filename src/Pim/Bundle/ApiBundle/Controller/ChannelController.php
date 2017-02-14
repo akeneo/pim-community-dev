@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ApiBundle\Controller;
 
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Pagination\HalPaginator;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
@@ -73,8 +74,10 @@ class ChannelController
      * @param Request $request
      *
      * @throws UnprocessableEntityHttpException
+     *
      * @return JsonResponse
      *
+     * @AclAncestor("pim_api_channel_list")
      */
     public function listAction(Request $request)
     {

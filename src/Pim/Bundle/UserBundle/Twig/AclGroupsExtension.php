@@ -38,16 +38,39 @@ class AclGroupsExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('acl_groups', [$this, 'getAclGroups'])
+            new \Twig_SimpleFunction('acl_groups', [$this, 'getAclGroups']),
+            new \Twig_SimpleFunction('acl_group_names', [$this, 'getAclGroupNames']),
         ];
     }
 
     /**
-     * Get acl groups
+     * Get ACL groups.
      *
      * @return string[]
      */
     public function getAclGroups()
+    {
+        $config = $this->getConfig();
+
+        return $this->getSortedGroups($config);
+    }
+
+    /**
+     * Get ACL group names.
+     *
+     * @return string[]
+     */
+    public function getAclGroupNames()
+    {
+        $config = $this->getConfig();
+
+        return array_keys($config);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getConfig()
     {
         $config = [];
         foreach ($this->bundles as $class) {
@@ -58,7 +81,7 @@ class AclGroupsExtension extends \Twig_Extension
             }
         }
 
-        return $this->getSortedGroups($config);
+        return $config;
     }
 
     /**
@@ -72,7 +95,7 @@ class AclGroupsExtension extends \Twig_Extension
     protected function getSortedGroups($config)
     {
         $groups = $this->getGroups($config);
-        $groups= $this->sortGroups($groups);
+        $groups = $this->sortGroups($groups);
 
         return $groups;
     }
