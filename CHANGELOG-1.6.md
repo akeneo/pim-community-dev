@@ -3,6 +3,7 @@
 ## Improvements
 
 - PIM-6149: Remove version number displayed on login page
+- PIM-6157: Improve product exports speed
 
 ## Bug fixes
 
