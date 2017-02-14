@@ -97,7 +97,7 @@ LEFT JOIN `@pim_user.entity.user@` AS `user`
 FILTER_USER;
 
             $filterByCategoryPermissionByConditions = <<<FILTER_USER
-AND (`user`.`username` = :username OR `user`.`username` IS NULL)
+AND `user`.`username` = :username
 FILTER_USER;
 
             // Filter on the attribute groups the user can edit
@@ -151,20 +151,25 @@ FROM (
 		SUM(`completeness_per_attribute_group`.`is_complete`) AS `attribute_group_done`,
 		COUNT(`completeness_per_attribute_group`.`product_id`) AS `total_attribute_group`
 	FROM (      
-        SELECT DISTINCT `project_product`.`product_id`
+	    SELECT DISTINCT `project_product`.`product_id`
         FROM `@pimee_activity_manager.project_product@` AS `project_product`
         LEFT JOIN `@pim_catalog.entity.product#categories@` AS `category_product`
             ON `project_product`.`product_id` = `category_product`.`product_id`
-        LEFT JOIN `@pimee_security.entity.product_category_access@` AS `product_category_access`
-            ON `category_product`.`category_id` = `product_category_access`.`category_id`
-            AND (`product_category_access`.`edit_items` = 1 OR `product_category_access`.`edit_items` IS NULL)
-        $filterByCategoryPermissionJoins
         WHERE `project_product`.`project_id` = :project_id
-        $filterByCategoryPermissionByConditions
+        AND (
+			`category_product`.`category_id` IS NULL
+			OR `category_product`.`category_id` IN (
+				SELECT `product_category_access`.`category_id`
+				FROM `@pimee_security.entity.product_category_access@` AS `product_category_access`
+				$filterByCategoryPermissionJoins
+				WHERE `product_category_access`.`edit_items` = 1
+				$filterByCategoryPermissionByConditions
+			)
+        )
     ) AS `product_selection`
     
     INNER JOIN `@pimee_activity_manager.completeness_per_attribute_group@` AS `completeness_per_attribute_group`
-		ON `completeness_per_attribute_group`.`product_id` = `product_selection`.`product_id`
+        ON `completeness_per_attribute_group`.`product_id` = `product_selection`.`product_id`
         AND `completeness_per_attribute_group`.`channel_id` = :channel_id
         AND `completeness_per_attribute_group`.`locale_id` = :locale_id
     $filterByAttributeGroupPermissions
