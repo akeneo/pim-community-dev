@@ -45,6 +45,27 @@ class LocaleAccessRepository extends EntityRepository implements IdentifiableObj
 
         return $qb->getQuery()->getResult();
     }
+    /**
+     * Get group that have the specified access to a locale
+     *
+     * @param LocaleInterface $locale
+     * @param string          $accessLevel
+     *
+     * @return string[]
+     */
+    public function getGrantedUserGroupsName(LocaleInterface $locale, $accessLevel)
+    {
+        $accessField = $this->getAccessField($accessLevel);
+        $qb = $this->createQueryBuilder('a');
+        $qb
+            ->select('g.name')
+            ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
+            ->where('a.locale = :locale')
+            ->andWhere($qb->expr()->eq(sprintf('a.%s', $accessField), true))
+            ->setParameter('locale', $locale);
+
+        return $qb->getQuery()->getResult();
+    }
 
     /**
      * Revoke access to a locales
