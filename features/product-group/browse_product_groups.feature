@@ -16,9 +16,9 @@ Feature: Browse product groups
       | tshirt_akeneo | Akeneo T-Shirt | size,color | VARIANT |
       | mug_akeneo    | Akeneo Mug     | color      | VARIANT |
     And the following product groups:
-      | code         | label-en_US | type    |
-      | CROSS_SELL_1 | Cross Sell  | X_SELL  |
-      | CROSS_SELL_2 | Relational  | X_SELL  |
+      | code         | label-en_US | type   |
+      | CROSS_SELL_1 | Cross Sell  | X_SELL |
+      | CROSS_SELL_2 | Relational  | X_SELL |
     And I am logged in as "Julia"
     And I am on the product groups page
     Then the grid should contain 2 elements

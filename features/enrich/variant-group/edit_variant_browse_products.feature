@@ -17,9 +17,9 @@ Feature: Edit a variant group adding/removing products
     And the following "color" attribute options: Yellow, Blue, Green, Pink and Red
     And the following "size" attribute options: XS, S, M, L and XL
     And the following variant groups:
-      | code       | label-en_US | axis       | type    |
-      | MUG        | MUG Akeneo  | color      | VARIANT |
-      | POSTIT     | Postit      | color,size | VARIANT |
+      | code   | label-en_US | axis       | type    |
+      | MUG    | MUG Akeneo  | color      | VARIANT |
+      | POSTIT | Postit      | color,size | VARIANT |
     And the following product groups:
       | code       | label-en_US | type   |
       | CROSS_SELL | Cross sell  | X_SELL |

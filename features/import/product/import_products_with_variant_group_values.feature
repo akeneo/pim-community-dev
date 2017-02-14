@@ -7,7 +7,7 @@ Feature: Execute a product import
   Background:
     Given the "footwear" catalog configuration
     And I add the "french" locale to the "tablet" channel
-    And the following product groups:
+    And the following variant groups:
       | code   | label-en_US | axis       | type    |
       | SANDAL | Sandal      | size,color | VARIANT |
     And the following products:

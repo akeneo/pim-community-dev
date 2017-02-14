@@ -18,9 +18,9 @@ Feature: Filter products
       | code | label-en_US | axis  | type    |
       | MUG  | Mug         | color | VARIANT |
     And the following product groups:
-      | code   | label-en_US | type    |
-      | POSTIT | Postit      | X_SELL  |
-      | EMPTY  | Empty       | X_SELL  |
+      | code   | label-en_US | type   |
+      | POSTIT | Postit      | X_SELL |
+      | EMPTY  | Empty       | X_SELL |
     And the following products:
       | sku    | family    | color | groups   |
       | BOOK   | library   |       |          |
