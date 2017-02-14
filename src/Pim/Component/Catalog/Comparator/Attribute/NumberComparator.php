@@ -40,7 +40,7 @@ class NumberComparator implements ComparatorInterface
         $default = ['locale' => null, 'scope' => null, 'data' => null];
         $originals = array_merge($default, $originals);
 
-        if (null === $data['data'] && null === $originals['data']['data']) {
+        if (null === $data['data'] && null === $originals['data']) {
             return null;
         }
 
