@@ -1,0 +1,16 @@
+pim_analytics:
+  new_patch_available: Nuovo patch disponibile
+  system_config:
+    group:
+      notification.title: Notifiche
+  system_info:
+    title: Informazioni sistema
+    download: TXT
+  info_type:
+    pim_version: Versione
+  acl:
+    system_info:
+      index: Informazioni sistema
+pim_menu:
+  item:
+    system_info: Informazioni sistema

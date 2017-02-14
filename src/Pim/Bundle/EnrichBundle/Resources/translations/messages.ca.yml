@@ -40,7 +40,7 @@ pim_enrich:
       property.title: Propietats
       history.title: Històric
   group:
-    axis.help: Els eixos defineixen els atributs sobre els que els productes del grup han de variar. Els eixos són atributs amb opcions, sense configuració regional i sense abast. No es poden canviar després de la creació del grup de variants.
+    axis.help: 'Els eixos defineixen els atributs sobre els que els productes del grup han de variar. Els eixos són atributs amb opcions, sense configuració regional i sense abast. No es poden canviar després de la creació del grup de variants.'
     type:
       VARIANT: Variant
       X_SELL: Venda creuada
@@ -101,6 +101,7 @@ pim_enrich:
       launched_flash: L'acció en massa "canviar estat" ja s'ha engegat. Se li notificarà una cop acabi.
     edit-common-attributes:
       label: Editar atributs
+      description: Els atributs del producte seleccionat s'editaran amb les dades següents pels paràmetres regionals triats.
       empty: Si us plau seleccioneu l'atribut o atributs que voleu editar
       success_flash: La tasca d'actualització del(s) producte(s) està en marxa
       launched_flash: L'acció en massa "editar atributs comuns" ja s'ha engegat. Se li notificarà una cop acabi.
@@ -112,6 +113,7 @@ pim_enrich:
       label: Classificar els productes en categories
       description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
       success_flash: El(s) producte(s) han estat classificat(s) a les categories seleccionades
+      launched_flash: L'acció massiva "classificar" s'ha engegat. Se'l notificarà quan hagi finalitzat.
     change-family:
       label: Canviar la família de productes
       description: La família dels productes seleccionats es canviarà per la família escollida
@@ -342,7 +344,7 @@ btn:
     variant group: crear grup de variants
     association type: crear tipus d'associació
     group type: crear tipus de grup
-    drag_or_upload: Arrossegueu-lo aquí per penjar o feu-hi clic
+    drag_or_upload: Arrossegueu-lo aquí per carregar o feu-hi clic
   edit: editar
   save: guardar
   save and back: guardar i tornar a la quadrícula
@@ -495,6 +497,16 @@ info:
     auto option sorting: Si s'activa, les opcions s'ordenaran automàticament per les seves etiquetes configurades regionalment
   completeness:
     not calculated: No s'ha calculat encara
+color:
+  title: Color
+  gray: Gris
+  white: Blanc
+  yellow: Groc
+  orange: Taronja
+  magenta: Magenta
+  violet: Violeta
+  blue: Blau
+  cyan: Cian
 Options: Opcions
 Created at: Creat el
 Updated at: Actualitzat el
@@ -547,9 +559,11 @@ Translate from: Traduir de
 switch_on: "Sí"
 switch_off: "No"
 Close: Tancar
+Choose a color: Trieu un color
 Search: Cercar
 Choose the attribute type: Trieu el tipus d'atribut
 Choose the attribute group: Trieu el grup de l'atribut
+Drop a file or click here: Porteu un arxiu o feu clic aquí
 Drop an image or click here: Arrossegui aquí una imatge o feu-hi clic
 Automatic option sorting: Ordenació automàtica de les opcions
 save_attribute_before_manage_option: Per administrar opcions, guardeu primer l'atribut si us plau
@@ -595,46 +609,49 @@ Default: Per defecte
 Attributes: Atributs
 Title: Títol
 pim_title.attribute_group:
-  index: Grups d'atribut
-  create: Grups d'atributs | Crear
-  edit: Grups d'atributs %group.label% | Editar
+  index: "Grups d'atribut"
+  create: "Grups d'atributs | Crear"
+  edit: "Grups d'atributs %group.label% | Editar"
 pim_title.category:
-  index: Arbres de categories
-  create: Arbres de categories | Crear
-  edit: Arbres de categories %category.label% | Editar
+  index: "Arbres de categories"
+  create: "Arbres de categories | Crear"
+  edit: "Arbres de categories %category.label% | Editar"
 pim_title.attribute:
-  index: Atributs
-  create: Atributs | Crear
-  edit: Atributs %attribute.label% | Editar
+  index: "Atributs"
+  create: "Atributs | Crear"
+  edit: "Atributs %attribute.label% | Editar"
 pim_title.product:
-  index: Productes
-  edit: Productes %product.sku% | Editar
+  index: "Productes"
+  edit: "Productes %product.sku% | Editar"
 pim_title.family:
-  index: Famílies
-  edit: Famílies %family.label% | Editar
+  index: "Famílies"
+  edit: "Famílies %family.label% | Editar"
 pim_title.channel:
-  index: Canals
-  create: Canals | Crear
-  edit: Canals %channel.label% | Editar
+  index: "Canals"
+  create: "Canals | Crear"
+  edit: "Canals %channel.label% | Editar"
 pim_title.currency:
-  index: Monedes
+  index: "Monedes"
 pim_title.locale:
-  index: Configuracions regionals
+  index: "Configuracions regionals"
 pim_title.group:
-  index: Grups
-  edit: Grups %group.label% | Editar
+  index: "Grups"
+  edit: "Grups %group.label% | Editar"
 pim_title.variant_group:
-  index: Grups de variants
-  edit: Grups de variants %group.label% | Editar
+  index: "Grups de variants"
+  edit: "Grups de variants %group.label% | Editar"
 pim_title.association_type:
-  index: Tipus d'associació
-  edit: Tipus d'Associació %association type.label% | Editar
+  index: "Tipus d'associació"
+  edit: "Tipus d'Associació %association type.label% | Editar"
 pim_title.group_type:
-  index: Tipus de grup
-  edit: Tipus de grup %group type.label% | Editar
+  index: "Tipus de grup"
+  edit: "Tipus de grup %group type.label% | Editar"
+pim_title.mass_edit_action:
+  choose: "Editar en massa | Triar"
+  configure: "Editar en massa | Configurar"
 pim_title.job_tracker:
   index: Seguiment del procés
-  show: Seguiment del procés | Mostrar tasca
+  show: "Seguiment del procés | Mostrar tasca"
 pim_title.dashboard: "Panell de contol"
 pim_catalog_identifier: Identificador
 pim_catalog_text: Texte
@@ -648,6 +665,8 @@ pim_catalog_image: Imatge
 pim_catalog_boolean: "Sí/No"
 pim_catalog_date: Data
 pim_catalog_metric: Mètrica
+pim_reference_data_simpleselect: Selecció simple de dades de referència
+pim_reference_data_multiselect: Selecció múltiple de dades de referència
 Activated: Activat
 Disable: Deshabilitar
 pim_enrich.sequential_edit_action:
@@ -684,6 +703,7 @@ pim_enrich.mass_edit_action:
     success_flash: S'ha canviat l'estat del(s) producte(s)
   edit-common-attributes:
     label: Editar atributs comuns
+    description: Els atributs del producte seleccionat s'editaran amb les dades següents pels paràmetres regionals triats.
     empty: Si us plau seleccioneu l'atribut o atributs que voleu editar
     success_flash: S'han actualitzat els atributs de producte
     message.warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
@@ -790,23 +810,23 @@ Currency: Moneda
 oro.locale:
   address_format:
     region_name_type:
-      parish: parròquia
-      state: estat
-      island: illa
-      county: comtat
-      area: àrea
-      prefecture: prefectura
-      department: departament
-      district: districte
-      province: província
+      parish: "parròquia"
+      state: "estat"
+      island: "illa"
+      county: "comtat"
+      area: "àrea"
+      prefecture: "prefectura"
+      department: "departament"
+      district: "districte"
+      province: "província"
   form:
     tooltip:
-      locale: Seleccioneu la opció d'idioma que feu servir pel format de nombres, adreces, noms i dates
-      location: ' La ubicació servirà per formatar les adreces quan la opció ''Format d''adreça per país'' estigui desactivada'
-      format_address_by_address_country: Seleccionant aquesta opció, les adreces habilitades seran formatades pel país on s'hi trobin. Deshabilitant aquesta opció farà que les adreces agafin el format d'adreça de la ubicació configurada
-      language: Seleccioneu l'idioma de sistema que desitjeu utilitzar
-      timezone: Seleccioneu la zona horària per mostrar data i hora
-      currency: Seleccioneu la moneda per defecte
+      locale: "Seleccioneu la opció d'idioma que feu servir pel format de nombres, adreces, noms i dates"
+      location: " La ubicació servirà per formatar les adreces quan la opció 'Format d'adreça per país' estigui desactivada"
+      format_address_by_address_country: "Seleccionant aquesta opció, les adreces habilitades seran formatades pel país on s'hi trobin. Deshabilitant aquesta opció farà que les adreces agafin el format d'adreça de la ubicació configurada"
+      language: "Seleccioneu l'idioma de sistema que desitjeu utilitzar"
+      timezone: "Seleccioneu la zona horària per mostrar data i hora"
+      currency: "Seleccioneu la moneda per defecte"
 Selected products successfully deleted: Els productes seleccionats s'han eliminat correctament
 pim_mass_edit:
   notification:
