@@ -3,7 +3,7 @@
 namespace Akeneo\Component\StorageUtils\Exception;
 
 /**
- * Exception an updater can throw when updating a property with an unexpected data type.
+ * Exception thrown when performing an action on a property with an unexpected data type.
  * For example, when a scalar is provided instead of an array.
  *
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>

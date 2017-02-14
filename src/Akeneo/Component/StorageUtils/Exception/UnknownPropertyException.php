@@ -3,7 +3,7 @@
 namespace Akeneo\Component\StorageUtils\Exception;
 
 /**
- * Exception an updater can throw when updating value on an unknown property.
+ * Exception thrown when performing an action on an unknown property.
  *
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
