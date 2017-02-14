@@ -25,6 +25,7 @@ define(
         FetcherRegistry
     ) {
         return ViewSelector.extend({
+            hasNoProject: false,
 
             /**
              * {@inheritdoc}
@@ -73,14 +74,10 @@ define(
                         .search({search: null, options: {limit: 1, page: 1}})
                         .then(function (projects) {
                             var project = _.first(projects);
+                            this.hasNoProject = (undefined === project);
 
-                            if (undefined === project) {
-                                this.$('.select2-selection-label-view .current').html(
-                                    __('activity_manager.grid.view_selector.start_new_project')
-                                );
-                                this.$('.select2-arrow').remove();
-                                this.select2Instance.select2('readonly', true);
-
+                            if (this.hasNoProject) {
+                                this.disableSelect2();
                                 this.renderExtensions();
                             } else {
                                 this.selectView(project);
@@ -144,6 +141,30 @@ define(
                 }
 
                 return ViewSelector.prototype.postFetchDatagridView.apply(this, arguments);
+            },
+
+            /**
+             * Disable the View Selector select2 and display a message to create a new project
+             */
+            disableSelect2: function () {
+                this.$('.select2-selection-label-view .current').html(
+                    __('activity_manager.grid.view_selector.start_new_project')
+                );
+                this.$('.select2-arrow').remove();
+                this.select2Instance.select2('readonly', true);
+            },
+
+            /**
+             * {@inheritdoc}
+             *
+             * Override to disable the select2 if there is no project to display
+             */
+            initializeSelectWidget: function () {
+                ViewSelector.prototype.initializeSelectWidget.apply(this, arguments);
+
+                if ('project' === this.currentViewType && this.hasNoProject) {
+                    this.disableSelect2();
+                }
             }
         });
     }
