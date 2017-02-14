@@ -17,7 +17,6 @@ use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
@@ -29,7 +28,6 @@ use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -233,7 +231,7 @@ class FixturesContext extends BaseFixturesContext
             $attribute = $processor->process($converter->convert($data));
 
             if (isset($data['unique'])) {
-                // TODO Due to Pim/Component/Catalog/Updater/AttributeUpdater.php:226 (SDS-998)
+                // Due to Pim/Component/Catalog/Updater/AttributeUpdater.php:226 (SDS-998)
                 $attribute->setUnique($data['unique'] === '1');
             }
 
@@ -447,13 +445,10 @@ class FixturesContext extends BaseFixturesContext
                 $matches = null;
                 if ('attributes' === $key) {
                     $this->assertArrayEquals(explode(',', $value), $family->getAttributeCodes());
-
                 } elseif ('attribute_as_label' === $key) {
                     assertEquals($value, $family->getAttributeAsLabel()->getCode());
-
                 } elseif (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
                     assertEquals($value, $family->getTranslation($matches['locale'])->getLabel());
-
                 } elseif (preg_match('/^requirements-(?P<channel>.*)$/', $key, $matches)) {
                     $requirements = [];
                     foreach ($family->getAttributeRequirements() as $requirement) {
@@ -462,9 +457,8 @@ class FixturesContext extends BaseFixturesContext
                         }
                     }
                     $this->assertArrayEquals(explode(',', $value), $requirements);
-
                 } else {
-                    throw new \InvalidArgumentException(sprintf('Can not check "%s" attribute of the family', $key));
+                    throw new \InvalidArgumentException(sprintf('Cannot check "%s" attribute of the family', $key));
                 }
             }
         }
@@ -513,29 +507,24 @@ class FixturesContext extends BaseFixturesContext
                 $matches = null;
                 if ('tree' === $key) {
                     assertEquals($value, $channel->getCategory()->getCode());
-
                 } elseif (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
                     assertEquals($value, $channel->getTranslation($matches['locale'])->getLabel());
-
                 } elseif ('locales' === $key) {
                     $this->assertArrayEquals(explode(',', $value), $channel->getLocaleCodes());
-
                 } elseif ('currencies' === $key) {
                     $currencyCodes = [];
                     foreach ($channel->getCurrencies() as $currency) {
                         $currencyCodes[] = $currency->getCode();
                     }
                     $this->assertArrayEquals(explode(',', $value), $currencyCodes);
-
                 } elseif ('conversion_units' === $key) {
                     $formattedUnits = [];
                     foreach ($channel->getConversionUnits() as $attribute => $measure) {
                         $formattedUnits[] = sprintf("%s:%s", $attribute, $measure);
                     }
                     $this->assertArrayEquals(explode(',', $value), $formattedUnits);
-
                 } else {
-                    throw new \InvalidArgumentException(sprintf('Can not check "%s" attribute of the channel', $key));
+                    throw new \InvalidArgumentException(sprintf('Cannot check "%s" attribute of the channel', $key));
                 }
             }
         }
@@ -556,13 +545,11 @@ class FixturesContext extends BaseFixturesContext
                 $matches = null;
                 if ('is_variant' === $key) {
                     assertEquals($value, (int) $groupType->isVariant());
-
                 } elseif (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
                     assertEquals($value, $groupType->getTranslation($matches['locale'])->getLabel());
-
                 } else {
                     throw new \InvalidArgumentException(
-                        sprintf('Can not check "%s" attribute of the group type', $key)
+                        sprintf('Cannot check "%s" attribute of the group type', $key)
                     );
                 }
             }
@@ -648,10 +635,9 @@ class FixturesContext extends BaseFixturesContext
                 $matches = null;
                 if (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
                     assertEquals($value, $associationType->getTranslation($matches['locale'])->getLabel());
-
                 } else {
                     throw new \InvalidArgumentException(
-                        sprintf('Can not check "%s" attribute of the association type', $key)
+                        sprintf('Cannot check "%s" attribute of the association type', $key)
                     );
                 }
             }
