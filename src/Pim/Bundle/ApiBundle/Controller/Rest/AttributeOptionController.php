@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ApiBundle\Controller\Rest;
 
-use Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException;
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
@@ -245,7 +245,7 @@ class AttributeOptionController
                 ),
                 $exception
             );
-        } catch (ObjectUpdaterException $exception) {
+        } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
                 $this->urlDocumentation,
                 sprintf('%s Check the standard format documentation.', $exception->getMessage()),
