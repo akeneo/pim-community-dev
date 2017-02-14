@@ -345,11 +345,11 @@ Feature: Read a single product by applying rules
 
   Scenario: Successfully execute a rule with copier actions to update non empty values on all kind of attributes
     Given the following attributes:
-      | code            | label           | type        | scopable | localizable | allowedExtensions | metric_family | default_metric_unit |
-      | made_in_france  | Made in France  | boolean     | no       | no          |                   |               |                     |
-      | report          | Report          | file        | no       | no          | txt               |               |                     |
-      | climate         | Climate         | multiselect | no       | no          |                   |               |                     |
-      | promotion_price | Promotion price | prices      | no       | no          |                   |               |                     |
+      | code            | label           | type        | scopable | localizable | allowed_extensions | metric_family | default_metric_unit |
+      | made_in_france  | Made in France  | boolean     | no       | no          |                    |               |                     |
+      | report          | Report          | file        | no       | no          | txt                |               |                     |
+      | climate         | Climate         | multiselect | no       | no          |                    |               |                     |
+      | promotion_price | Promotion price | prices      | no       | no          |                    |               |                     |
     And the following products:
       | sku       | family  | weather_conditions |
       | my-jacket | jackets | dry                |
@@ -451,11 +451,11 @@ Feature: Read a single product by applying rules
 
   Scenario: Successfully execute a rule with copier actions to update empty values on all kind of attributes
     Given the following attributes:
-      | code            | label           | type        | scopable | localizable | allowedExtensions | metric_family | default_metric_unit |
-      | made_in_france  | Made in France  | boolean     | no       | no          |                   |               |                     |
-      | report          | Report          | file        | no       | no          | txt               |               |                     |
-      | climate         | Climate         | multiselect | no       | no          |                   |               |                     |
-      | promotion_price | Promotion price | prices      | no       | no          |                   |               |                     |
+      | code            | label           | type        | scopable | localizable | allowed_extensions | metric_family | default_metric_unit |
+      | made_in_france  | Made in France  | boolean     | no       | no          |                    |               |                     |
+      | report          | Report          | file        | no       | no          | txt                |               |                     |
+      | climate         | Climate         | multiselect | no       | no          |                    |               |                     |
+      | promotion_price | Promotion price | prices      | no       | no          |                    |               |                     |
     And the following products:
       | sku       | family  | weather_conditions |
       | my-jacket | jackets | dry                |

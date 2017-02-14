@@ -12,7 +12,7 @@ Feature: Catalog updates - Remove a channel used by a project
       | technical | Technical   |
       | other     | Other       |
     And the following attributes:
-      | code         | label        | type       | localizable | scopable | decimals_allowed | metric_family | default metric unit | useable_as_grid_filter | group     | allowed extensions |
+      | code         | label        | type       | localizable | scopable | decimals_allowed | metric_family | default_metric_unit | useable_as_grid_filter | group     | allowed_extensions |
       | sku          | SKU          | identifier | no          | no       |                  |               |                     | yes                    | other     |                    |
       | name         | Name         | text       | yes         | no       |                  |               |                     | yes                    | marketing |                    |
       | description  | Description  | text       | yes         | yes      |                  |               |                     | no                     | marketing |                    |

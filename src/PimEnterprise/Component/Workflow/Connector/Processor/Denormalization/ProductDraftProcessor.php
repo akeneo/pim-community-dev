@@ -14,7 +14,7 @@ namespace PimEnterprise\Component\Workflow\Connector\Processor\Denormalization;
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException;
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -96,7 +96,7 @@ class ProductDraftProcessor extends AbstractProcessor implements
 
         try {
             $this->updateProduct($product, $item);
-        } catch (ObjectUpdaterException $exception) {
+        } catch (PropertyException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
@@ -168,7 +168,7 @@ class ProductDraftProcessor extends AbstractProcessor implements
      * @param ProductInterface $product
      * @param array            $convertedItem
      *
-     * @throws ObjectUpdaterException
+     * @throws PropertyException
      */
     protected function updateProduct(ProductInterface $product, array $convertedItem)
     {
