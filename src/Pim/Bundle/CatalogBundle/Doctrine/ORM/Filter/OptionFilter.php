@@ -29,8 +29,8 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
     /**
      * @param AttributeValidatorHelper  $attrValidatorHelper
      * @param ObjectIdResolverInterface $objectIdResolver
-     * @param array                     $supportedAttributeTypes
-     * @param array                     $supportedOperators
+     * @param string[]                  $supportedAttributeTypes
+     * @param string[]                  $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,

@@ -13,7 +13,7 @@ Feature: Filter on category
       | BOOTBL  |                                    |
       | BOOTRXS | 2014_collection, summer_collection |
     Then I should get the following results for the given filters:
-      | filter                                                                                               | result                           |
+      | filter                                                                                          | result                           |
       | [{"field":"categories", "operator":"IN",                 "value": ["winter_boots", "sandals"]}] | ["BOOTBXS", "BOOTWXS", "BOOTBS"] |
       | [{"field":"categories", "operator":"NOT IN",             "value": ["winter_boots"]}]            | ["BOOTBS", "BOOTBL", "BOOTRXS"]  |
       | [{"field":"categories", "operator":"UNCLASSIFIED",       "value": []}]                          | ["BOOTBL"]                       |
