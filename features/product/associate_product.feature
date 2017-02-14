@@ -216,6 +216,7 @@ Feature: Associate a product
     And I press the "Show groups" button
     And I check the row "caterpillar_boots"
     And I save the product
+    And I should not see the text "There are unsaved changes."
     When I select the "Substitution" association
     Then I should see the text "0 products and 0 groups"
     And the row "caterpillar_boots" should not be checked
