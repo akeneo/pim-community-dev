@@ -7,15 +7,15 @@ Feature: Validate unique attribute of a product
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | code   | label-en_US | type   | unique |
-      | text   | Text        | text   | yes    |
-      | number | Number      | number | yes    |
-      | date   | Date        | date   | yes    |
+      | code   | label-en_US | type               | unique | group |
+      | text   | Text        | pim_catalog_text   | 1      | other |
+      | number | Number      | pim_catalog_number | 1      | other |
+      | date   | Date        | pim_catalog_date   | 1      | other |
     And the following families:
-      | code        | label-en_US | attributes  | requirements-ecommerce | requirements-mobile |
-      | with_text   | With Text   | sku, text   | sku                    | sku                 |
-      | with_number | With Number | sku, number | sku                    | sku                 |
-      | with_date   | With Date   | sku, date   | sku                    | sku                 |
+      | code        | label-en_US | attributes | requirements-ecommerce | requirements-mobile |
+      | with_text   | With Text   | sku,text   | sku                    | sku                 |
+      | with_number | With Number | sku,number | sku                    | sku                 |
+      | with_date   | With Date   | sku,date   | sku                    | sku                 |
     And the following products:
       | sku     | family      |
       | text1   | with_text   |
@@ -69,7 +69,7 @@ Feature: Validate unique attribute of a product
   @skip @info date picker does not work properly on CI
   Scenario: Validate the unique constraint of date attribute with a provided date
     Given the following product values:
-      | product | attribute |value       |
+      | product | attribute | value      |
       | postit  | date      | 2015-01-01 |
     Given I am on the "date2" product page
     And I change the Date to "2015/01/01"

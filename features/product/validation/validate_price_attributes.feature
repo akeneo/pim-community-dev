@@ -7,14 +7,14 @@ Feature: Validate price attributes of a product
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | code    | label-en_US | type   | scopable | negative_allowed | decimals_allowed | number_min | number_max |
-      | cost    | Cost        | prices | no       | no               | no               |            |            |
-      | price   | Price       | prices | yes      | no               | no               |            |            |
-      | tax     | Tax         | prices | no       |                  | yes              | 10         | 100        |
-      | customs | Customs     | prices | yes      |                  | yes              | 10         | 100        |
+      | code    | label-en_US | type                         | scopable | negative_allowed | decimals_allowed | number_min | number_max | group |
+      | cost    | Cost        | pim_catalog_price_collection | 0        | 0                | 0                |            |            | other |
+      | price   | Price       | pim_catalog_price_collection | 1        | 0                | 0                |            |            | other |
+      | tax     | Tax         | pim_catalog_price_collection | 0        |                  | 1                | 10         | 100        | other |
+      | customs | Customs     | pim_catalog_price_collection | 1        |                  | 1                | 10         | 100        | other |
     And the following family:
-      | code | label-en_US | attributes                     |
-      | baz  | Baz         | sku, cost, price, tax, customs |
+      | code | label-en_US | attributes                 |
+      | baz  | Baz         | sku,cost,price,tax,customs |
     And the following product:
       | sku | family |
       | foo | baz    |

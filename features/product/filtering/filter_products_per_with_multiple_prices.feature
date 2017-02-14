@@ -11,9 +11,9 @@ Feature: Filter products with multiples prices filters
       | furniture |
       | library   |
     And the following attributes:
-      | code      | label     | type   | useable_as_grid_filter |
-      | margin    | Margin    | prices | yes                    |
-      | transport | Transport | prices | yes                    |
+      | code      | label-en_US | type                         | useable_as_grid_filter | group |
+      | margin    | Margin      | pim_catalog_price_collection | 1                      | other |
+      | transport | Transport   | pim_catalog_price_collection | 1                      | other |
     And the following products:
       | sku    | family    | transport | margin |
       | BOOK   | library   |           |        |

@@ -8,13 +8,13 @@ Feature: Edit a product
     Given a "default" catalog configuration
     And I add the "english" locale to the "mobile" channel
     And the following attributes:
-      | code        | type     | localizable | wysiwyg_enabled | label       | scopable |
-      | description | textarea | yes         | yes             | Description | yes      |
-      | name        | text     | no          |                 | Name        | no       |
-      | other_name  | text     | yes         |                 | Other Name  | yes      |
+      | code        | type                 | localizable | wysiwyg_enabled | label-en_US | scopable | group |
+      | description | pim_catalog_textarea | 1           | 1               | Description | 1        | other |
+      | name        | pim_catalog_text     | 0           |                 | Name        | 0        | other |
+      | other_name  | pim_catalog_text     | 1           |                 | Other Name  | 1        | other |
     And the following attributes:
-      | code        | label      | type   | metric family | default metric unit |
-      | length      | Shoes size | metric | Length        | CENTIMETER          |
+      | code   | label-en_US | type               | metric family | default metric unit | group |
+      | length | Shoes size  | pim_catalog_metric | Length        | CENTIMETER          | other |
     And the following products:
       | sku    |
       | sandal |

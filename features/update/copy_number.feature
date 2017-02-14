@@ -6,12 +6,12 @@ Feature: Update number fields
   Scenario: Successfully update a number field
     Given a "apparel" catalog configuration
     And the following attributes:
-      | code         | type   |
-      | item_count   | number |
-      | car_count    | number |
+      | code       | type               | group |
+      | item_count | pim_catalog_number | other |
+      | car_count  | pim_catalog_number | other |
     And the following products:
-      | sku  | item_count |
-      | AKN  | 123        |
+      | sku | item_count |
+      | AKN | 123        |
     Then I should get the following products after apply the following updater to it:
       | product | actions                                                                      | result                                     |
       | AKN     | [{"type": "copy_data", "from_field": "item_count", "to_field": "car_count"}] | {"values": {"car_count": [{"data": 123}]}} |
