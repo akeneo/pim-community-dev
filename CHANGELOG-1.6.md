@@ -4,6 +4,7 @@
 
 - PIM-6149: Remove version number displayed on login page
 - PIM-6157: Improve product exports speed
+- PIM-6159: Fix number comparator when removing numeric value in the PEF
 
 ## Bug fixes
 
