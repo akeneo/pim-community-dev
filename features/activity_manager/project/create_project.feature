@@ -120,3 +120,32 @@ Feature: Create enrichment project
       | Owner       | Julia                |
       | Locale      | en_US                |
       | Due date    | 2051-01-31           |
+
+    Scenario: I can re-submit new data when there is a validation error
+      Given a "footwear" catalog configuration
+      And I am logged in as "Julia"
+      When I am on the products page
+      And I click on the create project button
+      When I fill in the following information in the popin:
+        | project-label    | Star Wars Collection |
+        | project-due-date | 01/31/2051           |
+      And I press the "Save" button
+      And I am on the products page
+      And I click on the create project button
+      When I fill in the following information in the popin:
+        | project-label    | Star Wars Collection |
+        | project-due-date | 01/31/2051           |
+      And I press the "Save" button
+      Then I should see the text "This value is already used."
+      And the "project-due-date" field should contain "01/31/2051"
+      When I fill in the following information in the popin:
+        | project-label    | Star Wars  |
+      And I press the "Save" button
+      Then I should be on the products page
+      And the project "Star Wars" for channel "tablet" and locale "en_US" has the following properties:
+        | Label       | Star Wars  |
+        | Description |            |
+        | Channel     | tablet     |
+        | Owner       | Julia      |
+        | Locale      | en_US      |
+        | Due date    | 2051-01-31 |
