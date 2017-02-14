@@ -100,7 +100,7 @@ Feature: Revert a product to a previous version
     Given the following product:
       | sku          | family  | size |
       | helly-hansen | Jackets | XS   |
-    And the following product groups:
+    And the following variant groups:
       | code       | label-en_US          | axis | type    |
       | hh_jackets | Helly Hansen jackets | size | VARIANT |
     And the following variant group values:
