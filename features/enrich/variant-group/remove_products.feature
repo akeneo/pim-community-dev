@@ -6,7 +6,7 @@ Feature: Remove products from a variant group
 
   Background:
     Given the "footwear" catalog configuration
-    And the following product groups:
+    And the following variant groups:
       | code   | label-en_US | axis       | type    |
       | SANDAL | Sandal      | size,color | VARIANT |
     And the following products:

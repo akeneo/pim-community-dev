@@ -16,7 +16,7 @@ Feature: Edit common attributes of many products at once
       | boots      | sku,name,manufacturer,description,weather_conditions,price,rating,side_view,top_view,size,color,lace_color,weight |
       | sneakers   | sku,name,manufacturer,description,weather_conditions,price,rating,side_view,top_view,size,color,lace_color,weight |
       | sandals    | sku,name,manufacturer,description,price,rating,side_view,size,color,weight,heel_height                            |
-    And the following product groups:
+    And the following variant groups:
       | code          | label-en_US   | axis  | type    |
       | variant_heels | Variant Heels | color | VARIANT |
     And the following variant group values:

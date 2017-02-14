@@ -16,7 +16,7 @@ Feature: Sort available products for a variant group
       | size  | Size        | pim_catalog_simpleselect | 1                      | other |
     And the following "color" attribute options: Yellow, Blue, Green and Red
     And the following "size" attribute options: XS, S, M, L and XL
-    And the following product groups:
+    And the following variant groups:
       | code   | label-en_US | axis       | type    |
       | POSTIT | Postit      | color,size | VARIANT |
     And the following products:

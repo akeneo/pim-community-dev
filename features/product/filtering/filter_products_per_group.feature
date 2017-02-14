@@ -14,11 +14,13 @@ Feature: Filter products
       | code  | label-en_US | type                     | group |
       | color | Color       | pim_catalog_simpleselect | other |
     And the following "color" attribute options: Black and White
+    And the following variant groups:
+      | code | label-en_US | axis  | type    |
+      | MUG  | Mug         | color | VARIANT |
     And the following product groups:
-      | code   | label-en_US | axis  | type    |
-      | MUG    | Mug         | color | VARIANT |
-      | POSTIT | Postit      |       | X_SELL  |
-      | EMPTY  | Empty       |       | X_SELL  |
+      | code   | label-en_US | type    |
+      | POSTIT | Postit      | X_SELL  |
+      | EMPTY  | Empty       | X_SELL  |
     And the following products:
       | sku    | family    | color | groups   |
       | BOOK   | library   |       |          |

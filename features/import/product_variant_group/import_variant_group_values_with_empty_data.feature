@@ -6,7 +6,7 @@ Feature: Execute an import with empty data
 
   Background:
     Given the "footwear" catalog configuration
-    And the following product groups:
+    And the following variant groups:
       | code    | label-en_US | axis       | type    |
       | SANDAL  | Sandal      | size,color | VARIANT |
       | SANDAL2 | Sandal2     | size,color | VARIANT |

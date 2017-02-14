@@ -9,7 +9,7 @@ Feature: Update variant group fields
       | sku     |
       | tshirt1 |
       | tshirt2 |
-    And the following product groups:
+    And the following variant groups:
       | code    | label-en_US   | type    | axis |
       | TSHIRT1 | First tshirt  | VARIANT | size |
       | TSHIRT2 | Second tshirt | VARIANT | size |
@@ -32,14 +32,16 @@ Feature: Update variant group fields
     Given the following group type:
       | code |
       | PACK |
-    And the following product groups:
+    And the following variant groups:
       | code    | label-en_US   | type    | axis |
       | TSHIRT1 | First tshirt  | VARIANT | size |
       | TSHIRT2 | Second tshirt | VARIANT | size |
       | TSHIRT3 | Third tshirt  | VARIANT | size |
-      | PACK1   | First pack    | PACK    |      |
-      | PACK2   | Second pack   | PACK    |      |
-      | PACK3   | Third pack    | PACK    |      |
+    And the following product groups:
+      | code  | label-en_US | type |
+      | PACK1 | First pack  | PACK |
+      | PACK2 | Second pack | PACK |
+      | PACK3 | Third pack  | PACK |
     Then I should get the following products after apply the following updater to it:
       | product | actions                                                                                                                                  | result                                                     |
       | tshirt1 | [{"type": "set_data", "field": "groups", "data": ["PACK1", "PACK2", "TSHIRT1"]}]                                                         | {"groups": ["PACK1", "PACK2"], "variant_group": "TSHIRT1"} |

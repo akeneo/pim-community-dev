@@ -10,7 +10,7 @@ Feature: Import variant group involving reference data
       | type  | code | label |
       | color | red  | Red   |
       | color | blue | Blue  |
-    And the following product groups:
+    And the following variant groups:
       | code   | label-en_US | axis       | type    |
       | jacket | Jacket      | sole_color | VARIANT |
     And the following products:

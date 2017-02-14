@@ -12,7 +12,7 @@ Feature: Browse variant groups
       | color     | Color       | pim_catalog_simpleselect | other |
       | size      | Size        | pim_catalog_simpleselect | other |
       | dimension | Dimensions  | pim_catalog_simpleselect | other |
-    And the following product groups:
+    And the following variant groups:
       | code              | label-en_US       | axis       | type    |
       | tshirt_akeneo     | Akeneo T-Shirt    | size,color | VARIANT |
       | mug               | Mug               | color      | VARIANT |
@@ -24,7 +24,9 @@ Feature: Browse variant groups
       | helicopter_akeneo | Akeneo Helicopter | dimension  | VARIANT |
       | watch_akeneo      | Akeneo Watch      | dimension  | VARIANT |
       | bike_akeneo       | Akeneo Bike       | dimension  | VARIANT |
-      | cross_sell        | Cross Sell        |            | X_SELL  |
+    And the following product groups:
+      | code       | label-en_US | type   |
+      | cross_sell | Cross Sell  | X_SELL |
     And I am logged in as "Julia"
     And I am on the variant groups page
     Then the grid should contain 10 elements

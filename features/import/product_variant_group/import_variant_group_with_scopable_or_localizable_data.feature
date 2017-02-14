@@ -6,7 +6,7 @@ Feature: Execute an import with scopable or localizable data
 
   Background:
     Given the "apparel" catalog configuration
-    And the following product groups:
+    And the following variant groups:
       | code   | label-en_US | axis       | type    |
       | SANDAL | Sandal      | size,color | VARIANT |
     And I am logged in as "Julia"

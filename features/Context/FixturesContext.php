@@ -230,11 +230,10 @@ class FixturesContext extends BaseFixturesContext
         $saver     = $this->getContainer()->get('pim_catalog.saver.attribute');
 
         foreach ($table->getHash() as $data) {
-            // TODO Remove all this magic
             $attribute = $processor->process($converter->convert($data));
 
             if (isset($data['unique'])) {
-                // TODO Due to Pim/Component/Catalog/Updater/AttributeUpdater.php:226
+                // TODO Due to Pim/Component/Catalog/Updater/AttributeUpdater.php:226 (SDS-998)
                 $attribute->setUnique($data['unique'] === '1');
             }
 
@@ -731,38 +730,34 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * TODO A better solution should be to use 2 different methods, becasue we have to make some magic column match
-     *      and convertor/processor choice before creating the entities:
-     * - ^the following product groups
-     * - ^the following variant groups
-     *
      * @param TableNode $table
      *
      * @Given /^the following product groups?:$/
      */
     public function theFollowingProductGroups(TableNode $table)
     {
-        $groupConverter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.group');
-        $groupProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.group');
-
-        $variantConverter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.variant_group');
-        $variantProcessor = $this->getContainer()->get('pim_connector.processor.denormalization.variant_group');
-
-        $saver = $this->getContainer()->get('pim_catalog.saver.group');
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.group');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.group');
+        $saver     = $this->getContainer()->get('pim_catalog.saver.group');
 
         foreach ($table->getHash() as $data) {
-            if (isset($data['type'])) {
-                if ('VARIANT' === $data['type']) {
-                    $saver->save($variantProcessor->process($variantConverter->convert($data)));
+            $saver->save($processor->process($converter->convert($data)));
+        }
+    }
 
-                } else {
-                    if (isset($data['axis']) && ('' !== $data['axis'])) {
-                        throw new \InvalidArgumentException('Column "axis" should be empty for non-variant groups.');
-                    }
-                    unset($data['axis']);
-                    $saver->save($groupProcessor->process($groupConverter->convert($data)));
-                }
-            }
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following variant groups?:$/
+     */
+    public function theFollowingVariantGroups(TableNode $table)
+    {
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.variant_group');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.variant_group');
+        $saver     = $this->getContainer()->get('pim_catalog.saver.group');
+
+        foreach ($table->getHash() as $data) {
+            $saver->save($processor->process($converter->convert($data)));
         }
     }
 

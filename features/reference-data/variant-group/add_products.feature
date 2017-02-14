@@ -13,7 +13,7 @@ Feature: Add products with reference data to a variant group
       | sandal-red-37 | sandals | winter_collection | 37   | Red        |
       | sandal-red-38 | sandals | winter_collection | 38   | Red        |
       | sandal-red-39 | sandals | winter_collection | 39   | Red        |
-    And the following product groups:
+    And the following variant groups:
       | code   | label-en_US | axis            | type    |
       | SANDAL | Sandal      | size,sole_color | VARIANT |
     And I am logged in as "Julia"
@@ -31,7 +31,7 @@ Feature: Add products with reference data to a variant group
     Given the following family:
       | code       | attributes                |
       | high_heels | sku,sole_color,heel_color |
-    And the following product groups:
+    And the following variant groups:
       | code       | label-en_US | axis                       | type    |
       | HIGH_HEELS | High heels  | size,sole_color,heel_color | VARIANT |
     And the following products:

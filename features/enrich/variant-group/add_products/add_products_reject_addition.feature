@@ -11,7 +11,7 @@ Feature: Add products to a variant group
       | sandal-white-37 | sandals | winter_collection | 37   | white | old name   |
       | sandal-white-38 | sandals | winter_collection | 38   | white | old name   |
       | sandal-white-39 | sandals | winter_collection | 39   | white | old name   |
-    And the following product groups:
+    And the following variant groups:
       | code   | label-en_US | axis       | type    |
       | SANDAL | Sandal      | size,color | VARIANT |
     And the following variant group values:

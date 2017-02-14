@@ -23,21 +23,21 @@ Feature: Execute an import with invalid data
 
   Background:
     Given the "footwear" catalog configuration
-    And the following product groups:
+    And the following variant groups:
       | code    | label-en_US | axis       | type    |
       | SANDAL  | Sandal      | size,color | VARIANT |
       | SANDAL2 | SandalTwo   | size,color | VARIANT |
     And the following products:
-      | sku              | family  | categories        | size | color | groups  |
-      | sandal-white-37  | sandals | winter_collection | 37   | white | SANDAL  |
-      | sandal-white-38  | sandals | winter_collection | 38   | white | SANDAL  |
-      | sandal-white-39  | sandals | winter_collection | 39   | white | SANDAL  |
-      | sandal-red-37    | sandals | winter_collection | 37   | red   | SANDAL  |
-      | sandal-red-38    | sandals | winter_collection | 38   | red   | SANDAL  |
-      | sandal-red-39    | sandals | winter_collection | 39   | red   | SANDAL  |
+      | sku              | family  | categories        | size | color | groups |
+      | sandal-white-37  | sandals | winter_collection | 37   | white | SANDAL |
+      | sandal-white-38  | sandals | winter_collection | 38   | white | SANDAL |
+      | sandal-white-39  | sandals | winter_collection | 39   | white | SANDAL |
+      | sandal-red-37    | sandals | winter_collection | 37   | red   | SANDAL |
+      | sandal-red-38    | sandals | winter_collection | 38   | red   | SANDAL |
+      | sandal-red-39    | sandals | winter_collection | 39   | red   | SANDAL |
       | sandal2-white-37 | sandals | winter_collection | 37   | white | SANDAL2 |
-      | sandal2-white-38 | sandals | winter_collection | 38   | white | SANDAL2 |
-      | sandal2-red-37   | sandals | winter_collection | 37   | red   | SANDAL2 |
+      | sandal2-white-38 | sandals | winter_collection | 38   | white | SANDAL2                   |
+      | sandal2-red-37   | sandals | winter_collection | 37   | red   | SANDAL2          |
       | sandal2-red-38   | sandals | winter_collection | 38   | red   | SANDAL2 |
     And the following attributes:
       | code        | label-en_US | type             | scopable | max_characters | validation_rule | validation_regexp | group |

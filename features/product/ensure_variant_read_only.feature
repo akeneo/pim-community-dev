@@ -18,7 +18,7 @@ Feature: Disable attribute fields updated by a variant group
       | length      | Length      | pim_catalog_metric           | 0        | 0           | Length        | CENTIMETER          | other |
     And the following "options" attribute options: Blue
     And the following "color" attribute options: Red, black and Green
-    And the following product groups:
+    And the following variant groups:
       | code          | label-en_US    | axis  | type    |
       | tshirt_akeneo | Akeneo T-Shirt | color | VARIANT |
     And the following variant group values:
