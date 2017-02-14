@@ -2,8 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\CompletenessJoin;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
@@ -81,15 +82,18 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
      * @param string $field
      * @param mixed  $scope
      * @param mixed  $value
+     *
+     * @throws InvalidPropertyTypeException
+     * @throws InvalidPropertyException
      */
     protected function checkScopeAndValue($field, $scope, $value)
     {
         if (!is_numeric($value)) {
-            throw InvalidArgumentException::numericExpected($field, static::class, gettype($value));
+            throw InvalidPropertyTypeException::numericExpected($field, static::class, $value);
         }
 
         if (null === $scope) {
-            throw InvalidArgumentException::scopeExpected($field, static::class);
+            throw InvalidPropertyException::dataExpected($field, 'a valid scope', static::class);
         }
     }
 
@@ -102,23 +106,25 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
      *
      * @param string $field
      * @param array  $options
+     *
+     * @throws InvalidPropertyTypeException
      */
     protected function checkOptions($field, array $options)
     {
         if (!array_key_exists('locales', $options)) {
-            throw InvalidArgumentException::arrayKeyExpected(
+            throw InvalidPropertyTypeException::arrayKeyExpected(
                 $field,
                 'locales',
                 static::class,
-                print_r($options, true)
+                $options
             );
         }
 
         if (!isset($options['locales']) || !is_array($options['locales'])) {
-            throw InvalidArgumentException::arrayOfArraysExpected(
+            throw InvalidPropertyTypeException::arrayOfArraysExpected(
                 $field,
                 static::class,
-                print_r($options, true)
+                $options
             );
         }
     }

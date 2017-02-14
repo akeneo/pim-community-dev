@@ -110,8 +110,8 @@ class MetricFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_metric" expects an array as data, "string" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "a_metric" expects an array as data, "string" given.
      */
     public function testErrorDataIsMalformed()
     {
@@ -119,11 +119,8 @@ class MetricFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_metric" expects an array with the key "amount" as data, "Array
-     * (
-     * [unit] => WATT
-     * )" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "a_metric" expects an array with the key "amount" as data.
      */
     public function testErrorAmountIsMissing()
     {
@@ -131,11 +128,8 @@ class MetricFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_metric" expects an array with the key "unit" as data, "Array
-     * (
-     * [amount] =>
-     * )" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "a_metric" expects an array with the key "unit" as data.
      */
     public function testErrorCurrencyIsMissing()
     {
@@ -143,7 +137,7 @@ class MetricFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage The unit does not exist in the attribute's family "Power"
      */
     public function testErrorUnitNotFound()

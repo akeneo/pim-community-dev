@@ -57,8 +57,8 @@ class FamilyFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "family" expects an array as data, "string" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "family" expects an array as data, "string" given.
      */
     public function testErrorDataIsMalformed()
     {

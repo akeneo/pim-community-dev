@@ -110,8 +110,8 @@ class NumberFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_number_float_negative" expects a numeric as data, "string" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "a_number_float_negative" expects a numeric as data, "string" given.
      */
     public function testErrorDataIsMalformed()
     {

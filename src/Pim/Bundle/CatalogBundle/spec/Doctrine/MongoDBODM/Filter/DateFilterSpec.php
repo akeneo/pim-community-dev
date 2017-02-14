@@ -2,9 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -192,11 +193,11 @@ class DateFilterSpec extends ObjectBehavior
         $date->getCode()->willReturn('release_date');
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::dateExpected(
                 'release_date',
-                'array with 2 elements, string or \DateTime',
+                'yyyy-mm-dd',
                 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
-                print_r(123, true)
+                123
             )
         )->during('addAttributeFilter', [$date, '>', 123]);
     }
@@ -206,9 +207,9 @@ class DateFilterSpec extends ObjectBehavior
         $date->getCode()->willReturn('release_date');
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::dateExpected(
                 'release_date',
-                'a string with the format yyyy-mm-dd',
+                'yyyy-mm-dd',
                 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
                 'not a valid date format'
             )
@@ -220,9 +221,9 @@ class DateFilterSpec extends ObjectBehavior
         $date->getCode()->willReturn('release_date');
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::dateExpected(
                 'release_date',
-                'array with 2 elements, string or \DateTime',
+                'yyyy-mm-dd',
                 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
                 123
             )
@@ -234,11 +235,11 @@ class DateFilterSpec extends ObjectBehavior
         $date->getCode()->willReturn('release_date');
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'release_date',
-                'array with 2 elements, string or \DateTime',
+                'should contain 2 strings with the format "yyyy-mm-dd"',
                 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
-                print_r([123, 123, 'three'], true)
+                [123, 123, 'three']
             )
         )->during('addAttributeFilter', [$date, '>', [123, 123, 'three']]);
     }

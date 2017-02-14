@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\Query\Expr;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Prophecy\Argument;
@@ -249,20 +249,20 @@ class CompletenessFilterSpec extends ObjectBehavior
     function it_throws_an_exception_when_scope_is_not_provided()
     {
         $this
-            ->shouldThrow('Pim\Component\Catalog\Exception\InvalidArgumentException')
+            ->shouldThrow('Akeneo\Component\StorageUtils\Exception\InvalidPropertyException')
             ->duringAddFieldFilter('completeness', '=', 100);
         $this
-            ->shouldThrow('Pim\Component\Catalog\Exception\InvalidArgumentException')
+            ->shouldThrow('Akeneo\Component\StorageUtils\Exception\InvalidPropertyException')
             ->duringAddFieldFilter('completeness', '=', 100, 'fr_FR', null);
     }
 
     function it_throws_an_exception_if_value_is_not_an_integer()
     {
         $this->shouldThrow(
-            InvalidArgumentException::numericExpected(
+            InvalidPropertyTypeException::numericExpected(
                 'completeness',
                 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter',
-                gettype('123')
+                '12a3'
             ))->during('addFieldFilter', ['completeness', '=', '12a3', 'fr_FR', 'mobile']);
     }
 
@@ -270,11 +270,11 @@ class CompletenessFilterSpec extends ObjectBehavior
     {
         $this
             ->shouldThrow(
-                InvalidArgumentException::arrayKeyExpected(
+                InvalidPropertyTypeException::arrayKeyExpected(
                     'completeness',
                     'locales',
                     'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter',
-                    print_r(['wrong_key'], true)
+                    ['wrong_key' => ['en_US', 'fr_FR']]
                 )
             )->during(
                 'addFieldFilter',
@@ -290,10 +290,10 @@ class CompletenessFilterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidArgumentException::arrayOfArraysExpected(
+                InvalidPropertyTypeException::arrayOfArraysExpected(
                     'completeness',
                     'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter',
-                    print_r(['locales' => 'en_US'], true)
+                    ['locales' => 'en_US']
                 )
             )->during(
                 'addFieldFilter',

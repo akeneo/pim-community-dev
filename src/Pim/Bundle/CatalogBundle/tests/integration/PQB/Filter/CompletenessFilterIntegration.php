@@ -309,12 +309,8 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "completeness" expects an array with the key "locales" as data, "Array
-     * (
-     *     [locale] =>
-     *     [scope] => ecommerce
-     * )" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "completeness" expects an array with the key "locales" as data.
      */
     public function testErrorLocalesIsMissing()
     {
@@ -322,12 +318,8 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "completeness" expects an array of arrays as data, "Array
-     * (
-     *     [locale] =>
-     *     [scope] => string
-     * )" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "completeness" expects an array of arrays as data.
      */
     public function testErrorLocalesIsMalformed()
     {
@@ -335,8 +327,8 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "completeness" expects a valid scope.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Property "completeness" expects a valid scope.
      */
     public function testErrorScopeIsMissing()
     {
@@ -344,8 +336,8 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "completeness" expects a numeric as data, "string" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "completeness" expects a numeric as data, "string" given.
      */
     public function testErrorDataIsNotAnNumeric()
     {

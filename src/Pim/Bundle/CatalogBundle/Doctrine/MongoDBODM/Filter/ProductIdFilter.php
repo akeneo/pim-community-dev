@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
@@ -33,7 +33,17 @@ class ProductIdFilter extends AbstractFieldFilter implements FieldFilterInterfac
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         if (!is_string($value) && !is_array($value)) {
-            throw InvalidArgumentException::expected($field, 'array or string value', static::class, $value);
+            throw new InvalidPropertyTypeException(
+                $field,
+                $value,
+                static::class,
+                sprintf(
+                    'Property "%s" expects array or string value, "%s" given.',
+                    $field,
+                    gettype($value)
+                ),
+                InvalidPropertyTypeException::EXPECTED_CODE
+            );
         }
 
         $this->applyFilter('_id', $operator, $value);
