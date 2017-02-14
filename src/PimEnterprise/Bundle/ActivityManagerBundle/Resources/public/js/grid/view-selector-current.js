@@ -28,6 +28,12 @@ define(
              * {@inheritdoc}
              */
             onDatagridStateChange: function () {
+                // If view type switcher is on "project" and there is no project to display,
+                // then we don't react to datagrid change
+                if ('project' === this.getRoot().currentViewType && this.getRoot().hasNoProject) {
+                    return;
+                }
+
                 BaseCurrent.prototype.onDatagridStateChange.apply(this, arguments);
 
                 if ('project' !== this.datagridView.type) {
