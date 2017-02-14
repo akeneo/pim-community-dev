@@ -71,8 +71,8 @@ Feature: Quick export products with user permissions applied
       | Allowed to view product information | IT support |
     And I save the locale
     And the following attributes:
-      | code                      | type | available_locales |
-      | locale_specific_attribute | text | de_DE             |
+      | code                      | type             | available_locales | group |
+      | locale_specific_attribute | pim_catalog_text | de_DE             | other |
     And the following "sleeve_color" attribute reference data: black, green
     And the following products:
       | sku         | family  | locale_specific_attribute        | sleeve_color |

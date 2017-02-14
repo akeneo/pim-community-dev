@@ -11,8 +11,8 @@ Feature: List proposals
       | 2014_collection  | Redactor   | edit   |
       | 2014_collection  | Manager    | own    |
     And the following products:
-      | sku     | family   | categories      |
-      | hoodie  | jackets  | 2014_collection |
+      | sku    | family  | categories      |
+      | hoodie | jackets | 2014_collection |
     And Mary proposed the following change to "hoodie":
       | field | value              |
       | Name  | Hoodie for hackers |

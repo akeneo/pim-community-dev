@@ -7,8 +7,8 @@ Feature: Save only filled fields after a save
   Background:
     Given a "clothing" catalog configuration
     Given the following family:
-      | code  | attributes                  |
-      | socks | sku, name, length, handmade |
+      | code  | attributes               |
+      | socks | sku,name,length,handmade |
     And the following product:
       | sku        | family | categories        | name-en_US |
       | sport-sock | socks  | summer_collection | Socks      |
@@ -26,8 +26,8 @@ Feature: Save only filled fields after a save
     And I edit the "sport-sock" product
     And I visit the "Proposal" tab
     Then I should see the following changes on the proposals:
-      | product    | author | attribute  |
-      | sport-sock | Mary   | name       |
+      | product    | author | attribute |
+      | sport-sock | Mary   | name      |
     But I should not see the following changes on the proposals:
       | product    | author | attribute |
       | sport-sock | Mary   | Length    |

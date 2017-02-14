@@ -12,22 +12,22 @@ Feature: Catalog updates - Remove a product used by a project
       | marketing | Marketing   |
       | other     | Other       |
     And the following attributes:
-      | code         | label        | type       | localizable | scopable | decimals_allowed | metric_family | default metric unit | useable_as_grid_filter | group     | allowed extensions |
-      | sku          | SKU          | identifier | no          | no       |                  |               |                     | yes                    | other     |                    |
-      | name         | Name         | text       | yes         | no       |                  |               |                     | yes                    | marketing |                    |
-      | description  | Description  | text       | yes         | no       |                  |               |                     | no                     | marketing |                    |
+      | code        | label-en_US | type                   | localizable | scopable | decimals_allowed | metric_family | default metric unit | useable_as_grid_filter | group     | allowed extensions |
+      | sku         | SKU         | pim_catalog_identifier | 0           | 0        |                  |               |                     | 1                      | other     |                    |
+      | name        | Name        | pim_catalog_text       | 1           | 0        |                  |               |                     | 1                      | marketing |                    |
+      | description | Description | pim_catalog_text       | 1           | 0        |                  |               |                     | 0                      | marketing |                    |
     And the following attribute group accesses:
-      | attribute group | user group    | access |
-      | marketing       | All           | view   |
-      | marketing       | All           | edit   |
-      | other           | All           | view   |
-      | other           | All           | edit   |
+      | attribute group | user group | access |
+      | marketing       | All        | view   |
+      | marketing       | All        | edit   |
+      | other           | All        | view   |
+      | other           | All        | edit   |
     And the following categories:
-      | code       | label-en_US | parent  |
-      | clothing   | Clothing    | default |
+      | code     | label-en_US | parent  |
+      | clothing | Clothing    | default |
     And the following families:
-      | code     | label-en_US | attributes             | requirements-ecommerce | requirements-mobile    |
-      | tshirt   | TShirts     | sku, name, description | sku, name, description | sku, name, description |
+      | code   | label-en_US | attributes           | requirements-ecommerce | requirements-mobile  |
+      | tshirt | TShirts     | sku,name,description | sku,name,description   | sku,name,description |
     And the following products:
       | sku                  | family | categories | name-en_US                | description-en_US         |
       | tshirt-the-witcher-3 | tshirt | clothing   | T-Shirt "The Witcher III" | T-Shirt "The Witcher III" |

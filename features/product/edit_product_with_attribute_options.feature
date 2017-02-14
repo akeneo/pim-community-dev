@@ -8,14 +8,14 @@ Feature: Edit a product with attribute options
     Given the "footwear" catalog configuration
     And the following channels:
       | code      | label-en_US | color | currencies | locales | tree            |
-      | ecommerce | Ecommerce   | gray  | EUR, USD   | en_US   | 2014_collection |
+      | ecommerce | Ecommerce   | gray  | EUR,USD    | en_US   | 2014_collection |
     And the following locale accesses:
       | locale | user group | access |
       | de_DE  | Manager    | edit   |
     And the following attributes:
-      | code   | label-en_US | label-fr_FR | label-de_DE | type         | group |
-      | multi  | Multi       | Multi       | Multi       | multiselect  | other |
-      | simple | Simple      | Simple      | Simple      | simpleselect | other |
+      | code   | label-en_US | label-fr_FR | label-de_DE | type                     | group |
+      | multi  | Multi       | Multi       | Multi       | pim_catalog_multiselect  | other |
+      | simple | Simple      | Simple      | Simple      | pim_catalog_simpleselect | other |
     And the following products:
       | sku        | categories      |
       | rick_morty | 2014_collection |
@@ -98,7 +98,7 @@ Feature: Edit a product with attribute options
       hammer;MARTEAU;WURST;HAMMER;simple;36
       """
     And the following job "csv_footwear_option_import" configuration:
-      | filePath      | %file to import% |
+      | filePath | %file to import% |
     And I am on the "csv_footwear_option_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_option_import" job to finish

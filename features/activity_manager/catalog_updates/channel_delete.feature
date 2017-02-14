@@ -12,22 +12,22 @@ Feature: Catalog updates - Remove a channel used by a project
       | technical | Technical   |
       | other     | Other       |
     And the following attributes:
-      | code         | label        | type       | localizable | scopable | decimals_allowed | metric_family | default metric unit | useable_as_grid_filter | group     | allowed extensions |
-      | sku          | SKU          | identifier | no          | no       |                  |               |                     | yes                    | other     |                    |
-      | name         | Name         | text       | yes         | no       |                  |               |                     | yes                    | marketing |                    |
-      | description  | Description  | text       | yes         | yes      |                  |               |                     | no                     | marketing |                    |
-      | size         | Size         | text       | yes         | no       |                  |               |                     | yes                    | marketing |                    |
+      | code        | label-en_US | type                   | localizable | scopable | decimals_allowed | metric_family | default metric unit | useable_as_grid_filter | group     | allowed extensions |
+      | sku         | SKU         | pim_catalog_identifier | 0           | 0        |                  |               |                     | 1                      | other     |                    |
+      | name        | Name        | pim_catalog_text       | 1           | 0        |                  |               |                     | 1                      | marketing |                    |
+      | description | Description | pim_catalog_text       | 1           | 1        |                  |               |                     | 0                      | marketing |                    |
+      | size        | Size        | pim_catalog_text       | 1           | 0        |                  |               |                     | 1                      | marketing |                    |
     And the following categories:
-      | code       | label-en_US | parent  |
-      | clothing   | Clothing    | default |
+      | code     | label-en_US | parent  |
+      | clothing | Clothing    | default |
     And the following families:
-      | code     | label-en_US | attributes                   | requirements-ecommerce       | requirements-mobile          |
-      | tshirt   | TShirts     | sku, name, description, size | sku, name, size, description | sku, name, size, description |
+      | code   | label-en_US | attributes                | requirements-ecommerce    | requirements-mobile       |
+      | tshirt | TShirts     | sku,name,description,size | sku,name,size,description | sku,name,size,description |
     And the following products:
-      | sku                  | family   | categories  | name-en_US                | size-en_US |
-      | tshirt-the-witcher-3 | tshirt   | clothing    | T-Shirt "The Witcher III" | M          |
-      | tshirt-skyrim        | tshirt   | clothing    | T-Shirt "Skyrim"          | M          |
-      | tshirt-lcd           | tshirt   | clothing    | T-shirt LCD screen        | M          |
+      | sku                  | family | categories | name-en_US                | size-en_US |
+      | tshirt-the-witcher-3 | tshirt | clothing   | T-Shirt "The Witcher III" | M          |
+      | tshirt-skyrim        | tshirt | clothing   | T-Shirt "Skyrim"          | M          |
+      | tshirt-lcd           | tshirt | clothing   | T-shirt LCD screen        | M          |
     And the following projects:
       | label                  | owner | due_date   | description                                  | channel   | locale | product_filters                                                 |
       | Collection Summer 2030 | julia | 2030-10-28 | Please do your best to finish before Summer. | ecommerce | en_US  | [{"field":"family.code", "operator":"IN", "value": ["tshirt"]}] |

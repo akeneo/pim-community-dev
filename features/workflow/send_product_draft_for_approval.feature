@@ -71,8 +71,8 @@ Feature: Send a product draft for approval
     Then I should be on the proposals index page
     And the grid should contain 1 element
     And I should see the following proposal:
-      | product | author | attribute  | original  | new   |
-      | my-pant | Mary   | name       |           | Baggy |
+      | product | author | attribute | original | new   |
+      | my-pant | Mary   | name      |          | Baggy |
 
   Scenario: Fail to send a product draft for approval with a comment longer than 255 characters
     When I change the "Name" to "Baggy"

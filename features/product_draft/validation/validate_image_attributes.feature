@@ -7,12 +7,12 @@ Feature: Validate image attributes of a draft
   Background:
     Given the "clothing" catalog configuration
     And the following attributes:
-      | code      | label-en_US | type  | scopable | max_file_size | allowed_extensions | group |
-      | image     | Image       | image | no       | 0.01          | jpg                | info  |
-      | thumbnail | Thumbnail   | image | yes      | 0.01          | jpg                | info  |
+      | code      | label-en_US | type              | scopable | max_file_size | allowed_extensions | group |
+      | image     | Image       | pim_catalog_image | 0        | 0.01          | jpg                | info  |
+      | thumbnail | Thumbnail   | pim_catalog_image | 1        | 0.01          | jpg                | info  |
     And the following family:
-      | code | label-en_US | attributes            |
-      | baz  | Baz         | sku, image, thumbnail |
+      | code | label-en_US | attributes          |
+      | baz  | Baz         | sku,image,thumbnail |
     And the following product:
       | sku | family | categories        |
       | foo | baz    | summer_collection |

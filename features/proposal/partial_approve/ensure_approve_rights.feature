@@ -31,9 +31,9 @@ Feature: Partial approve
       | Name  | Summer jacket | Product information |
       | Price | 10 USD        | Marketing           |
     And the following attribute group accesses:
-      | attribute group | user group | access |
-      | info            | Manager    | edit   |
-      | marketing       | Manager    | view   |
+      | attribute group | user group | access | group | type             |
+      | info            | Manager    | edit   | other | pim_catalog_text |
+      | marketing       | Manager    | view   | other | pim_catalog_text |
     And I am logged in as "Julia"
     When I edit the "tshirt" product
     And I visit the "Proposals" tab
@@ -51,9 +51,9 @@ Feature: Partial approve
       | Name  | Summer jacket | Product information |
       | Price | 10 USD        | Marketing           |
     And the following attribute group accesses:
-      | attribute group | user group | access |
-      | info            | Manager    | edit   |
-      | marketing       | Manager    | view   |
+      | attribute group | user group | access | group | type             |
+      | info            | Manager    | edit   | other | pim_catalog_text |
+      | marketing       | Manager    | view   | other | pim_catalog_text |
     And I am logged in as "Julia"
     When I edit the "tshirt" product
     And I visit the "Proposals" tab

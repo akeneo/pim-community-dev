@@ -7,13 +7,13 @@ Feature: Edit asset collection of many products at once
   Background:
     Given the "clothing" catalog configuration
     And the following family:
-      | code       | attributes      |
-      | high_heels | sku, front_view |
+      | code       | attributes     |
+      | high_heels | sku,front_view |
     And the following products:
-      | sku            | family     |
-      | boots          | high_heels |
-      | sneakers       | high_heels |
-      | sandals        | high_heels |
+      | sku      | family     |
+      | boots    | high_heels |
+      | sneakers | high_heels |
+      | sandals  | high_heels |
     And I am logged in as "Julia"
     And I am on the products page
 

@@ -70,60 +70,60 @@ Feature: Remove an asset category
   @jira https://akeneo.atlassian.net/browse/PIM-4227
   Scenario: Remove an asset category with linked products limit exceeded
     Given the following assets:
-      | code      | categories |
-      | video_1   | videos     |
-      | video_2   | videos     |
-      | video_3   | videos     |
-      | video_4   | videos     |
-      | video_5   | videos     |
-      | video_6   | videos     |
-      | video_7   | videos     |
-      | video_8   | videos     |
-      | video_9   | videos     |
-      | video_10  | videos     |
-      | video_11  | videos     |
-      | video_12  | videos     |
-      | video_13  | videos     |
-      | video_14  | videos     |
-      | video_15  | videos     |
-      | video_16  | videos     |
-      | video_17  | videos     |
-      | video_18  | videos     |
-      | video_19  | videos     |
-      | video_20  | videos     |
-      | video_21  | videos     |
+      | code     | categories |
+      | video_1  | videos     |
+      | video_2  | videos     |
+      | video_3  | videos     |
+      | video_4  | videos     |
+      | video_5  | videos     |
+      | video_6  | videos     |
+      | video_7  | videos     |
+      | video_8  | videos     |
+      | video_9  | videos     |
+      | video_10 | videos     |
+      | video_11 | videos     |
+      | video_12 | videos     |
+      | video_13 | videos     |
+      | video_14 | videos     |
+      | video_15 | videos     |
+      | video_16 | videos     |
+      | video_17 | videos     |
+      | video_18 | videos     |
+      | video_19 | videos     |
+      | video_20 | videos     |
+      | video_21 | videos     |
     And I am on the "videos" asset category page
     When I press the "Delete" button
     Then I should see a confirm dialog with the following content:
-      | title   | Delete confirmation                                                                         |
-      | content | This category contains more products than allowed for this operation (20 products maximum)  |
+      | title   | Delete confirmation                                                                        |
+      | content | This category contains more products than allowed for this operation (20 products maximum) |
 
   Scenario: Remove an asset category with linked products limit exceeded including sub-categories
     Given the following assets:
-      | code      | categories         |
-      | video_1   | prioritized_videos |
-      | video_2   | prioritized_videos |
-      | video_3   | prioritized_videos |
-      | video_4   | prioritized_videos |
-      | video_5   | prioritized_videos |
-      | video_6   | prioritized_videos |
-      | video_7   | prioritized_videos |
-      | video_8   | prioritized_videos |
-      | video_9   | prioritized_videos |
-      | video_10  | prioritized_videos |
-      | video_11  | prioritized_videos |
-      | video_12  | prioritized_videos |
-      | video_13  | prioritized_videos |
-      | video_14  | prioritized_videos |
-      | video_15  | prioritized_videos |
-      | video_16  | prioritized_videos |
-      | video_17  | prioritized_videos |
-      | video_18  | prioritized_videos |
-      | video_19  | prioritized_videos |
-      | video_20  | prioritized_videos |
-      | video_21  | prioritized_videos |
+      | code     | categories         |
+      | video_1  | prioritized_videos |
+      | video_2  | prioritized_videos |
+      | video_3  | prioritized_videos |
+      | video_4  | prioritized_videos |
+      | video_5  | prioritized_videos |
+      | video_6  | prioritized_videos |
+      | video_7  | prioritized_videos |
+      | video_8  | prioritized_videos |
+      | video_9  | prioritized_videos |
+      | video_10 | prioritized_videos |
+      | video_11 | prioritized_videos |
+      | video_12 | prioritized_videos |
+      | video_13 | prioritized_videos |
+      | video_14 | prioritized_videos |
+      | video_15 | prioritized_videos |
+      | video_16 | prioritized_videos |
+      | video_17 | prioritized_videos |
+      | video_18 | prioritized_videos |
+      | video_19 | prioritized_videos |
+      | video_20 | prioritized_videos |
+      | video_21 | prioritized_videos |
     And I am on the "videos" asset category page
     When I press the "Delete" button
     Then I should see a confirm dialog with the following content:
-      | title   | Delete confirmation                                                                         |
-      | content | This category contains more products than allowed for this operation (20 products maximum)  |
+      | title   | Delete confirmation                                                                        |
+      | content | This category contains more products than allowed for this operation (20 products maximum) |
