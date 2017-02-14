@@ -7,8 +7,8 @@ Feature: Update the use information
   Background:
     Given the "activity_manager" catalog configuration
     And the following datagrid views:
-      | label     | alias        | columns         | filters   |
-      | My view   | product-grid | sku             | f[sku]=-1 |
+      | label   | alias        | columns | filters   |
+      | My view | product-grid | sku     | f[sku]=-1 |
     And the following projects:
       | label                  | owner | due_date   | description                                  | channel   | locale | product_filters |
       | Collection Summer 2030 | julia | 2030-10-28 | Please do your best to finish before Summer. | ecommerce | en_US  | []              |
