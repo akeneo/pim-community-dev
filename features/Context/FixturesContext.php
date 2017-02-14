@@ -550,9 +550,22 @@ class FixturesContext extends BaseFixturesContext
     {
         foreach ($table->getHash() as $data) {
             $groupType = $this->getGroupType($data['code']);
+            unset($data['code']);
 
-            assertEquals($data['label-en_US'], $groupType->getTranslation('en_US')->getLabel());
-            assertEquals($data['is_variant'], (int)$groupType->isVariant());
+            foreach ($data as $key => $value) {
+                $matches = null;
+                if ('is_variant' === $key) {
+                    assertEquals($value, (int) $groupType->isVariant());
+
+                } elseif (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
+                    assertEquals($value, $groupType->getTranslation($matches['locale'])->getLabel());
+
+                } else {
+                    throw new \InvalidArgumentException(
+                        sprintf('Can not check "%s" attribute of the group type', $key)
+                    );
+                }
+            }
         }
     }
 
@@ -779,14 +792,12 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFollowingAssociationTypes(TableNode $table)
     {
-        foreach ($table->getHash() as $data) {
-            $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.association_type');
-            $processor = $this->getContainer()->get('pim_connector.processor.denormalization.association_type');
-            $saver     = $this->getContainer()->get('pim_catalog.saver.association_type');
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.association_type');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.association_type');
+        $saver     = $this->getContainer()->get('pim_catalog.saver.association_type');
 
-            foreach ($table->getHash() as $data) {
-                $saver->save($processor->process($converter->convert($data)));
-            }
+        foreach ($table->getHash() as $data) {
+            $saver->save($processor->process($converter->convert($data)));
         }
     }
 
@@ -797,12 +808,12 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFollowingGroupTypes(TableNode $table)
     {
-        foreach ($table->getHash() as $data) {
-            $code      = $data['code'];
-            $label     = isset($data['label']) ? $data['label'] : null;
-            $isVariant = isset($data['variant']) ? $data['variant'] : 0;
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.group_type');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.group_type');
+        $saver     = $this->getContainer()->get('pim_catalog.saver.group_type');
 
-            $this->createGroupType($code, $label, $isVariant);
+        foreach ($table->getHash() as $data) {
+            $saver->save($processor->process($converter->convert($data)));
         }
     }
 
