@@ -248,7 +248,11 @@ define(
                     descriptionPlaceholder: __(
                         'activity_manager.' + this.formType + '_project_modal.description_placeholder'
                     ),
-                    dueDateValue: model.get('due_date'),
+                    dueDateValue: DateFormatter.format(
+                        model.get('due_date'),
+                        'yyyy-MM-dd',
+                        DateContext.get('date').format
+                    ),
                     dueDateLabel: __('activity_manager.project.due_date'),
                     errors: this.validationErrors,
                     requiredLabel: __('activity_manager.common.required')
