@@ -283,7 +283,9 @@ JSON;
         "code":"an_incomplete_text",
         "type":"pim_catalog_text",
         "group":"attributeGroupA",
-        "max_characters": 100
+        "max_characters": 100,
+        "metric_family": null,
+        "default_metric_unit": null
     }
 JSON;
 
