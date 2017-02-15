@@ -147,6 +147,10 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
         if ($this->qb instanceof QueryBuilder) {
             $this->qb->setParameters($this->parameters);
         }
+        // TODO - TIP-664: make the datagrid work with ES
+        elseif ($this->qb instanceof \Pim\Bundle\ElasticSearchBundle\Query\QueryBuilder) {
+            $this->qb->getStorageQb()->setParameters($this->parameters);
+        }
 
         return $this;
     }
