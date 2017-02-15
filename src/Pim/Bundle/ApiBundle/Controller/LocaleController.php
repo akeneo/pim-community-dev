@@ -5,6 +5,7 @@ namespace Pim\Bundle\ApiBundle\Controller;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Pagination\HalPaginator;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -127,7 +128,7 @@ class LocaleController
     protected function prepareSearchCriterias(Request $request)
     {
         $criterias = [];
-        if (false === $request->query->has('search')) {
+        if (!$request->query->has('search')) {
             return $criterias;
         }
         $searchString = $request->query->get('search', '');
@@ -136,10 +137,19 @@ class LocaleController
         if (null === $searchParameters) {
             throw new BadRequestHttpException('Search query parameter should be valid JSON.');
         }
+        if (!is_array($searchParameters)) {
+            throw new UnprocessableEntityHttpException(
+                sprintf('Search query parameter has to be an array, "%s" given.', gettype($searchParameters))
+            );
+        }
         foreach ($searchParameters as $searchKey => $searchParameter) {
-            if (0 === count($searchParameter)) {
+            if (!is_array($searchParameters) || !isset($searchParameter[0])) {
                 throw new UnprocessableEntityHttpException(
-                    sprintf('Operator and value are missing for the property "%s".', $searchKey)
+                    sprintf(
+                        'Structure of filter "%s" should respect this structure: %s.',
+                        $searchKey,
+                        sprintf('{"%s":[{"operator": "my_operator", "value": "my_value"}]}', $searchKey)
+                    )
                 );
             }
 
@@ -155,7 +165,8 @@ class LocaleController
                     );
                 }
 
-                if (!in_array($searchKey, $this->authorizedFieldFilters) || '=' !== $searchOperator['operator']) {
+                if (!in_array($searchKey, $this->authorizedFieldFilters)
+                    || Operators::EQUALS !== $searchOperator['operator']) {
                     throw new UnprocessableEntityHttpException(
                         sprintf(
                             'Filter on property "%s" is not supported or does not support operator "%s".',
@@ -167,7 +178,7 @@ class LocaleController
                 if (!is_bool($searchOperator['value'])) {
                     throw new UnprocessableEntityHttpException(
                         sprintf(
-                            'Filter "%s" with operator "%s" expects a boolean value',
+                            'Filter "%s" with operator "%s" expects a boolean value.',
                             $searchKey,
                             $searchOperator['operator']
                         )
