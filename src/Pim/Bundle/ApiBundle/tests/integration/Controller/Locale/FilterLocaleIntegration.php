@@ -12,10 +12,7 @@ class FilterLocaleIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $filters = [
-            'enabled' => [['operator' => '=', 'value' => true]]
-        ];
-        $searchString = urlencode(json_encode($filters));
+        $searchString = '{"enabled":[{"operator":"=","value":true}]}';
         $filterLocaleUrl = sprintf('api/rest/v1/locales?search=%s', $searchString);
         $client->request('GET', $filterLocaleUrl);
 
@@ -78,10 +75,7 @@ class FilterLocaleIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $filters = [
-            'enabled' => [['operator' => '=', 'value' => false]]
-        ];
-        $searchString = urlencode(json_encode($filters));
+        $searchString = '{"enabled":[{"operator":"=","value":false}]}';
         $filterLocaleUrl = sprintf('api/rest/v1/locales?search=%s', $searchString);
         $client->request('GET', $filterLocaleUrl);
 
@@ -185,14 +179,11 @@ class FilterLocaleIntegration extends ApiTestCase
         $this->assertSame($standardLocales, json_decode($response->getContent(), true));
     }
 
-    public function testFilterOnNonAuthorizedField()
+    public function testFilterOnUnauthorizedField()
     {
         $client = $this->createAuthenticatedClient();
 
-        $filters = [
-            'non_authorized' => [['operator' => '=', 'value' => false]]
-        ];
-        $searchString = urlencode(json_encode($filters));
+        $searchString = '{"unauthorized":[{"operator":"=","value":true}]}';
         $filterLocaleUrl = sprintf('api/rest/v1/locales?search=%s', $searchString);
         $client->request('GET', $filterLocaleUrl);
 
@@ -202,7 +193,7 @@ class FilterLocaleIntegration extends ApiTestCase
         $this->assertCount(2, $content, 'response contains 2 items');
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $content['code']);
         $this->assertSame(
-            'Filter on property "non_authorized" is not supported or does not support operator "=".',
+            'Filter on property "unauthorized" is not supported or does not support operator "=".',
             $content['message']
         );
     }
@@ -211,7 +202,7 @@ class FilterLocaleIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $searchString = urlencode('{"enabled":[{"operator":"=","value\': "]}');
+        $searchString = '{"enabled":[{"operator":"=","value\': "]}';
         $filterLocaleUrl = sprintf('api/rest/v1/locales?search=%s', $searchString);
         $client->request('GET', $filterLocaleUrl);
 
@@ -223,14 +214,11 @@ class FilterLocaleIntegration extends ApiTestCase
         $this->assertSame('Search query parameter should be valid JSON.', $content['message']);
     }
 
-    public function testFilterMissingOperatorAndValueFields()
+    public function testFilterOnInvalidJsonForFilterPart()
     {
         $client = $this->createAuthenticatedClient();
 
-        $filters = [
-            'enabled' => []
-        ];
-        $searchString = urlencode(json_encode($filters));
+        $searchString = '{"enabled":{"operator":"=","value":false}}';
         $filterLocaleUrl = sprintf('api/rest/v1/locales?search=%s', $searchString);
         $client->request('GET', $filterLocaleUrl);
 
@@ -239,7 +227,31 @@ class FilterLocaleIntegration extends ApiTestCase
         $content = json_decode($response->getContent(), true);
         $this->assertCount(2, $content, 'response contains 2 items');
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $content['code']);
-        $this->assertSame('Operator and value are missing for the property "enabled".', $content['message']);
+        $expectedErrorMessage = sprintf(
+            'Structure of filter "enabled" should respect this structure: %s.',
+            '{"enabled":[{"operator": "my_operator", "value": "my_value"}]}'
+        );
+        $this->assertSame($expectedErrorMessage, $content['message']);
+    }
+
+    public function testFilterMissingOperatorAndValueFields()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $searchString = '{"enabled":[]}';
+        $filterLocaleUrl = sprintf('api/rest/v1/locales?search=%s', $searchString);
+        $client->request('GET', $filterLocaleUrl);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $content = json_decode($response->getContent(), true);
+        $this->assertCount(2, $content, 'response contains 2 items');
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $content['code']);
+        $expectedErrorMessage = sprintf(
+            'Structure of filter "enabled" should respect this structure: %s.',
+            '{"enabled":[{"operator": "my_operator", "value": "my_value"}]}'
+        );
+        $this->assertSame($expectedErrorMessage, $content['message']);
     }
 
     public function testFilterMissingOperatorField()
@@ -250,6 +262,8 @@ class FilterLocaleIntegration extends ApiTestCase
             'enabled' => [['value' => true]]
         ];
         $searchString = urlencode(json_encode($filters));
+        var_dump(json_encode($filters));
+
         $filterLocaleUrl = sprintf('api/rest/v1/locales?search=%s', $searchString);
         $client->request('GET', $filterLocaleUrl);
 
@@ -269,6 +283,7 @@ class FilterLocaleIntegration extends ApiTestCase
             'enabled' => [['operator' => '=']]
         ];
         $searchString = urlencode(json_encode($filters));
+        var_dump(json_encode($filters));
         $filterLocaleUrl = sprintf('api/rest/v1/locales?search=%s', $searchString);
         $client->request('GET', $filterLocaleUrl);
 
@@ -288,6 +303,7 @@ class FilterLocaleIntegration extends ApiTestCase
             'enabled' => [['operator' => '=', 'value' => 'non_boolean']]
         ];
         $searchString = urlencode(json_encode($filters));
+        var_dump(json_encode($filters));
         $filterLocaleUrl = sprintf('api/rest/v1/locales?search=%s', $searchString);
         $client->request('GET', $filterLocaleUrl);
 
@@ -296,7 +312,7 @@ class FilterLocaleIntegration extends ApiTestCase
         $content = json_decode($response->getContent(), true);
         $this->assertCount(2, $content, 'response contains 2 items');
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $content['code']);
-        $this->assertSame('Filter "enabled" with operator "=" expects a boolean value', $content['message']);
+        $this->assertSame('Filter "enabled" with operator "=" expects a boolean value.', $content['message']);
     }
 
     /**
