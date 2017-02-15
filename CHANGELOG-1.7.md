@@ -40,6 +40,9 @@
 - AMS-128: As Julia, I would like to stay on my working locale
 - AMS-130: As Julia, I would like to stay on my working scope
 - AMS-153: As a owner or contributor I want to see updated completeness each new day
+- PIM-5999: Fix list tree permission in manage category page
+
+## Functional improvements
 
 ## Technical improvements
 

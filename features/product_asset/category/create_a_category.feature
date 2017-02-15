@@ -16,7 +16,6 @@ Feature: Create an asset category
     Then I should be on the asset category "newcategory" edit page
     And I should see the flash message "Tree successfully created"
 
-  @javascript
   Scenario: Create an asset category node
     Given I am on the asset category "images" node creation page
     When I fill in the following information:
@@ -25,7 +24,6 @@ Feature: Create an asset category
     Then I should see the flash message "Category successfully created"
     And I should be on the asset category "logo" edit page
 
-  @javascript
   Scenario: Create an asset category tree and assign an asset to it
     Given I am on the asset category tree creation page
     When I fill in the following information:

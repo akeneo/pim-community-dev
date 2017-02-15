@@ -103,17 +103,22 @@ class CategoryTreeController extends BaseCategoryTreeController
         $selectNodeId = $request->get('select_node_id', -1);
         $context = $request->get('context', false);
 
-        try {
-            $selectNode = $this->findGrantedCategory($selectNodeId, $context);
-        } catch (NotFoundHttpException $e) {
-            $selectNode = $this->userContext->getAccessibleUserTree();
-        } catch (AccessDeniedException $e) {
-            $selectNode = $this->userContext->getAccessibleUserTree();
-        }
-
         if (self::CONTEXT_MANAGE === $context) {
+            try {
+                $selectNode = $this->findCategory($selectNodeId);
+            } catch (NotFoundHttpException $e) {
+                $selectNode = $this->userContext->getUserProductCategoryTree();
+            }
             $grantedTrees = $this->categoryRepository->getTrees();
         } else {
+            try {
+                $selectNode = $this->findGrantedCategory($selectNodeId, $context);
+            } catch (NotFoundHttpException $e) {
+                $selectNode = $this->userContext->getAccessibleUserTree();
+            } catch (AccessDeniedException $e) {
+                $selectNode = $this->userContext->getAccessibleUserTree();
+            }
+
             $grantedCategoryIds = $this->getGrantedCategories();
             $grantedTrees = $this->categoryRepository->getGrantedTrees($grantedCategoryIds);
         }
@@ -130,14 +135,14 @@ class CategoryTreeController extends BaseCategoryTreeController
     /**
      * {@inheritdoc}
      */
-    protected function getChildrenCategories(Request $request, $selectNode)
+    protected function getChildrenCategories(Request $request, $selectNode, $parent)
     {
         $parent = $this->findCategory($request->get('id'));
         $isEditGranted = $this->securityFacade->isGranted($this->buildAclName('category_edit'));
         $context = $request->get('context', false);
 
         if ($isEditGranted && self::CONTEXT_MANAGE === $context) {
-            $categories = parent::getChildrenCategories($request, $selectNode);
+            $categories = parent::getChildrenCategories($request, $selectNode, $parent);
         } else {
             $grantedCategoryIds = $this->getGrantedCategories();
 
