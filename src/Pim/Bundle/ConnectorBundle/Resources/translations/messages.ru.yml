@@ -5,7 +5,6 @@ pim_connector:
     entity_reader.title: Извлечение объектов
     csv_reader:
       title: Считыватель из CSV
-      invalid_item_columns_count: 'Ожидается получить %totalColumnsCount% колонок, но было передано %itemColumnsCount% в %csvPath%:%lineno%'
     csv_product_reader.title: Считыватель продуктов из CSV
     csv_category_reader.title: Считыватель категорий из CSV
     csv_variant_group .title: Считыватель групп вариантов из CSV
