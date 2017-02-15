@@ -83,7 +83,7 @@ class Attribute implements ArrayConverterInterface
             $convertedItem[$field] = $this->convertDate($data);
         } elseif (in_array($field, $booleanFields, true)) {
             $convertedItem[$field] = (bool) $data;
-        } elseif ('metric_family' === $field || '' !== $data) {
+        } elseif ('' !== $data) {
             $convertedItem[$field] = (string) $data;
         } else {
             $convertedItem[$field] = null;
