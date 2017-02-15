@@ -1,8 +1,7 @@
 <?php
 
-namespace Pim\Bundle\ApiBundle\Controller\Rest;
+namespace Pim\Bundle\ApiBundle\Controller;
 
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -12,7 +11,8 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Version;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\ViolationHttpException;
-use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,26 +24,26 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @author    Marie Bochu <marie.bochu@akeneo.com>
+ * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryController
+class AttributeController
 {
-    /** @var CategoryRepositoryInterface */
+    /** @var AttributeRepositoryInterface */
     protected $repository;
 
     /** @var NormalizerInterface */
     protected $normalizer;
-
-    /** @var  ValidatorInterface */
-    protected $validator;
 
     /** @var SimpleFactoryInterface */
     protected $factory;
 
     /** @var ObjectUpdaterInterface */
     protected $updater;
+
+    /** @var  ValidatorInterface */
+    protected $validator;
 
     /** @var SaverInterface */
     protected $saver;
@@ -55,17 +55,17 @@ class CategoryController
     protected $urlDocumentation;
 
     /**
-     * @param CategoryRepositoryInterface $repository
-     * @param NormalizerInterface         $normalizer
-     * @param SimpleFactoryInterface      $factory
-     * @param ObjectUpdaterInterface      $updater
-     * @param ValidatorInterface          $validator
-     * @param SaverInterface              $saver
-     * @param RouterInterface             $router
-     * @param string                      $urlDocumentation
+     * @param AttributeRepositoryInterface $repository
+     * @param NormalizerInterface          $normalizer
+     * @param SimpleFactoryInterface       $factory
+     * @param ObjectUpdaterInterface       $updater
+     * @param ValidatorInterface           $validator
+     * @param SaverInterface               $saver
+     * @param RouterInterface              $router
+     * @param string                       $urlDocumentation
      */
     public function __construct(
-        CategoryRepositoryInterface $repository,
+        AttributeRepositoryInterface $repository,
         NormalizerInterface $normalizer,
         SimpleFactoryInterface $factory,
         ObjectUpdaterInterface $updater,
@@ -92,18 +92,18 @@ class CategoryController
      *
      * @return JsonResponse
      *
-     * @AclAncestor("pim_api_category_list")
+     * @AclAncestor("pim_api_attribute_list")
      */
     public function getAction(Request $request, $code)
     {
-        $category = $this->repository->findOneByIdentifier($code);
-        if (null === $category) {
-            throw new NotFoundHttpException(sprintf('Category "%s" does not exist.', $code));
+        $attribute = $this->repository->findOneByIdentifier($code);
+        if (null === $attribute) {
+            throw new NotFoundHttpException(sprintf('Attribute "%s" does not exist.', $code));
         }
 
-        $categoryStandard = $this->normalizer->normalize($category, 'standard');
+        $attributeApi = $this->normalizer->normalize($attribute, 'external_api');
 
-        return new JsonResponse($categoryStandard);
+        return new JsonResponse($attributeApi);
     }
 
     /**
@@ -111,7 +111,7 @@ class CategoryController
      *
      * @return JsonResponse
      *
-     * @AclAncestor("pim_api_category_list")
+     * @AclAncestor("pim_api_attribute_list")
      */
     public function listAction(Request $request)
     {
@@ -123,13 +123,13 @@ class CategoryController
 
         $offset = $limit * ($page - 1);
 
-        $categories = $this->repository->findBy([], ['root' => 'ASC', 'left' => 'ASC'], $limit, $offset);
+        $attributes = $this->repository->findBy([], [], $limit, $offset);
 
-        $categoriesStandard = $this->normalizer->normalize($categories, 'external_api');
+        $attributesApi = $this->normalizer->normalize($attributes, 'external_api');
 
         //@TODO use paginate method before return results
 
-        return new JsonResponse($categoriesStandard);
+        return new JsonResponse($attributesApi);
     }
 
     /**
@@ -140,19 +140,19 @@ class CategoryController
      *
      * @return Response
      *
-     * @AclAncestor("pim_api_category_edit")
+     * @AclAncestor("pim_api_attribute_edit")
      */
     public function createAction(Request $request)
     {
         $data = $this->getDecodedContent($request->getContent());
 
-        $category = $this->factory->create();
-        $this->updateCategory($category, $data);
-        $this->validateCategory($category);
+        $attribute = $this->factory->create();
+        $this->updateAttribute($attribute, $data);
+        $this->validateAttribute($attribute);
 
-        $this->saver->save($category);
+        $this->saver->save($attribute);
 
-        $response = $this->getCreateResponse($category);
+        $response = $this->getResponse($attribute, Response::HTTP_CREATED);
 
         return $response;
     }
@@ -161,33 +161,29 @@ class CategoryController
      * @param Request $request
      * @param string  $code
      *
-     * @throws BadRequestHttpException
-     * @throws UnprocessableEntityHttpException
-     *
      * @return Response
-     *
-     * @AclAncestor("pim_api_category_edit")
      */
     public function partialUpdateAction(Request $request, $code)
     {
         $data = $this->getDecodedContent($request->getContent());
 
         $isCreation = false;
-        $category = $this->repository->findOneByIdentifier($code);
+        $attribute = $this->repository->findOneByIdentifier($code);
 
-        if (null === $category) {
+        if (null === $attribute) {
             $isCreation = true;
             $this->validateCodeConsistency($code, $data);
             $data['code'] = $code;
-            $category = $this->factory->create();
+            $attribute = $this->factory->create();
         }
 
-        $this->updateCategory($category, $data);
-        $this->validateCategory($category, $data);
+        $this->updateAttribute($attribute, $data);
+        $this->validateAttribute($attribute);
 
-        $this->saver->save($category);
+        $this->saver->save($attribute);
 
-        $response = $isCreation ? $this->getCreateResponse($category) : $this->getUpdateResponse($category);
+        $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
+        $response = $this->getResponse($attribute, $status);
 
         return $response;
     }
@@ -213,17 +209,17 @@ class CategoryController
     }
 
     /**
-     * Update a category. It throws an error 422 if a problem occurred during the update.
+     * Update an attribute. It throws an error 422 if a problem occurred during the update.
      *
-     * @param CategoryInterface $category category to update
-     * @param array             $data     data of the request already decoded
+     * @param AttributeInterface $attribute
+     * @param array              $data
      *
-     * @throws UnprocessableEntityHttpException
+     * @throws DocumentedHttpException
      */
-    protected function updateCategory(CategoryInterface $category, array $data)
+    protected function updateAttribute(AttributeInterface $attribute, array $data)
     {
         try {
-            $this->updater->update($category, $data);
+            $this->updater->update($attribute, $data);
         } catch (UnknownPropertyException $exception) {
             throw new DocumentedHttpException(
                 $this->urlDocumentation,
@@ -243,58 +239,26 @@ class CategoryController
     }
 
     /**
-     * Validate a category. It throws an error 422 with every violated constraints if
+     * Validate an attribute. It throws an error 422 with every violated constraints if
      * the validation failed.
      *
-     * @param CategoryInterface $category
+     * @param AttributeInterface $attribute
      *
      * @throws ViolationHttpException
      */
-    protected function validateCategory(CategoryInterface $category)
+    protected function validateAttribute(AttributeInterface $attribute)
     {
-        $violations = $this->validator->validate($category);
+        $violations = $this->validator->validate($attribute);
         if (0 !== $violations->count()) {
             throw new ViolationHttpException($violations);
         }
     }
 
     /**
-     * Get a response with HTTP code 201 when an object is created.
-     *
-     * @param CategoryInterface $category
-     *
-     * @return Response
-     */
-    protected function getCreateResponse(CategoryInterface $category)
-    {
-        $response = new Response(null, Response::HTTP_CREATED);
-        $route = $this->router->generate('pim_api_rest_category_get', ['code' => $category->getCode()], true);
-        $response->headers->set('Location', $route);
-
-        return $response;
-    }
-
-    /**
-     * Get a response with HTTP code 204 when an object is updated.
-     *
-     * @param CategoryInterface $category
-     *
-     * @return Response
-     */
-    protected function getUpdateResponse(CategoryInterface $category)
-    {
-        $response = new Response(null, Response::HTTP_NO_CONTENT);
-        $route = $this->router->generate('pim_api_rest_category_get', ['code' => $category->getCode()], true);
-        $response->headers->set('Location', $route);
-
-        return $response;
-    }
-
-    /**
      * Throw an exception if the code provided in the url and the code provided in the request body
-     * are not equals when creating a category with a PATCH or PUT method.
+     * are not equals when creating a category with a PATCH method.
      *
-     * The code in the request body is optional when we create a resource with PATCH or PUT.
+     * The code in the request body is optional when we create a resource with PATCH.
      *
      * @param string $code code provided in the url
      * @param array  $data body of the request already decoded
@@ -312,5 +276,22 @@ class CategoryController
                 )
             );
         }
+    }
+
+    /**
+     * Get a response with HTTP code when an object is created.
+     *
+     * @param AttributeInterface $attribute
+     * @param int                $status
+     *
+     * @return Response
+     */
+    protected function getResponse(AttributeInterface $attribute, $status)
+    {
+        $response = new Response(null, $status);
+        $url = $this->router->generate('pim_api_rest_attribute_get', ['code' => $attribute->getCode()], true);
+        $response->headers->set('Location', $url);
+
+        return $response;
     }
 }

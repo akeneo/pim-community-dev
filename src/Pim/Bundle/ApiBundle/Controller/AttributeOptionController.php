@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ApiBundle\Controller\Rest;
+namespace Pim\Bundle\ApiBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
@@ -125,9 +125,9 @@ class AttributeOptionController
             );
         }
 
-        $attributeOptionStandard = $this->normalizer->normalize($attributeOption, 'standard');
+        $attributeOptionApi = $this->normalizer->normalize($attributeOption, 'external_api');
 
-        return new JsonResponse($attributeOptionStandard);
+        return new JsonResponse($attributeOptionApi);
     }
 
     /**

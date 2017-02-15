@@ -1,7 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ApiBundle\Controller\Rest;
+namespace Pim\Bundle\ApiBundle\Controller;
 
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -11,8 +12,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Version;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\ViolationHttpException;
-use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,13 +24,13 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
+ * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyController
+class CategoryController
 {
-    /** @var FamilyRepositoryInterface */
+    /** @var CategoryRepositoryInterface */
     protected $repository;
 
     /** @var NormalizerInterface */
@@ -52,36 +52,36 @@ class FamilyController
     protected $router;
 
     /** @var string */
-    protected $documentationUrl;
+    protected $urlDocumentation;
 
     /**
-     * @param FamilyRepositoryInterface $repository
-     * @param NormalizerInterface       $normalizer
-     * @param SimpleFactoryInterface    $factory
-     * @param ObjectUpdaterInterface    $updater
-     * @param ValidatorInterface        $validator
-     * @param SaverInterface            $saver
-     * @param RouterInterface           $router
-     * @param string                    $documentationUrl
+     * @param CategoryRepositoryInterface $repository
+     * @param NormalizerInterface         $normalizer
+     * @param SimpleFactoryInterface      $factory
+     * @param ObjectUpdaterInterface      $updater
+     * @param ValidatorInterface          $validator
+     * @param SaverInterface              $saver
+     * @param RouterInterface             $router
+     * @param string                      $urlDocumentation
      */
     public function __construct(
-        FamilyRepositoryInterface $repository,
+        CategoryRepositoryInterface $repository,
         NormalizerInterface $normalizer,
         SimpleFactoryInterface $factory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         SaverInterface $saver,
         RouterInterface $router,
-        $documentationUrl
+        $urlDocumentation
     ) {
-        $this->repository       = $repository;
-        $this->normalizer       = $normalizer;
-        $this->factory          = $factory;
-        $this->updater          = $updater;
-        $this->validator        = $validator;
-        $this->saver            = $saver;
-        $this->router           = $router;
-        $this->documentationUrl = sprintf($documentationUrl, substr(Version::VERSION, 0, 3));
+        $this->repository = $repository;
+        $this->normalizer = $normalizer;
+        $this->factory = $factory;
+        $this->updater = $updater;
+        $this->validator = $validator;
+        $this->saver = $saver;
+        $this->router = $router;
+        $this->urlDocumentation = sprintf($urlDocumentation, substr(Version::VERSION, 0, 3));
     }
 
     /**
@@ -92,18 +92,18 @@ class FamilyController
      *
      * @return JsonResponse
      *
-     * @AclAncestor("pim_api_family_list")
+     * @AclAncestor("pim_api_category_list")
      */
     public function getAction(Request $request, $code)
     {
-        $family = $this->repository->findOneByIdentifier($code);
-        if (null === $family) {
-            throw new NotFoundHttpException(sprintf('Family "%s" does not exist.', $code));
+        $category = $this->repository->findOneByIdentifier($code);
+        if (null === $category) {
+            throw new NotFoundHttpException(sprintf('Category "%s" does not exist.', $code));
         }
 
-        $familyStandard = $this->normalizer->normalize($family, 'standard');
+        $categoryApi = $this->normalizer->normalize($category, 'external_api');
 
-        return new JsonResponse($familyStandard);
+        return new JsonResponse($categoryApi);
     }
 
     /**
@@ -111,7 +111,7 @@ class FamilyController
      *
      * @return JsonResponse
      *
-     * @AclAncestor("pim_api_family_list")
+     * @AclAncestor("pim_api_category_list")
      */
     public function listAction(Request $request)
     {
@@ -123,13 +123,13 @@ class FamilyController
 
         $offset = $limit * ($page - 1);
 
-        $families = $this->repository->findBy([], [], $limit, $offset);
+        $categories = $this->repository->findBy([], ['root' => 'ASC', 'left' => 'ASC'], $limit, $offset);
 
-        $familiesStandard = $this->normalizer->normalize($families, 'external_api');
+        $categoriesApi = $this->normalizer->normalize($categories, 'external_api');
 
         //@TODO use paginate method before return results
 
-        return new JsonResponse($familiesStandard);
+        return new JsonResponse($categoriesApi);
     }
 
     /**
@@ -138,55 +138,56 @@ class FamilyController
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
      *
-     * @return JsonResponse
+     * @return Response
      *
-     * @AclAncestor("pim_api_family_edit")
+     * @AclAncestor("pim_api_category_edit")
      */
     public function createAction(Request $request)
     {
         $data = $this->getDecodedContent($request->getContent());
 
-        $family = $this->factory->create();
-        $this->updateFamily($family, $data);
-        $this->validateFamily($family);
+        $category = $this->factory->create();
+        $this->updateCategory($category, $data);
+        $this->validateCategory($category);
 
-        $this->saver->save($family);
+        $this->saver->save($category);
 
-        $response = $this->getCreateResponse($family);
+        $response = $this->getCreateResponse($category);
 
         return $response;
     }
 
     /**
      * @param Request $request
+     * @param string  $code
      *
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
      *
-     * @return JsonResponse
+     * @return Response
      *
-     * @AclAncestor("pim_api_family_edit")
+     * @AclAncestor("pim_api_category_edit")
      */
     public function partialUpdateAction(Request $request, $code)
     {
         $data = $this->getDecodedContent($request->getContent());
 
         $isCreation = false;
-        $family = $this->repository->findOneByIdentifier($code);
+        $category = $this->repository->findOneByIdentifier($code);
 
-        if (null === $family) {
+        if (null === $category) {
             $isCreation = true;
             $this->validateCodeConsistency($code, $data);
             $data['code'] = $code;
-            $family = $this->factory->create();
+            $category = $this->factory->create();
         }
 
-        $this->updateFamily($family, $data);
-        $this->validateFamily($family);
+        $this->updateCategory($category, $data);
+        $this->validateCategory($category, $data);
 
-        $this->saver->save($family);
+        $this->saver->save($category);
 
-        $response = $isCreation ? $this->getCreateResponse($family) : $this->getUpdateResponse($family);
+        $response = $isCreation ? $this->getCreateResponse($category) : $this->getUpdateResponse($category);
 
         return $response;
     }
@@ -212,20 +213,20 @@ class FamilyController
     }
 
     /**
-     * Update a family. It throws an error 422 if a problem occurred during the update.
+     * Update a category. It throws an error 422 if a problem occurred during the update.
      *
-     * @param FamilyInterface $family family to update
-     * @param array           $data   data of the request already decoded, it should be the standard format
+     * @param CategoryInterface $category category to update
+     * @param array             $data     data of the request already decoded
      *
      * @throws UnprocessableEntityHttpException
      */
-    protected function updateFamily(FamilyInterface $family, array $data)
+    protected function updateCategory(CategoryInterface $category, array $data)
     {
         try {
-            $this->updater->update($family, $data);
+            $this->updater->update($category, $data);
         } catch (UnknownPropertyException $exception) {
             throw new DocumentedHttpException(
-                $this->documentationUrl,
+                $this->urlDocumentation,
                 sprintf(
                     'Property "%s" does not exist. Check the standard format documentation.',
                     $exception->getPropertyName()
@@ -234,7 +235,7 @@ class FamilyController
             );
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
-                $this->documentationUrl,
+                $this->urlDocumentation,
                 sprintf('%s Check the standard format documentation.', $exception->getMessage()),
                 $exception
             );
@@ -242,16 +243,16 @@ class FamilyController
     }
 
     /**
-     * Validate a family. It throws an error 422 with every violated constraints if
+     * Validate a category. It throws an error 422 with every violated constraints if
      * the validation failed.
      *
-     * @param FamilyInterface $family
+     * @param CategoryInterface $category
      *
      * @throws ViolationHttpException
      */
-    protected function validateFamily(FamilyInterface $family)
+    protected function validateCategory(CategoryInterface $category)
     {
-        $violations = $this->validator->validate($family);
+        $violations = $this->validator->validate($category);
         if (0 !== $violations->count()) {
             throw new ViolationHttpException($violations);
         }
@@ -260,14 +261,14 @@ class FamilyController
     /**
      * Get a response with HTTP code 201 when an object is created.
      *
-     * @param FamilyInterface $family
+     * @param CategoryInterface $category
      *
      * @return Response
      */
-    protected function getCreateResponse(FamilyInterface $family)
+    protected function getCreateResponse(CategoryInterface $category)
     {
         $response = new Response(null, Response::HTTP_CREATED);
-        $route = $this->router->generate('pim_api_rest_family_get', ['code' => $family->getCode()], true);
+        $route = $this->router->generate('pim_api_rest_category_get', ['code' => $category->getCode()], true);
         $response->headers->set('Location', $route);
 
         return $response;
@@ -276,14 +277,14 @@ class FamilyController
     /**
      * Get a response with HTTP code 204 when an object is updated.
      *
-     * @param FamilyInterface $family
+     * @param CategoryInterface $category
      *
      * @return Response
      */
-    protected function getUpdateResponse(FamilyInterface $family)
+    protected function getUpdateResponse(CategoryInterface $category)
     {
         $response = new Response(null, Response::HTTP_NO_CONTENT);
-        $route = $this->router->generate('pim_api_rest_family_get', ['code' => $family->getCode()], true);
+        $route = $this->router->generate('pim_api_rest_category_get', ['code' => $category->getCode()], true);
         $response->headers->set('Location', $route);
 
         return $response;
@@ -291,7 +292,7 @@ class FamilyController
 
     /**
      * Throw an exception if the code provided in the url and the code provided in the request body
-     * are not equals when creating a family with a PATCH or PUT method.
+     * are not equals when creating a category with a PATCH or PUT method.
      *
      * The code in the request body is optional when we create a resource with PATCH or PUT.
      *
