@@ -152,7 +152,7 @@ class FamilyController
 
         $this->saver->save($family);
 
-        $response = $this->getCreateResponse($family);
+        $response = $this->getResponse($family, Response::HTTP_CREATED);
 
         return $response;
     }
@@ -186,7 +186,8 @@ class FamilyController
 
         $this->saver->save($family);
 
-        $response = $isCreation ? $this->getCreateResponse($family) : $this->getUpdateResponse($family);
+        $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
+        $response = $this->getResponse($family, $status);
 
         return $response;
     }
@@ -258,31 +259,16 @@ class FamilyController
     }
 
     /**
-     * Get a response with HTTP code 201 when an object is created.
+     * Get a response with a location header to the created or updated resource.
      *
      * @param FamilyInterface $family
+     * @param string          $status
      *
      * @return Response
      */
-    protected function getCreateResponse(FamilyInterface $family)
+    protected function getResponse(FamilyInterface $family, $status)
     {
-        $response = new Response(null, Response::HTTP_CREATED);
-        $route = $this->router->generate('pim_api_family_get', ['code' => $family->getCode()], true);
-        $response->headers->set('Location', $route);
-
-        return $response;
-    }
-
-    /**
-     * Get a response with HTTP code 204 when an object is updated.
-     *
-     * @param FamilyInterface $family
-     *
-     * @return Response
-     */
-    protected function getUpdateResponse(FamilyInterface $family)
-    {
-        $response = new Response(null, Response::HTTP_NO_CONTENT);
+        $response = new Response(null, $status);
         $route = $this->router->generate('pim_api_family_get', ['code' => $family->getCode()], true);
         $response->headers->set('Location', $route);
 
@@ -302,7 +288,7 @@ class FamilyController
      */
     protected function validateCodeConsistency($code, array $data)
     {
-        if (isset($data['code']) && $code !== $data['code']) {
+        if (array_key_exists('code', $data) && $code !== $data['code']) {
             throw new UnprocessableEntityHttpException(
                 sprintf(
                     'The code "%s" provided in the request body must match the code "%s" provided in the url.',
