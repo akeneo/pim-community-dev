@@ -20,11 +20,14 @@ class InGroupSelector implements SelectorInterface
      */
     public function apply(DatasourceInterface $datasource, DatagridConfiguration $configuration)
     {
+        $currentGroupId = $configuration->offsetGetByPath('[source][current_group_id]');
+
         $esQb = $datasource->getQueryBuilder();
         $qb = $esQb->getStorageQb();
         $rootAlias = $qb->getRootAlias();
 
         $inGroupExpr = sprintf('CASE WHEN :currentGroup MEMBER OF p.groups THEN true ELSE false END', $rootAlias);
         $qb->addSelect($inGroupExpr.' AS in_group');
+        $qb->setParameter('currentGroup', intval($currentGroupId));
     }
 }

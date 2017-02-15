@@ -13,6 +13,7 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
@@ -317,7 +318,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         }
 
         $pqb = $this->productQueryBuilderFactory->create();
-        $pqb->addFilter('id', 'IN', $productIds);
+        $pqb->addFilter('identifier', Operators::IN_LIST, $productIds);
 
         $products = $pqb->execute();
 
