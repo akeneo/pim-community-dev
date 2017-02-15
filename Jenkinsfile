@@ -107,9 +107,9 @@ def runUnitTest(phpVersion) {
 
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
-            sh "if test `grep 'status=\"failed\"' app/build/logs/phpcs.xml | wc -l` -ne 0; then exit 1; fi"
-            sh "if test `grep '<failure ' app/build/logs/phpunit.xml | wc -l` -ne 0; then exit 1; fi"
-            sh "if test `grep '<failure ' app/build/logs/phpspec.xml | wc -l` -ne 0; then exit 1; fi"
+            sh "if test `grep 'status=\"failed\"' app/build/logs/phpunit.xml | wc -l` -ne 0; then exit 1; fi"
+            sh "if test `grep 'status=\"failed\"' app/build/logs/phpspec.xml | wc -l` -ne 0; then exit 1; fi"
+            sh "if test `grep '<failure ' app/build/logs/phpcs.xml | wc -l` -ne 0; then exit 1; fi"
         }
     }
 }
@@ -154,7 +154,6 @@ def runBehatTest(edition, storage, features) {
             sh "cp behat.ci.yml behat.yml"
             sh "php /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE}/behat-${edition}-${storage} ${env.BUILD_NUMBER} ${storage} ${features} akeneo/job/pim-community-dev/job/${env.JOB_BASE_NAME} 5 5.6 5.5 \"${tags}\" \"behat-${edition}-${storage}\""
             archiveArtifacts allowEmptyArchive: true, artifacts: 'app/build/screenshots/*.png'
-            archiveArtifacts allowEmptyArchive: true, artifacts: 'app/build/logs/behat/*.xml'
             sh "sed -i \"s/ name=\\\"/ name=\\\"[${edition}-${storage}] /\" app/build/logs/behat/*.xml"
             junit 'app/build/logs/behat/*.xml'
             sh "if test `grep 'status=\"failed\"' app/build/logs/behat/*.xml | wc -l` -ne 0; then exit 1; fi"
