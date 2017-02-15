@@ -56,7 +56,8 @@ define([
                             locale: UserContext.get('catalogLocale'),
                             currentGroup: this.getFormData().meta.id,
                             id: this.getFormData().meta.id,
-                            selection: this.getFormData().products
+                            selection: this.getFormData().products,
+                            selectionIdentifier: 'identifier'
                         }
                     );
 

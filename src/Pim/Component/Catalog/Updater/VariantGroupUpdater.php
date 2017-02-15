@@ -305,20 +305,20 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
 
     /**
      * @param GroupInterface $variantGroup
-     * @param array          $productIds
+     * @param array          $productIdentifiers
      */
-    protected function setProducts(GroupInterface $variantGroup, array $productIds)
+    protected function setProducts(GroupInterface $variantGroup, array $productIdentifiers)
     {
         foreach ($variantGroup->getProducts() as $product) {
             $variantGroup->removeProduct($product);
         }
 
-        if (empty($productIds)) {
+        if (empty($productIdentifiers)) {
             return;
         }
 
         $pqb = $this->productQueryBuilderFactory->create();
-        $pqb->addFilter('identifier', Operators::IN_LIST, $productIds);
+        $pqb->addFilter('identifier', Operators::IN_LIST, $productIdentifiers);
 
         $products = $pqb->execute();
 

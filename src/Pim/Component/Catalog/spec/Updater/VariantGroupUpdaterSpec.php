@@ -93,7 +93,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('main_color')->willReturn($mainColor);
         $attributeRepository->findOneByIdentifier('secondary_color')->willReturn($secondaryColor);
         $pqbFactory->create()->willReturn($pqb);
-        $pqb->addFilter('id', 'IN', [2])->shouldBeCalled();
+        $pqb->addFilter('identifier', 'IN', ['foo'])->shouldBeCalled();
         $pqb->execute()->willReturn([$addedProduct]);
 
         $variantGroup->getTranslation()->willReturn($translatable);
@@ -137,7 +137,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
                 'fr_FR' => 'T-shirt super beau',
             ],
             'values' => $values,
-            'products' => [2]
+            'products' => ['foo']
         ];
 
         $this->update($variantGroup, $data, []);
