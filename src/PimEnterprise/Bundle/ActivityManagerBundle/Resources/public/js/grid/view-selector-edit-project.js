@@ -87,10 +87,6 @@ define(
                     .fetch(this.getRoot().currentView.label)
                     .then(function (project) {
                         project = $.extend(true, {}, project);
-                        project.due_date = DateFormatter.format(
-                            project.due_date, 'yyyy-MM-dd',
-                            DateContext.get('date').format
-                        );
 
                         this.form = new CreateForm();
                         this.form.configure();

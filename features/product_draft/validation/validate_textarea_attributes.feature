@@ -7,14 +7,14 @@ Feature: Validate textarea attributes of a draft
   Background:
     Given the "clothing" catalog configuration
     And the following attributes:
-      | code             | label-en_US     | type     | scopable | max_characters | wysiwyg_enabled | group      |
-      | info             | Info            | textarea | no       | 5              | no              | info       |
-      | old_description  | Description     | textarea | yes      | 5              | no              | marketing  |
-      | long_info        | Longinfo        | textarea | no       | 10             | yes             | info       |
-      | long_description | Longdescription | textarea | yes      | 10             | yes             | marketing  |
+      | code             | label-en_US     | type                 | scopable | max_characters | wysiwyg_enabled | group     |
+      | info             | Info            | pim_catalog_textarea | 0        | 5              | 0               | info      |
+      | old_description  | Description     | pim_catalog_textarea | 1        | 5              | 0               | marketing |
+      | long_info        | Longinfo        | pim_catalog_textarea | 0        | 10             | 1               | info      |
+      | long_description | Longdescription | pim_catalog_textarea | 1        | 10             | 1               | marketing |
     And the following family:
-      | code | label-en_US | attributes                                              |
-      | baz  | Baz         | sku, info, long_info, old_description, long_description |
+      | code | label-en_US | attributes                                          |
+      | baz  | Baz         | sku,info,long_info,old_description,long_description |
     And the following product:
       | sku | family | categories        |
       | foo | baz    | summer_collection |

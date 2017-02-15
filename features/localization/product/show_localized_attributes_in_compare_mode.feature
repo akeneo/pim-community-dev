@@ -7,10 +7,10 @@ Feature: Show localized attributes in compare mode
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | code           | label          | type   | decimals_allowed | metric_family | default_metric_unit | localizable |
-      | decimal_price  | decimal_price  | prices | yes              |               |                     | yes         |
-      | decimal_number | decimal_number | number | yes              |               |                     | yes         |
-      | decimal_metric | decimal_metric | metric | yes              | Length        | CENTIMETER          | yes         |
+      | code           | label-en_US    | type                         | decimals_allowed | metric_family | default metric unit | localizable | group |
+      | decimal_price  | decimal_price  | pim_catalog_price_collection | 1                |               |                     | 1           | other |
+      | decimal_number | decimal_number | pim_catalog_number           | 1                |               |                     | 1           | other |
+      | decimal_metric | decimal_metric | pim_catalog_metric           | 1                | Length        | CENTIMETER          | 1           | other |
     And the following products:
       | sku     | decimal_number-en_US | decimal_price-fr_FR  | decimal_number-fr_FR | decimal_metric-fr_FR |
       | sandals | 1                    | 10.12 USD, 10.12 EUR | 12.1234              | 10.3456 CENTIMETER   |

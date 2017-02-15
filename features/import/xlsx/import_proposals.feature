@@ -46,7 +46,7 @@ Feature: Import proposals with XLSX files
     And I am logged in as "Julia"
     And I am on the proposals page
     Then I should see the following proposals:
-      | product   | author                                | attribute   | original | new          |
-      | my-jacket | xlsx_clothing_product_proposal_import | side_view   |          | jack_003.png |
+      | product   | author                                | attribute | original | new          |
+      | my-jacket | xlsx_clothing_product_proposal_import | side_view |          | jack_003.png |
     And I should see entity my-jacket2
     And I should see entity my-jacket3

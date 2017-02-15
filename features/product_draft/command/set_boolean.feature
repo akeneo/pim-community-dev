@@ -14,10 +14,10 @@ Feature: Create a draft with a boolean fields
       | product       | actions                                                                               | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "handmade", "data": 1, "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                                                                                        |
-      | akeneo_tshirt  | Mary     | {"values": {"handmade": [{"locale": null, "scope": null, "data": 1}]}, "review_statuses": {"handmade": [{"locale": null, "scope": null, "status": "draft"}]}} |
+      | product       | username | result                                                                                                                                                        |
+      | akeneo_tshirt | Mary     | {"values": {"handmade": [{"locale": null, "scope": null, "data": 1}]}, "review_statuses": {"handmade": [{"locale": null, "scope": null, "status": "draft"}]}} |
     And the product "akeneo_tshirt" should have the following values:
-      | handmade | |
+      | handmade |  |
 
   Scenario: Successfully add a draft without update attribute in product
     Given the following product values:
@@ -27,10 +27,10 @@ Feature: Create a draft with a boolean fields
       | product       | actions                                                                               | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "handmade", "data": 1, "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                                                                                        |
-      | akeneo_tshirt  | Mary     | {"values": {"handmade": [{"locale": null, "scope": null, "data": 1}]}, "review_statuses": {"handmade": [{"locale": null, "scope": null, "status": "draft"}]}} |
+      | product       | username | result                                                                                                                                                        |
+      | akeneo_tshirt | Mary     | {"values": {"handmade": [{"locale": null, "scope": null, "data": 1}]}, "review_statuses": {"handmade": [{"locale": null, "scope": null, "status": "draft"}]}} |
     And the product "akeneo_tshirt" should have the following values:
-      | handmade | |
+      | handmade |  |
 
   Scenario: Do not create a draft with same values as product
     Given the following product values:

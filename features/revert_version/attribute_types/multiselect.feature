@@ -40,7 +40,7 @@ Feature: Revert product attributes to a previous version
       | 1       | enabled            | 1        |
     When I visit the "Attribute" tab
     Then the product "jean" should have the following values:
-      | weather_conditions | |
+      | weather_conditions |  |
 
   Scenario: Successfully revert a pim_catalog_multiselect attribute
     When I am on the products page
@@ -58,19 +58,19 @@ Feature: Revert product attributes to a previous version
     And I open the history
     Then I should see 2 versions in the history
     And I should see history:
-      | version | property           | value    |
-      | 2       | Weather conditions | wet,hot  |
-      | 1       | SKU                | marcel   |
-      | 1       | family             | tees     |
-      | 1       | enabled            | 1        |
+      | version | property           | value   |
+      | 2       | Weather conditions | wet,hot |
+      | 1       | SKU                | marcel  |
+      | 1       | family             | tees    |
+      | 1       | enabled            | 1       |
     When I revert the product version number 1
     Then I should see 3 versions in the history
     And I should see history:
-      | version | property           | value    |
-      | 3       | Weather conditions |          |
-      | 2       | Weather conditions | wet,hot  |
-      | 1       | SKU                | marcel   |
-      | 1       | family             | tees     |
-      | 1       | enabled            | 1        |
+      | version | property           | value   |
+      | 3       | Weather conditions |         |
+      | 2       | Weather conditions | wet,hot |
+      | 1       | SKU                | marcel  |
+      | 1       | family             | tees    |
+      | 1       | enabled            | 1       |
     And the product "marcel" should have the following values:
     | weather_conditions |  |

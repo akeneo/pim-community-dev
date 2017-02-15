@@ -5,9 +5,9 @@ Feature: Enforce no permissions for an attribute group in variant group
 
   Background:
     Given a "footwear" catalog configuration
-    And the following product groups:
-      | code   | label  | axis        | type    |
-      | SANDAL | Sandal | size, color | VARIANT |
+    And the following variant groups:
+      | code   | label-en_US | axis       | type    |
+      | SANDAL | Sandal      | size,color | VARIANT |
     And the following variant group values:
       | group  | attribute | value | locale |
       | SANDAL | name      | bar   | en_US  |
@@ -32,7 +32,7 @@ Feature: Enforce no permissions for an attribute group in variant group
     And I visit the "Permissions" tab
     And I fill in the following information:
       | Allowed to view attributes | IT support, Manager |
-      | Allowed to edit attributes | IT support |
+      | Allowed to edit attributes | IT support          |
     And I save the attribute group
     When I edit the "SANDAL" variant group
     And I visit the "Attributes" tab

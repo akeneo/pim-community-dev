@@ -42,17 +42,17 @@ Feature: Browse product assets
   Scenario: Successfully display 10 product asset rows in the grid
     And I am on the assets page
     And the row "paint" should contain:
-      | column      | value                |
-      | description | Photo of a paint.    |
+      | column      | value             |
+      | description | Photo of a paint. |
     And the row "chicagoskyline" should contain:
-      | column      | value                |
-      | description | This is chicago!     |
+      | column      | value            |
+      | description | This is chicago! |
     And the row "akene" should contain:
-      | column      | value             |
-      | description | Because Akeneo    |
+      | column      | value          |
+      | description | Because Akeneo |
     And the row "autumn" should contain:
-      | column      | value             |
-      | description | Leaves and water  |
+      | column      | value            |
+      | description | Leaves and water |
     And the row "bridge" should contain:
       | column      | value                                       |
       | description | Architectural bridge of a city, above water |
@@ -64,7 +64,7 @@ Feature: Browse product assets
       | description |       |
     And the row "machine" should contain:
       | column      | value         |
-      | description | A big machine    |
+      | description | A big machine |
     And the row "man_wall" should contain:
       | column      | value |
       | description |       |

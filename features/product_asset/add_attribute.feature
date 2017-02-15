@@ -11,7 +11,7 @@ Feature: Add assets collection
   Scenario: Successfully create a collection of assets
     Given I create an "Assets collection" attribute
     Given I fill in the following information:
-      | Code                | blue_tshirt |
-      | Attribute group     | Other       |
+      | Code            | blue_tshirt |
+      | Attribute group | Other       |
     Then I save the attribute
     Then I should see the flash message "Attribute successfully created"

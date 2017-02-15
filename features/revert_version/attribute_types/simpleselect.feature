@@ -38,7 +38,7 @@ Feature: Revert product attributes to a previous version
       | 1       | enabled      | 1        |
     When I visit the "Attribute" tab
     Then the product "jean" should have the following values:
-      | Manufacturer | |
+      | Manufacturer |  |
 
   Scenario: Successfully revert a simpleselect attribute
     When I am on the products page

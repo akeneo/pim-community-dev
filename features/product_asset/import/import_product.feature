@@ -27,7 +27,7 @@ Feature: Import products with an assets collection
     And the product "pant-2" should have the following values:
       | gallery | minivan |
     And the product "pant-3" should have the following values:
-      | gallery | |
+      | gallery |  |
 
   Scenario: Skip products with unknown collection assets
     Given the following CSV file to import:

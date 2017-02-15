@@ -22,7 +22,7 @@ Feature: Revert product attributes to a previous version
     Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "akeneo-jacket" should have the following values:
-    | release_date-mobile | |
+    | release_date-mobile |  |
 
   Scenario: Successfully revert a date attribute with original empty value
     Given the following product:
@@ -37,7 +37,7 @@ Feature: Revert product attributes to a previous version
     Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "akeneo-jacket" should have the following values:
-    | release_date-mobile | |
+    | release_date-mobile |  |
 
   Scenario: Successfully revert a date attribute with original non empty value
     Given the following product:

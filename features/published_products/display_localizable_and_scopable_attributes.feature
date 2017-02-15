@@ -6,8 +6,8 @@ Feature: Display localizable and scopable attributes
   Background:
     Given a "apparel" catalog configuration
     And the following products:
-      | sku          | family  | name-en_US     | name-de_DE          | customer_rating-ecommerce | customer_rating-print|
-      | black_jacket | jackets | A black jacket | Eine schwarze Jacke | 1                         | 2                    |
+      | sku          | family  | name-en_US     | name-de_DE          | customer_rating-ecommerce | customer_rating-print |
+      | black_jacket | jackets | A black jacket | Eine schwarze Jacke | 1                         | 2                     |
     And I am logged in as "Julia"
     And I publish the product "black_jacket"
 

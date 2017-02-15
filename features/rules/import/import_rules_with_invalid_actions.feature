@@ -114,7 +114,7 @@ Feature: Import rules
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then the row "sony_beautiful_description" should contain the texts:
-      | column | value                                                                          |
+      | column | value                                                                         |
       | Action | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |
 
   Scenario: Skip rules with missing to_field key for copy action
@@ -169,7 +169,7 @@ Feature: Import rules
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then the row "sony_beautiful_description" should contain the texts:
-      | column | value                                                                          |
+      | column | value                                                                         |
       | Action | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |
 
   Scenario: Skip rules with missing value key for set action
@@ -274,8 +274,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     And I should see the text "skipped 2"
-    And I should see the text "conditions[0]: Attribute or field \"name\" expects valid data, scope and locale. Attribute \"name\" expects a locale, none given."
-    And I should see the text "actions[0]: Property \"description\" expects valid data, scope and locale. Attribute \"description\" expects a locale, none given."
+    And I should see the text "conditions[0]: Attribute \"name\" expects a locale, none given."
+    And I should see the text "actions[0]: Attribute \"description\" expects a locale, none given."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     And I should see the text "Another good description"
@@ -333,8 +333,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     And I should see the text "skipped 2"
-    And I should see the text "conditions[0]: Attribute or field \"name\" expects valid data, scope and locale. Attribute \"name\" expects an existing and activated locale, \"kj_KL\" given."
-    And I should see the text "actions[0]: Property \"description\" expects valid data, scope and locale. Attribute \"description\" expects an existing and activated locale, \"kj_KL\" given."
+    And I should see the text "conditions[0]: Attribute \"name\" expects an existing and activated locale, \"kj_KL\" given."
+    And I should see the text "actions[0]: Attribute \"description\" expects an existing and activated locale, \"kj_KL\" given."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     And I should see the text "Another good description"
@@ -388,8 +388,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     And I should see the text "skipped 2"
-    And I should see the text "conditions[0]: Attribute or field \"description\" expects valid data, scope and locale. Attribute \"description\" expects a scope, none given."
-    And I should see the text "actions[0]: Property \"description\" expects valid data, scope and locale. Attribute \"description\" expects a scope, none given."
+    And I should see the text "conditions[0]: Attribute \"description\" expects a scope, none given."
+    And I should see the text "actions[0]: Attribute \"description\" expects a scope, none given."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     And I should see the text "Another good description"
@@ -447,8 +447,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     And I should see the text "skipped 2"
-    And I should see the text "conditions[0]: Attribute or field \"description\" expects valid data, scope and locale. Attribute \"description\" expects an existing scope, \"nonexistent\" given."
-    And I should see the text "actions[0]: Property \"description\" expects valid data, scope and locale. Attribute \"description\" expects an existing scope, \"nonexistent\" given."
+    And I should see the text "conditions[0]: Attribute \"description\" expects an existing scope, \"nonexistent\" given."
+    And I should see the text "actions[0]: Attribute \"description\" expects an existing scope, \"nonexistent\" given."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     And I should see the text "Another good description"
@@ -669,7 +669,7 @@ Feature: Import rules
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then the row "sony_beautiful_description" should contain the texts:
-      | column | value                                                                          |
+      | column | value                                                                         |
       | Action | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |
 
   Scenario: Skip rules with non existing to_field for copy action
@@ -727,7 +727,7 @@ Feature: Import rules
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then the row "sony_beautiful_description" should contain the texts:
-      | column | value                                                                          |
+      | column | value                                                                         |
       | Action | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |
 
   Scenario: Skip rules with incompatible fields for copy action
@@ -784,7 +784,7 @@ Feature: Import rules
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then the row "sony_beautiful_description" should contain the texts:
-      | column | value                                                                          |
+      | column | value                                                                         |
       | Action | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |
 
   Scenario: Skip rules with wrong locale fields for copy action
@@ -840,11 +840,11 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see the text "skipped 2"
-    And I should see the text "actions[0]: Property \"name\" expects valid data, scope and locale. Attribute \"name\" expects an existing and activated locale, \"wrong\" given."
+    And I should see the text "actions[0]: Attribute \"name\" expects an existing and activated locale, \"wrong\" given."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then the row "sony_beautiful_description" should contain the texts:
-      | column | value                                                                          |
+      | column | value                                                                         |
       | Action | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |
 
   Scenario: Skip rules with wrong scope fields for copy action
@@ -904,9 +904,9 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see the text "skipped 2"
-    And I should see the text "actions[0]: Property \"description\" expects valid data, scope and locale. Attribute \"description\" expects an existing scope, \"wrong\" given."
+    And I should see the text "actions[0]: Attribute \"description\" expects an existing scope, \"wrong\" given."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then the row "sony_beautiful_description" should contain the texts:
-      | column | value                                                                          |
+      | column | value                                                                         |
       | Action | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |
