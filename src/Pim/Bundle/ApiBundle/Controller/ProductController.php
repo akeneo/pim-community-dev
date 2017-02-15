@@ -270,7 +270,45 @@ class ProductController
         $this->validateProduct($product);
         $this->saver->save($product);
 
-        $response = $this->getCreateResponse($product);
+        $response = $this->getResponse($product, Response::HTTP_CREATED);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @throws BadRequestHttpException
+     *
+     * @return Response
+     */
+    public function partialUpdateAction(Request $request, $code)
+    {
+        $data = $this->getDecodedContent($request->getContent());
+
+        $isCreation = false;
+        $product = $this->productRepository->findOneByIdentifier($code);
+
+        if (null === $product) {
+            $isCreation = true;
+
+            $this->validateCodeConsistency($code, $data);
+            $data['identifier'] = $code;
+            $data = $this->populateIdentifierProductValue($data);
+
+            $product = $this->productBuilder->createProduct();
+        } else {
+            $data['identifier'] = array_key_exists('identifier', $data) ? $data['identifier'] : $code;
+            $data = $this->populateIdentifierProductValue($data);
+            $data = $this->filterValues($product, $data);
+        }
+
+        $this->updateProduct($product, $data);
+        $this->validateProduct($product);
+        $this->saver->save($product);
+
+        $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
+        $response = $this->getResponse($product, $status);
 
         return $response;
     }
@@ -325,6 +363,23 @@ class ProductController
         }
     }
 
+    protected function filterValues(ProductInterface $product, array $data)
+    {
+        if (!isset($data['values'])) {
+            return $data;
+        }
+
+        $dataFiltered = $this->emptyValuesFilter->filter($product, ['values' => $data['values']]);
+
+        if (!empty($dataFiltered)) {
+            $data = array_replace($data, $dataFiltered);
+        } else {
+            $data['values'] = [];
+        }
+
+        return $data;
+    }
+
     /**
      * Validate a product. It throws an error 422 with every violated constraints if
      * the validation failed.
@@ -342,15 +397,16 @@ class ProductController
     }
 
     /**
-     * Get a response with HTTP code 201 when an object is created.
+     * Get a response with a location header to the  created or updated resource.
      *
      * @param ProductInterface $product
+     * @param string           $status
      *
      * @return Response
      */
-    protected function getCreateResponse(ProductInterface $product)
+    protected function getResponse(ProductInterface $product, $status)
     {
-        $response = new Response(null, Response::HTTP_CREATED);
+        $response = new Response(null, $status);
         $route = $this->router->generate('pim_api_product_get', ['code' => $product->getIdentifier()], true);
         $response->headers->set('Location', $route);
 
@@ -467,5 +523,29 @@ class ProductController
         ];
 
         return $data;
+    }
+
+    /**
+     * Throw an exception if the code provided in the url and the identifier provided in the request body
+     * are not equals when creating a product with a PATCH method.
+     *
+     * The identifier in the request body is optional when we create a resource with PATCH.
+     *
+     * @param string $code code provided in the url
+     * @param array  $data body of the request already decoded
+     *
+     * @throws UnprocessableEntityHttpException
+     */
+    protected function validateCodeConsistency($code, array $data)
+    {
+        if (array_key_exists('identifier', $data) && $code !== $data['identifier']) {
+            throw new UnprocessableEntityHttpException(
+                sprintf(
+                    'The identifier "%s" provided in the request body must match the identifier "%s" provided in the url.',
+                    $data['identifier'],
+                    $code
+                )
+            );
+        }
     }
 }

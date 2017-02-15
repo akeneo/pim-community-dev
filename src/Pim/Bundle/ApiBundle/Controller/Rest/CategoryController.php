@@ -145,7 +145,7 @@ class CategoryController
 
         $this->saver->save($category);
 
-        $response = $this->getCreateResponse($category);
+        $response = $this->getResponse($category, Response::HTTP_CREATED);
 
         return $response;
     }
@@ -178,7 +178,8 @@ class CategoryController
 
         $this->saver->save($category);
 
-        $response = $isCreation ? $this->getCreateResponse($category) : $this->getUpdateResponse($category);
+        $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
+        $response = $this->getResponse($category, $status);
 
         return $response;
     }
@@ -250,31 +251,16 @@ class CategoryController
     }
 
     /**
-     * Get a response with HTTP code 201 when an object is created.
+     * Get a response with a location header to the created or updated resource.
      *
      * @param CategoryInterface $category
+     * @param string            $status
      *
      * @return Response
      */
-    protected function getCreateResponse(CategoryInterface $category)
+    protected function getResponse(CategoryInterface $category, $status)
     {
-        $response = new Response(null, Response::HTTP_CREATED);
-        $route = $this->router->generate('pim_api_rest_category_get', ['code' => $category->getCode()], true);
-        $response->headers->set('Location', $route);
-
-        return $response;
-    }
-
-    /**
-     * Get a response with HTTP code 204 when an object is updated.
-     *
-     * @param CategoryInterface $category
-     *
-     * @return Response
-     */
-    protected function getUpdateResponse(CategoryInterface $category)
-    {
-        $response = new Response(null, Response::HTTP_NO_CONTENT);
+        $response = new Response(null, $status);
         $route = $this->router->generate('pim_api_rest_category_get', ['code' => $category->getCode()], true);
         $response->headers->set('Location', $route);
 
