@@ -1,8 +1,11 @@
 parameters:
     pim_enrich.provider.form_extension.class:      Pim\Bundle\EnrichBundle\Provider\FormExtensionProvider
-    pim_enrich.provider.field.chained.class:       Pim\Bundle\EnrichBundle\Provider\Field\FieldChainedProvider
-    pim_enrich.provider.field.base.class:          Pim\Bundle\EnrichBundle\Provider\Field\BaseFieldProvider
-    pim_enrich.provider.field.wysiwyg.class:       Pim\Bundle\EnrichBundle\Provider\Field\WysiwygFieldProvider
+
+    pim_enrich.provider.field.chained.class:         Pim\Bundle\EnrichBundle\Provider\Field\FieldChainedProvider
+    pim_enrich.provider.field.base.class:            Pim\Bundle\EnrichBundle\Provider\Field\BaseFieldProvider
+    pim_enrich.provider.field.wysiwyg.class:         Pim\Bundle\EnrichBundle\Provider\Field\WysiwygFieldProvider
+    pim_enrich.provider.field.text_collection.class: Pim\Bundle\EnrichBundle\Provider\Field\TextCollectionProvider
+
     pim_enrich.provider.filter.chained.class:      Pim\Bundle\EnrichBundle\Provider\Filter\FilterChainedProvider
     pim_enrich.provider.filter.base.class:         Pim\Bundle\EnrichBundle\Provider\Filter\BaseFilterProvider
     pim_enrich.provider.empty_value.chained.class: Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueChainedProvider
@@ -31,6 +34,11 @@ services:
         class: '%pim_enrich.provider.field.wysiwyg.class%'
         tags:
             - { name: pim_enrich.provider.field, priority: 90 }
+
+    pim_enrich.provider.field.text_collection:
+        class: '%pim_enrich.provider.field.text_collection.class%'
+        tags:
+            - { name: pim_enrich.provider.field, priority: 100 }
 
     pim_enrich.provider.filter.chained:
         class: '%pim_enrich.provider.filter.chained.class%'

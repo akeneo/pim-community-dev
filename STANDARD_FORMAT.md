@@ -283,6 +283,42 @@ Its standard format would be the following:
                 "data" => "this is a very very very very very long text"
               ]
             ]
+            "a_text_collection" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  0 => "foo"
+                  1 => "bar"
+                ]
+              ]
+            ]
+            "a_localized_and_scopable_text_collection" => array:3 [
+              0 => array:3 [
+                "locale" => "en_US"
+                "scope" => "ecommerce"
+                "data" => array:2 [
+                  0 => "foo-commerce"
+                  1 => "bar-commerce"
+                ]
+              ]
+              1 => array:3 [
+                "locale" => "en_US"
+                "scope" => "tablet"
+                "data" => array:2 [
+                  0 => "foo-tablet"
+                  1 => "bar-tablet"
+                ]
+              ]
+              2 => array:3 [
+                "locale" => "fr_FR"
+                "scope" => "tablet"
+                "data" => array:2 [
+                  0 => "foo-fr-tablet"
+                  1 => "bar-fr-tablet"
+                ]
+              ]
+            ]
             "a_yes_no" => array:1 [
               0 => array:3 [
                 "locale" => null

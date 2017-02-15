@@ -94,7 +94,8 @@ INSERT INTO `pim_catalog_attribute` VALUES
 (2543,595,0,0,NULL,'','',0,NULL,NULL,0,1,NULL,NULL,'Temperature','CELSIUS',NULL,'',0,0,0,0,0,'a_metric_without_decimal_negative','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_metric','metric','a:1:{s:19:"reference_data_name";N;}','2016-10-05 13:52:34','2016-10-05 13:52:34'),
 (2544,595,0,0,NULL,'','',0,NULL,NULL,1,1,NULL,NULL,'Temperature','CELSIUS',NULL,'',0,0,0,0,0,'a_metric_negative','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_metric','metric','a:1:{s:19:"reference_data_name";N;}','2016-10-05 13:52:34','2016-10-05 13:52:34'),
 (2545,595,0,0,NULL,'','',0,NULL,NULL,0,1,NULL,NULL,'','',NULL,'',0,0,0,0,0,'a_price_without_decimal','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_price_collection','prices','a:1:{s:19:"reference_data_name";N;}','2016-10-05 13:52:34','2016-10-05 13:52:34'),
-(2546,595,0,0,NULL,'','',0,NULL,NULL,0,1,NULL,NULL,'','',NULL,'',0,0,0,0,0,'a_number_integer_negative','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_number','decimal','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49');
+(2546,595,0,0,NULL,'','',0,NULL,NULL,0,1,NULL,NULL,'','',NULL,'',0,0,0,0,0,'a_number_integer_negative','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_number','decimal','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49'),
+(2547,595,0,0,NULL,'','',0,NULL,NULL,0,0,NULL,NULL,'','',NULL,'',0,0,0,0,0,'a_text_collection','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_text_collection','textCollection','a:1:{s:19:\"reference_data_name\";N;}','2017-02-22 14:28:49','2017-02-22 14:28:49');
 /*!40000 ALTER TABLE `pim_catalog_attribute` ENABLE KEYS */;
 
 

@@ -34,6 +34,7 @@ parameters:
     pim_catalog.updater.setter.multiselect_value.class:       Pim\Component\Catalog\Updater\Setter\MultiSelectAttributeSetter
     pim_catalog.updater.setter.price_collection_value.class:  Pim\Component\Catalog\Updater\Setter\PriceCollectionAttributeSetter
     pim_catalog.updater.setter.media_value.class:             Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter
+    pim_catalog.updater.setter.text_collection_value.class:   Pim\Component\Catalog\Updater\Setter\TextCollectionAttributeSetter
 
     pim_catalog.updater.copier.registry.class:                Pim\Component\Catalog\Updater\Copier\CopierRegistry
     pim_catalog.updater.copier.abstract.class:                Pim\Component\Catalog\Updater\Copier\AbstractAttributeCopier
@@ -48,6 +49,7 @@ parameters:
     pim_catalog.updater.copier.simpleselect_value.class:      Pim\Component\Catalog\Updater\Copier\BaseAttributeCopier
     pim_catalog.updater.copier.multiselect_value.class:       Pim\Component\Catalog\Updater\Copier\MultiSelectAttributeCopier
     pim_catalog.updater.copier.price_collection_value.class:  Pim\Component\Catalog\Updater\Copier\PriceCollectionAttributeCopier
+    pim_catalog.updater.copier.text_collection_value.class:   Pim\Component\Catalog\Updater\Copier\TextCollectionAttributeCopier
 
     pim_catalog.updater.adder.registry.class:                 Pim\Component\Catalog\Updater\Adder\AdderRegistry
     pim_catalog.updater.adder.category_field.class:           Pim\Component\Catalog\Updater\Adder\CategoryFieldAdder
@@ -531,3 +533,20 @@ services:
             - ['pim_catalog_multiselect']
         tags:
             - { name: 'pim_catalog.updater.remover' }
+
+    pim_catalog.updater.setter.text_collection_value:
+        class: '%pim_catalog.updater.setter.text_collection_value.class%'
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - ['pim_catalog_text_collection']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.copier.text_collection_value:
+        class: '%pim_catalog.updater.copier.text_collection_value.class%'
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - ['pim_catalog_text_collection']
+            - ['pim_catalog_text_collection']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }

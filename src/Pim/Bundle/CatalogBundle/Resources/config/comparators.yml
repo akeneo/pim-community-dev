@@ -1,13 +1,16 @@
 parameters:
-    pim_catalog.comparator.registry.class:          Pim\Component\Catalog\Comparator\ComparatorRegistry
-    pim_catalog.comparator.attribute.file.class:    Pim\Component\Catalog\Comparator\Attribute\FileComparator
-    pim_catalog.comparator.attribute.prices.class:  Pim\Component\Catalog\Comparator\Attribute\PricesComparator
-    pim_catalog.comparator.attribute.metric.class:  Pim\Component\Catalog\Comparator\Attribute\MetricComparator
-    pim_catalog.comparator.attribute.option.class:  Pim\Component\Catalog\Comparator\Attribute\OptionComparator
-    pim_catalog.comparator.attribute.options.class: Pim\Component\Catalog\Comparator\Attribute\OptionsComparator
-    pim_catalog.comparator.attribute.scalar.class:  Pim\Component\Catalog\Comparator\Attribute\ScalarComparator
-    pim_catalog.comparator.attribute.boolean.class: Pim\Component\Catalog\Comparator\Attribute\BooleanComparator
-    pim_catalog.comparator.attribute.number.class:  Pim\Component\Catalog\Comparator\Attribute\NumberComparator
+    pim_catalog.comparator.registry.class:                  Pim\Component\Catalog\Comparator\ComparatorRegistry
+
+    pim_catalog.comparator.attribute.file.class:            Pim\Component\Catalog\Comparator\Attribute\FileComparator
+    pim_catalog.comparator.attribute.prices.class:          Pim\Component\Catalog\Comparator\Attribute\PricesComparator
+    pim_catalog.comparator.attribute.metric.class:          Pim\Component\Catalog\Comparator\Attribute\MetricComparator
+    pim_catalog.comparator.attribute.option.class:          Pim\Component\Catalog\Comparator\Attribute\OptionComparator
+    pim_catalog.comparator.attribute.options.class:         Pim\Component\Catalog\Comparator\Attribute\OptionsComparator
+    pim_catalog.comparator.attribute.scalar.class:          Pim\Component\Catalog\Comparator\Attribute\ScalarComparator
+    pim_catalog.comparator.attribute.boolean.class:         Pim\Component\Catalog\Comparator\Attribute\BooleanComparator
+    pim_catalog.comparator.attribute.number.class:          Pim\Component\Catalog\Comparator\Attribute\NumberComparator
+    pim_catalog.comparator.attribute.text_collection.class: Pim\Component\Catalog\Comparator\Attribute\TextCollectionComparator
+
     pim_catalog.comparator.field.boolean.class:     Pim\Component\Catalog\Comparator\Field\BooleanComparator
     pim_catalog.comparator.field.scalar.class:      Pim\Component\Catalog\Comparator\Field\ScalarComparator
     pim_catalog.comparator.field.array.class:       Pim\Component\Catalog\Comparator\Field\ArrayComparator
@@ -63,6 +66,13 @@ services:
         tags:
             - { name: pim_catalog.attribute.comparator }
 
+    pim_catalog.comparator.attribute.text_collection:
+        class: '%pim_catalog.comparator.attribute.text_collection.class%'
+        arguments:
+            - ['pim_catalog_text_collection']
+        tags:
+            - { name: pim_catalog.attribute.comparator }
+
     pim_catalog.comparator.attribute.boolean:
         class: '%pim_catalog.comparator.attribute.boolean.class%'
         arguments:
@@ -76,6 +86,7 @@ services:
             - [ 'pim_catalog_date', 'pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea']
         tags:
             - { name: pim_catalog.attribute.comparator, priority: -128 }
+
 
     ##
     # Comparators of product fields

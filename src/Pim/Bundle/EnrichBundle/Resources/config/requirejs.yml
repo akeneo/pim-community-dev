@@ -420,6 +420,7 @@ config:
         pim/text-field:             pimenrich/js/product/field/text-field
         pim/textarea-field:         pimenrich/js/product/field/textarea-field
         pim/wysiwyg-field:          pimenrich/js/product/field/wysiwyg-field
+        pim/text-collection-field:  pimenrich/js/product/field/text-collection-field
 
         # Formatters
         pim/formatter/choices/base: pimenrich/js/formatter/choices/base
@@ -496,6 +497,7 @@ config:
         pim/template/product/field/simple-select:            pimenrich/templates/product/field/simple-select.html
         pim/template/product/field/text:                     pimenrich/templates/product/field/text.html
         pim/template/product/field/textarea:                 pimenrich/templates/product/field/textarea.html
+        pim/template/product/field/text-collection:          pimenrich/templates/product/field/text-collection.html
         pim/template/product-create-popin:                   pimenrich/templates/product/create-popin.html
         pim/template/product-create-error:                   pimenrich/templates/product/create-error.html
         pim/template/attribute-option/form:                  pimenrich/templates/attribute-option/form.html

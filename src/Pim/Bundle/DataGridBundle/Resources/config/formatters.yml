@@ -10,6 +10,8 @@ parameters:
     pim_datagrid.extension.formatter.property.product_value.boolean_property.class:           Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\BooleanProperty
     pim_datagrid.extension.formatter.property.product_value.date_property.class:              Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\DateProperty
     pim_datagrid.extension.formatter.property.product_value.twig_property.class:              Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\TwigProperty
+    pim_datagrid.extension.formatter.property.product_value.text_collection_property.class:   Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\TextCollectionProperty
+
     pim_datagrid.extension.formatter.property.product.groups_property.class:                  Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Product\GroupsProperty
     pim_datagrid.extension.formatter.property.job.name_property.class:                        Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Job\NameProperty
     pim_datagrid.extension.formatter.property.job.type_property.class:                        Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Job\TypeProperty
@@ -104,6 +106,13 @@ services:
             - '@twig'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_twig }
+
+    pim_datagrid.extension.formatter.property.product_value.text_collection_property:
+        class: '%pim_datagrid.extension.formatter.property.product_value.text_collection_property.class%'
+        arguments:
+            - '@twig'
+        tags:
+            - { name: oro_datagrid.extension.formatter.property, type: product_value_text_collection }
 
     pim_datagrid.extension.formatter.property.product.groups_property:
         class: '%pim_datagrid.extension.formatter.property.product.groups_property.class%'

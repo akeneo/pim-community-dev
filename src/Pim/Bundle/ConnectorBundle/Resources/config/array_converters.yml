@@ -46,6 +46,7 @@ parameters:
     pim_connector.array_converter.flat_to_standard.product.value_converter.boolean.class:         Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\BooleanConverter
     pim_connector.array_converter.flat_to_standard.product.value_converter.number.class:          Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\NumberConverter
     pim_connector.array_converter.flat_to_standard.product.value_converter.date.class:            Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\DateConverter
+    pim_connector.array_converter.flat_to_standard.product.value_converter.text_collection.class: Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\TextCollectionConverter
 
     pim_connector.array_converter.standard_to_flat.product.value_converter.registry.class:        Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\ValueConverterRegistry
     pim_connector.array_converter.standard_to_flat.product.value_converter.price.class:           Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\PriceConverter
@@ -56,6 +57,7 @@ parameters:
     pim_connector.array_converter.standard_to_flat.product.value_converter.text.class:            Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\TextConverter
     pim_connector.array_converter.standard_to_flat.product.value_converter.boolean.class:         Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\BooleanConverter
     pim_connector.array_converter.standard_to_flat.product.value_converter.date.class:            Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\DateConverter
+    pim_connector.array_converter.standard_to_flat.product.value_converter.text_collection.class: Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\TextCollectionConverter
 
     pim_connector.array_converter.flat_to_standard.product.field_converter.class:                 Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldConverter
 
@@ -431,12 +433,27 @@ services:
             - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
 
     pim_connector.array_converter.standard_to_flat.product.value_converter.date:
-        class: %pim_connector.array_converter.standard_to_flat.product.value_converter.date.class%
+        class: '%pim_connector.array_converter.standard_to_flat.product.value_converter.date.class%'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
             - ['pim_catalog_date']
         tags:
             - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
+
+    pim_connector.array_converter.standard_to_flat.product.value_converter.text_collection:
+        class: '%pim_connector.array_converter.standard_to_flat.product.value_converter.text_collection.class%'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
+            - ['pim_catalog_text_collection']
+        tags:
+            - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
+
+    pim_connector.array_converter.flat_to_standard.product.value_converter.text_collection:
+        class: '%pim_connector.array_converter.flat_to_standard.product.value_converter.text_collection.class%'
+        arguments:
+            - ['pim_catalog_text_collection']
+        tags:
+            - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
 
     # product field converter
     pim_connector.array_converter.flat_to_standard.product.field_converter:

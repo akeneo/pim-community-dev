@@ -175,3 +175,13 @@ parameters:
                     attr:
                         empty_choice: true
         sorter:          ~
+    pim_datagrid.product.attribute_type.pim_catalog_text_collection:
+        column:
+            type:          product_value_text_collection
+            selector:      product_value_base
+            frontend_type: html
+            template:      PimDataGridBundle:Property:text_collection.html.twig
+        filter:
+            type:        product_value_string
+            ftype:       string
+        sorter:          ~

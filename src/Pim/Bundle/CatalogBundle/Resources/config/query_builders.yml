@@ -226,6 +226,15 @@ services:
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
+    pim_catalog.doctrine.query.filter.text_collection:
+        class: '%pim_catalog.doctrine.query.filter.string.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_text_collection']
+            - ['CONTAINS', 'DOES NOT CONTAIN', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
     # PQB common sorter definitions (implement either in ORM or MongoDB ODM)
     pim_catalog.doctrine.query.sorter.base:
         class: '%pim_catalog.doctrine.query.sorter.base.class%'

@@ -13,6 +13,7 @@ parameters:
     pim_catalog.attribute_type.file.class:             Pim\Bundle\CatalogBundle\AttributeType\FileType
     pim_catalog.attribute_type.image.class:            Pim\Bundle\CatalogBundle\AttributeType\ImageType
     pim_catalog.attribute_type.metric.class:           Pim\Bundle\CatalogBundle\AttributeType\MetricType
+    pim_catalog.attribute_type.text_collection.class:  Pim\Bundle\CatalogBundle\AttributeType\TextCollectionType
 
 services:
     pim_catalog.registry.attribute_type:
@@ -126,3 +127,12 @@ services:
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_metric, entity: '%pim_catalog.entity.product.class%' }
+
+    pim_extended_attribute_type.attribute_type.text_collection:
+        class: '%pim_catalog.attribute_type.text_collection.class%'
+        arguments:
+            - textCollection
+            - text
+            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: pim_catalog_text_collection }

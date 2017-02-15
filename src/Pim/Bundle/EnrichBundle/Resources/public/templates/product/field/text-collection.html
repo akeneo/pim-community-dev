@@ -1,0 +1,37 @@
+<div id="<%- fieldId %>" class="AknTextCollection">
+    <table class="AknTextCollection-items">
+        <tbody>
+        <% if (null !== value.data) { %>
+        <% value.data.forEach(function(text){ %>
+        <tr>
+            <% if (editMode !== 'view') { %>
+            <td class="handle"><i class="icon-reorder"></i></td>
+            <% } %>
+            <td><input type="text" class="AknTextField AknTextCollection-item"
+                <%= editMode === 'view' ? 'disabled' : '' %>
+                value="<%- text %>"
+                />
+            </td>
+            <% if (editMode !== 'view') { %>
+            <td class="AknTextCollection-actions">
+                <button class="AknButton AknButton--small AknTextCollection-deleteButton" type="button"><i class="icon-remove"></i></button>
+            </td>
+            <% } %>
+        </tr>
+        <% }); %>
+        <% } %>
+
+        <% if (editMode !== 'view') { %>
+        <tr>
+            <td></td>
+            <td><input type="text"
+                       class="AknTextField AknTextCollection-newItem"
+            /></td>
+            <td class="AknTextCollection-actions"><button
+                    class="AknButton AknButton--small AknTextCollection-addButton"
+            >Add item</button></td>
+        </tr>
+        <% } %>
+        </tbody>
+    </table>
+</div>
