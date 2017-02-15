@@ -18,5 +18,5 @@ Feature: Import locales
     And I launch the import job
     And I wait for the "xlsx_footwear_locale_import" job to finish
     Then there should be the following locales:
-      | code |
-      | ru_MO  |
+      | code  |
+      | ru_MO |

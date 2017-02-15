@@ -27,5 +27,5 @@ Feature: Export channels
     And I launch the export job
     And I wait for the "xlsx_footwear_channel_export" job to finish
     Then exported xlsx file of "xlsx_footwear_channel_export" should contain:
-      | mobile | Mobile | Mobil  | Mobile   | EUR     | en_US | 2014_collection | |
-      | tablet | Tablet | Tablet | Tablette | USD,EUR | en_US | 2014_collection | |
+      | mobile | Mobile | Mobil  | Mobile   | EUR     | en_US | 2014_collection |  |
+      | tablet | Tablet | Tablet | Tablette | USD,EUR | en_US | 2014_collection |  |

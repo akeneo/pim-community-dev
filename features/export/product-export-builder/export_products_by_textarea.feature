@@ -8,7 +8,7 @@ Feature: Export products according to textarea attribute filter
     Given a "footwear" catalog configuration
     And the following family:
       | code    | requirements-mobile | attributes |
-      | rangers | sku, name           | sku, name  |
+      | rangers | sku,name            | sku,name   |
     And the following products:
       | sku      | enabled | family  | categories        | description-en_US-mobile |
       | SNKRS-1B | 1       | rangers | summer_collection | Awesome                  |
@@ -19,7 +19,7 @@ Feature: Export products according to textarea attribute filter
   @skip
   Scenario: Export products by filtering on textarea values without using the UI
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | filePath | %tmp%/product_export/product_export.csv                                                                                     |
       | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "description", "operator": "=", "value": "Awesome"}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job

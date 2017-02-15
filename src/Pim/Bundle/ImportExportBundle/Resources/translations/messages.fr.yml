@@ -6,14 +6,14 @@ pim_import_export:
   status:
     - Prêt
   batch_status:
-    1: TERMINÉ
-    2: DÉMARRAGE EN COURS
-    3: DÉMARRÉ
-    4: ARRÊT EN COURS
-    5: ARRÊTÉ
-    6: EN ÉCHEC
-    7: ABANDONNÉ
-    8: INCONNU
+    1: Terminé
+    2: Démarrage
+    3: Démarré
+    4: En cours d'arrêt
+    5: Arrêté
+    6: Echoué
+    7: Abandonné
+    8: Inconnu
   download_archive:
     archive: Télécharger l'archive générée|Télécharger les archives générées
     output: Télécharger le fichier généré|Télécharger les fichiers générés
@@ -152,16 +152,17 @@ job_execution.summary:
     skipped: ignoré(s), extension dans la liste blanche
 Step: Étape
 Status: État
+Warnings: Aventissements
 Summary: Résumé
 Start: Début
 End: Fin
 set_attribute_requirements: Choisir les attributs requis
-COMPLETED: TERMINÉ
-STARTING: DÉMARRAGE EN COURS
-STARTED: DÉMARRÉ
-STOPPING: ARRÊT EN COURS
-STOPPED: ARRÊTÉ
-FAILED: EN ÉCHEC
-ABANDONED: ABANDONNÉ
-UNKNOWN: INCONNU
+COMPLETED: Terminé
+STARTING: Démarrage
+STARTED: Démarré
+STOPPING: En cours d'arrêt
+STOPPED: Arrêté
+FAILED: Echoué
+ABANDONED: Abandonné
+UNKNOWN: Inconnu
 warning.label: Attention

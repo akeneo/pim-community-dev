@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Query\Filter;
 
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * Field filter helper
@@ -63,11 +63,13 @@ class FieldFilterHelper
      * @param string $field
      * @param mixed  $value
      * @param string $className
+     *
+     * @throws InvalidPropertyTypeException
      */
     public static function checkArray($field, $value, $className)
     {
         if (!is_array($value)) {
-            throw InvalidArgumentException::arrayExpected(static::getCode($field), $className, gettype($value));
+            throw InvalidPropertyTypeException::arrayExpected(static::getCode($field), $className, $value);
         }
     }
 
@@ -77,15 +79,17 @@ class FieldFilterHelper
      * @param string $field
      * @param mixed  $value
      * @param string $className
+     *
+     * @throws InvalidPropertyTypeException
      */
     public static function checkIdentifier($field, $value, $className)
     {
         $invalidIdField = static::hasProperty($field) && static::getProperty($field) === 'id' && !is_numeric($value);
         if ($invalidIdField) {
-            throw InvalidArgumentException::numericExpected(
+            throw InvalidPropertyTypeException::numericExpected(
                 static::getCode($field),
                 $className,
-                gettype($value)
+                $value
             );
         }
 
@@ -94,7 +98,7 @@ class FieldFilterHelper
             !is_string($value) && !is_numeric($value);
 
         if ($invalidDefaultField || $invalidStringField) {
-            throw InvalidArgumentException::stringExpected(static::getCode($field), $className, gettype($value));
+            throw InvalidPropertyTypeException::stringExpected(static::getCode($field), $className, $value);
         }
     }
 }

@@ -6,9 +6,9 @@ Feature: Execute an import with scopable or localizable data
 
   Background:
     Given the "apparel" catalog configuration
-    And the following product groups:
-      | code   | label  | axis        | type    |
-      | SANDAL | Sandal | size, color | VARIANT |
+    And the following variant groups:
+      | code   | label-en_US | axis       | type    |
+      | SANDAL | Sandal      | size,color | VARIANT |
     And I am logged in as "Julia"
 
   Scenario: Avoid data loss when importing variant group localizable/scopable values
@@ -35,9 +35,9 @@ Feature: Execute an import with scopable or localizable data
 
   Scenario: Have coherent values when importing new variant group with localizable/scopable attributes
     Given the following attributes:
-      | code             | label-en_US      | label-fr_FR      | type   | localizable | scopable | group   | metric_family | default_metric_unit |
-      | sole_length      | Sole length      | Longueur semelle | metric | yes         | no       | general | Length        | CENTIMETER          |
-      | packaging_weight | Packaging weight | Poids packaging  | metric | no          | yes      | general | Weight        | KILOGRAM            |
+      | code             | label-en_US      | label-fr_FR      | type               | localizable | scopable | group   | metric_family | default_metric_unit |
+      | sole_length      | Sole length      | Longueur semelle | pim_catalog_metric | 1           | 0        | general | Length        | CENTIMETER          |
+      | packaging_weight | Packaging weight | Poids packaging  | pim_catalog_metric | 0           | 1        | general | Weight        | KILOGRAM            |
     And the following CSV file to import:
       """
       code;type;label-en_US;axis;description-en_US-tablet;sole_length-en_US;packaging_weight-tablet

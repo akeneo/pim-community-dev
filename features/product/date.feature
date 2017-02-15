@@ -8,8 +8,8 @@ Feature: Check that imported date is properly displayed
     Given the "default" catalog configuration
     And I am logged in as "Julia"
     And the following attributes:
-      | label   | type | localizable | scopable | useable_as_grid_filter |
-      | release | date | no          | no       | yes                    |
+      | label-en_US | type             | localizable | scopable | useable_as_grid_filter | group | code    |
+      | release     | pim_catalog_date | 0           | 0        | 1                      | other | release |
     And the following CSV file to import:
       """
       sku;release

@@ -2,7 +2,7 @@
 
 namespace Akeneo\Component\StorageUtils\Updater;
 
-use Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException;
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
 
 /**
  * Updates an object with a set of data
@@ -20,7 +20,7 @@ interface ObjectUpdaterInterface
      * @param array  $data    The data to update
      * @param array  $options The options to use
      *
-     * @throws ObjectUpdaterException
+     * @throws PropertyException
      *
      * @return ObjectUpdaterInterface
      */

@@ -140,9 +140,9 @@ Feature: Associate a product
       | orange-boots |
       | white-boots  |
     And the following associations for the product "red-boots":
-      | type   | products     |
-      | X_SELL | black-boots  |
-      | X_SELL | gray-boots   |
+      | type   | products    |
+      | X_SELL | black-boots |
+      | X_SELL | gray-boots  |
     And I edit the "red-boots" product
     When I visit the "Associations" tab
     Then I should see the text "black-boots"
@@ -160,9 +160,9 @@ Feature: Associate a product
       | orange-boots |
       | white-boots  |
     And the following associations for the product "red-boots":
-      | type   | products     |
-      | X_SELL | black-boots  |
-      | X_SELL | gray-boots   |
+      | type   | products    |
+      | X_SELL | black-boots |
+      | X_SELL | gray-boots  |
     And I edit the "red-boots" product
     When I visit the "Associations" tab
     Then I should be able to sort the rows by Is associated
@@ -216,6 +216,7 @@ Feature: Associate a product
     And I press the "Show groups" button
     And I check the row "caterpillar_boots"
     And I save the product
+    And I should not see the text "There are unsaved changes."
     When I select the "Substitution" association
     Then I should see the text "0 products and 0 groups"
     And the row "caterpillar_boots" should not be checked

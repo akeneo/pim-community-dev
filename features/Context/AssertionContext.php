@@ -46,6 +46,9 @@ class AssertionContext extends RawMinkContext
      */
     public function assertPageNotContainsText($text)
     {
+        //Remove unecessary escaped antislashes
+        $text = str_replace('\\"', '"', $text);
+        $text = strip_tags($text);
         $this->spin(function () use ($text) {
             $this->assertSession()->pageTextNotContains($text);
 

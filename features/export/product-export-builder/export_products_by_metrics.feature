@@ -18,7 +18,7 @@ Feature: Export products according to metric attribute filter
 
   Scenario: Export products by their metric values without using the UI
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | filePath | %tmp%/product_export/product_export.csv                                                                                                           |
       | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "length", "operator": "<", "value": {"amount": 15, "unit": "CENTIMETER"}}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job

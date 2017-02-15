@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDB\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
@@ -145,20 +145,20 @@ class ReferenceDataFilterSpec extends ObjectBehavior
 
         $value = 'string';
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected(
+            InvalidPropertyTypeException::arrayExpected(
                 'color',
                 'Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDB\Filter\ReferenceDataFilter',
-                $value
+                'string'
             )
         )
             ->during('addAttributeFilter', [$attribute, '=', $value, null, null, ['field' => 'color']]);
 
         $value = [false];
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected(
+            InvalidPropertyTypeException::stringExpected(
                 'color',
                 'Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDB\Filter\ReferenceDataFilter',
-                'boolean'
+                false
             )
         )
             ->during('addAttributeFilter', [$attribute, '=', $value, null, null, ['field' => 'color']]);

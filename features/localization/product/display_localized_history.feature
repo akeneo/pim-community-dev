@@ -7,10 +7,10 @@ Feature: Display the localized product history
   Background:
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code   | label  | label-fr_FR | type   | decimals_allowed | negative_allowed | default_metric_unit | metric_family | group |
-      | number | Number | Nombre      | number | true             | false            |                     |               | other |
-      | metric | Metric | Metrique    | metric | true             | true             | GRAM                | Weight        | other |
-      | price  | Price  | Prix        | prices | true             | false            |                     |               | other |
+      | code   | label-en_US | label-fr_FR | type                         | decimals_allowed | negative_allowed | default_metric_unit | metric_family | group |
+      | number | Number      | Nombre      | pim_catalog_number           | 1                | 0                |                     |               | other |
+      | metric | Metric      | Metrique    | pim_catalog_metric           | 1                | 1                | GRAM                | Weight        | other |
+      | price  | Price       | Prix        | pim_catalog_price_collection | 1                | 0                |                     |               | other |
     And I am logged in as "admin"
     And the following CSV file to import:
       """

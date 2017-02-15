@@ -7,14 +7,14 @@ Feature: Validate metric attributes of a product
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | code   | label-en_US | type   | scopable | metric_family | default_metric_unit | negative_allowed | decimals_allowed | number_min | number_max |
-      | area   | Area        | metric | no       | Area          | HECTARE             | no               | no               |            |            |
-      | length | Length      | metric | yes      | Length        | METER               | no               | no               |            |            |
-      | power  | Power       | metric | no       | Power         | WATT                | yes              | yes              | -200       | -100       |
-      | speed  | Speed       | metric | yes      | Speed         | YARD_PER_HOUR       | yes              | yes              | 5.50       | 100        |
+      | code   | label-en_US | type               | scopable | metric_family | default_metric_unit | negative_allowed | decimals_allowed | number_min | number_max | group |
+      | area   | Area        | pim_catalog_metric | 0        | Area          | HECTARE             | 0                | 0                |            |            | other |
+      | length | Length      | pim_catalog_metric | 1        | Length        | METER               | 0                | 0                |            |            | other |
+      | power  | Power       | pim_catalog_metric | 0        | Power         | WATT                | 1                | 1                | -200       | -100       | other |
+      | speed  | Speed       | pim_catalog_metric | 1        | Speed         | YARD_PER_HOUR       | 1                | 1                | 5.50       | 100        | other |
     And the following family:
-      | code | label-en_US | attributes                      |
-      | baz  | Baz         | sku, area, length, power, speed |
+      | code | label-en_US | attributes                  |
+      | baz  | Baz         | sku,area,length,power,speed |
     And the following product:
       | sku | family |
       | foo | baz    |

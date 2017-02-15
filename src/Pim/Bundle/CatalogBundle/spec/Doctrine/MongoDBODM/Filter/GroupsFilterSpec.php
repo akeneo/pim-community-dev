@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Prophecy\Argument;
 
 /**
@@ -145,16 +145,16 @@ class GroupsFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_an_array()
     {
-        $this->shouldThrow(InvalidArgumentException::arrayExpected('groups', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter', gettype('not an array')))
+        $this->shouldThrow(InvalidPropertyTypeException::arrayExpected('groups', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter', 'not an array'))
             ->during('addFieldFilter', ['groups.id', 'IN', 'not an array']);
     }
 
     function it_throws_an_exception_if_content_of_array_is_not_string_or_numeric_or_empty()
     {
-        $this->shouldThrow(InvalidArgumentException::numericExpected('groups', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter', gettype('WRONG')))
+        $this->shouldThrow(InvalidPropertyTypeException::numericExpected('groups', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter', 'WRONG'))
             ->during('addFieldFilter', ['groups.id', 'IN', [1, 2, 'WRONG']]);
 
-        $this->shouldThrow(InvalidArgumentException::stringExpected('groups', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter', gettype(false)))
+        $this->shouldThrow(InvalidPropertyTypeException::stringExpected('groups', 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter', false))
             ->during('addFieldFilter', ['groups', 'IN', ['a_code', false]]);
     }
 

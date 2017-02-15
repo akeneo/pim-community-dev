@@ -7,8 +7,8 @@ Feature: Join a document to a product
   Background:
     Given the "default" catalog configuration
     And the following attribute:
-      | label       | type | allowed extensions |
-      | Description | file | txt                |
+      | label-en_US | type             | allowed extensions | group | code        |
+      | Description | pim_catalog_file | txt                | other | description |
     And a "Car" product
     And the "Car" product has the "Description" attribute
     And I am logged in as "Julia"

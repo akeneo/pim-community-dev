@@ -147,8 +147,8 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_localizable_scopable_text" expects valid data, scope and locale. Attribute "a_localizable_scopable_text" expects a locale, none given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Attribute "a_localizable_scopable_text" expects a locale, none given.
      */
     public function testErrorLocalizable()
     {

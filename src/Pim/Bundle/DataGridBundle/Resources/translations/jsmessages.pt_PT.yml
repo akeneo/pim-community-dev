@@ -40,8 +40,10 @@ oro_datagrid.select.all: "Tudo"
 oro_datagrid.select.visible: "Tudo visível"
 oro_datagrid.select.none: "Nenhum"
 pim.grid.ajax_choice_filter.label_empty: está vazio
+pim.grid.ajax_choice_filter.label_not_empty: não está vazio
 pim.grid.choice_filter:
   label_empty: está vazio
+  label_not_empty: não está vazio
   label_in_list: na lista
 Available Columns: Colunas disponíveis
 datagrid_view.columns.min_message: Deve selecionar pelo menos uma coluna da grelha para exibir

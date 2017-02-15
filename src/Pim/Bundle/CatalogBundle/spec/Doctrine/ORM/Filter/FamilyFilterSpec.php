@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
@@ -118,19 +119,19 @@ class FamilyFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_an_array()
     {
-        $this->shouldThrow(InvalidArgumentException::arrayExpected(
+        $this->shouldThrow(InvalidPropertyTypeException::arrayExpected(
             'family',
             'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\FamilyFilter',
-            gettype('WRONG')
+            'WRONG'
         ))->during('addFieldFilter', ['family', 'IN', 'WRONG']);
     }
 
     function it_throws_an_exception_if_values_in_array_are_not_strings_or_numerics()
     {
-        $this->shouldThrow(InvalidArgumentException::stringExpected(
+        $this->shouldThrow(InvalidPropertyTypeException::stringExpected(
             'family',
             'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\FamilyFilter',
-            gettype(false)
+            false
         ))->during('addFieldFilter', ['family', 'IN', [false]]);
     }
 }

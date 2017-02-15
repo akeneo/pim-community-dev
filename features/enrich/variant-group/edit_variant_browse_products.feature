@@ -11,16 +11,18 @@ Feature: Edit a variant group adding/removing products
       | mug       | Mug         |
       | furniture | Furniture   |
     And the following attributes:
-      | code  | label | type         | useable_as_grid_filter |
-      | color | Color | simpleselect | yes                    |
-      | size  | Size  | simpleselect | yes                    |
+      | code  | label-en_US | type                     | useable_as_grid_filter | group |
+      | color | Color       | pim_catalog_simpleselect | 1                      | other |
+      | size  | Size        | pim_catalog_simpleselect | 1                      | other |
     And the following "color" attribute options: Yellow, Blue, Green, Pink and Red
     And the following "size" attribute options: XS, S, M, L and XL
+    And the following variant groups:
+      | code   | label-en_US | axis       | type    |
+      | MUG    | MUG Akeneo  | color      | VARIANT |
+      | POSTIT | Postit      | color,size | VARIANT |
     And the following product groups:
-      | code       | label      | axis        | type    |
-      | MUG        | MUG Akeneo | color       | VARIANT |
-      | POSTIT     | Postit     | color, size | VARIANT |
-      | CROSS_SELL | Cross sell |             | X_SELL |
+      | code       | label-en_US | type   |
+      | CROSS_SELL | Cross sell  | X_SELL |
     And the following products:
       | sku    | groups          | family    | color  | size |
       | MUG_A1 |                 | mug       |        |      |

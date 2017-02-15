@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Prophecy\Argument;
 
 /**
@@ -152,19 +152,19 @@ class FamilyFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_an_array()
     {
-        $this->shouldThrow(InvalidArgumentException::arrayExpected(
+        $this->shouldThrow(InvalidPropertyTypeException::arrayExpected(
             'family',
             'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\FamilyFilter',
-            gettype('not an array')
+            'not an array'
         ))->during('addFieldFilter', ['family', 'IN', 'not an array']);
     }
 
     function it_throws_an_exception_if_content_of_array_is_not_string_or_numeric_or_empty()
     {
-        $this->shouldThrow(InvalidArgumentException::stringExpected(
+        $this->shouldThrow(InvalidPropertyTypeException::stringExpected(
             'family',
             'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\FamilyFilter',
-            gettype(false)
+            false
         ))
             ->during('addFieldFilter', ['family', 'IN', ['a_code', false]]);
     }

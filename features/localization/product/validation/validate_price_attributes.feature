@@ -7,14 +7,14 @@ Feature: Validate localized price attributes of a product
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | code    | label-fr_FR | type   | scopable | negative_allowed | decimals_allowed | number_min | number_max |
-      | cost    | Coût        | prices | no       | no               | no               |            |            |
-      | price   | Prix        | prices | yes      | no               | no               |            |            |
-      | tax     | Taxe        | prices | no       |                  | yes              | 10         | 100        |
-      | customs | Douane      | prices | yes      |                  | yes              | 10         | 100        |
+      | code    | label-fr_FR | type                         | scopable | negative_allowed | decimals_allowed | number_min | number_max | group |
+      | cost    | Coût        | pim_catalog_price_collection | 0        | 0                | 0                |            |            | other |
+      | price   | Prix        | pim_catalog_price_collection | 1        | 0                | 0                |            |            | other |
+      | tax     | Taxe        | pim_catalog_price_collection | 0        |                  | 1                | 10         | 100        | other |
+      | customs | Douane      | pim_catalog_price_collection | 1        |                  | 1                | 10         | 100        | other |
     And the following family:
-      | code | label-en_US | attributes                     |
-      | baz  | Baz         | sku, cost, price, tax, customs |
+      | code | label-en_US | attributes                 |
+      | baz  | Baz         | sku,cost,price,tax,customs |
     And the following product:
       | sku | family |
       | foo | baz    |

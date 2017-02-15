@@ -7,10 +7,10 @@ Feature: Import media with products
   Background:
     Given the "footwear" catalog configuration
     And the following attributes:
-      | label       | type  | allowed extensions | max file size |
-      | Front view  | image | gif, jpg           | 1             |
-      | User manual | file  | txt, pdf           | 1             |
-      | Warranty    | file  | txt, pdf           | 1             |
+      | label-en_US | type              | allowed extensions | max file size | group | code       |
+      | Front view  | pim_catalog_image | gif, jpg           | 1             | other | frontView  |
+      | User manual | pim_catalog_file  | txt, pdf           | 1             | other | userManual |
+      | Warranty    | pim_catalog_file  | txt, pdf           | 1             | other | warranty   |
     And I am logged in as "Julia"
 
   Scenario: Successfully import media

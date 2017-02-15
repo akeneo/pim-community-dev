@@ -39,17 +39,17 @@ Feature: Export products with media
 
   @jira https://akeneo.atlassian.net/browse/PIM-3785
   Scenario: Successfully export products with nullable media
-    Given the following family:
-      | code      | requirements-tablet | requirements-mobile |
-      | flipflop  | sku                 | sku                 |
-    And the following attributes:
-      | code    | label   | type  | allowed extensions | families  |
-      | picture | Picture | image | jpg                | flipflop  |
+    Given the following attributes:
+      | code    | label-en_US | type              | allowed extensions | group |
+      | picture | Picture     | pim_catalog_image | jpg                | other |
+    And the following family:
+      | code     | requirements-tablet | requirements-mobile | attributes |
+      | flipflop | sku                 | sku                 | picture    |
     And the following products:
-      | sku         | categories        | price          | size | color    | name-en_US | family    |
-      | FLIPFLOP-1R | summer_collection | 50 EUR, 70 USD | 45   | red      | Model 1    | flipflop  |
-      | FLIPFLOP-1C | summer_collection | 55 EUR, 75 USD | 45   | charcoal | Model 1    | flipflop  |
-      | FLIPFLOP-1B | summer_collection | 50 EUR, 70 USD | 45   | black    | Model 1    | flipflop  |
+      | sku         | categories        | price          | size | color    | name-en_US | family   |
+      | FLIPFLOP-1R | summer_collection | 50 EUR, 70 USD | 45   | red      | Model 1    | flipflop |
+      | FLIPFLOP-1C | summer_collection | 55 EUR, 75 USD | 45   | charcoal | Model 1    | flipflop |
+      | FLIPFLOP-1B | summer_collection | 50 EUR, 70 USD | 45   | black    | Model 1    | flipflop |
     And I am on the products page
     And I select rows FLIPFLOP-1R and FLIPFLOP-1C
     And I press "Change product information" on the "Bulk Actions" dropdown button
@@ -84,10 +84,10 @@ Feature: Export products with media
   @jira https://akeneo.atlassian.net/browse/PIM-5844
   Scenario: Successfully export products with media with identifier containing slash
     Given the following products:
-      | sku       | family   | categories        | price          | size | color    | name-en_US |
-      | SN/KRS-1B | sneakers | summer_collection | 50 EUR, 70 USD | 45   | black    | Model 1    |
+      | sku       | family   | categories        | price          | size | color | name-en_US |
+      | SN/KRS-1B | sneakers | summer_collection | 50 EUR, 70 USD | 45   | black | Model 1    |
     And the following product values:
-      | product   | attribute | value                    |
+      | product   | attribute | value                   |
       | SN/KRS-1B | side_view | %fixtures%/SNKRS-1R.png |
     And I launched the completeness calculator
     And I am on the "csv_footwear_product_export" export job page

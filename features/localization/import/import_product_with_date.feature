@@ -25,7 +25,7 @@ Feature: Import product information with date
     Then the product "SKU-001" should have the following values:
       | destocking_date | 2014-10-28 |
     Then the product "SKU-002" should have the following values:
-      | destocking_date | |
+      | destocking_date |  |
 
   Scenario: Skip product with a decimal separator different as configuration
     Given the following CSV file to import:
@@ -48,5 +48,5 @@ Feature: Import product information with date
     Then the product "SKU-004" should have the following values:
       | destocking_date | 2014-10-28 |
     Then the product "SKU-005" should have the following values:
-      | destocking_date | |
+      | destocking_date |  |
     And I should see "This type of value expects the use of the format yyyy-MM-dd for dates."

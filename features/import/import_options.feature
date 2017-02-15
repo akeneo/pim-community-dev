@@ -7,8 +7,8 @@ Feature: Import options
   Scenario: Successfully import options in CSV
     Given the "footwear" catalog configuration
     And the following attributes:
-      | code  | label | type         |
-      | brand | Brand | simpleselect |
+      | code  | label-en_US | type                     | group |
+      | brand | Brand       | pim_catalog_simpleselect | other |
     And I am logged in as "Julia"
     And the following CSV file to import:
       """
@@ -34,8 +34,8 @@ Feature: Import options
   Scenario: Skip options with empty code
     Given the "footwear" catalog configuration
     And the following attributes:
-      | code  | label | type         |
-      | brand | Brand | simpleselect |
+      | code  | label-en_US | type                     | group |
+      | brand | Brand       | pim_catalog_simpleselect | other |
     And I am logged in as "Julia"
     And the following CSV file to import:
       """
@@ -53,8 +53,8 @@ Feature: Import options
   Scenario: Skip options with unknown attribute code
     Given the "footwear" catalog configuration
     And the following attributes:
-      | code  | label | type         |
-      | brand | Brand | simpleselect |
+      | code  | label-en_US | type                     | group |
+      | brand | Brand       | pim_catalog_simpleselect | other |
     And I am logged in as "Julia"
     And the following CSV file to import:
       """
@@ -73,8 +73,8 @@ Feature: Import options
   Scenario: Import options with localizable label
     Given the "apparel" catalog configuration
     And the following attributes:
-      | code | label | type         |
-      | test | Test  | simpleselect |
+      | code | label-en_US | type                     | group |
+      | test | Test        | pim_catalog_simpleselect | other |
     And I am logged in as "Julia"
     And the following CSV file to import:
       """
@@ -103,8 +103,8 @@ Feature: Import options
   Scenario: Stop an import when a label is provided for a disabled language
     Given the "apparel" catalog configuration
     And the following attributes:
-      | code | label | type         |
-      | test | Test  | simpleselect |
+      | code | label-en_US | type                     | group |
+      | test | Test        | pim_catalog_simpleselect | other |
     And I am logged in as "Julia"
     And the following CSV file to import:
       """
@@ -123,8 +123,8 @@ Feature: Import options
   Scenario: Import options with full numeric codes
     Given the "footwear" catalog configuration
     And the following attributes:
-      | code  | label | type         |
-      | brand | Brand | simpleselect |
+      | code  | label-en_US | type                     | group |
+      | brand | Brand       | pim_catalog_simpleselect | other |
     And I am logged in as "Julia"
     And the following CSV file to import:
       """
@@ -149,8 +149,8 @@ Feature: Import options
   Scenario: Successfully import options in XLSX
     Given the "footwear" catalog configuration
     And the following attributes:
-      | code  | label | type         |
-      | brand | Brand | simpleselect |
+      | code  | label-en_US | type                     | group |
+      | brand | Brand       | pim_catalog_simpleselect | other |
     And I am logged in as "Julia"
     And the following XLSX file to import:
       """
@@ -176,8 +176,8 @@ Feature: Import options
   Scenario: Does not overwrite sort order values when importing existing options
     Given the "footwear" catalog configuration
     And the following attributes:
-      | code  | label | type         |
-      | brand | Brand | simpleselect |
+      | code  | label-en_US | type                     | group |
+      | brand | Brand       | pim_catalog_simpleselect | other |
     And I am logged in as "Julia"
     And the following CSV file to import:
       """

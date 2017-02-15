@@ -32,11 +32,15 @@ class DatagridViewRepository extends EntityRepository implements DatagridViewRep
      */
     public function findDatagridViewByAlias($alias)
     {
-        return $this->createQueryBuilder('v')
+        $queryBuilder = $this->createQueryBuilder('v')
+            ->andWhere('v.type = :type')
             ->andWhere('v.datagridAlias = :alias')
             ->setParameters([
+                'type'  => DatagridView::TYPE_PUBLIC,
                 'alias' => $alias
             ]);
+
+        return $queryBuilder;
     }
 
     /**

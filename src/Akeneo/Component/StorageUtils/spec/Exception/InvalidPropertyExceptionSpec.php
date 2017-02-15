@@ -167,8 +167,32 @@ class InvalidPropertyExceptionSpec extends ObjectBehavior
             'attribute',
             null,
             'Pim\Component\Catalog\Updater\Attribute',
-            'Property "attribute" expects valid data, scope and locale. This is an exception message.',
+            'This is an exception message.',
             42
+        );
+
+        $this->shouldBeAnInstanceOf(get_class($exception));
+        $this->getPropertyName()->shouldReturn($exception->getPropertyName());
+        $this->getPropertyValue()->shouldReturn($exception->getPropertyValue());
+        $this->getClassName()->shouldReturn($exception->getClassName());
+        $this->getMessage()->shouldReturn($exception->getMessage());
+        $this->getCode()->shouldReturn($exception->getCode());
+    }
+
+    function it_creates_a_data_expected_exception()
+    {
+        $exception = InvalidPropertyException::dataExpected(
+            'name',
+            'a valid scope',
+            'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter'
+        );
+
+        $this->beConstructedWith(
+            'name',
+            null,
+            'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter',
+            'Property "name" expects a valid scope.',
+            InvalidPropertyException::VALID_DATA_EXPECTED_CODE
         );
 
         $this->shouldBeAnInstanceOf(get_class($exception));
