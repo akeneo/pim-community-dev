@@ -7,8 +7,8 @@ Feature: Export products according to multi select reference data values
   Background:
     Given the "clothing" catalog configuration
     And the following family:
-      | code  | label-en_US | attributes      |
-      | shirt | Shirt       | sku, front_view |
+      | code  | label-en_US | attributes     |
+      | shirt | Shirt       | sku,front_view |
     And the following products:
       | sku     | front_view | categories      | family |
       | shirt-1 | akene      | 2014_collection | shirt  |
@@ -18,7 +18,7 @@ Feature: Export products according to multi select reference data values
       | connector            | type   | alias              | code               | label              |
       | Akeneo CSV Connector | export | csv_product_export | csv_product_export | CSV product export |
     And the following job "csv_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | filePath | %tmp%/product_export/product_export.csv                                     |
       | filters  | {"structure": {"locales": ["fr_FR", "en_US"], "scope": "tablet"},"data":[]} |
 
   Scenario: Export only the product values with selected reference data value

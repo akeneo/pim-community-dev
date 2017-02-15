@@ -14,10 +14,10 @@ Feature: Create a draft with a simple select fields
       | product       | actions                                                                               | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "rating", "data": "2", "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                                                                                      |
-      | akeneo_tshirt  | Mary     | {"values": {"rating": [{"locale": null, "scope": null, "data": "2"}]}, "review_statuses": {"rating": [{"locale": null, "scope": null, "status": "draft"}]}} |
+      | product       | username | result                                                                                                                                                      |
+      | akeneo_tshirt | Mary     | {"values": {"rating": [{"locale": null, "scope": null, "data": "2"}]}, "review_statuses": {"rating": [{"locale": null, "scope": null, "status": "draft"}]}} |
     And the product "akeneo_tshirt" should have the following values:
-      | rating | |
+      | rating |  |
 
   Scenario: Successfully add a draft without update attribute in product
     Given the following product values:
@@ -27,8 +27,8 @@ Feature: Create a draft with a simple select fields
       | product       | actions                                                                               | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "rating", "data": "2", "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                                                                                      |
-      | akeneo_tshirt  | Mary     | {"values": {"rating": [{"locale": null, "scope": null, "data": "2"}]}, "review_statuses": {"rating": [{"locale": null, "scope": null, "status": "draft"}]}} |
+      | product       | username | result                                                                                                                                                      |
+      | akeneo_tshirt | Mary     | {"values": {"rating": [{"locale": null, "scope": null, "data": "2"}]}, "review_statuses": {"rating": [{"locale": null, "scope": null, "status": "draft"}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | rating | [3] |
 

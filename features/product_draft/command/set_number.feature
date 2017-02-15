@@ -14,10 +14,10 @@ Feature: Create a draft with a number fields
       | product       | actions                                                                                                | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "number_in_stock", "data": 12.0000, "locale": null, "scope": "mobile"}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                                                                                                                      |
-      | akeneo_tshirt  | Mary     | {"values": {"number_in_stock": [{"locale": null, "scope": "mobile", "data": "12.0000"}]}, "review_statuses": {"number_in_stock": [{"locale": null, "scope": "mobile", "status": "draft"}]}} |
+      | product       | username | result                                                                                                                                                                                      |
+      | akeneo_tshirt | Mary     | {"values": {"number_in_stock": [{"locale": null, "scope": "mobile", "data": "12.0000"}]}, "review_statuses": {"number_in_stock": [{"locale": null, "scope": "mobile", "status": "draft"}]}} |
     And the product "akeneo_tshirt" should have the following values:
-      | number_in_stock-mobile | |
+      | number_in_stock-mobile |  |
 
   Scenario: Successfully add a draft without update attribute in product
     Given the following product values:
@@ -27,8 +27,8 @@ Feature: Create a draft with a number fields
       | product       | actions                                                                                                | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "number_in_stock", "data": 12.0000, "locale": null, "scope": "mobile"}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                                                                                                                      |
-      | akeneo_tshirt  | Mary     | {"values": {"number_in_stock": [{"locale": null, "scope": "mobile", "data": "12.0000"}]}, "review_statuses": {"number_in_stock": [{"locale": null, "scope": "mobile", "status": "draft"}]}} |
+      | product       | username | result                                                                                                                                                                                      |
+      | akeneo_tshirt | Mary     | {"values": {"number_in_stock": [{"locale": null, "scope": "mobile", "data": "12.0000"}]}, "review_statuses": {"number_in_stock": [{"locale": null, "scope": "mobile", "status": "draft"}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | number_in_stock-mobile | 15.0000 |
 

@@ -1,5 +1,6 @@
 username;first_name;last_name;email;password;catalog_locale;user_locale;catalog_scope;default_tree;roles;groups;enabled;api_key
 admin;John;Doe;admin@example.com;admin;en_US;en_US;ecommerce;default;ROLE_ADMINISTRATOR;Read Only;1;admin_api_key
+Peter;Peter;Williams;Peter@example.com;Peter;en_US;en_US;ecommerce;default;ROLE_ADMINISTRATOR;Read Only;1;Peter_api_key
 Julia;Julia;Stark;Julia@example.com;Julia;en_US;en_US;ecommerce;default;ROLE_CATALOG_MANAGER;Marketing,Technical Clothing,Technical High-Tech,All;1;Julia_api_key
 Mary;Mary;Smith;Mary@example.com;Mary;en_US;en_US;ecommerce;default;ROLE_USER;Marketing;1;Mary_api_key
 Claude;Claude;Yachifeur;claude@example.com;Claude;en_US;en_US;ecommerce;default;ROLE_USER;Technical Clothing;1;Kevin_api_key

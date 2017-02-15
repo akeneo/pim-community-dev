@@ -7,8 +7,8 @@ Feature: Product creation
   Scenario: Successfully display an error message when user have no access rights on the identifier attribute
     Given the "default" catalog configuration
     And the following attribute group accesses:
-      | attribute group | user group | access |
-      | other           | Manager    | none   |
+      | attribute group | user group | access | group | type             |
+      | other           | Manager    | none   | other | pim_catalog_text |
     And I am logged in as "Julia"
     When I am on the products page
     And I create a new product

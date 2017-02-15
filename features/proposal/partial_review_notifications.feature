@@ -7,9 +7,9 @@ Feature: Adapt notification for redactor depending on action on their proposal
   Background:
     Given a "clothing" catalog configuration
     And the following attribute group accesses:
-      | attribute group | user group | access |
-      | sizes           | Manager    | view   |
-      | sizes           | Redactor   | edit   |
+      | attribute group | user group | access | group | type             |
+      | sizes           | Manager    | view   | other | pim_catalog_text |
+      | sizes           | Redactor   | edit   | other | pim_catalog_text |
     And the following products:
       | sku  | family  | categories | name-en_US               | weather_conditions |
       | sp-1 | hoodies | tops       | South Park Hoodie - Timm | dry                |

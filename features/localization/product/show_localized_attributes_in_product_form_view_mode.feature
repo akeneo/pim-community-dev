@@ -7,16 +7,16 @@ Feature: Show localized attributes in products form in view mode
   Background:
     Given the "default" catalog configuration
     And the following categories:
-      | code    | label-en_US | parent  |
-      | shoes   | shoes       | default |
+      | code  | label-en_US | parent  |
+      | shoes | shoes       | default |
     And the following product category accesses:
       | product category | user group | access |
       | shoes            | Redactor   | view   |
     And the following attributes:
-      | code           | label          | type   | decimals_allowed | metric_family | default_metric_unit |
-      | decimal_price  | decimal_price  | prices | yes              |               |                     |
-      | decimal_number | decimal_number | number | yes              |               |                     |
-      | decimal_metric | decimal_metric | metric | yes              | Length        | CENTIMETER          |
+      | code           | label-en_US    | type                         | decimals_allowed | metric_family | default metric unit | group |
+      | decimal_price  | decimal_price  | pim_catalog_price_collection | 1                |               |                     | other |
+      | decimal_number | decimal_number | pim_catalog_number           | 1                |               |                     | other |
+      | decimal_metric | decimal_metric | pim_catalog_metric           | 1                | Length        | CENTIMETER          | other |
     And the following products:
       | sku     | decimal_price        | decimal_number | decimal_metric     | categories |
       | sandals | 10.12 USD, 10.12 EUR | 12.1234        | 10.3456 CENTIMETER | shoes      |

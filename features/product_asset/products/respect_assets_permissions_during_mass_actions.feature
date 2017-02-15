@@ -10,9 +10,9 @@ Feature: Apply permissions for an assets collection attribute during mass action
       | code     | categories          |
       | doc_tech | technical_documents |
     And the following products:
-      | sku            | family     | front_view |
-      | leather jacket | jackets    | paint      |
-      | wool jacket    | jackets    | akene      |
+      | sku            | family  | front_view |
+      | leather jacket | jackets | paint      |
+      | wool jacket    | jackets | akene      |
     And I am logged in as "Julia"
 
   Scenario: Apply permissions for an assets collection attribute during editing common attributes

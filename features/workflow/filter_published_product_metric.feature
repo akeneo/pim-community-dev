@@ -6,12 +6,12 @@ Feature: Filter on metric attributes
   Scenario: Successfully filter on metric attributes
     Given a "clothing" catalog configuration
     And the following published products:
-      | sku       | volume              |
-      | MOUTH     | 12 CUBIC_MILLIMETER |
-      | SAUCEPAN  | 20 CUBIC_MILLIMETER |
-      | POOL      | 15 CUBIC_METER      |
+      | sku      | volume              |
+      | MOUTH    | 12 CUBIC_MILLIMETER |
+      | SAUCEPAN | 20 CUBIC_MILLIMETER |
+      | POOL     | 15 CUBIC_METER      |
     Then I should get the following published products results for the given filters:
-      | filter                                                                                    | result                |
-      | [{"field":"volume", "operator":"=", "value":{"amount": 12, "unit":"CUBIC_MILLIMETER"}}]   | ["MOUTH"]             |
-      | [{"field":"volume", "operator":"<", "value":{"amount": 1, "unit":"CUBIC_METER"}}]         | ["MOUTH", "SAUCEPAN"] |
-      | [{"field":"volume", "operator":">", "value":{"amount": 100, "unit":"CUBIC_MILLIMETER"}}]  | ["POOL"]              |
+      | filter                                                                                   | result                |
+      | [{"field":"volume", "operator":"=", "value":{"amount": 12, "unit":"CUBIC_MILLIMETER"}}]  | ["MOUTH"]             |
+      | [{"field":"volume", "operator":"<", "value":{"amount": 1, "unit":"CUBIC_METER"}}]        | ["MOUTH", "SAUCEPAN"] |
+      | [{"field":"volume", "operator":">", "value":{"amount": 100, "unit":"CUBIC_MILLIMETER"}}] | ["POOL"]              |

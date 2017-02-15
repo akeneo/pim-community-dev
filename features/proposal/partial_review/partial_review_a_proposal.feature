@@ -10,9 +10,9 @@ Feature: Partial review a proposal
       | sku    | categories |
       | jacket | jackets    |
     And the following product values:
-      | product | attribute          | value | locale | scope  |
-      | jacket  | name               | Coat  | en_US  |        |
-      | jacket  | weather_conditions | dry   |        |        |
+      | product | attribute          | value | locale | scope |
+      | jacket  | name               | Coat  | en_US  |       |
+      | jacket  | weather_conditions | dry   |        |       |
     And Mary proposed the following change to "jacket":
       | field              | value  |
       | Name               | Jacket |
@@ -70,8 +70,8 @@ Feature: Partial review a proposal
       | jacket  | Mary   | weather_conditions |        |       |
     Then the grid should contain 1 element
     And I should see the following proposals:
-      | product | author | attribute          | original | new    |
-      | jacket  | Mary   | name               | Coat     | Jacket |
+      | product | author | attribute | original | new    |
+      | jacket  | Mary   | name      | Coat     | Jacket |
     When I partially approve:
       | product | author | attribute | locale | scope |
       | jacket  | Mary   | name      | en_US  |       |
@@ -91,8 +91,8 @@ Feature: Partial review a proposal
       | jacket  | Mary   | weather_conditions |        |       |
     Then the grid should contain 1 element
     And I should see the following proposals:
-      | product | author | attribute          | original | new    |
-      | jacket  | Mary   | name               | Coat     | Jacket |
+      | product | author | attribute | original | new    |
+      | jacket  | Mary   | name      | Coat     | Jacket |
     When I click on the "Approve all" action of the row which contains "jacket"
     And I press the "Send" button in the popin
     Then the grid should contain 0 element
@@ -114,8 +114,8 @@ Feature: Partial review a proposal
       | jacket  | Mary   | weather_conditions |        |       |
     Then the grid should contain 1 element
     And I should see the following proposals:
-      | product | author | attribute          | original | new    |
-      | jacket  | Mary   | name               | Coat     | Jacket |
+      | product | author | attribute | original | new    |
+      | jacket  | Mary   | name      | Coat     | Jacket |
     And I logout
     When Mary proposed the following change to "jacket":
       | field              | value |

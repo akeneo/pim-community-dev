@@ -44,8 +44,8 @@ class ActivityManagerTestCase extends TestCase
         $application = new Application();
         $cleanCategoryRight = $application->add(new CleanCategoryAccessesCommand());
         $cleanAttributeGroupRight = $application->add(new CleanAttributeGroupAccessesCommand());
-        $cleanCategoryRight->setContainer($this->container);
-        $cleanAttributeGroupRight->setContainer($this->container);
+        $cleanCategoryRight->setContainer(static::$kernel->getContainer());
+        $cleanAttributeGroupRight->setContainer(static::$kernel->getContainer());
         $cleanCategoryRightCommand = new CommandTester($cleanCategoryRight);
         $cleanAttributeGroupRightCommand = new CommandTester($cleanAttributeGroupRight);
 
@@ -62,7 +62,7 @@ class ActivityManagerTestCase extends TestCase
      */
     protected function getDatabasePurger()
     {
-        return new DatabasePurger($this->container);
+        return new DatabasePurger(static::$kernel->getContainer());
     }
 
     /**

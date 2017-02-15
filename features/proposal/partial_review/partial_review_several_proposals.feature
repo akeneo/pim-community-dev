@@ -11,11 +11,11 @@ Feature: Partial review several proposals
       | jacket | jackets    |
       | coat   | jackets    |
     And the following product values:
-      | product | attribute          | value  | locale | scope  |
-      | jacket  | name               | Jacket | en_US  |        |
-      | jacket  | weather_conditions | wet    |        |        |
-      | coat    | name               | Caut   | en_US  |        |
-      | coat    | weather_conditions | hot    |        |        |
+      | product | attribute          | value  | locale | scope |
+      | jacket  | name               | Jacket | en_US  |       |
+      | jacket  | weather_conditions | wet    |        |       |
+      | coat    | name               | Caut   | en_US  |       |
+      | coat    | weather_conditions | hot    |        |       |
 
   Scenario: Successfully partial reject then approve all proposals
     Given Mary proposed the following change to "jacket":
@@ -40,10 +40,10 @@ Feature: Partial review several proposals
       | jacket  | Mary   | name      | en_US  |       |
     Then the grid should contain 2 elements
     And I should see the following proposals:
-      | product | author | attribute          | locale | original | new    |
-      | coat    | Mary   | name               | en_US  | Caut     | Coat   |
-      | coat    | Mary   | weather_conditions |        | Hot      | Cold   |
-      | jacket  | Mary   | weather_conditions |        | Wet      | Dry    |
+      | product | author | attribute          | locale | original | new  |
+      | coat    | Mary   | name               | en_US  | Caut     | Coat |
+      | coat    | Mary   | weather_conditions |        | Hot      | Cold |
+      | jacket  | Mary   | weather_conditions |        | Wet      | Dry  |
     When I press the "All" button
     And I press "Approve all selected" on the "Bulk Action" dropdown button
     And I press the "Send" button in the popin

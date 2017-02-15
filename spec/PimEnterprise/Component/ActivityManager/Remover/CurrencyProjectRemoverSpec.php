@@ -5,6 +5,7 @@ namespace spec\PimEnterprise\Component\ActivityManager\Remover;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
@@ -13,6 +14,7 @@ use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Remover\CurrencyProjectRemover;
 use PimEnterprise\Component\ActivityManager\Remover\ProjectRemoverInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
+use Prophecy\Argument;
 
 class CurrencyProjectRemoverSpec extends ObjectBehavior
 {
@@ -37,14 +39,18 @@ class CurrencyProjectRemoverSpec extends ObjectBehavior
         ProjectInterface $firstProject,
         ProjectInterface $secondProject,
         ChannelInterface $mobileChannel,
-        CurrencyInterface $eur,
-        CurrencyInterface $usd
+        ArrayCollection $currencies,
+        CurrencyInterface $eur
     ) {
         $projectRepository->findByChannel($mobileChannel)->willReturn([$firstProject, $secondProject]);
 
-        $mobileChannel->getCurrencies()->willReturn([$usd]);
-        $usd->getCode()->willReturn('USD');
         $eur->getCode()->willReturn('EUR');
+
+        $mobileChannel->getCurrencies()->willReturn($currencies);
+        $currencies->map(Argument::any())->willReturn($currencies);
+        $currencies->contains('USD')->willReturn(true);
+        $currencies->contains('EUR')->willReturn(false);
+
         $firstProject->getProductFilters()->willReturn([
             [
                 'field' => 'price',
