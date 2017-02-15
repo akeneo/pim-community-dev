@@ -101,9 +101,9 @@ class CategoryController
             throw new NotFoundHttpException(sprintf('Category "%s" does not exist.', $code));
         }
 
-        $categoryStandard = $this->normalizer->normalize($category, 'standard');
+        $categoryApi = $this->normalizer->normalize($category, 'external_api');
 
-        return new JsonResponse($categoryStandard);
+        return new JsonResponse($categoryApi);
     }
 
     /**
@@ -125,11 +125,11 @@ class CategoryController
 
         $categories = $this->repository->findBy([], ['root' => 'ASC', 'left' => 'ASC'], $limit, $offset);
 
-        $categoriesStandard = $this->normalizer->normalize($categories, 'external_api');
+        $categoriesApi = $this->normalizer->normalize($categories, 'external_api');
 
         //@TODO use paginate method before return results
 
-        return new JsonResponse($categoriesStandard);
+        return new JsonResponse($categoriesApi);
     }
 
     /**

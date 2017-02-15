@@ -101,9 +101,9 @@ class FamilyController
             throw new NotFoundHttpException(sprintf('Family "%s" does not exist.', $code));
         }
 
-        $familyStandard = $this->normalizer->normalize($family, 'standard');
+        $familyApi = $this->normalizer->normalize($family, 'external_api');
 
-        return new JsonResponse($familyStandard);
+        return new JsonResponse($familyApi);
     }
 
     /**
@@ -125,11 +125,11 @@ class FamilyController
 
         $families = $this->repository->findBy([], [], $limit, $offset);
 
-        $familiesStandard = $this->normalizer->normalize($families, 'external_api');
+        $familiesApi = $this->normalizer->normalize($families, 'external_api');
 
         //@TODO use paginate method before return results
 
-        return new JsonResponse($familiesStandard);
+        return new JsonResponse($familiesApi);
     }
 
     /**

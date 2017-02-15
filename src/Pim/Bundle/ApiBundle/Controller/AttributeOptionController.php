@@ -125,9 +125,9 @@ class AttributeOptionController
             );
         }
 
-        $attributeOptionStandard = $this->normalizer->normalize($attributeOption, 'standard');
+        $attributeOptionApi = $this->normalizer->normalize($attributeOption, 'external_api');
 
-        return new JsonResponse($attributeOptionStandard);
+        return new JsonResponse($attributeOptionApi);
     }
 
     /**

@@ -143,9 +143,9 @@ class ProductController
             ->setMaxResults($queryParameters['limit'])
             ->setFirstResult(($queryParameters['page'] - 1) * $queryParameters['limit']);
 
-        $standardProducts = $this->normalizer->normalize($pqb->execute(), 'external_api', $normalizerOptions);
+        $productsApi = $this->normalizer->normalize($pqb->execute(), 'external_api', $normalizerOptions);
         $paginatedProducts = $this->paginator->paginate(
-            $standardProducts,
+            $productsApi,
             array_merge($request->query->all(), $queryParameters),
             $count,
             'pim_api_product_list',
@@ -171,9 +171,9 @@ class ProductController
             throw new NotFoundHttpException(sprintf('Product "%s" does not exist.', $code));
         }
 
-        $standardizedProduct = $this->normalizer->normalize($product, 'external_api');
+        $productApi = $this->normalizer->normalize($product, 'external_api');
 
-        return new JsonResponse($standardizedProduct);
+        return new JsonResponse($productApi);
     }
 
     /**
