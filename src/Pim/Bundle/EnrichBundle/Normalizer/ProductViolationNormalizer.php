@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -16,6 +17,17 @@ class ProductViolationNormalizer implements NormalizerInterface
 {
     /** @var array */
     protected $supportedFormats = ['internal_api'];
+
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /**
+     * @param AttributeRepositoryInterface $attributeRepository
+     */
+    public function __construct(AttributeRepositoryInterface $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+    }
 
     /**
      * {@inheritdoc}
@@ -44,12 +56,19 @@ class ProductViolationNormalizer implements NormalizerInterface
                 'attribute' => $productValue->getAttribute()->getCode(),
                 'locale'    => $productValue->getLocale(),
                 'scope'     => $productValue->getScope(),
-                'message'   => $violation->getMessage()
+                'message'   => $violation->getMessage(),
+            ];
+        } elseif ('identifier' === $path) {
+            $normalizedViolation = [
+                'attribute' => $this->attributeRepository->getIdentifierCode(),
+                'locale'    => null,
+                'scope'     => null,
+                'message'   => $violation->getMessage(),
             ];
         } else {
             $normalizedViolation = [
                 'global'  => true,
-                'message' => $violation->getMessage()
+                'message' => $violation->getMessage(),
             ];
         }
 

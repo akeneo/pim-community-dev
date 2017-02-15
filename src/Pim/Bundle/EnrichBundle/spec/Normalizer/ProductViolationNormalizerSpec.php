@@ -7,10 +7,16 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValue;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 class ProductViolationNormalizerSpec extends ObjectBehavior
 {
+    function let(AttributeRepositoryInterface $attributeRepository)
+    {
+        $this->beConstructedWith($attributeRepository);
+    }
+
     function it_supports_constraint_violation(ConstraintViolationInterface $violation)
     {
         $this->supportsNormalization($violation, 'internal_api')->shouldReturn(true);
@@ -106,6 +112,24 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
             'locale'    => null,
             'scope'     => null,
             'message'   => 'The price should be above 10.'
+        ]);
+    }
+
+    function it_normalizes_violation_on_product_identifier(
+        $attributeRepository,
+        ConstraintViolationInterface $violation,
+        ProductInterface $product
+    ) {
+        $violation->getPropertyPath()->willReturn('identifier');
+        $violation->getMessage()->willReturn(' This value is already used.');
+
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
+
+        $this->normalize($violation, 'internal_api', ['product' => $product])->shouldReturn([
+            'attribute' => 'sku',
+            'locale'    => null,
+            'scope'     => null,
+            'message'   => ' This value is already used.'
         ]);
     }
 
