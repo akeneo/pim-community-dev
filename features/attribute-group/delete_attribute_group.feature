@@ -6,12 +6,12 @@ Feature: Attribute group creation
   Background:
     Given the "default" catalog configuration
     And the following attribute group:
-      | code   | label-en_US |
-      | sizes  | Sizes       |
-      | colors | Colors      |
+      | code   | label-en_US | group | type             |
+      | sizes  | Sizes       | other | pim_catalog_text |
+      | colors | Colors      | other | pim_catalog_text |
     And the following attributes:
-      | code | group  |
-      | red  | colors |
+      | code | group  | type             |
+      | red  | colors | pim_catalog_text |
     And I am logged in as "Julia"
 
   @javascript

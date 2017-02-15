@@ -6,18 +6,20 @@ Feature: Edit common localized attributes of many products at once
 
   Background:
     Given a "footwear" catalog configuration
-    And the following family:
-      | code       | attributes                                                       |
-      | high_heels | sku, name, description, price, rating, size, color, manufacturer |
     And the following attributes:
-      | code    | label  | type   | metric family | default metric unit | families       | decimals_allowed |
-      | weight  | Weight | metric | Weight        | GRAM                | boots, sandals | yes              |
-      | time    | Time   | number |               |                     | boots, sandals | yes              |
-      | date    | Date   | date   |               |                     | boots, sandals |                  |
+      | code   | label-en_US | type               | metric family | default metric unit | decimals_allowed | group |
+      | weight | Weight      | pim_catalog_metric | Weight        | GRAM                | 1                | other |
+      | time   | Time        | pim_catalog_number |               |                     | 1                | other |
+      | date   | Date        | pim_catalog_date   |               |                     |                  | other |
+    And the following family:
+      | code       | attributes                                                                                                                  |
+      | high_heels | sku,name,description,price,rating,size,color,manufacturer                                                                   |
+      | boots      | sku,name,manufacturer,description,weather_conditions,price,rating,side_view,top_view,size,color,lace_color,weight,time,date |
+      | sandals    | sku,name,manufacturer,description,price,rating,side_view,size,color,weight,time,date                                        |
     And the following products:
-      | sku            | family     |
-      | boots          | boots      |
-      | sandals        | sandals    |
+      | sku     | family  |
+      | boots   | boots   |
+      | sandals | sandals |
     And I am logged in as "Julien"
     And I am on the products page
 

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\AbstractAttributeFilter;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
@@ -70,7 +70,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         try {
             $options = $this->optionsResolver->resolve($options);
         } catch (\Exception $e) {
-            throw InvalidArgumentException::expectedFromPreviousException(
+            throw InvalidPropertyException::expectedFromPreviousException(
                 $e,
                 $attribute->getCode(),
                 static::class
@@ -154,7 +154,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         try {
             $value = $this->idsResolver->resolve($attribute->getReferenceDataName(), $value);
         } catch (\LogicException $e) {
-            throw InvalidArgumentException::validEntityCodeExpected(
+            throw InvalidPropertyException::validEntityCodeExpected(
                 $attribute->getCode(),
                 'code',
                 $e->getMessage(),

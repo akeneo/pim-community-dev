@@ -2,7 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -92,16 +93,18 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
      * @param string $type
      * @param mixed  $value
      *
+     * @throws InvalidPropertyException
+     *
      * @return mixed $value
      */
     protected function formatValues($type, $value)
     {
         if (is_array($value) && 2 !== count($value)) {
-            throw InvalidArgumentException::expected(
+            throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $type,
-                'array with 2 elements, string or \DateTime',
+                'should contain 2 strings with the format "yyyy-mm-dd"',
                 static::class,
-                print_r($value, true)
+                $value
             );
         }
 
@@ -122,7 +125,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
      * @param string $type
      * @param mixed  $value
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyException
      *
      * @return string
      */
@@ -140,9 +143,9 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
             $dateTime = \DateTime::createFromFormat(static::DATETIME_FORMAT, $value);
 
             if (!$dateTime || 0 < $dateTime->getLastErrors()['warning_count']) {
-                throw InvalidArgumentException::expected(
+                throw InvalidPropertyException::dateExpected(
                     $type,
-                    'a string with the format yyyy-mm-dd',
+                    'yyyy-mm-dd',
                     static::class,
                     $value
                 );
@@ -151,11 +154,6 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
             return $dateTime->format(static::DATETIME_FORMAT);
         }
 
-        throw InvalidArgumentException::expected(
-            $type,
-            'array with 2 elements, string or \DateTime',
-            static::class,
-            print_r($value, true)
-        );
+        throw InvalidPropertyException::dateExpected($type, 'yyyy-mm-dd', static::class, $value);
     }
 }

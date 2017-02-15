@@ -4,8 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Bundle\CatalogBundle\ProductQueryUtility;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -58,7 +59,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'metric');
+        $this->checkLocaleAndScope($attribute, $locale, $scope);
 
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($attribute, $value);
@@ -116,46 +117,49 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
      *
      * @param AttributeInterface $attribute
      * @param mixed              $data
+     *
+     * @throws InvalidPropertyTypeException
+     * @throws InvalidPropertyException
      */
     protected function checkValue(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected($attribute->getCode(), static::class, gettype($data));
+            throw InvalidPropertyTypeException::arrayExpected($attribute->getCode(), static::class, $data);
         }
 
         if (!array_key_exists('amount', $data)) {
-            throw InvalidArgumentException::arrayKeyExpected(
+            throw InvalidPropertyTypeException::arrayKeyExpected(
                 $attribute->getCode(),
                 'amount',
                 static::class,
-                print_r($data, true)
+                $data
             );
         }
 
         if (!array_key_exists('unit', $data)) {
-            throw InvalidArgumentException::arrayKeyExpected(
+            throw InvalidPropertyTypeException::arrayKeyExpected(
                 $attribute->getCode(),
                 'unit',
                 static::class,
-                print_r($data, true)
+                $data
             );
         }
 
         if (null !== $data['amount'] && !is_numeric($data['amount'])) {
-            throw InvalidArgumentException::arrayNumericKeyExpected(
+            throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $attribute->getCode(),
-                'amount',
+                sprintf('key "amount" has to be a numeric, "%s" given', gettype($data['amount'])),
                 static::class,
-                gettype($data['amount'])
+                $data
             );
         }
 
         if (!is_string($data['unit'])) {
-            throw InvalidArgumentException::arrayStringKeyExpected(
+            throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $attribute->getCode(),
-                'unit',
+                sprintf('key "unit" has to be a string, "%s" given', gettype($data['unit'])),
                 static::class,
-                gettype($data['unit'])
+                $data
             );
         }
 
@@ -163,7 +167,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $data['unit'],
             $this->measureManager->getUnitSymbolsForFamily($attribute->getMetricFamily())
         )) {
-            throw InvalidArgumentException::arrayInvalidKey(
+            throw InvalidPropertyException::validEntityCodeExpected(
                 $attribute->getCode(),
                 'unit',
                 sprintf(

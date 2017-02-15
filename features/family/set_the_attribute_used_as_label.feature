@@ -6,15 +6,15 @@ Feature: Set the attribute used as label
 
   Background:
     Given the "default" catalog configuration
-    And the following family:
-      | code |
-      | Bags |
     And the following attributes:
-      | label       | families | type     |
-      | Brand       | Bags     | text     |
-      | Model       | Bags     | text     |
-      | Size        | Bags     | number   |
-      | Description | Bags     | textarea |
+      | label-en_US | type                 | group | code        |
+      | Brand       | pim_catalog_text     | other | brand       |
+      | Model       | pim_catalog_text     | other | model       |
+      | Size        | pim_catalog_number   | other | size        |
+      | Description | pim_catalog_textarea | other | description |
+    And the following family:
+      | code | attributes                   |
+      | Bags | brand,model,size,description |
     And I am logged in as "Peter"
 
   Scenario: Successfully set a family attribute as the family label

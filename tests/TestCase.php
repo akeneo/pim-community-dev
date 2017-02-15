@@ -3,8 +3,6 @@
 namespace Akeneo\Test\Integration;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Console\Application;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -15,9 +13,6 @@ abstract class TestCase extends KernelTestCase
 {
     /** @var int Count of test inside the same test class */
     protected static $count = 0;
-
-    /** @var ContainerInterface */
-    protected $container;
 
     /**
      * {@inheritdoc}
@@ -37,9 +32,8 @@ abstract class TestCase extends KernelTestCase
      */
     protected function setUp()
     {
-        static::bootKernel();
+        static::bootKernel(['debug' => false]);
 
-        $this->container = static::$kernel->getContainer();
         $configuration = $this->getConfiguration();
 
         self::$count++;
@@ -60,7 +54,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function get($service)
     {
-        return $this->container->get($service);
+        return static::$kernel->getContainer()->get($service);
     }
 
     /**
@@ -70,7 +64,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function getParameter($service)
     {
-        return $this->container->getParameter($service);
+        return static::$kernel->getContainer()->getParameter($service);
     }
 
     /**
@@ -89,7 +83,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function getDatabasePurger()
     {
-        return new DatabasePurger($this->container);
+        return new DatabasePurger(static::$kernel->getContainer());
     }
 
     /**
@@ -99,7 +93,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function getFixturesLoader(Configuration $configuration)
     {
-        return new FixturesLoader($this->container, $configuration);
+        return new FixturesLoader(static::$kernel->getContainer(), $configuration);
     }
 
     /**
@@ -107,7 +101,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function getConnectionCloser()
     {
-        return new ConnectionCloser($this->container);
+        return new ConnectionCloser(static::$kernel->getContainer());
     }
 
     /**

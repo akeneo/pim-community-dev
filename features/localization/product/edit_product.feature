@@ -7,20 +7,20 @@ Feature: Edit a product with localized attributes
   Background:
     Given the "default" catalog configuration
     And the following attribute groups:
-      | code    | label-en_US |
-      | general | General     |
+      | code    | label-en_US | group | type             |
+      | general | General     | other | pim_catalog_text |
     And the following attributes:
-      | code   | label-fr_FR | type   | scopable | unique | negative_allowed | decimals_allowed | group | metric_family | default_metric_unit |
-      | number | Nombre      | number | no       | no     | yes              | yes              | other |               |                     |
-      | weight | Poids       | metric | no       | no     | yes              | yes              | other | Weight        | GRAM                |
-      | price  | Prix        | prices | no       | no     | no               | yes              | other |               |                     |
-      | date   | Date        | date   | no       | no     | no               | no               | other |               |                     |
+      | code   | label-fr_FR | type                         | scopable | unique | negative_allowed | decimals_allowed | group | metric_family | default_metric_unit |
+      | number | Nombre      | pim_catalog_number           | 0        | 0      | 1                | 1                | other |               |                     |
+      | weight | Poids       | pim_catalog_metric           | 0        | 0      | 1                | 1                | other | Weight        | GRAM                |
+      | price  | Prix        | pim_catalog_price_collection | 0        | 0      | 0                | 1                | other |               |                     |
+      | date   | Date        | pim_catalog_date             | 0        | 0      | 0                | 0                | other |               |                     |
     And the following family:
-      | code | label-en_US | attributes                       |
-      | baz  | Baz         | sku, number, weight, price, date |
+      | code | label-en_US | attributes                   |
+      | baz  | Baz         | sku,number,weight,price,date |
     And the following products:
-      | sku | family | number  | weight        | price-EUR | date       |
-      | foo | baz    | -12.5   | 150.8675 GRAM | 1000.50   | 2015-05-28 |
+      | sku | family | number | weight        | price-EUR | date       |
+      | foo | baz    | -12.5  | 150.8675 GRAM | 1000.50   | 2015-05-28 |
     And I am logged in as "Julien"
 
   Scenario: Successfully view and edit localized number

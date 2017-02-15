@@ -7,20 +7,20 @@ Feature: Proper completeness display for locale specific attributes
   Background:
     Given the "apparel" catalog configuration
     And the following attributes:
-      | code                            | type | localizable | available_locales | label-en_US     |
-      | locale_specific                 | text | yes         | de_DE,fr_FR,en_US | Locale Specific |
-      | locale_specific_not_localizable | text | no          | de_DE,fr_FR       |                 |
+      | code                            | type             | localizable | available_locales | label-en_US     | group |
+      | locale_specific                 | pim_catalog_text | 1           | de_DE,fr_FR,en_US | Locale Specific | other |
+      | locale_specific_not_localizable | pim_catalog_text | 0           | de_DE,fr_FR       |                 | other |
     And the following family:
-      | code | label-en_US | attributes                                                 | requirements-ecommerce                                |
-      | baz  | Baz         | sku, locale_specific, name                                 | locale_specific, name                                 |
-      | biz  | Biz         | sku, locale_specific_not_localizable, name                 | locale_specific_not_localizable, name                 |
-      | bar  | Bar         | sku, locale_specific_not_localizable, name, description    | locale_specific_not_localizable, name, description    |
-      | bat  | Bat         | sku, name, description, thumbnail, legend, locale_specific | name, description, thumbnail, legend, locale_specific |
+      | code | label-en_US | attributes                                            | requirements-ecommerce                            |
+      | baz  | Baz         | sku,locale_specific,name                              | locale_specific,name                              |
+      | biz  | Biz         | sku,locale_specific_not_localizable,name              | locale_specific_not_localizable,name              |
+      | bar  | Bar         | sku,locale_specific_not_localizable,name,description  | locale_specific_not_localizable,name,description  |
+      | bat  | Bat         | sku,name,description,thumbnail,legend,locale_specific | name,description,thumbnail,legend,locale_specific |
     And the following products:
-      | sku    | family |
-      | foo    | baz    |
-      | bar    | biz    |
-      | baz    | bat    |
+      | sku | family |
+      | foo | baz    |
+      | bar | biz    |
+      | baz | bat    |
     And I am logged in as "Mary"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4771

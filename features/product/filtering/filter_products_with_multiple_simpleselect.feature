@@ -11,9 +11,9 @@ Feature: Filter products with multiples simpleselect filters
       | furniture |
       | library   |
     And the following attributes:
-      | code    | label   | type         | useable_as_grid_filter |
-      | color   | Color   | simpleselect | yes                    |
-      | company | Company | simpleselect | yes                    |
+      | code    | label-en_US | type                     | useable_as_grid_filter | group |
+      | color   | Color       | pim_catalog_simpleselect | 1                      | other |
+      | company | Company     | pim_catalog_simpleselect | 1                      | other |
     And the following "color" attribute options: Black and Green
     And the following "company" attribute options: Debian and Canonical and Suze
     And the following products:

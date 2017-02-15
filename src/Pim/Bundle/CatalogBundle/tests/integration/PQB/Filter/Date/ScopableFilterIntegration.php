@@ -118,8 +118,8 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_scopable_date" expects valid data, scope and locale. Attribute "a_scopable_date" expects a scope, none given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Attribute "a_scopable_date" expects a scope, none given.
      */
     public function testErrorMetricScopable()
     {
@@ -127,8 +127,8 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_scopable_date" expects valid data, scope and locale. Attribute "a_scopable_date" expects an existing scope, "NOT_FOUND" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Attribute "a_scopable_date" expects an existing scope, "NOT_FOUND" given.
      */
     public function testScopeNotFound()
     {

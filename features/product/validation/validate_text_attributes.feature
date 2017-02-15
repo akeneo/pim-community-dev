@@ -7,17 +7,17 @@ Feature: Validate text attributes of a product
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | code                | label-en_US         | type | scopable | unique | max_characters | validation_rule | validation_regexp |
-      | barcode             | Barcode             | text | no       | yes    | 8              | regexp          | /^0\d*$/          |
-      | email               | Email               | text | no       | yes    |                | email           |                   |
-      | link                | Link                | text | no       | no     |                | url             |                   |
-      | manufacturer_number | Manufacturer number | text | yes      | no     | 8              | regexp          | /^0\d*$/          |
-      | recipient           | Recipient           | text | yes      | no     |                | email           |                   |
-      | references          | References          | text | yes      | no     |                | url             |                   |
-      | desc                | Description         | text | no       | no     |                |                 |                   |
+      | code                | label-en_US         | type             | scopable | unique | max_characters | validation_rule | validation_regexp | group |
+      | barcode             | Barcode             | pim_catalog_text | 0        | 1      | 8              | regexp          | /^0\d*$/          | other |
+      | email               | Email               | pim_catalog_text | 0        | 1      |                | email           |                   | other |
+      | link                | Link                | pim_catalog_text | 0        | 0      |                | url             |                   | other |
+      | manufacturer_number | Manufacturer number | pim_catalog_text | 1        | 0      | 8              | regexp          | /^0\d*$/          | other |
+      | recipient           | Recipient           | pim_catalog_text | 1        | 0      |                | email           |                   | other |
+      | references          | References          | pim_catalog_text | 1        | 0      |                | url             |                   | other |
+      | desc                | Description         | pim_catalog_text | 0        | 0      |                |                 |                   | other |
     And the following family:
-      | code | label-en_US | attributes                                                                  | requirements-ecommerce | requirements-mobile |
-      | baz  | Baz         | sku, barcode, email, link, manufacturer_number, recipient, references, desc | sku                    | sku                 |
+      | code | label-en_US | attributes                                                           | requirements-ecommerce | requirements-mobile |
+      | baz  | Baz         | sku,barcode,email,link,manufacturer_number,recipient,references,desc | sku                    | sku                 |
     And the following products:
       | sku | family |
       | foo | baz    |

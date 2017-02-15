@@ -244,7 +244,10 @@ define(
                             .then(this.postFetchDatagridView.bind(this))
                             .then(function (view) {
                                 deferred.resolve(view);
-                            });
+                            })
+                            .fail(function () {
+                                this.selectView(userDefaultView ? userDefaultView : this.getDefaultView());
+                            }.bind(this));
                     } else {
                         // Other, set the default view
                         deferred.resolve(this.getDefaultView());

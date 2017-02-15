@@ -6,8 +6,8 @@ Feature: Update text fields
   Scenario: Successfully update a text field
     Given a "apparel" catalog configuration
     And the following products:
-      | sku  | name-en_US   |
-      | AKN  | Name to copy |
+      | sku | name-en_US   |
+      | AKN | Name to copy |
     Then I should get the following products after apply the following updater to it:
       | product | actions                                                                                                           | result                                                                               |
       | AKN     | [{"type": "copy_data", "from_field": "name", "to_field": "legend", "from_locale": "en_US", "to_locale": "en_US"}] | {"values": {"legend": [{"locale": "en_US", "scope": null, "data": "Name to copy"}]}} |

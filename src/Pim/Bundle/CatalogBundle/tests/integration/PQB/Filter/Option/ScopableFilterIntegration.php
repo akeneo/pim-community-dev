@@ -87,8 +87,8 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_select_scopable_simple_select" expects valid data, scope and locale. Attribute "a_select_scopable_simple_select" expects a scope, none given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Attribute "a_select_scopable_simple_select" expects a scope, none given.
      */
     public function testErrorOptionScopable()
     {
@@ -96,8 +96,8 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "a_select_scopable_simple_select" expects valid data, scope and locale. Attribute "a_select_scopable_simple_select" expects an existing scope, "NOT_FOUND" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Attribute "a_select_scopable_simple_select" expects an existing scope, "NOT_FOUND" given.
      */
     public function testScopeNotFound()
     {

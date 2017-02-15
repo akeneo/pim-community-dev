@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
-use Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException;
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -23,7 +23,7 @@ interface FieldCopierInterface extends CopierInterface
      * @param string           $toField
      * @param array            $options
      *
-     * @throws ObjectUpdaterException
+     * @throws PropertyException
      */
     public function copyFieldData(
         ProductInterface $fromProduct,

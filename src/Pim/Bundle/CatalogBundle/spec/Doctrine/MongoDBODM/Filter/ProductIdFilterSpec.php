@@ -2,9 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
@@ -32,11 +33,15 @@ class ProductIdFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_a_numeric_or_an_array()
     {
-        $this->shouldThrow(InvalidArgumentException::expected(
-            'id',
-            'array or string value',
-            'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\ProductIdFilter',
-            1234))
+        $this->shouldThrow(
+            new InvalidPropertyTypeException(
+                'id',
+                1234,
+                'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\ProductIdFilter',
+                'Property "id" expects array or string value, "integer" given.',
+                100
+            )
+        )
             ->during('addFieldFilter', ['id', '=', 1234]);
     }
 

@@ -63,8 +63,8 @@ class GroupsFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Attribute or field "groups" expects an array as data, "string" given.
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "groups" expects an array as data, "string" given.
      */
     public function testErrorDataIsMalformed()
     {

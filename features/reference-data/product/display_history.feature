@@ -7,9 +7,9 @@ Feature: Display the product history
   Background:
     Given a "default" catalog configuration
     And the following attributes:
-      | code    | type                        | reference_data_name |
-      | color   | reference_data_simpleselect | color               |
-      | fabrics | reference_data_multiselect  | fabrics             |
+      | code    | type                            | reference_data_name | group |
+      | color   | pim_reference_data_simpleselect | color               | other |
+      | fabrics | pim_reference_data_multiselect  | fabrics             | other |
     And the following "color" attribute reference data: Red, Green, Blue
     And the following "fabrics" attribute reference data: Cashmerewool, Neoprene and Silk
     And I am logged in as "Julia"

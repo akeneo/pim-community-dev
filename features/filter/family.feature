@@ -13,7 +13,7 @@ Feature: Filter on family
       | BOOTBL  |          |
       | BOOTRXS |          |
     Then I should get the following results for the given filters:
-      | filter                                                                            | result                            |
+      | filter                                                                       | result                            |
       | [{"field":"family", "operator":"IN",        "value": ["boots", "heels"]}]    | ["BOOTBXS", "HEELXXL"]            |
       | [{"field":"family", "operator":"NOT IN",    "value": ["heels", "sneakers"]}] | ["BOOTBXS", "BOOTBL", "BOOTRXS"]  |
       | [{"field":"family", "operator":"EMPTY",     "value": null}]                  | ["BOOTBL", "BOOTRXS"]             |
