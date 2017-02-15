@@ -19,6 +19,7 @@ services:
             - '@pim_catalog.saver.category'
             - '@router'
             - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#category'
+            - '@pim_catalog.query.category_query_builder_factory'
 
     pim_api.controller.rest.family:
         class: '%pim_api.controller.rest.family.class%'
