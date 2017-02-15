@@ -101,9 +101,9 @@ class AttributeController
             throw new NotFoundHttpException(sprintf('Attribute "%s" does not exist.', $code));
         }
 
-        $attributeStandard = $this->normalizer->normalize($attribute, 'standard');
+        $attributeApi = $this->normalizer->normalize($attribute, 'external_api');
 
-        return new JsonResponse($attributeStandard);
+        return new JsonResponse($attributeApi);
     }
 
     /**
@@ -125,11 +125,11 @@ class AttributeController
 
         $attributes = $this->repository->findBy([], [], $limit, $offset);
 
-        $attributesStandard = $this->normalizer->normalize($attributes, 'external_api');
+        $attributesApi = $this->normalizer->normalize($attributes, 'external_api');
 
         //@TODO use paginate method before return results
 
-        return new JsonResponse($attributesStandard);
+        return new JsonResponse($attributesApi);
     }
 
     /**
