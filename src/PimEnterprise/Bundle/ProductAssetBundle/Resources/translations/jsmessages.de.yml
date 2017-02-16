@@ -25,21 +25,25 @@ pimee_product_asset:
   mass_upload:
     menu: Assets hochladen
     btn:
+      remove_all_files: Alle Dateien entfernen
       delete: Löschen
       import: Import
       upload: Hochladen
     success:
       new: Ein neues Asset wird erstellt
+      imported: Dateien importiert für Verarbeitung von Assets
       canceled: Upload erfolgreich abgebrochen
       deleted: Hochgeladene Datei erfolgreich gelöscht
     error:
       list: Bereits hochgeladene Dateien können nicht gelesen werden
       upload: Während des Hochladens ist ein Fehler aufgetreten
       delete: Datei kann nicht vom Server gelöscht werden
+      import: Beim Import ist ein Fehler aufgetreten
       filename: Ungültiger Dateiname für Asset
       code: Ungültiges Code-Format für Asset
       locale: Ein Asset existiert, ist aber nicht lokalisierbar
       invalid_locale: Das Gebietsschema ist deaktiviert oder ungültig
+      exists: Eine Datei mit dem gleichen Namen wurde bereits importiert
       conflicts: Konflikt der Dateinamen
     grid:
       medias: Medien
@@ -57,6 +61,14 @@ pimee_product_asset:
       uploading: Wird hochgeladen
       error: Fehler
       success: Abgeschlossen
+    drag_and_drop: Drag & Drop Ihrer Assetss oder hier klicken
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: Sind Sie sicher, dass Sie die ausgewählten Assets löschen möchten?
+        success: Ausgewählte Assets erfolgreich gelöscht.
+        error: Es ist ein Fehler beim Löschen der ausgewählten Assets aufgetreten, bitte versuchen Sie es erneut.
+        empty_selection: Keine Assets ausgewählt
 pim_dashboard:
   widget:
     last_operations:

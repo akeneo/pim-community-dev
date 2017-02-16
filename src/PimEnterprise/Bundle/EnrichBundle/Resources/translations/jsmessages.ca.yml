@@ -20,7 +20,7 @@ pimee_enrich:
         published: Publicat
         revert: Restaurar
       smart_attribute:
-        come_from: 'Aquest atribut pot ser actualitzat per una regla:'
+        come_from: "Aquest atribut pot ser actualitzat per una regla:"
       btn:
         publish: Publicar
         publish_this_version: Publicar aquesta versió
@@ -69,7 +69,7 @@ pimee_enrich:
         source:
           working_copy: Còpia en procés
           draft: El meu projecte
-          draft_of: projecte de {{ author }}
+          draft_of: "projecte de {{ author }}"
     product_draft:
       info:
         update_successful: El projecte de producte s'ha desat correctament

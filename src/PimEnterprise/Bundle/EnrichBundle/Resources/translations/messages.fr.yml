@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: Locale %locale.code% | Modifier
+  edit: "Locale %locale.code% | Modifier"
 Permissions: Permissions
 pane.accordion.permissions: Permissions
 attribute group.permissions:
@@ -153,7 +153,7 @@ batch_jobs:
     label: Mettre à jour les attributs communs avec vérification des permissions et application des règles
     perform.label: Modifier les attributs communs
     execute_rules.label: Exécution des règles
-    clean.label: Nettoyage des fichiers temporaires
+    cleaner.label: Nettoyage des fichiers temporaires
   add_to_variant_group_with_rules:
     label: Ajouter des produits au groupe de variantes avec application de règles
     perform.label: Ajouter des produits à un groupe de variantes

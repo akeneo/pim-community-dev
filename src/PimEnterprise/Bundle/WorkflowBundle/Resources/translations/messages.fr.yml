@@ -111,8 +111,8 @@ pim_title:
     index: Produits publiés
     view: Produits publiés %product.sku% | Voir
   product:
-    dispatch: Produits %product.sku%
-    show: Produits %product.sku% | Voir
+    dispatch: "Produits %product.sku%"
+    show: "Produits %product.sku% | Voir"
   proposal:
     index: Propositions
 btn.editworkingcopy: Editer la copie de travail

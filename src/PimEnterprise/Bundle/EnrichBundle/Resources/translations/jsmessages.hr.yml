@@ -20,7 +20,7 @@ pimee_enrich:
         published: Objavljeno
         revert: Vrati
       smart_attribute:
-        come_from: 'Ovaj atribut se može ažurirati prema pravilu:'
+        come_from: "Ovaj atribut se može ažurirati prema pravilu:"
       btn:
         publish: Objavi
         publish_this_version: Objavi ovu verziju
@@ -69,7 +69,7 @@ pimee_enrich:
         source:
           working_copy: Radna kopija
           draft: Moj nacrt
-          draft_of: Nacrt od {{ author }}
+          draft_of: "Nacrt od {{ author }}"
     product_draft:
       info:
         update_successful: Nacrt proizvoda je uspješno spremljen

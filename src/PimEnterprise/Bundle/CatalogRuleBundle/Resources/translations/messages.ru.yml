@@ -19,35 +19,35 @@ pimee_catalog_rule:
         delete: Удалить выбранные правила
   actions:
     type:
-      copy: Тогда %from_field% копируется в %to_field%
-      copy_value: Тогда %from_field% копируется в %to_field%
-      set: Тогда %value% устанавливается в %field%
-      set_value: Тогда %value% устанавливается в %field%
-      add: Тогда %value% добавляется к %field%
-      remove: Тогда %value% удаляется из %field%
+      "copy": Тогда %from_field% копируется в %to_field%
+      "copy_value": Тогда %from_field% копируется в %to_field%
+      "set": Тогда %value% устанавливается в %field%
+      "set_value": Тогда %value% устанавливается в %field%
+      "add": Тогда %value% добавляется к %field%
+      "remove": Тогда %value% удаляется из %field%
   condition:
     label: Если %field% %operator% %value%
     operators:
-      STARTS WITH: начинается с
-      ENDS WITH: заканчивается на
-      CONTAINS: содержит
-      DOES NOT CONTAIN: не содержит
-      EMPTY: пусто
-      NOT EMPTY: не является пустым
-      IN: в списке
-      NOT IN: не в списке
-      IN CHILDREN: среди детей
-      NOT IN CHILDREN: не среди детей
-      UNCLASSIFIED: неклассифицирован
-      IN OR UNCLASSIFIED: неклассифицирован или в списке
-      BETWEEN: между
-      NOT BETWEEN: не между
-      =: равен
-      !=: не равно
-      >: больше
-      >=: равно или больше
-      <: менее чем
-      <=: равно или меньше
+      "STARTS WITH": начинается с
+      "ENDS WITH": заканчивается на
+      "CONTAINS": содержит
+      "DOES NOT CONTAIN": не содержит
+      "EMPTY": пусто
+      "NOT EMPTY": не является пустым
+      "IN": в списке
+      "NOT IN": не в списке
+      "IN CHILDREN": среди детей
+      "NOT IN CHILDREN": не среди детей
+      "UNCLASSIFIED": неклассифицирован
+      "IN OR UNCLASSIFIED": неклассифицирован или в списке
+      "BETWEEN": между
+      "NOT BETWEEN": не между
+      "=": равен
+      "!=": не равно
+      ">": больше
+      ">=": равно или больше
+      "<": менее чем
+      "<=": равно или меньше
   acl_group:
     rule: Правила
   acl:

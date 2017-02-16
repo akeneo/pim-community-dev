@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: Lokacije %locale.code% | Uredi
+  edit: "Lokacije %locale.code% | Uredi"
 Permissions: Dozvole
 pane.accordion.permissions: Dozvole
 attribute group.permissions:
@@ -153,7 +153,7 @@ batch_jobs:
     label: Promijeni vrijednosti proizvoda sa provjerom dozvola i pravilima aplikacije
     perform.label: Uredi uobičajene atribute
     execute_rules.label: Izvođenje pravila
-    clean.label: Očisti privremene datoteke
+    cleaner.label: Očisti privremene datoteke
   add_to_variant_group_with_rules:
     label: Dodaj proizvode u varijantu grupe sa pravilima aplikacije
     perform.label: Dodaj proizvod u varijantu grupe

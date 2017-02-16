@@ -33,7 +33,7 @@ pimee_product_asset:
       code: Code
       description: Beschreibung
       end_of_use: Gültig bis  
-      reference: Verwendungszweck
+      reference: Referenz
       filename: Dateiname
       width: Breite
       height: Höhe
@@ -140,15 +140,39 @@ pimee_product_asset:
   mass_edit_action:
     asset:
       page_title: Assets
+      page_subtitle: Massenbearbeitung (1 Asset)|Massenbearbeitung (%count% Assets)
+      confirm: Sie sind dabei ein Asset mit den folgenden Informationen zu aktualisieren, bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Assets mit den folgenden Informationen zu aktualisieren, bitte bestätigten Sie den Vorgang.
       steps:
+        first: Asset auswählen
         second: Konfigurieren
         third: Bestätigen
+pim_enrich:
+  mass_edit_action:
+    asset-classify-move:
+      label: Assets in Kategorien verschieben
+      description: Die Assets werden folgenden Kategorien zugeordnet, die bestehende Zuordnung wird verworfen
+      success_flash: Asset(s) wurden in die ausgewählten Kategorien verschoben
+      launched_flash: Die Massenbearbeitung "in Kategorien verschieben" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
+    add-tags-to-assets:
+      label: Stichworte zu Assets hinzufügen
+      description: Stichworte werden Assets hinzugefügt. Stichworte die noch nicht vorhanden sind, werden erstellt.
+      success_flash: Stichwort(e) wurden Asset(s) hinzugefügt
+      launched_flash: Die Massenbearbeitung "Stichworte zu Asset(s) hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
+      message.error: Das angegebene Stichwort existiert nicht
+pim:
+  grid:
+    mass_action:
+      mass_classify_assets: Klassifizieren
+      add_tags_to_assets: Stichworte hinzufügen
+      delete_assets: Assets löschen
 btn.create.asset: Asset erstellen
 btn.drag_or_upload: Drag & Drop einer Datei oder hier klicken
 job_execution.summary:
   variations_not_generated: Variationen nicht generiert
   pimee_product_asset.mass_upload.new: Asset aus Datei erzeugt
   pimee_product_asset.mass_upload.updated: Asset aktualisiert
+  error: Fehler beim Verarbeiten der Asset-Datei
+  skipped_assets: Übersprungene Assets
 assets_mass_upload.steps:
   asset_mass_upload.title: Massenupload von Assets
 import_asset.steps.channel_configuration_processor.title: Verarbeite Ausgabekanalkonfigurationen
@@ -165,16 +189,54 @@ batch_jobs:
     label: Assetausgabekanalkonfiguration-Export in Yaml
     export.label: Assetausgabekanalkonfiguration-Export in Yaml
   csv_asset_import:
+    label: Asset-Import aus CSV-Datei
     validation.label: Dateivalidierung
+    import_tags.label: Stichworte-Import aus CSV-Datei
+    import_asset.label: Asset-Import aus CSV-Datei
+  csv_asset_export:
+    label: Asset-Export in CSV-Datei
+    export.label: Asset-Export in CSV-Datei
+  csv_asset_variation_export:
+    label: Assetvariationen-Export in CSV-Datei
+    export.label: Assetvariationen-Export in CSV-Datei
   csv_tag_import:
+    label: Stichworte-Import aus CSV-Datei
     validation.label: Dateivalidierung
+    import.label: Stichworte-Import aus CSV-Datei
   csv_asset_category_import:
+    label: Assetkategorie-Import aus CSV-Datei
     validation.label: Dateivalidierung
+    import_asset_category.label: Assetkategorie-Import aus CSV-Datei
   csv_asset_configuration_import:
+    label: Asset-Ausgabekanal-Konfigurations-Import aus CSV-Datei
     validation.label: Dateivalidierung
+    import_asset.label: Asset-Ausgabekanal-Konfigurations-Import aus CSV-Datei
+  csv_asset_category_export:
+    label: Assetkategorie-Export in CSV-Datei
+    export.label: Assetkategorie-Export in CSV-Datei
   xlsx_tag_import:
+    label: Stichworte-Import aus XLSX-Datei
     validation.label: Dateivalidierung
+    import.label: Stichworte-Import aus XLSX-Datei
   xlsx_asset_import:
+    label: Asset-Import aus XLSX-Datei
     validation.label: Dateivalidierung
+    import_tags.label: Stichworte-Import aus XLSX-Datei
+    import_asset.label: Asset-Import aus XLSX-Datei
   xlsx_asset_category_import:
+    label: Assetkategorie-Import aus XLSX-Datei
     validation.label: Dateivalidierung
+    import_asset_category.label: Assetkategorie-Import aus XLSX-Datei
+  xlsx_asset_export:
+    label: Asset-Export in XLSX-Datei
+    export.label: Asset-Export in XLSX-Datei
+  xlsx_asset_category_export:
+    label: Assetkategorie-Export in XLSX-Datei
+    export.label: Assetkategorie-Export in XLSX-Datei
+  xlsx_asset_variation_export:
+    label: Assetkategorie-Export in XLSX-Datei
+    export.label: Assetkategorie-Export in XLSX-Datei
+  classify_assets:
+    perform.label: Assets in Kategorien verschieben
+  add_tags_to_assets:
+    perform.label: Stichworte zu Assets hinzufügen

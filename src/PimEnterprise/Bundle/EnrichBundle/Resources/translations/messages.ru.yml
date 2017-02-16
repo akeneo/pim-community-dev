@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: Локали %locale.code% | Изменить
+  edit: "Локали %locale.code% | Изменить"
 Permissions: Права доступа
 pane.accordion.permissions: Права доступа
 attribute group.permissions:
@@ -153,7 +153,7 @@ batch_jobs:
     label: Редактировать общие атрибуты с проверкой прав доступа & применением правил
     perform.label: Изменить общие атрибуты
     execute_rules.label: Выполнение правил
-    clean.label: Очистить временные файлы
+    cleaner.label: Очистить временные файлы
   add_to_variant_group_with_rules:
     label: Добавить продукты в группу вариантов с применением правил
     perform.label: Добавить продукты в группу вариантов
