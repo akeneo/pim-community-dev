@@ -1,0 +1,14 @@
+pimee_catalog_rule:
+  attribute:
+    list:
+      code.label: Codi
+      condition.label: Condició
+      action.label: Acció
+      no_rule_yet.label: Cap regla de moment
+  rule:
+    condition:
+      if.label: si
+    action:
+      then.label: llavors
+      set_value.label: es troba en
+      copy_value.label: es copia en

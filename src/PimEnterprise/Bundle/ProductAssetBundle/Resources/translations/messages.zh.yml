@@ -1,0 +1,17 @@
+pimee_product_asset:
+  enrich_asset:
+    button:
+      delete: 删除
+    view:
+      code: 代码
+  popin.create:
+    is_localized: 可本地化
+  code:
+    label: 代码
+  status:
+    label: 状态
+  createdAt:
+    label: 创建于
+  tabs:
+    properties.title: 属性
+    categories.title: 分类

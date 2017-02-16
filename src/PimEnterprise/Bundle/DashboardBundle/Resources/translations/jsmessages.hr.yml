@@ -2,3 +2,8 @@ pimee_dashboard:
   widget:
     product_drafts:
       date: Datum
+      author: Autor
+      product: Proizvod
+      review: Recenzija
+      empty: Nema prijedloga za recenziju
+      view_all: Pogledaj sve

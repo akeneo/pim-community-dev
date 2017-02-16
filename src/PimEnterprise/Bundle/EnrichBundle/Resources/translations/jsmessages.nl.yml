@@ -1,0 +1,66 @@
+View the product: Bekijk het product
+pimee_enrich.product_history.action.revert: Terugkeren naar deze versie
+permission-changes:
+  category:
+    grant: De groep <strong>{{ group }}</strong> zal <strong>{{ permission }} worden</strong> in deze categorie
+    revoke: De groep <strong>{{ group }}</strong> zal <strong>niet {{ permission }} worden</strong> in deze categorie
+  locale:
+    grant: De groep <strong>{{ group }}</strong> zal <strong>{{ permission }} worden</strong> in deze vertaling
+    revoke: De groep <strong>{{ group }}</strong> zal <strong>niet {{ permission }} worden</strong> in deze vertaling
+  attribute group:
+    grant: De groep <strong>{{ group }}</strong> zal <strong>{{ permission }} worden</strong> in deze attribuutgroep
+    revoke: De groep <strong>{{ group }}</strong> zal <strong>niet {{ permission }} worden</strong> in deze attribuutgroep
+  job profile:
+    grant: De groep <strong>{{ group }}</strong> zal <strong>{{ permission }} worden</strong>
+    revoke: De groep <strong>{{ group }}</strong> zal <strong>niet {{ permission }} worden</strong>
+pimee_enrich:
+  entity:
+    product:
+      history:
+        published: Gepubliceerd
+        revert: Herstel
+      smart_attribute:
+        come_from: "Dit attribuut kan geüpdatet worden door een regel:"
+      btn:
+        publish: Publiceren
+        publish_this_version: Publiceer deze versie
+        unpublish: Depubliceer
+        save_draft: Concept opslaan
+      flash:
+        product_unpublished: Publicatie van product succesvol ongedaan gemaakt
+        product_published: Product succesvol gepubliceerd
+        product_not_published: Publicatie van dit product mislukt
+        product_not_unpublished: Ongedaan maken van publicatie mislukt
+        product_reverted: Product succesvol hersteld
+      meta:
+        published: Gepubliceerde versie
+        owner_groups: Eigenaar groepen
+        draft:
+          in_progress: In uitvoering
+          sent_for_approval: Wachtend op goedkeuring
+          working_copy: Werkkopie
+      tab:
+        proposals:
+          title: Voorstellen
+          messages:
+            approve:
+              error:
+                The proposal can't be applied due to the following error:
+                  - fout
+      confirmation:
+        revert:
+          title: Herstel bevestiging
+          content: Weet u zeker dat u het product wilt herstellen naar deze versie?
+        publish:
+          title: Publiceer dit product
+          content: Weet u zeker dat u dit product wilt publiceren?
+        unpublish:
+          title: Maak publicatie van dit product ongedaan
+          content: Weet u zeker dat u de publicatie van dit product ongedaan wilt maken?
+      copy:
+        source:
+          working_copy: Werkkopie
+    product_draft:
+      btn:
+        send_for_approval: Verzenden voor goedkeuring
+        sent_for_approval: Verzonden voor goedkeuring

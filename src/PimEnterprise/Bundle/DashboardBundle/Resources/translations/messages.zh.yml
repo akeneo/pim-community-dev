@@ -1,0 +1,7 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: 建议审查
+      date: 日期
+      author: 作者
+      product: 产品

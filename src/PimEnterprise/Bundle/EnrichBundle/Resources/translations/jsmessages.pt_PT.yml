@@ -1,0 +1,40 @@
+View the product: Exibir o produto
+pimee_enrich.product_history.action.revert: Reverter para esta versão
+permission-changes:
+  category:
+    grant: O grupo <strong>{{ group }}</strong> vai <strong>ser {{ permission }}</strong> nesta categoria
+    revoke: O grupo <strong>{{ group }}</strong> não vai <strong>ser {{ permission }}</strong> nesta categoria
+  locale:
+    grant: O grupo <strong>{{ group }}</strong> vai <strong>ser {{ permission }}</strong> neste local
+    revoke: O grupo <strong>{{ group }}</strong> não vai <strong> ser {{ permission }}</strong> neste local
+  attribute group:
+    grant: O grupo <strong>{{ group }}</strong> vai <strong>ser {{ permission }}</strong> neste grupo de atributo
+    revoke: O grupo <strong>{{ group }}</strong> não vai <strong>ser {{ permission }}</strong> neste grupo de atributo
+  job profile:
+    grant: O grupo <strong>{{ group }}</strong> vai <strong>ser {{ permission }}</strong>
+    revoke: O grupo <strong>{{ group }}</strong> não vai <strong>ser {{ permission }}</strong>
+pimee_enrich:
+  entity:
+    product:
+      btn:
+        publish: Publicar
+        unpublish: Cancelar a publicação
+        save_draft: Guardar rascunho
+      meta:
+        owner_groups: Grupos de proprietário
+        draft:
+          in_progress: Em progresso
+          sent_for_approval: À espera de aprovação
+          working_copy: Cópia de trabalho
+      tab:
+        proposals:
+          title: Propostas
+      info:
+        update_successful: Cópia de trabalho do produto foi atualizada
+      copy:
+        source:
+          working_copy: Cópia de trabalho
+    product_draft:
+      btn:
+        send_for_approval: Enviar para aprovação
+        sent_for_approval: Enviado para aprovação

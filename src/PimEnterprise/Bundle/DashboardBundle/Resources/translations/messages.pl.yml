@@ -1,5 +1,11 @@
 pimee_dashboard:
   widget:
     product_drafts:
+      title: Propozycje do wystawienia opinii
+      date: Data
       author: Autor
       product: Produkt
+      review: Opinia
+  version:
+    community_edition: CE
+    enterprise_edition: EE

@@ -1,0 +1,50 @@
+pimee_workflow:
+  product_draft:
+    created: Proposto a
+    changes: Alterações
+    locale: Contexto local
+    product:
+      label: Rótulo do produto
+    status:
+      label: Estado
+      working_copy: Cópia de trabalho
+      in_progress: Em progresso
+      ready: À espera de aprovação
+      can_not_be_deleted: Não pode ser eliminado
+    action:
+      approve: Aprovar
+      remove: Remover
+  published_product:
+    index: Produtos publicados
+    title: Produto publicado
+  acl.published_product:
+    index: Gerir produtos publicados
+  product:
+    permission:
+      label: Permissões
+      own: Rever / publicar
+      edit: Editar
+      view: Ver
+btn.publish: Publicar
+btn.unpublish: Cancelar a publicação
+pim_menu:
+  item:
+    published_product: Produtos publicados
+    proposal: Propostas
+pim_title:
+  published_product:
+    index: Produtos publicados
+    view: Produtos publicados %product.sku% | Visualizar
+  product:
+    dispatch: "Produtos %product.sku%"
+    show: "Produtos %product.sku% | Mostrar"
+  proposal:
+    index: Propostas
+btn.editworkingcopy: Editar cópia de trabalho
+confirmation:
+  product:
+    publish: Tem a certeza que deseja publicar este produto?
+    unpublish: Tem a certeza que deseja cancelar a publicação deste produto ?
+proposal.overview: Propostas
+Attributes.title: Atributos
+Completeness.title: '% de Dados Completos'

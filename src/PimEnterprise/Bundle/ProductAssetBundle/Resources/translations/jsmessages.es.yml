@@ -18,10 +18,10 @@ pimee_product_asset:
     popin:
       delete:
         title: Confirmación de borrado
-        message: ¿Está seguro que desea eliminar este elemento?
+        message: '¿Está seguro que desea eliminar este elemento?'
       reset:
         title: Reinicializar variaciones
-        message: ¿Está seguro que desea reinicializar todas las variaciones?
+        message: '¿Está seguro que desea reinicializar todas las variaciones?'
   mass_upload:
     menu: Cargar recursos
     btn:

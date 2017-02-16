@@ -1,0 +1,11 @@
+View the product: Zobacz produkt
+Unpublish the product: Cofnij publikację produktu
+Approve: Zatwierdź
+Refuse: Odrzucić
+Approve selected: Zatwierdź wybrane
+Refuse selected: Odrzuć wybrane
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Edytuj kopię roboczą

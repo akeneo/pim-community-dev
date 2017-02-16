@@ -2,6 +2,8 @@ pimee_catalog_rule:
   attribute:
     grid:
       is_smart.label: Inteligentne
+    acl:
+      rule.view_permissions: Zobacz reguły
   product:
     tooltip:
       loading.title: Ładuję...

@@ -1,0 +1,5 @@
+user:
+  email:
+    notifications: Notificacions per correu electrònic
+  asset_delay_reminder: Recordatori de retard de recurs (en dies)
+Default asset tree: Arbre de recursos per defecte

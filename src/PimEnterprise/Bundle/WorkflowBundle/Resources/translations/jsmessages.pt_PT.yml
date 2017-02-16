@@ -1,0 +1,8 @@
+View the product: Exibir o produto
+Unpublish the product: Cancelar a publicação do produto
+Approve: Aprovar
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Editar cópia de trabalho

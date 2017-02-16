@@ -1,0 +1,28 @@
+pimee_catalog_rule:
+  attribute:
+    tab:
+      rule.title: Regels
+    grid:
+      is_smart.label: Slim
+    acl:
+      rule.view_permissions: Regels weergeven
+  product:
+    tooltip:
+      product_attribute_affected_by_a_rule.content: De waarde van deze kenmerk kan afkomstig zijn van de regel(s) <strong>%rule%</strong>. Dit betekent dat als de voorwaarde voor de regel geldig zijn, uw wijzigingen zal worden overschreven.
+      variant_attribute_affected_by_a_rule.content: Variant groep kenmerken hebben voorrang op de kenmerken van de producten. Dit betekent dat elk kenmerk van deze variant groep de overeenkomende waarde in de staande producten overschrijft. De regel(s) <strong>%rule%</strong>, zal niet worden toegepast op de producten.
+      loading.title: Laden...
+    history: Toegepaste regel "%rule%"
+  product_value:
+    tooltip:
+      affected_by.title: 'Beïnvloed door regel(s):'
+  jobs:
+    yml_rule_import:
+      title: Regel importeren in YAML
+      import.title: Regel importeren
+    yml_rule_export:
+      title: Regel exporteren in YAML
+      export.title: Regel exporteren
+  steps:
+    product_rule_definition_reader.title: Product regel importeer lezer
+    rule_definition_processor.title: Product regel importeer processor
+    product_rule_definition_writer.title: Product regel importeer schrijver

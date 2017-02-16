@@ -24,7 +24,7 @@ pimee_workflow:
         draft_not_ready: Это предложение не готово быть принятым
         not_product_owner: Вы не являетесь владельцем продукта, относяющемуся к этому предложению
         cannot_edit_attributes: Нельзя редактировать атрибуты изменяемые этим предложением
-        invalid_draft: 'Это предложение не может быть применено из-за следующей ошибки. %error%'
+        invalid_draft: Это предложение не может быть применено из-за следующей ошибки. %error%
   published_product:
     index: Опубликованные продукты
     title: Опубликованный продукт
@@ -57,7 +57,7 @@ flash:
   product_draft:
     approve:
       success: Предложение было успешно применено.
-      error: 'Это предложение нельзя применить из-за следующей ошибки. %error%'
+      error: Это предложение нельзя применить из-за следующей ошибки. %error%
     refuse:
       success: Это предложение было отклонено.
 pim_menu:
@@ -67,10 +67,10 @@ pim_menu:
 pim_title:
   published_product:
     index: Опубликованные продукты
-    view: 'Опубликованные продукты %product.sku% | Просмотр'
+    view: Опубликованные продукты %product.sku% | Просмотр
   product:
-    dispatch: 'Продукты %product.sku%'
-    show: 'Продукты %product.sku% | Показать'
+    dispatch: "Продукты %product.sku%"
+    show: "Продукты %product.sku% | Показать"
   proposal:
     index: Предложения
 btn.editworkingcopy: Редактировать рабочую копию

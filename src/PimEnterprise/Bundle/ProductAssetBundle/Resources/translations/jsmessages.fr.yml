@@ -37,12 +37,12 @@ pimee_product_asset:
       deleted: Le fichier téléchargé a été supprimé
     error:
       list: Impossible de lire les fichiers déjà téléchargés
-      upload: "Une erreur s'est produite lors du téléchargement"
+      upload: Une erreur s'est produite lors du téléchargement
       delete: Impossible de supprimer le fichier du serveur
-      schedule: "Une erreur s'est produite lors de la programmation du traitement des téléchargements"
+      schedule: Une erreur s'est produite lors de la programmation du traitement des téléchargements
       filename: Nom de fichier incorrect pour la ressource
       code: Format de code non valide pour la ressource
-      locale: "Une ressource existe mais n'est pas traduisible"
+      locale: Une ressource existe mais n'est pas traduisible
       invalid_locale: Les paramètres régionaux sont désactivés ou non valides
       exists: Un fichier portant le même nom est déjà programmé pour le téléchargement
       conflicts: Conflit de noms de fichiers

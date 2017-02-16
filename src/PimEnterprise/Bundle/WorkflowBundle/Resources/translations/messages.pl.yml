@@ -1,14 +1,55 @@
 pimee_workflow:
   product_draft:
     author: Autor
+    created: Proponowane w
+    changes: Zmiany
+    locale: Kontekst lokalny
+    product:
+      label: Etykieta produktu
     status:
       label: Status
+      working_copy: Kopia robocza
+      in_progress: W Toku
+      ready: Oczekuje na akceptację
+      can_not_be_deleted: Nie może być usunięty
     action:
+      approve: Zatwierdź
       remove: Usuń
+    mass_review_action:
+      approve: Zatwierdź wybrane
+      refuse: Odrzuć wybrane
+  published_product:
+    index: Opublikowany produkty
+    title: Opublikowany produkt
+  acl.published_product:
+    index: Zarządzaj opublikowanymi produktami
   product:
     permission:
       label: Uprawnienia
+      own: Przejrzyj / publikuj
       edit: Edytuj
       view: Zobacz
+btn.publish: Opublikuj
+btn.unpublish: Cofnij publikację
+flash:
+  product:
+    published: Produkt został pomyślnie opublikowany.
+    unpublished: Publikacja produktu została cofnięta pomyślnie.
+pim_menu:
+  item:
+    published_product: Opublikowane produkty
+    proposal: Propozycje
+pim_title:
+  published_product:
+    index: Opublikowane produkty
+    view: Opublikowane produkty %product.sku% | Widok
+  proposal:
+    index: Propozycje
+btn.editworkingcopy: Edytuj kopię roboczą
+proposal.overview: Propozycje
 Attributes.title: Atrybuty
 Completeness.title: Kompletność
+unpublish_product.steps.unpublish_product_tasklet.title: Cofnij publikowanie produktu
+job_execution.summary:
+  approved: zatwierdzone
+  refused: odrzucone

@@ -1,0 +1,28 @@
+pimee_catalog_rule:
+  attribute:
+    tab:
+      rule.title: Regras
+    grid:
+      is_smart.label: Inteligente
+    acl:
+      rule.view_permissions: Ver regras
+  product:
+    tooltip:
+      product_attribute_affected_by_a_rule.content: O valor desse atributo pode ser proveniente da(s) regra(s) <strong>%rule%</strong>. Isso significa que se as condições da regra são válidas, a sua modificação será substituída.
+      variant_attribute_affected_by_a_rule.content: Atributos do grupo variante têm prioridade sobre os atributos de produtos. Isto significa que cada atributo deste grupo variante substituirá o valor correspondente dos produtos contidos. Não será aplicada a(s) regra(s) <strong>%rule%</strong>, sobre os produtos.
+      loading.title: A carregar...
+    history: Regra "%rule%" aplicada
+  product_value:
+    tooltip:
+      affected_by.title: 'Afetados pela regra(s):'
+  jobs:
+    yml_rule_import:
+      title: Regra de importação em YAML
+      import.title: Importação de regra
+    yml_rule_export:
+      title: Regra de exportação em YAML
+      export.title: Exportação de regra
+  steps:
+    product_rule_definition_reader.title: Leitor da importação das regras de produto
+    rule_definition_processor.title: Processador de importação de regras de produto
+    product_rule_definition_writer.title: Escritor de importação de regras de produto

@@ -1,0 +1,39 @@
+View the product: Zobacz produkt
+pimee_enrich.product_history.action.revert: Powróć do tej wersji
+pimee_enrich:
+  entity:
+    product:
+      history:
+        published: Opublikowane
+      btn:
+        publish: Opublikuj
+        publish_this_version: Opublikuj tę wersję
+        unpublish: Cofnij publikację
+        save_draft: Zapisz wersję tymczasową
+      flash:
+        product_unpublished: Publikacja produktu cofnięta pomyślnie
+        product_published: Produkt pomyślnie opublikowano
+        product_not_published: Nie udało się opublikować tego produktu
+        product_not_unpublished: Nie udało się cofnąć publikacji tego produktu
+        product_reverted: Produkt pomyślnie przywrócony
+      meta:
+        published: Opublikowana wersja
+        draft:
+          in_progress: W Toku
+          sent_for_approval: Oczekuje na akceptację
+          working_copy: Kopia robocza
+      tab:
+        proposals:
+          title: Propozycje
+      confirmation:
+        publish:
+          content: Czy na pewno chcesz opublikować ten produkt?
+        unpublish:
+          title: Cofnij publikację produktu
+      copy:
+        source:
+          working_copy: Kopia robocza
+          draft: Moje szkice
+    product_draft:
+      btn:
+        send_for_approval: Wyślij do zatwierdzenia

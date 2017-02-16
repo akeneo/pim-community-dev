@@ -1,21 +1,39 @@
 Permissions: Uprawnienia
 pane.accordion.permissions: Uprawnienia
+attribute group.permissions:
+  view.label: Możliwość wyświetlenia atrybutów
+  edit.label: Możliwość edycji atrybutów
+category.permissions:
+  view.help: Zezwól na przeglądanie produktów w kategorii
+  edit.label: Możliwość edycji produktów
+  own.label: Może zawierać produkty
+  own.help: Możliwość przeglądu, publikowania, cofnięcia publikacji, klasyfikowania, powiązywania produktów w tej kategorii (implikuje możliwość edycji)
+locale.permissions:
+  view.label: Możliwość wyświetlania informacji o produkcie
+btn:
+  save working copy: Zapisz kopię roboczą
+  save draft: Zapisz wersję tymczasową
+  save working copy and next: Zapisz kopię roboczą i dalej
+  send for approval: Wyślij do zatwierdzenia
 pim_enrich:
   mass_edit_action:
     published_product:
+      page_title: Opublikowane produkty
       title: Wybierz działanie
       steps:
         second: Wybierz działanie
         third: Konfiguruj
         fourth: Potwierdź
+    unpublish:
+      label: Cofnij publikację produktów
 pim_enrich.mass_edit_action:
-  limit_exceeded: 'Proszę wybrać mniej niż %limit% elementów do edycji'
+  limit_exceeded: Proszę wybrać mniej niż %limit% elementów do edycji
   product:
     page_title: Produkty
-    page_subtitle: 'Masowa edycja (1 produkt) | Masowa edycja (%count% produktów)'
+    page_subtitle: Masowa edycja (1 produkt) | Masowa edycja (%count% produktów)
     title: Wybierz działanie
-    subtitle: 'Wybierz operację, którą chcesz wykonać na wybranych produktach | Wybierz operację, którą chcesz wykonać na %count% wybranych produktach'
-    confirm: 'Zamierzasz zaktualizować produkt o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% produkty(ów) o następujące informacje, proszę potwierdź.'
+    subtitle: Wybierz operację, którą chcesz wykonać na wybranych produktach | Wybierz operację, którą chcesz wykonać na %count% wybranych produktach
+    confirm: Zamierzasz zaktualizować produkt o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% produkty(ów) o następujące informacje, proszę potwierdź.
     steps:
       first: Wybierz produkty
       second: Wybierz działanie
@@ -25,10 +43,23 @@ pimee_enrich:
   attribute_group:
     tab:
       permission.title: Uprawnienia
+  product:
+    tab:
+      proposal.title: Propozycje
   category:
     tab:
       permission.title: Uprawnienia
+  attributes:
+    empty: żaden
+  groups:
+    empty: żaden
   asset_transformation:
     title:
       transformation: Transformacja
       options: Ustawienia
+    resize:
+      title: Zmień rozmiar
+    thumbnail:
+      title: Miniatura
+job_execution.summary:
+  proposal_deleted: usunięte

@@ -1,0 +1,152 @@
+pim_title.locale:
+  edit: "Configuracions regionals %locale.code% | Editar"
+Permissions: Permisos
+pane.accordion.permissions: Permisos
+attribute group.permissions:
+  view.label: Permet veure els atributs
+  view.help: Permet veure els productes en aquest grup d'atributs
+  edit.label: Permet editar els atributs
+  edit.help: Permet editar els productes en aquest grup d'atributs
+  no_access_to_attributes: No teniu accés a cap atribut d'aquest producte. Contacteu amb l'administrador.
+category.permissions:
+  view.label: Permet veure els productes
+  view.help: Permet veure els productes en aquesta categoria
+  edit.label: Permet editar els productes
+  edit.help: Permet editar els productes en aquesta categoria (això implica l'autorització de la vista)
+  own.label: Permet tenir productes propis
+  own.help: Permet revisar, publicar, despublicar, classificar i associar productes en aquesta categoria (això implica permís d'edició)
+  no_access_to_products: No teniu accés a productes de qualsevol dels arbres, contacteu amb l'administrador
+  apply_on_children.label: Aplicar canvis en els fills
+  apply_on_children.help: Copiar els canvis de permisos a tots els fills. Se'n mantindran tots els seus permisos actuals
+locale.permissions:
+  view.label: Permet visualitzar la informació del producte
+  view.help: Permet visualitzar la informació del producte en aquesta configuració regional
+  edit.label: Permet editar la informació del producte
+  edit.help: Permet editar la informació del producte en aquesta configuració regional (això implica l'autorització de la vista)
+  no_access_to_products: No teniu accés a les dades de producte en cap de les configuracions regionals activades, contacteu amb l'administrador
+btn:
+  save working copy: Desa una còpia de treball
+  save draft: Desar l'esborrany
+  save working copy and next: Desar una còpia de treball i continuar
+  save draft and next: Desar esborrany i continuar
+  save working copy and finish: Desar una còpia de treball i finalitzar
+  save draft and finish: Desar l'esborrany i finalitzar
+  send for approval: Enviar per a la seva aprovació
+  sent for approval: Enviat per a la seva aprovació
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: No teniu permissos per editar els productes "%identifiers%".
+    publish:
+      label: Publicar productes
+      description: Publicar els productes seleccionats, les dades actuals seran esborrades per l'actual còpia de treball.
+      success_flash: Els productes seleccionats s'han publicat amb èxit.
+      launched_flash: El treball de publicació del(s) producte(s) s'està executant.
+      message:
+        error: No ets el propietari del producte, no el podeu publicar.
+        warning: No ets el propietari dels productes seleccionats. No els podeu publicar "%notGranted%".
+        info: Els productes %nbProducts% seleccionats seran publicats.
+      not_editable: No teniu permissos per editar els productes "%identifiers%".
+    published_product:
+      page_title: Productes publicats
+      page_subtitle: Edició en massa (1 producte publicat) | Edició en massa (%count% productes publicats)
+      title: Trieu l'operació
+      subtitle: Trieu la operació que voleu realitzar sobre el producte seleccionat i publicat | Trieu la operació que voleu realitzar sobre els %count% productes seleccionats i publicats
+      confirm: Esteu a punt d'actualitzar un producte publicat amb la informació següent, confirmeu. | Esteu a punt d'actualitzar %count% productes publicats amb la informació següent, confirmeu.
+      steps:
+        first: Triar productes publicats
+        second: Trieu l'operació
+        third: Configurar
+        fourth: Confirmar
+    unpublish:
+      label: Anul·lar la publicació de productes
+      description: Anul·lar la publicació dels productes seleccionats. S'esborraran les dades publicades actualment.
+      success_flash: Els productes seleccionats s'han despublicat amb èxit.
+      launched_flash: El treball de despublicació del(s) producte(s) està en marxa.
+      message:
+        error: No sou el propietari del producte, no el podeu despublicar.
+        warning: No sou el propietari dels productes seleccionats. No els podeu despublicar "%notGranted%".
+        info: Els productes %nbProducts% seleccionats seran despublicats.
+      not_editable: No teniu permissos per editar els productes "%identifiers%".
+    classify:
+      message:
+        error: No sou el propietari del producte, no podeu classificar-lo.
+        warning: No sou el propietari dels productes seleccionats. No els podeu classificar "%notGranted%".
+    edit_common_attributes:
+      message:
+        error: No sou el propietari del producte, no podeu editar-lo.
+pim_enrich.mass_edit_action:
+  limit_exceeded: Trieu menys de %limit% elements per editar
+  product:
+    page_title: Productes
+    page_subtitle: Edició en massa (1 producte) | Edició en massa (%count% productes)
+    title: Trieu l'operació
+    subtitle: Trieu la operació que voleu realitzar al producte seleccionat| Trieu la operació que voleu realitzar als %count% productes seleccionats
+    confirm: Esteu a punt d'actualitzar un producte amb la informació següent, confirmeu-ho si us plau. | Esteu a punt d'actualitzar %count% productes amb la informació següent, confirmeu-ho si us plau.
+    steps:
+      first: Triar productes
+      second: Trieu l'operació
+      third: Configurar
+      fourth: Confirmar
+flash.product.updated: La còpia de treball del producte s'ha actualitzat
+flash.product_draft.updated: El projecte s'ha desat correctament
+flash.locale.updated: S'han actualitzat la configuració regional i els permisos
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Permisos
+  product:
+    tab:
+      proposal.title: Propostes
+  category:
+    tab:
+      permission.title: Permisos
+  channel:
+    tab:
+      asset_transformation.title: Transformacions de recursos
+  acl.product_ownership.title: Propietat
+  attributes:
+    empty: cap
+  groups:
+    label: grups de propietaris
+    empty: cap
+  asset_transformation:
+    not_found: No s'ha trobat cap transformació
+    title:
+      transformation: Transformació
+      options: Opcions
+    colorspace:
+      title: Espai de color
+      options:
+        colorspace: Espai de color %value%
+    resize:
+      title: Redimensiona
+      options:
+        width: '% value%px d''amplada'
+        height: '% value%px d''alçada'
+    resolution:
+      title: Resolució
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Escala
+      options:
+        width: '% value%px d''amplada'
+        height: '% value%px d''alçada'
+        ratio: '%value%% proporció'
+    thumbnail:
+      title: Miniatura
+      options:
+        width: '% value%px d''amplada'
+        height: '% value%px d''alçada'
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Afegir valor producte amb permisos
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Actualitzar el valor de producte amb permissos
+edit_common_attributes_with_permission: Editar els atributs comuns amb permisos
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Editar els atributs comuns amb permisos
+job_execution.summary:
+  mass_published: Producte publicat
+  mass_unpublished: Producte despublicat
+  proposal: Proposta creada
+  proposal_deleted: suprimit
+pim_assets_collection: Col·lecció de recursos
