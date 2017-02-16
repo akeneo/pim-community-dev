@@ -77,7 +77,6 @@ class ProjectRecalculationCommandSpec extends ObjectBehavior
             '--no-debug' => true,
         ]);
         $application->run($commandInput, $output)->willReturn(0);
-        $objectDetacher->detach($otherProject)->shouldBeCalled();
 
         $definition->getOptions()->willReturn([]);
         $definition->getArguments()->willReturn([]);
