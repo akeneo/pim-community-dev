@@ -101,14 +101,6 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $this->assert($client, 'Operator is missing for the property "a_localized_and_scopable_text_area".');
     }
 
-    public function testSearchWithMissingValue()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $client->request('GET', '/api/rest/v1/products?search={"a_localized_and_scopable_text_area":[{"operator":"="}]}');
-        $this->assert($client, 'Value is missing for the property "a_localized_and_scopable_text_area".');
-    }
-
     public function testSearchWithWrongOperator()
     {
         $client = $this->createAuthenticatedClient();
@@ -175,12 +167,12 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $this->assert($client, 'Attribute "a_scopable_image" expects an existing scope, "not_found" given.');
     }
 
-    public function testSearchScalarExpected()
+    public function testSearchScalarExpectedOnFilter()
     {
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search={"a_text":[{"operator":"=", "value":["text"]}]}');
-        $this->assert($client, 'Only scalar values are allowed for operators eq, neq, lt, lte, gt, gte, like, notLike.');
+        $this->assert($client, 'Only scalar values are allowed for operators eq, neq, lt, lte, gt, gte, like, notLike, "array" given.');
     }
 
     public function testSearchIsNotAnArray()

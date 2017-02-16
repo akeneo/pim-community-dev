@@ -14,9 +14,10 @@ use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Api\Pagination\HalPaginator;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
-use Pim\Component\Catalog\Exception\UnsupportedFilterException;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
+use Pim\Component\Catalog\Exception\InvalidOperatorException;
+use Pim\Component\Catalog\Exception\UnsupportedFilterException;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -179,6 +180,8 @@ class ProductController
         } catch (PropertyException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         } catch (UnsupportedFilterException $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        } catch (InvalidOperatorException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
 
