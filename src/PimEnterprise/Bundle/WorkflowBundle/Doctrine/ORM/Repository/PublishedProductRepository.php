@@ -118,7 +118,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     public function countPublishedProductsForFamily(FamilyInterface $family)
     {
         $productQb = $this->queryBuilderFactory->create();
-        $productQb->addFilter('family.code', Operators::IN_LIST, [$family->getCode()]);
+        $productQb->addFilter('family', Operators::IN_LIST, [$family->getCode()]);
 
         return $productQb->execute()->count();
     }
@@ -129,7 +129,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     public function countPublishedProductsForCategory(CategoryInterface $category)
     {
         $productQb = $this->queryBuilderFactory->create();
-        $productQb->addFilter('categories.code', Operators::IN_CHILDREN_LIST, [$category->getCode()]);
+        $productQb->addFilter('categories', Operators::IN_CHILDREN_LIST, [$category->getCode()]);
 
         return $productQb->execute()->count();
     }
@@ -151,7 +151,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     public function countPublishedProductsForGroup(GroupInterface $group)
     {
         $productQb = $this->queryBuilderFactory->create();
-        $productQb->addFilter('groups.code', Operators::IN_LIST, [$group->getCode()]);
+        $productQb->addFilter('groups', Operators::IN_LIST, [$group->getCode()]);
 
         return $productQb->execute()->count();
     }
