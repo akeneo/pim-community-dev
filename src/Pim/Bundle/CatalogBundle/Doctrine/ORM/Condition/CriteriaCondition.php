@@ -3,9 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Doctrine\ORM\QueryBuilder;
+use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -37,7 +36,7 @@ class CriteriaCondition
      * @param string|array $operator the operator used to filter
      * @param string|array $value    the value(s) to filter
      *
-     * @throws PropertyException
+     * @throws InvalidOperatorException
      *
      * @return string
      */
@@ -53,8 +52,8 @@ class CriteriaCondition
      * @param string       $operator the operator used to filter
      * @param string|array $value    the value(s) to filter
      *
+     * @throws InvalidOperatorException
      * @throws InvalidPropertyException
-     * @throws InvalidPropertyTypeException
      *
      * @return string
      */
@@ -72,13 +71,7 @@ class CriteriaCondition
         ];
         if (array_key_exists($operator, $operators)) {
             if (!is_scalar($value)) {
-                throw new InvalidPropertyTypeException(
-                    $field,
-                    $value,
-                    static::class,
-                    sprintf('Only scalar values are allowed for operators %s.', implode(', ', $operators)),
-                    InvalidPropertyTypeException::SCALAR_EXPECTED_CODE
-                );
+                throw InvalidOperatorException::scalarExpected($operators, static::class, $value);
             }
             $method = $operators[$operator];
             $condition = $this->qb->expr()->$method($field, $this->qb->expr()->literal($value));
@@ -101,13 +94,7 @@ class CriteriaCondition
         $operators = [Operators::IN_LIST => 'in', Operators::NOT_IN_LIST => 'notIn'];
         if (array_key_exists($operator, $operators)) {
             if (!is_array($value)) {
-                throw new InvalidPropertyTypeException(
-                    $field,
-                    $value,
-                    static::class,
-                    sprintf('Only array values are allowed for operators %s.', implode(', ', $operators)),
-                    InvalidPropertyTypeException::ARRAY_EXPECTED_CODE
-                );
+                throw InvalidOperatorException::arrayExpected($operators, static::class, $value);
             }
 
             if (0 === count($value)) {
@@ -121,13 +108,7 @@ class CriteriaCondition
 
         if (Operators::BETWEEN === $operator) {
             if (!is_array($value)) {
-                throw new InvalidPropertyTypeException(
-                    $field,
-                    $value,
-                    static::class,
-                    'Only array values are allowed for operators BETWEEN.',
-                    InvalidPropertyTypeException::ARRAY_EXPECTED_CODE
-                );
+                throw InvalidOperatorException::arrayExpected(['BETWEEN'], static::class, $value);
             }
 
             return sprintf(
@@ -138,12 +119,6 @@ class CriteriaCondition
             );
         }
 
-        throw new InvalidPropertyException(
-            $field,
-            $value,
-            static::class,
-            sprintf('Operator "%s" is not supported', $operator),
-            InvalidPropertyException::EXPECTED_CODE
-        );
+        throw InvalidOperatorException::notSupported($operator, static::class, $value);
     }
 }
