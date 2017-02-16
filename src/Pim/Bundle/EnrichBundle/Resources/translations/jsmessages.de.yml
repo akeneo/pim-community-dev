@@ -543,9 +543,9 @@ pim_enrich:
           help: Wählen Sie die Produkte, die entsprechend Ihrer Vollständigkeit exportiert werden sollen.
           operators:
             ALL: Keine Bedingung für Vollständigkeit
-            ">=": Vervollständigen Sie für mindestens ein ausgewählten Gebietsschema
-            "GREATER OR EQUALS THAN ON ALL LOCALES": Vervollständigen Sie für alle ausgewählten Gebietsschema
-            LOWER THAN ON ALL LOCALES: Nicht vollständig für alle ausgewählten Gebietsschemas
+            ">=": Vollständig für mindestens ein ausgewähltes Gebietsschemata
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Vollständig für alle ausgewählten Gebietsschemata
+            LOWER THAN ON ALL LOCALES: Unvollständig für alle ausgewählten Gebietsschemas
           empty_selection: Produktfamilie wählen
         category:
           title: Kategorie

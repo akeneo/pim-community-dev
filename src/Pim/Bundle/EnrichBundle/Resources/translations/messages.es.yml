@@ -256,7 +256,7 @@ pim_enrich:
     group: Grupos
     variant_group: Grupos de variantes
     group_type: Tipos de grupo
-    locale: Idiomas
+    locale: Locales
     product: Productos
   product_value:
     tooltip:
@@ -310,8 +310,8 @@ family:
 locale:
   title: configuración regional
   overview: resumen de configuración regional
-  create: crear idioma
-  edit: editar configuración regional
+  create: crear local
+  edit: editar configuración de local
 product:
   title: producto
   overview: resumen del producto
@@ -347,7 +347,7 @@ btn:
     channel: crear canal
     currency: crear moneda
     family: crear familia
-    locale: crear idioma
+    locale: crear local
     product: crear producto
     group: crear grupo
     variant group: crear un grupo de variante
@@ -629,7 +629,7 @@ pim_title.channel:
 pim_title.currency:
   index: "Monedas"
 pim_title.locale:
-  index: "Idiomas"
+  index: "Locales"
 pim_title.group:
   index: "Grupos"
   edit: "Grupos %group.label% | Editar"
@@ -750,7 +750,7 @@ pim_menu:
     family: Familias
     group: Grupos
     group_type: Tipos de grupo
-    locale: Idiomas
+    locale: Locales
     product: Productos
     variant_group: Grupos de variantes
 Properties: Propiedades
@@ -800,7 +800,7 @@ System configuration: Configuración del sistema
 General setup: Configuración general
 Localization: Localización
 Localization options: Opciones de localización
-Locale: Conriguración Regional
+Locale: Local
 Location: Ubicación
 Format address by address country: Formatear dirección por dirección del país
 Language: idioma
@@ -821,8 +821,8 @@ oro.locale:
   form:
     tooltip:
       locale: "Seleccione el local empleado para dar formato a números, direcciones, nombres y fechas"
-      location: " Ubicación se utilizará para dar formato a direcciones cuando se desactiva la opción 'Formatear  dirección por dirección país"
-      format_address_by_address_country: "Al seleccionar esta opción se activa formateo de direcciones  por el país en que se encuentran. Disactivando esta opción hará que las direcciones sean formateados en el formato de dirección de su ubicación"
+      location: " La ubicación se utilizará para dar formato a direcciones cuando se desactiva la opción 'Formatear  dirección por dirección país'"
+      format_address_by_address_country: "Al seleccionar esta opción se activa formateo de direcciones por el país en que se encuentran. Disactivando esta opción hará que las direcciones sean formateados en el formato de dirección de su ubicación"
       language: "Seleccione el idioma del sistema que desee utilizar"
       timezone: "Seleccione la zona horaria para visualización de fecha y hora"
       currency: "Seleccione la divisa predeterminada"
@@ -842,6 +842,7 @@ job_execution.summary:
   skip: Omitido
   skipped_products: Productos omitidos
   skipped_attributes: Atributos omitidos
+  skipped_families: Familias omitidas
 pim_mass_edit_execution_show: Exclusiones de edición en masa | Detalles
 edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributos comunes
 update_product_value.steps.update_product_value_processor.title: Actualizar el valor del producto
