@@ -267,7 +267,7 @@ class FamilyController
     protected function getCreateResponse(FamilyInterface $family)
     {
         $response = new Response(null, Response::HTTP_CREATED);
-        $route = $this->router->generate('pim_api_rest_family_get', ['code' => $family->getCode()], true);
+        $route = $this->router->generate('pim_api_family_get', ['code' => $family->getCode()], true);
         $response->headers->set('Location', $route);
 
         return $response;
@@ -283,7 +283,7 @@ class FamilyController
     protected function getUpdateResponse(FamilyInterface $family)
     {
         $response = new Response(null, Response::HTTP_NO_CONTENT);
-        $route = $this->router->generate('pim_api_rest_family_get', ['code' => $family->getCode()], true);
+        $route = $this->router->generate('pim_api_family_get', ['code' => $family->getCode()], true);
         $response->headers->set('Location', $route);
 
         return $response;

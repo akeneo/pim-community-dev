@@ -103,8 +103,8 @@ class ChannelController
             $channelsApi,
             array_merge($request->query->all(), $queryParameters),
             $count,
-            'pim_api_rest_channel_list',
-            'pim_api_rest_channel_get',
+            'pim_api_channel_list',
+            'pim_api_channel_get',
             'code'
         );
 

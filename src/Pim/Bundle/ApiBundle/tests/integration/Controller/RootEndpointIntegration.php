@@ -24,67 +24,67 @@ class RootEndpointIntegration extends ApiTestCase
             }
         },
         "routes": {
-            "pim_api_rest_category_list": {
+            "pim_api_category_list": {
                 "route": "/api/rest/v1/categories",
                 "methods": ["GET"]
             },
-            "pim_api_rest_category_get": {
+            "pim_api_category_get": {
                 "route": "/api/rest/v1/categories/{code}",
                 "methods": ["GET"]
             },
-            "pim_api_rest_controller_create": {
+            "pim_api_category_create": {
                 "route": "/api/rest/v1/categories",
                 "methods": ["POST"]
             },
-            "pim_api_rest_controller_partial_update": {
+            "pim_api_category_partial_update": {
                 "route": "/api/rest/v1/categories/{code}",
                 "methods": ["PATCH"]
             },
-            "pim_api_rest_family_list": {
+            "pim_api_family_list": {
                 "route": "/api/rest/v1/families",
                 "methods": ["GET"]
             },
-            "pim_api_rest_family_get": {
+            "pim_api_family_get": {
                 "route": "/api/rest/v1/families/{code}",
                 "methods": ["GET"]
             },
-            "pim_api_rest_family_create": {
+            "pim_api_family_create": {
                 "route": "/api/rest/v1/families",
                 "methods": ["POST"]
             },
-            "pim_api_rest_family_partial_update": {
+            "pim_api_family_partial_update": {
                 "route": "/api/rest/v1/families/{code}",
                 "methods": ["PATCH"]
             },
-            "pim_api_rest_attribute_list": {
+            "pim_api_attribute_list": {
                 "route": "/api/rest/v1/attributes",
                 "methods": ["GET"]
             },
-            "pim_api_rest_attribute_create": {
+            "pim_api_attribute_create": {
                 "route": "/api/rest/v1/attributes",
                 "methods": ["POST"]
             },
-            "pim_api_rest_attribute_update": {
+            "pim_api_attribute_update": {
                 "route": "/api/rest/v1/attributes/{code}",
                 "methods": ["PATCH"]
             },
-            "pim_api_rest_attribute_get": {
+            "pim_api_attribute_get": {
                 "route": "/api/rest/v1/attributes/{code}",
                 "methods": ["GET"]
             },
-            "pim_api_rest_attribute_option_create": {
+            "pim_api_attribute_option_create": {
                 "route": "/api/rest/v1/attributes/{attributeCode}/options",
                 "methods": ["POST"]
             },
-            "pim_api_rest_attribute_option_get": {
+            "pim_api_attribute_option_get": {
                 "route": "/api/rest/v1/attributes/{attributeCode}/options/{optionCode}",
                 "methods": ["GET"]
             },
-            "pim_api_rest_channel_list": {
+            "pim_api_channel_list": {
                 "route": "/api/rest/v1/channels",
                 "methods": ["GET"]
             },
-            "pim_api_rest_channel_get": {
+            "pim_api_channel_get": {
                 "route": "/api/rest/v1/channels/{code}",
                 "methods": ["GET"]
             },
@@ -95,6 +95,10 @@ class RootEndpointIntegration extends ApiTestCase
             "pim_api_product_get": {
                 "route": "/api/rest/v1/products/{code}",
                 "methods": ["GET"]
+            },
+            "pim_api_product_create": {
+                "route": "/api/rest/v1/products",
+                "methods": ["POST"]
             },
             "pim_api_product_delete": {
                 "route": "/api/rest/v1/products/{code}",

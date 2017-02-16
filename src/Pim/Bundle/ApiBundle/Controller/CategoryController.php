@@ -268,7 +268,7 @@ class CategoryController
     protected function getCreateResponse(CategoryInterface $category)
     {
         $response = new Response(null, Response::HTTP_CREATED);
-        $route = $this->router->generate('pim_api_rest_category_get', ['code' => $category->getCode()], true);
+        $route = $this->router->generate('pim_api_category_get', ['code' => $category->getCode()], true);
         $response->headers->set('Location', $route);
 
         return $response;
@@ -284,7 +284,7 @@ class CategoryController
     protected function getUpdateResponse(CategoryInterface $category)
     {
         $response = new Response(null, Response::HTTP_NO_CONTENT);
-        $route = $this->router->generate('pim_api_rest_category_get', ['code' => $category->getCode()], true);
+        $route = $this->router->generate('pim_api_category_get', ['code' => $category->getCode()], true);
         $response->headers->set('Location', $route);
 
         return $response;
