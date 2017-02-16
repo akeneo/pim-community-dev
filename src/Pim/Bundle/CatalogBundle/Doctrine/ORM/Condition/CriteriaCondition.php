@@ -43,57 +43,7 @@ class CriteriaCondition
      */
     public function prepareCriteriaCondition($field, $operator, $value)
     {
-        if (is_array($operator)) {
-            return $this->prepareMultiCriteriaCondition($field, $operator, $value);
-        } else {
-            return $this->prepareSingleCriteriaCondition($field, $operator, $value);
-        }
-    }
-
-    /**
-     * Prepare multi criteria condition with field, operator and value
-     *
-     * @param array $field    the backend field name
-     * @param array $operator the operator used to filter
-     * @param array $value    the value(s) to filter
-     *
-     * @throws InvalidPropertyTypeException
-     * @throws InvalidPropertyException
-     *
-     * @return string
-     */
-    protected function prepareMultiCriteriaCondition($field, $operator, $value)
-    {
-        if (!is_array($value)) {
-            throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
-        }
-
-        if (!is_array($field)) {
-            $fieldArray = [];
-            foreach (array_keys($operator) as $key) {
-                $fieldArray[$key] = $field;
-            }
-            $field = $fieldArray;
-        }
-
-        if (array_diff(array_keys($field), array_keys($operator))
-            || array_diff(array_keys($field), array_keys($value))
-        ) {
-            throw new InvalidPropertyException(
-                $field,
-                $value,
-                static::class,
-                'Field, operator and value arrays must have the same keys',
-                InvalidPropertyException::EXPECTED_CODE
-            );
-        }
-
-        $conditions = [];
-        foreach ($field as $key => $fieldName) {
-            $conditions[] = $this->prepareSingleCriteriaCondition($fieldName, $operator[$key], $value[$key]);
-        }
-
-        return '(' . implode(' OR ', $conditions) . ')';
+        return $this->prepareSingleCriteriaCondition($field, $operator, $value);
     }
 
     /**
