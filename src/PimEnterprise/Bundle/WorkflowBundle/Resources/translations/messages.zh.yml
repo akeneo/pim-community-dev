@@ -1,0 +1,43 @@
+pimee_workflow:
+  product_draft:
+    author: 作者
+    created: 提出了在
+    changes: 更改
+    locale: 区域设置上下文
+    product:
+      label: 产品标签
+    status:
+      label: 状态
+      working_copy: 工作副本
+      in_progress: 正在处理
+      ready: 等待审核中
+      can_not_be_approved: 不能审查
+      can_not_be_deleted: 不能删除
+    action:
+      approve: 批准
+      remove: 删除
+    mass_review_action:
+      approve: 批准所选
+      refuse: 拒绝所选
+      error:
+        draft_not_ready: 这项建议是不准备批准
+        not_product_owner: 你并不拥有这项建议与相关产品
+        cannot_edit_attributes: 您不能编辑修改的这项建议的属性
+        invalid_draft: 由于以下错误，这项建议不能应用。%error%
+  published_product:
+    index: 已发布的产品
+    title: 已发布的产品
+  acl.published_product:
+    index: 管理已发布的产品
+  product:
+    permission:
+      label: 权限
+      own: 审查/发布
+      edit: 编辑
+      view: 视图
+  steps:
+    product_draft_processor.title: 建议处理器
+btn.publish: 发布
+btn.unpublish: 取消发布
+Attributes.title: 属性
+Completeness.title: 完整性

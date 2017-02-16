@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: 'Gebietsschemata %locale.code% | Bearbeiten'
+  edit: "Gebietsschemata %locale.code% | Bearbeiten"
 Permissions: Berechtigungen
 pane.accordion.permissions: Berechtigungen
 attribute group.permissions:
@@ -36,7 +36,7 @@ btn:
 pim_enrich:
   mass_edit_action:
     product:
-      not_editable: 'Sie haben nicht die Berechtigung die "%identifiers%" des Produktes zu bearbeiten.'
+      not_editable: Sie haben nicht die Berechtigung die "%identifiers%" des Produktes zu bearbeiten.
     publish:
       label: Produkte veröffentlichen
       description: Die ausgewählten Produkte veröffentlichen, dabei werden die aktuell veröffentlichten Daten von der aktuellen Arbeitskopie überschrieben.
@@ -45,12 +45,16 @@ pim_enrich:
       message:
         error: Sie sind nicht der Eigentümer von diesem Produkt. Sie können es nicht veröffentlichen.
         warning: 'Sie sind nicht der Eigentümer aller ausgewählten Produkte. Sie können diese Produkte nicht veröffentlichen: "%notGranted%".'
-        info: 'Die %nbProducts% ausgewählten Produkte werden veröffentlicht.'
-      not_editable: 'Sie haben nicht die Berechtigung die "%identifiers%" des Produktes zu bearbeiten.'
+        info: Die %nbProducts% ausgewählten Produkte werden veröffentlicht.
+      not_editable: Sie haben nicht die Berechtigung die "%identifiers%" des Produktes zu bearbeiten.
     published_product:
       page_title: Veröffentlichte Produkte
+      page_subtitle: Massenbearbeitung (1 veröffentlichtes Produkt)|Massenbearbeitung (%count% veröffentlichte Produkte)
       title: Aktion auswählen
+      subtitle: Wählen Sie die Aktion aus, die Sie auf das ausgewählte, veröffentlichte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten, %count% veröffentlichten Produkt anwenden wollen
+      confirm: Sie sind dabei, ein veröffentlichtes Produkt mit den folgenden Informationen zu aktualisieren, bitte bestätigen Sie das.|Sie sind dabei, %count% veröffentlichte Produkte mit den folgenden Informationen zu aktualisieren, bitte bestätigen Sie das.
       steps:
+        first: Veröffentlichte Produkte auswählen
         second: Aktion auswählen
         third: Konfigurieren
         fourth: Bestätigen
@@ -62,8 +66,8 @@ pim_enrich:
       message:
         error: Sie sind nicht der Eigentümer dieses Produkts und können deshalb die Veröffentlichung nicht entziehen.
         warning: 'Sie sind nicht der Eigentümer von allen ausgewählten Produkten. Sie können die Veröffentlichung dieser Produkte nicht aufheben: %notGranted%".'
-        info: 'Den %nbProducts% ausgewählten Produkten wird die Veröffentlichung entzogen.'
-      not_editable: 'Sie haben nicht die Berechtigung die "%identifiers%" des Produktes zu bearbeiten.'
+        info: Den %nbProducts% ausgewählten Produkten wird die Veröffentlichung entzogen.
+      not_editable: Sie haben nicht die Berechtigung die "%identifiers%" des Produktes zu bearbeiten.
     classify:
       message:
         error: Sie sind nicht der Eigentümer dieses Produkts und können es deshalb nicht klassifizieren.
@@ -72,13 +76,13 @@ pim_enrich:
       message:
         error: Sie sind nicht der Eigentümer dieses Produkts und können es deshalb nicht bearbeiten.
 pim_enrich.mass_edit_action:
-  limit_exceeded: 'Bitte wählen Sie weniger als %limit% Elemente für die Bearbeitung'
+  limit_exceeded: Bitte wählen Sie weniger als %limit% Elemente für die Bearbeitung
   product:
     page_title: Produkte
-    page_subtitle: 'Massenbearbeitung (1 Produkt)|Massenbearbeitung (%count% Produkte)'
+    page_subtitle: Massenbearbeitung (1 Produkt)|Massenbearbeitung (%count% Produkte)
     title: Aktion auswählen
-    subtitle: 'Wählen Sie die Aktion aus, die Sie auf das ausgewählte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produkte anwenden wollen'
-    confirm: 'Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|.'
+    subtitle: Wählen Sie die Aktion aus, die Sie auf das ausgewählte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produkte anwenden wollen
+    confirm: Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|.
     steps:
       first: Produkte auswählen
       second: Aktion auswählen
@@ -130,7 +134,7 @@ pimee_enrich:
       options:
         width: '%value%px Breite'
         height: '%value%px Höhe'
-        ratio: 'Verhältnis %value%%'
+        ratio: Verhältnis %value%%
     thumbnail:
       title: Miniaturansicht
       options:
@@ -143,6 +147,6 @@ edit_common_attributes_with_permission.steps.edit_common_attributes_processor.ti
 job_execution.summary:
   mass_published: Produkt veröffentlicht
   mass_unpublished: Produktveröffentlichung entzogen
-  proposal: Vorschlag angelegt
+  proposal: Vorschlag erstellt
   proposal_deleted: gelöscht
 pim_assets_collection: Sammlung von Assets

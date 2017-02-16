@@ -1,0 +1,14 @@
+pimee_catalog_rule:
+  attribute:
+    list:
+      code.label: Kod
+      condition.label: Stanje
+      action.label: Akcija
+      no_rule_yet.label: Nema pravila za sada
+  rule:
+    condition:
+      if.label: ako
+    action:
+      then.label: tada
+      set_value.label: je postavljen u
+      copy_value.label: kopira se u

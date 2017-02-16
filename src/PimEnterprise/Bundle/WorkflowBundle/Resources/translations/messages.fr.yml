@@ -14,8 +14,8 @@ pimee_workflow:
       can_not_be_approved: Ne peut pas être validé
       can_not_be_deleted: Ne peut pas être supprimé
     status_message:
-      can_not_be_approved: "Vous ne pouvez pas approuver ou refuser cette proposition car elle s'applique à des valeurs que vous ne pouvez pas éditer. Contactez votre administrateur pour modifier vos droits."
-      can_not_be_deleted: "Vous ne pouvez pas supprimer cette proposition qui applique des modifications sur des valeurs que vous ne pouvez pas modifier. S'il vous plaît contactez votre administrateur pour modifier vos droits."
+      can_not_be_approved: Vous ne pouvez pas approuver ou refuser cette proposition car elle s'applique à des valeurs que vous ne pouvez pas éditer. Contactez votre administrateur pour modifier vos droits.
+      can_not_be_deleted: Vous ne pouvez pas supprimer cette proposition qui applique des modifications sur des valeurs que vous ne pouvez pas modifier. S'il vous plaît contactez votre administrateur pour modifier vos droits.
     action:
       approve: Accepter
       refuse: Refuser
@@ -24,10 +24,10 @@ pimee_workflow:
       approve: Approuver les éléments sélectionnés
       refuse: Rejeter les éléments sélectionnés
       error:
-        draft_not_ready: "Cette propostion n'est pas prêt à être approuvée"
-        not_product_owner: "Vous n'êtes pas propriétaire du produit associé à cette proposition"
+        draft_not_ready: Cette propostion n'est pas prêt à être approuvée
+        not_product_owner: Vous n'êtes pas propriétaire du produit associé à cette proposition
         cannot_edit_attributes: Vous ne pouvez pas modifier les attributs modifiés par cette proposition
-        invalid_draft: "La proposition ne peut être appliquée en raison de l'erreur suivante. %error%"
+        invalid_draft: La proposition ne peut être appliquée en raison de l'erreur suivante. %error%
   published_product:
     index: Produits publiés
     title: Produit publié
@@ -60,7 +60,7 @@ flash:
   product_draft:
     approve:
       success: La proposition a été soumise avec succès.
-      error: "La proposition ne peut être soumise en raison de l'erreur suivante. %error%"
+      error: La proposition ne peut être soumise en raison de l'erreur suivante. %error%
     refuse:
       success: La proposition a été rejetée.
 pim_menu:
@@ -70,10 +70,10 @@ pim_menu:
 pim_title:
   published_product:
     index: Produits publiés
-    view: 'Produits publiés %product.sku% | Voir'
+    view: Produits publiés %product.sku% | Voir
   product:
-    dispatch: 'Produits %product.sku%'
-    show: 'Produits %product.sku% | Voir'
+    dispatch: "Produits %product.sku%"
+    show: "Produits %product.sku% | Voir"
   proposal:
     index: Propositions
 btn.editworkingcopy: Editer la copie de travail

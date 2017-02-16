@@ -1,7 +1,7 @@
 pimee_workflow:
   product_draft:
     author: Autor
-    created: Propuesto en
+    created: Propuesto el
     changes: Cambios
     locale: Configuración regional
     product:
@@ -27,7 +27,7 @@ pimee_workflow:
         draft_not_ready: Esta propuesta no está lista para ser aprobada
         not_product_owner: Usted no es propietario del producto asociado a esta proposición
         cannot_edit_attributes: Usted no puede editar los atributos modificados en esta propuesta
-        invalid_draft: 'Esta propuesta no puede aplicarse debido al siguiente error. %error%'
+        invalid_draft: Esta propuesta no puede aplicarse debido al siguiente error. %error%
   published_product:
     index: Productos publicados
     title: Producto publicado
@@ -60,7 +60,7 @@ flash:
   product_draft:
     approve:
       success: La propuesta ha sido aplicada exitosamente.
-      error: 'La propuesta no puede ser aplicada debido al siguiente error. %error%'
+      error: La propuesta no puede ser aplicada debido al siguiente error. %error%
     refuse:
       success: La propuesta ha sido rechazada.
 pim_menu:
@@ -70,17 +70,17 @@ pim_menu:
 pim_title:
   published_product:
     index: Productos publicados
-    view: 'Publicado %product.sku% publicado | Vista'
+    view: Publicado %product.sku% publicado | Vista
   product:
-    dispatch: 'Productos %product.sku%'
-    show: 'Productos %product.sku% | Mostrar'
+    dispatch: "Productos %product.sku%"
+    show: "Productos %product.sku% | Mostrar"
   proposal:
     index: Propuestas
 btn.editworkingcopy: Editar copia de trabajo
 confirmation:
   product:
-    publish: ¿Está seguro que desea publicar este producto?
-    unpublish: ¿Está seguro que desea quitar la publicación este producto ?
+    publish: '¿Está seguro que desea publicar este producto?'
+    unpublish: '¿Está seguro que desea quitar la publicación este producto ?'
 proposal.overview: Propuestas
 Attributes.title: Atributos
 Completeness.title: Completitud

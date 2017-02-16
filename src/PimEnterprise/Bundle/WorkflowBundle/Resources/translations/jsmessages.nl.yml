@@ -1,0 +1,11 @@
+View the product: Bekijk het product
+Unpublish the product: Maak publicatie van dit product ongedaan
+Approve: Keur goed
+Refuse: Keur af
+Approve selected: Geselecteerde goedkeuren
+Refuse selected: Geselecteerde afkeuren
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Wijzig werkkopie

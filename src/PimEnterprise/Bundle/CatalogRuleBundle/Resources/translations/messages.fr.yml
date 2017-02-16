@@ -8,10 +8,10 @@ pimee_catalog_rule:
       rule.view_permissions: Voir les règles
   product:
     tooltip:
-      product_attribute_affected_by_a_rule.content: "La valeur de cet attribut peut provenir d'une ou plusieurs règles <strong>%rule%</strong>. Cela signifie que - dans le cas ou une règle peut s'appliquer -  vos modifications seront écrasées."
-      variant_attribute_affected_by_a_rule.content: "Les valeurs d'attributs liées à un groupe de variantes sont prioritaires sur les valeurs d'attributs du produit. Cela signifie que chaque valeur d'attribut du groupe de variante remplacera systématiquement la valeur d'attribut du produit. La/les règle(s) <strong>%rule%</strong> ne seront pas appliquées au produit."
+      product_attribute_affected_by_a_rule.content: La valeur de cet attribut peut provenir d'une ou plusieurs règles <strong>%rule%</strong>. Cela signifie que - dans le cas ou une règle peut s'appliquer -  vos modifications seront écrasées.
+      variant_attribute_affected_by_a_rule.content: Les valeurs d'attributs liées à un groupe de variantes sont prioritaires sur les valeurs d'attributs du produit. Cela signifie que chaque valeur d'attribut du groupe de variante remplacera systématiquement la valeur d'attribut du produit. La/les règle(s) <strong>%rule%</strong> ne seront pas appliquées au produit.
       loading.title: Chargement en cours...
-    history: 'Application de la règle "%rule%"'
+    history: Application de la règle "%rule%"
   product_value:
     tooltip:
       affected_by.title: 'Champ affecté par une ou plusieurs règles :'

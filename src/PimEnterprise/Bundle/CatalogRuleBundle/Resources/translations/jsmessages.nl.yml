@@ -1,0 +1,14 @@
+pimee_catalog_rule:
+  attribute:
+    list:
+      code.label: Code
+      condition.label: Voorwaarde
+      action.label: Actie
+      no_rule_yet.label: Geen regel voor nu
+  rule:
+    condition:
+      if.label: Als
+    action:
+      then.label: vervolgens
+      set_value.label: is ingesteld in
+      copy_value.label: is gekopieerd naar

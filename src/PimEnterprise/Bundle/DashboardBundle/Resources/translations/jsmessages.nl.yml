@@ -1,0 +1,9 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Datum
+      author: Auteur
+      product: Product
+      review: Recensie
+      empty: Geen voorstellen te herzien
+      view_all: Alles weergeven

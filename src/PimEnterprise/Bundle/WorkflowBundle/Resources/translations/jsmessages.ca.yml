@@ -1,0 +1,11 @@
+View the product: Veure el producte
+Unpublish the product: Despublicar aquest producte
+Approve: Aprobar
+Refuse: Rebutjar
+Approve selected: Aprovar la selecció
+Refuse selected: Rebutja els seleccionats
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Editar la còpia de treball

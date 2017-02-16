@@ -1,0 +1,5 @@
+user:
+  email:
+    notifications: Obavijesti e-poštom
+  asset_delay_reminder: Odgoda podsjećanja o imovini (u danima)
+Default asset tree: Zadano stablo imovine

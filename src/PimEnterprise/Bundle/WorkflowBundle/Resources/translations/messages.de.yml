@@ -27,7 +27,7 @@ pimee_workflow:
         draft_not_ready: Dieser Vorschlag ist noch nicht bereit um genehmigt zu werden
         not_product_owner: Sie besitzen das Produkt welches zu diesem Vorschlag gehört nicht
         cannot_edit_attributes: Sie können die Attribute, welche durch diesen Vorschlag geändert wurden, nicht bearbeiten
-        invalid_draft: 'Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden. %error%'
+        invalid_draft: Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden. %error%
   published_product:
     index: Veröffentlichte Produkte
     title: Veröffentlichtes Produkt
@@ -60,7 +60,7 @@ flash:
   product_draft:
     approve:
       success: Der Vorschlag wurde erfolgreich freigegeben.
-      error: 'Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden. %error%'
+      error: Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden. %error%
     refuse:
       success: Der Vorschlag wurde abgelehnt.
 pim_menu:
@@ -70,10 +70,10 @@ pim_menu:
 pim_title:
   published_product:
     index: Veröffentlichte Produkte
-    view: 'Veröffentlichte Produkte %product.sku% | Ansehen'
+    view: Veröffentlichte Produkte %product.sku% | Ansehen
   product:
-    dispatch: 'Produkte %product.sku%'
-    show: 'Produkte %product.sku% | Zeigen'
+    dispatch: "Produkte %product.sku%"
+    show: "Produkte %product.sku% | Zeigen"
   proposal:
     index: Vorschläge
 btn.editworkingcopy: Arbeitskopie bearbeiten
@@ -93,7 +93,7 @@ job_execution.summary:
   refused: Abgelehnt
   mass_published: Produkt veröffentlicht
   mass_unpublished: Produktveröffentlichung entzogen
-  proposal: Vorschlag angelegt
+  proposal: Vorschlag erstellt
   proposal_deleted: Vorschlag gelöscht
   proposal_updated: Vorschlag aktualisiert
   proposal_created: Vorschlag erstellt

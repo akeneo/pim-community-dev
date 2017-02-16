@@ -1,0 +1,5 @@
+pimee_base_connector:
+  jobs:
+    csv_published_product_export:
+      title: Izvoz objavljenih proizvoda u CSV
+      export.title: Izvoz objavljenih proizvoda

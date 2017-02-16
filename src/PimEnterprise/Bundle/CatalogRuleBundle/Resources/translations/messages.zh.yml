@@ -1,0 +1,7 @@
+pimee_catalog_rule:
+  attribute:
+    grid:
+      is_smart.label: 智能
+  product:
+    tooltip:
+      loading.title: 正在加载...

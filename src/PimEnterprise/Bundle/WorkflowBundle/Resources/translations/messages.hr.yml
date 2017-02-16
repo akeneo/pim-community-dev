@@ -1,0 +1,14 @@
+pimee_workflow:
+  product_draft:
+    author: Autor
+    status:
+      label: Status
+    action:
+      remove: Ukloni
+  product:
+    permission:
+      label: Dozvole
+      edit: Uredi
+      view: Prikaz
+Attributes.title: Atributi
+Completeness.title: Potpunost

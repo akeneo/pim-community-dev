@@ -2,17 +2,17 @@ View the product: Katso tuotte
 pimee_enrich.product_history.action.revert: Palaa tähän versioon
 permission-changes:
   category:
-    grant: 'Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong> tässä kategoriassa'
-    revoke: 'Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong> tässä kategoriassa'
+    grant: Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong> tässä kategoriassa
+    revoke: Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong> tässä kategoriassa
   locale:
-    grant: 'Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong> tällä alueella'
-    revoke: 'Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong> tällä alueella'
+    grant: Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong> tällä alueella
+    revoke: Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong> tällä alueella
   attribute group:
-    grant: 'Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong>tässä attribuuttiryhmässä'
-    revoke: 'Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong>tässä attribuuttiryhmässä'
+    grant: Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong>tässä attribuuttiryhmässä
+    revoke: Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong>tässä attribuuttiryhmässä
   job profile:
-    grant: 'Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong>'
-    revoke: 'Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong>'
+    grant: Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong>
+    revoke: Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong>
 pimee_enrich:
   entity:
     product:
@@ -20,7 +20,7 @@ pimee_enrich:
         published: Julkaistu
         revert: Palauta
       smart_attribute:
-        come_from: 'Tämä attribuutti voidaan päivittää säännöllä:'
+        come_from: "Tämä attribuutti voidaan päivittää säännöllä:"
       btn:
         publish: Julkaise
         publish_this_version: Julkaise tämä versio

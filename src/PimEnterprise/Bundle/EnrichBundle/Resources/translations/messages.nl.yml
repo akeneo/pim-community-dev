@@ -1,0 +1,81 @@
+pim_title.locale:
+  edit: "Lokalisatie %locale.code% | Bewerken"
+Permissions: Machtigingen
+pane.accordion.permissions: Machtigingen
+attribute group.permissions:
+  view.label: Toegestaan om kenmerken te bekijken
+  view.help: Toestaan dat de producten in deze kenmerkgroep te weergeven
+  edit.label: Toegestaan om attributen bewerken
+  edit.help: Sta wijziging van producten in deze kenmerkgroep toe
+  no_access_to_attributes: U heeft geen toegang tot de eigenschappen van dit product. Neem contact op met uw beheerder.
+category.permissions:
+  view.label: Toegestaan om producten te bekijken
+  view.help: Toestaan dat de producten in deze categorie te weergeven
+  edit.label: Toegestaan om producten te bewerken
+  own.label: Toegestaan om producten te beheren
+  apply_on_children.label: Breng wijzigingen aan de onderliggende elementen
+locale.permissions:
+  view.label: Toegestaan om productinformatie te bekijken
+  view.help: Sta het bekijken van productinformatie toe in deze landinstelling
+  edit.label: Toegestaan om productinformatie te bewerken
+btn:
+  save working copy: Werkversie opslaan
+  save draft: Concept opslaan
+  save working copy and next: Werkversie opslaan en verder
+  save draft and next: Opslaan als concept en verder gaan
+  save working copy and finish: Werkversie opslaan en afsluiten
+  save draft and finish: Concept opslaan en afwerking
+  send for approval: Verzenden voor goedkeuring
+  sent for approval: Verzonden voor goedkeuring
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: U heeft geen machtiging om de producten "%identifiers%" te bewerken.
+    publish:
+      label: Product publiceren
+      description: Publiceer de geselecteerde producten, de huidige gepubliceerde data zal overgeschreven worden door de huidige werkkopie.
+      success_flash: De geselecteerde producten zijn succesvol gepubliceerd.
+      not_editable: U heeft geen machtiging om de producten "%identifiers%" te bewerken.
+    published_product:
+      page_title: Gepubliceerde producten
+      title: Kies bewerking
+      confirm: U staat op het punt een gepubliceerd product bij te werken met de volgende informatie. Alstublieft bevestigen. |U staat op het punt %count% gepubliceerde producten bij te werken met de volgende informatie. Alstublieft bevestigen.
+      steps:
+        first: Kies gepubliceerde producten
+        second: Kies bewerking
+    unpublish:
+      label: Depubliceer producten
+      description: De geselecteerde producten de publicatie ongedaan maken, de huidige gepubliceerde gegevens worden gewist.
+      not_editable: U heeft geen machtiging om de producten "%identifiers%" te bewerken.
+pim_enrich.mass_edit_action:
+  limit_exceeded: Kies minder dan %limit% items om te wijzigen
+  product:
+    page_title: Producten
+    page_subtitle: Massa-wijzig (1 product)|Massa-wijzig (%count% producten)
+    title: Kies bewerking
+    subtitle: Kies de bewerking die u wilt uitvoeren op het geselecteerde product|Kies de bewerking die u wilt uitvoeren op de %count% geselecteerde producten
+    steps:
+      second: Kies bewerking
+flash.product_draft.updated: Concept is succesvol opgeslagen
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Machtigingen
+  product:
+    tab:
+      proposal.title: Voorstellen
+  category:
+    tab:
+      permission.title: Machtigingen
+  acl.product_ownership.title: Eigendom
+  attributes:
+    empty: geen
+  groups:
+    label: eigenaar groepen
+    empty: geen
+  asset_transformation:
+    title:
+      transformation: Transformatie
+      options: Opties
+    resolution:
+      title: Resolutie

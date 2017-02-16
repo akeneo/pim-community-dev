@@ -1,0 +1,2 @@
+job_profile.permissions:
+  execute.label: 允许执行任务脚本

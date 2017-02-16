@@ -1,17 +1,56 @@
 pimee_product_asset:
+  acl:
+    asset:
+      index: Wzbogać zasób
+      create: Utwórz zasób
+      remove: Usuwanie zasobu
+  acl_group:
+    category: Kategorie aktywów
   enrich_asset:
     button:
+      upload: Wgraj na serwer
       delete: Usuń
+      download: Pobierz
     view:
       code: Kod
+      description: Opis
+      reference: Referencje
+      filename: Nazwa pliku
+      width: Szerokość
+      height: Wysokość
+      colors: Przestrzeń kolorów
+      filesize: Rozmiar pliku
+      filetype: Typ pliku
+      actions: Działania
+      download: Pobierz
+      tag: Tagi
   popin.create:
     is_localized: Określaj ustawienia regionalne
   code:
     label: Kod
+  thumbnail:
+    label: Miniatura
   status:
     label: Status
+  description:
+    label: Opis
   createdAt:
     label: Data utworzenia
+  updatedAt:
+    label: Ostatnia aktualizacja w
+  tags:
+    label: Tagi
   tabs:
     properties.title: Właściwości
+    variations.title: Wariacje
     categories.title: Kategorie
+  notAvailable:
+    label: nie dostępne
+  mass_upload:
+    add_files: dodaj pliki
+    start: Zacznij wysyłanie
+    cancel: Anuluj wysyłanie
+    executed: Masowego wysyłania wykonywane
+  category:
+    menu: Kategorie aktywów
+btn.create.asset: Utwórz zasób
