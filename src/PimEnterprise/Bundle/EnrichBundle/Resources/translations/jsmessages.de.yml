@@ -14,13 +14,24 @@ permission-changes:
     grant: Die Gruppe <strong>{{ group }}</strong> wird <strong>{{ permission }}</strong> sein
     revoke: Die Gruppe <strong>{{ group }}</strong> wird nicht <strong>{{ permission }}</strong> sein
 pimee_enrich:
+  form:
+    job_instance:
+      tab:
+        permission:
+          title: Berechtigungen
+          execute.label: Berechtigt Job-Profil auszuführen
+          edit.label: Berechtigt Job-Profil zu bearbeiten
+    channel:
+      tab:
+        asset-transformation:
+          title: Assetumwandlungen
   entity:
     product:
       history:
         published: Veröffentlicht
         revert: Wiederherstellen
       smart_attribute:
-        come_from: 'Dieses Attribut kann durch eine Regel aktualisiert werden:'
+        come_from: "Dieses Attribut kann durch eine Regel aktualisiert werden:"
       btn:
         publish: Veröffentlichen
         publish_this_version: Diese Version veröffentlichen
@@ -37,8 +48,8 @@ pimee_enrich:
         owner_groups: Eigentümer-Gruppen
         draft_status: Entwurfsstatus
         draft:
-          in_progress: In Bearbeitung
-          sent_for_approval: Auf Genehmigung wartend
+          in_progress: In Arbeit
+          sent_for_approval: Auf Genehmigung warten
           working_copy: Arbeitskopie
       tab:
         proposals:
@@ -69,7 +80,7 @@ pimee_enrich:
         source:
           working_copy: Arbeitskopie
           draft: Mein Entwurf
-          draft_of: Entwurf von {{ author }}
+          draft_of: "Entwurf von {{ author }}"
     product_draft:
       info:
         update_successful: Produktentwurf wurde erfolgreich gespeichert
@@ -87,7 +98,7 @@ pimee_enrich:
         reject_proposal: Vorschlag ablehnen
         reject_selected_proposal: Ausgewählte Vorschläge ablehnen
         remove_proposal: Vorschlag entfernen
-        send_for_approval: Zur Genehmigung senden
+        send_for_approval: Zur Freigabe senden
         cancel: Abbrechen
         confirm: Senden
         title: Kommentar zu Ihrem Vorschlag (optional - max. 255 Zeichen)
@@ -95,3 +106,33 @@ pimee_enrich:
       confirmation:
         discard_changes: Ungespeicherte Änderungen gehen verloren. Sind Sie sicher, dass Sie den Produktentwurf mit den ungespeicherten Anpassungen zur Freigabe senden möchten?
         discard_changes_title: Sind Sie sicher, dass Sie diesen Produktentwurf absenden möchten?
+  asset_transformation:
+    not_found: Keine Umwandlung gefunden
+    title:
+      transformation: Umwandlung
+      options: Optionen
+    colorspace:
+      title: Farbraum
+      options:
+        colorspace: '%value% Farbraum'
+    resize:
+      title: Größe anpassen
+      options:
+        width: '%value%px Breite'
+        height: '%value%px Höhe'
+    resolution:
+      title: Auflösung
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Skalierung
+      options:
+        width: '%value%px Breite'
+        height: '%value%px Höhe'
+        ratio: Verhältnis %value%%
+    thumbnail:
+      title: Miniaturansicht
+      options:
+        width: '%value%px Breite'
+        height: '%value%px Höhe'

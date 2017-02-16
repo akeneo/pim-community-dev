@@ -24,7 +24,7 @@ pimee_workflow:
     action:
       approve: Aprobar todos
       refuse: Rechazar todos
-      remove: Eliminar
+      remove: Quitar
       partial_approve: Aprobar cambios en atributo %attribute% de el producto %product%
       partial_reject: Rechazar cambios en atributo %attribute% del producto %product%
     notification:
@@ -66,14 +66,14 @@ pimee_workflow:
       view: Vista
   steps:
     product_draft_processor.title: Procesador de propuesta
-    approve.title: Aprobar la proposición
+    approve.title: Aprobar la propuesta
     refuse.title: Rechazar la proposición
   mass_edit_action:
     published:
       page_title: Productos publicados
       page_subtitle: Edición en masa (1 producto publicado)|Edición en masa (%count% productos publicados)
       title: Elegir operación
-      subtitle: Seleccione la operación que desea ejecutar en el producto publicado que ha seleccionado|Seleccione la operación que desea ejecutar en los %count% productos publicados que ha seleccionado
+      subtitle: Seleccione la operación que desea ejecutar en los productos publicados que ha seleccionado|Seleccione la operación que desea ejecutar en los %count% productos publicados que ha seleccionado
       confirm: Está a punto de actualizar un producto publicado con la siguiente información, por favor confirme.|Está a punto de actualizar %count% productos publicados con la siguiente información, por favor confirme.
       steps:
         first: Seleccione los productos publicados
@@ -101,7 +101,7 @@ flash:
     refuse:
       success: La propuesta ha sido rechazada.
     remove:
-      success: La propuesta ha sido removida.
+      success: La propuesta ha sido eliminada.
 pim_menu:
   item:
     published_product: Productos publicados
@@ -111,8 +111,8 @@ pim_title:
     index: Productos publicados
     view: Publicado %product.sku% publicado | Vista
   product:
-    dispatch: Productos %product.sku%
-    show: Productos %product.sku% | Mostrar
+    dispatch: "Productos %product.sku%"
+    show: "Productos %product.sku% | Mostrar"
   proposal:
     index: Propuestas
 btn.editworkingcopy: Editar copia de trabajo

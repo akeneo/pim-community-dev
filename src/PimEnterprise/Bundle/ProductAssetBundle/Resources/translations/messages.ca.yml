@@ -175,7 +175,7 @@ job_execution.summary:
   skipped_assets: Recursos omesos
 assets_mass_upload.steps:
   asset_mass_upload.title: Carregar recursos en massa
-import_asset.steps.channel_configuration_processor.title: Configuracions de procés del canal
+import_asset.steps.channel_configuration_processor.title: Configuracions del procés de canal
 mass_upload: Recursos de càrrega en massa
 batch_jobs:
   apply_assets_mass_upload:

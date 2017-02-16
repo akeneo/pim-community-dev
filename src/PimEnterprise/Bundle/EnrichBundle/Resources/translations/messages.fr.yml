@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: Locale %locale.code% | Modifier
+  edit: "Locale %locale.code% | Modifier"
 Permissions: Permissions
 pane.accordion.permissions: Permissions
 attribute group.permissions:
@@ -56,7 +56,7 @@ pim_enrich:
         error: Vous n'êtes pas le propriétaire du produit, vous ne pouvez pas le publier.
         warning: Vous n'êtes pas propriétaire de tous les produits sélectionnés. Vous ne pouvez pas publier les produits "%notGranted%".
         info: Les %nbProducts% produits sélectionnés vont être publiés.
-      not_editable: Vous n'avez pas les permissions d'éditer les produits "%identifiers%".
+      not_editable: Vous n'avez pas le droit de modifier les produits "%identifiers%".
     unpublish:
       label: Dépublier des produits
       description: Dépublier les produits sélectionnés, les données actuellement publiées seront supprimées.
@@ -66,7 +66,7 @@ pim_enrich:
         error: Vous n'êtes pas le propriétaire du produit, vous ne pouvez pas le dépublier.
         warning: Vous n'êtes pas le propriétaire de tous les produits sélectionnés. Vous ne pouvez pas dépublier les produits "%notGranted%".
         info: Les %nbProducts% produits sélectionnés vont être dépubliés.
-      not_editable: Vous n'avez pas la permission d'éditer les produits "%identifiers%".
+      not_editable: Vous n'avez pas le droit de modifier les produits "%identifiers%".
     classify:
       message:
         error: Vous n'êtes pas le propriétaire du produit, vous ne pouvez pas le classifier.
@@ -80,13 +80,13 @@ flash.locale.updated: Les locales et les permissions ont bien étés mises à jo
 pimee_enrich:
   attribute_group:
     tab:
-      permission.title: Autorisations 
+      permission.title: Permissions
   product:
     tab:
       proposal.title: Propositions
   category:
     tab:
-      permission.title: Autorisations 
+      permission.title: Permissions
   locale:
     tab:
       permission.title: Permissions
@@ -147,13 +147,13 @@ batch_jobs:
     execute_rules.label: Exécution des règles
   remove_product_value_with_permission_and_rules:
     label: Supprime une valeur de produit avec vérification des permissions et application des règles
-    perform.label: Mise à jour de la valeur du produit
+    perform.label: Suppression de la valeur du produit
     execute_rules.label: Exécution des règles
   edit_common_attributes_with_permission_and_rules:
     label: Mettre à jour les attributs communs avec vérification des permissions et application des règles
     perform.label: Modifier les attributs communs
     execute_rules.label: Exécution des règles
-    clean.label: Nettoyage des fichiers temporaires
+    cleaner.label: Nettoyage des fichiers temporaires
   add_to_variant_group_with_rules:
     label: Ajouter des produits au groupe de variantes avec application de règles
     perform.label: Ajouter des produits à un groupe de variantes
@@ -173,7 +173,7 @@ batch_jobs:
   xlsx_published_product_grid_context_quick_export:
     export.label: Export rapide XLSX des produits publiés dans le contexte de grille
     perform:
-      label: Export rapide CSV des produits publiés dans le contexte de grille
+      label: Export rapide XLSX des produits publiés dans le contexte de grille
 add_to_variant_group_with_rules:
   steps.perform: Ajouter des produits à un groupe de variantes
   steps.excluded.title: Produit exclu
@@ -185,9 +185,9 @@ remove_product_value_with_permission.steps.update_product_value_with_permission_
 edit_common_attributes_with_permission: Édition des attributs communs avec permission
 edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Édition des attributs communs avec permission
 job_execution.summary:
-  mass_published: Produit publié
+  mass_published: Produit(s) publié(s)
   mass_unpublished: Produit dépublié
-  proposal: Proposition créée
+  proposal: Proposition(s) créée(s)
   proposal_deleted: supprimé
 pim_assets_collection: Collection de ressources
 pim_enrich_attribute_form:

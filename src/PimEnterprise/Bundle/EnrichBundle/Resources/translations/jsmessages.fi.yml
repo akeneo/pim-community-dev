@@ -1,4 +1,4 @@
-View the product: Näytä tuote
+View the product: Katso tuotte
 pimee_enrich.product_history.action.revert: Palaa tähän versioon
 permission-changes:
   category:
@@ -14,13 +14,24 @@ permission-changes:
     grant: Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong>
     revoke: Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong>
 pimee_enrich:
+  form:
+    job_instance:
+      tab:
+        permission:
+          title: Käyttöoikeudet
+          execute.label: Työprofiilin suorittaminen sallittu
+          edit.label: Työprofiilin muokkaaminen sallittu
+    channel:
+      tab:
+        asset-transformation:
+          title: Resurssien muunnokset
   entity:
     product:
       history:
         published: Julkaistu
         revert: Palauta
       smart_attribute:
-        come_from: 'Tämä attribuutti voidaan päivittää säännöllä:'
+        come_from: "Tämä attribuutti voidaan päivittää säännöllä:"
       btn:
         publish: Julkaise
         publish_this_version: Julkaise tämä versio
@@ -37,7 +48,7 @@ pimee_enrich:
         owner_groups: Omistajaryhmät
         draft_status: Luonnoksen tila
         draft:
-          in_progress: Työn alla
+          in_progress: Toiminto käynnissä
           sent_for_approval: Odottaa hyväksyntää
           working_copy: Työkopio
       tab:
@@ -64,12 +75,12 @@ pimee_enrich:
           title: Peruuta tuotteen julkaisu
           content: Oletko varma että haluat peruuttaa tuotteen julkaisun?
       info:
-        update_successful: Tuotteen työkopio on päivitetty
+        update_successful: Tuotteen työn alla oleva kopio on päivitetty
       copy:
         source:
           working_copy: Työkopio
           draft: Luonnokseni
-          draft_of: '{{ author }}: n luonnos'
+          draft_of: "{{ author }}: n luonnos"
     product_draft:
       info:
         update_successful: Tuotteen luonnos tallennettu onnistuneesti
@@ -88,10 +99,40 @@ pimee_enrich:
         reject_selected_proposal: Hylkää valittu ehdotus / ehdotukset
         remove_proposal: Poista ehdotus
         send_for_approval: Lähetä hyväksyttäväksi
-        cancel: Hylkää
+        cancel: Peruuta
         confirm: Lähetä
         title: Kommentoi ehdotustasi (valinnainen - 255 merkkiä max)
         characters: merkkiä
       confirmation:
         discard_changes: Tallentamattomat muutokset menetetään. Oletko varma että haluat lähettää luonnoksesi hyväksyttäväksi ilman tallentamattomia muutoksia?
         discard_changes_title: Oletko varma että haluat lähettää tämän luonnoksen?
+  asset_transformation:
+    not_found: Ei muunnosta löydettävissä
+    title:
+      transformation: Muunnos
+      options: Vaihtoehdot
+    colorspace:
+      title: Väriavaruus
+      options:
+        colorspace: '%value% väriavaruus'
+    resize:
+      title: Muokkaa kokoa
+      options:
+        width: '%value%px leveys'
+        height: '%value%px korkeus'
+    resolution:
+      title: Resoluutio
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Asteikko
+      options:
+        width: '%value%px leveys'
+        height: '%value%px korkeus'
+        ratio: '%value%% suhde'
+    thumbnail:
+      title: Pikkukuva
+      options:
+        width: '%value%px leveys'
+        height: '%value%px korkeus'
