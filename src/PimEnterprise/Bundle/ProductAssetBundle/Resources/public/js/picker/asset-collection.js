@@ -25,7 +25,7 @@ define(
         FormBuilder
     ) {
         return Backbone.View.extend({
-            className: 'asset-collection-picker',
+            className: 'AknAssetCollectionField',
             data: [],
             context: {},
             template: _.template(template),
@@ -91,6 +91,7 @@ define(
 
                 FormBuilder.build('pimee-product-asset-picker-form').then(function (form) {
                     var modal = new Backbone.BootstrapModal({
+                        className: 'modal modal-large',
                         modalOptions: {
                             backdrop: 'static',
                             keyboard: false

@@ -1,12 +1,22 @@
-<div class="categories-container">
-    <div id="asset-tree" data-datalocale="<%= locale %>" data-name="category" data-type="tree" class="filter-item" data-relatedentity="asset"></div>
-</div>
-<div class="separator"></div>
-<div id="asset-picker-grid" class="asset-grid">
-    <div id="grid-asset-picker-grid" data-type="datagrid"></div>
-</div>
-<div class="basket"></div>
-
-<div class="selection-inputs">
-    <input type="hidden" id="asset-appendfield"/>
+<div class="AknColumnConfigurator">
+    <div class="AknColumnConfigurator-column AknColumnConfigurator-column--withAuto">
+        <div class="AknColumnConfigurator-listContainer">
+            <div class="categories-container">
+                <div id="asset-tree" data-datalocale="<%= locale %>" data-name="category" data-type="tree" class="filter-item" data-relatedentity="asset"></div>
+            </div>
+        </div>
+    </div>
+    <div class="AknColumnConfigurator-column AknColumnConfigurator-column--withAuto">
+        <div class="AknColumnConfigurator-listContainer">
+            <div id="asset-picker-grid" class="asset-grid">
+                <div id="grid-asset-picker-grid" data-type="datagrid"></div>
+            </div>
+        </div>
+    </div>
+    <div class="AknColumnConfigurator-column AknColumnConfigurator-column--withAuto">
+        <div class="basket"></div>
+        <div class="selection-inputs">
+            <input type="hidden" id="asset-appendfield"/>
+        </div>
+    </div>
 </div>
