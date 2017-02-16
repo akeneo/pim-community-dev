@@ -342,7 +342,7 @@ pim_enrich:
           title: Canal
           help: El canal define el objetivo de los valores del producto, los locales utilizados para seleccionar los datos, y el árbol usado para seleccionar los productos.
         locales:
-          title: Idiomas
+          title: Locales
           help: 'Los locales definen los valores de producto traducidos a exportar. Ej.: sólo obtener información de producto en inglés.'
         attributes:
           title: Atributos

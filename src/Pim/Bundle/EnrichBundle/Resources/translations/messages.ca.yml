@@ -675,6 +675,8 @@ pim_catalog_image: Imatge
 pim_catalog_boolean: "Sí/No"
 pim_catalog_date: Data
 pim_catalog_metric: Mètrica
+pim_reference_data_simpleselect: Selecció simple de dades de referència
+pim_reference_data_multiselect: Selecció múltiple de dades de referència
 Activated: Activat
 Disable: Deshabilitar
 pim_enrich.sequential_edit_action:
