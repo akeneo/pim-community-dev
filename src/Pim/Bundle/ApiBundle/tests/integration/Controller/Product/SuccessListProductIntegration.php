@@ -101,7 +101,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     }
 
     /**
-     * Get all products, whatever locale, channel, category
+     * Get all products, whatever locale, scope, category
      */
     public function testListProductsWithoutParameter()
     {
@@ -278,7 +278,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     }
 
     /**
-     * Channel "ecommerce" has only "en_US" activated locale and it category tree linked is "master"
+     * Scope "ecommerce" has only "en_US" activated locale and it category tree linked is "master"
      * So PV are returned only if:
      *    - scope = "ecommerce"
      *    - locale = "en_US" or null
@@ -288,12 +288,12 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?channel=ecommerce');
+        $client->request('GET', 'api/rest/v1/products?scope=ecommerce');
         $expected = [
             '_links'       => [
-                'self'  => ['href' => 'http://localhost/api/rest/v1/products?channel=ecommerce&page=1&limit=10'],
-                'first' => ['href' => 'http://localhost/api/rest/v1/products?channel=ecommerce&page=1&limit=10'],
-                'last'  => ['href' => 'http://localhost/api/rest/v1/products?channel=ecommerce&page=1&limit=10'],
+                'self'  => ['href' => 'http://localhost/api/rest/v1/products?scope=ecommerce&page=1&limit=10'],
+                'first' => ['href' => 'http://localhost/api/rest/v1/products?scope=ecommerce&page=1&limit=10'],
+                'last'  => ['href' => 'http://localhost/api/rest/v1/products?scope=ecommerce&page=1&limit=10'],
             ],
             'current_page' => 1,
             'pages_count'  => 1,
@@ -406,7 +406,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     }
 
     /**
-     * Channel "tablet" has "fr_FR" and "en_US" activated locales and it category tree linked is "master"
+     * Scope "tablet" has "fr_FR" and "en_US" activated locales and it category tree linked is "master"
      * So PV are returned only if:
      *     - scope = "tablet"
      *     - locale = "en_US", "fr_FR" or null
@@ -416,12 +416,12 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?channel=tablet');
+        $client->request('GET', 'api/rest/v1/products?scope=tablet');
         $expected = [
             '_links'       => [
-                'self'  => ['href' => 'http://localhost/api/rest/v1/products?channel=tablet&page=1&limit=10'],
-                'first' => ['href' => 'http://localhost/api/rest/v1/products?channel=tablet&page=1&limit=10'],
-                'last'  => ['href' => 'http://localhost/api/rest/v1/products?channel=tablet&page=1&limit=10'],
+                'self'  => ['href' => 'http://localhost/api/rest/v1/products?scope=tablet&page=1&limit=10'],
+                'first' => ['href' => 'http://localhost/api/rest/v1/products?scope=tablet&page=1&limit=10'],
+                'last'  => ['href' => 'http://localhost/api/rest/v1/products?scope=tablet&page=1&limit=10'],
             ],
             'current_page' => 1,
             'pages_count'  => 1,
@@ -536,7 +536,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     }
 
     /**
-     * Filter on channel "tablet" and locale "fr_FR"
+     * Filter on scope "tablet" and locale "fr_FR"
      * So PV are returned only if:
      *     - scope = "tablet"
      *     - locale = "fr_FR" or null
@@ -546,12 +546,12 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?channel=tablet&locales=fr_FR');
+        $client->request('GET', 'api/rest/v1/products?scope=tablet&locales=fr_FR');
         $expected = [
             '_links'       => [
-                'self'  => ['href' => 'http://localhost/api/rest/v1/products?channel=tablet&locales=fr_FR&page=1&limit=10'],
-                'first' => ['href' => 'http://localhost/api/rest/v1/products?channel=tablet&locales=fr_FR&page=1&limit=10'],
-                'last'  => ['href' => 'http://localhost/api/rest/v1/products?channel=tablet&locales=fr_FR&page=1&limit=10'],
+                'self'  => ['href' => 'http://localhost/api/rest/v1/products?scope=tablet&locales=fr_FR&page=1&limit=10'],
+                'first' => ['href' => 'http://localhost/api/rest/v1/products?scope=tablet&locales=fr_FR&page=1&limit=10'],
+                'last'  => ['href' => 'http://localhost/api/rest/v1/products?scope=tablet&locales=fr_FR&page=1&limit=10'],
             ],
             'current_page' => 1,
             'pages_count'  => 1,
@@ -664,7 +664,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     }
 
     /**
-     * Channel "ecommerce_china" has "CNY" activated locale and it category tree linked is "master_china"
+     * Scope "ecommerce_china" has "CNY" activated locale and it category tree linked is "master_china"
      * So PV are returned only if:
      *     - scope = "ecommerce_china"
      *     - locale = "en_US", "zh_CN" or null
@@ -674,12 +674,12 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?channel=ecommerce_china');
+        $client->request('GET', 'api/rest/v1/products?scope=ecommerce_china');
         $expected = [
             '_links'       => [
-                'self'  => ['href' => 'http://localhost/api/rest/v1/products?channel=ecommerce_china&page=1&limit=10'],
-                'first' => ['href' => 'http://localhost/api/rest/v1/products?channel=ecommerce_china&page=1&limit=10'],
-                'last'  => ['href' => 'http://localhost/api/rest/v1/products?channel=ecommerce_china&page=1&limit=10'],
+                'self'  => ['href' => 'http://localhost/api/rest/v1/products?scope=ecommerce_china&page=1&limit=10'],
+                'first' => ['href' => 'http://localhost/api/rest/v1/products?scope=ecommerce_china&page=1&limit=10'],
+                'last'  => ['href' => 'http://localhost/api/rest/v1/products?scope=ecommerce_china&page=1&limit=10'],
             ],
             'current_page' => 1,
             'pages_count'  => 1,
@@ -1029,12 +1029,12 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?channel=tablet&locales=fr_FR&attributes=a_scopable_price,a_metric,a_localized_and_scopable_text_area');
+        $client->request('GET', 'api/rest/v1/products?scope=tablet&locales=fr_FR&attributes=a_scopable_price,a_metric,a_localized_and_scopable_text_area');
         $expected = [
             '_links'       => [
-                'self'  => ['href' => 'http://localhost/api/rest/v1/products?channel=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area&page=1&limit=10'],
-                'first' => ['href' => 'http://localhost/api/rest/v1/products?channel=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area&page=1&limit=10'],
-                'last'  => ['href' => 'http://localhost/api/rest/v1/products?channel=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area&page=1&limit=10'],
+                'self'  => ['href' => 'http://localhost/api/rest/v1/products?scope=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area&page=1&limit=10'],
+                'first' => ['href' => 'http://localhost/api/rest/v1/products?scope=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area&page=1&limit=10'],
+                'last'  => ['href' => 'http://localhost/api/rest/v1/products?scope=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area&page=1&limit=10'],
             ],
             'current_page' => 1,
             'pages_count'  => 1,

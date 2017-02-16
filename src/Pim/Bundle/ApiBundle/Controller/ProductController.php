@@ -162,11 +162,11 @@ class ProductController
         }
 
         $channel = null;
-        if ($request->query->has('channel')) {
-            $channel = $this->channelRepository->findOneByIdentifier($request->query->get('channel'));
+        if ($request->query->has('scope')) {
+            $channel = $this->channelRepository->findOneByIdentifier($request->query->get('scope'));
             if (null === $channel) {
                 throw new UnprocessableEntityHttpException(
-                    sprintf('Channel "%s" does not exist.', $request->query->get('channel'))
+                    sprintf('Scope "%s" does not exist.', $request->query->get('scope'))
                 );
             }
         }
@@ -349,7 +349,7 @@ class ProductController
 
     /**
      * Set the PQB filters.
-     * If a channel is requested, add a filter to return only products linked to its category tree
+     * If a scope is requested, add a filter to return only products linked to its category tree
      *
      * @param ProductQueryBuilderInterface $pqb
      * @param Request                      $request
@@ -411,7 +411,7 @@ class ProductController
                 }
 
                 $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $request->query->get('search_locale');
-                $context['scope'] = isset($filter['scope']) ? $filter['scope'] : $request->query->get('search_channel');
+                $context['scope'] = isset($filter['scope']) ? $filter['scope'] : $request->query->get('search_scope');
                 $value = isset($filter['value']) ? $filter['value'] : null;
 
                 $pqb->addFilter($propertyCode, $filter['operator'], $value, $context);
@@ -429,7 +429,7 @@ class ProductController
     {
         $normalizerOptions = [];
 
-        if ($request->query->has('channel')) {
+        if ($request->query->has('scope')) {
             $normalizerOptions['channels'] = [$channel->getCode()];
             $normalizerOptions['locales'] = $channel->getLocaleCodes();
         }
@@ -478,7 +478,7 @@ class ProductController
             if ($diff = array_diff($locales, $channel->getLocaleCodes())) {
                 $plural = sprintf(count($diff) > 1 ? 'Locales "%s" are' : 'Locale "%s" is', implode(', ', $diff));
                 throw new UnprocessableEntityHttpException(
-                    sprintf('%s not activated for the channel "%s".', $plural, $channel->getCode())
+                    sprintf('%s not activated for the scope "%s".', $plural, $channel->getCode())
                 );
             }
         }
