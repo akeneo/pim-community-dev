@@ -57,6 +57,8 @@ flash:
   role:
     removed: Rol eliminado correctamente
 error:
+  creating:
+    product: Ningún atributo se ha configurado como identificador de producto o usted no posee derechos de edición.
   removing:
     item: No se puede eliminar este elemento
     association_type: No se puede eliminar este tipo de asociación
@@ -206,6 +208,10 @@ pim_enrich:
           cancel: Cancelar
     association_type:
       info:
+        deletion_successful: Tipo de asociación eliminado correctamente.
+        deletion_failed: No se ha podido eliminar correctamente el tipo de asociación.
+        update_successful: Tipo de asociación actualizado correctamente.
+        update_failed: No se ha podido actualizar el tipo de asociación.
         field_not_ready:
           The association type cannot be saved right now. The following fields are not ready:
             - campos
@@ -218,6 +224,12 @@ pim_enrich:
         save: Guardar
     channel:
       info:
+        deletion_successful: Canal eliminado correctamente.
+        deletion_failed: No se ha podido eliminar el canal.
+        update_successful: Canal actualizado correctamente.
+        update_failed: No se ha podido actualizar el canal.
+        create_successful: Canal creado correctamente.
+        create_failed: No se ha podido crear el canal.
         field_not_ready:
           The channel cannot be saved right now. The following fields are not ready:
             - campos
@@ -270,6 +282,9 @@ pim_enrich:
         created_by: Creado por
         updated: Actualizado
         updated_by: Actualizado por
+    job_instance:
+      info:
+        update_failed: No se ha podido actualizar el perfil de trabajo.
   confirmation:
     leave: '¿Está seguro que desea salir de esta página?'
     discard_changes: Perderá los cambios realizados sobre {{ entity }} si abandona esta página.
@@ -359,7 +374,7 @@ pim_enrich:
           general: General
           code: Código
           currencies: Monedas
-          locales: Idiomas
+          locales: Locales
           category_tree: Árbol de categoría
           label_translations: Traducciones de etiqueta
           label_conversion_units: Elegir una unidad de conversión para cada atributo métrico que se utilizará durante la exportación del producto
@@ -414,6 +429,12 @@ pim_enrich:
             search_attributes: Buscar...
             no_available_attributes: No hay más atributos para agregar
     job_instance:
+      fail:
+        launch: Se ha producido un error al lanzar el perfil de trabajo. Asegúrese que sea válido y que usted posee los derechos para ejecutarlo.
+        save: Se ha producido un error al salvar el perfil de trabajo. Asegúrese que posee el permiso de edición.
+      title:
+        import: Perfil de importación
+        export: Perfil de exportación
       button:
         edit.title: Editar
         export.title: Exportar Ahora
@@ -481,6 +502,8 @@ pim_enrich:
             help: Significa que el historial del producto es actualizada automáticamente, puede ser desactivada para mejorar el desempeño
         history:
           title: Histórico
+  job:
+    upload: Arrastrar y soltar un fichero o haga clic aquí
   export:
     product:
       data:
@@ -494,7 +517,7 @@ pim_enrich:
           title: Canal
           help: El canal define el objetivo de los valores del producto, los locales utilizados para seleccionar los datos, y el árbol usado para seleccionar los productos.
         locales:
-          title: Idiomas
+          title: Locales
           help: 'Los locales definen los valores de producto traducidos a exportar. Ej.: sólo obtener información de producto en inglés.'
         attributes:
           title: Atributos
