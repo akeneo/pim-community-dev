@@ -20,7 +20,7 @@ pimee_enrich:
         published: Опубликован
         revert: Восстановить
       smart_attribute:
-        come_from: 'Этот атрибут может обновляться по правилу:'
+        come_from: "Этот атрибут может обновляться по правилу:"
       btn:
         publish: Опубликовать
         publish_this_version: Опубликовать эту версию
@@ -69,7 +69,7 @@ pimee_enrich:
         source:
           working_copy: Рабочая копия
           draft: Мои черновики
-          draft_of: Черновики пользователя {{ author }}
+          draft_of: "Черновики пользователя {{ author }}"
     product_draft:
       info:
         update_successful: Черновик продукта успешно сохранен

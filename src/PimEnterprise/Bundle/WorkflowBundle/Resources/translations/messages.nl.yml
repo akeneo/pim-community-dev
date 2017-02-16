@@ -65,7 +65,9 @@ pimee_workflow:
     published:
       page_title: Gepubliceerde producten
       title: Kies bewerking
+      confirm: U staat op het punt een gepubliceerd product bij te werken met de volgende informatie. Alstublieft bevestigen. |U staat op het punt %count% gepubliceerde producten bij te werken met de volgende informatie. Alstublieft bevestigen.
       steps:
+        first: Kies gepubliceerde producten
         second: Kies bewerking
         third: Configureer
         fourth: Bevestig
@@ -93,8 +95,8 @@ pim_title:
     index: Gepubliceerde producten
     view: Gepubliceerde producten %product.sku% | Bekijk
   product:
-    dispatch: Producten %product.sku%
-    show: Producten %product.sku% | Toon
+    dispatch: "Producten %product.sku%"
+    show: "Producten %product.sku% | Toon"
   proposal:
     index: Voorstellen
 btn.editworkingcopy: Wijzig werkkopie
@@ -106,3 +108,9 @@ proposal.overview: Voorstellen
 Attributes.title: Kenmerken
 Completeness.title: Volledigheid
 published products: Gepubliceerde producten
+batch_jobs:
+  csv_published_product_export:
+    label: Gepubliceerd product exporteren in CSV
+    export.label: Gepubliceerd product exporteren
+  xlsx_published_product_export:
+    export.label: Gepubliceerd product exporteren

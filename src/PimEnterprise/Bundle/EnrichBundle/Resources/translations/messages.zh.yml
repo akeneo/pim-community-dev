@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: 本地%locale.code% |编辑
+  edit: "本地%locale.code% |编辑"
 Permissions: 权限
 pane.accordion.permissions: 权限
 pim_enrich:

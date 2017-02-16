@@ -90,3 +90,19 @@ btn.create.asset: Creëer een kenmerk
 batch_jobs:
   apply_assets_mass_upload:
     perform.label: Massa upload
+  yml_asset_channel_configuration_import:
+    validation.label: Bestandsvalidatie
+  csv_asset_import:
+    validation.label: Bestandsvalidatie
+  csv_tag_import:
+    validation.label: Bestandsvalidatie
+  csv_asset_category_import:
+    validation.label: Bestandsvalidatie
+  csv_asset_configuration_import:
+    validation.label: Bestandsvalidatie
+  xlsx_tag_import:
+    validation.label: Bestandsvalidatie
+  xlsx_asset_import:
+    validation.label: Bestandsvalidatie
+  xlsx_asset_category_import:
+    validation.label: Bestandsvalidatie

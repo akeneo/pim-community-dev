@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: Lokalisatie %locale.code% | Bewerken
+  edit: "Lokalisatie %locale.code% | Bewerken"
 Permissions: Machtigingen
 pane.accordion.permissions: Machtigingen
 attribute group.permissions:

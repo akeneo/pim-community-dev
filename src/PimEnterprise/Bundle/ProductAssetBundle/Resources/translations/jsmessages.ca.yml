@@ -46,6 +46,7 @@ pimee_product_asset:
       exists: Ja s'ha importat un arxiu amb el mateix nom
       conflicts: Conflicte de nom d'arxius
     grid:
+      medias: mitjans
       filename: nom d'arxiu
       filetype: tipus d'arxiu
       status: estat

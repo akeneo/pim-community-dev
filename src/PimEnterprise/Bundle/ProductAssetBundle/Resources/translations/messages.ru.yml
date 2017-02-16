@@ -110,8 +110,6 @@ pimee_product_asset:
       not_empty: Код требуется. Он не может быть пустым.
       unique: Код должен быть уникальным.
       new_generation: Мы создали новый для Вас.
-  jobs:
-    assets_mass_upload.title: Масс загрузка медиафайлов
   notAvailable:
     label: недоступно
   asset:

@@ -5,25 +5,29 @@ pimee_catalog_rule:
         delete: 删除
       column:
         code: 代码
+        conditions: 条件：
         actions: 操作
         impacted_product_count:
           no_yet_calculated: 尚未计算
   condition:
     operators:
-      STARTS WITH: 开始于
-      ENDS WITH: 结束于
-      CONTAINS: 包含
-      DOES NOT CONTAIN: 不包含
-      EMPTY: 为空
-      BETWEEN: 介于
-      NOT BETWEEN: 不介于
-      <: 小于
+      "STARTS WITH": 开始于
+      "ENDS WITH": 结束于
+      "CONTAINS": 包含
+      "DOES NOT CONTAIN": 不包含
+      "EMPTY": 为空
+      "BETWEEN": 介于
+      "NOT BETWEEN": 不介于
+      "<": 小于
   attribute:
     grid:
       is_smart.label: 智能
   product:
     tooltip:
       loading.title: 正在加载...
+  popin:
+    execute_rules:
+      confirm_title: 执行确认
 batch_jobs:
   csv_product_import_with_rules:
     validation.label: 文件验证
