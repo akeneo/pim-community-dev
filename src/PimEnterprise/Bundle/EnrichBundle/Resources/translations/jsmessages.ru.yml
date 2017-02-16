@@ -1,4 +1,4 @@
-View the product: Просмотреть продукт
+View the product: Посмотреть продукт
 pimee_enrich.product_history.action.revert: Вернуться к этой версии
 permission-changes:
   category:
@@ -14,17 +14,28 @@ permission-changes:
     grant: Группа <strong>{{ group }} будет {{ permission }}</strong>
     revoke: Группа <strong>{{ group }} не будет {{ permission }}</strong>
 pimee_enrich:
+  form:
+    job_instance:
+      tab:
+        permission:
+          title: Права доступа
+          execute.label: Разрешено выполнение заданий профиля
+          edit.label: Разрешено изменение заданий профиля
+    channel:
+      tab:
+        asset-transformation:
+          title: Преобразования активов
   entity:
     product:
       history:
         published: Опубликован
         revert: Восстановить
       smart_attribute:
-        come_from: 'Этот атрибут может обновляться по правилу:'
+        come_from: "Этот атрибут может обновляться по правилу:"
       btn:
         publish: Опубликовать
         publish_this_version: Опубликовать эту версию
-        unpublish: Отменить публикацию
+        unpublish: Снять с публикации
         save_draft: Сохранить черновик
       flash:
         product_unpublished: Продукт успешно снят с публикации
@@ -34,10 +45,10 @@ pimee_enrich:
         product_reverted: Продукт успешно восстановлен
       meta:
         published: Опубликованная версия
-        owner_groups: Группы владельцев
+        owner_groups: Группы владельцы
         draft_status: Статус черновика
         draft:
-          in_progress: В ходе выполнения
+          in_progress: В процессе
           sent_for_approval: В ожидании утверждения
           working_copy: Рабочая копия
       tab:
@@ -69,7 +80,7 @@ pimee_enrich:
         source:
           working_copy: Рабочая копия
           draft: Мои черновики
-          draft_of: Черновики пользователя {{ author }}
+          draft_of: "Черновики пользователя {{ author }}"
     product_draft:
       info:
         update_successful: Черновик продукта успешно сохранен
@@ -80,7 +91,7 @@ pimee_enrich:
         draft_not_sendable: Невозможно отправить черновик на утверждение
       btn:
         send_for_approval: Отправить на утверждение
-        sent_for_approval: Отправить на утверждение
+        sent_for_approval: Отправлено на утверждение
       modal:
         accept_proposal: Принять предложение
         accept_selected_proposal: Принять выбранные предложения
@@ -95,3 +106,33 @@ pimee_enrich:
       confirmation:
         discard_changes: Несохраненные изменения будут потеряны. Вы уверены, что хотите отправить черновик для утверждения без несохраненных изменений?
         discard_changes_title: Вы уверены, что вы хотите отправить этот черновик?
+  asset_transformation:
+    not_found: Преобразования не найдены
+    title:
+      transformation: Преобразование
+      options: Параметры
+    colorspace:
+      title: Цветовое пространство
+      options:
+        colorspace: '%value% цветовое пространство'
+    resize:
+      title: Изменение размера
+      options:
+        width: Ширина %value%px 
+        height: Высота %value%px
+    resolution:
+      title: Разрешение
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Маштабирование
+      options:
+        width: Ширина %value%px 
+        height: Высота %value%px
+        ratio: '%value%% соотношение'
+    thumbnail:
+      title: Миниатюра изображения
+      options:
+        width: Ширина %value%px 
+        height: Высота %value%px

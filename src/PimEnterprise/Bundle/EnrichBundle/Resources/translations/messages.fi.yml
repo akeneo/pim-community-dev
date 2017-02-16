@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: Alueelliset asetukset %locale.code% | Muokkaa
+  edit: "Alueelliset asetukset %locale.code% | Muokkaa"
 Permissions: Käyttöoikeudet
 pane.accordion.permissions: Käyttöoikeudet
 attribute group.permissions:
@@ -56,7 +56,7 @@ pim_enrich:
         error: Sinä et omista tätä tuotetta, joten et voi julkaista sitä.
         warning: Sinä et ole kaikkien valittujen tuotteiden omistaja. Et voi julkaista tuotteita "%notGranted%".
         info: '%nbProducts% valitut tuotteet julkaistaan.'
-      not_editable: Sinulla ei ole käyttöoikeuksia muokata tuotteita %identifiers%.
+      not_editable: Sinulla ei ole käyttöoikeuksia muokata tuotteita "%identifiers%".
     unpublish:
       label: Muuta tuote tilaan "Julkaisematon"
       description: Muuta valittujen tuotteiden tila tilaan "Julkaisematon", tällä hetkellä julkaistu data poistetaan.
@@ -66,7 +66,7 @@ pim_enrich:
         error: Sinä et omista tätä tuotetta, joten et voi peruuttaa sen julkaisua.
         warning: Sinä et ole kaikkien valittujen tuotteiden omistaja. Et voi peruuttaa tuotteiden "%notGranted%" julkaisua.
         info: '%nbProducts% valittujen tuotteiden julkaisu peruutetaan.'
-      not_editable: Sinulla ei ole käyttöoikeuksia muokata tuotteita %identifiers%.
+      not_editable: Sinulla ei ole käyttöoikeuksia muokata tuotteita "%identifiers%".
     classify:
       message:
         error: Et ole tuotteen omistaja, et voi luokitella sitä.
@@ -86,7 +86,10 @@ pimee_enrich:
       proposal.title: Ehdotukset
   category:
     tab:
-      permission.title: Käyttöoikeudert
+      permission.title: Käyttöoikeudet
+  locale:
+    tab:
+      permission.title: Käyttöoikeudet
   channel:
     tab:
       asset_transformation.title: Resurssien muunnokset
@@ -100,7 +103,7 @@ pimee_enrich:
     not_found: Ei muunnosta löydettävissä
     title:
       transformation: Muunnos
-      options: Asetukset
+      options: Vaihtoehdot
     colorspace:
       title: Väriavaruus
       options:
@@ -148,7 +151,7 @@ edit_common_attributes_with_permission: Muokkaa yleisiä luvanvaraisia attribuut
 edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Muokkaa yleisiä luvanvaraisia attribuutteja
 job_execution.summary:
   mass_published: Tuote julkaistu
-  mass_unpublished: Tuote ei julkaistu
+  mass_unpublished: Tuote julkaisematon
   proposal: Ehdotus luotu
   proposal_deleted: poistettu
 pim_assets_collection: Resurssien keruu

@@ -19,35 +19,35 @@ pimee_catalog_rule:
         delete: Eliminar la(s) regla(s) seleccionada(s)
   actions:
     type:
-      copy: Entonces %from_field% es copiado en %to_field%
-      copy_value: Entonces %from_field% es copiado en %to_field%
-      set: Entonces %value% es establecido en %field%
-      set_value: Entonces %value% es establecido en %field%
-      add: Entonces %value% es agregado en %field%
-      remove: Entonces %value% es elimiado de %field%
+      "copy": Entonces %from_field% es copiado en %to_field%
+      "copy_value": Entonces %from_field% es copiado en %to_field%
+      "set": Entonces %value% es establecido en %field%
+      "set_value": Entonces %value% es establecido en %field%
+      "add": Entonces %value% es agregado en %field%
+      "remove": Entonces %value% es elimiado de %field%
   condition:
     label: Si %field% %operator% %value%
     operators:
-      STARTS WITH: comienza con
-      ENDS WITH: termina por
-      CONTAINS: contiene
-      DOES NOT CONTAIN: no contiene
-      EMPTY: está vacía
-      NOT EMPTY: no está vacío
-      IN: en
-      NOT IN: no en
-      IN CHILDREN: en descendiente
-      NOT IN CHILDREN: no en descendiente
-      UNCLASSIFIED: sin clasificar
-      IN OR UNCLASSIFIED: sin clasificar o dentro
-      BETWEEN: entre
-      NOT BETWEEN: no entre
-      =: igual
-      !=: no es igual a
-      >: mayor que
-      >=: igual o mayor que
-      <: menor que
-      <=: igual o menor que
+      "STARTS WITH": comienza con
+      "ENDS WITH": termina con
+      "CONTAINS": contiene
+      "DOES NOT CONTAIN": no contiene
+      "EMPTY": está vacía
+      "NOT EMPTY": no está vacío
+      "IN": en
+      "NOT IN": no en
+      "IN CHILDREN": en descendiente
+      "NOT IN CHILDREN": no en descendiente
+      "UNCLASSIFIED": sin clasificar
+      "IN OR UNCLASSIFIED": sin clasificar o dentro
+      "BETWEEN": entre
+      "NOT BETWEEN": No entre
+      "=": igual
+      "!=": no es igual a
+      ">": mayor que
+      ">=": igual o mayor que
+      "<": menor que
+      "<=": igual o menor que
   acl_group:
     rule: Reglas
   acl:

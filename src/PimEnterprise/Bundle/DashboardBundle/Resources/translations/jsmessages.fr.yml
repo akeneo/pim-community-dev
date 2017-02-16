@@ -4,5 +4,5 @@ pimee_dashboard:
       date: Date
       author: Auteur
       product: Produit
-      review: Examiner
+      review: Relire
       empty: Il n'y a aucune proposition à examiner

@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: Lokacije %locale.code% | Uredi
+  edit: "Lokacije %locale.code% | Uredi"
 Permissions: Dozvole
 pane.accordion.permissions: Dozvole
 attribute group.permissions:
@@ -81,9 +81,6 @@ pimee_enrich:
   attribute_group:
     tab:
       permission.title: Dozvole
-  product:
-    tab:
-      proposal.title: Prijedlozi
   category:
     tab:
       permission.title: Dozvole
@@ -153,7 +150,7 @@ batch_jobs:
     label: Promijeni vrijednosti proizvoda sa provjerom dozvola i pravilima aplikacije
     perform.label: Uredi uobičajene atribute
     execute_rules.label: Izvođenje pravila
-    clean.label: Očisti privremene datoteke
+    cleaner.label: Očisti privremene datoteke
   add_to_variant_group_with_rules:
     label: Dodaj proizvode u varijantu grupe sa pravilima aplikacije
     perform.label: Dodaj proizvod u varijantu grupe
@@ -185,9 +182,6 @@ remove_product_value_with_permission.steps.update_product_value_with_permission_
 edit_common_attributes_with_permission: Promijeni vrijednost proizvoda sa dozvolom
 edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Promijeni vrijednost proizvoda sa dozvolom
 job_execution.summary:
-  mass_published: Proizvod je objavljen
-  mass_unpublished: Poništena je objava proizvoda
-  proposal: Kreiran je prijedlog
   proposal_deleted: obrisano
 pim_assets_collection: Popis imovine
 pim_enrich_attribute_form:

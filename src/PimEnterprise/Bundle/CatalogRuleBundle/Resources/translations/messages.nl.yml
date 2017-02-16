@@ -13,24 +13,24 @@ pimee_catalog_rule:
           no_yet_calculated: Nog niet berekend
   condition:
     operators:
-      STARTS WITH: begint met
-      ENDS WITH: eindigt op
-      CONTAINS: bevat
-      DOES NOT CONTAIN: bevat geen
-      EMPTY: is leeg
-      NOT EMPTY: is niet leeg
-      IN: in
-      NOT IN: niet in
-      UNCLASSIFIED: is niet-geclassificeerd
-      IN OR UNCLASSIFIED: is niet-geclassificeerd of in
-      BETWEEN: tussen
-      NOT BETWEEN: niet tussen
-      =: is gelijk aan
-      !=: is niet gelijk aan
-      >: groter dan
-      >=: is gelijk aan of groter dan
-      <: minder dan
-      <=: is gelijk aan of minder dan
+      "STARTS WITH": begint met
+      "ENDS WITH": eindigt op
+      "CONTAINS": bevat
+      "DOES NOT CONTAIN": bevat geen
+      "EMPTY": is leeg
+      "NOT EMPTY": is niet leeg
+      "IN": in
+      "NOT IN": niet in
+      "UNCLASSIFIED": is niet-geclassificeerd
+      "IN OR UNCLASSIFIED": is niet-geclassificeerd of in
+      "BETWEEN": tussen
+      "NOT BETWEEN": niet tussen
+      "=": is gelijk aan
+      "!=": is niet gelijk aan
+      ">": groter dan
+      ">=": is gelijk aan of groter dan
+      "<": minder dan
+      "<=": is gelijk aan of minder dan
   acl_group:
     rule: Regels
   acl:
@@ -73,12 +73,20 @@ rule: Regelinstellingen
 mass_edit_rule: Regelinstellingen
 job_execution.summary.rule_calculated: Aantal regels
 batch_jobs:
+  yml_rule_import:
+    label: Regel importeren in YAML
+    import.label: Regel importeren
+  yml_rule_export:
+    label: Regel exporteren in YAML
+    export.label: Regel exporteren
   csv_product_import_with_rules:
     label: Product import in CSV met regels
     execute_rules.label: Uitvoering van regels
+    validation.label: Bestandsvalidatie
     import.label: Productimport
     import_associations.label: Productassociatie import
   xlsx_product_import_with_rules:
     execute_rules.label: Uitvoering van regels
+    validation.label: Bestandsvalidatie
     import.label: Productimport
     import_associations.label: Productassociatie import
