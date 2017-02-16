@@ -155,7 +155,6 @@ define(
                         break;
                 }
 
-
                 return params.canBeCopied;
             },
 
