@@ -4,32 +4,26 @@ namespace tests\integration\Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
+/**
+ * Integration tests to verify a product is well loaded from database with its product values.
+ */
 class LoadProductValuesSubscriberIntegration extends TestCase
 {
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
-
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
-
-    /** @var ProductValueFactory */
-    private $valueFactory;
-
-    public function setUp()
+    public function testLoadValuesForProductWithAllAttributes()
     {
-        parent::setUp();
+        $product = $this->findProductByIdentifier('foo');
+        $expectedValues = $this->getValuesForProductWithAllAttributes();
 
-        $this->productRepository = $this->get('pim_catalog.repository.product');
-        $this->attributeRepository = $this->get('pim_catalog.repository.attribute');
-        $this->valueFactory = $this->get('pim_catalog.factory.product_value');
+        $this->assertProductHasValues($expectedValues, $product);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getConfiguration()
     {
         return new Configuration(
@@ -38,20 +32,47 @@ class LoadProductValuesSubscriberIntegration extends TestCase
         );
     }
 
-    public function testLoadValuesForProductWithAllAttributes()
+    /**
+     * @param string $identifier
+     *
+     * @return ProductInterface
+     */
+    private function findProductByIdentifier($identifier)
     {
-        $product = $this->productRepository->findOneByIdentifier('foo');
-        $expectedValues = $this->getValuesForProductWithAllAttributes();
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+    }
 
-        $this->assertProductHasValues($expectedValues, $product);
+    /**
+     * @param string $attributeCode
+     *
+     * @return AttributeInterface
+     */
+    private function findAttributeByIdentifier($attributeCode)
+    {
+        return $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($attributeCode);
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param string             $scope
+     * @param string             $locale
+     * @param mixed              $data
+     *
+     * @return ProductValueInterface
+     */
+    private function createProductValue(AttributeInterface $attribute, $scope, $locale, $data)
+    {
+        return $this->get('pim_catalog.factory.product_value')->create(
+            $attribute,
+            $scope,
+            $locale,
+            $data
+        );
     }
 
     /**
      * @param array            $expectedValues
      * @param ProductInterface $product
-     *
-     * @return bool
-     *
      */
     private function assertProductHasValues(array $expectedValues, ProductInterface $product)
     {
@@ -87,14 +108,14 @@ class LoadProductValuesSubscriberIntegration extends TestCase
         $values = [];
 
         foreach ($this->getStandardValuesWithAllAttributes() as $attributeCode => $rawValues) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+            $attribute = $this->findAttributeByIdentifier($attributeCode);
 
             if (null === $attribute) {
                 throw new \Exception(sprintf('No attribute found with the code "%s".', $attributeCode));
             }
 
             foreach ($rawValues as $rawValue) {
-                $values[] = $this->valueFactory->create(
+                $values[] = $this->createProductValue(
                     $attribute,
                     $rawValue['scope'],
                     $rawValue['locale'],
@@ -106,6 +127,9 @@ class LoadProductValuesSubscriberIntegration extends TestCase
         return $values;
     }
 
+    /**
+     * @return array
+     */
     private function getStandardValuesWithAllAttributes()
     {
         return [

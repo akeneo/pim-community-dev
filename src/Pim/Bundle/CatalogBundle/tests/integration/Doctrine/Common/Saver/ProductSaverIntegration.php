@@ -2,61 +2,23 @@
 
 namespace tests\integration\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Doctrine\DBAL\Connection;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Doctrine\DBAL\Statement;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Integration tests to verify a product is well saved in database.
  */
 class ProductSaverIntegration extends TestCase
 {
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var ProductSaver */
-    protected $productSaver;
-
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
-
-    /** @var ObjectUpdaterInterface */
-    protected $productUpdater;
-
-    /** @var Connection */
-    protected $db;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->productBuilder = $this->get('pim_catalog.builder.product');
-        $this->productUpdater = $this->get('pim_catalog.updater.product');
-        $this->productSaver = $this->get('pim_catalog.saver.product');
-
-        $em = $this->get('doctrine.orm.entity_manager');
-        $this->db = $em->getConnection();
-    }
-
-    protected function getConfiguration()
-    {
-        return new Configuration(
-            [Configuration::getTechnicalSqlCatalogPath()],
-            false
-        );
-    }
-
     public function testRawValuesForProductWithAllAttributes()
     {
-        $product = $this->productBuilder->createProduct('just-a-product-with-all-possible-values', 'familyA');
-        $this->productUpdater->update($product, $this->getStandardValuesWithAllAttributes());
-        $this->productSaver->save($product);
+        $product = $this->createProduct('just-a-product-with-all-possible-values', 'familyA');
+        $this->updateProduct($product, $this->getStandardValuesWithAllAttributes());
+        $this->saveProduct($product);
 
-        $stmt = $this->db->query('SELECT raw_values FROM pim_catalog_product ORDER BY id DESC LIMIT 1');
+        $stmt = $this->createStatement('SELECT raw_values FROM pim_catalog_product ORDER BY id DESC LIMIT 1');
         $jsonRawValues = $stmt->fetchColumn();
 
         $this->assertEquals(
@@ -65,13 +27,59 @@ class ProductSaverIntegration extends TestCase
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration()
+    {
+        return new Configuration(
+            [Configuration::getTechnicalSqlCatalogPath()],
+            false
+        );
+    }
+
+    /**
+     * @param string $productIdentifier
+     * @param string $familyCode
+     *
+     * @return ProductInterface
+     */
+    private function createProduct($productIdentifier, $familyCode)
+    {
+        return $this->get('pim_catalog.builder.product')->createProduct($productIdentifier, $familyCode);
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param array            $data
+     */
+    private function updateProduct(ProductInterface $product, array $data)
+    {
+        $this->get('pim_catalog.updater.product')->update($product, $data);
+    }
+
+    /**
+     * @param ProductInterface $product
+     */
+    private function saveProduct(ProductInterface $product)
+    {
+        $this->get('pim_catalog.saver.product')->save($product);
+    }
+
+    /**
+     * @param string $sql
+     *
+     * @return Statement
+     */
+    private function createStatement($sql)
+    {
+        return $this->get('doctrine.orm.entity_manager')->getConnection()->query($sql);
+    }
+
     private function getStandardValuesWithAllAttributes()
     {
         return [
             'values' => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'foo'],
-                ],
                 'a_file' => [
                     [
                         'locale' => null,
@@ -232,11 +240,6 @@ class ProductSaverIntegration extends TestCase
     private function getStorageValuesWithAllAttributes()
     {
         return [
-            'sku' => [
-                '<all_channels>' => [
-                    '<all_locales>' => 'foo'
-                ],
-            ],
             'a_file' => [
                 '<all_channels>' => [
                     '<all_locales>' => '8/b/5/c/8b5cf9bfd2e7e4725fd581e03251133ada1b2c99_fileA.txt'
