@@ -3,48 +3,59 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         delete: Löschen
+        execute: Ausführen
       title: Regeln
       column:
         code: Code
         conditions: Bedingung
         actions: Aktion
         impacted_product_count:
+          label: Betroffene Produkte
+          count: '{0,1}%count% betroffenes Produkt |] 1, Inf [%count% betroffene Produkte'
           no_yet_calculated: Noch nicht berechnet
+      mass_edit_action:
+        impacted_product_count: Betroffene Produkte berechnen
+        execute: Ausgewählte Regeln anwenden
+        delete: Ausgewählte Regeln löschen
   actions:
     type:
-      copy: Dann wird %from_field% in %to_field% kopiert.
-      copy_value: Dann wird %from_field% in %to_field% kopiert
-      set: Dann wird %value% in %field% gesetzt.
-      set_value: Dann wird %value% in %field% gesetzt
-      add: Dann wird %value% in %field% hinzugefügt
+      "copy": Dann wird %from_field% in %to_field% kopiert.
+      "copy_value": Dann wird %from_field% in %to_field% kopiert.
+      "set": Dann wird %value% in %field% gesetzt.
+      "set_value": Dann wird %value% in %field% gesetzt.
+      "add": Dann wird %value% in %field% hinzugefügt
+      "remove": Dann wird %value% von %field% entfernt
   condition:
     label: Wenn %field% %operator% %value%
     operators:
-      STARTS WITH: beginnt mit
-      ENDS WITH: endet mit
-      CONTAINS: enthält
-      DOES NOT CONTAIN: enthält nicht
-      EMPTY: ist leer
-      IN: in
-      NOT IN: nicht in
-      IN CHILDREN: in Kindelementen
-      NOT IN CHILDREN: nicht in Kindelementen
-      UNCLASSIFIED: ist unklassifiziert
-      IN OR UNCLASSIFIED: ist unklassifiziert oder in
-      BETWEEN: zwischen
-      NOT BETWEEN: nicht zwischen
-      =: ist gleich
-      !=: ungleich
-      >: größer als
-      >=: gleich oder größer als
-      <: kleiner als
-      <=: gleich oder kleiner als
+      "STARTS WITH": beginnt mit
+      "ENDS WITH": endet mit
+      "CONTAINS": enthält
+      "DOES NOT CONTAIN": enthält nicht
+      "EMPTY": ist leer
+      "NOT EMPTY": ist nicht leer
+      "IN": in
+      "NOT IN": nicht in
+      "IN CHILDREN": in Kindelementen
+      "NOT IN CHILDREN": nicht in Kindelementen
+      "UNCLASSIFIED": ist unklassifiziert
+      "IN OR UNCLASSIFIED": ist unklassifiziert oder in
+      "BETWEEN": zwischen
+      "NOT BETWEEN": nicht zwischen
+      "=": ist gleich
+      "!=": ungleich
+      ">": größer als
+      ">=": gleich oder größer als
+      "<": weniger als
+      "<=": gleich oder kleiner als
   acl_group:
     rule: Regeln
   acl:
     rule:
       view_permissions: Regeln ansehen
       delete_permissions: Regeln löschen
+      impacted_product_count_permissions: Die von dieser Regel betroffenen Produkte berechnen
+      execute_permissions: Regeln anwenden
   attribute:
     tab:
       rule.title: Regeln
@@ -66,6 +77,19 @@ pimee_catalog_rule:
     rule_definition_processor.title: Produktimport-Regeln Processor
     product_rule_definition_writer.title: Produktimport-Regeln Writer
     rules_execution.title: Regel-Ausführung
+  notification:
+    rule:
+      executed: Anwenden der Regel(n) abgeschlossen
+      launched: Die Anwendung der Regeln wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
+    mass_edit_rule:
+      success: Berechnung der von dieser Regel betroffenen Produkte abgeschlossen
+      error: Während der Berechnung, der von diesen Regeln betroffenen Produkte, ist ein Fehler aufgetreten
+  popin:
+    execute_rules:
+      confirm_title: Ausführen bestätigen
+      confirm_content: Sind Sie sicher, dass Sie alle Regeln anwenden möchten? (Dies kann sehr lange dauern)
+btn:
+  Execute rules: Regeln anwenden
 rule: Regeleinstellungen
 mass_edit_rule: Regeleinstellungen
 job_execution.summary.rule_calculated: Anzahl der Regeln
@@ -76,12 +100,17 @@ batch_jobs:
   yml_rule_export:
     label: Regel-Export in YAML
     export.label: Regelexport
+  rule_impacted_product_count:
+    label: Von dieser Regel betroffene Produkte
+    perform.label: Anzahl der betroffenen Produkte
   csv_product_import_with_rules:
+    label: Produktimport in CSV mit Regeln
     execute_rules.label: Regel-Ausführung
     validation.label: Dateivalidierung
     import.label: Produkt import
     import_associations.label: Produktverbindungen-Import
   xlsx_product_import_with_rules:
+    label: Produktimport in XLSX mit Regeln
     execute_rules.label: Regel-Ausführung
     validation.label: Dateivalidierung
     import.label: Produkt import

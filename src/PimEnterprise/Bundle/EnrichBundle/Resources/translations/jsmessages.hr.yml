@@ -1,4 +1,3 @@
-View the product: Pogledaj proizvod
 pimee_enrich.product_history.action.revert: Vrati na ovu verziju
 permission-changes:
   category:
@@ -14,17 +13,26 @@ permission-changes:
     grant: Grupa <strong>{{ group }}</strong> će <strong>biti {{ permission }}</strong>
     revoke: Grupa <strong>{{ group }}</strong> neće <strong>biti {{ permission }}</strong>
 pimee_enrich:
+  form:
+    job_instance:
+      tab:
+        permission:
+          title: Dozvole
+          execute.label: Dopušteno izvoditi profil zadatka
+          edit.label: Dopušteno uređivati profil zadatka
+    channel:
+      tab:
+        asset-transformation:
+          title: Transformacije imovine
   entity:
     product:
       history:
         published: Objavljeno
         revert: Vrati
       smart_attribute:
-        come_from: 'Ovaj atribut se može ažurirati prema pravilu:'
+        come_from: "Ovaj atribut se može ažurirati prema pravilu:"
       btn:
-        publish: Objavi
         publish_this_version: Objavi ovu verziju
-        unpublish: Poništi objavu
         save_draft: Spremi skicu
       flash:
         product_unpublished: Proizvodu uspješno poništena objava
@@ -36,21 +44,13 @@ pimee_enrich:
         published: Objavljena verzija
         owner_groups: Vlasnik grupe
         draft_status: Status skice
-        draft:
-          in_progress: U tijeku
-          sent_for_approval: Čeka na odobrenje
-          working_copy: Radna kopija
       tab:
         proposals:
-          title: Prijedlozi
           messages:
             approve:
-              success: Prijedlog je uspješno primijenjen.
               error:
                 The proposal can't be applied due to the following error:
                   - greška
-            reject:
-              success: Prijedlog je odbijen.
             remove:
               success: Prijedlog je uklonjen.
       confirmation:
@@ -67,9 +67,8 @@ pimee_enrich:
         update_successful: Radna kopija proizvoda je ažurirana
       copy:
         source:
-          working_copy: Radna kopija
           draft: Moj nacrt
-          draft_of: Nacrt od {{ author }}
+          draft_of: "Nacrt od {{ author }}"
     product_draft:
       info:
         update_successful: Nacrt proizvoda je uspješno spremljen
@@ -84,7 +83,6 @@ pimee_enrich:
       modal:
         accept_proposal: Prihvatiti prijedlog
         accept_selected_proposal: Prihvatite odabrane prijedloge
-        reject_proposal: Odbiti prijedlog
         reject_selected_proposal: Odbacite odabrane prijedloge
         remove_proposal: Uklanjanje prijedloga
         send_for_approval: Slanje na odobrenje
@@ -95,3 +93,33 @@ pimee_enrich:
       confirmation:
         discard_changes: Nespremljene promjene bit će izgubljene. Jeste li sigurni da želite poslati vaš nacrt za odobrenje bez nespremljene promjene?
         discard_changes_title: Jeste li sigurni da želite poslati ovaj nacrt?
+  asset_transformation:
+    not_found: Nisu pronađene transformacije
+    title:
+      transformation: Transformacije
+      options: Opcije
+    colorspace:
+      title: Prostor boja
+      options:
+        colorspace: '%value% prostoar boja'
+    resize:
+      title: Promjena veličine
+      options:
+        width: '% value%px širina'
+        height: '% value%px visina'
+    resolution:
+      title: Razlučivost
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Skala
+      options:
+        width: '% value%px širina'
+        height: '% value%px visina'
+        ratio: '%value%% omjer'
+    thumbnail:
+      title: Minijatura
+      options:
+        width: '% value%px širina'
+        height: '% value%px visina'
