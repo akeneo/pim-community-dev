@@ -1,6 +1,6 @@
 pimee_workflow:
   product_draft:
-    author: Kirjoittaja
+    author: Tekijä
     created: Ehdotettu
     changes: Muutokset
     locale: Lokaation konteksti
@@ -83,8 +83,8 @@ pim_title:
     index: Julkaistut tuotteet
     view: Julkaistut tuotteet %product.sku% | Näkymä
   product:
-    dispatch: Tuotteet %product.sku%
-    show: Tuotteet %product.sku% | Näytä
+    dispatch: "Tuotteet %product.sku%"
+    show: "Tuotteet %product.sku% | Näytä"
   proposal:
     index: Ehdotukset
 btn.editworkingcopy: Muokkaa työn alla olevaa kopiota
@@ -93,7 +93,7 @@ confirmation:
     publish: Oletko varma, että haluat julkaista tämän tuotteen?
     unpublish: Oletko varma, että haluat muuttaa tuotteen tilan tilaan "Julkaisematon"?
 proposal.overview: Ehdotukset
-Attributes.title: Ominaisuudet
+Attributes.title: Attribuutit
 Completeness.title: Valmistumisaste
 publish_product.steps.publish_product_tasklet.title: Julkaise tuote
 unpublish_product.steps.unpublish_product_tasklet.title: Muuta tuote tilaan "Julkaisematon"
@@ -109,7 +109,7 @@ job_execution.summary:
   proposal_updated: ehdotus päivitetty
   proposal_created: ehdotus luotu
   proposal_skipped: ehdotus ohitettu (ei eroja)
-published products: Julkaistu tuote
+published products: Julkaistut tuotteet
 batch_jobs:
   csv_published_product_export:
     label: Julkaistun tuotteen vienti CSV-muodossa

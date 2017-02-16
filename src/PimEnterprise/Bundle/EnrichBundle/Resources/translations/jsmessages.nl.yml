@@ -14,13 +14,20 @@ permission-changes:
     grant: De groep <strong>{{ group }}</strong> zal <strong>{{ permission }} worden</strong>
     revoke: De groep <strong>{{ group }}</strong> zal <strong>niet {{ permission }} worden</strong>
 pimee_enrich:
+  form:
+    job_instance:
+      tab:
+        permission:
+          title: Machtigingen
+          execute.label: Toegestaan om profiel uit te voeren
+          edit.label: Toegestaan om profiel te wijzigen
   entity:
     product:
       history:
         published: Gepubliceerd
         revert: Herstel
       smart_attribute:
-        come_from: 'Dit attribuut kan geüpdatet worden door een regel:'
+        come_from: "Dit attribuut kan geüpdatet worden door een regel:"
       btn:
         publish: Publiceren
         publish_this_version: Publiceer deze versie
@@ -44,12 +51,9 @@ pimee_enrich:
           title: Voorstellen
           messages:
             approve:
-              success: Het voorstel is succesvol toegepast.
               error:
                 The proposal can't be applied due to the following error:
                   - fout
-            reject:
-              success: Het voorstel is afgewezen.
             remove:
               success: Het voorstel is verwijderd.
       confirmation:
@@ -72,3 +76,9 @@ pimee_enrich:
       modal:
         send_for_approval: Verzenden voor goedkeuring
         cancel: Annuleren
+  asset_transformation:
+    title:
+      transformation: Transformatie
+      options: Opties
+    resolution:
+      title: Resolutie

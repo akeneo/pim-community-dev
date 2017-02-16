@@ -143,21 +143,35 @@ pimee_product_asset:
       page_subtitle: Masovno uređivanje (1 imovine) | Masovno uređivanje (%count% imovina)
       confirm: Spremate se ažurirati imovinu sa sljedećim podacima, molimo vas da potvrdite. | Ažurirati ćete %count% imovina sa sljedećim podacima, molimo vas da potvrdite.
       steps:
-        first: Odaberi imovinu
+        first: Odaberite imovinu
         second: Konfiguriraj
         third: Potvrdi
 pim_enrich:
   mass_edit_action:
     asset-classify-move:
-      label: Premjesti imovinu u kategorije
+      label: Premjestiti imovinu u kategorije
       description: Imovina će biti postavljena u sljedeće kategorije, postojeći raspored je izgubljen
       success_flash: Imovina je premještena u odabrane kategorije
       launched_flash: Pokrenuta je masovna radnja "premjesti u kategorije". Biti ćete obaviješteni kad bude gotovo.
     add-tags-to-assets:
-      label: Dodaj oznake u imovine
-      description: Oznake će biti dodane u imovine. Ako neke oznake ne postoje, biti će biti napravljene.
+      label: Dodavanje oznaka u imovinu
+      description: Oznake će biti dodane u imovinu. Ako neke oznake ne postoje, biti će biti napravljene.
       success_flash: Oznake su dodane u imovinu
+      launched_flash: Masovna radnja "Dodavanje oznaka imovini" je pokrenuta. Biti ćeteobaviješteni kad bude gotovo.
+      message.error: Navedene oznake ne postoje
+pim:
+  grid:
+    mass_action:
+      mass_classify_assets: Klasificirati
+      add_tags_to_assets: Dodavanje oznaka
 btn.create.asset: Kreiraj imovinu
+btn.drag_or_upload: Povucite i ispustite datoteku ili kliknite ovdje
+job_execution.summary:
+  variations_not_generated: Varijacije nisu generirane
+  pimee_product_asset.mass_upload.new: Imovina je kreirana iz datoteke
+  pimee_product_asset.mass_upload.updated: Imovina je ažurirana
+  error: Greška u procesiranju datoteke imovine
+  skipped_assets: Preskočene imovine
 assets_mass_upload.steps:
   asset_mass_upload.title: Masovni prijenos imovine
 import_asset.steps.channel_configuration_processor.title: Konfiguracije obrade kanala
@@ -167,22 +181,61 @@ batch_jobs:
     label: Masovni prijenos imovine
     perform.label: Masovni prijenos
   yml_asset_channel_configuration_import:
+    label: Uvoz konfiguracije kanala imovine iz Yaml
     validation.label: Provjera valjanosti datoteke
+    import_asset.label: Uvoz konfiguracije kanala imovine iz Yaml
+  yml_asset_channel_configuration_export:
+    label: Izvoz konfiguracije kanala imovine u Yaml
+    export.label: Izvoz konfiguracije kanala imovine u Yaml
   csv_asset_import:
+    label: Uvoz imovine iz CSV
     validation.label: Provjera valjanosti datoteke
+    import_tags.label: Uvoz oznaka iz CSV
+    import_asset.label: Uvoz imovine iz CSV
+  csv_asset_export:
+    label: Izvoz imovine u CSV
+    export.label: Izvoz imovine u CSV
+  csv_asset_variation_export:
+    label: Izvoz varijacije imovine u CSV
+    export.label: Izvoz varijacije imovine u CSV
   csv_tag_import:
+    label: Uvoz oznaka iz CSV
     validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz oznaka iz CSV
   csv_asset_category_import:
+    label: Uvoz kategorije imovine iz CSV
     validation.label: Provjera valjanosti datoteke
+    import_asset_category.label: Uvoz kategorije imovine iz CSV
   csv_asset_configuration_import:
+    label: Uvoz konfiguracije kanala imovine iz CSV
     validation.label: Provjera valjanosti datoteke
+    import_asset.label: Uvoz konfiguracije kanala imovine iz CSV
+  csv_asset_category_export:
+    label: Izvoz kategorije imovine u CSV
+    export.label: Izvoz kategorije imovine u CSV
   xlsx_tag_import:
+    label: Uvoz oznake iz XLSX
     validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz oznake iz XLSX
   xlsx_asset_import:
+    label: Uvoz imovine iz XLSX
     validation.label: Provjera valjanosti datoteke
+    import_tags.label: Uvoz oznake iz XLSX
+    import_asset.label: Uvoz imovine iz XLSX
   xlsx_asset_category_import:
+    label: Uvoz kategorije imovine iz XLSX
     validation.label: Provjera valjanosti datoteke
+    import_asset_category.label: Uvoz kategorije imovine iz XLSX
+  xlsx_asset_export:
+    label: Izvoz imovine u XLSX
+    export.label: Izvoz imovine u XLSX
+  xlsx_asset_category_export:
+    label: Izvoz kategorije imovine u XLSX
+    export.label: Izvoz kategorije imovine u XLSX
+  xlsx_asset_variation_export:
+    label: Izvoz kategorije imovine u XLSX
+    export.label: Izvoz kategorije imovine u XLSX
   classify_assets:
     perform.label: Premjesti imovinu u kategorije
   add_tags_to_assets:
-    perform.label: Dodaj oznake u imovine
+    perform.label: Dodaj oznake u imovinu

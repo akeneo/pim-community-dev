@@ -4,5 +4,5 @@ pimee_dashboard:
       date: Datum
       author: Auteur
       product: Product
-      review: Beoordeel
+      review: Recensie
       empty: Geen voorstellen te herzien
