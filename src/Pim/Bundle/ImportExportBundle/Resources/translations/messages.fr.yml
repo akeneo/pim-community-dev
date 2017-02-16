@@ -13,7 +13,7 @@ pim_import_export:
     7: ABANDONNÉ
     8: INCONNU
   download_archive:
-    archive: Télécharger le fichier généré|Télécharger les fichiers générés
+    archive: Télécharger l'archive générée|Télécharger les archives générées
     output: Télécharger le fichier généré|Télécharger les fichiers générés
     input: Télécharger le fichier lu|Télécharger les fichiers lus
     invalid: Télécharger données invalides
