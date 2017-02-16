@@ -1,5 +1,6 @@
 parameters:
     pim_api.repository.client.class: Pim\Bundle\ApiBundle\Doctrine\ORM\Repository\ClientRepository
+    pim_api.repository.product.class: Pim\Bundle\ApiBundle\Doctrine\ORM\Repository\ProductRepository
 
 services:
     pim_api.repository.client:
@@ -7,3 +8,10 @@ services:
         arguments:
             - '@fos_oauth_server.entity_manager'
             - '%fos_oauth_server.model.client.class%'
+
+    pim_api.repository.product:
+        class: '%pim_api.repository.product.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%pim_catalog.entity.product.class%'
+            - '@pim_catalog.repository.product'
