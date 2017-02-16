@@ -84,7 +84,9 @@ define(
             _onAjaxError: function (jqXHR) {
                 messenger.notificationFlashMessage(
                     'error',
-                    __('pimee_enrich.entity.product.tab.proposals.messages.approve.error', {error: message})
+                    __('pimee_enrich.entity.product.tab.proposals.messages.approve.error', {
+                        error: jqXHR.responseJSON.message
+                    })
                 );
 
                 this.datagrid.hideLoading();

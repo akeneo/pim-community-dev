@@ -122,7 +122,7 @@ class EnterpriseWebUser extends BaseWebUser
 
             $item = $this->spin(function () use ($search, $tag) {
                 $options = $search->findAll('css', '.select2-result:not(.select2-selected) .select2-result-label');
-                foreach($options as $option) {
+                foreach ($options as $option) {
                     if ($option->getText() === $tag) {
                         return $option;
                     }
