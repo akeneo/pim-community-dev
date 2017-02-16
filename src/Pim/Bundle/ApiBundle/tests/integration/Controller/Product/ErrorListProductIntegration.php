@@ -11,8 +11,8 @@ class ErrorListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?channel=not_found');
-        $this->assert($client, 'Channel "not_found" does not exist.');
+        $client->request('GET', 'api/rest/v1/products?scope=not_found');
+        $this->assert($client, 'Scope "not_found" does not exist.');
     }
 
     public function testNotFoundLocale()
@@ -35,16 +35,16 @@ class ErrorListProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?channel=ecommerce&locales=de_DE');
-        $this->assert($client, 'Locale "de_DE" is not activated for the channel "ecommerce".');
+        $client->request('GET', 'api/rest/v1/products?scope=ecommerce&locales=de_DE');
+        $this->assert($client, 'Locale "de_DE" is not activated for the scope "ecommerce".');
     }
 
     public function testInactiveLocales()
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?channel=ecommerce&locales=de_DE,fr_FR');
-        $this->assert($client, 'Locales "de_DE, fr_FR" are not activated for the channel "ecommerce".');
+        $client->request('GET', 'api/rest/v1/products?scope=ecommerce&locales=de_DE,fr_FR');
+        $this->assert($client, 'Locales "de_DE, fr_FR" are not activated for the scope "ecommerce".');
     }
 
     public function testNotFoundAttribute()
@@ -171,7 +171,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client->request('GET', '/api/rest/v1/products?search={"a_scopable_image":[{"operator":"CONTAINS", "value":"text", "scope":"not_found"}]}');
         $this->assert($client, 'Attribute "a_scopable_image" expects an existing scope, "not_found" given.');
 
-        $client->request('GET', '/api/rest/v1/products?search_channel=not_found&search={"a_scopable_image":[{"operator":"CONTAINS", "value":"text"}]}');
+        $client->request('GET', '/api/rest/v1/products?search_scope=not_found&search={"a_scopable_image":[{"operator":"CONTAINS", "value":"text"}]}');
         $this->assert($client, 'Attribute "a_scopable_image" expects an existing scope, "not_found" given.');
     }
 
