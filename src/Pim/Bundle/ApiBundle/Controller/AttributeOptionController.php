@@ -271,7 +271,7 @@ class AttributeOptionController
     {
         $response = new Response(null, Response::HTTP_CREATED);
         $route = $this->router->generate(
-            'pim_api_rest_attribute_option_get',
+            'pim_api_attribute_option_get',
             [
                 'attributeCode' => $attribute->getCode(),
                 'optionCode'    => $attributeOption->getCode(),

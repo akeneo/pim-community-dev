@@ -289,7 +289,7 @@ class AttributeController
     protected function getResponse(AttributeInterface $attribute, $status)
     {
         $response = new Response(null, $status);
-        $url = $this->router->generate('pim_api_rest_attribute_get', ['code' => $attribute->getCode()], true);
+        $url = $this->router->generate('pim_api_attribute_get', ['code' => $attribute->getCode()], true);
         $response->headers->set('Location', $url);
 
         return $response;
