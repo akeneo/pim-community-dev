@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Exception\ProductQueryException;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
@@ -97,6 +97,7 @@ class CriteriaCondition
      *
      * @throws ProductQueryException
      * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      *
      * @return string
      */
@@ -110,7 +111,7 @@ class CriteriaCondition
             Operators::GREATER_THAN          => 'gt',
             Operators::GREATER_OR_EQUAL_THAN => 'gte',
             Operators::IS_LIKE               => 'like',
-            Operators::NOT_LIKE              => 'notLike'
+            Operators::IS_NOT_LIKE           => 'notLike'
         ];
         if (array_key_exists($operator, $operators)) {
             if (!is_scalar($value)) {
@@ -145,7 +146,7 @@ class CriteriaCondition
             }
 
             if (0 === count($value)) {
-                throw InvalidArgumentException::emptyArray($field);
+                throw InvalidPropertyException::valueNotEmptyExpected($field, static::class);
             }
 
             $method = $operators[$operator];

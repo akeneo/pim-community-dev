@@ -2,10 +2,11 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Adder;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -78,11 +79,11 @@ class MultiSelectAttributeAdderSpec extends ObjectBehavior
         $data = ['foo' => ['bar' => 'baz']];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringValueExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'attributeCode',
-                'foo',
+                'one of the option codes is not a string, "array" given',
                 'Pim\Component\Catalog\Updater\Adder\MultiSelectAttributeAdder',
-                'array'
+                $data
             )
         )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -102,9 +103,9 @@ class MultiSelectAttributeAdderSpec extends ObjectBehavior
             ->willReturn(null);
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayInvalidKey(
+            InvalidPropertyException::validEntityCodeExpected(
                 'attributeCode',
-                'code',
+                'option code',
                 'The option does not exist',
                 'Pim\Component\Catalog\Updater\Adder\MultiSelectAttributeAdder',
                 'unknown code'
@@ -137,7 +138,7 @@ class MultiSelectAttributeAdderSpec extends ObjectBehavior
         $productValue->addOption($attributeOption)->shouldBeCalled();
 
         $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->addOrReplaceProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
 
         $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);

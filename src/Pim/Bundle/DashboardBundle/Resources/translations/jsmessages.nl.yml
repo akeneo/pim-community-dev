@@ -5,7 +5,7 @@ pim_dashboard:
       status: Status
       date: Datum
       type: Type
-      profile name: Profielnaam
+      profile_name: Profielnaam
       details: Details
       job_type:
         import: Import

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Bundle\CatalogBundle\ProductQueryUtility;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
@@ -67,13 +67,13 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'boolean');
+        $this->checkLocaleAndScope($attribute, $locale, $scope);
 
         if (!is_bool($value)) {
-            throw InvalidArgumentException::booleanExpected(
+            throw InvalidPropertyTypeException::booleanExpected(
                 $attribute->getCode(),
                 static::class,
-                gettype($value)
+                $value
             );
         }
 
@@ -90,7 +90,7 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         if (!is_bool($value)) {
-            throw InvalidArgumentException::booleanExpected($field, static::class, gettype($value));
+            throw InvalidPropertyTypeException::booleanExpected($field, static::class, $value);
         }
 
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);

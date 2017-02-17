@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\ReferenceData\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
@@ -95,8 +96,34 @@ class ReferenceDataCollectionSetterSpec extends ObjectBehavior
         ProductInterface $product,
         AttributeInterface $attribute
     ) {
-        $this->shouldThrow('InvalidArgumentException')->during('setAttributeData', [
+        $attribute->getCode()->willReturn('attribute_code');
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::arrayExpected(
+                'attribute_code',
+                'Pim\Component\ReferenceData\Updater\Setter\ReferenceDataCollectionSetter',
+                'shiny_metal'
+            )
+        )->during('setAttributeData', [
             $product, $attribute, 'shiny_metal', ['locale' => 'fr_FR', 'scope' => 'mobile']
+        ]);
+    }
+
+    function it_throws_an_exception_if_data_is_an_array_but_does_not_contain_a_string(
+        ProductInterface $product,
+        AttributeInterface $attribute
+    ) {
+        $attribute->getCode()->willReturn('attribute_code');
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::validArrayStructureExpected(
+                'attribute_code',
+                'one of the "attribute_code" values is not a scalar',
+                'Pim\Component\ReferenceData\Updater\Setter\ReferenceDataCollectionSetter',
+                ['string', 12]
+            )
+        )->during('setAttributeData', [
+            $product, $attribute, ['string', 12], ['locale' => 'fr_FR', 'scope' => 'mobile']
         ]);
     }
 
@@ -167,7 +194,7 @@ class ReferenceDataCollectionSetterSpec extends ObjectBehavior
         $product2->getValue('custom_material', $locale, $scope)->willReturn($productValue2);
         $product3->getValue('custom_material', $locale, $scope)->willReturn($productValue3);
 
-        $builder->addProductValue($product1, $attribute, $locale, $scope)
+        $builder->addOrReplaceProductValue($product1, $attribute, $locale, $scope)
             ->shouldBeCalled()
             ->willReturn($productValue1);
 

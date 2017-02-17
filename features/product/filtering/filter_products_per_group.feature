@@ -45,3 +45,10 @@ Feature: Filter products
     When I filter by "groups" with operator "" and value "Empty"
     Then the grid should contain 0 element
     And I should not see products BOOK, MUG-1, MUG-2 and POSTIT
+
+  Scenario: Successfully keep the group filter on page reload
+    Given I am on the products page
+    When I filter by "groups" with operator "in list" and value "Mug"
+    And I reload the page
+    Then I should see the text "Groups: \"Mug\""
+    And the grid should contain 2 elements

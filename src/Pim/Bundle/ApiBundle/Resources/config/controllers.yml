@@ -1,16 +1,16 @@
 parameters:
-    pim_api.controller.rest.category.class: Pim\Bundle\ApiBundle\Controller\Rest\CategoryController
-    pim_api.controller.rest.family.class: Pim\Bundle\ApiBundle\Controller\Rest\FamilyController
-    pim_api.controller.rest.attribute.class: Pim\Bundle\ApiBundle\Controller\Rest\AttributeController
-    pim_api.controller.rest.attribute_option.class: Pim\Bundle\ApiBundle\Controller\Rest\AttributeOptionController
+    pim_api.controller.category.class: Pim\Bundle\ApiBundle\Controller\CategoryController
+    pim_api.controller.family.class: Pim\Bundle\ApiBundle\Controller\FamilyController
+    pim_api.controller.attribute.class: Pim\Bundle\ApiBundle\Controller\AttributeController
+    pim_api.controller.attribute_option.class: Pim\Bundle\ApiBundle\Controller\AttributeOptionController
     pim_api.controller.channel.class: Pim\Bundle\ApiBundle\Controller\ChannelController
     pim_api.controller.locale.class: Pim\Bundle\ApiBundle\Controller\LocaleController
     pim_api.controller.token.class: Pim\Bundle\ApiBundle\Controller\TokenController
     pim_api.controller.product.class: Pim\Bundle\ApiBundle\Controller\ProductController
 
 services:
-    pim_api.controller.rest.category:
-        class: '%pim_api.controller.rest.category.class%'
+    pim_api.controller.category:
+        class: '%pim_api.controller.category.class%'
         arguments:
             - '@pim_catalog.repository.category'
             - '@pim_serializer'
@@ -21,8 +21,8 @@ services:
             - '@router'
             - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#category'
 
-    pim_api.controller.rest.family:
-        class: '%pim_api.controller.rest.family.class%'
+    pim_api.controller.family:
+        class: '%pim_api.controller.family.class%'
         arguments:
             - '@pim_catalog.repository.family'
             - '@pim_serializer'
@@ -33,8 +33,8 @@ services:
             - '@router'
             - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#family'
 
-    pim_api.controller.rest.attribute:
-        class: '%pim_api.controller.rest.attribute.class%'
+    pim_api.controller.attribute:
+        class: '%pim_api.controller.attribute.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_serializer'
@@ -45,8 +45,8 @@ services:
             - '@router'
             - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute'
 
-    pim_api.controller.rest.attribute_option:
-        class: '%pim_api.controller.rest.attribute_option.class%'
+    pim_api.controller.attribute_option:
+        class: '%pim_api.controller.attribute_option.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.attribute_option'
@@ -92,4 +92,11 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_api.pagination.paginator'
             - '@pim_api.pagination.parameter_validator'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.builder.product'
             - '@pim_catalog.remover.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+            - '@router'
+            - '@pim_catalog.comparator.filter.product'
+            - 'https://docs.akeneo.com/%s/reference/standard_format/products.html'

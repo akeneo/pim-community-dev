@@ -61,6 +61,9 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
                 'stdClass',
                 'Pim\Component\Catalog\Model\GroupInterface'
             )
+        )->during(
+            'update',
+            [new \stdClass(), []]
         );
     }
 

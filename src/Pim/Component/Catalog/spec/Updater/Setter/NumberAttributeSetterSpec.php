@@ -66,7 +66,7 @@ class NumberAttributeSetterSpec extends ObjectBehavior
         $productValue->setData($data)->shouldBeCalled();
 
         $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->addOrReplaceProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
 
         $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
@@ -94,7 +94,7 @@ class NumberAttributeSetterSpec extends ObjectBehavior
         $productValue->setData($data)->shouldBeCalled();
 
         $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->addOrReplaceProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
 
         $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);

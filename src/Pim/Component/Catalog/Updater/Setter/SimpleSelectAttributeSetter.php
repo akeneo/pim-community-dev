@@ -2,9 +2,10 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -59,7 +60,7 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
         } else {
             $option = $this->getOption($attribute, $data);
             if (null === $option) {
-                throw InvalidArgumentException::validEntityCodeExpected(
+                throw InvalidPropertyException::validEntityCodeExpected(
                     $attribute->getCode(),
                     'code',
                     'The option does not exist',
@@ -77,6 +78,8 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
      *
      * @param AttributeInterface $attribute
      * @param mixed              $data
+     *
+     * @throws InvalidPropertyTypeException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
@@ -85,10 +88,10 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
         }
 
         if (!is_string($data) && !is_numeric($data)) {
-            throw InvalidArgumentException::stringExpected(
+            throw InvalidPropertyTypeException::stringExpected(
                 $attribute->getCode(),
                 static::class,
-                gettype($data)
+                $data
             );
         }
     }
@@ -111,7 +114,7 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
     ) {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
         if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+            $value = $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope);
         }
         $value->setOption($option);
     }

@@ -48,6 +48,7 @@ security:
             pattern:                        ^/api
             fos_oauth:                      true
             stateless:                      true
+            access_denied_handler:          pim_api.security.access_denied_handler
 
         main:
             pattern:                        ^/
@@ -66,4 +67,4 @@ security:
 
     access_control:
         - { path: ^/admin/, role: ROLE_ADMIN }
-        - { path: ^/api/, role: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/, role: pim_api_overall_access }

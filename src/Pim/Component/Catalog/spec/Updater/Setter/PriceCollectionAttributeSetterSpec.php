@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
@@ -70,10 +70,10 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         $data = 'not an array';
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected(
+            InvalidPropertyTypeException::arrayExpected(
                 'attributeCode',
                 'Pim\Component\Catalog\Updater\Setter\PriceCollectionAttributeSetter',
-                gettype($data)
+                $data
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -87,10 +87,10 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         $data = ['not an array'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayOfArraysExpected(
+            InvalidPropertyTypeException::arrayOfArraysExpected(
                 'attributeCode',
                 'Pim\Component\Catalog\Updater\Setter\PriceCollectionAttributeSetter',
-                gettype($data)
+                $data
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -104,11 +104,11 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         $data = [['not the data key' => 123]];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected(
+            InvalidPropertyTypeException::arrayKeyExpected(
                 'attributeCode',
                 'amount',
                 'Pim\Component\Catalog\Updater\Setter\PriceCollectionAttributeSetter',
-                print_r($data, true)
+                $data
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -122,11 +122,11 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         $data = [['amount' => 123, 'not the currency key' => 'euro']];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected(
+            InvalidPropertyTypeException::arrayKeyExpected(
                 'attributeCode',
                 'currency',
                 'Pim\Component\Catalog\Updater\Setter\PriceCollectionAttributeSetter',
-                print_r($data, true)
+                $data
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -148,7 +148,7 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
 
         $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->addOrReplaceProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
 
         $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);

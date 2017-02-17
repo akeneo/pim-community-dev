@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ODM\MongoDB\Query\Expr;
 use Pim\Bundle\CatalogBundle\ProductQueryUtility;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
@@ -161,16 +162,18 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
      * @param string $field
      * @param mixed  $scope
      * @param mixed  $value
-     * @throws InvalidArgumentException
+     *
+     * @throws InvalidPropertyTypeException
+     * @throws InvalidPropertyException
      */
     protected function checkScopeAndValue($field, $scope, $value)
     {
         if (!is_numeric($value)) {
-            throw InvalidArgumentException::numericExpected($field, static::class, gettype($value));
+            throw InvalidPropertyTypeException::numericExpected($field, static::class, $value);
         }
 
         if (null === $scope) {
-            throw InvalidArgumentException::scopeExpected($field, static::class);
+            throw InvalidPropertyException::dataExpected($field, 'a valid scope', static::class);
         }
     }
 
@@ -183,24 +186,25 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
      *
      * @param string $field
      * @param array  $options
-     * @throws InvalidArgumentException
+     *
+     * @throws InvalidPropertyTypeException
      */
     protected function checkOptions($field, array $options)
     {
         if (!array_key_exists('locales', $options)) {
-            throw InvalidArgumentException::arrayKeyExpected(
+            throw InvalidPropertyTypeException::arrayKeyExpected(
                 $field,
                 'locales',
                 static::class,
-                print_r(array_keys($options), true)
+                $options
             );
         }
 
         if (!isset($options['locales']) || !is_array($options['locales'])) {
-            throw InvalidArgumentException::arrayOfArraysExpected(
+            throw InvalidPropertyTypeException::arrayOfArraysExpected(
                 $field,
                 static::class,
-                print_r($options, true)
+                $options
             );
         }
     }

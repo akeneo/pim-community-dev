@@ -40,8 +40,10 @@ oro_datagrid.select.all: "Все"
 oro_datagrid.select.visible: "Все видимые"
 oro_datagrid.select.none: "Нет"
 pim.grid.ajax_choice_filter.label_empty: пусто
+pim.grid.ajax_choice_filter.label_not_empty: не является пустым
 pim.grid.choice_filter:
   label_empty: пусто
+  label_not_empty: не является пустым
   label_in_list: в списке
 Available Columns: Доступные столбцы
 Displayed Columns: Выбранные столбцы

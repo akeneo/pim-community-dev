@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -107,7 +108,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
         $variantUpdater
             ->update($variantGroup, $values)
-            ->willThrow(new \InvalidArgumentException('Attributes: This property cannot be changed.'));
+            ->willThrow(new InvalidPropertyException('attributes', 'value', 'className', 'This property cannot be changed.'));
 
         $this
             ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
@@ -149,10 +150,6 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $this
             ->process($values)
             ->shouldReturn($variantGroup);
-
-        $variantUpdater
-            ->update($variantGroup, $values)
-            ->willThrow(new \InvalidArgumentException('Attributes: This property cannot be changed.'));
 
         $violation = new ConstraintViolation('Error', 'foo', [], 'bar', 'code', 'mycode');
         $violations = new ConstraintViolationList([$violation]);

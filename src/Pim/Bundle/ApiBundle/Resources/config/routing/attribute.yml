@@ -1,24 +1,29 @@
 pim_api_rest_attribute_list:
     path: /attributes
-    defaults: { _controller: pim_api.controller.rest.attribute:listAction, _format: json }
+    defaults: { _controller: pim_api.controller.attribute:listAction, _format: json }
     methods: [GET]
 
 pim_api_rest_attribute_create:
     path: /attributes
-    defaults: { _controller: pim_api.controller.rest.attribute:createAction, _format: json }
+    defaults: { _controller: pim_api.controller.attribute:createAction, _format: json }
     methods: [POST]
+
+pim_api_rest_attribute_update:
+    path: /attributes/{code}
+    defaults: { _controller: pim_api.controller.attribute:partialUpdateAction, _format: json }
+    methods: [PATCH]
 
 pim_api_rest_attribute_get:
     path: /attributes/{code}
-    defaults: { _controller: pim_api.controller.rest.attribute:getAction, _format: json }
+    defaults: { _controller: pim_api.controller.attribute:getAction, _format: json }
     methods: [GET]
 
 pim_api_rest_attribute_option_create:
     path: /attributes/{attributeCode}/options
-    defaults: { _controller: pim_api.controller.rest.attribute_option:createAction, _format: json }
+    defaults: { _controller: pim_api.controller.attribute_option:createAction, _format: json }
     methods: [POST]
 
 pim_api_rest_attribute_option_get:
     path: /attributes/{attributeCode}/options/{optionCode}
-    defaults: { _controller: pim_api.controller.rest.attribute_option:getAction, _format: json }
+    defaults: { _controller: pim_api.controller.attribute_option:getAction, _format: json }
     methods: [GET]

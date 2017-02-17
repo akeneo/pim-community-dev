@@ -43,10 +43,13 @@ class Version_1_5_20160405165700_versioning extends AbstractMigration implements
         if (AkeneoStorageUtilsExtension::DOCTRINE_ORM ===
             $this->container->getParameter('pim_catalog_product_storage_driver')
         ) {
+            $updateSql = 'UPDATE pim_versioning_version SET resource_name = :after WHERE resource_name = :before';
+
             foreach ($this->movedEntities as $source => $target) {
-                $this->addSql(
-                    'UPDATE pim_versioning_version SET resource_name = "' . $target . '" WHERE resource_name = "' . $source . '"'
-                );
+                $updateStmt = $this->connection->prepare($updateSql);
+                $updateStmt->bindValue('before', $source);
+                $updateStmt->bindValue('after', $target);
+                $updateStmt->execute();
             }
         }
     }

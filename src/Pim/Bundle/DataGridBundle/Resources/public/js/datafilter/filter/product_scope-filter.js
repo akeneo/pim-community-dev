@@ -87,6 +87,10 @@ define(
              * @inheritDoc
              */
             _onValueUpdated: function (newValue) {
+                if ('' === newValue.value) {
+                    return;
+                }
+
                 UserContext.set('catalogScope', newValue.value);
 
                 return SelectFilter.prototype._onValueUpdated.apply(this, arguments);

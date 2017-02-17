@@ -2,7 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater\Remover;
 
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
@@ -93,49 +94,50 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
-     * @return mixed
+     * @throws InvalidPropertyTypeException
+     * @throws InvalidPropertyException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected(
+            throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
                 static::class,
-                gettype($data)
+                $data
             );
         }
 
         foreach ($data as $price) {
             if (!is_array($price)) {
-                throw InvalidArgumentException::arrayOfArraysExpected(
+                throw InvalidPropertyTypeException::arrayOfArraysExpected(
                     $attribute->getCode(),
                     static::class,
-                    gettype($data)
+                    $data
                 );
             }
 
             if (!array_key_exists('amount', $price)) {
-                throw InvalidArgumentException::arrayKeyExpected(
+                throw InvalidPropertyTypeException::arrayKeyExpected(
                     $attribute->getCode(),
                     'amount',
                     static::class,
-                    print_r($data, true)
+                    $data
                 );
             }
 
             if (!array_key_exists('currency', $price)) {
-                throw InvalidArgumentException::arrayKeyExpected(
+                throw InvalidPropertyTypeException::arrayKeyExpected(
                     $attribute->getCode(),
                     'currency',
                     static::class,
-                    print_r($data, true)
+                    $data
                 );
             }
 
             if (!in_array($price['currency'], $this->currencyRepository->getActivatedCurrencyCodes())) {
-                throw InvalidArgumentException::arrayInvalidKey(
+                throw InvalidPropertyException::validEntityCodeExpected(
                     $attribute->getCode(),
-                    'currency',
+                    'currency code',
                     'The currency does not exist',
                     static::class,
                     $price['currency']

@@ -2,8 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -34,19 +35,19 @@ class CategoryFieldSetterSpec extends ObjectBehavior
     function it_checks_valid_data_format(ProductInterface $product)
     {
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected(
+            InvalidPropertyTypeException::arrayExpected(
                 'categories',
                 'Pim\Component\Catalog\Updater\Setter\CategoryFieldSetter',
-                'string'
+                'not an array'
             )
         )->during('setFieldData', [$product, 'categories', 'not an array']);
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringValueExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'categories',
-                0,
+                'one of the category codes is not a string, "array" given',
                 'Pim\Component\Catalog\Updater\Setter\CategoryFieldSetter',
-                'array'
+                [['array of array']]
             )
         )->during('setFieldData', [$product, 'categories', [['array of array']]]);
     }
@@ -81,9 +82,10 @@ class CategoryFieldSetterSpec extends ObjectBehavior
         $categoryRepository->findOneByIdentifier('non valid category code')->willReturn(null);
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validEntityCodeExpected(
                 'categories',
-                'existing category code',
+                'category code',
+                'The category does not exist',
                 'Pim\Component\Catalog\Updater\Setter\CategoryFieldSetter',
                 'non valid category code'
             )

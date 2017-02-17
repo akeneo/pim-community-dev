@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Remover;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -77,10 +77,10 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
 
         $data = 'not an array!';
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected(
+            InvalidPropertyTypeException::arrayExpected(
                 'attributeCode',
                 'Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover',
-                gettype($data)
+                $data
             )
         )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -93,11 +93,11 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
 
         $data = [0];
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringValueExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'attributeCode',
-                0,
+                'one of the option codes is not a string, "integer" given',
                 'Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover',
-                gettype($data[0])
+                $data
             )
         )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }

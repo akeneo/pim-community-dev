@@ -40,8 +40,10 @@ oro_datagrid.select.all: "Tots"
 oro_datagrid.select.visible: "Tot visible"
 oro_datagrid.select.none: "Cap"
 pim.grid.ajax_choice_filter.label_empty: està buit
+pim.grid.ajax_choice_filter.label_not_empty: no és buit
 pim.grid.choice_filter:
   label_empty: està buit
+  label_not_empty: no és buit
   label_in_list: a la llista
 Available Columns: Columnes disponibles
 Displayed Columns: Columnes seleccionades

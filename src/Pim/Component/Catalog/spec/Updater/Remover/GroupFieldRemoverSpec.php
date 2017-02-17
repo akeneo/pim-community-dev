@@ -2,8 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Remover;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -63,9 +64,10 @@ class GroupFieldRemoverSpec extends ObjectBehavior
         $groupRepository->findOneByIdentifier('not valid code')->willReturn(null);
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validEntityCodeExpected(
                 'groups',
-                'existing group code',
+                'group code',
+                'The group does not exist',
                 'Pim\Component\Catalog\Updater\Remover\GroupFieldRemover',
                 'not valid code'
             )
@@ -75,19 +77,19 @@ class GroupFieldRemoverSpec extends ObjectBehavior
     function it_checks_valid_data_format(ProductInterface $product)
     {
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected(
+            InvalidPropertyTypeException::arrayExpected(
                 'groups',
                 'Pim\Component\Catalog\Updater\Remover\GroupFieldRemover',
-                'string'
+                'not an array'
             )
         )->during('removeFieldData', [$product, 'groups', 'not an array']);
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringValueExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'groups',
-                0,
+                'one of the group codes is not a string, "array" given',
                 'Pim\Component\Catalog\Updater\Remover\GroupFieldRemover',
-                'array'
+                [['array of array']]
             )
         )->during('removeFieldData', [$product, 'groups', [['array of array']]]);
     }
@@ -108,9 +110,9 @@ class GroupFieldRemoverSpec extends ObjectBehavior
         $variantType->isVariant()->willReturn(true);
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validGroupExpected(
                 'groups',
-                'non variant group code',
+                'Cannot process variant group, only groups are supported',
                 'Pim\Component\Catalog\Updater\Remover\GroupFieldRemover',
                 'variant'
             )

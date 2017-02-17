@@ -2,11 +2,12 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
@@ -38,30 +39,36 @@ class AssociationFieldSetterSpec extends ObjectBehavior
     function it_checks_valid_association_data_format(ProductInterface $product)
     {
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected(
+            InvalidPropertyTypeException::arrayExpected(
                 'associations',
                 'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
-                'string'
+                'not an array'
             )
         )->during('setFieldData', [$product, 'associations', 'not an array']);
 
         $this->shouldThrow(
-            InvalidArgumentException::associationFormatExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
+                'association format is not valid for the association type "0".',
+                'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
                 [0 => []]
             )
         )->during('setFieldData', [$product, 'associations', [0 => []]]);
 
         $this->shouldThrow(
-            InvalidArgumentException::associationFormatExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
+                'association format is not valid for the association type "assoc_type_code".',
+                'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
                 ['assoc_type_code' => []]
             )
         )->during('setFieldData', [$product, 'associations', ['assoc_type_code' => []]]);
 
         $this->shouldThrow(
-            InvalidArgumentException::associationFormatExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
+                'association format is not valid for the association type "assoc_type_code".',
+                'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
                 ['assoc_type_code' => ['products' => [1], 'groups' => []]]
             )
         )->during(
@@ -70,8 +77,10 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         );
 
         $this->shouldThrow(
-            InvalidArgumentException::associationFormatExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
+                'association format is not valid for the association type "assoc_type_code".',
+                'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
                 ['assoc_type_code' => ['products' => [], 'groups' => [2]]]
             )
         )->during(
@@ -149,9 +158,10 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $product->getAssociationForTypeCode('non valid association type code')->willReturn(null);
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validEntityCodeExpected(
                 'associations',
-                'existing association type code',
+                'association type code',
+                'The association type does not exist',
                 'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
                 'non valid association type code'
             )
@@ -184,9 +194,10 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier('not existing product')->willReturn(null);
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validEntityCodeExpected(
                 'associations',
-                'existing product identifier',
+                'product identifier',
+                'The product does not exist',
                 'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
                 'not existing product'
             )
@@ -217,9 +228,10 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $groupRepository->findOneByIdentifier('not existing group')->willReturn(null);
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validEntityCodeExpected(
                 'associations',
-                'existing group code',
+                'group code',
+                'The group does not exist',
                 'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
                 'not existing group'
             )

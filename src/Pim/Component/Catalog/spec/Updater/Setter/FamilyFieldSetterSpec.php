@@ -2,8 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
@@ -34,10 +35,10 @@ class FamilyFieldSetterSpec extends ObjectBehavior
     function it_checks_valid_data_format(ProductInterface $product)
     {
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected(
+            InvalidPropertyTypeException::stringExpected(
                 'family',
                 'Pim\Component\Catalog\Updater\Setter\FamilyFieldSetter',
-                'array'
+                ['not a string']
             )
         )->during('setFieldData', [$product, 'family', ['not a string']]);
     }
@@ -65,9 +66,10 @@ class FamilyFieldSetterSpec extends ObjectBehavior
         $familyRepository->findOneByIdentifier('shirt')->willReturn(null);
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validEntityCodeExpected(
                 'family',
-                'existing family code',
+                'family code',
+                'The family does not exist',
                 'Pim\Component\Catalog\Updater\Setter\FamilyFieldSetter',
                 'shirt'
             )

@@ -116,7 +116,7 @@ class GroupDenormalizerSpec extends ObjectBehavior
         $group->getId()->willReturn(42);
         $group->setCode('tshirt')->shouldBeCalled();
         $group->setType(Argument::any())->shouldNotBeCalled();
-        $group->setAttributes(Argument::any())->shouldNotBeCalled();
+        $group->setAxisAttributes(Argument::any())->shouldNotBeCalled();
 
         $group->getTranslation('en_US')->willReturn($translationUS);
         $translationUS->setLabel('My T-shirt')->shouldBeCalled();

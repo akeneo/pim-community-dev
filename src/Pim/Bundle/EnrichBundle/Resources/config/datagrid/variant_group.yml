@@ -10,7 +10,7 @@ datagrid:
                 label: Code
             label:
                 label: Label
-            attributes:
+            axisAttributes:
                 label: Axis
                 type: twig
                 template: PimDataGridBundle:Property:options.html.twig
@@ -57,7 +57,7 @@ datagrid:
                     type:      string
                     label:     Label
                     data_name: translation.label
-                attributes:
+                axisAttributes:
                     type:      choice
                     label:     Axis
                     data_name: attribute

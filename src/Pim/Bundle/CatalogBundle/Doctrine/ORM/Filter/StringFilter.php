@@ -2,7 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -53,7 +54,7 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
         try {
             $options = $this->resolver->resolve($options);
         } catch (\Exception $e) {
-            throw InvalidArgumentException::expectedFromPreviousException(
+            throw InvalidPropertyException::expectedFromPreviousException(
                 $e,
                 $attribute->getCode(),
                 static::class
@@ -145,14 +146,14 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 $value = '%' . $value . '%';
                 break;
             case Operators::DOES_NOT_CONTAIN:
-                $operator = Operators::NOT_LIKE;
+                $operator = Operators::IS_NOT_LIKE;
                 $value = '%' . $value . '%';
                 break;
             case Operators::EQUALS:
                 $operator = Operators::IS_LIKE;
                 break;
             case Operators::NOT_EQUAL:
-                $operator = Operators::NOT_LIKE;
+                $operator = Operators::IS_NOT_LIKE;
                 break;
         }
 
@@ -179,11 +180,13 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
     /**
      * @param string $field
      * @param mixed  $value
+     *
+     * @throws InvalidPropertyTypeException
      */
     protected function checkScalarValue($field, $value)
     {
         if (!is_string($value) && null !== $value) {
-            throw InvalidArgumentException::stringExpected($field, static::class, gettype($value));
+            throw InvalidPropertyTypeException::stringExpected($field, static::class, $value);
         }
     }
 

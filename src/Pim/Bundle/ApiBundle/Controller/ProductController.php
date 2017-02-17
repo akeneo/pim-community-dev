@@ -2,12 +2,22 @@
 
 namespace Pim\Bundle\ApiBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Pim\Bundle\CatalogBundle\Version;
+use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
+use Pim\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Api\Pagination\HalPaginator;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
@@ -15,9 +25,12 @@ use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -50,8 +63,29 @@ class ProductController
     /** @var ParameterValidatorInterface */
     protected $parameterValidator;
 
+    /** @var  ValidatorInterface */
+    protected $productValidator;
+
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
+
+    /** @var ObjectUpdaterInterface */
+    protected $updater;
+
     /** @var RemoverInterface */
     protected $remover;
+
+    /** @var SaverInterface */
+    protected $saver;
+
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var ProductFilterInterface */
+    protected $emptyValuesFilter;
+
+    /** @var string */
+    protected $urlDocumentation;
 
     /**
      * @param ProductQueryBuilderFactoryInterface   $pqbFactory
@@ -62,7 +96,14 @@ class ProductController
      * @param ProductRepositoryInterface            $productRepository
      * @param HalPaginator                          $paginator
      * @param ParameterValidatorInterface           $parameterValidator
+     * @param ValidatorInterface                    $productValidator
+     * @param ProductBuilderInterface               $productBuilder
      * @param RemoverInterface                      $remover
+     * @param ObjectUpdaterInterface                $updater
+     * @param SaverInterface                        $saver
+     * @param RouterInterface                       $router
+     * @param ProductFilterInterface                $emptyValuesFilter
+     * @param string                                $urlDocumentation
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -73,7 +114,14 @@ class ProductController
         ProductRepositoryInterface $productRepository,
         HalPaginator $paginator,
         ParameterValidatorInterface $parameterValidator,
-        RemoverInterface $remover
+        ValidatorInterface $productValidator,
+        ProductBuilderInterface $productBuilder,
+        RemoverInterface $remover,
+        ObjectUpdaterInterface $updater,
+        SaverInterface $saver,
+        RouterInterface $router,
+        ProductFilterInterface $emptyValuesFilter,
+        $urlDocumentation
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->normalizer = $normalizer;
@@ -83,7 +131,14 @@ class ProductController
         $this->productRepository = $productRepository;
         $this->paginator = $paginator;
         $this->parameterValidator = $parameterValidator;
+        $this->productValidator = $productValidator;
+        $this->productBuilder = $productBuilder;
         $this->remover = $remover;
+        $this->updater = $updater;
+        $this->saver = $saver;
+        $this->router = $router;
+        $this->emptyValuesFilter = $emptyValuesFilter;
+        $this->urlDocumentation = sprintf($urlDocumentation, substr(Version::VERSION, 0, 3));
     }
 
     /**
@@ -143,9 +198,9 @@ class ProductController
             ->setMaxResults($queryParameters['limit'])
             ->setFirstResult(($queryParameters['page'] - 1) * $queryParameters['limit']);
 
-        $standardProducts = $this->normalizer->normalize($pqb->execute(), 'external_api', $normalizerOptions);
+        $productsApi = $this->normalizer->normalize($pqb->execute(), 'external_api', $normalizerOptions);
         $paginatedProducts = $this->paginator->paginate(
-            $standardProducts,
+            $productsApi,
             array_merge($request->query->all(), $queryParameters),
             $count,
             'pim_api_product_list',
@@ -171,9 +226,9 @@ class ProductController
             throw new NotFoundHttpException(sprintf('Product "%s" does not exist.', $code));
         }
 
-        $standardizedProduct = $this->normalizer->normalize($product, 'external_api');
+        $productApi = $this->normalizer->normalize($product, 'external_api');
 
-        return new JsonResponse($standardizedProduct);
+        return new JsonResponse($productApi);
     }
 
     /**
@@ -194,6 +249,112 @@ class ProductController
         $this->remover->remove($product);
 
         return new Response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @throws BadRequestHttpException
+     *
+     * @return Response
+     */
+    public function createAction(Request $request)
+    {
+        $data = $this->getDecodedContent($request->getContent());
+
+        $data = $this->populateIdentifierProductValue($data);
+
+        $product = $this->productBuilder->createProduct();
+
+        $this->updateProduct($product, $data);
+        $this->validateProduct($product);
+        $this->saver->save($product);
+
+        $response = $this->getCreateResponse($product);
+
+        return $response;
+    }
+
+    /**
+     * Get the JSON decoded content. If the content is not a valid JSON, it throws an error 400.
+     *
+     * @param string $content content of a request to decode
+     *
+     * @throws BadRequestHttpException
+     *
+     * @return array
+     */
+    protected function getDecodedContent($content)
+    {
+        $decodedContent = json_decode($content, true);
+
+        if (null === $decodedContent) {
+            throw new BadRequestHttpException('Invalid json message received');
+        }
+
+        return $decodedContent;
+    }
+
+    /**
+     * Update a product. It throws an error 422 if a problem occurred during the update.
+     *
+     * @param ProductInterface $product category to update
+     * @param array            $data    data of the request already decoded
+     *
+     * @throws UnprocessableEntityHttpException
+     */
+    protected function updateProduct(ProductInterface $product, array $data)
+    {
+        try {
+            $this->updater->update($product, $data);
+        } catch (UnknownPropertyException $exception) {
+            throw new DocumentedHttpException(
+                $this->urlDocumentation,
+                sprintf(
+                    'Property "%s" does not exist. Check the standard format documentation.',
+                    $exception->getPropertyName()
+                ),
+                $exception
+            );
+        } catch (PropertyException $exception) {
+            throw new DocumentedHttpException(
+                $this->urlDocumentation,
+                sprintf('%s Check the standard format documentation.', $exception->getMessage()),
+                $exception
+            );
+        }
+    }
+
+    /**
+     * Validate a product. It throws an error 422 with every violated constraints if
+     * the validation failed.
+     *
+     * @param ProductInterface $product
+     *
+     * @throws ViolationHttpException
+     */
+    protected function validateProduct(ProductInterface $product)
+    {
+        $violations = $this->productValidator->validate($product);
+        if (0 !== $violations->count()) {
+            throw new ViolationHttpException($violations);
+        }
+    }
+
+    /**
+     * Get a response with HTTP code 201 when an object is created.
+     *
+     * @param ProductInterface $product
+     *
+     * @return Response
+     */
+    protected function getCreateResponse(ProductInterface $product)
+    {
+        $response = new Response(null, Response::HTTP_CREATED);
+        $route = $this->router->generate('pim_api_product_get', ['code' => $product->getIdentifier()], true);
+        $response->headers->set('Location', $route);
+
+        return $response;
     }
 
     /**
@@ -227,7 +388,7 @@ class ProductController
 
     /**
      * Checks $localeCodes if they exist.
-     * Thrown an exception if one of them does not exist or, if there is a $channel, one of them does not belong to it.
+     * Throws an exception if one of them does not exist or, if there is a $channel, one of them does not belong to it.
      *
      * @param string                $localeCodes
      * @param ChannelInterface|null $channel
@@ -282,5 +443,29 @@ class ProductController
             $plural = count($errors) > 1 ? 'Attributes "%s" do not exist.' : 'Attribute "%s" does not exist.';
             throw new UnprocessableEntityHttpException(sprintf($plural, implode(', ', $errors)));
         }
+    }
+
+    /**
+     * Add to the data the identifier product value with the same identifier as the value of the identifier property.
+     * It silently overwrite the identifier product value if one is already provided in the input.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    protected function populateIdentifierProductValue(array $data)
+    {
+        $identifierProperty = $this->productRepository->getIdentifierProperties()[0];
+        $identifier = isset($data['identifier']) ? $data['identifier'] : null;
+
+        unset($data['values'][$identifierProperty]);
+
+        $data['values'][$identifierProperty][] = [
+            'locale' => null,
+            'scope'  => null,
+            'data'   => $identifier,
+        ];
+
+        return $data;
     }
 }

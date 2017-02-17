@@ -2,10 +2,11 @@
 
 namespace spec\Pim\Component\ReferenceData\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AbstractProductValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -81,7 +82,15 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         ProductInterface $product,
         AttributeInterface $attribute
     ) {
-        $this->shouldThrow('InvalidArgumentException')->during('setAttributeData', [
+        $attribute->getCode()->willReturn('attribute_code');
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::stringExpected(
+                'attribute_code',
+                'Pim\Component\ReferenceData\Updater\Setter\ReferenceDataSetter',
+                ['shiny_metal']
+            )
+        )->during('setAttributeData', [
             $product, $attribute, ['shiny_metal'], ['locale' => 'fr_FR', 'scope' => 'mobile']
         ]);
     }
@@ -101,10 +110,10 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         $repositoryResolver->resolve('customMaterials')->willReturn($repository);
         $repository->findOneBy(['code' => 'hulk_retriever'])->willReturn(null);
 
-        $exception = InvalidArgumentException::validEntityCodeExpected(
+        $exception = InvalidPropertyException::validEntityCodeExpected(
             'lace_fabric',
-            'code',
-            'No reference data "customMaterials" with code "hulk_retriever" has been found',
+            'reference data code',
+            'The code of the reference data "customMaterials" does not exist',
             'Pim\Component\ReferenceData\Updater\Setter\ReferenceDataSetter',
             'hulk_retriever'
         );
@@ -178,7 +187,7 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         $product2->getValue('custom_material', $locale, $scope)->willReturn($productValue2);
         $product3->getValue('custom_material', $locale, $scope)->willReturn($productValue3);
 
-        $builder->addProductValue($product1, $attribute, $locale, $scope)
+        $builder->addOrReplaceProductValue($product1, $attribute, $locale, $scope)
             ->shouldBeCalled()
             ->willReturn($productValue1);
 
@@ -214,7 +223,7 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         $product1->getValue('custom_material', $locale, $scope)->willReturn(null);
         $product2->getValue('custom_material', $locale, $scope)->willReturn($productValue2);
 
-        $builder->addProductValue($product1, $attribute, $locale, $scope)
+        $builder->addOrReplaceProductValue($product1, $attribute, $locale, $scope)
             ->shouldBeCalled()
             ->willReturn($productValue1);
 

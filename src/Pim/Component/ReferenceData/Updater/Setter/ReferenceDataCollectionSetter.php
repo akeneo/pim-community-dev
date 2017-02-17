@@ -2,9 +2,10 @@
 
 namespace Pim\Component\ReferenceData\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Setter\AbstractAttributeSetter;
@@ -59,14 +60,10 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
             $referenceData = $repository->findOneBy(['code' => $referenceDataCode]);
 
             if (null === $referenceData) {
-                throw InvalidArgumentException::arrayInvalidKey(
+                throw InvalidPropertyException::validEntityCodeExpected(
                     $attribute->getCode(),
-                    'code',
-                    sprintf(
-                        'No reference data "%s" with code "%s" has been found',
-                        $attribute->getReferenceDataName(),
-                        $referenceDataCode
-                    ),
+                    'reference data code',
+                    sprintf('The code of the reference data "%s" does not exist', $attribute->getReferenceDataName()),
                     static::class,
                     $referenceDataCode
                 );
@@ -93,20 +90,20 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
     protected function checkData(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected(
+            throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
                 static::class,
-                gettype($data)
+                $data
             );
         }
 
         foreach ($data as $key => $value) {
             if (!is_string($value)) {
-                throw InvalidArgumentException::arrayStringKeyExpected(
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $attribute->getCode(),
-                    $key,
+                    sprintf('one of the "%s" values is not a scalar', $attribute->getCode()),
                     static::class,
-                    gettype($value)
+                    $data
                 );
             }
         }
@@ -133,7 +130,7 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
 
         if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+            $value = $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope);
         }
 
         $referenceDataName = $attribute->getReferenceDataName();

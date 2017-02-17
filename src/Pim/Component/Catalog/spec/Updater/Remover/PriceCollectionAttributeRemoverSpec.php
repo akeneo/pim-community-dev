@@ -2,8 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Remover;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
@@ -97,10 +98,10 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $data = 'not an array';
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected(
+            InvalidPropertyTypeException::arrayExpected(
                 'attributeCode',
                 'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
-                gettype($data)
+                $data
             )
         )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -114,10 +115,10 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $data = ['not an array'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayOfArraysExpected(
+            InvalidPropertyTypeException::arrayOfArraysExpected(
                 'attributeCode',
                 'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
-                gettype($data)
+                $data
             )
         )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -131,11 +132,11 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $data = [['not the data key' => 123]];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected(
+            InvalidPropertyTypeException::arrayKeyExpected(
                 'attributeCode',
                 'amount',
                 'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
-                print_r($data, true)
+                $data
             )
         )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -149,11 +150,11 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $data = [['amount' => 123, 'not the currency key' => 'euro']];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected(
+            InvalidPropertyTypeException::arrayKeyExpected(
                 'attributeCode',
                 'currency',
                 'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
-                print_r($data, true)
+                $data
             )
         )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -170,9 +171,9 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $data = [['amount' => 123, 'currency' => 'invalid currency']];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayInvalidKey(
+            InvalidPropertyException::validEntityCodeExpected(
                 'attributeCode',
-                'currency',
+                'currency code',
                 'The currency does not exist',
                 'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
                 'invalid currency'

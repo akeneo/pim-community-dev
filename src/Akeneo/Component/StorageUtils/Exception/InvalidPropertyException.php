@@ -3,28 +3,24 @@
 namespace Akeneo\Component\StorageUtils\Exception;
 
 /**
- * Exception an updater can throw when updating a property which is invalid.
+ * Exception thrown when performing an action on a property with invalid data.
  *
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class InvalidPropertyException extends ObjectUpdaterException
+class InvalidPropertyException extends PropertyException
 {
     const EXPECTED_CODE = 100;
     const DATE_EXPECTED_CODE = 101;
-    const BOOLEAN_EXPECTED_CODE = 102;
-    const FLOAT_EXPECTED_CODE = 103;
-    const INTEGER_EXPECTED_CODE = 104;
-    const NUMERIC_EXPECTED_CODE = 105;
-    const STRING_EXPECTED_CODE = 106;
-    const ARRAY_EXPECTED_CODE = 108;
-    const ARRAY_OF_ARRAYS_EXPECTED_CODE = 109;
 
     const NOT_EMPTY_VALUE_EXPECTED_CODE = 200;
 
     const VALID_ENTITY_CODE_EXPECTED_CODE = 300;
     const VALID_GROUP_TYPE_EXPECTED_CODE = 301;
+    const VALID_GROUP_EXPECTED_CODE = 302;
+    const VALID_PATH_EXPECTED_CODE = 304;
+    const VALID_DATA_EXPECTED_CODE = 305;
 
     /** @var string */
     protected $propertyName;
@@ -53,7 +49,7 @@ class InvalidPropertyException extends ObjectUpdaterException
     ) {
         parent::__construct($message, $code, $previous);
 
-        $this->propertyName  = $propertyName;
+        $this->propertyName = $propertyName;
         $this->propertyValue = $propertyValue;
         $this->className = $className;
     }
@@ -146,6 +142,94 @@ class InvalidPropertyException extends ObjectUpdaterException
             $className,
             sprintf($message, $propertyName, $because, $propertyValue),
             self::VALID_GROUP_TYPE_EXPECTED_CODE
+        );
+    }
+
+    /**
+     * Build an exception when the group is invalid or is not allowed.
+     *
+     * @param string $propertyName
+     * @param string $because
+     * @param string $className
+     * @param string $propertyValue
+     *
+     * @return InvalidPropertyException
+     */
+    public static function validGroupExpected($propertyName, $because, $className, $propertyValue)
+    {
+        $message = 'Property "%s" expects a valid group. %s, "%s" given.';
+
+        return new self(
+            $propertyName,
+            $propertyValue,
+            $className,
+            sprintf($message, $propertyName, $because, $propertyValue),
+            self::VALID_GROUP_EXPECTED_CODE
+        );
+    }
+
+    /**
+     * Build an exception when a data is excepted.
+     *
+     * @param string $propertyName
+     * @param string $data
+     * @param string $className
+     *
+     * @return InvalidPropertyException
+     */
+    public static function dataExpected($propertyName, $data, $className)
+    {
+        $message = 'Property "%s" expects %s.';
+
+        return new self(
+            $propertyName,
+            null,
+            $className,
+            sprintf($message, $propertyName, $data),
+            self::VALID_DATA_EXPECTED_CODE
+        );
+    }
+
+    /**
+     * Build an exception when the pathname is invalid.
+     *
+     * @param string $propertyName
+     * @param string $className
+     * @param string $propertyValue
+     *
+     * @return InvalidPropertyException
+     */
+    public static function validPathExpected($propertyName, $className, $propertyValue)
+    {
+        $message = 'Property "%s" expects a valid pathname as data, "%s" given.';
+
+        return new self(
+            $propertyName,
+            $propertyValue,
+            $className,
+            sprintf($message, $propertyName, $propertyValue),
+            self::VALID_PATH_EXPECTED_CODE
+        );
+    }
+
+    /**
+     * Build an exception from a previous one.
+     *
+     * @param string     $propertyName
+     * @param string     $className
+     * @param \Exception $exception
+     *
+     * @return InvalidPropertyException
+     */
+    public static function expectedFromPreviousException($propertyName, $className, \Exception $exception)
+    {
+        return new self(
+            $propertyName,
+            null,
+            $className,
+            $exception->getMessage(),
+            $exception->getCode(),
+            $exception
         );
     }
 

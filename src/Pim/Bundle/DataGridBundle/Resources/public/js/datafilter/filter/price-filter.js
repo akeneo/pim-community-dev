@@ -70,7 +70,7 @@ define(
              */
             _getCriteriaHint: function () {
                 var value = this._getDisplayValue();
-                if (value.type === 'empty' && value.currency) {
+                if (_.contains(['empty', 'not empty'], value.type) && value.currency) {
                     return this._getChoiceOption(value.type).label + ': ' + value.currency;
                 }
                 if (!value.value) {
@@ -146,7 +146,7 @@ define(
             _isValueValid: function(value) {
                 return (value.currency && value.type && !_.isUndefined(value.value)) ||
                        (!value.currency && !value.type && _.isUndefined(value.value)) ||
-                       (value.type === 'empty' && value.currency);
+                       (_.contains(['empty', 'not empty'], value.type) && value.currency);
             },
 
             /**
@@ -178,7 +178,7 @@ define(
                         item.closest('.AknDropdown').find('AknActionButton').html(item.html() + '<span class="AknActionButton-caret AknCaret"></span>');
                     }
                 });
-                if (newValue.type === 'empty') {
+                if (_.contains(['empty', 'not empty'], newValue.type)) {
                     this.$(this.criteriaValueSelectors.value).hide();
                 } else {
                     this.$(this.criteriaValueSelectors.value).show();
@@ -210,7 +210,7 @@ define(
                 NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
                 if ($(e.currentTarget).attr('data-input-toggle')) {
                     var filterContainer = $(e.currentTarget).closest('.AknFilterChoice');
-                    if ($(e.currentTarget).attr('data-value') === 'empty') {
+                    if (_.contains(['empty', 'not empty'], $(e.currentTarget).attr('data-value'))) {
                         filterContainer.find(this.criteriaValueSelectors.value).hide();
                     } else {
                         filterContainer.find(this.criteriaValueSelectors.value).show();

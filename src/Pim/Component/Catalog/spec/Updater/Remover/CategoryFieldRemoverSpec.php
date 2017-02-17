@@ -2,9 +2,10 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Remover;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -48,9 +49,10 @@ class CategoryFieldRemoverSpec extends ObjectBehavior
         $categoryRepository->findOneByIdentifier('unknown_category')->willReturn(null);
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validEntityCodeExpected(
                 'categories',
-                'existing category code',
+                'category code',
+                'The category does not exist',
                 'Pim\Component\Catalog\Updater\Remover\CategoryFieldRemover',
                 'unknown_category'
             )
@@ -60,19 +62,19 @@ class CategoryFieldRemoverSpec extends ObjectBehavior
     function it_throws_an_exception_if_data_are_invalid(ProductInterface $bookProduct)
     {
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected(
+            InvalidPropertyTypeException::arrayExpected(
                 'categories',
                 'Pim\Component\Catalog\Updater\Remover\CategoryFieldRemover',
-                'string'
+                'category_code'
             )
         )->duringRemoveFieldData($bookProduct, 'categories', 'category_code');
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringValueExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'categories',
-                0,
+                'one of the category codes is not a string, "integer" given',
                 'Pim\Component\Catalog\Updater\Remover\CategoryFieldRemover',
-                'integer'
+                [42]
             )
         )->duringRemoveFieldData($bookProduct, 'categories', [42]);
     }

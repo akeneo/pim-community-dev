@@ -26,7 +26,7 @@ JSON;
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertArrayHasKey('location', $response->headers->all());
         $this->assertSame('http://localhost/api/rest/v1/categories/new_category_headers', $response->headers->get('location'));
-        $this->assertSame(null, json_decode($response->getContent(), true));
+        $this->assertSame('', $response->getContent());
     }
 
     public function testStandardFormatWhenACategoryIsCreatedButIncompleted()
@@ -224,7 +224,7 @@ JSON;
         $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "labels" expects an array. Check the standard format documentation.',
+            'message' => 'Property "labels" expects an array as data, "NULL" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#category', $version),

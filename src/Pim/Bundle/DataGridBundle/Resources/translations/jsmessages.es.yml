@@ -40,8 +40,10 @@ oro_datagrid.select.all: "Todos"
 oro_datagrid.select.visible: "Todo lo visible"
 oro_datagrid.select.none: "Ninguno"
 pim.grid.ajax_choice_filter.label_empty: está vacía
+pim.grid.ajax_choice_filter.label_not_empty: no está vacío
 pim.grid.choice_filter:
   label_empty: está vacía
+  label_not_empty: no está vacío
   label_in_list: en la lista
 Available Columns: Columnas disponibles
 Displayed Columns: Columnas seleccionadas

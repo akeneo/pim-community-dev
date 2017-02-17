@@ -2,8 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -35,10 +36,10 @@ class VariantGroupFieldSetterSpec extends ObjectBehavior
     function it_checks_valid_data_format(ProductInterface $product)
     {
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected(
+            InvalidPropertyTypeException::stringExpected(
                 'variant_group',
                 'Pim\Component\Catalog\Updater\Setter\VariantGroupFieldSetter',
-                'array'
+                ['not a string']
             )
         )->during('setFieldData', [$product, 'variant_group', ['not a string']]);
     }
@@ -81,9 +82,9 @@ class VariantGroupFieldSetterSpec extends ObjectBehavior
         $nonVariantType->isVariant()->willReturn(false);
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validGroupExpected(
                 'variant_group',
-                'variant group code',
+                'Cannot process group, only variant groups are supported',
                 'Pim\Component\Catalog\Updater\Setter\VariantGroupFieldSetter',
                 'pack'
             )
@@ -101,9 +102,10 @@ class VariantGroupFieldSetterSpec extends ObjectBehavior
         $nonVariantType->isVariant()->willReturn(false);
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validEntityCodeExpected(
                 'variant_group',
-                'existing variant group code',
+                'variant group code',
+                'The variant group does not exist',
                 'Pim\Component\Catalog\Updater\Setter\VariantGroupFieldSetter',
                 'not valid code'
             )

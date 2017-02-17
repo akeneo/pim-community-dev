@@ -3,7 +3,6 @@
 namespace Pim\Bundle\UIBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
-use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -55,14 +54,7 @@ class AjaxOptionController
 
         $repository = $this->doctrine->getRepository($class);
 
-        if ($repository instanceof OptionRepositoryInterface) {
-            $choices = $repository->getOptions(
-                $query->get('dataLocale'),
-                $query->get('collectionId'),
-                $search,
-                $query->get('options', [])
-            );
-        } elseif ($repository instanceof ReferenceDataRepositoryInterface) {
+        if ($repository instanceof ReferenceDataRepositoryInterface) {
             $choices['results'] = $repository->findBySearch(
                 $search,
                 $query->get('options', [])
@@ -91,11 +83,9 @@ class AjaxOptionController
         if (
             $query->get('isCreatable') &&
             !empty($search) &&
-            !in_array($choices['results'], ['id' => $search, 'text' => $search])
+            !in_array(['id' => $search, 'text' => $search], $choices['results'])
         ) {
-            $choices['results'] = [
-                ['id' => $search, 'text' => $search]
-            ];
+            $choices['results'][] = ['id' => $search, 'text' => $search];
         }
 
         return new JsonResponse($choices);

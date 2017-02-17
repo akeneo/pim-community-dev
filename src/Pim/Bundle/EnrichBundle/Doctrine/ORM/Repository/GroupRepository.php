@@ -73,7 +73,7 @@ class GroupRepository extends EntityRepository implements
             ->leftJoin('g.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
             ->leftJoin('g.type', 'typ')
             ->leftJoin('typ.translations', 'typTrans', 'WITH', 'typTrans.locale = :localeCode')
-            ->leftJoin('g.attributes', 'attribute')
+            ->leftJoin('g.axisAttributes', 'attribute')
             ->innerJoin('g.type', 'type', 'WITH', $typeExpr);
 
         $qb->groupBy('g');
