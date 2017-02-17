@@ -81,9 +81,9 @@ Feature: Follow project completeness
       | usb-key-small        | usb_keys | high_tech          |                           |            | 1            | OUNCE             |                    |                    |                | 8        | GIGABYTE      |
       | poster-movie-contact | posters  | decoration         | Movie poster "Contact"    | A1         |              |                   |                    |                    |                |          |               |
     And the following projects:
-      | label                  | owner | due_date   | description                                  | channel   | locale | product_filters                                                 |
-      | Collection Summer 2030 | julia | 2030-10-25 | Please do your best to finish before Summer. | ecommerce | en_US  | []                                                              |
-      | Collection Winter 2030 | julia | 2030-08-25 | Please do your best to finish before Winter. | ecommerce | en_US  | [{"field":"family.code", "operator":"IN", "value": ["tshirt"]}] |
+      | label                  | owner | due_date   | description                                  | channel   | locale | product_filters                                            |
+      | Collection Summer 2030 | julia | 2030-10-25 | Please do your best to finish before Summer. | ecommerce | en_US  | []                                                         |
+      | Collection Winter 2030 | julia | 2030-08-25 | Please do your best to finish before Winter. | ecommerce | en_US  | [{"field":"family", "operator":"IN", "value": ["tshirt"]}] |
 
   Scenario: Successfully display completeness on widget
     Given I am logged in as "Claude"

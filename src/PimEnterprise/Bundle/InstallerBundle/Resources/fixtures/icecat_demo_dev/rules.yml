@@ -3,7 +3,7 @@ rules:
         priority: 0
         conditions:
             -
-                field: family.code
+                field: family
                 operator: IN
                 value:
                     - camcorders
@@ -12,7 +12,7 @@ rules:
                 operator: CONTAINS
                 value: Canon
             -
-                field: camera_brand.code
+                field: camera_brand
                 operator: NOT IN
                 value:
                     - canon_brand
@@ -25,7 +25,7 @@ rules:
         priority: 0
         conditions:
             -
-                field: family.code
+                field: family
                 operator: IN
                 value:
                     - camcorders
@@ -41,7 +41,7 @@ rules:
         priority: 0
         conditions:
             -
-                field: family.code
+                field: family
                 operator: IN
                 value:
                     - camcorders
@@ -50,7 +50,7 @@ rules:
                 operator: CONTAINS
                 value: Canon
             -
-                field: camera_type.code
+                field: camera_type
                 operator: NOT IN
                 value:
                     - compact
@@ -63,7 +63,7 @@ rules:
         priority: 0
         conditions:
             -
-                field: family.code
+                field: family
                 operator: IN
                 value:
                     - camcorders
@@ -84,7 +84,7 @@ rules:
         priority: 0
         conditions:
             -
-                field: family.code
+                field: family
                 operator: IN
                 value:
                     - camcorders
@@ -105,7 +105,7 @@ rules:
         priority: 0
         conditions:
             -
-                field: family.code
+                field: family
                 operator: IN
                 value:
                     - camcorders
@@ -136,7 +136,7 @@ rules:
                 operator: CONTAINS
                 value: AKNTS_PB
             -
-                field: main_color.code
+                field: main_color
                 operator: IN
                 value:
                     - purple
@@ -201,7 +201,7 @@ rules:
                 operator: CONTAINS
                 value: AKNTS_PB
             -
-                field: tshirt_style.code
+                field: tshirt_style
                 operator: NOT IN
                 value:
                     - sportwear
