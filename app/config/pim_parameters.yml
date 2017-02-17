@@ -28,7 +28,6 @@ parameters:
     installer_data:       PimInstallerBundle:icecat_demo_dev
 
     uservoice_key:                 ~
-    mass_edit_limit:               1000
     max_products_category_removal: 100
 
     # Product storage driver can be doctrine/orm or doctrine/mongodb-odm
