@@ -1,3 +1,9 @@
+# 1.6.12 (?)
+
+## Improvements
+
+- TIP-500: Dispatch events during installation process
+
 # 1.6.11 (2017-02-14)
 
 ## Improvements
