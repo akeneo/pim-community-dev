@@ -401,6 +401,24 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^I should see available filters in the following order "([^"]*)"$/
+     */
+    public function iShouldSeeOrderedFilters($filters)
+    {
+        $filters = explode(",", $filters);
+        $existingFiltersArr = [];
+        foreach ($this->getCurrentPage()->getFiltersList() as $filter) {
+            $existingFiltersArr[] = strtolower(trim($filter->getHtml()));
+        }
+
+        return $filters === array_slice(
+            $existingFiltersArr,
+            array_search($filters[0], $existingFiltersArr),
+            count($filters)
+        );
+    }
+
+    /**
      * @param string $filterName
      *
      * @Then /^I expand the "([^"]*)" sidebar$/
