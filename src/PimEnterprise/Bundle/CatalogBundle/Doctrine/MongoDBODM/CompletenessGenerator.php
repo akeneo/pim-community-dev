@@ -151,7 +151,7 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
                     foreach ($channel->getCurrencies() as $currency) {
                         $fields[$expectedCompleteness]['reqs']['prices'][$fieldName][] = $currency->getCode();
                     }
-                } elseif (AssetAttributeTypes::ASSETS_COLLECTION === $requirement->getAttribute()->getAttributeType()) {
+                } elseif (AssetAttributeTypes::ASSETS_COLLECTION === $requirement->getAttribute()->getType()) {
                     $fields[$expectedCompleteness]['reqs']['assets'][] = $fieldName;
                 } else {
                     $fields[$expectedCompleteness]['reqs']['attributes'][] = $fieldName;

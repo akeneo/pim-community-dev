@@ -92,7 +92,7 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         $attributes = parent::getImageAttributes($product, $locale, $scope);
 
         foreach ($this->getAttributes($product, $locale) as $attribute) {
-            if (AttributeTypes::ASSETS_COLLECTION === $attribute->getAttributeType()) {
+            if (AttributeTypes::ASSETS_COLLECTION === $attribute->getType()) {
                 $attributes[$attribute->getCode()] = $attribute;
             }
         }

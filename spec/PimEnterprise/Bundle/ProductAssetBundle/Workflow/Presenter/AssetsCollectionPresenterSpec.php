@@ -30,14 +30,14 @@ class AssetsCollectionPresenterSpec extends ObjectBehavior
     function it_supports_an_assets_collection(ProductValueInterface $productValue, AttributeInterface $frontView)
     {
         $productValue->getAttribute()->willReturn($frontView);
-        $frontView->getAttributeType()->willReturn(AssetAttributeType::ASSETS_COLLECTION);
+        $frontView->getType()->willReturn(AssetAttributeType::ASSETS_COLLECTION);
         $this->supports($productValue)->shouldBe(true);
     }
 
     function it_does_not_support_other_attribute_types(ProductValueInterface $productValue, AttributeInterface $frontView)
     {
         $productValue->getAttribute()->willReturn($frontView);
-        $frontView->getAttributeType()->willReturn(AttributeTypes::PRICE_COLLECTION);
+        $frontView->getType()->willReturn(AttributeTypes::PRICE_COLLECTION);
         $this->supports($productValue)->shouldBe(false);
     }
 
