@@ -7,6 +7,7 @@ pim_dashboard:
       type: Tipo
       profile_name: Nombre del perfil
       details: Detalles
+      warning_count: Advertencias
       job_type:
         import: Importar
         export: Exportar

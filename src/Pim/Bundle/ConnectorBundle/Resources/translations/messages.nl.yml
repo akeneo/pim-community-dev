@@ -5,7 +5,6 @@ pim_connector:
     entity_reader.title: Entiteitextractie
     csv_reader:
       title: CSV-lezer
-      invalid_item_columns_count: 'Verwacht %totalColumnsCount% kolommen, in werkelijkheid %itemColumnsCount% %csvPath%:%lineno%'
     csv_product_reader.title: CSV product lezer
     csv_category_reader.title: CSV categorie lezer
     csv_variant_group .title: CSV-variant groep lezer

@@ -5,12 +5,11 @@ pim_connector:
     entity_reader.title: Extracció d'entitats
     csv_reader:
       title: Lector de CSV
-      invalid_item_columns_count: 'Esperem tenir %totalColumnsCount% columnes, ara tenim %itemColumnsCount% a %csvPath%:%lineno%'
     csv_product_reader.title: Lector CSV de productes
     csv_category_reader.title: Lector CSV de categories
     csv_variant_group .title: Lector CSV de grups de variants
     dummy_processor.title: Processador de proves
-    product_processor.title: Creació de producte
+    product_processor.title: Creació de productes
     variant_group_processor.title: Creació / actualització de grup de variants
     category_processor.title: Creació de categories
     association_processor.title: Creació d'associacions
