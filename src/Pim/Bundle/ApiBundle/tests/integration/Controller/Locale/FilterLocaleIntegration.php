@@ -12,7 +12,7 @@ class FilterLocaleIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $searchString = '{"enabled":[{"operator":"=","value":true}]}';
+        $searchString = urlencode('{"enabled":[{"operator":"=","value":true}]}');
         $filterLocaleUrl = sprintf('api/rest/v1/locales?search=%s', $searchString);
         $client->request('GET', $filterLocaleUrl);
 
@@ -75,7 +75,7 @@ class FilterLocaleIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $searchString = '{"enabled":[{"operator":"=","value":false}]}';
+        $searchString = urlencode('{"enabled":[{"operator":"=","value":false}]}');
         $filterLocaleUrl = sprintf('api/rest/v1/locales?search=%s', $searchString);
         $client->request('GET', $filterLocaleUrl);
 
@@ -258,12 +258,7 @@ class FilterLocaleIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $filters = [
-            'enabled' => [['value' => true]]
-        ];
-        $searchString = urlencode(json_encode($filters));
-        var_dump(json_encode($filters));
-
+        $searchString = '{"enabled":[{"value":true}]}';
         $filterLocaleUrl = sprintf('api/rest/v1/locales?search=%s', $searchString);
         $client->request('GET', $filterLocaleUrl);
 
@@ -279,11 +274,7 @@ class FilterLocaleIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $filters = [
-            'enabled' => [['operator' => '=']]
-        ];
-        $searchString = urlencode(json_encode($filters));
-        var_dump(json_encode($filters));
+        $searchString = '{"enabled":[{"operator":"="}]}';
         $filterLocaleUrl = sprintf('api/rest/v1/locales?search=%s', $searchString);
         $client->request('GET', $filterLocaleUrl);
 
@@ -299,11 +290,7 @@ class FilterLocaleIntegration extends ApiTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $filters = [
-            'enabled' => [['operator' => '=', 'value' => 'non_boolean']]
-        ];
-        $searchString = urlencode(json_encode($filters));
-        var_dump(json_encode($filters));
+        $searchString = '{"enabled":[{"operator":"=","value":"non_boolean"}]}';
         $filterLocaleUrl = sprintf('api/rest/v1/locales?search=%s', $searchString);
         $client->request('GET', $filterLocaleUrl);
 

@@ -82,7 +82,8 @@ class LocaleController
      */
     public function listAction(Request $request)
     {
-        $criterias = $this->prepareSearchCriterias($request);
+        $searchCriterias = $this->validateSearchCriterias($request);
+        $criterias = $this->prepareSearchCriterias($searchCriterias);
 
         $queryParameters = [];
         $queryParameters['page'] = $request->query->get('page', 1);
@@ -125,12 +126,8 @@ class LocaleController
      * @throws BadRequestHttpException
      * @return array
      */
-    protected function prepareSearchCriterias(Request $request)
+    protected function validateSearchCriterias(Request $request)
     {
-        $criterias = [];
-        if (!$request->query->has('search')) {
-            return $criterias;
-        }
         $searchString = $request->query->get('search', '');
         $searchParameters = json_decode($searchString, true);
 
@@ -184,11 +181,29 @@ class LocaleController
                         )
                     );
                 }
-
-                $criterias['activated'] = $searchOperator['value'];
             }
         }
 
-        return $criterias;
+        return $searchParameters;
+    }
+
+    /**
+     * Prepares search criterias
+     * For now, only enabled filter with operator "=" are managed
+     * Value is a boolean
+     *
+     * @param array $searchParameters
+     *
+     * @return array
+     */
+    protected function prepareSearchCriterias(array $searchParameters)
+    {
+        if (empty($searchParameters)) {
+            return [];
+        }
+
+        return [
+            'activated' => $searchParameters['enabled'][0]['value']
+        ];
     }
 }
