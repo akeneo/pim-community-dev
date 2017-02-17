@@ -98,6 +98,20 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
+     * @param string $message
+     *
+     * @Then /^I should see the tooltip "([^"]*)"$/
+     */
+    public function iShouldSeeTheTooltip($message)
+    {
+        $this->spin(function () use ($message) {
+            $tooltipMessages = $this->getCurrentPage()->getTooltipMessages();
+
+            return in_array($message, $tooltipMessages);
+        }, sprintf('Expecting to see tooltip "%s", not found', $message));
+    }
+
+    /**
      * @param string $error
      *
      * @Then /^I should not see(?: a)? validation (?:error|tooltip) "([^"]*)"$/

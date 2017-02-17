@@ -2,6 +2,7 @@
 
 ## Bug Fixes
 
+- PIM-6161: Fix Tooltips and errors rendering on Import/Export Builder
 - GITHUB-5038: Fixed job name visibility checker to also check additional config
 - GITHUB-5062: Fixed unit conversion for ElectricCharge, cheers @gplanchat!
 - GITHUB-5294: Fixed infinite loading if no attribute is configured as a product identifier, cheers @gplanchat!
