@@ -134,4 +134,16 @@ class Index extends Grid
 
         $elt->click();
     }
+
+    /**
+     * Returns list of filters available from "Manage filters" select/dropdown
+     *
+     * @return array
+     */
+    public function getFiltersList()
+    {
+        return $this->spin(function () {
+            return $this->findAll('css', '.AknFilterBox-addFilterButton .ui-multiselect-checkboxes li label span');
+        }, 'Filters list was not found.');
+    }
 }
