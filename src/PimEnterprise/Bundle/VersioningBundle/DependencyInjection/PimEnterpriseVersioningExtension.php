@@ -30,11 +30,11 @@ class PimEnterpriseVersioningExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('controllers.yml');
-        $loader->load('denormalizers.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('guessers.yml');
         $loader->load('purgers.yml');
         $loader->load('reverters.yml');
+        $loader->load('serializers.yml');
 
         $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
         $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);

@@ -27,7 +27,5 @@ class PimEnterpriseVersioningBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container
-            ->addCompilerPass(new RegisterSerializerPass('pimee_versioning.serializer'));
     }
 }
