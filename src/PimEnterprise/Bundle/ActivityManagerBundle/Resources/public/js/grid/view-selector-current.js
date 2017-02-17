@@ -9,12 +9,14 @@
  */
 define(
     [
+        'underscore',
         'oro/translator',
         'oro/messenger',
         'pim/grid/view-selector/current',
         'text!activity-manager/templates/grid/view-selector/current'
     ],
     function (
+        _,
         __,
         messenger,
         BaseCurrent,

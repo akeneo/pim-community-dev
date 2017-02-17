@@ -62,12 +62,18 @@ class ProjectRecalculationCommand extends ContainerAwareCommand
             ->get('pimee_activity_manager.repository.project')
             ->findAll();
 
+        $projectToDetach = null;
         foreach ($projects as $project) {
             $this->commandExecutor->runCommand('akeneo:batch:job', [
                 'code' => $jobName,
                 '-c'   => sprintf('{"project_code":"%s"}', $project->getCode()),
             ]);
-            $objectDetacher->detach($project);
+
+            if (null !== $projectToDetach) {
+                $objectDetacher->detach($projectToDetach);
+            }
+
+            $projectToDetach = $project;
         }
     }
 }

@@ -12,42 +12,42 @@ pimee_catalog_rule:
         impacted_product_count:
           label: Затрагиваемые продукты
           count: '{0,1}%count% затронутый продукт |] 1, Inf [%count% затронутых продуктов'
-          no_yet_calculated: Не подсчитано
+          no_yet_calculated: не подсчитана
       mass_edit_action:
         impacted_product_count: Вычислить количество затрагиваемых продуктов
         execute: Выполнить выбранные правила
         delete: Удалить выбранные правила
   actions:
     type:
-      copy: Тогда %from_field% копируется в %to_field%
-      copy_value: Тогда %from_field% копируется в %to_field%
-      set: Тогда %value% устанавливается в %field%
-      set_value: Тогда %value% устанавливается в %field%
-      add: Тогда %value% добавляется к %field%
-      remove: Тогда %value% удаляется из %field%
+      "copy": Тогда %from_field% копируется в %to_field%
+      "copy_value": Тогда %from_field% копируется в %to_field%
+      "set": Тогда %value% устанавливается в %field%
+      "set_value": Тогда %value% устанавливается в %field%
+      "add": Тогда %value% добавляется к %field%
+      "remove": Тогда %value% удаляется из %field%
   condition:
     label: Если %field% %operator% %value%
     operators:
-      STARTS WITH: начинается с
-      ENDS WITH: заканчивается на
-      CONTAINS: содержит
-      DOES NOT CONTAIN: не содержит
-      EMPTY: пусто
-      NOT EMPTY: не является пустым
-      IN: в списке
-      NOT IN: не в списке
-      IN CHILDREN: среди детей
-      NOT IN CHILDREN: не среди детей
-      UNCLASSIFIED: неклассифицирован
-      IN OR UNCLASSIFIED: неклассифицирован или в списке
-      BETWEEN: между
-      NOT BETWEEN: не между
-      =: равен
-      !=: не равно
-      >: больше
-      >=: равно или больше
-      <: менее чем
-      <=: равно или меньше
+      "STARTS WITH": начинается с
+      "ENDS WITH": заканчивается на
+      "CONTAINS": содержит
+      "DOES NOT CONTAIN": не содержит
+      "EMPTY": пусто
+      "NOT EMPTY": не является пустым
+      "IN": в списке
+      "NOT IN": не в списке
+      "IN CHILDREN": среди детей
+      "NOT IN CHILDREN": не среди детей
+      "UNCLASSIFIED": неклассифицирован
+      "IN OR UNCLASSIFIED": неклассифицирован или в списке
+      "BETWEEN": между
+      "NOT BETWEEN": не между
+      "=": равен
+      "!=": не равно
+      ">": больше
+      ">=": равно или больше
+      "<": менее чем
+      "<=": равно или меньше
   acl_group:
     rule: Правила
   acl:
@@ -60,7 +60,7 @@ pimee_catalog_rule:
     tab:
       rule.title: Правила
     grid:
-      is_smart.label: Умные
+      is_smart.label: Smart
     acl:
       rule.view_permissions: Просмотр правил
   product:
@@ -95,11 +95,8 @@ mass_edit_rule: Настройки правил
 job_execution.summary.rule_calculated: Количество привил
 batch_jobs:
   yml_rule_import:
-    label: Импорт правил из YAML
+    label: Импорт правил в YAML
     import.label: Импорт правил
-  yml_rule_export:
-    label: Экспорт правил в YAML
-    export.label: Экспорт правил
   rule_impacted_product_count:
     label: Затрагиваемые продукты для правил
     perform.label: Вычислить затрагиваемые продукты

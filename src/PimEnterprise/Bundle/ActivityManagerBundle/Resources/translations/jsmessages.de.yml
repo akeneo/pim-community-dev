@@ -1,9 +1,19 @@
 activity_manager:
   common:
     required: Erforderlich
+  grid:
+    view_selector:
+      loading: Lädt...
+      confirmation:
+        delete: Löschbestätigung
   project:
     label: Bezeichnung
     description: Beschreibung
+  edit_project_modal:
+    confirm: Speichern
+    cancel: Abbrechen
   create_project_modal:
     confirm: Speichern
     cancel: Abbrechen
+  widget:
+    description: Beschreibung

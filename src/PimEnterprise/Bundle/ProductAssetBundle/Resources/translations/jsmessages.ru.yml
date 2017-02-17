@@ -9,28 +9,28 @@ pimee_product_asset:
             empty_basket: Корзина пуста
         manage_asset:
           title: Управление активами
-          cancel: Отменить
-          confirm: Подтвердить
+          cancel: Отмена
+          confirm: Подтверждение
   enrich_asset:
     grid:
       edit: Редактирование свойств актива
   enrich_variation:
     popin:
       delete:
-        title: Отменить подтверждение
+        title: Подтверждение удаления
         message: Вы действительно хотите удалить этот элемент?
       reset:
         title: Сбросить вариации
         message: Вы уверен, что хотите сбросить все вариации?
   mass_upload:
-    menu: Добавить активы
+    menu: Загрузить медиафайлы
     btn:
       remove_all_files: Удалить все файлы
       delete: Удалить
       import: Импорт
       upload: Загрузить
     success:
-      new: Будет создан новый актив
+      new: Будет создан новый медиафайл
       imported: Файлы, импортированные для обработки активов
       canceled: Загрузка успешно отмененa
       deleted: Загруженный файл успешно удален
@@ -40,7 +40,7 @@ pimee_product_asset:
       delete: Не удается удалить файл с сервера
       import: Произошла ошибка во время импорта
       filename: Недопустимое имя файла для актива
-      code: Недопустимый формат кода для актива
+      code: Недопустимый формат кода для медиафайла
       locale: Актив существует, но не является локализуемым
       invalid_locale: Локаль отключена или недопустна
       exists: Файл с таким же именем уже импортирован
@@ -53,7 +53,7 @@ pimee_product_asset:
       progress: прогресс
       actions: действия
     action:
-      cancel: oтменить
+      cancel: Отмена
       remove: Удалить
     status:
       added: Добавлено
