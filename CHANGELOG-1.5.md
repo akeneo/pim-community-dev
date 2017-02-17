@@ -1,3 +1,9 @@
+# 1.5.20 (2017-02-09)
+
+## Bug fixes
+
+- Fix timeout with too many Assets
+
 # 1.5.19 (2017-02-06)
 
 # 1.5.18 (2017-02-01)

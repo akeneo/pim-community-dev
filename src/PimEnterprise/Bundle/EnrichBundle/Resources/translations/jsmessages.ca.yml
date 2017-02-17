@@ -14,13 +14,24 @@ permission-changes:
     grant: El grup <strong>{{ group }} serà {{ permission }}</strong>
     revoke: El grup <strong>{{ group }} no serà {{ permission }}</strong>
 pimee_enrich:
+  form:
+    job_instance:
+      tab:
+        permission:
+          title: Permisos
+          execute.label: Autoritzat per executar el perfil d'aquesta tasca
+          edit.label: Autoritzat per editar el perfil d'aquesta tasca
+    channel:
+      tab:
+        asset-transformation:
+          title: Transformacions de recurs
   entity:
     product:
       history:
         published: Publicat
         revert: Restaurar
       smart_attribute:
-        come_from: 'Aquest atribut pot ser actualitzat per una regla:'
+        come_from: "Aquest atribut pot ser actualitzat per una regla:"
       btn:
         publish: Publicar
         publish_this_version: Publicar aquesta versió
@@ -39,7 +50,7 @@ pimee_enrich:
         draft:
           in_progress: En procés
           sent_for_approval: En espera d'aprovació
-          working_copy: Còpia en procés
+          working_copy: Còpia de treball
       tab:
         proposals:
           title: Propostes
@@ -64,12 +75,12 @@ pimee_enrich:
           title: Despublicar aquest producte
           content: Esteu segur que voleu despublicar aquest producte?
       info:
-        update_successful: La còpia en procès del producte s'ha actualitzat
+        update_successful: La còpia de treball del producte s'ha actualitzat
       copy:
         source:
-          working_copy: Còpia en procés
+          working_copy: Còpia de treball
           draft: El meu projecte
-          draft_of: projecte de {{ author }}
+          draft_of: "projecte de {{ author }}"
     product_draft:
       info:
         update_successful: El projecte de producte s'ha desat correctament
@@ -95,3 +106,33 @@ pimee_enrich:
       confirmation:
         discard_changes: Esteu segur que voleu enviar el seu projecte a aprovació sense canvis no desats? Aquests canvis es perdran.
         discard_changes_title: Esteu segur que voleu enviar aquest projecte?
+  asset_transformation:
+    not_found: No s'ha trobat cap transformació
+    title:
+      transformation: Transformació
+      options: Opcions
+    colorspace:
+      title: Espai de color
+      options:
+        colorspace: Espai de color %value%
+    resize:
+      title: Redimensiona
+      options:
+        width: '% value%px d''amplada'
+        height: '% value%px d''alçada'
+    resolution:
+      title: Resolució
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Escala
+      options:
+        width: '% value%px d''amplada'
+        height: '% value%px d''alçada'
+        ratio: '%value%% proporció'
+    thumbnail:
+      title: Miniatura
+      options:
+        width: '% value%px d''amplada'
+        height: '% value%px d''alçada'

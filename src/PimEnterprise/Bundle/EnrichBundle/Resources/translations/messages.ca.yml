@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: Configuracions regionals %locale.code% | Editar
+  edit: "Configuracions regionals %locale.code% | Editar"
 Permissions: Permisos
 pane.accordion.permissions: Permisos
 attribute group.permissions:
@@ -90,6 +90,9 @@ pimee_enrich:
   locale:
     tab:
       permission.title: Permisos
+  channel:
+    tab:
+      asset_transformation.title: Transformacions de recurs
   acl.product_ownership.title: Propietat
   attributes:
     empty: cap
@@ -101,6 +104,10 @@ pimee_enrich:
     title:
       transformation: Transformació
       options: Opcions
+    colorspace:
+      title: Espai de color
+      options:
+        colorspace: Espai de color %value%
     resize:
       title: Redimensiona
       options:
@@ -146,7 +153,7 @@ batch_jobs:
     label: Editar els atributs comuns amb comprovació de permisos i aplicació de regles
     perform.label: Editar atributs comuns
     execute_rules.label: Execució de les regles
-    clean.label: Netejar arxius temporals
+    cleaner.label: Netejar arxius temporals
   add_to_variant_group_with_rules:
     label: Afegir productes a la variant de grup amb aplicació de regles
     perform.label: Afegir productes a la variant de grups
@@ -182,5 +189,6 @@ job_execution.summary:
   mass_unpublished: Producte despublicat
   proposal: Proposta creada
   proposal_deleted: suprimit
+pim_assets_collection: Col·lecció de recursos
 pim_enrich_attribute_form:
   isReadOnly: Només de lectura

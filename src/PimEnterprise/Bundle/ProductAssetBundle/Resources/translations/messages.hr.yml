@@ -160,7 +160,6 @@ pim_enrich:
 btn.create.asset: Kreiraj imovinu
 assets_mass_upload.steps:
   asset_mass_upload.title: Masovni prijenos imovine
-import_asset.steps.channel_configuration_processor.title: Konfiguracije obrade kanala
 mass_upload: Masovni prenesi imovine
 batch_jobs:
   apply_assets_mass_upload:

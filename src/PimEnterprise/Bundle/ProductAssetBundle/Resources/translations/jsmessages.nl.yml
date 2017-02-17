@@ -7,8 +7,7 @@ pimee_product_asset:
             title: Mandje
             empty_basket: Mandje is leeg
         manage_asset:
-          cancel: Annuleer
-          confirm: Bevestig
+          cancel: Annuleren
   enrich_variation:
     popin:
       delete:
@@ -21,17 +20,15 @@ pimee_product_asset:
     btn:
       remove_all_files: Verwijder alle bestanden
       delete: Verwijderen
-      import: Importeer
+      import: Import
       upload: Upload
     success:
       canceled: Uploaden met succes geannuleerd
       deleted: Geüploade bestand succesvol verwijderd
     error:
       list: Kan de reeds geüploade bestanden niet lezen
-      upload: Er is een fout opgetreden tijdens het uploaden
       delete: Kan bestand niet verwijderen van server
       import: Er is een fout opgetreden tijdens import
-      invalid_locale: De landinstelling is uitgeschakeld of ongeldig
       exists: Een bestand met dezelfde naam is reeds geïmporteerd
       conflicts: Bestandsnamen conflict
     grid:
