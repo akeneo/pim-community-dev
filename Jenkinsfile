@@ -93,27 +93,29 @@ stage("Integration tests") {
 def runUnitTest(version) {
     node('docker') {
         deleteDir()
-        docker.image("mysql:5.5").withRun("--name phpunit -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim") {
-            docker.image("carcel/php:${version}").inside("--link phpunit:phpunit -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
-                unstash "pim_community_dev"
+        docker.image("mysql:5.5").withRun("--name phpunit_mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim") {
+            docker.image("elasticsearch:1.7").withRun("--name phpunit_elasticsearch") {
+                docker.image("carcel/php:${version}").inside("--link phpunit:phpunit -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+                    unstash "pim_community_dev"
 
-                sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                sh "composer global require friendsofphp/php-cs-fixer ^2.0"
-                sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
-                sh "sed -i 's/database_host:     localhost/database_host:     phpunit/' app/config/parameters_test.yml"
-                sh "./app/console --env=test pim:install --force"
+                    sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                    sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
+                    sh "sed -i \"s#database_host: .*#database_host: phpunit_mysql#g\" app/config/parameters_test.yml"
+                    sh "sed -i \"s#pim_es_host: .*#database_host: phpunit_elasticsearch#g\" app/config/parameters_test.yml"
+                    sh "./app/console --env=test pim:install --force"
 
-                sh "./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test --log-junit app/build/logs/phpunit.xml || true"
-                sh "./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml || true"
-                sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml || true"
-                sh "/home/akeneo/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --diff --format=junit --config=.php_cs.dist > app/build/logs/phpcs.xml || true"
+                    sh "./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test --log-junit app/build/logs/phpunit.xml || true"
+                    sh "./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml || true"
+                    sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml || true"
+                    sh "./bin/php-cs-fixer fix --diff --format=junit --config=.php_cs.dist > app/build/logs/phpcs.xml || true"
 
-                sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${version}] /\" app/build/logs/*.xml"
-                junit "app/build/logs/*.xml"
-                sh "if test `grep 'status=\"failed\"' app/build/logs/phpunit.xml | wc -l` -ne 0; then exit 1; fi"
-                sh "if test `grep 'status=\"failed\"' app/build/logs/phpunit_integration.xml | wc -l` -ne 0; then exit 1; fi"
-                sh "if test `grep 'status=\"failed\"' app/build/logs/phpspec.xml | wc -l` -ne 0; then exit 1; fi"
-                sh "if test `grep '<failure ' app/build/logs/phpcs.xml | wc -l` -ne 0; then exit 1; fi"
+                    sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${version}] /\" app/build/logs/*.xml"
+                    junit "app/build/logs/*.xml"
+                    sh "if test `grep 'status=\"failed\"' app/build/logs/phpunit.xml | wc -l` -ne 0; then exit 1; fi"
+                    sh "if test `grep 'status=\"failed\"' app/build/logs/phpunit_integration.xml | wc -l` -ne 0; then exit 1; fi"
+                    sh "if test `grep 'status=\"failed\"' app/build/logs/phpspec.xml | wc -l` -ne 0; then exit 1; fi"
+                    sh "if test `grep '<failure ' app/build/logs/phpcs.xml | wc -l` -ne 0; then exit 1; fi"
+                }
             }
         }
     }
