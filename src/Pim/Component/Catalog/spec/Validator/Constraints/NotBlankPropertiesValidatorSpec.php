@@ -33,7 +33,7 @@ class NotBlankPropertiesValidatorSpec extends ObjectBehavior
             ->getProperties()
             ->willReturn(['my_property' => null]);
         $value
-            ->getAttributeType()
+            ->getType()
             ->willReturn(AttributeTypes::NUMBER);
 
         $context
@@ -54,7 +54,7 @@ class NotBlankPropertiesValidatorSpec extends ObjectBehavior
             ->getProperties()
             ->willReturn(['my_property' => 'not_blank_value']);
         $value
-            ->getAttributeType()
+            ->getType()
             ->willReturn(AttributeTypes::REFERENCE_DATA_MULTI_SELECT);
 
         $context
@@ -76,7 +76,7 @@ class NotBlankPropertiesValidatorSpec extends ObjectBehavior
             ->getProperties()
             ->willReturn(['my_property' => null]);
         $value
-            ->getAttributeType()
+            ->getType()
             ->willReturn(AttributeTypes::REFERENCE_DATA_MULTI_SELECT);
 
         $context

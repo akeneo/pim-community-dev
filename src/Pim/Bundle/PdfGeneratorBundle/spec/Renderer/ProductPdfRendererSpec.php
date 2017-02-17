@@ -59,7 +59,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $design->getLabel()->willReturn('Design');
 
         $color->getCode()->willReturn('color');
-        $color->getAttributeType()->willReturn('pim_catalog_text');
+        $color->getType()->willReturn('pim_catalog_text');
 
         $templating->render(self::TEMPLATE_NAME, [
             'product'           => $blender,
@@ -99,7 +99,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $media->getLabel()->willReturn('Media');
 
         $mainImage->getCode()->willReturn('main_image');
-        $mainImage->getAttributeType()->willReturn('pim_catalog_image');
+        $mainImage->getType()->willReturn('pim_catalog_image');
 
         $templating->render(
             self::TEMPLATE_NAME,

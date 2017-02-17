@@ -52,8 +52,8 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
      */
     public function supportsAttributes(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
     {
-        $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
-        $supportsTo = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
+        $supportsFrom = in_array($fromAttribute->getType(), $this->supportedFromTypes);
+        $supportsTo = in_array($toAttribute->getType(), $this->supportedToTypes);
 
         return $supportsFrom && $supportsTo;
     }

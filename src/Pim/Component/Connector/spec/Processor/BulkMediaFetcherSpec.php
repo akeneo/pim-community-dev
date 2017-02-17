@@ -55,7 +55,7 @@ class BulkMediaFetcherSpec extends ObjectBehavior
         $productValue->getMedia()->willReturn($fileInfo);
         $productValue->getLocale()->willReturn('en_US');
         $productValue->getScope()->willReturn(null);
-        $attribute->getAttributeType()->willReturn('pim_catalog_image');
+        $attribute->getType()->willReturn('pim_catalog_image');
         $attribute->getCode()->willReturn('my_picture');
 
         $productValuesCollection->getIterator()->willReturn($valuesIterator);
@@ -111,7 +111,7 @@ class BulkMediaFetcherSpec extends ObjectBehavior
         $productValue2->getLocale()->willReturn('fr_FR');
         $productValue2->getScope()->willReturn('ecommerce');
 
-        $attribute->getAttributeType()->willReturn('pim_catalog_image');
+        $attribute->getType()->willReturn('pim_catalog_image');
         $attribute->getCode()->willReturn('my_picture');
 
         $productValuesCollection->getIterator()->willReturn($valuesIterator);

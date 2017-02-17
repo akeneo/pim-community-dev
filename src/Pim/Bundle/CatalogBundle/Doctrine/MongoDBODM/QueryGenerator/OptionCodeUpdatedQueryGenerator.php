@@ -39,6 +39,6 @@ class OptionCodeUpdatedQueryGenerator extends AbstractQueryGenerator
     public function supports($entity, $field)
     {
         return parent::supports($entity, $field) &&
-            AttributeTypes::OPTION_SIMPLE_SELECT === $entity->getAttribute()->getAttributeType();
+            AttributeTypes::OPTION_SIMPLE_SELECT === $entity->getAttribute()->getType();
     }
 }

@@ -19,7 +19,7 @@ class ReferenceDataEmptyValueProvider implements EmptyValueProviderInterface
      */
     public function getEmptyValue($attribute)
     {
-        return 'pim_reference_data_multiselect' === $attribute->getAttributeType() ? [] : null;
+        return 'pim_reference_data_multiselect' === $attribute->getType() ? [] : null;
     }
 
     /**

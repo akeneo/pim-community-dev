@@ -45,10 +45,10 @@ class DateFilterSpec extends ObjectBehavior
 
     function it_supports_date_attributes(AttributeInterface $dateAtt, AttributeInterface $otherAtt)
     {
-        $dateAtt->getAttributeType()->willReturn('pim_catalog_date');
+        $dateAtt->getType()->willReturn('pim_catalog_date');
         $this->supportsAttribute($dateAtt)->shouldReturn(true);
 
-        $otherAtt->getAttributeType()->willReturn('pim_catalog_other');
+        $otherAtt->getType()->willReturn('pim_catalog_other');
         $this->supportsAttribute($otherAtt)->shouldReturn(false);
     }
 

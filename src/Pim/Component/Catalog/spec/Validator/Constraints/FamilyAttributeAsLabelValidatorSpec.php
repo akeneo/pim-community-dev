@@ -31,7 +31,7 @@ class FamilyAttributeAsLabelValidatorSpec extends ObjectBehavior
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $attributeAsLabel->getCode()->willReturn('attributeAsLabelCode');
         $family->getAttributeCodes()->willReturn(['attributeAsLabelCode', 'anotherAttribute']);
-        $attributeAsLabel->getAttributeType()->willReturn('pim_catalog_text');
+        $attributeAsLabel->getType()->willReturn('pim_catalog_text');
 
         $this->validate($family, $minimumRequirements);
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
@@ -47,7 +47,7 @@ class FamilyAttributeAsLabelValidatorSpec extends ObjectBehavior
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $attributeAsLabel->getCode()->willReturn('attributeAsLabelCode');
         $family->getAttributeCodes()->willReturn(['anotherAttribute']);
-        $attributeAsLabel->getAttributeType()->willReturn('pim_catalog_text');
+        $attributeAsLabel->getType()->willReturn('pim_catalog_text');
 
         $context->buildViolation(Argument::any())->willReturn($violation)->shouldBeCalled();
 
@@ -64,7 +64,7 @@ class FamilyAttributeAsLabelValidatorSpec extends ObjectBehavior
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $attributeAsLabel->getCode()->willReturn('attributeAsLabelCode');
         $family->getAttributeCodes()->willReturn(['attributeAsLabelCode', 'anotherAttribute']);
-        $attributeAsLabel->getAttributeType()->willReturn('wrong_type');
+        $attributeAsLabel->getType()->willReturn('wrong_type');
 
         $context->buildViolation(Argument::any())->willReturn($violation)->shouldBeCalled();
 

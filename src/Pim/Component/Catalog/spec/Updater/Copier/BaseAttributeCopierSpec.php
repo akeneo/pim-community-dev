@@ -33,28 +33,28 @@ class BaseAttributeCopierSpec extends ObjectBehavior
         AttributeInterface $toFileAttribute,
         AttributeInterface $toTextareaAttribute
     ) {
-        $fromFooAttribute->getAttributeType()->willReturn('foo');
-        $toFooAttribute->getAttributeType()->willReturn('foo');
+        $fromFooAttribute->getType()->willReturn('foo');
+        $toFooAttribute->getType()->willReturn('foo');
         $this->supportsAttributes($fromFooAttribute, $toFooAttribute)->shouldReturn(true);
 
-        $fromFooAttribute->getAttributeType()->willReturn('foo');
-        $toFooAttribute->getAttributeType()->willReturn('bar');
+        $fromFooAttribute->getType()->willReturn('foo');
+        $toFooAttribute->getType()->willReturn('bar');
         $this->supportsAttributes($fromFooAttribute, $toFooAttribute)->shouldReturn(false);
 
-        $fromTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $fromTextareaAttribute->getType()->willReturn('pim_catalog_textarea');
+        $toTextareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttributes($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(false);
 
-        $fromImageAttribute->getAttributeType()->willReturn('pim_catalog_image');
-        $toImageAttribute->getAttributeType()->willReturn('pim_catalog_image');
+        $fromImageAttribute->getType()->willReturn('pim_catalog_image');
+        $toImageAttribute->getType()->willReturn('pim_catalog_image');
         $this->supportsAttributes($fromImageAttribute, $toImageAttribute)->shouldReturn(false);
 
-        $fromFileAttribute->getAttributeType()->willReturn('pim_catalog_file');
-        $toFileAttribute->getAttributeType()->willReturn('pim_catalog_file');
+        $fromFileAttribute->getType()->willReturn('pim_catalog_file');
+        $toFileAttribute->getType()->willReturn('pim_catalog_file');
         $this->supportsAttributes($fromImageAttribute, $toImageAttribute)->shouldReturn(false);
 
-        $fromFooAttribute->getAttributeType()->willReturn('foo');
-        $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $fromFooAttribute->getType()->willReturn('foo');
+        $toTextareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttributes($fromFooAttribute, $toTextareaAttribute)->shouldReturn(false);
     }
 

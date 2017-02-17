@@ -43,10 +43,10 @@ class OptionsFilterSpec extends ObjectBehavior
 
     function it_supports_multi_select_attribute(AttributeInterface $attribute)
     {
-        $attribute->getAttributeType()->willReturn('pim_catalog_multiselect');
+        $attribute->getType()->willReturn('pim_catalog_multiselect');
         $this->supportsAttribute($attribute)->shouldReturn(true);
 
-        $attribute->getAttributeType()->willReturn(Argument::any());
+        $attribute->getType()->willReturn(Argument::any());
         $this->supportsAttribute($attribute)->shouldReturn(false);
     }
 

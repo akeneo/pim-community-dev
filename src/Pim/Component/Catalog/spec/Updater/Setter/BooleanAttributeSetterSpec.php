@@ -28,10 +28,10 @@ class BooleanAttributeSetterSpec extends ObjectBehavior
         AttributeInterface $booleanAttribute,
         AttributeInterface $textareaAttribute
     ) {
-        $booleanAttribute->getAttributeType()->willReturn('pim_catalog_boolean');
+        $booleanAttribute->getType()->willReturn('pim_catalog_boolean');
         $this->supportsAttribute($booleanAttribute)->shouldReturn(true);
 
-        $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $textareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 

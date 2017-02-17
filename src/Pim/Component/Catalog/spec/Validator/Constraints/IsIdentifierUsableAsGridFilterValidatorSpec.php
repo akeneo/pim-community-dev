@@ -27,7 +27,7 @@ class IsIdentifierUsableAsGridFilterValidatorSpec extends ObjectBehavior
         IsIdentifierUsableAsGridFilter $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $attribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $attribute->getType()->willReturn('pim_catalog_identifier');
         $attribute->isUseableAsGridFilter()->willReturn(false);
         $attribute->getCode()->shouldBeCalled()->willReturn('foobar');
 
@@ -43,7 +43,7 @@ class IsIdentifierUsableAsGridFilterValidatorSpec extends ObjectBehavior
         AttributeInterface $attribute,
         IsIdentifierUsableAsGridFilter $constraint
     ) {
-        $attribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $attribute->getType()->willReturn('pim_catalog_identifier');
         $attribute->isUseableAsGridFilter()->willReturn(true);
 
         $attribute->getCode()->shouldNotBeCalled();

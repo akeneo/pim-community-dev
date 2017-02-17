@@ -55,7 +55,7 @@ class FamilyAttributeAsLabelValidator extends ConstraintValidator
      */
     protected function isAttributeAsLabelTypeValid(FamilyInterface $family)
     {
-        return in_array($family->getAttributeAsLabel()->getAttributeType(), [
+        return in_array($family->getAttributeAsLabel()->getType(), [
                 AttributeTypes::IDENTIFIER,
                 AttributeTypes::TEXT
             ]);
