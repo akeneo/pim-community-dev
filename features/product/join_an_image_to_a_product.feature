@@ -8,8 +8,8 @@ Feature: Join an image to a product
     Given the "default" catalog configuration
     And a "Car" product
     And the following attribute:
-      | label  | type  | allowed extensions |
-      | Visual | image | jpg,gif            |
+      | label-en_US | type              | allowed extensions | group | code   |
+      | Visual      | pim_catalog_image | jpg,gif            | other | visual |
     And the "Car" product has the "visual" attribute
     And I am logged in as "Mary"
     And I am on the "Car" product page

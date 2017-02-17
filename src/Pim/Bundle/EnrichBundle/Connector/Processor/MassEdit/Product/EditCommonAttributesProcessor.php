@@ -198,7 +198,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
                 [
                     'class'  => ClassUtils::getClass($product),
                     'id'     => $product->getId(),
-                    'string' => $product->getIdentifier()->getData(),
+                    'string' => $product->getIdentifier(),
                 ]
             )
         );

@@ -20,11 +20,6 @@ interface GroupTypeRepositoryInterface extends IdentifiableObjectRepositoryInter
     public function getAllGroupsExceptVariantQB();
 
     /**
-     * @return mixed
-     */
-    public function createDatagridQueryBuilder();
-
-    /**
      * @param string $code
      *
      * @return string

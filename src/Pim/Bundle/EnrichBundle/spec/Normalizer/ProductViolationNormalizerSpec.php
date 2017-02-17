@@ -7,10 +7,16 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValue;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 class ProductViolationNormalizerSpec extends ObjectBehavior
 {
+    function let(AttributeRepositoryInterface $attributeRepository)
+    {
+        $this->beConstructedWith($attributeRepository);
+    }
+
     function it_supports_constraint_violation(ConstraintViolationInterface $violation)
     {
         $this->supportsNormalization($violation, 'internal_api')->shouldReturn(true);
@@ -109,6 +115,24 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
         ]);
     }
 
+    function it_normalizes_violation_on_product_identifier(
+        $attributeRepository,
+        ConstraintViolationInterface $violation,
+        ProductInterface $product
+    ) {
+        $violation->getPropertyPath()->willReturn('identifier');
+        $violation->getMessage()->willReturn(' This value is already used.');
+
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
+
+        $this->normalize($violation, 'internal_api', ['product' => $product])->shouldReturn([
+            'attribute' => 'sku',
+            'locale'    => null,
+            'scope'     => null,
+            'message'   => ' This value is already used.'
+        ]);
+    }
+
     function it_normalizes_global_violation(ConstraintViolationInterface $violation, ProductInterface $product)
     {
         $violation->getPropertyPath()->willReturn('variant.color');
@@ -129,12 +153,14 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
             ->duringNormalize($violation, 'internal_api');
     }
 
-    function it_throws_an_exception_if_product_argument_is_not_a_product(ConstraintViolationInterface $violation)
-    {
+    function it_throws_an_exception_if_product_argument_is_not_a_product(
+        ConstraintViolationInterface $violation,
+        ProductValueInterface $productValue
+    ) {
         $violation->getPropertyPath()->willReturn('values[price].float');
 
         $this
             ->shouldThrow(new \InvalidArgumentException('Expects a product or a product template as context'))
-            ->duringNormalize($violation, 'internal_api', ['product' => new ProductValue()]);
+            ->duringNormalize($violation, 'internal_api', ['product' => $productValue]);
     }
 }

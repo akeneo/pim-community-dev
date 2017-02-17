@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -50,8 +50,11 @@ class BooleanFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_a_boolean()
     {
-        $this->shouldThrow(InvalidArgumentException::booleanExpected('enabled', 'filter', 'boolean', gettype('fuu')))
-            ->during('addFieldFilter', ['enabled', '=', 'fuu']);
+        $this->shouldThrow(InvalidPropertyTypeException::booleanExpected(
+            'enabled',
+            'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BooleanFilter',
+            'fuu'
+        ))->during('addFieldFilter', ['enabled', '=', 'fuu']);
     }
 
     function it_adds_an_equal_filter_on_a_field_in_the_query(

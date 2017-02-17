@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
@@ -29,8 +29,8 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
     /**
      * @param AttributeValidatorHelper  $attrValidatorHelper
      * @param ObjectIdResolverInterface $objectIdResolver
-     * @param array                     $supportedAttributeTypes
-     * @param array                     $supportedOperators
+     * @param string[]                  $supportedAttributeTypes
+     * @param string[]                  $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
@@ -61,15 +61,14 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
         try {
             $options = $this->resolver->resolve($options);
         } catch (\Exception $e) {
-            throw InvalidArgumentException::expectedFromPreviousException(
+            throw InvalidPropertyException::expectedFromPreviousException(
                 $e,
                 $attribute->getCode(),
-                'filter',
-                'options'
+                static::class
             );
         }
 
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'options');
+        $this->checkLocaleAndScope($attribute, $locale, $scope);
 
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($options['field'], $value);
@@ -162,10 +161,10 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
      */
     protected function checkValue($field, $values)
     {
-        FieldFilterHelper::checkArray($field, $values, 'options');
+        FieldFilterHelper::checkArray($field, $values, static::class);
 
         foreach ($values as $value) {
-            FieldFilterHelper::checkIdentifier($field, $value, 'options');
+            FieldFilterHelper::checkIdentifier($field, $value, static::class);
         }
     }
 

@@ -11,8 +11,8 @@ Feature: Filter products per metric
       | furniture |
       | library   |
     And the following attributes:
-      | label  | scopable | type   | useable_as_grid_filter | metric_family | default_metric_unit | decimals_allowed |
-      | Weight | yes      | metric | yes                    | Weight        | GRAM                | yes              |
+      | label-en_US | scopable | type               | useable_as_grid_filter | metric_family | default_metric_unit | decimals_allowed | group | code   |
+      | Weight      | 1        | pim_catalog_metric | 1                      | Weight        | GRAM                | 1                | other | weight |
     And the following products:
       | sku    | family    | enabled | weight-ecommerce | weight-mobile |
       | postit | furniture | yes     | 120 GRAM         |               |
@@ -27,12 +27,13 @@ Feature: Filter products per metric
     And the grid should contain 4 elements
     And I should see products postit and book
     And I should be able to use the following filters:
-      | filter | operator | value         | result          |
-      | weight | >=       | 200 Gram      | book            |
-      | weight | >        | 120 Gram      | book            |
-      | weight | =        | 120 Gram      | postit          |
-      | weight | <        | 200 Gram      | postit          |
-      | weight | <=       | 120 Gram      | postit          |
-      | weight | <=       | 0.25 Kilogram | postit and book |
-      | weight | >        | 4 Kilogram    |                 |
-      | weight | is empty |               | mug and pen     |
+      | filter | operator     | value         | result          |
+      | weight | >=           | 200 Gram      | book            |
+      | weight | >            | 120 Gram      | book            |
+      | weight | =            | 120 Gram      | postit          |
+      | weight | <            | 200 Gram      | postit          |
+      | weight | <=           | 120 Gram      | postit          |
+      | weight | <=           | 0.25 Kilogram | postit and book |
+      | weight | >            | 4 Kilogram    |                 |
+      | weight | is empty     |               | mug and pen     |
+      | weight | is not empty |               | postit and book |

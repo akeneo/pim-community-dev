@@ -5,8 +5,6 @@ namespace Pim\Component\Catalog\Repository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\NonUniqueResultException;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -22,17 +20,6 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
  */
 interface ProductRepositoryInterface extends ObjectRepository
 {
-    /**
-     * Load a product entity with related attribute values
-     *
-     * @param int $id
-     *
-     * @throws NonUniqueResultException
-     *
-     * @return ProductInterface|null
-     */
-    public function findOneByWithValues($id);
-
     /**
      * @param ChannelInterface $channel
      *
@@ -56,33 +43,6 @@ interface ProductRepositoryInterface extends ObjectRepository
      * @return array
      */
     public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = []);
-
-    /**
-     * Returns all products that have the given attribute
-     *
-     * @param AttributeInterface $attribute
-     *
-     * @return ProductInterface[]
-     */
-    public function findAllWithAttribute(AttributeInterface $attribute);
-
-    /**
-     * Returns all products that have the given attribute option
-     *
-     * @param AttributeOptionInterface $option
-     *
-     * @return ProductInterface[]
-     */
-    public function findAllWithAttributeOption(AttributeOptionInterface $option);
-
-    /**
-     * Returns a full product with all relations
-     *
-     * @param int $id
-     *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
-     */
-    public function getFullProduct($id);
 
     /**
      * Returns true if a ProductValue with the provided value alread exists,
@@ -140,7 +100,7 @@ interface ProductRepositoryInterface extends ObjectRepository
 
     /**
      * @param GroupInterface $group
-     * @param                $maxResults
+     * @param int            $maxResults
      *
      * @return array
      */

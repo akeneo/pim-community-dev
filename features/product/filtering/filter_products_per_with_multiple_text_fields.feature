@@ -11,9 +11,9 @@ Feature: Filter products with multiples text fields filters
       | furniture |
       | library   |
     And the following attributes:
-      | code        | label       | type | useable_as_grid_filter |
-      | name        | Name        | text | yes                    |
-      | description | Description | text | yes                    |
+      | code        | label-en_US | type             | useable_as_grid_filter | group |
+      | name        | Name        | pim_catalog_text | 1                      | other |
+      | description | Description | pim_catalog_text | 1                      | other |
     And the following products:
       | sku    | family    | description    | name   |
       | BOOK   | library   |                |        |
@@ -35,6 +35,7 @@ Feature: Filter products with multiples text fields filters
     And I should be able to use the following filters:
       | filter | operator         | value | result                                 |
       | name   | is empty         |       | POST-1 and POST-2                      |
+      | name   | is not empty     |       | MUG-2, MUG-3 and MUG-4                 |
       | name   | contains         | in    | MUG-2, MUG-3 and MUG-4                 |
       | name   | starts with      | in    | MUG-2 and MUG-3                        |
       | name   | ends with        | nk    | MUG-4                                  |
@@ -49,16 +50,17 @@ Feature: Filter products with multiples text fields filters
   Scenario: Successfully filter product without commons attributes
     Given I filter by "name" with operator "contains" and value "indigo"
     And I should be able to use the following filters:
-      | filter      | operator         | value      | result                 |
-      | description | is empty         |            | MUG-5                  |
-      | description | contains         | color      | POST-3                 |
-      | description | contains         | red        | MUG-2 and MUG-3        |
-      | description | starts with      | color      |                        |
-      | description | starts with      | b          | POST-3                 |
-      | description | ends with        | or         | POST-3                 |
-      | description | ends with        | OR         | POST-3                 |
-      | description | does not contain | bl         | MUG-2, MUG-5 and MUG-3 |
-      | description | is equal to      | red        |                        |
-      | description | is equal to      | red handle | MUG-2 and MUG-3        |
+      | filter      | operator         | value      | result                         |
+      | description | is empty         |            | MUG-5                          |
+      | description | is not empty     |            | MUG-1, MUG-2, MUG-3 and POST-3 |
+      | description | contains         | color      | POST-3                         |
+      | description | contains         | red        | MUG-2 and MUG-3                |
+      | description | starts with      | color      |                                |
+      | description | starts with      | b          | POST-3                         |
+      | description | ends with        | or         | POST-3                         |
+      | description | ends with        | OR         | POST-3                         |
+      | description | does not contain | bl         | MUG-2, MUG-5 and MUG-3         |
+      | description | is equal to      | red        |                                |
+      | description | is equal to      | red handle | MUG-2 and MUG-3                |
     And I hide the filter "description"
     And I hide the filter "name"

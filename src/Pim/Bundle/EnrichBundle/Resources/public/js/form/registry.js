@@ -25,8 +25,9 @@ define(
         var getExtensionMeta = function (formName) {
             return ConfigProvider.getExtensionMap().then(function (extensionMap) {
                 var form = _.findWhere(extensionMap, { code: formName });
+                var extensions = _.where(extensionMap, { parent: form.code });
 
-                return _.where(extensionMap, { parent: form.code });
+                return $.extend(true, {}, extensions);
             });
         };
 

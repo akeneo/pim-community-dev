@@ -7,8 +7,8 @@ Feature: Define product prices
   Background:
     Given the "default" catalog configuration
     And the following attribute:
-      | code        | label        | type   | localizable |
-      | publicPrice | Public price | prices | yes         |
+      | code        | label-en_US  | type                         | localizable | group |
+      | publicPrice | Public price | pim_catalog_price_collection | 1           | other |
     And the following product:
       | sku  | publicPrice-en_US | publicPrice-fr_FR |
       | bike | 50 EUR, 100 USD   | 150 EUR, 200 USD  |

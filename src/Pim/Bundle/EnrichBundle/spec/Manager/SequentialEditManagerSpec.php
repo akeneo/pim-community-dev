@@ -19,17 +19,9 @@ class SequentialEditManagerSpec extends ObjectBehavior
         SequentialEditRepository $repository,
         SequentialEditFactory $factory,
         ProductRepositoryInterface $productRepository,
-        SaverInterface $saver,
         RemoverInterface $remover
     ) {
-        $this->beConstructedWith($repository, $factory, $productRepository, $saver, $remover);
-    }
-
-    function it_saves_a_sequential_edit($saver, SequentialEdit $sequentialEdit)
-    {
-        $saver->save($sequentialEdit, [])->shouldBeCalled();
-
-        $this->save($sequentialEdit)->shouldReturn(null);
+        $this->beConstructedWith($repository, $factory, $productRepository, $remover);
     }
 
     function it_creates_an_entity($factory, UserInterface $user, SequentialEdit $sequentialEdit)
@@ -37,13 +29,6 @@ class SequentialEditManagerSpec extends ObjectBehavior
         $factory->create([1, 3], $user)->willReturn($sequentialEdit);
 
         $this->createEntity([1, 3], $user)->shouldReturn($sequentialEdit);
-    }
-
-    function it_removes_a_sequential_edit($remover, SequentialEdit $sequentialEdit)
-    {
-        $remover->remove($sequentialEdit, [])->shouldBeCalled();
-
-        $this->remove($sequentialEdit)->shouldReturn(null);
     }
 
     function it_removes_a_sequential_edit_from_a_user($remover, $repository, UserInterface $user, SequentialEdit $sequentialEdit)
@@ -82,23 +67,13 @@ class SequentialEditManagerSpec extends ObjectBehavior
         $sequentialEdit->countObjectSet()->willReturn(4);
         $product->getId()->willReturn(5);
 
-        $productRepository->findOneByWithValues(6)->willReturn($previous);
-        $productRepository->findOneByWithValues(2)->willReturn($next);
+        $productRepository->find(6)->willReturn($previous);
+        $productRepository->find(2)->willReturn($next);
 
         $sequentialEdit->setCurrent($product)->shouldBeCalled();
         $sequentialEdit->setPrevious($previous)->shouldBeCalled();
         $sequentialEdit->setNext($next)->shouldBeCalled();
 
         $this->findWrap($sequentialEdit, $product);
-    }
-
-    function it_is_a_saver()
-    {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Saver\SaverInterface');
-    }
-
-    function it_is_a_remover()
-    {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Remover\RemoverInterface');
     }
 }

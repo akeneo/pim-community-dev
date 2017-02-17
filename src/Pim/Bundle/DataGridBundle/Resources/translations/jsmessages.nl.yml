@@ -29,23 +29,24 @@ Please, select item to perform action.: Selecteer item om actie uit te voeren.
 View per page: Bekijk per pagina
 oro.datagrid.entityHint: Entiteit
 oro.datagrid.noentities: Geen records gevonden
-oro.datagrid.noresults: "Er zijn geen resultaten gevonden. Probeer een andere zoekterm."
+oro.datagrid.noresults: "Er zijn geen resultaten gevonden. Proberen te een andere zoekterm."
 oro.datagrid.nocolumns: Geen kolommen geconfigureerd voor dit raster
 oro.datagrid.pagination.label: "Pagina"
-oro.datagrid.pagination.totalPages: "van {{totalPages}}"
-oro.datagrid.pagination.totalRecords: "{{totalRecords}} records"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} records"
 oro.datagrid.action.reset: "Resetten"
 oro.datagrid.action.refresh: "Vernieuwen"
 oro_datagrid.select.all: "Alle"
 oro_datagrid.select.visible: "Alle zichtbare"
 oro_datagrid.select.none: "Geen"
 pim.grid.ajax_choice_filter.label_empty: is leeg
+pim.grid.ajax_choice_filter.label_not_empty: is niet leeg
 pim.grid.choice_filter:
   label_empty: is leeg
+  label_not_empty: is niet leeg
   label_in_list: in lijst
 Available Columns: Beschikbare kolommen
 Displayed Columns: Geselecteerde kolommen
-datagrid_view.columns.min_message: U moet ten minste één datarasterkolom selecteren om weer te geven
+datagrid_view.columns.min_message: U moet ten minste één dataraster kolom selecteren om weer te geven
 pim_datagrid:
   column_configurator:
     label: Kolommen
@@ -54,9 +55,9 @@ pim_datagrid:
     search: Zoeken
     clear: Opruimen
     displayed_columns: Geselecteerde kolommen
-    apply: Pas toe
-    cancel: Annuleer
-    remove_column: Verwijder
+    apply: Toepassen
+    cancel: Annuleren
+    remove_column: Verwijderen
   mass_action:
     delete:
       confirm_title: Bevestig verwijderen
@@ -68,6 +69,20 @@ pim.grid.action.launch.title: Starten
 pim.grid.action.show.title: Toon
 Please select view: Selecteer weergave
 Loading...: Laden...
-View: Bekijk
+View: Bekijken
 from: van
 to: tot
+grid.view_selector:
+  default_view: Standaardweergave
+  save_changes: Deze weergave opslaan
+  remove: Deze weergave verwijderen
+  create_view: Weergave maken
+  create: Aanmaken
+  search: Zoeken
+  views: Weergaves
+  placeholder: Naam van nieuwe weergave
+  choose_label: Kies een label voor de weergave
+  confirmation:
+    remove: Weet u zeker dat u deze datarasterweergave wilt verwijderen?
+    delete: Bevestig verwijderen
+grid.view_selector.flash.updated: Datarasterweergave succesvol bijgewerkt

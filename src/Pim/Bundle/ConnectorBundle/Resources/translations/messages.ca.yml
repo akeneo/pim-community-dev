@@ -5,7 +5,6 @@ pim_connector:
     entity_reader.title: Extracció d'entitats
     csv_reader:
       title: Lector de CSV
-      invalid_item_columns_count: 'Esperem tenir %totalColumnsCount% columnes, ara tenim %itemColumnsCount% a %csvPath%:%lineno%'
     csv_product_reader.title: Lector CSV de productes
     csv_category_reader.title: Lector CSV de categories
     csv_variant_group .title: Lector CSV de grups de variants
@@ -28,146 +27,8 @@ pim_connector:
     variant_group_writer.title: Emmagatzematge de grup variants
     writer.title: Emmagatzematge d'entitats
     csv_writer.title: Editor de CSV
-  export:
-    csv:
-      delimiter:
-        label: Delimitador
-        help: Caràcter utilitzat per definir el delimitador de camp
-      enclosure:
-        label: Enquadrament
-        help: Caràcter utilitzat per enquadrar el camp
-      withHeader:
-        label: Amb capçalera
-        help: Si vol imprimir el nom de la columna o no
-      with_media:
-        label: Exportar arxius i imatges
-        help: Exportar, o no, arxius i imatges de productes
-      filePath:
-        label: Ruta de l'arxiu
-        help: On guardar l'arxiu generat al servidor
-      decimalSeparator:
-        label: Separador de decimals
-        help: Determinar el separador de decimals
-      dateFormat:
-        label: Format de data
-        help: Determinar el format dels camps de data
-    xlsx:
-      lines_per_files:
-        label: Nombre de línies per arxiu
-        help: Definir el nombre límit de línies per arxiu
-      withHeader:
-        label: Amb capçalera
-        help: Si vol imprimir el nom de la columna o no
-      with_media:
-        label: Exportar arxius i imatges
-        help: Exportar, o no, arxius i imatges de productes
-      filePath:
-        label: Ruta de l'arxiu
-        help: On guardar l'arxiu generat al servidor
-      decimalSeparator:
-        label: Separador de decimals
-        help: Determinar el separador de decimals
-      dateFormat:
-        label: Format de data
-        help: Determinar el format dels camps de data
-    yml:
-      filePath:
-        label: Ruta de l'arxiu
-        help: On guardar l'arxiu generat al servidor
-  import:
-    csv:
-      enabled:
-        label: Habilitar el producte
-        help: Habilitar o no els productes importats
-      categoriesColumn:
-        label: Columna de categories
-        help: Nom de la columna categories
-      familyColumn:
-        label: Columna de famílies
-        help: Nom de la família de columnes
-      groupsColumn:
-        label: Columna de grups
-        help: Nom de la columna de grups
-      filePath:
-        label: Arxiu
-        help: Arxiu CSV per importar
-      uploadAllowed:
-        label: Permetre la càrrega d'arxius
-        help: Permetre o no la càrrega directa de l'arxiu
-      delimiter:
-        label: Delimitador
-        help: Caràcter utilitzat per delimitar el camp per l'arxiu CSV
-      enclosure:
-        label: Enquadrament
-        help: Caràcter utilitzat per enquadrar el camp
-      escape:
-        label: Escapada
-        help: Caràcter per establir l'escapada del camp
-      circularRefsChecked:
-        label: Comprovar referències circulars
-        help: En cas afirmatiu, les dades seran tractades per assegurar-se que no hi ha cap referència circular entre les categories
-      realTimeVersioning:
-        label: Actualització de l'historial en temps real
-        help: Significa que l'historial del producte s'actualitza automàticament, que es pot desactivar per millorar-ne el rendiment
-      copyValuesToProducts:
-        label: Copia els valors de grup de variants a productes
-        help: Vol dir que els productes s'actualitzen automàticament amb valors de variants de grup, es pot deshabilitar per que només s'actualitzin les variants de grup
-      enabledComparison:
-        label: Comparar valors
-        help: Permet la comparació entre valors originals i valors importats. Pot accelerar la importació si el valors importats són molt similars als valors originals
-      decimalSeparator:
-        label: Separador de decimals
-        help: Caràcter utilitzat per definir el separador de camps com a decimal
-      dateFormat:
-        label: Format de data
-        help: 'Especifiqueu el format de les columnes de data a l''arxiu, per exemple: DD/MM/AAAA per la data 31/04/2014.'
-    xlsx:
-      enabled:
-        label: Habilitar el producte
-        help: Habilitar o no els productes importats
-      categoriesColumn:
-        label: Columna de categories
-        help: Nom de la columna categories
-      familyColumn:
-        label: Columna de famílies
-        help: Nom de la família de columnes
-      groupsColumn:
-        label: Columna de grups
-        help: Nom de la columna de grups
-      filePath:
-        label: Arxiu
-        help: L'arxiu XLSX a importar
-      uploadAllowed:
-        label: Permetre la càrrega d'arxius
-        help: Permetre o no la càrrega directa de l'arxiu
-      circularRefsChecked:
-        label: Comprovar referències circulars
-        help: En cas afirmatiu, les dades seran tractades per assegurar-se que no hi ha cap referència circular entre les categories
-      realTimeVersioning:
-        label: Actualització de l'historial en temps real
-        help: Significa que l'historial del producte s'actualitza automàticament, que es pot desactivar per millorar-ne el rendiment
-      copyValuesToProducts:
-        label: Copia els valors de grup de variants a productes
-        help: Vol dir que els productes s'actualitzen automàticament amb valors de variants de grup, es pot deshabilitar per que només s'actualitzin les variants de grup
-      enabledComparison:
-        label: Comparar valors
-        help: Permet la comparació entre valors originals i valors importats. Pot accelerar la importació si el valors importats són molt similars als valors originals
-      decimalSeparator:
-        label: Separador de decimals
-        help: Caràcter utilitzat per definir el separador de camps com a decimal
-      dateFormat:
-        label: Format de data
-        help: 'Especifiqueu el format de les columnes de data a l''arxiu, per exemple: DD/MM/AAAA per la data 31/04/2014.'
-    yml:
-      filePath:
-        label: Arxiu
-        help: L'arxiu YML a importar
-      uploadAllowed:
-        label: Permetre la càrrega d'arxius
-        help: Permetre o no la càrrega directa de l'arxiu
 job_execution.summary:
   read: llegir
-  read_lines: llegir les línies
   write: escrit
   skip: omès
   create: creat
@@ -177,9 +38,10 @@ job_execution.summary:
   skip_products: productes omesos
   displayed: primers avisos mostrats
   charset_validator:
-    title: 'Codificació de l''archiu:'
+    title: 'Codificació de l''arxiu:'
     skipped: omès, extensió a la llista blanca
   product_skipped_no_diff: producte omès (no hi ha diferències)
+  item_position: llegir les línies
 batch_jobs:
   csv_product_export:
     label: Exportar productes a CSV
@@ -245,8 +107,8 @@ batch_jobs:
     label: Exportació de configuració regional en CSV
     export.label: Exportació de configuració regional
   csv_attribute_group_export:
-    label: Exportació de grup d'atribut en CSV
-    export.label: Exportació de grup d'atribut
+    label: Exportació de grup d'atributs en CSV
+    export.label: Exportació de grup d'atributs
   csv_currency_export:
     label: Exportació de moneda en CSV
     export.label: Exportació de moneda
@@ -262,9 +124,9 @@ batch_jobs:
     validation.label: Validar arxius
     import.label: Importació de configuració regional
   csv_attribute_group_import:
-    label: Impoftació de grup d'atribut en CSV
+    label: Impoftació de grup d'atributs en CSV
     validation.label: Validar arxius
-    import.label: Exportació de grup d'atribut
+    import.label: Importació de grup d'atributs
   csv_currency_import:
     label: Importació de moneda en CSV
     validation.label: Validar arxius
@@ -332,13 +194,13 @@ batch_jobs:
     export.label: Exportació de tipus d'associació en CSV
   xlsx_channel_export:
     label: Exportació de canal en XLSX
-    export.label: Exportació de canal
+    export.label: Canal d'exportació
   xlsx_locale_export:
     label: Exportació de configuració regional en XLSX
     export.label: Exportació de configuració regional
   xlsx_attribute_group_export:
-    label: Exportació de grup d'atribut en XLSX
-    export.label: Exportació de grup d'atribut
+    label: Exportació de grup d'atributs en XLSX
+    export.label: Exportació de grup d'atributs
   xlsx_currency_export:
     label: Exportació de moneda en XLSX
     export.label: Exportació de moneda
@@ -354,9 +216,9 @@ batch_jobs:
     validation.label: Validar arxius
     import.label: Importació de configuració regional
   xlsx_attribute_group_import:
-    label: Impoftació de grup d'atribut en XLSX
+    label: Impoftació de grup d'atributs en XLSX
     validation.label: Validar arxius
-    import.label: Importació de grup d'atribut
+    import.label: Importació de grup d'atributs
   xlsx_currency_import:
     label: Importació de moneda en XLSX
     validation.label: Validar arxius

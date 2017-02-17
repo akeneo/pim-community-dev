@@ -7,8 +7,8 @@ Feature: Export products according to their skus
   Background:
     Given an "footwear" catalog configuration
     And the following family:
-      | code    | requirements-mobile |
-      | rangers | sku, name           |
+      | code    | requirements-mobile | attributes |
+      | rangers | sku,name            | sku,name   |
     And the following products:
       | sku      | enabled | family  | categories        | name-en_US    |
       | SNKRS-1B | 1       | rangers | summer_collection | Black rangers |
@@ -17,7 +17,7 @@ Feature: Export products according to their skus
 
   Scenario: Export products by their identifiers
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | filePath | %tmp%/product_export/product_export.csv                                                                                 |
       | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "sku", "operator": "IN", "value": ["SNKRS-1B"]}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job

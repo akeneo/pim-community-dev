@@ -2,56 +2,23 @@
 
 namespace tests\integration\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Doctrine\DBAL\Connection;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Test\Integration\TestCase;
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
+use Doctrine\DBAL\Statement;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Integration tests to verify a product is well saved in database.
  */
 class ProductSaverIntegration extends TestCase
 {
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var ProductSaver */
-    protected $productSaver;
-
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
-
-    /** @var ObjectUpdaterInterface */
-    protected $productUpdater;
-
-    /** @var Connection */
-    protected $db;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->productBuilder = $this->get('pim_catalog.builder.product');
-        $this->productUpdater = $this->get('pim_catalog.updater.product');
-        $this->productSaver = $this->get('pim_catalog.saver.product');
-
-        $em = $this->get('doctrine.orm.entity_manager');
-        $this->db = $em->getConnection();
-
-        //TODO: clean that, see with Skeleton
-        $path = $this->getParameter('kernel.root_dir') . '/../src/Pim/Component/Catalog/tests/integration/Normalizer/Standard/common.sql';
-        $this->db->executeQuery(file_get_contents($path));
-    }
-
     public function testRawValuesForProductWithAllAttributes()
     {
-        $product = $this->productBuilder->createProduct('just-a-product-with-all-possible-values', 'familyA');
-        $this->productUpdater->update($product, $this->getStandardValuesWithAllAttributes());
-        $this->productSaver->save($product);
+        $product = $this->createProduct('just-a-product-with-all-possible-values', 'familyA');
+        $this->updateProduct($product, $this->getStandardValuesWithAllAttributes());
+        $this->saveProduct($product);
 
-        $stmt = $this->db->query('SELECT raw_values FROM pim_catalog_product ORDER BY id DESC LIMIT 1');
+        $stmt = $this->createStatement('SELECT raw_values FROM pim_catalog_product ORDER BY id DESC LIMIT 1');
         $jsonRawValues = $stmt->fetchColumn();
 
         $this->assertEquals(
@@ -61,21 +28,58 @@ class ProductSaverIntegration extends TestCase
     }
 
     /**
-     * Overwritte this method to have no catalog installed.
-     * Instead, we want to use the common.sql file.
+     * {@inheritdoc}
      */
-    protected function getConfigurationFiles()
+    protected function getConfiguration()
     {
-        return [];
+        return new Configuration(
+            [Configuration::getTechnicalSqlCatalogPath()],
+            false
+        );
+    }
+
+    /**
+     * @param string $productIdentifier
+     * @param string $familyCode
+     *
+     * @return ProductInterface
+     */
+    private function createProduct($productIdentifier, $familyCode)
+    {
+        return $this->get('pim_catalog.builder.product')->createProduct($productIdentifier, $familyCode);
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param array            $data
+     */
+    private function updateProduct(ProductInterface $product, array $data)
+    {
+        $this->get('pim_catalog.updater.product')->update($product, $data);
+    }
+
+    /**
+     * @param ProductInterface $product
+     */
+    private function saveProduct(ProductInterface $product)
+    {
+        $this->get('pim_catalog.saver.product')->save($product);
+    }
+
+    /**
+     * @param string $sql
+     *
+     * @return Statement
+     */
+    private function createStatement($sql)
+    {
+        return $this->get('doctrine.orm.entity_manager')->getConnection()->query($sql);
     }
 
     private function getStandardValuesWithAllAttributes()
     {
         return [
             'values' => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'foo'],
-                ],
                 'a_file' => [
                     [
                         'locale' => null,
@@ -97,7 +101,7 @@ class ProductSaverIntegration extends TestCase
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => ['amount' => '987.0000', 'unit' => 'KILOWATT'],
+                        'data'   => ['amount' => '987654321987.1234', 'unit' => 'KILOWATT'],
                     ],
                 ],
                 'a_metric_without_decimal' => [
@@ -236,11 +240,6 @@ class ProductSaverIntegration extends TestCase
     private function getStorageValuesWithAllAttributes()
     {
         return [
-            'sku' => [
-                '<all_channels>' => [
-                    '<all_locales>' => 'foo'
-                ],
-            ],
             'a_file' => [
                 '<all_channels>' => [
                     '<all_locales>' => '8/b/5/c/8b5cf9bfd2e7e4725fd581e03251133ada1b2c99_fileA.txt'
@@ -259,11 +258,13 @@ class ProductSaverIntegration extends TestCase
             'a_metric' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
-                        'amount' => '987.0000',
+                        'amount' => '987654321987.1234',
                         'unit'   => 'KILOWATT',
-                        // TODO: wrong but makes the test pass
-                        'base_data' => null,
-                        'base_unit' => null,
+                        // TODO: here maybe we should have a "987654321987123.4", but the measure converter
+                        // TODO: returns a double that is too big, and we didn't change that
+                        // TODO: see TIP-695
+                        'base_data' => 9.8765432198712e+14,
+                        'base_unit' => 'WATT',
                         'family'    => 'Power',
                     ]
                 ],
@@ -271,11 +272,10 @@ class ProductSaverIntegration extends TestCase
             'a_metric_without_decimal' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
-                        'amount' => 98,
-                        'unit'   => 'CENTIMETER',
-                        // TODO: wrong but makes the test pass
-                        'base_data' => null,
-                        'base_unit' => null,
+                        'amount'    => 98,
+                        'unit'      => 'CENTIMETER',
+                        'base_data' => 0.98,
+                        'base_unit' => 'METER',
                         'family'    => 'Length',
                     ],
                 ],
@@ -283,11 +283,10 @@ class ProductSaverIntegration extends TestCase
             'a_metric_without_decimal_negative' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
-                        'amount' => -20,
-                        'unit'   => 'CELSIUS',
-                        // TODO: wrong but makes the test pass
-                        'base_data' => null,
-                        'base_unit' => null,
+                        'amount'    => -20,
+                        'unit'      => 'CELSIUS',
+                        'base_data' => 253.15,
+                        'base_unit' => 'KELVIN',
                         'family'    => 'Temperature',
                     ],
                 ],
@@ -295,11 +294,13 @@ class ProductSaverIntegration extends TestCase
             'a_metric_negative' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
-                        'amount' => '-20.5000',
-                        'unit'   => 'CELSIUS',
-                        // TODO: wrong but makes the test pass
-                        'base_data' => null,
-                        'base_unit' => null,
+                        'amount'    => '-20.5000',
+                        'unit'      => 'CELSIUS',
+                        // TODO: here maybe we should have a string, but the measure converter returns a double,
+                        // TODO: and we didn't change that
+                        // TODO: see TIP-695
+                        'base_data' => 252.65,
+                        'base_unit' => 'KELVIN',
                         'family'    => 'Temperature',
                     ],
                 ],

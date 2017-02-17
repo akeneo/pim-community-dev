@@ -30,11 +30,6 @@ pim_enrich:
   group_type:
     tab:
       property.title: Ominaisuudet
-  channel:
-    pick_conversion_unit: Valitse muunnosyksikkö jokaisella metrimääritteelle jota käytetään tuotteen viennin yhteydessä
-    tab:
-      property.title: Ominaisuudet
-      history.title: Historia
   category:
     tab:
       property.title: Ominaisuudet
@@ -44,7 +39,7 @@ pim_enrich:
       property.title: Ominaisuudet
       permission.title: Käyttöoikeudet
   group:
-    axis.help: Keskiviiva määrittää määritteet, joiden yli ryhmän tuotteiden tulee vaihdella. Keskiviivat ovat määritteitä joissa on vaihtoehtoja. Niitä ei voi lokalisoida tai scoped. Niitä ei voi muuttaa tuotevariaatioryhmän perustamisen jälkeen.
+    axis.help: 'Keskiviiva määrittää määritteet, joiden yli ryhmän tuotteiden tulee vaihdella. Keskiviivat ovat määritteitä joissa on vaihtoehtoja. Niitä ei voi lokalisoida tai scoped. Niitä ei voi muuttaa tuotevariaatioryhmän perustamisen jälkeen.'
     type:
       VARIANT: Tuotevariaatio
       X_SELL: X-Sell
@@ -75,33 +70,33 @@ pim_enrich:
     legend:
       locale_not_associated: Lokaatio ei ole liitetty tähän kanavaan
   mass_edit_action:
-    limit_exceeded: Valitse alle %limit% kohteita muokattavaksi
+    limit_exceeded: Ole hyvä ja valitse alle %limit% kohdetta muokattavaksi
     product:
       page_title: Tuotteet
-      page_subtitle: Massaeditoi (1 tuote) | Massaeditoi (%count% tuotetta)
-      title: Valitse toimenpide
+      page_subtitle: Massamuokkaa (1 tuote) | Massamuokkaa (%count% tuotetta)
+      title: Valitse toiminto
       subtitle: Valitse toiminto, jonka haluat suorittaa valitulle tuotteelle| Valitse toiminto, jota haluat suorittaa valituille %count% tuotteille
       confirm: Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuotteita %count% seuraavilla tiedoilla, ole hyvä ja vahvista.
       steps:
         first: Valitse tuotteet
-        second: Valitse toimepide
+        second: Valitse toiminto
         third: Konfiguroi
         fourth: Vahvista
     family:
       page_title: Perheet
-      page_subtitle: Massamuokkaa (1 perhe) | Massamuokkaa (%count% perheet)
-      title: Valitse toimenpide
-      subtitle: Valitse toiminto, jonka haluat suorittaa valitulle perheelle| Valitse toiminto, jonka haluat suorittaa valituille %count% perheille
-      confirm: Olet päivittämässä perhettä seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä perheitä %count% seuraavilla tiedoilla, ole hyvä ja vahvista.
+      page_subtitle: Massamuokkaa (1 tuoteperhe) | Massamuokkaa (%count% tuoteperheet)
+      title: Valitse toiminto
+      subtitle: Valitse toiminto, jonka haluat suorittaa valitulle tuoteperheelle| Valitse toiminto, jonka haluat suorittaa valituille %count% tuoteperheille
+      confirm: Olet päivittämässä tuoteperhettä seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuoteperheitä %count% seuraavilla tiedoilla, ole hyvä ja vahvista.
       steps:
-        first: Valitse perheet
-        second: Valitse toimenpide
+        first: Valitse tuoteperheet
+        second: Valitse toiminto
         third: Konfiguroi
         fourth: Vahvista
     change-status:
       label: Muuta tilaa (päälle / pois)
       description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
-      success_flash: Tuotteen / tuotteiden status on muuttunut
+      success_flash: Tuotteiden tila on muutettu
       launched_flash: Massatoiminto "Muuta tilaa" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     edit-common-attributes:
       label: Muokkaa attribuutteja
@@ -152,7 +147,7 @@ pim_enrich:
     set-attribute-requirements:
       label: Aseta attribuuttivaatimukset
       description: Seuraavat attribuuttivaatimukset otetaan käyttöön valituille perheille
-      success_flash: Määritteen vaatimuksia sovellettaisiin valittuihin ryhmiin
+      success_flash: Määritteen vaatimuksia sovellettiin valittuihin ryhmiin
       launched_flash: Bulkkitoiminto "Aseta määritteen vaatimukset" on käynnistetty. Saat ilmoituksen, kun se on valmis.
     mass_action:
       quick_export:
@@ -261,7 +256,7 @@ pim_enrich:
     group: Ryhmät
     variant_group: Tuotevariaatioryhmät
     group_type: Ryhmätyypit
-    locale: Lokaatiot
+    locale: Alueet
     product: Tuotteet
   product_value:
     tooltip:
@@ -348,11 +343,11 @@ btn:
     attribute: luo attribuutti
     attribute group: luo attribuuttiryhmä
     category: luo kategoria
-    tree: luo puu
+    tree: luo tuotepuu
     channel: luo kanava
     currency: luo valuutta
-    family: luo perhe
-    locale: luo alue
+    family: luo tuoteperhe
+    locale: luo lokaatio
     product: luo tuote
     group: luo ryhmä
     variant group: luo tuotevariaatioryhmä
@@ -387,10 +382,8 @@ confirmation:
     category: Oletko varma että haluat poistaa kategoian %name%?
     family: Oletko varma, että haluat poistaa tuoteryhmän %name%?
     product: Oletko varma, että haluat poistaa tuotteen %name%?
-    channel: Oletko varma, että haluat poistaa kanavan %name%?
     group: Oletko varma, että haluat poistaa ryhmän %name%?
     variant group: Oletko varma, että haluat poistaa tuotevariaatioryhmän %name%?
-    association type: Oletko varma, että haluat poistaa määritetyypin %name%?
     group type: Oletko varma, että haluat poistaa ryhmätyypin %name%?
     user: Oletko varma, että haluat poistaa käyttäjän %name%?
   attribute group:
@@ -428,10 +421,6 @@ flash:
     updated: Tuotehierarkia päivitetty
     removed: Tuotehierarkia poistettu
     not removable: Tuotehierarkioita jotka liittyvät kanaviin ei voida poistaa.
-  channel:
-    saved: Kanavan tallentaminen onnistui
-    removed: Kanavan poistaminen onnistui
-    not removable: Kanavaa ei voida poistaa
   currency:
     updated: Valuutta päivitetty
     error.linked_to_channel: Et voi poistaa kanavaan liitettyä valuuttaa.
@@ -616,52 +605,52 @@ Default: Oletusarvo
 Attributes: Attribuutit
 Title: Nimike
 pim_title.attribute_group:
-  index: Attribuuttiryhmät
-  create: Attribuuttiryhmät | Luo
-  edit: Attribuuttiryhmät %group.label% | Muokkaa
+  index: "Attribuuttiryhmät"
+  create: "Attribuuttiryhmät | Luo"
+  edit: "Attribuuttiryhmät %group.label% | Muokkaa"
 pim_title.category:
-  index: Kategoriahierarkia
-  create: Kategoriahierarkia | Luo
-  edit: Kategoriahierarkia %category.label% | Muokkaa
+  index: "Kategoriahierarkia"
+  create: "Kategoriahierarkia | Luo"
+  edit: "Kategoriahierarkia %category.label% | Muokkaa"
 pim_title.attribute:
-  index: Attribuutit
-  create: Attribuutit | Luo
-  edit: Attribuutit %attribute.label% | Muokkaa
+  index: "Attribuutit"
+  create: "Attribuutit | Luo"
+  edit: "Attribuutit %attribute.label% | Muokkaa"
 pim_title.product:
-  index: Tuotteet
-  edit: Tuotteiden %product.sku% | Muokkaa
+  index: "Tuotteet"
+  edit: "Tuotteiden %product.sku% | Muokkaa"
 pim_title.family:
-  index: Tuoteperheet
-  edit: Tuoteperheiden %family.label% | Muokkaa
+  index: "Perheet"
+  edit: "Tuoteperheiden %family.label% | Muokkaa"
 pim_title.channel:
-  index: Kanavat
-  create: Kanavat | Luo
-  edit: Kanavat %channel.label% | Muokkaa
+  index: "Kanavat"
+  create: "Kanavat | Luo"
+  edit: "Kanavat %channel.label% | Muokkaa"
 pim_title.currency:
-  index: Valuutat
+  index: "Valuutat"
 pim_title.locale:
-  index: Lokaatiot
+  index: "Alueet"
 pim_title.group:
-  index: Ryhmät
-  edit: Ryhmien %group.label% | Muokkaa
+  index: "Ryhmät"
+  edit: "Ryhmien %group.label% | Muokkaa"
 pim_title.variant_group:
-  index: Tuotevariaatioryhmät
-  edit: Tuotevariaatioryhmät %group.label% | Muokkaa
+  index: "Tuotevariaatioryhmät"
+  edit: "Tuotevariaatioryhmät %group.label% | Muokkaa"
 pim_title.association_type:
-  index: Määritetyypit
-  edit: Määritetyypit %association type.label% | Muokkaa
+  index: "Määritetyypit"
+  edit: "Määritetyypit %association type.label% | Muokkaa"
 pim_title.group_type:
-  index: Ryhmätyypit
-  edit: Ryhmätyypit %group type.label% | Muokkaa
+  index: "Ryhmätyypit"
+  edit: "Ryhmätyypit %group type.label% | Muokkaa"
 pim_title.mass_edit_product_action:
-  choose: Massaedit | Valitse
-  configure: Massaedit | Määritä
+  choose: "Massaedit | Valitse"
+  configure: "Massaedit | Määritä"
 pim_title.mass_edit_family_action:
-  choose: Massaedit | Valitse
-  configure: Massaedit | Määritä
+  choose: "Massaedit | Valitse"
+  configure: "Massaedit | Määritä"
 pim_title.job_tracker:
   index: Prosessiseurain
-  show: Prosessin tracker | Näytä työ
+  show: "Prosessin tracker | Näytä työ"
 pim_title.dashboard: "Ohjauspaneeli"
 pim_catalog_identifier: Tunniste
 pim_catalog_text: Teksti
@@ -697,7 +686,7 @@ pim_enrich.mass_edit_action:
       third: Konfiguroi
       fourth: Vahvista
   family:
-    page_title: Tuoteperheet
+    page_title: Perheet
     page_subtitle: Massamuokkaa (1 tuoteperhe) | Massamuokkaa (%count% tuoteperheet)
     title: Valitse toiminto
     subtitle: Valitse toiminto, jonka haluat suorittaa valitulle tuoteperheelle| Valitse toiminto, jonka haluat suorittaa valituille %count% tuoteperheille
@@ -788,15 +777,15 @@ In group: Ryhmässä
 Attribute as label: Attribuutti otsikkona
 Is associated: Liittyy
 Complete: Valmis
-Created At: Luontiaika
-Updated At: Päivitysaika
-Enabled: Otettu käyttöön
+Created At: Luotu
+Updated At: Päivitetty
+Enabled: Käytössä
 Disabled: Poistettu käytöstä
 Status: Status
 Change History: Muutoshistoria
 Data Audit: Tietojen audit
 Data Audit - System: 'Tietojen audit - järjestelmä'
-Action: Toiminto
+Action: Toimi
 Version: Versio
 Entity type: Entiteettityyppi
 Entity name: Entiteetin nimi
@@ -820,23 +809,23 @@ Currency: Valuutta
 oro.locale:
   address_format:
     region_name_type:
-      parish: seurakunta
-      state: osavaltio
-      island: saari
-      county: maakunta
-      area: alue
-      prefecture: prefektuuri
-      department: osasto
-      district: alue
-      province: provinssi
+      parish: "seurakunta"
+      state: "osavaltio"
+      island: "saari"
+      county: "maakunta"
+      area: "alue"
+      prefecture: "prefektuuri"
+      department: "osasto"
+      district: "alue"
+      province: "provinssi"
   form:
     tooltip:
-      locale: Valitse lokaatio, jonka avulla järjestelmän numerot, osoitteet, nimet ja päivämäärät muotoillaan
-      location: ' Lokaatiota käytetään osoitteiden muotoiluun, kun "muotoile osoite maa-asetuksen mukaan" vaihtoehto on poistettu käytöstä'
-      format_address_by_address_country: Tämän vaihtoehdon valitsemisen jälkeen osoitteet muotoillaan sen valtion mukaan missä ne ovat. Tämän vaihtoehdon ottaminen pois käytöstä aiheuttaa sen, että osoitteet muotoillaan oman sijaintisi mukaan
-      language: Valitse kieli, jota haluat käyttää
-      timezone: Valitse aikavyöhyke päivän ja ajan näyttämiseen
-      currency: Valitse oletusvaluutta
+      locale: "Valitse lokaatio, jonka avulla järjestelmän numerot, osoitteet, nimet ja päivämäärät muotoillaan"
+      location: " Lokaatiota käytetään osoitteiden muotoiluun, kun \"muotoile osoite maa-asetuksen mukaan\" vaihtoehto on poistettu käytöstä"
+      format_address_by_address_country: "Tämän vaihtoehdon valitsemisen jälkeen osoitteet muotoillaan sen valtion mukaan missä ne ovat. Tämän vaihtoehdon ottaminen pois käytöstä aiheuttaa sen, että osoitteet muotoillaan oman sijaintisi mukaan"
+      language: "Valitse kieli, jota haluat käyttää"
+      timezone: "Valitse aikavyöhyke päivän ja ajan näyttämiseen"
+      currency: "Valitse oletusvaluutta"
 Selected products successfully deleted: Valitut tuotteet poistettiin
 pim_mass_edit:
   notification:
@@ -867,10 +856,6 @@ edit_common_attributes_clean: Puhdista tiedostot yleisille attribuuteille
 perform.steps.duplicated.title: Päällekkäät akselit
 perform.steps.excluded.title: Poissuljetut tuotteet
 batch_jobs:
-  add_product_value:
-    label: Lisää tuotteen arvo
-    perform:
-      label: Lisää tuotteen arvo
   update_product_value:
     label: Päivitä tuotteen arvo
     perform:

@@ -2,7 +2,9 @@
 
 namespace Pim\Component\Catalog\Updater\Remover;
 
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
@@ -20,19 +22,25 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
     /** @var CurrencyRepositoryInterface */
     protected $currencyRepository;
 
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
+
     /**
      * @param AttributeValidatorHelper    $attrValidatorHelper
      * @param CurrencyRepositoryInterface $currencyRepository
-     * @param array                       $supportedTypes
+     * @param ProductBuilderInterface     $productBuilder
+     * @param string[]                    $supportedTypes
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
         CurrencyRepositoryInterface $currencyRepository,
+        ProductBuilderInterface $productBuilder,
         array $supportedTypes
     ) {
         parent::__construct($attrValidatorHelper);
 
         $this->currencyRepository = $currencyRepository;
+        $this->productBuilder = $productBuilder;
         $this->supportedTypes = $supportedTypes;
     }
 
@@ -59,7 +67,6 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'prices collection');
         $this->checkData($attribute, $data);
 
         $this->removePrices($product, $attribute, $data, $options['locale'], $options['scope']);
@@ -79,10 +86,14 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
         $productValue = $product->getValue($attribute->getCode(), $locale, $scope);
 
         if (null !== $productValue) {
-            foreach ($data as $price) {
-                $priceToRemove = $productValue->getPrice($price['currency']);
-                $productValue->removePrice($priceToRemove);
+            $prices = [];
+            foreach ($productValue->getData() as $price) {
+                if (!in_array(['amount' => $price->getData(), 'currency' => $price->getCurrency()], $data)) {
+                    $prices[] = ['amount' => $price->getData(), 'currency' => $price->getCurrency()];
+                }
             }
+
+            $this->productBuilder->addOrReplaceProductValue($product, $attribute, $scope, $locale, $prices);
         }
     }
 
@@ -93,56 +104,52 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
-     * @return mixed
+     * @throws InvalidPropertyTypeException
+     * @throws InvalidPropertyException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected(
+            throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
-                'remover',
-                'prices collection',
-                gettype($data)
+                static::class,
+                $data
             );
         }
 
         foreach ($data as $price) {
             if (!is_array($price)) {
-                throw InvalidArgumentException::arrayOfArraysExpected(
+                throw InvalidPropertyTypeException::arrayOfArraysExpected(
                     $attribute->getCode(),
-                    'remover',
-                    'prices collection',
-                    gettype($data)
+                    static::class,
+                    $data
                 );
             }
 
             if (!array_key_exists('amount', $price)) {
-                throw InvalidArgumentException::arrayKeyExpected(
+                throw InvalidPropertyTypeException::arrayKeyExpected(
                     $attribute->getCode(),
                     'amount',
-                    'remover',
-                    'prices collection',
-                    print_r($data, true)
+                    static::class,
+                    $data
                 );
             }
 
             if (!array_key_exists('currency', $price)) {
-                throw InvalidArgumentException::arrayKeyExpected(
+                throw InvalidPropertyTypeException::arrayKeyExpected(
                     $attribute->getCode(),
                     'currency',
-                    'remover',
-                    'prices collection',
-                    print_r($data, true)
+                    static::class,
+                    $data
                 );
             }
 
             if (!in_array($price['currency'], $this->currencyRepository->getActivatedCurrencyCodes())) {
-                throw InvalidArgumentException::arrayInvalidKey(
+                throw InvalidPropertyException::validEntityCodeExpected(
                     $attribute->getCode(),
-                    'currency',
+                    'currency code',
                     'The currency does not exist',
-                    'remover',
-                    'prices collection',
+                    static::class,
                     $price['currency']
                 );
             }

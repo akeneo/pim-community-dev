@@ -296,7 +296,11 @@ class ProductController
             throw new BadRequestHttpException();
         }
 
-        $this->productBuilder->removeAttributeFromProduct($product, $attribute);
+        foreach ($product->getValues() as $value) {
+            if ($attribute === $value->getAttribute()) {
+                $product->removeValue($value);
+            }
+        }
         $this->productSaver->save($product);
 
         return new JsonResponse();
@@ -313,7 +317,7 @@ class ProductController
      */
     protected function findProductOr404($id)
     {
-        $product = $this->productRepository->findOneByWithValues($id);
+        $product = $this->productRepository->find($id);
         $product = $this->objectFilter->filterObject($product, 'pim.internal_api.product.view') ? null : $product;
 
         if (!$product) {
@@ -363,7 +367,7 @@ class ProductController
 
         $dataFiltered = $this->emptyValuesFilter->filter($product, ['values' => $values]);
 
-        if (null !== $dataFiltered) {
+        if (!empty($dataFiltered)) {
             $data = array_replace($data, $dataFiltered);
         } else {
             $data['values'] = [];

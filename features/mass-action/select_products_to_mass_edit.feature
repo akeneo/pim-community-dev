@@ -3,13 +3,16 @@ Feature: When I mass edit I should be able to see how many items will be edited
 
   Background:
     Given a "footwear" catalog configuration
-    And the following family:
-      | code       | attributes                                                       |
-      | high_heels | sku, name, description, price, rating, size, color, manufacturer |
     And the following attributes:
-      | code        | label       | type   | metric family | default metric unit | families                 |
-      | weight      | Weight      | metric | Weight        | GRAM                | boots, sneakers, sandals |
-      | heel_height | Heel Height | metric | Length        | CENTIMETER          | high_heels               |
+      | code        | label-en_US | type               | metric family | default metric unit | group |
+      | weight      | Weight      | pim_catalog_metric | Weight        | GRAM                | other |
+      | heel_height | Heel Height | pim_catalog_metric | Length        | CENTIMETER          | other |
+    And the following family:
+      | code       | attributes                                                                                                        |
+      | high_heels | sku,name,description,price,rating,size,color,manufacturer,heel_height                                             |
+      | boots      | sku,name,manufacturer,description,weather_conditions,price,rating,side_view,top_view,size,color,lace_color,weight |
+      | sneakers   | sku,name,manufacturer,description,weather_conditions,price,rating,side_view,top_view,size,color,lace_color,weight |
+      | sandals    | sku,name,manufacturer,description,price,rating,side_view,size,color,weight                                        |
     And the following products:
       | sku       | family     |
       | boots     | boots      |
@@ -40,7 +43,8 @@ Feature: When I mass edit I should be able to see how many items will be edited
     Then I should see "Mass Edit (19 products)"
 
   Scenario: Successfully count the number of mass-edited items when click on all visible products
-    Given I select all visible entities
+    Given I change the page size to 10
+    And I select all visible entities
     When I press "Change product information" on the "Bulk Actions" dropdown button
     Then I should see "Mass Edit (10 products)"
 

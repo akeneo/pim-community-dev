@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Adder;
 
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -21,6 +22,8 @@ interface AttributeAdderInterface extends AdderInterface
      * @param AttributeInterface $attribute The attribute of the product to update
      * @param mixed              $data      The data to add
      * @param array              $options   Options passed to the adder
+     *
+     * @throws PropertyException
      */
     public function addAttributeData(
         ProductInterface $product,

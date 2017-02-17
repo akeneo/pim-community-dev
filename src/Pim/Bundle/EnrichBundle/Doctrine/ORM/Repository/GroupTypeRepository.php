@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 
@@ -12,7 +13,9 @@ use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupTypeRepository extends EntityRepository implements TranslatedLabelsProviderInterface
+class GroupTypeRepository extends EntityRepository implements
+    TranslatedLabelsProviderInterface,
+    DatagridRepositoryInterface
 {
     /** @var UserContext */
     protected $userContext;
@@ -54,5 +57,28 @@ class GroupTypeRepository extends EntityRepository implements TranslatedLabelsPr
         }
 
         return $choices;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createDatagridQueryBuilder()
+    {
+        $rootAlias = 'g';
+        $qb = $this->createQueryBuilder($rootAlias);
+
+        $labelExpr = sprintf(
+            "(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)",
+            $rootAlias
+        );
+
+        $qb
+            ->addSelect($rootAlias)
+            ->addSelect(sprintf("%s AS label", $labelExpr));
+
+        $qb
+            ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
+
+        return $qb;
     }
 }

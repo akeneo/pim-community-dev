@@ -31,16 +31,16 @@ Feature: Define user rights
     And I should not be able to access the <forbiddenPage> page
 
     Examples:
-      | permission                  | page              | button                  | forbiddenPage            |
-      | Create an association type  | association types | Create association type | AssociationType creation |
-      | Create a channel            | channels          | Create channel          | channel creation         |
-      | Create a family             | families          | Create family           | Family creation          |
-      | Create a group              | product groups    | Create group            | ProductGroup creation    |
-      | Create a variant group      | variant groups    | Create variant group    | VariantGroup creation    |
-      | Create a group type         | group types       | Create group type       | GroupType creation       |
-      | Create an attribute         | attributes        | Create attribute        | Attribute creation       |
-      | Create an export profile    | exports           | Create export profile   | Export creation          |
-      | Create an import profile    | imports           | Create import profile   | Import creation          |
+      | permission                 | page              | button                  | forbiddenPage            |
+      | Create an association type | association types | Create association type | AssociationType creation |
+      | Create a channel           | channels          | Create channel          | channel creation         |
+      | Create a family            | families          | Create family           | Family creation          |
+      | Create a group             | product groups    | Create group            | ProductGroup creation    |
+      | Create a variant group     | variant groups    | Create variant group    | VariantGroup creation    |
+      | Create a group type        | group types       | Create group type       | GroupType creation       |
+      | Create an attribute        | attributes        | Create attribute        | Attribute creation       |
+      | Create an export profile   | exports           | Create export profile   | Export creation          |
+      | Create an import profile   | imports           | Create import profile   | Import creation          |
 
   Scenario Outline: Successfully hide entity creation and deletion buttons when user doesn't have the rights
     Given I am logged in as "Peter"
@@ -48,16 +48,15 @@ Feature: Define user rights
     And I visit the "Permissions" tab
     When I revoke rights to resource <permission>
     And I save the role
-    And I should not see the text "There are unsaved changes."
     And I am on the <page> page
     Then I should not see the text "<button>"
 
     Examples:
       | permission                  | page                                         | button |
+      | Remove a channel            | "mobile" channel                             | Delete |
       | Remove an association type  | "X_SELL" association type                    | Delete |
       | Remove an attribute group   | "Sizes" attribute group                      | Delete |
       | Remove a category           | "sandals" category                           | Delete |
-      | Remove a channel            | "mobile" channel                             | Delete |
       | Remove a family             | "boots" family                               | Delete |
       | Remove a group              | "similar_boots" product group                | Delete |
       | Remove a variant group      | "caterpillar_boots" variant group            | Delete |

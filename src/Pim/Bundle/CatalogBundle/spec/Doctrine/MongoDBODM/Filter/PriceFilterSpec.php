@@ -2,9 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
@@ -221,30 +222,44 @@ class PriceFilterSpec extends ObjectBehavior
 
         $value = ['currency' => 'foo'];
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('price_code', 'amount', 'filter', 'price', print_r($value, true))
+            InvalidPropertyTypeException::arrayKeyExpected(
+                'price_code',
+                'amount',
+                'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\PriceFilter',
+                $value
+            )
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
 
         $value = ['amount' => 459];
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected(
+            InvalidPropertyTypeException::arrayKeyExpected(
                 'price_code',
                 'currency',
-                'filter',
-                'price',
-                print_r($value, true)
+                'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\PriceFilter',
+                $value
             )
         )->during('addAttributeFilter', [$attribute, '=', $value]);
 
         $value = ['amount' => 'foo', 'currency' => 'foo'];
         $this->shouldThrow(
-            InvalidArgumentException::arrayNumericKeyExpected('price_code', 'amount', 'filter', 'price', 'string')
+            InvalidPropertyTypeException::validArrayStructureExpected(
+                'price_code',
+                'key "amount" has to be a numeric, "string" given',
+                'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\PriceFilter',
+                $value
+            )
         )
             ->during('addAttributeFilter', [$attribute, '=', $value]);
 
         $value = ['amount' => 132, 'currency' => 42];
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringKeyExpected('price_code', 'currency', 'filter', 'price', 'integer')
+            InvalidPropertyTypeException::validArrayStructureExpected(
+                'price_code',
+                'key "currency" has to be a string, "integer" given',
+                'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\PriceFilter',
+                $value
+            )
         )->during('addAttributeFilter', [$attribute, '=', $value]);
     }
 
@@ -255,12 +270,11 @@ class PriceFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('price_code');
         $value = ['amount' => 132, 'currency' => 'FOO'];
         $this->shouldThrow(
-            InvalidArgumentException::arrayInvalidKey(
+            InvalidPropertyException::validEntityCodeExpected(
                 'price_code',
                 'currency',
                 'The currency does not exist',
-                'filter',
-                'price',
+                'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\PriceFilter',
                 'FOO'
             )
         )->during('addAttributeFilter', [$attribute, '=', $value]);

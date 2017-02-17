@@ -6,12 +6,12 @@ Feature: Mass edit common attributes for reference data
 
   Background:
     Given a "footwear" catalog configuration
-    And the following family:
-      | code           | attributes                                             |
-      | platform_shoes | sku, name, description, color, heel_color, sole_fabric |
     And the following attributes:
-      | code        | label       | type   | metric family | default metric unit | families       |
-      | heel_height | Heel height | metric | Length        | CENTIMETER          | platform_shoes |
+      | code        | label-en_US | type               | metric family | default metric unit | group |
+      | heel_height | Heel height | pim_catalog_metric | Length        | CENTIMETER          | other |
+    And the following family:
+      | code           | attributes                                                    |
+      | platform_shoes | sku,name,description,color,heel_color,sole_fabric,heel_height |
     And the following "heel_color" attribute reference data: Red, Green, Light green, Blue, Yellow, Cyan, Magenta, Black, White
     And the following "sole_fabric" attribute reference data: PVC, Nylon, Neoprene, Spandex, Wool, Kevlar, Jute
     And the following products:

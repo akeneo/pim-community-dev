@@ -2,8 +2,7 @@
 
 namespace Pim\Component\Catalog\Normalizer\Storage\Product;
 
-use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -14,7 +13,7 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValuesNormalizer extends SerializerAwareNormalizer  implements NormalizerInterface
+class ProductValuesNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
 {
     /**
      * {@inheritdoc}
@@ -35,20 +34,6 @@ class ProductValuesNormalizer extends SerializerAwareNormalizer  implements Norm
      */
     public function supportsNormalization($data, $format = null)
     {
-        $isCollection = $data instanceof Collection || is_array($data);
-        $isStandardFormat = 'storage' === $format;
-
-        if (!$isCollection || !$isStandardFormat) {
-            return false;
-        }
-
-        $firstElementIsValue =
-            (is_array($data) && empty($data)) ||
-            ($data instanceof Collection && $data->isEmpty()) ||
-            (is_array($data) && !empty($data) && $data[0] instanceof ProductValueInterface) ||
-            ($data instanceof Collection && !$data->isEmpty() && $data->first() instanceof ProductValueInterface)
-        ;
-
-        return $firstElementIsValue;
+        return 'storage' === $format && $data instanceof ProductValueCollectionInterface;
     }
 }

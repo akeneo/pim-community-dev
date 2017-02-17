@@ -4,8 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
@@ -23,17 +24,17 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
     /** @var JobRepositoryInterface */
     protected $jobRepository;
 
-    /** @var JobInstanceRepository */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $jobInstanceRepository;
 
     /**
-     * @param JobInstanceRepository  $jobInstanceRepository
-     * @param JobRepositoryInterface $jobRepository
-     * @param array                  $supportedFields
-     * @param array                  $supportedOperators
+     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
+     * @param JobRepositoryInterface                $jobRepository
+     * @param array                                 $supportedFields
+     * @param array                                 $supportedOperators
      */
     public function __construct(
-        JobInstanceRepository $jobInstanceRepository,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         JobRepositoryInterface $jobRepository,
         array $supportedFields = [],
         array $supportedOperators = []
@@ -52,7 +53,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
         switch ($operator) {
             case Operators::SINCE_LAST_JOB:
                 if (!is_string($value)) {
-                    throw InvalidArgumentException::stringExpected($field, 'filter', 'updated', gettype($value));
+                    throw InvalidPropertyTypeException::stringExpected($field, static::class, $value);
                 }
 
                 $this->addUpdatedSinceLastJob($field, $value);
@@ -60,7 +61,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
 
             case Operators::SINCE_LAST_N_DAYS:
                 if (!is_numeric($value)) {
-                    throw InvalidArgumentException::numericExpected($field, 'filter', 'updated', gettype($value));
+                    throw InvalidPropertyTypeException::numericExpected($field, static::class, $value);
                 }
 
                 $this->addSinceLastNDays($field, $value);
@@ -119,7 +120,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
      */
     protected function addUpdatedSinceLastJob($field, $value)
     {
-        $jobInstance = $this->jobInstanceRepository->findOneBy(['code' => $value]);
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($value);
         $lastCompletedJobExecution = $this->jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED);
         if (null === $lastCompletedJobExecution) {
             return;
@@ -152,19 +153,18 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
      * @param string $type
      * @param mixed  $value
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyTypeException
      *
      * @return mixed $value
      */
     protected function formatValues($type, $value)
     {
         if (is_array($value) && 2 !== count($value)) {
-            throw InvalidArgumentException::expected(
+            throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $type,
-                'array with 2 elements, string or \DateTime',
-                'filter',
-                'date',
-                print_r($value, true)
+                'should contain 2 strings with the format "yyyy-mm-dd H:i:s"',
+                static::class,
+                $value
             );
         }
 
@@ -185,7 +185,8 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
      * @param string $type
      * @param mixed  $value
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyException
+     * @throws InvalidPropertyTypeException
      *
      * @return string
      */
@@ -197,6 +198,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
 
         if ($value instanceof \DateTime) {
             $value->setTimezone(new \DateTimeZone('UTC'));
+
             return $value->format(static::DATETIME_FORMAT);
         }
 
@@ -204,11 +206,10 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
             $dateTime = \DateTime::createFromFormat(static::DATETIME_FORMAT, $value);
 
             if (!$dateTime || 0 < $dateTime->getLastErrors()['warning_count']) {
-                throw InvalidArgumentException::expected(
+                throw InvalidPropertyException::dateExpected(
                     $type,
-                    'a string with the format yyyy-mm-dd H:i:s',
-                    'filter',
-                    'date',
+                    'yyyy-mm-dd H:i:s',
+                    static::class,
                     $value
                 );
             }
@@ -216,12 +217,6 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
             return $dateTime->format(static::DATETIME_FORMAT);
         }
 
-        throw InvalidArgumentException::expected(
-            $type,
-            'array with 2 elements, string or \DateTime',
-            'filter',
-            'date',
-            print_r($value, true)
-        );
+        throw InvalidPropertyException::dateExpected($type, 'yyyy-mm-dd H:i:s', static::class, $value);
     }
 }

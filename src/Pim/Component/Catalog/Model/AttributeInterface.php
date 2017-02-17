@@ -112,11 +112,18 @@ interface AttributeInterface extends
     public function addOption(AttributeOptionInterface $option);
 
     /**
-     * Get available locales
+     * Get available locale codes
      *
-     * @deprecated will be removed in 1.7, use getLocaleSpecificCodes
+     * @deprecated Will be removed in 1.8. Please use getAvailableLocaleCodes() instead.
      *
-     * @return ArrayCollection|null
+     * @return array
+     */
+    public function getLocaleSpecificCodes();
+
+    /**
+     * Get available locale
+     *
+     * @return array
      */
     public function getAvailableLocales();
 
@@ -125,7 +132,7 @@ interface AttributeInterface extends
      *
      * @return array
      */
-    public function getLocaleSpecificCodes();
+    public function getAvailableLocaleCodes();
 
     /**
      * Test if the attribute have the given locale specific available

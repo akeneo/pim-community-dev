@@ -24,14 +24,14 @@ Feature: Validate editing common numeric attributes of multiple products
   Background:
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code      | label     | type     | allowed_extensions | date_min   | max_characters |
-      | available | Available | boolean  |                    |            |                |
-      | date      | Date      | date     |                    | 2014-01-01 |                |
-      | file      | File      | file     | gif                |            |                |
-      | info      | Info      | textarea |                    |            | 25             |
+      | code      | label-en_US | type                 | allowed_extensions | date_min   | max_characters | group |
+      | available | Available   | pim_catalog_boolean  |                    |            |                | other |
+      | date      | Date        | pim_catalog_date     |                    | 2014-01-01 |                | other |
+      | file      | File        | pim_catalog_file     | gif                |            |                | other |
+      | info      | Info        | pim_catalog_textarea |                    |            | 25             | other |
     And the following family:
-      | code          | attributes                                                                                                             |
-      | master_family | sku, side_view, length, weather_conditions, number_in_stock, price, manufacturer, comment, available, date, file, info |
+      | code          | attributes                                                                                                  |
+      | master_family | sku,side_view,length,weather_conditions,number_in_stock,price,manufacturer,comment,available,date,file,info |
     And the following products:
       | sku      | family        |
       | boots    | master_family |

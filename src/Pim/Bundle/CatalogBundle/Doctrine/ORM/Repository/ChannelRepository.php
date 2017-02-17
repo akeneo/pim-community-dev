@@ -21,16 +21,24 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $criteria, array $orderBy = ['code' => 'ASC'], $limit = null, $offset = null)
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
+        if (null === $orderBy) {
+            $orderBy = ['code' => 'ASC'];
+        }
+
         return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria, array $orderBy = ['code' => 'ASC'])
+    public function findOneBy(array $criteria, array $orderBy = null)
     {
+        if (null === $orderBy) {
+            $orderBy = ['code' => 'ASC'];
+        }
+
         return parent::findOneBy($criteria, $orderBy);
     }
 
@@ -45,80 +53,6 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
             ->select('count(c.id)')
             ->getQuery()
             ->getSingleScalarResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createDatagridQueryBuilder()
-    {
-        $qb = $this->createQueryBuilder('c');
-        $rootAlias = $qb->getRootAlias();
-
-        $treeExpr = '(CASE WHEN ct.label IS NULL THEN category.code ELSE ct.label END)';
-
-        $labelExpr = sprintf(
-            '(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)',
-            $rootAlias
-        );
-
-        $qb
-            ->addSelect($rootAlias)
-            ->addSelect('category')
-            ->addSelect(sprintf('%s AS categoryLabel', $treeExpr))
-            ->addSelect(sprintf('%s AS channelLabel', $labelExpr))
-            ->addSelect('translation.label');
-
-        $qb
-            ->innerJoin(sprintf('%s.category', $rootAlias), 'category')
-            ->leftJoin('category.translations', 'ct', 'WITH', 'ct.locale = :localeCode')
-            ->leftJoin($rootAlias . '.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
-
-        $qb->groupBy($rootAlias);
-
-        return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeletedLocaleIdsForChannel(ChannelInterface $channel)
-    {
-        $currentLocaleIds = array_map(
-            function ($locale) {
-                return $locale->getId();
-            },
-            $channel->getLocales()->toArray()
-        );
-
-        $sql = <<<SQL
-    SELECT cl.locale_id
-    FROM pim_catalog_channel_locale cl
-    WHERE cl.channel_id = :channel_id
-      AND cl.locale_id NOT IN (:current_locale_ids)
-SQL;
-
-        $stmt = $this->getEntityManager()->getConnection()->executeQuery(
-            $sql,
-            [
-                ':channel_id'         => $channel->getId(),
-                ':current_locale_ids' => $currentLocaleIds,
-            ],
-            [
-                ':current_locale_ids' => Connection::PARAM_INT_ARRAY,
-            ]
-        );
-
-        $rows = $stmt->fetchAll();
-
-        $locales = array_map(
-            function ($row) {
-                return (int) $row['locale_id'];
-            },
-            $rows
-        );
-
-        return $locales;
     }
 
     /**

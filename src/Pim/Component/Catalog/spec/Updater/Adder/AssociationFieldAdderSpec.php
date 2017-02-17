@@ -2,10 +2,11 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Adder;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -35,45 +36,54 @@ class AssociationFieldAdderSpec extends ObjectBehavior
     function it_checks_valid_association_data_format(ProductInterface $product)
     {
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected(
+            InvalidPropertyTypeException::arrayExpected(
                 'associations',
-                'adder',
-                'association',
-                'string'
+                'Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder',
+                'not an array'
             )
         )->during('addFieldData', [$product, 'associations', 'not an array']);
 
         $this->shouldThrow(
-            InvalidArgumentException::associationFormatExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
+                'association format is not valid for the association type "0".',
+                'Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder',
                 [0 => []]
             )
         )->during('addFieldData', [$product, 'associations', [0 => []]]);
 
         $this->shouldThrow(
-            InvalidArgumentException::associationFormatExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
+                'association format is not valid for the association type "assoc_type_code".',
+                'Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder',
                 ['assoc_type_code' => []]
             )
         )->during('addFieldData', [$product, 'associations', ['assoc_type_code' => []]]);
 
         $this->shouldThrow(
-            InvalidArgumentException::associationFormatExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
+                'association format is not valid for the association type "assoc_type_code".',
+                'Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder',
                 ['assoc_type_code' => ['products' => []]]
             )
         )->during('addFieldData', [$product, 'associations', ['assoc_type_code' => ['products' => []]]]);
 
         $this->shouldThrow(
-            InvalidArgumentException::associationFormatExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
+                'association format is not valid for the association type "assoc_type_code".',
+                'Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder',
                 ['assoc_type_code' => ['groups' => []]]
             )
         )->during('addFieldData', [$product, 'associations', ['assoc_type_code' => ['groups' => []]]]);
 
         $this->shouldThrow(
-            InvalidArgumentException::associationFormatExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
+                'association format is not valid for the association type "assoc_type_code".',
+                'Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder',
                 ['assoc_type_code' => ['products' => [1], 'groups' => []]]
             )
         )->during(
@@ -82,8 +92,10 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         );
 
         $this->shouldThrow(
-            InvalidArgumentException::associationFormatExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
+                'association format is not valid for the association type "assoc_type_code".',
+                'Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder',
                 ['assoc_type_code' => ['products' => [], 'groups' => [2]]]
             )
         )->during(
@@ -149,11 +161,11 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         $product->getAssociationForTypeCode('non valid association type code')->willReturn(null);
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validEntityCodeExpected(
                 'associations',
-                'existing association type code',
-                'adder',
-                'association',
+                'association type code',
+                'The association type does not exist',
+                'Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder',
                 'non valid association type code'
             )
         )->during(
@@ -179,11 +191,11 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier('not existing product')->willReturn(null);
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validEntityCodeExpected(
                 'associations',
-                'existing product identifier',
-                'adder',
-                'association',
+                'product identifier',
+                'The product does not exist',
+                'Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder',
                 'not existing product'
             )
         )->during(
@@ -209,11 +221,11 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         $groupRepository->findOneByIdentifier('not existing group')->willReturn(null);
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validEntityCodeExpected(
                 'associations',
-                'existing group code',
-                'adder',
-                'association',
+                'group code',
+                'The group does not exist',
+                'Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder',
                 'not existing group'
             )
         )->during(

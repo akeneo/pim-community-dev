@@ -44,16 +44,14 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $productDetacher,
         $productRepository,
         ProductInterface $product,
-        ProductValueInterface $productValue,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         JobParameters $jobParameters
     ) {
         $this->setStepExecution($stepExecution);
 
-        $product->getIdentifier()->shouldBeCalled()->willReturn($productValue);
+        $product->getIdentifier()->shouldBeCalled()->willReturn('a_sku');
         $product->getId()->willReturn(10);
-        $productValue->getData()->shouldBeCalled();
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn([]);

@@ -2,13 +2,16 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
@@ -97,11 +100,9 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     public function update($variantGroup, array $data, array $options = [])
     {
         if (!$variantGroup instanceof GroupInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\GroupInterface", "%s" provided.',
-                    ClassUtils::getClass($variantGroup)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($variantGroup),
+                GroupInterface::class
             );
         }
 
@@ -117,7 +118,8 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      * @param string         $field
      * @param mixed          $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
+     * @throws ImmutablePropertyException
      */
     protected function setData(GroupInterface $variantGroup, $field, $data)
     {
@@ -161,7 +163,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      * @param GroupInterface $variantGroup
      * @param string         $type
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function setType(GroupInterface $variantGroup, $type)
     {
@@ -169,15 +171,19 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         if (null !== $groupType) {
             $variantGroup->setType($groupType);
         } else {
-            throw new \InvalidArgumentException(sprintf('Type "%s" does not exist', $type));
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'type',
+                'group type',
+                'The group type does not exist',
+                static::class,
+                $type
+            );
         }
     }
 
     /**
      * @param GroupInterface $variantGroup
      * @param array          $labels
-     *
-     * @throws \InvalidArgumentException
      */
     protected function setLabels(GroupInterface $variantGroup, array $labels)
     {
@@ -192,13 +198,19 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      * @param GroupInterface $variantGroup
      * @param array          $axes
      *
-     * @throws \InvalidArgumentException
+     * @throws ImmutablePropertyException
+     * @throws InvalidPropertyException
      */
     protected function setAxes(GroupInterface $variantGroup, array $axes)
     {
         if (null !== $variantGroup->getId()) {
             if (array_diff($this->getOriginalAxes($variantGroup->getAxisAttributes()), array_values($axes))) {
-                throw new \InvalidArgumentException('Attributes: This property cannot be changed.');
+                throw ImmutablePropertyException::immutableProperty(
+                    'axes',
+                    implode(',', $axes),
+                    static::class,
+                    'variant group'
+                );
             }
         }
 
@@ -207,7 +219,13 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
             if (null !== $attribute) {
                 $variantGroup->addAxisAttribute($attribute);
             } else {
-                throw new \InvalidArgumentException(sprintf('Attribute "%s" does not exist', $axis));
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'axes',
+                    'attribute code',
+                    'The attribute does not exist',
+                    static::class,
+                    $axis
+                );
             }
         }
     }
@@ -285,8 +303,8 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      *          }
      *      ]
      *
-     * @param  array $originalValues
-     * @param  array $newValues
+     * @param array $originalValues
+     * @param array $newValues
      *
      * @return array
      */
@@ -323,7 +341,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      *
      * @param array $arrayValues
      *
-     * @return ArrayCollection
+     * @return ProductValueCollectionInterface
      */
     protected function transformArrayToValues(array $arrayValues)
     {
@@ -331,7 +349,8 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         $this->productUpdater->update($product, ['values' => $arrayValues]);
 
         $values = $product->getValues();
-        $values->removeElement($product->getIdentifier());
+        // TODO: dirty remove of the identifier, will be performed correctly in TIP-697
+        $values->removeKey(sprintf('%s-<all_channels>-<all_locales>', $this->attributeRepository->getIdentifierCode()));
 
         return $values;
     }
@@ -372,18 +391,24 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      * the file has already been stored during the construction of the product values
      * (in the method transformArrayToValues).
      *
-     * @param Collection $mergedValues
-     * @param array      $mergedValuesData
+     * @param ProductValueCollectionInterface $mergedValues
+     * @param array                           $mergedValuesData
      *
      * @return array
      */
-    protected function replaceMediaLocalPathsByStoredPaths(Collection $mergedValues, array $mergedValuesData)
-    {
+    protected function replaceMediaLocalPathsByStoredPaths(
+        ProductValueCollectionInterface $mergedValues,
+        array $mergedValuesData
+    ) {
         foreach ($mergedValues as $value) {
             if (null !== $value->getMedia()) {
                 $attributeCode = $value->getAttribute()->getCode();
-                foreach (array_keys($mergedValuesData[$attributeCode]) as $index) {
-                    $mergedValuesData[$attributeCode][$index]['data'] = $value->getMedia()->getKey();
+                foreach ($mergedValuesData[$attributeCode] as $index => $mergedValuesDataValues) {
+                    if ($value->getLocale() === $mergedValuesDataValues['locale'] &&
+                        $value->getScope() === $mergedValuesDataValues['scope']
+                    ) {
+                        $mergedValuesData[$attributeCode][$index]['data'] = $value->getMedia()->getKey();
+                    }
                 }
             }
         }

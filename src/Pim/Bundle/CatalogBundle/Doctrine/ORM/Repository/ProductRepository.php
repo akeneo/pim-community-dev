@@ -166,7 +166,6 @@ class ProductRepository extends EntityRepository implements
     public function findByIds(array $productIds)
     {
         $qb = $this->createQueryBuilder('Product');
-        $this->addJoinToValueTables($qb);
         $rootAlias = current($qb->getRootAliases());
         $qb->andWhere(
             $qb->expr()->in($rootAlias.'.id', ':product_ids')
@@ -188,75 +187,10 @@ class ProductRepository extends EntityRepository implements
 
     /**
      * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.8
-     */
-    public function findAllWithAttribute(AttributeInterface $attribute)
-    {
-        return $this
-            ->createQueryBuilder('p')
-            ->leftJoin('p.values', 'value')
-            ->leftJoin('value.attribute', 'attribute')
-            ->where('attribute=:attribute')
-            ->setParameter('attribute', $attribute)
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     *  @deprecated will be removed in 1.8
-     */
-    public function findAllWithAttributeOption(AttributeOptionInterface $option)
-    {
-        $backendType = $option->getAttribute()->getBackendType();
-
-        $qb = $this
-            ->createQueryBuilder('p')
-            ->leftJoin('p.values', 'value')
-            ->leftJoin(sprintf('value.%s', $backendType), 'option');
-
-        if ('options' === $backendType) {
-            $qb->where(
-                $qb->expr()->in('option', ':option')
-            );
-        } else {
-            $qb->where('option=:option');
-        }
-
-        return $qb
-            ->setParameter('option', $option)
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFullProduct($id)
-    {
-        return $this
-            ->createQueryBuilder('p')
-            ->select('p, f, v, pr, m, o, os')
-            ->leftJoin('p.family', 'f')
-            ->leftJoin('p.values', 'v')
-            ->leftJoin('v.prices', 'pr')
-            ->leftJoin('v.media', 'm')
-            ->leftJoin('v.option', 'o')
-            ->leftJoin('v.options', 'os')
-            ->where('p.id=:id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
-    /**
-     * {@inheritdoc}
      */
     public function getIdentifierProperties()
     {
-        return [$this->attributeRepository->getIdentifierCode()];
+        return ['identifier'];
     }
 
     /**
@@ -362,6 +296,8 @@ class ProductRepository extends EntityRepository implements
      */
     public function valueExists(ProductValueInterface $value)
     {
+        return false;
+
         $criteria = [
             'attribute'                              => $value->getAttribute(),
             $value->getAttribute()->getBackendType() => $value->getData()
@@ -434,17 +370,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneByIdentifier($identifier)
     {
-        $pqb = $this->queryBuilderFactory->create();
-        $qb = $pqb->getQueryBuilder();
-        $attribute = $this->getIdentifierAttribute();
-        $pqb->addFilter($attribute->getCode(), Operators::EQUALS, $identifier);
-        $result = $qb->getQuery()->execute();
-
-        if (empty($result)) {
-            return null;
-        }
-
-        return reset($result);
+        return $this->findOneBy(['identifier' => $identifier]);
     }
 
     /**
@@ -454,38 +380,13 @@ class ProductRepository extends EntityRepository implements
     {
         $pqb = $this->queryBuilderFactory->create();
         $pqb->addFilter('id', '=', $id);
-        $qb = $pqb->getQueryBuilder();
-        $result = $qb->getQuery()->execute();
+        $result = $pqb->execute();
 
-        if (empty($result)) {
+        if (0 === $result->count()) {
             return null;
         }
 
-        return reset($result);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneByWithValues($id)
-    {
-        $productQb = $this->queryBuilderFactory->create();
-        $qb = $productQb->getQueryBuilder();
-        $rootAlias = current($qb->getRootAliases());
-        $this->addJoinToValueTables($qb);
-        $qb->leftJoin('Attribute.availableLocales', 'AttributeLocales');
-        $qb->addSelect('Value');
-        $qb->addSelect('Attribute');
-        $qb->addSelect('AttributeLocales');
-        $qb->leftJoin('Attribute.group', 'AttributeGroup');
-        $qb->addSelect('AttributeGroup');
-        $qb->andWhere(
-            $qb->expr()->eq($rootAlias.'.id', $id)
-        );
-
-        return $qb
-            ->getQuery()
-            ->getOneOrNullResult();
+        return $result->current();
     }
 
     /**
@@ -654,6 +555,12 @@ class ProductRepository extends EntityRepository implements
     protected function findAllForVariantGroupQB(GroupInterface $variantGroup, array $criteria = [])
     {
         $qb = $this->createQueryBuilder('Product');
+
+        //TODO - TIP-697: make the variant groups work again
+        $qb->where('Product.identifier = :no_identifier');
+        $qb->setParameter('no_identifier', 'THERE_IS_NO_SKU_LIKE_DAT');
+
+        return $qb;
 
         $qb
             ->where(':variantGroup MEMBER OF Product.groups')

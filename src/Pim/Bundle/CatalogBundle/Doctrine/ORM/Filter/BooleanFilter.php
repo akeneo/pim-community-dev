@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
@@ -50,14 +50,13 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'boolean');
+        $this->checkLocaleAndScope($attribute, $locale, $scope);
 
         if (!is_bool($value)) {
-            throw InvalidArgumentException::booleanExpected(
+            throw InvalidPropertyTypeException::booleanExpected(
                 $attribute->getCode(),
-                'filter',
-                'boolean',
-                gettype($value)
+                static::class,
+                $value
             );
         }
 
@@ -82,7 +81,7 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         if (!is_bool($value)) {
-            throw InvalidArgumentException::booleanExpected($field, 'filter', 'boolean', gettype($value));
+            throw InvalidPropertyTypeException::booleanExpected($field, static::class, $value);
         }
 
         $field = current($this->qb->getRootAliases()) . '.' . FieldFilterHelper::getCode($field);

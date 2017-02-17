@@ -7,8 +7,8 @@ Feature: Export products according to textarea attribute filter
   Background:
     Given a "footwear" catalog configuration
     And the following family:
-      | code    | requirements-mobile |
-      | rangers | sku, name           |
+      | code    | requirements-mobile | attributes |
+      | rangers | sku,name            | sku,name   |
     And the following products:
       | sku      | enabled | family  | categories        | description-en_US-mobile |
       | SNKRS-1B | 1       | rangers | summer_collection | Awesome                  |
@@ -19,7 +19,7 @@ Feature: Export products according to textarea attribute filter
   @skip
   Scenario: Export products by filtering on textarea values without using the UI
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | filePath | %tmp%/product_export/product_export.csv                                                                                     |
       | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "description", "operator": "=", "value": "Awesome"}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
@@ -65,8 +65,8 @@ Feature: Export products according to textarea attribute filter
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;categories;enabled;family;groups;description-en_US-mobile
-    SNKRS-1R;summer_collection;1;rangers;;Awesome description
+    sku;categories;enabled;family;groups;description-en_US-mobile;name-en_US
+    SNKRS-1R;summer_collection;1;rangers;;Awesome description;
     """
 
   Scenario: Export products by textarea values using the UI
@@ -84,9 +84,9 @@ Feature: Export products according to textarea attribute filter
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;categories;enabled;family;groups;description-en_US-mobile
-    SNKRS-1B;summer_collection;1;rangers;;Awesome
-    SNKRS-1R;summer_collection;1;rangers;;Awesome description
+    sku;categories;enabled;family;groups;description-en_US-mobile;name-en_US
+    SNKRS-1B;summer_collection;1;rangers;;Awesome;
+    SNKRS-1R;summer_collection;1;rangers;;Awesome description;
     """
 
   Scenario: Export products by textarea values using the UI
@@ -104,9 +104,9 @@ Feature: Export products according to textarea attribute filter
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;categories;enabled;family;groups;description-en_US-mobile
-    SNKRS-1B;summer_collection;1;rangers;;Awesome
-    SNKRS-1R;summer_collection;1;rangers;;Awesome description
+    sku;categories;enabled;family;groups;description-en_US-mobile;name-en_US
+    SNKRS-1B;summer_collection;1;rangers;;Awesome;
+    SNKRS-1R;summer_collection;1;rangers;;Awesome description;
     """
 
   @skip

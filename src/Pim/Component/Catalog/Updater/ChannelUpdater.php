@@ -2,6 +2,9 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -25,19 +28,31 @@ class ChannelUpdater implements ObjectUpdaterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     protected $currencyRepository;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var MeasureManager */
+    protected $measureManager;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $categoryRepository
      * @param IdentifiableObjectRepositoryInterface $localeRepository
      * @param IdentifiableObjectRepositoryInterface $currencyRepository
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param MeasureManager                        $measureManager
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $categoryRepository,
         IdentifiableObjectRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $currencyRepository
+        IdentifiableObjectRepositoryInterface $currencyRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        MeasureManager $measureManager
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->localeRepository = $localeRepository;
         $this->currencyRepository = $currencyRepository;
+        $this->attributeRepository = $attributeRepository;
+        $this->measureManager = $measureManager;
     }
 
     /**
@@ -52,17 +67,16 @@ class ChannelUpdater implements ObjectUpdaterInterface
      *     },
      *     'locales': ['en_US'],
      *     'currencies': ['EUR', 'USD'],
+     *     'conversion_units': ["weight" => "GRAM", "display_diagonal" => "METER"],
      *     'category_tree': 'master'
      * }
      */
     public function update($channel, array $data, array $options = [])
     {
         if (!$channel instanceof ChannelInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\ChannelInterface", "%s" provided.',
-                    ClassUtils::getClass($channel)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($channel),
+                ChannelInterface::class
             );
         }
 
@@ -78,7 +92,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      * @param string           $field
      * @param mixed            $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function setData(ChannelInterface $channel, $field, $data)
     {
@@ -96,7 +110,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
                 $this->setCurrencies($channel, $data);
                 break;
             case 'conversion_units':
-                $channel->setConversionUnits($data);
+                $this->setConversionUnits($channel, $data);
                 break;
             case 'labels':
                 $this->setLabels($channel, $data);
@@ -107,12 +121,20 @@ class ChannelUpdater implements ObjectUpdaterInterface
     /**
      * @param ChannelInterface $channel
      * @param string           $treeCode
+     *
+     * @throws InvalidPropertyException
      */
     protected function setCategoryTree(ChannelInterface $channel, $treeCode)
     {
         $category = $this->categoryRepository->findOneByIdentifier($treeCode);
         if (null === $category) {
-            throw new \InvalidArgumentException(sprintf('Category with "%s" code does not exist', $treeCode));
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'category_tree',
+                'code',
+                'The category does not exist',
+                static::class,
+                $treeCode
+            );
         }
         $channel->setCategory($category);
     }
@@ -120,6 +142,8 @@ class ChannelUpdater implements ObjectUpdaterInterface
     /**
      * @param ChannelInterface $channel
      * @param array            $currencyCodes
+     *
+     * @throws InvalidPropertyException
      */
     protected function setCurrencies(ChannelInterface $channel, array $currencyCodes)
     {
@@ -127,7 +151,13 @@ class ChannelUpdater implements ObjectUpdaterInterface
         foreach ($currencyCodes as $currencyCode) {
             $currency = $this->currencyRepository->findOneByIdentifier($currencyCode);
             if (null === $currency) {
-                throw new \InvalidArgumentException(sprintf('Currency with "%s" code does not exist', $currencyCode));
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'currencies',
+                    'code',
+                    'The currency does not exist',
+                    static::class,
+                    $currencyCode
+                );
             }
 
             $currencies[] = $currency;
@@ -139,6 +169,8 @@ class ChannelUpdater implements ObjectUpdaterInterface
     /**
      * @param ChannelInterface $channel
      * @param array            $localeCodes
+     *
+     * @throws InvalidPropertyException
      */
     protected function setLocales(ChannelInterface $channel, array $localeCodes)
     {
@@ -146,7 +178,13 @@ class ChannelUpdater implements ObjectUpdaterInterface
         foreach ($localeCodes as $localeCode) {
             $locale = $this->localeRepository->findOneByIdentifier($localeCode);
             if (null === $locale) {
-                throw new \InvalidArgumentException(sprintf('Locale with "%s" code does not exist', $localeCode));
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'locales',
+                    'code',
+                    'The locale does not exist',
+                    static::class,
+                    $localeCode
+                );
             }
 
             $locales[] = $locale;
@@ -164,6 +202,43 @@ class ChannelUpdater implements ObjectUpdaterInterface
             $channel->setLocale($localeCode);
             $translation = $channel->getTranslation();
             $translation->setLabel($label);
+        }
+    }
+
+    /**
+     * Validates the list of conversion units passed in before updating the channel object with.
+     *
+     * @param ChannelInterface $channel
+     * @param array            $conversionUnits
+     *
+     * @throws InvalidPropertyException
+     */
+    protected function setConversionUnits(ChannelInterface $channel, $conversionUnits)
+    {
+        foreach ($conversionUnits as $attributeCode => $conversionUnit) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+
+            if ($attribute === null) {
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'conversionUnits',
+                    'attributeCode',
+                    'the attribute code for the conversion unit does not exist',
+                    static::class,
+                    $attributeCode
+                );
+            }
+
+            if (!$this->measureManager->unitCodeExistsInFamily($conversionUnit, $attribute->getMetricFamily())) {
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'conversionUnits',
+                    'unitCode',
+                    'the metric unit code for the conversion unit does not exist',
+                    static::class,
+                    $conversionUnit
+                );
+            }
+
+            $channel->setConversionUnits($conversionUnits);
         }
     }
 }

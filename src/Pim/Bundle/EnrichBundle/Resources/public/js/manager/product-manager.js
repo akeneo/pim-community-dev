@@ -24,7 +24,7 @@ define([
                     .then(function (productAttributeCodes) {
                         return $.when(
                             FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(productAttributeCodes),
-                            FetcherRegistry.getFetcher('locale').fetchAll(),
+                            FetcherRegistry.getFetcher('locale').search({'activated': true}),
                             FetcherRegistry.getFetcher('channel').fetchAll(),
                             FetcherRegistry.getFetcher('currency').fetchAll(),
                             FetcherRegistry.getFetcher('association-type').fetchAll()

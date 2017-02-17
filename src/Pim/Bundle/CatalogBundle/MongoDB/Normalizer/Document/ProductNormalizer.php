@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * A transfomer to normalize a product object into a MongoDB object
+ * A transformer to normalize a product object into a MongoDB object
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -78,13 +78,8 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 
         $context[self::MONGO_ID] = $data[self::MONGO_ID];
 
-        if (null !== $product->getCreated()) {
-            $data['created'] = $this->normalizer->normalize($product->getCreated(), self::FORMAT, $context);
-        } else {
-            $data['created'] = $this->mongoFactory->createMongoDate();
-        }
-
-        $data['updated'] = $this->mongoFactory->createMongoDate();
+        $data['created'] = $this->normalizer->normalize($product->getCreated(), self::FORMAT, $context);
+        $data['updated'] = $this->normalizer->normalize($product->getUpdated(), self::FORMAT, $context);
 
         if (null !== $product->getFamily()) {
             $data['family'] = $product->getFamily()->getId();

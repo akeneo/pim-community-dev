@@ -1,7 +1,7 @@
 confirmation:
   remove:
-    item: Вы действительно хотите удалить этот элемент?
-    association type: Вы действительно хотите удалить этот тип ассоциации?
+    item: Вы уверены, что хотите удалить этот элемент?
+    association_type: Вы действительно хотите удалить этот тип ассоциации?
     attribute: Вы действительно хотите удалить этот атрибут?
     family: Вы действительно хотите удалить это семейство?
     product: Вы действительно хотите удалить этот продукт?
@@ -24,10 +24,15 @@ pim_datagrid:
       confirm_content: Вы уверены, что хотите удалить выбранные продукты?
       success: Выбранные продукты успешно удалены.
       error: Oшибка при попытке удаления выбранных продуктов, пожалуйста, попробуйте снова.
+  view_selector:
+    view: Представления
+    create_view_modal:
+      confirm: Подтвердить
+      cancel: Отмена
 flash:
   item:
     removed: Элемент успешно удален
-  association type:
+  association_type:
     removed: Тип ассоциации успешно удален
   attribute:
     removed: Атрибут успешно удален
@@ -40,9 +45,9 @@ flash:
   group:
     removed: Группа успешно удалена
   variant group:
-    removed: Группа вариантов успешно удалена
+    removed: Вариативная группа успешно удалена
   group type:
-    removed: Группа типов успешно удалена
+    removed: Тип группы успешно удален
   import profile:
     removed: Профиль импорта успешно удален
   export profile:
@@ -54,7 +59,7 @@ flash:
 error:
   removing:
     item: Не удается удалить этот элемент
-    association type: Не удается удалить этот тип ассоциации
+    association_type: Не удается удалить этот тип ассоциации
     attribute: Не удается удалить этот атрибут
     family: Не удается удалить это семейство
     product: Не удается удалить этот продукт
@@ -84,7 +89,7 @@ label:
   attribute_option:
     add_option: Добавить новый элемента списка
 Code: Код
-Edit: Изменить
+Edit: Редактировать
 Delete: Удалить
 Edit attributes of the product: Изменение атрибутов продукта
 Classify the product: Классифицировать продукт
@@ -126,10 +131,10 @@ pim_enrich:
     product:
       title: продукт
       btn:
-        enable: Активировать
-        enabled: Активирован
-        disable: Деактивировать
-        disabled: Деактивирован
+        enable: Включить
+        enabled: Включено
+        disable: Отключить
+        disabled: Отключено
         download_pdf: PDF
         compare_translate: Сравнить / Перевести
         delete: Удалить
@@ -159,32 +164,32 @@ pim_enrich:
       error:
         upload: Произошла ошибка при загрузке файла
       meta:
-        created: Создан
-        created_by: Создан
-        updated_by: Обновлен
+        created: Создано
+        created_by: Создано
+        updated_by: Создано
         updated: Последнее обновление
         family:
           title: Семейство
-          none: (Пусто)
+          none: Нет
         groups:
           title: Группы
           modal:
             title: Группа {{ group }}
             view_group: Посмотреть группу
-            group_label: Ярлык
+            group_label: Метка
             more_products: '{{ count }} больше продуктов...'
             close: Закрыть
       copy:
         select: Выбрать
         all: Все
         all_visible: Все видимые
-        none: (Пусто)
-        copy: Копировать
+        none: Нет
+        copy: Копия
       variant_group:
         updated_by: Обновлено группой вариантов
         switch:
-          "yes": Да
-          "no": Нет
+          "yes": "Да"
+          "no": "Нет"
       optional_attribute:
         remove: Удалить этот атрибут
       locale_specific_attribute:
@@ -199,9 +204,34 @@ pim_enrich:
           family: Выберите семейство
           save: Сохранить
           cancel: Отмена
+    association_type:
+      info:
+        field_not_ready:
+          The association type cannot be saved right now. The following fields are not ready:
+            - поля
+      meta:
+        created: Создано
+        created_by: Создана
+        updated: Обновлено
+        updated_by: Обновлена
+      btn:
+        save: Сохранить
+    channel:
+      info:
+        field_not_ready:
+          The channel cannot be saved right now. The following fields are not ready:
+            - поля
+      meta:
+        created: Создано
+        created_by: Создана
+        updated: Обновлено
+        updated_by: Обновлена
+      btn:
+        save: Сохранить
     attribute_option:
       code: Код
-      label: Ярлык
+      label: Метка
+      actions: Действия
     variant_group:
       title: Группа вариантов
       info:
@@ -222,6 +252,20 @@ pim_enrich:
         created_by: Создана
         updated: Обновлено
         updated_by: Обновлена
+    group:
+      title: Группа
+      info:
+        field_not_ready:
+          The group cannot be saved right now. The following fields are not ready:
+            - поля
+      btn:
+        save: Сохранить
+      meta:
+        product_count: Продукты
+        created: Создано
+        created_by: Создана
+        updated: Обновлено
+        updated_by: Обновлена
   confirmation:
     leave: Вы уверены, что хотите покинуть эту страницу?
     discard_changes: Если вы покините страницу изменения будут потеряны для {{ entity }}.
@@ -229,7 +273,7 @@ pim_enrich:
     delete:
       attribute: Вы уверены, что хотите удалить этот атрибут из продукта?
   info:
-    not_applicable: '-'
+    not_applicable: Н/Д
     entity:
       updated: Имеются несохраненные изменения.
   error:
@@ -244,10 +288,10 @@ pim_enrich:
         associations:
           title: Ассоциации
           info:
-            none_exist: Типы ассоциаций отсутствуют.
+            none_exist: Титпы ассоциаций отсутствуют.
             show_products: Показать продукты
             show_groups: Показать группы
-            number_of_associations: '{{ productCount }} продуктов и {{ groupCount }} групп'
+            number_of_associations: "{{ productCount }} продуктов и {{ groupCount }} групп"
         attributes:
           title: Атрибуты
           btn:
@@ -256,7 +300,7 @@ pim_enrich:
           info:
             search_attributes: Поиск...
             no_available_attributes: Нет больше атрибутов для добавления
-            attributes_selected: Выбран(o) {{ attributeCount }} атрибут(ов)
+            attributes_selected: "Выбран(o) {{ attributeCount }} атрибут(ов)"
             no_match: Совпадений не найдено
             load_more: Загрузка дополнительных результатов...
         categories:
@@ -271,11 +315,11 @@ pim_enrich:
         history:
           title: Журнал
       switch:
-        "no": Нет
-        "yes": Да
+        "no": "Нет"
+        "yes": "Да"
       sequential_edit:
         info:
-          products: продуктов
+          products: продукты
           previous: Перейти обратно к {{ product }} без сохранения.
           next: Перейти к {{ product }} без сохранения.
         btn:
@@ -284,7 +328,7 @@ pim_enrich:
       change_family:
         modal:
           title: Изменить семейство продуктов
-          merge_attributes: Текущие атрибуты будут объединены с существующими в новом семействе.
+          merge_attributes: Текущие атрибуты будут объединены с существующими, в новом семействе.
           keep_attributes: Атрибуты не будут удалены.
           change_family_to: Изменить семейство на
           empty_selection: Выберите семейство
@@ -292,7 +336,31 @@ pim_enrich:
         attribute_deletion_error: Произошла ошибка при удалении атрибута
       mass_edit:
         select_attributes: Выберите атрибуты
-        select: Выберите
+        select: Выбрать
+    association_type:
+      tab:
+        properties:
+          title: Свойства
+          general: Общие свойства
+          code: Код
+          label_translations: Переводы меток
+        history:
+          title: Журнал
+    channel:
+      tab:
+        history:
+          title: Журнал
+        properties:
+          title: Свойства
+          general: Основные
+          code: Код
+          currencies: Валюты
+          locales: Локали
+          category_tree: Дерево категорий
+          label_translations: Переводы меток
+          label_conversion_units: Выбрать единицу преобразования для каждого метрического атрибута, которая будет использована во время экспорта продуктов
+          conversion_unit:
+            do_not_convert: Не преобразовывать
     attribute_option:
       flash:
         option_created: Элемент в списке атрибута успешно создан
@@ -300,11 +368,11 @@ pim_enrich:
       add_option_modal:
         title: Добавить элемента списка для атрибута
         confirm: Добавить
-        cancel: Отменить
+        cancel: Отмена
     entity:
       switch:
-        "no": Нет
-        "yes": Да
+        "no": "Нет"
+        "yes": "Да"
     variant_group:
       tab:
         properties:
@@ -320,6 +388,18 @@ pim_enrich:
           title: Продукты
         attributes:
           title: Атрибуты
+    group:
+      tab:
+        properties:
+          title: Свойства
+          general: Общие свойства
+          code: Код
+          type: Тип
+          label_translations: Переводы меток
+        history:
+          title: Журнал
+        products:
+          title: Продукты
     common:
       tab:
         attributes:
@@ -329,6 +409,74 @@ pim_enrich:
           info:
             search_attributes: Поиск...
             no_available_attributes: Нет больше атрибутов для добавления
+    job_instance:
+      button:
+        edit.title: Редактировать
+        export.title: Экспортировать сейчас
+        import.launch: Импортировать сейчас
+        import.upload: Загрузить и импортировать сейчас
+      meta:
+        job: Работа
+        connector: Соединитель
+      tab:
+        content:
+          title: Содержание
+        properties:
+          title: Общие свойства
+          code:
+            title: Код
+          label:
+            title: Метка
+          decimal_separator:
+            title: Десятичный разделитель
+            help: Введите десятичный разделитель
+          date_format:
+            title: Формат даты
+            help: Введите формат даты
+          file_path:
+            title: Путь к файлу
+            help: Путь к сгенерированному файлу
+          delimiter:
+            title: Разделитель
+            help: Символ, используемый как разделитель полей
+          enclosure:
+            title: Символ обрамления
+            help: Символ, используемый для обрамления полей
+          with_header:
+            title: Включая заголовки
+            help: Добавить строку с заголовками
+          with_media:
+            title: Экспортировать файлы и изображения
+            help: Экспортировать файлы и изображения продуктов
+          lines_per_file:
+            title: Количество строк в файле
+            help: Определить предельное число строк в файле
+          upload_allowed:
+            title: Разрешить загрузку файлов
+            help: Разрешить загрузку файлов
+          categories_column:
+            title: Колонка категорий
+            help: Название колонки категорий
+          escape:
+            title: Экранирование
+            help: Символ, используемый для экранирования
+          family_column:
+            title: Колонка семейства
+            help: Название колонки семейства
+          groups_column:
+            title: Колонка групп
+            help: Название колонки групп
+          enabled:
+            title: Активировать продукт
+            help: Активировать импортируемые продукты
+          enabled_comparison:
+            title: Сравнивать значения
+            help: Включить сравнение исходных значений и импортированных значений. Может ускорить импорт, если импортированные значения очень похожи на исходные значения
+          real_time_versioning:
+            title: Обновление истории изменений в реальном времени
+            help: Означает, что история изменений продукта автоматически обновляется, можно выключить для улучшения производительности
+        history:
+          title: Журнал
   export:
     product:
       data:
@@ -347,7 +495,7 @@ pim_enrich:
         attributes:
           title: Атрибуты
           edit: Редактировать
-          label: '{0} все атрибуты |{1} один атрибут выбран |] 1, Inf [{{ count }} атрибутов выделено'
+          label: "{0} все атрибуты |{1} один атрибут выбран |] 1, Inf [{{ count }} атрибутов выделено"
           help: Выберите сведения о продукте для экспорта. На пример, только технические атрибуты.
           empty: Все атрибуты будут экспортированы
           modal:
@@ -356,8 +504,8 @@ pim_enrich:
             title: Выбор атрибутов
         attributes_selector:
           attribute_group: Группы атрибутов
-          attributes: Поиск в {{ attributeCount }} атрибутах
-          selected: Выбранные атрибуты
+          attributes: "Поиск в {{ attributeCount }} атрибутах"
+          selected: "Выбранные атрибуты"
           clear: Очистить
           all_group: Все группы
           empty_selection: Все атрибуты будут экспортированы
@@ -366,17 +514,16 @@ pim_enrich:
           help: Выберите продукты для экспорта по семейству. На пример, экспорт только обувей и платьев.
           operators:
             IN: В списке
-            NOT IN: Нет в списке
+            "NOT IN": Нет в списке
             EMPTY: Продукты, которые не имеют семейства
-            NOT EMPTY: Продукты, которые имеют семейство
-          empty_selection: Нет условия для семейств
+            "NOT EMPTY": Продукты, которые имеют семейство
         updated:
           title: Условие времени
           operators:
             ALL: Нет условия
-            SINCE LAST N DAYS: Обновленные продукты за последние n дней (например, 6)
-            >: Обновленные продукты с этой даты
-            SINCE LAST JOB: Обновленные продукты с момента последнего экспорта
+            "SINCE LAST N DAYS": Обновленные продукты за последние n дней (например, 6)
+            ">": Обновленные продукты с этой даты
+            "SINCE LAST JOB": Обновленные продукты с момента последнего экспорта
         enabled:
           title: Статус
           help: Выберите продукты, для экспорта по их статусу. На пример, экспорт товаров независимо от их статуса.
@@ -389,8 +536,8 @@ pim_enrich:
           help: Выберите продукты для экспорта по законченности.
           operators:
             ALL: Нет условия
-            >=: Закончен по хотя бы одной локали
-            GREATER OR EQUALS THAN ON ALL LOCALES: Закончен по всем выбранным локалям
+            ">=": Закончен по хотя бы одной локали
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Закончен по всем выбранным локалям
             LOWER THAN ON ALL LOCALES: Незакончен ни по одной локали
           empty_selection: Выберите семейство
         category:
@@ -401,12 +548,12 @@ pim_enrich:
           help: Идентификаторы продуктов, которые вы хотите экспортировать, разделенные запятыми, пробелами или разрывами строк
         metric:
           operators:
-            =: Равно
-            !=: Не равно
-            >=: Больше или равно
-            >: Больше
-            <=: Меньше или равно
-            <: Меньше
+            "=": Равно
+            "!=": Не равно
+            ">=": Больше или равно
+            ">": Больше
+            "<=": Меньше или равно
+            "<": Меньше
             EMPTY: Пусто
             NOT EMPTY: Не является пустым
         string:
@@ -414,19 +561,19 @@ pim_enrich:
             ALL: Все
             CONTAINS: Содержит
             DOES NOT CONTAIN: Не содержит
-            =: Равно
+            "=": Равно
             STARTS WITH: Начинается с
             ENDS WITH: Заканчивается на
             EMPTY: Пусто
             NOT EMPTY: Не является пустым
         price-collection:
           operators:
-            =: Равно
-            !=: Не равно
-            >=: Больше или равно
-            >: Больше
-            <=: Меньше или равно
-            <: Меньше
+            "=": Равно
+            "!=": Не равно
+            ">=": Больше или равно
+            ">": Больше
+            "<=": Меньше или равно
+            "<": Меньше
             EMPTY: Пусто
             NOT EMPTY: Не является пустым
         multi_select:
@@ -438,31 +585,35 @@ pim_enrich:
           operators:
             CONTAINS: Содержит
             DOES NOT CONTAIN: Не содержит
-            =: Равно
+            "=": Равно
             STARTS WITH: Начинается с
             ENDS WITH: Заканчивается на
             EMPTY: Пусто
             NOT EMPTY: Не является пустым
         date:
           operators:
-            >: Больше
-            <: Меньше
-            =: Равно
-            !=: Не равно
+            ">": Больше
+            "<": Меньше
+            "=": Равно
+            "!=": Не равно
             BETWEEN: Между
             NOT BETWEEN: Не между
             EMPTY: Пусто
             NOT EMPTY: Не является пустым
         number:
           operators:
-            =: Равно
-            !=: Не равно
-            >=: Больше или равно
-            >: Больше
-            <=: Меньше или равно
-            <: Меньше
+            "=": Равно
+            "!=": Не равно
+            ">=": Больше или равно
+            ">": Больше
+            "<=": Меньше или равно
+            "<": Меньше
             EMPTY: Пусто
             NOT EMPTY: Не является пустым
+      properties:
+        title: Свойства
+      global_settings:
+        title: Глобальные настройки
   mass_edit_action:
     edit_common_attributes:
       description: Атрибуты выбранного продукта будут редактироваться со следующими данными для локали <span class="highlight">{{ locale }}</span> и канала <span class="highlight">{{ channel }}</span>, выбранных в таблице продуктов.

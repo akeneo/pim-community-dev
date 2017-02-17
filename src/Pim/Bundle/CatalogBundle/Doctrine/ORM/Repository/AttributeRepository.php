@@ -275,35 +275,6 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function createDatagridQueryBuilder()
-    {
-        $qb = $this->createQueryBuilder('a');
-        $rootAlias = $qb->getRootAlias();
-
-        $labelExpr = sprintf(
-            '(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)',
-            $rootAlias
-        );
-        $groupExpr = '(CASE WHEN gt.label IS NULL THEN attributeGroup.code ELSE gt.label END)';
-
-        $qb
-            ->addSelect($rootAlias)
-            ->addSelect(sprintf("%s AS label", $labelExpr))
-            ->addSelect(sprintf("%s AS groupLabel", $groupExpr))
-            ->addSelect('translation.label')
-            ->addSelect('attributeGroup.code');
-
-        $qb
-            ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
-            ->leftJoin($rootAlias .'.group', 'attributeGroup')
-            ->leftJoin('attributeGroup.translations', 'gt', 'WITH', 'gt.locale = :localeCode');
-
-        return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifier()
     {
         return $this->findOneBy(['attributeType' => AttributeTypes::IDENTIFIER]);

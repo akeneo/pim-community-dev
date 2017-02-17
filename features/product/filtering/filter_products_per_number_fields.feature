@@ -10,9 +10,9 @@ Feature: Filter products by number field
 
   Scenario: Successfully filter products by empty value for number attributes
     Given the following attributes:
-      | label | type   | localizable | scopable | useable_as_grid_filter | decimals_allowed |
-      | count | number | no          | no       | yes                    | no               |
-      | rate  | number | no          | no       | yes                    | yes              |
+      | label-en_US | type               | localizable | scopable | useable_as_grid_filter | decimals_allowed | group | code  |
+      | count       | pim_catalog_number | 0           | 0        | 1                      | 0                | other | count |
+      | rate        | pim_catalog_number | 0           | 0        | 1                      | 1                | other | rate  |
     And the following products:
       | sku    | count | rate |
       | postit | 200   |      |
@@ -24,19 +24,21 @@ Feature: Filter products by number field
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter | operator | value | result         |
-      | count  | is empty |       | book and mug   |
-      | count  | >        | 200   |                |
-      | count  | <        | 200   |                |
-      | count  | >        | 199   | postit         |
-      | count  | <        | 201   | postit         |
-      | count  | >=       | 200   | postit         |
-      | count  | <=       | 200   | postit         |
-      | count  | =        | 200   | postit         |
-      | count  | =        | 0     |                |
-      | count  | >        | 0     | postit         |
-      | rate   | is empty |       | mug and postit |
-      | rate   | >        | 9.5   |                |
-      | rate   | <=       | 9.5   | book           |
-      | rate   | =        | 0     |                |
-      | rate   | >        | 0     | book           |
+      | filter | operator     | value | result         |
+      | count  | is empty     |       | book and mug   |
+      | count  | is not empty |       | postit         |
+      | count  | >            | 200   |                |
+      | count  | <            | 200   |                |
+      | count  | >            | 199   | postit         |
+      | count  | <            | 201   | postit         |
+      | count  | >=           | 200   | postit         |
+      | count  | <=           | 200   | postit         |
+      | count  | =            | 200   | postit         |
+      | count  | =            | 0     |                |
+      | count  | >            | 0     | postit         |
+      | rate   | is empty     |       | mug and postit |
+      | rate   | is not empty |       | book           |
+      | rate   | >            | 9.5   |                |
+      | rate   | <=           | 9.5   | book           |
+      | rate   | =            | 0     |                |
+      | rate   | >            | 0     | book           |

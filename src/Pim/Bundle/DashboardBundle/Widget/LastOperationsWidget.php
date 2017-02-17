@@ -3,6 +3,7 @@
 namespace Pim\Bundle\DashboardBundle\Widget;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -28,22 +29,28 @@ class LastOperationsWidget implements WidgetInterface
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
     /**
      * @param JobExecutionManager   $manager
      * @param TranslatorInterface   $translator
      * @param PresenterInterface    $presenter
      * @param TokenStorageInterface $tokenStorage
+     * @param SecurityFacade        $securityFacade
      */
     public function __construct(
         JobExecutionManager $manager,
         TranslatorInterface $translator,
         PresenterInterface $presenter,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        SecurityFacade $securityFacade
     ) {
-        $this->manager = $manager;
-        $this->translator = $translator;
-        $this->presenter = $presenter;
-        $this->tokenStorage = $tokenStorage;
+        $this->manager        = $manager;
+        $this->translator     = $translator;
+        $this->presenter      = $presenter;
+        $this->tokenStorage   = $tokenStorage;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -85,6 +92,8 @@ class LastOperationsWidget implements WidgetInterface
                 $locale = $this->tokenStorage->getToken()->getUser()->getUiLocale()->getCode();
                 $operation['date'] = $this->presenter->present($operation['date'], ['locale' => $locale]);
             }
+            $operation['canSeeReport'] = !in_array($operation['type'], ['import', 'export']) ||
+                $this->securityFacade->isGranted(sprintf('pim_importexport_%s_execution_show', $operation['type']));
         }
 
         return $operations;

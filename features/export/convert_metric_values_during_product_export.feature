@@ -9,6 +9,7 @@ Feature: Export of metric values
       | filePath | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
     And I am logged in as "Julia"
 
+  @javascript
   Scenario: Successfully display metric conversion configuration for a channel
     Given I am on the "tablet" channel page
     Then I should see "Pick a conversion unit for each metric attribute that will be used during product export" fields:

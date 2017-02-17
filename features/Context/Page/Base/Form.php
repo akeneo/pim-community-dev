@@ -8,6 +8,7 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Traits\ClosestTrait;
+use Pim\Behat\Decorator\Field\Select2Decorator;
 
 /**
  * Basic form page
@@ -445,24 +446,18 @@ class Form extends Base
      */
     public function findFieldInTabSection($groupField, $field)
     {
-        $tabSection = $this->find(
-            'css',
-            sprintf('.tabsection-title:contains("%s")', $groupField)
-        );
-
-        if (!$tabSection) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not find tab section "%s"', $groupField)
+        $tabSection = $this->spin(function () use ($groupField) {
+            return $this->find(
+                'css',
+                sprintf('.tabsection-title:contains("%s")', $groupField)
             );
-        }
+        }, sprintf('Could not find tab section "%s"', $groupField));
 
         $accordionContent = $tabSection->getParent()->find('css', '.tabsection-content');
 
-        if (!$accordionContent->findField($field)) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not find a "%s" field inside the %s accordion group', $field, $groupField)
-            );
-        }
+        $this->spin(function () use ($accordionContent, $field) {
+            return $accordionContent->findField($field);
+        }, sprintf('Could not find a "%s" field inside the %s accordion group', $field, $groupField));
     }
 
     /**
@@ -494,32 +489,20 @@ class Form extends Base
      */
     public function checkFieldChoices($label, array $choices, $isExpected = true)
     {
-        $field = $this->spin(function () use ($label) {
-            return $this->findField($label);
-        }, sprintf('Cannot find "%s" field', $label));
-
-        // TODO: Improve this part to make it work with regular selects if necessary
-        $field->find('css', 'input[type="text"]')->click();
-        $select2Drop   = $this->findById('select2-drop');
-        $selectChoices = $this->spin(function () use ($select2Drop) {
-            $choices = [];
-            $select2Choices = $select2Drop->findAll('css', '.select2-result');
-            if (!empty($select2Choices)) {
-                foreach ($select2Choices as $select2Choice) {
-                    $choices[] = trim($select2Choice->getText(), '[]');
-                }
-
-                return $choices;
-            }
-        }, 'Cannot find "select2-drop" element');
-
+        $labelElement = $this->extractLabelElement($label);
+        $container = $this->getClosest($labelElement, 'AknFieldContainer');
+        $select2 = $this->spin(function () use ($container) {
+            return $container->find('css', '.select2');
+        }, 'Impossible to find the select');
+        $select2 = $this->decorate($select2, [Select2Decorator::class]);
+        $selectChoices = $select2->getAvailableValues();
         if ($isExpected) {
             foreach ($choices as $choice) {
                 if (!in_array($choice, $selectChoices)) {
                     throw new ExpectationException(sprintf(
                         'Expecting to find choice "%s" in field "%s"',
                         $choice,
-                        $label
+                        $labelElement
                     ), $this->getSession());
                 }
             }
@@ -529,7 +512,7 @@ class Form extends Base
                     throw new ExpectationException(sprintf(
                         'Choice "%s" should not be in available for field "%s"',
                         $choice,
-                        $label
+                        $labelElement
                     ), $this->getSession());
                 }
             }

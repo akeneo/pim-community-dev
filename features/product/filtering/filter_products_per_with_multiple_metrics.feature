@@ -11,9 +11,9 @@ Feature: Filter products with multiples metrics filters
       | furniture |
       | library   |
     And the following attributes:
-      | code      | label     | type   | useable_as_grid_filter | metric_family | default_metric_unit | decimals_allowed |
-      | weight    | Weight    | metric | yes                    | Weight        | GRAM                | yes              |
-      | packaging | Packaging | metric | yes                    | Weight        | GRAM                | yes              |
+      | code      | label-en_US | type               | useable_as_grid_filter | metric_family | default_metric_unit | decimals_allowed | group |
+      | weight    | Weight      | pim_catalog_metric | 1                      | Weight        | GRAM                | 1                | other |
+      | packaging | Packaging   | pim_catalog_metric | 1                      | Weight        | GRAM                | 1                | other |
     And the following products:
       | sku    | family    | packaging | weight   |
       | BOOK   | library   |           |          |
@@ -32,27 +32,29 @@ Feature: Filter products with multiples metrics filters
     Given I show the filter "packaging"
     And I filter by "packaging" with operator ">" and value "30 Gram"
     Then I should be able to use the following filters:
-      | filter | operator | value    | result                 |
-      | weight | =        | 200 Gram | MUG-2, MUG-3 and MUG-4 |
-      | weight | >=       | 200 Gram | MUG-2, MUG-3 and MUG-4 |
-      | weight | >        | 199 Gram | MUG-2, MUG-3 and MUG-4 |
-      | weight | <        | 200 Gram |                        |
-      | weight | <=       | 200 Gram | MUG-2, MUG-3 and MUG-4 |
-      | weight | <        | 201 Gram | MUG-2, MUG-3 and MUG-4 |
-      | weight | is empty |          | POST-1 and POST-2      |
+      | filter | operator     | value    | result                 |
+      | weight | =            | 200 Gram | MUG-2, MUG-3 and MUG-4 |
+      | weight | >=           | 200 Gram | MUG-2, MUG-3 and MUG-4 |
+      | weight | >            | 199 Gram | MUG-2, MUG-3 and MUG-4 |
+      | weight | <            | 200 Gram |                        |
+      | weight | <=           | 200 Gram | MUG-2, MUG-3 and MUG-4 |
+      | weight | <            | 201 Gram | MUG-2, MUG-3 and MUG-4 |
+      | weight | is empty     |          | POST-1 and POST-2      |
+      | weight | is not empty |          | MUG-2, MUG-3 and MUG-4 |
 
   Scenario: Successfully filter product without commons attributes
     Given I show the filter "weight"
     And I filter by "weight" with operator ">" and value "100 Gram"
     Then I should be able to use the following filters:
-      | filter    | operator | value   | result                        |
-      | packaging | =        | 10 Gram | MUG-1                         |
-      | packaging | >=       | 10 Gram | MUG-1, MUG-2, MUG-3 and MUG-4 |
-      | packaging | >        | 9 Gram  | MUG-1, MUG-2, MUG-3 and MUG-4 |
-      | packaging | <        | 10 Gram |                               |
-      | packaging | <=       | 10 Gram | MUG-1                         |
-      | packaging | <        | 11 Gram | MUG-1                         |
-      | packaging | is empty |         | MUG-5                         |
+      | filter    | operator     | value   | result                        |
+      | packaging | =            | 10 Gram | MUG-1                         |
+      | packaging | >=           | 10 Gram | MUG-1, MUG-2, MUG-3 and MUG-4 |
+      | packaging | >            | 9 Gram  | MUG-1, MUG-2, MUG-3 and MUG-4 |
+      | packaging | <            | 10 Gram |                               |
+      | packaging | <=           | 10 Gram | MUG-1                         |
+      | packaging | <            | 11 Gram | MUG-1                         |
+      | packaging | is empty     |         | MUG-5                         |
+      | packaging | is not empty |         | MUG-1, MUG-2, MUG-3 and MUG-4 |
 
   Scenario: Successfully filter only one product
     Given I show the filter "packaging"

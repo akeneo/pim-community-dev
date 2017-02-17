@@ -2,7 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -50,7 +51,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'price');
+        $this->checkLocaleAndScope($attribute, $locale, $scope);
 
         if (Operators::IS_EMPTY === $operator || Operators::IS_NOT_EMPTY === $operator) {
             $this->addEmptyTypeFilter($attribute, $value, $operator, $locale, $scope);
@@ -160,60 +161,58 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     /**
      * @param AttributeInterface $attribute
      * @param mixed              $data
+     *
+     * @throws InvalidPropertyTypeException
+     * @throws InvalidPropertyException
      */
     protected function checkValue(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'filter', 'price', gettype($data));
+            throw InvalidPropertyTypeException::arrayExpected($attribute->getCode(), static::class, $data);
         }
 
         if (!array_key_exists('amount', $data)) {
-            throw InvalidArgumentException::arrayKeyExpected(
+            throw InvalidPropertyTypeException::arrayKeyExpected(
                 $attribute->getCode(),
                 'amount',
-                'filter',
-                'price',
-                print_r($data, true)
+                static::class,
+                $data
             );
         }
 
         if (!array_key_exists('currency', $data)) {
-            throw InvalidArgumentException::arrayKeyExpected(
+            throw InvalidPropertyTypeException::arrayKeyExpected(
                 $attribute->getCode(),
                 'currency',
-                'filter',
-                'price',
-                print_r($data, true)
+                static::class,
+                $data
             );
         }
 
         if (null !== $data['amount'] && !is_numeric($data['amount'])) {
-            throw InvalidArgumentException::arrayNumericKeyExpected(
+            throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $attribute->getCode(),
-                'amount',
-                'filter',
-                'price',
-                gettype($data['amount'])
+                sprintf('key "amount" has to be a numeric, "%s" given', gettype($data['amount'])),
+                static::class,
+                $data
             );
         }
 
         if (!is_string($data['currency'])) {
-            throw InvalidArgumentException::arrayStringKeyExpected(
+            throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $attribute->getCode(),
-                'currency',
-                'filter',
-                'price',
-                gettype($data['currency'])
+                sprintf('key "currency" has to be a string, "%s" given', gettype($data['currency'])),
+                static::class,
+                $data
             );
         }
 
         if (!in_array($data['currency'], $this->currencyRepository->getActivatedCurrencyCodes())) {
-            throw InvalidArgumentException::arrayInvalidKey(
+            throw InvalidPropertyException::validEntityCodeExpected(
                 $attribute->getCode(),
                 'currency',
                 'The currency does not exist',
-                'filter',
-                'price',
+                static::class,
                 $data['currency']
             );
         }

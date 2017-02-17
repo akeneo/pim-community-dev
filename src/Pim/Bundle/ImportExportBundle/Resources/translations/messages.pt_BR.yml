@@ -5,15 +5,6 @@ pim_import_export:
   connector: Conector
   status:
     - Pronto
-  batch_status:
-    1: CONCLUÍDO
-    2: INICIANDO
-    3: INICIADO
-    4: PARANDO
-    5: PARADO
-    6: FALHOU
-    7: ABANDONADO
-    8: DESCONHECIDO
   download_archive:
     output: baixar arquivo gerado | baixar arquivos gerados
     input: baixar arquivo de leitura|baixar arquivos de leitura
@@ -87,12 +78,12 @@ pim_importexport:
       dl_log: Baixar o log do relatório de importação
       dl_files: Baixar os arquivos importados
   acl_group:
-    export: Exportar perfis
-    import: Importar perfis
+    export: Perfis de exportação
+    import: Perfis de importação
 btn:
   create:
-    export profile: criar um perfil de exportação
-    import profile: criar um perfil de importação
+    export profile: criar perfil de exportação
+    import profile: criar perfil de importação
 Upload and import now: Enviar e Importar Agora
 import now: Importar Agora
 export now: Exportar Agora
@@ -151,12 +142,4 @@ Summary: Resumo
 Start: Iniciar
 End: Fim
 set_attribute_requirements: Estabelecer requisitos do atributo
-COMPLETED: CONCLUÍDO
-STARTING: INICIANDO
-STARTED: INICIADO
-STOPPING: PARANDO
-STOPPED: PARADO
-FAILED: FALHOU
-ABANDONED: ABANDONADO
-UNKNOWN: DESCONHECIDO
 warning.label: Aviso

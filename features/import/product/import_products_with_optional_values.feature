@@ -7,10 +7,10 @@ Feature: Import product information with optional values
   Scenario: Successfully add an optional product value
     Given a "footwear" catalog configuration
     And the following attribute:
-      | code           | type | localizable | scopable |
-      | opt_att_global | text | no          | no       |
-      | opt_att_local  | text | yes         | no       |
-      | opt_att_scope  | text | no          | yes      |
+      | code           | type             | localizable | scopable | group |
+      | opt_att_global | pim_catalog_text | 0           | 0        | other |
+      | opt_att_local  | pim_catalog_text | 1           | 0        | other |
+      | opt_att_scope  | pim_catalog_text | 0           | 1        | other |
     And the following product:
       | sku              | family | opt_att_global |
       | caterpillar-pim  | boots  |                |

@@ -44,7 +44,7 @@ services:
             - '@pim_connector.event_listener.archivist'
             - '@pim_serializer'
             - '@akeneo_batch.manager.job_execution'
-            - '@pim_import_export.repository.job_execution'
+            - '@pim_enrich.repository.job_execution'
             - export
 
     pim_import_export.controller.import_execution:
@@ -58,5 +58,5 @@ services:
             - '@pim_connector.event_listener.archivist'
             - '@pim_serializer'
             - '@akeneo_batch.manager.job_execution'
-            - '@pim_import_export.repository.job_execution'
+            - '@pim_enrich.repository.job_execution'
             - import

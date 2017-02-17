@@ -6,18 +6,18 @@ Feature: Execute an import with empty data
 
   Background:
     Given the "footwear" catalog configuration
+    And the following variant groups:
+      | code    | label-en_US | axis       | type    |
+      | SANDAL  | Sandal      | size,color | VARIANT |
+      | SANDAL2 | Sandal2     | size,color | VARIANT |
     And the following products:
-      | sku             | family  | categories        | size | color | name-en_US |
-      | sandal-white-37 | sandals | winter_collection | 37   | white | old name   |
-      | sandal-white-38 | sandals | winter_collection | 38   | white | old name   |
-      | sandal-white-39 | sandals | winter_collection | 39   | white | old name   |
-      | sandal-red-37   | sandals | winter_collection | 37   | red   | old name   |
-      | sandal-red-38   | sandals | winter_collection | 38   | red   | old name   |
-      | sandal-red-39   | sandals | winter_collection | 39   | red   | old name   |
-    And the following product groups:
-      | code    | label   | axis        | type    | products                                          |
-      | SANDAL  | Sandal  | size, color | VARIANT | sandal-white-37, sandal-white-38, sandal-white-39 |
-      | SANDAL2 | Sandal2 | size, color | VARIANT | sandal-red-37, sandal-red-38, sandal-red-39       |
+      | sku             | family  | categories        | size | color | name-en_US | groups  |
+      | sandal-white-37 | sandals | winter_collection | 37   | white | old name   | SANDAL  |
+      | sandal-white-38 | sandals | winter_collection | 38   | white | old name   | SANDAL  |
+      | sandal-white-39 | sandals | winter_collection | 39   | white | old name   | SANDAL  |
+      | sandal-red-37   | sandals | winter_collection | 37   | red   | old name   | SANDAL2 |
+      | sandal-red-38   | sandals | winter_collection | 38   | red   | old name   | SANDAL2 |
+      | sandal-red-39   | sandals | winter_collection | 39   | red   | old name   | SANDAL2 |
     And I am logged in as "Julia"
 
   Scenario: Successfully import a csv file with values for one variant group and empty values for the other

@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Connector\Processor\Denormalization;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
@@ -559,7 +560,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $productUpdater
             ->update($product, $filteredData)
-            ->willThrow(new \InvalidArgumentException('family does not exists'));
+            ->willThrow(new InvalidPropertyException('family', 'value', 'className', 'family does not exists'));
 
         $productDetacher->detach($product)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();

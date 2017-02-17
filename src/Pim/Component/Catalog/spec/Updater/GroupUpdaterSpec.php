@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -37,8 +39,9 @@ class GroupUpdaterSpec extends ObjectBehavior
     function it_throws_an_exception_when_trying_to_update_anything_else_than_a_variant_group()
     {
         $this->shouldThrow(
-            new \InvalidArgumentException(
-                'Expects a "Pim\Component\Catalog\Model\GroupInterface", "stdClass" provided.'
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                'Pim\Component\Catalog\Model\GroupInterface'
             )
         )->during(
             'update',
@@ -92,18 +95,47 @@ class GroupUpdaterSpec extends ObjectBehavior
         $this->update($group, $values, []);
     }
 
-    function it_throws_an_error_if_type_is_unknown(GroupInterface $group)
+    function it_throws_an_error_if_type_is_unknown($groupTypeRepository, GroupInterface $group)
     {
         $group->setCode('mycode')->shouldBeCalled();
-        $group->getId()->willReturn(null);
+        $groupTypeRepository->findOneByIdentifier('UNKNOWN')->willReturn(null);
 
         $values = [
             'code' => 'mycode',
             'type' => 'UNKNOWN',
         ];
 
-        $this->shouldThrow(new \InvalidArgumentException('Type "UNKNOWN" does not exist'))
-            ->during('update', [$group, $values, []]);
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'type',
+                'group type',
+                'The group type does not exist',
+                'Pim\Component\Catalog\Updater\GroupUpdater',
+                'UNKNOWN'
+            )
+        )->during('update', [$group, $values, []]);
+    }
+
+    function it_throws_an_error_if_it_is_a_variant_group_type($groupTypeRepository, GroupInterface $group, GroupTypeInterface $groupType)
+    {
+        $group->setCode('mycode')->shouldBeCalled();
+        $groupTypeRepository->findOneByIdentifier('variant')->willReturn($groupType);
+        $groupType->isVariant()->willReturn(true);
+        $group->getCode()->willReturn('mycode');
+
+        $values = [
+            'code' => 'mycode',
+            'type' => 'variant',
+        ];
+
+        $this->shouldThrow(
+            InvalidPropertyException::validGroupTypeExpected(
+                'type',
+                'Cannot process variant group, only groups are supported',
+                'Pim\Component\Catalog\Updater\GroupUpdater',
+                'mycode'
+            )
+        )->during('update', [$group, $values, []]);
     }
 
     function it_throws_an_exception_if_attribute_is_unknown($attributeRepository, GroupInterface $group)
@@ -117,7 +149,14 @@ class GroupUpdaterSpec extends ObjectBehavior
             'axis' => ['foo']
         ];
 
-        $this->shouldThrow(new \InvalidArgumentException('Attribute "foo" does not exist'))
-            ->during('update', [$group, $values, []]);
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'axis',
+                'attribute code',
+                'The attribute does not exist',
+                'Pim\Component\Catalog\Updater\GroupUpdater',
+                'foo'
+            )
+        )->during('update', [$group, $values, []]);
     }
 }

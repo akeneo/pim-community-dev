@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Query\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
+
 /**
  * Filter interface
  *
@@ -20,6 +22,8 @@ interface FieldFilterInterface extends FilterInterface
      * @param string       $locale   the locale
      * @param string       $scope    the scope
      * @param array        $options  the filter options
+     *
+     * @throws PropertyException
      *
      * @return FieldFilterInterface
      */

@@ -40,12 +40,14 @@ oro_datagrid.select.all: "Sve"
 oro_datagrid.select.visible: "Sve vidljive"
 oro_datagrid.select.none: "Niti jedan"
 pim.grid.ajax_choice_filter.label_empty: je prazan
+pim.grid.ajax_choice_filter.label_not_empty: nije prazan
 pim.grid.choice_filter:
   label_empty: je prazan
+  label_not_empty: nije prazan
   label_in_list: na popisu
 Available Columns: Dostupni stupci
 Displayed Columns: Odabrani stupci
-datagrid_view.columns.min_message: Morate odabrati barem jedan stupac u prikazu tablice
+datagrid_view.columns.min_message: Odaberi barem jedan stupac u prikazu tablice
 pim_datagrid:
   column_configurator:
     label: Stupci
@@ -55,7 +57,7 @@ pim_datagrid:
     clear: Obriši
     displayed_columns: Odabrani stupci
     apply: Primijeni
-    cancel: Odustani
+    cancel: Poništi
     remove_column: Ukloni
   mass_action:
     delete:
@@ -71,3 +73,17 @@ Loading...: Učitavanje...
 View: Prikaz
 from: od
 to: u
+grid.view_selector:
+  default_view: Zadani prikaz
+  save_changes: Spremi ovaj prikaz
+  remove: Izbriši ovaj prikaz
+  create_view: Stvaranje prikaza
+  create: Kreiraj
+  search: Pretraživanje
+  views: Pregledi
+  placeholder: Naziv novog prikaza
+  choose_label: Odaberi oznaku za prikaz
+  confirmation:
+    remove: Da li ste sigurni da želite izbrisati ovaj prikaz tablice?
+    delete: Potvrdi brisanje
+grid.view_selector.flash.updated: Prikaz tablice je uspješno ažuriran

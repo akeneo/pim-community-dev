@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Saver;
 
 use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\Versioning\BulkVersionBuilderInterface;
 use Doctrine\MongoDB\Collection;
@@ -80,6 +79,13 @@ class ProductSaverSpec extends ObjectBehavior
         $productB->setId(Argument::any())->shouldNotBeCalled();
         $productC->setId(Argument::any())->shouldBeCalled();
         $productD->setId(Argument::any())->shouldBeCalled();
+
+        $productA->setUpdated(Argument::any())->shouldBeCalled();
+        $productB->setUpdated(Argument::any())->shouldBeCalled();
+        $productC->setCreated(Argument::any())->shouldBeCalled();
+        $productC->setUpdated(Argument::any())->shouldBeCalled();
+        $productD->setCreated(Argument::any())->shouldBeCalled();
+        $productD->setUpdated(Argument::any())->shouldBeCalled();
 
         $normalizer->normalize($productA, Argument::cetera())->willReturn(['_id' => 'id_a', 'key_a' => 'data_a']);
         $normalizer->normalize($productB, Argument::cetera())->willReturn(['_id' => 'id_b', 'key_b' => 'data_b']);

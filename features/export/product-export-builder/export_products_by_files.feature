@@ -8,18 +8,18 @@ Feature: Export products according to file media attribute
     Given an "apparel" catalog configuration
     And the following family:
       | code    | requirements-ecommerce | attributes                        |
-      | rangers | sku, name              | attachment,description,name,price |
+      | rangers | sku,name               | attachment,description,name,price |
     And the following products:
-      | sku        | enabled | family  | categories      | image                     | attachment            |
-      | SNKRS-1C-s | 1       | rangers | 2014_collection | %fixtures%/SNKRS-1C-s.png | %fixtures%/akeneo.txt |
-      | SNKRS-1C-t | 1       | rangers | 2014_collection | %fixtures%/SNKRS-1C-t.png | %fixtures%/akeneo.txt |
-      | SNKRS-1R   | 1       | rangers | 2014_collection | %fixtures%/SNKRS-1R.png   |                       |
-      | SNKRS-1S   | 1       | rangers | 2014_collection |                           | %fixtures%/akeneo2.txt|
+      | sku        | enabled | family  | categories      | image                     | attachment             |
+      | SNKRS-1C-s | 1       | rangers | 2014_collection | %fixtures%/SNKRS-1C-s.png | %fixtures%/akeneo.txt  |
+      | SNKRS-1C-t | 1       | rangers | 2014_collection | %fixtures%/SNKRS-1C-t.png | %fixtures%/akeneo.txt  |
+      | SNKRS-1R   | 1       | rangers | 2014_collection | %fixtures%/SNKRS-1R.png   |                        |
+      | SNKRS-1S   | 1       | rangers | 2014_collection |                           | %fixtures%/akeneo2.txt |
     And I am logged in as "Julia"
 
   Scenario: Successfully export products by their file values without using the UI
     Given the following job "ecommerce_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | filePath | %tmp%/product_export/product_export.csv                                                                                          |
       | filters  | {"structure":{"locales":["en_US"],"scope":"ecommerce"},"data":[{"field": "attachment", "operator": "=", "value": "akeneo.txt"}]} |
     When I am on the "ecommerce_product_export" export job page
     And I launch the export job

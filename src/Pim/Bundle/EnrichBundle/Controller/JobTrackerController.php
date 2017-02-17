@@ -6,7 +6,7 @@ use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Component\FileStorage\StreamedFileResponse;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

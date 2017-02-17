@@ -21,7 +21,9 @@ class CompletenessSelector implements SelectorInterface
      */
     public function apply(DatasourceInterface $datasource, DatagridConfiguration $configuration)
     {
-        $qb = $datasource->getQueryBuilder();
+        $esQb = $datasource->getQueryBuilder();
+        $qb = $esQb->getStorageQb();
+
         $joinAlias = 'selectCompleteness';
         $util = new CompletenessJoin($qb);
 

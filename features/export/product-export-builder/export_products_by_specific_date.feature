@@ -1,10 +1,10 @@
+@javascript
 Feature: Export products according to a date
   In order to use the enriched product data
   As a product manager
   I need to be able to export the products according to a date
 
-  @javascript
-  Scenario: Export only the products updated since the last export
+  Scenario: Export only the products updated by the UI since the last export
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv                                                                                                                  |
@@ -36,7 +36,6 @@ Feature: Export products according to a date
       SNKRS-1B;summer_collection;black;;1;sneakers;;;;"Model 1";;;50.00;70.00;;;45;;;;;;hot;;
       """
 
-  @javascript
   Scenario: Update the updated time condition field
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -49,7 +48,7 @@ Feature: Export products according to a date
     And I press "Save"
     And I should not see the text "There are unsaved changes"
 
-  @javascript @skip
+  @skip
   Scenario: Error management when the updated time condition field is updated
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -72,16 +71,15 @@ Feature: Export products according to a date
     Then I should be on the "csv_footwear_product_export" export job edit page
     And I should see a validation error "This value should be 0 or more."
 
-  @javascript
   Scenario: Export only the products updated since a defined date
     Given a "footwear" catalog configuration
     And the following products:
-      | sku      | family   | categories        | price          | size | color    | name-en_US |
-      | SNKRS-1B | sneakers | summer_collection | 50 EUR, 70 USD | 45   | black    | Model 1    |
-      | SNKRS-1R | sneakers | summer_collection | 50 EUR, 70 USD | 45   | red      | Model 1    |
+      | sku      | family   | categories        | price          | size | color | name-en_US |
+      | SNKRS-1B | sneakers | summer_collection | 50 EUR, 70 USD | 45   | black | Model 1    |
+      | SNKRS-1R | sneakers | summer_collection | 50 EUR, 70 USD | 45   | red   | Model 1    |
     And the following job "csv_footwear_product_export" configuration:
-      | filePath               | %tmp%/product_export/product_export.csv |
-      | filters                | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": ">", "value": "2016-04-25 00:00:00"}]} |
+      | filePath | %tmp%/product_export/product_export.csv                                                                                             |
+      | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": ">", "value": "2016-04-25 00:00:00"}]} |
     And I am logged in as "Julia"
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
@@ -98,3 +96,43 @@ Feature: Export products according to a date
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should be empty
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6038
+  Scenario: Export only the products updated by an import since the last export
+    Given a "footwear" catalog configuration
+    And the following job "csv_footwear_product_export" configuration:
+      | filePath | %tmp%/product_export/product_export.csv                                                                                                                  |
+      | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": "SINCE LAST JOB", "value": "csv_footwear_product_export"}]} |
+    And the following products:
+      | sku      | family   | categories        | price          | size | color | name-en_US |
+      | SNKRS-1B | sneakers | summer_collection | 50 EUR, 70 USD | 45   | black | Model 1    |
+      | SNKRS-1R | sneakers | summer_collection | 50 EUR, 70 USD | 45   | red   | Model 1    |
+    And the following CSV file to import:
+      """
+      sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
+      SNKRS-1B;summer_collection;black;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;hot
+      SNKRS-1R;summer_collection;red;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;
+      """
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    And I am logged in as "Julia"
+    When I am on the "csv_footwear_product_export" export job page
+    And I launch the export job
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contain:
+      """
+      sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
+      SNKRS-1B;summer_collection;black;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;
+      SNKRS-1R;summer_collection;red;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;
+      """
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
+    And I am on the "csv_footwear_product_export" export job page
+    And I launch the export job
+    And I wait for the "csv_footwear_product_export" job to finish
+    Then exported file of "csv_footwear_product_export" should contain:
+      """
+      sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
+      SNKRS-1B;summer_collection;black;;1;sneakers;;;;"Model 1";50.00;70.00;;;45;;hot
+      """

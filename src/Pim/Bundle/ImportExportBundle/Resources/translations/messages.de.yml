@@ -5,15 +5,6 @@ pim_import_export:
   connector: Konnektor
   status:
     - Bereit
-  batch_status:
-    1: ABGESCHLOSSEN
-    2: STARTEN
-    3: GESTARTET
-    4: STOPPEN
-    5: GESTOPPT
-    6: FEHLGESCHLAGEN
-    7: AUFGEGEBEN
-    8: UNBEKANNT
   download_archive:
     archive: generiertes Archiv herunterladen|generierte Archive herunterladen
     output: generierte Datei herunterladen|generierte Dateien herunterladen
@@ -34,6 +25,7 @@ pim_import_export:
     tab:
       property.title: Allgemeine Eigenschaften
       history.title: Historie
+      job_content.title: Inhalt
 pim_title.export_profile.index: Verwaltung der Export-Profile
 pim_title.export_profile.edit: Export-Profile %job.label% | Bearbeiten
 pim_title.export_profile.show: Export-Profile %job.label% | Anzeigen
@@ -67,7 +59,11 @@ pim_importexport:
       edit: Ein Exportprofil bearbeiten
       remove: Ein Exportprofil löschen
       launch: Ein Exportprofil ausführen
+      property_edit: Allgemeine Eigenschaften eines Export Profil bearbeiten
+      property_show: Allgemeine Eigenschaften eines Export Profil anzeigen
       history: Export-Profil Historie ansehen
+      content_edit: Inhalt eines Export Profil bearbeiten
+      content_show: Inhalt eines Export Profil anzeigen
     import_profile:
       index: Auflistung der Importprofile
       create: Ein Importprofil anlegen
@@ -122,6 +118,7 @@ History: Historie
 pane.accordion:
   properties: Eigenschaften
   global_settings: Globale Einstellungen
+  filters: Filter
 popin.create:
   export_profile.title: Ein neues Exportprofil anlegen
   import_profile.title: Ein neues Importprofil anlegen
@@ -149,12 +146,5 @@ Status: Status
 Summary: Zusammenfassung
 Start: Start
 End: Ende
-set_attribute_requirements: Attribut-Anforderungen festlegen
-COMPLETED: ABGESCHLOSSEN
-STARTING: STARTEN
-STARTED: GESTARTET
-STOPPING: STOPPEN
-STOPPED: GESTOPPT
-FAILED: FEHLGESCHLAGEN
-ABANDONED: AUFGEGEBEN
-UNKNOWN: UNBEKANNT
+set_attribute_requirements: Benötigte Attribute auswählen
+warning.label: Warnung

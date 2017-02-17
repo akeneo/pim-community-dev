@@ -32,6 +32,7 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         array $supportedToTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
+
         $this->supportedFromTypes = $supportedFromTypes;
         $this->supportedToTypes = $supportedToTypes;
     }
@@ -52,8 +53,8 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         $fromScope = $options['from_scope'];
         $toScope = $options['to_scope'];
 
-        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'reference data');
-        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'reference data');
+        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope);
+        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope);
 
         $this->copySingleValue(
             $fromProduct,
@@ -74,6 +75,7 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
     {
         $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
         $supportsTo = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
+
         $referenceData = ($fromAttribute->getReferenceDataName() === $toAttribute->getReferenceDataName());
 
         return $supportsFrom && $supportsTo && $referenceData;
@@ -101,28 +103,27 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
     ) {
         $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
-            $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
-            if (null === $toValue) {
-                $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
-            }
+            $fromDataGetter = $this->getValueGetterName($fromValue, $fromAttribute);
 
-            $fromDataGetter = $this->getValueMethodName($fromValue, $fromAttribute, 'get');
-            $toDataSetter = $this->getValueMethodName($toValue, $toAttribute, 'set');
-
-            $toValue->$toDataSetter($fromValue->$fromDataGetter());
+            $this->productBuilder->addOrReplaceProductValue(
+                $toProduct,
+                $toAttribute,
+                $toLocale,
+                $toScope,
+                $fromValue->$fromDataGetter()->getCode()
+            );
         }
     }
 
     /**
      * @param ProductValueInterface $value
      * @param AttributeInterface    $attribute
-     * @param string                $type
      *
      * @return string
      */
-    private function getValueMethodName(ProductValueInterface $value, AttributeInterface $attribute, $type)
+    private function getValueGetterName(ProductValueInterface $value, AttributeInterface $attribute)
     {
-        $method = MethodNameGuesser::guess($type, $attribute->getReferenceDataName(), true);
+        $method = MethodNameGuesser::guess('get', $attribute->getReferenceDataName(), true);
 
         if (!method_exists($value, $method)) {
             throw new \LogicException(

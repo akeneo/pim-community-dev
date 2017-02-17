@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,13 +33,11 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     protected $resolver;
 
     /**
-     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface  $productBuilder
+     * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
      */
-    public function __construct(
-        ProductBuilderInterface $productBuilder,
-        AttributeValidatorHelper $attrValidatorHelper
-    ) {
+    public function __construct(ProductBuilderInterface $productBuilder, AttributeValidatorHelper $attrValidatorHelper)
+    {
         $this->productBuilder = $productBuilder;
         $this->attrValidatorHelper = $attrValidatorHelper;
 
@@ -55,7 +53,9 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
         $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
         $supportsTo = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
 
-        return $supportsFrom && $supportsTo;
+        $sameType = $fromAttribute->getAttributeType() === $toAttribute->getAttributeType();
+
+        return $supportsFrom && $supportsTo && $sameType;
     }
 
     /**
@@ -64,21 +64,19 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
      * @param AttributeInterface $attribute
      * @param string             $locale
      * @param string             $scope
-     * @param string             $type
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidPropertyException
      */
-    protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope, $type)
+    protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope)
     {
         try {
             $this->attrValidatorHelper->validateLocale($attribute, $locale);
             $this->attrValidatorHelper->validateScope($attribute, $scope);
         } catch (\LogicException $e) {
-            throw InvalidArgumentException::expectedFromPreviousException(
-                $e,
+            throw InvalidPropertyException::expectedFromPreviousException(
                 $attribute->getCode(),
-                'copier',
-                $type
+                static::class,
+                $e
             );
         }
     }

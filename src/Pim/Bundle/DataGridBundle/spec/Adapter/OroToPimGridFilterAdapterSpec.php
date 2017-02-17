@@ -25,7 +25,7 @@ class OroToPimGridFilterAdapterSpec extends ObjectBehavior
                 'value'    => 'DP',
             ],
             [
-                'field'    => 'categories.id',
+                'field'    => 'categories',
                 'operator' => 'IN',
                 'value'    => [12, 13, 14],
             ]
@@ -38,7 +38,7 @@ class OroToPimGridFilterAdapterSpec extends ObjectBehavior
                 'value'    => 'DP',
             ],
             [
-                'field'    => 'categories.id',
+                'field'    => 'categories',
                 'operator' => 'IN',
                 'value'    => [12, 13, 14],
             ]

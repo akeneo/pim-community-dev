@@ -11,9 +11,9 @@ Feature: Filter products with multiples number fields filters
       | furniture |
       | library   |
     And the following attributes:
-      | code      | label     | type   | useable_as_grid_filter |
-      | component | Component | number | yes                    |
-      | supplier  | Supplier  | number | yes                    |
+      | code      | label-en_US | type               | useable_as_grid_filter | group |
+      | component | Component   | pim_catalog_number | 1                      | other |
+      | supplier  | Supplier    | pim_catalog_number | 1                      | other |
     And the following products:
       | sku    | family    | supplier | component |
       | BOOK   | library   |          |           |
@@ -33,33 +33,35 @@ Feature: Filter products with multiples number fields filters
   Scenario: Successfully filter products with the sames attributes
     Given I filter by "supplier" with operator "=" and value "03"
     And I should be able to use the following filters:
-      | filter    | operator | value | result                 |
-      | component | is empty |       | POST-1, POST-2         |
-      | component | >        | 16    |                        |
-      | component | <        | 16    |                        |
-      | component | >        | 15    | MUG-2, MUG-3 and MUG-4 |
-      | component | <        | 17    | MUG-2, MUG-3 and MUG-4 |
-      | component | >=       | 16    | MUG-2, MUG-3 and MUG-4 |
-      | component | <=       | 16    | MUG-2, MUG-3 and MUG-4 |
-      | component | =        | 16    | MUG-2, MUG-3 and MUG-4 |
-      | component | =        | 0     |                        |
-      | component | >        | 0     | MUG-2, MUG-3 and MUG-4 |
+      | filter    | operator     | value | result                 |
+      | component | is empty     |       | POST-1, POST-2         |
+      | component | is not empty |       | MUG-2, MUG-3 and MUG-4 |
+      | component | >            | 16    |                        |
+      | component | <            | 16    |                        |
+      | component | >            | 15    | MUG-2, MUG-3 and MUG-4 |
+      | component | <            | 17    | MUG-2, MUG-3 and MUG-4 |
+      | component | >=           | 16    | MUG-2, MUG-3 and MUG-4 |
+      | component | <=           | 16    | MUG-2, MUG-3 and MUG-4 |
+      | component | =            | 16    | MUG-2, MUG-3 and MUG-4 |
+      | component | =            | 0     |                        |
+      | component | >            | 0     | MUG-2, MUG-3 and MUG-4 |
     And I hide the filter "supplier"
     And I hide the filter "component"
 
   Scenario: Successfully filter product without commons attributes
     Given I filter by "component" with operator "=" and value "16"
     And I should be able to use the following filters:
-      | filter   | operator | value | result                        |
-      | supplier | is empty |       | MUG-5                         |
-      | supplier | >        | 12    |                               |
-      | supplier | <        | 12    | MUG-2, MUG-3 and MUG-4        |
-      | supplier | >        | 11    | MUG-1                         |
-      | supplier | <        | 13    | MUG-1, MUG-2, MUG-3 and MUG-4 |
-      | supplier | >=       | 12    | MUG-1                         |
-      | supplier | <=       | 12    | MUG-1, MUG-2, MUG-3 and MUG-4 |
-      | supplier | =        | 12    | MUG-1                         |
-      | supplier | =        | 0     |                               |
-      | supplier | >        | 0     | MUG-1, MUG-2, MUG-3 and MUG-4 |
+      | filter   | operator     | value | result                        |
+      | supplier | is empty     |       | MUG-5                         |
+      | supplier | is not empty |       | MUG-1, MUG-2, MUG-3 and MUG-4 |
+      | supplier | >            | 12    |                               |
+      | supplier | <            | 12    | MUG-2, MUG-3 and MUG-4        |
+      | supplier | >            | 11    | MUG-1                         |
+      | supplier | <            | 13    | MUG-1, MUG-2, MUG-3 and MUG-4 |
+      | supplier | >=           | 12    | MUG-1                         |
+      | supplier | <=           | 12    | MUG-1, MUG-2, MUG-3 and MUG-4 |
+      | supplier | =            | 12    | MUG-1                         |
+      | supplier | =            | 0     |                               |
+      | supplier | >            | 0     | MUG-1, MUG-2, MUG-3 and MUG-4 |
     And I hide the filter "supplier"
     And I hide the filter "component"

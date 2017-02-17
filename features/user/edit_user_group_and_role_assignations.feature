@@ -69,7 +69,7 @@ Feature: Edit a user groups and roles
     And I revoke rights to resource Edit roles
     And I save the Role
     Then I should see the flash message "Role saved"
-    But I should not see the text "There are unsaved changes."
+    And I should not see the text "There are unsaved changes."
     When I logout
     And I am logged in as "Mary"
     And I am on the Role index page

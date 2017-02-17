@@ -9,15 +9,15 @@ Feature: Display the completeness of a product with simple or multi selects
     And I add the "french" locale to the "tablet" channel
     And I add the "french" locale to the "mobile" channel
     And the following attributes:
-      | code         | label        | localizable | scopable | type         |
-      | braid_color  | Braid color  | no          | no       | simpleselect |
-      | braid_fabric | Braid fabric | no          | no       | multiselect  |
-      | heel_fabric  | Heel fabric  | yes         | yes      | multiselect  |
-      | main_fabric  | Main fabric  | no          | yes      | multiselect  |
-      | main_color   | Main color   | yes         | no       | simpleselect |
+      | code         | label-en_US  | localizable | scopable | type                     | group |
+      | braid_color  | Braid color  | 0           | 0        | pim_catalog_simpleselect | other |
+      | braid_fabric | Braid fabric | 0           | 0        | pim_catalog_multiselect  | other |
+      | heel_fabric  | Heel fabric  | 1           | 1        | pim_catalog_multiselect  | other |
+      | main_fabric  | Main fabric  | 0           | 1        | pim_catalog_multiselect  | other |
+      | main_color   | Main color   | 1           | 0        | pim_catalog_simpleselect | other |
     And the following family:
-      | code      | attributes                                                           | requirements-tablet                        | requirements-mobile                       |
-      | highheels | sku, braid_color, braid_fabric, heel_fabric, main_fabric, main_color | sku, braid_color, braid_fabric, main_color | sku, heel_fabric, main_fabric, main_color |
+      | code      | attributes                                                      | requirements-tablet                     | requirements-mobile                    |
+      | highheels | sku,braid_color,braid_fabric,heel_fabric,main_fabric,main_color | sku,braid_color,braid_fabric,main_color | sku,heel_fabric,main_fabric,main_color |
     And I am logged in as "Julia"
     And the following "braid_fabric" attribute options: PVC, Nylon, Neoprene, Spandex, Wool, Kevlar, Jute
     And the following "braid_color" attribute options: Red, Green, Emerald, Blue, Yellow, Cyan, Magenta, Black, White

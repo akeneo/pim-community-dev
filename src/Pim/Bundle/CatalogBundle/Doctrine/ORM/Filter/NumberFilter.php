@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -43,10 +43,10 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $scope = null,
         $options = []
     ) {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'number');
+        $this->checkLocaleAndScope($attribute, $locale, $scope);
 
         if (null !== $value && !is_numeric($value)) {
-            throw InvalidArgumentException::numericExpected($attribute->getCode(), 'filter', 'number', gettype($value));
+            throw InvalidPropertyTypeException::numericExpected($attribute->getCode(), static::class, $value);
         }
 
         $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());

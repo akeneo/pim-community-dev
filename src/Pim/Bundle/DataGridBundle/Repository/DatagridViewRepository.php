@@ -23,8 +23,6 @@ class DatagridViewRepository extends EntityRepository implements DatagridViewRep
         return $this->createQueryBuilder('v')
             ->select('v.datagridAlias')
             ->groupBy('v.datagridAlias')
-            ->where('v.owner = :user_id')
-            ->setParameter('user_id', $user->getId())
             ->getQuery()
             ->execute();
     }
@@ -32,15 +30,17 @@ class DatagridViewRepository extends EntityRepository implements DatagridViewRep
     /**
      * {@inheritdoc}
      */
-    public function findDatagridViewByUserAndAlias(UserInterface $user, $alias)
+    public function findDatagridViewByAlias($alias)
     {
-        return $this->createQueryBuilder('v')
-            ->where('v.owner = :user_id')
+        $queryBuilder = $this->createQueryBuilder('v')
+            ->andWhere('v.type = :type')
             ->andWhere('v.datagridAlias = :alias')
             ->setParameters([
-                'user_id' => $user->getId(),
-                'alias'   => $alias
+                'type'  => DatagridView::TYPE_PUBLIC,
+                'alias' => $alias
             ]);
+
+        return $queryBuilder;
     }
 
     /**

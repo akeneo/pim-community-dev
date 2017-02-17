@@ -90,7 +90,9 @@ class Creation extends Form
         $row->find('css', '.attribute_option_code')->setValue($name);
 
         foreach ($labels as $locale => $label) {
-            $row->find('css', sprintf('.attribute-option-value[data-locale="%s"]', $locale))->setValue($label);
+            $this->spin(function () use ($row, $label, $locale) {
+                return $row->find('css', sprintf('.attribute-option-value[data-locale="%s"]', $locale));
+            }, sprintf('Unable fo find attribute option with locale "%s"', $locale))->setValue($label);
         }
     }
 

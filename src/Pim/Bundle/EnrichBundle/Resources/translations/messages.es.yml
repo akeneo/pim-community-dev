@@ -5,46 +5,41 @@ pim_enrich:
       category.title: Categorías
       association.title: Asociaciones
       completeness.title: Completitud
-      history.title: Historial
+      history.title: Histórico
     no_comparison_locale_available: Ningún otro local está disponible para la comparación
     no_compared_media: No hay medios disponibles para la comparación
   attribute:
     tab:
       parameter.title: Parámetros
       value.title: Valores
-      history.title: Historial
+      history.title: Histórico
   attribute_group:
     tab:
       property.title: Propiedades
       attribute.title: Atributos
-      history.title: Historial
+      history.title: Histórico
   family:
     tab:
       property.title: Propiedades
       attribute.title: Atributos
-      history.title: Historial
+      history.title: Histórico
   association_type:
     tab:
       property.title: Propiedades
-      history.title: Historial
+      history.title: Histórico
   group_type:
     tab:
       property.title: Propiedades
-  channel:
-    pick_conversion_unit: Elegir una unidad de conversión para cada atributo métrico que se utilizará durante la exportación del producto
-    tab:
-      property.title: Propiedades
-      history.title: Historial
   category:
     tab:
       property.title: Propiedades
-      history.title: Historial
+      history.title: Histórico
   locale:
     tab:
       property.title: Propiedades
       permission.title: Permisos
   group:
-    axis.help: Los ejes definen los atributos sobre los cuales el producto debería variar dentro del grupo. Los ejes son atributos con opciones, no localizables y sin ámbito. No puede cambiarse después de la creación del grupo variantes.
+    axis.help: 'Los ejes definen los atributos sobre los cuales el producto debería variar dentro del grupo. Los ejes son atributos con opciones, no localizables y sin ámbito. No puede cambiarse después de la creación del grupo variantes.'
     type:
       VARIANT: Variante
       X_SELL: Venta cruzada
@@ -53,7 +48,7 @@ pim_enrich:
     tab:
       product.title: Productos
       property.title: Propiedades
-      history.title: Historial
+      history.title: Histórico
   variant_group:
     type:
       VARIANT: Variante
@@ -79,28 +74,28 @@ pim_enrich:
     product:
       page_title: Productos
       page_subtitle: Edición masiva (1 producto) |Edición masiva (%count% productos)
-      title: Elegir la operación
+      title: Elegir operación
       subtitle: Elija la operación que desea realizar en el producto seleccionado| Elija la operación que desea realizar en los %count% productos seleccionados
-      confirm: Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar los siguientes %count% productos con la siguiente información, por favor confirme.
+      confirm: Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.
       steps:
         first: Elegir productos
-        second: Elegir la operación
+        second: Elegir operación
         third: Configurar
         fourth: Confirmar
     family:
       page_title: Familias
       page_subtitle: Edición masiva (1 familia) |Edición masiva (%count% familias)
-      title: Elegir la operación
-      subtitle: Elija la operación que desea realizar en la familia seleccionada|Elija la operación que desea realizar en %count% de las familias seleccionadas
-      confirm: Está a punto de actualizar una familia con la siguiente información, por favor confirme. |Está a punto de actualizar %count% familias con la siguiente información, por favor confirme.
+      title: Elegir operación
+      subtitle: Elija la operación que desea realizar en la familia seleccionada|Elija la operación que desea realizar en las %count% familias seleccionadas
+      confirm: Está a punto de actualizar una familia con la siguiente información, por favor confirme. |Estás a punto de actualizar %count% familias con la siguiente información, por favor confirme.
       steps:
-        first: Elija las familias
+        first: Elija familias
         second: Elegir operación
         third: Configurar
         fourth: Confirmar
     change-status:
       label: Cambiar estado (habilitar / inhabilitar)
-      description: Los productos seleccionados serán habilitados o deshabilitados.
+      description: Los productos seleccionados serán habilitados o inhabilitados.
       success_flash: Estado de los producto(s) han sido cambiados
       launched_flash: La acción en masa "cambiar estado" ha sido lanzada.  Será notificado una vez finalizada.
     edit-common-attributes:
@@ -150,7 +145,7 @@ pim_enrich:
         The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: La acción en masa "agregar a grupo de variantes" ha sido lanzada. Será notificado una vez finalizada.
     set-attribute-requirements:
-      label: Poner requerimientos del atributo
+      label: Configurar requerimientos del atributo
       description: Se aplicarán los siguientes requisitos de atributo a las familias seleccionadas
       success_flash: Requisitos de atributo se aplicaron a las familias seleccionadas
       launched_flash: La acción en masa "definir requisitos de atributos" ha sido lanzada. Será notificado una vez finalizada.
@@ -159,8 +154,8 @@ pim_enrich:
         launched_flash: El trabajo de exportación de productos está ejecutándose
   sequential_edit_action:
     product:
-      previous: Regresar a "%product%" sin guardar los cambios.
-      next: Saltar a "%product%" sin guardar los cambios.
+      previous: Saltar a "%product%" sin guardar los cambios.
+      next: Vaya a "%product%" sin guardar los cambios.
   acl:
     locale:
       index: Lista de locales
@@ -251,7 +246,7 @@ pim_enrich:
     job_tracker:
       index: Visualizar los procesos ejecutados
   acl_group:
-    association_type: Tipos de asociación
+    association_type: Tipos de asociaciones
     attribute: Atributos
     attribute_group: Grupos de atributos
     category: Categorías
@@ -259,9 +254,9 @@ pim_enrich:
     currency: Monedas
     family: Familias
     group: Grupos
-    variant_group: Grupo de variantes
+    variant_group: Grupos de variantes
     group_type: Tipos de grupo
-    locale: Idiomas
+    locale: Locales
     product: Productos
   product_value:
     tooltip:
@@ -315,8 +310,8 @@ family:
 locale:
   title: configuración regional
   overview: resumen de configuración regional
-  create: crear idioma
-  edit: editar configuración regional
+  create: crear local
+  edit: editar configuración de local
 product:
   title: producto
   overview: resumen del producto
@@ -345,18 +340,18 @@ association type:
 products: productos
 btn:
   create:
-    attribute: crear atributos
-    attribute group: Crear grupo de atributos
+    attribute: Crear atributo
+    attribute group: crear grupo de atributos
     category: crear categoría
     tree: crear árbol
     channel: crear canal
     currency: crear moneda
     family: crear familia
-    locale: crear idioma
+    locale: crear local
     product: crear producto
     group: crear grupo
-    variant group: Crear grupo variante
-    association type: crear asociación de tipo
+    variant group: crear un grupo de variante
+    association type: crear Asociación de tipo
     group type: crear tipo de grupo
     drag_or_upload: Arrastrar y soltar para cargar o haga clic aquí
   edit: editar
@@ -387,10 +382,8 @@ confirmation:
     category: '¿Está seguro que desea eliminar la categoría %name%?'
     family: '¿Está seguro que desea eliminar la  familia %name%?'
     product: '¿Está seguro que desea eliminar el producto %name%?'
-    channel: '¿Está seguro que desea eliminar el canal %name%?'
     group: '¿Está seguro que desea eliminar el grupo %name%?'
     variant group: '¿Está seguro que desea eliminar el grupo de variantes %name%?'
-    association type: '¿Está seguro que desea eliminar la  tipo de asociación %name%?'
     group type: '¿Está seguro que desea eliminar el tipo de grupo %name%?'
     user: '¿Está seguro que desea eliminar usuario(a) %name%?'
   attribute group:
@@ -428,10 +421,6 @@ flash:
     updated: Árbol actualizado correctamente
     removed: Árbol eliminado correctamente
     not removable: Árboles conectados a canales no pueden eliminarse.
-  channel:
-    saved: Canal guardado correctamente
-    removed: Canal eliminado correctamente
-    not removable: No puede eliminarse el último canal
   currency:
     updated: Moneda actualizada correctamente
     error.linked_to_channel: No puede desactivar una moneda ligada a un canal.
@@ -555,13 +544,13 @@ Useable as grid column: Se puede usar como columna de grilla
 Useable as grid filter: Se puede usar en la grilla
 Family: Familia
 Available locales: Locales disponibles
-Locale specific: Locale específico
+Locale specific: Local específico
 default: Predefinido
 Axis: Eje
 Add attributes: Agregar atributos
 Translate from: Traducir desde
 switch_on: "SÍ"
-switch_off: "No 	"
+switch_off: "No"
 Close: Cerrar
 Search: Buscar
 Choose the attribute type: Elija el tipo de atributo
@@ -616,52 +605,52 @@ Default: Predefinido
 Attributes: Atributos
 Title: Título
 pim_title.attribute_group:
-  index: Grupos de atributos
-  create: Grupos de Atributos | Crear
-  edit: Grupos de Atributos %group.label% | Editar
+  index: "Grupos de atributos"
+  create: "Grupos de Atributos | Crear"
+  edit: "Grupos de Atributos %group.label% | Editar"
 pim_title.category:
-  index: Árbol de categoría
-  create: Árboles de categoría | Crear
-  edit: Árboles de categoría %category.label% | Editar
+  index: "Árbol de categoría"
+  create: "Árboles de categoría | Crear"
+  edit: "Árboles de categoría %category.label% | Editar"
 pim_title.attribute:
-  index: Atributos
-  create: Atributos | Crear
-  edit: Atributos  %attribute.label% | Editar
+  index: "Atributos"
+  create: "Atributos | Crear"
+  edit: "Atributos  %attribute.label% | Editar"
 pim_title.product:
-  index: Productos
-  edit: Productos %product.sku% | Editar
+  index: "Productos"
+  edit: "Productos %product.sku% | Editar"
 pim_title.family:
-  index: Familias
-  edit: Familias %family.label% | Editar
+  index: "Familias"
+  edit: "Familias %family.label% | Editar"
 pim_title.channel:
-  index: Canales
-  create: Canales | Crear
-  edit: Canales %channel.label% | Editar
+  index: "Canales"
+  create: "Canales | Crear"
+  edit: "Canales %channel.label% | Editar"
 pim_title.currency:
-  index: Monedas
+  index: "Monedas"
 pim_title.locale:
-  index: Idiomas
+  index: "Locales"
 pim_title.group:
-  index: Grupos
-  edit: Grupos %group.label% | Editar
+  index: "Grupos"
+  edit: "Grupos %group.label% | Editar"
 pim_title.variant_group:
-  index: Grupos Variantes
-  edit: Grupos Variante %group.label% | Editar
+  index: "Grupos de variantes"
+  edit: "Grupos Variante %group.label% | Editar"
 pim_title.association_type:
-  index: Tipos de asociación
-  edit: Tipos de asociación %association type.label% | Editar
+  index: "Tipos de asociaciones"
+  edit: "Tipos de asociación %association type.label% | Editar"
 pim_title.group_type:
-  index: Tipos de grupo
-  edit: Tipos de Grupo %group type.label% | Editar
+  index: "Tipos de grupo"
+  edit: "Tipos de Grupo %group type.label% | Editar"
 pim_title.mass_edit_product_action:
-  choose: Edición masiva | Seleccionar
-  configure: Edición masiva | Configurar
+  choose: "Edición masiva | Seleccionar"
+  configure: "Edición masiva | Configurar"
 pim_title.mass_edit_family_action:
-  choose: Edición masiva | Seleccionar
-  configure: Edición masiva | Configurar
+  choose: "Edición masiva | Seleccionar"
+  configure: "Edición masiva | Configurar"
 pim_title.job_tracker:
   index: Seguimiento de procesos
-  show: Seguimiento de procesos | Ver el trabajo
+  show: "Seguimiento de procesos | Ver el trabajo"
 pim_title.dashboard: "Cartelera"
 pim_catalog_identifier: Identificador
 pim_catalog_text: Texto
@@ -669,7 +658,7 @@ pim_catalog_textarea: Área de Texto
 pim_catalog_number: Número
 pim_catalog_price_collection: Precio
 pim_catalog_multiselect: Selección multiple
-pim_catalog_simpleselect: Seleccione simple
+pim_catalog_simpleselect: Selección simple
 pim_catalog_file: Archivo
 pim_catalog_image: Imagen
 pim_catalog_boolean: "Si/No"
@@ -678,7 +667,7 @@ pim_catalog_metric: Métrica
 pim_reference_data_simpleselect: Selección simple de datos de referencia
 pim_reference_data_multiselect: Selección múltiple de datos de referencia
 Activated: Habilitado
-Disable: Desactivar
+Disable: Inhabilitar
 pim_enrich.sequential_edit_action:
   product:
     previous: Saltar a "%product%" sin guardar los cambios.
@@ -693,7 +682,7 @@ pim_enrich.mass_edit_action:
     confirm: Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.
     steps:
       first: Elegir productos
-      second: Elegir la operación
+      second: Elegir operación
       third: Configurar
       fourth: Confirmar
   family:
@@ -716,8 +705,8 @@ pim_enrich.mass_edit_action:
     description: Los atributos de producto seleccionados serán editados con la siguiente información para el local elegido.
     empty: Por favor, seleccione atributo(s) que desea editar
     success_flash: Atributo(s) del producto(s) han sido actualizados
-    message.warning: No existe ningún atributo en común para los productos seleccionados. Por favor modifique su selección.
-    no_attribute.warning: No existe ningún atributo en común para los productos seleccionados. Por favor modifique su selección.
+    message.warning: No hay ningún atributo en común para los productos seleccionados. Por favor cambie su selección.
+    no_attribute.warning: No hay ningún atributo en común para los productos seleccionados. Por favor cambie su selección.
     truncated_by_variant_attribute.warning: 'Algunos atributos comunes de los productos seleccionados provienen de un grupo de variantes. Los mismos no están disponibles para edición en masa: %attributes%.'
   classify:
     label: Clasificar los productos en categorías
@@ -761,7 +750,7 @@ pim_menu:
     family: Familias
     group: Grupos
     group_type: Tipos de grupo
-    locale: Idiomas
+    locale: Locales
     product: Productos
     variant_group: Grupos de variantes
 Properties: Propiedades
@@ -805,13 +794,13 @@ Data: DATOS
 Author: Autor
 Logged at: Sesión iniciada el
 Deleted: Eliminados
-Old values: Viejos valores
+Old values: Valores anteriores
 New values: Nuevos valores
 System configuration: Configuración del sistema
 General setup: Configuración general
 Localization: Localización
 Localization options: Opciones de localización
-Locale: Conriguración Regional
+Locale: Local
 Location: Ubicación
 Format address by address country: Formatear dirección por dirección del país
 Language: idioma
@@ -820,23 +809,23 @@ Currency: Moneda
 oro.locale:
   address_format:
     region_name_type:
-      parish: Distrito
-      state: estado
-      island: Isla
-      county: municipio
-      area: área
-      prefecture: prefectura
-      department: departamento
-      district: distrito
-      province: provincia
+      parish: "Distrito"
+      state: "estado"
+      island: "Isla"
+      county: "municipio"
+      area: "área"
+      prefecture: "prefectura"
+      department: "departamento"
+      district: "distrito"
+      province: "provincia"
   form:
     tooltip:
-      locale: Seleccione el local empleado para dar formato a números, direcciones, nombres y fechas
-      location: ' Ubicación se utilizará para dar formato a direcciones cuando se desactiva la opción ''Formatear  dirección por dirección país'
-      format_address_by_address_country: Al seleccionar esta opción se activa formateo de direcciones  por el país en que se encuentran. Disactivando esta opción hará que las direcciones sean formateados en el formato de dirección de su ubicación
-      language: Seleccione el idioma del sistema que desee utilizar
-      timezone: Seleccione la zona horaria para visualización de fecha y hora
-      currency: Seleccione la divisa predeterminada
+      locale: "Seleccione el local empleado para dar formato a números, direcciones, nombres y fechas"
+      location: " La ubicación se utilizará para dar formato a direcciones cuando se desactiva la opción 'Formatear  dirección por dirección país'"
+      format_address_by_address_country: "Al seleccionar esta opción se activa formateo de direcciones por el país en que se encuentran. Disactivando esta opción hará que las direcciones sean formateados en el formato de dirección de su ubicación"
+      language: "Seleccione el idioma del sistema que desee utilizar"
+      timezone: "Seleccione la zona horaria para visualización de fecha y hora"
+      currency: "Seleccione la divisa predeterminada"
 Selected products successfully deleted: Productos seleccionados borrados con éxito
 pim_mass_edit:
   notification:
@@ -853,6 +842,7 @@ job_execution.summary:
   skip: Omitido
   skipped_products: Productos omitidos
   skipped_attributes: Atributos omitidos
+  skipped_families: Familias omitidas
 pim_mass_edit_execution_show: Exclusiones de edición en masa | Detalles
 edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributos comunes
 update_product_value.steps.update_product_value_processor.title: Actualizar el valor del producto
@@ -920,6 +910,6 @@ pim_enrich_attribute_form:
   localizable: Localizable
   unique: Valor único
   availableLocales: Locales disponibles
-  locale_specific: Locale específico
+  locale_specific: Local específico
   group: Grupo de atributos
   useableAsGridFilter: Se puede usar en la grilla

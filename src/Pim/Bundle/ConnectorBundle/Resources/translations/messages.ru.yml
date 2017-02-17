@@ -5,7 +5,6 @@ pim_connector:
     entity_reader.title: Извлечение объектов
     csv_reader:
       title: Считыватель из CSV
-      invalid_item_columns_count: 'Ожидается получить %totalColumnsCount% колонок, но было передано %itemColumnsCount% в %csvPath%:%lineno%'
     csv_product_reader.title: Считыватель продуктов из CSV
     csv_category_reader.title: Считыватель категорий из CSV
     csv_variant_group .title: Считыватель групп вариантов из CSV
@@ -28,146 +27,8 @@ pim_connector:
     variant_group_writer.title: Хранилище групп вариантов
     writer.title: Хранилище объектов
     csv_writer.title: Записыватель CSV
-  export:
-    csv:
-      delimiter:
-        label: Разделитель
-        help: Символ, используемый как разделитель полей
-      enclosure:
-        label: Символ обрамления
-        help: Символ, используемый для обрамления полей
-      withHeader:
-        label: Включая заголовки
-        help: Добавить строку с заголовками
-      with_media:
-        label: Экспортировать файлы и изображения
-        help: Экспортировать файлы и изображения продуктов
-      filePath:
-        label: Путь к файлу
-        help: Путь к сгенерированному файлу
-      decimalSeparator:
-        label: Десятичный разделитель
-        help: Введите десятичный разделитель
-      dateFormat:
-        label: Формат даты
-        help: Введите формат даты
-    xlsx:
-      lines_per_files:
-        label: Количество строк в файле
-        help: Определить предельное число строк в файле
-      withHeader:
-        label: Включая заголовки
-        help: Добавить строку с заголовками
-      with_media:
-        label: Экспортировать файлы и изображения
-        help: Экспортировать файлы и изображения продуктов
-      filePath:
-        label: Путь к файлу
-        help: Путь к сгенерированному файлу
-      decimalSeparator:
-        label: Десятичный разделитель
-        help: Введите десятичный разделитель
-      dateFormat:
-        label: Формат даты
-        help: Введите формат даты
-    yml:
-      filePath:
-        label: Путь к файлу
-        help: Путь к сгенерированному файлу
-  import:
-    csv:
-      enabled:
-        label: Активировать продукт
-        help: Активировать импортируемые продукты
-      categoriesColumn:
-        label: Колонка категорий
-        help: Название колонки категорий
-      familyColumn:
-        label: Колонка семейства
-        help: Название колонки семейства
-      groupsColumn:
-        label: Колонка групп
-        help: Название колонки групп
-      filePath:
-        label: Файл
-        help: CSV-файл для импорта
-      uploadAllowed:
-        label: Разрешить загрузку файлов
-        help: Разрешить загрузку файлов
-      delimiter:
-        label: Разделитель
-        help: Символ, используемый как разделитель полей для CSV-файла
-      enclosure:
-        label: Символ обрамления
-        help: Символ, используемый для обрамления полей
-      escape:
-        label: Экранирование
-        help: Символ, используемый для экранирования
-      circularRefsChecked:
-        label: Проверять циклические ссылки
-        help: Если да, данные будут обрабатываться чтобы убедиться, что нет циклических ссылок между категориями
-      realTimeVersioning:
-        label: Обновление истории изменений в реальном времени
-        help: Означает, что история изменений продукта автоматически обновляется, можно выключить для улучшения производительности
-      copyValuesToProducts:
-        label: Копировать значения из группы вариантов в продукты
-        help: Это означает, что продукты будут автоматически обновлены значениями группы вариантов, можно отключить для обновления только группы вариантов
-      enabledComparison:
-        label: Сравнивать значения
-        help: Включить сравнение исходных значений и импортированных значений. Может ускорить импорт, если импортированные значения очень похожи на исходные значения
-      decimalSeparator:
-        label: Десятичный разделитель
-        help: Символ, используемый для установки разделителя полей для десятичной
-      dateFormat:
-        label: Формат даты
-        help: Укажите формат столбцов дат в файле, например здесь дд/мм/гггг для формата 30/04/2014.
-    xlsx:
-      enabled:
-        label: Активировать продукт
-        help: Активировать импортируемые продукты
-      categoriesColumn:
-        label: Колонка категорий
-        help: Название колонки категорий
-      familyColumn:
-        label: Колонка семейства
-        help: Название колонки семейства
-      groupsColumn:
-        label: Колонка групп
-        help: Название колонки групп
-      filePath:
-        label: Файл
-        help: XLSX файл для импорта
-      uploadAllowed:
-        label: Разрешить загрузку файлов
-        help: Разрешить загрузку файлов
-      circularRefsChecked:
-        label: Проверять циклические ссылки
-        help: Если да, данные будут обрабатываться чтобы убедиться, что нет циклических ссылок между категориями
-      realTimeVersioning:
-        label: Обновление истории изменений в реальном времени
-        help: Означает, что история изменений продукта автоматически обновляется, можно выключить для улучшения производительности
-      copyValuesToProducts:
-        label: Копировать значения из группы вариантов в продукты
-        help: Это означает, что продукты будут автоматически обновлены значениями группы вариантов, можно отключить для обновления только группы вариантов
-      enabledComparison:
-        label: Сравнивать значения
-        help: Включить сравнение исходных значений и импортированных значений. Может ускорить импорт, если импортированные значения очень похожи на исходные значения
-      decimalSeparator:
-        label: Десятичный разделитель
-        help: Символ, используемый для установки разделителя полей для десятичной
-      dateFormat:
-        label: Формат даты
-        help: Укажите формат столбцов дат в файле, например здесь дд/мм/гггг для формата 30/04/2014.
-    yml:
-      filePath:
-        label: Файл
-        help: YML файл для импорта
-      uploadAllowed:
-        label: Разрешить загрузку файлов
-        help: Разрешить загрузку файлов
 job_execution.summary:
   read: прочитано
-  read_lines: прочитанных строк
   write: записано
   skip: пропущено
   create: создано
@@ -175,11 +36,12 @@ job_execution.summary:
   update_products: обновленных продуктов
   process_products: обработанных продуктов
   skip_products: пропущенных продуктов
-  displayed: первые предупреждения отображены
+  displayed: отображены первые предупреждения
   charset_validator:
     title: 'Кодировка файла:'
     skipped: пропущено, расширение из белого списка
   product_skipped_no_diff: пропущен продукт (без разницы)
+  item_position: прочитанных строк
 batch_jobs:
   csv_product_export:
     label: Экспорт продуктов в CSV
@@ -190,9 +52,6 @@ batch_jobs:
   csv_attribute_export:
     label: Экспорт атрибутов в CSV
     export.label: Экспорт атрибутов
-  csv_attribute_option_export:
-    label: Экспорт элементов списочных атрибутов в CSV
-    export.label: Экспорт элементов списочных атрибутов
   csv_association_type_export:
     label: Экспорт типов ассоциаций в CSV
     export.label: Экспорт типов ассоциаций
@@ -219,9 +78,8 @@ batch_jobs:
     validation.label: Проверка файла
     import.label: Импорт атрибутов
   csv_attribute_option_import:
-    label: Импорт элементов списочных атрибутов из CSV
+    label: Импорт выборов атрибутов из CSV
     validation.label: Проверка файла
-    import.label: Импорт элементов списочных атрибутов
   csv_association_type_import:
     label: Импорт типов ассоциаций из CSV
     validation.label: Проверка файла
@@ -238,45 +96,20 @@ batch_jobs:
     label: Импорт группы вариантов в CSV
     validation.label: Проверка файла
     import.label: Импорт групп вариантов
-  csv_channel_export:
-    label: Экспорт каналов в CSV
-    export.label: Экспорт каналов
-  csv_locale_export:
-    label: Экспорт локалей в CSV
-    export.label: Экспорт локалей
-  csv_attribute_group_export:
-    label: Экспорт групп атрибутов в CSV
-    export.label: Экспорт групп атрибутов
-  csv_currency_export:
-    label: Экспорт валют в CSV
-    export.label: Экспорт валют
-  csv_group_type_export:
-    label: Экспорт типов групп в CSV
-    export.label: Экспорт типов групп
   csv_channel_import:
-    label: Импорт каналов в CSV
     validation.label: Проверка файла
-    import.label: Импорт каналов
   csv_locale_import:
-    label: Импорт локалей из CSV
     validation.label: Проверка файла
-    import.label: Импорт локалей
   csv_attribute_group_import:
-    label: Импорт групп атрибутов в CSV
     validation.label: Проверка файла
-    import.label: Импорт групп атрибутов
   csv_currency_import:
-    label: Импорт валют в CSV
     validation.label: Проверка файла
-    import.label: Импорт валют
   csv_group_type_import:
-    label: Импорт типов групп в CSV
     validation.label: Проверка файла
-    import.label: Импорт типов групп
   xlsx_category_import:
     label: Импорт категорий из XLSX
     validation.label: Проверка файла
-    import.label: Импорт категорий
+    import.label: Импорт категории
   xlsx_association_type_import:
     label: Импорт типов ассоциаций из XLSX
     validation.label: Проверка файла
@@ -288,7 +121,6 @@ batch_jobs:
   xlsx_attribute_option_import:
     label: Импорт элементов списочных атрибутов из XLSX
     validation.label: Проверка файла
-    import.label: Импорт элементов списочных атрибутов
   xlsx_family_import:
     label: Импорт семейств из XLSX
     validation.label: Проверка файла
@@ -310,7 +142,7 @@ batch_jobs:
   xlsx_group_import:
     label: Импорт групп из XLSX
     validation.label: Проверка файла
-    import.label: Импорт групп
+    import.label: Импорт группы
   xlsx_variant_group_import:
     label: Импорт групп вариантов из XLSX
     validation.label: Проверка файла
@@ -330,38 +162,13 @@ batch_jobs:
   xlsx_association_type_export:
     label: Экспорт типов ассоциаций в XLSX
     export.label: Экспорт типов ассоциаций в XLSX
-  xlsx_channel_export:
-    label: Экспорт каналов в XLSX
-    export.label: Экспорт каналов
-  xlsx_locale_export:
-    label: Экспорт локалей в XLSX
-    export.label: Экспорт локалей
-  xlsx_attribute_group_export:
-    label: Экспорт групп атрибутов в XLSX
-    export.label: Экспорт групп атрибутов
-  xlsx_currency_export:
-    label: Экспорт валют в XLSX
-    export.label: Экспорт валют
-  xlsx_group_type_export:
-    label: Экспорт типов групп в XLSX
-    export.label: Экспорт типов групп
   xlsx_channel_import:
-    label: Импорт каналов в XLSX
     validation.label: Проверка файла
-    import.label: Импорт каналов
   xlsx_locale_import:
-    label: Импорт локалей из XLSX
     validation.label: Проверка файла
-    import.label: Импорт локалей
   xlsx_attribute_group_import:
-    label: Импорт групп атрибутов в XLSX
     validation.label: Проверка файла
-    import.label: Импорт групп атрибутов
   xlsx_currency_import:
-    label: Импорт валют в XLSX
     validation.label: Проверка файла
-    import.label: Импорт валют
   xlsx_group_type_import:
-    label: Импорт типов групп в XLSX
     validation.label: Проверка файла
-    import.label: Импорт типов групп

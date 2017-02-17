@@ -8,7 +8,7 @@ Feature: Export products according to image media attribute
     Given an "apparel" catalog configuration
     And the following family:
       | code    | requirements-ecommerce | attributes                              |
-      | rangers | sku, name              | attachment,description,name,price,image |
+      | rangers | sku,name               | attachment,description,name,price,image |
     And the following products:
       | sku        | enabled | family  | categories      | image                     | attachment             |
       | SNKRS-1C-s | 1       | rangers | 2014_collection | %fixtures%/SNKRS-1C-s.png | %fixtures%/akeneo.txt  |
@@ -19,7 +19,7 @@ Feature: Export products according to image media attribute
 
   Scenario: Successfully export products by their image values without using the UI
     Given the following job "ecommerce_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | filePath | %tmp%/product_export/product_export.csv                                                                                         |
       | filters  | {"structure":{"locales":["en_US"],"scope":"ecommerce"},"data":[{"field": "image", "operator": "=", "value": "SNKRS-1C-s.png"}]} |
     When I am on the "ecommerce_product_export" export job page
     And I launch the export job

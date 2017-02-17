@@ -42,30 +42,6 @@ class AssociationTypeRepository extends EntityRepository implements AssociationT
     /**
      * {@inheritdoc}
      */
-    public function createDatagridQueryBuilder()
-    {
-        $qb = $this->createQueryBuilder('a');
-        $rootAlias = $qb->getRootAlias();
-
-        $labelExpr = sprintf(
-            "(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)",
-            $rootAlias
-        );
-
-        $qb
-            ->addSelect($rootAlias)
-            ->addSelect(sprintf("%s AS label", $labelExpr))
-            ->addSelect('translation.label');
-
-        $qb
-            ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
-
-        return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function countAll()
     {
         $qb = $this->createQueryBuilder('a');

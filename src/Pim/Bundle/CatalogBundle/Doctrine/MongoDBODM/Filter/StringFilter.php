@@ -2,8 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Bundle\CatalogBundle\ProductQueryUtility;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -54,15 +55,14 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
         try {
             $options = $this->resolver->resolve($options);
         } catch (\Exception $e) {
-            throw InvalidArgumentException::expectedFromPreviousException(
-                $e,
+            throw InvalidPropertyException::expectedFromPreviousException(
                 $attribute->getCode(),
-                'filter',
-                'string'
+                static::class,
+                $e
             );
         }
 
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'string');
+        $this->checkLocaleAndScope($attribute, $locale, $scope);
 
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($options['field'], $value);
@@ -165,7 +165,7 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected function checkScalarValue($field, $value)
     {
         if (!is_string($value) && null !== $value) {
-            throw InvalidArgumentException::stringExpected($field, 'filter', 'string', gettype($value));
+            throw InvalidPropertyTypeException::stringExpected($field, static::class, $value);
         }
     }
 

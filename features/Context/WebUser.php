@@ -651,22 +651,21 @@ class WebUser extends RawMinkContext
         $this->spin(function () use ($field, $label, $expected) {
             if ($field->hasClass('select2-focusser')) {
                 for ($i = 0; $i < 2; ++$i) {
-                    if (!$field->getParent()) {
+                    $parent = $field->getParent();
+                    if (!$parent) {
                         break;
                     }
-                    $field = $field->getParent();
+                    $field = $parent;
                 }
-                if ($select = $field->find('css', 'select')) {
-                    $actual = $select->find('css', 'option[selected]')->getHtml();
-                } else {
-                    $actual = trim($field->find('css', '.select2-chosen')->getHtml());
-                }
+
+                $actual = trim($field->find('css', '.select2-chosen')->getHtml());
             } elseif ($field->hasClass('select2-input')) {
                 for ($i = 0; $i < 4; ++$i) {
-                    if (!$field->getParent()) {
+                    $parent = $field->getParent();
+                    if (!$parent) {
                         break;
                     }
-                    $field = $field->getParent();
+                    $field = $parent;
                 }
                 if ($select = $field->find('css', 'select')) {
                     $options = $field->findAll('css', 'option[selected]');
@@ -1144,7 +1143,9 @@ class WebUser extends RawMinkContext
     {
         $element = $popin ? $this->getCurrentPage()->find('css', '.ui-dialog') : null;
         if ($popin && !$element) {
-            $element = $this->getCurrentPage()->find('css', '.modal');
+            $element = $this->spin(function () {
+                return $this->getCurrentPage()->find('css', '.modal');
+            }, 'Modal not found.');
         }
 
         foreach ($table->getRowsHash() as $field => $value) {
@@ -1426,6 +1427,18 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $button
+     *
+     * @Given /^I should not see the "([^"]*)" icon button$/
+     */
+    public function iShouldNotSeeTheIconButton($button)
+    {
+        $this->spin(function () use ($button) {
+            return null === $this->getCurrentPage()->getIconButton($button);
+        }, sprintf('Icon button "%s" should not be displayed', $button));
+    }
+
+    /**
      * @param string $buttonLabel
      *
      * @Given /^I press the "([^"]*)" button in the popin$/
@@ -1673,10 +1686,13 @@ class WebUser extends RawMinkContext
      * @param string $code
      *
      * @When /^I wait for the "([^"]*)" job to finish$/
+     *
+     * @throws \Exception
      */
     public function iWaitForTheJobToFinish($code)
     {
-        $condition = '$("#status").length && /(COMPLETED|STOPPED|FAILED|TERMINÉ|ARRÊTÉ|EN ÉCHEC)$/.test($("#status").text().trim())';
+        $condition = '$("#status").length && '.
+            '/(completed|stopped|failed|terminé|arrêté|en échec)$/.test($("#status").text().trim().toLowerCase())';
 
         try {
             $this->wait($condition);

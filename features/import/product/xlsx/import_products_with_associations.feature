@@ -7,8 +7,8 @@ Feature: Execute a job
   Background:
     Given the "footwear" catalog configuration
     And the following product groups:
-      | code  | label     | type    |
-      | CROSS | Bag Cross | RELATED |
+      | code  | label-en_US | type    |
+      | CROSS | Bag Cross   | RELATED |
     And I am logged in as "Julia"
 
   Scenario: Successfully import a xlsx file of products with associations
@@ -56,7 +56,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "xlsx_footwear_product_import" job to finish
     Then there should be 1 product
-    And I should see "Attribute or field \"associations\" expects existing product identifier as data, \"SKU-002\" given"
+    And I should see "Property \"associations\" expects a valid product identifier. The product does not exist, \"SKU-002\" given."
 
   Scenario: Successfully import a xlsx file with associations between invalid but existing products
     Given the following products:

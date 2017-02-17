@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 
 /**
- * Group factory
+ * Creates and configures a group instance.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

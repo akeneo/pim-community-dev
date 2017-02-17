@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Factory;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 
 /**
- * Product Template factory
+ * Creates and configures a product template instance.
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

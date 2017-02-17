@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -20,6 +21,8 @@ interface FieldSetterInterface extends SetterInterface
      * @param string           $field   The field of the product to modify
      * @param mixed            $data    The data to set
      * @param array            $options Options passed to the setter
+     *
+     * @throws PropertyException
      */
     public function setFieldData(ProductInterface $product, $field, $data, array $options = []);
 

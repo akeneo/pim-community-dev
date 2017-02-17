@@ -11,6 +11,10 @@ use Symfony\Component\Validator\ConstraintValidator;
 /**
  * Family requirements validator
  *
+ * This validator will check that:
+ * - every requirement must have a list of requirement for every channel,
+ * - a required attribute must be an attribute of a family.
+ *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -41,18 +45,52 @@ class FamilyRequirementsValidator extends ConstraintValidator
     public function validate($family, Constraint $constraint)
     {
         if ($family instanceof FamilyInterface) {
-            $missingChannelCodes = $this->getMissingChannelCodes($family);
-            if (0 < count($missingChannelCodes)) {
-                $identifierCode = $this->attributeRepository->getIdentifierCode();
-                $this->context->buildViolation(
-                    $constraint->message,
-                    [
-                        '%family%'    => $family->getCode(),
-                        '%id%'        => $identifierCode,
-                        '%channels%'  => implode(', ', $missingChannelCodes)
+            $this->validateMissingChannels($family, $constraint);
+            $this->validateRequiredAttributes($family, $constraint);
+        }
+    }
 
-                    ]
-                )->addViolation();
+    /**
+     * Validates that there is no missing channel for the family.
+     *
+     * @param FamilyInterface $family
+     * @param Constraint      $constraint
+     */
+    protected function validateMissingChannels(FamilyInterface $family, Constraint $constraint)
+    {
+        $missingChannelCodes = $this->getMissingChannelCodes($family);
+        if (0 < count($missingChannelCodes)) {
+            $identifierCode = $this->attributeRepository->getIdentifierCode();
+            $this->context->buildViolation(
+                $constraint->messageChannel,
+                [
+                    '%family%'    => $family->getCode(),
+                    '%id%'        => $identifierCode,
+                    '%channels%'  => implode(', ', $missingChannelCodes)
+
+                ]
+            )->addViolation();
+        }
+    }
+
+    /**
+     * Validates that every required attribute is a family attribute.
+     *
+     * @param FamilyInterface $family
+     * @param Constraint      $constraint
+     */
+    protected function validateRequiredAttributes(FamilyInterface $family, Constraint $constraint)
+    {
+        $familyAttributeCodes = $family->getAttributeCodes();
+
+        foreach ($family->getAttributeRequirements() as $code => $attributeRequirement) {
+            if (!in_array($attributeRequirement->getAttributeCode(), $familyAttributeCodes)) {
+                $this->context
+                    ->buildViolation($constraint->messageAttribute, [
+                        '%attribute%' => $attributeRequirement->getAttributeCode(),
+                        '%channel%'   => $attributeRequirement->getChannelCode(),
+                    ])
+                    ->addViolation();
             }
         }
     }

@@ -10,8 +10,8 @@ Feature: Add attributes to a variant group
 
   Scenario: Display available attributes for a variant group
     Given the following attribute:
-      | code   | label-en_US | unique | group     |
-      | unique | Unique      | yes    | marketing |
+      | code   | label-en_US | unique | group     | type             |
+      | unique | Unique      | 1      | marketing | pim_catalog_text |
     Given I am on the "caterpillar_boots" variant group page
     And I visit the "Attributes" tab
     Then I should see available attribute Name in group "Product information"
@@ -86,19 +86,19 @@ Feature: Add attributes to a variant group
   @jira https://akeneo.atlassian.net/browse/PIM-5208
   Scenario: View only attribute filters that are usable as grid filters and view variant axes in columns
     Given the following attributes:
-      | code                       | label-en_US                | type         | group  | useable_as_grid_filter |
-      | high_heel_main_color       | High heel main color       | simpleselect | colors | yes                    |
-      | high_heel_main_fabric      | High heel main fabric      | simpleselect | other  | no                     |
-      | high_heel_secondary_color  | High heel secondary color  | simpleselect | colors | no                     |
-      | high_heel_secondary_fabric | High heel secondary fabric | simpleselect | other  | yes                    |
+      | code                       | label-en_US                | type                     | group  | useable_as_grid_filter |
+      | high_heel_main_color       | High heel main color       | pim_catalog_simpleselect | colors | 1                      |
+      | high_heel_main_fabric      | High heel main fabric      | pim_catalog_simpleselect | other  | 0                      |
+      | high_heel_secondary_color  | High heel secondary color  | pim_catalog_simpleselect | colors | 0                      |
+      | high_heel_secondary_fabric | High heel secondary fabric | pim_catalog_simpleselect | other  | 1                      |
     And the following "high_heel_main_color" attribute options: Red, Blue
     And the following "high_heel_main_fabric" attribute options: Leather, Silk
     And the following family:
-      | code       | requirements-mobile                              | requirements-tablet |
-      | high_heels | sku, high_heel_main_color, high_heel_main_fabric | sku                 |
-    And the following product groups:
-      | code       | label      | axis                                        | type    |
-      | high_heels | High heels | high_heel_main_color, high_heel_main_fabric | VARIANT |
+      | code       | requirements-mobile                            | requirements-tablet | attributes                                     |
+      | high_heels | sku,high_heel_main_color,high_heel_main_fabric | sku                 | sku,high_heel_main_color,high_heel_main_fabric |
+    And the following variant groups:
+      | code       | label-en_US | axis                                       | type    |
+      | high_heels | High heels  | high_heel_main_color,high_heel_main_fabric | VARIANT |
     And the following product:
       | sku     | family     | high_heel_main_color | high_heel_main_fabric |
       | heel001 | high_heels | Red                  | Silk                  |

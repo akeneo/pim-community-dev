@@ -34,8 +34,8 @@ Feature: Create attribute options
   @jira https://akeneo.atlassian.net/browse/PIM-6033
   Scenario: Successfully create several empty attribute options but save only filled options
     Given the following attributes:
-      | code | type         | localizable | scopable | group |
-      | size | simpleselect | no          | no       | other |
+      | code | type                     | localizable | scopable | group |
+      | size | pim_catalog_simpleselect | 0           | 0        | other |
     And I am on the "size" attribute page
     When I visit the "Values" tab
     And I create the following attribute options:

@@ -9,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Finder\Finder;
 
 /**
  * Database preparing command
@@ -79,7 +78,7 @@ class DatabaseCommand extends ContainerAwareCommand
             }
             $this->commandExecutor->runCommand('doctrine:database:drop', ['--force' => true]);
         } catch (\PDOException $e) {
-            $output->writeln(' <error>Database does not exist yet</error>');
+            $output->writeln('<error>Database does not exist yet</error>');
         }
 
         $this->commandExecutor->runCommand('doctrine:database:create');
@@ -106,7 +105,7 @@ class DatabaseCommand extends ContainerAwareCommand
 
         $this
             ->loadFixturesStep($input, $output)
-            ->launchCommands($input, $output);
+            ->launchCommands();
 
         return $this;
     }
@@ -149,7 +148,10 @@ class DatabaseCommand extends ContainerAwareCommand
         }
 
         $output->writeln(
-            sprintf('<info>Load jobs for fixtures. (data set: %s)</info>', $this->getContainer()->getParameter('installer_data'))
+            sprintf(
+                '<info>Load jobs for fixtures. (data set: %s)</info>',
+                $this->getContainer()->getParameter('installer_data')
+            )
         );
         $this->getFixtureJobLoader()->loadJobInstances();
 
@@ -161,6 +163,14 @@ class DatabaseCommand extends ContainerAwareCommand
                 '--no-log'   => true,
                 '-v'         => true
             ];
+            if ($input->getOption('verbose')) {
+                $output->writeln(
+                    sprintf(
+                        'Please wait, the <comment>%s</comment> are processing...',
+                        $jobInstance->getCode()
+                    )
+                );
+            }
             $this->commandExecutor->runCommand('akeneo:batch:job', $params);
         }
         $output->writeln('');
@@ -172,18 +182,13 @@ class DatabaseCommand extends ContainerAwareCommand
     }
 
     /**
-     * Launchs all commands needed after fixtures loading
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * Launches all commands needed after fixtures loading
      *
      * @return DatabaseCommand
      */
-    protected function launchCommands(InputInterface $input, OutputInterface $output)
+    protected function launchCommands()
     {
-        $this->commandExecutor
-            ->runCommand('pim:versioning:refresh')
-            ->runCommand('pim:completeness:calculate');
+        $this->commandExecutor->runCommand('pim:versioning:refresh');
 
         return $this;
     }

@@ -104,7 +104,7 @@ class IsAssociatedFilter extends BooleanFilter
         if (!$productId) {
             throw new \LogicException('The current product type must be configured');
         }
-        $product = $this->productRepository->findOneByWithValues($productId);
+        $product = $this->productRepository->find($productId);
 
         return $product;
     }

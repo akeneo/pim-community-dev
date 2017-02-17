@@ -1,4 +1,34 @@
-# 1.6.x
+# 1.6.11 (2017-02-14)
+
+## Improvements
+
+- PIM-6149: Remove version number displayed on login page
+- PIM-6157: Improve product exports speed
+- PIM-6159: Fix number comparator when removing numeric value in the PEF
+
+## Bug fixes
+
+- PIM-6152: Fix fatal error on import in case of wrong column count
+
+# 1.6.10 (2017-02-02)
+
+## Bug fixes
+
+- PIM-6113: Fix wrong context switch on association groups
+- PIM-6062: Fix potential Unix commands injection
+- PIM-5085: Fix update of the normalized data on family update (mongodb)
+- PIM-6080: Fix simple and multi select removal on product export builder
+- PIM-6124: Importing family with missing requirement column does not remove associated requirements anymore
+- PIM-6140: Fix 'equals to' filters on job tracker page
+
+# 1.6.9 (2017-01-17)
+
+## Bug fixes
+
+- PIM-6110: Saving a product value clears the saved associations
+- PIM-6086: Command that removes obsolete relations and migrates normalizedData for MongoDB documents.
+
+# 1.6.8 (2017-01-05)
 
 ## Bug fixes
 
@@ -6,6 +36,7 @@
 - PIM-6042: Successfully import product associations without removing already existing associations when option "compare values" is set to true
 - PIM-6041: Fix wrong conversion units output for channel export profiles csv and xlsx
 - PIM-6047: Do not export conversion units of channels if no conversion is set
+- PIM-6038: Fix product imports that do not change the product update date correctly (mongodb)
 
 # 1.6.7 (2016-12-20)
 

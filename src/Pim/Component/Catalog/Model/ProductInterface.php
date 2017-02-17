@@ -44,11 +44,17 @@ interface ProductInterface extends
     /**
      * Get the identifier of the product
      *
-     * @throws MissingIdentifierException if no identifier could be found
-     *
-     * @return ProductValueInterface the identifier of the product
+     * @return string
      */
     public function getIdentifier();
+
+    /**
+     * @param string $identifier
+     *
+     * @return ProductInterface
+     *
+     */
+    public function setIdentifier($identifier);
 
     /**
      * @return array
@@ -58,16 +64,25 @@ interface ProductInterface extends
     /**
      * @param array $rawValues
      *
-     * @return ProductValueInterface
+     * @return ProductInterface
      */
     public function setRawValues(array $rawValues);
 
     /**
      * Get values
      *
-     * @return ArrayCollection | ProductValueInterface[]
+     * @return ProductValueCollectionInterface
      */
     public function getValues();
+
+    /**
+     * Set values
+     *
+     * @param ProductValueCollectionInterface $values
+     *
+     * @return ProductInterface
+     */
+    public function setValues(ProductValueCollectionInterface $values);
 
     /**
      * Get value related to attribute code
@@ -247,7 +262,7 @@ interface ProductInterface extends
     public function hasAttribute(AttributeInterface $attribute);
 
     /**
-     * Get the list of used attribute code from the indexed values
+     * Get the list of used attribute codes from the indexed values
      *
      * @return array
      */
@@ -286,13 +301,6 @@ interface ProductInterface extends
     public function isAttributeEditable(AttributeInterface $attribute);
 
     /**
-     * Mark the indexed as outdated
-     *
-     * @return ProductInterface
-     */
-    public function markIndexedValuesOutdated();
-
-    /**
      * Get product label
      *
      * @param string $locale
@@ -300,11 +308,6 @@ interface ProductInterface extends
      * @return mixed|string
      */
     public function getLabel($locale = null);
-
-    /**
-     * @param mixed $normalizedData
-     */
-    public function setNormalizedData($normalizedData);
 
     /**
      * Set family

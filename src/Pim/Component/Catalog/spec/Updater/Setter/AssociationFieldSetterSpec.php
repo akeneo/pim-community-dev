@@ -2,15 +2,17 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Prophecy\Promise\ReturnPromise;
 
 class AssociationFieldSetterSpec extends ObjectBehavior
 {
@@ -37,31 +39,36 @@ class AssociationFieldSetterSpec extends ObjectBehavior
     function it_checks_valid_association_data_format(ProductInterface $product)
     {
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected(
+            InvalidPropertyTypeException::arrayExpected(
                 'associations',
-                'setter',
-                'association',
-                'string'
+                'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
+                'not an array'
             )
         )->during('setFieldData', [$product, 'associations', 'not an array']);
 
         $this->shouldThrow(
-            InvalidArgumentException::associationFormatExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
+                'association format is not valid for the association type "0".',
+                'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
                 [0 => []]
             )
         )->during('setFieldData', [$product, 'associations', [0 => []]]);
 
         $this->shouldThrow(
-            InvalidArgumentException::associationFormatExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
+                'association format is not valid for the association type "assoc_type_code".',
+                'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
                 ['assoc_type_code' => []]
             )
         )->during('setFieldData', [$product, 'associations', ['assoc_type_code' => []]]);
 
         $this->shouldThrow(
-            InvalidArgumentException::associationFormatExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
+                'association format is not valid for the association type "assoc_type_code".',
+                'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
                 ['assoc_type_code' => ['products' => [1], 'groups' => []]]
             )
         )->during(
@@ -70,8 +77,10 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         );
 
         $this->shouldThrow(
-            InvalidArgumentException::associationFormatExpected(
+            InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
+                'association format is not valid for the association type "assoc_type_code".',
+                'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
                 ['assoc_type_code' => ['products' => [], 'groups' => [2]]]
             )
         )->during(
@@ -149,11 +158,11 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $product->getAssociationForTypeCode('non valid association type code')->willReturn(null);
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validEntityCodeExpected(
                 'associations',
-                'existing association type code',
-                'setter',
-                'association',
+                'association type code',
+                'The association type does not exist',
+                'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
                 'non valid association type code'
             )
         )->during(
@@ -185,11 +194,11 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier('not existing product')->willReturn(null);
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validEntityCodeExpected(
                 'associations',
-                'existing product identifier',
-                'setter',
-                'association',
+                'product identifier',
+                'The product does not exist',
+                'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
                 'not existing product'
             )
         )->during(
@@ -219,11 +228,11 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $groupRepository->findOneByIdentifier('not existing group')->willReturn(null);
 
         $this->shouldThrow(
-            InvalidArgumentException::expected(
+            InvalidPropertyException::validEntityCodeExpected(
                 'associations',
-                'existing group code',
-                'setter',
-                'association',
+                'group code',
+                'The group does not exist',
+                'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
                 'not existing group'
             )
         )->during(
@@ -243,29 +252,53 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         AssociationInterface $upsellAssociation,
         AssociationTypeInterface $upsellAssociationType,
         AssociationTypeInterface $xsellAssociationType,
-        ArrayCollection $xsellGroups,
         ArrayCollection $xsellProducts,
         ArrayCollection $upsellGroups,
-        ArrayCollection $upsellProducts
+        \ArrayIterator $xsellProductIterator,
+        \ArrayIterator $upsellGroupIterator,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        GroupInterface $group1,
+        GroupInterface $group2
     ) {
+        $xsellProductIterator->rewind()->shouldBeCalled();
+        $xsellProductCount = 2;
+        $xsellProductIterator->valid()->will(
+            function () use (&$xsellProductCount) {
+                return $xsellProductCount-- > 0;
+            }
+        );
+        $xsellProductIterator->next()->shouldBeCalled();
+        $xsellProductIterator->current()->will(new ReturnPromise([$product1, $product2]));
+        $xsellProducts->getIterator()->willReturn($xsellProductIterator);
+
         $xsellAssociationType->getCode()->willReturn('xsell');
         $xsellAssociation->getAssociationType()->willReturn($xsellAssociationType);
-        $xsellAssociation->getGroups()->willReturn($xsellGroups);
         $xsellAssociation->getProducts()->willReturn($xsellProducts);
+
+        $upsellGroupIterator->rewind()->shouldBeCalled();
+        $upsellGroupCount = 2;
+        $upsellGroupIterator->valid()->will(
+            function () use (&$upsellGroupCount) {
+                return $upsellGroupCount-- > 0;
+            }
+        );
+        $upsellGroupIterator->next()->shouldBeCalled();
+        $upsellGroupIterator->current()->will(new ReturnPromise([$group1, $group2]));
+        $upsellGroups->getIterator()->willReturn($upsellGroupIterator);
 
         $upsellAssociationType->getCode()->willReturn('upsell');
         $upsellAssociation->getAssociationType()->willReturn($upsellAssociationType);
         $upsellAssociation->getGroups()->willReturn($upsellGroups);
-        $upsellAssociation->getProducts()->willReturn($upsellProducts);
 
         $product->getAssociations()->willReturn(
             new ArrayCollection([$xsellAssociation->getWrappedObject(), $upsellAssociation->getWrappedObject()])
         );
 
-        $xsellProducts->clear()->shouldBeCalled();
-        $xsellGroups->clear()->shouldNotBeCalled();
-        $upsellProducts->clear()->shouldNotBeCalled();
-        $upsellGroups->clear()->shouldBeCalled();
+        $xsellAssociation->removeProduct($product1)->shouldBeCalled();
+        $xsellAssociation->removeProduct($product2)->shouldBeCalled();
+        $upsellAssociation->removeGroup($group1)->shouldBeCalled();
+        $upsellAssociation->removeGroup($group2)->shouldBeCalled();
 
         $productBuilder->addMissingAssociations($product)->shouldBeCalled();
         $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
@@ -276,7 +309,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             'associations',
             [
                 'xsell' => [
-                    'products' => []
+                    'products' => [],
                 ],
                 'upsell' => [
                     'groups' => []

@@ -7,7 +7,6 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
@@ -182,25 +181,6 @@ class ProductController
     }
 
     /**
-     * Switch case to redirect after saving a product from the edit form
-     *
-     * @param array $params
-     *
-     * @return Response
-     */
-    protected function redirectAfterEdit($params)
-    {
-        switch ($request->get('action')) {
-            case self::CREATE:
-                $route = 'pim_enrich_product_edit';
-                $params['create_popin'] = true;
-                break;
-        }
-
-        return $this->redirectToRoute($route, $params);
-    }
-
-    /**
      * List categories associated with the provided product and descending from the category
      * defined by the parent parameter.
      *
@@ -306,7 +286,7 @@ class ProductController
      */
     protected function findProductOr404($id)
     {
-        $product = $this->productRepository->findOneByWithValues($id);
+        $product = $this->productRepository->find($id);
         if (!$product) {
             throw new NotFoundHttpException(
                 sprintf('Product with id %s could not be found.', (string) $id)

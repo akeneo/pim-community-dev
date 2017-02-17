@@ -2,6 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
@@ -13,7 +16,7 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\Model\ProductValue;
+use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
@@ -53,8 +56,14 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_trying_to_update_anything_else_than_a_variant_group()
     {
-        $this->shouldThrow(new \InvalidArgumentException('Expects a "Pim\Component\Catalog\Model\GroupInterface", "stdClass" provided.'))->during(
-            'update', [new \stdClass(), []]
+        $this->shouldThrow(
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                'Pim\Component\Catalog\Model\GroupInterface'
+            )
+        )->during(
+            'update',
+            [new \stdClass(), []]
         );
     }
 
@@ -71,9 +80,14 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         ProductInterface $removedProduct,
         ProductInterface $addedProduct,
         ProductTemplateInterface $productTemplate,
-        ProductQueryBuilderInterface $pqb
+        ProductQueryBuilderInterface $pqb,
+        ProductValueInterface $productValue,
+        ProductValueInterface $identifierValue,
+        ProductValueCollection $values,
+        \ArrayIterator $valuesIterator
     ) {
         $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
+        $attributeRepository->getIdentifierCode()->willReturn('code');
         $attributeRepository->findOneByIdentifier('main_color')->willReturn($attribute);
         $attributeRepository->findOneByIdentifier('secondary_color')->willReturn($attribute);
         $pqbFactory->create()->willReturn($pqb);
@@ -99,12 +113,15 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
         $variantGroup->setProductTemplate($productTemplate)->shouldBeCalled();
 
-        $productValue = new ProductValue();
-        $identifierValue = new ProductValue();
-
         $productBuilder->createProduct()->willReturn($product);
-        $product->getValues()->willReturn(new ArrayCollection([$productValue, $identifierValue]));
-        $product->getIdentifier()->willReturn($identifierValue);
+        $product->getValues()->willReturn($values);
+
+        $values->removeKey('code-<all_channels>-<all_locales>')->willReturn($identifierValue);
+        $values->getIterator()->willReturn($valuesIterator);
+        $valuesIterator->rewind()->shouldBeCalled();
+        $valuesIterator->valid()->willReturn(true, true, false);
+        $valuesIterator->current()->willReturn($productValue, $identifierValue);
+        $valuesIterator->next()->shouldBeCalled();
 
         $values = [
             'code'         => 'mycode',
@@ -129,15 +146,21 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
     }
 
     function it_updates_an_empty_variant_group(
+        $attributeRepository,
         $groupTypeRepository,
         $productBuilder,
         $pqbFactory,
         GroupInterface $variantGroup,
         GroupTypeInterface $type,
         ProductInterface $product,
-        ProductTemplateInterface $productTemplate
+        ProductTemplateInterface $productTemplate,
+        ProductValueInterface $productValue,
+        ProductValueInterface $identifierValue,
+        ProductValueCollection $values,
+        \ArrayIterator $valuesIterator
     ) {
         $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
+        $attributeRepository->getIdentifierCode()->willReturn('code');
         $pqbFactory->create()->shouldNotBeCalled();
 
         $variantGroup->setCode('mycode')->shouldBeCalled();
@@ -152,12 +175,16 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         $productTemplate->setValues(Argument::any())->shouldBeCalled();
         $productTemplate->setValuesData([])->shouldBeCalled();
 
-        $productValue = new ProductValue();
-        $identifierValue = new ProductValue();
-
         $productBuilder->createProduct()->willReturn($product);
-        $product->getValues()->willReturn(new ArrayCollection([$productValue, $identifierValue]));
+        $product->getValues()->willReturn($values);
         $product->getIdentifier()->willReturn($identifierValue);
+
+        $values->removeKey('code-<all_channels>-<all_locales>')->willReturn($identifierValue);
+        $values->getIterator()->willReturn($valuesIterator);
+        $valuesIterator->rewind()->shouldBeCalled();
+        $valuesIterator->valid()->willReturn(true, true, false);
+        $valuesIterator->current()->willReturn($productValue, $identifierValue);
+        $valuesIterator->next()->shouldBeCalled();
 
         $values = [
             'code'     => 'mycode',
@@ -181,8 +208,15 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
             'type' => 'UNKNOWN',
         ];
 
-        $this->shouldThrow(new \InvalidArgumentException('Type "UNKNOWN" does not exist'))
-            ->during('update', [$variantGroup, $values, []]);
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'type',
+                'group type',
+                'The group type does not exist',
+                'Pim\Component\Catalog\Updater\VariantGroupUpdater',
+                'UNKNOWN'
+            )
+        )->during('update', [$variantGroup, $values, []]);
     }
 
     function it_throws_an_error_if_axis_is_unknown(GroupInterface $variantGroup)
@@ -195,8 +229,15 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
             'axes' => ['unknown', 'secondary_color'],
         ];
 
-        $this->shouldThrow(new \InvalidArgumentException('Attribute "unknown" does not exist'))
-            ->during('update', [$variantGroup, $values, []]);
+        $this->shouldThrow(
+            InvalidPropertyException::validEntityCodeExpected(
+                'axes',
+                'attribute code',
+                'The attribute does not exist',
+                'Pim\Component\Catalog\Updater\VariantGroupUpdater',
+                'unknown'
+            )
+        )->during('update', [$variantGroup, $values, []]);
     }
 
     function it_throws_an_error_if_axis_is_updated(GroupInterface $variantGroup)
@@ -212,19 +253,28 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
             'axes' => ['main_color'],
         ];
 
-        $this->shouldThrow(new \InvalidArgumentException('Attributes: This property cannot be changed.'))
-            ->during('update', [$variantGroup, $values, []]);
+        $this->shouldThrow(
+            ImmutablePropertyException::immutableProperty(
+                'axes',
+                'main_color',
+                'Pim\Component\Catalog\Updater\VariantGroupUpdater',
+                'variant group'
+            )
+        )->during('update', [$variantGroup, $values, []]);
     }
 
     function it_merges_original_and_new_values(
+        $attributeRepository,
         GroupInterface $variantGroup,
         ProductTemplateInterface $template,
         ProductBuilderInterface $productBuilder,
         ProductInterface $product,
         ProductValueInterface $identifier,
-        ArrayCollection $values,
-        \Iterator $valuesIterator
+        ProductValueCollection $values,
+        \ArrayIterator $valuesIterator
     ) {
+        $attributeRepository->getIdentifierCode()->willReturn('code');
+
         $originalValues = [
             'description' => [
                 [
@@ -236,6 +286,17 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
                     'locale' => 'de_DE',
                     'scope'  => 'ecommerce',
                     'data'   => 'original description de_DE'
+                ]
+            ],
+            'image' => [
+                [
+                    'locale' => 'en_US',
+                    'scope'  => null,
+                    'data'   => [
+                        'originalFilename' => 'originalFilename',
+                        'filePath' => 'originalFilepath',
+                        'hash' => 'originalhash',
+                    ]
                 ]
             ]
         ];
@@ -253,6 +314,26 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
                     'data'   => 'new description fr_FR'
                 ]
 
+            ],
+            'image' => [
+                [
+                    'locale' => 'en_US',
+                    'scope'  => null,
+                    'data'   => [
+                        'originalFilename' => 'originalFilename',
+                        'filePath' => 'originalFilepath',
+                        'hash' => 'originalhash',
+                    ]
+                ],
+                [
+                    'locale' => 'de_DE',
+                    'scope'  => null,
+                    'data'   => [
+                        'originalFilename' => 'newFilename',
+                        'filePath' => 'newFilepath',
+                        'hash' => 'newhash',
+                    ]
+                ]
             ]
         ];
 
@@ -273,6 +354,26 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
                     'scope'  => 'ecommerce',
                     'data'   => 'new description fr_FR'
                 ]
+            ],
+            'image' => [
+                [
+                    'locale' => 'en_US',
+                    'scope'  => null,
+                    'data'   => [
+                        'originalFilename' => 'originalFilename',
+                        'filePath' => 'originalFilepath',
+                        'hash' => 'originalhash',
+                    ]
+                ],
+                [
+                    'locale' => 'de_DE',
+                    'scope'  => null,
+                    'data'   => [
+                        'originalFilename' => 'newFilename',
+                        'filePath' => 'newFilepath',
+                        'hash' => 'newhash',
+                    ]
+                ]
             ]
         ];
 
@@ -281,10 +382,13 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
 
         $productBuilder->createProduct()->willReturn($product);
         $product->getValues()->willReturn($values);
-        $product->getIdentifier()->willReturn($identifier);
-        $values->removeElement($identifier)->shouldBeCalled();
+        $values->removeKey('code-<all_channels>-<all_locales>')->willReturn($identifier);
 
         $values->getIterator()->willReturn($valuesIterator);
+        $valuesIterator->rewind()->shouldBeCalled();
+        $valuesIterator->valid()->willReturn(true, false);
+        $valuesIterator->current()->willReturn($identifier);
+        $valuesIterator->next()->shouldBeCalled();
 
         $template->setValues($values)->shouldBeCalled();
         $template->setValuesData($expectedValues)->shouldBeCalled();
