@@ -84,8 +84,7 @@ def runUnitTest(phpVersion) {
             sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml || true"
 
             if (phpVersion != "5.4") {
-                sh "composer global require friendsofphp/php-cs-fixer ^2.0"
-                sh "/home/akeneo/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --diff --format=junit --config=.php_cs.dist > app/build/logs/phpcs.xml || true"
+                sh "./bin/php-cs-fixer fix --diff --format=junit --config=.php_cs.dist > app/build/logs/phpcs.xml || true"
             }
 
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
