@@ -1,4 +1,6 @@
 activity_manager:
+  project:
+    required: Cette valeur ne doit pas être vide.
   notification:
     project_calculation:
       start: Début

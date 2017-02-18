@@ -3,6 +3,8 @@ activity_manager:
     required: Obligatoire
   grid:
     view_selector:
+      create: Créer un projet
+      edit: Modifier le projet
       loading: Chargement en cours...
       confirmation:
         delete: Confirmation de la suppression
@@ -10,9 +12,11 @@ activity_manager:
     label: Libellé
     description: Description
   edit_project_modal:
+    title: Modifier le projet
     confirm: Enregistrer
     cancel: Annuler
   create_project_modal:
+    title: Créer un projet
     confirm: Enregistrer
     cancel: Annuler
   widget:
