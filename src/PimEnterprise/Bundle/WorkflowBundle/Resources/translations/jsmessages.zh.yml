@@ -4,3 +4,8 @@ Approve: 批准
 Refuse: 拒绝
 Approve selected: 批准所选
 Refuse selected: 拒绝所选
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: 编辑工作副本
