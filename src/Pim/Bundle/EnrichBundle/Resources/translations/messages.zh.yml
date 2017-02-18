@@ -853,6 +853,7 @@ job_execution.summary:
   skip: 跳过
   skipped_products: 跳过的产品
   skipped_attributes: 跳过的属性
+  skipped_families: 被略过的品类
 pim_mass_edit_execution_show: 批量编辑执行 |详细信息
 edit_common_attributes.steps.edit_common_attributes_processor.title: 编辑共同属性
 update_product_value.steps.update_product_value_processor.title: 更新商品值
