@@ -1,0 +1,5 @@
+pimee_datagrid:
+  cell:
+    expand:
+      expandText: 展开
+      collapseText: 折叠
