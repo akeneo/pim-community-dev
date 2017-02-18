@@ -134,6 +134,7 @@ pim_enrich:
         property: 属性
         old_values: 原值
         new_values: 新值
+        actions: 操作
       info:
         deletion_successful: 产品被成功删除。
         deletion_failed: 产品不能被删除。
