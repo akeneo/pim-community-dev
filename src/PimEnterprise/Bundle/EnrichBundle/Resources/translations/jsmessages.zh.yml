@@ -4,20 +4,94 @@ permission-changes:
   category:
     grant: 分组<strong>{{ group }}</strong> 将会在这一类别中 <strong> {{ permission }}</strong>
     revoke: 分组<strong>{{ group }}</strong>将不会在这一类别中<strong>{{ permission }}</strong>
+  locale:
+    grant: 分组<strong>{{ group }}</strong> 将会在这一语言中 <strong> {{ permission }}</strong>
+    revoke: 分组<strong>{{ group }}</strong> 将不会在这一语言中 <strong> {{ permission }}</strong>
+  attribute group:
+    grant: 分组<strong>{{ group }}</strong> 将会在这一属性组中 <strong> {{ permission }}</strong>
+    revoke: 分组<strong>{{ group }}</strong> 将不会在这一属性组中 <strong> {{ permission }}</strong>
+  job profile:
+    grant: 分组<strong>{{ group }}</strong> 将会在<strong> {{ permission }}</strong>中
+    revoke: 分组<strong>{{ group }}</strong> 将不会在<strong> {{ permission }}</strong>中
 pimee_enrich:
   entity:
     product:
+      history:
+        published: 已发布
+        revert: 恢复
+      smart_attribute:
+        come_from: "此属性可以通过规则进行更新︰"
       btn:
         publish: 发布
+        publish_this_version: 发布此版本
         unpublish: 取消发布
+        save_draft: 保存草稿
+      flash:
+        product_unpublished: 产品已成功取消发布。
+        product_published: 产品已发布
+        product_not_published: 不能发布此产品
+        product_not_unpublished: 未能取消发布此产品
+        product_reverted: 产品已恢复
       meta:
+        published: 已发布的版本
+        owner_groups: 所有者组
+        draft_status: 草稿状态
         draft:
           in_progress: 正在处理
           sent_for_approval: 等待审核中
           working_copy: 工作副本
+      tab:
+        proposals:
+          title: 提案
+          messages:
+            approve:
+              success: 该提案已被应用
+              error:
+                The proposal can't be applied due to the following error:
+                  - 错误
+            reject:
+              success: 该提案已被拒绝。
+            remove:
+              success: 该提案已被移除。
+      confirmation:
+        revert:
+          title: 恢复确认
+          content: 您确认要恢复产品到这个版本吗？
+        publish:
+          title: 发布这个产品
+          content: 确定要发布这个产品吗？
+        unpublish:
+          title: 取消发布产品
+          content: 确定要取消发布这个产品吗？
+      info:
+        update_successful: 产品工作副本已被更新
       copy:
         source:
           working_copy: 工作副本
+          draft: 我的草稿
+          draft_of: "{{ author }} 的草稿"
     product_draft:
+      info:
+        update_successful: 产品草稿已被成功保存
+        update_failed: 产品草稿不能被更新
+        value_modified: 此值被当前的草稿修改
+      flash:
+        sent_for_approval: 产品草稿已经发出，等待审批
+        draft_not_sendable: 你不能将此草稿发出审批
+      btn:
+        send_for_approval: 发送至审核
+        sent_for_approval: 发送至审核
       modal:
+        accept_proposal: 接受建议
+        accept_selected_proposal: 接受所选的建议
+        reject_proposal: 拒绝此提案
+        reject_selected_proposal: 拒绝所选的提案
+        remove_proposal: 移除提案
+        send_for_approval: 发送至审核
         cancel: 取消
+        confirm: 发送
+        title: 评论你的建议 （可选，最多255 字符）。
+        characters: 字符。
+      confirmation:
+        discard_changes: 未保存的更改将会丢失。你确定你想要在未保存的情况下，发送你的草稿至审批？
+        discard_changes_title: 是否确实要发送此草稿?
