@@ -5,6 +5,8 @@ pim_connector:
     entity_reader.title: 实体提取
     csv_reader:
       title: CSV阅读器
+    file_reader:
+      invalid_item_columns_count: '期望获得 %totalColumnsCount% 列，实际获得 %itemColumnsCount% 列。路径：%filePath%:%lineno%'
     csv_product_reader.title: CSV产品阅读器
     csv_category_reader.title: CSV分类阅读器
     csv_variant_group .title: CSV多样组读

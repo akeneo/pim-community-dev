@@ -100,16 +100,24 @@ batch_jobs:
     label: Importar grupo variante em CSV
     validation.label: Validação de arquivo
     import.label: Importação de Grupo Variante
+  csv_channel_export:
+    label: Exportação de canal em CSV
+    export.label: Exportação de canal
+  csv_locale_export:
+    label: Exportação de localidade em CSV
   csv_channel_import:
     validation.label: Validação de arquivo
   csv_locale_import:
     validation.label: Validação de arquivo
+    import.label: Importação de localidade
   csv_attribute_group_import:
     validation.label: Validação de arquivo
   csv_currency_import:
     validation.label: Validação de arquivo
+    import.label: Importação de moeda
   csv_group_type_import:
     validation.label: Validação de arquivo
+    import.label: Grupo tipo importação
   xlsx_category_import:
     label: Importação de categorias por XLSX
     validation.label: Validação de arquivo
@@ -167,13 +175,18 @@ batch_jobs:
   xlsx_association_type_export:
     label: Exportação de tipos de associação em XLSX
     export.label: Exportação de tipos de associação em XLSX
+  xlsx_channel_export:
+    export.label: Exportação de canal
   xlsx_channel_import:
     validation.label: Validação de arquivo
   xlsx_locale_import:
     validation.label: Validação de arquivo
+    import.label: Importação de localidade
   xlsx_attribute_group_import:
     validation.label: Validação de arquivo
   xlsx_currency_import:
     validation.label: Validação de arquivo
+    import.label: Importação de moeda
   xlsx_group_type_import:
     validation.label: Validação de arquivo
+    import.label: Grupo tipo importação

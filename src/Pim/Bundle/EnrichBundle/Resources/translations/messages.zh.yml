@@ -555,6 +555,7 @@ Close: 关闭
 Search: 搜索
 Choose the attribute type: 选择属性类型
 Choose the attribute group: 选择属性组
+Drag and drop a file or click here: 拖放式操作可上传或点击这里
 Drop an image or click here: 拖入一幅图片或点击这里
 Automatic option sorting: 自动对选项排序
 save_attribute_before_manage_option: 若要管理选项，请先保存属性
@@ -855,6 +856,10 @@ edit_common_attributes_clean: 为共同的属性清理文件
 perform.steps.duplicated.title: 重复的轴
 perform.steps.excluded.title: 被排除在外的产品
 batch_jobs:
+  add_product_value:
+    label: 添加商品值
+    perform:
+      label: 添加商品值
   update_product_value:
     label: 更新商品值
     perform:
