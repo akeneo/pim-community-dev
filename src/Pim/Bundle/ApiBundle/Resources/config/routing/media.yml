@@ -1,0 +1,11 @@
+pim_api_media_file_list:
+    path: /media_files
+    defaults: { _controller: pim_api.controller.media_file:listAction, _format: json }
+    methods: [GET]
+
+pim_api_media_file_get:
+    path: /media_files/{code}
+    defaults: { _controller: pim_api.controller.media_file:getAction, _format: json }
+    methods: [GET]
+    requirements:
+        code: .+
