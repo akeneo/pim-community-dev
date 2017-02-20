@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 use Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -48,6 +50,20 @@ class FamilyController
     /** @var ValidatorInterface */
     protected $validator;
 
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
+    protected $attributeFields = [
+        'attributes',
+        'attribute_requirements',
+    ];
+
+    protected $propertiesFields = [
+        'code',
+        'attribute_as_label',
+        'labels',
+    ];
+
     /**
      * @param FamilyRepositoryInterface  $familyRepository
      * @param NormalizerInterface        $normalizer
@@ -56,6 +72,7 @@ class FamilyController
      * @param SaverInterface             $saver
      * @param RemoverInterface           $remover
      * @param ValidatorInterface         $validator
+     * @param SecurityFacade             $securityFacade
      */
     public function __construct(
         FamilyRepositoryInterface $familyRepository,
@@ -64,7 +81,8 @@ class FamilyController
         FamilyUpdater $updater,
         SaverInterface $saver,
         RemoverInterface $remover,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        SecurityFacade $securityFacade
     ) {
         $this->familyRepository = $familyRepository;
         $this->normalizer = $normalizer;
@@ -73,6 +91,7 @@ class FamilyController
         $this->saver = $saver;
         $this->remover = $remover;
         $this->validator = $validator;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -131,6 +150,12 @@ class FamilyController
      */
     public function putAction(Request $request, $code)
     {
+        if (!$this->securityFacade->isGranted('pim_enrich_family_edit_properties') &&
+            !$this->securityFacade->isGranted('pim_enrich_family_edit_attributes')
+        ) {
+            throw new AccessDeniedException();
+        }
+
         $family = $this->getFamily($code);
 
         return $this->saveFamily($request, $family);
@@ -167,7 +192,7 @@ class FamilyController
 
         if (null === $family) {
             throw new NotFoundHttpException(
-                sprintf('Channel with code %s does not exist.', $code)
+                sprintf('Family with code %s does not exist.', $code)
             );
         }
 
@@ -187,6 +212,15 @@ class FamilyController
     protected function saveFamily(Request $request, FamilyInterface $family)
     {
         $data = json_decode($request->getContent(), true);
+
+        if (!$this->securityFacade->isGranted('pim_enrich_family_edit_properties')) {
+            $data = $this->sanitizeFields($data, $this->propertiesFields);
+        }
+
+        if (!$this->securityFacade->isGranted('pim_enrich_family_edit_attributes')) {
+            $data = $this->sanitizeFields($data, $this->attributeFields);
+        }
+
         $this->updater->update($family, $data);
 
         $violations = $this->validator->validate($family);
@@ -210,5 +244,24 @@ class FamilyController
                 'internal_api'
             )
         );
+    }
+
+    /**
+     * Returns sanitized family data array
+     *
+     * @param array $data
+     * @param array $fieldsToRemove
+     *
+     * @return mixed
+     */
+    protected function sanitizeFields($data, $fieldsToRemove)
+    {
+        foreach ($fieldsToRemove as $field) {
+            if (array_key_exists($field, $data)) {
+                unset($data[$field]);
+            }
+        }
+
+        return $data;
     }
 }

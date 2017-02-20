@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * todo-a2x: implement
+ * Attributes tab top toolbar view
  *
  * @author    Alexandr Jeliuc <alex@jeliuc.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

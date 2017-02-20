@@ -4,7 +4,7 @@
     </label>
 </div>
 <div class="AknFieldContainer-inputContainer">
-    <select class="select2" id="<%- fieldBaseId + 'attribute_as_label' %>">
+    <select class="select2" id="<%- fieldBaseId + 'attribute_as_label' %>" <%- isReadOnly ? 'readonly disabled' : '' %>>
         <% _.each(attributes, function (attribute) { %>
         <option value="<%- attribute.code %>" <%- (currentAttribute === attribute.code) ? 'selected' : '' %> >
         <%- i18n.getLabel(attribute.labels, catalogLocale, attribute.code) %>

@@ -14,9 +14,11 @@ define([
         'pim/form',
         'text!pim/template/family/tab/attributes/attributes',
         'pim/user-context',
+        'pim/security-context',
         'pim/i18n',
         'pim/fetcher-registry',
         'pim/dialog',
+        'oro/messenger',
         'oro/loading-mask'
     ],
     function (
@@ -26,9 +28,11 @@ define([
         BaseForm,
         template,
         UserContext,
+        SecurityContext,
         i18n,
         FetcherRegistry,
         Dialog,
+        Messanger,
         LoadingMask
     ) {
         return BaseForm.extend({
@@ -65,6 +69,12 @@ define([
             configure: function () {
                 this.listenTo(
                     this.getRoot(),
+                    'pim_enrich:form:entity:post_fetch',
+                    this.render
+                );
+
+                this.listenTo(
+                    this.getRoot(),
                     'add-attribute:add',
                     this.onAddAttributes
                 );
@@ -86,10 +96,7 @@ define([
                     return this;
                 }
 
-                if (!this.channels || !this.attributeGroups) {
-                    var loadingMask = new LoadingMask();
-                    loadingMask.render().$el.appendTo(this.getRoot().$el).show();
-
+                if (!this.channels && !this.attributeGroups) {
                     $.when(
                         FetcherRegistry.getFetcher('channel').fetchAll(),
                         FetcherRegistry.getFetcher('attribute-group').fetchAll()
@@ -98,9 +105,7 @@ define([
                         this.attributeGroups = attributeGroups;
 
                         return this.render();
-                    }.bind(this)).always(function () {
-                        loadingMask.hide().$el.remove();
-                    });
+                    }.bind(this));
 
                     return;
                 }
@@ -148,7 +153,9 @@ define([
              * @param {Object} event
              */
             toggleGroup: function (event) {
+                event.preventDefault();
                 var target = event.currentTarget;
+
                 $(target).parent().find('tr:not(.group)').toggle();
                 $(target).find('i').toggleClass('icon-expand-alt icon-collapse-alt');
 
@@ -161,7 +168,12 @@ define([
              * @param {Object} event
              */
             toggleAttribute: function (event) {
+                event.preventDefault();
                 var target = event.currentTarget;
+
+                if (!SecurityContext.isGranted('pim_enrich_family_edit_attributes')) {
+                    return this;
+                }
 
                 if (!this.isAttributeEditable(target.dataset.type)) {
                     return this;
@@ -231,14 +243,33 @@ define([
             /**
              * Removes attribute from family
              *
+             * Checks if user has rights to remove attributes
+             * Checks if attribute is not used as label
+             *
              * @param {Object} event
              */
             onRemoveAttribute: function (event) {
+                event.preventDefault();
+                var attributeAsLabel = this.getFormData().attribute_as_label;
+
+                if (!SecurityContext.isGranted('pim_enrich_family_edit_attributes')) {
+                    return false;
+                }
+
                 this.attributeToRemove = event.currentTarget.dataset.attribute;
                 var attr = _.findWhere(
                     this.getFormData().attributes,
                     {code: this.attributeToRemove}
                 );
+
+                if (attributeAsLabel === attr.code) {
+                    Messanger.notificationFlashMessage(
+                        'error',
+                        __('pim_enrich.entity.family.info.cant_remove_attribute_as_label')
+                    );
+
+                    return false;
+                }
                 var name = i18n.getLabel(attr.labels, this.catalogLocale, attr.code);
 
                 Dialog.confirm(

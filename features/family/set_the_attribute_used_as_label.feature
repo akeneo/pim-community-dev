@@ -50,5 +50,8 @@ Feature: Set the attribute used as label
     When I am on the "Bags" family page
     And I visit the "Attributes" tab
     And I remove the "brand" attribute
-    And I confirm the deletion
-    Then I should see the flash message "This attribute can not be removed because it is used as the label of the family"
+    Then I should not see confirm dialog
+    And I should see the flash message "This attribute can not be removed because it is used as the label of the family"
+    Then I should see attributes "Brand" in group "Other"
+
+  # todo-a2x should not attribute as label be marked as required for all channels as identifier???

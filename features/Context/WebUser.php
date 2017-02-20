@@ -394,6 +394,16 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Given /^I should not see confirm dialog$/
+     */
+    public function iShouldNotSeeConfirmDialog()
+    {
+        return $this->spin(function () {
+            return null === $this->getCurrentPage()->getElement('Dialog')->find('css', '.ok');
+        }, 'Confirm dialog button is still visible');
+    }
+
+    /**
      * @Given /^I save the (.*)$/
      */
     public function iSave()
@@ -863,6 +873,37 @@ class WebUser extends RawMinkContext
     /**
      * @param string $group
      *
+     * @Then /^I should see available attribute group "([^"]*)"$/
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldSeeAvailableAttributeGroup($groups)
+    {
+        foreach ($this->listToArray($groups) as $group) {
+            $element = $this->getCurrentPage()->findAvailableAttributeGroup($group);
+
+            if (null === $element) {
+                throw new ExpectationException(
+                    sprintf('Expecting to see attribute group "%s"', $group)
+                );
+            }
+        }
+    }
+
+    /**
+     * @param string $groups
+     *
+     * @Then /^I add attributes by group "([^"]*)"$/
+     */
+    public function iAddAttributesByGroup($groups)
+    {
+        $this->getCurrentPage()
+            ->addAttributesByGroup($this->listToArray($groups));
+    }
+
+    /**
+     * @param string $group
+     *
      * @Then /^I should see available group "([^"]*)"$/
      *
      * @throws ExpectationException
@@ -933,6 +974,16 @@ class WebUser extends RawMinkContext
                 )
             );
         }
+    }
+
+    public function removeAttributeButtonIsDisabled($attribute)
+    {
+        return $this->spin(function () use ($attribute) {
+            $button = $this->getCurrentPage()
+                ->find('css', sprinf('.remove-attribute[data-attribute="$s"]', $attribute));
+//        return true
+        }, sprintf('Remove button "%s" is still enabled', $attribute));
+
     }
 
     /**

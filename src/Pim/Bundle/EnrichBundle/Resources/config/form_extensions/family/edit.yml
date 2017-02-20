@@ -116,7 +116,7 @@ extensions:
             fieldBaseId: 'pim_enrich_family_form_label_'
 
     pim-family-edit-form-properties-translation:
-        module: pim/common/properties/translation
+        module: pim/family-edit-form/properties/general/translation
         parent: pim-family-edit-form-properties
         targetZone: accordion
         position: 140
@@ -136,6 +136,7 @@ extensions:
         module: pim/family-edit-form/attributes/toolbar
         parent: pim-family-edit-form-attributes
         targetZone: attributes-content
+        aclResourceId: pim_enrich_family_edit_attributes
         position: 160
 
     pim-family-edit-form-attributes-toolbar-add-attribute-by-group:

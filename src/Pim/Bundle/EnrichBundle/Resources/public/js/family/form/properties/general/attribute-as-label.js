@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * todo-a2x: implement
+ * Attributes used as label field view
  *
  * @author    Alexandr Jeliuc <alex@jeliuc.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -15,6 +15,7 @@ define([
         'pim/fetcher-registry',
         'pim/i18n',
         'pim/user-context',
+        'pim/security-context',
         'text!pim/template/family/tab/general/attribute-as-label',
         'jquery.select2'
     ],
@@ -26,6 +27,7 @@ define([
         FetcherRegistry,
         i18n,
         UserContext,
+        SecurityContext,
         template
     ) {
         return BaseForm.extend({
@@ -63,13 +65,15 @@ define([
                         this.getFormData().attributes,
                         function (attribute) {
                             return attribute.type === 'pim_catalog_text' ||
-                                attribute.type === 'pim_catalog_identifier';
-                    }),
+                            attribute.type === 'pim_catalog_identifier';
+                        }
+                    ),
                     currentAttribute: this.getFormData().attribute_as_label,
                     fieldBaseId: this.config.fieldBaseId,
                     errors: this.errors,
                     label: __(this.config.label),
-                    requiredLabel: __('pim_enrich.form.required')
+                    requiredLabel: __('pim_enrich.form.required'),
+                    isReadOnly: !SecurityContext.isGranted('pim_enrich_family_edit_properties')
                 }));
 
                 this.$('.select2').select2().on('change', this.updateState.bind(this));
