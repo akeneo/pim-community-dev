@@ -1,0 +1,8 @@
+activity_manager:
+  notification:
+    project_calculation:
+      start: Start
+    project_finished:
+      show: Toon
+    due_date:
+      start: Start
