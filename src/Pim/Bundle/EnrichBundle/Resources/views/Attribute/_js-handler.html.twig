@@ -74,7 +74,7 @@ require(
                     $(formName+'_defaultMetricUnit').select2('val', '').select2({
                         data: measures.getMetricUnits($(this).select2('val')),
                         placeholder: '{{ "Choose a unit"|trans }}'
-                    });
+                    }).closest('.AknTextField').addClass('AknTextField--select2');
                 }).trigger('change');
 
                 $(formName).trigger('refresh');
