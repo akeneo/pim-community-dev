@@ -85,7 +85,7 @@ class AttributeGroupController
                 $options
             );
 
-        /** @todo-a2x Does it do nothing? */
+        /** @todo (a2xchip) should be moved to EE */
         $filteredAttributeGroups = $this->collectionFilter->filterCollection(
             $attributeGroups,
             'pim.internal_api.attribute_group.view'
@@ -93,7 +93,7 @@ class AttributeGroupController
 
         $normalizedAttributeGroups = [];
 
-        foreach ($attributeGroups as $attributeGroup) {
+        foreach ($filteredAttributeGroups as $attributeGroup) {
             $normalizedAttributeGroups[$attributeGroup->getCode()] = $this->normalizer
                 ->normalize($attributeGroup, 'standard');
         }

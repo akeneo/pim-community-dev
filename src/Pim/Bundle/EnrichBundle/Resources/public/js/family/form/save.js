@@ -17,7 +17,8 @@ define(
         'pim/saver/family',
         'pim/field-manager',
         'pim/i18n',
-        'pim/user-context'
+        'pim/user-context',
+        'pim/security-context'
     ],
     function (
         $,
@@ -28,7 +29,8 @@ define(
         FamilySaver,
         FieldManager,
         i18n,
-        UserContext
+        UserContext,
+        SecurityContext
     ) {
         return BaseSave.extend({
             updateSuccessMessage: __('pim_enrich.entity.family.info.update_successful'),
@@ -42,6 +44,16 @@ define(
                 family.attributes = _.pluck(family.attributes, 'code');
 
                 delete family.meta;
+
+                if (!SecurityContext.isGranted('pim_enrich_family_edit_properties')) {
+                    delete family.attribute_as_label;
+                    delete family.labels;
+                }
+
+                if (!SecurityContext.isGranted('pim_enrich_family_edit_attributes')) {
+                    delete family.attributes;
+                    delete family.attribute_requirements;
+                }
 
                 var notReadyFields = FieldManager.getNotReadyFields();
                 if (0 < notReadyFields.length) {

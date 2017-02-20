@@ -160,7 +160,7 @@ define(
 
             /**
              * Gets attribute groups to exclude
-             * todo-a2x do we need it to implement
+             * @todo Implement it if we needed in the future
              *
              * @return {Promise}
              */

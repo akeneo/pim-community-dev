@@ -4,6 +4,8 @@ namespace Context\Page\Family;
 
 use Context\Page\Base\Form;
 use Context\Spin\SpinCapableTrait;
+use Pim\Behat\Decorator\Common\AddAttributeDecorator;
+use Pim\Behat\Decorator\Common\SelectGroupDecorator;
 
 /**
  * Family edit page
@@ -31,16 +33,23 @@ class Edit extends Form
         $this->elements = array_merge(
             $this->elements,
             [
-                'Attributes'                 => ['css' => '.tab-pane.tab-attribute table'],
-                'Attribute as label choices' => ['css' => '#pim_enrich_family_form_label_attribute_as_label'],
-                'Available attributes button'     => ['css' => '.add-attribute a.select2-choice'],
-                'Available attributes'            => [
+                'Attributes'                        => ['css' => '.tab-pane.tab-attribute table'],
+                'Attribute as label choices'        => ['css' => '#pim_enrich_family_form_label_attribute_as_label'],
+                'Available attributes button'       => ['css' => '.add-attribute a.select2-choice'],
+                'Available attribute groups button' => ['css' => '.add-attribute-group a.select2-choice'],
+                'Available attributes'              => [
                     'css'        => '.add-attribute',
-                    'decorators' => ['Pim\Behat\Decorator\Common\AddAttributeDecorator']
+                    'decorators' => [AddAttributeDecorator::class]
                 ],
-                'Available attributes list'       => ['css' => '.add-attribute .select2-results'],
-                'Available attributes search'     => ['css' => '.add-attribute .select2-search input[type="text"]'],
-                'Select2 dropmask'                => ['css' => '.select2-drop-mask'],
+                'Available attributes list'         => ['css' => '.add-attribute .select2-results'],
+                'Available attribute groups list'   => ['css' => '.add-attribute-group .select2-results'],
+                'Available attributes search'       => ['css' => '.add-attribute .select2-search input[type="text"]'],
+                'Available attribute groups search' => ['css' => '.add-attribute-group .select2-search input[type="text"]'],
+                'Available groups'                  => [
+                    'css'        => '.add-attribute-group',
+                    'decorators' => [SelectGroupDecorator::class],
+                ],
+                'Select2 dropmask'                  => ['css' => '.select2-drop-mask'],
             ]
         );
     }
@@ -166,12 +175,6 @@ class Edit extends Form
         $cell        = $this->getAttributeRequirementCell($attribute, $channel);
         $requirement = $cell->find('css', 'i');
 
-        $loadingMask = $this->find('css', '.hash-loading-mask .loading-mask');
-
-        $this->spin(function () use ($loadingMask) {
-            return (null === $loadingMask) || !$loadingMask->isVisible();
-        }, '".loading-mask" is still visible');
-
         $requirement->click();
     }
 
@@ -239,6 +242,15 @@ class Edit extends Form
         return isset($results[$attribute]) ? $results[$attribute] : null;
     }
 
+    public function findAvailableAttributeGroup($group)
+    {
+        $addGroupElement = $this->spin(function () {
+            return $this->getElement('Available groups');
+        }, 'Can not find add by group select');
+
+        return $addGroupElement->findItem($group);
+    }
+
     /**
      * {@inheritdoc}
      *
@@ -252,5 +264,14 @@ class Edit extends Form
         }, 'Cannot find the add attribute element');
 
         return $availableAttribute->addAttributes($attributes);
+    }
+
+    public function addAttributesByGroup($groups)
+    {
+        $addGroupElement = $this->spin(function () {
+            return $this->getElement('Available groups');
+        }, 'Can not find add by group select');
+
+        $addGroupElement->addItems($groups);
     }
 }

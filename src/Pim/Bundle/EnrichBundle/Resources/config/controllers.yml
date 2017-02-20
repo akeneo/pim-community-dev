@@ -353,6 +353,7 @@ services:
             - '@pim_catalog.saver.family'
             - '@pim_catalog.remover.family'
             - '@validator'
+            - '@oro_security.security_facade'
 
     pim_enrich.controller.rest.form_extension:
         scope: request
