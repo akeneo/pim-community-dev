@@ -4,3 +4,5 @@ pimee_dashboard:
       date: 日期
       author: 作者
       product: 产品
+      review: 审查
+      empty: 没有要审查的提案

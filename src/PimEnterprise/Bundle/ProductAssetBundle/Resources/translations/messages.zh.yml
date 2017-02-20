@@ -1,45 +1,242 @@
 pimee_product_asset:
+  acl:
+    asset:
+      index: 增加资源
+      create: 创建资产
+      remove: 移除资产
+      categories_view: 咨询资产的类别
+      mass_upload: 批量上传资产
+    category_asset_picker:
+      list: 在资产选取器中列出资产类别
+    category:
+      create: 创建一个资产类别
+      edit: 编辑一个资产类别
+      list: 列出资产目录
+      remove: 删除资产类别
+      manage: 管理资产目录权限
+      history: 查看资产类别历史
+  acl_group:
+    asset: 产品资产
+    category: 资产分类
   enrich_asset:
     button:
+      upload: 上传 
       delete: 删除
+      download: 下载
+      generate_from_reference: 从参考生成
+      reset_variations: 重置变化
+    confirmation.remove: 您确定要删除 "%asset%" 吗？
+    grid:
+      edit: 编辑资产的属性
     view:
+      title: 产品资源
       code: 代码
+      description: 描述
+      end_of_use: 结束使用于
+      reference: 使用指南
+      filename: 文件名
+      width: 宽度
+      height: 高度
+      resolution: 解析度
+      colors: 色彩空间
+      filesize: 文件大小
+      filetype: 文件类型
+      actions: 操作
+      download: 下载
+      tag: 标记
+      no_reference: 尚未上传参考文件。
+      no_variation: 尚未生成差异文件
+    flash:
+      update:
+        success: 资产已被更新。
+        error: 资产尚未更新成功。发生错误。
+      create:
+        success: 资产被创建。
+        error: 资产尚未创建成功。发生错误。
+      remove:
+        success: 资产被移除。
+  enrich_reference:
+    flash:
+      delete:
+        success: 参考文件已被删除。
+        error: 参考文件尚未被删除。发生错误。
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: 由于无效的选项，不能生成变化%channel%
+        image_width_error: 无法生成变化 %channel%，因为上传的图像的宽度小于转换所需要的图像宽度。
+        image_height_error: 无法生成变化 %channel%，因为上传的图像的高度小于转换所需要的图像高度。
+        not_applicable: 无法生成变化 %channel%。
+        non_registered: 没有 %transformation% 变换注册在 mime 类型 %mimeType%下。无法生成变化 %channel%。
+        error: 无法生成变化 %channel%。
+        success: 变化文件已成功生成。
+      update:
+        success: 变化文件已经被更新。
+        error: 变化文件尚未更新。发生错误。
+      delete:
+        success: 变化文件已经被删除。
+        error: 变化文件尚未删除。发生错误。
   popin.create:
+    title: 创建资产
     is_localized: 可本地化
+  menu: 资产
+  page_tab:
+    title:
+      view: 产品资产 %asset.code% |查看
+      edit: 产品资产 %asset.code% |编辑
+      index: 产品资产
   code:
     label: 代码
+  thumbnail:
+    label: 缩略图
   status:
     label: 状态
+  description:
+    label: 描述
+  endOfUse:
+    label: 结束使用于
   createdAt:
     label: 创建于
+  updatedAt:
+    label: 上次更新于
+  tags:
+    label: 标签
   tabs:
     properties.title: 属性
+    variations.title: 变化
     categories.title: 分类
+  validation:
+    code:
+      not_empty: 代码是必需的。它不能为空。
+      unique: 编号必须是唯一的。
+      new_generation: 我们为您生成了一个新的。
+  notAvailable:
+    label: 不可用
+  asset:
+    title: 资产
   mass_upload:
+    menu: 上传资产
+    new: 将创建一个新的资产
+    add_files: 添加文件
+    start: 开始上传
+    cancel: 取消上传
     import: 导入
+    executed: 执行的大规模上传
+    error:
+      upload: 在上传的过程中发生了错误
+      code: 该资产有一个无效的编号格式
+      localizable: 一个资产存在但不可本地化
+      invalid_locale: 区域设置被禁用或无效
+  category:
+    menu: 资产分类
+    permissions:
+      view.label: 允许查看资产
+      view.help: 允许查看该目录中的资产
+      edit.label: 允许编辑资产
+      edit.help: 允许编辑这一目录的资产（意味着查看权限）
+      no_access_to_products: 你无法访问任何树上的资产。请联系您的管理员。
+      apply_on_children.label: 将更改应用于子目录
+      apply_on_children.help: 在所有的子目录复制权限变更，在子目录中的现有权限保留。
   mass_edit_action:
     asset:
+      page_title: 资产
+      page_subtitle: 批量编辑 （1 件资产） |批量编辑 （%count% 件资产）
+      confirm: 您将要更新该资产的以下信息，请确认。 |您将要更新 %count% 资产的以下信息，请确认。
       steps:
+        first: 选择资产
         second: 配置
         third: 确认
 pim_enrich:
   mass_edit_action:
     asset-classify-move:
+      label: 在目录中移动资源
+      description: 资源将被放入以下目录，现存的位置不会保留。
+      success_flash: 资源已经被移动到所选的目录中了。
       launched_flash: 批量操作"移动到目录"已经启动。完成后会通知您。
+    add-tags-to-assets:
+      label: 将标签添加到资源
+      description: 标记将添加到的资产。如果一些标签不存在，则会被创建。
+      success_flash: 标记已添加到资源
+      launched_flash: 批量操作"加入到资源"已经启动。完成后会通知您。
+      message.error: 提供的标签不存在
+pim:
+  grid:
+    mass_action:
+      mass_classify_assets: 分类
+      add_tags_to_assets: 添加标签
+      delete_assets: 删除资源
+btn.create.asset: 创建资产
+btn.drag_or_upload: 拖放式操作可上传或点击这里
+job_execution.summary:
+  variations_not_generated: 没有被生成的变化
+  pimee_product_asset.mass_upload.new: 从文件创建的资源
+  pimee_product_asset.mass_upload.updated: 资产被更新
+  error: 资产文件处理错误
+  skipped_assets: 被略过的资产
+assets_mass_upload.steps:
+  asset_mass_upload.title: 资产大批上传
+import_asset.steps.channel_configuration_processor.title: 处理渠道配置
+mass_upload: 批量上传资产
 batch_jobs:
+  apply_assets_mass_upload:
+    label: 资产大批上传
+    perform.label: 批量上传
   yml_asset_channel_configuration_import:
+    label: 用 Yaml 导入资产通道配置
     validation.label: 文件验证
+    import_asset.label: 用 Yaml 导入资产通道配置
+  yml_asset_channel_configuration_export:
+    label: 用 Yaml 导出资产通道配置
+    export.label: 用 Yaml 导出资产通道配置
   csv_asset_import:
+    label: 从CSV文件中导入产品
     validation.label: 文件验证
+    import_tags.label: 从CSV导入标签
+    import_asset.label: 从CSV文件中导入产品
+  csv_asset_export:
+    label: 从CSV文件中导出资产
+    export.label: 从CSV文件中导出资产
+  csv_asset_variation_export:
+    label: 在 CSV 导出资产变化
+    export.label: 在 CSV 导出资产变化
   csv_tag_import:
+    label: 从CSV导入标签
     validation.label: 文件验证
+    import.label: 从CSV导入标签
   csv_asset_category_import:
+    label: 从CSV导入资产分类
     validation.label: 文件验证
+    import_asset_category.label: 从CSV导入资产分类
   csv_asset_configuration_import:
+    label: 用CSV 导入资产通道配置
     validation.label: 文件验证
+    import_asset.label: 用CSV 导入资产通道配置
+  csv_asset_category_export:
+    label: 导出资产分类至CSV文件
+    export.label: 导出资产分类至CSV文件
   xlsx_tag_import:
+    label: 从XLSX文件中导入标签
     validation.label: 文件验证
+    import.label: 从XLSX文件中导入标签
   xlsx_asset_import:
+    label: 从XLSX文件中导入资产
     validation.label: 文件验证
+    import_tags.label: 从XLSX文件中导入标签
+    import_asset.label: 从XLSX文件中导入资产
   xlsx_asset_category_import:
+    label: 从XLSX文件中导入资产分类
     validation.label: 文件验证
+    import_asset_category.label: 从XLSX文件中导入资产分类
+  xlsx_asset_export:
+    label: 从XLSX文件中导出资产
+    export.label: 从XLSX文件中导出资产
+  xlsx_asset_category_export:
+    label: 从XLSX文件中导出资产分类
+    export.label: 从XLSX文件中导出资产分类
+  xlsx_asset_variation_export:
+    label: 从XLSX文件中导出资产分类
+    export.label: 从XLSX文件中导出资产分类
+  classify_assets:
+    perform.label: 在目录中移动资产
+  add_tags_to_assets:
+    perform.label: 将标签添加到资产
