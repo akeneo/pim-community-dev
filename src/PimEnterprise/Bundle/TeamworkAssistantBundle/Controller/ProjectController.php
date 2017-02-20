@@ -218,7 +218,8 @@ class ProjectController
      */
     public function searchAction(Request $request)
     {
-        $options = $request->query->get('options', ['limit' => 20, 'page' => 1]);
+        $options = ['limit' => 20, 'page' => 1, 'completeness' => '1'];
+        $options = array_merge($options, $request->query->get('options', []));
         $contributor = $this->tokenStorage->getToken()->getUser()->getUsername();
 
         $projects = $this->projectRepository->findBySearch(
@@ -234,13 +235,16 @@ class ProjectController
 
         foreach ($projects as $project) {
             $normalizedProject = $this->projectNormalizer->normalize($project, 'internal_api');
-            $normalizedProject['completeness'] = $this->projectCompletenessNormalizer->normalize(
-                $this->projectCompletenessRepository->getProjectCompleteness(
-                    $project,
-                    $contributor
-                ),
-                'internal_api'
-            );
+
+            if ('1' === $options['completeness']) {
+                $normalizedProject['completeness'] = $this->projectCompletenessNormalizer->normalize(
+                    $this->projectCompletenessRepository->getProjectCompleteness(
+                        $project,
+                        $contributor
+                    ),
+                    'internal_api'
+                );
+            }
 
             $normalizedProjects[] = $normalizedProject;
         }
