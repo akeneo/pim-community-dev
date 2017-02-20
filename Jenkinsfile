@@ -73,13 +73,13 @@ def runUnitTest(phpVersion) {
         deleteDir()
         docker.image("mysql:5.5").withRun("--name phpunit -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim") {
             docker.image("elasticsearch:1.7").withRun("--name phpunit_elasticsearch") {
-                docker.image("carcel/php:${phpVersion}").inside("--link phpunit:phpunit -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+                docker.image("carcel/php:${phpVersion}").inside("--link phpunit_mysql:phpunit_mysql --link phpunit_elasticsearch:phpunit_elasticsearch -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                     unstash "project_files"
 
                     sh "php -d memory_limit=-1 /usr/local/bin/composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                     sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
                     sh "sed -i \"s#database_host: .*#database_host: phpunit_mysql#g\" app/config/parameters_test.yml"
-                    sh "sed -i \"s#pim_es_host: .*#database_host: phpunit_elasticsearch#g\" app/config/parameters_test.yml"
+                    sh "sed -i \"s#pim_es_host: .*#pim_es_host: phpunit_elasticsearch#g\" app/config/parameters_test.yml"
                     sh "mkdir -p app/build/logs"
                     sh "./app/console --env=test pim:install --force"
 
@@ -111,7 +111,7 @@ def runBehatTest(features, phpVersion, mysqlVersion) {
             // Configure the PIM
             sh "cp app/config/parameters.yml.dist app/config/parameters_test.yml"
             sh "sed -i \"s#database_host: .*#database_host: ${mysqlHostName}#g\" app/config/parameters_test.yml"
-            sh "sed -i \"s#pim_es_host: .*#database_host: elasticsearch#g\" app/config/parameters_test.yml"
+            sh "sed -i \"s#pim_es_host: .*#pim_es_host: elasticsearch#g\" app/config/parameters_test.yml"
             sh "printf \"    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" >> app/config/parameters_test.yml"
 
             sh "mkdir -p app/build/logs/behat app/build/logs/consumer app/build/screenshots"
