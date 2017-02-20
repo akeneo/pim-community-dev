@@ -29,21 +29,159 @@ pim_connector:
     variant_group_writer.title: Variantengruppen-Speicher
     writer.title: Entitäten-Speicher
     csv_writer.title: CSV-Schreiber
+  export:
+    csv:
+      delimiter:
+        label: Trennzeichen
+        help: Einzelnes Zeichen, das als Feld-Trennzeichen verwendet wird
+      enclosure:
+        label: Zeichen zum Einschließen
+        help: Einzelnes Zeichen, von dem Felder eingeschlossen werden
+      withHeader:
+        label: Mit Kopfzeile
+        help: Ob die Spaltenüberschrift ausgegeben wird oder nicht
+      with_media:
+        label: Exportieren von Dateien und Bildern
+        help: Ob Produktdateien und Bilder exportiert werden oder nicht
+      filePath:
+        label: Dateipfad
+        help: Wo die generierte Datei im Dateisystem abgelegt wird
+      decimalSeparator:
+        label: Dezimaltrennzeichen
+        help: Wählen Sie ein Dezimaltrennzeichen
+      dateFormat:
+        label: Datumsformat
+        help: Bestimmen Sie das Format der Datumsfelder
+    xlsx:
+      lines_per_files:
+        label: Anzahl Zeilen pro Datei
+        help: Definieren Sie die max. Anzahl Zeilen je Datei
+      withHeader:
+        label: Mit Kopfzeile
+        help: Ob die Spaltenüberschrift ausgegeben wird oder nicht
+      with_media:
+        label: Exportieren von Dateien und Bildern
+        help: Ob Produktdateien und Bilder exportiert werden oder nicht
+      filePath:
+        label: Dateipfad
+        help: Wo die generierte Datei im Dateisystem abgelegt wird
+      decimalSeparator:
+        label: Dezimaltrennzeichen
+        help: Wählen Sie ein Dezimaltrennzeichen
+      dateFormat:
+        label: Datumsformat
+        help: Bestimmen Sie das Format der Datumsfelder
+    yml:
+      filePath:
+        label: Dateipfad
+        help: Wo die generierte Datei im Dateisystem abgelegt wird
+  import:
+    csv:
+      enabled:
+        label: Produkt aktivieren
+        help: Ob importierte Produkte aktiviert werden sollen oder nicht
+      categoriesColumn:
+        label: Kategorienspalte
+        help: Name der Kategorienspalte
+      familyColumn:
+        label: Produktfamilienspalte
+        help: Name der Produktfamilienspalte
+      groupsColumn:
+        label: Gruppenspalte
+        help: Name der Gruppenspalte
+      filePath:
+        label: Datei
+        help: Die zu importierende CSV-Datei
+      uploadAllowed:
+        label: Datei-Upload erlauben
+        help: Ob direktes Hochladen einer Datei erlaubt wird oder nicht
+      delimiter:
+        label: Trennzeichen
+        help: Einzelnes Zeichen, von dem Felder in der CSV-Datei getrennt werden
+      enclosure:
+        label: Zeichen zum Einschließen
+        help: Einzelnes Zeichen, von dem Felder eingeschlossen werden
+      escape:
+        label: Escape-Zeichen
+        help: Einzelnes Zeichen, das als Escape-Zeichen für Felder benutzt wird
+      circularRefsChecked:
+        label: Zirkelbezüge überprüfen
+        help: Falls ja, werden die Daten verarbeitet, um sicherzustellen, dass keine Zirkelbezüge zwischen den Kategorien existieren
+      realTimeVersioning:
+        label: Echtzeit Änderungsverfolgung
+        help: Bedeutet, dass sich die Änderungsverfolgung von Produkten automatisch aktualisiert. Um die Systemleistung zu verbessern, kann diese Funktion ausgeschaltet werden
+      copyValuesToProducts:
+        label: Variantengruppenwerte in Produkte kopieren
+        help: Bedeutet, dass die Produkte automatisch mit den Variantengruppenwerten aktualisiert werden. Um nur die Variantengruppe zu aktualisieren, kann diese Funktion ausgeschaltet werden
+      enabledComparison:
+        label: Werte vergleichen
+        help: Den Vergleich von originalen und importierten Werten aktivieren. Kann den Import beschleunigen, wenn die importierten Werte den originalen Werten sehr ähnlich sind
+      decimalSeparator:
+        label: Dezimaltrennzeichen
+        help: Einzelnes Zeichen, das als Dezimaltrennzeichen für Felder benutzt wird
+      dateFormat:
+        label: Datumsformat
+        help: Geben Sie das Datumsformat aller Datumsspalten der Datei an, z.B. DD/MM/YYYY für ein 31/12/2014 Format.
+    xlsx:
+      enabled:
+        label: Produkt aktivieren
+        help: Ob importierte Produkte aktiviert werden sollen oder nicht
+      categoriesColumn:
+        label: Kategorienspalte
+        help: Name der Kategorienspalte
+      familyColumn:
+        label: Produktfamilienspalte
+        help: Name der Produktfamilienspalte
+      groupsColumn:
+        label: Gruppenspalte
+        help: Name der Gruppenspalte
+      filePath:
+        label: Datei
+        help: Die zu importierende XLSX-Datei
+      uploadAllowed:
+        label: Datei-Upload erlauben
+        help: Ob direktes Hochladen einer Datei erlaubt wird oder nicht
+      circularRefsChecked:
+        label: Zirkelbezüge überprüfen
+        help: Falls ja, werden die Daten verarbeitet, um sicherzustellen, dass keine Zirkelbezüge zwischen den Kategorien existieren
+      realTimeVersioning:
+        label: Echtzeit Änderungsverfolgung
+        help: Bedeutet, dass sich die Änderungsverfolgung von Produkten automatisch aktualisiert. Um die Systemleistung zu verbessern, kann diese Funktion ausgeschaltet werden
+      copyValuesToProducts:
+        label: Variantengruppenwerte in Produkte kopieren
+        help: Bedeutet, dass die Produkte automatisch mit den Variantengruppenwerten aktualisiert werden. Um nur die Variantengruppe zu aktualisieren, kann diese Funktion ausgeschaltet werden
+      enabledComparison:
+        label: Werte vergleichen
+        help: Den Vergleich von originalen und importierten Werten aktivieren. Kann den Import beschleunigen, wenn die importierten Werte den originalen Werten sehr ähnlich sind
+      decimalSeparator:
+        label: Dezimaltrennzeichen
+        help: Einzelnes Zeichen, das als Dezimaltrennzeichen für Felder benutzt wird
+      dateFormat:
+        label: Datumsformat
+        help: Geben Sie das Datumsformat aller Datumsspalten der Datei an, z.B. DD/MM/YYYY für ein 31/12/2014 Format.
+    yml:
+      filePath:
+        label: Datei
+        help: Die zu importierende YML-Datei
+      uploadAllowed:
+        label: Datei-Upload erlauben
+        help: Ob direktes Hochladen einer Datei erlaubt wird oder nicht
 job_execution.summary:
-  read: Lesen
+  read: gelesen
+  read_lines: gelesene Zeilen
   write: geschrieben
   skip: übersprungen
   create: erstellt
   process: verarbeitet
-  update_products: Aktualisierte Produkte
+  update_products: aktualisierte Produkte
   process_products: verarbeitete Produkte
-  skip_products: Übersprungene Produkte
+  skip_products: übersprungene Produkte
   displayed: Die ersten Warnungen angezeigt
   charset_validator:
     title: 'Datei Zeichenkodierung:'
     skipped: übersprungen, Erweiterung in der Whitelist
   product_skipped_no_diff: Übersprungenes Produkt (keine Unterschiede)
-  item_position: gelesene Zeilen
+  product_skipped_no_associations: Produkt übersprungen (keine Verbindungen vorhanden)
 batch_jobs:
   csv_product_export:
     label: Produkt-Export als CSV-Datei
@@ -67,8 +205,8 @@ batch_jobs:
     label: Variantengruppen-Export als CSV
     export.label: Variantengruppen-Export
   csv_family_export:
-    label: Exportiere Produktfamilie in CSV-Datei
-    export.label: Exportiere Produktfamilie
+    label: Produktfamilien-Export als CSV-Datei
+    export.label: Produktfamilien-Export
   csv_product_import:
     label: Produkt-Export als CSV-Datei
     validation.label: Dateivalidierung
@@ -181,7 +319,7 @@ batch_jobs:
     import.label: Variantengruppen-Import
   xlsx_family_export:
     label: Produktfamilien-Eport als XLSX-Datei
-    export.label: Exportiere Produktfamilie
+    export.label: Produktfamilien-Export
   xlsx_category_export:
     label: Kategorie-Export als XLSX-Datei
     export.label: Kategorie export
@@ -228,4 +366,4 @@ batch_jobs:
   xlsx_group_type_import:
     label: Gruppen-Import aus XLSX-Datei
     validation.label: Dateivalidierung
-    import.label: Gruppentyp-Import
+    import.label: Gruppen-Import
