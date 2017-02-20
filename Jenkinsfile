@@ -32,7 +32,11 @@ stage("Checkout") {
         deleteDir()
         docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
             unstash "project_files"
-            sh "composer require --no-update \"${ceOwner}/pim-community-dev\":\"${ceBranch}\""
+            if ('akeneo' != ceOwner) {
+                sh "composer config repositories.pim-community-dev vcs \"https://github.com/${ceOwner}/pim-community-dev.git\""
+            }
+
+            sh "composer require --no-update \"akeneo/pim-community-dev\":\"${ceBranch}\""
             sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
             sh "app/console oro:requirejs:generate-config"
             sh "app/console assets:install"
