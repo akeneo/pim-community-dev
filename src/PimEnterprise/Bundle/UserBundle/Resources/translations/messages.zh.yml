@@ -1,0 +1,5 @@
+user:
+  email:
+    notifications: Email通知
+  asset_delay_reminder: 资源延迟提醒 （以天计）
+Default asset tree: 默认资源树
