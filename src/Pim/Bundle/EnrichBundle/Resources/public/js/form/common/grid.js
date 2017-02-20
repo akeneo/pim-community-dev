@@ -33,12 +33,14 @@ define([
                 });
                 this.options   = options;
 
+                var selectionIdentifier = options.selectionIdentifier || 'id';
+
                 mediator.on('datagrid:selectModel:' + this.alias, function (model) {
-                    this.addElement(model.get('id'));
+                    this.addElement(model.get(selectionIdentifier));
                 }.bind(this));
 
                 mediator.on('datagrid:unselectModel:' + this.alias, function (model) {
-                    this.removeElement(model.get('id'));
+                    this.removeElement(model.get(selectionIdentifier));
                 }.bind(this));
             },
 

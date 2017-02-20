@@ -65,6 +65,15 @@ interface ProductValueCollectionInterface extends \Countable, \IteratorAggregate
     public function remove(ProductValueInterface $value);
 
     /**
+     * Removes all product values related to a specified attribute (if any).
+     *
+     * @param AttributeInterface $attribute
+     *
+     * @return bool TRUE if this collection contained values for the specified attribute, FALSE otherwise.
+     */
+    public function removeByAttribute(AttributeInterface $attribute);
+
+    /**
      * Checks whether the collection contains a value with the specified key/index.
      *
      * @param string $key The key/index to check for.

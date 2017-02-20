@@ -4,25 +4,23 @@ namespace spec\Pim\Component\Catalog\Manager;
 
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\FileStorage;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductTemplateMediaManagerSpec extends ObjectBehavior
 {
     function let(
         FileStorerInterface $fileStorer,
-        NormalizerInterface $normalizer,
         ProductValueFactory $productValueFactory
     ) {
-        $this->beConstructedWith($fileStorer, $normalizer, $productValueFactory);
+        $this->beConstructedWith($fileStorer, $productValueFactory);
     }
 
     function it_is_initializable()
@@ -32,7 +30,6 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
 
     function it_uses_the_media_manager_to_handle_the_media_of_product_templates(
         $fileStorer,
-        $normalizer,
         $productValueFactory,
         ProductTemplateInterface $template,
         ProductValueInterface $imageValue,
@@ -43,12 +40,20 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
         FileInfoInterface $fileInfoMedia,
         FileInfoInterface $fileInfoMediaUploaded,
         AttributeInterface $imageAttribute,
-        AttributeInterface $fileAttribute
+        AttributeInterface $fileAttribute,
+        ProductValueCollectionInterface $values,
+        \ArrayIterator $valuesIterator
     ) {
         $pathname = tempnam(sys_get_temp_dir(), 'spec');
         $uploadedFile = new UploadedFile($pathname, 'uploaded file.txt');
 
-        $template->getValues()->willReturn([$imageValue, $fileValue]);
+        $template->getValues()->willReturn($values);
+
+        $values->getIterator()->willReturn($valuesIterator);
+        $valuesIterator->rewind()->shouldBeCalled();
+        $valuesIterator->valid()->willReturn(true, true, false);
+        $valuesIterator->current()->willReturn($imageValue, $fileValue);
+        $valuesIterator->next()->shouldBeCalled();
 
         $imageValue->getMedia()->willReturn($imageMedia);
         $imageMedia->isRemoved()->willReturn(true);
@@ -70,16 +75,18 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
         $productValueFactory->create($imageAttribute, null, null, null)->willReturn($newImageValue);
         $productValueFactory->create($fileAttribute, null, null, 'file_info_key')->willReturn($newFileValue);
 
-        $normalizer
-            ->normalize([$newImageValue, $newFileValue], 'standard', ['entity' => 'product'])
-            ->willReturn(['file_info_key']);
-        $template->setValuesData(['file_info_key'])->shouldBeCalled();
+        $values->remove($imageValue)->willReturn($values);
+        $values->add($newImageValue)->willReturn($values);
+
+        $values->remove($fileValue)->willReturn($values);
+        $values->add($newFileValue)->willReturn($values);
+
+        $template->setValues($values)->shouldBeCalled();
 
         $this->handleProductTemplateMedia($template);
     }
 
     function it_updates_normalized_product_template_values_if_media_values_have_been_handled(
-        $normalizer,
         $productValueFactory,
         ProductTemplateInterface $imageTemplate,
         ProductTemplateInterface $textTemplate,
@@ -87,9 +94,20 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
         ProductValueInterface $textValue,
         FileInfoInterface $imageMedia,
         AttributeInterface $attribute,
-        ProductValueInterface $newImageValue
+        ProductValueInterface $newImageValue,
+        ProductValueCollectionInterface $imageValues,
+        ProductValueCollectionInterface $textValues,
+        \ArrayIterator $imageValuesIterator,
+        \ArrayIterator $textValuesIterator
     ) {
-        $imageTemplate->getValues()->willReturn([$imageValue]);
+        $imageTemplate->getValues()->willReturn($imageValues);
+
+        $imageValues->getIterator()->willReturn($imageValuesIterator);
+        $imageValuesIterator->rewind()->shouldBeCalled();
+        $imageValuesIterator->valid()->willReturn(true, true, false);
+        $imageValuesIterator->current()->willReturn($imageValue);
+        $imageValuesIterator->next()->shouldBeCalled();
+
         $imageValue->getMedia()->willReturn($imageMedia);
         $imageMedia->isRemoved()->willReturn(true);
 
@@ -98,11 +116,21 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
         $imageValue->getLocale()->willReturn(null);
 
         $productValueFactory->create($attribute, null, null, null)->willReturn($newImageValue);
-        $normalizer->normalize([$newImageValue], 'standard', ['entity' => 'product'])->willReturn(['foobar']);
-        $imageTemplate->setValuesData(['foobar'])->shouldBeCalled();
 
-        $textTemplate->getValues()->willReturn([$textValue]);
-        $textTemplate->setValuesData(Argument::any())->shouldNotBeCalled();
+        $imageValues->remove($imageValue)->willReturn($imageValues);
+        $imageValues->add($newImageValue)->willReturn($imageValues);
+
+        $imageTemplate->setValues($imageValues)->shouldBeCalled();
+
+        $textTemplate->getValues()->willReturn($textValues);
+
+        $textValues->getIterator()->willReturn($textValuesIterator);
+        $textValuesIterator->rewind()->shouldBeCalled();
+        $textValuesIterator->valid()->willReturn(true, true, false);
+        $textValuesIterator->current()->willReturn($textValue);
+        $textValuesIterator->next()->shouldBeCalled();
+
+        $textTemplate->setValues(Argument::any())->shouldNotBeCalled();
 
         $this->handleProductTemplateMedia($imageTemplate);
         $this->handleProductTemplateMedia($textTemplate);

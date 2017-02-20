@@ -85,6 +85,7 @@ services:
         class: '%pim_catalog.updater.product_template.class%'
         arguments:
             - '@pim_catalog.updater.product_property_setter'
+            - '@pim_serializer'
 
     pim_catalog.updater.attribute_option:
         class: '%pim_catalog.updater.attribute_option.class%'
