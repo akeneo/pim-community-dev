@@ -53,4 +53,19 @@ class CreateProjectIntegration extends TeamworkAssistantTestCase
             sprintf('The new datagrid view must have the type "project". "%s" found.', $datagridView->getType())
         );
     }
+
+    /**
+     * @expectedException Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionCode  305
+     */
+    public function testThatWeCannotCreateAProjectWithDisableLocale()
+    {
+        $this->createProject('High-Tech project /42', 'admin', 'iu_Latn_CA', 'mobile', [
+            [
+                'field'    => 'categories',
+                'operator' => 'IN',
+                'value'    => ['high_tech'],
+            ],
+        ]);
+    }
 }

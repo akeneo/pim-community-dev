@@ -12,6 +12,7 @@
 namespace PimEnterprise\Component\TeamworkAssistant\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -108,6 +109,14 @@ class ProjectUpdater implements ObjectUpdaterInterface
                 break;
             case 'locale':
                 $locale = $this->localeRepository->findOneByIdentifier($value);
+                if (!$locale->isActivated()) {
+                    throw InvalidPropertyException::dataExpected(
+                        $field,
+                        'to be activated',
+                        static::class,
+                        gettype($value)
+                    );
+                }
                 $project->setLocale($locale);
                 break;
         }
@@ -128,7 +137,7 @@ class ProjectUpdater implements ObjectUpdaterInterface
                 throw new \Exception('Invalid date');
             }
         } catch (\Exception $e) {
-            throw InvalidArgumentException::expected(
+            throw InvalidPropertyException::dataExpected(
                 $field,
                 'a string with the format yyyy-mm-dd',
                 static::class,

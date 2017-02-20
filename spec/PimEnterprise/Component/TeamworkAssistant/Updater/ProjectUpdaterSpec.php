@@ -3,6 +3,7 @@
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Updater\ProjectUpdater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -57,6 +58,7 @@ class ProjectUpdaterSpec extends ObjectBehavior
         $userRepository->findOneByIdentifier('julia')->willreturn($user);
         $channelRepository->findOneByIdentifier('ecommerce')->willReturn($channel);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($locale);
+        $locale->isActivated()->willReturn(true);
 
         $project->setLabel('Summer collection 2017')->shouldBeCalled();
         $project->setDueDate(Argument::type(\DateTime::class))->shouldBeCalled();
@@ -82,5 +84,38 @@ class ProjectUpdaterSpec extends ObjectBehavior
                 'locale' => 'fr_FR',
             ]
         );
+    }
+
+    function it_throws_exception_if_project_locale_is_disable(
+        $localeRepository,
+        LocaleInterface $locale,
+        ProjectInterface $project
+    ) {
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($locale);
+        $locale->isActivated()->willReturn(false);
+
+        $this->shouldThrow(InvalidPropertyException::class)->during('update', [
+            $project,
+            [
+                'locale' => 'fr_FR',
+            ]
+        ]);
+    }
+
+    function it_throws_exception_if_the_date_is_invalid(ProjectInterface $project)
+    {
+        $this->shouldThrow(InvalidPropertyException::class)->during('update', [
+            $project,
+            [
+                'due_date' => '2012-13-02',
+            ]
+        ]);
+
+        $this->shouldThrow(InvalidPropertyException::class)->during('update', [
+            $project,
+            [
+                'due_date' => 'string',
+            ]
+        ]);
     }
 }
