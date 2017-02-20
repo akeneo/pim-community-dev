@@ -150,7 +150,6 @@ class Edit extends Form
      */
     public function isAttributeRequired($attributeCode, $channelCode)
     {
-
         $selector = '.attribute-requirement [data-channel="%s"][data-attribute="%s"]';
         $checkbox = $this->find('css', sprintf($selector, $channelCode, $attributeCode));
         if (!$checkbox) {

@@ -25,6 +25,11 @@ class SelectGroupDecorator extends ElementDecorator
         'resultItemSelector' => '.select2-result-label span:contains("%s"), li.select2-no-results',
     ];
 
+    /**
+     * Check and add list of given items
+     *
+     * @param array $items
+     */
     public function addItems(array $items)
     {
         $this->openDropList();

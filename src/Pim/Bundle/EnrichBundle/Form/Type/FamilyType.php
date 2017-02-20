@@ -23,7 +23,8 @@ class FamilyType extends AbstractType
      *
      * @param string $dataClass
      */
-    public function __construct($dataClass) {
+    public function __construct($dataClass)
+    {
         $this->dataClass = $dataClass;
     }
 

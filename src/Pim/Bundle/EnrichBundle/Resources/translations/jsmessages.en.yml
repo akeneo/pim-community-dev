@@ -252,6 +252,8 @@ pim_enrich:
             info:
                 update_successful: Family successfully updated.
                 create_successful: Channel successfully created.
+                cant_remove_attribute_as_label: Can not remove attribute used as label
+                attribute_edit_permission_is_not_granted: You have no rights to edit familie's attributes
             meta:
                 created: Created
                 created_by: Created by
@@ -411,6 +413,11 @@ pim_enrich:
                         select_attributes: Add attributes
                         add: Add
                         attributes_groups_selected: '{{ itemsCount }} group(s) selected'
+                    not_required_label: Not required
+                    required_label: Required
+                    dialog:
+                        delete_message: Are you sure you want to remove the attribute  {{ name }} from this family?
+                        delete_title: Delete confirmation
                 history:
                     title: History
 

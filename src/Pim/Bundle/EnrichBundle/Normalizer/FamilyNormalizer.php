@@ -5,10 +5,10 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Normalizer\Standard\FamilyNormalizer as StandardFamilyNormalizer;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Component\Catalog\Normalizer\Standard\FamilyNormalizer as StandardFamilyNormalizer;
 
 /**
  * Class FamilyNormalizer

@@ -976,16 +976,6 @@ class WebUser extends RawMinkContext
         }
     }
 
-    public function removeAttributeButtonIsDisabled($attribute)
-    {
-        return $this->spin(function () use ($attribute) {
-            $button = $this->getCurrentPage()
-                ->find('css', sprinf('.remove-attribute[data-attribute="$s"]', $attribute));
-//        return true
-        }, sprintf('Remove button "%s" is still enabled', $attribute));
-
-    }
-
     /**
      * @param string $attributes
      * @param string $group
