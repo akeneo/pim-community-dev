@@ -17,12 +17,12 @@ class SortersConfiguratorSpec extends ObjectBehavior
     {
         $attributes = [
             'sku' => [
-                'code'          => 'sku',
-                'attributeType' => 'pim_catalog_identifier'
+                'code' => 'sku',
+                'type' => 'pim_catalog_identifier',
             ],
             'name' => [
-                'code'          => 'name',
-                'attributeType' => 'pim_catalog_text'
+                'code' => 'name',
+                'type' => 'pim_catalog_text',
             ]
         ];
 

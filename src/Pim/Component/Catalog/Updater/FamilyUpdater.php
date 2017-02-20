@@ -163,7 +163,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
             if (array_key_exists($channelCode, $newRequirements)) {
                 $attribute = $requirement->getAttribute();
                 $key = array_search($attribute->getCode(), $newRequirements[$channelCode], true);
-                if (false === $key && AttributeTypes::IDENTIFIER !== $attribute->getAttributeType()) {
+                if (false === $key && AttributeTypes::IDENTIFIER !== $attribute->getType()) {
                     $family->removeAttributeRequirement($requirement);
                 } elseif (false !== $key) {
                     unset($newRequirements[$channelCode][$key]);
@@ -205,7 +205,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
                     $attributeCode
                 );
             }
-            if (AttributeTypes::IDENTIFIER !== $attribute->getAttributeType()) {
+            if (AttributeTypes::IDENTIFIER !== $attribute->getType()) {
                 $requirements[] = $this->createAttributeRequirement($family, $attribute, $channelCode);
             }
         }
@@ -255,7 +255,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
     protected function addAttributes(FamilyInterface $family, array $data)
     {
         foreach ($family->getAttributes() as $attribute) {
-            if (AttributeTypes::IDENTIFIER !== $attribute->getAttributeType()) {
+            if (AttributeTypes::IDENTIFIER !== $attribute->getType()) {
                 $family->removeAttribute($attribute);
             }
         }

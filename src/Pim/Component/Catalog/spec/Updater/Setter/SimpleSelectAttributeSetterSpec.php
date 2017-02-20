@@ -38,10 +38,10 @@ class SimpleSelectAttributeSetterSpec extends ObjectBehavior
         AttributeInterface $simpleSelectAttribute,
         AttributeInterface $textareaAttribute
     ) {
-        $simpleSelectAttribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $simpleSelectAttribute->getType()->willReturn('pim_catalog_simpleselect');
         $this->supportsAttribute($simpleSelectAttribute)->shouldReturn(true);
 
-        $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $textareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 

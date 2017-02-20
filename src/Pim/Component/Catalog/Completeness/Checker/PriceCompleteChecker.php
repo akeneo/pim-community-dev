@@ -43,6 +43,6 @@ class PriceCompleteChecker implements ProductValueCompleteCheckerInterface
      */
     public function supportsValue(ProductValueInterface $productValue)
     {
-        return 'pim_catalog_price_collection' === $productValue->getAttribute()->getAttributeType();
+        return 'pim_catalog_price_collection' === $productValue->getAttribute()->getType();
     }
 }

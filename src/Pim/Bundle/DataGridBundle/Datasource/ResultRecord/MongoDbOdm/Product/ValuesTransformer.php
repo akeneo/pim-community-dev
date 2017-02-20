@@ -65,7 +65,7 @@ class ValuesTransformer
         $backendType = $attribute['backendType'];
         $value = $result[$attributeCode];
 
-        if (AttributeTypes::DATE === $attribute['attributeType'] && isset($value[$backendType])) {
+        if (AttributeTypes::DATE === $attribute['type'] && isset($value[$backendType])) {
             $mongoDate = $value[$backendType];
             $value[$backendType] = $dateTransformer->transform($mongoDate);
         }
@@ -86,7 +86,7 @@ class ValuesTransformer
         $attributeCode = $attribute['code'];
         $backendType = $attribute['backendType'];
         $value = $result[$attributeCode];
-        if (AttributeTypes::IMAGE === $attribute['attributeType'] && isset($value[$backendType])) {
+        if (AttributeTypes::IMAGE === $attribute['type'] && isset($value[$backendType])) {
             $normalizedData = $result['normalizedData'];
             $attributeCode = ProductQueryUtility::getNormalizedValueField(
                 $attributeCode,

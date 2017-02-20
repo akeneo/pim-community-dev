@@ -87,7 +87,7 @@ class AttributeFilterDumper implements DumperInterface
     protected function getFilterInformationForAttribute(AttributeInterface $attribute, array $attributeFilters)
     {
         $field = $attribute->getCode();
-        $attributeType = $attribute->getAttributeType();
+        $attributeType = $attribute->getType();
         $isLocalizable = $attribute->isLocalizable() ? 'yes' : 'no';
         $isScopable = $attribute->isScopable() ? 'yes' : 'no';
 

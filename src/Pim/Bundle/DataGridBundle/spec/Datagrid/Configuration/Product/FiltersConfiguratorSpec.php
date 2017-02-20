@@ -27,7 +27,7 @@ class FiltersConfiguratorSpec extends ObjectBehavior
                 'code'                => 'sku',
                 'label'               => 'Sku',
                 'useableAsGridFilter' => 1,
-                'attributeType'       => 'pim_catalog_identifier',
+                'type'                => 'pim_catalog_identifier',
                 'sortOrder'           => 1,
                 'group'               => 'General',
                 'groupOrder'          => 1
@@ -36,7 +36,7 @@ class FiltersConfiguratorSpec extends ObjectBehavior
                 'code'                => 'name',
                 'label'               => 'Name',
                 'useableAsGridFilter' => 1,
-                'attributeType'       => 'pim_catalog_text',
+                'type'                => 'pim_catalog_text',
                 'sortOrder'           => 2,
                 'group'               => 'General',
                 'groupOrder'          => 1
@@ -85,7 +85,7 @@ class FiltersConfiguratorSpec extends ObjectBehavior
                 'code'                => 'sku',
                 'label'               => 'Sku',
                 'useableAsGridFilter' => 1,
-                'attributeType'       => 'pim_catalog_identifier',
+                'type'                => 'pim_catalog_identifier',
                 'sortOrder'           => 2,
                 'group'               => 'Foo',
                 'groupOrder'          => 3
@@ -94,7 +94,7 @@ class FiltersConfiguratorSpec extends ObjectBehavior
                 'code'                => 'name',
                 'label'               => 'Name',
                 'useableAsGridFilter' => 1,
-                'attributeType'       => 'pim_catalog_text',
+                'type'                => 'pim_catalog_text',
                 'sortOrder'           => 4,
                 'group'               => 'Bar',
                 'groupOrder'          => 5

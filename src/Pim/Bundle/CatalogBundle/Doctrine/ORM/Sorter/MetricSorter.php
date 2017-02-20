@@ -35,7 +35,7 @@ class MetricSorter implements AttributeSorterInterface
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
-        return AttributeTypes::METRIC === $attribute->getAttributeType();
+        return AttributeTypes::METRIC === $attribute->getType();
     }
 
     /**

@@ -28,7 +28,7 @@ class LengthGuesser implements ConstraintGuesserInterface
     public function supportAttribute(AttributeInterface $attribute)
     {
         return in_array(
-            $attribute->getAttributeType(),
+            $attribute->getType(),
             [
                 AttributeTypes::TEXT,
                 AttributeTypes::TEXTAREA,
@@ -44,7 +44,7 @@ class LengthGuesser implements ConstraintGuesserInterface
     {
         $constraints = [];
 
-        $characterLimit = AttributeTypes::TEXTAREA === $attribute->getAttributeType() ?
+        $characterLimit = AttributeTypes::TEXTAREA === $attribute->getType() ?
             static::TEXTAREA_FIELD_LEMGTH :
             static::TEXT_FIELD_LEMGTH;
 

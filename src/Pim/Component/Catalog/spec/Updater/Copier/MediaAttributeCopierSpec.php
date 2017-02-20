@@ -53,12 +53,12 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         AttributeInterface $fromNumberAttribute,
         AttributeInterface $toNumberAttribute
     ) {
-        $fromMediaAttribute->getAttributeType()->willReturn('media');
-        $toMediaAttribute->getAttributeType()->willReturn('media');
+        $fromMediaAttribute->getType()->willReturn('media');
+        $toMediaAttribute->getType()->willReturn('media');
         $this->supportsAttributes($fromMediaAttribute, $toMediaAttribute)->shouldReturn(true);
 
-        $fromNumberAttribute->getAttributeType()->willReturn('pim_catalog_number');
-        $toNumberAttribute->getAttributeType()->willReturn('pim_catalog_number');
+        $fromNumberAttribute->getType()->willReturn('pim_catalog_number');
+        $toNumberAttribute->getType()->willReturn('pim_catalog_number');
         $this->supportsAttributes($fromNumberAttribute, $toNumberAttribute)->shouldReturn(false);
 
         $this->supportsAttributes($fromMediaAttribute, $toNumberAttribute)->shouldReturn(false);

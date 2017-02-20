@@ -33,11 +33,11 @@ class ReferenceDataAttributeCopierSpec extends ObjectBehavior
         AttributeInterface $referenceDataColorAttribute,
         AttributeInterface $referenceDataFabricAttribute
     ) {
-        $referenceDataColorAttribute->getAttributeType()->willReturn('pim_reference_data_simpleselect');
-        $referenceDataFabricAttribute->getAttributeType()->willReturn('pim_reference_data_simpleselect');
+        $referenceDataColorAttribute->getType()->willReturn('pim_reference_data_simpleselect');
+        $referenceDataFabricAttribute->getType()->willReturn('pim_reference_data_simpleselect');
         $referenceDataColorAttribute->getReferenceDataName()->willReturn('color');
         $referenceDataFabricAttribute->getReferenceDataName()->willReturn('fabric');
-        $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $textareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $textareaAttribute->getReferenceDataName()->willReturn(null);
 
         $this->supportsAttributes($referenceDataColorAttribute, $referenceDataColorAttribute)->shouldReturn(true);
