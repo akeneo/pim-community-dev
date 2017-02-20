@@ -1,5 +1,7 @@
 #!groovy
 
+def launchUnitTests = "yes"
+def launchBehat = "yes"
 def editions = ["ce", "ee"]
 def storages = ["orm", "odm"]
 def features = "features,vendor/akeneo/pim-community-dev/features"
@@ -11,6 +13,9 @@ stage("Checkout") {
     milestone 1
     if (env.BRANCH_NAME =~ /^PR-/) {
         userInput = input(message: 'Launch tests?', parameters: [
+
+            choice(choices: 'yes\nno', description: 'Run unit and integration tests', name: 'launchUnitTests'),
+            choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehat'),
             string(defaultValue: 'odm,orm', description: 'Storage used for the build (comma separated values)', name: 'storages'),
             string(defaultValue: 'ee,ce', description: 'PIM edition the tests should run to (comma separated values)', name: 'editions'),
             string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
@@ -19,6 +24,8 @@ stage("Checkout") {
             choice(choices: 'none\n1.7\n5', description: 'ElasticSearch version to run behat with', name: 'esVersion')
         ])
 
+        launchUnitTests = userInput['launchUnitTests']
+        launchBehat = userInput['launchBehat']
         storages = userInput['storages'].tokenize(',')
         editions = userInput['editions'].tokenize(',')
         features = userInput['features']
@@ -74,8 +81,10 @@ stage("Checkout") {
 stage("Integration tests") {
     def tasks = [:]
 
-    tasks["php-5.6"] = {runUnitTest("5.6")}
-    tasks["php-7.0"] = {runUnitTest("7.0")}
+    if (launchUnitTests.equals('yes')) {
+        tasks["php-5.6"] = {runUnitTest("5.6")}
+        tasks["php-7.0"] = {runUnitTest("7.0")}
+    }
 
     tasks['grunt'] = {
         node('docker') {
@@ -89,10 +98,12 @@ stage("Integration tests") {
         }
     }
 
-    if (editions.contains('ee') && storages.contains('odm')) {tasks["behat-ee-odm"] = {runBehatTest("ee", "odm", features, phpVersion, mysqlVersion, esVersion)}}
-    if (editions.contains('ee') && storages.contains('orm')) {tasks["behat-ee-orm"] = {runBehatTest("ee", "orm", features, phpVersion, mysqlVersion, esVersion)}}
-    if (editions.contains('ce') && storages.contains('odm')) {tasks["behat-ce-odm"] = {runBehatTest("ce", "odm", features, phpVersion, mysqlVersion, esVersion)}}
-    if (editions.contains('ce') && storages.contains('orm')) {tasks["behat-ce-orm"] = {runBehatTest("ce", "orm", features, phpVersion, mysqlVersion, esVersion)}}
+    if (launchBehat.equals('yes')) {
+        if (editions.contains('ee') && storages.contains('odm')) {tasks["behat-ee-odm"] = {runBehatTest("ee", "odm", features, phpVersion, mysqlVersion, esVersion)}}
+        if (editions.contains('ee') && storages.contains('orm')) {tasks["behat-ee-orm"] = {runBehatTest("ee", "orm", features, phpVersion, mysqlVersion, esVersion)}}
+        if (editions.contains('ce') && storages.contains('odm')) {tasks["behat-ce-odm"] = {runBehatTest("ce", "odm", features, phpVersion, mysqlVersion, esVersion)}}
+        if (editions.contains('ce') && storages.contains('orm')) {tasks["behat-ce-orm"] = {runBehatTest("ce", "orm", features, phpVersion, mysqlVersion, esVersion)}}
+    }
 
     parallel tasks
 }
