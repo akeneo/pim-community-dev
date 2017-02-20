@@ -14,21 +14,19 @@ namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\LocaleAccessRepository;
-use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 
 /**
  * Step executed after a project calculation.
+ * Clean the contributor groups depending on the locale permissions
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class PostProjectCalculationTasklet implements TaskletInterface
+class CleanContributorGroupTasklet implements TaskletInterface
 {
-    /** @var PreProcessingRepositoryInterface */
-    protected $preProcessingRepository;
-
     /** @var IdentifiableObjectRepositoryInterface */
     protected $projectRepository;
 
@@ -73,19 +71,39 @@ class PostProjectCalculationTasklet implements TaskletInterface
         $projectCode = $jobParameters->get('project_code');
         $project = $this->projectRepository->findOneByIdentifier($projectCode);
 
-        $projectContributorGroups = $project->getUserGroups()->toArray();
-
-        $localeContributorGroups = $this->localeAccessRepository->getGrantedUserGroups(
+        $grantedContributorGroups = $this->localeAccessRepository->getGrantedUserGroups(
             $project->getLocale(),
             Attributes::EDIT_ITEMS
         );
 
-        $groupsToRemove = array_diff($projectContributorGroups, $localeContributorGroups);
+        if ($this->isLocaleGrantedToAll($grantedContributorGroups)) {
+            return null;
+        }
 
-        foreach ($groupsToRemove as $groupToRemove) {
-            $project->removeUserGroup($groupToRemove);
+        foreach ($project->getUserGroups() as $projectContributorGroup) {
+            if (!in_array($projectContributorGroup, $grantedContributorGroups)) {
+                $project->removeUserGroup($projectContributorGroup);
+            }
         }
 
         $this->projectSaver->save($project);
+    }
+
+    /**
+     * Check if the project local is granted to all user groups
+     *
+     * @param GroupInterface[] $grantedContributorGroups
+     *
+     * @return bool
+     */
+    protected function isLocaleGrantedToAll(array $grantedContributorGroups)
+    {
+        foreach ($grantedContributorGroups as $grantedContributorGroup) {
+            if ('All' === $grantedContributorGroup->getName()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
