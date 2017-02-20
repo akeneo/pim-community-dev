@@ -1,0 +1,12 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: 建议审查
+      date: 日期
+      author: 作者
+      product: 产品
+      review: 审查
+      empty: 没有要审查的产品提案
+  version:
+    community_edition: CE
+    enterprise_edition: EE

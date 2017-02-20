@@ -1,0 +1,63 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        delete: 删除
+      title: 规则
+      column:
+        code: 代码
+        conditions: 条件：
+        actions: 操作
+  actions:
+    type:
+      "copy": 然后将 %from_field% 复制到 %to_field%
+      "copy_value": 然后将 %from_field% 复制到 %to_field%
+      "set": 然后将 %value% 设置到 %field%
+      "set_value": 然后将 %value% 设置到 %field%
+      "add": 然后将 %value% 添加到 %field%
+  condition:
+    label: 如果 %field% %operator% %value%
+    operators:
+      "STARTS WITH": 开始于
+      "ENDS WITH": 结束于
+      "CONTAINS": 包含
+      "DOES NOT CONTAIN": 不包含
+      "IN": 在
+      "NOT IN": 不在
+      "IN CHILDREN": 在子级中
+      "NOT IN CHILDREN": 不在子级中
+      "UNCLASSIFIED": 未分类
+      "IN OR UNCLASSIFIED": 未分类或在
+      "BETWEEN": 介于
+      "NOT BETWEEN": 不介于
+      "=": 等于
+      ">": 大于
+      ">=": 大于或等于
+      "<": 小于
+      "<=": 小于等于
+  acl_group:
+    rule: 规则
+  acl:
+    rule:
+      view_permissions: 查看规则
+      delete_permissions: 删除规则
+  attribute:
+    tab:
+      rule.title: 规则
+    grid:
+      is_smart.label: 智能
+    acl:
+      rule.view_permissions: 查看规则
+  product:
+    tooltip:
+      product_attribute_affected_by_a_rule.content: 此属性的值可以来自规则 <strong>%rule%</strong>。这意味着如果规则的条件是有效的，您的修改将被覆盖。
+      variant_attribute_affected_by_a_rule.content: 款式组属性优先于产品属性。这意味着款式组的每个属性将重写包含产品中相应的值。规则 <strong>%rule%</strong>，将不会应用在产品上。
+      loading.title: 正在加载...
+    history: 应用规则"%rule%"
+  product_value:
+    tooltip:
+      affected_by.title: '被规则覆盖'
+  steps:
+    product_rule_definition_reader.title: 产品规则导入阅读器
+    rule_definition_processor.title: 产品规则导入处理器
+    product_rule_definition_writer.title: 产品规则导入写

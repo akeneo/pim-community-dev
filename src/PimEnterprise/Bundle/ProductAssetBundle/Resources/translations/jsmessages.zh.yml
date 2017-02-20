@@ -1,0 +1,64 @@
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: 管理资产
+        panel:
+          basket:
+            title: 购物篮
+            empty_basket: 购物车是空的
+        manage_asset:
+          title: 管理资产
+          cancel: 取消
+          confirm: 确认
+  enrich_asset:
+    grid:
+      edit: 编辑资产的属性
+  enrich_variation:
+    popin:
+      delete:
+        title: 删除确认
+        message: 确实要删除这个条目吗?
+      reset:
+        title: 重置变化
+        message: 您确定要重置所有的差异吗？
+  mass_upload:
+    menu: 上传资产
+    btn:
+      cancel: 取消上传
+      delete: 删除
+      start: 开始上传
+    success:
+      new: 将创建一个新的资产
+      canceled: 上传取消
+      deleted: 已上传的文件已被删除
+    error:
+      list: 不能读取已经上传的文件
+      upload: 在上传的过程中发生了错误
+      delete: 无法从服务器中删除文件
+      filename: 该资产有一个无效的文件
+      code: 该资产有一个无效的编号格式
+      locale: 一个资产存在但不可本地化
+      invalid_locale: 区域设置被禁用或无效
+      conflicts: 文件名称冲突
+    grid:
+      medias: 媒体
+      filename: 文件名
+      filetype: 文件类型
+      status: 状态
+      progress: 进度
+      actions: 操作
+    action:
+      cancel: 取消
+      delete: 删除
+    status:
+      added: 已添加
+      queued: 排队中
+      uploading: 上传中
+      error: 故障 
+      success: 保存成功
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: 批量上传
