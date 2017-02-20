@@ -93,6 +93,6 @@ class AssetCollectionCompleteChecker implements ProductValueCompleteCheckerInter
      */
     public function supportsValue(ProductValueInterface $productValue)
     {
-        return AttributeTypes::ASSETS_COLLECTION === $productValue->getAttribute()->getAttributeType();
+        return AttributeTypes::ASSETS_COLLECTION === $productValue->getAttribute()->getType();
     }
 }

@@ -28,7 +28,7 @@ Feature: Browse smart attributes in the attribute grid
             value: Foo
             locale: en_US
       """
-    When I filter by "attributeType" with operator "equals" and value "Text"
+    When I filter by "type" with operator "equals" and value "Text"
     Then I should be able to use the following filters:
       | filter | operator | value | result       |
       | smart  | equals   | yes   | name         |

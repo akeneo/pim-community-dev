@@ -36,6 +36,6 @@ class AssetCollectionFieldProvider implements FieldProviderInterface
     public function supports($element)
     {
         return $element instanceof AttributeInterface &&
-            AttributeTypes::ASSETS_COLLECTION === $element->getAttributeType();
+            AttributeTypes::ASSETS_COLLECTION === $element->getType();
     }
 }
