@@ -111,7 +111,7 @@ class ProductFilter implements ProductFilterInterface
         $result = [];
         foreach ($values as $code => $value) {
             if (!isset($attributeTypes[$code])) {
-                throw new \LogicException(sprintf('Cannot filter value of attribute "%s"', $code));
+                throw UnknownPropertyException::unknownProperty($code);
             }
 
             $comparator = $this->comparatorRegistry->getAttributeComparator($attributeTypes[$code]);
