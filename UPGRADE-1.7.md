@@ -12,7 +12,27 @@
 
 > Please perform a backup of your codebase if you don't use a VCS (Version Control System).
 
+> Don't forget to do the Upgrade process of the Community Edition before
 
+## Migrate your standard project
+
+4. In addition of the Community Edition Upgrade Step 4 in your **app/AppKernel.php**:
+
+    * Remove the following bundle:
+        - `PimEnterprise\Bundle\WebServiceBundle\PimEnterpriseWebServiceBundle`
+
+    * Add the following bundles:
+        - `PimEnterprise\Bundle\ActivityManagerBundle\PimEnterpriseActivityManagerBundle`
+
+5. In addition of the Community Edition Upgrade Step 5 in your **app/config/routing.yml**:
+
+    * Add this configuration:
+    
+```
+pimee_activity_manager:
+    resource: "@PimEnterpriseActivityManagerBundle/Resources/config/routing/routing.yml"
+```
+    
 ## Standard Normalizers
 
 In order to use the standard format, Structured Normalizers have been replaced by Standard Normalizers.
