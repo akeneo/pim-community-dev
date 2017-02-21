@@ -12,7 +12,7 @@ class AssetIntegration extends AbstractStandardNormalizerTestCase
             'code'        => 'cat',
             'localized'   => true,
             'description' => null,
-            'end_of_use'  => '2041-04-02T00:00:00+01:00',
+            'end_of_use'  => '2041-04-02T00:00:00+00:00',
             'tags'        => ['animal'],
             'categories'  => ['asset_main_catalog']
         ];
@@ -22,6 +22,6 @@ class AssetIntegration extends AbstractStandardNormalizerTestCase
 
         $result = $serializer->normalize($repository->findOneByIdentifier('cat'), 'standard');
 
-        $this->assertSame($result, $expected);
+        $this->assertSame($expected, $result);
     }
 }

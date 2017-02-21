@@ -13,13 +13,10 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\TestEnterprise\Integration\PermissionCleaner;
 use Doctrine\DBAL\Connection;
-use PimEnterprise\Bundle\InstallerBundle\Command\CleanAttributeGroupAccessesCommand;
-use PimEnterprise\Bundle\InstallerBundle\Command\CleanCategoryAccessesCommand;
 use PimEnterprise\Component\ActivityManager\Model\ProjectCompleteness;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Tester\CommandTester;
 
 class ActivityManagerTestCase extends TestCase
 {
@@ -32,28 +29,8 @@ class ActivityManagerTestCase extends TestCase
 
         $configuration = $this->getConfiguration();
         if ($configuration->isDatabasePurgedForEachTest() || 1 === self::$count) {
-            $this->cleanRightAccesses();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function cleanRightAccesses()
-    {
-        $application = new Application();
-        $cleanCategoryRight = $application->add(new CleanCategoryAccessesCommand());
-        $cleanAttributeGroupRight = $application->add(new CleanAttributeGroupAccessesCommand());
-        $cleanCategoryRight->setContainer(static::$kernel->getContainer());
-        $cleanAttributeGroupRight->setContainer(static::$kernel->getContainer());
-        $cleanCategoryRightCommand = new CommandTester($cleanCategoryRight);
-        $cleanAttributeGroupRightCommand = new CommandTester($cleanAttributeGroupRight);
-
-        $cleanCategoryRightCode = $cleanCategoryRightCommand->execute([]);
-        $cleanAttributeGroupRightCode = $cleanAttributeGroupRightCommand->execute([]);
-
-        if (0 !== $cleanCategoryRightCode && 0 !== $cleanAttributeGroupRightCode) {
-            throw new \Exception('Failed to clean accesses.');
+            $permissionCleaner = new PermissionCleaner(static::$kernel);
+            $permissionCleaner->cleanPermission(static::$kernel);
         }
     }
 

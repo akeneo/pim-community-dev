@@ -17,6 +17,7 @@
             "Pim\\Behat": "vendor/akeneo/pim-community-dev/features/"
         },
         "psr-4": {
+            "Akeneo\\TestEnterprise\\Integration\\": "tests/",
             "Pim\\Upgrade\\": "upgrades/",
             "Akeneo\\Test\\Integration\\": "vendor/akeneo/pim-community-dev/tests/"
         }
