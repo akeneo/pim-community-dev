@@ -171,6 +171,8 @@ class ProductRepository extends DocumentRepository implements
             $qb->expr()->field('categoryIds')->in($categoryIds)
         );
 
+        $qb->addAnd($qb->expr()->field('enabled')->equals(true));
+
         return $qb;
     }
 
