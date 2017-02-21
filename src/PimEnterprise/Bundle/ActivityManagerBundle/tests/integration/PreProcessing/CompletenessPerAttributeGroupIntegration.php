@@ -24,8 +24,8 @@ class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
      * 4 created projects with the product 'tshirt-skyrim':
      *     - ecommerce / en_US
      *     - ecommerce / fr_FR
-     *     - mobile / en_US
-     *     - mobile / fr_FR
+     *     - tablet / en_US
+     *     - tablet / fr_FR
      */
     public function testProjectCalculationOnTshirtSkyrim()
     {
@@ -38,8 +38,8 @@ class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
 
         $skyrimEcommerceEn = $this->createProject('skyrim-ecommerce-en', 'Julia', 'en_US', 'ecommerce', $projectFilters);
         $skyrimEcommerceFr = $this->createProject('skyrim-ecommerce-fr', 'Julia', 'fr_FR', 'ecommerce', $projectFilters);
-        $skyrimMobileEn = $this->createProject('skyrim-mobile-en', 'Julia', 'en_US', 'mobile', $projectFilters);
-        $skyrimMobileFr = $this->createProject('skyrim-mobile-fr', 'Julia', 'fr_FR', 'mobile', $projectFilters);
+        $skyrimTabletEn = $this->createProject('skyrim-tablet-en', 'Julia', 'en_US', 'tablet', $projectFilters);
+        $skyrimTabletFr = $this->createProject('skyrim-tablet-fr', 'Julia', 'fr_FR', 'tablet', $projectFilters);
 
         $this->checkAttributeGroupCompleteness($skyrimEcommerceEn, $productIdentifier, [
             'general' => [
@@ -71,7 +71,7 @@ class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
             ],
         ]);
 
-        $this->checkAttributeGroupCompleteness($skyrimMobileEn, $productIdentifier, [
+        $this->checkAttributeGroupCompleteness($skyrimTabletEn, $productIdentifier, [
             'general' => [
                 'has_at_least_one_required_attribute_filled' => '0',
                 'is_complete'                                => '1'
@@ -86,7 +86,7 @@ class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
             ],
         ]);
 
-        $this->checkAttributeGroupCompleteness($skyrimMobileFr, $productIdentifier, [
+        $this->checkAttributeGroupCompleteness($skyrimTabletFr, $productIdentifier, [
             'general' => [
                 'has_at_least_one_required_attribute_filled' => '0',
                 'is_complete'                                => '1'
@@ -157,7 +157,7 @@ class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
      *
      * For that test all values should be empty, the "other" attribute group completeness should be "to do"
      *
-     * Note: "other" has not a filled property for en_US and ecommerce but it has for mobile and fr_FR
+     * Note: "other" has not a filled property for en_US and ecommerce but it has for tablet and fr_FR
      *
      * 1 created project with the product 'empty-technical-product':
      *     - Channel: ecommerce
