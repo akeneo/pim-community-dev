@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 use Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -97,6 +98,8 @@ class FamilyController
     /**
      * Get the family collection
      *
+     * @AclAncestor("pim_enrich_family_index")
+     *
      * @param Request $request
      *
      * @return JsonResponse
@@ -124,6 +127,8 @@ class FamilyController
 
     /**
      * Get a single family
+     *
+     * @AclAncestor("pim_enrich_family_index")
      *
      * @param int $identifier
      *
@@ -163,6 +168,8 @@ class FamilyController
 
     /**
      * Removes given family
+     *
+     * @AclAncestor("pim_enrich_family_remove")
      *
      * @param Request $request
      * @param string  $code
@@ -214,11 +221,15 @@ class FamilyController
         $data = json_decode($request->getContent(), true);
 
         if (!$this->securityFacade->isGranted('pim_enrich_family_edit_properties')) {
-            $data = $this->sanitizeFields($data, $this->propertiesFields);
+            $data = array_filter($data, function ($value, $key) {
+                return !in_array($key, $this->propertiesFields);
+            });
         }
 
         if (!$this->securityFacade->isGranted('pim_enrich_family_edit_attributes')) {
-            $data = $this->sanitizeFields($data, $this->attributeFields);
+            $data = array_filter($data, function ($value, $key) {
+                return !in_array($key, $this->attributeFields);
+            });
         }
 
         $this->updater->update($family, $data);
@@ -244,24 +255,5 @@ class FamilyController
                 'internal_api'
             )
         );
-    }
-
-    /**
-     * Returns sanitized family data array
-     *
-     * @param array $data
-     * @param array $fieldsToRemove
-     *
-     * @return mixed
-     */
-    protected function sanitizeFields($data, $fieldsToRemove)
-    {
-        foreach ($fieldsToRemove as $field) {
-            if (array_key_exists($field, $data)) {
-                unset($data[$field]);
-            }
-        }
-
-        return $data;
     }
 }

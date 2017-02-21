@@ -51,9 +51,9 @@ define([
             attributeGroups: null,
             attributeToRemove: null,
             events: {
-                'click tr.group': 'toggleGroup',
+                'click .group': 'toggleGroup',
                 'click .attribute-requirement i': 'toggleAttribute',
-                'click a.remove-attribute': 'onRemoveAttribute'
+                'click .remove-attribute': 'onRemoveAttribute'
             },
 
             /**
@@ -96,55 +96,49 @@ define([
                     return this;
                 }
 
-                if (!this.channels && !this.attributeGroups) {
-                    $.when(
-                        FetcherRegistry.getFetcher('channel').fetchAll(),
-                        FetcherRegistry.getFetcher('attribute-group').fetchAll()
-                    ).then(function (channels, attributeGroups) {
-                        this.channels = channels;
-                        this.attributeGroups = attributeGroups;
+                $.when(
+                    FetcherRegistry.getFetcher('channel').fetchAll(),
+                    FetcherRegistry.getFetcher('attribute-group').fetchAll()
+                ).then(function (channels, attributeGroups) {
+                    this.channels = channels;
+                    this.attributeGroups = attributeGroups;
 
-                        return this.render();
-                    }.bind(this));
-
-                    return;
-                }
-
-                var data = this.getFormData();
-                var groupedAttributes = _.groupBy(data.attributes, function (attribute) {
-                    return attribute.group_code;
-                });
-
-                _.sortBy(groupedAttributes, function (attributes, group) {
-                    return this.attributeGroups[group].sort_order;
-                }.bind(this));
-
-                _.each(groupedAttributes, function (attributes, group) {
-                    attributes = _.sortBy(attributes, function (attribute) {
-                        return attribute.sort_order;
+                    var data = this.getFormData();
+                    var groupedAttributes = _.groupBy(data.attributes, function (attribute) {
+                        return attribute.group_code;
                     });
 
-                    groupedAttributes[group] = attributes;
-                });
+                    _.sortBy(groupedAttributes, function (attributes, group) {
+                        return this.attributeGroups[group].sort_order;
+                    }.bind(this));
 
-                this.$el.html(this.template({
-                    label: __(this.config.label),
-                    requiredLabel: this.requiredLabel,
-                    notRequiredLabel: this.notRequiredLabel,
-                    groupedAttributes: groupedAttributes,
-                    attributeRequirements: data.attribute_requirements,
-                    channels: this.channels,
-                    attributeGroups: this.attributeGroups,
-                    colspan: (this.channels.length + 2),
-                    i18n: i18n,
-                    identifierAttribute: this.identifierAttribute,
-                    catalogLocale: this.catalogLocale
-                }));
+                    _.each(groupedAttributes, function (attributes, group) {
+                        attributes = _.sortBy(attributes, function (attribute) {
+                            return attribute.sort_order;
+                        });
 
-                $(this.$el).find('[data-original-title]').tooltip();
+                        groupedAttributes[group] = attributes;
+                    });
 
-                this.delegateEvents();
-                this.renderExtensions();
+                    this.$el.html(this.template({
+                        label: __(this.config.label),
+                        requiredLabel: this.requiredLabel,
+                        notRequiredLabel: this.notRequiredLabel,
+                        groupedAttributes: groupedAttributes,
+                        attributeRequirements: data.attribute_requirements,
+                        channels: this.channels,
+                        attributeGroups: this.attributeGroups,
+                        colspan: (this.channels.length + 2),
+                        i18n: i18n,
+                        identifierAttribute: this.identifierAttribute,
+                        catalogLocale: this.catalogLocale
+                    }));
+
+                    $(this.$el).find('[data-original-title]').tooltip();
+
+                    this.delegateEvents();
+                    this.renderExtensions();
+                }.bind(this));
             },
 
             /**
@@ -318,15 +312,13 @@ define([
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
 
-                $.when(
-                    FetcherRegistry.getFetcher('attribute-group')
-                        .search({
-                            options: {
-                                identifiers: event.codes,
-                                limit: event.codes.length
-                            }
-                        })
-                ).then(function (attributeGroups) {
+                FetcherRegistry.getFetcher('attribute-group')
+                    .search({
+                        options: {
+                            identifiers: event.codes,
+                            limit: event.codes.length
+                        }
+                    }).then(function (attributeGroups) {
                     var existingAttributes = _.pluck(this.getFormData().attributes, 'code');
                     var groupsAttributes = [].concat.apply([], _.pluck(attributeGroups, 'attributes'));
                     var attributesToAdd = _.filter(groupsAttributes, function (attribute) {

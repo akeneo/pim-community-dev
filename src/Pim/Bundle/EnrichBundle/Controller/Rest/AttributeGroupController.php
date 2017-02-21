@@ -59,7 +59,7 @@ class AttributeGroupController
         $options = [];
 
         if ($request->request->has('identifiers')) {
-            $options['identifiers'] = explode(',', $request->get('identifiers'));
+            $options['identifiers'] = explode(',', $request->request->get('identifiers'));
         }
 
         if ($request->request->has('attribute_groups')) {
@@ -85,7 +85,6 @@ class AttributeGroupController
                 $options
             );
 
-        /** @todo (a2xchip) should be moved to EE */
         $filteredAttributeGroups = $this->collectionFilter->filterCollection(
             $attributeGroups,
             'pim.internal_api.attribute_group.view'

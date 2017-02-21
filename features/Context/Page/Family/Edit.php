@@ -116,14 +116,12 @@ class Edit extends Form
      */
     public function getRemoveLinkFor($attribute)
     {
-        $removeLink = $this->spin(function () use ($attribute) {
+        return $this->spin(function () use ($attribute) {
             return $this->find(
                     'css',
                     sprintf('.remove-attribute[data-attribute="%s"]', $attribute)
                 );
         }, sprintf('Remove link for field "%s" was not found', $attribute));
-
-        return $removeLink;
     }
 
     /**
@@ -258,11 +256,11 @@ class Edit extends Form
      */
     public function addAvailableAttributes(array $attributes = [])
     {
-        $availableAttribute = $this->spin(function () {
+        $addAttributeDecorator = $this->spin(function () {
             return $this->getElement('Available attributes');
         }, 'Cannot find the add attribute element');
 
-        return $availableAttribute->addAttributes($attributes);
+        $addAttributeDecorator->addAttributes($attributes);
     }
 
     public function addAttributesByGroup($groups)

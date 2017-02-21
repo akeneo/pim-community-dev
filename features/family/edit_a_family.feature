@@ -42,6 +42,7 @@ Feature: Edit a family
     When I fill in the following information:
       | English (United States) | NewBoots |
     And I save the family
+    Then I should not see the text "There are unsaved changes."
     Then I should see "NewBoots"
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
