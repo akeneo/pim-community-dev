@@ -36,7 +36,7 @@ class ChannelRepositorySpec extends ObjectBehavior
     {
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('c')->willReturn($queryBuilder);
-        $queryBuilder->from('channel', 'c')->willReturn($queryBuilder);
+        $queryBuilder->from('channel', 'c', null)->willReturn($queryBuilder);
         $queryBuilder->select('count(c.id)')->willReturn($queryBuilder);
 
         $queryBuilder->getQuery()->willReturn($query);
