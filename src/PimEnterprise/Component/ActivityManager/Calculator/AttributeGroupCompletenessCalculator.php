@@ -20,7 +20,7 @@ use PimEnterprise\Component\ActivityManager\Repository\FamilyRequirementReposito
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class AttributeGroupCompletenessCalculator implements ProjectCalculatorInterface
+class AttributeGroupCompletenessCalculator implements ProjectItemCalculatorInterface
 {
     /** @var ProductValueCompleteCheckerInterface */
     protected $productValueChecker;

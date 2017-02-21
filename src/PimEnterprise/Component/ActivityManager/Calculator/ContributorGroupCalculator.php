@@ -22,7 +22,7 @@ use PimEnterprise\Component\Security\Attributes;
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ContributorGroupCalculator implements ProjectCalculatorInterface
+class ContributorGroupCalculator implements ProjectItemCalculatorInterface
 {
     /** @var CategoryAccessRepository */
     protected $categoryAccessRepository;

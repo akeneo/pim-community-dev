@@ -129,7 +129,7 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    ### Pre Process engine
+    ### Calculators
     pimee_activity_manager.calculator.attribute_group_completeness.class:
         class: '%pimee_activity_manager.calculator.attribute_group_completeness.class%'
         arguments:
