@@ -12,9 +12,11 @@
 namespace PimEnterprise\Bundle\ActivityManagerBundle\Notification;
 
 use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Localization\Presenter\DatePresenter;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\NotificationBundle\Factory\AbstractNotificationFactory;
 use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
+use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 
 /**
  * Factory that creates a notification for project calculation from a job instance.
@@ -29,12 +31,26 @@ class ProjectCalculationNotificationFactory extends AbstractNotificationFactory 
     /** @var string */
     protected $notificationClass;
 
+    /** @var ProjectRepositoryInterface */
+    protected $projectRepository;
+
+    /** @var DatePresenter */
+    protected $datePresenter;
+
     /**
-     * @param string[] $notificationTypes
-     * @param string   $notificationClass
+     * @param ProjectRepositoryInterface $projectRepository
+     * @param DatePresenter              $datePresenter
+     * @param string[]                   $notificationTypes
+     * @param string                     $notificationClass
      */
-    public function __construct(array $notificationTypes, $notificationClass)
-    {
+    public function __construct(
+        ProjectRepositoryInterface $projectRepository,
+        DatePresenter $datePresenter,
+        array $notificationTypes,
+        $notificationClass
+    ) {
+        $this->projectRepository = $projectRepository;
+        $this->datePresenter     = $datePresenter;
         $this->notificationTypes = $notificationTypes;
         $this->notificationClass = $notificationClass;
     }
@@ -56,11 +72,19 @@ class ProjectCalculationNotificationFactory extends AbstractNotificationFactory 
         $notification = new $this->notificationClass();
         $type = $jobExecution->getJobInstance()->getType();
         $status = $this->getJobStatus($jobExecution);
+        $projectCode = $jobExecution->getJobParameters()->get('project_code');
+
+        $project = $this->projectRepository->findOneBy(['code' => $projectCode]);
+        $userLocale = $project->getOwner()->getUiLocale();
+        $formattedDate = $this->datePresenter->present(
+            $project->getDueDate(),
+            ['locale' => $userLocale->getCode()]
+        );
 
         $notification
             ->setType($status)
             ->setMessage(sprintf('activity_manager.notification.%s.%s', $type, $status))
-            ->setMessageParams(['%label%' => $jobExecution->getJobInstance()->getLabel()])
+            ->setMessageParams(['%project_label%' => $project->getLabel(), '%due_date%' => $formattedDate])
             ->setRoute('pim_enrich_job_tracker_show')
             ->setRouteParams(['id' => $jobExecution->getId()])
             ->setContext(['actionType' => $type]);

@@ -7,9 +7,9 @@ activity_manager:
         project_identifier: The project {{ project }} doesn't exist.
     notification:
         project_calculation:
-            error:   <strong>%label%</strong> failed
-            warning: <strong>%label%</strong> finished with some warnings
-            success: <strong>%label%</strong> finished
+            error:   Project's calculation for <strong>%project_label%</strong> failed
+            warning: Project's calculation for <strong>%project_label%</strong> finished with some warnings
+            success: Project's calculation is finished for <strong>%project_label%</strong>. Due date is %due_date%
             start:   Start
         message: You have new products to enrich for "%project_label%". Due date is "%due_date%".
         project_finished:
