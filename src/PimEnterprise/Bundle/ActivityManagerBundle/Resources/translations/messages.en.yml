@@ -1,4 +1,6 @@
 project_calculation: Project calculation
+project_created: Project created
+project_finished: Project finished
 
 activity_manager:
     project:
