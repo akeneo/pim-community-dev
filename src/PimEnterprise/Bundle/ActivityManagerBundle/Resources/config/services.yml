@@ -15,8 +15,8 @@ parameters:
     pimee_activity_manager.notifier.project_finished.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectFinishedNotifier'
     pimee_activity_manager.notifier.project_due_date_reminder.class: 'PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectDueDateReminderNotifier'
     pimee_activity_manager.reminder.days: [7, 3, 1]
-    pimee_activity_manager.engine.attribute.pre_process_completeness.class: 'PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\PreProcessAttributeCompletenessEngine'
-    pimee_activity_manager.engine.add_user_group.class: 'PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\AddUserGroupEngine'
+    pimee_activity_manager.calculator.attribute_group_completeness.class: 'PimEnterprise\Component\ActivityManager\Calculator\AttributeGroupCompletenessCalculator'
+    pimee_activity_manager.calculator.contributor_group.class: 'PimEnterprise\Component\ActivityManager\Calculator\ContributorGroupCalculator'
 
 services:
     pimee_activity_manager.table_name_mapper:
@@ -130,14 +130,14 @@ services:
             - { name: kernel.event_subscriber }
 
     ### Pre Process engine
-    pimee_activity_manager.engine.attribute.pre_process_completeness:
-        class: '%pimee_activity_manager.engine.attribute.pre_process_completeness.class%'
+    pimee_activity_manager.calculator.attribute_group_completeness.class:
+        class: '%pimee_activity_manager.calculator.attribute_group_completeness.class%'
         arguments:
             - '@pim_catalog.completeness.checker.chained'
             - '@pimee_activity_manager.repository.family_requirement'
 
-    pimee_activity_manager.engine.add_user_group:
-        class: '%pimee_activity_manager.engine.add_user_group.class%'
+    pimee_activity_manager.calculator.contributor_group.class:
+        class: '%pimee_activity_manager.calculator.contributor_group.class%'
         arguments:
             - '@pimee_security.repository.category_access'
             - '@pimee_activity_manager.repository.family_requirement'

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation;
+namespace PimEnterprise\Component\ActivityManager\Calculator;
 
 use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -20,7 +20,7 @@ use PimEnterprise\Component\ActivityManager\Repository\FamilyRequirementReposito
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class PreProcessAttributeCompletenessEngine implements PreProcessAttributeCompletenessEngineInterface
+class AttributeGroupCompletenessCalculator implements ProjectCalculatorInterface
 {
     /** @var ProductValueCompleteCheckerInterface */
     protected $productValueChecker;
@@ -44,12 +44,9 @@ class PreProcessAttributeCompletenessEngine implements PreProcessAttributeComple
      * Get the attribute group completeness, it compares the product attributes filled with the attributes
      * required by the family.
      *
-     * @param ProjectInterface $project
-     * @param ProductInterface $product
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function getAttributeGroupCompleteness(ProjectInterface $project, ProductInterface $product)
+    public function calculate(ProjectInterface $project, ProductInterface $product)
     {
         $requiredAttributes = $this->familyRequirementRepository->findRequiredAttributes($product, $project);
         $filledAttributes = $this->findFilledAttributes($product, $project);

@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\Calcula
 
 use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\PreProcessAttributeCompletenessEngineInterface;
+use PimEnterprise\Component\ActivityManager\Calculator\ProjectCalculatorInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\FamilyRequirementRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
@@ -41,10 +41,10 @@ class PreProcessCompletenessStep implements CalculationStepInterface
      */
     public function __construct(
         PreProcessingRepositoryInterface $preProcessingRepository,
-        PreProcessAttributeCompletenessEngineInterface $preProcessAttributeCompletenessEngine
+        ProjectCalculatorInterface $attributeGroupCompletenessCalculator
     ) {
         $this->preProcessingRepository = $preProcessingRepository;
-        $this->preProcessAttributeCompletenessEngine = $preProcessAttributeCompletenessEngine;
+        $this->attributeGroupCompletenessCalculator = $attributeGroupCompletenessCalculator;
     }
 
     /**
@@ -52,8 +52,8 @@ class PreProcessCompletenessStep implements CalculationStepInterface
      */
     public function execute(ProductInterface $product, ProjectInterface $project)
     {
-        $attributeGroupCompleteness = $this->preProcessAttributeCompletenessEngine
-            ->getAttributeGroupCompleteness($project, $product);
+        $attributeGroupCompleteness = $this->attributeGroupCompletenessCalculator
+            ->calculate($project, $product);
 
         $this->preProcessingRepository->addAttributeGroupCompleteness(
             $product,

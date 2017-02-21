@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation;
+namespace PimEnterprise\Component\ActivityManager\Calculator;
 
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\User\Model\GroupInterface;
@@ -22,7 +22,7 @@ use PimEnterprise\Component\Security\Attributes;
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class AddUserGroupEngine implements AddUserGroupEngineInterface
+class ContributorGroupCalculator implements ProjectCalculatorInterface
 {
     /** @var CategoryAccessRepository */
     protected $categoryAccessRepository;
@@ -49,21 +49,23 @@ class AddUserGroupEngine implements AddUserGroupEngineInterface
     }
 
     /**
-     * @param ProjectInterface $project
-     * @param ProductInterface $product
+     * {@inheritdoc}
      */
-    public function addUserGroup(ProjectInterface $project, ProductInterface $product)
+    public function calculate(ProjectInterface $project, ProductInterface $product)
     {
         $productContributorsGroupNames = $this->findUserGroupNamesForProduct($product);
         $attributeContributorGroups = $this->findUserGroupForAttribute($product, $project);
 
+        $contributorGroups = [];
         foreach ($attributeContributorGroups as $attributeUserGroup) {
             if (0 === count($productContributorsGroupNames) && 0 === count($product->getCategories())) {
-                $project->addUserGroup($attributeUserGroup);
+                $contributorGroups[] = $attributeUserGroup;
             } elseif (in_array($attributeUserGroup->getName(), $productContributorsGroupNames, true)) {
-                $project->addUserGroup($attributeUserGroup);
+                $contributorGroups[] = $attributeUserGroup;
             }
         }
+
+        return array_unique($contributorGroups);
     }
 
     /**

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation;
+namespace PimEnterprise\Component\ActivityManager\Calculator;
 
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
@@ -17,16 +17,13 @@ use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-interface PreProcessAttributeCompletenessEngineInterface
+interface ProjectCalculatorInterface
 {
     /**
-     * Get the attribute group completeness, it compares the product attributes filled with the attributes
-     * required by the family.
-     *
      * @param ProjectInterface $project
      * @param ProductInterface $product
      *
      * @return array
      */
-    public function getAttributeGroupCompleteness(ProjectInterface $project, ProductInterface $product);
+    public function calculate(ProjectInterface $project, ProductInterface $product);
 }

@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep;
 
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\AddUserGroupEngineInterface;
+use PimEnterprise\Component\ActivityManager\Calculator\ProjectCalculatorInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 /**
@@ -23,15 +23,15 @@ use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
  */
 class AddUserGroupStep implements CalculationStepInterface
 {
-    /** @var AddUserGroupEngineInterface */
-    protected $addUserGroupEngine;
+    /** @var ProjectCalculatorInterface */
+    protected $contributorGroupCalculator;
 
     /**
-     * @param AddUserGroupEngineInterface $addUserGroupEngine
+     * @param ProjectCalculatorInterface $contributorGroupCalculator
      */
-    public function __construct(AddUserGroupEngineInterface $addUserGroupEngine)
+    public function __construct(ProjectCalculatorInterface $contributorGroupCalculator)
     {
-        $this->addUserGroupEngine = $addUserGroupEngine;
+        $this->contributorGroupCalculator = $contributorGroupCalculator;
     }
 
     /**
@@ -39,6 +39,10 @@ class AddUserGroupStep implements CalculationStepInterface
      */
     public function execute(ProductInterface $product, ProjectInterface $project)
     {
-        $this->addUserGroupEngine->addUserGroup($project, $product);
+        $contributorGroups = $this->contributorGroupCalculator->calculate($project, $product);
+
+        foreach ($contributorGroups as $contributorGroup) {
+            $project->addUserGroup($contributorGroup);
+        }
     }
 }
