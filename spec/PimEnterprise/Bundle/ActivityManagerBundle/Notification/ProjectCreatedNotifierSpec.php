@@ -81,7 +81,7 @@ class ProjectCreatedNotifierSpec extends ObjectBehavior
         $project->getOwner()->willReturn($owner);
 
         $context = [
-            'actionType'  => 'project_calculation',
+            'actionType'  => 'project_created',
             'buttonLabel' => 'activity_manager.notification.project_calculation.start'
         ];
 
