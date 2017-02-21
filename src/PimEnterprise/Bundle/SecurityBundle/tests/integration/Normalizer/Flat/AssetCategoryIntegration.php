@@ -1,8 +1,6 @@
 <?php
 
-namespace tests\integration\PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat;
-
-use PimEnterprise\Bundle\SecurityBundle\tests\integration\Normalizer\Flat\AbstractFlatNormalizerTestCase;
+namespace PimEnterprise\Bundle\SecurityBundle\tests\integration\Normalizer\Flat;
 
 class AssetCategoryIntegration extends AbstractFlatNormalizerTestCase
 {
@@ -16,8 +14,8 @@ class AssetCategoryIntegration extends AbstractFlatNormalizerTestCase
             'code'            => 'asset_main_catalog',
             'parent'          => null,
             'label-en_US'     => 'Asset main catalog',
-            'view_permission' => 'All,IT support,Manager,Redactor',
-            'edit_permission' => 'All,IT support,Manager'
+            'view_permission' => 'IT support,Manager,Redactor',
+            'edit_permission' => 'IT support,Manager'
         ]);
     }
 }

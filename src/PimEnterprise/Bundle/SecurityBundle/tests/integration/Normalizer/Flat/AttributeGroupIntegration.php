@@ -2,24 +2,8 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\tests\integration\Normalizer\Flat;
 
-use Akeneo\TestEnterprise\Integration\PermissionCleaner;
-
 class AttributeGroupIntegration extends AbstractFlatNormalizerTestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function setUp()
-    {
-        parent::setUp();
-
-        $configuration = $this->getConfiguration();
-        if ($configuration->isDatabasePurgedForEachTest() || 1 === self::$count) {
-            $permissionCleaner = new PermissionCleaner(static::$kernel);
-            $permissionCleaner->cleanPermission(static::$kernel);
-        }
-    }
-
     public function testAttributeGroup()
     {
         $attributeGroup = $this->get('pim_catalog.repository.attribute_group')->findOneByIdentifier('attributeGroupA');
