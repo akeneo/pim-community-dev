@@ -1,5 +1,29 @@
 # UPGRADE FROM 1.6 to 1.7
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents:**
+
+- [Disclaimer](#disclaimer)
+- [Migrate your system requirements](#migrate-your-system-requirements)
+- [Migrate your standard project](#migrate-your-standard-project)
+- [Migrate your custom code](#migrate-your-custom-code)
+  - [Import/export UI migration](#importexport-ui-migration)
+    - [You only added custom import/export without UI changes](#you-only-added-custom-importexport-without-ui-changes)
+    - [You added some fields to your custom job](#you-added-some-fields-to-your-custom-job)
+    - [You created a fully customized screen for your job](#you-created-a-fully-customized-screen-for-your-job)
+  - [Global updates for any project](#global-updates-for-any-project)
+    - [Update references to moved `Pim\Bundle\ConnectorBundle\Reader` business classes](#update-references-to-moved-pim%5Cbundle%5Cconnectorbundle%5Creader-business-classes)
+    - [Update references to the standardized `Pim\Component\Catalog\Normalizer\Standard` classes](#update-references-to-the-standardized-pim%5Ccomponent%5Ccatalog%5Cnormalizer%5Cstandard-classes)
+    - [Versioning](#versioning)
+    - [Operator](#operator)
+  - [CSS Refactoring](#css-refactoring)
+    - [Examples](#examples)
+    - [Non-exhausting changes](#non-exhausting-changes)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<!-- To update doctoc UPGRADE-1.7.md --title '**Table of Contents:**' -->
+
 ## Disclaimer
 
 > Please check that you're using Akeneo PIM v1.6
@@ -16,6 +40,108 @@
 ## Migrate your system requirements
 
 ## Migrate your standard project
+
+1. Download and extract the latest standard archive,
+
+    * Download it from the website [PIM community standard](http://www.akeneo.com/download/) and extract:
+
+    ```
+     wget http://download.akeneo.com/pim-community-standard-v1.7-latest.tar.gz
+     tar -zxf pim-community-standard-v1.7-latest.tar.gz
+     cd pim-community-standard/
+    ```
+
+2. Copy the following files to your PIM installation:
+
+    ```
+     export PIM_DIR=/path/to/your/pim/installation
+     cp app/SymfonyRequirements.php $PIM_DIR/app
+     cp app/PimRequirements.php $PIM_DIR/app
+     cp app/config/pim_parameters.yml $PIM_DIR/app/config
+     cp composer.json $PIM_DIR/
+    ```
+
+3. Update your **app/config/config.yml**
+
+    * Add this configuration:
+
+    ```
+    # FOSOAuthServer Configuration
+    fos_oauth_server:
+        db_driver:                orm
+        client_class:             Pim\Bundle\ApiBundle\Entity\Client
+        access_token_class:       Pim\Bundle\ApiBundle\Entity\AccessToken
+        refresh_token_class:      Pim\Bundle\ApiBundle\Entity\RefreshToken
+        auth_code_class:          Pim\Bundle\ApiBundle\Entity\AuthCode
+        service:
+            user_provider:        pim_user.provider.user
+    ```
+
+4. Update your **app/AppKernel.php**:
+
+    * Remove the following bundles:
+        - `Oro\Bundle\UIBundle\OroUIBundle`
+        - `Oro\Bundle\FormBundle\OroFormBundle`
+        - `Pim\Bundle\WebServiceBundle\PimWebServiceBundle`
+
+    * Add the following bundles:
+        - `FOS\OAuthServerBundle\FOSOAuthServerBundle`
+        - `Pim\Bundle\ApiBundle\PimApiBundle` 
+
+5. Update your **app/config/routing.yml**:
+
+    * Remove the route: `pim_webservice`
+
+    * Add this configuration:
+
+    ```
+    pim_api:
+        resource: "@PimApiBundle/Resources/config/routing.yml"
+    ```
+
+6. Then remove your old upgrades folder:
+
+    ```
+     rm -rf $PIM_DIR/upgrades/schema
+    ```
+
+7. Now you're ready to update your dependencies:
+
+    * **Caution**, don't forget to add your own dependencies back to your *composer.json* if you have some:
+
+        ```
+        "require": {
+            "your/dependencies": "version",
+            "your/other-dependencies": "version",
+        }
+        ```
+
+    * Then run the command to update your dependencies:
+
+        ```
+         cd $PIM_DIR
+         composer update
+        ```
+
+        This step will also copy the upgrades folder from `vendor/akeneo/pim-community-dev/` to your Pim project root in order to migrate.
+
+        If you have custom code in your project, this step may raise errors in the "post-script" command.
+
+        In this case, go to the chapter "Migrate your custom code" before running the database migration.
+
+8. Then you can migrate your database using:
+
+    ```
+     php app/console cache:clear --env=prod
+     php app/console doctrine:migration:migrate --env=prod
+    ```
+
+9. Then, generate JS translations and re-generate the PIM assets:
+
+    ```
+     rm -rf $PIM_DIR/web/js/translation/*
+     php app/console pim:installer:assets
+    ```
 
 ## Migrate your custom code
 
@@ -43,7 +169,7 @@ services:
 #### You added some fields to your custom job
 
 In this case you will also need to register it in your form provider but aslo declare a custom form. You will find a
-detailed documentation [here](https://docs.akeneo.com/1.7/cookbook/import_export/create-connector.html)
+detailed documentation [here](https://docs.akeneo.com/1.7/cookbook/import_export/create-connector.html).
 
 #### You created a fully customized screen for your job
 
@@ -51,11 +177,6 @@ In this case, you will have to redo this screen with the new javascript architec
 above.
 
 ### Global updates for any project
-
-#### Remove deprecated bundles from your AppKernel
-
-Remove "new Oro\Bundle\UIBundle\OroUIBundle()" from your app/AppKernel.php
-Remove "new Oro\Bundle\FormBundle\OroFormBundle()" from your app/AppKernel.php
 
 #### Update references to moved `Pim\Bundle\ConnectorBundle\Reader` business classes
 
