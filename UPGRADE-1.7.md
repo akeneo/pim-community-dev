@@ -65,17 +65,17 @@
 
     * Add this configuration:
 
-```
-# FOSOAuthServer Configuration
-fos_oauth_server:
-    db_driver:                orm
-    client_class:             Pim\Bundle\ApiBundle\Entity\Client
-    access_token_class:       Pim\Bundle\ApiBundle\Entity\AccessToken
-    refresh_token_class:      Pim\Bundle\ApiBundle\Entity\RefreshToken
-    auth_code_class:          Pim\Bundle\ApiBundle\Entity\AuthCode
-    service:
-        user_provider:        pim_user.provider.user
-```
+    ```
+    # FOSOAuthServer Configuration
+    fos_oauth_server:
+        db_driver:                orm
+        client_class:             Pim\Bundle\ApiBundle\Entity\Client
+        access_token_class:       Pim\Bundle\ApiBundle\Entity\AccessToken
+        refresh_token_class:      Pim\Bundle\ApiBundle\Entity\RefreshToken
+        auth_code_class:          Pim\Bundle\ApiBundle\Entity\AuthCode
+        service:
+            user_provider:        pim_user.provider.user
+    ```
 
 4. Update your **app/AppKernel.php**:
 
@@ -94,10 +94,10 @@ fos_oauth_server:
 
     * Add this configuration:
 
-```
-pim_api:
-    resource: "@PimApiBundle/Resources/config/routing.yml"
-```
+    ```
+    pim_api:
+        resource: "@PimApiBundle/Resources/config/routing.yml"
+    ```
 
 6. Then remove your old upgrades folder:
 
@@ -139,7 +139,7 @@ pim_api:
 9. Then, generate JS translations and re-generate the PIM assets:
 
     ```
-     rm -rf $PIM_DIR/web/js/translation/
+     rm -rf $PIM_DIR/web/js/translation/*
      php app/console pim:installer:assets
     ```
 
@@ -169,7 +169,7 @@ services:
 #### You added some fields to your custom job
 
 In this case you will also need to register it in your form provider but aslo declare a custom form. You will find a
-detailed documentation [here](https://docs.akeneo.com/1.7/cookbook/import_export/create-connector.html)
+detailed documentation [here](https://docs.akeneo.com/1.7/cookbook/import_export/create-connector.html).
 
 #### You created a fully customized screen for your job
 
