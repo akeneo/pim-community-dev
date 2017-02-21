@@ -16,18 +16,18 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class FamilyNormalizerSpec extends ObjectBehavior
 {
     function let(
+        NormalizerInterface $familyNormalizer,
         NormalizerInterface $translationNormalizer,
         CollectionFilterInterface $collectionFilter,
         AttributeRepositoryInterface $attributeRepository,
-        AttributeRequirementRepositoryInterface $attributeRequirementRepo,
         VersionManager $versionManager,
         NormalizerInterface $versionNormalizer
     ) {
         $this->beConstructedWith(
+            $familyNormalizer,
             $translationNormalizer,
             $collectionFilter,
             $attributeRepository,
-            $attributeRequirementRepo,
             $versionManager,
             $versionNormalizer
         );
@@ -54,9 +54,9 @@ class FamilyNormalizerSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         AttributeGroupInterface $marketingAttributeGroup,
         $collectionFilter,
-        $attributeRequirementRepo,
         FamilyInterface $family,
         NormalizerInterface $translationNormalizer,
+        NormalizerInterface $familyNormalizer,
         VersionManager $versionManager,
         AttributeInterface $name,
         AttributeInterface $description,
@@ -64,15 +64,40 @@ class FamilyNormalizerSpec extends ObjectBehavior
     ) {
         $family->getId()->willReturn(1);
 
-        $attributeRepository->findAttributesByFamily($family)->willReturn([$name, $description, $price]);
-        $attributeRequirementRepo->findRequiredAttributesCodesByFamily($family)
-            ->shouldBeCalled()
-            ->willReturn([
-            ['attribute' => 'name', 'channel' => 'ecommerce'],
-            ['attribute' => 'price', 'channel' => 'ecommerce'],
-            ['attribute' => 'name', 'channel' => 'mobile'],
-            ['attribute' => 'price', 'channel' => 'mobile']
-        ]);
+        $normalizedFamily = [
+            'code'                   => 'tshirts',
+            'attributes'             => [
+                'name',
+                'description',
+                'price',
+            ],
+            'attribute_as_label'     => 'name',
+            'attribute_requirements' => [
+                'ecommerce' => [
+                    'name',
+                    'price',
+                ],
+                'mobile' => [
+                    'name',
+                    'price',
+                ]
+            ],
+            'labels' => [],
+            'meta' => [
+                'id' => 1,
+                'form' => 'pim-family-edit-form',
+                'created' => null,
+                'updated' => null,
+            ]
+        ];
+
+        $familyNormalizer->normalize($family, 'standard', [])->willReturn($normalizedFamily);
+
+        $normalizedFamily['attributes'] = ['name', 'description', 'price'];
+
+        $familyNormalizer->normalize($family, 'standard', [])->shouldBeCalled();
+
+        $attributeRepository->findBy(['code' =>['name', 'description', 'price']])->willReturn([$name, $description, $price]);
 
         $collectionFilter->filterCollection([$name, $description, $price], 'pim.internal_api.attribute.view')
             ->willReturn([$name, $price]);

@@ -949,7 +949,6 @@ class WebUser extends RawMinkContext
      */
     public function iAddAvailableAttributes($attributes)
     {
-        $this->wait();
         $this->getCurrentPage()->addAvailableAttributes($this->listToArray($attributes));
         $this->wait();
     }

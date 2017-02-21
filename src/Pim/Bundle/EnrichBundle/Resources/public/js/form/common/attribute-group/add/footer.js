@@ -22,7 +22,7 @@ define(
     ) {
         return Backbone.View.extend({
             template: _.template(template),
-            buttonTitle: '[add]',
+            buttonTitle: null,
             numberOfItems: 0,
             countTitle: null,
             addEvent: null,

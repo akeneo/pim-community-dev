@@ -17,10 +17,22 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyNormalizer extends StandardFamilyNormalizer
+class FamilyNormalizer implements NormalizerInterface
 {
     /** @var array */
     protected $supportedFormats = ['internal_api'];
+
+    /** @var NormalizerInterface */
+    protected $familyNormalizer;
+
+    /** @var NormalizerInterface */
+    protected $translationNormalizer;
+
+    /** @var CollectionFilterInterface */
+    protected $collectionFilter;
+
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
 
     /** @var VersionManager */
     protected $versionManager;
@@ -28,32 +40,26 @@ class FamilyNormalizer extends StandardFamilyNormalizer
     /** @var NormalizerInterface */
     protected $versionNormalizer;
 
-    /** @var CollectionFilterInterface */
-    protected $collectionFilter;
-
     /**
-     * @param NormalizerInterface                     $translationNormalizer
-     * @param CollectionFilterInterface               $collectionFilter
-     * @param AttributeRepositoryInterface            $attributeRepository
-     * @param AttributeRequirementRepositoryInterface $attributeRequirementRepo
-     * @param VersionManager                          $versionManager
-     * @param NormalizerInterface                     $versionNormalizer
+     * @param NormalizerInterface          $familyNormalizer
+     * @param NormalizerInterface          $translationNormalizer
+     * @param CollectionFilterInterface    $collectionFilter
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param VersionManager               $versionManager
+     * @param NormalizerInterface          $versionNormalizer
      */
     public function __construct(
+        NormalizerInterface $familyNormalizer,
         NormalizerInterface $translationNormalizer,
         CollectionFilterInterface $collectionFilter,
         AttributeRepositoryInterface $attributeRepository,
-        AttributeRequirementRepositoryInterface $attributeRequirementRepo,
         VersionManager $versionManager,
         NormalizerInterface $versionNormalizer
     ) {
-        parent::__construct(
-            $translationNormalizer,
-            $collectionFilter,
-            $attributeRepository,
-            $attributeRequirementRepo
-        );
-
+        $this->familyNormalizer = $familyNormalizer;
+        $this->translationNormalizer = $translationNormalizer;
+        $this->collectionFilter = $collectionFilter;
+        $this->attributeRepository = $attributeRepository;
         $this->versionManager = $versionManager;
         $this->versionNormalizer = $versionNormalizer;
     }
@@ -63,14 +69,15 @@ class FamilyNormalizer extends StandardFamilyNormalizer
      */
     public function normalize($family, $format = null, array $context = array())
     {
-        $normalizedFamily = [
-            'code'                   => $family->getCode(),
-            'attributes'             => $this->normalizeAttributes($family),
-            'attribute_as_label'     => null !== $family->getAttributeAsLabel()
-                ? $family->getAttributeAsLabel()->getCode() : null,
-            'attribute_requirements' => $this->normalizeRequirements($family),
-            'labels'                 => $this->translationNormalizer->normalize($family, 'standard', $context),
-        ];
+        $normalizedFamily = $this->familyNormalizer->normalize(
+            $family,
+            'standard',
+            $context
+        );
+
+        $normalizedFamily['attributes'] = $this->normalizeAttributes(
+            $normalizedFamily['attributes']
+        );
 
         $firstVersion = $this->versionManager->getOldestLogEntry($family);
         $lastVersion = $this->versionManager->getNewestLogEntry($family);
@@ -99,13 +106,10 @@ class FamilyNormalizer extends StandardFamilyNormalizer
             in_array($format, $this->supportedFormats);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function normalizeAttributes(FamilyInterface $family)
+    protected function normalizeAttributes($codes)
     {
         $attributes = $this->collectionFilter->filterCollection(
-            $this->attributeRepository->findAttributesByFamily($family),
+            $this->attributeRepository->findBy(['code' => $codes]),
             'pim.internal_api.attribute.view'
         );
 

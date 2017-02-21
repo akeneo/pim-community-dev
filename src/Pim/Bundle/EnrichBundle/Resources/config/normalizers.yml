@@ -83,10 +83,10 @@ services:
     pim_enrich.normalizer.family:
         class: '%pim_enrich.normalizer.family.class%'
         arguments:
+            - '@pim_catalog.normalizer.standard.family'
             - '@pim_catalog.normalizer.standard.translation'
             - '@pim_catalog.filter.chained'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.attribute_requirement'
             - '@pim_versioning.manager.version'
             - '@pim_enrich.normalizer.version'
         tags:
