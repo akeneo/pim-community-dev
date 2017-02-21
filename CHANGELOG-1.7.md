@@ -8,6 +8,7 @@
 - GITHUB-5337: Fixed Widget Registry. Priority is now taken in account.
 - PIM-6127: In the family import, the attributes required should be in the family
 - PIM-6125: In the family import, the attribute_as_label has to be in the family and its type has to be identifier or text
+- GITHUB-5538: User without permissions access to import/export jobs through `Process tracker` 
 
 ## Deprecations
 
@@ -212,3 +213,4 @@
 - Update constructor of `Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer` first parameter to `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository`
 - Remove deprecated method `removeAttributeFromProduct` from `Pim\Component\Catalog\Builder\ProductBuilder` and `Pim\Component\Catalog\Builder\ProductBuilderInterface`
 - Remove deprecated methods `addAttribute`, `removeAttribute`, `getAttributes`, `setAttributes` and `getAttributeIds` from `Pim\Bundle\CatalogBundle\Entity\Group` and `Pim\Component\Catalog\Model\GroupInterface`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\JobTrackerController` add `securityFacade`
