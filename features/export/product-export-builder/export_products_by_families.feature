@@ -11,6 +11,25 @@ Feature: Export products according to their families
       | rangers    | sku, name           |
       | boots      | sku, name           |
       | heels      | sku, name           |
+      | foo        | sku, name           |
+      | bar        | sku, name           |
+      | baz        | sku, name           |
+      | cloud      | sku, name           |
+      | bee        | sku, name           |
+      | dog        | sku, name           |
+      | cat        | sku, name           |
+      | area       | sku, name           |
+      | bath       | sku, name           |
+      | beer       | sku, name           |
+      | bear       | sku, name           |
+      | bomb       | sku, name           |
+      | ball       | sku, name           |
+      | head       | sku, name           |
+      | ham        | sku, name           |
+      | item       | sku, name           |
+      | jean       | sku, name           |
+      | snake      | sku, name           |
+      | star       | sku, name           |
     And the following products:
       | sku     | family  | categories        | name-en_US       |
       | SNKRS-1 | rangers | summer_collection | Black rangers    |
@@ -78,3 +97,12 @@ Feature: Export products according to their families
     When I am on the "csv_footwear_product_export" export job page
     And I visit the "Content" tab
     Then the export content field "family.code" should contain "No condition on families"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6162
+  Scenario: View families already selected
+    Given I am on the "csv_footwear_product_export" export job edit page
+    When I visit the "Content" tab
+    And I filter by "family.code" with operator "" and value "rangers,star,snake"
+    When I press "Save"
+    Then I should see the text "The export has been successfully updated"
+    And I should see the text "[rangers] [star] [snake]"
