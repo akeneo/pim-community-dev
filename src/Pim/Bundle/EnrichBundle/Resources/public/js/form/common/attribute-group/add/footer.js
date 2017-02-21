@@ -46,7 +46,7 @@ define(
              */
             render: function () {
                 this.$el.html(this.template({
-                    buttonTitle:        this.buttonTitle,
+                    buttonTitle: this.buttonTitle,
                     numberOfItems: this.numberOfItems,
                     countTitle: this.countTitle
                 }));

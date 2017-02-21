@@ -43,6 +43,7 @@ define(
              */
             getLabel: function () {
                 var data = this.getFormData();
+
                 return i18n.getLabel(
                     data.labels,
                     UserContext.get('catalogLocale'),

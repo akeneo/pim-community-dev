@@ -7,9 +7,12 @@
     <div class="AknFieldContainer-inputContainer">
         <input
                 id="<%- fieldName%>"
-                class="AknTextField <%- className %>" type="text"
+                class="AknTextField <%- className %>"
+                type="text"
+                value="<%- value %>"
                 <%- isReadOnly ? 'readonly disabled' : '' %>
-                <%- isRequired ? 'required' : '' %> value="<%- value %>">
+                <%- isRequired ? 'required' : '' %>
+        >
     </div>
     <div class="AknFieldContainer-footer">
         <div class="AknFieldContainer-validationErrors validation-errors">

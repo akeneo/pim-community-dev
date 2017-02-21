@@ -14,11 +14,12 @@
             <tr class="AknGrid-bodyRow AknGrid-bodyRow--highlight group">
                 <td class="AknGrid-bodyCell" colspan="<%- colspan %>">
                     <i class="icon-collapse-alt"></i>
+                    <% var attributeGroup = _.findWhere(attributeGroups, {code: group}) %>
                     <%-
                         i18n.getLabel(
-                            _.findWhere(attributeGroups, {code: group}).labels,
+                            attributeGroup.labels,
                             catalogLocale,
-                            _.findWhere(attributeGroups, {code: group}).code
+                            attributeGroup.code
                         )
                     %>
                 </td>
