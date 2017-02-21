@@ -832,6 +832,42 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Then /^I should see select choices of the "(.*)" in the following order:$/
+     *
+     * @param string $field
+     * @param array  $items
+     */
+    public function iShouldSeeSelectChoicesOrdered($field, PyStringNode $items)
+    {
+        $searched = array_values(explode(',', implode(',', $items->getLines())));
+        $foundChoices = $this->getCurrentPage()
+            ->find(
+                'css',
+                sprintf('label:contains("%s")', $field)
+            )
+            ->getParent()
+            ->getParent()
+            ->findAll('css', '.field-input select option');
+
+        $fieldsArray = [];
+        foreach ($foundChoices as $choice) {
+            $fieldsArray[] = trim($choice->getText());
+        }
+
+        $fieldsArray = array_values(array_filter($fieldsArray));
+
+        if ($searched !== $fieldsArray) {
+            var_dump($fieldsArray, $searched);
+            throw $this->createExpectationException(
+                sprintf(
+                    'Order of choices for field "%s" is not as expected, got: %s',
+                    $field, implode(', ', $fieldsArray)
+                )
+            );
+        }
+    }
+
+    /**
      * @param $field
      *
      * @When /^I click on the field (?P<field>\w+)$/
