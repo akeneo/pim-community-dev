@@ -74,7 +74,7 @@ class ProjectCreatedNotifier implements ProjectNotifierInterface
             );
 
             $context = [
-                'actionType'  => 'project_calculation',
+                'actionType'  => 'project_created',
                 'buttonLabel' => 'activity_manager.notification.project_calculation.start'
             ];
 

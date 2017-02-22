@@ -64,6 +64,8 @@ services:
     pimee_activity_manager.factory.project_calculation_notification:
         class: '%pimee_activity_manager.factory.project_calculation_notification.class%'
         arguments:
+            - '@pimee_activity_manager.repository.project'
+            - '@pim_catalog.localization.presenter.date'
             - ['project_calculation']
             - '%pim_notification.entity.notification.class%'
         public: false

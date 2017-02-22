@@ -24,17 +24,18 @@ use PimEnterprise\Component\ActivityManager\Repository\ProjectCompletenessReposi
 class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInterface
 {
     /** @var EntityManager */
-    protected $entityManger;
+    protected $entityManager;
 
     /** @var TableNameMapper */
     protected $tableNameMapper;
 
     /**
-     * @param EntityManager $entityManager
+     * @param EntityManager   $entityManager
+     * @param TableNameMapper $tableNameMapper
      */
     public function __construct(EntityManager $entityManager, TableNameMapper $tableNameMapper)
     {
-        $this->entityManger = $entityManager;
+        $this->entityManager = $entityManager;
         $this->tableNameMapper = $tableNameMapper;
     }
 
@@ -45,7 +46,7 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
     {
         $query = $this->buildSqlQuery($username);
         $parameters = $this->buildQueryParameters($project, $username);
-        $completeness = $this->entityManger->getConnection()->fetchAssoc($query, $parameters);
+        $completeness = $this->entityManager->getConnection()->fetchAssoc($query, $parameters);
 
         return new ProjectCompleteness($completeness['todo'], $completeness['in_progress'], $completeness['done']);
     }
@@ -130,7 +131,7 @@ AND `completeness_per_attribute_group`.`locale_id` IN (
         ON `user_group`.`user_id` = `user`.`id`
     WHERE `project_contributor_group`.`project_id` = :project_id
     AND `locale_access`.`edit_products` = 1
-    AND  `user`.`username` = :username 
+    AND  `user`.`username` = :username
 )
 LOCALE_FILTER;
         }

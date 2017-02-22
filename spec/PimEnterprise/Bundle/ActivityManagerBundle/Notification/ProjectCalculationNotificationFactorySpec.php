@@ -2,17 +2,28 @@
 
 namespace spec\PimEnterprise\Bundle\ActivityManagerBundle\Notification;
 
+use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Localization\Presenter\DatePresenter;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\Notification\ProjectCalculationNotificationFactory;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\ActivityManager\Repository\ProjectRepositoryInterface;
 
 class ProjectCalculationNotificationFactorySpec extends ObjectBehavior
 {
-    function let()
+    function let(ProjectRepositoryInterface $projectRepository, DatePresenter $datePresenter)
     {
-        $this->beConstructedWith(['project_calculation'], 'Pim\Bundle\NotificationBundle\Entity\Notification');
+        $this->beConstructedWith(
+            $projectRepository,
+            $datePresenter,
+            ['project_calculation'],
+            'Pim\Bundle\NotificationBundle\Entity\Notification'
+        );
     }
 
     function it_is_initializable()
@@ -27,13 +38,31 @@ class ProjectCalculationNotificationFactorySpec extends ObjectBehavior
     }
 
     function it_creates_a_notification(
+        $projectRepository,
+        $datePresenter,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
-        BatchStatus $batchStatus
+        BatchStatus $batchStatus,
+        JobParameters $jobParameters,
+        ProjectInterface $project,
+        UserInterface $owner,
+        LocaleInterface $locale
     ) {
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getStatus()->willReturn($batchStatus);
         $jobExecution->getId()->willReturn(1);
+        $jobExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('project_code')->willReturn('project_code');
+        $projectRepository->findOneBy(['code' => 'project_code'])->willReturn($project);
+        $project->getOwner()->willReturn($owner);
+        $project->getDueDate()->willReturn('12/13/2018');
+        $project->getLabel()->willReturn('project label');
+        $owner->getUiLocale()->willReturn($locale);
+        $locale->getCode()->willReturn('en_US');
+        $datePresenter->present(
+            '12/13/2018',
+            ['locale' => 'en_US']
+        )->willReturn('12/13/2018');
         $batchStatus->isUnsuccessful()->willReturn(true);
         $jobInstance->getType()->willReturn('import');
         $jobInstance->getLabel()->willReturn('Import');
