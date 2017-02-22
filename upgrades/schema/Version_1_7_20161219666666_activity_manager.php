@@ -154,6 +154,7 @@ CREATE TABLE `pimee_activity_manager_project_status` (
 
 ALTER TABLE `pimee_activity_manager_project_status` ADD CONSTRAINT FK_2A911294A76ED395 FOREIGN KEY (user_id) REFERENCES `@pim_user.entity.user@` (id);
 ALTER TABLE `pimee_activity_manager_project_status` ADD CONSTRAINT FK_2A911294166D1F9C FOREIGN KEY (project_id) REFERENCES `pimee_activity_manager_project` (id) ON DELETE CASCADE;
+ALTER TABLE `pimee_security_attribute_group_access` ADD KEY `attr_grp_editable_permission_index` (`edit_attributes`, `attribute_group_id`);
 SQL;
 
         $sql = $this->container->get('pimee_activity_manager.table_name_mapper')->createQuery($sql);
