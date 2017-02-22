@@ -14,7 +14,7 @@ namespace Akeneo\Bundle\RuleEngineBundle;
 use Akeneo\Bundle\RuleEngineBundle\DependencyInjection\Compiler\RegisterActionApplierPass;
 use Akeneo\Bundle\RuleEngineBundle\DependencyInjection\Compiler\RegisterRunnerPass;
 use Akeneo\Bundle\RuleEngineBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
