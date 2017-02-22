@@ -33,7 +33,5 @@ class ConnectionCloser
         foreach ($doctrine->getConnections() as $connection) {
             $connection->close();
         }
-
-        gc_collect_cycles();
     }
 }
