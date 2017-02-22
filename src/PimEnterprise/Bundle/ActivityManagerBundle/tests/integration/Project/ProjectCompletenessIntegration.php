@@ -155,12 +155,12 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
      * Check that the project completeness is computed with the right locale and the right channel.
      *
      * Family: tshirt (3 products + 1 uncategorized product)
-     * Channel: mobile
+     * Channel: tablet
      * Locale: fr_FR
      */
     public function testCreateAProjectOnTheTshirtFamilyButWithAnotherChannel()
     {
-        $project = $this->createProject('Tshirt - print', 'Julia', 'fr_FR', 'mobile', [
+        $project = $this->createProject('Tshirt - print', 'Julia', 'fr_FR', 'tablet', [
             [
                 'field'    => 'family',
                 'operator' => 'IN',
@@ -238,12 +238,12 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
      * Check that the project completeness is computed depending on the locale accesses.
      *
      * Family: tshirt (3 products + 1 uncategorized product)
-     * Channel: mobile
+     * Channel: tablet
      * Locale: en_ES
      */
     public function testCreateAProjectOnTheTshirtFamilyButWithAnotherChannelAndLocale()
     {
-        $project = $this->createProject('Tshirt - print', 'Julia', 'es_ES', 'mobile', [
+        $project = $this->createProject('Tshirt - print', 'Julia', 'es_ES', 'tablet', [
             [
                 'field'    => 'family',
                 'operator' => 'IN',

@@ -18,14 +18,14 @@ class CreateProjectIntegration extends ActivityManagerTestCase
     public function testCreateProjectGenerateCodeAndAddDatagridView()
     {
         $projectRepository = $this->get('pimee_activity_manager.repository.project');
-        $this->createProject('High-Tech project /42', 'admin', 'en_US', 'mobile', [
+        $this->createProject('High-Tech project /42', 'admin', 'en_US', 'tablet', [
             [
                 'field'    => 'categories',
                 'operator' => 'IN',
                 'value'    => ['high_tech'],
             ],
         ]);
-        $expectedCode = 'high-tech-project-42-mobile-en-us';
+        $expectedCode = 'high-tech-project-42-tablet-en-us';
         $project = $projectRepository->findOneByIdentifier($expectedCode);
         $this->assertTrue(
             null !== $project,

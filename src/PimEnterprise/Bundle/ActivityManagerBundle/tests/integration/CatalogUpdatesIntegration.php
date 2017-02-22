@@ -23,7 +23,7 @@ class CatalogUpdatesIntegration extends ActivityManagerTestCase
         $channelRemover = $this->get('pim_catalog.remover.channel');
         $channelRepository = $this->get('pim_catalog.repository.channel');
         $projectRepository = $this->get('pimee_activity_manager.repository.project');
-        $project = $this->createProject('High-Tech project', 'admin', 'en_US', 'mobile', [
+        $project = $this->createProject('High-Tech project', 'admin', 'en_US', 'tablet', [
             [
                 'field'    => 'categories',
                 'operator' => 'IN',
@@ -32,8 +32,8 @@ class CatalogUpdatesIntegration extends ActivityManagerTestCase
         ]);
         $projectCode = $project->getCode();
 
-        $mobileChannel = $channelRepository->findOneByIdentifier('mobile');
-        $channelRemover->remove($mobileChannel);
+        $tabletChannel = $channelRepository->findOneByIdentifier('tablet');
+        $channelRemover->remove($tabletChannel);
 
         $result = $projectRepository->findOneByIdentifier($projectCode);
         $this->assertTrue(null === $result, 'Project not removed after its channel has been removed.');
@@ -49,7 +49,7 @@ class CatalogUpdatesIntegration extends ActivityManagerTestCase
         $channelRepository = $this->get('pim_catalog.repository.channel');
         $channelSaver = $this->get('pim_catalog.saver.channel');
         $projectRepository = $this->get('pimee_activity_manager.repository.project');
-        $project = $this->createProject('High-Tech project', 'admin', 'en_US', 'mobile', [
+        $project = $this->createProject('High-Tech project', 'admin', 'en_US', 'tablet', [
             [
                 'field'    => 'categories',
                 'operator' => 'IN',
@@ -60,7 +60,7 @@ class CatalogUpdatesIntegration extends ActivityManagerTestCase
         $projectCode = $project->getCode();
 
         $locale = $localeRepository->findOneByIdentifier('en_US');
-        $channel = $channelRepository->findOneByIdentifier('mobile');
+        $channel = $channelRepository->findOneByIdentifier('tablet');
         $channel->removeLocale($locale);
         $channelSaver->save($channel);
 
@@ -76,7 +76,7 @@ class CatalogUpdatesIntegration extends ActivityManagerTestCase
         $attributeRemover = $this->get('pim_catalog.remover.attribute');
         $attributeRepository = $this->get('pim_catalog.repository.attribute');
         $projectRepository = $this->get('pimee_activity_manager.repository.project');
-        $project = $this->createProject('High-Tech project', 'admin', 'en_US', 'mobile', [
+        $project = $this->createProject('High-Tech project', 'admin', 'en_US', 'tablet', [
             [
                 'field'    => 'release_date',
                 'operator' => '=',
@@ -104,7 +104,7 @@ class CatalogUpdatesIntegration extends ActivityManagerTestCase
         $categoryRemover = $this->get('pim_catalog.remover.category');
         $categoryRepository = $this->get('pim_catalog.repository.category');
         $projectRepository = $this->get('pimee_activity_manager.repository.project');
-        $project = $this->createProject('High-Tech project', 'admin', 'en_US', 'mobile', [
+        $project = $this->createProject('High-Tech project', 'admin', 'en_US', 'tablet', [
             [
                 'field'    => 'categories',
                 'operator' => 'IN',

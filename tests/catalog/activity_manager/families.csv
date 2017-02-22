@@ -1,4 +1,4 @@
-code;label-en_US;attributes;attribute_as_label;requirements-ecommerce;requirements-mobile
+code;label-en_US;attributes;attribute_as_label;requirements-ecommerce;requirements-tablet
 tshirt;TShirts;sku,brand,name,description,size,weight,material,release_date;name;sku,name,size,description,material;sku,name,size,description,material
 usb_keys;USB Keys;sku,name,description,weight,release_date,capacity,size;name;sku,name,size,description,capacity;sku,name,size,description,capacity
 posters;Posters;sku,name,description,size,release_date,picture;name;sku,name,size,description,picture;sku,name,size,description,picture
