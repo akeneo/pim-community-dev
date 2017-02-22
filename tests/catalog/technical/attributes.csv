@@ -26,3 +26,5 @@ a_scopable_image;;;;;0;;attributeGroupB;0;;;;0;0;;;;1;0;pim_catalog_image;0;0;;;
 a_localizable_scopable_image;;;;;0;;attributeGroupB;1;;;;0;0;;;;1;0;pim_catalog_image;0;0;;;0
 a_scopable_price;;;;;1;;attributeGroupA;0;;;;0;0;;;;1;9;pim_catalog_price_collection;0;0;;;0
 a_localized_and_scopable_text_area;;;;;0;;attributeGroupA;1;;;;0;0;;;;1;10;pim_catalog_textarea;0;0;;;0
+a_text_collection;;;;;0;;attributeGroupA;0;;;;0;0;;;;0;11;pim_catalog_text_collection;0;0;;;0
+a_localizable_text_collection;;;;;0;;attributeGroupA;1;;;;0;0;;;;0;12;pim_catalog_text_collection;0;0;;;0
