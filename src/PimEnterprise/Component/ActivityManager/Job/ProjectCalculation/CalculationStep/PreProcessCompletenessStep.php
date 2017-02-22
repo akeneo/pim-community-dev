@@ -34,6 +34,11 @@ class PreProcessCompletenessStep implements CalculationStepInterface
     /** @var ProductValueCompleteCheckerInterface */
     protected $productValueChecker;
 
+    /**
+     * @param PreProcessingRepositoryInterface     $preProcessingRepository
+     * @param FamilyRequirementRepositoryInterface $familyRequirementRepository
+     * @param ProductValueCompleteCheckerInterface $productValueChecker
+     */
     public function __construct(
         PreProcessingRepositoryInterface $preProcessingRepository,
         FamilyRequirementRepositoryInterface $familyRequirementRepository,

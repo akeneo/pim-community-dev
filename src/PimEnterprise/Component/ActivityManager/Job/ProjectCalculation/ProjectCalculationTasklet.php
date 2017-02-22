@@ -17,7 +17,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
-use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\ProductRepositoryInterface;
 
 /**

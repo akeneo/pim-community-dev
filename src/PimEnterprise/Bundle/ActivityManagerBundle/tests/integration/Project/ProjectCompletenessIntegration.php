@@ -168,8 +168,6 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
             ],
         ]);
 
-        $this->calculateProject($project);
-
         /**
          * Julia is a project creator, she creates a project on the "tshirt" family
          * She can access to all categories and attributes groups (for all products at least one attribute group is not done)
@@ -250,8 +248,6 @@ class ProjectCompletenessIntegration extends ActivityManagerTestCase
                 'value'    => ['tshirt'],
             ],
         ]);
-
-        $this->calculateProject($project);
 
         /**
          * Julia is a project creator, she creates a project on the "tshirt" family
