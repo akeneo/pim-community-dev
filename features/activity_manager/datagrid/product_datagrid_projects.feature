@@ -128,6 +128,42 @@ Feature: Products datagrid projects
     And I should see the text "My TShirts Project"
     But I should not see the text "My TShirts Project *"
 
+  Scenario: A project is not seen as modified if only items per page or current page change
+    Given the following products:
+      | sku                    | family | categories | name-en_US                  |
+      | tshirt-fast-furious-1  | tshirt | clothing   | T-Shirt "Fast & Furious 1"  |
+      | tshirt-fast-furious-2  | tshirt | clothing   | T-Shirt "Fast & Furious 2"  |
+      | tshirt-fast-furious-3  | tshirt | clothing   | T-Shirt "Fast & Furious 3"  |
+      | tshirt-fast-furious-4  | tshirt | clothing   | T-Shirt "Fast & Furious 4"  |
+      | tshirt-fast-furious-5  | tshirt | clothing   | T-Shirt "Fast & Furious 5"  |
+      | tshirt-fast-furious-6  | tshirt | clothing   | T-Shirt "Fast & Furious 6"  |
+      | tshirt-fast-furious-7  | tshirt | clothing   | T-Shirt "Fast & Furious 7"  |
+      | tshirt-fast-furious-8  | tshirt | clothing   | T-Shirt "Fast & Furious 8"  |
+      | tshirt-fast-furious-9  | tshirt | clothing   | T-Shirt "Fast & Furious 9"  |
+      | tshirt-fast-furious-10 | tshirt | clothing   | T-Shirt "Fast & Furious 10" |
+      | tshirt-fast-furious-11 | tshirt | clothing   | T-Shirt "Fast & Furious 11" |
+      | tshirt-fast-furious-12 | tshirt | clothing   | T-Shirt "Fast & Furious 12" |
+      | tshirt-fast-furious-13 | tshirt | clothing   | T-Shirt "Fast & Furious 13" |
+      | tshirt-fast-furious-14 | tshirt | clothing   | T-Shirt "Fast & Furious 14" |
+    And I am logged in as "Julia"
+    And I am on the products page
+    When I filter by "family" with operator "in list" and value "TShirts"
+    And I click on the create project button
+    And I fill in the following information in the popin:
+      | project-label    | My TShirts Project |
+      | project-due-date | 01/25/2077         |
+    And I press the "Save" button
+    Then I should be on the products page
+    When I go on the last executed job resume of "project_calculation"
+    And I wait for the "project_calculation" job to finish
+    And I am on the products page
+    And I switch view selector type to "Projects"
+    Then I should see the text "My TShirts Project"
+    When I change the page size to 10
+    Then I should not see the text "My TShirts Project *"
+    When I change the page number to 2
+    Then I should not see the text "My TShirts Project *"
+
   Scenario: I fallback on my custom default view if the project I was working on has been deleted
     Given I am logged in as "Julia"
     And I am on the products page
