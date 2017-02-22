@@ -816,6 +816,7 @@ JSON;
 <<<JSON
     {
         "identifier": "wrong_amount",
+        "variant_group": "variantB",
         "values": {
             "a_scopable_price": [{
                 "locale": null,
@@ -836,31 +837,41 @@ JSON;
 
         $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
 
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'field'     => 'values',
-                    'message'   => 'This value should be a valid number.',
-                    'attribute' => 'a_scopable_price',
-                    'locale'    => null,
-                    'scope'     => 'ecommerce',
-                    'currency'  => 'EUR'
-                ],
-                [
-                    'field'     => 'values',
-                    'message'   => 'This value should be -250 or more.',
-                    'attribute' => 'a_number_float_negative',
-                    'locale'    => null,
-                    'scope'     => null
-                ]
-            ],
-        ];
+        $expectedContent = <<<JSON
+{
+    "code": 422,
+    "message": "Validation failed.",
+    "errors": [
+        {
+            "field": "variant_group",
+            "message": "The product \"wrong_amount\" is in the variant group \"variantB\" but it misses the following axes: a_simple_select."
+        },
+        {
+            "field": "variant_group",
+            "message": "Product \"wrong_amount\" should have value for axis \"a_simple_select\" of variant group \"Variant B\""
+        },
+        {
+            "field": "values",
+            "message": "This value should be a valid number.",
+            "attribute": "a_scopable_price",
+            "locale": null,
+            "scope": "ecommerce",
+            "currency": "EUR"
+        },
+        {
+            "field": "values",
+            "message": "This value should be -250 or more.",
+            "attribute": "a_number_float_negative",
+            "locale": null,
+            "scope": null
+        }
+    ]
+}
+JSON;
 
         $response = $client->getResponse();
 
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
