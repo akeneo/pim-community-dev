@@ -175,7 +175,7 @@ The following command helps to migrate references to these classes or services.
 With this 1.7 version, we migrated the old import/export configuration screens to new javascript architecture. It means
 that if you had customized them, you will need to migrate your configuration to the new one.
 
-There is three level of customization:
+There are three levels of customization:
 
 #### You only added custom import/export without UI changes
 
@@ -205,7 +205,7 @@ above.
 
 #### Update references to moved `Pim\Bundle\ConnectorBundle\Reader` business classes
 
-In order to be more precise about the roles our existing file iterators have we renamed some existing classed as existing file iterators would only supports only tabular file format like CSV and XLSX.
+In order to be more precise about the roles of our existing file iterators, we have renamed some existing classes as existing file iterators would only support a tabular file format, such as CSV and XLSX.
 
 Please execute the following commands in your project folder to update the references you may have to these classes:
 ```
@@ -216,22 +216,22 @@ Please execute the following commands in your project folder to update the refer
 #### Update references to the standardized `Pim\Component\Catalog\Normalizer\Standard` classes
 
 In order to use the standard format, Structured Normalizers have been replaced by Standard Normalizers.
-To call these normalizers via the Symfony Normalizer service, the key `standard` has to be filled. Example:
+To call these normalizers via the Symfony Normalizer service, the key `standard` has to be filled in. Example:
 
 ```
      $this->normalizer->normalize($entity, 'standard');
 ```
 
 Originally, the Normalizer `Pim\Component\Catalog\Normalizer\Structured\GroupNormalizer` was used to normalize both Groups and Variant Groups.
-This normalizer has been split in two distinct normalizers :
+This normalizer has been split in two distinct normalizers:
 
 * `Pim\Component\Catalog\Normalizer\Standard\GroupNormalizer` class is used to normalize Groups
 * `Pim\Component\Catalog\Normalizer\Standard\VariantGroupNormalizer` class is used to normalize Variant Groups
 
-In order to use the good one, a proxy group normalizer `Pim\Component\Catalog\Normalizer\Standard\ProxyGroupNormalizer` has been created.
+In order to use the right one, a proxy group normalizer `Pim\Component\Catalog\Normalizer\Standard\ProxyGroupNormalizer` has been created.
 This proxy normalizer will be used  instead of `Pim\Component\Catalog\Normalizer\Structured\GroupNormalizer`.
 
-The following command helps to migrate references to Normalizer classes or services :
+The following command helps to migrate references to Normalizer classes or services:
 ```
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Normalizer\\Structured\\AssociationTypeNormalizer/Pim\\Component\\Catalog\\Normalizer\\Standard\\AssociationTypeNormalizer/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Normalizer\\Structured\\AttributeGroupNormalizer/Pim\\Component\\Catalog\\Normalizer\\Standard\\AttributeGroupNormalizer/g'
@@ -301,7 +301,7 @@ The following command helps to migrate references to Normalizer classes or servi
 
 #### Versioning
 
-Previously, to normalize an entity for versioning, formats allowed were `flat` and `csv`. To avoid confusion, only `flat` format will be allowed.
+Previously, to normalize an entity for versioning, allowed formats were `flat` and `csv`. To avoid confusion, only `flat` format will be allowed.
 
 #### Operator
 
@@ -388,7 +388,7 @@ According to the full path specified in this example, the filename will be "imag
 
 ### CSS Refactoring
 
-Akeneo 1.7 comes with a refactor of a large part of the CSS, with the implementation of [BEM methodology](http://getbem.com/introduction/).
+Akeneo 1.7 comes with a remake of a large part of the CSS, with the implementation of [BEM methodology](http://getbem.com/introduction/).
 For more information about our choices, please read the [Akeneo Style guide documentation](https://docs.akeneo.com/master/styleguide/).
 
 This work has been done for several reasons:
