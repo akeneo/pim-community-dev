@@ -178,21 +178,11 @@ define([
 
                 if ('true' === target.dataset.required) {
                     this.removeFromAttributeRequirements(attribute, channel);
-                    $(target).attr('class', this.attributeNotRequiredIconClass);
-                    target.dataset.originalTitle = this.notRequiredLabel;
-                    target.dataset.required = 'false';
-                    $(target).tooltip('show');
-
-                    return this;
+                } else {
+                    this.addToAttributeRequirements(attribute, channel);
                 }
 
-                this.addToAttributeRequirements(attribute, channel);
-                $(target).attr('class', this.attributeRequiredIconClass);
-                target.dataset.originalTitle = this.requiredLabel;
-                target.dataset.required = 'true';
-                $(target).tooltip('show');
-
-                return this;
+                return this.render();
             },
 
             /**
