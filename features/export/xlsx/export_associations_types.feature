@@ -33,5 +33,5 @@ Feature: Export associations in XLSX
       | UPSELL       | Upsell       |
       | SUBSTITUTION | Substitution |
     And exported xlsx file 2 of "xlsx_footwear_association_type_export" should contain:
-      | code         | label-en_US  |
-      | PACK         | Pack         |
+      | code | label-en_US |
+      | PACK | Pack        |

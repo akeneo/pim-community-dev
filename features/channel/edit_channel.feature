@@ -78,7 +78,7 @@ Feature: Edit a channel
     Given I am logged in as "Peter"
     And I am on the "tablet" channel page
     And I fill in the following information:
-      | Currencies | |
+      | Currencies |  |
     And I press the "Save" button
     Then I should see the text "This collection should contain 1 element or more."
     And I fill in the following information:
@@ -91,7 +91,7 @@ Feature: Edit a channel
     Given I am logged in as "Peter"
     And I am on the "tablet" channel page
     And I fill in the following information:
-      | Locales | |
+      | Locales |  |
     And I press the "Save" button
     Then I should see the text "This collection should contain 1 element or more."
 

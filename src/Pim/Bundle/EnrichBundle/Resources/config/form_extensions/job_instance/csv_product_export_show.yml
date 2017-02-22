@@ -68,7 +68,7 @@ extensions:
             fieldCode: configuration.decimalSeparator
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.decimal_separator.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.decimal_separator.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.decimal_separator.help
 
     pim-job-instance-csv-product-export-show-properties-date-format:
         module: pim/job/product/edit/field/date-format
@@ -79,7 +79,7 @@ extensions:
             fieldCode: configuration.dateFormat
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.date_format.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.date_format.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.date_format.help
 
     pim-job-instance-csv-product-export-show-properties-file-path:
         module: pim/job/common/edit/field/text
@@ -90,7 +90,7 @@ extensions:
             fieldCode: configuration.filePath
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.file_path.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
 
     pim-job-instance-csv-product-export-show-properties-delimiter:
         module: pim/job/common/edit/field/text
@@ -101,7 +101,7 @@ extensions:
             fieldCode: configuration.delimiter
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.delimiter.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.delimiter.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.delimiter.help
 
     pim-job-instance-csv-product-export-show-properties-enclosure:
         module: pim/job/common/edit/field/text
@@ -112,7 +112,7 @@ extensions:
             fieldCode: configuration.enclosure
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.enclosure.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.enclosure.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.enclosure.help
 
     pim-job-instance-csv-product-export-show-properties-with-header:
         module: pim/job/common/edit/field/switch
@@ -123,7 +123,7 @@ extensions:
             fieldCode: configuration.withHeader
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.with_header.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.with_header.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.with_header.help
 
     pim-job-instance-csv-product-export-show-properties-with-media:
         module: pim/job/common/edit/field/switch
@@ -134,7 +134,7 @@ extensions:
             fieldCode: configuration.with_media
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.with_media.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.with_media.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.with_media.help
 
     pim-job-instance-csv-product-export-show-content-structure:
         module: pim/job/product/edit/content/structure

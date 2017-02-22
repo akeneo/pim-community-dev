@@ -74,9 +74,9 @@ Feature: Export options in XSLX
       | manufacturer       | Caterpillar | 4          | Caterpillar |
       | weather_conditions | dry         | 1          | Dry         |
     And exported xlsx file 2 of "xlsx_footwear_option_export" should contain:
-      | attribute          | code        | sort_order | label-en_US |
-      | weather_conditions | wet         | 2          | Wet         |
-      | weather_conditions | hot         | 3          | Hot         |
-      | weather_conditions | cold        | 4          | Cold        |
-      | weather_conditions | snowy       | 5          | Snowy       |
-      | rating             | 1           | 1          | 1 star      |
+      | attribute          | code  | sort_order | label-en_US |
+      | weather_conditions | wet   | 2          | Wet         |
+      | weather_conditions | hot   | 3          | Hot         |
+      | weather_conditions | cold  | 4          | Cold        |
+      | weather_conditions | snowy | 5          | Snowy       |
+      | rating             | 1     | 1          | 1 star      |

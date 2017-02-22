@@ -99,7 +99,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
         $this->attributesColumns = [];
 
         foreach ($attributes as $attributeCode => $attribute) {
-            $attributeType = $attribute['attributeType'];
+            $attributeType = $attribute['type'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
             if (!$attributeTypeConf || !isset($attributeTypeConf['column'])) {

@@ -27,10 +27,10 @@ class EntitySorterSpec extends ObjectBehavior
 
     function it_supports_select_attributes(AttributeInterface $attribute)
     {
-        $attribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $attribute->getType()->willReturn('pim_catalog_simpleselect');
         $this->supportsAttribute($attribute)->shouldReturn(true);
 
-        $attribute->getAttributeType()->willReturn(Argument::any());
+        $attribute->getType()->willReturn(Argument::any());
         $this->supportsAttribute($attribute)->shouldReturn(false);
     }
 
@@ -79,7 +79,7 @@ class EntitySorterSpec extends ObjectBehavior
     {
         $attribute->getCode()->willReturn('my_code');
         $attribute->getBackendType()->willReturn('options');
-        $attribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $attribute->getType()->willReturn('pim_catalog_simpleselect');
         $this
             ->shouldThrow('\InvalidArgumentException')
             ->duringAddAttributeSorter($attribute, 'desc', null, 'ecommerce');

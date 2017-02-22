@@ -22,7 +22,7 @@ class NotDecimalGuesser implements ConstraintGuesserInterface
     public function supportAttribute(AttributeInterface $attribute)
     {
         return in_array(
-            $attribute->getAttributeType(),
+            $attribute->getType(),
             [
                 AttributeTypes::METRIC,
                 AttributeTypes::NUMBER,

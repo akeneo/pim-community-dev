@@ -84,7 +84,7 @@ class ProductBuilderSpec extends ObjectBehavior
         $attributeRepository->getIdentifier()->willReturn($skuAttribute);
 
         $skuAttribute->getCode()->willReturn('sku');
-        $skuAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $skuAttribute->getType()->willReturn('pim_catalog_identifier');
         $skuAttribute->getBackendType()->willReturn('varchar');
         $skuAttribute->isLocalizable()->willReturn(false);
         $skuAttribute->isScopable()->willReturn(false);
@@ -118,17 +118,17 @@ class ProductBuilderSpec extends ObjectBehavior
         $valueClass = self::VALUE_CLASS;
 
         $sku->getCode()->willReturn('sku');
-        $sku->getAttributeType()->willReturn('pim_catalog_identifier');
+        $sku->getType()->willReturn('pim_catalog_identifier');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
         $name->getCode()->willReturn('name');
-        $name->getAttributeType()->willReturn('pim_catalog_text');
+        $name->getType()->willReturn('pim_catalog_text');
         $name->isLocalizable()->willReturn(true);
         $name->isScopable()->willReturn(false);
 
         $desc->getCode()->willReturn('description');
-        $desc->getAttributeType()->willReturn('pim_catalog_text');
+        $desc->getType()->willReturn('pim_catalog_text');
         $desc->isLocalizable()->willReturn(true);
         $desc->isScopable()->willReturn(true);
 

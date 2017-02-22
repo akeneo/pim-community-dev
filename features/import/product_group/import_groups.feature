@@ -6,12 +6,14 @@ Feature: Import groups
 
   Background:
     Given the "footwear" catalog configuration
+    And the following variant groups:
+      | code          | label-en_US    | type    | axis       |
+      | ORO_TSHIRT    | Oro T-shirt    | VARIANT | size,color |
+      | AKENEO_TSHIRT | Akeneo T-shirt | VARIANT | size       |
     And the following product groups:
-      | code          | label          | type    | axis        |
-      | ORO_TSHIRT    | Oro T-shirt    | VARIANT | size, color |
-      | AKENEO_TSHIRT | Akeneo T-shirt | VARIANT | size        |
-      | ORO_XSELL     | Oro X          | XSELL   |             |
-      | AKENEO_XSELL  | Akeneo X       | XSELL   |             |
+      | code         | label-en_US | type  |
+      | ORO_XSELL    | Oro X       | XSELL |
+      | AKENEO_XSELL | Akeneo X    | XSELL |
     And I am logged in as "Julia"
 
   Scenario: Successfully import standard groups to create and update products (no variant groups)

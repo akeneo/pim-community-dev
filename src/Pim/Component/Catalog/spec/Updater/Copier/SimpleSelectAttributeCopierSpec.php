@@ -36,20 +36,20 @@ class SimpleSelectAttributeCopierSpec extends ObjectBehavior
         AttributeInterface $fromSimpleSelectAttribute,
         AttributeInterface $toSimpleSelectAttribute
     ) {
-        $fromSimpleSelectAttribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
-        $toSimpleSelectAttribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $fromSimpleSelectAttribute->getType()->willReturn('pim_catalog_simpleselect');
+        $toSimpleSelectAttribute->getType()->willReturn('pim_catalog_simpleselect');
         $this->supportsAttributes($fromSimpleSelectAttribute, $toSimpleSelectAttribute)->shouldReturn(true);
 
-        $fromTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $fromTextareaAttribute->getType()->willReturn('pim_catalog_textarea');
+        $toTextareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttributes($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(false);
 
-        $fromIdentifierAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
-        $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_text');
+        $fromIdentifierAttribute->getType()->willReturn('pim_catalog_identifier');
+        $toTextareaAttribute->getType()->willReturn('pim_catalog_text');
         $this->supportsAttributes($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(false);
 
-        $fromSimpleSelectAttribute->getAttributeType()->willReturn('pim_catalog_number');
-        $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $fromSimpleSelectAttribute->getType()->willReturn('pim_catalog_number');
+        $toTextareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttributes($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(false);
 
         $this->supportsAttributes($fromTextAttribute, $toSimpleSelectAttribute)->shouldReturn(false);

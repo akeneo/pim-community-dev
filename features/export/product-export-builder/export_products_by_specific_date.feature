@@ -74,12 +74,12 @@ Feature: Export products according to a date
   Scenario: Export only the products updated since a defined date
     Given a "footwear" catalog configuration
     And the following products:
-      | sku      | family   | categories        | price          | size | color    | name-en_US |
-      | SNKRS-1B | sneakers | summer_collection | 50 EUR, 70 USD | 45   | black    | Model 1    |
-      | SNKRS-1R | sneakers | summer_collection | 50 EUR, 70 USD | 45   | red      | Model 1    |
+      | sku      | family   | categories        | price          | size | color | name-en_US |
+      | SNKRS-1B | sneakers | summer_collection | 50 EUR, 70 USD | 45   | black | Model 1    |
+      | SNKRS-1R | sneakers | summer_collection | 50 EUR, 70 USD | 45   | red   | Model 1    |
     And the following job "csv_footwear_product_export" configuration:
-      | filePath               | %tmp%/product_export/product_export.csv |
-      | filters                | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": ">", "value": "2016-04-25 00:00:00"}]} |
+      | filePath | %tmp%/product_export/product_export.csv                                                                                             |
+      | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": ">", "value": "2016-04-25 00:00:00"}]} |
     And I am logged in as "Julia"
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job

@@ -23,10 +23,10 @@ Feature: Display jobs execution in job tracker
 
   Scenario: Display a mass edit in the job tracker
     And the following products:
-      | sku       | family     |
-      | boots     | boots      |
-      | sneakers  | sneakers   |
-      | sandals   | sandals    |
+      | sku      | family   |
+      | boots    | boots    |
+      | sneakers | sneakers |
+      | sandals  | sandals  |
     When I am on the products page
     Then I select rows boots, sandals and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
@@ -78,8 +78,8 @@ Feature: Display jobs execution in job tracker
     And I wait for the "csv_footwear_category_export" job to finish
     When I am on the job tracker page
     Then I should be able to use the following filters:
-      | filter   | operator    | value                       | result                                                    |
-      | job      | is equal to | CSV footwear product export | CSV footwear product export                               |
-      | user     | is equal to | Julia                       | CSV footwear product export                               |
-      | type     | is equal to | import                      |                                                           |
-      | type     | is equal to | export                      | CSV footwear product export, CSV footwear category export |
+      | filter | operator    | value                       | result                                                    |
+      | job    | is equal to | CSV footwear product export | CSV footwear product export                               |
+      | user   | is equal to | Julia                       | CSV footwear product export                               |
+      | type   | is equal to | import                      |                                                           |
+      | type   | is equal to | export                      | CSV footwear product export, CSV footwear category export |

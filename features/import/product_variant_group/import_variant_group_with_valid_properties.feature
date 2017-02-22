@@ -6,10 +6,12 @@ Feature: Execute an import with valid properties
 
   Background:
     Given the "footwear" catalog configuration
+    And the following variant groups:
+      | code   | label-en_US | axis       | type    |
+      | SANDAL | Sandal      | color,size | VARIANT |
     And the following product groups:
-      | code   | label  | axis        | type    |
-      | SANDAL | Sandal | color, size | VARIANT |
-      | NOT_VG | Not VG |             | RELATED |
+      | code   | label-en_US | type    |
+      | NOT_VG | Not VG      | RELATED |
     And I am logged in as "Julia"
 
   Scenario: Successfully import a csv file of variant group to create a new one

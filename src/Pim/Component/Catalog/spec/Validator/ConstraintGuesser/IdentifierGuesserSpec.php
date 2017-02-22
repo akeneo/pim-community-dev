@@ -9,14 +9,14 @@ class IdentifierGuesserSpec extends ObjectBehavior
 {
     function it_does_not_support_multiselect(AttributeInterface $attribute)
     {
-        $attribute->getAttributeType()->willReturn('pim_catalog_multiselect');
+        $attribute->getType()->willReturn('pim_catalog_multiselect');
 
         $this->supportAttribute($attribute)->shouldReturn(false);
     }
 
     function it_supports_identifier(AttributeInterface $attribute)
     {
-        $attribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $attribute->getType()->willReturn('pim_catalog_identifier');
 
         $this->supportAttribute($attribute)->shouldReturn(true);
     }

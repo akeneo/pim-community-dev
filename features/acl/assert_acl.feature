@@ -31,16 +31,16 @@ Feature: Define user rights
     And I should not be able to access the <forbiddenPage> page
 
     Examples:
-      | permission                  | page              | button                  | forbiddenPage            |
-      | Create an association type  | association types | Create association type | AssociationType creation |
-      | Create a channel            | channels          | Create channel          | channel creation         |
-      | Create a family             | families          | Create family           | Family creation          |
-      | Create a group              | product groups    | Create group            | ProductGroup creation    |
-      | Create a variant group      | variant groups    | Create variant group    | VariantGroup creation    |
-      | Create a group type         | group types       | Create group type       | GroupType creation       |
-      | Create an attribute         | attributes        | Create attribute        | Attribute creation       |
-      | Create an export profile    | exports           | Create export profile   | Export creation          |
-      | Create an import profile    | imports           | Create import profile   | Import creation          |
+      | permission                 | page              | button                  | forbiddenPage            |
+      | Create an association type | association types | Create association type | AssociationType creation |
+      | Create a channel           | channels          | Create channel          | channel creation         |
+      | Create a family            | families          | Create family           | Family creation          |
+      | Create a group             | product groups    | Create group            | ProductGroup creation    |
+      | Create a variant group     | variant groups    | Create variant group    | VariantGroup creation    |
+      | Create a group type        | group types       | Create group type       | GroupType creation       |
+      | Create an attribute        | attributes        | Create attribute        | Attribute creation       |
+      | Create an export profile   | exports           | Create export profile   | Export creation          |
+      | Create an import profile   | imports           | Create import profile   | Import creation          |
 
   Scenario Outline: Successfully hide entity creation and deletion buttons when user doesn't have the rights
     Given I am logged in as "Peter"

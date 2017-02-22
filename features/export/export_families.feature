@@ -28,8 +28,8 @@ Feature: Export families
   Scenario: Successfully export families CSV
     Given a "footwear" catalog configuration
     And the following family:
-      | code      | label-en_US |requirements-tablet | requirements-mobile |
-      | tractors  |             |sku                 | sku                 |
+      | code     | label-en_US | requirements-tablet | requirements-mobile |
+      | tractors |             | sku                 | sku                 |
     And the following job "csv_footwear_family_export" configuration:
       | filePath | %tmp%/family_export/family.csv |
     And I am logged in as "Julia"

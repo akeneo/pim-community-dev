@@ -45,7 +45,7 @@ class Group implements GroupInterface
      */
     protected $locale;
 
-    /**  @var \Doctrine\Common\Collections\ArrayCollection $translations */
+    /**  @var ArrayCollection $translations */
     protected $translations;
 
     /**  @var ProductTemplateInterface */

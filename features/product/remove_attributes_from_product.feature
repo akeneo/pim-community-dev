@@ -28,8 +28,8 @@ Feature: Remove an attribute from a product
 
   Scenario: Successfully remove a scopable attribute from a product
     Given the following attribute:
-      | code            | label           | scopable | group |
-      | scopable_length | Scopable length | yes      | sizes |
+      | code            | label-en_US     | scopable | group | type             |
+      | scopable_length | Scopable length | 1        | sizes | pim_catalog_text |
     And the "nike" product has the "scopable_length" attribute
     And I am on the "nike" product page
     When I visit the "Sizes" group

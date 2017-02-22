@@ -53,7 +53,7 @@ class SortersConfigurator implements ConfiguratorInterface
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );
         foreach ($attributes as $attributeCode => $attribute) {
-            $attributeType = $attribute['attributeType'];
+            $attributeType = $attribute['type'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
             $columnExists = isset($columns[$attributeCode]);
 

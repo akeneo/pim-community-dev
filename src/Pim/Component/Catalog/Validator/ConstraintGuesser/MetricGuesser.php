@@ -31,6 +31,6 @@ class MetricGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AttributeInterface $attribute)
     {
-        return AttributeTypes::METRIC === $attribute->getAttributeType();
+        return AttributeTypes::METRIC === $attribute->getType();
     }
 }

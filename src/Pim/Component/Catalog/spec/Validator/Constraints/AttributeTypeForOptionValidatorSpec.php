@@ -35,7 +35,7 @@ class AttributeTypeForOptionValidatorSpec extends ObjectBehavior
         AttributeTypeForOption $constraint
     ) {
         $attributeOption->getAttribute()->willReturn($allowedAttribute);
-        $allowedAttribute->getAttributeType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
+        $allowedAttribute->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($attributeOption, $constraint);
@@ -49,7 +49,7 @@ class AttributeTypeForOptionValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $violation
     ) {
         $attributeOption->getAttribute()->willReturn($notAllowedAttribute);
-        $notAllowedAttribute->getAttributeType()->willReturn(AttributeTypes::TEXT);
+        $notAllowedAttribute->getType()->willReturn(AttributeTypes::TEXT);
         $notAllowedAttribute->getCode()->willReturn('attributeCode');
 
         $violationData = [

@@ -7,9 +7,9 @@ Feature: Export products with only selected attributes
   Background:
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code                 | label-en_US          | type         | group  |
-      | high_heel_color      | High heel color      | simpleselect | colors |
-      | high_heel_color_sole | High heel color sole | simpleselect | colors |
+      | code                 | label-en_US          | type                     | group  |
+      | high_heel_color      | High heel color      | pim_catalog_simpleselect | colors |
+      | high_heel_color_sole | High heel color sole | pim_catalog_simpleselect | colors |
     And the following "high_heel_color" attribute options: Red, Blue
     And the following "high_heel_color_sole" attribute options: Green, Orange
     And the following products:
@@ -132,14 +132,14 @@ Feature: Export products with only selected attributes
   @jira https://akeneo.atlassian.net/browse/PIM-5994
   Scenario: Export the attributes only once
     Given the following family:
-      | code       | attributes                                 | requirements-mobile                        |
-      | high_heels | sku, high_heel_color, high_heel_color_sole | sku, high_heel_color, high_heel_color_sole |
+      | code       | attributes                               | requirements-mobile                      |
+      | high_heels | sku,high_heel_color,high_heel_color_sole | sku,high_heel_color,high_heel_color_sole |
     And the following products:
       | sku    | family     | name-en_US     | high_heel_color | high_heel_color_sole | categories      |
       | HEEL-1 | high_heels | The red heels  | Red             | Green                | 2014_collection |
       | HEEL-2 | high_heels | The blue heels | Blue            | Orange               | 2014_collection |
     And the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | filePath | %tmp%/product_export/product_export.csv                                                                                                                                                       |
       | filters  | {"structure": {"locales": ["en_US"], "scope": "mobile", "attributes": ["high_heel_color", "high_heel_color_sole"]}, "data": [{"field": "family", "operator": "IN", "value": ["high_heels"]}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job

@@ -71,7 +71,7 @@ Feature: Export products
   Scenario: Do not export products that are not classified
     Given an "apparel" catalog configuration
     And the following job "tablet_product_export" configuration:
-      | filePath | %tmp%/tablet_product_export/tablet_product_export.csv |
+      | filePath | %tmp%/tablet_product_export/tablet_product_export.csv                                                                                                                                       |
       | filters  | {"structure": {"locales": ["en_US", "en_GB"], "scope": "tablet"},"data":[{"field":"completeness","operator":"=","value":100}, {"field":"categories","operator":"IN","value":["men_2013"]}]} |
     And the following products:
       | sku          | family  | categories                   | price                 | size   | color | manufacturer     | material | country_of_manufacture |
@@ -101,11 +101,11 @@ Feature: Export products
   Scenario: Export only attributes with the locale specific
     Given an "apparel" catalog configuration
     And the following job "tablet_product_export" configuration:
-      | filePath | %tmp%/tablet_product_export/tablet_product_export.csv |
+      | filePath | %tmp%/tablet_product_export/tablet_product_export.csv                                                                                                                                                       |
       | filters  | {"structure": {"locales": ["en_US", "en_GB"], "scope": "tablet"},"data":[{"field":"completeness","operator":"=","value":100}, {"field":"categories","operator":"IN CHILDREN","value":["2013_collection"]}]} |
     And the following attributes:
-      | code                      | type | localizable | available_locales |
-      | locale_specific_attribute | text | yes         | en_US,fr_FR       |
+      | code                      | type             | localizable | available_locales | group |
+      | locale_specific_attribute | pim_catalog_text | 1           | en_US,fr_FR       | other |
     And the following products:
       | sku          | family  | categories                   | price                 | size   | color | manufacturer     | material | country_of_manufacture |
       | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |
@@ -140,22 +140,22 @@ Feature: Export products
     And the following job "ecommerce_product_export" configuration:
       | filePath | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
     And the following products:
-      | sku          | family  | categories                   | price                       | size   | color | manufacturer     | material | country_of_manufacture |
-      | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10.90 EUR, 15 USD, 9 GBP    | size_M | white | american_apparel | cotton   | usa                    |
-      | tshirt-black | tshirts | men_2013, men_2014, men_2015 | 10.90 EUR, 15 USD, 9 GBP    | size_L | black | american_apparel | cotton   | usa                    |
+      | sku          | family  | categories                   | price                    | size   | color | manufacturer     | material | country_of_manufacture |
+      | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10.90 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |
+      | tshirt-black | tshirts | men_2013, men_2014, men_2015 | 10.90 EUR, 15 USD, 9 GBP | size_L | black | american_apparel | cotton   | usa                    |
     And the following product values:
-      | product      | attribute                | value                             | locale    | scope        |
-      | tshirt-white | name                     | T-shirt blanc                     | fr_FR     |              |
-      | tshirt-white | name                     | Weißes T-Shirt                    | de_DE     |              |
-      | tshirt-white | description              | Un T-shirt blanc élégant          | fr_FR     | ecommerce    |
-      | tshirt-white | description              | Ein elegantes weißes T-Shirt      | de_DE     | ecommerce    |
-      | tshirt-white | number_in_stock          | 186                               |           | ecommerce    |
-      | tshirt-white | customs_tax              | 4.20 EUR, 6 USD, 3.80 GBP         | de_DE     |              |
-      | tshirt-black | name                     | T-shirt noir                      | fr_FR     |              |
-      | tshirt-black | name                     | Schwarzes T-Shirt                 | de_DE     |              |
-      | tshirt-black | description              | Un T-shirt noir élégant           | fr_FR     | ecommerce    |
-      | tshirt-black | description              | Ein elegantes schwarzes T-Shirt   | de_DE     | ecommerce    |
-      | tshirt-black | number_in_stock          | 98                                |           | ecommerce    |
+      | product      | attribute       | value                           | locale | scope     |
+      | tshirt-white | name            | T-shirt blanc                   | fr_FR  |           |
+      | tshirt-white | name            | Weißes T-Shirt                  | de_DE  |           |
+      | tshirt-white | description     | Un T-shirt blanc élégant        | fr_FR  | ecommerce |
+      | tshirt-white | description     | Ein elegantes weißes T-Shirt    | de_DE  | ecommerce |
+      | tshirt-white | number_in_stock | 186                             |        | ecommerce |
+      | tshirt-white | customs_tax     | 4.20 EUR, 6 USD, 3.80 GBP       | de_DE  |           |
+      | tshirt-black | name            | T-shirt noir                    | fr_FR  |           |
+      | tshirt-black | name            | Schwarzes T-Shirt               | de_DE  |           |
+      | tshirt-black | description     | Un T-shirt noir élégant         | fr_FR  | ecommerce |
+      | tshirt-black | description     | Ein elegantes schwarzes T-Shirt | de_DE  | ecommerce |
+      | tshirt-black | number_in_stock | 98                              |        | ecommerce |
     And I launched the completeness calculator
     And I am logged in as "Julia"
     When I am on the "ecommerce_product_export" export job page
@@ -174,22 +174,22 @@ Feature: Export products
     And the following job "ecommerce_product_export" configuration:
       | filePath | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
     And the following products:
-      | sku          | family  | categories                   | price                       | size   | color | manufacturer     | material | country_of_manufacture |
-      | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10.90 EUR, 15 USD, 9 GBP    | size_M | white | american_apparel | cotton   | usa                    |
-      | tshirt-black | tshirts | men_2013, men_2014, men_2015 | 10.90 EUR, 15 USD, 9 GBP    | size_L | black | american_apparel | cotton   | usa                    |
+      | sku          | family  | categories                   | price                    | size   | color | manufacturer     | material | country_of_manufacture |
+      | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10.90 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |
+      | tshirt-black | tshirts | men_2013, men_2014, men_2015 | 10.90 EUR, 15 USD, 9 GBP | size_L | black | american_apparel | cotton   | usa                    |
     And the following product values:
-      | product      | attribute                | value                             | locale    | scope        |
-      | tshirt-white | name                     | T-shirt blanc                     | fr_FR     |              |
-      | tshirt-white | name                     | Weißes T-Shirt                    | de_DE     |              |
-      | tshirt-white | description              | Un T-shirt blanc élégant          | fr_FR     | ecommerce    |
-      | tshirt-white | description              | Ein elegantes weißes T-Shirt      | de_DE     | ecommerce    |
-      | tshirt-white | customs_tax              | 4.20 EUR, 6 USD, 3.80 GBP         | de_DE     |              |
-      | tshirt-white | washing_temperature      | 40 CELSIUS                        |           |              |
-      | tshirt-black | name                     | T-shirt noir                      | fr_FR     |              |
-      | tshirt-black | name                     | Schwarzes T-Shirt                 | de_DE     |              |
-      | tshirt-black | description              | Un T-shirt noir élégant           | fr_FR     | ecommerce    |
-      | tshirt-black | description              | Ein elegantes schwarzes T-Shirt   | de_DE     | ecommerce    |
-      | tshirt-black | washing_temperature      | 40 CELSIUS                        |           |              |
+      | product      | attribute           | value                           | locale | scope     |
+      | tshirt-white | name                | T-shirt blanc                   | fr_FR  |           |
+      | tshirt-white | name                | Weißes T-Shirt                  | de_DE  |           |
+      | tshirt-white | description         | Un T-shirt blanc élégant        | fr_FR  | ecommerce |
+      | tshirt-white | description         | Ein elegantes weißes T-Shirt    | de_DE  | ecommerce |
+      | tshirt-white | customs_tax         | 4.20 EUR, 6 USD, 3.80 GBP       | de_DE  |           |
+      | tshirt-white | washing_temperature | 40 CELSIUS                      |        |           |
+      | tshirt-black | name                | T-shirt noir                    | fr_FR  |           |
+      | tshirt-black | name                | Schwarzes T-Shirt               | de_DE  |           |
+      | tshirt-black | description         | Un T-shirt noir élégant         | fr_FR  | ecommerce |
+      | tshirt-black | description         | Ein elegantes schwarzes T-Shirt | de_DE  | ecommerce |
+      | tshirt-black | washing_temperature | 40 CELSIUS                      |        |           |
     And I launched the completeness calculator
     And I am logged in as "Julia"
     When I am on the "ecommerce_product_export" export job page

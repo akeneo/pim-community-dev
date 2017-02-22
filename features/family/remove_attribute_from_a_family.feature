@@ -6,13 +6,13 @@ Feature: Remove attribute from a family
 
   Background:
     Given the "default" catalog configuration
-    And the following family:
-      | code |
-      | Bags |
     And the following attributes:
-      | label            | families |
-      | Long Description | Bags     |
-      | Manufacturer     | Bags     |
+      | label-en_US      | group | type             | code            |
+      | Long Description | other | pim_catalog_text | longDescription |
+      | Manufacturer     | other | pim_catalog_text | manufacturer    |
+    And the following family:
+      | code | attributes                   |
+      | Bags | longDescription,manufacturer |
     And the following product:
       | sku            | family | longDescription | manufacturer |
       | bag-dolce-vita | Bags   | my description  | dolce        |

@@ -9,13 +9,13 @@ Feature: Display the completeness of a product with reference data
     And I add the "french" locale to the "tablet" channel
     And I add the "french" locale to the "mobile" channel
     And the following attributes:
-      | code        | label       | localizable | scopable | type                        | reference_data_name |
-      | heel_fabric | Heel fabric | yes         | yes      | reference_data_multiselect  | fabrics             |
-      | main_fabric | Main fabric | no          | yes      | reference_data_multiselect  | fabrics             |
-      | main_color  | Main color  | yes         | no       | reference_data_simpleselect | color               |
+      | code        | label-en_US | localizable | scopable | type                            | reference_data_name | group |
+      | heel_fabric | Heel fabric | 1           | 1        | pim_reference_data_multiselect  | fabrics             | other |
+      | main_fabric | Main fabric | 0           | 1        | pim_reference_data_multiselect  | fabrics             | other |
+      | main_color  | Main color  | 1           | 0        | pim_reference_data_simpleselect | color               | other |
     And the following family:
-      | code      | attributes                                                         | requirements-tablet                      | requirements-mobile                      |
-      | highheels | sku, heel_color, sole_fabric, heel_fabric, main_fabric, main_color | sku, heel_color, sole_fabric, main_color | sku,heel_fabric, main_fabric, main_color |
+      | code      | attributes                                                    | requirements-tablet                   | requirements-mobile                    |
+      | highheels | sku,heel_color,sole_fabric,heel_fabric,main_fabric,main_color | sku,heel_color,sole_fabric,main_color | sku,heel_fabric,main_fabric,main_color |
     And I am logged in as "Julia"
     And the following "main_fabric" attribute reference data: PVC, Nylon, Neoprene, Spandex, Wool, Kevlar, Jute
     And the following "main_color" attribute reference data: Red, Green, Light green, Blue, Yellow, Cyan, Magenta, Black, White

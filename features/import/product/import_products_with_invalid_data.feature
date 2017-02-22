@@ -7,8 +7,8 @@ Feature: Execute a job
   Background:
     Given the "footwear" catalog configuration
     And the following product groups:
-      | code  | label     | type    |
-      | CROSS | Bag Cross | RELATED |
+      | code  | label-en_US | type    |
+      | CROSS | Bag Cross   | RELATED |
     And I am logged in as "Julia"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
@@ -199,9 +199,9 @@ Feature: Execute a job
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip new products with non-existing media attributes during an import
     Given the following attributes:
-      | label       | type  | allowed_extensions |
-      | Front view  | image | gif, jpg           |
-      | User manual | file  | txt, pdf           |
+      | label-en_US | type              | allowed_extensions | group | code       |
+      | Front view  | pim_catalog_image | gif, jpg           | other | frontView  |
+      | User manual | pim_catalog_file  | txt, pdf           | other | userManual |
     And the following CSV file to import:
       """
       sku;family;groups;frontView;name-en_US;userManual;categories
@@ -230,9 +230,9 @@ Feature: Execute a job
       | bic-core-148        | sneakers | Bic Core 148        | 2014_collection |
       | fanatic-freewave-76 | sneakers | Fanatic Freewave 76 | 2014_collection |
     And the following attributes:
-      | label       | type  | allowed_extensions |
-      | Front view  | image | gif, jpg           |
-      | User manual | file  | txt, pdf           |
+      | label-en_US | type              | allowed_extensions | group | code       |
+      | Front view  | pim_catalog_image | gif, jpg           | other | frontView  |
+      | User manual | pim_catalog_file  | txt, pdf           | other | userManual |
     And the following CSV file to import:
       """
       sku;family;groups;frontView;name-en_US;userManual;categories
@@ -319,9 +319,9 @@ Feature: Execute a job
     And the product "SKU-002" should have the following value:
       | handmade | 1 |
     And the product "SKU-003" should have the following value:
-      | handmade | |
+      | handmade |  |
     And the product "SKU-004" should have the following value:
-      | handmade | |
+      | handmade |  |
 
   Scenario: Skip new products with invalid metric during an import
     Given the following CSV file to import:
@@ -345,7 +345,7 @@ Feature: Execute a job
     And the product "honda-civic" should have the following value:
       | length | 2.0000 METER |
     And the product "fiat-panda" should have the following value:
-      | length | |
+      | length |  |
 
   Scenario: Skip new products with invalid metric (two columns) during an import
     Given the following CSV file to import:
@@ -366,12 +366,12 @@ Feature: Execute a job
     And the product "renault-kangoo" should have the following value:
       | length | 2500.0000 CENTIMETER |
     And the product "fiat-500" should have the following value:
-      | length | |
+      | length |  |
 
   Scenario: Skip new products with invalid price during an import
     Given the following attributes:
-      | label        | type   | negative_allowed |
-      | Public Price | prices | no               |
+      | label-en_US  | type                         | negative_allowed | group | code        |
+      | Public Price | pim_catalog_price_collection | 0                | other | publicPrice |
     And the following CSV file to import:
       """
       sku;publicPrice
@@ -391,8 +391,8 @@ Feature: Execute a job
 
   Scenario: Skip new products with invalid price (many columns) during an import
     Given the following attributes:
-      | label        | type   |
-      | Public Price | prices |
+      | label-en_US  | type                         | group | code        |
+      | Public Price | pim_catalog_price_collection | other | publicPrice |
     And the following CSV file to import:
       """
       sku;publicPrice-EUR

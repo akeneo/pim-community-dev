@@ -7,12 +7,12 @@ Feature: Validate image attributes of a product
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | code      | label-en_US | type  | scopable | max_file_size | allowed_extensions |
-      | image     | Image       | image | no       | 0.01          | jpg                |
-      | thumbnail | Thumbnail   | image | yes      | 0.01          | jpg                |
+      | code      | label-en_US | type              | scopable | max_file_size | allowed_extensions | group |
+      | image     | Image       | pim_catalog_image | 0        | 0.01          | jpg                | other |
+      | thumbnail | Thumbnail   | pim_catalog_image | 1        | 0.01          | jpg                | other |
     And the following family:
-      | code | label-en_US | attributes            |
-      | baz  | Baz         | sku, image, thumbnail |
+      | code | label-en_US | attributes          |
+      | baz  | Baz         | sku,image,thumbnail |
     And the following product:
       | sku | family |
       | foo | baz    |

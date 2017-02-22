@@ -317,7 +317,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
     {
         foreach ($data as $code => $values) {
             $attribute = $this->attributeRepository->findOneByIdentifier($code);
-            $localizer = $this->localizerRegistry->getLocalizer($attribute->getAttributeType());
+            $localizer = $this->localizerRegistry->getLocalizer($attribute->getType());
 
             if (null !== $localizer) {
                 $values = array_map(function ($value) use ($localizer, $uiLocaleCode) {

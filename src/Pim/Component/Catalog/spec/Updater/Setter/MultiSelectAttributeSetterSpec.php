@@ -38,10 +38,10 @@ class MultiSelectAttributeSetterSpec extends ObjectBehavior
         AttributeInterface $multiSelectAttribute,
         AttributeInterface $textareaAttribute
     ) {
-        $multiSelectAttribute->getAttributeType()->willReturn('pim_catalog_multiselect');
+        $multiSelectAttribute->getType()->willReturn('pim_catalog_multiselect');
         $this->supportsAttribute($multiSelectAttribute)->shouldReturn(true);
 
-        $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $textareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 

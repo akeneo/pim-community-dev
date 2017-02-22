@@ -673,7 +673,7 @@ class ProductRepository extends DocumentRepository implements
      */
     protected function getIdentifierAttribute()
     {
-        return $this->attributeRepository->findOneBy(['attributeType' => AttributeTypes::IDENTIFIER]);
+        return $this->attributeRepository->findOneBy(['type' => AttributeTypes::IDENTIFIER]);
     }
 
     /**

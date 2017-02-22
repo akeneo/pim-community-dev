@@ -6,9 +6,9 @@ Feature: Update date fields
   Scenario: Successfully update a date field
     Given a "default" catalog configuration
     And the following attributes:
-      | code          | type |
-      | release_date  | date |
-      | end_date      | date |
+      | code         | type             | group |
+      | release_date | pim_catalog_date | other |
+      | end_date     | pim_catalog_date | other |
     And the following products:
       | sku     | release_date |
       | AKN_MUG | 2014-02-18   |
