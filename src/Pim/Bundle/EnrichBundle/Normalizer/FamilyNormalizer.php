@@ -106,6 +106,13 @@ class FamilyNormalizer implements NormalizerInterface
             in_array($format, $this->supportedFormats);
     }
 
+    /**
+     * Fetches attributes by code and normalizes them
+     *
+     * @param array $codes
+     *
+     * @return array
+     */
     protected function normalizeAttributes($codes)
     {
         $attributes = $this->collectionFilter->filterCollection(
