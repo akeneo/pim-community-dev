@@ -34,7 +34,7 @@ class ContributorGroupCalculatorSpec extends ObjectBehavior
         $this->shouldHaveType(ContributorGroupCalculator::class);
     }
 
-    function it_is_a_project_factory()
+    function it_is_a_calculator()
     {
         $this->shouldImplement(ProjectItemCalculatorInterface::class);
     }

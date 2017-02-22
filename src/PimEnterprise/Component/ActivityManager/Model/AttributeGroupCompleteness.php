@@ -27,6 +27,11 @@ class AttributeGroupCompleteness
     /** @var int */
     protected $isComplete;
 
+    /**
+     * @param string $attributeGroupId
+     * @param bool   $hasAtLeastOneAttributeFilled
+     * @param bool   $isComplete
+     */
     public function __construct($attributeGroupId, $hasAtLeastOneAttributeFilled, $isComplete)
     {
         $this->attributeGroupId = $attributeGroupId;

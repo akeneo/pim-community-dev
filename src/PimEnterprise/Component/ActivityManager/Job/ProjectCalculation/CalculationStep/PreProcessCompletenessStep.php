@@ -28,11 +28,8 @@ class PreProcessCompletenessStep implements CalculationStepInterface
     /** @var PreProcessingRepositoryInterface */
     protected $preProcessingRepository;
 
-    /** @var FamilyRequirementRepositoryInterface */
-    protected $familyRequirementRepository;
-
-    /** @var ProductValueCompleteCheckerInterface */
-    protected $productValueChecker;
+    /** @var ProjectItemCalculatorInterface */
+    protected $attributeGroupCompletenessCalculator;
 
     /**
      * @param PreProcessingRepositoryInterface $preProcessingRepository
