@@ -12,6 +12,6 @@ services:
     pim_api.repository.product:
         class: '%pim_api.repository.product.class%'
         arguments:
-            - '@doctrine.orm.default_entity_manager'
+            - '@pim_catalog.object_manager.product'
             - '%pim_catalog.entity.product.class%'
             - '@pim_catalog.repository.product'
