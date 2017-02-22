@@ -16,6 +16,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 
@@ -95,26 +96,61 @@ class ProjectUpdater implements ObjectUpdaterInterface
                 break;
             case 'owner':
                 $user = $this->userRepository->findOneByIdentifier($value);
+                if (null === $user) {
+                    throw InvalidPropertyException::validEntityCodeExpected(
+                        $field,
+                        'owner username',
+                        'The owner username does not exist',
+                        static::class,
+                        $value
+                    );
+                }
                 $project->setOwner($user);
                 break;
             case 'datagrid_view':
+                if (!$value instanceof DatagridView) {
+                    throw new InvalidPropertyException(
+                        $field,
+                        $value,
+                        static::class,
+                        sprintf('Wrong datagrid view type: given %s, expected %s', gettype($value), DatagridView::class)
+                    );
+                }
                 $project->setDatagridView($value);
                 break;
             case 'product_filters':
+                if (!is_array($value)) {
+                    throw new InvalidPropertyException(
+                        $field,
+                        $value,
+                        static::class,
+                        sprintf('Product filters must an array, given %s,', gettype($value))
+                    );
+                }
                 $project->setProductFilters($value);
                 break;
             case 'channel':
                 $channel = $this->channelRepository->findOneByIdentifier($value);
+                if (null === $channel) {
+                    throw InvalidPropertyException::validEntityCodeExpected(
+                        $field,
+                        'channel code',
+                        'The channel code does not exist',
+                        static::class,
+                        $value
+                    );
+                }
                 $project->setChannel($channel);
                 break;
             case 'locale':
                 $locale = $this->localeRepository->findOneByIdentifier($value);
-                if (!$locale->isActivated()) {
-                    throw InvalidPropertyException::dataExpected(
+                if (null === $locale) {
+                    throw InvalidPropertyException::validEntityCodeExpected(
                         $field,
-                        'to be activated',
+                        'locale code',
+                        'The locale code does not exist',
                         static::class,
-                        gettype($value)
+                        $value
                     );
                 }
                 $project->setLocale($locale);

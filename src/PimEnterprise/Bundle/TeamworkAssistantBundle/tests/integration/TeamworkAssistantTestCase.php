@@ -87,6 +87,12 @@ class TeamworkAssistantTestCase extends TestCase
         }
 
         $project = $this->get('pimee_teamwork_assistant.factory.project')->create($projectData);
+        $violation = $this->get('validator')->validate($project);
+
+        if (0 < count($violation)) {
+            throw new \Exception('Project object is invalid');
+        }
+
         $this->get('pimee_teamwork_assistant.saver.project')->save($project);
 
         $this->calculateProject($project);
