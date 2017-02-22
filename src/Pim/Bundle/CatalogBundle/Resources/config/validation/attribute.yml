@@ -168,7 +168,8 @@ Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
             - Length:
                 max: 100
         locale:
-            - Pim\Component\Catalog\Validator\Constraints\Locale: ~
+            - Pim\Component\Catalog\Validator\Constraints\Locale:
+                propertyPath: labels
 
 Pim\Bundle\CatalogBundle\Entity\AttributeOption:
     constraints:

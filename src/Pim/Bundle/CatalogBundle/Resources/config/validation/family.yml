@@ -23,4 +23,5 @@ Pim\Bundle\CatalogBundle\Entity\FamilyTranslation:
             - Length:
                 max: 100
         locale:
-            - Pim\Component\Catalog\Validator\Constraints\Locale: ~
+            - Pim\Component\Catalog\Validator\Constraints\Locale:
+                propertyPath: labels

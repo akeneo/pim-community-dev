@@ -258,7 +258,7 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'translations[0].locale',
+                    'field'   => 'labels',
                     'message' => 'The locale "" does not exist.',
                 ],
             ],
@@ -290,7 +290,7 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'translations[0].locale',
+                    'field'   => 'labels',
                     'message' => 'The locale "foo" does not exist.',
                 ],
             ],
