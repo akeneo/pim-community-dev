@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep;
 
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\ActivityManager\Calculator\ProjectCalculatorInterface;
+use PimEnterprise\Component\ActivityManager\Calculator\ProjectItemCalculatorInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 
 /**
@@ -23,13 +23,13 @@ use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
  */
 class AddUserGroupStep implements CalculationStepInterface
 {
-    /** @var ProjectCalculatorInterface */
+    /** @var ProjectItemCalculatorInterface */
     protected $contributorGroupCalculator;
 
     /**
-     * @param ProjectCalculatorInterface $contributorGroupCalculator
+     * @param ProjectItemCalculatorInterface $contributorGroupCalculator
      */
-    public function __construct(ProjectCalculatorInterface $contributorGroupCalculator)
+    public function __construct(ProjectItemCalculatorInterface $contributorGroupCalculator)
     {
         $this->contributorGroupCalculator = $contributorGroupCalculator;
     }

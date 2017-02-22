@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\Calcula
 
 use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\ActivityManager\Calculator\ProjectCalculatorInterface;
+use PimEnterprise\Component\ActivityManager\Calculator\ProjectItemCalculatorInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
 use PimEnterprise\Component\ActivityManager\Repository\FamilyRequirementRepositoryInterface;
 use PimEnterprise\Component\ActivityManager\Repository\PreProcessingRepositoryInterface;
@@ -35,13 +35,12 @@ class PreProcessCompletenessStep implements CalculationStepInterface
     protected $productValueChecker;
 
     /**
-     * @param PreProcessingRepositoryInterface     $preProcessingRepository
-     * @param FamilyRequirementRepositoryInterface $familyRequirementRepository
-     * @param ProductValueCompleteCheckerInterface $productValueChecker
+     * @param PreProcessingRepositoryInterface $preProcessingRepository
+     * @param ProjectItemCalculatorInterface   $attributeGroupCompletenessCalculator
      */
     public function __construct(
         PreProcessingRepositoryInterface $preProcessingRepository,
-        ProjectCalculatorInterface $attributeGroupCompletenessCalculator
+        ProjectItemCalculatorInterface $attributeGroupCompletenessCalculator
     ) {
         $this->preProcessingRepository = $preProcessingRepository;
         $this->attributeGroupCompletenessCalculator = $attributeGroupCompletenessCalculator;
