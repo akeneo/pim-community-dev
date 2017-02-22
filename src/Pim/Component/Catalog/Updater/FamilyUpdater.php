@@ -13,6 +13,7 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
@@ -277,6 +278,18 @@ class FamilyUpdater implements ObjectUpdaterInterface
         $channelCode
     ) {
         $requirements = [];
+
+        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
+        if (null === $channel) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'attribute_requirements',
+                'code',
+                'The channel does not exist',
+                static::class,
+                $channelCode
+            );
+        }
+
         foreach ($attributeCodes as $attributeCode) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
             if (null === $attribute) {
@@ -289,7 +302,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
                 );
             }
             if (AttributeTypes::IDENTIFIER !== $attribute->getType()) {
-                $requirements[] = $this->createAttributeRequirement($family, $attribute, $channelCode);
+                $requirements[] = $this->createAttributeRequirement($family, $attribute, $channel);
             }
         }
 
@@ -299,25 +312,17 @@ class FamilyUpdater implements ObjectUpdaterInterface
     /**
      * @param FamilyInterface    $family
      * @param AttributeInterface $attribute
-     * @param string             $channelCode
+     * @param ChannelInterface   $channel
      *
      * @throws InvalidPropertyException
      *
      * @return AttributeRequirementInterface
      */
-    protected function createAttributeRequirement(FamilyInterface $family, AttributeInterface $attribute, $channelCode)
-    {
-        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
-        if (null === $channel) {
-            throw InvalidPropertyException::validEntityCodeExpected(
-                'attribute_requirements',
-                'code',
-                'The channel does not exist',
-                static::class,
-                $channelCode
-            );
-        }
-
+    protected function createAttributeRequirement(
+        FamilyInterface $family,
+        AttributeInterface $attribute,
+        ChannelInterface $channel
+    ) {
         $requirement = $this->requirementRepo->findOneBy(
             ['attribute' => $attribute->getId(), 'channel' => $channel->getId(), 'family' => $family->getId()]
         );

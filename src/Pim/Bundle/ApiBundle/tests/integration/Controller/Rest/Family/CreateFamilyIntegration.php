@@ -185,8 +185,8 @@ JSON;
 
         $expectedContent = <<<JSON
 {
-    "code":422,
-    "message":"Validation failed.",
+    "code": 422,
+    "message": "Validation failed.",
     "errors": [
         {
             "field":"attribute_requirements",
@@ -312,7 +312,7 @@ JSON;
         $data =
 <<<JSON
     {
-        "code": "test_unknown_localee",
+        "code": "test_unknown_locale",
         "labels": {
             "foo" : "label"
          }
@@ -335,6 +335,39 @@ JSON;
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+    }
+
+    public function testResponseWhenChannelCodeDoesNotExist()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = <<<JSON
+{
+    "code": "test_unknown_channel",
+    "attribute_requirements": {
+        "ecommerce2" : ["sku"]
+    }
+}
+JSON;
+
+        $version = substr(Version::VERSION, 0, 3);
+        $expectedContent = <<<JSON
+{
+    "code": 422,
+    "message": "Property \"attribute_requirements\" expects a valid code. The channel does not exist, \"ecommerce2\" given. Check the standard format documentation.",
+    "_links": {
+        "documentation": {
+            "href": "https://docs.akeneo.com/${version}/reference/standard_format/other_entities.html#family"
+        }
+    }
+}
+JSON;
+
+        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 
     /**
