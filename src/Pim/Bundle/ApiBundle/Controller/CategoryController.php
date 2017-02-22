@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Gedmo\Exception\UnexpectedValueException;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Version;
 use Pim\Component\Api\Exception\DocumentedHttpException;
@@ -185,7 +186,11 @@ class CategoryController
         $this->updateCategory($category, $data);
         $this->validateCategory($category, $data);
 
-        $this->saver->save($category);
+        try {
+            $this->saver->save($category);
+        } catch (UnexpectedValueException $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        }
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
         $response = $this->getResponse($category, $status);

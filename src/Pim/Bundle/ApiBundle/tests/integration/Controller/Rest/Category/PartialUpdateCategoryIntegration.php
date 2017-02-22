@@ -393,6 +393,20 @@ JSON;
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
+    public function testResponseWhenParentIsMovedInChildren()
+    {
+        $client = $this->createAuthenticatedClient();
+        $categoryId = $this->get('pim_catalog.repository.category')->findOneByIdentifier('master')->getId();
+
+        $data = '{"parent": "categoryA"}';
+        $expectedContent = sprintf('{"code":422, "message": "Cannot set child as parent to node: %d"}', $categoryId);
+        $client->request('PATCH', 'api/rest/v1/categories/master', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+    }
+
     /**
      * {@inheritdoc}
      */
