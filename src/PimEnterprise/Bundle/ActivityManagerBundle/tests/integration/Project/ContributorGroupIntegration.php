@@ -60,7 +60,7 @@ class ContributorGroupIntegration extends ActivityManagerTestCase
      */
     public function testToCreateAProjectOnALocaleGrantedToSpecificGroup()
     {
-        $project = $this->createProject('Tshirt - print', 'Julia', 'es_ES', 'mobile', [
+        $project = $this->createProject('Tshirt - print', 'Julia', 'es_ES', 'tablet', [
             [
                 'field'    => 'family',
                 'operator' => 'IN',
