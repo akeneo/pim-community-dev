@@ -49,6 +49,9 @@ class FamilyController
     /** @var HandlerInterface */
     protected $familyHandler;
 
+    /** @var Form */
+    protected $familyForm;
+
     /**
      * @param Request                      $request
      * @param RouterInterface              $router

@@ -28,27 +28,24 @@ define([
              * {@inheritdoc}
              */
             render: function () {
-                if (!this.locales) {
-                    FetcherRegistry.getFetcher('locale')
-                        .search({'activated': true, 'cached': true})
-                        .then(function (locales) {
-                            this.locales = locales;
-                            this.render();
-                        }.bind(this));
-                }
+                FetcherRegistry.getFetcher('locale')
+                    .search({'activated': true, 'cached': true})
+                    .then(function (locales) {
+                        this.locales = locales;
 
-                this.$el.html(this.template({
-                    model: this.getFormData(),
-                    locales: this.locales,
-                    errors: this.validationErrors,
-                    label: this.config.label,
-                    fieldBaseId: this.config.fieldBaseId,
-                    isReadOnly: !SecurityContext.isGranted('pim_enrich_family_edit_properties')
-                }));
+                        this.$el.html(this.template({
+                            model: this.getFormData(),
+                            locales: this.locales,
+                            errors: this.validationErrors,
+                            label: this.config.label,
+                            fieldBaseId: this.config.fieldBaseId,
+                            isReadOnly: !SecurityContext.isGranted('pim_enrich_family_edit_properties')
+                        }));
 
-                this.delegateEvents();
+                        this.delegateEvents();
 
-                this.renderExtensions();
+                        this.renderExtensions();
+                    }.bind(this));
             }
         });
     }
