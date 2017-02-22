@@ -48,6 +48,22 @@ define(
                     messenger.notificationFlashMessage('warning', __('activity_manager.project.leaving_scope'));
                     this.notified = true;
                 }
+            },
+
+            /**
+             * {@inheritdoc}
+             *
+             * Override to omit "items per page" and "current page" filters
+             */
+            areFiltersModified: function (initialViewFilters, datagridStateFilters) {
+                if ('project' !== this.datagridView.type) {
+                    return BaseCurrent.prototype.areFiltersModified.apply(this, arguments);
+                }
+
+                // Regex to remove items per page (p) and current page (i) of the filters url
+                var regex = /(i=\d+&p=\d+&)/;
+
+                return initialViewFilters.replace(regex, '') !== datagridStateFilters.replace(regex, '');
             }
         });
     }
