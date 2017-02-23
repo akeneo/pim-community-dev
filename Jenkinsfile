@@ -213,7 +213,7 @@ def runBehatTest(edition, storage, features) {
             sh "cp behat.ci.yml behat.yml"
 
             try {
-                sh "php /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE}/behat-${edition}-${storage} ${env.BUILD_NUMBER} ${storage} ${features} ${env.JOB_NAME} 5 5.6 5.5 \"${tags}\" \"behat-${edition}-${storage}\""
+                sh "php /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE}/behat-${edition}-${storage} ${env.BUILD_NUMBER} ${storage} ${features} ${env.JOB_NAME} 5 5.6 5.5 \"${tags}\" \"behat-${edition}-${storage}\" --exit_on_failure"
             } finally {
                 sh "sed -i \"s/ name=\\\"/ name=\\\"[${edition}-${storage}] /\" app/build/logs/behat/*.xml"
                 junit 'app/build/logs/behat/*.xml'
