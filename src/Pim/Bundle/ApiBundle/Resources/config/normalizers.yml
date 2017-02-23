@@ -42,7 +42,7 @@ services:
         class: '%pim_api.normalizer.product.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.product'
-            - '@pim_catalog.repository.attribute'
+            - '@pim_api.repository.attribute'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

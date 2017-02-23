@@ -11,7 +11,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Version;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\ViolationHttpException;
-use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
+use Pim\Component\Api\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeController
 {
-    /** @var ApiResourceRepositoryInterface */
+    /** @var AttributeRepositoryInterface */
     protected $repository;
 
     /** @var NormalizerInterface */
@@ -55,17 +55,17 @@ class AttributeController
     protected $urlDocumentation;
 
     /**
-     * @param ApiResourceRepositoryInterface $repository
-     * @param NormalizerInterface            $normalizer
-     * @param SimpleFactoryInterface         $factory
-     * @param ObjectUpdaterInterface         $updater
-     * @param ValidatorInterface             $validator
-     * @param SaverInterface                 $saver
-     * @param RouterInterface                $router
-     * @param string                         $urlDocumentation
+     * @param AttributeRepositoryInterface $repository
+     * @param NormalizerInterface          $normalizer
+     * @param SimpleFactoryInterface       $factory
+     * @param ObjectUpdaterInterface       $updater
+     * @param ValidatorInterface           $validator
+     * @param SaverInterface               $saver
+     * @param RouterInterface              $router
+     * @param string                       $urlDocumentation
      */
     public function __construct(
-        ApiResourceRepositoryInterface $repository,
+        AttributeRepositoryInterface $repository,
         NormalizerInterface $normalizer,
         SimpleFactoryInterface $factory,
         ObjectUpdaterInterface $updater,

@@ -1,6 +1,7 @@
 parameters:
     pim_api.repository.client.class: Pim\Bundle\ApiBundle\Doctrine\ORM\Repository\ClientRepository
     pim_api.repository.product.class: Pim\Bundle\ApiBundle\Doctrine\ORM\Repository\ProductRepository
+    pim_api.repository.attribute.class: Pim\Bundle\ApiBundle\Doctrine\ORM\Repository\AttributeRepository
     pim_api.repository.api_resource.class: Pim\Bundle\ApiBundle\Doctrine\ORM\Repository\ApiResourceRepository
 
 services:
@@ -18,7 +19,7 @@ services:
             - '@pim_catalog.repository.product'
 
     pim_api.repository.attribute:
-        class: '%pim_api.repository.api_resource.class%'
+        class: '%pim_api.repository.attribute.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.attribute.class%'
