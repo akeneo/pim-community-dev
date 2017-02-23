@@ -11,18 +11,18 @@ Feature: Sort available products for a variant group
       | mug       | Mug         |
       | furniture | Furniture   |
     And the following attributes:
-      | code  | label | type         | useable_as_grid_filter |
-      | color | Color | simpleselect | yes                    |
-      | size  | Size  | simpleselect | yes                    |
+      | code  | label-en_US | type                     | useable_as_grid_filter | group |
+      | color | Color       | pim_catalog_simpleselect | 1                      | other |
+      | size  | Size        | pim_catalog_simpleselect | 1                      | other |
     And the following "color" attribute options: Yellow, Blue, Green and Red
     And the following "size" attribute options: XS, S, M, L and XL
+    And the following variant groups:
+      | code   | label-en_US | axis       | type    |
+      | POSTIT | Postit      | color,size | VARIANT |
     And the following products:
-      | sku    | family    | color | size |
-      | MUG_1  | mug       | Red   | M    |
-      | POSTIT | furniture | Blue  | XL   |
-    And the following product groups:
-      | code   | label  | axis        | products | type    |
-      | POSTIT | Postit | color, size | POSTIT   | VARIANT |
+      | sku    | family    | color | size | groups |
+      | MUG_1  | mug       | Red   | M    |        |
+      | POSTIT | furniture | Blue  | XL   | POSTIT |
     And I am logged in as "Julia"
 
   Scenario: Successfully sort products

@@ -1,27 +1,6 @@
-confirmation:
-  remove:
-    item: Weet u zeker dat u dit item wilt verwijderen?
-    association_type: Weet u zeker dat u dit associatietype wilt verwijderen?
-    attribute: Weet u zeker dat u attribuut wilt verwijderen?
-    family: Weet u zeker dat u deze familie wilt verwijderen?
-    product: Weet u zeker dat u dit product wilt verwijderen?
-    channel: Weet u zeker dat u dit kanaal wilt verwijderen?
-    group: Weet u zeker dat u deze groep wilt verwijderen?
-    variant group: Weet u zeker dat u deze variantgroep wilt verwijderen?
-    group type: Weet u zeker dat u dit groepstype wilt verwijderen?
-    import profile: Weet u zeker dat u dit importprofiel wilt verwijderen?
-    export profile: Weet u zeker dat u dit exportprofiel wilt verwijderen?
-    user: Weet u zeker dat u deze gebruiker wilt verwijderen?
-    role: Weet u zeker dat u deze rol wilt verwijderen?
 pim_datagrid:
-  mass_action_group:
-    bulk_actions:
-      label: Bulkacties
-    quick_export:
-      label: Snelle Export
   mass_action:
     delete:
-      confirm_content: Weet u zeker dat u de geselecteerde producten wilt verwijderen?
       success: Geselecteerde producten succesvol verwijderd.
       error: Er is een fout opgetreden tijdens het verwijderen van de geselecteerde producten, probeer het opnieuw.
   view_selector:

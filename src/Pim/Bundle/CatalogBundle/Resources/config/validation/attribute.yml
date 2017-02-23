@@ -7,7 +7,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         - Pim\Component\Catalog\Validator\Constraints\Immutable:
             properties:
                 - code
-                - attributeType
+                - type
                 - scopable
                 - localizable
                 - metricFamily
@@ -27,7 +27,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             properties:
                 - reference_data_name
     properties:
-        attributeType:
+        type:
             - NotBlank: ~
         code:
             - NotBlank: ~

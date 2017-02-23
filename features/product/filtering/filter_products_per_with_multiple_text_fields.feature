@@ -11,9 +11,9 @@ Feature: Filter products with multiples text fields filters
       | furniture |
       | library   |
     And the following attributes:
-      | code        | label       | type | useable_as_grid_filter |
-      | name        | Name        | text | yes                    |
-      | description | Description | text | yes                    |
+      | code        | label-en_US | type             | useable_as_grid_filter | group |
+      | name        | Name        | pim_catalog_text | 1                      | other |
+      | description | Description | pim_catalog_text | 1                      | other |
     And the following products:
       | sku    | family    | description    | name   |
       | BOOK   | library   |                |        |

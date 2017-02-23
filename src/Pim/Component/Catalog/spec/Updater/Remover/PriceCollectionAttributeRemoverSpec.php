@@ -35,10 +35,10 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         AttributeInterface $priceCollectionAttribute,
         AttributeInterface $textareaAttribute
     ) {
-        $priceCollectionAttribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $priceCollectionAttribute->getType()->willReturn('pim_catalog_price_collection');
         $this->supportsAttribute($priceCollectionAttribute)->shouldReturn(true);
 
-        $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $textareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 

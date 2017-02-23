@@ -56,14 +56,14 @@ Feature: Filter products by reference data with locale and scope
     Given I show the filter "cap_color"
     And I filter by "cap_color" with operator "in list" and value "Black"
     And I should be able to use the following filters:
-      | filter      | operator | value        | result |
-      | lace_fabric | in list  | Cotton       | postit |
-      | lace_fabric | in list  | Flax         | postit |
-      | lace_fabric | in list  | Cotton,Straw | postit |
-      | lace_fabric | in list  | Cotton,Flax  | postit |
-      | lace_fabric | in list  | Straw        |        |
-      | lace_fabric | is empty |              |        |
-      | lace_fabric | is not empty |              | postit       |
+      | filter      | operator     | value        | result |
+      | lace_fabric | in list      | Cotton       | postit |
+      | lace_fabric | in list      | Flax         | postit |
+      | lace_fabric | in list      | Cotton,Straw | postit |
+      | lace_fabric | in list      | Cotton,Flax  | postit |
+      | lace_fabric | in list      | Straw        |        |
+      | lace_fabric | is empty     |              |        |
+      | lace_fabric | is not empty |              | postit |
     When I filter by "scope" with operator "" and value "Mobile"
     And I hide the filter "cap_color"
     And I show the filter "cap_color"

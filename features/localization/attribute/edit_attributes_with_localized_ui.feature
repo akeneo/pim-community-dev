@@ -7,8 +7,8 @@ Feature: Edit attributes with localized ui
   Background:
     Given the "footwear" catalog configuration
     And the following attributes:
-      | code | label-fr_FR | type   | group | date_min   |
-      | date | Date        | date   | other | 2016-01-31 |
+      | code | label-fr_FR | type             | group | date_min   |
+      | date | Date        | pim_catalog_date | other | 2016-01-31 |
 
   Scenario: Successfully show validation error for a number attribute in english
     Given I am logged in as "Julia"

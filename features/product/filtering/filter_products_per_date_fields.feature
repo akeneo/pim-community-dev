@@ -7,8 +7,8 @@ Feature: Filter products by date field
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | label   | code    | type | localizable | scopable | useable_as_grid_filter |
-      | release | release | date | no          | no       | yes                    |
+      | label-en_US | code    | type             | localizable | scopable | useable_as_grid_filter | group |
+      | release     | release | pim_catalog_date | 0           | 0        | 1                      | other |
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products by empty value for date attribute
@@ -46,9 +46,9 @@ Feature: Filter products by date field
 
   Scenario: Filter products by date attributes and keep the appropriate default filter values
     Given the following products:
-      | sku    | release    |
-      | book   | 2014-05-02 |
-      | pen    | 2014-05-06 |
+      | sku  | release    |
+      | book | 2014-05-02 |
+      | pen  | 2014-05-06 |
     And I am on the products page
     And I show the filter "release"
     When I filter by "release" with operator "between" and value "05/01/2014 and 05/03/2014"

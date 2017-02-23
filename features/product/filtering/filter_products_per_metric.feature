@@ -11,8 +11,8 @@ Feature: Filter products per metric
       | furniture |
       | library   |
     And the following attributes:
-      | label  | scopable | type   | useable_as_grid_filter | metric_family | default_metric_unit | decimals_allowed |
-      | Weight | yes      | metric | yes                    | Weight        | GRAM                | yes              |
+      | label-en_US | scopable | type               | useable_as_grid_filter | metric_family | default_metric_unit | decimals_allowed | group | code   |
+      | Weight      | 1        | pim_catalog_metric | 1                      | Weight        | GRAM                | 1                | other | weight |
     And the following products:
       | sku    | family    | enabled | weight-ecommerce | weight-mobile |
       | postit | furniture | yes     | 120 GRAM         |               |

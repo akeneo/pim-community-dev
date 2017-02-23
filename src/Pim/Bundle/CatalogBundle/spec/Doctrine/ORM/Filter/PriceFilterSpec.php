@@ -183,7 +183,7 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_checks_if_attribute_is_supported(AttributeInterface $attribute)
     {
-        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $attribute->getType()->willReturn('pim_catalog_price_collection');
         $this->supportsAttribute($attribute)->shouldReturn(true);
     }
 

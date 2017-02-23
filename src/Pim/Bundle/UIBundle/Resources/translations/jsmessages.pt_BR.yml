@@ -110,3 +110,5 @@ oro_config:
         notification:
           title: Notificações
           system_notification: Notificação de nova versão
+        loading_message:
+          title: Carregando mensagens

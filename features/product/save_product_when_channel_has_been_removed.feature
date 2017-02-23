@@ -7,11 +7,11 @@ Feature: Save a product when a channel has been removed
   Background:
     Given the "footwear" catalog configuration
     And the following attributes:
-      | code        | type     | label-en_US | group |
-      | description | textarea | Description | info  |
+      | code        | type                 | label-en_US | group |
+      | description | pim_catalog_textarea | Description | info  |
     And the following family:
-      | code      | attributes       |
-      | vegetable | sku, description |
+      | code      | attributes      |
+      | vegetable | sku,description |
     And the following products:
       | sku       | family    | description-en_US-tablet |
       | artichoke | vegetable | Yummy !                  |

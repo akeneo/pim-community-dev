@@ -102,11 +102,11 @@ Feature: Import product information with decimal
     Then the product "SKU-004" should have the following values:
       | price | 125.00 EUR, 199.00 USD |
     Then the product "SKU-005" should have the following values:
-      | price | |
+      | price |  |
     Then the product "SKU-006" should have the following values:
-      | price | |
+      | price |  |
     Then the product "SKU-007" should have the following values:
-      | price | |
+      | price |  |
 
   Scenario: Successfully import a csv file (with decimal separator as a comma) with a price attribute splitting the data and currency
     Given the following CSV file to import:
@@ -131,7 +131,7 @@ Feature: Import product information with decimal
     Then the product "SKU-003" should have the following values:
       | price | 125.00 EUR, 199.00 USD |
     Then the product "SKU-004" should have the following values:
-      | price | |
+      | price |  |
 
   Scenario: Skip product with a decimal separator different as configuration
     Given the following CSV file to import:

@@ -112,7 +112,7 @@ class AttributeRepository extends EntityRepository implements
         $codes = $this
             ->createQueryBuilder('a')
             ->select('a.code')
-            ->andWhere('a.attributeType IN (:file_type, :image_type)')
+            ->andWhere('a.type IN (:file_type, :image_type)')
             ->setParameters(
                 [
                     ':file_type'  => AttributeTypes::FILE,
@@ -139,7 +139,7 @@ class AttributeRepository extends EntityRepository implements
         $qb
             ->andWhere(
                 $qb->expr()->in(
-                    'a.attributeType',
+                    'a.type',
                     [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT]
                 )
             )
@@ -181,7 +181,7 @@ class AttributeRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('a');
         $qb
             ->andWhere(
-                $qb->expr()->in('a.attributeType', [AttributeTypes::TEXT, AttributeTypes::IDENTIFIER])
+                $qb->expr()->in('a.type', [AttributeTypes::TEXT, AttributeTypes::IDENTIFIER])
             );
 
         return $qb->getQuery()->getResult();
@@ -277,7 +277,7 @@ class AttributeRepository extends EntityRepository implements
      */
     public function getIdentifier()
     {
-        return $this->findOneBy(['attributeType' => AttributeTypes::IDENTIFIER]);
+        return $this->findOneBy(['type' => AttributeTypes::IDENTIFIER]);
     }
 
     /**
@@ -288,8 +288,8 @@ class AttributeRepository extends EntityRepository implements
         if (null === $this->identifierCode) {
             $code = $this->createQueryBuilder('a')
                 ->select('a.code')
-                ->andWhere('a.attributeType = :attributeType')
-                ->setParameter('attributeType', AttributeTypes::IDENTIFIER)
+                ->andWhere('a.type = :type')
+                ->setParameter('type', AttributeTypes::IDENTIFIER)
                 ->setMaxResults(1)
                 ->getQuery()->getSingleResult(Query::HYDRATE_SINGLE_SCALAR);
 
@@ -307,7 +307,7 @@ class AttributeRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('a');
 
         $qb
-            ->andWhere($qb->expr()->neq('a.attributeType', '?1'))
+            ->andWhere($qb->expr()->neq('a.type', '?1'))
             ->setParameter(1, AttributeTypes::IDENTIFIER);
 
         return $qb->getQuery()->getResult();
@@ -319,7 +319,7 @@ class AttributeRepository extends EntityRepository implements
     public function getAttributeTypeByCodes(array $codes)
     {
         $results = $this->createQueryBuilder('a')
-            ->select('a.code, a.attributeType')
+            ->select('a.code, a.type')
             ->where('a.code IN (:codes)')
             ->setParameter('codes', $codes)
             ->getQuery()
@@ -328,7 +328,7 @@ class AttributeRepository extends EntityRepository implements
         $attributes = [];
         if (!empty($results)) {
             foreach ($results as $attribute) {
-                $attributes[$attribute['code']] = $attribute['attributeType'];
+                $attributes[$attribute['code']] = $attribute['type'];
             }
         }
 
@@ -343,7 +343,7 @@ class AttributeRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('a');
         $qb
             ->select('a.code')
-            ->where($qb->expr()->eq('a.attributeType', ':type'))
+            ->where($qb->expr()->eq('a.type', ':type'))
             ->setParameter(':type', $type);
 
         $result = $qb->getQuery()->getScalarResult();

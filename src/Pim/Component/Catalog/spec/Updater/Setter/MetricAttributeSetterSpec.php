@@ -39,10 +39,10 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         AttributeInterface $metrictAttribute,
         AttributeInterface $textareaAttribute
     ) {
-        $metrictAttribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $metrictAttribute->getType()->willReturn('pim_catalog_metric');
         $this->supportsAttribute($metrictAttribute)->shouldReturn(true);
 
-        $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $textareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 

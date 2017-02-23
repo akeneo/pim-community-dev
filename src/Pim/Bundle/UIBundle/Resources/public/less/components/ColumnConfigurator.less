@@ -7,12 +7,17 @@
 
   &-column {
     flex-basis: 100% / 3;
+    flex-grow: 1;
     border-left: 1px solid @AknBorderColor;
     border-top: 1px solid @AknBorderColor;
     border-bottom: 1px solid @AknBorderColor;
 
     &:last-child {
       border-right: 1px solid @AknBorderColor;
+    }
+
+    &--autoWidth {
+      flex-basis: auto;
     }
   }
 

@@ -67,17 +67,17 @@ Feature: Display the completeness of a product
     And I am on the "sneakers" product page
     When I open the "Completeness" panel
     Then I should see the completeness:
-      | channel | locale | state    | missing_values         | ratio |
-      | mobile  | en_US  | success  |                        | 100%  |
-      | mobile  | fr_FR  | success  |                        | 100%  |
-      | tablet  | fr_FR  | warning  | Description, Side view | 78%   |
+      | channel | locale | state   | missing_values         | ratio |
+      | mobile  | en_US  | success |                        | 100%  |
+      | mobile  | fr_FR  | success |                        | 100%  |
+      | tablet  | fr_FR  | warning | Description, Side view | 78%   |
     When I am on the "sandals" product page
     And I open the "Completeness" panel
     Then I should see the completeness:
-      | channel | locale | state    | missing_values                 | ratio |
-      | mobile  | en_US  | warning  | Name, Price, Size              | 40%   |
-      | mobile  | fr_FR  | warning  | Price, Size                    | 60%   |
-      | tablet  | fr_FR  | warning  | Price, Rating, Side view, Size | 50%   |
+      | channel | locale | state   | missing_values                 | ratio |
+      | mobile  | en_US  | warning | Name, Price, Size              | 40%   |
+      | mobile  | fr_FR  | warning | Price, Size                    | 60%   |
+      | tablet  | fr_FR  | warning | Price, Rating, Side view, Size | 50%   |
 
   Scenario: Remove completeness from grid when locales of a channel are deleted
     Given I am on the "tablet" channel page

@@ -7,12 +7,12 @@ Feature: Validate file attributes of a product
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | code       | label-en_US | type | scopable | max_file_size | allowed_extensions |
-      | datasheet  | Datasheet   | file | no       | 0.01          | jpg                |
-      | attachment | Attachment  | file | yes      | 0.01          | jpg                |
+      | code       | label-en_US | type             | scopable | max_file_size | allowed_extensions | group |
+      | datasheet  | Datasheet   | pim_catalog_file | 0        | 0.01          | jpg                | other |
+      | attachment | Attachment  | pim_catalog_file | 1        | 0.01          | jpg                | other |
     And the following family:
-      | code | label-en_US | attributes                 |
-      | baz  | Baz         | sku, datasheet, attachment |
+      | code | label-en_US | attributes               |
+      | baz  | Baz         | sku,datasheet,attachment |
     And the following product:
       | sku | family |
       | foo | baz    |

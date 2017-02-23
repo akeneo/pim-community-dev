@@ -1027,7 +1027,7 @@ job_tracker:
 
 pim_enrich_attribute_form:
     code: Code
-    attributeType: Attribute Type
+    type: Attribute Type
     reference_data_name: Reference data name
     scopable: Scope
     localizable: Localizable

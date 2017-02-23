@@ -160,7 +160,7 @@ class ProductSpec extends ObjectBehavior
 
     function it_is_not_attribute_removable_if_attribute_is_an_identifier(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $familyAttributes)
     {
-        $attribute->getAttributeType()->willReturn(AttributeTypes::IDENTIFIER);
+        $attribute->getType()->willReturn(AttributeTypes::IDENTIFIER);
 
         $this->isAttributeRemovable($attribute)->shouldReturn(false);
     }

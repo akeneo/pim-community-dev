@@ -11,7 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Test case dedicated to PIM API interaction including authentication handling.

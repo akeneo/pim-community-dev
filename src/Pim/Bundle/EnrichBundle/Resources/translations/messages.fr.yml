@@ -904,7 +904,7 @@ job_tracker:
     started_at: Démarré à
 pim_enrich_attribute_form:
   code: Code
-  attributeType: Type d'attribut
+  type: Type d'attribut
   reference_data_name: Nom de la référence
   scopable: Portée
   localizable: Localisable

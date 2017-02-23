@@ -20,7 +20,7 @@ class IdentifierGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AttributeInterface $attribute)
     {
-        return 'pim_catalog_identifier' === $attribute->getAttributeType();
+        return 'pim_catalog_identifier' === $attribute->getType();
     }
 
     /**

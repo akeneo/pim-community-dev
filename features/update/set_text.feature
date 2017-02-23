@@ -6,8 +6,8 @@ Feature: Update text fields
   Scenario: Successfully update a text field
     Given a "apparel" catalog configuration
     And the following products:
-      | sku      |
-      | AKN_MUG  |
+      | sku     |
+      | AKN_MUG |
     Then I should get the following products after apply the following updater to it:
       | product | actions                                                                                                       | result                                                                                         |
       | AKN_MUG | [{"type": "set_data", "field": "name", "data": "Akeneo mug", "locale": "en_US", "scope": null}]               | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "Akeneo mug"}]}}               |

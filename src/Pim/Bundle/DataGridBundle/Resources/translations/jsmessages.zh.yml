@@ -40,8 +40,10 @@ oro_datagrid.select.all: "所有"
 oro_datagrid.select.visible: "所有可见的"
 oro_datagrid.select.none: "无"
 pim.grid.ajax_choice_filter.label_empty: 为空
+pim.grid.ajax_choice_filter.label_not_empty: 不为空
 pim.grid.choice_filter:
   label_empty: 为空
+  label_not_empty: 不为空
   label_in_list: 在列表中
 Available Columns: 可用的列
 Displayed Columns: 选定的列

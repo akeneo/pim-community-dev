@@ -46,6 +46,9 @@ class AssertionContext extends RawMinkContext
      */
     public function assertPageNotContainsText($text)
     {
+        //Remove unecessary escaped antislashes
+        $text = str_replace('\\"', '"', $text);
+        $text = strip_tags($text);
         $this->spin(function () use ($text) {
             $this->assertSession()->pageTextNotContains($text);
 
@@ -92,6 +95,20 @@ class AssertionContext extends RawMinkContext
             $errors = $this->getCurrentPage()->getValidationErrors();
             assertTrue(in_array($error, $errors), sprintf('Expecting to see validation error "%s", not found', $error));
         }
+    }
+
+    /**
+     * @param string $message
+     *
+     * @Then /^I should see the tooltip "([^"]*)"$/
+     */
+    public function iShouldSeeTheTooltip($message)
+    {
+        $this->spin(function () use ($message) {
+            $tooltipMessages = $this->getCurrentPage()->getTooltipMessages();
+
+            return in_array($message, $tooltipMessages);
+        }, sprintf('Expecting to see tooltip "%s", not found', $message));
     }
 
     /**

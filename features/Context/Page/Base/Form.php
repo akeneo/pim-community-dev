@@ -44,8 +44,9 @@ class Form extends Base
                 'Save'                            => ['css' => '.AknButton--apply'],
                 'Panel sidebar'                   => [
                     'css'        => '.edit-form > .content',
-                    'decorators' => ['Pim\Behat\Decorator\Page\PanelableDecorator']
-                ]
+                    'decorators' => ['Pim\Behat\Decorator\Page\PanelableDecorator'],
+                ],
+                'Tooltips'                         => ['css' => '.icon-info-sign'],
             ],
             $this->elements
         );
@@ -243,6 +244,23 @@ class Form extends Base
         }
 
         return $errors;
+    }
+
+    /**
+     * Get tooltips messages
+     *
+     * @return string[]
+     */
+    public function getTooltipMessages()
+    {
+        $tooltips = $this->findAll('css', $this->elements['Tooltips']['css']);
+
+        $messages = [];
+        foreach ($tooltips as $tooltip) {
+            $messages[] = $tooltip->getAttribute('data-original-title');
+        }
+
+        return $messages;
     }
 
     /**

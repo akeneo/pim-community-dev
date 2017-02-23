@@ -70,7 +70,7 @@ class BulkMediaFetcher
                 );
             }
 
-            if (in_array($value->getAttribute()->getAttributeType(), $this->mediaAttributeTypes)
+            if (in_array($value->getAttribute()->getType(), $this->mediaAttributeTypes)
                 && null !== $media = $value->getMedia()) {
                 $exportPath = $this->fileExporterPath->generate(
                     [
