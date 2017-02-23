@@ -14,7 +14,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class TextCollectionType extends AbstractAttributeType
 {
-    const FLAT_SEPARATOR = ';';
+    const FLAT_SEPARATOR = ',';
 
     /**
      * {@inheritdoc}
