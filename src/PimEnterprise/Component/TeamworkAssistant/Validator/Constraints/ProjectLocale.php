@@ -9,23 +9,31 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\TeamworkAssistant\Validator;
+namespace PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class ProjectIdentifier extends Constraint
+class ProjectLocale extends Constraint
 {
     /** @var string */
-    public $message = 'teamwork_assistant.project.project_identifier';
+    public $message = 'teamwork_assistant.project.project_locale';
 
     /**
      * {@inheritdoc}
      */
     public function validatedBy()
     {
-        return 'project_identifier_validator';
+        return 'project_locale_validator';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTargets()
+    {
+        return self::CLASS_CONSTRAINT;
     }
 }

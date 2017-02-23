@@ -7,7 +7,7 @@ teamwork_assistant:
         required: This value should not be blank.
         label_maxlength: This value is too long. It should have {{ max }} characters or less.
         project_identifier: The project {{ project }} doesn't exist.
-        project_locale: The project locale {{ fr_FR }} must not be disable.
+        project_locale: The project's locale {{ locale }} must be enabled.
         project_due_date: You can't select a date in the past.
     notification:
         project_calculation:

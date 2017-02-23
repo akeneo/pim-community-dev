@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\PimEnterprise\Component\ActivityManager\Validator;
+namespace spec\PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
-use PimEnterprise\Component\ActivityManager\Validator\ProjectDueDate;
-use PimEnterprise\Component\ActivityManager\Validator\ProjectDueDateValidator;
+use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
+use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectDueDate;
+use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectDueDateValidator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -39,7 +39,7 @@ class ProjectDueDateValidatorSpec extends ObjectBehavior
         $project->getDueDate()->willReturn(new \DateTime('2016-12-12'));
 
 
-        $translator->trans('activity_manager.project.project_due_date')
+        $translator->trans('teamwork_assistant.project.project_due_date')
             ->willReturn('You can\'t select a date in the past.');
 
         $context->buildViolation('You can\'t select a date in the past.')

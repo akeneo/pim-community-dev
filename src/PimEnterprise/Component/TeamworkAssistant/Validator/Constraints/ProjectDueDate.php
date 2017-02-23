@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ActivityManager\Validator;
+namespace PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraint;
 class ProjectDueDate extends Constraint
 {
     /** @var string */
-    public $message = 'activity_manager.project.project_due_date';
+    public $message = 'teamwork_assistant.project.project_due_date';
 
     /**
      * {@inheritdoc}

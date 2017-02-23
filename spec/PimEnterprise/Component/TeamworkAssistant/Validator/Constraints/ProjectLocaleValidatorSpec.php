@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\PimEnterprise\Component\ActivityManager\Validator;
+namespace spec\PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
-use PimEnterprise\Component\ActivityManager\Validator\ProjectLocaleValidator;
-use PimEnterprise\Component\ActivityManager\Validator\ProjectLocale;
+use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
+use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectLocaleValidator;
+use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectLocale;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -50,10 +50,10 @@ class ProjectLocaleValidatorSpec extends ObjectBehavior
         $project->getChannel()->willReturn($channel);
         $locale->hasChannel($channel)->willReturn(false);
 
-        $translator->trans('activity_manager.project.project_locale', ['{{ locale }}' => 'fr_FR'])
-            ->willReturn('The project locale "fr_FR" must not be disable.');
+        $translator->trans('teamwork_assistant.project.project_locale', ['{{ locale }}' => 'fr_FR'])
+            ->willReturn('The project\'s locale "fr_FR" must be enabled.');
 
-        $context->buildViolation('The project locale "fr_FR" must not be disable.')
+        $context->buildViolation('The project\'s locale "fr_FR" must be enabled.')
             ->willReturn($constraintViolationBuilder);
 
         $constraintViolationBuilder->addViolation()->shouldBeCalled();

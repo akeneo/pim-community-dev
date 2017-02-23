@@ -124,7 +124,7 @@ class ProjectUpdater implements ObjectUpdaterInterface
                         $field,
                         $value,
                         static::class,
-                        sprintf('Product filters must an array, given %s,', gettype($value))
+                        sprintf('Product filters must be an array, given %s,', gettype($value))
                     );
                 }
                 $project->setProductFilters($value);

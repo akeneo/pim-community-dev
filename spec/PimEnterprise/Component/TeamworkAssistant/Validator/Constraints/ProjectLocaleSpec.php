@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\PimEnterprise\Component\ActivityManager\Validator;
+namespace spec\PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
-use PimEnterprise\Component\ActivityManager\Validator\ProjectLocale;
+use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectLocale;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\Constraint;
 

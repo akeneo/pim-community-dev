@@ -9,15 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ActivityManager\Validator;
+namespace PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
-use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
+use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectLocale;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
+ * Validate the project's locale, it must belong to the project's channel
+ *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
 class ProjectLocaleValidator extends ConstraintValidator
@@ -36,11 +39,11 @@ class ProjectLocaleValidator extends ConstraintValidator
     public function validate($project, Constraint $constraint)
     {
         if (!$project instanceof ProjectInterface) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\ProjectInterface');
+            throw new UnexpectedTypeException($constraint, ProjectInterface::class);
         }
 
         if (!$constraint instanceof ProjectLocale) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\ProjectLocale');
+            throw new UnexpectedTypeException($constraint, ProjectLocale::class);
         }
 
         $locale = $project->getLocale();

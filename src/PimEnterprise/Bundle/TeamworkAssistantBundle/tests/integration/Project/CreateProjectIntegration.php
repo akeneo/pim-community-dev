@@ -56,7 +56,7 @@ class CreateProjectIntegration extends TeamworkAssistantTestCase
 
     public function testThatWeCannotCreateAProjectWithLocaleThatDoNotBelongToTheChannel()
     {
-        $project = $this->get('pimee_activity_manager.factory.project')->create([
+        $project = $this->get('pimee_teamwork_assistant.factory.project')->create([
             'label'           => 'High-Tech project /42',
             'locale'          => 'iu_Latn_CA',
             'owner'           => 'admin',
@@ -79,7 +79,7 @@ class CreateProjectIntegration extends TeamworkAssistantTestCase
 
     public function testThatWeCannotCreateAProjectWithDueDateInThePast()
     {
-        $project = $this->get('pimee_activity_manager.factory.project')->create([
+        $project = $this->get('pimee_teamwork_assistant.factory.project')->create([
             'label'           => 'High-Tech project /42',
             'locale'          => 'en_US',
             'owner'           => 'admin',
@@ -102,7 +102,7 @@ class CreateProjectIntegration extends TeamworkAssistantTestCase
 
     public function testThatWeCannotCreateAProjectWithEmptyFields()
     {
-        $project = $this->get('pimee_activity_manager.factory.project')->create([
+        $project = $this->get('pimee_teamwork_assistant.factory.project')->create([
             'label'           => null,
             'locale'          => 'en_US',
             'owner'           => 'admin',
