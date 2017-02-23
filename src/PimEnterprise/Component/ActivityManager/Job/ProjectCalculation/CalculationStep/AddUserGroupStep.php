@@ -11,14 +11,9 @@
 
 namespace PimEnterprise\Component\ActivityManager\Job\ProjectCalculation\CalculationStep;
 
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\User\Model\GroupInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Component\ActivityManager\Calculator\ProjectItemCalculatorInterface;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
-use PimEnterprise\Component\ActivityManager\Repository\AttributePermissionRepositoryInterface;
-use PimEnterprise\Component\ActivityManager\Repository\FamilyRequirementRepositoryInterface;
-use PimEnterprise\Component\Security\Attributes;
 
 /**
  * Find contributor groups (user groups which have edit on the product) affected by the project and
@@ -28,34 +23,15 @@ use PimEnterprise\Component\Security\Attributes;
  */
 class AddUserGroupStep implements CalculationStepInterface
 {
-    /** @var ObjectDetacherInterface */
-    protected $objectDetacher;
-
-    /** @var CategoryAccessRepository */
-    protected $categoryAccessRepository;
-
-    /** @var FamilyRequirementRepositoryInterface */
-    protected $familyRequirementRepository;
-
-    /** @var AttributePermissionRepositoryInterface */
-    protected $attributePermissionRepository;
+    /** @var ProjectItemCalculatorInterface */
+    protected $contributorGroupCalculator;
 
     /**
-     * @param ObjectDetacherInterface                $objectDetacher
-     * @param CategoryAccessRepository               $categoryAccessRepository
-     * @param FamilyRequirementRepositoryInterface   $familyRequirementRepository
-     * @param AttributePermissionRepositoryInterface $attributePermissionRepository
+     * @param ProjectItemCalculatorInterface $contributorGroupCalculator
      */
-    public function __construct(
-        ObjectDetacherInterface $objectDetacher,
-        CategoryAccessRepository $categoryAccessRepository,
-        FamilyRequirementRepositoryInterface $familyRequirementRepository,
-        AttributePermissionRepositoryInterface $attributePermissionRepository
-    ) {
-        $this->objectDetacher = $objectDetacher;
-        $this->categoryAccessRepository = $categoryAccessRepository;
-        $this->familyRequirementRepository = $familyRequirementRepository;
-        $this->attributePermissionRepository = $attributePermissionRepository;
+    public function __construct(ProjectItemCalculatorInterface $contributorGroupCalculator)
+    {
+        $this->contributorGroupCalculator = $contributorGroupCalculator;
     }
 
     /**
@@ -63,50 +39,10 @@ class AddUserGroupStep implements CalculationStepInterface
      */
     public function execute(ProductInterface $product, ProjectInterface $project)
     {
-        $productContributorsGroupNames = $this->findUserGroupNamesForProduct($product);
-        $attributeContributorGroups = $this->findUserGroupForAttribute($product, $project);
+        $contributorGroups = $this->contributorGroupCalculator->calculate($project, $product);
 
-        foreach ($attributeContributorGroups as $attributeUserGroup) {
-            if (0 === count($productContributorsGroupNames) && 0 === count($product->getCategories())) {
-                $project->addUserGroup($attributeUserGroup);
-            } elseif (in_array($attributeUserGroup->getName(), $productContributorsGroupNames, true)) {
-                $project->addUserGroup($attributeUserGroup);
-            }
+        foreach ($contributorGroups as $contributorGroup) {
+            $project->addUserGroup($contributorGroup);
         }
-    }
-
-    /**
-     * Find contributor group names that can edit a product (category permission).
-     *
-     * @param ProductInterface $product
-     *
-     * @return string[]
-     */
-    protected function findUserGroupNamesForProduct(ProductInterface $product)
-    {
-        $contributors = $this->categoryAccessRepository->getGrantedUserGroupsForProduct(
-            $product,
-            Attributes::EDIT_ITEMS
-        );
-
-        return array_column($contributors, 'name');
-    }
-
-    /**
-     * Find contributor groups that can edit at least one product attribute (attribute GroupInterface permission).
-     *
-     * @param ProductInterface $product
-     * @param ProjectInterface $project
-     *
-     * @return GroupInterface[]
-     */
-    protected function findUserGroupForAttribute(ProductInterface $product, ProjectInterface $project)
-    {
-        $attributeGroupIdentifiers = $this->familyRequirementRepository->findAttributeGroupIdentifiers(
-            $product->getFamily(),
-            $project->getChannel()
-        );
-
-        return $this->attributePermissionRepository->findContributorsUserGroups($attributeGroupIdentifiers);
     }
 }
