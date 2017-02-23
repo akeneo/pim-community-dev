@@ -4,8 +4,8 @@ namespace spec\Pim\Component\Api\Normalizer;
 
 use Pim\Component\Api\Normalizer\ProductNormalizer;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Api\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

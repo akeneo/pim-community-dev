@@ -11,8 +11,8 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Version;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\ViolationHttpException;
+use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class FamilyController
 {
-    /** @var FamilyRepositoryInterface */
+    /** @var ApiResourceRepositoryInterface */
     protected $repository;
 
     /** @var NormalizerInterface */
@@ -55,17 +55,17 @@ class FamilyController
     protected $documentationUrl;
 
     /**
-     * @param FamilyRepositoryInterface $repository
-     * @param NormalizerInterface       $normalizer
-     * @param SimpleFactoryInterface    $factory
-     * @param ObjectUpdaterInterface    $updater
-     * @param ValidatorInterface        $validator
-     * @param SaverInterface            $saver
-     * @param RouterInterface           $router
-     * @param string                    $documentationUrl
+     * @param ApiResourceRepositoryInterface $repository
+     * @param NormalizerInterface            $normalizer
+     * @param SimpleFactoryInterface         $factory
+     * @param ObjectUpdaterInterface         $updater
+     * @param ValidatorInterface             $validator
+     * @param SaverInterface                 $saver
+     * @param RouterInterface                $router
+     * @param string                         $documentationUrl
      */
     public function __construct(
-        FamilyRepositoryInterface $repository,
+        ApiResourceRepositoryInterface $repository,
         NormalizerInterface $normalizer,
         SimpleFactoryInterface $factory,
         ObjectUpdaterInterface $updater,
@@ -122,8 +122,7 @@ class FamilyController
         //@TODO add parameterValidator to validate limit and page
 
         $offset = $limit * ($page - 1);
-
-        $families = $this->repository->findBy([], [], $limit, $offset);
+        $families = $this->repository->searchAfterOffset([], [], $limit, $offset);
 
         $familiesApi = $this->normalizer->normalize($families, 'external_api');
 

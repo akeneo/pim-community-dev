@@ -11,10 +11,10 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Version;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\ViolationHttpException;
+use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
+use Pim\Component\Api\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +35,7 @@ class AttributeOptionController
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var AttributeOptionRepositoryInterface */
+    /** @var ApiResourceRepositoryInterface */
     protected $attributeOptionsRepository;
 
     /** @var NormalizerInterface */
@@ -63,27 +63,27 @@ class AttributeOptionController
     protected $urlDocumentation;
 
     /**
-     * @param AttributeRepositoryInterface       $attributeRepository
-     * @param AttributeOptionRepositoryInterface $attributeOptionsRepository
-     * @param NormalizerInterface                $normalizer
-     * @param SimpleFactoryInterface             $factory
-     * @param ObjectUpdaterInterface             $updater
-     * @param ValidatorInterface                 $validator
-     * @param SaverInterface                     $saver
-     * @param RouterInterface                    $router
-     * @param array                              $supportedAttributeTypes
-     * @param string                             $urlDocumentation
+     * @param AttributeRepositoryInterface   $attributeRepository
+     * @param ApiResourceRepositoryInterface $attributeOptionsRepository
+     * @param NormalizerInterface            $normalizer
+     * @param SimpleFactoryInterface         $factory
+     * @param ObjectUpdaterInterface         $updater
+     * @param ValidatorInterface             $validator
+     * @param SaverInterface                 $saver
+     * @param RouterInterface                $router
+     * @param array                          $supportedAttributeTypes
+     * @param string                         $urlDocumentation
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
-        AttributeOptionRepositoryInterface $attributeOptionsRepository,
+        ApiResourceRepositoryInterface $attributeOptionsRepository,
         NormalizerInterface $normalizer,
         SimpleFactoryInterface $factory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         SaverInterface $saver,
         RouterInterface $router,
-        $supportedAttributeTypes,
+        array $supportedAttributeTypes,
         $urlDocumentation
     ) {
         $this->attributeRepository = $attributeRepository;

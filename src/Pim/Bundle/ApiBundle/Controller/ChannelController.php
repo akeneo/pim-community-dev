@@ -6,7 +6,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Pagination\HalPaginator;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ChannelController
 {
-    /** @var ChannelRepositoryInterface */
+    /** @var ApiResourceRepositoryInterface */
     protected $repository;
 
     /** @var NormalizerInterface */
@@ -33,13 +33,13 @@ class ChannelController
     protected $parameterValidator;
 
     /**
-     * @param ChannelRepositoryInterface  $repository
-     * @param NormalizerInterface         $normalizer
-     * @param HalPaginator                $paginator
-     * @param ParameterValidatorInterface $parameterValidator
+     * @param ApiResourceRepositoryInterface $repository
+     * @param NormalizerInterface            $normalizer
+     * @param HalPaginator                   $paginator
+     * @param ParameterValidatorInterface    $parameterValidator
      */
     public function __construct(
-        ChannelRepositoryInterface $repository,
+        ApiResourceRepositoryInterface $repository,
         NormalizerInterface $normalizer,
         HalPaginator $paginator,
         ParameterValidatorInterface $parameterValidator
@@ -92,10 +92,8 @@ class ChannelController
         }
 
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
-
-        $count = $this->repository->countAll();
-
-        $channels = $this->repository->findBy([], ['code' => 'ASC'], $queryParameters['limit'], $offset);
+        $count = $this->repository->count([]);
+        $channels = $this->repository->searchAfterOffset([], ['code' => 'ASC'], $queryParameters['limit'], $offset);
 
         $channelsApi = $this->normalizer->normalize($channels, 'external_api');
 
