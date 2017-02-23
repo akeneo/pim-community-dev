@@ -5,8 +5,7 @@ namespace Pim\Component\Connector\Processor;
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Component\FileStorage\FilesystemProvider;
-use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 
 /**
@@ -55,21 +54,15 @@ class BulkMediaFetcher
     /**
      * Fetch the media of the items to the target
      *
-     * @param ArrayCollection $items
-     * @param string          $target
-     * @param string          $identifier
+     * @param ProductValueCollectionInterface $values
+     * @param string                          $target
+     * @param string                          $identifier
      */
-    public function fetchAll(ArrayCollection $items, $target, $identifier)
+    public function fetchAll(ProductValueCollectionInterface $values, $target, $identifier)
     {
         $target = DIRECTORY_SEPARATOR !== substr($target, -1) ? $target . DIRECTORY_SEPARATOR : $target;
 
-        foreach ($items as $value) {
-            if (!$value instanceof ProductValueInterface) {
-                throw new \InvalidArgumentException(
-                    sprintf('Value is not an instance of %s.', ProductValueInterface::class)
-                );
-            }
-
+        foreach ($values as $value) {
             if (in_array($value->getAttribute()->getAttributeType(), $this->mediaAttributeTypes)
                 && null !== $media = $value->getMedia()) {
                 $exportPath = $this->fileExporterPath->generate(

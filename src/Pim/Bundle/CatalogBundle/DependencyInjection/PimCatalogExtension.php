@@ -29,7 +29,6 @@ class PimCatalogExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('attribute_types.yml');
         $loader->load('builders.yml');
-        $loader->load('collectors.yml');
         $loader->load('comparators.yml');
         $loader->load('completeness_checkers.yml');
         $loader->load('console.yml');
@@ -57,6 +56,7 @@ class PimCatalogExtension extends Extension
         $loader->load('versions.yml');
         $loader->load('serializers.yml');
         $loader->load('serializers_standard.yml');
+        $loader->load('serializers_storage.yml');
         $loader->load('converters.yml');
 
         $this->loadStorageDriver($container);

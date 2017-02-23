@@ -55,6 +55,9 @@ class UniqueValueValidator extends ConstraintValidator
      */
     public function validate($data, Constraint $constraint)
     {
+        // TODO: This validator will be completely reworked in TIP-698
+        return;
+
         if (empty($data)) {
             return;
         }

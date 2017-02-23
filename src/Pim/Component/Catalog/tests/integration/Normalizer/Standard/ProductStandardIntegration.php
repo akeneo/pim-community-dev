@@ -268,9 +268,12 @@ class ProductStandardIntegration extends TestCase
 
         $result = $this->normalizeProductToStandardFormat($product);
         $result = $this->sanitizeDateFields($result);
+
+        //TODO: why do we need that?
         $result = $this->sanitizeMediaAttributeData($result);
 
         $expected = $this->sanitizeDateFields($expected);
+        //TODO: why do we need that?
         $expected = $this->sanitizeMediaAttributeData($expected);
 
         $this->assertSame($expected, $result);

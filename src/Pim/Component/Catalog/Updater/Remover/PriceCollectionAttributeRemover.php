@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Updater\Remover;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
@@ -21,19 +22,25 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
     /** @var CurrencyRepositoryInterface */
     protected $currencyRepository;
 
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
+
     /**
      * @param AttributeValidatorHelper    $attrValidatorHelper
      * @param CurrencyRepositoryInterface $currencyRepository
-     * @param array                       $supportedTypes
+     * @param ProductBuilderInterface     $productBuilder
+     * @param string[]                    $supportedTypes
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
         CurrencyRepositoryInterface $currencyRepository,
+        ProductBuilderInterface $productBuilder,
         array $supportedTypes
     ) {
         parent::__construct($attrValidatorHelper);
 
         $this->currencyRepository = $currencyRepository;
+        $this->productBuilder = $productBuilder;
         $this->supportedTypes = $supportedTypes;
     }
 
@@ -60,7 +67,6 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
         $this->checkData($attribute, $data);
 
         $this->removePrices($product, $attribute, $data, $options['locale'], $options['scope']);
@@ -80,10 +86,14 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
         $productValue = $product->getValue($attribute->getCode(), $locale, $scope);
 
         if (null !== $productValue) {
-            foreach ($data as $price) {
-                $priceToRemove = $productValue->getPrice($price['currency']);
-                $productValue->removePrice($priceToRemove);
+            $prices = [];
+            foreach ($productValue->getData() as $price) {
+                if (!in_array(['amount' => $price->getData(), 'currency' => $price->getCurrency()], $data)) {
+                    $prices[] = ['amount' => $price->getData(), 'currency' => $price->getCurrency()];
+                }
             }
+
+            $this->productBuilder->addOrReplaceProductValue($product, $attribute, $scope, $locale, $prices);
         }
     }
 

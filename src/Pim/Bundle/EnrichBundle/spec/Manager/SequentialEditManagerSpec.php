@@ -67,8 +67,8 @@ class SequentialEditManagerSpec extends ObjectBehavior
         $sequentialEdit->countObjectSet()->willReturn(4);
         $product->getId()->willReturn(5);
 
-        $productRepository->findOneByWithValues(6)->willReturn($previous);
-        $productRepository->findOneByWithValues(2)->willReturn($next);
+        $productRepository->find(6)->willReturn($previous);
+        $productRepository->find(2)->willReturn($next);
 
         $sequentialEdit->setCurrent($product)->shouldBeCalled();
         $sequentialEdit->setPrevious($previous)->shouldBeCalled();

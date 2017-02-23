@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Converter;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -19,14 +20,17 @@ class MetricConverter
     /** @var MeasureConverter */
     protected $converter;
 
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
+
     /**
-     * Constructor
-     *
-     * @param MeasureConverter $converter
+     * @param MeasureConverter        $converter
+     * @param ProductBuilderInterface $productBuilder
      */
-    public function __construct(MeasureConverter $converter)
+    public function __construct(MeasureConverter $converter, ProductBuilderInterface $productBuilder)
     {
         $this->converter = $converter;
+        $this->productBuilder = $productBuilder;
     }
 
     /**
@@ -43,14 +47,22 @@ class MetricConverter
             $attribute = $value->getAttribute();
             if ($data instanceof MetricInterface && isset($channelUnits[$attribute->getCode()])) {
                 if (null === $data->getData()) {
-                    return;
+                    continue;
                 }
+
+                $measureFamily = $data->getFamily();
                 $channelUnit = $channelUnits[$attribute->getCode()];
-                $this->converter->setFamily($data->getFamily());
-                $data->setData(
-                    $this->converter->convert($data->getUnit(), $channelUnit, $data->getData())
+                $amount = $this->converter
+                    ->setFamily($measureFamily)
+                    ->convert($data->getUnit(), $channelUnit, $data->getData());
+
+                $this->productBuilder->addOrReplaceProductValue(
+                    $product,
+                    $attribute,
+                    $value->getLocale(),
+                    $value->getScope(),
+                    ['amount' => $amount, 'unit' => $channelUnit]
                 );
-                $data->setUnit($channelUnit);
             }
         }
     }

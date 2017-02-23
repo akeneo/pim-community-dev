@@ -5,22 +5,16 @@ namespace spec\Pim\Component\Catalog\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilder;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Prophecy\Argument;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductTemplateBuilderSpec extends ObjectBehavior
 {
-    function let(
-        NormalizerInterface $normalizer,
-        DenormalizerInterface $denormalizer,
-        ProductBuilder $productBuilder
-    ) {
+    function let(ProductBuilder $productBuilder)
+    {
         $this->beConstructedWith(
-            $normalizer,
-            $denormalizer,
             $productBuilder,
             'Pim\Bundle\CatalogBundle\Entity\ProductTemplate',
             'Pim\Component\Catalog\Model\Product'
@@ -38,54 +32,42 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
     }
 
     function it_adds_attributes_to_a_product_template(
-        $denormalizer,
-        $normalizer,
         $productBuilder,
         ProductTemplateInterface $template,
-        ProductValueInterface $colorValue,
         AttributeInterface $name,
-        AttributeInterface $color
+        ProductValueCollectionInterface $originalValues,
+        ProductValueCollectionInterface $newValues,
+        ProductInterface $product
     ) {
-        $color->getCode()->willReturn('color');
-        $color->isLocalizable()->willReturn(false);
-        $color->isScopable()->willReturn(false);
-        $colorValue->getAttribute()->willReturn($color);
-        $colorValue->setEntity(Argument::type('Pim\Component\Catalog\Model\Product'))->willReturn($colorValue);
+        $productBuilder->createProduct()->willReturn($product);
 
-        $options = ['locale' => 'en_US', 'disable_grouping_separator' => true];
-        $template->getValuesData()->willReturn(['color' => 'bar']);
-        $denormalizer
-            ->denormalize(['color' => 'bar'], 'ProductValue[]', 'standard', $options)
-            ->shouldBeCalled()->willReturn([$colorValue]);
+        $template->getValues()->willReturn($originalValues);
+        $product->setValues($originalValues)->shouldBeCalled();
 
-        $productBuilder
-            ->addAttributeToProduct(Argument::type('Pim\Component\Catalog\Model\Product'), $name)
-            ->shouldBeCalled();
-        $productBuilder
-            ->addMissingProductValues(Argument::type('Pim\Component\Catalog\Model\Product'))
-            ->shouldBeCalled();
+        $productBuilder->addAttributeToProduct($product, $name)->shouldBeCalled();
+        $productBuilder->addMissingProductValues($product)->shouldBeCalled();
 
-        $normalizer
-            ->normalize(Argument::type('Doctrine\Common\Collections\ArrayCollection'), 'standard', [
-                'entity'                     => 'product',
-                'locale'                     => 'en_US',
-                'disable_grouping_separator' => true
-            ])
-            ->shouldBeCalled()
-            ->willReturn(['name' => 'foo', 'color' => 'bar']);
+        $product->getValues()->willReturn($newValues);
 
-        $template->setValuesData(['name' => 'foo', 'color' => 'bar'])->shouldBeCalled();
+        $template->setValues($newValues)->shouldBeCalled();
 
-        $this->addAttributes($template, [$name], 'en_US');
+        $this->addAttributes($template, [$name]);
     }
 
     function it_removes_attributes_from_a_product_template(
         ProductTemplateInterface $template,
-        AttributeInterface $name
+        ProductValueInterface $nameValue,
+        ProductValueInterface $colorValue,
+        AttributeInterface $name,
+        AttributeInterface $color,
+        ProductValueCollectionInterface $values
     ) {
-        $name->getCode()->willReturn('name');
-        $template->getValuesData()->willReturn(['name' => 'foo', 'color' => 'bar']);
-        $template->setValuesData(['color' => 'bar'])->shouldBeCalled();
+        $nameValue->getAttribute()->willReturn($name);
+        $colorValue->getAttribute()->willReturn($color);
+
+        $template->getValues()->willReturn($values);
+
+        $values->removeByAttribute($name)->shouldBeCalled();
 
         $this->removeAttribute($template, $name);
     }

@@ -12,120 +12,51 @@ namespace Pim\Component\Catalog\Model;
 interface MetricInterface
 {
     /**
-     * Get base unit
+     * Gets the metric base unit (standard unit of the measure family).
      *
      * @return string
      */
     public function getBaseUnit();
 
     /**
-     * Set id
-     *
-     * @param int|string $id
-     *
-     * @return MetricInterface
-     */
-    public function setId($id);
-
-    /**
-     * Get base data
+     * Gets the metric base data (amount converted according to the
+     * standard unit of the measure family).
      *
      * @return float
      */
     public function getBaseData();
 
     /**
-     * Set base unit
+     * Gets used unit.
      *
-     * @param string $baseUnit
-     *
-     * @return MetricInterface
-     */
-    public function setBaseUnit($baseUnit);
-
-    /**
-     * Set used unit
-     *
-     * @param string $unit
-     *
-     * @return MetricInterface
-     */
-    public function setUnit($unit);
-
-    /**
-     * Set data
-     *
-     * @param float $data
-     *
-     * @return MetricInterface
-     */
-    public function setData($data);
-
-    /**
-     * Set family
-     *
-     * @param string $family
-     *
-     * @return MetricInterface
-     */
-    public function setFamily($family);
-
-    /**
-     * Get used unit
-     *
-     * @return string $unit
+     * @return string
      */
     public function getUnit();
 
     /**
-     * Get id
-     *
-     * @return int|string
-     */
-    public function getId();
-
-    /**
-     * Get data
+     * Gets the metric amount.
      *
      * @return float
      */
     public function getData();
 
     /**
-     * Set base data
-     *
-     * @param float $baseData
-     *
-     * @return MetricInterface
-     */
-    public function setBaseData($baseData);
-
-    /**
-     * Get family
+     * Gets the measure family of the metric.
      *
      * @return string
      */
     public function getFamily();
 
     /**
-     * Get the product value
+     * Checks if the metric is equal to another one.
      *
-     * @return ProductValueInterface
+     * @param MetricInterface $metric
+     *
+     * @return bool
      */
-    public function getValue();
+    public function isEqual(MetricInterface $metric);
 
     /**
-     * Set the product value
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return MetricInterface
-     */
-    public function setValue(ProductValueInterface $value);
-
-    /**
-     * To string
-     *
      * @return string
      */
     public function __toString();

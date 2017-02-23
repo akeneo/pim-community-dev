@@ -3,11 +3,9 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Standard\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Prophecy\Promise\ReturnPromise;
 use Symfony\Component\Serializer\SerializerInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductValueInterface;

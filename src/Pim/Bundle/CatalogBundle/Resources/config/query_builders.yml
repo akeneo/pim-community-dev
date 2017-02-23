@@ -69,7 +69,7 @@ services:
             - '@pim_catalog.repository.category'
             - '@pim_catalog.repository.product_category'
             - '@pim_catalog.doctrine.query.filter.object_id_resolver'
-            - ['categories', 'categories.id', 'categories.code']
+            - ['categories']
             - ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
@@ -97,8 +97,7 @@ services:
     pim_catalog.doctrine.query.filter.family:
         class: '%pim_catalog.doctrine.query.filter.family.class%'
         arguments:
-            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
-            - ['family', 'family.id', 'family.code']
+            - ['family']
             - ['IN', 'NOT IN' ,'EMPTY', 'NOT EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
@@ -106,8 +105,7 @@ services:
     pim_catalog.doctrine.query.filter.groups:
         class: '%pim_catalog.doctrine.query.filter.groups.class%'
         arguments:
-            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
-            - ['groups', 'groups.id', 'groups.code']
+            - ['groups']
             - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
@@ -209,10 +207,11 @@ services:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.identifier:
-        class: '%pim_catalog.doctrine.query.filter.string.class%'
+        class: '%pim_catalog.doctrine.query.filter.identifier.class%'
         arguments:
             - '@pim_catalog.validator.helper.attribute'
             - ['pim_catalog_identifier']
+            - ['identifier']
             - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'IN', '!=']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
