@@ -8,3 +8,4 @@ poster-movie-contact;;;decoration;;;;;1;posters;;;;"Movie poster ""Contact""";;;
 tshirt-uncategorized;;;;;T-shirt;;Super T-shirt;;tshirt;;;;;1;;;;;M;;;;;;;;;;;;;;;;;;;;
 empty-technical-product;;;default;;;;;1;technical_family;;;;;;;;;;;;;;;;;localizable_attribute-fr_FR;;scopable_attribute-tablet;;localizable_scopable_attribute-fr_FR-tablet;;;;;;;;;
 full-technical-product;;;default;;;;;1;technical_family;;;;;;;;;;;;;;;;simple_attribute;;localizable_attribute-en_US;;scopable_attribute-ecommerce;;localizable_scopable_attribute-en_US-ecommerce;simple_attribute;files/file.txt;10;GRAM;100;90;option_1;option_2
+technical-product;;;car;;;;;1;technical_family;;;;;;;;;;;;;;;;simple_attribute;;localizable_attribute-en_US;;scopable_attribute-ecommerce;;localizable_scopable_attribute-en_US-ecommerce;simple_attribute;files/file.txt;10;GRAM;100;90;option_1;option_2
