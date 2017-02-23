@@ -1,0 +1,62 @@
+parameters:
+    pimee_team_work_assistant.project_remover.chained.class: PimEnterprise\Component\TeamWorkAssistant\Remover\ChainedProjectRemover
+    pimee_team_work_assistant.project_remover.channel.class: PimEnterprise\Component\TeamWorkAssistant\Remover\ChannelProjectRemover
+    pimee_team_work_assistant.project_remover.locale.class: PimEnterprise\Component\TeamWorkAssistant\Remover\LocaleProjectRemover
+    pimee_team_work_assistant.project_remover.attribute.class: PimEnterprise\Component\TeamWorkAssistant\Remover\AttributeProjectRemover
+    pimee_team_work_assistant.project_remover.category.class: PimEnterprise\Component\TeamWorkAssistant\Remover\CategoryProjectRemover
+    pimee_team_work_assistant.project_remover.currency.class: PimEnterprise\Component\TeamWorkAssistant\Remover\CurrencyProjectRemover
+
+services:
+    pimee_team_work_assistant.project_remover.chained:
+        class: '%pimee_team_work_assistant.project_remover.chained.class%'
+        arguments:
+            - []
+
+    pimee_team_work_assistant.project_remover.channel:
+        class: '%pimee_team_work_assistant.project_remover.channel.class%'
+        arguments:
+            - '@pimee_team_work_assistant.repository.project'
+            - '@pimee_team_work_assistant.remover.project'
+        public: false
+        tags:
+            - { name: pimee_team_work_assistant.project_remover }
+
+    pimee_team_work_assistant.project_remover.locale:
+        class: '%pimee_team_work_assistant.project_remover.locale.class%'
+        arguments:
+            - '@pimee_team_work_assistant.repository.project'
+            - '@pimee_team_work_assistant.remover.project'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+        public: false
+        tags:
+            - { name: pimee_team_work_assistant.project_remover }
+
+    pimee_team_work_assistant.project_remover.attribute:
+        class: '%pimee_team_work_assistant.project_remover.attribute.class%'
+        arguments:
+            - '@pimee_team_work_assistant.repository.project'
+            - '@pimee_team_work_assistant.remover.project'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+        public: false
+        tags:
+            - { name: pimee_team_work_assistant.project_remover }
+
+    pimee_team_work_assistant.project_remover.category:
+        class: '%pimee_team_work_assistant.project_remover.category.class%'
+        arguments:
+            - '@pimee_team_work_assistant.repository.project'
+            - '@pimee_team_work_assistant.remover.project'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+        public: false
+        tags:
+            - { name: pimee_team_work_assistant.project_remover }
+
+    pimee_team_work_assistant.project_remover.currency:
+        class: '%pimee_team_work_assistant.project_remover.currency.class%'
+        arguments:
+            - '@pimee_team_work_assistant.repository.project'
+            - '@pimee_team_work_assistant.remover.project'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+        public: false
+        tags:
+            - { name: pimee_team_work_assistant.project_remover }

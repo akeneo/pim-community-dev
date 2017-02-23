@@ -1,0 +1,19 @@
+team_work_assistant:
+  common:
+    required: Obavezno
+  grid:
+    view_selector:
+      loading: Učitavanje...
+      confirmation:
+        delete: Potvrdi brisanje
+  project:
+    label: Oznaka
+    description: Opis
+  edit_project_modal:
+    confirm: Spremi
+    cancel: Poništi
+  create_project_modal:
+    confirm: Spremi
+    cancel: Poništi
+  widget:
+    description: Opis

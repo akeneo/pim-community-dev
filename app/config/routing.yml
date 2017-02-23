@@ -1,6 +1,6 @@
 # PIM
-pimee_activity_manager:
-    resource: "@PimEnterpriseActivityManagerBundle/Resources/config/routing/routing.yml"
+pimee_team_work_assistant:
+    resource: "@PimEnterpriseTeamWorkAssistantBundle/Resources/config/routing/routing.yml"
 
 pim_analytics:
     resource: "@PimAnalyticsBundle/Resources/config/routing.yml"

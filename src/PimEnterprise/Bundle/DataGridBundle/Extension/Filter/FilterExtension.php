@@ -19,7 +19,7 @@ use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver;
 use Pim\Bundle\DataGridBundle\Extension\Filter\FilterExtension as BaseFilterExtension;
 use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
-use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\DatagridViewTypes;
+use PimEnterprise\Bundle\TeamWorkAssistantBundle\Datagrid\DatagridViewTypes;
 use PimEnterprise\Bundle\EnrichBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;

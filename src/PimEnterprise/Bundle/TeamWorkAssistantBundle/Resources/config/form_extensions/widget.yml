@@ -1,0 +1,42 @@
+extensions:
+    team-work-assistant-widget:
+        module: team-work-assistant/widget/project-widget
+
+    team-work-assistant-widget-project-selector:
+        module: team-work-assistant/widget/project-selector
+        parent: team-work-assistant-widget
+        targetZone: top-bar-left
+        position: 100
+
+    team-work-assistant-widget-contributor-selector:
+        module: team-work-assistant/widget/contributor-selector
+        parent: team-work-assistant-widget
+        targetZone: top-bar-left
+        position: 200
+
+    team-work-assistant-widget-project-due-date:
+        module: team-work-assistant/widget/project-due-date
+        parent: team-work-assistant-widget
+        targetZone: top-bar-right
+        position: 100
+
+    team-work-assistant-widget-project-completeness-data:
+        module: team-work-assistant/widget/project-completeness-data
+        parent: team-work-assistant-widget
+        targetZone: content
+        position: 100
+        config:
+            labels:
+                ratioTodo: team_work_assistant.widget.completeness.to_enrich
+                ratioInProgress: team_work_assistant.widget.completeness.in_progress
+                ratioDone: team_work_assistant.widget.completeness.done
+                todo: team_work_assistant.widget.todo
+                inProgress: team_work_assistant.widget.in_progress
+                done: team_work_assistant.widget.done
+                displayProducts: team_work_assistant.widget.display_products
+
+    team-work-assistant-widget-project-description:
+        module: team-work-assistant/widget/project-description
+        parent: team-work-assistant-widget
+        targetZone: content
+        position: 200

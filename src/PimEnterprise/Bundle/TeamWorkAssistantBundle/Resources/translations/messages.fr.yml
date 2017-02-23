@@ -1,0 +1,10 @@
+team_work_assistant:
+  project:
+    required: Cette valeur ne doit pas être vide.
+  notification:
+    project_calculation:
+      start: Début
+    project_finished:
+      show: Afficher
+    due_date:
+      start: Début

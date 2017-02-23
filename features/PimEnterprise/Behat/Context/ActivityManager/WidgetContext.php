@@ -1,13 +1,13 @@
 <?php
 
-namespace PimEnterprise\Behat\Context\ActivityManager;
+namespace PimEnterprise\Behat\Context\TeamWorkAssistant;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Pim\Behat\Context\PimContext;
-use PimEnterprise\Behat\Decorator\Widget\ActivityManagerWidgetDecorator;
+use PimEnterprise\Behat\Decorator\Widget\TeamWorkAssistantWidgetDecorator;
 
 class WidgetContext extends PimContext
 {
@@ -21,7 +21,7 @@ class WidgetContext extends PimContext
     {
         $getSelectorMethod = sprintf('get%sSelector', ucfirst($selector));
         try {
-            $this->getActivityManagerWidget()->$getSelectorMethod();
+            $this->getTeamWorkAssistantWidget()->$getSelectorMethod();
             throw new ExpectationException(
                 sprintf('%s selector is visible but must not.', $selector),
                 $this->getSession()
@@ -32,11 +32,11 @@ class WidgetContext extends PimContext
     }
 
     /**
-     * @Then /^I should see the Activity Manager widget$/
+     * @Then /^I should see the team work assistant widget$/
      */
-    public function iShouldSeeTheActivityManagerWidget()
+    public function iShouldSeeTheTeamWorkAssistantWidget()
     {
-        $this->getActivityManagerWidget();
+        $this->getTeamWorkAssistantWidget();
     }
 
     /**
@@ -46,7 +46,7 @@ class WidgetContext extends PimContext
      */
     public function iSelectProject($projectLabel)
     {
-        $this->getActivityManagerWidget()->getProjectSelector()->setValue($projectLabel);
+        $this->getTeamWorkAssistantWidget()->getProjectSelector()->setValue($projectLabel);
     }
 
     /**
@@ -56,19 +56,19 @@ class WidgetContext extends PimContext
      */
     public function iSelectContributor($contributorName)
     {
-        $this->getActivityManagerWidget()->getContributorSelector()->setValue($contributorName);
+        $this->getTeamWorkAssistantWidget()->getContributorSelector()->setValue($contributorName);
     }
 
     /**
-     * @Then /^I should see the following activity manager completeness:$/
+     * @Then /^I should see the following team work assistant completeness:$/
      *
      * @param TableNode $table
      *
      * @throws \Exception
      */
-    public function iShouldSeeTheFollowingActivityManagerCompleteness(TableNode $table)
+    public function iShouldSeeTheFollowingTeamWorkAssistantCompleteness(TableNode $table)
     {
-        $completeness = $this->getActivityManagerWidget()->getCompleteness();
+        $completeness = $this->getTeamWorkAssistantWidget()->getCompleteness();
         foreach ($table->getHash() as $expectedData) {
             foreach ($expectedData as $field => $expectedValue) {
                 if ($completeness[$field] !== $expectedValue) {
@@ -94,7 +94,7 @@ class WidgetContext extends PimContext
      */
     public function iShouldSeeTheProject($not, $projectName)
     {
-        $values = $this->getActivityManagerWidget()->getProjectSelector()->getAvailableValues();
+        $values = $this->getTeamWorkAssistantWidget()->getProjectSelector()->getAvailableValues();
         $found = false;
 
         foreach ($values as $value) {
@@ -115,22 +115,22 @@ class WidgetContext extends PimContext
     }
 
     /**
-     * @When /^I click on the "([^"]*)" section of the activity manager widget$/
+     * @When /^I click on the "([^"]*)" section of the team work assistant widget$/
      *
      * @param string $sectionName
      */
-    public function iClickOnTheSectionOfTheActivityManagerWidget($sectionName)
+    public function iClickOnTheSectionOfTheTeamWorkAssistantWidget($sectionName)
     {
-        $this->getActivityManagerWidget()->clickOnSection($sectionName);
+        $this->getTeamWorkAssistantWidget()->clickOnSection($sectionName);
     }
 
     /**
-     * Get the decorated Activity Manager widget
+     * Get the decorated team work assistant widget
      *
-     * @return ActivityManagerWidgetDecorator
+     * @return TeamWorkAssistantWidgetDecorator
      */
-    protected function getActivityManagerWidget()
+    protected function getTeamWorkAssistantWidget()
     {
-        return $this->getCurrentPage()->getActivityManagerWidget();
+        return $this->getCurrentPage()->getTeamWorkAssistantWidget();
     }
 }

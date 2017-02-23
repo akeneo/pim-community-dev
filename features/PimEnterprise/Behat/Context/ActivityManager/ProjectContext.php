@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Behat\Context\ActivityManager;
+namespace PimEnterprise\Behat\Context\TeamWorkAssistant;
 
 use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\Gherkin\Node\TableNode;
 use Pim\Behat\Context\PimContext;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use PimEnterprise\Bundle\ActivityManagerBundle\Datagrid\DatagridViewTypes;
-use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Bundle\TeamWorkAssistantBundle\Datagrid\DatagridViewTypes;
+use PimEnterprise\Component\TeamWorkAssistant\Model\ProjectInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Process\PhpExecutableFinder;
@@ -98,7 +98,7 @@ class ProjectContext extends PimContext
      */
     public function theFollowingProjects(TableNode $table)
     {
-        $factory = $this->getService('pimee_activity_manager.factory.project');
+        $factory = $this->getService('pimee_team_work_assistant.factory.project');
 
         $projects = [];
         foreach ($table->getHash() as $field => $data) {
@@ -111,7 +111,7 @@ class ProjectContext extends PimContext
 
             $projects[] = $factory->create($data);
         }
-        $this->getService('pimee_activity_manager.saver.project')->saveAll($projects);
+        $this->getService('pimee_team_work_assistant.saver.project')->saveAll($projects);
 
         foreach ($projects as $project) {
             $this->generateProject($project->getCode());
@@ -164,7 +164,7 @@ class ProjectContext extends PimContext
         $locale = $this->getService('pim_catalog.repository.locale')
             ->findOneByIdentifier($localeCode);
 
-        $project = $this->getService('pimee_activity_manager.repository.project')
+        $project = $this->getService('pimee_team_work_assistant.repository.project')
             ->findOneBy([
                 'label'   => $label,
                 'channel' => $channel,

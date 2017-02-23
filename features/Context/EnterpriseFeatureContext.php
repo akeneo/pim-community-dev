@@ -4,8 +4,8 @@ namespace Context;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
-use PimEnterprise\Behat\Context\ActivityManager\ProjectContext;
-use PimEnterprise\Behat\Context\ActivityManager\WidgetContext;
+use PimEnterprise\Behat\Context\TeamWorkAssistant\ProjectContext;
+use PimEnterprise\Behat\Context\TeamWorkAssistant\WidgetContext;
 use PimEnterprise\Behat\Context\DashboardContext;
 use PimEnterprise\Behat\Context\HookContext;
 use PimEnterprise\Behat\Context\JobContext;

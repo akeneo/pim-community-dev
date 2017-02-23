@@ -86,7 +86,7 @@ class AppKernel extends Kernel
         return [
             new Akeneo\Bundle\FileMetadataBundle\AkeneoFileMetadataBundle(),
             new Akeneo\Bundle\FileTransformerBundle\AkeneoFileTransformerBundle(),
-            new PimEnterprise\Bundle\ActivityManagerBundle\PimEnterpriseActivityManagerBundle(),
+            new PimEnterprise\Bundle\TeamWorkAssistantBundle\PimEnterpriseTeamWorkAssistantBundle(),
             new PimEnterprise\Bundle\CatalogBundle\PimEnterpriseCatalogBundle(),
             new PimEnterprise\Bundle\ConnectorBundle\PimEnterpriseConnectorBundle(),
             new PimEnterprise\Bundle\DashboardBundle\PimEnterpriseDashboardBundle(),

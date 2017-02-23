@@ -24,7 +24,7 @@ services:
             - '@pimee_security.repository.attribute_group_access'
             - '@pim_user.context.user'
             - '@pim_datagrid.repository.datagrid_view'
-            - '@pimee_activity_manager.repository.project'
+            - '@pimee_team_work_assistant.repository.project'
         public: false
         tags:
              - { name: oro_datagrid.extension }

@@ -1,0 +1,8 @@
+team_work_assistant:
+  notification:
+    project_calculation:
+      start: Començar
+    project_finished:
+      show: Mostrar
+    due_date:
+      start: Començar

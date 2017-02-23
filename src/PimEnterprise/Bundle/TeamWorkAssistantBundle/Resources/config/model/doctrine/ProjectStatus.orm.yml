@@ -1,0 +1,31 @@
+PimEnterprise\Component\TeamWorkAssistant\Model\ProjectStatus:
+    type: entity
+    table: pimee_team_work_assistant_project_status
+    repositoryClass: PimEnterprise\Bundle\TeamWorkAssistantBundle\Doctrine\ORM\Repository\ProjectStatusRepository
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        isComplete:
+            type: boolean
+            nullable: true
+        hasBeenNotified:
+            type: boolean
+            nullable: true
+    manyToOne:
+        user:
+            targetEntity: Pim\Bundle\UserBundle\Entity\UserInterface
+            joinColumns:
+                user_id:
+                    nullable: false
+                    referencedColumnName: id
+        project:
+            targetEntity: PimEnterprise\Component\TeamWorkAssistant\Model\ProjectInterface
+            joinColumns:
+                project_id:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: CASCADE
