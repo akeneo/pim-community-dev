@@ -1,0 +1,19 @@
+teamwork_assistant:
+  common:
+    required: Обязательно
+  grid:
+    view_selector:
+      loading: Загрузка...
+      confirmation:
+        delete: Подтверждение удаления
+  project:
+    label: Метка
+    description: Описание
+  edit_project_modal:
+    confirm: Сохранить
+    cancel: Отмена
+  create_project_modal:
+    confirm: Сохранить
+    cancel: Отмена
+  widget:
+    description: Описание

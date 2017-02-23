@@ -1,13 +1,13 @@
 <?php
 
-namespace PimEnterprise\Behat\Context\TeamWorkAssistant;
+namespace PimEnterprise\Behat\Context\TeamworkAssistant;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Pim\Behat\Context\PimContext;
-use PimEnterprise\Behat\Decorator\Widget\TeamWorkAssistantWidgetDecorator;
+use PimEnterprise\Behat\Decorator\Widget\TeamworkAssistantWidgetDecorator;
 
 class WidgetContext extends PimContext
 {
@@ -21,7 +21,7 @@ class WidgetContext extends PimContext
     {
         $getSelectorMethod = sprintf('get%sSelector', ucfirst($selector));
         try {
-            $this->getTeamWorkAssistantWidget()->$getSelectorMethod();
+            $this->getTeamworkAssistantWidget()->$getSelectorMethod();
             throw new ExpectationException(
                 sprintf('%s selector is visible but must not.', $selector),
                 $this->getSession()
@@ -34,9 +34,9 @@ class WidgetContext extends PimContext
     /**
      * @Then /^I should see the team work assistant widget$/
      */
-    public function iShouldSeeTheTeamWorkAssistantWidget()
+    public function iShouldSeeTheTeamworkAssistantWidget()
     {
-        $this->getTeamWorkAssistantWidget();
+        $this->getTeamworkAssistantWidget();
     }
 
     /**
@@ -46,7 +46,7 @@ class WidgetContext extends PimContext
      */
     public function iSelectProject($projectLabel)
     {
-        $this->getTeamWorkAssistantWidget()->getProjectSelector()->setValue($projectLabel);
+        $this->getTeamworkAssistantWidget()->getProjectSelector()->setValue($projectLabel);
     }
 
     /**
@@ -56,7 +56,7 @@ class WidgetContext extends PimContext
      */
     public function iSelectContributor($contributorName)
     {
-        $this->getTeamWorkAssistantWidget()->getContributorSelector()->setValue($contributorName);
+        $this->getTeamworkAssistantWidget()->getContributorSelector()->setValue($contributorName);
     }
 
     /**
@@ -66,9 +66,9 @@ class WidgetContext extends PimContext
      *
      * @throws \Exception
      */
-    public function iShouldSeeTheFollowingTeamWorkAssistantCompleteness(TableNode $table)
+    public function iShouldSeeTheFollowingTeamworkAssistantCompleteness(TableNode $table)
     {
-        $completeness = $this->getTeamWorkAssistantWidget()->getCompleteness();
+        $completeness = $this->getTeamworkAssistantWidget()->getCompleteness();
         foreach ($table->getHash() as $expectedData) {
             foreach ($expectedData as $field => $expectedValue) {
                 if ($completeness[$field] !== $expectedValue) {
@@ -94,7 +94,7 @@ class WidgetContext extends PimContext
      */
     public function iShouldSeeTheProject($not, $projectName)
     {
-        $values = $this->getTeamWorkAssistantWidget()->getProjectSelector()->getAvailableValues();
+        $values = $this->getTeamworkAssistantWidget()->getProjectSelector()->getAvailableValues();
         $found = false;
 
         foreach ($values as $value) {
@@ -119,18 +119,18 @@ class WidgetContext extends PimContext
      *
      * @param string $sectionName
      */
-    public function iClickOnTheSectionOfTheTeamWorkAssistantWidget($sectionName)
+    public function iClickOnTheSectionOfTheTeamworkAssistantWidget($sectionName)
     {
-        $this->getTeamWorkAssistantWidget()->clickOnSection($sectionName);
+        $this->getTeamworkAssistantWidget()->clickOnSection($sectionName);
     }
 
     /**
      * Get the decorated team work assistant widget
      *
-     * @return TeamWorkAssistantWidgetDecorator
+     * @return TeamworkAssistantWidgetDecorator
      */
-    protected function getTeamWorkAssistantWidget()
+    protected function getTeamworkAssistantWidget()
     {
-        return $this->getCurrentPage()->getTeamWorkAssistantWidget();
+        return $this->getCurrentPage()->getTeamworkAssistantWidget();
     }
 }

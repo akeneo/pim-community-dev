@@ -1,8 +1,0 @@
-team_work_assistant:
-  common:
-    required: Obrigatório
-  project:
-    label: Rótulo
-  create_project_modal:
-    confirm: Guardar
-    cancel: Cancelar

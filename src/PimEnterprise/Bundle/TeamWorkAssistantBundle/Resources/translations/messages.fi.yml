@@ -1,8 +1,0 @@
-team_work_assistant:
-  notification:
-    project_calculation:
-      start: Aloitus
-    project_finished:
-      show: Näytä
-    due_date:
-      start: Aloitus

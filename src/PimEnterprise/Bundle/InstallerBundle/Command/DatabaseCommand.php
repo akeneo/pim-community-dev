@@ -39,8 +39,8 @@ class DatabaseCommand extends BaseDatabaseCommand
     /**
      * {@inheritdoc}
      *
-     * pimee_team_work_assistant_completeness_per_attribute_group is the table used to calculate the project completeness.
-     * pimee_team_work_assistant_project_product allows to know the product affected a project.
+     * pimee_teamwork_assistant_completeness_per_attribute_group is the table used to calculate the project completeness.
+     * pimee_teamwork_assistant_project_product allows to know the product affected a project.
      */
     protected function createNotMappedTables(OutputInterface $output)
     {
@@ -50,8 +50,8 @@ class DatabaseCommand extends BaseDatabaseCommand
 
         if (AkeneoStorageUtilsExtension::DOCTRINE_ORM === $this->getStorageDriver()) {
             $sql = <<<'SQL'
-DROP TABLE IF EXISTS `@pimee_team_work_assistant.completeness_per_attribute_group@`;
-CREATE TABLE `@pimee_team_work_assistant.completeness_per_attribute_group@` (
+DROP TABLE IF EXISTS `@pimee_teamwork_assistant.completeness_per_attribute_group@`;
+CREATE TABLE `@pimee_teamwork_assistant.completeness_per_attribute_group@` (
     `locale_id` INT NOT NULL,
     `channel_id` INT NOT NULL, 
     `product_id` INT NOT NULL, 
@@ -69,21 +69,21 @@ CREATE TABLE `@pimee_team_work_assistant.completeness_per_attribute_group@` (
     CONSTRAINT `attr_grp_completeness_attribute_group_foreign_key` FOREIGN KEY (`attribute_group_id`) REFERENCES `@pim_catalog.entity.attribute_group@` (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `@pimee_team_work_assistant.project_product@`;
-CREATE TABLE `@pimee_team_work_assistant.project_product@` (
+DROP TABLE IF EXISTS `@pimee_teamwork_assistant.project_product@`;
+CREATE TABLE `@pimee_teamwork_assistant.project_product@` (
   `project_id` INT NOT NULL,
   `product_id` INT NOT NULL,
   PRIMARY KEY (`project_id`,`product_id`),
   KEY `product_selection_project_index` (`project_id`),
   KEY `product_selection_product_index`  (`product_id`),
-  CONSTRAINT product_selection_project_foreign_key FOREIGN KEY (`project_id`) REFERENCES `@pimee_team_work_assistant.model.project@` (id) ON DELETE CASCADE,
+  CONSTRAINT product_selection_project_foreign_key FOREIGN KEY (`project_id`) REFERENCES `@pimee_teamwork_assistant.model.project@` (id) ON DELETE CASCADE,
   CONSTRAINT product_selection_product_foreign_key FOREIGN KEY (`product_id`) REFERENCES `@pim_catalog.entity.product@` (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 SQL;
         } else {
             $sql = <<<'SQL'
-DROP TABLE IF EXISTS `@pimee_team_work_assistant.completeness_per_attribute_group@`;
-CREATE TABLE `@pimee_team_work_assistant.completeness_per_attribute_group@` (
+DROP TABLE IF EXISTS `@pimee_teamwork_assistant.completeness_per_attribute_group@`;
+CREATE TABLE `@pimee_teamwork_assistant.completeness_per_attribute_group@` (
     `locale_id` INT NOT NULL,
     `channel_id` INT NOT NULL, 
     `product_id` VARCHAR(36) NOT NULL, 
@@ -100,14 +100,14 @@ CREATE TABLE `@pimee_team_work_assistant.completeness_per_attribute_group@` (
     CONSTRAINT `attr_grp_completeness_attribute_group_foreign_key` FOREIGN KEY (`attribute_group_id`) REFERENCES `@pim_catalog.entity.attribute_group@` (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `@pimee_team_work_assistant.project_product@`;
-CREATE TABLE `@pimee_team_work_assistant.project_product@` (
+DROP TABLE IF EXISTS `@pimee_teamwork_assistant.project_product@`;
+CREATE TABLE `@pimee_teamwork_assistant.project_product@` (
   `project_id` INT NOT NULL,
   `product_id` VARCHAR(36) NOT NULL,
   PRIMARY KEY (`project_id`,`product_id`),
   KEY `product_selection_project_index` (`project_id`),
   KEY `product_selection_product_index` (`product_id`),
-  CONSTRAINT product_selection_project_foreign_key FOREIGN KEY (`project_id`) REFERENCES `@pimee_team_work_assistant.model.project@` (id) ON DELETE CASCADE
+  CONSTRAINT product_selection_project_foreign_key FOREIGN KEY (`project_id`) REFERENCES `@pimee_teamwork_assistant.model.project@` (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `@pim_catalog.entity.product#categories@`;
@@ -122,7 +122,7 @@ CREATE TABLE `@pim_catalog.entity.product#categories@` (
 SQL;
         }
 
-        $sql = $this->getContainer()->get('pimee_team_work_assistant.table_name_mapper')->createQuery($sql);
+        $sql = $this->getContainer()->get('pimee_teamwork_assistant.table_name_mapper')->createQuery($sql);
 
         $this->getContainer()
             ->get('doctrine')

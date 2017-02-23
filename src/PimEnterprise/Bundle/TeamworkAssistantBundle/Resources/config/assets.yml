@@ -1,0 +1,3 @@
+css:
+    teamwork-assistant:
+        - bundles/pimenterpriseteamworkassistant/css/teamwork-assistant.less

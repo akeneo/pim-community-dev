@@ -1,0 +1,73 @@
+config:
+    config:
+        teamwork-assistant/saver/project:
+            url: teamwork_assistant_project_create
+        teamwork-assistant/remover/project:
+            url: teamwork_assistant_project_remove
+        pim/fetcher-registry:
+            fetchers:
+                project:
+                    module: teamwork-assistant/project/fetcher
+                    options:
+                        urls:
+                            list: teamwork_assistant_project_search
+                            get: teamwork_assistant_project_get
+                            completeness: teamwork_assistant_project_completeness_show
+                contributor:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: teamwork_assistant_project_contributors_search
+
+    map:
+        '*':
+            pim/grid/view-selector/selector: teamwork-assistant/grid/view-selector/selector
+            pim/grid/view-selector/line: teamwork-assistant/grid/view-selector/line
+            pim/grid/view-selector/current: teamwork-assistant/grid/view-selector/current
+        teamwork-assistant/grid/view-selector/selector:
+            pim/grid/view-selector/selector: pim/grid/view-selector/selector
+        teamwork-assistant/grid/view-selector/line:
+            pim/grid/view-selector/line: pim/grid/view-selector/line
+        teamwork-assistant/grid/view-selector/current:
+            pim/grid/view-selector/current: pim/grid/view-selector/current
+
+    paths:
+        # Forms
+        teamwork-assistant/project/create-form: pimenterpriseTeamworkAssistant/js/project/create-form
+        teamwork-assistant/project/fetcher: pimenterpriseTeamworkAssistant/js/fetcher/project-fetcher
+        teamwork-assistant/widget/project-widget: pimenterpriseTeamworkAssistant/js/widget/project-widget
+        teamwork-assistant/widget/project-selector: pimenterpriseTeamworkAssistant/js/widget/project-selector
+        teamwork-assistant/widget/contributor-selector: pimenterpriseTeamworkAssistant/js/widget/contributor-selector
+        teamwork-assistant/widget/project-due-date: pimenterpriseTeamworkAssistant/js/widget/project-due-date
+        teamwork-assistant/widget/project-completeness-data: pimenterpriseTeamworkAssistant/js/widget/project-completeness-data
+        teamwork-assistant/widget/project-description: pimenterpriseTeamworkAssistant/js/widget/project-description
+        teamwork-assistant/grid/view-selector/selector: pimenterpriseTeamworkAssistant/js/grid/view-selector
+        teamwork-assistant/grid/view-selector/line: pimenterpriseTeamworkAssistant/js/grid/view-selector-line
+        teamwork-assistant/grid/view-selector/current: pimenterpriseTeamworkAssistant/js/grid/view-selector-current
+        teamwork-assistant/grid/view-selector/create-project: pimenterpriseTeamworkAssistant/js/grid/view-selector-create-project
+        teamwork-assistant/grid/view-selector/edit-project: pimenterpriseTeamworkAssistant/js/grid/view-selector-edit-project
+        teamwork-assistant/grid/view-selector/remove-project: pimenterpriseTeamworkAssistant/js/grid/view-selector-remove-project
+
+        # Savers
+        teamwork-assistant/saver/project: pimenterpriseTeamworkAssistant/js/saver/project-saver
+
+        # Removers
+        teamwork-assistant/remover/project: pimenterpriseTeamworkAssistant/js/remover/project-remover
+
+        # Templates
+        teamwork-assistant/templates/grid/create-project-modal-content: pimenterpriseTeamworkAssistant/templates/grid/create-project-modal-content.html
+        teamwork-assistant/templates/field-error: pimenterpriseTeamworkAssistant/templates/field-error.html
+        teamwork-assistant/templates/grid/view-selector/line-project: pimenterpriseTeamworkAssistant/templates/grid/view-selector-line-project.html
+        teamwork-assistant/templates/grid/view-selector/create-project: pimenterpriseTeamworkAssistant/templates/grid/view-selector-create-project.html
+        teamwork-assistant/templates/grid/view-selector/edit-project: pimenterpriseTeamworkAssistant/templates/grid/view-selector-edit-project.html
+        teamwork-assistant/templates/grid/view-selector/remove-project: pimenterpriseTeamworkAssistant/templates/grid/view-selector-remove-project.html
+        teamwork-assistant/templates/grid/view-selector/current: pimenterpriseTeamworkAssistant/templates/grid/view-selector-current.html
+        teamwork-assistant/templates/widget/project-widget: pimenterpriseTeamworkAssistant/templates/widget/project-widget.html
+        teamwork-assistant/templates/widget/project-widget-empty: pimenterpriseTeamworkAssistant/templates/widget/project-widget-empty.html
+        teamwork-assistant/templates/widget/project-selector: pimenterpriseTeamworkAssistant/templates/widget/project-selector.html
+        teamwork-assistant/templates/widget/project-selector-line: pimenterpriseTeamworkAssistant/templates/widget/project-selector-line.html
+        teamwork-assistant/templates/widget/contributor-selector: pimenterpriseTeamworkAssistant/templates/widget/contributor-selector.html
+        teamwork-assistant/templates/widget/contributor-selector-line: pimenterpriseTeamworkAssistant/templates/widget/contributor-selector-line.html
+        teamwork-assistant/templates/widget/project-due-date: pimenterpriseTeamworkAssistant/templates/widget/project-due-date.html
+        teamwork-assistant/templates/widget/project-completeness-data: pimenterpriseTeamworkAssistant/templates/widget/project-completeness-data.html
+        teamwork-assistant/templates/widget/project-description: pimenterpriseTeamworkAssistant/templates/widget/project-description.html

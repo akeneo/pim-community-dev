@@ -88,7 +88,7 @@
     * Add the following bundles:
         - `FOS\OAuthServerBundle\FOSOAuthServerBundle`
         - `Pim\Bundle\ApiBundle\PimApiBundle`
-        - `PimEnterprise\Bundle\TeamWorkAssistantBundle\PimEnterpriseTeamWorkAssistantBundle`
+        - `PimEnterprise\Bundle\TeamworkAssistantBundle\PimEnterpriseTeamworkAssistantBundle`
 
 5. Update your **app/config/routing.yml**:
 
@@ -97,8 +97,8 @@
     * Add this configuration:
     
     ```
-    pimee_team_work_assistant:
-        resource: "@PimEnterpriseTeamWorkAssistantBundle/Resources/config/routing/routing.yml"
+    pimee_teamwork_assistant:
+        resource: "@PimEnterpriseTeamworkAssistantBundle/Resources/config/routing/routing.yml"
 
     pim_api:
         resource: "@PimApiBundle/Resources/config/routing.yml"

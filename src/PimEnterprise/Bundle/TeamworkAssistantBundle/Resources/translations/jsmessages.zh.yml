@@ -1,0 +1,19 @@
+teamwork_assistant:
+  common:
+    required: 必填
+  grid:
+    view_selector:
+      loading: 正在加载...
+      confirmation:
+        delete: 删除确认
+  project:
+    label: 标签
+    description: 描述
+  edit_project_modal:
+    confirm: 保存
+    cancel: 取消
+  create_project_modal:
+    confirm: 保存
+    cancel: 取消
+  widget:
+    description: 描述

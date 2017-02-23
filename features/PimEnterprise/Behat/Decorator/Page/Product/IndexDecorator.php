@@ -75,15 +75,15 @@ class IndexDecorator extends ElementDecorator
      *
      * @return ElementDecorator
      */
-    public function getTeamWorkAssistantWidget()
+    public function getTeamworkAssistantWidget()
     {
         $widget = $this->spin(function () {
-            return $this->find('css', '#team-work-assistant-widget');
+            return $this->find('css', '#teamwork-assistant-widget');
         }, 'team work assistant widget not found.');
 
         return $this->decorate(
             $widget,
-            ['PimEnterprise\Behat\Decorator\Widget\TeamWorkAssistantWidgetDecorator']
+            ['PimEnterprise\Behat\Decorator\Widget\TeamworkAssistantWidgetDecorator']
         );
     }
 }
