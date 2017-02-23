@@ -102,10 +102,8 @@ class ChannelController
         $count = $this->repository->count([]);
         $channels = $this->repository->searchAfterOffset([], ['code' => 'ASC'], $queryParameters['limit'], $offset);
 
-        $channelsApi = $this->normalizer->normalize($channels, 'external_api');
-
         $paginatedChannels = $this->paginator->paginate(
-            $channelsApi,
+            $this->normalizer->normalize($channels, 'external_api'),
             array_merge($request->query->all(), $queryParameters),
             $count,
             'pim_api_channel_list',
