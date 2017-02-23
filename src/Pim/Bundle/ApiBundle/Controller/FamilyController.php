@@ -10,7 +10,10 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Version;
 use Pim\Component\Api\Exception\DocumentedHttpException;
+use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
+use Pim\Component\Api\Pagination\HalPaginator;
+use Pim\Component\Api\Pagination\ParameterValidator;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -51,6 +54,12 @@ class FamilyController
     /** @var RouterInterface */
     protected $router;
 
+    /** @var HalPaginator */
+    protected $paginator;
+
+    /** @var ParameterValidator */
+    protected $parameterValidator;
+
     /** @var array */
     protected $apiConfiguration;
 
@@ -65,6 +74,8 @@ class FamilyController
      * @param ValidatorInterface             $validator
      * @param SaverInterface                 $saver
      * @param RouterInterface                $router
+     * @param HalPaginator                   $paginator
+     * @param ParameterValidator             $parameterValidator
      * @param array                          $apiConfiguration
      * @param string                         $documentationUrl
      */
@@ -76,6 +87,8 @@ class FamilyController
         ValidatorInterface $validator,
         SaverInterface $saver,
         RouterInterface $router,
+        HalPaginator $paginator,
+        ParameterValidator $parameterValidator,
         array $apiConfiguration,
         $documentationUrl
     ) {
@@ -86,6 +99,8 @@ class FamilyController
         $this->validator = $validator;
         $this->saver = $saver;
         $this->router = $router;
+        $this->paginator = $paginator;
+        $this->parameterValidator = $parameterValidator;
         $this->apiConfiguration = $apiConfiguration;
         $this->documentationUrl = sprintf($documentationUrl, substr(Version::VERSION, 0, 3));
     }
@@ -122,20 +137,29 @@ class FamilyController
     public function listAction(Request $request)
     {
         $queryParameters = [
-            'page'  => $request->query->get('limit', 1),
+            'page'  => $request->query->get('page', 1),
             'limit' => $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default'])
         ];
 
-        //@TODO add parameterValidator to validate limit and page
+        try {
+            $this->parameterValidator->validate($queryParameters);
+        } catch (PaginationParametersException $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        }
 
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
         $families = $this->repository->searchAfterOffset([], [], $queryParameters['limit'], $offset);
 
-        $familiesApi = $this->normalizer->normalize($families, 'external_api');
+        $paginatedFamilies = $this->paginator->paginate(
+            $this->normalizer->normalize($families, 'external_api'),
+            array_merge($request->query->all(), $queryParameters),
+            $this->repository->count([]),
+            'pim_api_family_list',
+            'pim_api_family_get',
+            'code'
+        );
 
-        //@TODO use paginate method before return results
-
-        return new JsonResponse($familiesApi);
+        return new JsonResponse($paginatedFamilies);
     }
 
     /**
