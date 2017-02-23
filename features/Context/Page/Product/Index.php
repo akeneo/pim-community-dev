@@ -40,6 +40,7 @@ class Index extends Grid
                 'Locales dropdown'        => ['css' => '#locale-switcher'],
                 'Sidebar collapse button' => ['css' => '.sidebar .sidebar-controls i.icon-double-angle-left'],
                 'Sidebar expand button'   => ['css' => '.separator.collapsed i.icon-double-angle-right'],
+                'Manage filters options'  => ['css' => '.filter-list.select-filter-widget .ui-multiselect-checkboxes li label span'],
             ]
         );
     }
@@ -143,7 +144,7 @@ class Index extends Grid
     public function getFiltersList()
     {
         return $this->spin(function () {
-            return $this->findAll('css', '.AknFilterBox-addFilterButton .ui-multiselect-checkboxes li label span');
+            return $this->findAll('css', $this->elements['Manage filters options']['css']);
         }, 'Filters list was not found.');
     }
 }
