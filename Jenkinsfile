@@ -15,8 +15,8 @@ stage("Checkout") {
     if (env.BRANCH_NAME =~ /^PR-/) {
         userInput = input(message: 'Launch tests?', parameters: [
             choice(choices: 'yes\nno', description: 'Run unit tests', name: 'launchUnitTests'),
-            choice(choices: 'yes\nno', description: 'Run functional tests', name: 'launchBehatTests'),
             choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
+            choice(choices: 'yes\nno', description: 'Run functional tests', name: 'launchBehatTests'),
             string(defaultValue: 'odm,orm', description: 'Storage used for the build (comma separated values)', name: 'storages'),
             string(defaultValue: 'ee,ce', description: 'PIM edition the tests should run to (comma separated values)', name: 'editions'),
             string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
@@ -44,7 +44,7 @@ stage("Checkout") {
 
         if (editions.contains('ee')) {
            checkout([$class: 'GitSCM',
-             branches: [[name: '1.6']],
+             branches: [[name: '1.7']],
              userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
            ])
 
@@ -87,10 +87,13 @@ if (launchUnitTests.equals("yes")) {
 
         tasks["phpunit-5.6"] = {runPhpUnitTest("5.6")}
         tasks["phpunit-7.0"] = {runPhpUnitTest("7.0")}
+        tasks["phpunit-7.1"] = {runPhpUnitTest("7.1")}
         tasks["phpspec-5.6"] = {runPhpSpecTest("5.6")}
         tasks["phpspec-7.0"] = {runPhpSpecTest("7.0")}
+        tasks["phpspec-7.1"] = {runPhpSpecTest("7.1")}
         tasks["php-cs-fixer-5.6"] = {runPhpCsFixerTest("5.6")}
         tasks["php-cs-fixer-7.0"] = {runPhpCsFixerTest("7.0")}
+        tasks["php-cs-fixer-7.1"] = {runPhpCsFixerTest("7.1")}
         tasks["grunt"] = {runGruntTest()}
 
         parallel tasks
@@ -103,6 +106,7 @@ if (launchIntegrationTests.equals("yes")) {
 
         tasks["phpunit-5.6"] = {runIntegrationTest("5.6")}
         tasks["phpunit-7.0"] = {runIntegrationTest("7.0")}
+        tasks["phpunit-7.1"] = {runIntegrationTest("7.1")}
 
         parallel tasks
     }
@@ -164,18 +168,22 @@ def runIntegrationTest(version) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("mysql:5.5").run("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim")
-            docker.image("carcel/php:${version}").inside("--link mysql:mysql -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
-                unstash "pim_community_dev"
+            docker.image("mysql:5.5").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim") {
+                docker.image("carcel/php:${version}").inside("--link mysql:mysql -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+                    unstash "pim_community_dev"
 
-                if (version == "7.0") {
-                    sh "composer require --no-update alcaeus/mongo-php-adapter"
+                    if (version != "5.6") {
+                        sh "composer require --no-update alcaeus/mongo-php-adapter"
+                    }
+
+                    sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                    sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
+                    sh "sed -i 's/database_host:     localhost/database_host:     mysql/' app/config/parameters_test.yml"
+                    sh "./app/console --env=test pim:install --force"
+
+                    sh "mkdir -p app/build/logs/"
+                    sh "./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
                 }
-
-                sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
-                sh "mkdir -p app/build/logs/"
-                sh "./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
             }
         } finally {
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${version}] /\" app/build/logs/*.xml"
@@ -192,7 +200,7 @@ def runPhpSpecTest(version) {
             docker.image("carcel/php:${version}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "pim_community_dev"
 
-                if (version == "7.0") {
+                if (version != "5.6") {
                     sh "composer require --no-update alcaeus/mongo-php-adapter"
                 }
 
@@ -221,10 +229,9 @@ def runPhpCsFixerTest(version) {
                 }
 
                 sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                sh "composer global require friendsofphp/php-cs-fixer ^2.0"
                 sh "touch app/config/parameters_test.yml"
                 sh "mkdir -p app/build/logs/"
-                sh "/home/akeneo/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --diff --format=junit --config=.php_cs.dist > app/build/logs/phpcs.xml"
+                sh "./bin/php-cs-fixer fix --diff --format=junit --config=.php_cs.dist > app/build/logs/phpcs.xml"
             }
         } finally {
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${version}] /\" app/build/logs/*.xml"
