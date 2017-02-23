@@ -322,7 +322,7 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'values[sku].varchar',
+                    'field'   => 'identifier',
                     'message' => 'This value should not be blank.',
                 ],
             ],
@@ -532,7 +532,7 @@ JSON;
 <<<JSON
     {
         "identifier": "product_categories",
-        "categories": [] 
+        "categories": []
     }
 JSON;
 
@@ -814,7 +814,7 @@ JSON;
 <<<JSON
     {
         "identifier": "product_categories",
-        "enabled": false 
+        "enabled": false
     }
 JSON;
 
@@ -1304,7 +1304,7 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'values[sku]',
+                    'field'   => 'identifier',
                     'message' => 'The value product_family is already set on another product for the unique attribute sku',
                 ],
             ],
@@ -1388,7 +1388,7 @@ JSON;
 <<<JSON
     {
         "identifier": "product_categories",
-        "enabled": null 
+        "enabled": null
     }
 JSON;
 
