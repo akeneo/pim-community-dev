@@ -1,0 +1,19 @@
+teamwork_assistant:
+  common:
+    required: Verplicht
+  grid:
+    view_selector:
+      loading: Laden...
+      confirmation:
+        delete: Bevestig verwijderen
+  project:
+    label: Label
+    description: Beschrijving
+  edit_project_modal:
+    confirm: Opslaan
+    cancel: Annuleren
+  create_project_modal:
+    confirm: Opslaan
+    cancel: Annuleren
+  widget:
+    description: Beschrijving

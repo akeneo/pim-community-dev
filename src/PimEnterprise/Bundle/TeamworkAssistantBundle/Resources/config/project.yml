@@ -1,0 +1,178 @@
+parameters:
+    pimee_teamwork_assistant.model.project.class: 'PimEnterprise\Component\TeamworkAssistant\Model\Project'
+    pimee_teamwork_assistant.model.project.interface: 'PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface'
+    pimee_teamwork_assistant.model.project_status.class: 'PimEnterprise\Component\TeamworkAssistant\Model\ProjectStatus'
+
+    pimee_teamwork_assistant.normalizer.project.class: 'PimEnterprise\Component\TeamworkAssistant\Normalizer\ProjectNormalizer'
+    pimee_teamwork_assistant.normalizer.project_completeness.class: 'PimEnterprise\Component\TeamworkAssistant\Normalizer\ProjectCompletenessNormalizer'
+    pimee_teamwork_assistant.repository.project.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\ProjectRepository'
+    pimee_teamwork_assistant.repository.project_completeness.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\ProjectCompletenessRepository'
+    pimee_teamwork_assistant.updater.project.class: 'PimEnterprise\Component\TeamworkAssistant\Updater\ProjectUpdater'
+    pimee_teamwork_assistant.event_listener.event_translation.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\EventTranslationSubscriber'
+    pimee_teamwork_assistant.event_listener.project.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\ProjectSubscriber'
+    pimee_teamwork_assistant.controller.project_controller.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Controller\ProjectController'
+    pimee_teamwork_assistant.controller.project_completeness_controller.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Controller\ProjectCompletenessController'
+    pimee_teamwork_assistant.widget.completeness.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Widget\ProjectCompletenessWidget'
+    pimee_teamwork_assistant.voter.project.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Security\ProjectVoter'
+    pimee_teamwork_assistant.factory.project.class: 'PimEnterprise\Component\TeamworkAssistant\Factory\ProjectFactory'
+    pimee_teamwork_assistant.doctrine.cursor_factory.project.class: 'Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\CursorFactory'
+    pimee_teamwork_assistant.doctrine.cursor.project.class: 'Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor'
+    pimee_teamwork_assistant.validator.project_identifier.class: 'PimEnterprise\Component\TeamworkAssistant\Validator\ProjectIdentifierValidator'
+    pimee_teamwork_assistant.factory.project_status.class: 'PimEnterprise\Component\TeamworkAssistant\Factory\ProjectStatusFactory'
+
+    pimee_teamwork_assistant.factory.project_cursor.page_size: 10
+
+    pimee_teamwork_assistant.pre_processing.tables:
+        pimee_teamwork_assistant.completeness_per_attribute_group: 'pimee_teamwork_assistant_completeness_per_attribute_group'
+        pimee_teamwork_assistant.project_product: 'pimee_teamwork_assistant_project_product'
+
+services:
+    ### Normalizer
+    pimee_teamwork_assistant.normalizer.project:
+        class: '%pimee_teamwork_assistant.normalizer.project.class%'
+        public: false
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pimee_teamwork_assistant.normalizer.project_completeness:
+        class: '%pimee_teamwork_assistant.normalizer.project_completeness.class%'
+        public: false
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    ### Repository
+    pimee_teamwork_assistant.repository.project:
+        class: '%pimee_teamwork_assistant.repository.project.class%'
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - '%pimee_teamwork_assistant.model.project.class%'
+        calls:
+            - [ setCursorFactory, ['@pimee_teamwork_assistant.factory.project_cursor']]
+
+    pimee_teamwork_assistant.remover.project:
+        class: '%pim_catalog.remover.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pimee_teamwork_assistant.model.project.class%'
+
+    pimee_teamwork_assistant.repository.project_completeness:
+        class: '%pimee_teamwork_assistant.repository.project_completeness.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pimee_teamwork_assistant.table_name_mapper'
+
+    ### Updater
+    pimee_teamwork_assistant.updater.project:
+        class: '%pimee_teamwork_assistant.updater.project.class%'
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@pim_user.repository.user'
+
+    ### Factory
+    pimee_teamwork_assistant.factory.project:
+        class: '%pimee_teamwork_assistant.factory.project.class%'
+        arguments:
+            - '@pimee_teamwork_assistant.updater.project'
+            - '@pim_datagrid.factory.datagrid_view'
+            - '@pim_datagrid.updater.datagrid_view'
+            - '%pimee_teamwork_assistant.model.project.class%'
+
+    pimee_teamwork_assistant.factory.project_status:
+        class: '%pimee_teamwork_assistant.factory.project_status.class%'
+        arguments:
+            - '%pimee_teamwork_assistant.model.project_status.class%'
+
+    pimee_teamwork_assistant.factory.project_cursor:
+        class: '%pimee_teamwork_assistant.doctrine.cursor_factory.project.class%'
+        arguments:
+            - '%pimee_teamwork_assistant.doctrine.cursor.project.class%'
+            - '@doctrine.orm.entity_manager'
+            - '%pimee_teamwork_assistant.factory.project_cursor.page_size%'
+
+    ### Saver
+    pimee_teamwork_assistant.saver.project:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pimee_teamwork_assistant.model.project.interface%'
+
+    pimee_teamwork_assistant.saver.project_status:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pimee_teamwork_assistant.model.project_status.class%'
+
+    ### Subscribers
+    pimee_teamwork_assistant.event_listener.event_translation:
+        class: '%pimee_teamwork_assistant.event_listener.event_translation.class%'
+        arguments:
+            - '@event_dispatcher'
+            - '@pimee_teamwork_assistant.repository.project'
+            - '%pimee_teamwork_assistant.project_calculation.job_name%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_teamwork_assistant.event_listener.project:
+        class: '%pimee_teamwork_assistant.event_listener.project.class%'
+        arguments:
+            - '@pimee_teamwork_assistant.repository.pre_processing'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ### Widget
+    pimee_teamwork_assistant.widget.completeness:
+        class: '%pimee_teamwork_assistant.widget.completeness.class%'
+        tags:
+            - { name: pim_dashboard.widget, position: 15 }
+
+    ### Voter
+    pimee_teamwork_assistant.voter.project:
+        class: '%pimee_teamwork_assistant.voter.project.class%'
+        arguments:
+            - '@pimee_teamwork_assistant.repository.user'
+        public: false
+        tags:
+            - { name: security.voter }
+
+    ### Controllers
+    pimee_teamwork_assistant.controller.project_controller:
+        class: '%pimee_teamwork_assistant.controller.project_controller.class%'
+        arguments:
+            - '@pimee_teamwork_assistant.converter.filter'
+            - '@pimee_teamwork_assistant.factory.project'
+            - '@pimee_teamwork_assistant.saver.project'
+            - '@pimee_teamwork_assistant.updater.project'
+            - '@pimee_teamwork_assistant.remover.project'
+            - '@validator'
+            - '@pimee_teamwork_assistant.launcher.job.project_calculation'
+            - '@pim_internal_api_serializer'
+            - '@pimee_teamwork_assistant.repository.project'
+            - '@pimee_teamwork_assistant.repository.user'
+            - '@security.token_storage'
+            - '@pimee_teamwork_assistant.repository.project_completeness'
+            - '@security.authorization_checker'
+            - '@router'
+            - '@pim_internal_api_serializer'
+
+    pimee_teamwork_assistant.controller.project_completeness_controller:
+        class: '%pimee_teamwork_assistant.controller.project_completeness_controller.class%'
+        arguments:
+            - '@pimee_teamwork_assistant.repository.project'
+            - '@pimee_teamwork_assistant.repository.project_completeness'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@pim_internal_api_serializer'
+
+    ### Validation
+    pimee_teamwork_assistant.validator.project_identifier:
+        class: '%pimee_teamwork_assistant.validator.project_identifier.class%'
+        arguments:
+            - '@pimee_teamwork_assistant.repository.project'
+            - '@translator'
+        tags:
+            - { name: validator.constraint_validator, alias: project_identifier_validator }
