@@ -13,6 +13,8 @@ Pim\Component\Catalog\Model\ProductValue:
             type: boolean
         text:
             type: string
+        textCollection:
+            type: raw
         date:
             type: date
         datetime:
