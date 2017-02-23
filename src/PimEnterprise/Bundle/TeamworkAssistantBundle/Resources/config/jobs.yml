@@ -1,5 +1,5 @@
 parameters:
-    pimee_teamwork_assistant.project_calculation.connector_name: 'activity manager'
+    pimee_teamwork_assistant.project_calculation.connector_name: 'teamwork assistant'
 
     pimee_teamwork_assistant.prepare_project_calculation.tasklet_name: 'prepare_project_calculation'
     pimee_teamwork_assistant.project_calculation.tasklet_name: 'project_calculation'

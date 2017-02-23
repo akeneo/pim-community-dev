@@ -38,7 +38,10 @@ define(
              * {@inheritDoc}
              */
             configure: function () {
-                this.onExtensions('teamwork-assistant:widget:project-selected', this.updateCurrentProjectCode.bind(this));
+                this.onExtensions(
+                    'teamwork-assistant:widget:project-selected',
+                    this.updateCurrentProjectCode.bind(this)
+                );
                 this.onExtensions(
                     'teamwork-assistant:widget:contributor-selected',
                     this.updateCurrentContributorUsername.bind(this)

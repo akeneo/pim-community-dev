@@ -11,11 +11,8 @@
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\tests\integration\PreProcessing;
 
-use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\tests\integration\TeamworkAssistantTestCase;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Bundle\TeamWorkAssistantBundle\tests\integration\ActivityManagerTestCase;
-use PimEnterprise\Component\TeamWorkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\Security\Attributes;
 
 class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
@@ -296,7 +293,7 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
 
         $catalogManager = $this->get('pim_user.repository.group')->findOneByIdentifier('Catalog Manager');
         $marketing = $this->get('pim_user.repository.group')->findOneByIdentifier('Marketing');
-        $result = $this->get('pimee_activity_manager.calculator.contributor_group')->calculate($project, $product);
+        $result = $this->get('pimee_teamwork_assistant.calculator.contributor_group')->calculate($project, $product);
 
         $this->assertSame($result, [$catalogManager, $marketing]);
     }
