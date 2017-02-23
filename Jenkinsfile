@@ -124,7 +124,7 @@ def runPhpUnitTest(version) {
                     sh "composer require --no-update alcaeus/mongo-php-adapter"
                 }
 
-                sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "touch app/config/parameters_test.yml"
                 sh "mkdir -p app/build/logs/"
                 sh "./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test --log-junit app/build/logs/phpunit.xml"
@@ -148,7 +148,7 @@ def runPhpSpecTest(version) {
                     sh "composer require --no-update alcaeus/mongo-php-adapter"
                 }
 
-                sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "touch app/config/parameters_test.yml"
                 sh "mkdir -p app/build/logs/"
                 sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
@@ -172,7 +172,7 @@ def runPhpCsFixerTest(version) {
                     sh "composer require --no-update alcaeus/mongo-php-adapter"
                 }
 
-                sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "composer global require friendsofphp/php-cs-fixer ^2.0"
                 sh "touch app/config/parameters_test.yml"
                 sh "mkdir -p app/build/logs/"
