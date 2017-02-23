@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\ActivityManagerBundle\tests\integration\PreProces
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\ActivityManagerBundle\tests\integration\ActivityManagerTestCase;
 use PimEnterprise\Component\ActivityManager\Model\ProjectInterface;
+use PimEnterprise\Component\Security\Attributes;
 
 class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
 {
@@ -36,8 +37,20 @@ class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
             'value'    => $productIdentifier,
         ]];
 
-        $skyrimEcommerceEn = $this->createProject('skyrim-ecommerce-en', 'Julia', 'en_US', 'ecommerce', $projectFilters);
-        $skyrimEcommerceFr = $this->createProject('skyrim-ecommerce-fr', 'Julia', 'fr_FR', 'ecommerce', $projectFilters);
+        $skyrimEcommerceEn = $this->createProject(
+            'skyrim-ecommerce-en',
+            'Julia',
+            'en_US',
+            'ecommerce',
+            $projectFilters
+        );
+        $skyrimEcommerceFr = $this->createProject(
+            'skyrim-ecommerce-fr',
+            'Julia',
+            'fr_FR',
+            'ecommerce',
+            $projectFilters
+        );
         $skyrimTabletEn = $this->createProject('skyrim-tablet-en', 'Julia', 'en_US', 'tablet', $projectFilters);
         $skyrimTabletFr = $this->createProject('skyrim-tablet-fr', 'Julia', 'fr_FR', 'tablet', $projectFilters);
 
@@ -261,6 +274,29 @@ class CompletenessPerAttributeGroupIntegration extends ActivityManagerTestCase
                 'is_complete'                                => '1'
             ]
         ]);
+    }
+
+    public function testTheAllPermissionCategory()
+    {
+        $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('car');
+        $userGroup = $this->get('pim_user.repository.group')->findOneByIdentifier('All');
+        $this->get('pimee_security.manager.category_access')
+            ->grantAccess($category, $userGroup, Attributes::OWN_PRODUCTS);
+
+        $productIdentifier = 'technical-product';
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productIdentifier);
+
+        $project = $this->createProject('test-categ', 'Julia', 'en_US', 'ecommerce', [[
+            'field'    => 'sku',
+            'operator' => '=',
+            'value'    => $productIdentifier,
+        ]]);
+
+        $catalogManager = $this->get('pim_user.repository.group')->findOneByIdentifier('Catalog Manager');
+        $marketing = $this->get('pim_user.repository.group')->findOneByIdentifier('Marketing');
+        $result = $this->get('pimee_activity_manager.calculator.contributor_group')->calculate($project, $product);
+
+        $this->assertSame($result, [$catalogManager, $marketing]);
     }
 
     /**

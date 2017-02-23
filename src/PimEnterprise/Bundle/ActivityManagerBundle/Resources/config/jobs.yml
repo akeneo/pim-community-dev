@@ -92,7 +92,7 @@ services:
     pimee_activity_manager.calculation_step.add_user_group:
         class: '%pimee_activity_manager.calculation_step.add_user_group.class%'
         arguments:
-            - '@pimee_activity_manager.calculator.contributor_group.class'
+            - '@pimee_activity_manager.calculator.contributor_group'
         public: false
         tags:
             - { name: pimee_activity_manager.calculation_step, priority: 100 }
@@ -117,7 +117,7 @@ services:
         class: '%pimee_activity_manager.calculation_step.pre_process_completeness.class%'
         arguments:
             - '@pimee_activity_manager.repository.pre_processing'
-            - '@pimee_activity_manager.calculator.attribute_group_completeness.class'
+            - '@pimee_activity_manager.calculator.attribute_group_completeness'
         public: false
         tags:
             - { name: pimee_activity_manager.calculation_step, priority: 400 }

@@ -56,6 +56,10 @@ class ContributorGroupCalculator implements ProjectItemCalculatorInterface
         $productContributorsGroupNames = $this->findUserGroupNamesForProduct($product);
         $attributeContributorGroups = $this->findUserGroupForAttribute($product, $project);
 
+        if (in_array('All', $productContributorsGroupNames)) {
+            return $attributeContributorGroups;
+        }
+
         $contributorGroups = [];
         foreach ($attributeContributorGroups as $attributeUserGroup) {
             if (0 === count($productContributorsGroupNames) && 0 === count($product->getCategories())) {

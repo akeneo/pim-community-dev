@@ -130,13 +130,13 @@ services:
             - { name: kernel.event_subscriber }
 
     ### Calculators
-    pimee_activity_manager.calculator.attribute_group_completeness.class:
+    pimee_activity_manager.calculator.attribute_group_completeness:
         class: '%pimee_activity_manager.calculator.attribute_group_completeness.class%'
         arguments:
             - '@pim_catalog.completeness.checker.chained'
             - '@pimee_activity_manager.repository.family_requirement'
 
-    pimee_activity_manager.calculator.contributor_group.class:
+    pimee_activity_manager.calculator.contributor_group:
         class: '%pimee_activity_manager.calculator.contributor_group.class%'
         arguments:
             - '@pimee_security.repository.category_access'
