@@ -14,45 +14,95 @@ class ListCategoryIntegration extends ApiTestCase
 
         $client->request('GET', 'api/rest/v1/categories');
 
-        $standardCategories = [
-            [
-                'code'   => 'master',
-                'parent' => null,
-                'labels' => []
-            ],
-            [
-                'code'   => 'categoryA',
-                'parent' => 'master',
-                'labels' => [
-                    'en_US' => 'Category A',
-                    'fr_FR' => 'Catégorie A'
-                ]
-            ],
-            [
-                'code'   => 'categoryA1',
-                'parent' => 'categoryA',
-                'labels' => []
-            ],
-            [
-                'code'   => 'categoryA2',
-                'parent' => 'categoryA',
-                'labels' => []
-            ],
-            [
-                'code'   => 'categoryB',
-                'parent' => 'master',
-                'labels' => []
-            ],
-            [
-                'code'   => 'master_china',
-                'parent' => null,
-                'labels' => []
-            ]
-        ];
+        $expected = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10"
+        },
+        "last": {
+            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10"
+        },
+        "first": {
+            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10"
+        }
+    },
+    "current_page": 1,
+    "pages_count": 1,
+    "items_count": 6,
+    "_embedded": {
+        "items": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http://localhost/api/rest/v1/categories/master"
+                    }
+                },
+                "code": "master",
+                "parent": null,
+                "labels": []
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http://localhost/api/rest/v1/categories/categoryA"
+                    }
+                },
+                "code": "categoryA",
+                "parent": "master",
+                "labels": {
+                    "en_US": "Category A",
+                    "fr_FR": "Catégorie A"
+                }
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http://localhost/api/rest/v1/categories/categoryA1"
+                    }
+                },
+                "code": "categoryA1",
+                "parent": "categoryA",
+                "labels": []
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http://localhost/api/rest/v1/categories/categoryA2"
+                    }
+                },
+                "code": "categoryA2",
+                "parent": "categoryA",
+                "labels": []
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http://localhost/api/rest/v1/categories/categoryB"
+                    }
+                },
+                "code": "categoryB",
+                "parent": "master",
+                "labels": []
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http://localhost/api/rest/v1/categories/master_china"
+                    }
+                },
+                "code": "master_china",
+                "parent": null,
+                "labels": []
+            }
+        ]
+    }
+}
+JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertSame($standardCategories, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
     public function testOutOfRangeListCategories()
@@ -61,11 +111,31 @@ class ListCategoryIntegration extends ApiTestCase
 
         $client->request('GET', 'api/rest/v1/categories?limit=10&page=2');
 
-        $standardCategories = [];
 
+        $expected = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/categories?limit=10&page=2"
+        },
+        "last": {
+            "href": "http://localhost/api/rest/v1/categories?limit=10&page=1"
+        },
+        "first": {
+            "href": "http://localhost/api/rest/v1/categories?limit=10&page=1"
+        }
+    },
+    "current_page": 2,
+    "pages_count": 1,
+    "items_count": 6,
+    "_embedded": {
+        "items": []
+    }
+}
+JSON;
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertSame($standardCategories, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
     /**

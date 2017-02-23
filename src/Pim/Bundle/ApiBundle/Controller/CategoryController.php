@@ -11,7 +11,10 @@ use Gedmo\Exception\UnexpectedValueException;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Version;
 use Pim\Component\Api\Exception\DocumentedHttpException;
+use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
+use Pim\Component\Api\Pagination\HalPaginator;
+use Pim\Component\Api\Pagination\ParameterValidator;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -52,6 +55,12 @@ class CategoryController
     /** @var RouterInterface */
     protected $router;
 
+    /** @var HalPaginator */
+    protected $paginator;
+
+    /** @var ParameterValidator */
+    protected $parameterValidator;
+
     /** @var array */
     protected $apiConfiguration;
 
@@ -66,6 +75,8 @@ class CategoryController
      * @param ValidatorInterface             $validator
      * @param SaverInterface                 $saver
      * @param RouterInterface                $router
+     * @param HalPaginator                   $paginator
+     * @param ParameterValidator             $parameterValidator
      * @param array                          $apiConfiguration
      * @param string                         $urlDocumentation
      */
@@ -77,6 +88,8 @@ class CategoryController
         ValidatorInterface $validator,
         SaverInterface $saver,
         RouterInterface $router,
+        HalPaginator $paginator,
+        ParameterValidator $parameterValidator,
         array $apiConfiguration,
         $urlDocumentation
     ) {
@@ -87,6 +100,8 @@ class CategoryController
         $this->validator = $validator;
         $this->saver = $saver;
         $this->router = $router;
+        $this->parameterValidator = $parameterValidator;
+        $this->paginator = $paginator;
         $this->apiConfiguration = $apiConfiguration;
         $this->urlDocumentation = sprintf($urlDocumentation, substr(Version::VERSION, 0, 3));
     }
@@ -127,17 +142,26 @@ class CategoryController
             'limit' => $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default'])
         ];
 
-        //@TODO add parameterValidator to validate limit and page
+        try {
+            $this->parameterValidator->validate($queryParameters);
+        } catch (PaginationParametersException $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        }
 
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
         $order = ['root' => 'ASC', 'left' => 'ASC'];
         $categories = $this->repository->searchAfterOffset([], $order, $queryParameters['limit'], $offset);
 
-        $categoriesApi = $this->normalizer->normalize($categories, 'external_api');
+        $paginatedCategories = $this->paginator->paginate(
+            $this->normalizer->normalize($categories, 'external_api'),
+            array_merge($request->query->all(), $queryParameters),
+            $this->repository->count([]),
+            'pim_api_category_list',
+            'pim_api_category_get',
+            'code'
+        );
 
-        //@TODO use paginate method before return results
-
-        return new JsonResponse($categoriesApi);
+        return new JsonResponse($paginatedCategories);
     }
 
     /**
