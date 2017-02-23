@@ -178,10 +178,9 @@ def runPhpCsFixerTest(version) {
                 }
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                sh "composer global require friendsofphp/php-cs-fixer ^2.0"
                 sh "touch app/config/parameters_test.yml"
                 sh "mkdir -p app/build/logs/"
-                sh "/home/akeneo/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --diff --format=junit --config=.php_cs.dist > app/build/logs/phpcs.xml"
+                sh "./bin/php-cs-fixer fix --diff --format=junit --config=.php_cs.dist > app/build/logs/phpcs.xml"
             }
         } finally {
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${version}] /\" app/build/logs/*.xml"
