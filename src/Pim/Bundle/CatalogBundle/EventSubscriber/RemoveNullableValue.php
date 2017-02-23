@@ -32,7 +32,7 @@ class RemoveNullableValue  implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::POST_SAVE => 'removeNullableValue',
+            StorageEvents::PRE_SAVE => 'removeNullableValue',
         ];
     }
 
@@ -50,7 +50,7 @@ class RemoveNullableValue  implements EventSubscriberInterface
         $attributes = $product->getFamily()->getAttributeCodes();
         foreach ($product->getValues() as $value) {
             if (null === $value->getData() && in_array($value->getAttribute()->getCode(), $attributes)) {
-                $this->remover->remove($value);
+                $product->removeValue($value);
             }
         }
     }
