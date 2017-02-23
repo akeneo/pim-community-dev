@@ -8,6 +8,3 @@ parameters:
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
     installer_data:    PimInstallerBundle:minimal
-    pim_es_index_name: product_index
-    pim_es_host:       localhost
-    pim_es_port:       9200
