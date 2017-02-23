@@ -296,6 +296,7 @@ config:
         pim/product-edit-form/attributes/validation-error: pimenrich/js/product/form/attributes/validation-error
         pim/product-edit-form/attributes/variant-group:    pimenrich/js/product/form/attributes/variant-group
         pim/product-edit-form/attributes/locale-specific:  pimenrich/js/product/form/attributes/locale-specific
+        pim/product-edit-form/attributes/completeness:     pimenrich/js/product/form/attributes/completeness
         pim/product-edit-form/attributes/localizable:      pimenrich/js/product/form/attributes/localizable
         pim/product-edit-form/categories:                  pimenrich/js/product/form/categories
         pim/product-edit-form/associations:                pimenrich/js/product/form/associations
@@ -369,6 +370,7 @@ config:
 
         # Product edit form
         pim/field-manager: pimenrich/js/product/field-manager
+        pim/provider/to-fill-field-provider: pimenrich/js/provider/to-fill-field-provider
 
         # Product create form
         pim/product-create:      pimenrich/js/product/create/create

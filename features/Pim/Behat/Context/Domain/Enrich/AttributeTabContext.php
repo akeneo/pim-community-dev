@@ -2,11 +2,14 @@
 
 namespace Pim\Behat\Context\Domain\Enrich;
 
+use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Pim\Behat\Context\PimContext;
 
 class AttributeTabContext extends PimContext
 {
+    use SpinCapableTrait;
+
     /**
      * @When /^I open the comparison panel$/
      */
@@ -75,6 +78,68 @@ class AttributeTabContext extends PimContext
     public function theComparisonValueShouldBe($fieldName, $expected)
     {
         $this->getCurrentPage()->compareFieldValue($fieldName, $expected, true);
+    }
+
+    /**
+     * @param string $fieldName
+     * @param mixed  $not
+     *
+     * @Then /^the ([^"]*) field should (not )?be highlighted$/
+     */
+    public function theFieldShouldBeHighlighted($fieldName, $not = null)
+    {
+        $field = $this->getCurrentPage()->findField($fieldName);
+        try {
+            $badge = $this->spin(function () use ($field) {
+                return $field->getParent()->getParent()->find('css', '.AknBadge--highlight');
+            }, 'Cannot find the badge element');
+        } catch (TimeoutException $e) {
+            if ('not ' !== $not) {
+                throw $e;
+            } else {
+                return true;
+            }
+        }
+
+        if ('not ' === $not) {
+            throw $this->getMainContext()->createExpectationException(
+                sprintf(
+                    'Expected to not see the field "%s" highlighted.',
+                    $fieldName
+                )
+            );
+        }
+    }
+
+    /**
+     * @param string $groupName
+     * @param mixed  $not
+     *
+     * @Then /^the ([^"]*) group should (not )?be highlighted$/
+     */
+    public function theGroupShouldBeHighlighted($groupName, $not = null)
+    {
+        $group = $this->getCurrentPage()->findGroup($groupName);
+        try {
+            $badge = $this->spin(function () use ($group) {
+                return $group->getParent()->find('css', '.AknBadge--highlight');
+            }, 'Cannot find the badge element');
+        } catch (TimeoutException $e) {
+            if ('not ' !== $not) {
+                throw $e;
+            } else {
+                return true;
+            }
+        }
+
+        if ('not ' === $not) {
+            throw $this->getMainContext()->createExpectationException(
+                sprintf(
+                    'Expected to see the group "%s" highlighted.',
+                    $groupName
+                )
+            );
+        }
     }
 
     /**
