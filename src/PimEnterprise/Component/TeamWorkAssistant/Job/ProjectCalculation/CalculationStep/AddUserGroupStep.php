@@ -12,8 +12,8 @@
 namespace PimEnterprise\Component\TeamWorkAssistant\Job\ProjectCalculation\CalculationStep;
 
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\TeamWorkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamWorkAssistant\Calculator\ProjectItemCalculatorInterface;
+use PimEnterprise\Component\TeamWorkAssistant\Model\ProjectInterface;
 
 /**
  * Find contributor groups (user groups which have edit on the product) affected by the project and

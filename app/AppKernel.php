@@ -86,7 +86,6 @@ class AppKernel extends Kernel
         return [
             new Akeneo\Bundle\FileMetadataBundle\AkeneoFileMetadataBundle(),
             new Akeneo\Bundle\FileTransformerBundle\AkeneoFileTransformerBundle(),
-            new PimEnterprise\Bundle\TeamWorkAssistantBundle\PimEnterpriseTeamWorkAssistantBundle(),
             new PimEnterprise\Bundle\CatalogBundle\PimEnterpriseCatalogBundle(),
             new PimEnterprise\Bundle\ConnectorBundle\PimEnterpriseConnectorBundle(),
             new PimEnterprise\Bundle\DashboardBundle\PimEnterpriseDashboardBundle(),
@@ -98,6 +97,7 @@ class AppKernel extends Kernel
             new PimEnterprise\Bundle\PdfGeneratorBundle\PimEnterprisePdfGeneratorBundle(),
             new PimEnterprise\Bundle\ProductAssetBundle\PimEnterpriseProductAssetBundle(),
             new PimEnterprise\Bundle\SecurityBundle\PimEnterpriseSecurityBundle(),
+            new PimEnterprise\Bundle\TeamWorkAssistantBundle\PimEnterpriseTeamWorkAssistantBundle(),
             new PimEnterprise\Bundle\UIBundle\PimEnterpriseUIBundle(),
             new PimEnterprise\Bundle\UserBundle\PimEnterpriseUserBundle(),
             new PimEnterprise\Bundle\VersioningBundle\PimEnterpriseVersioningBundle(),

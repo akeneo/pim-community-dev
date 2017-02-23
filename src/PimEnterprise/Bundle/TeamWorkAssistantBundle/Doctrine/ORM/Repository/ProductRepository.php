@@ -13,9 +13,9 @@ namespace PimEnterprise\Bundle\TeamWorkAssistantBundle\Doctrine\ORM\Repository;
 
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\TeamWorkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamWorkAssistant\Repository\ProductRepositoryInterface;
-use PimEnterprise\Component\Security\Attributes;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>

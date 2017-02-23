@@ -14,10 +14,10 @@ namespace PimEnterprise\Component\TeamWorkAssistant\Calculator;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\TeamWorkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamWorkAssistant\Repository\AttributePermissionRepositoryInterface;
 use PimEnterprise\Component\TeamWorkAssistant\Repository\FamilyRequirementRepositoryInterface;
-use PimEnterprise\Component\Security\Attributes;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
