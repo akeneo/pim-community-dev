@@ -18,6 +18,9 @@ class HasVariantAxes extends Constraint
         'The product "%product%" is in the variant group "%variant%" but it misses the following axes: %axes%.'
     ;
 
+    /** @var string */
+    public $propertyPath = 'variant_group';
+
     /**
      * {@inheritdoc}
      */

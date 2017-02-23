@@ -175,26 +175,43 @@ JSON;
         $data =
 <<<JSON
     {
-        "code": ""
+        "code": "",
+        "attribute_as_label": "a_price",
+        "attribute_requirements": {
+           "ecommerce": ["a_text"]
+        }
     }
 JSON;
 
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'field'   => 'code',
-                    'message' => 'This value should not be blank.',
-                ],
-            ],
-        ];
+        $expectedContent = <<<JSON
+{
+    "code": 422,
+    "message": "Validation failed.",
+    "errors": [
+        {
+            "field":"attribute_requirements",
+            "message":"The attribute \"a_text\" cannot be an attribute required for the channel \"ecommerce\" as it does not belong to this family"
+        },
+        {
+            "field":"attribute_as_label",
+            "message":"Property 'attribute_as_label' must belong to the family"
+        },
+        {
+            "field":"attribute_as_label",
+            "message":"Property 'attribute_as_label' only supports 'pim_catalog_text' and 'pim_catalog_identifier' attribute types for the family"
+        },
+        {
+            "field":"code",
+            "message":"This value should not be blank."
+        }
+    ]
+}
+JSON;
 
         $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
-
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 
     public function testResponseWhenAPropertyIsNotExpected()
@@ -295,7 +312,7 @@ JSON;
         $data =
 <<<JSON
     {
-        "code": "test_unknown_localee",
+        "code": "test_unknown_locale",
         "labels": {
             "foo" : "label"
          }
@@ -318,6 +335,39 @@ JSON;
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+    }
+
+    public function testResponseWhenChannelCodeDoesNotExist()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = <<<JSON
+{
+    "code": "test_unknown_channel",
+    "attribute_requirements": {
+        "ecommerce2" : ["sku"]
+    }
+}
+JSON;
+
+        $version = substr(Version::VERSION, 0, 3);
+        $expectedContent = <<<JSON
+{
+    "code": 422,
+    "message": "Property \"attribute_requirements\" expects a valid code. The channel does not exist, \"ecommerce2\" given. Check the standard format documentation.",
+    "_links": {
+        "documentation": {
+            "href": "https://docs.akeneo.com/${version}/reference/standard_format/other_entities.html#family"
+        }
+    }
+}
+JSON;
+
+        $client->request('POST', 'api/rest/v1/families', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 
     /**

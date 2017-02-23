@@ -195,12 +195,16 @@ class FamilyUpdaterSpec extends ObjectBehavior
     }
 
     function it_does_not_remove_requirements_when_channel_column_is_missing(
+        $channelRepository,
+        ChannelInterface $mobileChannel,
         FamilyInterface $family,
         AttributeInterface $skuAttribute,
         AttributeRequirementInterface $skuMobileRqrmt,
         AttributeRequirementInterface $skuEcommerceRqrmt,
         AttributeRequirementInterface $nameEcommerceRqrmt
     ) {
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($mobileChannel);
+
         $values = [
             'attribute_requirements' => [
                 'mobile' => ['sku']
@@ -436,8 +440,9 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $data = [
             'code'                   => 'mycode',
             'attribute_requirements' => [
-                'mobile' => ['sku', 'name'],
-                'print'  => ['sku', 'name', 'description'],
+                'ecommerce' => ['sku'],
+                'mobile'    => ['sku', 'name'],
+                'print'     => ['sku', 'name', 'description'],
             ]
         ];
         $family->getAttributeRequirements()->willReturn([]);
@@ -449,6 +454,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('price')->willReturn($attribute);
         $channelRepository->findOneByIdentifier('print')->willReturn(null);
         $channelRepository->findOneByIdentifier('mobile')->willReturn(null);
+        $channelRepository->findOneByIdentifier('ecommerce')->willReturn(null);
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
@@ -456,7 +462,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 'code',
                 'The channel does not exist',
                 'Pim\Component\Catalog\Updater\FamilyUpdater',
-                'mobile'
+                'ecommerce'
             )
         )->during('update', [$family, $data]);
     }
