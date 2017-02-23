@@ -411,11 +411,15 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             $existingFiltersArr[] = strtolower(trim($filter->getHtml()));
         }
 
-        return $filters === array_slice(
+        $ordered = $filters === array_slice(
             $existingFiltersArr,
             array_search($filters[0], $existingFiltersArr),
             count($filters)
         );
+
+        if (!$ordered) {
+            throw $this->createExpectationException('Filters are not ordered as expected');
+        }
     }
 
     /**
