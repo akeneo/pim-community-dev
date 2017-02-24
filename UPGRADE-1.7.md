@@ -9,7 +9,7 @@
 - [Migrate your custom code](#migrate-your-custom-code)
   - [Structured normalizers to Standard Normalizers](#structured-normalizers-to-standard-normalizers)
   - [Import/export UI migration](#importexport-ui-migration)
-  - [Update references to moved reader business classes](#update-references-to-moved-reader-business-classes)
+  - [Update references to business reader classes that have been moved](#update-references-to-business-reader-classes-that-have-been-moved)
   - [Versioning formats](#versioning-formats)
   - [Operator](#operator)
   - [Rule structure modifications](#rule-structure-modifications)
@@ -46,7 +46,10 @@
      export PIM_DIR=/path/to/your/pim/installation
      cp app/SymfonyRequirements.php $PIM_DIR/app
      cp app/PimRequirements.php $PIM_DIR/app
-     cp app/config/pim_parameters.yml $PIM_DIR/app/config
+
+     mv $PIM_DIR/app/config/pim_parameters.yml $PIM_DIR/app/config/pim_parameters.yml.bak
+     cp app/config/pim_parameters.yml $PIM_DIR/app/config/
+
      mv $PIM_DIR/composer.json $PIM_DIR/composer.json.bak
      cp composer.json $PIM_DIR/
     ```
@@ -76,7 +79,7 @@
     PimEnterprise\Bundle\WebServiceBundle\PimEnterpriseWebServiceBundle,
     ```
 
-    * Add the following bundles in the next functions:
+    * Add the following bundles in the following functions:
 
         - `getOroDependencies()`:
 
@@ -88,7 +91,7 @@
 
         - `getPimEnterpriseBundles()`:
         
-          `new PimEnterprise\Bundle\ActivityManagerBundle\PimEnterpriseActivityManagerBundle()`
+          `new PimEnterprise\Bundle\TeamworkAssistantBundle\PimEnterpriseTeamworkAssistantBundle()`
 
 5. Update your routing configuration `$PIM_DIR/app/config/routing.yml`:
 
@@ -117,8 +120,8 @@
 
 7. Now update your dependencies:
 
-    * [Optional] If you have added dependencies to your project, you have to set it back in your `composer.json`.
-      You can show the differences of your previous composer.json in `$PIM_DIR/composer.json.bak`.
+    * [Optional] If you had added dependencies to your project, you will need to do it again in your `composer.json`.
+      You can display the differences of your previous composer.json in `$PIM_DIR/composer.json.bak`.
 
         ```
         "require": {
@@ -145,7 +148,8 @@
      php app/console doctrine:migration:migrate --env=prod
     ```
 
-    The issues of missing services of missing classes are often due to custom code. Please refer to the "migrate custom code" section before continue.
+    The issues of missing services or missing classes are often due to custom code.
+    Please refer to the [Migrate your custom code](#migrate-your-custom-code) section before continuing with this section.
 
 9. Then, generate JS translations and re-generate the PIM assets:
 
@@ -157,14 +161,14 @@
 
 ## Migrate your custom code
 
-With the 1.7 comes several technical improvements.
+With the 1.7 edition of the PIM come several technical improvements.
 This chapter lists most of the actions to do in your custom code to manually or automatically change service or class names.
 
-The provided commands are based on a custom code located in `$PIM_DIR/src/`; if this is not the case, please update their paths before running it.
+The provided commands are based on a custom code located in `$PIM_DIR/src/`; if this is not the case, please update their paths before running them.
 
 ### Structured normalizers to Standard Normalizers
 
-The 1.7 introduce a "standard" format to be able to use a unified format for every normalizer and denormalizers.
+The 1.7 edition introduces a "standard" format to be able to use a unified format for every normalizer and denormalizer.
 In order to use the standard format, Structured Normalizers have been replaced by Standard Normalizers.
 The definition of the complete standard format can be find in the (documentation)[https://docs.akeneo.com/1.7/reference/standard_format/index.html].
 
@@ -265,7 +269,7 @@ has been created. This proxy normalizer will be used instead of `Pim\Component\C
 
 ### Import/export UI migration
 
-With this 1.7 version, we migrated the old import/export configuration screens to new javascript architecture. It means
+With this 1.7 edition, we migrated the old import/export configuration screens to new javascript architecture. It means
 that if you had customized them, you will need to migrate your configuration to the new one.
 
 There are three levels of customization:
@@ -297,9 +301,9 @@ In this case, you will have to redo this screen with the new javascript architec
 above.
 
 
-### Update references to moved reader business classes
+### Update references to business reader classes that have been moved
 
-In order to be more precise about the roles of our existing file iterators, we have renamed some existing classes as
+In order to be more precise about the roles of our existing file iterators, we have renamed some existing classes since
 existing file iterators would only support a tabular file format, such as CSV and XLSX.
 
 Please execute the following commands in your project folder to update the references you may have to these classes:
@@ -326,17 +330,17 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Operators::NOT_LIKE/Operators::
 
 In the enrichment rules, the key `data` has been replaced by the key `amount` for metrics.
 
-In 1.6 version, the rule structure was defined like this:
+In the 1.6 edition, the rule structure was defined like this:
 
 ```
 field: weight
-perator: =
+operator: =
 value:
     data: 0.5
     unit: KILOGRAM
 ```
 
-In 1.7 version, the rule structure is defined like this:
+In the 1.7 edition, the rule structure is defined like this:
 
 ```
 field: weight
@@ -350,7 +354,7 @@ value:
 
 In the enrichment rules, the key `data` has been replaced by the key `amount` for prices.
 
-In 1.6 version, the rule structure was defined like this:
+In the 1.6 edition, the rule structure was defined like this:
 
 ```
 field: null_price
@@ -360,7 +364,7 @@ value:
     currency: EUR
 ```
 
-In 1.7 version, the rule structure is defined like this:
+In the 1.7 edition, the rule structure is defined like this:
 
 ```
 field: basic_price
@@ -375,7 +379,7 @@ value:
 In the enrichment rules, the rule structure has been changed for pictures and files.
 The notion of original filename has been removed. The filename will be directly determined from the full path.
 
-In 1.6 version, the rule structure was defined like this:
+In the 1.6 edition, the rule structure was defined like this:
 
 ```
 field: small_image
@@ -385,7 +389,7 @@ value:
   - originalFilename: akeneo.jpg
 ```
 
-In 1.7 version, the rule structure is defined like this:
+In the 1.7 edition, the rule structure is defined like this:
 
 ```
 field: small_image
@@ -408,7 +412,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_import_export\.repository\.
 
 ### CSS Refactoring
 
-The 1.7 version comes with a remake of a large part of the CSS, with the implementation of [BEM methodology](http://getbem.com/introduction/).
+The 1.7 edition comes with a remake of a large part of the CSS, with the implementation of [BEM methodology](http://getbem.com/introduction/).
 For more information about our choices, please read the [Akeneo Style guide documentation](https://docs.akeneo.com/1.7/styleguide/).
 
 This work has been done for several reasons:
