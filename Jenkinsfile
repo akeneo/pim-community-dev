@@ -99,11 +99,11 @@ def runPhpSpecTest(version) {
             docker.image("carcel/php:${version}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "project_files"
 
-                if (phpVersion != "5.6") {
+                if (version == "7.0") {
                     sh "composer require --no-update alcaeus/mongo-php-adapter"
                 }
 
-                sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                sh "php -d memory_limit=-1 /usr/local/bin/composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "touch app/config/parameters_test.yml"
                 sh "mkdir -p app/build/logs/"
                 sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
@@ -123,11 +123,11 @@ def runPhpCsFixerTest(version) {
             docker.image("carcel/php:${version}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "project_files"
 
-                if (phpVersion != "5.6") {
+                if (version == "7.0") {
                     sh "composer require --no-update alcaeus/mongo-php-adapter"
                 }
 
-                sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                sh "php -d memory_limit=-1 /usr/local/bin/composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "composer global require friendsofphp/php-cs-fixer ^2.0"
                 sh "touch app/config/parameters_test.yml"
                 sh "mkdir -p app/build/logs/"
