@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\TeamworkAssistant\Validator;
+namespace PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;

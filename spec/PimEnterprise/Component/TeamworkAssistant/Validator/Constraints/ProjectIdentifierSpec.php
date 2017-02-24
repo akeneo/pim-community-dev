@@ -1,10 +1,9 @@
 <?php
 
-namespace spec\PimEnterprise\Component\TeamworkAssistant\Validator;
+namespace spec\PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
-use PimEnterprise\Component\TeamworkAssistant\Validator\ProjectIdentifier;
+use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectIdentifier;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 
 class ProjectIdentifierSpec extends ObjectBehavior

@@ -12,7 +12,6 @@
 namespace PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectLocale;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
@@ -28,6 +27,9 @@ class ProjectLocaleValidator extends ConstraintValidator
     /** @var TranslatorInterface */
     protected $translator;
 
+    /**
+     * @param TranslatorInterface $translator
+     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
