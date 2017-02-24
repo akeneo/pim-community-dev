@@ -145,7 +145,7 @@ def runIntegrationTest(version) {
         try {
             docker.image("mysql:5.5").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim") {
                 docker.image("carcel/php:${version}").inside("--link mysql:mysql -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
-                    unstash "pim_community_dev"
+                    unstash "project_files"
 
                     if (version != "5.6") {
                         sh "composer require --no-update alcaeus/mongo-php-adapter"
