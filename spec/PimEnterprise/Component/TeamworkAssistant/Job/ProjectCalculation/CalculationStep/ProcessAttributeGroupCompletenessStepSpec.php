@@ -37,7 +37,7 @@ class ProcessAttributeGroupCompletenessStepSpec extends ObjectBehavior
         ProductInterface $product,
         ProjectInterface $project
     ) {
-        $preProcessingRepository->isPreProcessable($product, $project)->willReturn(true);
+        $preProcessingRepository->isProcessableAttributeGroupCompleteness($product, $project)->willReturn(true);
 
         $attributeGroupCompleteness1 = new AttributeGroupCompleteness(40, 0, 1);
         $attributeGroupCompleteness2 = new AttributeGroupCompleteness(33, 0, 1);
@@ -59,7 +59,7 @@ class ProcessAttributeGroupCompletenessStepSpec extends ObjectBehavior
         ProductInterface $product,
         ProjectInterface $project
     ) {
-        $preProcessingRepository->isPreProcessable($product, $project)->willReturn(false);
+        $preProcessingRepository->isProcessableAttributeGroupCompleteness($product, $project)->willReturn(false);
 
         $attributeGroupCompletenessCalculator->calculate($project, $product)->shouldNotBeCalled();
 

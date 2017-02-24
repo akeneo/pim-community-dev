@@ -46,7 +46,7 @@ class ProcessAttributeGroupCompletenessStep implements CalculationStepInterface
      */
     public function execute(ProductInterface $product, ProjectInterface $project)
     {
-        if (false === $this->preProcessingRepository->isPreProcessable($product, $project)) {
+        if (false === $this->preProcessingRepository->isProcessableAttributeGroupCompleteness($product, $project)) {
             return null;
         }
 

@@ -43,7 +43,7 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function isPreProcessable(ProductInterface $product, ProjectInterface $project)
+    public function isProcessableAttributeGroupCompleteness(ProductInterface $product, ProjectInterface $project)
     {
         $connection = $this->entityManager->getConnection();
         $sqlTable = $this->tableNameMapper->getTableName('pimee_teamwork_assistant.completeness_per_attribute_group');
