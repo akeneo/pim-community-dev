@@ -458,10 +458,10 @@ SQL
         $completenessUpdatedCount = $this->getConnection()->fetchColumn(
             <<<SQL
 SELECT count(*)
-FROM `pimee_activity_manager_project` AS `p`
-INNER JOIN `pimee_activity_manager_project_product` AS `pp`
+FROM `pimee_teamwork_assistant_project` AS `p`
+INNER JOIN `pimee_teamwork_assistant_project_product` AS `pp`
 	ON `pp`.`project_id` = `p`.`id`
-INNER JOIN `pimee_activity_manager_completeness_per_attribute_group` AS `cag`
+INNER JOIN `pimee_teamwork_assistant_completeness_per_attribute_group` AS `cag`
 	ON `pp`.`product_id` = `cag`.`product_id` AND `p`.`channel_id` = `cag`.`channel_id` AND `p`.`locale_id` = `cag`.`locale_id`
 WHERE `p`.`id` = :project_id
 AND calculated_at > :calculated_at

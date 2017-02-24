@@ -46,7 +46,7 @@ class PreProcessingRepository implements PreProcessingRepositoryInterface
     public function isPreProcessable(ProductInterface $product, ProjectInterface $project)
     {
         $connection = $this->entityManager->getConnection();
-        $sqlTable = $this->tableNameMapper->getTableName('pimee_activity_manager.completeness_per_attribute_group');
+        $sqlTable = $this->tableNameMapper->getTableName('pimee_teamwork_assistant.completeness_per_attribute_group');
 
         $query = <<<SQL
 SELECT MIN(`attribute_group_completeness`.`calculated_at`)
@@ -101,7 +101,8 @@ SQL;
                     'attribute_group_id'                         => $attributeGroup->getAttributeGroupId(),
                     'has_at_least_one_required_attribute_filled' => $attributeGroup->hasAtLeastOneAttributeFilled(),
                     'is_complete'                                => $attributeGroup->isComplete(),
-                    'calculated_at'                              => $attributeGroup->getCalculatedAt()->format('Y-m-d H:i:s'),
+                    'calculated_at'                              => $attributeGroup->getCalculatedAt()
+                        ->format('Y-m-d H:i:s'),
                 ]
             );
         }

@@ -18,9 +18,9 @@ parameters:
     pimee_teamwork_assistant.doctrine.cursor_factory.project.class: 'Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\CursorFactory'
     pimee_teamwork_assistant.doctrine.cursor.project.class: 'Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor'
     pimee_teamwork_assistant.validator.project_identifier.class: 'PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectIdentifierValidator'
-    pimee_activity_manager.validator.project_identifier.class: 'PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectIdentifierValidator'
-    pimee_activity_manager.validator.locale.class: 'PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectLocaleValidator'
-    pimee_activity_manager.validator.due_date.class: 'PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectDueDateValidator'
+    pimee_teamwork_assistant.validator.project_identifier.class: 'PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectIdentifierValidator'
+    pimee_teamwork_assistant.validator.locale.class: 'PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectLocaleValidator'
+    pimee_teamwork_assistant.validator.due_date.class: 'PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectDueDateValidator'
     pimee_teamwork_assistant.factory.project_status.class: 'PimEnterprise\Component\TeamworkAssistant\Factory\ProjectStatusFactory'
 
     pimee_teamwork_assistant.factory.project_cursor.page_size: 10
@@ -180,15 +180,15 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: project_identifier_validator }
 
-    pimee_activity_manager.validator.locale:
-        class: '%pimee_activity_manager.validator.locale.class%'
+    pimee_teamwork_assistant.validator.locale:
+        class: '%pimee_teamwork_assistant.validator.locale.class%'
         arguments:
             - '@translator'
         tags:
             - { name: validator.constraint_validator, alias: project_locale_validator }
 
-    pimee_activity_manager.validator.due_date:
-        class: '%pimee_activity_manager.validator.due_date.class%'
+    pimee_teamwork_assistant.validator.due_date:
+        class: '%pimee_teamwork_assistant.validator.due_date.class%'
         arguments:
             - '@translator'
         tags:
