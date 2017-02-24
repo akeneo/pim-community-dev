@@ -35,30 +35,30 @@
 
 1. Download and extract the latest standard archive from the Partner Portal:
 
-    ```
-     tar -zxf pim-enterprise-standard.tar.gz
-     cd pim-enterprise-standard/
+    ```bash
+tar -zxf pim-enterprise-standard.tar.gz
+cd pim-enterprise-standard/
     ```
 
 2. Copy the following files to your PIM installation:
 
-    ```
-     export PIM_DIR=/path/to/your/pim/installation
-     cp app/SymfonyRequirements.php $PIM_DIR/app
-     cp app/PimRequirements.php $PIM_DIR/app
+    ```bash
+export PIM_DIR=/path/to/your/pim/installation
+cp app/SymfonyRequirements.php $PIM_DIR/app
+cp app/PimRequirements.php $PIM_DIR/app
 
-     mv $PIM_DIR/app/config/pim_parameters.yml $PIM_DIR/app/config/pim_parameters.yml.bak
-     cp app/config/pim_parameters.yml $PIM_DIR/app/config/
+mv $PIM_DIR/app/config/pim_parameters.yml $PIM_DIR/app/config/pim_parameters.yml.bak
+cp app/config/pim_parameters.yml $PIM_DIR/app/config/
 
-     mv $PIM_DIR/composer.json $PIM_DIR/composer.json.bak
-     cp composer.json $PIM_DIR/
+mv $PIM_DIR/composer.json $PIM_DIR/composer.json.bak
+cp composer.json $PIM_DIR/
     ```
 
 3. Update the configuration of your application `$PIM_DIR/app/config/config.yml` to add these new lines:
 
-    ```
-    # FOSOAuthServer Configuration
-    fos_oauth_server:
+    ```YAML
+# FOSOAuthServer Configuration
+fos_oauth_server:
         db_driver:                orm
         client_class:             Pim\Bundle\ApiBundle\Entity\Client
         access_token_class:       Pim\Bundle\ApiBundle\Entity\AccessToken
@@ -72,50 +72,56 @@
 
     * Remove the following bundles:
 
-    ```
-    Oro\Bundle\UIBundle\OroUIBundle,
-    Oro\Bundle\FormBundle\OroFormBundle,
-    Pim\Bundle\WebServiceBundle\PimWebServiceBundle,
-    PimEnterprise\Bundle\WebServiceBundle\PimEnterpriseWebServiceBundle,
+    ```PHP
+Oro\Bundle\UIBundle\OroUIBundle,
+Oro\Bundle\FormBundle\OroFormBundle,
+Pim\Bundle\WebServiceBundle\PimWebServiceBundle,
+PimEnterprise\Bundle\WebServiceBundle\PimEnterpriseWebServiceBundle,
     ```
 
     * Add the following bundles in the following functions:
 
         - `getOroDependencies()`:
 
-          `new FOS\OAuthServerBundle\FOSOAuthServerBundle()`
+          ```PHP
+new FOS\OAuthServerBundle\FOSOAuthServerBundle()
+          ```
 
         - `getPimBundles()`:
 
-          `new Pim\Bundle\ApiBundle\PimApiBundle()`
+          ```PHP
+new Pim\Bundle\ApiBundle\PimApiBundle()
+          ```
 
         - `getPimEnterpriseBundles()`:
         
-          `new PimEnterprise\Bundle\TeamworkAssistantBundle\PimEnterpriseTeamworkAssistantBundle()`
+          ```PHP
+new PimEnterprise\Bundle\TeamworkAssistantBundle\PimEnterpriseTeamworkAssistantBundle()
+          ```
 
 5. Update your routing configuration `$PIM_DIR/app/config/routing.yml`:
 
     * Remove the following lines:
 
-    ```
-    pim_webservice:
+    ```YAML
+pim_webservice:
         resource: "@PimWebServiceBundle/Resources/config/routing.yml"
     ```
 
     * Add the following lines:
     
-    ```
-    pimee_teamwork_assistant:
+    ```YAML
+pimee_teamwork_assistant:
         resource: "@PimEnterpriseTeamworkAssistantBundle/Resources/config/routing/routing.yml"
 
-    pim_api:
+pim_api:
         resource: "@PimApiBundle/Resources/config/routing.yml"
     ```
 
 6. Then remove your old upgrades folder:
 
-    ```
-    rm -rf $PIM_DIR/upgrades/schema
+    ```bash
+rm -rf $PIM_DIR/upgrades/schema
     ```
 
 7. Now update your dependencies:
@@ -123,18 +129,18 @@
     * [Optional] If you had added dependencies to your project, you will need to do it again in your `composer.json`.
       You can display the differences of your previous composer.json in `$PIM_DIR/composer.json.bak`.
 
-        ```
-        "require": {
+        ```JSON
+    "require": {
             "your/dependency": "version",
             "your/other-dependency": "version",
-        }
+    }
         ```
 
     * Then run the command to update your dependencies:
 
-        ```
-        cd $PIM_DIR
-        php -d memory_limit=3G composer update
+        ```bash
+cd $PIM_DIR
+php -d memory_limit=3G composer update
         ```
 
         This step will copy the upgrades folder from `pim-enterprise-dev/` to your Pim project root in order to migrate.
@@ -143,9 +149,9 @@
 
 8. Then you can migrate your database using:
 
-    ```
-     php app/console cache:clear --env=prod
-     php app/console doctrine:migration:migrate --env=prod
+    ```bash
+php app/console cache:clear --env=prod
+php app/console doctrine:migration:migrate --env=prod
     ```
 
     The issues of missing services or missing classes are often due to custom code.
@@ -153,9 +159,9 @@
 
 9. Then, generate JS translations and re-generate the PIM assets:
 
-    ```
-     rm -rf $PIM_DIR/web/js/translation/*
-     php app/console pim:installer:assets
+    ```bash
+rm -rf $PIM_DIR/web/js/translation/*
+php app/console pim:installer:assets
     ```
 
 
@@ -173,7 +179,7 @@ In order to use the standard format, Structured Normalizers have been replaced b
 The definition of the complete standard format can be find in the (documentation)[https://docs.akeneo.com/1.7/reference/standard_format/index.html].
 
 The following commands help to migrate references to these classes or services.
-```
+```bash
 # pim-community-dev package
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\Batch\\Normalizer\\Structured\\JobInstanceNormalizer/Akeneo\\Component\\Batch\\Normalizer\\Standard\\JobInstanceNormalizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Normalizer\\Structured\\AssociationTypeNormalizer/Pim\\Component\\Catalog\\Normalizer\\Standard\\AssociationTypeNormalizer/g'
@@ -253,7 +259,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/akeneo_rule_engine\.normalizer\
 
 To call these normalizers via the Symfony Normalizer service, the key `standard` has to be filled in. Example:
 
-```
+```PHP
 $this->normalizer->normalize($entity, 'standard');
 ```
 
@@ -278,7 +284,7 @@ There are three levels of customization:
 
 In this case, you only need to add your custom form provider for your connector. Here is an example:
 
-```
+```YAML
 services:
     acme_dummy_connector.provider.form.job_instance:
         class: '%pim_enrich.provider.form.job_instance.class%'
@@ -307,7 +313,8 @@ In order to be more precise about the roles of our existing file iterators, we h
 existing file iterators would only support a tabular file format, such as CSV and XLSX.
 
 Please execute the following commands in your project folder to update the references you may have to these classes:
-```
+
+```bash
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Reader\\File\\FileIterator/Pim\\Component\\Connector\\Reader\\File\\FlatFileIterator/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_connector\.reader\.file\.file_iterator\.class/pim_connector\.reader\.file\.flat_file_iterator\.class/g'
 ```
@@ -320,7 +327,7 @@ Previously, to normalize an entity for versioning, allowed formats were `flat` a
 
 For consistency we changed the variable name of an operator. To update your project you can run this command
 
-```
+```bash
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Operators::NOT_LIKE/Operators::IS_NOT_LIKE/g'
 ```
 
@@ -332,7 +339,7 @@ In the enrichment rules, the key `data` has been replaced by the key `amount` fo
 
 In the 1.6 edition, the rule structure was defined like this:
 
-```
+```YAML
 field: weight
 operator: =
 value:
@@ -342,7 +349,7 @@ value:
 
 In the 1.7 edition, the rule structure is defined like this:
 
-```
+```YAML
 field: weight
 operator: =
 value:
@@ -356,7 +363,7 @@ In the enrichment rules, the key `data` has been replaced by the key `amount` fo
 
 In the 1.6 edition, the rule structure was defined like this:
 
-```
+```YAML
 field: null_price
 operator: NOT EMPTY
 value:
@@ -366,7 +373,7 @@ value:
 
 In the 1.7 edition, the rule structure is defined like this:
 
-```
+```YAML
 field: basic_price
 operator: <=
 value:
@@ -381,7 +388,7 @@ The notion of original filename has been removed. The filename will be directly 
 
 In the 1.6 edition, the rule structure was defined like this:
 
-```
+```YAML
 field: small_image
 operator: CONTAINS
 value:
@@ -391,7 +398,7 @@ value:
 
 In the 1.7 edition, the rule structure is defined like this:
 
-```
+```YAML
 field: small_image
 operator: CONTAINS
 value: /tmp/image.jpg
@@ -403,7 +410,7 @@ According to the full path specified in this example, the filename will be `"ima
 
 The following command helps to migrate updated references:
 
-```
+```bash
 find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_user_user_rest_get/pim_user_user_rest_get_current/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ImportExportBundle\\Validator\\Constraints\\WritableDirectory/Pim\\Component\\Catalog\\Validator\\Constraints\\WritableDirectory/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Validator\\Constraints\\Channel/Pim\\Component\\Catalog\\Validator\\Constraints\\Channel/g'
@@ -428,11 +435,13 @@ If you used styled components in a custom bundle, you have to do some changes ma
 #### Examples
 
 For example, if you had HTML like:
+
 ```html
 <button class="btn btn-primary">Primary Button</button>
 ```
 
 You now have to use:
+
 ```html
 <button class="AknButton AknButton--apply">Primary Button</button>
 ```
