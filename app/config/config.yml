@@ -45,6 +45,17 @@ assetic:
     filters:
         cssrewrite: ~
 
+# Doctrine Cache Configuration
+doctrine_cache:
+    providers:
+        pim_apcu:
+            apcu: ~
+        pim_array:
+            array: ~
+        pim:
+            chain:
+                providers: [doctrine_cache.providers.pim_apcu, doctrine_cache.providers.pim_array]
+
 # Doctrine Configuration
 doctrine:
     dbal:
