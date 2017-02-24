@@ -26,7 +26,7 @@ JSON;
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertArrayHasKey('location', $response->headers->all());
         $this->assertSame('http://localhost/api/rest/v1/categories/categoryA1', $response->headers->get('location'));
-        $this->assertSame(null, json_decode($response->getContent(), true));
+        $this->assertSame('', $response->getContent());
     }
 
     public function testHttpHeadersInResponseWhenACategoryIsCreated()
