@@ -970,7 +970,7 @@ jobs:
             withHeader: true
             linesPerFile: 10000
     project_calculation:
-        connector: team work assistant
+        connector: teamwork assistant
         alias:     project_calculation
         label:     Project calculation
         type: project_calculation

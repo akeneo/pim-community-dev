@@ -46,7 +46,7 @@ class DatabaseCommand extends BaseDatabaseCommand
     {
         parent::createNotMappedTables($output);
 
-        $output->writeln('<info>Initialize team work assistant </info>');
+        $output->writeln('<info>Initialize teamwork assistant </info>');
 
         if (AkeneoStorageUtilsExtension::DOCTRINE_ORM === $this->getStorageDriver()) {
             $sql = <<<'SQL'

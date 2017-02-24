@@ -13,7 +13,7 @@ use Pim\Behat\Context\DBALPurger;
 class DatabasePurger extends BaseDatabasePurger
 {
     /**
-     * Purges additional tables related to the team work assistant.
+     * Purges additional tables related to the teamwork assistant.
      */
     public function purge()
     {
