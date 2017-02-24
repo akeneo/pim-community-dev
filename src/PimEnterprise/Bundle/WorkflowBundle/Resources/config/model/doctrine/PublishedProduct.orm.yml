@@ -18,7 +18,7 @@ PimEnterprise\Component\Workflow\Model\PublishedProduct:
             unique: true
             nullable: false
         rawValues:
-          type: json_array
+          type: native_json
           column: raw_values
         created:
             type: datetime
