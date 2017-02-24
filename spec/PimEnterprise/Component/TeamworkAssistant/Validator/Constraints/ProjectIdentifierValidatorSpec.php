@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\PimEnterprise\Component\TeamworkAssistant\Validator;
+namespace spec\PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Validator\ProjectIdentifier;
-use PimEnterprise\Component\TeamworkAssistant\Validator\ProjectIdentifierValidator;
+use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectIdentifier;
+use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectIdentifierValidator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;

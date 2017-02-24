@@ -3,6 +3,7 @@
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Updater\ProjectUpdater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -57,6 +58,7 @@ class ProjectUpdaterSpec extends ObjectBehavior
         $userRepository->findOneByIdentifier('julia')->willreturn($user);
         $channelRepository->findOneByIdentifier('ecommerce')->willReturn($channel);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($locale);
+        $locale->isActivated()->willReturn(true);
 
         $project->setLabel('Summer collection 2017')->shouldBeCalled();
         $project->setDueDate(Argument::type(\DateTime::class))->shouldBeCalled();
@@ -82,5 +84,75 @@ class ProjectUpdaterSpec extends ObjectBehavior
                 'locale' => 'fr_FR',
             ]
         );
+    }
+
+    function it_throws_exception_if_the_date_is_invalid(ProjectInterface $project)
+    {
+        $this->shouldThrow(InvalidPropertyException::class)->during('update', [
+            $project,
+            [
+                'due_date' => '2012-13-02',
+            ]
+        ]);
+
+        $this->shouldThrow(InvalidPropertyException::class)->during('update', [
+            $project,
+            [
+                'due_date' => 'string',
+            ]
+        ]);
+    }
+
+    function it_throws_exception_the_locale_does_not_exist($localeRepository, ProjectInterface $project)
+    {
+        $localeRepository->findOneByIdentifier('landais_LANDAIS')->willReturn(null);
+        $this->shouldThrow(InvalidPropertyException::class)->during('update', [
+            $project,
+            [
+                'locale' => 'landais_LANDAIS',
+            ]
+        ]);
+    }
+
+    function it_throws_exception_the_channel_does_not_exist($channelRepository, ProjectInterface $project)
+    {
+        $channelRepository->findOneByIdentifier('ecommerce')->willReturn(null);
+        $this->shouldThrow(InvalidPropertyException::class)->during('update', [
+            $project,
+            [
+                'channel' => 'ecommerce',
+            ]
+        ]);
+    }
+
+    function it_throws_exception_the_owner_does_not_exist_because_pipou_has_been_fired($userRepository, ProjectInterface $project)
+    {
+        $userRepository->findOneByIdentifier('pipou')->willReturn(null);
+        $this->shouldThrow(InvalidPropertyException::class)->during('update', [
+            $project,
+            [
+                'owner' => 'pipou',
+            ]
+        ]);
+    }
+
+    function it_throws_exception_the_datagrid_view_does_not_exist(ProjectInterface $project)
+    {
+        $this->shouldThrow(InvalidPropertyException::class)->during('update', [
+            $project,
+            [
+                'datagrid_view' => 'My view',
+            ]
+        ]);
+    }
+
+    function it_throws_exception_the_product_filter_does_are_not_array(ProjectInterface $project)
+    {
+        $this->shouldThrow(InvalidPropertyException::class)->during('update', [
+            $project,
+            [
+                'product_filters' => 'My filter',
+            ]
+        ]);
     }
 }
