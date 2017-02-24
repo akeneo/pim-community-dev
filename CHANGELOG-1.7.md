@@ -10,25 +10,21 @@
 - PIM-6127: In the family import, the attributes required should be in the family
 - PIM-6125: In the family import, the attribute_as_label has to be in the family and its type has to be identifier or text
 
-## Deprecations
-
-- In the _Product Query Builder_, aka _PQB_, (`Pim\Component\Catalog\Query\ProductQueryBuilderInterface`), filtering products by the following filters is now deprecated: `categories.id`, `family.id`, `groups.id`.
-  Filters `categories`, `family` and `groups` have been introduced and the _PQB_ now uses them by default. The filters `categories.code`, `family.code` and `groups.code` are deprecated.
-  In the next version, the deprecated filters will be removed.
-- As it's not needed anymore to convert `codes` to `ids` in order to filter products, `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver` and `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface` are now deprecated.
-- Creating a product value with the ProductBuilder (`Pim\Component\Catalog\Denormalizer\Standard\ProductValueDenormalizer`) using the `createProductValue` method is now deprecated. It is advised to use the ProductValueFactory (`Pim\Component\Catalog\Factory\ProductValueFactory`) instead.
-- `Pim\Component\Catalog\Model\AttributeInterface::setAttributeType()` has been deprecated in favor of `Pim\Component\Catalog\Model\AttributeInterface::setType()`
-- `Pim\Component\Catalog\Model\AttributeInterface::getAttributeType()` has been deprecated in favor of `Pim\Component\Catalog\Model\AttributeInterface::getType()`
-
 ## Functional improvements
 
+- PIM-6106: As Peter, I would like to remove the escape parameter not usefull
+- PIM-6081: As Julia, when I use a multiselect filter in a grid, I would like to automatically unchecked
+- PIM-6058: As Julia, I would like to define as default a view I have not created
+- PIM-6090: As Julia, I would like to see my dashboard according to my rights
+- PIM-6093: As Peter, I would like to know the imports/exports or mass actions with warnings
+- PIM-6088: As Julia, I would like to change the view per page by default
+- PIM-6052: As Julia, I would like to use filters "is not empty" in the product grid
+- PIM-6149: [Security] PIM Version displayed on login form
 - Change the loading message by a more humanized message to share our love.
 - Add Energy measure family and conversions cheers @JulienDotDev!
 - Complete Duration measure family with week, month, year and related conversions cheers @JulienDotDev!
 - Add CaseBox measure family and conversions, cheers @gplanchat!
 - Add history support for the channel conversion units.
-- Add warning count on export execution grid and dashboard
-- Add not empty filter operator on product grid and product export builder
 
 ## Technical improvements
 
@@ -42,7 +38,19 @@
 - TIP-682: Update to Symfony 2.7.23
 - GITHUB-5455: Redo channel edit form using backbonejs architecture and internal REST API, implement `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\ChannelRemover` and move validation logic from controller to newly created remover
 
+
+## Deprecations
+
+- In the _Product Query Builder_, aka _PQB_, (`Pim\Component\Catalog\Query\ProductQueryBuilderInterface`), filtering products by the following filters is now deprecated: `categories.id`, `family.id`, `groups.id`.
+  Filters `categories`, `family` and `groups` have been introduced and the _PQB_ now uses them by default. The filters `categories.code`, `family.code` and `groups.code` are deprecated.
+  In the next version, the deprecated filters will be removed.
+- As it's not needed anymore to convert `codes` to `ids` in order to filter products, `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver` and `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface` are now deprecated.
+- Creating a product value with the ProductBuilder (`Pim\Component\Catalog\Denormalizer\Standard\ProductValueDenormalizer`) using the `createProductValue` method is now deprecated. It is advised to use the ProductValueFactory (`Pim\Component\Catalog\Factory\ProductValueFactory`) instead.
+- `Pim\Component\Catalog\Model\AttributeInterface::setAttributeType()` has been deprecated in favor of `Pim\Component\Catalog\Model\AttributeInterface::setType()`
+- `Pim\Component\Catalog\Model\AttributeInterface::getAttributeType()` has been deprecated in favor of `Pim\Component\Catalog\Model\AttributeInterface::getType()`
+
 ## BC breaks
+
 - Change the constructor of `Pim\Component\Catalog\Updater\ChannelUpdater` to add `Pim\Component\Catalog\Repositor\AttributeRepositoryInterface` and add `Akeneo\Bundle\MeasureBundle\Manager\MeasureManager`
 - Change the constructor of `Pim\Component\Catalog\Denormalizer\Standard\ProductValueDenormalizer` to add `Pim\Component\Catalog\Factory\ProductValueFactory`
 - Change the constructor of `Pim\Component\Catalog\Builder\ProductBuilder` to add `Pim\Component\Catalog\Factory\ProductValueFactory`
