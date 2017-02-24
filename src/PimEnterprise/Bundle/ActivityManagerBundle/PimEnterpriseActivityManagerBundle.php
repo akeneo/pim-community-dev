@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\ActivityManagerBundle;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection\Compiler\RegisterCalculationStepPass;
 use PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection\Compiler\RegisterProjectRemoverPass;
 use PimEnterprise\Bundle\ActivityManagerBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
