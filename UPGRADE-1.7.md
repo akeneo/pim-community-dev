@@ -169,6 +169,9 @@ php app/console pim:installer:assets
 
 With the 1.7 edition of the PIM come several technical improvements.
 This chapter lists most of the actions to do in your custom code to manually or automatically change service or class names.
+These instructions will fix most of the migrations of your custom code. The entire list of backward compatibility breaks is available for
+[the Enterprise Edition](https://github.com/akeneo/pim-enterprise-dev/blob/1.7/CHANGELOG-1.7.md#bc-breaks) and
+[the Community Edition](https://github.com/akeneo/pim-community-dev/blob/1.7/CHANGELOG-1.7.md#bc-breaks).
 
 The provided commands are based on a custom code located in `$PIM_DIR/src/`; if this is not the case, please update their paths before running them.
 
