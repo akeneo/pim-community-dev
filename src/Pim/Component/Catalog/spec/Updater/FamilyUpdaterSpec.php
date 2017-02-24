@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
@@ -352,7 +353,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
-                'attributes',
+                'attribute_as_label',
                 'code',
                 'The attribute does not exist',
                 'Pim\Component\Catalog\Updater\FamilyUpdater',
@@ -397,8 +398,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_attribute_as_label_does_not_exist(
         $attributeRepository,
-        FamilyInterface $family,
-        AttributeInterface $priceAttribute
+        FamilyInterface $family
     ) {
         $data = [
             'attribute_as_label'     => 'unknown',
@@ -461,11 +461,10 @@ class FamilyUpdaterSpec extends ObjectBehavior
         )->during('update', [$family, $data]);
     }
 
-    function it_throws_an_exception_when_trying_to_update_a_non_existent_field(FamilyInterface $family) {
-        $values = [
+    function it_throws_an_exception_when_trying_to_update_a_non_existent_field(FamilyInterface $family)
+    {
+        $data = [
             'unknown_field' => 'field',
-            'code'          => 'mycode',
-            'parent'        => 'master',
         ];
 
         $this->shouldThrow(
@@ -473,6 +472,168 @@ class FamilyUpdaterSpec extends ObjectBehavior
                     'unknown_field',
                     new NoSuchPropertyException()
                 )
-        )->during('update', [$family, $values, []]);
+        )->during('update', [$family, $data, []]);
+    }
+
+    function it_throws_an_exception_when_code_is_not_a_scalar(FamilyInterface $family)
+    {
+        $data = [
+            'code' => [],
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::scalarExpected(
+                    'code',
+                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    []
+                )
+            )
+            ->during('update', [$family, $data, []]);
+    }
+
+    function it_throws_an_exception_when_attribute_as_label_is_not_a_scalar(FamilyInterface $family)
+    {
+        $data = [
+            'attribute_as_label' => [],
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::scalarExpected(
+                    'attribute_as_label',
+                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    []
+                )
+            )
+            ->during('update', [$family, $data, []]);
+    }
+
+    function it_throws_an_exception_when_attributes_is_not_an_array(FamilyInterface $family)
+    {
+        $data = [
+            'attributes' => 'foo',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::arrayExpected(
+                    'attributes',
+                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    'foo'
+                )
+            )
+            ->during('update', [$family, $data, []]);
+    }
+
+    function it_throws_an_exception_when_a_value_in_attributes_array_is_not_a_scalar(FamilyInterface $family)
+    {
+        $data = [
+            'attributes' => ['foo', []],
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::validArrayStructureExpected(
+                    'attributes',
+                    'one of the attributes is not a scalar',
+                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    ['foo', []]
+                )
+            )
+            ->during('update', [$family, $data, []]);
+    }
+
+    function it_throws_an_exception_when_labels_is_not_an_array(FamilyInterface $family)
+    {
+        $data = [
+            'labels' => 'foo',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::arrayExpected(
+                    'labels',
+                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    'foo'
+                )
+            )
+            ->during('update', [$family, $data, []]);
+    }
+
+    function it_throws_an_exception_when_a_value_in_labels_array_is_not_a_scalar(FamilyInterface $family)
+    {
+        $data = [
+            'labels' => [
+                'en_US' => 'us_Label',
+                'fr_FR' => [],
+            ],
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::validArrayStructureExpected(
+                    'labels',
+                    'one of the labels is not a scalar',
+                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    ['en_US' => 'us_Label', 'fr_FR' => []]
+                )
+            )
+            ->during('update', [$family, $data, []]);
+    }
+
+    function it_throws_an_exception_when_attribute_requirements_is_not_an_array(FamilyInterface $family)
+    {
+        $data = [
+            'attribute_requirements' => 'foo',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::arrayExpected('attribute_requirements', 'update', 'family', 'foo')
+            )
+            ->during('update', [$family, $data, []]);
+    }
+
+    function it_throws_an_exception_when_a_value_in_attribute_requirements_is_not_an_array(FamilyInterface $family)
+    {
+        $data = [
+            'attribute_requirements' => [
+                'ecommerce' => ['sku'],
+                'tablet'    => 'foo',
+            ],
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::validArrayStructureExpected(
+                    'attribute_requirements',
+                    'the channel "tablet" is not an array',
+                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    ['ecommerce' => ['sku'], 'tablet' => 'foo']
+                )
+            )
+            ->during('update', [$family, $data, []]);
+    }
+
+    function it_throws_an_exception_when_an_attribute_in_attribute_requirements_is_not_a_scalar(FamilyInterface $family)
+    {
+        $data = [
+            'attribute_requirements' => [
+                'ecommerce' => ['sku'],
+                'tablet'    => ['foo', []],
+            ],
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::validArrayStructureExpected(
+                    'attribute_requirements',
+                    'one of the attributes in the channel "tablet" is not a scalar',
+                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    ['ecommerce' => ['sku'], 'tablet' => ['foo', []]]
+                )
+            )
+            ->during('update', [$family, $data, []]);
     }
 }

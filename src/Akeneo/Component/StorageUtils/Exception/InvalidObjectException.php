@@ -3,7 +3,7 @@
 namespace Akeneo\Component\StorageUtils\Exception;
 
 /**
- * Exception an updater can throw when updating an object unsupported by the updater.
+ * Exception thrown when perfoming an action on an unsupported object.
  *
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
