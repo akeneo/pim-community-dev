@@ -34,7 +34,7 @@ class TextCollectionConverterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attribute_code');
         $fieldNameInfo = ['attribute' => $attribute, 'locale_code' => 'en_US', 'scope_code' => 'mobile'];
 
-        $value = 'foo;bar';
+        $value = 'foo,bar';
 
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',
@@ -44,12 +44,12 @@ class TextCollectionConverterSpec extends ObjectBehavior
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
 
-        $value = 'foo,bar;baz';
+        $value = 'foo,bar,baz';
 
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',
             'scope'  => 'mobile',
-            'data'   => ['foo,bar','baz'],
+            'data'   => ['foo','bar','baz'],
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);

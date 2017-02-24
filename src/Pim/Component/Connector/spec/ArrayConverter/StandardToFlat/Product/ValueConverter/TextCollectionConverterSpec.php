@@ -17,13 +17,13 @@ class TextCollectionConverterSpec extends ObjectBehavior
         $columnsResolver->resolveFlatAttributeName('my_collection', null, 'mobile')
             ->willReturn('my_collection-mobile');
 
-        $expected = ['my_collection-mobile' => 'foo,bar;baz;"snafu"'];
+        $expected = ['my_collection-mobile' => 'foo,bar,baz'];
 
         $data = [
             [
                 'locale' => null,
                 'scope'  => 'mobile',
-                'data'   => ['foo,bar','baz','"snafu"'],
+                'data'   => ['foo', 'bar', 'baz'],
             ]
         ];
 
