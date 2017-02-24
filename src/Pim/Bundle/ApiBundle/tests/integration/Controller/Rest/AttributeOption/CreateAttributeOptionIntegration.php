@@ -36,7 +36,7 @@ JSON;
         $this->assertSame('', $response->getContent());
     }
 
-    public function testFormatStandardWhenAnAttributeOptionIsCreatedButUncompleted()
+    public function testStandardFormatWhenAnAttributeOptionIsCreatedButIncompleted()
     {
         $client = $this->createAuthenticatedClient();
 
@@ -45,13 +45,13 @@ JSON;
     {
         "code":"optionD",
         "attribute":"a_multi_select",
-        "labels":[]
+        "labels":{}
     }
 JSON;
         $client->request('POST', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
 
         $attributeOption = $this->get('pim_catalog.repository.attribute_option')
-            ->findOneByIdentifier('a_multi_select' . '.' . 'optionD');
+            ->findOneByIdentifier('a_multi_select.optionD');
 
         $attributeOptionStandard = [
             'code'       => 'optionD',
@@ -84,7 +84,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
 
         $attributeOption = $this->get('pim_catalog.repository.attribute_option')
-            ->findOneByIdentifier('a_multi_select' . '.' . 'optionE');
+            ->findOneByIdentifier('a_multi_select.optionE');
 
         $attributeOptionStandard = [
             'code'       => 'optionE',
@@ -102,21 +102,54 @@ JSON;
         $this->assertSame($attributeOptionStandard, $normalizer->normalize($attributeOption));
     }
 
+    public function testStandardFormatWithoutAttributeCodeInBody()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "code":"optionF"
+    }
+JSON;
+        $client->request('POST', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
+
+        $attributeOption = $this->get('pim_catalog.repository.attribute_option')
+            ->findOneByIdentifier('a_multi_select.optionF');
+
+        $attributeOptionStandard = [
+            'code'       => 'optionF',
+            'attribute'  => 'a_multi_select',
+            'sort_order' => 1,
+            'labels'     => [],
+        ];
+        $normalizer = $this->get('pim_catalog.normalizer.standard.attribute_option');
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSame($attributeOptionStandard, $normalizer->normalize($attributeOption));
+    }
+
     public function testResponseWhenContentIsInvalid()
     {
         $client = $this->createAuthenticatedClient();
 
         $data = '{';
 
-        $expectedContent = [
-            'code'    => 400,
-            'message' => 'Invalid json message received',
-        ];
+        $expectedContent =
+<<<JSON
+    {
+        "message" : "Invalid json message received",
+        "code" : 400
+    }
+JSON;
+
 
         $client->request('POST', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
         $response = $client->getResponse();
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
     public function testResponseWhenContentIsEmpty()
@@ -125,15 +158,18 @@ JSON;
 
         $data = '';
 
-        $expectedContent = [
-            'code'    => 400,
-            'message' => 'Invalid json message received',
-        ];
+        $expectedContent =
+<<<JSON
+    {
+        "message" : "Invalid json message received",
+        "code" : 400
+    }
+JSON;
 
         $client->request('POST', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
         $response = $client->getResponse();
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
     public function testResponseWhenJsonIsEmpty()
@@ -142,26 +178,23 @@ JSON;
 
         $data = '{}';
 
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'field'   => 'code',
-                    'message' => 'This value should not be blank.',
-                ],
-                [
-                    'field'   => 'attribute',
-                    'message' => 'This value should not be blank.',
-                ],
-            ],
-        ];
+        $expectedContent =
+<<<JSON
+    {
+    	"message": "Validation failed.",
+    	"errors": [{
+    		"field": "code",
+    		"message": "This value should not be blank."
+    	}],
+    	"code": 422
+    }
+JSON;
 
         $client->request('POST', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
         $response = $client->getResponse();
 
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
     public function testResponseWhenAttributeDoesNotExist()
@@ -175,15 +208,18 @@ JSON;
     }
 JSON;
 
-        $expectedContent = [
-            'code'    => 404,
-            'message' => 'Attribute "an_unknown_multi_select" does not exist.',
-        ];
+        $expectedContent =
+<<<JSON
+    {
+        "message" : "Attribute \"an_unknown_multi_select\" does not exist.",
+        "code" : 404
+    }
+JSON;
 
         $client->request('POST', 'api/rest/v1/attributes/an_unknown_multi_select/options', [], [], [], $data);
         $response = $client->getResponse();
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
     public function testResponseWhenAttributeDoesNotSupportOptions()
@@ -193,21 +229,30 @@ JSON;
         $data =
 <<<JSON
     {
+        "code":"optionA",
         "attribute":"sku"
     }
 JSON;
-        $expectedContent = [
-            'code'    => 404,
-            'message' => 'Attribute "sku" does not support options. Only attributes of type "pim_catalog_simpleselect", "pim_catalog_multiselect" support options.',
-        ];
+
+        $expectedContent =
+<<<JSON
+    {
+        "code": 422,
+        "message": "Validation failed.",
+        "errors": [{
+            "field": "attribute",
+            "message": "Attribute \"sku\" does not support options. Only attributes of type \"pim_catalog_simpleselect\", \"pim_catalog_multiselect\" support options"
+        }]
+    }
+JSON;
 
         $client->request('POST', 'api/rest/v1/attributes/sku/options', [], [], [], $data);
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
-    public function testResponseWhenAttributeInUriIsNotIdenticalAsInRequestBody()
+    public function testResponseWhenAttributeInUriIsNotIdenticalToAttributeInBody()
     {
         $client = $this->createAuthenticatedClient();
 
@@ -219,15 +264,18 @@ JSON;
     }
 JSON;
 
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Attribute code "a_multi_sel" in the request body must match "a_multi_select" in the URI.',
-        ];
+        $expectedContent =
+<<<JSON
+    {
+        "message" : "The attribute code \"a_multi_sel\" provided in the request body must match the attribute code \"a_multi_select\" provided in the url.",
+        "code" : 422
+    }
+JSON;
 
         $client->request('POST', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
         $response = $client->getResponse();
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
     public function testResponseWhenAPropertyIsNotExpected()
@@ -243,21 +291,25 @@ JSON;
 JSON;
 
         $version = substr(Version::VERSION, 0, 3);
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Property "extra_property" does not exist. Check the standard format documentation.',
-            '_links'  => [
-                'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute-option', $version),
-                ],
-            ],
-        ];
+
+        $expectedContent =
+<<<JSON
+    {
+    	"message": "Property \"extra_property\" does not exist. Check the standard format documentation.",
+    	"_links": {
+    		"documentation": {
+    			"href": "https://docs.akeneo.com/${version}/reference/standard_format/other_entities.html#attribute-option"
+    		}
+    	},
+    	"code": 422
+    }
+JSON;
 
         $client->request('POST', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
 
         $response = $client->getResponse();
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
     public function testResponseWhenLabelsIsNull()
@@ -273,52 +325,24 @@ JSON;
 JSON;
 
         $version = substr(Version::VERSION, 0, 3);
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Property "labels" expects an array as data, "NULL" given. Check the standard format documentation.',
-            '_links'  => [
-                'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute-option', $version),
-                ],
-            ],
-        ];
-
-        $client->request('POST', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
-
-        $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
-    }
-
-    public function testResponseWhenAttributeIsNotInRequestBody()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
+        $expectedContent =
 <<<JSON
     {
-        "code":"optionD",
-        "labels":[],
-        "sort_order": 1
+        "code": 422,
+        "message": "Property \"labels\" expects an array as data, \"NULL\" given. Check the standard format documentation.",
+        "_links": {
+            "documentation": {
+                "href": "https:\/\/docs.akeneo.com\/${version}\/reference\/standard_format\/other_entities.html#attribute-option"
+            }
+        }
     }
 JSON;
 
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'field'   => 'attribute',
-                    'message' => 'This value should not be blank.',
-                ],
-            ],
-        ];
-
         $client->request('POST', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
-        $response = $client->getResponse();
 
+        $response = $client->getResponse();
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
     }
 
     /**
