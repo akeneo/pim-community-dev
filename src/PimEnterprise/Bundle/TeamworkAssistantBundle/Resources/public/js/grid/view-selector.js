@@ -51,7 +51,7 @@ define(
             /**
              * {@inheritdoc}
              *
-             * Override to handle team work assistant projects.
+             * Override to handle teamwork assistant projects.
              */
             switchViewType: function (event) {
                 var viewType = $(event.target).data('value');
@@ -115,7 +115,7 @@ define(
             /**
              * {@inheritdoc}
              *
-             * Override to handle team work assistant projects view.
+             * Override to handle teamwork assistant projects view.
              */
             selectView: function (view) {
                 if ('project' === this.currentViewType) {

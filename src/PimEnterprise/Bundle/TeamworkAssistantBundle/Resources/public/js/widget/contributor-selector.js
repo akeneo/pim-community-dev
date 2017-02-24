@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Contributor selector for the team work assistant widget.
+ * Contributor selector for the teamwork assistant widget.
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
