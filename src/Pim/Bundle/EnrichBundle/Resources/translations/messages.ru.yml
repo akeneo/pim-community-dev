@@ -903,7 +903,7 @@ job_tracker:
     started_at: Запущеннo в
 pim_enrich_attribute_form:
   code: Код
-  attributeType: Тип атрибута
+  type: Тип атрибута
   reference_data_name: Имя справочных данных
   scopable: Область
   localizable: Локализуемый

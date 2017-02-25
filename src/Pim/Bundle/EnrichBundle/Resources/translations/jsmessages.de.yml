@@ -208,6 +208,10 @@ pim_enrich:
           cancel: Abbrechen
     association_type:
       info:
+        deletion_successful: Verbindungstyp erfolgreich entfernt.
+        deletion_failed: Verbindungstyp konnte nicht entfernt werden.
+        update_successful: Verbindungstyp erfolgreich aktualisiert.
+        update_failed: Verbindungstyp konnte nicht aktualisiert werden.
         field_not_ready:
           The association type cannot be saved right now. The following fields are not ready:
             - Felder
@@ -220,6 +224,12 @@ pim_enrich:
         save: Speichern
     channel:
       info:
+        deletion_successful: Ausgabekanal erfolgreich entfernt.
+        deletion_failed: Ausgabekanal konnte nicht gelöscht werden.
+        update_successful: Ausgabekanal erfolgreich aktualisiert.
+        update_failed: Ausgabekanal konnte nicht aktualisiert werden.
+        create_successful: Ausgabekanal erfolgreich angelegt.
+        create_failed: Ausgabekanal konnte nicht angelegt werden.
         field_not_ready:
           The channel cannot be saved right now. The following fields are not ready:
             - Felder
@@ -272,6 +282,9 @@ pim_enrich:
         created_by: Erstellt von
         updated: Aktualisiert
         updated_by: Aktualisiert von
+    job_instance:
+      info:
+        update_failed: Das Job-Profil konnte nicht aktualisiert werden.
   confirmation:
     leave: Möchten Sie diese Seite wirklich verlassen?
     discard_changes: Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.
@@ -416,6 +429,12 @@ pim_enrich:
             search_attributes: Suche...
             no_available_attributes: Es können keine weiteren Attribute hinzugefügt werden
     job_instance:
+      fail:
+        launch: Das Job-Profil konnte nicht geladen werden. Bitte prüfen Sie, ob es korrekt ist und Sie den entsprechen Rechte besitzen.
+        save: Das Job-Profil konnte nicht gespeichert werden. Bitte prüfen Sie, ob Sie das Recht zum Editieren besitzen.
+      title:
+        import: Import-Profil
+        export: Export-Profil
       button:
         edit.title: Bearbeiten
         export.title: Jetzt exportieren
@@ -483,6 +502,8 @@ pim_enrich:
             help: Bedeutet, dass sich die Änderungsverfolgung von Produkten automatisch aktualisiert. Um die Systemleistung zu verbessern, kann diese Funktion ausgeschaltet werden
         history:
           title: Historie
+  job:
+    upload: Drag & Drop einer Datei oder hier klicken
   export:
     product:
       data:
