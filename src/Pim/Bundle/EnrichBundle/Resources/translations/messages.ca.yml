@@ -903,7 +903,7 @@ job_tracker:
     started_at: Va començar a
 pim_enrich_attribute_form:
   code: Codi
-  attributeType: Tipus d'atribut
+  type: Tipus d'atribut
   reference_data_name: Nom de dades de referència
   scopable: Abast
   localizable: Configurable regionalment

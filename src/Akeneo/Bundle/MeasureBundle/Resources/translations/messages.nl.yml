@@ -95,6 +95,9 @@ SECOND: Seconde
 MINUTE: Minuut
 HOUR: Uur
 DAY: Dag
+WEEK: Week
+MONTH: Maand
+YEAR: Jaar
 Speed: Snelheid
 FOOT_PER_SECOND: Voet per seconde
 FOOT_PER_HOUR: Voet per uur
@@ -146,3 +149,9 @@ ATM: Atmosfeer
 PSI: Pound per vierkante inch
 TORR: Torr
 MMHG: millimeter kwik
+Energy: Energie
+KILOCALORIE: kilocalorie
+KILOJOULE: kilojoule
+CaseBox: Verpakking
+PIECE: Deel
+DOZEN: Dozijn

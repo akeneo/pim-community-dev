@@ -32,6 +32,7 @@ oro.datagrid.noentities: Geen records gevonden
 oro.datagrid.noresults: "Er zijn geen resultaten gevonden. Proberen te een andere zoekterm."
 oro.datagrid.nocolumns: Geen kolommen geconfigureerd voor dit raster
 oro.datagrid.pagination.label: "Pagina"
+oro.datagrid.pagination.totalPages: "van {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} records"
 oro.datagrid.action.reset: "Resetten"
 oro.datagrid.action.refresh: "Vernieuwen"

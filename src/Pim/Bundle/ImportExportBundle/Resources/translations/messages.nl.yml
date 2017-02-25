@@ -142,6 +142,7 @@ job_execution.summary:
     skipped: overgeslagen, extensie in whitelist
 Step: Stap
 Status: Status
+Warnings: Waarschuwingen
 Summary: Samenvatting
 Start: Start
 End: Einde
