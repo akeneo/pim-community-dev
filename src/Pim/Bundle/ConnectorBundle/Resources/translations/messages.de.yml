@@ -165,3 +165,4 @@ job_execution.summary:
     title: 'Datei Zeichenkodierung:'
     skipped: übersprungen, Erweiterung in der Whitelist
   product_skipped_no_diff: Übersprungenes Produkt (keine Unterschiede)
+  product_skipped_no_associations: Produkt übersprungen (keine Verbindungen vorhanden)
