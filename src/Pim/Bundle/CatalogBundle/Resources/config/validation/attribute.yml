@@ -40,16 +40,21 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 pattern: /^(?!(id|associationTypes|categories|categoryId|completeness|enabled|family|groups|associations|products|scope|treeId|values|category|(.)*_(products|groups))$)/
                 message: This code is not available
         localizable:
+            - NotNull: ~
             - Type: bool
             - 'IsFalse':
-                message: An unique attribute can not be localizable
-                groups: [unique]
+                message: A unique attribute can not be localizable
+                groups:
+                    - unique
         scopable:
             - NotNull: ~
+            - Type: bool
             - 'IsFalse':
-                message: An unique attribute can not be scopable
-                groups: [unique]
+                message: A unique attribute can not be scopable
+                groups:
+                    - unique
         useableAsGridFilter:
+            - NotNull: ~
             - Type: bool
         wysiwygEnabled:
             - Type:
@@ -156,6 +161,11 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_metric
         unique:
             - Type: bool
+            - NotNull: ~
+            - 'IsTrue':
+                message: This attribute type must be unique
+                groups:
+                    - pim_catalog_identifier
             - 'IsFalse':
                 message: This attribute type can't have unique value
                 groups:
@@ -300,9 +310,12 @@ Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
         label:
             - Length:
                 max: 100
+                payload:
+                    standardPropertyName: labels
         locale:
             - Pim\Component\Catalog\Validator\Constraints\Locale:
-                propertyPath: labels
+                payload:
+                    standardPropertyName: labels
 
 Pim\Bundle\CatalogBundle\Entity\AttributeOption:
     constraints:

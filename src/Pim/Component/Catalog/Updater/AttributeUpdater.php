@@ -286,9 +286,6 @@ class AttributeUpdater implements ObjectUpdaterInterface
 
         try {
             $attributeType = $this->registry->get($data);
-            $attribute->setType($attributeType->getName());
-            $attribute->setBackendType($attributeType->getBackendType());
-            $attribute->setUnique($attributeType->isUnique());
         } catch (\LogicException $exception) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 'type',
@@ -298,6 +295,10 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 $data
             );
         }
+
+        $attribute->setType($attributeType->getName());
+        $attribute->setBackendType($attributeType->getBackendType());
+        $attribute->setUnique($attributeType->isUnique());
     }
 
     /**
