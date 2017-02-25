@@ -117,6 +117,7 @@ pim_enrich:
       label: Zuordnung von Produkten in Kategorien
       description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
       success_flash: Die Produkte wurden den ausgewählten Kategorien zugeordnet
+      launched_flash: Die Massenbearbeitung "Klassifikation" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     change-family:
       label: Produktfamilie der Produkte ändern
       description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
@@ -733,6 +734,7 @@ pim_enrich.mass_edit_action:
     label: Benötigte Attribute auswählen
     description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
     success_flash: Die benötigten Attribute wurden den ausgewählten Produktfamilien zugeordnet
+To enable: Aktivieren
 Select attributes: Attribute auswählen
 Select: Auswählen
 Remove this attribute: Dieses Attribut löschen
@@ -849,6 +851,7 @@ job_execution.summary:
   skip: Übersprungen
   skipped_products: Übersprungene Produkte
   skipped_attributes: Übersprungene Attribute
+  skipped_families: Übersprungene Produktfamilien
 pim_mass_edit_execution_show: Ausgeführte Massenbearbeitung | Details
 edit_common_attributes.steps.edit_common_attributes_processor.title: Gemeinsame Attribute bearbeiten
 update_product_value.steps.update_product_value_processor.title: Wert des Produkts aktualisieren
