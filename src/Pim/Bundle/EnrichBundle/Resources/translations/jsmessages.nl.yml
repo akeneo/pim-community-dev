@@ -394,6 +394,7 @@ pim_enrich:
           empty_selection: Selecteer een familie
         category:
           title: Categorie
+          help: Gebruik de productcategorieën in de boom (gedefinieerd door het bovenstaande kanaal) om de producten te selecteren om te exporteren
         identifier:
           title: Id
         metric:
