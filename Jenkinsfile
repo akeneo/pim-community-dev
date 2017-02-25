@@ -70,7 +70,7 @@ stage("Checkout") {
 }
 
 if (launchUnitTests.equals("yes")) {
-    stage("Unit tests") {
+    stage("Unit tests and Code style") {
         def tasks = [:]
 
         tasks["phpunit-5.4"] = {runPhpUnitTest("5.4")}
