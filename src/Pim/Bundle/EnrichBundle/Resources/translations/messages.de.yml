@@ -842,6 +842,7 @@ job_execution.summary:
   skip: Übersprungen
   skipped_products: Übersprungene Produkte
   skipped_attributes: Übersprungene Attribute
+  skipped_families: Übersprungene Produktfamilien
 pim_mass_edit_execution_show: Ausgeführte Massenbearbeitung | Details
 edit_common_attributes.steps.edit_common_attributes_processor.title: Gemeinsame Attribute bearbeiten
 update_product_value.steps.update_product_value_processor.title: Wert des Produkts aktualisieren

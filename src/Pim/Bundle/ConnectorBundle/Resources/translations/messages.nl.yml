@@ -5,6 +5,8 @@ pim_connector:
     entity_reader.title: Entiteitextractie
     csv_reader:
       title: CSV-lezer
+    file_reader:
+      invalid_item_columns_count: 'Er worden %totalColumnsCount% kolommen verwacht, in werkelijkheid %itemColumnsCount% in %filePath%:%lineno%'
     csv_product_reader.title: CSV product lezer
     csv_category_reader.title: CSV categorie lezer
     csv_variant_group .title: CSV-variant groep lezer
@@ -95,16 +97,41 @@ batch_jobs:
     label: Variant groep import in CSV
     validation.label: Bestandsvalidatie
     import.label: Variant groep import
+  csv_channel_export:
+    label: Kanaal export in CSV
+    export.label: Kanaal export
+  csv_locale_export:
+    label: Locale export in CSV
+    export.label: Locale export
+  csv_attribute_group_export:
+    label: Attribuut groep export in CSV
+    export.label: Attribuut groep export
+  csv_currency_export:
+    label: Valuta export in CSV
+    export.label: Valuta export
+  csv_group_type_export:
+    label: Groepstype export in CSV
+    export.label: Groepstype export
   csv_channel_import:
+    label: Kanaal import in CSV
     validation.label: Bestandsvalidatie
+    import.label: Kanaal import
   csv_locale_import:
+    label: Locale import in CSV
     validation.label: Bestandsvalidatie
+    import.label: Locale import
   csv_attribute_group_import:
+    label: Attribuut groep import in CSV
     validation.label: Bestandsvalidatie
+    import.label: Attribuut groep import
   csv_currency_import:
+    label: Valuta import in CSV
     validation.label: Bestandsvalidatie
+    import.label: Valuta import
   csv_group_type_import:
+    label: Groepstype-import in CSV
     validation.label: Bestandsvalidatie
+    import.label: Groepstype import
   xlsx_category_import:
     label: Categorie import in XLSX
     validation.label: Bestandsvalidatie
@@ -160,13 +187,38 @@ batch_jobs:
   xlsx_association_type_export:
     label: Associatie type export in XLSX
     export.label: Associatie type export in XLSX
+  xlsx_channel_export:
+    label: Kanaal export in XLSX
+    export.label: Kanaal export
+  xlsx_locale_export:
+    label: Locale export in XLSX
+    export.label: Locale export
+  xlsx_attribute_group_export:
+    label: Attribuut groep export in XLSX
+    export.label: Attribuut groep export
+  xlsx_currency_export:
+    label: Valuta export in XLSX
+    export.label: Valuta export
+  xlsx_group_type_export:
+    label: Groepstype export in XLSX
+    export.label: Groepstype export
   xlsx_channel_import:
+    label: Kanaal import in XLSX
     validation.label: Bestandsvalidatie
+    import.label: Kanaal import
   xlsx_locale_import:
+    label: Locale import in XLSX
     validation.label: Bestandsvalidatie
+    import.label: Locale import
   xlsx_attribute_group_import:
+    label: Attribuut groep import in XLSX
     validation.label: Bestandsvalidatie
+    import.label: Attribuut groep import
   xlsx_currency_import:
+    label: Valuta import in XLSX
     validation.label: Bestandsvalidatie
+    import.label: Valuta import
   xlsx_group_type_import:
+    label: Groepstype import in XLSX
     validation.label: Bestandsvalidatie
+    import.label: Groepstype import

@@ -204,6 +204,10 @@ pim_enrich:
           cancel: Annuleren
     association_type:
       info:
+        deletion_successful: Associatietype succesvol verwijderd.
+        deletion_failed: Associatietype kon niet worden verwijderd.
+        update_successful: Associatietype succesvol bijgewerkt.
+        update_failed: Het associatietype kon niet worden bijgewerkt.
         field_not_ready:
           The association type cannot be saved right now. The following fields are not ready:
             - velden
@@ -216,6 +220,12 @@ pim_enrich:
         save: Opslaan
     channel:
       info:
+        deletion_successful: Kanaal succesvol verwijderd.
+        deletion_failed: Het kanaal kon niet worden verwijderd.
+        update_successful: Kanaal succesvol bijgewerkt.
+        update_failed: Het kanaal kon niet worden bijgewerkt.
+        create_successful: Kanaal succesvol aangemaakt.
+        create_failed: Het kanaal kon niet aangemaakt worden.
         field_not_ready:
           The channel cannot be saved right now. The following fields are not ready:
             - velden
@@ -253,6 +263,10 @@ pim_enrich:
     group:
       title: Groep
       info:
+        deletion_successful: Groep succesvol verwijderd.
+        deletion_failed: Groep kon niet verwijderd worden.
+        update_successful: Groep succesvol bijgewerkt.
+        update_failed: De groep kon niet worden bijgewerkt.
         field_not_ready:
           The group cannot be saved right now. The following fields are not ready:
             - velden
@@ -264,6 +278,9 @@ pim_enrich:
         created_by: Aangemaakt door
         updated: Bijgewerkt
         updated_by: Bijgewerkt door
+    job_instance:
+      info:
+        update_failed: Het jobprofiel kon niet worden bijgewerkt.
   confirmation:
     leave: Weet u zeker dat u deze pagina wilt verlaten?
     discard_changes: Als u deze pagina verlaat worden veranderingen aan {{ entity }} niet opgeslagen.
@@ -404,6 +421,9 @@ pim_enrich:
             search_attributes: Zoeken...
             no_available_attributes: Er zijn geen attributen meer om toe te voegen
     job_instance:
+      title:
+        import: Profiel importeren
+        export: Profiel exporteren
       button:
         edit.title: Bewerken
         export.title: Nu exporteren
@@ -462,6 +482,8 @@ pim_enrich:
             help: Betekent dat de productgeschiedenis automatisch wordt bijgewerkt. Dit kan worden uitgeschakeld om de prestaties te verbeteren
         history:
           title: Geschiedenis
+  job:
+    upload: Klik en sleep om te uploaden of klik hier
   export:
     product:
       data:
@@ -501,6 +523,7 @@ pim_enrich:
             "NOT IN": Niet in de lijst
             EMPTY: Producten die geen familie hebben
             "NOT EMPTY": Producten die een familie hebben
+          empty_selection: Geen voorwaarde voor families
         updated:
           title: Tijdsvoorwaarde
           operators:
@@ -526,6 +549,7 @@ pim_enrich:
           empty_selection: Selecteer een familie
         category:
           title: Categorie
+          help: Gebruik de productcategorieën in de boom (gedefinieerd door het bovenstaande kanaal) om de producten te selecteren om te exporteren
         identifier:
           title: Id
         metric:
