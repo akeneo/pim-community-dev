@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\Constraint;
 
-class NotBlankPropertiesSpec extends ObjectBehavior
+class NotNullPropertiesSpec extends ObjectBehavior
 {
     function let()
     {
@@ -14,7 +14,7 @@ class NotBlankPropertiesSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Validator\Constraints\NotBlankProperties');
+        $this->shouldHaveType('Pim\Component\Catalog\Validator\Constraints\NotNullProperties');
     }
 
     function it_is_a_validator_constraint()

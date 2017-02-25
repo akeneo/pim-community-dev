@@ -23,9 +23,14 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 - pim_catalog_number
                 - pim_catalog_price_collection
                 - pim_catalog_metric
-        - Pim\Component\Catalog\Validator\Constraints\NotBlankProperties:
+        - Pim\Component\Catalog\Validator\Constraints\NotNullProperties:
             properties:
                 - reference_data_name
+            groups:
+                - pim_catalog_reference_data_multiselect
+                - pim_catalog_reference_data_simpleselect
+            payload:
+                standardPropertyName: reference_data_name
     properties:
         type:
             - NotBlank: ~
