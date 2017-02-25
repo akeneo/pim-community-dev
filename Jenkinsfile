@@ -53,7 +53,7 @@ stage("Checkout") {
 }
 
 if (launchUnitTests.equals("yes")) {
-    stage("Unit tests") {
+    stage("Unit tests and Code style") {
         def tasks = [:]
 
         tasks["phpspec-5.6"] = {runPhpSpecTest("5.6")}
