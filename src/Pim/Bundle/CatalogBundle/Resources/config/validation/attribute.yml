@@ -83,7 +83,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         wysiwygEnabled:
             - Type:
                 type: bool
-                groups: [pim_catalog_textarea]
+                groups:
+                    - pim_catalog_textarea
             - IsNull:
                 groups:
                     - pim_catalog_identifier
@@ -102,7 +103,10 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         decimalsAllowed:
             - Type:
                 type: bool
-                groups: [pim_catalog_number, pim_catalog_price_collection, pim_catalog_metric]
+                groups:
+                    - pim_catalog_number
+                    - pim_catalog_price_collection
+                    - pim_catalog_metric
             - IsNull:
                 groups:
                     - pim_catalog_identifier
@@ -119,7 +123,9 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         negativeAllowed:
             - Type:
                 type: bool
-                groups: [pim_catalog_number, pim_catalog_metric]
+                groups:
+                    - pim_catalog_number
+                    - pim_catalog_metric
             - IsNull:
                 groups:
                     - pim_catalog_identifier
@@ -141,10 +147,13 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 value: 0
             - Range:
                 max: 255
-                groups: [pim_catalog_text, pim_catalog_identifier]
+                groups:
+                    - pim_catalog_text
+                    - pim_catalog_identifier
             - Range:
                 max: 65535
-                groups: [pim_catalog_textarea]
+                groups:
+                    - pim_catalog_textarea
             - IsNull:
                 groups:
                     - pim_catalog_number
@@ -205,10 +214,14 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             - Range:
                 min: 0.01
                 max: 9999.99
-                groups: [pim_catalog_file, pim_catalog_image]
+                groups:
+                    - pim_catalog_file
+                    - pim_catalog_image
             - Type:
                 type: numeric
-                groups: [pim_catalog_file, pim_catalog_image]
+                groups:
+                    - pim_catalog_file
+                    - pim_catalog_image
             - IsNull:
                 groups:
                     - pim_catalog_identifier
@@ -225,7 +238,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_reference_data_simpleselect
         dateMin:
             - DateTime:
-                groups: [pim_catalog_date]
+                groups:
+                    - pim_catalog_date
             - IsNull:
                 groups:
                     - pim_catalog_identifier
@@ -243,7 +257,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_reference_data_simpleselect
         dateMax:
             - DateTime:
-                groups: [pim_catalog_date]
+                groups:
+                    - pim_catalog_date
             - IsNull:
                 groups:
                     - pim_catalog_identifier
@@ -262,7 +277,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         validationRule:
             - Choice:
                 choices: [null, url, email, regexp]
-                groups: [pim_catalog_identifier, pim_catalog_text]
+                groups:
+                    - pim_catalog_text
         validationRegexp:
             - IsNull:
                 groups:
@@ -293,7 +309,10 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         numberMin:
             - Type:
                 type: numeric
-                groups: [pim_catalog_number, pim_catalog_price_collection, pim_catalog_metric]
+                groups:
+                    - pim_catalog_number
+                    - pim_catalog_price_collection
+                    - pim_catalog_metric
             - IsNull:
                 groups:
                     - pim_catalog_identifier
@@ -310,7 +329,10 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         numberMax:
             - Type:
                 type: numeric
-                groups: [pim_catalog_number, pim_catalog_price_collection, pim_catalog_metric]
+                groups:
+                    - pim_catalog_number
+                    - pim_catalog_price_collection
+                    - pim_catalog_metric
             - IsNull:
                 groups:
                     - pim_catalog_identifier
