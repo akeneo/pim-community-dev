@@ -113,3 +113,5 @@ oro_config:
         loading_message:
           title: Nachrichten werden geladen
           label: Nachrichten laden aktivieren
+        loading_messages:
+          label: Nachrichten laden aktivieren
