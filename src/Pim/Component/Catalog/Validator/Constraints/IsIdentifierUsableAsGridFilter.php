@@ -14,6 +14,9 @@ class IsIdentifierUsableAsGridFilter extends Constraint
     /** @var string */
     public $message = '"%code%" is an identifier attribute, it must be usable as grid filter';
 
+    /** @var string */
+    public $propertyPath = 'useableAsGridFilter';
+
     /**
      * {@inheritdoc}
      */

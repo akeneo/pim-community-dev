@@ -145,11 +145,15 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             - Pim\Component\Catalog\Validator\Constraints\NotDecimal: {}
             - GreaterThanOrEqual:
                 value: 0
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
             - Range:
                 max: 255
                 groups:
-                    - pim_catalog_text
                     - pim_catalog_identifier
+                    - pim_catalog_text
             - Range:
                 max: 65535
                 groups:
@@ -279,6 +283,10 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 choices: [null, url, email, regexp]
                 groups:
                     - pim_catalog_text
+            - Choice:
+                choices: [null, regexp]
+                groups:
+                    - pim_catalog_identifier
         validationRegexp:
             - IsNull:
                 groups:
@@ -300,8 +308,24 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_identifier
         allowedExtensions:
             - NotNull:
-                groups: [pim_catalog_file, pim_catalog_image]
+                groups:
+                    - pim_catalog_file
+                    - pim_catalog_image
                 message: This value should not be blank
+            - Blank:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_price_collection
+                    - pim_catalog_number
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_catalog_metric
+                    - pim_catalog_reference_data_multiselect
+                    - pim_catalog_reference_data_simpleselect
         translations:
             - Valid: ~
         group:
@@ -346,6 +370,60 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_date
                     - pim_catalog_reference_data_multiselect
                     - pim_catalog_reference_data_simpleselect
+        metricFamily:
+            - Blank:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_price_collection
+                    - pim_catalog_number
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_catalog_reference_data_multiselect
+                    - pim_catalog_reference_data_simpleselect
+        defaultMetricUnit:
+            - Blank:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_price_collection
+                    - pim_catalog_number
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_catalog_reference_data_multiselect
+                    - pim_catalog_reference_data_simpleselect
+        availableLocales:
+            - Count:
+                min: 0
+                max: 0
+                exactMessage: This attribute cannot have available locales.
+                groups:
+                    - pim_catalog_identifier
+        minimumInputLength:
+            - Type: numeric
+            - Pim\Component\Catalog\Validator\Constraints\NotDecimal: {}
+            - IsNull:
+                groups:
+                    - pim_catalog_identifier
+                    - pim_catalog_text
+                    - pim_catalog_textarea
+                    - pim_catalog_number
+                    - pim_catalog_price_collection
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_catalog_metric
 
     getters:
         group:

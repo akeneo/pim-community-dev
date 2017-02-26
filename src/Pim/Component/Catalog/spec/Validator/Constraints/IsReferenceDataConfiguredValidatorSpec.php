@@ -31,19 +31,19 @@ class IsReferenceDataConfiguredValidatorSpec extends ObjectBehavior
         $context,
         Attribute $attribute,
         IsReferenceDataConfigured $constraint,
-        ConstraintViolationBuilderInterface $violation
+        ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $attribute->getType()->willReturn('pim_reference_data_simpleselect');
-        $attribute->getProperty('reference_data_name')->willReturn('foo');
+        $attribute->getReferenceDataName()->willReturn('foo');
         $registry->has('foo')->willReturn(false);
         $registry->all()->willReturn(['bar' => 'bar']);
 
-        $context->buildViolation($constraint->message)
-            ->shouldBeCalled()
-            ->willReturn($violation);
-        $violation->setParameter('%reference_data_name%', 'foo')->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('%references%', 'bar')->shouldBeCalled()->willReturn($violation);
-        $violation->addViolation()->shouldBeCalled();
+        $context->buildViolation($constraint->message)->willReturn($violationBuilder);
+
+        $violationBuilder->setParameter('%reference_data_name%', 'foo')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->setParameter('%references%', 'bar')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('referenceDataName')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($attribute, $constraint);
     }
@@ -55,7 +55,7 @@ class IsReferenceDataConfiguredValidatorSpec extends ObjectBehavior
         IsReferenceDataConfigured $constraint
     ) {
         $attribute->getType()->willReturn('pim_reference_data_simpleselect');
-        $attribute->getProperty('reference_data_name')->willReturn('foo');
+        $attribute->getReferenceDataName()->willReturn('foo');
         $registry->has('foo')->willReturn(true);
 
         $registry->all()->shouldNotBeCalled();
@@ -71,19 +71,19 @@ class IsReferenceDataConfiguredValidatorSpec extends ObjectBehavior
         $context,
         Attribute $attribute,
         IsReferenceDataConfigured $constraint,
-        ConstraintViolationBuilderInterface $violation
+        ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $attribute->getType()->willReturn('pim_reference_data_multiselect');
-        $attribute->getProperty('reference_data_name')->willReturn('foo');
+        $attribute->getReferenceDataName()->willReturn('foo');
         $registry->has('foo')->willReturn(false);
         $registry->all()->willReturn(['bar' => 'bar']);
 
-        $context->buildViolation($constraint->message)
-            ->shouldBeCalled()
-            ->willReturn($violation);
-        $violation->setParameter('%reference_data_name%', 'foo')->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('%references%', 'bar')->shouldBeCalled()->willReturn($violation);
-        $violation->addViolation()->shouldBeCalled();
+        $context->buildViolation($constraint->message)->willReturn($violationBuilder);
+
+        $violationBuilder->setParameter('%reference_data_name%', 'foo')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->setParameter('%references%', 'bar')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('referenceDataName')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($attribute, $constraint);
     }
@@ -95,7 +95,7 @@ class IsReferenceDataConfiguredValidatorSpec extends ObjectBehavior
         IsReferenceDataConfigured $constraint
     ) {
         $attribute->getType()->willReturn('pim_reference_data_multiselect');
-        $attribute->getProperty('reference_data_name')->willReturn('foo');
+        $attribute->getReferenceDataName()->willReturn('foo');
         $registry->has('foo')->willReturn(true);
 
         $registry->all()->shouldNotBeCalled();
