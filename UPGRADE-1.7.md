@@ -83,7 +83,7 @@ Pim\Bundle\WebServiceBundle\PimWebServiceBundle,
 
     * Add the following bundles in the following functions:
 
-        - `getOroDependencies()`:
+        - `getPimDependenciesBundles()`:
 
           ```PHP
 new FOS\OAuthServerBundle\FOSOAuthServerBundle()
@@ -257,7 +257,24 @@ There are three levels of customization:
 
 #### You only added custom import/export without UI changes
 
-In this case, you only need to add your custom form provider for your connector. Here is an example:
+In this case, you only need to add your custom form provider for your connector.
+In the 1.6, you declared an import/export with a default values provider, a constraint collection provider and a form configuration provider.
+In the 1.7, the default values provider and constraint collection provider do not change, but the form configuration provider have to be replaced by a form job instance.
+
+In the 1.6 edition, the service was defined like this:
+
+```YAML
+services:
+    acme.job_parameters.form_configuration_provider.simple_csv_import:
+        class: '%pim_import_export.job_parameters.form_configuration_provider.simple_csv_import.class%'
+        arguments:
+            -
+                - 'my_custom_import_job_name'
+        tags:
+            - { name: pim_import_export.job_parameters.form_configuration_provider }
+```
+
+In the 1.7, you have to declare a new form job instance like this:
 
 ```YAML
 services:
@@ -265,15 +282,18 @@ services:
         class: '%pim_enrich.provider.form.job_instance.class%'
         arguments:
             -
-                my_custom_export_job_name: pim-job-instance-csv-base-export
                 my_custom_import_job_name: pim-job-instance-csv-base-import
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
 ```
 
+You can find the loaded JS modules of `pim-job-instance-csv-base-import` in
+[view mode](https://github.com/akeneo/pim-community-dev/blob/1.7/src/Pim/Bundle/EnrichBundle/Resources/config/form_extensions/job_instance/csv_base_import_show.yml) and
+[edit mode](https://github.com/akeneo/pim-community-dev/blob/1.7/src/Pim/Bundle/EnrichBundle/Resources/config/form_extensions/job_instance/csv_base_import_edit.yml).
+
 #### You added some fields to your custom job
 
-In this case you will also need to register it in your form provider but aslo declare a custom form. You will find a
+In this case you will also need to register it in your form provider but also declare a custom form. You will find a
 detailed documentation [here](https://docs.akeneo.com/1.7/cookbook/import_export/create-connector.html).
 
 #### You created a fully customized screen for your job
