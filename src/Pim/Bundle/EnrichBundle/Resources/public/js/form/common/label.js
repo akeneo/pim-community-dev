@@ -8,8 +8,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(
-    ['pim/form', 'pim/user-context'],
-    function (BaseForm, UserContext) {
+    ['pim/form', 'pim/user-context', 'pim/i18n'],
+    function (BaseForm, UserContext, i18n) {
         return BaseForm.extend({
             tagName: 'h1',
             className: 'AknTitleContainer-title',
@@ -29,8 +29,9 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                var label = null === this.getLabel() ? '[' + this.getFormData().code + ']' : this.getLabel();
-                this.$el.text(label);
+                this.$el.text(
+                    this.getLabel()
+                );
 
                 return this;
             },
@@ -41,7 +42,13 @@ define(
              * @return {String}
              */
             getLabel: function () {
-                return this.getFormData().labels[UserContext.get('catalogLocale')];
+                var data = this.getFormData();
+
+                return i18n.getLabel(
+                    data.labels,
+                    UserContext.get('catalogLocale'),
+                    data.code
+                );
             }
         });
     }
