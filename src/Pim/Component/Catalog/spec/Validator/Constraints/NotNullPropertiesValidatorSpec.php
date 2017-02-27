@@ -22,27 +22,6 @@ class NotNullPropertiesValidatorSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Component\Catalog\Validator\Constraints\NotNullPropertiesValidator');
     }
 
-    function it_validates_not_reference_data_attribute(
-        $context,
-        NotNullProperties $constraint,
-        Attribute $value
-    ) {
-        $constraint->properties = ['my_property'];
-
-        $value
-            ->getProperties()
-            ->willReturn(['my_property' => null]);
-        $value
-            ->getType()
-            ->willReturn(AttributeTypes::NUMBER);
-
-        $context
-            ->buildViolation(Argument::any())
-            ->shouldNotBeCalled();
-
-        $this->validate($value, $constraint);
-    }
-
     function it_validates_not_blank_property_value(
         $context,
         NotNullProperties $constraint,
@@ -67,7 +46,7 @@ class NotNullPropertiesValidatorSpec extends ObjectBehavior
     function it_does_not_validate_blank_property_value(
         $context,
         NotNullProperties $constraint,
-        ConstraintViolationBuilderInterface $violation,
+        ConstraintViolationBuilderInterface $violationBuilder,
         Attribute $value
     ) {
         $constraint->properties = ['my_property'];
@@ -82,7 +61,12 @@ class NotNullPropertiesValidatorSpec extends ObjectBehavior
         $context
             ->buildViolation($constraint->message)
             ->shouldBeCalled()
-            ->willReturn($violation);
+            ->willReturn($violationBuilder);
+        $violationBuilder
+            ->atPath('properties')
+            ->shouldBeCalled()
+            ->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($value, $constraint);
     }
