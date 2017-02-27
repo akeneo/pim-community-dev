@@ -8,6 +8,7 @@
 - GITHUB-5337: Fixed Widget Registry. Priority is now taken in account.
 - PIM-6127: In the family import, the attributes required should be in the family
 - PIM-6125: In the family import, the attribute_as_label has to be in the family and its type has to be identifier or text
+- GITHUB-4772: Switching between tabs of family edit form removes newly added attributes
 
 ## Deprecations
 
@@ -26,6 +27,7 @@
 - Add history support for the channel conversion units.
 - Add warning count on export execution grid and dashboard
 - Add not empty filter operator on product grid and product export builder
+- PIM-6095: Selector on family attribute's tab to add all attributes of an attribute group
 
 ## Technical improvements
 
@@ -38,6 +40,7 @@
 - TIP-652: Redo the import/export screens in new PEF architecture
 - TIP-682: Update to Symfony 2.7.23
 - GITHUB-5455: Redo channel edit form using backbonejs architecture and internal REST API, implement `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\ChannelRemover` and move validation logic from controller to newly created remover
+- GITHUB-5573: Redo family edit form using backbonejs architecture and internal REST API, implement `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeGroupSearchableRepository`
 
 ## BC breaks
 - Change the constructor of `Pim\Component\Catalog\Updater\ChannelUpdater` to add `Pim\Component\Catalog\Repositor\AttributeRepositoryInterface` and add `Akeneo\Bundle\MeasureBundle\Manager\MeasureManager`
@@ -212,3 +215,10 @@
 - Update constructor of `Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer` first parameter to `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository`
 - Remove deprecated method `removeAttributeFromProduct` from `Pim\Component\Catalog\Builder\ProductBuilder` and `Pim\Component\Catalog\Builder\ProductBuilderInterface`
 - Remove deprecated methods `addAttribute`, `removeAttribute`, `getAttributes`, `setAttributes` and `getAttributeIds` from `Pim\Bundle\CatalogBundle\Entity\Group` and `Pim\Component\Catalog\Model\GroupInterface`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\FamilyController` to remove `formFactory`, `templating`, `translator`, `doctrine`, `channelRepository`, `attributeClass`, `familySaver`, `familyRemover`, `familyClass`, `attributeRepo`, `familyRepository`, `validator`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\FamilyController` to add `updater`, `saver`, `remover`, `validator`, `securityFacade`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Form\Type\FamilyType` to remove `requireSubscriber`, `attributeClass`, `fieldSubscriber`, `labelSubscriber`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController` to add `attributeGroupSearchableRepository`
+- Remove useless class `Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeAsLabelSubscriber`
+- Remove useless class `Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber`
+- Remove useless class `Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFamilyFieldsSubscriber`

@@ -22,8 +22,10 @@ Feature: Remove attribute from a family
   Scenario: Successfully remove an attribute from a family and display it as removable from product
     Given I am on the "Bags" family page
     And I visit the "Attributes" tab
-    When I remove the "Manufacturer" attribute
+    When I remove the "manufacturer" attribute
     And I confirm the deletion
+    And I save the family
+    And I should not see the text "There are unsaved changes."
     Then I should see the flash message "Attribute successfully removed from the family"
     And I should see attribute "Long Description" in group "Other"
     When I am on the "bag-dolce-vita" product page

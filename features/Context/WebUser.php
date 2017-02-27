@@ -394,6 +394,16 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Given /^I should not see confirm dialog$/
+     */
+    public function iShouldNotSeeConfirmDialog()
+    {
+        return $this->spin(function () {
+            return null === $this->getCurrentPage()->getElement('Dialog')->find('css', '.ok');
+        }, 'Confirm dialog button is still visible');
+    }
+
+    /**
      * @Given /^I save the (.*)$/
      */
     public function iSave()
@@ -854,6 +864,53 @@ class WebUser extends RawMinkContext
     public function iShouldSeeAvailableAttributesInGroup($attributes, $group)
     {
         foreach ($this->listToArray($attributes) as $attribute) {
+            $this->spin(function () use ($attribute, $group) {
+                return $this->getCurrentPage()->findAvailableAttributeInGroup($attribute, $group);
+            }, sprintf('Expecting to see attribute "%s" under group "%s"', $attribute, $group));
+        }
+    }
+
+    /**
+     * @param string $group
+     *
+     * @Then /^I should see available attribute group "([^"]*)"$/
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldSeeAvailableAttributeGroup($groups)
+    {
+        foreach ($this->listToArray($groups) as $group) {
+            $element = $this->getCurrentPage()->findAvailableAttributeGroup($group);
+
+            if (null === $element) {
+                throw new ExpectationException(
+                    sprintf('Expecting to see attribute group "%s"', $group)
+                );
+            }
+        }
+    }
+
+    /**
+     * @param string $groups
+     *
+     * @Then /^I add attributes by group "([^"]*)"$/
+     */
+    public function iAddAttributesByGroup($groups)
+    {
+        $this->getCurrentPage()
+            ->addAttributesByGroup($this->listToArray($groups));
+    }
+
+    /**
+     * @param string $group
+     *
+     * @Then /^I should see available group "([^"]*)"$/
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldSeeAvailableGroup($group)
+    {
+        foreach ($this->listToArray($group) as $attribute) {
             $element = $this->getCurrentPage()->findAvailableAttributeInGroup($attribute, $group);
 
             if (null === $element) {
@@ -931,15 +988,13 @@ class WebUser extends RawMinkContext
         $attributes = $this->listToArray($attributes);
 
         foreach ($attributes as $attribute) {
-            if (null === $this->getCurrentPage()->getAttribute($attribute, $group)) {
-                throw $this->createExpectationException(
-                    sprintf(
-                        'Expecting to see attribute %s under group %s, but was not present.',
-                        $attribute,
-                        $group
-                    )
-                );
-            }
+            $this->spin(function () use ($attribute, $group) {
+                return $this->getCurrentPage()->getAttribute($attribute, $group);
+            }, sprintf(
+                'Expecting to see attribute %s under group %s, but was not present.',
+                $attribute,
+                $group
+            ));
         }
     }
 
@@ -1855,19 +1910,16 @@ class WebUser extends RawMinkContext
      */
     public function attributeShouldBeRequiredInChannels($attribute, $not, $channels)
     {
-        $channels    = $this->listToArray($channels);
         $expectation = $not === '';
-        foreach ($channels as $channel) {
-            if ($expectation !== $this->getCurrentPage()->isAttributeRequired($attribute, $channel)) {
-                throw $this->createExpectationException(
-                    sprintf(
-                        'Attribute %s should be%s required in channel %s',
-                        $attribute,
-                        $not,
-                        $channel
-                    )
-                );
-            }
+        foreach ($this->listToArray($channels) as $channel) {
+            $this->spin(function () use ($attribute, $channel, $expectation) {
+                return $expectation === $this->getCurrentPage()->isAttributeRequired($attribute, $channel);
+            }, sprintf(
+                'Attribute %s should be%s required in channel %s',
+                $attribute,
+                $not,
+                $channel
+            ));
         }
     }
 
