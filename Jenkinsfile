@@ -157,7 +157,7 @@ def runIntegrationTest(version) {
                     sh "./app/console --env=test pim:install --force"
 
                     sh "mkdir -p app/build/logs/"
-                    sh "./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
+                    sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
                 }
             }
         } finally {
@@ -204,9 +204,8 @@ def runBehatTest(storage, features, phpVersion, mysqlVersion, esVersion) {
             mysqlHostName = "mysql_${env.JOB_NAME}_${env.BUILD_NUMBER}_behat-${storage}".replaceAll( '/', '_' )
 
             // Configure the PIM
-            sh "cp app/config/parameters.yml.dist app/config/parameters_test.yml"
+            sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
             sh "sed -i \"s#database_host: .*#database_host: ${mysqlHostName}#g\" app/config/parameters_test.yml"
-            sh "printf \"    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" >> app/config/parameters_test.yml"
 
             // Activate MongoDB if needed
             if ('odm' == storage) {
