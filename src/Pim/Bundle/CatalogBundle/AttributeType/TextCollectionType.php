@@ -40,9 +40,6 @@ class TextCollectionType extends AbstractAttributeType
             ],
         ];
 
-        $properties['unique']['options']['disabled'] = false;
-        $properties['unique']['options']['read_only'] = false;
-
         return $properties;
     }
 
