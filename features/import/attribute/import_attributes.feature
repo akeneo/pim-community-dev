@@ -244,7 +244,7 @@ Feature: Import attributes
     And I wait for the "csv_footwear_attribute_import" job to finish
     Then I should see "read lines 1"
     Then I should see "skipped 1"
-    Then I should see "attributeType: This property cannot be changed.: SKU"
+    Then I should see "type: This property cannot be changed.: SKU"
     Then I should see "localizable: This property cannot be changed.: SKU"
     Then I should see "unique: This property cannot be changed.: SKU"
 

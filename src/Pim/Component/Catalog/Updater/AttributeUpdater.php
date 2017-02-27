@@ -221,7 +221,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
 
         try {
             $attributeType = $this->registry->get($data);
-            $attribute->setAttributeType($attributeType->getName());
+            $attribute->setType($attributeType->getName());
             $attribute->setBackendType($attributeType->getBackendType());
             $attribute->setUnique($attributeType->isUnique());
         } catch (\LogicException $exception) {

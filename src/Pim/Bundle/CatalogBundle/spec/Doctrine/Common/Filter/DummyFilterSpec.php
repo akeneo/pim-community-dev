@@ -40,8 +40,8 @@ class DummyFilterSpec extends ObjectBehavior
         AttributeInterface $goodAttribute,
         AttributeInterface $badAttribute
     ) {
-        $goodAttribute->getAttributeType()->willReturn('acme_attribute_type');
-        $badAttribute->getAttributeType()->willReturn('acme_other_attribute_type');
+        $goodAttribute->getType()->willReturn('acme_attribute_type');
+        $badAttribute->getType()->willReturn('acme_other_attribute_type');
 
         $this->supportsAttribute($goodAttribute)->shouldReturn(true);
         $this->supportsAttribute($badAttribute)->shouldReturn(false);

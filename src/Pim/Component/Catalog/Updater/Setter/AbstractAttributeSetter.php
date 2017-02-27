@@ -49,7 +49,7 @@ abstract class AbstractAttributeSetter implements AttributeSetterInterface
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
-        return in_array($attribute->getAttributeType(), $this->supportedTypes);
+        return in_array($attribute->getType(), $this->supportedTypes);
     }
 
     /**

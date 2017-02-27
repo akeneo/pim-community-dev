@@ -48,13 +48,13 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         AttributeInterface $fileAttribute,
         AttributeInterface $textareaAttribute
     ) {
-        $imageAttribute->getAttributeType()->willReturn('pim_catalog_image');
+        $imageAttribute->getType()->willReturn('pim_catalog_image');
         $this->supportsAttribute($imageAttribute)->shouldReturn(true);
 
-        $fileAttribute->getAttributeType()->willReturn('pim_catalog_file');
+        $fileAttribute->getType()->willReturn('pim_catalog_file');
         $this->supportsAttribute($fileAttribute)->shouldReturn(true);
 
-        $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $textareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 

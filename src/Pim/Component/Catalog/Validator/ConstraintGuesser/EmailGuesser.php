@@ -21,7 +21,7 @@ class EmailGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AttributeInterface $attribute)
     {
-        return AttributeTypes::TEXT === $attribute->getAttributeType();
+        return AttributeTypes::TEXT === $attribute->getType();
     }
 
     /**

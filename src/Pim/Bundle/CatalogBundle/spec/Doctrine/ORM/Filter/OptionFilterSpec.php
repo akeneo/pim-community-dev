@@ -41,10 +41,10 @@ class OptionFilterSpec extends ObjectBehavior
 
     function it_supports_simple_select_attribute(AttributeInterface $attribute)
     {
-        $attribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $attribute->getType()->willReturn('pim_catalog_simpleselect');
         $this->supportsAttribute($attribute)->shouldReturn(true);
 
-        $attribute->getAttributeType()->willReturn(Argument::any());
+        $attribute->getType()->willReturn(Argument::any());
         $this->supportsAttribute($attribute)->shouldReturn(false);
     }
 

@@ -28,10 +28,10 @@ class DateAttributeSetterSpec extends ObjectBehavior
         AttributeInterface $dateAttribute,
         AttributeInterface $textareaAttribute
     ) {
-        $dateAttribute->getAttributeType()->willReturn('pim_catalog_date');
+        $dateAttribute->getType()->willReturn('pim_catalog_date');
         $this->supportsAttribute($dateAttribute)->shouldReturn(true);
 
-        $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $textareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 

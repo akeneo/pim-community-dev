@@ -105,7 +105,7 @@ flash:
     created: A exportação foi criada com sucesso
     removed: A exportação foi removida
     updated: A exportação foi atualizada com sucesso
-    running: A exportação está a ser executada
+    running: A exportação está sendo executado
   import:
     created: A importação foi criada com sucesso
     removed: A importação foi removida

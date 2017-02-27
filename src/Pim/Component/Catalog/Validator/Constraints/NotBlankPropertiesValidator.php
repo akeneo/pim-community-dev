@@ -22,7 +22,7 @@ class NotBlankPropertiesValidator extends ConstraintValidator
     {
         $properties = $constraint->properties;
         $values = $value->getProperties();
-        if (in_array($value->getAttributeType(), [
+        if (in_array($value->getType(), [
             AttributeTypes::REFERENCE_DATA_MULTI_SELECT,
             AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT,
         ])) {

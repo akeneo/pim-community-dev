@@ -26,10 +26,10 @@ class MetricSorterSpec extends ObjectBehavior
 
     function it_supports_metric_attribute(AttributeInterface $metric)
     {
-        $metric->getAttributeType()->willReturn('pim_catalog_metric');
+        $metric->getType()->willReturn('pim_catalog_metric');
         $this->supportsAttribute($metric)->shouldReturn(true);
 
-        $metric->getAttributeType()->willReturn(Argument::any());
+        $metric->getType()->willReturn(Argument::any());
         $this->supportsAttribute($metric)->shouldReturn(false);
     }
 

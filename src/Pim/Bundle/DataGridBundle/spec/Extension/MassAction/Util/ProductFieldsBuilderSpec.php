@@ -50,12 +50,12 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
         $bar->getCode()->willReturn('bar-code');
         $bar->isLocalizable()->willReturn(false);
         $bar->isScopable()->willReturn(false);
-        $bar->getAttributeType()->willReturn(null);
+        $bar->getType()->willReturn(null);
 
         $baz->getCode()->willReturn('baz-code');
         $baz->isLocalizable()->willReturn(false);
         $baz->isScopable()->willReturn(false);
-        $baz->getAttributeType()->willReturn(null);
+        $baz->getType()->willReturn(null);
 
         $association->getCode()->willReturn('association-type-code');
 

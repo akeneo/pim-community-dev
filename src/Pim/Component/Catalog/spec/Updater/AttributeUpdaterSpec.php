@@ -59,7 +59,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         AttributeTypeInterface $attributeType
     ) {
         $attribute->getId()->willReturn(null);
-        $attribute->getAttributeType()->willReturn('pim_reference_data_multiselect');
+        $attribute->getType()->willReturn('pim_reference_data_multiselect');
 
         $data = [
             'labels' => ['en_US' => 'Test1', 'fr_FR' => 'Test2'],
@@ -77,7 +77,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
 
         $attrGroupRepo->findOneByIdentifier('marketing')->willReturn($attributeGroup);
         $attribute->setGroup($attributeGroup)->shouldBeCalled();
-        $attribute->setAttributeType('pim_catalog_text')->shouldBeCalled();
+        $attribute->setType('pim_catalog_text')->shouldBeCalled();
         $attribute->setBackendType('backend')->shouldBeCalled();
         $attribute->setUnique(true)->shouldBeCalled();
         $attribute->setDateMin(new \DateTime('2016-12-12T00:00:00+01:00'))->shouldBeCalled();
@@ -100,7 +100,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         AttributeTypeInterface $attributeType
     ) {
         $attribute->getId()->willReturn(null);
-        $attribute->getAttributeType()->willReturn('pim_reference_data_simpleselect');
+        $attribute->getType()->willReturn('pim_reference_data_simpleselect');
 
         $data = [
             'labels' => ['en_US' => 'Test1', 'fr_FR' => 'Test2'],

@@ -27,10 +27,10 @@ class NumberAttributeSetterSpec extends ObjectBehavior
         AttributeInterface $numberAttribute,
         AttributeInterface $textareaAttribute
     ) {
-        $numberAttribute->getAttributeType()->willReturn('pim_catalog_number');
+        $numberAttribute->getType()->willReturn('pim_catalog_number');
         $this->supportsAttribute($numberAttribute)->shouldReturn(true);
 
-        $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $textareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 

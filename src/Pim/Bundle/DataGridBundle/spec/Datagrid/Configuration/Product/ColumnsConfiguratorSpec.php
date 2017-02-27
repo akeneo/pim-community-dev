@@ -33,7 +33,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
             'sku' => [
                 'code'          => 'sku',
                 'label'         => 'Sku',
-                'attributeType' => 'pim_catalog_identifier',
+                'type'          => 'pim_catalog_identifier',
                 'sortOrder'     => 1,
                 'group'         => 'General',
                 'groupOrder'    => 1
@@ -41,7 +41,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
             'name' => [
                 'code'          => 'name',
                 'label'         => 'Name',
-                'attributeType' => 'pim_catalog_text',
+                'type'          => 'pim_catalog_text',
                 'sortOrder'     => 2,
                 'group'         => 'General',
                 'groupOrder'    => 1
@@ -49,7 +49,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
             'desc' => [
                 'code'          => 'desc',
                 'label'         => 'Desc',
-                'attributeType' => 'pim_catalog_text',
+                'type'          => 'pim_catalog_text',
                 'sortOrder'     => 3,
                 'group'         => 'General',
                 'groupOrder'    => 1
@@ -110,7 +110,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
             'sku' => [
                 'code'          => 'sku',
                 'label'         => 'Sku',
-                'attributeType' => 'pim_catalog_identifier',
+                'type'          => 'pim_catalog_identifier',
                 'sortOrder'     => 1,
                 'group'         => 'General',
                 'groupOrder'    => 1
@@ -118,7 +118,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
             'name' => [
                 'code'          => 'name',
                 'label'         => 'Name',
-                'attributeType' => 'pim_catalog_text',
+                'type'          => 'pim_catalog_text',
                 'sortOrder'     => 2,
                 'group'         => 'General',
                 'groupOrder'    => 1
@@ -126,7 +126,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
             'desc' => [
                 'code'          => 'desc',
                 'label'         => 'Desc',
-                'attributeType' => 'pim_catalog_text',
+                'type'          => 'pim_catalog_text',
                 'sortOrder'     => 3,
                 'group'         => 'General',
                 'groupOrder'    => 1
@@ -197,7 +197,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
             'sku' => [
                 'code'          => 'sku',
                 'label'         => 'Sku',
-                'attributeType' => 'pim_catalog_identifier',
+                'type'          => 'pim_catalog_identifier',
                 'sortOrder'     => 1,
                 'group'         => 'General',
                 'groupOrder'    => 1
@@ -205,7 +205,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
             'name' => [
                 'code'          => 'name',
                 'label'         => 'Name',
-                'attributeType' => 'pim_catalog_text',
+                'type'          => 'pim_catalog_text',
                 'sortOrder'     => 2,
                 'group'         => 'General',
                 'groupOrder'    => 1

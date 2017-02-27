@@ -35,10 +35,10 @@ class PriceCollectionAttributeSetterSpec extends ObjectBehavior
         AttributeInterface $price_collectionAttribute,
         AttributeInterface $textareaAttribute
     ) {
-        $price_collectionAttribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $price_collectionAttribute->getType()->willReturn('pim_catalog_price_collection');
         $this->supportsAttribute($price_collectionAttribute)->shouldReturn(true);
 
-        $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $textareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 

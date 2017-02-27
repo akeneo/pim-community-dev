@@ -61,7 +61,7 @@ class ProductValueDenormalizerSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ProductValueInterface $productValue
     ) {
-        $attribute->getAttributeType()->willReturn('pim_catalog_text');
+        $attribute->getType()->willReturn('pim_catalog_text');
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -87,7 +87,7 @@ class ProductValueDenormalizerSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ProductValueInterface $productValue
     ) {
-        $attribute->getAttributeType()->willReturn('pim_catalog_number');
+        $attribute->getType()->willReturn('pim_catalog_number');
         $attribute->getBackendType()->willReturn('decimal');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
         $attribute->isLocalizable()->willReturn(true);

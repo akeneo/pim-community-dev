@@ -899,7 +899,7 @@ job_tracker:
     started_at: Alkoi
 pim_enrich_attribute_form:
   code: Koodi
-  attributeType: Attribuuttityyppi
+  type: Attribuuttityyppi
   reference_data_name: Referenssidatan nimi
   scopable: Soveltamisala
   localizable: Lokalisoitavissa

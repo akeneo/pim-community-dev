@@ -374,8 +374,21 @@ interface AttributeInterface extends
      * @param string $type
      *
      * @return AttributeInterface
+     *
+     * @deprecated Will be removed in 1.8. Please use setType() instead.
      */
     public function setAttributeType($type);
+
+    /**
+     * Set attribute type
+     *
+     * @param string $type
+     *
+     * @see Pim\Component\Catalog\AttributeTypes
+     *
+     * @return AttributeInterface
+     */
+    public function setType($type);
 
     /**
      * Set dateMax
@@ -412,11 +425,22 @@ interface AttributeInterface extends
     public function setLabel($label);
 
     /**
-     * Get frontend type
+     * Get attribute type
+     *
+     * @return string
+     *
+     * @deprecated Will be removed in 1.8. Please use getType() instead.
+     */
+    public function getAttributeType();
+
+    /**
+     * Get attribute type
+     *
+     * @see Pim\Component\Catalog\AttributeTypes
      *
      * @return string
      */
-    public function getAttributeType();
+    public function getType();
 
     /**
      * Predicate for wysiwygEnabled property

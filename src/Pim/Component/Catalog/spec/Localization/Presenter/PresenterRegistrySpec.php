@@ -26,7 +26,7 @@ class PresenterRegistrySpec extends ObjectBehavior
         AttributeInterface $attribute
     ) {
         $attributeRepository->findOneByIdentifier('number')->willReturn($attribute);
-        $attribute->getAttributeType()->willReturn('pim_catalog_number');
+        $attribute->getType()->willReturn('pim_catalog_number');
         $presenter->supports('pim_catalog_number')->willReturn(true);
         $this->register($presenter, 'product_value');
         $this->getPresenterByAttributeCode('number')->shouldReturn($presenter);
@@ -38,7 +38,7 @@ class PresenterRegistrySpec extends ObjectBehavior
         AttributeInterface $attribute
     ) {
         $attributeRepository->findOneByIdentifier('number')->willReturn($attribute);
-        $attribute->getAttributeType()->willReturn('pim_catalog_number');
+        $attribute->getType()->willReturn('pim_catalog_number');
         $presenter->supports('pim_catalog_number')->willReturn(false);
         $this->register($presenter, 'product_value');
         $this->getPresenterByAttributeCode('number')->shouldReturn(null);

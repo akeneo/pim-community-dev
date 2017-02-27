@@ -91,7 +91,7 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
 
         foreach ($family->getAttributeRequirements() as $key => $requirement) {
-            if (AttributeTypes::IDENTIFIER === $requirement->getAttribute()->getAttributeType()) {
+            if (AttributeTypes::IDENTIFIER === $requirement->getAttribute()->getType()) {
                 $requirement->setRequired(true);
                 $form->get('attributeRequirements')->remove($key);
             }

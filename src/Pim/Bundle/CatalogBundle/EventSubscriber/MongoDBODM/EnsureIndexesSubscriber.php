@@ -120,7 +120,7 @@ class EnsureIndexesSubscriber implements EventSubscriber
     public function ensureIndexesFromAttribute(AttributeInterface $attribute)
     {
         if ($attribute->isUseableAsGridFilter()
-            || AttributeTypes::IDENTIFIER === $attribute->getAttributeType()
+            || AttributeTypes::IDENTIFIER === $attribute->getType()
             || $attribute->isUnique()) {
             $this->indexCreator->ensureIndexesFromAttribute($attribute);
         }
