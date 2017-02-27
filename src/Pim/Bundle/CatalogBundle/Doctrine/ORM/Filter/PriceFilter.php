@@ -54,6 +54,14 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $this->checkLocaleAndScope($attribute, $locale, $scope);
 
         if (Operators::IS_EMPTY === $operator || Operators::IS_NOT_EMPTY === $operator) {
+            if (!array_key_exists('amount', $value)) {
+                $value['amount'] = null;
+            }
+            if (!array_key_exists('currency', $value)) {
+                $value['currency'] = '';
+            } else {
+                $this->checkCurrency($attribute, $value);
+            }
             $this->addEmptyTypeFilter($attribute, $value, $operator, $locale, $scope);
         } else {
             $this->checkValue($attribute, $value);
@@ -197,7 +205,18 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
                 $data
             );
         }
+        $this->checkCurrency($attribute, $data);
+    }
 
+    /**
+     * @param AttributeInterface $attribute
+     * @param array              $data
+     *
+     * @throws InvalidPropertyTypeException
+     * @throws InvalidPropertyException
+     */
+    protected function checkCurrency(AttributeInterface $attribute, $data)
+    {
         if (!is_string($data['currency'])) {
             throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $attribute->getCode(),
@@ -207,7 +226,9 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
             );
         }
 
-        if (!in_array($data['currency'], $this->currencyRepository->getActivatedCurrencyCodes())) {
+        if (!in_array($data['currency'], $this->currencyRepository->getActivatedCurrencyCodes()) &&
+            '' !== $data['currency']
+        ) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 $attribute->getCode(),
                 'currency',
