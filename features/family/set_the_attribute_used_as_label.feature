@@ -26,6 +26,7 @@ Feature: Set the attribute used as label
     And I fill in the following information:
       | Attribute used as label | Brand |
     And I save the family
+    And I should not see the text "There are unsaved changes."
     Then I am on the families page
     And I should see "Brand"
 
@@ -48,6 +49,9 @@ Feature: Set the attribute used as label
     Given the attribute "Brand" has been chosen as the family "Bags" label
     When I am on the "Bags" family page
     And I visit the "Attributes" tab
-    And I remove the "Brand" attribute
-    And I confirm the deletion
-    Then I should see the flash message "This attribute can not be removed because it is used as the label of the family"
+    And I remove the "brand" attribute
+    Then I should not see confirm dialog
+    And I should see the flash message "This attribute can not be removed because it is used as the label of the family"
+    Then I should see attributes "Brand" in group "Other"
+
+  # todo-a2x should not attribute as label be marked as required for all channels as identifier???

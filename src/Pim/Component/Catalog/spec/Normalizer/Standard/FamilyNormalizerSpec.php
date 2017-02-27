@@ -6,15 +6,15 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class FamilyNormalizerSpec extends ObjectBehavior
 {
     function let(
-        TranslationNormalizer $normalizer,
+        NormalizerInterface $normalizer,
         CollectionFilterInterface $filter,
         AttributeRepositoryInterface $attributeRepository,
         AttributeRequirementRepositoryInterface $requirementsRepository

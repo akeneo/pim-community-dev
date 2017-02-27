@@ -19,12 +19,12 @@ datagrid:
                 type: url
                 route: pim_enrich_family_edit
                 params:
-                    - id
+                    - code
             delete_link:
                 type: url
-                route: pim_enrich_family_remove
+                route: pim_enrich_family_rest_remove
                 params:
-                    - id
+                    - code
         actions:
             edit:
                 type:      navigate

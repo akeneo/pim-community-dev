@@ -64,7 +64,7 @@ define(
                         dropdownCssClass: 'add-attribute',
                         closeOnSelect: false
                     },
-                    resultsPerPage: 20,
+                    resultsPerPage: this.resultsPerPage,
                     searchParameters: {}
                 }, meta.config);
 

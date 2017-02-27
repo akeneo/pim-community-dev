@@ -100,7 +100,8 @@ define([
                     locales: this.locales,
                     errors: this.validationErrors,
                     label: this.config.label,
-                    fieldBaseId: this.config.fieldBaseId
+                    fieldBaseId: this.config.fieldBaseId,
+                    isReadOnly: false /* false as default default value */
                 }));
 
                 this.delegateEvents();
@@ -113,6 +114,10 @@ define([
              */
             updateModel: function (event) {
                 var data = this.getFormData();
+
+                if (Array.isArray(data.labels)) {
+                    data.labels = {};
+                }
 
                 data.labels[event.target.dataset.locale] = event.target.value;
 
