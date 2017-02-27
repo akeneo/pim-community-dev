@@ -1,0 +1,6 @@
+extensions:
+    teamwork-assistant-grid-view-selector-footer-create-project:
+        module: teamwork-assistant/grid/view-selector/footer/create/project
+        parent: pim-grid-view-selector-footer-create
+        targetZone: action-list
+        position: 100

@@ -46,7 +46,7 @@ class FilePresenter implements PresenterInterface
     public function supports($data)
     {
         return $data instanceof ProductValueInterface
-            && AttributeTypes::FILE === $data->getAttribute()->getAttributeType();
+            && AttributeTypes::FILE === $data->getAttribute()->getType();
     }
 
     /**

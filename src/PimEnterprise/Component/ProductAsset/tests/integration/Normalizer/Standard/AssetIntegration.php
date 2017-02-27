@@ -22,6 +22,6 @@ class AssetIntegration extends AbstractStandardNormalizerTestCase
 
         $result = $serializer->normalize($repository->findOneByIdentifier('cat'), 'standard');
 
-        $this->assertSame($result, $expected);
+        $this->assertSame($expected, $result);
     }
 }
