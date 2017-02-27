@@ -17,11 +17,9 @@
 - AMS-22: As a contributor I would like to select a project
 - AMS-44: As a Project creator, I would like my project to be updated with catalog structure updates
 - AMS-48: As a project creator, I would like due date to be required
-- AMS-114: Add a code to the project
 - AMS-128: As Julia, I would like to stay on my working locale
 - AMS-130: As Julia, I would like to stay on my working scope
 - AMS-153: As a owner or contributor I want to see updated completeness each new day
-- AMS-175: As Julia, I would like the "Reset" button, not to reset the scope
 
 ## Technical improvements
 
