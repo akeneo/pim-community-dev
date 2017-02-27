@@ -1,4 +1,4 @@
-# 1.7.0-alpha1
+# 1.7.0-ALPHA1 (2017-02-23)
 
 ## Bug Fixes
 
@@ -12,14 +12,14 @@
 
 ## Functional improvements
 
-- PIM-6106: As Peter, I would like to remove the escape parameter not usefull
-- PIM-6081: As Julia, when I use a multiselect filter in a grid, I would like to automatically unchecked
+- PIM-6106: As Peter, I would like to remove the escape parameter not usefull in the XLSX connector
+- PIM-6081: As Julia, when I use a multiselect filter in a grid, I would like to automatically unchecked ALL
 - PIM-6058: As Julia, I would like to define as default a view I have not created
 - PIM-6090: As Julia, I would like to see my dashboard according to my rights
 - PIM-6093: As Peter, I would like to know the imports/exports or mass actions with warnings
-- PIM-6088: As Julia, I would like to change the view per page by default
+- PIM-6088: As Julia, I would like to change the view per page by default to 25
 - PIM-6052: As Julia, I would like to use filters "is not empty" in the product grid
-- PIM-6149: [Security] PIM Version displayed on login form
+- PIM-6075: As Julia, I would like to view the asset thumbnail in the proposals
 - Change the loading message by a more humanized message to share our love.
 - Add Energy measure family and conversions cheers @JulienDotDev!
 - Complete Duration measure family with week, month, year and related conversions cheers @JulienDotDev!
