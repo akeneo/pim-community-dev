@@ -97,6 +97,8 @@ pim:
         csv_all: CSV (Todos atributos)
         csv_grid_context: CSV (Contexto de grelha)
         xlsx_all: Excel (todos os atributos)
+      delete: Eliminar produtos
+      mass_edit: Alterar as informações de produto
 jstree.create: Criar
 switch_on: "Sim"
 switch_off: "Não"
@@ -224,6 +226,7 @@ pim_enrich:
     not_allowed: Não tem autorização para aceder a esta página
     error_occured: Ocorreu um erro durante o carregamento da página
   form:
+    required: (Obrigatório)
     product:
       tab:
         associations:
@@ -372,10 +375,15 @@ pim_enrich:
           operators:
             ALL: Todos
             CONTAINS: Contém
+            DOES NOT CONTAIN: Não contém
+            "=": É igual a
+            STARTS WITH: Começa com
+            ENDS WITH: Termina com
             EMPTY: Está vazio
             NOT EMPTY: Não é vazio
         price-collection:
           operators:
+            "=": É igual a
             "!=": Não é igual a
             ">": Maior que
             "<=": Inferior ou igual a

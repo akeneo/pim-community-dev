@@ -5,6 +5,8 @@ pim_connector:
     entity_reader.title: Entiteitextractie
     csv_reader:
       title: CSV-lezer
+    file_reader:
+      invalid_item_columns_count: 'Er worden %totalColumnsCount% kolommen verwacht, in werkelijkheid %itemColumnsCount% in %filePath%:%lineno%'
     csv_product_reader.title: CSV product lezer
     csv_category_reader.title: CSV categorie lezer
     csv_variant_group .title: CSV-variant groep lezer
@@ -179,6 +181,7 @@ job_execution.summary:
     title: 'Bestandscodering:'
     skipped: overgeslagen, extensie in whitelist
   product_skipped_no_diff: overgeslagen product (geen verschillen)
+  product_skipped_no_associations: product overgeslagen (geen associaties gedetecteerd)
 batch_jobs:
   csv_product_export:
     label: Productexport in CSV

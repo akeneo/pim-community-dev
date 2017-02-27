@@ -1,4 +1,8 @@
-# 1.6.12 (?)
+# 1.6.x
+
+## Bug fixes
+
+- PIM-6162: Fix families rendering when editing product export
 
 ## Improvements
 
