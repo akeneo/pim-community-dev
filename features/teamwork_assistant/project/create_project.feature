@@ -14,11 +14,18 @@ Feature: Create enrichment project
     And I filter by "family" with operator "in list" and value "Sneakers"
     And I filter by "category" with operator "" and value "summer_collection"
     And I display in the products grid the columns sku, name, description
-    And I should be on the products page
-    And I click on the create project button
-    Then I should see the text "Label"
-    Then I should see the text "Due date"
-    Then I should see the text "Description"
+    Then I should be on the products page
+    When I click on the create project button
+    Then I should see the text "Locale"
+    And the field project-locale should contain "English (United States)"
+    And the field project-locale should be disabled
+    And I should see the text "Channel"
+    And the field project-channel should contain "[tablet]"
+    And the field project-channel should be disabled
+    And I should see the text "Name"
+    And I should see the text "Due date"
+    And I should see the text "Description"
+    And I should see the text "Don't worry, project calculation may take a while, so your project may not be visible right away."
     When I fill in the following information in the popin:
       | project-label       | Summer collection 2017                 |
       | project-description | My very awesome summer collection 2007 |
