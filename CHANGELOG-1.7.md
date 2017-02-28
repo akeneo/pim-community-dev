@@ -167,6 +167,10 @@
 - Move `Pim\Component\Catalog\Normalizer\Structured\ProductValuesNormalizer` to `Pim\Component\Catalog\Normalizer\Standard\Product\ProductValuesNormalizer`
 - Move `Pim\Component\Catalog\Normalizer\Structured\TranslationNormalizer` to `Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer`
 - Move `Pim\Bundle\CommentBundle\Normalizer\Structured\CommentNormalizer` to `Pim\Bundle\CommentBundle\Normalizer\Standard\CommentNormalizer` and remove `Akeneo\Component\Localization\Presenter\PresenterInterface` and `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver` from constructor.
+- Move `Pim\Bundle\Entity\Repository\GroupRepository` to `Pim\Bundle\Doctrine\ORM\Repository\GroupRepository`
+- Move `Pim\Bundle\Entity\Repository\RoleRepository` to `Pim\Bundle\Doctrine\ORM\Repository\RoleRepository`
+- Move `Pim\Bundle\Entity\Repository\UserRepository` to `Pim\Bundle\Doctrine\ORM\Repository\UserRepository`
+- Move `Pim\Bundle\Entity\Repository\UserRepositoryInterface` to `Pim\Bundle\Repository\UserRepositoryInterface`
 - `Pim\Component\Catalog\Model\ChannelInterface` implements `Akeneo\Component\Localization\Model\TranslatableInterface`
 - Update classes and services to use the interface `Pim\Component\User\Model\GroupInterface` in place of `Oro\Bundle\UserBundle\Entity\Group`
 

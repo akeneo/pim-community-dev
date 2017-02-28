@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\Controller;
 
-use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
 use Pim\Component\User\Model\GroupInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

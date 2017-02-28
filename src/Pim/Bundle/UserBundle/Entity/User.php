@@ -9,8 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
