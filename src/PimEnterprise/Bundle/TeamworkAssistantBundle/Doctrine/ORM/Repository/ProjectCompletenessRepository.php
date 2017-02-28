@@ -50,6 +50,72 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
         return new ProjectCompleteness($completeness['todo'], $completeness['in_progress'], $completeness['done']);
     }
 
+    public function findProductIds(ProjectInterface $project, $status, $username = null)
+    {
+        $parameters = [
+            'locale_code' => $project->getLocale()->getCode(),
+            'channel_code' => $project->getChannel()->getCode(),
+        ];
+
+        $permissionSql = '';
+
+        if (null !== $username) {
+            $permissionSql = <<<SQL
+INNER JOIN `@pimee_security.entity.attribute_group_access@` AS `attribute_group_access`
+    ON `completeness_per_attribute_group`.`attribute_group_id` = `attribute_group_access`.`attribute_group_id`
+    AND `attribute_group_access`.`edit_attributes` = 1
+INNER JOIN `@pim_user.entity.user#groups@` AS `user_group`
+    ON `attribute_group_access`.`user_group_id` = `user_group`.`group_id`
+INNER JOIN `@pim_user.entity.user@` AS `user`
+    ON `user_group`.`user_id` = `user`.`id`
+WHERE `user`.`username` = :username
+SQL;
+
+            $parameters['username'] = $username;
+        }
+
+        $sql = <<<SQL
+SELECT `completeness_per_attribute_group`.`product_id`
+FROM `@pimee_teamwork_assistant.completeness_per_attribute_group@` AS `completeness_per_attribute_group`
+INNER JOIN `@pim_catalog.entity.channel@` AS `channel`
+	ON `completeness_per_attribute_group`.`channel_id` = `channel`.`id`
+INNER JOIN `@pim_catalog.entity.locale@` AS `locale`
+	ON `completeness_per_attribute_group`.`locale_id` = `locale`.`id`
+$permissionSql
+AND `channel`.`code` = :channel_code
+AND `locale`.`code` = :locale_code
+GROUP BY `completeness_per_attribute_group`.`product_id`
+SQL;
+
+        // Todo
+        if ($status === 1) {
+            $sql .= <<<SQL
+HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) = 0 AND COUNT(`completeness_per_attribute_group`.`product_id`) = 0)
+SQL;
+        }
+
+        // IN PROGRESS
+        if ($status === 2) {
+            $sql .= <<<SQL
+HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) > 0 OR COUNT(`completeness_per_attribute_group`.`product_id`) > 0)
+AND SUM(`completeness_per_attribute_group`.`is_complete`) <> COUNT(`completeness_per_attribute_group`.`product_id`)
+SQL;
+        }
+
+        // DONE
+        if ($status === 3) {
+            $sql .= <<<SQL
+HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) = COUNT(`completeness_per_attribute_group`.`product_id`))
+SQL;
+        }
+
+        $connection = $this->entityManager->getConnection();
+        $sql = $this->tableNameMapper->createQuery($sql);
+        $productIds = $connection->fetchAll($sql, $parameters);
+
+        return array_column($productIds, 'product_id');
+    }
+
     /**
      * Build your query parameters.
      *
@@ -90,7 +156,7 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
             // Filter on the categories the user can edit
             $filterByCategoryPermissionJoins = <<<FILTER_USER
 LEFT JOIN `@pim_user.entity.user#groups@` AS `user_group`
-    ON `product_category_access`.`user_group_id` = `user_group`.`group_id` 
+    ON `product_category_access`.`user_group_id` = `user_group`.`group_id`
 LEFT JOIN `@pim_user.entity.user@` AS `user`
     ON `user_group`.`user_id` = `user`.`id`
 FILTER_USER;
@@ -108,7 +174,7 @@ INNER JOIN`@pimee_teamwork_assistant.model.project#userGroups@` AS `project_cont
     ON `project_contributor_group`.`user_group_id` = `attribute_group_access`.`user_group_id`
     AND `project_contributor_group`.`project_id` = :project_id
 INNER JOIN `@pim_user.entity.user#groups@` AS `user_group`
-    ON `project_contributor_group`.`user_group_id` = `user_group`.`group_id` 
+    ON `project_contributor_group`.`user_group_id` = `user_group`.`group_id`
 INNER JOIN `@pim_user.entity.user@` AS `user`
     ON `user_group`.`user_id` = `user`.`id`
 WHERE `user`.`username` = :username
@@ -119,37 +185,37 @@ ATTRIBUTE_GROUP_FILTER;
 SELECT
     COALESCE(
         SUM(
-            CASE 
+            CASE
                 WHEN `attribute_group_in_progress` = 0 AND `attribute_group_done` = 0
-                THEN 1 ELSE 0 
+                THEN 1 ELSE 0
             END
         ),
         0
     ) AS `todo`,
     COALESCE(
         SUM(
-            CASE 
+            CASE
                 WHEN `attribute_group_done` <> `total_attribute_group` AND (`attribute_group_in_progress` > 0 OR `attribute_group_done` > 0)
-                THEN 1 ELSE 0 
+                THEN 1 ELSE 0
             END
         ),
         0
     ) AS `in_progress`,
     COALESCE(
         SUM(
-            CASE 
+            CASE
                 WHEN `attribute_group_done` = `total_attribute_group`
-                THEN 1 ELSE 0 
+                THEN 1 ELSE 0
             END
         ),
         0
     ) AS `done`
 FROM (
-    SELECT 
+    SELECT
 		SUM(`completeness_per_attribute_group`.`has_at_least_one_required_attribute_filled`) AS `attribute_group_in_progress`,
 		SUM(`completeness_per_attribute_group`.`is_complete`) AS `attribute_group_done`,
 		COUNT(`completeness_per_attribute_group`.`product_id`) AS `total_attribute_group`
-	FROM (      
+	FROM (
 	    SELECT DISTINCT `project_product`.`product_id`
         FROM `@pimee_teamwork_assistant.project_product@` AS `project_product`
         LEFT JOIN `@pim_catalog.entity.product#categories@` AS `category_product`
@@ -166,7 +232,7 @@ FROM (
 			)
         )
     ) AS `product_selection`
-    
+
     INNER JOIN `@pimee_teamwork_assistant.completeness_per_attribute_group@` AS `completeness_per_attribute_group`
         ON `completeness_per_attribute_group`.`product_id` = `product_selection`.`product_id`
         AND `completeness_per_attribute_group`.`channel_id` = :channel_id

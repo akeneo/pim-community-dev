@@ -137,7 +137,11 @@ services:
         class: '%pimee_teamwork_assistant.project_completeness_filter.class%'
         arguments:
             - '@form.factory'
-            - '@oro_filter.filter_utility'
+            - '@pim_filter.product_utility'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@pimee_teamwork_assistant.repository.project'
+            - '@pimee_teamwork_assistant.repository.project_completeness'
+            - '@security.token_storage'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: project_completeness }
 
