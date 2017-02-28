@@ -9,7 +9,7 @@
     {
         function let()
         {
-            $this->beConstructedWith(100);
+            $this->beConstructedWith(['pagination' => ['limit_max' => 100]]);
         }
 
         function it_is_initializable()

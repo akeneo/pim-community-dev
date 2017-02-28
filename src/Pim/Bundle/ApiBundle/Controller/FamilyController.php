@@ -51,6 +51,9 @@ class FamilyController
     /** @var RouterInterface */
     protected $router;
 
+    /** @var array */
+    protected $apiConfiguration;
+
     /** @var string */
     protected $documentationUrl;
 
@@ -62,6 +65,7 @@ class FamilyController
      * @param ValidatorInterface             $validator
      * @param SaverInterface                 $saver
      * @param RouterInterface                $router
+     * @param array                          $apiConfiguration
      * @param string                         $documentationUrl
      */
     public function __construct(
@@ -72,15 +76,17 @@ class FamilyController
         ValidatorInterface $validator,
         SaverInterface $saver,
         RouterInterface $router,
+        array $apiConfiguration,
         $documentationUrl
     ) {
-        $this->repository       = $repository;
-        $this->normalizer       = $normalizer;
-        $this->factory          = $factory;
-        $this->updater          = $updater;
-        $this->validator        = $validator;
-        $this->saver            = $saver;
-        $this->router           = $router;
+        $this->repository = $repository;
+        $this->normalizer = $normalizer;
+        $this->factory = $factory;
+        $this->updater = $updater;
+        $this->validator = $validator;
+        $this->saver = $saver;
+        $this->router = $router;
+        $this->apiConfiguration = $apiConfiguration;
         $this->documentationUrl = sprintf($documentationUrl, substr(Version::VERSION, 0, 3));
     }
 
@@ -115,14 +121,15 @@ class FamilyController
      */
     public function listAction(Request $request)
     {
-        //@TODO limit will be set in configuration in an other PR
-        $limit = $request->query->get('limit', 10);
-        $page = $request->query->get('page', 1);
+        $queryParameters = [
+            'page'  => $request->query->get('limit', 1),
+            'limit' => $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default'])
+        ];
 
         //@TODO add parameterValidator to validate limit and page
 
-        $offset = $limit * ($page - 1);
-        $families = $this->repository->searchAfterOffset([], [], $limit, $offset);
+        $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
+        $families = $this->repository->searchAfterOffset([], [], $queryParameters['limit'], $offset);
 
         $familiesApi = $this->normalizer->normalize($families, 'external_api');
 

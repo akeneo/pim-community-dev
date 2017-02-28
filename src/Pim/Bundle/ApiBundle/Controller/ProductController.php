@@ -87,6 +87,9 @@ class ProductController
     /** @var ProductFilterInterface */
     protected $emptyValuesFilter;
 
+    /** @var array */
+    protected $apiConfiguration;
+
     /** @var string */
     protected $urlDocumentation;
 
@@ -106,6 +109,7 @@ class ProductController
      * @param SaverInterface                        $saver
      * @param RouterInterface                       $router
      * @param ProductFilterInterface                $emptyValuesFilter
+     * @param array                                 $apiConfiguration
      * @param string                                $urlDocumentation
      */
     public function __construct(
@@ -124,6 +128,7 @@ class ProductController
         SaverInterface $saver,
         RouterInterface $router,
         ProductFilterInterface $emptyValuesFilter,
+        array $apiConfiguration,
         $urlDocumentation
     ) {
         $this->pqbFactory = $pqbFactory;
@@ -141,6 +146,7 @@ class ProductController
         $this->saver = $saver;
         $this->router = $router;
         $this->emptyValuesFilter = $emptyValuesFilter;
+        $this->apiConfiguration = $apiConfiguration;
         $this->urlDocumentation = sprintf($urlDocumentation, substr(Version::VERSION, 0, 3));
     }
 
@@ -153,9 +159,10 @@ class ProductController
      */
     public function listAction(Request $request)
     {
-        $queryParameters = [];
-        $queryParameters['page'] = $request->query->get('page', 1);
-        $queryParameters['limit'] = $request->query->get('limit', 10); // limit will be put in config in an other PR
+        $queryParameters = [
+            'page'  => $request->query->get('page', 1),
+            'limit' => $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default'])
+        ];
 
         try {
             $this->parameterValidator->validate($queryParameters);

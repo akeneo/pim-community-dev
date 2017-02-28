@@ -19,6 +19,7 @@ services:
             - '@validator'
             - '@pim_catalog.saver.category'
             - '@router'
+            - '%pim_api.configuration%'
             - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#category'
 
     pim_api.controller.family:
@@ -31,6 +32,7 @@ services:
             - '@validator'
             - '@pim_catalog.saver.family'
             - '@router'
+            - '%pim_api.configuration%'
             - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#family'
 
     pim_api.controller.attribute:
@@ -43,6 +45,7 @@ services:
             - '@validator'
             - '@pim_catalog.saver.attribute'
             - '@router'
+            - '%pim_api.configuration%'
             - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute'
 
     pim_api.controller.attribute_option:
@@ -66,6 +69,7 @@ services:
             - '@pim_serializer'
             - '@pim_api.pagination.paginator'
             - '@pim_api.pagination.parameter_validator'
+            - '%pim_api.configuration%'
 
     pim_api.controller.token:
         scope: request
@@ -91,6 +95,7 @@ services:
             - '@pim_catalog.saver.product'
             - '@router'
             - '@pim_catalog.comparator.filter.product'
+            - '%pim_api.configuration%'
             - 'https://docs.akeneo.com/%s/reference/standard_format/products.html'
 
     pim_api.controller.root_endpoint:
