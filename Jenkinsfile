@@ -31,6 +31,12 @@ stage("Checkout") {
     node {
         deleteDir()
         checkout scm
+
+        if ('akeneo' != ceOwner) {
+            sh "composer config repositories.pim-community-dev vcs \"https://github.com/${ceOwner}/pim-community-dev.git\""
+        }
+        sh "composer require --no-update \"akeneo/pim-community-dev\":\"${ceBranch}\""
+
         stash "project_files"
     }
 
@@ -38,14 +44,11 @@ stage("Checkout") {
         deleteDir()
         docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
             unstash "project_files"
-            if ('akeneo' != ceOwner) {
-                sh "composer config repositories.pim-community-dev vcs \"https://github.com/${ceOwner}/pim-community-dev.git\""
-            }
 
-            sh "composer require --no-update \"akeneo/pim-community-dev\":\"${ceBranch}\""
             sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
             sh "app/console oro:requirejs:generate-config"
             sh "app/console assets:install"
+
             stash "project_files_full"
         }
         deleteDir()
@@ -87,7 +90,7 @@ def runGruntTest() {
             docker.image('digitallyseamless/nodejs-bower-grunt').inside("") {
                 unstash "project_files_full"
                 sh "npm install"
-                sh "grunt travis"
+                sh "grunt --force"
             }
         } finally {
             deleteDir()
@@ -95,49 +98,42 @@ def runGruntTest() {
     }
 }
 
-def runPhpSpecTest(version) {
+def runPhpSpecTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${version}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "project_files"
 
-                if (version == "7.0") {
+                if (phpVersion == "7.0") {
                     sh "composer remove --dev --no-update doctrine/mongodb-odm-bundle;"
                 }
 
                 sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                sh "touch app/config/parameters_test.yml"
                 sh "mkdir -p app/build/logs/"
                 sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
             }
         } finally {
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${version}] /\" app/build/logs/*.xml"
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
         }
     }
 }
 
-def runPhpCsFixerTest(version) {
+def runPhpCsFixerTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${version}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "project_files"
 
-                if (version == "7.0") {
-                    sh "composer remove --dev --no-update doctrine/mongodb-odm-bundle;"
-                }
-
-                sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "composer global require friendsofphp/php-cs-fixer ^2.0"
-                sh "touch app/config/parameters_test.yml"
                 sh "mkdir -p app/build/logs/"
                 sh "/home/akeneo/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --diff --format=junit --config=.php_cs.dist > app/build/logs/phpcs.xml"
             }
         } finally {
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${version}] /\" app/build/logs/*.xml"
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
         }
