@@ -71,19 +71,19 @@ class IndexDecorator extends ElementDecorator
     }
 
     /**
-     * Return the decorated Activity Manager widget
+     * Return the decorated team work assistant widget
      *
      * @return ElementDecorator
      */
-    public function getActivityManagerWidget()
+    public function getTeamworkAssistantWidget()
     {
         $widget = $this->spin(function () {
-            return $this->find('css', '#activity-manager-widget');
-        }, 'Activity Manager widget not found.');
+            return $this->find('css', '#teamwork-assistant-widget');
+        }, 'team work assistant widget not found.');
 
         return $this->decorate(
             $widget,
-            ['PimEnterprise\Behat\Decorator\Widget\ActivityManagerWidgetDecorator']
+            ['PimEnterprise\Behat\Decorator\Widget\TeamworkAssistantWidgetDecorator']
         );
     }
 }

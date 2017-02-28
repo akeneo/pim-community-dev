@@ -45,7 +45,7 @@ Feature: Send a product draft with reference data for approval
     And I press the Send for approval button
     Then I should see "Sent for approval"
     When I fill in the following information:
-      | Lace color  | Blue |
+      | Lace color | Blue |
     And I save the product
     Then I should see "Send for approval"
     And its status should be "In progress"

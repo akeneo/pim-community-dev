@@ -27,7 +27,7 @@ class ImagePresenter extends FilePresenter
     public function supports($data)
     {
         return $data instanceof ProductValueInterface &&
-            AttributeTypes::IMAGE === $data->getAttribute()->getAttributeType();
+            AttributeTypes::IMAGE === $data->getAttribute()->getType();
     }
 
     /**

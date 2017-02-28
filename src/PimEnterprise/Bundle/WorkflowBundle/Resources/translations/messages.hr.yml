@@ -1,32 +1,159 @@
 pimee_workflow:
   product_draft:
     author: Autor
+    created: Predložen od strane
+    changes: Promjene
+    locale: Kontekst lokala
+    product:
+      label: Oznaka proizvoda
+    attribute:
+      label: Atribut
     status:
       label: Status
+      working_copy: Radna kopija
+      in_progress: U tijeku
+      ready: Čeka na odobrenje
+      can_be_partially_reviewed: Mogu se djelomično pregledati
+      can_not_be_approved: Nije moguće pregledati
+      can_not_be_deleted: Ne može se izbrisati
+    status_message:
+      can_be_partially_reviewed: Ovaj prijedlog se može pregledati samo djelomično jer se neke promjene primijenjuju na vrijednosti koje ne možete uređivati. Obratite se administratoru da biste promijenili svoja prava.
+      can_not_be_approved: Ovaj prijedlog se ne može pregledati jer se sve promjene primijenjuju na vrijednosti koje ne možete uređivati. Obratite se administratoru da biste promijenili svoja prava.
+      can_not_be_deleted: Ovaj prijedlog se ne može obrisati jer se sve promjene primijenjuju na vrijednosti koje ne možete uređivati. Obratite se administratoru da biste promijenili svoja prava.
+      in_progress: Ovaj prijedlog je trenutno u obradi i nije još poslan.
     action:
+      approve: Odobri sve
+      refuse: Odbaci sve
       remove: Ukloni
+      partial_approve: Odobri promjene na atribut %attribute% proizvoda %product%
+      partial_reject: Odbaci promjene na atribut %attribute% proizvoda %product%
+    notification:
+      partial_approve: '%owner% je prihvatio vrijednosti za %attributes% proizvoda %product%'
+      partial_approve_number: '%owner% je prihvatio vrijednost za %attributes_count% atribute proizvoda %product%'
+      partial_reject: '%owner% je odbacio vrijednosti za %attributes% proizvoda %product%'
+      partial_reject_number: '%owner% je odbacio vrijednosti za %attributes_count% atribute proizvoda %product%'
+      partial_remove: '%owner% je izbrisao vrijednosti za %attributes% proizvoda %product%'
+      partial_remove_number: '%owner% je izbrisao vrijednosti za %attributes_count% atribute proizvoda %product%'
+      approve: '%owner% je prihvatio tvoj prijedlog za proizvod %product%'
+      refuse: '%owner% je odbio tvoj prijedlog za proizvod %product%'
+      remove: '%owner% je izbrisao svoj prijedlog za proizvod %product%'
+    mass_review_action:
+      approve: Odobri sve odabrano
+      refuse: Odbaci sve odabrano
+      error:
+        draft_not_ready: Ovaj prijedlog nije spreman za odobrenje
+        not_product_owner: Nema proizvoda vezanih uz ovaj prijedlog
+        cannot_edit_attributes: Ne može se uređivati atribute izmijene ovim prijedlogom
+        invalid_draft: Ovaj prijedlog se ne može primijeniti zbog sljedeće pogreške. %error%
+  proposal:
+    to_review: '%author.firstname% %author.lastname% je poslao prijedlog za pregled za proizvod %product.label%'
+    individual_import: '%author.firstname% %author.lastname% je poslao prijedloge za ocjenu iz uvezene radnje'
+    generic_import: Ima prijedloga za ocjenu iz uvezene radnje
+    original_value: Original
+    new_value: Novo
+    no_diff: Vrijednost "%value%" je ista u prijedlogu i radnoj kopiji.
+    draft_in_progress: Nacrt je u pripremi od strane %author% za ovaj proizvod.
+  published_product:
+    index: Objavljeni proizvodi
+    title: Objavljeni proizvodi
+  acl.published_product:
+    index: Upravljanje objavljenih proizvoda
   product:
     permission:
       label: Dozvole
+      own: Pregled / objava
       edit: Uredi
       view: Prikaz
+  steps:
+    product_draft_processor.title: Procesor prijedloga
+    approve.title: Odobri prijedlog
+    refuse.title: Odbij prijedlog
   mass_edit_action:
     published:
+      page_title: Objavljeni proizvodi
+      page_subtitle: Masovno uređivanje (1 objavljeni proizvod) | Masovno uređivanje (%count% objavljenih proizvoda)
       title: Odabiri operaciju
+      subtitle: Odaberi operaciju koju želiš obaviti na odabranom objavljenom proizvodu| Odaberi operaciju koju želiš izvesti na %count% odabranih objavljenih proizvoda
+      confirm: Spremate se ažurirati objavljene proizvode sa sljedećim podacima, molimo vas da potvrdite. | Ažurirati ćete %count% objavljenih proizvoda sa sljedećim podacima, molimo vas da potvrdite.
       steps:
         first: Odabir objavljenih proizvoda
         second: Odabiri operaciju
         third: Konfiguriraj
         fourth: Potvrdi
+pimee_workflow_product_draft_notification_new_proposal: Novi prijedlog
+pimee_workflow_import_notification_new_proposals: Novi prijedlozi iz uvoza
+btn.publish: Objavi
+btn.unpublish: Poništi objavu
+pimee_workflow_product_draft_notification_partial_approve: Prijedlog je djelomično odobren
+pimee_workflow_product_draft_notification_partial_reject: Prijedlog je djelomično odbijen
+pimee_workflow_product_draft_notification_partial_remove: Prijedlog je djelomično izbrisan
+pimee_workflow_product_draft_notification_approve: Prijedlog je odobren
+pimee_workflow_product_draft_notification_refuse: Prijedlog je odbačen
+pimee_workflow_product_draft_notification_remove: Prijedlog je izbrisan
 flash:
+  product:
+    published: Proizvod je uspješno objavljen.
+    unpublished: Uspješno je poništena objava proizvoda.
   product_draft:
+    approve:
+      success: Prijedlog je uspješno primijenjen.
+      error: Prijedlog nije moguće primijeniti zbog sljedeće pogreške. %error%
+    refuse:
+      success: Prijedlog je odbijen.
     remove:
       success: Prijedlog je uklonjen.
+pim_menu:
+  item:
+    published_product: Objavljeni proizvodi
+    proposal: Prijedlozi
+pim_title:
+  published_product:
+    index: Objavljeni proizvodi
+    view: Objavljeni proizvodi %product.sku% | Prikaz
+  product:
+    dispatch: "Proizvodi %product.sku%"
+    show: "Proizvodi %product.sku% | Prikaži"
+  proposal:
+    index: Prijedlozi
+btn.editworkingcopy: Uredi radnu kopiju
+confirmation:
+  product:
+    publish: Jeste li sigurni da želite objaviti ovaj proizvod ?
+    unpublish: Jeste li sigurni da želite poništiti objavu ovog proizvoda ?
+proposal.overview: Prijedlozi
 Attributes.title: Atributi
 Completeness.title: Potpunost
+publish_product.steps.publish_product_tasklet.title: Objavi proizvod
+unpublish_product.steps.unpublish_product_tasklet.title: Poništi objavu proizvoda
+approve_product_draft.steps.approve.title: Odobri prijedlog
+approve_product_draft.steps.refuse.title: Odbaci prijedlog
+job_execution.summary:
+  approved: odobreno
+  refused: odbijeno
+  mass_published: Proizvod je objavljen
+  mass_unpublished: Poništena je objava proizvoda
+  proposal: Kreiran je prijedlog
+  proposal_deleted: prijedlog je izbrisan
+  proposal_updated: prijedlog je ažuriran
+  proposal_created: kreirani prijedlog
+  proposal_skipped: preskočeni proizvod (nema razlike)
+published products: Objavljeni proizvodi
 batch_jobs:
   csv_published_product_export:
     label: Izvoz objavljenih proizvoda u CSV
     export.label: Izvoz objavljenih proizvoda
+  csv_product_proposal_import:
+    label: Uvoz prijedloga proizvoda iz CSV
+    import.label: Uvoz prijedloga proizvoda
+  approve_product_draft:
+    label: Odobri prijedlog
+    perform.label: Odobri prijedlog
+  refuse_product_draft:
+    label: Odbij prijedlog
+    perform.label: Odbij prijedloge
   xlsx_published_product_export:
+    label: Izvoz objavljenih proizvoda u XLSX
     export.label: Izvoz objavljenih proizvoda
+  xlsx_product_proposal_import:
+    label: Uvoz prijedloga proizvoda iz XLSX
+    import.label: Uvoz prijedloga proizvoda iz XLSX

@@ -7,8 +7,8 @@ Feature: purge product versions
   Scenario: Successfully purges product versions but keeps the published version
     Given a "footwear" catalog configuration
     And the following product:
-      | sku     |
-      | boots   |
+      | sku   |
+      | boots |
     And I am logged in as "Julia"
     And I am on the "boots" product page
     When I add available attribute Length, Description, Name

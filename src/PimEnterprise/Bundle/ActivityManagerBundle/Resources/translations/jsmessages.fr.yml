@@ -1,9 +1,0 @@
-activity_manager:
-  common:
-    required: Obligatoire
-  project:
-    label: Libellé
-    description: Description
-  create_project_modal:
-    confirm: Enregistrer
-    cancel: Annuler

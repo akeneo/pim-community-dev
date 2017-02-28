@@ -12,8 +12,8 @@ Feature: Add attribute to a family
     Given I am on the "colors" attribute group page
     And I visit the "Permissions" tab
     And I fill in the following information:
-      | Allowed to edit attributes | |
-      | Allowed to view attributes | |
+      | Allowed to edit attributes |  |
+      | Allowed to view attributes |  |
     And I save the attribute group
     When I am on the "Sandals" family page
     And I visit the "Attributes" tab

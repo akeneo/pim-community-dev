@@ -1,9 +1,0 @@
-activity_manager:
-  common:
-    required: Verplicht
-  project:
-    label: Label
-    description: Beschrijving
-  create_project_modal:
-    confirm: Opslaan
-    cancel: Annuleren

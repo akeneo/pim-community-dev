@@ -7,10 +7,9 @@ Feature: Ensure variant group values priority when execute a rule
   Background:
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-
-    And the following product groups:
-      | code  | label   | axis        | type    |
-      | vboot | VG boot | size, color | VARIANT |
+    And the following variant groups:
+      | code  | label-en_US | axis       | type    |
+      | vboot | VG boot     | size,color | VARIANT |
     And the following variant group values:
       | group | attribute | value                   | locale | scope |
       | vboot | name      | Name from variant group | en_US  |       |

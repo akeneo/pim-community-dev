@@ -20,7 +20,6 @@ pimee_workflow:
       can_be_partially_reviewed: U kan dit voorstel enkel gedeeltelijk nakijken, omdat sommige wijzigingen van toepassing zijn op waardes die je niet kan bewerken. Gelieve contact op te nemen met uw beheerder om uw rechten aan te passen.
       can_not_be_approved: U kan dit voorstel niet nakijken, omdat alle wijzigingen van toepassing zijn op waardes die je niet kan bewerken. Gelieve contact op te nemen met uw beheerder om uw rechten aan te passen.
       can_not_be_deleted: U kan dit voorstel niet verwijderen, omdat alle wijzigingen van toepassing zijn op waardes die je niet kan bewerken. Gelieve contact op te nemen met uw beheerder om uw rechten aan te passen.
-      in_progress: Dit voorstel is momenteel in ontwerp en is nog niet toegevoegd.
     action:
       approve: Keur alles goed
       refuse: Keur alles af
@@ -32,8 +31,6 @@ pimee_workflow:
       partial_approve_number: '%owner% heeft waardes geaccepteerd voor %attributes_count% attributen van het product %product%'
       partial_reject: '%owner% heeft waarde(s) afgekeurd voor %attributes% van het product %product%'
       partial_reject_number: '%owner% heeft waardes afgekeurd voor %attributes_count% attributen van het product %product%'
-      partial_remove: '%owner% heeft waarde(s) verwijderd voor %attributes% van het product %product%'
-      partial_remove_number: '%owner% heeft waardes verwijderd voor %attributes_count% attributen van het product %product%'
       approve: '%owner% heeft je voorstel geaccepteerd voor het product %product%'
       refuse: '%owner% heeft je voorstel afgekeurd voor het product %product%'
       remove: '%owner% heeft je voorstel verwijderd voor het product %product%'
@@ -59,22 +56,20 @@ pimee_workflow:
       edit: Bewerken
       view: Bekijken
   steps:
-    approve.title: Keur voorstel goed
     refuse.title: Keur voorstel af
   mass_edit_action:
     published:
       page_title: Gepubliceerde producten
       title: Kies bewerking
+      confirm: U staat op het punt een gepubliceerd product bij te werken met de volgende informatie. Alstublieft bevestigen. |U staat op het punt %count% gepubliceerde producten bij te werken met de volgende informatie. Alstublieft bevestigen.
       steps:
+        first: Kies gepubliceerde producten
         second: Kies bewerking
-        third: Configureer
-        fourth: Bevestig
 pimee_workflow_product_draft_notification_new_proposal: Nieuw voorstel
 btn.publish: Publiceren
 btn.unpublish: Depubliceer
 pimee_workflow_product_draft_notification_partial_approve: Voorstel gedeeltelijk goedgekeurd
 pimee_workflow_product_draft_notification_partial_reject: Voorstel gedeeltelijk afgekeurd
-pimee_workflow_product_draft_notification_partial_remove: Voorstel gedeeltelijk verwijderd
 pimee_workflow_product_draft_notification_approve: Voorstel goedgekeurd
 pimee_workflow_product_draft_notification_refuse: Voorstel afgekeurd
 pimee_workflow_product_draft_notification_remove: Voorstel verwijderd
@@ -93,8 +88,8 @@ pim_title:
     index: Gepubliceerde producten
     view: Gepubliceerde producten %product.sku% | Bekijk
   product:
-    dispatch: Producten %product.sku%
-    show: Producten %product.sku% | Toon
+    dispatch: "Producten %product.sku%"
+    show: "Producten %product.sku% | Toon"
   proposal:
     index: Voorstellen
 btn.editworkingcopy: Wijzig werkkopie
@@ -103,6 +98,12 @@ confirmation:
     publish: Weet u zeker dat u dit product wilt publiceren?
     unpublish: Weet u zeker dat u dit product wilt depubliceren?
 proposal.overview: Voorstellen
-Attributes.title: Kenmerken
+Attributes.title: Attributen
 Completeness.title: Volledigheid
 published products: Gepubliceerde producten
+batch_jobs:
+  csv_published_product_export:
+    label: Gepubliceerd product exporteren in CSV
+    export.label: Gepubliceerd product exporteren
+  xlsx_published_product_export:
+    export.label: Gepubliceerd product exporteren

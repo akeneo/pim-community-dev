@@ -7,33 +7,33 @@ Feature: Mass edit products through product draft
   Background:
     Given a "clothing" catalog configuration
     And the product:
-      | family                    | jackets                 |
-      | categories                | winter_top              |
-      | sku                       | my-first-jacket         |
-      | name-en_US                | First jacket            |
-      | description-en_US-mobile  | An awesome first jacket |
-      | number_in_stock-mobile    | 4                       |
-      | number_in_stock-tablet    | 20                      |
-      | price-USD                 | 45                      |
-      | manufacturer              | Volcom                  |
-      | weather_conditions        | dry, wet                |
-      | handmade                  | 0                       |
-      | release_date-mobile       | 2014-05-14              |
-      | length                    | 60 CENTIMETER           |
+      | family                   | jackets                 |
+      | categories               | winter_top              |
+      | sku                      | my-first-jacket         |
+      | name-en_US               | First jacket            |
+      | description-en_US-mobile | An awesome first jacket |
+      | number_in_stock-mobile   | 4                       |
+      | number_in_stock-tablet   | 20                      |
+      | price-USD                | 45                      |
+      | manufacturer             | Volcom                  |
+      | weather_conditions       | dry, wet                |
+      | handmade                 | 0                       |
+      | release_date-mobile      | 2014-05-14              |
+      | length                   | 60 CENTIMETER           |
     And the product:
-      | family                    | jackets                  |
-      | categories                | winter_top               |
-      | sku                       | my-second-jacket         |
-      | name-en_US                | Second jacket            |
-      | description-en_US-mobile  | An awesome second jacket |
-      | number_in_stock-mobile    | 4                        |
-      | number_in_stock-tablet    | 20                       |
-      | price-USD                 | 45                       |
-      | manufacturer              | Volcom                   |
-      | weather_conditions        | dry, wet                 |
-      | handmade                  | 0                        |
-      | release_date-mobile       | 2014-05-14               |
-      | length                    | 60 CENTIMETER            |
+      | family                   | jackets                  |
+      | categories               | winter_top               |
+      | sku                      | my-second-jacket         |
+      | name-en_US               | Second jacket            |
+      | description-en_US-mobile | An awesome second jacket |
+      | number_in_stock-mobile   | 4                        |
+      | number_in_stock-tablet   | 20                       |
+      | price-USD                | 45                       |
+      | manufacturer             | Volcom                   |
+      | weather_conditions       | dry, wet                 |
+      | handmade                 | 0                        |
+      | release_date-mobile      | 2014-05-14               |
+      | length                   | 60 CENTIMETER            |
     And I am logged in as "Mary"
     And I am on the products page
 

@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: Lokalisatie %locale.code% | Bewerken
+  edit: "Lokalisatie %locale.code% | Bewerken"
 Permissions: Machtigingen
 pane.accordion.permissions: Machtigingen
 attribute group.permissions:
@@ -35,12 +35,8 @@ pim_enrich:
       page_subtitle: Massa-wijzig (1 product)|Massa-wijzig (%count% producten)
       title: Kies bewerking
       subtitle: Kies de bewerking die u wilt uitvoeren op het geselecteerde product|Kies de bewerking die u wilt uitvoeren op de %count% geselecteerde producten
-      confirm: U staat op het punt een product bij te werken met de volgende informatie. Gelieve dit te bevestigen. |U staat op het punt %count% producten bij te werken met de volgende informatie. Gelieve dit te bevestigen.
       steps:
-        first: Kies producten
         second: Kies bewerking
-        third: Configureer
-        fourth: Bevestig
     publish:
       label: Product publiceren
       description: Publiceer de geselecteerde producten, de huidige gepubliceerde data zal overgeschreven worden door de huidige werkkopie.

@@ -124,28 +124,28 @@ Feature: Assign assets to a product
   @jira https://akeneo.atlassian.net/browse/PIM-5988
   Scenario: Correctly add assets by their code in the basket, even if not in the first 20 assets
     Given the following assets:
-      | code      | categories |
-      | video_1   | videos     |
-      | video_2   | videos     |
-      | video_3   | videos     |
-      | video_4   | videos     |
-      | video_5   | videos     |
-      | video_6   | videos     |
-      | video_7   | videos     |
-      | video_8   | videos     |
-      | video_9   | videos     |
-      | video_10  | videos     |
-      | video_11  | videos     |
-      | video_12  | videos     |
-      | video_13  | videos     |
-      | video_14  | videos     |
-      | video_15  | videos     |
-      | video_16  | videos     |
-      | video_17  | videos     |
-      | video_18  | videos     |
-      | video_19  | videos     |
-      | video_20  | videos     |
-      | video_21  | videos     |
+      | code     | categories |
+      | video_1  | videos     |
+      | video_2  | videos     |
+      | video_3  | videos     |
+      | video_4  | videos     |
+      | video_5  | videos     |
+      | video_6  | videos     |
+      | video_7  | videos     |
+      | video_8  | videos     |
+      | video_9  | videos     |
+      | video_10 | videos     |
+      | video_11 | videos     |
+      | video_12 | videos     |
+      | video_13 | videos     |
+      | video_14 | videos     |
+      | video_15 | videos     |
+      | video_16 | videos     |
+      | video_17 | videos     |
+      | video_18 | videos     |
+      | video_19 | videos     |
+      | video_20 | videos     |
+      | video_21 | videos     |
     And I am logged in as "Julia"
     And I am on the "shirt" product page
     And I add available attributes Front view

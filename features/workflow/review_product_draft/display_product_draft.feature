@@ -7,22 +7,22 @@ Feature: Review a product draft
   Background:
     Given a "clothing" catalog configuration
     And the product:
-      | family                    | jackets           |
-      | categories                | winter_top        |
-      | sku                       | my-jacket         |
-      | name-en_US                | Jacket            |
-      | description-en_US-mobile  | An awesome jacket |
-      | number_in_stock-mobile    | 4                 |
-      | number_in_stock-tablet    | 20                |
-      | price                     | 45 USD            |
-      | manufacturer              | Volcom            |
-      | weather_conditions        | dry, wet          |
-      | handmade                  | 0                 |
-      | release_date-mobile       | 2014-05-14        |
-      | length                    | 60 CENTIMETER     |
-      | legacy_attribute          | legacy            |
-      | datasheet                 |                   |
-      | side_view                 |                   |
+      | family                   | jackets           |
+      | categories               | winter_top        |
+      | sku                      | my-jacket         |
+      | name-en_US               | Jacket            |
+      | description-en_US-mobile | An awesome jacket |
+      | number_in_stock-mobile   | 4                 |
+      | number_in_stock-tablet   | 20                |
+      | price                    | 45 USD            |
+      | manufacturer             | Volcom            |
+      | weather_conditions       | dry, wet          |
+      | handmade                 | 0                 |
+      | release_date-mobile      | 2014-05-14        |
+      | length                   | 60 CENTIMETER     |
+      | legacy_attribute         | legacy            |
+      | datasheet                |                   |
+      | side_view                |                   |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully display the original value in the copy panel

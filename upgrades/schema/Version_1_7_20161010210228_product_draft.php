@@ -36,7 +36,7 @@ class Version_1_7_20161010210228_product_draft extends AbstractMigration impleme
         $schemaHelper = new SchemaHelperEE($this->container);
 
         $attributes = $this->container->get('pim_catalog.repository.attribute')->findBy([
-            'attributeType' => [AttributeTypes::METRIC, AttributeTypes::PRICE_COLLECTION]
+            'type' => [AttributeTypes::METRIC, AttributeTypes::PRICE_COLLECTION]
         ]);
 
         $attributeCodes = ['metric' => [], 'price' => []];

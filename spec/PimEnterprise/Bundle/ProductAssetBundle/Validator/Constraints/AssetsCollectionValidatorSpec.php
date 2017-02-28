@@ -31,7 +31,7 @@ class AssetsCollectionValidatorSpec extends ObjectBehavior
         AssetsCollectionConstraint $constraint,
         AttributeInterface $attribute
     ) {
-        $attribute->getAttributeType()->willReturn('other_code');
+        $attribute->getType()->willReturn('other_code');
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
@@ -44,7 +44,7 @@ class AssetsCollectionValidatorSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $attribute->getAttributeType()->willReturn('pim_assets_collection');
+        $attribute->getType()->willReturn('pim_assets_collection');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(false);
         $attribute->getCode()->willReturn('code');
@@ -63,7 +63,7 @@ class AssetsCollectionValidatorSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $attribute->getAttributeType()->willReturn('pim_assets_collection');
+        $attribute->getType()->willReturn('pim_assets_collection');
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(true);
         $attribute->getCode()->willReturn('code');
@@ -81,7 +81,7 @@ class AssetsCollectionValidatorSpec extends ObjectBehavior
         AssetsCollectionConstraint $constraint,
         AttributeInterface $attribute
     ) {
-        $attribute->getAttributeType()->willReturn('pim_assets_collection');
+        $attribute->getType()->willReturn('pim_assets_collection');
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
         $attribute->getCode()->willReturn('code');

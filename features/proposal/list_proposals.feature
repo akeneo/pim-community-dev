@@ -15,9 +15,9 @@ Feature: List proposals
       | 2015_collection  | IT support | own    |
     And the following products:
       | sku     | family   | categories      | weather_conditions |
-      | tshirt  | tshirts  | 2014_collection | dry |
-      | sweater | sweaters | 2014_collection | |
-      | jacket  | jackets  | 2015_collection | |
+      | tshirt  | tshirts  | 2014_collection | dry                |
+      | sweater | sweaters | 2014_collection |                    |
+      | jacket  | jackets  | 2015_collection |                    |
     And Mary proposed the following change to "tshirt":
       | field       | value                      |
       | Name        | Summer t-shirt             |
@@ -79,17 +79,17 @@ Feature: List proposals
     And I am on the "additional_materials" attribute page
     And I visit the "Values" tab
     And I create the following attribute options:
-      | Code   | en_US  | fr_FR  | de_DE  |
-      | Blue   | Blue   | Bleu   | Blau   |
+      | Code | en_US | fr_FR | de_DE |
+      | Blue | Blue  | Bleu  | Blau  |
     And I am on the "weather_conditions" attribute page
     And I visit the "Values" tab
     And I create the following attribute options:
-      | Code   | en_US   | fr_FR  | de_DE  |
-      | Blue   | Blue    | Bleu   | Blau   |
+      | Code | en_US | fr_FR | de_DE |
+      | Blue | Blue  | Bleu  | Blau  |
     And I logout
     And Mary proposed the following change to "tshirt":
-      | tab        | field               | value|
-      | Additional | Weather conditions  | Blue |
+      | tab        | field              | value |
+      | Additional | Weather conditions | Blue  |
     And I am logged in as "Julia"
     When I am on the proposals page
     Then I should see the following proposals:

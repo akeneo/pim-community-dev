@@ -30,7 +30,7 @@ pimee_product_asset:
       import: Uvoz
       upload: Prijenos
     success:
-      new: Stvorit će se nova imovina
+      new: Nova imovina će se kreirati
       imported: Obrada uvezenih datoteka za imovinu
       canceled: Prijenos je uspješno otkazan
       deleted: Učitana datoteka uspješno izbrisana

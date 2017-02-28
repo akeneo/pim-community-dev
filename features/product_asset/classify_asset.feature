@@ -34,9 +34,9 @@ Feature: Classify an asset in the trees I have access
       | 2016_collection | 2016 Collection |                 |
       | 2016_images     | Images          | 2016_collection |
     And the following asset category accesses:
-      | asset category   | user group | access |
-      | 2016_collection  | IT support | none   |
-      | images           | IT support | view   |
+      | asset category  | user group | access |
+      | 2016_collection | IT support | none   |
+      | images          | IT support | view   |
     When I edit the "mugs" asset
     And I visit the "Categories" tab
     Then I should see the text "Asset main catalog"

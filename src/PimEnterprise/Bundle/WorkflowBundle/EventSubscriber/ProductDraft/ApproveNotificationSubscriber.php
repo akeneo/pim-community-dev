@@ -20,8 +20,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @author Clement Gautier <clement.gautier@akeneo.com>
  */
-class ApproveNotificationSubscriber extends AbstractProposalStateNotificationSubscriber implements
-    EventSubscriberInterface
+class ApproveNotificationSubscriber extends AbstractProposalStateNotificationSubscriber implements EventSubscriberInterface
 {
     /**
      * {@inheritdoc}

@@ -1,0 +1,40 @@
+View the product: Pogledaj proizvod
+Unpublish the product: Poništi objavu proizvoda
+Approve: Dozvoli
+Refuse: Odbij
+Approve selected: Odobri odabrano
+Refuse selected: Odbaci odabrano
+oro:
+  datagrid:
+    noentities:
+      proposal: Ne postoji nijedan prijedlog za pregled.
+    noresults:
+      proposal: Ne postoji nijedan prijedlog za pregled. Pokušajte promijeniti kriterije pretraživanja.
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Uredi radnu kopiju
+    proposal:
+      modal.title: Ostavi komentar (opcionalno - 255 znakova max.)
+  proposal:
+    mass_action_group:
+      review:
+        label: Masovna radnja
+    partial_accept:
+      modal.title: Odobri djelomične informacije
+      modal.label: Ostavi komentar (opcionalno)
+      modal.error: Došlo je do pogreške, prijedlog nije djelomično odobren
+      modal.success: Prijedlog je djelomično uspješno provjeren
+    partial_approve:
+      modal:
+        title: Djelomično odobri promjene
+        label: Ostavi komentar (opcionalno)
+        error: Došlo je do pogreške, prijedlog nije djelomično odobren
+        success: Promjene su uspješno odobrene
+    partial_reject:
+      modal:
+        title: Djelomično odbaci promjene
+        label: Ostavi komentar (opcionalno)
+        error: Došlo je do pogreške, prijedlog nije djelomično odobren
+        success: Promjene su uspješno odbijene

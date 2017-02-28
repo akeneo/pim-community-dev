@@ -13,7 +13,7 @@ Feature: Revert product attributes to a previous version
   Scenario: Successfully revert a metric attribute
     When I fill in the following information in the popin:
       | SKU             | t-shirt |
-      | Choose a family | Tees   |
+      | Choose a family | Tees    |
     And I press the "Save" button in the popin
 
     And I am on the "t-shirt" product page

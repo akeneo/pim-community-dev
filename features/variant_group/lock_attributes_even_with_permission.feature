@@ -14,9 +14,9 @@ Feature: Make the attribute unmodifiable if coming from a variant group, even if
   @jira https://akeneo.atlassian.net/browse/PIM-4477
   Scenario: I'm not able to remove a media if I have no permission on this attribute group
     Given the following attribute group accesses:
-      | attribute group | user group | access |
-      | media           | Redactor   | view   |
-      | media           | Manager    | edit   |
+      | attribute group | user group | access | group | type             |
+      | media           | Redactor   | view   | other | pim_catalog_text |
+      | media           | Manager    | edit   | other | pim_catalog_text |
     And I am on the "hm_jackets" variant group page
     And I visit the "Attributes" tab
     And I add available attributes Side view
@@ -32,9 +32,9 @@ Feature: Make the attribute unmodifiable if coming from a variant group, even if
   @jira https://akeneo.atlassian.net/browse/PIM-4477
   Scenario: I'm not able to remove a media even if I have permission on this attribute group
     Given the following attribute group accesses:
-      | attribute group | user group | access |
-      | media           | Redactor   | edit   |
-      | media           | Manager    | edit   |
+      | attribute group | user group | access | group | type             |
+      | media           | Redactor   | edit   | other | pim_catalog_text |
+      | media           | Manager    | edit   | other | pim_catalog_text |
     And I am on the "hm_jackets" variant group page
     And I visit the "Attributes" tab
     And I add available attributes Side view

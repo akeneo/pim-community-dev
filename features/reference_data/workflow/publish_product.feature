@@ -7,9 +7,9 @@ Feature: Publish a product
   Background:
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code        | label       | type                        | reference_data_name |
-      | main_fabric | Main fabric | reference_data_multiselect  | fabrics             |
-      | main_color  | Main color  | reference_data_simpleselect | color               |
+      | code        | label-en_US | type                            | reference_data_name | group |
+      | main_fabric | Main fabric | pim_reference_data_multiselect  | fabrics             | other |
+      | main_color  | Main color  | pim_reference_data_simpleselect | color               | other |
     And the following reference data:
       | type   | code     |
       | color  | red      |
