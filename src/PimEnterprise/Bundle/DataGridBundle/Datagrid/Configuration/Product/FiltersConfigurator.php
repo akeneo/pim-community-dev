@@ -31,6 +31,7 @@ class FiltersConfigurator extends BaseFiltersConfigurator
         parent::configure($configuration);
 
         $this->addIsOwnerFilter($configuration);
+        $this->addProjectCompletenessFilter($configuration);
     }
 
     /**
@@ -57,6 +58,34 @@ class FiltersConfigurator extends BaseFiltersConfigurator
 
         $configuration->offsetSetByPath(
             sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'permission'),
+            $filter
+        );
+    }
+
+    /**
+     * @param $configuration
+     */
+    protected function addProjectCompletenessFilter($configuration)
+    {
+        $filter = [
+            'type'      => 'project_completeness',
+            'ftype'     => 'choice',
+            'data_name' => 'project_completeness',
+            'label'     => 'PROJECT COMPLETENESS',
+            'options'   => [
+                'field_options' => [
+                    'multiple' => false,
+                    'choices'  => [
+                        1  => 'TODO',
+                        2 => 'IN PROGRESS',
+                        3 => 'DONE',
+                    ]
+                ]
+            ]
+        ];
+
+        $configuration->offsetSetByPath(
+            sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'project_completeness'),
             $filter
         );
     }
