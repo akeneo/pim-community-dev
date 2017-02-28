@@ -155,7 +155,7 @@ class CategoryController
         $paginatedCategories = $this->paginator->paginate(
             $this->normalizer->normalize($categories, 'external_api'),
             array_merge($request->query->all(), $queryParameters),
-            $this->repository->count([]),
+            $this->repository->count(),
             'pim_api_category_list',
             'pim_api_category_get',
             'code'

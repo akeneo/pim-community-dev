@@ -99,7 +99,7 @@ class ChannelController
         }
 
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
-        $count = $this->repository->count([]);
+        $count = $this->repository->count();
         $channels = $this->repository->searchAfterOffset([], ['code' => 'ASC'], $queryParameters['limit'], $offset);
 
         $paginatedChannels = $this->paginator->paginate(

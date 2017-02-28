@@ -153,7 +153,7 @@ class AttributeController
         $paginatedAttributes = $this->paginator->paginate(
             $this->normalizer->normalize($attributes, 'external_api'),
             array_merge($request->query->all(), $queryParameters),
-            $this->repository->count([]),
+            $this->repository->count(),
             'pim_api_attribute_list',
             'pim_api_attribute_get',
             'code'

@@ -153,7 +153,7 @@ class FamilyController
         $paginatedFamilies = $this->paginator->paginate(
             $this->normalizer->normalize($families, 'external_api'),
             array_merge($request->query->all(), $queryParameters),
-            $this->repository->count([]),
+            $this->repository->count(),
             'pim_api_family_list',
             'pim_api_family_get',
             'code'

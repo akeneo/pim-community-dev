@@ -70,7 +70,7 @@ class ApiResourceRepository extends EntityRepository implements ApiResourceRepos
     /**
      * {@inheritdoc}
      */
-    public function count(array $criteria)
+    public function count(array $criteria = [])
     {
         try {
             $qb = $this->createQueryBuilder('o');
