@@ -142,14 +142,14 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
 
     /**
      * @param string $path
-     * @param string $referer
+     * @param string $referrer
      *
      * @Given /^I am on the relative path ([^"]+) from ([^"]+)$/
      */
-    public function iAmOnTheRelativePath($path, $referer)
+    public function iAmOnTheRelativePath($path, $referrer)
     {
         $basePath = parse_url($this->baseUrl)['path'];
-        $uri = sprintf('%s%s/#url=%s%s', $this->baseUrl, $referer, $basePath, $path);
+        $uri = sprintf('%s%s/#url=%s%s', $this->baseUrl, $referrer, $basePath, $path);
 
         $this->getSession()->visit($uri);
     }
@@ -221,7 +221,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      * @param string $page
      *
      * @Given /^I edit the "([^"]*)" (\w+)$/
-     * @Given /^I am on the "([^"]*)" ((?!channel)\w+) page$/
+     * @Given /^I am on the "([^"]*)" ((?!channel)(?!family)\w+) page$/
      */
     public function iAmOnTheEntityEditPage($identifier, $page)
     {
@@ -235,7 +235,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      * @param string $identifier
      * @param string $page
      *
-     * @Given /^I am on the "([^"]*)" (channel) page$/
+     * @Given /^I am on the "([^"]*)" (channel|family) page$/
      */
     public function iAmOnTheRedoEntityEditPage($identifier, $page)
     {

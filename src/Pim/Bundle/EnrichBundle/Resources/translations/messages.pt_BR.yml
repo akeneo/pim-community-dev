@@ -890,7 +890,7 @@ job_tracker:
     started_at: Iniciado em
 pim_enrich_attribute_form:
   code: Código
-  attributeType: Tipo de atributo
+  type: Tipo de atributo
   reference_data_name: Nome de referência de dados
   scopable: Escopo
   localizable: Localizável

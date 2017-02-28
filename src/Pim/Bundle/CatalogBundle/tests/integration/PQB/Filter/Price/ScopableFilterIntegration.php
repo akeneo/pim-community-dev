@@ -97,11 +97,17 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     {
         $result = $this->execute([['a_scopable_price', Operators::IS_EMPTY, ['amount' => '', 'currency' => ''], ['scope' => 'tablet']]]);
         $this->assert($result, ['empty_product']);
+
+        $result = $this->execute([['a_scopable_price', Operators::IS_EMPTY, [], ['scope' => 'tablet']]]);
+        $this->assert($result, ['empty_product']);
     }
 
     public function testOperatorNotEmpty()
     {
         $result = $this->execute([['a_scopable_price', Operators::IS_NOT_EMPTY, ['amount' => '', 'currency' => ''], ['scope' => 'tablet']]]);
+        $this->assert($result, []);
+
+        $result = $this->execute([['a_scopable_price', Operators::IS_NOT_EMPTY, [], ['scope' => 'tablet']]]);
         $this->assert($result, []);
 
         $result = $this->execute([['a_scopable_price', Operators::IS_NOT_EMPTY, ['amount' => '', 'currency' => 'EUR'], ['scope' => 'tablet']]]);
