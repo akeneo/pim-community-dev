@@ -256,18 +256,12 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeTheFlashMessage($text)
     {
-        return;
-
-        $this->spin(function () use ($text) {
-            $flashes = $this->getCurrentPage()->findAll('css', '.flash-messages-holder > div');
-            foreach ($flashes as $flash) {
-                if (false !== strpos($flash->getText(), $text)) {
-                    return true;
-                }
-            }
-
-            return null;
-        }, sprintf('Can not find flash message with text "%s"', $text));
+        return $this->spin(function () use ($text) {
+            return $this->getCurrentPage()->find(
+                'css',
+                sprintf('.message:contains("%s")', $text)
+            );
+        }, sprintf('Flash message "%s" was not found', $text));
     }
 
     /**
