@@ -69,6 +69,9 @@ class UniqueVariantGroupValidatorSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($violation);
 
+        $violation->atPath(Argument::any())->willReturn($violation);
+        $violation->addViolation(Argument::any())->shouldBeCalled();
+
         $this->validate($mug, $onlyOneVariantGroup);
     }
 }
