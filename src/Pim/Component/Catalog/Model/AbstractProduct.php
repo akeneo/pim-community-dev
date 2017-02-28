@@ -395,7 +395,7 @@ abstract class AbstractProduct implements ProductInterface
     public function getIdentifier()
     {
         foreach ($this->values as $value) {
-            if (AttributeTypes::IDENTIFIER === $value->getAttribute()->getAttributeType()) {
+            if (AttributeTypes::IDENTIFIER === $value->getAttribute()->getType()) {
                 return $value;
             }
         }
@@ -584,7 +584,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function isAttributeRemovable(AttributeInterface $attribute)
     {
-        if (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
+        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
             return false;
         }
 

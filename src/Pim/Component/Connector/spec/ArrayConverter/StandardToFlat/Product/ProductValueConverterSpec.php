@@ -25,7 +25,7 @@ class ProductValueConverterSpec extends ObjectBehavior
         AbstractValueConverter $arrayConverter
     ) {
         $attributeRepo->findOneByIdentifier('description')->willReturn($attribute);
-        $attribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $attribute->getType()->willReturn('pim_catalog_textarea');
         $converterRegistry->getConverter($attribute)->willReturn($arrayConverter);
 
         $data = [
@@ -52,7 +52,7 @@ class ProductValueConverterSpec extends ObjectBehavior
         AttributeInterface $attribute
     ) {
         $attributeRepo->findOneByIdentifier('weight')->willReturn($attribute);
-        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $attribute->getType()->willReturn('pim_catalog_metric');
         $converterRegistry->getConverter($attribute)->willReturn(null);
 
         $this->shouldThrow(

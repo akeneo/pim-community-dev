@@ -14,22 +14,22 @@ class NotBlankGuesserSpec extends ObjectBehavior
 
     function it_supports_any_attributes(AttributeInterface $attribute)
     {
-        $attribute->getAttributeType()
+        $attribute->getType()
             ->willReturn('pim_catalog_text');
         $this->supportAttribute($attribute)
             ->shouldReturn(true);
 
-        $attribute->getAttributeType()
+        $attribute->getType()
             ->willReturn('pim_catalog_date');
         $this->supportAttribute($attribute)
             ->shouldReturn(true);
 
-        $attribute->getAttributeType()
+        $attribute->getType()
             ->willReturn('pim_catalog_image');
         $this->supportAttribute($attribute)
             ->shouldReturn(true);
 
-        $attribute->getAttributeType()
+        $attribute->getType()
             ->willReturn('foo');
         $this->supportAttribute($attribute)
             ->shouldReturn(true);

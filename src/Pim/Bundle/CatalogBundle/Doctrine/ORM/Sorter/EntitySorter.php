@@ -35,7 +35,7 @@ class EntitySorter implements AttributeSorterInterface
     public function supportsAttribute(AttributeInterface $attribute)
     {
         return in_array(
-            $attribute->getAttributeType(),
+            $attribute->getType(),
             [
                 AttributeTypes::OPTION_SIMPLE_SELECT
             ]
@@ -53,7 +53,7 @@ class EntitySorter implements AttributeSorterInterface
 
         if (null === $locale) {
             throw new \InvalidArgumentException(
-                sprintf('Cannot prepare condition on type "%s" without locale', $attribute->getAttributeType())
+                sprintf('Cannot prepare condition on type "%s" without locale', $attribute->getType())
             );
         }
 

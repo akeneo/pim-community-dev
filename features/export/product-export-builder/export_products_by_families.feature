@@ -11,6 +11,25 @@ Feature: Export products according to their families
       | rangers | sku,name            | sku,name   |
       | boots   | sku,name            |            |
       | heels   | sku,name            |            |
+      | foo     | sku                 |            |
+      | bar     | sku                 |            |
+      | baz     | sku                 |            |
+      | cloud   | sku                 |            |
+      | bee     | sku                 |            |
+      | dog     | sku                 |            |
+      | cat     | sku                 |            |
+      | area    | sku                 |            |
+      | bath    | sku                 |            |
+      | beer    | sku                 |            |
+      | bear    | sku                 |            |
+      | bomb    | sku                 |            |
+      | ball    | sku                 |            |
+      | head    | sku                 |            |
+      | ham     | sku                 |            |
+      | item    | sku                 |            |
+      | jean    | sku                 |            |
+      | snake   | sku                 |            |
+      | star    | sku                 |            |
     And the following products:
       | sku     | family  | categories        | name-en_US       |
       | SNKRS-1 | rangers | summer_collection | Black rangers    |
@@ -78,3 +97,12 @@ Feature: Export products according to their families
     When I am on the "csv_footwear_product_export" export job page
     And I visit the "Content" tab
     Then the export content field "family" should contain "No condition on families"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6162
+  Scenario: View families already selected
+    Given I am on the "csv_footwear_product_export" export job edit page
+    When I visit the "Content" tab
+    And I filter by "family" with operator "" and value "rangers,star,snake"
+    When I press "Save"
+    Then I should not see the text "There are unsaved changes."
+    And I should see the text "[rangers] [star] [snake]"

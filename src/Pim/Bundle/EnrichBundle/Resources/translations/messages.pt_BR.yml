@@ -66,7 +66,7 @@ pim_enrich:
   completeness:
     progress_bar.title: '%ratio%% completo (1 valor obrigatório)|%ratio%% completo (%count% valores obrigatórios)'
     subtitle: '{0} Completo|{1} 1 valor em falta|] 1, Inf] %count% valores em falta'
-    missing_attributes: Valor em falta| Valores em falta
+    missing_attributes: Valor faltando|Valores faltando
     legend:
       locale_not_associated: Linguagem não associada a este canal
   mass_edit_action:
@@ -74,12 +74,12 @@ pim_enrich:
     product:
       page_title: Produtos
       page_subtitle: Editar em Massa (1 produto) | Editar em Massa (%count% produtos)
-      title: Escolher operação
+      title: Escolher Operação
       subtitle: Escolha a operação que deseja executar no produto selecionado | Escolha a operação que deseja executar nos %count% produtos selecionados
       confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
       steps:
-        first: Escolher produtos
-        second: Escolher operação
+        first: Escolha os produtos
+        second: Escolher Operação
         third: Configurar
         fourth: Confirmar
     family:
@@ -890,7 +890,7 @@ job_tracker:
     started_at: Iniciado em
 pim_enrich_attribute_form:
   code: Código
-  attributeType: Tipo de atributo
+  type: Tipo de atributo
   reference_data_name: Nome de referência de dados
   scopable: Escopo
   localizable: Localizável

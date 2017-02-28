@@ -47,10 +47,10 @@ class MetricFilterSpec extends ObjectBehavior
 
     function it_supports_metric_attribute(AttributeInterface $attribute)
     {
-        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $attribute->getType()->willReturn('pim_catalog_metric');
         $this->supportsAttribute($attribute)->shouldReturn(true);
 
-        $attribute->getAttributeType()->willReturn(Argument::any());
+        $attribute->getType()->willReturn(Argument::any());
         $this->supportsAttribute($attribute)->shouldReturn(false);
     }
 

@@ -61,7 +61,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             $data = new ArrayCollection($data);
         }
 
-        $type = $entity->getAttribute()->getAttributeType();
+        $type = $entity->getAttribute()->getType();
         $backendType = $entity->getAttribute()->getBackendType();
 
         if (AttributeTypes::BOOLEAN === $type) {

@@ -139,13 +139,13 @@ class ProductValue implements ArrayConverterInterface
         $attributeFieldInfo = $this->attrFieldExtractor->extractColumnInfo($column);
 
         if (null !== $attributeFieldInfo && isset($attributeFieldInfo['attribute'])) {
-            $converter = $this->converterRegistry->getConverter($attributeFieldInfo['attribute']->getAttributeType());
+            $converter = $this->converterRegistry->getConverter($attributeFieldInfo['attribute']->getType());
 
             if (null === $converter) {
                 throw new \LogicException(
                     sprintf(
                         'No converters found for attribute type "%s"',
-                        $attributeFieldInfo['attribute']->getAttributeType()
+                        $attributeFieldInfo['attribute']->getType()
                     )
                 );
             }

@@ -163,6 +163,14 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
             ['locale' => 'en_US', 'scope' => 'tablet']
         ]]);
         $this->assert($result, ['empty_product']);
+
+        $result = $this->execute([[
+            'a_scopable_localizable_price',
+            Operators::IS_EMPTY,
+            [],
+            ['locale' => 'en_US', 'scope' => 'tablet']
+        ]]);
+        $this->assert($result, ['empty_product']);
     }
 
     public function testOperatorNotEmpty()
@@ -171,6 +179,14 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
             'a_scopable_localizable_price',
             Operators::IS_NOT_EMPTY,
             ['amount' => '', 'currency' => ''],
+            ['locale' => 'en_US', 'scope' => 'tablet']
+        ]]);
+        $this->assert($result, []);
+
+        $result = $this->execute([[
+            'a_scopable_localizable_price',
+            Operators::IS_NOT_EMPTY,
+            [],
             ['locale' => 'en_US', 'scope' => 'tablet']
         ]]);
         $this->assert($result, []);

@@ -61,7 +61,7 @@ class AttributeFactory implements SimpleFactoryInterface
         if (null !== $type && '' !== $type) {
             $attributeType = $this->registry->get($type);
             $attribute->setBackendType($attributeType->getBackendType());
-            $attribute->setAttributeType($attributeType->getName());
+            $attribute->setType($attributeType->getName());
             $attribute->setUnique($attributeType->isUnique());
         }
 

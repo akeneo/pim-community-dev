@@ -903,7 +903,7 @@ job_tracker:
     started_at: 开始于
 pim_enrich_attribute_form:
   code: 代码
-  attributeType: 属性类型
+  type: 属性类型
   reference_data_name: 引用数据名称
   scopable: 范围
   localizable: 可本地化

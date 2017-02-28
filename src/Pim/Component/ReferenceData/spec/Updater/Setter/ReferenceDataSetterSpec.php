@@ -40,10 +40,10 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         AttributeInterface $refDataAttribute,
         AttributeInterface $textareaAttribute
     ) {
-        $refDataAttribute->getAttributeType()->willReturn('pim_reference_data_simpleselect');
+        $refDataAttribute->getType()->willReturn('pim_reference_data_simpleselect');
         $this->supportsAttribute($refDataAttribute)->shouldReturn(true);
 
-        $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $textareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 

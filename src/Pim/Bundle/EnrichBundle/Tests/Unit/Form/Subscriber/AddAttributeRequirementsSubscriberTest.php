@@ -188,7 +188,7 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($code));
 
         $attribute->expects($this->any())
-            ->method('getAttributeType')
+            ->method('getType')
             ->will($this->returnValue($type));
 
         return $attribute;

@@ -25,7 +25,7 @@ class ReferenceDataFieldProvider implements FieldProviderInterface
      */
     public function getField($attribute)
     {
-        return $this->fields[$attribute->getAttributeType()];
+        return $this->fields[$attribute->getType()];
     }
 
     /**
@@ -34,6 +34,6 @@ class ReferenceDataFieldProvider implements FieldProviderInterface
     public function supports($element)
     {
         return $element instanceof AttributeInterface &&
-            in_array($element->getAttributeType(), array_keys($this->fields));
+            in_array($element->getType(), array_keys($this->fields));
     }
 }

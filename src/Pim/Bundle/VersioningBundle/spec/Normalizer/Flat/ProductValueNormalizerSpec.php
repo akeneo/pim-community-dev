@@ -54,7 +54,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         ProductValueInterface $value,
         AttributeInterface $simpleAttribute
     ) {
-        $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::TEXT);
+        $simpleAttribute->getType()->willReturn(AttributeTypes::TEXT);
         $value->getData()->willReturn(null);
         $value->getAttribute()->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
@@ -67,7 +67,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         ProductValueInterface $value,
         AttributeInterface $simpleAttribute
     ) {
-        $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
+        $simpleAttribute->getType()->willReturn(AttributeTypes::NUMBER);
         $simpleAttribute->isDecimalsAllowed()->willReturn(false);
         $context = ['decimal_separator' => '.'];
         $numberLocalizer->localize('12', $context)->willReturn(12);
@@ -83,7 +83,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         ProductValueInterface $value,
         AttributeInterface $simpleAttribute
     ) {
-        $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
+        $simpleAttribute->getType()->willReturn(AttributeTypes::NUMBER);
         $simpleAttribute->isDecimalsAllowed()->willReturn(true);
 
         $value->getData()->willReturn('12.2500');
@@ -98,7 +98,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         ProductValueInterface $value,
         AttributeInterface $simpleAttribute
     ) {
-        $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
+        $simpleAttribute->getType()->willReturn(AttributeTypes::NUMBER);
         $simpleAttribute->isDecimalsAllowed()->willReturn(false);
 
         $value->getData()->willReturn('12.0000');
@@ -113,7 +113,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         ProductValueInterface $value,
         AttributeInterface $simpleAttribute
     ) {
-        $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::TEXT);
+        $simpleAttribute->getType()->willReturn(AttributeTypes::TEXT);
 
         $value->getData()->willReturn('my data');
         $value->getAttribute()->willReturn($simpleAttribute);
@@ -126,7 +126,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         ProductValueInterface $value,
         AttributeInterface $simpleAttribute
     ) {
-        $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::BOOLEAN);
+        $simpleAttribute->getType()->willReturn(AttributeTypes::BOOLEAN);
 
         $value->getAttribute()->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
@@ -144,7 +144,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         AttributeInterface $simpleAttribute,
         SerializerInterface $serializer
     ) {
-        $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
+        $simpleAttribute->getType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
 
         $itemOne = new \stdClass();
         $itemTwo = new \stdClass();
@@ -163,7 +163,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         AttributeInterface $simpleAttribute,
         SerializerInterface $serializer
     ) {
-        $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
+        $simpleAttribute->getType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
 
         $itemOne = new \stdClass();
         $itemTwo = new \stdClass();
@@ -185,7 +185,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         AttributeOptionInterface $blueOption,
         ArrayCollection $collection
     ) {
-        $multiColorAttribute->getAttributeType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
+        $multiColorAttribute->getType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
 
         $collection->toArray()->willReturn([$redOption, $blueOption]);
         $collection->isEmpty()->willReturn(false);
@@ -214,7 +214,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_value_with_a_date_data(ProductValueInterface $value, AttributeInterface $simpleAttribute)
     {
-        $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::DATE);
+        $simpleAttribute->getType()->willReturn(AttributeTypes::DATE);
 
         $value->getData()->willReturn('2000-10-28');
         $value->getAttribute()->willReturn($simpleAttribute);
@@ -225,7 +225,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_scopable_product_value(ProductValueInterface $value, AttributeInterface $simpleAttribute)
     {
-        $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::TEXT);
+        $simpleAttribute->getType()->willReturn(AttributeTypes::TEXT);
 
         $value->getData()->willReturn('12');
         $value->getAttribute()->willReturn($simpleAttribute);
@@ -239,7 +239,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_localizable_product_value(ProductValueInterface $value, AttributeInterface $simpleAttribute)
     {
-        $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::TEXT);
+        $simpleAttribute->getType()->willReturn(AttributeTypes::TEXT);
 
         $value->getData()->willReturn('12');
         $value->getAttribute()->willReturn($simpleAttribute);
@@ -253,7 +253,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_scopable_and_localizable_product_value(ProductValueInterface $value, AttributeInterface $simpleAttribute)
     {
-        $simpleAttribute->getAttributeType()->willReturn(AttributeTypes::TEXT);
+        $simpleAttribute->getType()->willReturn(AttributeTypes::TEXT);
 
         $value->getData()->willReturn('12');
         $value->getAttribute()->willReturn($simpleAttribute);

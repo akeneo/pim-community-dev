@@ -36,7 +36,7 @@ class SingleIdentifierAttributeValidator extends ConstraintValidator
      */
     public function validate($attribute, Constraint $constraint)
     {
-        if (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
+        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
             $identifier = $this->attributeRepository->getIdentifier();
 
             if ($identifier && $identifier->getId() !== $attribute->getId()) {

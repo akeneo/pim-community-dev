@@ -33,7 +33,7 @@ class IsReferenceDataConfiguredValidatorSpec extends ObjectBehavior
         IsReferenceDataConfigured $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $attribute->getAttributeType()->willReturn('pim_reference_data_simpleselect');
+        $attribute->getType()->willReturn('pim_reference_data_simpleselect');
         $attribute->getProperty('reference_data_name')->willReturn('foo');
         $registry->has('foo')->willReturn(false);
         $registry->all()->willReturn(['bar' => 'bar']);
@@ -54,7 +54,7 @@ class IsReferenceDataConfiguredValidatorSpec extends ObjectBehavior
         Attribute $attribute,
         IsReferenceDataConfigured $constraint
     ) {
-        $attribute->getAttributeType()->willReturn('pim_reference_data_simpleselect');
+        $attribute->getType()->willReturn('pim_reference_data_simpleselect');
         $attribute->getProperty('reference_data_name')->willReturn('foo');
         $registry->has('foo')->willReturn(true);
 
@@ -73,7 +73,7 @@ class IsReferenceDataConfiguredValidatorSpec extends ObjectBehavior
         IsReferenceDataConfigured $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $attribute->getAttributeType()->willReturn('pim_reference_data_multiselect');
+        $attribute->getType()->willReturn('pim_reference_data_multiselect');
         $attribute->getProperty('reference_data_name')->willReturn('foo');
         $registry->has('foo')->willReturn(false);
         $registry->all()->willReturn(['bar' => 'bar']);
@@ -94,7 +94,7 @@ class IsReferenceDataConfiguredValidatorSpec extends ObjectBehavior
         Attribute $attribute,
         IsReferenceDataConfigured $constraint
     ) {
-        $attribute->getAttributeType()->willReturn('pim_reference_data_multiselect');
+        $attribute->getType()->willReturn('pim_reference_data_multiselect');
         $attribute->getProperty('reference_data_name')->willReturn('foo');
         $registry->has('foo')->willReturn(true);
 

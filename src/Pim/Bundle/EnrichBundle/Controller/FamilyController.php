@@ -341,7 +341,7 @@ class FamilyController
 
         if (false === $family->hasAttribute($attribute)) {
             throw new DeleteException($this->translator->trans('flash.family.attribute not found'));
-        } elseif (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
+        } elseif (AttributeTypes::IDENTIFIER === $attribute->getType()) {
             throw new DeleteException($this->translator->trans('flash.family.identifier not removable'));
         } elseif ($attribute === $family->getAttributeAsLabel()) {
             throw new DeleteException($this->translator->trans('flash.family.label attribute not removable'));

@@ -53,9 +53,9 @@ class MediaFilterSpec extends ObjectBehavior
         AttributeInterface $imageAttribute,
         AttributeInterface $textAttribute
     ) {
-        $fileAttribute->getAttributeType()->willReturn('pim_catalog_file');
-        $imageAttribute->getAttributeType()->willReturn('pim_catalog_image');
-        $textAttribute->getAttributeType()->willReturn('pim_catalog_text');
+        $fileAttribute->getType()->willReturn('pim_catalog_file');
+        $imageAttribute->getType()->willReturn('pim_catalog_image');
+        $textAttribute->getType()->willReturn('pim_catalog_text');
 
         $this->supportsAttribute($fileAttribute)->shouldReturn(true);
         $this->supportsAttribute($imageAttribute)->shouldReturn(true);

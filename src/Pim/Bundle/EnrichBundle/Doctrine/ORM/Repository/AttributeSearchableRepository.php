@@ -144,7 +144,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         }
 
         if (null !== $options['types']) {
-            $qb->andWhere('a.attributeType in (:types)');
+            $qb->andWhere('a.type in (:types)');
             $qb->setParameter('types', $options['types']);
         }
 

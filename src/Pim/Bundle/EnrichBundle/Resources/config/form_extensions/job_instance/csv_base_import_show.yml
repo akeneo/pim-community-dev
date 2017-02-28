@@ -64,7 +64,7 @@ extensions:
             fieldCode: configuration.filePath
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.filePath.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
 
     pim-job-instance-csv-base-import-show-properties-escape:
         module: pim/job/common/edit/field/text
@@ -75,7 +75,7 @@ extensions:
             fieldCode: configuration.escape
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.escape.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.escape.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.escape.help
 
     pim-job-instance-csv-base-import-show-properties-delimiter:
         module: pim/job/common/edit/field/text
@@ -86,7 +86,7 @@ extensions:
             fieldCode: configuration.delimiter
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.delimiter.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.delimiter.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.delimiter.help
 
     pim-job-instance-csv-base-import-show-properties-enclosure:
         module: pim/job/common/edit/field/text
@@ -97,7 +97,7 @@ extensions:
             fieldCode: configuration.enclosure
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.enclosure.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.enclosure.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.enclosure.help
 
     pim-job-instance-csv-base-import-show-properties-file-upload:
         module: pim/job/common/edit/field/switch
@@ -108,7 +108,7 @@ extensions:
             fieldCode: configuration.uploadAllowed
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.upload_allowed.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.uploadAllowed.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.upload_allowed.help
 
     pim-job-instance-csv-base-import-show-label:
         module: pim/job/common/edit/label

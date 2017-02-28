@@ -63,7 +63,7 @@ extensions:
             fieldCode: configuration.filePath
             readOnly: false
             label: pim_enrich.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.filePath.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
 
     pim-job-instance-yml-base-export-edit-label:
         module: pim/job/common/edit/label
