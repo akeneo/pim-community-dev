@@ -30,7 +30,7 @@ stage("Checkout") {
         checkout scm
         stash "pim_community_dev"
 
-        if (editions.contains('ee')) {
+        if (editions.contains('ee')  && 'yes' == launchBehatTests) {
            checkout([$class: 'GitSCM',
              branches: [[name: '1.5']],
              userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
@@ -40,7 +40,8 @@ stage("Checkout") {
         }
     }
 
-    parallel community: {
+    checkouts = [:];
+    checkouts['community'] = {
         node('docker') {
             deleteDir()
             docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
@@ -52,8 +53,9 @@ stage("Checkout") {
             }
             deleteDir()
         }
-    }, enterprise: {
-        if (editions.contains('ee')) {
+    }
+    if (editions.contains('ee') && 'yes' == launchBehatTests) {
+        checkouts['enterprise'] = {
             node('docker') {
                 deleteDir()
                 docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
@@ -67,6 +69,8 @@ stage("Checkout") {
             }
         }
     }
+
+    parallel checkouts
 }
 
 if (launchUnitTests.equals("yes")) {
@@ -110,7 +114,7 @@ def runGruntTest() {
             docker.image('digitallyseamless/nodejs-bower-grunt').inside("") {
                 unstash "pim_community_dev_full"
                 sh "npm install"
-                sh "grunt travis"
+                sh "grunt --force"
             }
         } finally {
             deleteDir()
@@ -130,7 +134,6 @@ def runPhpUnitTest(version) {
                 }
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                sh "touch app/config/parameters_test.yml"
                 sh "mkdir -p app/build/logs/"
                 sh "./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test --log-junit app/build/logs/phpunit.xml"
             }
@@ -154,7 +157,6 @@ def runPhpSpecTest(version) {
                 }
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                sh "touch app/config/parameters_test.yml"
                 sh "mkdir -p app/build/logs/"
                 sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
             }
@@ -178,7 +180,6 @@ def runPhpCsFixerTest(version) {
                 }
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                sh "touch app/config/parameters_test.yml"
                 sh "mkdir -p app/build/logs/"
                 sh "./bin/php-cs-fixer fix --diff --format=junit --config=.php_cs.dist > app/build/logs/phpcs.xml"
             }
