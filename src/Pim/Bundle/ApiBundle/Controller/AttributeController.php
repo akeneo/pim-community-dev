@@ -10,7 +10,10 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Version;
 use Pim\Component\Api\Exception\DocumentedHttpException;
+use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
+use Pim\Component\Api\Pagination\HalPaginator;
+use Pim\Component\Api\Pagination\ParameterValidator;
 use Pim\Component\Api\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -54,6 +57,12 @@ class AttributeController
     /** @var array */
     protected $apiConfiguration;
 
+    /** @var HalPaginator */
+    protected $paginator;
+
+    /** @var ParameterValidator */
+    protected $parameterValidator;
+
     /** @var string */
     protected $urlDocumentation;
 
@@ -65,6 +74,8 @@ class AttributeController
      * @param ValidatorInterface           $validator
      * @param SaverInterface               $saver
      * @param RouterInterface              $router
+     * @param HalPaginator                 $paginator
+     * @param ParameterValidator           $parameterValidator
      * @param array                        $apiConfiguration
      * @param string                       $urlDocumentation
      */
@@ -76,6 +87,8 @@ class AttributeController
         ValidatorInterface $validator,
         SaverInterface $saver,
         RouterInterface $router,
+        HalPaginator $paginator,
+        ParameterValidator $parameterValidator,
         array $apiConfiguration,
         $urlDocumentation
     ) {
@@ -86,6 +99,8 @@ class AttributeController
         $this->validator = $validator;
         $this->saver = $saver;
         $this->router = $router;
+        $this->parameterValidator = $parameterValidator;
+        $this->paginator = $paginator;
         $this->apiConfiguration = $apiConfiguration;
         $this->urlDocumentation = sprintf($urlDocumentation, substr(Version::VERSION, 0, 3));
     }
@@ -126,15 +141,25 @@ class AttributeController
             'limit' => $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default'])
         ];
 
-        //@TODO add parameterValidator to validate limit and page
+        try {
+            $this->parameterValidator->validate($queryParameters);
+        } catch (PaginationParametersException $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        }
 
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
         $attributes = $this->repository->searchAfterOffset([], [], $queryParameters['limit'], $offset);
-        $attributesApi = $this->normalizer->normalize($attributes, 'external_api');
 
-        //@TODO use paginate method before return results
+        $paginatedAttributes = $this->paginator->paginate(
+            $this->normalizer->normalize($attributes, 'external_api'),
+            array_merge($request->query->all(), $queryParameters),
+            $this->repository->count(),
+            'pim_api_attribute_list',
+            'pim_api_attribute_get',
+            'code'
+        );
 
-        return new JsonResponse($attributesApi);
+        return new JsonResponse($paginatedAttributes);
     }
 
     /**

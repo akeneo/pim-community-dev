@@ -77,6 +77,8 @@ class FamilyRequirementsValidatorSpec extends ObjectBehavior
         $context->buildViolation(Argument::any(), Argument::any())
             ->willReturn($violation)
             ->shouldBeCalled();
+        $violation->atPath(Argument::any())->willReturn($violation);
+        $violation->addViolation(Argument::any())->shouldBeCalled();
 
         $this->validate($family, $minimumRequirements);
     }
@@ -96,6 +98,9 @@ class FamilyRequirementsValidatorSpec extends ObjectBehavior
         $context->buildViolation(Argument::any(), Argument::any())
             ->willReturn($violation)
             ->shouldBeCalled();
+
+        $violation->atPath(Argument::any())->willReturn($violation);
+        $violation->addViolation(Argument::any())->shouldBeCalled();
 
         $this->validate($family, $minimumRequirements);
     }

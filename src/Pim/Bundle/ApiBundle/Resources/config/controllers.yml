@@ -19,6 +19,8 @@ services:
             - '@validator'
             - '@pim_catalog.saver.category'
             - '@router'
+            - '@pim_api.pagination.paginator'
+            - '@pim_api.pagination.parameter_validator'
             - '%pim_api.configuration%'
             - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#category'
 
@@ -32,6 +34,8 @@ services:
             - '@validator'
             - '@pim_catalog.saver.family'
             - '@router'
+            - '@pim_api.pagination.paginator'
+            - '@pim_api.pagination.parameter_validator'
             - '%pim_api.configuration%'
             - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#family'
 
@@ -45,6 +49,8 @@ services:
             - '@validator'
             - '@pim_catalog.saver.attribute'
             - '@router'
+            - '@pim_api.pagination.paginator'
+            - '@pim_api.pagination.parameter_validator'
             - '%pim_api.configuration%'
             - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute'
 
