@@ -30,7 +30,7 @@ stage("Checkout") {
         checkout scm
         stash "pim_community_dev"
 
-        if (editions.contains('ee')) {
+        if (editions.contains('ee')  && 'yes' == launchBehatTests) {
            checkout([$class: 'GitSCM',
              branches: [[name: '1.6']],
              userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
@@ -40,7 +40,8 @@ stage("Checkout") {
         }
     }
 
-    parallel community: {
+    checkouts = [:];
+    checkouts['community'] = {
         node('docker') {
             deleteDir()
             docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
@@ -52,8 +53,9 @@ stage("Checkout") {
             }
             deleteDir()
         }
-    }, enterprise: {
-        if (editions.contains('ee')) {
+    }
+    if (editions.contains('ee') && 'yes' == launchBehatTests) {
+        checkouts['enterprise'] = {
             node('docker') {
                 deleteDir()
                 docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
@@ -67,6 +69,8 @@ stage("Checkout") {
             }
         }
     }
+
+    parallel checkouts
 }
 
 if (launchUnitTests.equals("yes")) {
@@ -105,7 +109,7 @@ def runGruntTest() {
             docker.image('digitallyseamless/nodejs-bower-grunt').inside("") {
                 unstash "pim_community_dev_full"
                 sh "npm install"
-                sh "grunt travis"
+                sh "grunt --force"
             }
         } finally {
             deleteDir()
@@ -113,72 +117,69 @@ def runGruntTest() {
     }
 }
 
-def runPhpUnitTest(version) {
+def runPhpUnitTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${version}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "pim_community_dev"
 
-                if (version == "7.0") {
+                if (phpVersion != "5.6") {
                     sh "composer require --no-update alcaeus/mongo-php-adapter"
                 }
 
                 sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                sh "touch app/config/parameters_test.yml"
                 sh "mkdir -p app/build/logs/"
                 sh "./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test --log-junit app/build/logs/phpunit.xml"
             }
         } finally {
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${version}] /\" app/build/logs/*.xml"
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
         }
     }
 }
 
-def runPhpSpecTest(version) {
+def runPhpSpecTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${version}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "pim_community_dev"
 
-                if (version == "7.0") {
+                if (phpVersion != "5.6") {
                     sh "composer require --no-update alcaeus/mongo-php-adapter"
                 }
 
                 sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                sh "touch app/config/parameters_test.yml"
                 sh "mkdir -p app/build/logs/"
                 sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
             }
         } finally {
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${version}] /\" app/build/logs/*.xml"
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
         }
     }
 }
 
-def runPhpCsFixerTest(version) {
+def runPhpCsFixerTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${version}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "pim_community_dev"
 
-                if (version == "7.0") {
+                if (phpVersion != "5.6") {
                     sh "composer require --no-update alcaeus/mongo-php-adapter"
                 }
 
                 sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                sh "touch app/config/parameters_test.yml"
                 sh "mkdir -p app/build/logs/"
                 sh "./bin/php-cs-fixer fix --diff --format=junit --config=.php_cs.dist > app/build/logs/phpcs.xml"
             }
         } finally {
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${version}] /\" app/build/logs/*.xml"
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
         }
