@@ -8,7 +8,6 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-
 /**
  * This is the class that loads and manages your bundle configuration
  *

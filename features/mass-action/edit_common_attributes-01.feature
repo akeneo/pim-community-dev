@@ -212,12 +212,18 @@ Feature: Edit common attributes of many products at once
     Given I am on the "boots" family page
     And I visit the "Attributes" tab
     And I add available attributes Comment
+    And I save the family
+    And I should not see the text "There are unsaved changes."
     And I am on the "sneakers" family page
     And I visit the "Attributes" tab
     And I add available attributes Comment
+    And I save the family
+    And I should not see the text "There are unsaved changes."
     And I am on the "sandals" family page
     And I visit the "Attributes" tab
     And I add available attributes Comment
+    And I save the family
+    And I should not see the text "There are unsaved changes."
     And I am on the products page
     When I select rows boots, sandals and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button

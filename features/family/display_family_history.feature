@@ -22,7 +22,7 @@ Feature: Display the family history
     And I save the family
     And I should see the flash message "Family successfully created"
     And I should not see the text "There are unsaved changes."
-    And I edit the "Flyer" family
+    And I am on the "Flyer" family page
     When I visit the "History" tab
     Then there should be 1 update
     And I should see history:

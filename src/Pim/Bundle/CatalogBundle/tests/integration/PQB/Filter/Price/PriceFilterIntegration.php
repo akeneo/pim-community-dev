@@ -114,6 +114,9 @@ class PriceFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorEmpty()
     {
+        $result = $this->execute([['a_price', Operators::IS_EMPTY, []]]);
+        $this->assert($result, ['empty_product']);
+
         $result = $this->execute([['a_price', Operators::IS_EMPTY, ['amount' => '', 'currency' => '']]]);
         $this->assert($result, ['empty_product']);
     }
@@ -127,6 +130,9 @@ class PriceFilterIntegration extends AbstractFilterTestCase
         $this->assert($result, ['product_one']);
 
         $result = $this->execute([['a_price', Operators::IS_NOT_EMPTY, ['amount' => '', 'currency' => '']]]);
+        $this->assert($result, []);
+
+        $result = $this->execute([['a_price', Operators::IS_NOT_EMPTY, []]]);
         $this->assert($result, []);
     }
 

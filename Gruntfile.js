@@ -92,6 +92,5 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', ['jasmine']);
     grunt.registerTask('codestyle', ['jshint', 'jscs', 'recess']);
-    grunt.registerTask('travis', ['codestyle', 'test']);
     grunt.registerTask('default', ['codestyle', 'test']);
 };

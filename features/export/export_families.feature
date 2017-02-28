@@ -72,6 +72,7 @@ Feature: Export families
       | French (Luxembourg)  | Baskets  |
       | French (Monaco)      | Baskets  |
     And I save the family
+    And I should not see the text "There are unsaved changes."
     And I am on the "csv_footwear_family_export" export job page
     When I launch the export job
     And I wait for the "csv_footwear_family_export" job to finish
