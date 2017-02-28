@@ -187,7 +187,6 @@ define([
                         price = { amount: null, currency: currency.code };
                         prices.push(price);
                     }
-
                 });
 
                 return _.sortBy(prices, 'currency');

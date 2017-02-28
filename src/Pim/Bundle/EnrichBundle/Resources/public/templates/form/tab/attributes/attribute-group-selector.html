@@ -5,7 +5,7 @@
             <span class="group-label"><%- i18n.getLabel(element.labels, locale, element.code) %></span>
             <span class="badge-elements-container">
                 <span
-                    class="AknBadge AknBadge--round AknBadge--highlight AknBadge--<%- !_.contains(toFillAttributeGroups, element.code) ? 'light' : '' %>"
+                    class="AknBadge AknBadge--round AknBadge--highlight <%- !_.contains(toFillAttributeGroups, element.code) ? 'AknBadge--light' : '' %>"
                 >
                 </span>
                 <% _.each(badges[element.code], function(badge, type) { %>

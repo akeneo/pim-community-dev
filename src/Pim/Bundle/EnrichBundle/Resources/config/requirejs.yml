@@ -102,7 +102,7 @@ config:
                             list: pim_enrich_channel_rest_index
                             get: pim_enrich_channel_rest_get
                 locale:
-                    module: pim/base-fetcher
+                    module: pim/locale-fetcher
                     options:
                         urls:
                             list: pim_enrich_locale_rest_index
@@ -215,6 +215,7 @@ config:
         pim/base-fetcher:            pimenrich/js/fetcher/base-fetcher
         pim/attribute-fetcher:       pimenrich/js/fetcher/attribute-fetcher
         pim/attribute-group-fetcher: pimenrich/js/fetcher/attribute-group-fetcher
+        pim/locale-fetcher:          pimenrich/js/fetcher/locale-fetcher
         pim/completeness-fetcher:    pimenrich/js/fetcher/completeness-fetcher
         pim/product-fetcher:         pimenrich/js/fetcher/product-fetcher
         pim/variant-group-fetcher:   pimenrich/js/fetcher/variant-group-fetcher

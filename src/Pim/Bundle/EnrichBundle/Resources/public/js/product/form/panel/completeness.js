@@ -53,7 +53,7 @@ define(
                 if (this.getFormData().meta) {
                     $.when(
                         this.fetchCompleteness(),
-                        FetcherRegistry.getFetcher('locale').search({'activated': true})
+                        FetcherRegistry.getFetcher('locale').fetchActivated()
                     ).then(function (completeness, locales) {
                         this.$el.html(
                             this.template({

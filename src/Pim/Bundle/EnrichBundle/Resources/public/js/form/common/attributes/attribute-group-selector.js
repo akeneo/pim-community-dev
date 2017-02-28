@@ -93,7 +93,6 @@ define(
                         );
                     }));
 
-                    this.$el.empty();
                     this.$el.html(this.template({
                         current: this.getCurrent(),
                         elements: this.getElements(),
@@ -104,7 +103,6 @@ define(
                     }));
 
                     this.delegateEvents();
-
                 }.bind(this));
 
                 return this;

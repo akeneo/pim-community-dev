@@ -17,7 +17,7 @@ define(
     function ($, _, mediator, attributeManager, fetcherRegistry) {
         return {
             /**
-             * Get list of fields that need to be field to complete the product
+             * Get list of fields that need to be filled to complete the product
              *
              * @param {object} root
              * @param {object} product

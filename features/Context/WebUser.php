@@ -824,21 +824,25 @@ class WebUser extends RawMinkContext
      */
     public function iChangeTheTo($field, $value = null, $language = null)
     {
-        if (null !== $language) {
-            try {
-                $field = $this->spin(function () use ($field, $language) {
-                    return $this->getCurrentPage()->getFieldLocator($field, $this->getLocaleCode($language));
-                }, sprintf('Cannot find "%s" field', $field));
-            } catch (\BadMethodCallException $e) {
-                // Use default $field if current page does not provide a getFieldLocator method
-            }
-        }
-
         $value = $value !== null ? $value : $this->getInvalidValueFor(
             sprintf('%s.%s', $this->getNavigationContext()->currentPage, $field)
         );
 
-        $this->getCurrentPage()->fillField($field, $value);
+        $this->spin(function () use ($field, $value, $language) {
+            if (null !== $language) {
+                try {
+                    $field = $this->spin(function () use ($field, $language) {
+                        return $this->getCurrentPage()->getFieldLocator($field, $this->getLocaleCode($language));
+                    }, sprintf('Cannot find "%s" field', $field));
+                } catch (\BadMethodCallException $e) {
+                    // Use default $field if current page does not provide a getFieldLocator method
+                }
+            }
+
+            $this->getCurrentPage()->fillField($field, $value);
+
+            return true;
+        }, sprintf('Cannot fill the field "%s"', $field));
     }
 
     /**

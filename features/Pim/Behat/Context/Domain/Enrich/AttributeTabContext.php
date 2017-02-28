@@ -77,7 +77,11 @@ class AttributeTabContext extends PimContext
      */
     public function theComparisonValueShouldBe($fieldName, $expected)
     {
-        $this->getCurrentPage()->compareFieldValue($fieldName, $expected, true);
+        $this->spin(function () use ($fieldName, $expected) {
+            $this->getCurrentPage()->compareFieldValue($fieldName, $expected, true);
+
+            return true;
+        }, sprintf('Cannot compare product value for "%s" field', $fieldName));
     }
 
     /**
@@ -91,7 +95,7 @@ class AttributeTabContext extends PimContext
         $field = $this->getCurrentPage()->findField($fieldName);
         try {
             $badge = $this->spin(function () use ($field) {
-                return $field->getParent()->getParent()->find('css', '.AknBadge--highlight');
+                return $field->getParent()->getParent()->find('css', '.AknBadge--highlight:not(.AknBadge--light)');
             }, 'Cannot find the badge element');
         } catch (TimeoutException $e) {
             if ('not ' !== $not) {
@@ -104,7 +108,7 @@ class AttributeTabContext extends PimContext
         if ('not ' === $not) {
             throw $this->getMainContext()->createExpectationException(
                 sprintf(
-                    'Expected to not see the field "%s" highlighted.',
+                    'Expected to not see the field "%s" not highlighted.',
                     $fieldName
                 )
             );
@@ -122,7 +126,7 @@ class AttributeTabContext extends PimContext
         $group = $this->getCurrentPage()->findGroup($groupName);
         try {
             $badge = $this->spin(function () use ($group) {
-                return $group->getParent()->find('css', '.AknBadge--highlight');
+                return $group->getParent()->find('css', '.AknBadge--highlight:not(.AknBadge--light)');
             }, 'Cannot find the badge element');
         } catch (TimeoutException $e) {
             if ('not ' !== $not) {
@@ -135,7 +139,7 @@ class AttributeTabContext extends PimContext
         if ('not ' === $not) {
             throw $this->getMainContext()->createExpectationException(
                 sprintf(
-                    'Expected to see the group "%s" highlighted.',
+                    'Expected to see the group "%s" not highlighted.',
                     $groupName
                 )
             );
@@ -159,19 +163,17 @@ class AttributeTabContext extends PimContext
      */
     public function iShouldNotSeeTheComparisonField($fieldLabel)
     {
-        try {
-            $this->getCurrentPage()
-                ->getElement('Attribute tab')
-                ->getComparisonFieldContainer($fieldLabel);
-        } catch (TimeoutException $e) {
-            return true;
-        }
-
-        throw $this->getMainContext()->createExpectationException(
-            sprintf(
-                'Expected to not see the field "%s".',
-                $fieldLabel
-            )
-        );
+        $this->spin(function () use ($fieldLabel) {
+            try {
+                $this->getCurrentPage()
+                    ->getElement('Attribute tab')
+                    ->getComparisonFieldContainer($fieldLabel);
+            } catch (TimeoutException $e) {
+                return true;
+            }
+        }, sprintf(
+            'Expected to not see the field "%s".',
+            $fieldLabel
+        ));
     }
 }
