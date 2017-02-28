@@ -13,15 +13,15 @@ use Pim\Component\Api\Exception\PaginationParametersException;
  */
 class ParameterValidator implements ParameterValidatorInterface
 {
-    /** @var int */
-    protected $limitMax;
+    /** @var array */
+    protected $configuration;
 
     /**
-     * @param int $limitMax
+     * @param array $configuration
      */
-    public function __construct($limitMax)
+    public function __construct(array $configuration)
     {
-        $this->limitMax = $limitMax;
+        $this->configuration = $configuration;
     }
 
     /**
@@ -65,8 +65,9 @@ class ParameterValidator implements ParameterValidatorInterface
             throw new PaginationParametersException(sprintf('"%s" is not a valid limit number.', $limit));
         }
 
-        if ($this->limitMax < $limit) {
-            throw new PaginationParametersException(sprintf('You cannot request more than %d items.', $this->limitMax));
+        $limitMax = $this->configuration['pagination']['limit_max'];
+        if ($limitMax < $limit) {
+            throw new PaginationParametersException(sprintf('You cannot request more than %d items.', $limitMax));
         }
     }
 

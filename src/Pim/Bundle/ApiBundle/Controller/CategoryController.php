@@ -52,6 +52,9 @@ class CategoryController
     /** @var RouterInterface */
     protected $router;
 
+    /** @var array */
+    protected $apiConfiguration;
+
     /** @var string */
     protected $urlDocumentation;
 
@@ -63,6 +66,7 @@ class CategoryController
      * @param ValidatorInterface             $validator
      * @param SaverInterface                 $saver
      * @param RouterInterface                $router
+     * @param array                          $apiConfiguration
      * @param string                         $urlDocumentation
      */
     public function __construct(
@@ -73,6 +77,7 @@ class CategoryController
         ValidatorInterface $validator,
         SaverInterface $saver,
         RouterInterface $router,
+        array $apiConfiguration,
         $urlDocumentation
     ) {
         $this->repository = $repository;
@@ -82,6 +87,7 @@ class CategoryController
         $this->validator = $validator;
         $this->saver = $saver;
         $this->router = $router;
+        $this->apiConfiguration = $apiConfiguration;
         $this->urlDocumentation = sprintf($urlDocumentation, substr(Version::VERSION, 0, 3));
     }
 
@@ -116,14 +122,16 @@ class CategoryController
      */
     public function listAction(Request $request)
     {
-        //@TODO limit will be set in configuration in an other PR
-        $limit = $request->query->get('limit', 10);
-        $page = $request->query->get('page', 1);
+        $queryParameters = [
+            'page'  => $request->query->get('page', 1),
+            'limit' => $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default'])
+        ];
 
         //@TODO add parameterValidator to validate limit and page
 
-        $offset = $limit * ($page - 1);
-        $categories = $this->repository->searchAfterOffset([], ['root' => 'ASC', 'left' => 'ASC'], $limit, $offset);
+        $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
+        $order = ['root' => 'ASC', 'left' => 'ASC'];
+        $categories = $this->repository->searchAfterOffset([], $order, $queryParameters['limit'], $offset);
 
         $categoriesApi = $this->normalizer->normalize($categories, 'external_api');
 

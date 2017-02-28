@@ -32,22 +32,28 @@ class ChannelController
     /** @var ParameterValidatorInterface */
     protected $parameterValidator;
 
+    /** @var array */
+    protected $apiConfiguration;
+
     /**
      * @param ApiResourceRepositoryInterface $repository
      * @param NormalizerInterface            $normalizer
      * @param HalPaginator                   $paginator
      * @param ParameterValidatorInterface    $parameterValidator
+     * @param array                          $apiConfiguration
      */
     public function __construct(
         ApiResourceRepositoryInterface $repository,
         NormalizerInterface $normalizer,
         HalPaginator $paginator,
-        ParameterValidatorInterface $parameterValidator
+        ParameterValidatorInterface $parameterValidator,
+        array $apiConfiguration
     ) {
         $this->repository = $repository;
         $this->normalizer = $normalizer;
         $this->paginator = $paginator;
         $this->parameterValidator = $parameterValidator;
+        $this->apiConfiguration = $apiConfiguration;
     }
 
     /**
@@ -81,9 +87,10 @@ class ChannelController
      */
     public function listAction(Request $request)
     {
-        $queryParameters = [];
-        $queryParameters['page'] = $request->query->get('page', 1);
-        $queryParameters['limit'] = $request->query->get('limit', 10);
+        $queryParameters = [
+            'page'  => $request->query->get('page', 1),
+            'limit' => $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default'])
+        ];
 
         try {
             $this->parameterValidator->validate($queryParameters);
