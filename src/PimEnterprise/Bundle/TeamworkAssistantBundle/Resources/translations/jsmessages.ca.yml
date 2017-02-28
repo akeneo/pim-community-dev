@@ -1,0 +1,19 @@
+teamwork_assistant:
+  common:
+    required: Obligatori
+  grid:
+    view_selector:
+      loading: Carregant...
+      confirmation:
+        delete: Confirmació de l'eliminació
+  project:
+    label: Etiqueta
+    description: Descripció
+  edit_project_modal:
+    confirm: Desar
+    cancel: Cancelar
+  create_project_modal:
+    confirm: Desar
+    cancel: Cancelar
+  widget:
+    description: Descripció

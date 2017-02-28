@@ -1,8 +1,6 @@
 <?php
 
-namespace tests\integration\PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat;
-
-use PimEnterprise\Bundle\SecurityBundle\tests\integration\Normalizer\Flat\AbstractFlatNormalizerTestCase;
+namespace PimEnterprise\Bundle\SecurityBundle\tests\integration\Normalizer\Flat;
 
 class LocaleIntegration extends AbstractFlatNormalizerTestCase
 {

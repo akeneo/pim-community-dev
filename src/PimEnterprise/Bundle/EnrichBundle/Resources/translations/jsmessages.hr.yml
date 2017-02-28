@@ -14,13 +14,24 @@ permission-changes:
     grant: Grupa <strong>{{ group }}</strong> će <strong>biti {{ permission }}</strong>
     revoke: Grupa <strong>{{ group }}</strong> neće <strong>biti {{ permission }}</strong>
 pimee_enrich:
+  form:
+    job_instance:
+      tab:
+        permission:
+          title: Dozvole
+          execute.label: Dopušteno izvoditi profil zadatka
+          edit.label: Dopušteno uređivati profil zadatka
+    channel:
+      tab:
+        asset-transformation:
+          title: Transformacije imovine
   entity:
     product:
       history:
         published: Objavljeno
         revert: Vrati
       smart_attribute:
-        come_from: 'Ovaj atribut se može ažurirati prema pravilu:'
+        come_from: "Ovaj atribut se može ažurirati prema pravilu:"
       btn:
         publish: Objavi
         publish_this_version: Objavi ovu verziju
@@ -69,7 +80,7 @@ pimee_enrich:
         source:
           working_copy: Radna kopija
           draft: Moj nacrt
-          draft_of: Nacrt od {{ author }}
+          draft_of: "Nacrt od {{ author }}"
     product_draft:
       info:
         update_successful: Nacrt proizvoda je uspješno spremljen
@@ -95,3 +106,33 @@ pimee_enrich:
       confirmation:
         discard_changes: Nespremljene promjene bit će izgubljene. Jeste li sigurni da želite poslati vaš nacrt za odobrenje bez nespremljene promjene?
         discard_changes_title: Jeste li sigurni da želite poslati ovaj nacrt?
+  asset_transformation:
+    not_found: Nisu pronađene transformacije
+    title:
+      transformation: Transformacije
+      options: Opcije
+    colorspace:
+      title: Prostor boja
+      options:
+        colorspace: '%value% prostoar boja'
+    resize:
+      title: Promjena veličine
+      options:
+        width: '% value%px širina'
+        height: '% value%px visina'
+    resolution:
+      title: Razlučivost
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Skala
+      options:
+        width: '% value%px širina'
+        height: '% value%px visina'
+        ratio: '%value%% omjer'
+    thumbnail:
+      title: Minijatura
+      options:
+        width: '% value%px širina'
+        height: '% value%px visina'

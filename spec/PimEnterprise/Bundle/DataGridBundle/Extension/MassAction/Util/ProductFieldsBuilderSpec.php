@@ -68,7 +68,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
         $association->getCode()->willReturn('association-type-code');
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
-        $attribute->getAttributeType()->willReturn(null);
+        $attribute->getType()->willReturn(null);
         $attribute->getCode()->willReturn('attribute-code');
 
         $assocTypeRepo->findAll()->willReturn([$association]);

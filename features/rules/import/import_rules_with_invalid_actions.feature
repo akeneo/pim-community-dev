@@ -114,7 +114,7 @@ Feature: Import rules
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then the row "sony_beautiful_description" should contain the texts:
-      | column | value                                                                          |
+      | column | value                                                                         |
       | Action | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |
 
   Scenario: Skip rules with missing to_field key for copy action
@@ -169,7 +169,7 @@ Feature: Import rules
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then the row "sony_beautiful_description" should contain the texts:
-      | column | value                                                                          |
+      | column | value                                                                         |
       | Action | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |
 
   Scenario: Skip rules with missing value key for set action
@@ -669,7 +669,7 @@ Feature: Import rules
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then the row "sony_beautiful_description" should contain the texts:
-      | column | value                                                                          |
+      | column | value                                                                         |
       | Action | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |
 
   Scenario: Skip rules with non existing to_field for copy action
@@ -727,7 +727,7 @@ Feature: Import rules
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then the row "sony_beautiful_description" should contain the texts:
-      | column | value                                                                          |
+      | column | value                                                                         |
       | Action | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |
 
   Scenario: Skip rules with incompatible fields for copy action
@@ -784,7 +784,7 @@ Feature: Import rules
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then the row "sony_beautiful_description" should contain the texts:
-      | column | value                                                                          |
+      | column | value                                                                         |
       | Action | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |
 
   Scenario: Skip rules with wrong locale fields for copy action
@@ -844,7 +844,7 @@ Feature: Import rules
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then the row "sony_beautiful_description" should contain the texts:
-      | column | value                                                                          |
+      | column | value                                                                         |
       | Action | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |
 
   Scenario: Skip rules with wrong scope fields for copy action
@@ -908,5 +908,5 @@ Feature: Import rules
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then the row "sony_beautiful_description" should contain the texts:
-      | column | value                                                                          |
+      | column | value                                                                         |
       | Action | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |

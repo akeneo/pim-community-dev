@@ -101,6 +101,6 @@ class AssetsCollectionPresenter implements PresenterInterface
      */
     public function supports($value)
     {
-        return AttributeTypes::ASSETS_COLLECTION === $value->getAttribute()->getAttributeType();
+        return AttributeTypes::ASSETS_COLLECTION === $value->getAttribute()->getType();
     }
 }

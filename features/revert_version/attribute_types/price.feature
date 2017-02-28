@@ -27,7 +27,7 @@ Feature: Revert product attributes to a previous version
     And I visit the "Attributes" tab
     And I visit the "Marketing" group
     Then the product "jeans" should have the following values:
-    | price      |            |
+    | price |  |
 
   Scenario: Successfully revert a price attribute
     When I am on the products page
@@ -55,7 +55,7 @@ Feature: Revert product attributes to a previous version
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | marcel |
-      | family | Tees    |
+      | family | Tees   |
     And I press the "Save" button in the popin
     And I wait to be on the "marcel" product page
     Given I am on the "marcel" product page

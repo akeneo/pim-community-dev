@@ -8,7 +8,7 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
     Given the "clothing" catalog configuration
     And the following family:
       | code       | attributes |
-      | high_heels | sku, name  |
+      | high_heels | sku,name   |
     And the following category:
       | code | label-en_US | parent          |
       | hat  | Hat         | 2014_collection |

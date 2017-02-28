@@ -13,7 +13,7 @@ Feature: Export published products with localized number
   Scenario: Successfully export published products
     Given the following job "csv_clothing_mobile_published_product_export" configuration:
       | filePath         | %tmp%/ecommerce_product_export/csv_clothing_mobile_published_product_export.csv |
-      | decimalSeparator | ,                                                                           |
+      | decimalSeparator | ,                                                                               |
     And I add the "english UK" locale to the "mobile" channel
     And the following products:
       | sku          | family  | categories                 | price             | size | main_color | manufacturer |

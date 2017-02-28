@@ -33,7 +33,7 @@ pimee_workflow:
       partial_reject: '%owner% ha rebutjat el/s valor/s per a %attributes% pel producte %product%'
       partial_reject_number: '%owner% ha rebutjat els valors pels atributs %attributes_count% pel producte %product%'
       partial_remove: '%owner% ha eliminat el/s valor/s per a %attributes% pel producte %product%'
-      partial_remove_number: '%owner% ha suprimit valors pels atributs %attributes_count% pel producte %product%'
+      partial_remove_number: '%owner% ha suprimit els valors pels atributs %attributes_count% pel producte %product%'
       approve: '%owner% ha acceptat la seva proposta pel producte %product%'
       refuse: '%owner% ha rebutjat la proposta pel producte %product%'
       remove: '%owner% ha rebutjat la proposta pel producte %product%'
@@ -66,14 +66,14 @@ pimee_workflow:
       view: Vista
   steps:
     product_draft_processor.title: Processador de proposta
-    approve.title: Aprovar proposta
+    approve.title: Aprovar la proposta
     refuse.title: Rebutjar proposta
   mass_edit_action:
     published:
       page_title: Productes publicats
       page_subtitle: Edició en massa (1 producte publicat) | Edició en massa (%count% productes publicats)
       title: Trieu l'operació
-      subtitle: Trieu l'operació que voleu realitzar sobre el producte seleccionat i publicat | Trieu l'operació que voleu realitzar en els %count% productes seleccionats i publicats
+      subtitle: Trieu la operació que voleu realitzar sobre el producte seleccionat i publicat | Trieu la operació que voleu realitzar en els %count% productes seleccionats i publicats
       confirm: Esteu a punt d'actualitzar un producte publicat amb la informació següent, confirmeu. | Esteu a punt d'actualitzar %count% productes publicats amb la informació següent, confirmeu.
       steps:
         first: Triar productes publicats
@@ -111,8 +111,8 @@ pim_title:
     index: Productes publicats
     view: Productes publicats %product.sku% | Veure
   product:
-    dispatch: Productes %product.sku%
-    show: Productes %product.sku% | Mostrar
+    dispatch: "Productes %product.sku%"
+    show: "Productes %product.sku% | Mostrar"
   proposal:
     index: Propostes
 btn.editworkingcopy: Editar la còpia de treball

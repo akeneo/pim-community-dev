@@ -1,0 +1,19 @@
+teamwork_assistant:
+  common:
+    required: Vaadittu
+  grid:
+    view_selector:
+      loading: Ladataan...
+      confirmation:
+        delete: Poista vahvistus
+  project:
+    label: Nimike
+    description: Kuvaus
+  edit_project_modal:
+    confirm: Tallenna
+    cancel: Peruuta
+  create_project_modal:
+    confirm: Tallenna
+    cancel: Peruuta
+  widget:
+    description: Kuvaus

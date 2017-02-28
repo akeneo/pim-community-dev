@@ -7,23 +7,23 @@ Feature: Submit a modification on a product draft
   Background:
     Given a "clothing" catalog configuration
     And the product:
-      | family                    | jackets           |
-      | categories                | winter_top        |
-      | sku                       | my-jacket         |
-      | name-en_US                | Jacket            |
-      | name-fr_FR                | Veste             |
-      | description-en_US-mobile  | An awesome jacket |
-      | description-fr_FR-mobile  | Une superbe veste |
-      | number_in_stock-mobile    | 4                 |
-      | number_in_stock-tablet    | 20                |
-      | price                     | 45 USD            |
-      | manufacturer              | Volcom            |
-      | weather_conditions        | dry, wet          |
-      | handmade                  | 0                 |
-      | release_date-mobile       | 2014-05-14        |
-      | length                    | 60 CENTIMETER     |
-      | datasheet                 |                   |
-      | side_view                 |                   |
+      | family                   | jackets           |
+      | categories               | winter_top        |
+      | sku                      | my-jacket         |
+      | name-en_US               | Jacket            |
+      | name-fr_FR               | Veste             |
+      | description-en_US-mobile | An awesome jacket |
+      | description-fr_FR-mobile | Une superbe veste |
+      | number_in_stock-mobile   | 4                 |
+      | number_in_stock-tablet   | 20                |
+      | price                    | 45 USD            |
+      | manufacturer             | Volcom            |
+      | weather_conditions       | dry, wet          |
+      | handmade                 | 0                 |
+      | release_date-mobile      | 2014-05-14        |
+      | length                   | 60 CENTIMETER     |
+      | datasheet                |                   |
+      | side_view                |                   |
     And I am logged in as "Mary"
     And I edit the "my-jacket" product
 

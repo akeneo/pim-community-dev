@@ -77,14 +77,14 @@ Feature: Browse products selected in rules datagrid
       | type    | message                                                     |
       | success | Calculation of the affected products for the rules finished |
     And the row "rule_sku" should contain:
-      | column             | value               |
-      | Affected products  | 2 affected products |
+      | column            | value               |
+      | Affected products | 2 affected products |
     And the row "rule_weight" should contain:
-      | column             | value               |
-      | Affected products  | 1 affected product  |
+      | column            | value              |
+      | Affected products | 1 affected product |
     And the row "rule_size" should contain:
-      | column             | value               |
-      | Affected products  | 0 affected product  |
+      | column            | value              |
+      | Affected products | 0 affected product |
     And the row "rule_big_size" should contain:
-      | column             | value               |
-      | Affected products  | Not yet calculated  |
+      | column            | value              |
+      | Affected products | Not yet calculated |

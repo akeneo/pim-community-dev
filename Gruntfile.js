@@ -33,17 +33,13 @@ module.exports = function (grunt) {
                 'web/bundles/pim*/**/*.css',
                 'web/bundles/pim*/**/*.less',
                 '!web/bundles/**/lib/**/*.css',
-                '!web/bundles/**/lib/**/*.less',
-                '!web/bundles/pimui/css/flags.less',
-                '!web/bundles/pimui/css/form.less',
-                '!web/bundles/pimui/css/less/oro.less',
-                '!web/bundles/pimui/css/pim.less'
+                '!web/bundles/**/lib/**/*.less'
             ],
             options: {
                 strictPropertyOrder: false,
-                noIDs:               false,
-                noUnderscores:       false,
-                noOverqualifying:    false
+                noIDs: false,
+                noOverqualifying: false,
+                noUniversalSelectors: false
             }
         },
         jasmine: {
@@ -90,6 +86,5 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', ['jasmine']);
     grunt.registerTask('codestyle', ['jshint', 'jscs', 'recess']);
-    grunt.registerTask('travis', ['codestyle', 'test']);
     grunt.registerTask('default', ['codestyle', 'test']);
 };

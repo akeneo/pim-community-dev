@@ -7,12 +7,12 @@ Feature: Validate date attributes of a draft
   Background:
     Given a "clothing" catalog configuration
     And the following attributes:
-      | code      | label-en_US | type | scopable | unique | date_min   | date_max   | group |
-      | release   | Release     | date | no       | yes    | 2013-01-01 | 2015-12-12 | info  |
-      | available | Available   | date | yes      | no     | 2013-01-01 | 2015-12-12 | info  |
+      | code      | label-en_US | type             | scopable | unique | date_min   | date_max   | group |
+      | release   | Release     | pim_catalog_date | 0        | 1      | 2013-01-01 | 2015-12-12 | info  |
+      | available | Available   | pim_catalog_date | 1        | 0      | 2013-01-01 | 2015-12-12 | info  |
     And the following family:
-      | code | label-en_US | attributes              |
-      | baz  | Baz         | sku, release, available |
+      | code | label-en_US | attributes            |
+      | baz  | Baz         | sku,release,available |
     And the following products:
       | sku | family | categories        |
       | foo | baz    | summer_collection |

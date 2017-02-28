@@ -273,7 +273,7 @@ class PublishedProductRepository extends ProductRepository implements
     {
         $qb = $this->createQueryBuilder('pp');
 
-        if ($option->getAttribute()->getAttributeType() === AttributeTypes::OPTION_SIMPLE_SELECT) {
+        if ($option->getAttribute()->getType() === AttributeTypes::OPTION_SIMPLE_SELECT) {
             $qb->field("values.option")->equals($option->getId());
         } else {
             $qb->field("values.optionIds")->equals($option->getId());

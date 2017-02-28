@@ -7,16 +7,16 @@ Feature: Validate number attributes of a draft
   Background:
     Given the "clothing" catalog configuration
     And the following attributes:
-      | code       | label-en_US | type   | scopable | unique | negative_allowed | decimals_allowed | number_min | number_max | group |
-      | ref        | Reference   | number | no       | yes    | no               | no               |            |            | info  |
-      | sold       | Sold        | number | no       | no     | no               | no               |            |            | info  |
-      | available  | Available   | number | yes      | no     | no               | no               |            |            | info  |
-      | note       | Rating      | number | no       | no     | no               | no               | 1          | 5          | info  |
-      | quality    | Quality     | number | no       | no     | no               | yes              | 1          | 10         | info  |
-      | popularity | Popularity  | number | yes      | no     | no               | no               | 1          | 10         | info  |
+      | code       | label-en_US | type               | scopable | unique | negative_allowed | decimals_allowed | number_min | number_max | group |
+      | ref        | Reference   | pim_catalog_number | 0        | 1      | 0                | 0                |            |            | info  |
+      | sold       | Sold        | pim_catalog_number | 0        | 0      | 0                | 0                |            |            | info  |
+      | available  | Available   | pim_catalog_number | 1        | 0      | 0                | 0                |            |            | info  |
+      | note       | Rating      | pim_catalog_number | 0        | 0      | 0                | 0                | 1          | 5          | info  |
+      | quality    | Quality     | pim_catalog_number | 0        | 0      | 0                | 1                | 1          | 10         | info  |
+      | popularity | Popularity  | pim_catalog_number | 1        | 0      | 0                | 0                | 1          | 10         | info  |
     And the following family:
-      | code | label-en_US | attributes                                           |
-      | baz  | Baz         | sku, ref, sold, available, note, popularity, quality |
+      | code | label-en_US | attributes                                     |
+      | baz  | Baz         | sku,ref,sold,available,note,popularity,quality |
     And the following products:
       | sku | family | popularity-mobile | popularity-tablet | note | categories        | ref |
       | foo | baz    | 4                 | 4                 | 1    | summer_collection |     |

@@ -44,7 +44,7 @@ Feature: Quick export many published products from datagrid
     When I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                     |
+      | type    | message                                      |
       | success | XLSX published product quick export finished |
     Then I go on the last executed job resume of "xlsx_published_product_quick_export"
     And I should see "COMPLETED"

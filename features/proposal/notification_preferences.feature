@@ -12,8 +12,8 @@ Feature: Manage notifications preferences
       | 2014_collection  | Manager    | own    |
       | 2014_collection  | IT support | view   |
     And the following products:
-      | sku     | family   | categories      |
-      | tshirt  | jackets  | 2014_collection |
+      | sku    | family  | categories      |
+      | tshirt | jackets | 2014_collection |
 
   Scenario: I can only edit notifications preferences that are relevant to me
     Given I am logged in as "Julia"

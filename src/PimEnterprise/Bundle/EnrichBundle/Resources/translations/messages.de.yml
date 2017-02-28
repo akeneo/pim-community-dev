@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: Gebietsschemata %locale.code% | Bearbeiten
+  edit: "Gebietsschemata %locale.code% | Bearbeiten"
 Permissions: Berechtigungen
 pane.accordion.permissions: Berechtigungen
 attribute group.permissions:
@@ -129,6 +129,8 @@ pimee_enrich:
       options:
         width: '%value%px Breite'
         height: '%value%px Höhe'
+add_product_value_with_permission_and_rules:
+  steps.perform: Produktwert hinzufügen
 update_product_value_with_permission_and_rules:
   steps.perform: Wert des Produkts aktualisieren
 edit_common_attributes_with_permission_and_rules:
@@ -136,23 +138,50 @@ edit_common_attributes_with_permission_and_rules:
   steps.edit_common_attributes_processor.title: Gemeinsame Attribute bearbeiten
 batch_jobs:
   add_product_value_with_permission_and_rules:
+    label: Hinzufügen von Produktwerten mit Rechteprüfung und Regeln
+    perform.label: Produktwert hinzufügen
     execute_rules.label: Regel-Ausführung
   update_product_value_with_permission_and_rules:
+    label: Aktualisieren von Produktwerten mit Rechteprüfung und Regeln
     perform.label: Wert des Produkts aktualisieren
     execute_rules.label: Regel-Ausführung
   remove_product_value_with_permission_and_rules:
+    label: Entfernen von Produktwerten mit Rechteprüfung und Regeln
+    perform.label: Produktwert entfernen
     execute_rules.label: Regel-Ausführung
   edit_common_attributes_with_permission_and_rules:
+    label: Bearbeiten von gemeinsamen Attributen mit Rechteprüfung und Regeln
     perform.label: Gemeinsame Attribute bearbeiten
     execute_rules.label: Regel-Ausführung
+    cleaner.label: Lösche temporäre Dateien
   add_to_variant_group_with_rules:
+    label: Hinzufügen von Produkten zu Variantengruppe mit Regeln
+    perform.label: Produkte zu Variantengruppe hinzufügen
     execute_rules.label: Regel-Ausführung
+  csv_published_product_quick_export:
+    export.label: Schnellexport veröffentlichter Produkte als CSV
+    perform:
+      label: Schnellexport veröffentlichter Produkte als CSV
+  csv_published_product_grid_context_quick_export:
+    export.label: Kontextbezogener Schnellexport veröffentlichter Produkte als CSV
+    perform:
+      label: Kontextbezogener Schnellexport veröffentlichter Produkte als CSV
+  xlsx_published_product_quick_export:
+    export.label: Schnellexport veröffentlichter Produkte als XLSX
+    perform:
+      label: Schnellexport veröffentlichter Produkte als XLSX
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Kontextbezogener Schnellexport veröffentlichter Produkte als XLSX
+    perform:
+      label: Kontextbezogener Schnellexport veröffentlichter Produkte als XLSX
 add_to_variant_group_with_rules:
+  steps.perform: Produkte zu Variantengruppe hinzufügen
   steps.excluded.title: Ausgeschlossene Produkte
   steps.duplicated.title: Doppelte Achse
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Gemeinsame Attribute bearbeiten
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Produktwert mit Berechtigung hinzufügen
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Produktwert mit Berechtigung aktualisieren
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Produktwert mit Berechtigung entfernen
 edit_common_attributes_with_permission: Gemeinsame Attribute mit Berechtigung bearbeiten
 edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Gemeinsame Attribute mit Berechtigung bearbeiten
 job_execution.summary:
@@ -161,3 +190,5 @@ job_execution.summary:
   proposal: Vorschlag erstellt
   proposal_deleted: gelöscht
 pim_assets_collection: Sammlung von Assets
+pim_enrich_attribute_form:
+  isReadOnly: Nur Lesezugriff

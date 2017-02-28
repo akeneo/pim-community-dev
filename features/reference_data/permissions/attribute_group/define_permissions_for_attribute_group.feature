@@ -9,8 +9,8 @@ Feature: Define permissions for an attribute group with reference data
     And the following "sole_fabric" attribute reference data: PVC, Nylon, Neoprene, Spandex, Wool, Kevlar, Jute
     And the following "sole_color" attribute reference data: Red, Green, Light green, Blue, Yellow, Cyan, Magenta, Black, White
     And the following product:
-      | sku         | family | sole_color | sole_fabric |
-      | foo         | boots  | Red        | Nylon       |
+      | sku | family | sole_color | sole_fabric |
+      | foo | boots  | Red        | Nylon       |
 
   Scenario: Successfully see a reference data attribute
     Given I am logged in as "Mary"

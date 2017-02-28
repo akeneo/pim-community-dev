@@ -14,13 +14,24 @@ permission-changes:
     grant: Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong>
     revoke: Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong>
 pimee_enrich:
+  form:
+    job_instance:
+      tab:
+        permission:
+          title: Permissions
+          execute.label: Autorisé à exécuter les profils
+          edit.label: Autorisé à éditer les profils
+    channel:
+      tab:
+        asset-transformation:
+          title: Transformations de la ressource
   entity:
     product:
       history:
         published: Publié
         revert: Restaurer
       smart_attribute:
-        come_from: 'Cet attribut peut être mis à jour par une règle :'
+        come_from: "Cet attribut peut être mis à jour par une règle :"
       btn:
         publish: Publier
         publish_this_version: Publier cette version
@@ -45,7 +56,7 @@ pimee_enrich:
           title: Propositions
           messages:
             approve:
-              success: La proposition a été appliquée avec succès.
+              success: La proposition a été soumise avec succès.
               error:
                 The proposal can't be applied due to the following error:
                   - erreur
@@ -64,12 +75,12 @@ pimee_enrich:
           title: Dépublier ce produit
           content: Êtes-vous sûr de vouloir dépublier ce produit ?
       info:
-        update_successful: La version de travail a bien été mise à jour
+        update_successful: La copie de travail a bien été mise à jour
       copy:
         source:
           working_copy: Version de travail
           draft: Mon brouillon
-          draft_of: Brouillon de {{ author }}
+          draft_of: "Brouillon de {{ author }}"
     product_draft:
       info:
         update_successful: Le brouillon a bien été enregistré
@@ -79,15 +90,15 @@ pimee_enrich:
         sent_for_approval: Le brouillon a été envoyé pour validation
         draft_not_sendable: Vous ne pouvez pas envoyer ce brouillon pour validation
       btn:
-        send_for_approval: Envoyer pour validation
-        sent_for_approval: Envoyé pour validation
+        send_for_approval: Soumettre pour validation
+        sent_for_approval: Soumis à la validation
       modal:
         accept_proposal: Accepter la proposition
         accept_selected_proposal: Accepter le(s) proposition(s) sélectionnée(s)
         reject_proposal: Rejeter la proposition
         reject_selected_proposal: Rejeter le(s) proposition(s) sélectionnée(s)
         remove_proposal: Supprimer la proposition
-        send_for_approval: Envoyer pour approbation
+        send_for_approval: Soumettre pour validation
         cancel: Annuler
         confirm: Envoyer
         title: Commenter votre proposition (facultatif - 255 caractères max.)
@@ -95,3 +106,33 @@ pimee_enrich:
       confirmation:
         discard_changes: Les modifications non enregistrées seront perdues. Êtes-vous sûr de que vouloir envoyer votre brouillon pour validation sans ces modifications ?
         discard_changes_title: Êtes-vous sûr de vouloir envoyer ce brouillon ?
+  asset_transformation:
+    not_found: Aucune transformation trouvée
+    title:
+      transformation: Transformation
+      options: Options
+    colorspace:
+      title: Espace colorimétrique
+      options:
+        colorspace: espace colorimétrique %value%
+    resize:
+      title: Redimensionner
+      options:
+        width: '%value%px de largeur'
+        height: '%value%px de hauteur'
+    resolution:
+      title: Résolution 
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Mise à l'échelle
+      options:
+        width: '%value%px de largeur'
+        height: '%value%px de hauteur'
+        ratio: ratio %value%%
+    thumbnail:
+      title: Miniature
+      options:
+        width: '%value%px de largeur'
+        height: '%value%px de hauteur'

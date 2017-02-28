@@ -7,14 +7,14 @@ Feature: Validate price attributes of a draft
   Background:
     Given the "clothing" catalog configuration
     And the following attributes:
-      | code      | label-en_US | type   | scopable | negative_allowed | decimals_allowed | number_min | number_max | group |
-      | cost      | Cost        | prices | no       | no               | no               |            |            | info  |
-      | net_price | Price       | prices | yes      | no               | no               |            |            | info  |
-      | tax       | Tax         | prices | no       |                  | yes              | 10         | 100        | info  |
-      | customs   | Customs     | prices | yes      |                  | yes              | 10         | 100        | info  |
+      | code      | label-en_US | type                         | scopable | negative_allowed | decimals_allowed | number_min | number_max | group |
+      | cost      | Cost        | pim_catalog_price_collection | 0        | 0                | 0                |            |            | info  |
+      | net_price | Price       | pim_catalog_price_collection | 1        | 0                | 0                |            |            | info  |
+      | tax       | Tax         | pim_catalog_price_collection | 0        |                  | 1                | 10         | 100        | info  |
+      | customs   | Customs     | pim_catalog_price_collection | 1        |                  | 1                | 10         | 100        | info  |
     And the following family:
-      | code | label-en_US | attributes                         |
-      | baz  | Baz         | sku, cost, net_price, tax, customs |
+      | code | label-en_US | attributes                     |
+      | baz  | Baz         | sku,cost,net_price,tax,customs |
     And the following product:
       | sku | family | categories        |
       | foo | baz    | summer_collection |

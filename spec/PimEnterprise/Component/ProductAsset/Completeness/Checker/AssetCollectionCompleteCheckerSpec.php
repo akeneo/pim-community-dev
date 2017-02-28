@@ -21,10 +21,10 @@ class AssetCollectionCompleteCheckerSpec extends ObjectBehavior
         AttributeInterface $attribute
     ) {
         $productValue->getAttribute()->willReturn($attribute);
-        $attribute->getAttributeType()->willReturn('pim_assets_collection');
+        $attribute->getType()->willReturn('pim_assets_collection');
         $this->supportsValue($productValue)->shouldReturn(true);
 
-        $attribute->getAttributeType()->willReturn('other');
+        $attribute->getType()->willReturn('other');
         $this->supportsValue($productValue)->shouldReturn(false);
     }
 

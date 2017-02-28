@@ -28,14 +28,14 @@ Feature: Enforce no permissions for a locale
     And I am logged in as "Julia"
     When I am on the products page
     Then the grid locale switcher should contain the following items:
-      | language  | locale | flag    |
-      | en        | en_US  | flag-us |
-      | de        | de_DE  | flag-de |
+      | language | locale | flag    |
+      | en       | en_US  | flag-us |
+      | de       | de_DE  | flag-de |
     When I edit the "foo" product
     Then the locale switcher should contain the following items:
-      | language  | locale | flag    |
-      | English   | en_US  | flag-us |
-      | German    | de_DE  | flag-de |
+      | language | locale | flag    |
+      | English  | en_US  | flag-us |
+      | German   | de_DE  | flag-de |
 
   @javascript
   Scenario: Display product view or edit page depending on user's rights
@@ -76,8 +76,8 @@ Feature: Enforce no permissions for a locale
       | product category | user group | access |
       | 2014_collection  | All        | edit   |
     And the following attribute group accesses:
-      | attribute group | user group | access |
-      | general         | All        | edit   |
+      | attribute group | user group | access | group | type             |
+      | general         | All        | edit   | other | pim_catalog_text |
     And I am logged in as "admin"
     And I am on the user groups creation page
     And I fill in the following information:

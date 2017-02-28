@@ -1,8 +1,0 @@
-activity_manager:
-  common:
-    required: Obligatori
-  project:
-    label: Etiqueta
-  create_project_modal:
-    confirm: Desar
-    cancel: Cancelar
