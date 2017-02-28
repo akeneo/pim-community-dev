@@ -177,4 +177,13 @@ class PriceFilterIntegration extends AbstractFilterTestCase
     {
         $this->execute([['a_price', Operators::NOT_EQUAL, ['amount' => 10, 'currency' => 'NOT_FOUND']]]);
     }
+
+    /**
+     * @expectedException \LogicException
+     * @expectedExceptionMessage Filter on property "a_price" is not supported or does not support operator "BETWEEN"
+     */
+    public function testErrorOperatorNotSupported()
+    {
+        $this->execute([['a_price', Operators::BETWEEN, ['amount' => 15, 'currency' => 'EUR']]]);
+    }
 }
