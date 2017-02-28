@@ -278,27 +278,6 @@ class GlobalConstraintsIntegration extends AbstractAttributeTestCase
         $this->assertSame('localizable', $violations->get(0)->getPropertyPath());
     }
 
-    public function testLocalizableIsBoolean()
-    {
-        $attribute = $this->createAttribute();
-
-        $this->updateAttribute(
-            $attribute,
-            [
-                'code'        => 'new_text',
-                'type'        => 'pim_catalog_text',
-                'group'       => 'attributeGroupA',
-                'localizable' => 'true',
-            ]
-        );
-
-        $violations = $this->validateAttribute($attribute);
-
-        $this->assertCount(1, $violations);
-        $this->assertSame('This value should be of type bool.', $violations->get(0)->getMessage());
-        $this->assertSame('localizable', $violations->get(0)->getPropertyPath());
-    }
-
     public function testNotLocalizableIfAttributeIsUnique()
     {
         $attribute = $this->createAttribute();
@@ -342,27 +321,6 @@ class GlobalConstraintsIntegration extends AbstractAttributeTestCase
         $this->assertSame('scopable', $violations->get(0)->getPropertyPath());
     }
 
-    public function testScopableIsBoolean()
-    {
-        $attribute = $this->createAttribute();
-
-        $this->updateAttribute(
-            $attribute,
-            [
-                'code'     => 'new_text',
-                'type'     => 'pim_catalog_text',
-                'group'    => 'attributeGroupA',
-                'scopable' => 'true',
-            ]
-        );
-
-        $violations = $this->validateAttribute($attribute);
-
-        $this->assertCount(1, $violations);
-        $this->assertSame('This value should be of type bool.', $violations->get(0)->getMessage());
-        $this->assertSame('scopable', $violations->get(0)->getPropertyPath());
-    }
-
     public function testNotScopableIfAttributeIsUnique()
     {
         $attribute = $this->createAttribute();
@@ -385,27 +343,6 @@ class GlobalConstraintsIntegration extends AbstractAttributeTestCase
         $this->assertSame('scopable', $violations->get(0)->getPropertyPath());
     }
 
-    public function testUseableAsGridFilterIsBoolean()
-    {
-        $attribute = $this->createAttribute();
-
-        $this->updateAttribute(
-            $attribute,
-            [
-                'code'                   => 'new_text',
-                'type'                   => 'pim_catalog_text',
-                'group'                  => 'attributeGroupA',
-                'useable_as_grid_filter' => 'true',
-            ]
-        );
-
-        $violations = $this->validateAttribute($attribute);
-
-        $this->assertCount(1, $violations);
-        $this->assertSame('This value should be of type bool.', $violations->get(0)->getMessage());
-        $this->assertSame('useableAsGridFilter', $violations->get(0)->getPropertyPath());
-    }
-
     public function testSortOrderIsNotNull()
     {
         $attribute = $this->createAttribute();
@@ -424,27 +361,6 @@ class GlobalConstraintsIntegration extends AbstractAttributeTestCase
 
         $this->assertCount(1, $violations);
         $this->assertSame('This value should not be null.', $violations->get(0)->getMessage());
-        $this->assertSame('sortOrder', $violations->get(0)->getPropertyPath());
-    }
-
-    public function testSortOrderIsNumeric()
-    {
-        $attribute = $this->createAttribute();
-
-        $this->updateAttribute(
-            $attribute,
-            [
-                'code'       => 'new_text',
-                'type'       => 'pim_catalog_text',
-                'group'      => 'attributeGroupA',
-                'sort_order' => 'jambon',
-            ]
-        );
-
-        $violations = $this->validateAttribute($attribute);
-
-        $this->assertCount(1, $violations);
-        $this->assertSame('This value should be of type numeric.', $violations->get(0)->getMessage());
         $this->assertSame('sortOrder', $violations->get(0)->getPropertyPath());
     }
 
@@ -469,46 +385,25 @@ class GlobalConstraintsIntegration extends AbstractAttributeTestCase
         $this->assertSame('sortOrder', $violations->get(0)->getPropertyPath());
     }
 
-    public function testRequiredIsBoolean()
+    public function testSortOrderDoesNotHaveDecimals()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'     => 'new_text',
-                'type'     => 'pim_catalog_text',
-                'group'    => 'attributeGroupA',
-                'required' => 'true',
+                'code'       => 'new_text',
+                'type'       => 'pim_catalog_text',
+                'group'      => 'attributeGroupA',
+                'sort_order' => 2.5,
             ]
         );
 
         $violations = $this->validateAttribute($attribute);
 
         $this->assertCount(1, $violations);
-        $this->assertSame('This value should be of type bool.', $violations->get(0)->getMessage());
-        $this->assertSame('required', $violations->get(0)->getPropertyPath());
-    }
-
-    public function testUniqueIsBoolean()
-    {
-        $attribute = $this->createAttribute();
-
-        $this->updateAttribute(
-            $attribute,
-            [
-                'code'   => 'new_text',
-                'type'   => 'pim_catalog_text',
-                'group'  => 'attributeGroupA',
-                'unique' => 'true',
-            ]
-        );
-
-        $violations = $this->validateAttribute($attribute);
-
-        $this->assertCount(1, $violations);
-        $this->assertSame('This value should be of type bool.', $violations->get(0)->getMessage());
-        $this->assertSame('unique', $violations->get(0)->getPropertyPath());
+        $this->assertSame('This value should not be a decimal.', $violations->get(0)->getMessage());
+        $this->assertSame('sortOrder', $violations->get(0)->getPropertyPath());
     }
 
     public function testLabelsMaxLength()
@@ -557,5 +452,47 @@ class GlobalConstraintsIntegration extends AbstractAttributeTestCase
         $this->assertSame('The locale "ab_CD" does not exist.', $violations->get(0)->getMessage());
         $this->assertSame('translations[0].locale', $violations->get(0)->getPropertyPath());
         $this->assertSame('labels', $violations->get(0)->getConstraint()->payload['standardPropertyName']);
+    }
+
+    public function testMaxCharactersDoesNotHaveDecimals()
+    {
+        $attribute = $this->createAttribute();
+
+        $this->updateAttribute(
+            $attribute,
+            [
+                'code'           => 'new_text',
+                'type'           => 'pim_catalog_text',
+                'group'          => 'attributeGroupA',
+                'max_characters' => 50.1,
+            ]
+        );
+
+        $violations = $this->validateAttribute($attribute);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This value should not be a decimal.', $violations->get(0)->getMessage());
+        $this->assertSame('maxCharacters', $violations->get(0)->getPropertyPath());
+    }
+
+    public function testMaxCharactersIsPositive()
+    {
+        $attribute = $this->createAttribute();
+
+        $this->updateAttribute(
+            $attribute,
+            [
+                'code'           => 'new_text',
+                'type'           => 'pim_catalog_text',
+                'group'          => 'attributeGroupA',
+                'max_characters' => -10,
+            ]
+        );
+
+        $violations = $this->validateAttribute($attribute);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This value should be greater than or equal to 0.', $violations->get(0)->getMessage());
+        $this->assertSame('maxCharacters', $violations->get(0)->getPropertyPath());
     }
 }

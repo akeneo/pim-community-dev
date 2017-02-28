@@ -52,8 +52,10 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 standardPropertyName: reference_data_name
     properties:
         type:
+            - Type: string
             - NotBlank: ~
         code:
+            - Type: string
             - NotBlank: ~
             - Regex:
                 pattern: /^[a-zA-Z0-9_]+$/
@@ -64,27 +66,24 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 pattern: /^(?!(id|associationTypes|categories|categoryId|completeness|enabled|family|groups|associations|products|scope|treeId|values|category|(.)*_(products|groups))$)/
                 message: This code is not available
         localizable:
-            - NotNull: ~
             - Type: bool
+            - NotNull: ~
             - 'IsFalse':
                 message: A unique attribute can not be localizable
                 groups:
                     - unique
         scopable:
-            - NotNull: ~
             - Type: bool
+            - NotNull: ~
             - 'IsFalse':
                 message: A unique attribute can not be scopable
                 groups:
                     - unique
         useableAsGridFilter:
-            - NotNull: ~
             - Type: bool
+            - NotNull: ~
         wysiwygEnabled:
-            - Type:
-                type: bool
-                groups:
-                    - pim_catalog_textarea
+            - Type: bool
             - IsNull:
                 groups:
                     - pim_catalog_identifier
@@ -101,8 +100,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_reference_data_multiselect
                     - pim_catalog_reference_data_simpleselect
         decimalsAllowed:
-            - Type:
-                type: bool
+            - Type: bool
+            - NotNull:
                 groups:
                     - pim_catalog_number
                     - pim_catalog_price_collection
@@ -121,8 +120,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_reference_data_multiselect
                     - pim_catalog_reference_data_simpleselect
         negativeAllowed:
-            - Type:
-                type: bool
+            - Type: bool
+            - NotNull:
                 groups:
                     - pim_catalog_number
                     - pim_catalog_metric
@@ -149,13 +148,13 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_identifier
                     - pim_catalog_text
                     - pim_catalog_textarea
-            - Range:
-                max: 255
+            - LessThanOrEqual:
+                value: 255
                 groups:
                     - pim_catalog_identifier
                     - pim_catalog_text
-            - Range:
-                max: 65535
+            - LessThanOrEqual:
+                value: 65535
                 groups:
                     - pim_catalog_textarea
             - IsNull:
@@ -174,6 +173,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         sortOrder:
             - NotNull: ~
             - Type: numeric
+            - Pim\Component\Catalog\Validator\Constraints\NotDecimal: {}
             - GreaterThanOrEqual:
                 value: 0
         required:
@@ -196,6 +196,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_boolean
                     - pim_catalog_date
                     - pim_catalog_metric
+                    - pim_catalog_reference_data_multiselect
+                    - pim_catalog_reference_data_simpleselect
         unique:
             - Type: bool
             - NotNull: ~
@@ -214,15 +216,13 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_file
                     - pim_catalog_metric
                     - pim_catalog_boolean
+                    - pim_catalog_reference_data_multiselect
+                    - pim_catalog_reference_data_simpleselect
         maxFileSize:
+            - Type: numeric
             - Range:
                 min: 0.01
                 max: 9999.99
-                groups:
-                    - pim_catalog_file
-                    - pim_catalog_image
-            - Type:
-                type: numeric
                 groups:
                     - pim_catalog_file
                     - pim_catalog_image
@@ -241,9 +241,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_reference_data_multiselect
                     - pim_catalog_reference_data_simpleselect
         dateMin:
-            - DateTime:
-                groups:
-                    - pim_catalog_date
+            - DateTime: ~
             - IsNull:
                 groups:
                     - pim_catalog_identifier
@@ -260,9 +258,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_reference_data_multiselect
                     - pim_catalog_reference_data_simpleselect
         dateMax:
-            - DateTime:
-                groups:
-                    - pim_catalog_date
+            - DateTime: ~
             - IsNull:
                 groups:
                     - pim_catalog_identifier
@@ -287,7 +283,22 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 choices: [null, regexp]
                 groups:
                     - pim_catalog_identifier
+            - IsNull:
+                groups:
+                    - pim_catalog_textarea
+                    - pim_catalog_multiselect
+                    - pim_catalog_simpleselect
+                    - pim_catalog_price_collection
+                    - pim_catalog_number
+                    - pim_catalog_boolean
+                    - pim_catalog_date
+                    - pim_catalog_file
+                    - pim_catalog_image
+                    - pim_catalog_metric
+                    - pim_catalog_reference_data_multiselect
+                    - pim_catalog_reference_data_simpleselect
         validationRegexp:
+            - Type: string
             - IsNull:
                 groups:
                     - pim_catalog_textarea
@@ -327,12 +338,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         group:
             - NotBlank: ~
         numberMin:
-            - Type:
-                type: numeric
-                groups:
-                    - pim_catalog_number
-                    - pim_catalog_price_collection
-                    - pim_catalog_metric
+            - Type: numeric
             - IsNull:
                 groups:
                     - pim_catalog_identifier
@@ -347,12 +353,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_reference_data_multiselect
                     - pim_catalog_reference_data_simpleselect
         numberMax:
-            - Type:
-                type: numeric
-                groups:
-                    - pim_catalog_number
-                    - pim_catalog_price_collection
-                    - pim_catalog_metric
+            - Type: numeric
             - IsNull:
                 groups:
                     - pim_catalog_identifier
@@ -367,7 +368,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_reference_data_multiselect
                     - pim_catalog_reference_data_simpleselect
         metricFamily:
-            - Blank:
+            - Type: string
+            - IsNull:
                 groups:
                     - pim_catalog_identifier
                     - pim_catalog_text
@@ -383,7 +385,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_reference_data_multiselect
                     - pim_catalog_reference_data_simpleselect
         defaultMetricUnit:
-            - Blank:
+            - Type: string
+            - IsNull:
                 groups:
                     - pim_catalog_identifier
                     - pim_catalog_text

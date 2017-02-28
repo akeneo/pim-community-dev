@@ -101,7 +101,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $violations = $this->validateAttribute($attribute);
 
         $this->assertCount(1, $violations);
-        $this->assertSame('This value should be blank.', $violations->get(0)->getMessage());
+        $this->assertSame('This value should be null.', $violations->get(0)->getMessage());
         $this->assertSame('metricFamily', $violations->get(0)->getPropertyPath());
     }
 
@@ -119,7 +119,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $violations = $this->validateAttribute($attribute);
 
         $this->assertCount(1, $violations);
-        $this->assertSame('This value should be blank.', $violations->get(0)->getMessage());
+        $this->assertSame('This value should be null.', $violations->get(0)->getMessage());
         $this->assertSame('defaultMetricUnit', $violations->get(0)->getPropertyPath());
     }
 
@@ -160,25 +160,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('availableLocales', $violations->get(0)->getPropertyPath());
     }
 
-    public function testMaxCharacterIsNumeric()
-    {
-        $attribute = $this->getAttribute('sku');
-
-        $this->updateAttribute(
-            $attribute,
-            [
-                'max_characters' => 'capybara',
-            ]
-        );
-
-        $violations = $this->validateAttribute($attribute);
-
-        $this->assertCount(1, $violations);
-        $this->assertSame('This value should be of type numeric.', $violations->get(0)->getMessage());
-        $this->assertSame('maxCharacters', $violations->get(0)->getPropertyPath());
-    }
-
-    public function testMaxCharacterIsNotDecimal()
+    public function testIdentifierMaxCharacterIsNotDecimal()
     {
         $attribute = $this->getAttribute('sku');
 
@@ -196,7 +178,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('maxCharacters', $violations->get(0)->getPropertyPath());
     }
 
-    public function testMaxCharacterIsPositive()
+    public function testIdentifierMaxCharacterIsPositive()
     {
         $attribute = $this->getAttribute('sku');
 
@@ -214,7 +196,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('maxCharacters', $violations->get(0)->getPropertyPath());
     }
 
-    public function testMaxCharacterShouldNotBeGreaterThan()
+    public function testIdentifierMaxCharactersIsNotGreaterThan()
     {
         $attribute = $this->getAttribute('sku');
 
@@ -228,26 +210,8 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $violations = $this->validateAttribute($attribute);
 
         $this->assertCount(1, $violations);
-        $this->assertSame('This value should be 255 or less.', $violations->get(0)->getMessage());
+        $this->assertSame('This value should be less than or equal to 255.', $violations->get(0)->getMessage());
         $this->assertSame('maxCharacters', $violations->get(0)->getPropertyPath());
-    }
-
-    public function testIdentifierShouldNotHaveAMaxFileSize()
-    {
-        $attribute = $this->getAttribute('sku');
-
-        $this->updateAttribute(
-            $attribute,
-            [
-                'max_file_size' => '666',
-            ]
-        );
-
-        $violations = $this->validateAttribute($attribute);
-
-        $this->assertCount(1, $violations);
-        $this->assertSame('This value should be null.', $violations->get(0)->getMessage());
-        $this->assertSame('maxFileSize', $violations->get(0)->getPropertyPath());
     }
 
     public function testIdentifierShouldNotHaveADateMin()
@@ -286,7 +250,25 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('dateMax', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierShouldHaveAValidValidationRule()
+    public function testIdentifierShouldNotHaveAMaxFileSize()
+    {
+        $attribute = $this->getAttribute('sku');
+
+        $this->updateAttribute(
+            $attribute,
+            [
+                'max_file_size' => '666',
+            ]
+        );
+
+        $violations = $this->validateAttribute($attribute);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This value should be null.', $violations->get(0)->getMessage());
+        $this->assertSame('maxFileSize', $violations->get(0)->getPropertyPath());
+    }
+
+    public function testIdentifierValidationRule()
     {
         $attribute = $this->getAttribute('sku');
 
@@ -304,13 +286,14 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('validationRule', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierShouldHaveAValidValidationRegexp()
+    public function testIdentifierValidationRegexp()
     {
         $attribute = $this->getAttribute('sku');
 
         $this->updateAttribute(
             $attribute,
             [
+                'validation_rule'   => 'regexp',
                 'validation_regexp' => '/[a-z]+',
             ]
         );
@@ -329,7 +312,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->updateAttribute(
             $attribute,
             [
-                'number_min' => '13',
+                'number_min' => 13,
             ]
         );
 
@@ -347,7 +330,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->updateAttribute(
             $attribute,
             [
-                'number_max' => '13',
+                'number_max' => 13,
             ]
         );
 
@@ -410,23 +393,5 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertCount(1, $violations);
         $this->assertSame('This value should be null.', $violations->get(0)->getMessage());
         $this->assertSame('negativeAllowed', $violations->get(0)->getPropertyPath());
-    }
-
-    public function testIdentifierShouldNotHaveAMinimumInputLength()
-    {
-        $attribute = $this->getAttribute('sku');
-
-        $this->updateAttribute(
-            $attribute,
-            [
-                'minimum_input_length' => 4,
-            ]
-        );
-
-        $violations = $this->validateAttribute($attribute);
-
-        $this->assertCount(1, $violations);
-        $this->assertSame('This value should be null.', $violations->get(0)->getMessage());
-        $this->assertSame('minimumInputLength', $violations->get(0)->getPropertyPath());
     }
 }
