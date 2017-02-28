@@ -96,7 +96,6 @@ Feature: Edit a family
     And I visit the "Attributes" tab
     Then I should see attributes "SKU, Name, Manufacturer, Weather conditions, Description" in group "Product information"
     And I remove the "manufacturer" attribute
-    And I should not see confirm dialog
     Then I should see attributes "SKU, Name, Manufacturer, Weather conditions, Description" in group "Product information"
 
   Scenario: Fail adding attributes when the user can't edit family attributes

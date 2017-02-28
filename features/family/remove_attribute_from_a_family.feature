@@ -23,7 +23,6 @@ Feature: Remove attribute from a family
     Given I am on the "Bags" family page
     And I visit the "Attributes" tab
     When I remove the "manufacturer" attribute
-    And I confirm the deletion
     And I save the family
     And I should not see the text "There are unsaved changes."
     Then I should see the flash message "Attribute successfully removed from the family"
@@ -49,7 +48,7 @@ Feature: Remove attribute from a family
       | mobile     | French (France)         | warning  | 1 missing value | 50%   |
     When I am on the "Bags" family page
     And I visit the "Attributes" tab
-    And I remove the "Manufacturer" attribute
+    And I remove the "manufacturer" attribute
     Then I should see the flash message "Attribute successfully removed from the family"
     When I am on the "bag-noname" product page
     And I open the "Completeness" panel
