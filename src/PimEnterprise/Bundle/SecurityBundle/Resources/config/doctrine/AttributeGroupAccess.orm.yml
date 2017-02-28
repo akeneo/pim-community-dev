@@ -8,6 +8,11 @@ PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess:
             columns:
                 - attribute_group_id
                 - user_group_id
+    indexes:
+        attr_grp_editable_permission_index:
+            columns:
+                - edit_attributes
+                - attribute_group_id
     fields:
         id:
             type: integer

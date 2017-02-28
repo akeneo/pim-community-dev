@@ -1,8 +1,6 @@
 <?php
 
-namespace tests\integration\PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat;
-
-use PimEnterprise\Bundle\SecurityBundle\tests\integration\Normalizer\Flat\AbstractFlatNormalizerTestCase;
+namespace PimEnterprise\Bundle\SecurityBundle\tests\integration\Normalizer\Flat;
 
 class CategoryIntegration extends AbstractFlatNormalizerTestCase
 {
@@ -14,9 +12,9 @@ class CategoryIntegration extends AbstractFlatNormalizerTestCase
         $this->assertSame($flatCategory, [
             'code'            => 'master',
             'parent'          => null,
-            'view_permission' => 'All,IT support,Manager,Redactor',
-            'edit_permission' => 'All,IT support,Manager,Redactor',
-            'own_permission'  => 'All,IT support,Manager,Redactor'
+            'view_permission' => 'IT support,Manager,Redactor',
+            'edit_permission' => 'IT support,Manager,Redactor',
+            'own_permission'  => 'IT support,Manager,Redactor'
         ]);
     }
 }

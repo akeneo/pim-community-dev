@@ -43,6 +43,12 @@ stage("Checkout") {
     node {
         deleteDir()
         checkout scm
+
+        if ('akeneo' != ceOwner) {
+            sh "composer config repositories.pim-community-dev vcs \"https://github.com/${ceOwner}/pim-community-dev.git\""
+        }
+
+        sh "composer require --no-update \"akeneo/pim-community-dev\":\"${ceBranch}\""
         stash "project_files"
     }
 
@@ -50,11 +56,7 @@ stage("Checkout") {
         deleteDir()
         docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
             unstash "project_files"
-            if ('akeneo' != ceOwner) {
-                sh "composer config repositories.pim-community-dev vcs \"https://github.com/${ceOwner}/pim-community-dev.git\""
-            }
 
-            sh "composer require --no-update \"akeneo/pim-community-dev\":\"${ceBranch}\""
             sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
             sh "app/console oro:requirejs:generate-config"
             sh "app/console assets:install"
@@ -122,12 +124,11 @@ def runPhpSpecTest(version) {
             docker.image("carcel/php:${version}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "project_files"
 
-                if (version == "7.0") {
+                if (version != "5.6") {
                     sh "composer require --no-update alcaeus/mongo-php-adapter"
                 }
 
                 sh "php -d memory_limit=-1 /usr/local/bin/composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                sh "cp app/config/parameters.yml.dist app/config/parameters_test.yml"
                 sh "mkdir -p app/build/logs/"
                 sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
             }
@@ -157,7 +158,7 @@ def runIntegrationTest(version) {
                     sh "./app/console --env=test pim:install --force"
 
                     sh "mkdir -p app/build/logs/"
-                    sh "./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
+                    sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
                 }
             }
         } finally {
@@ -175,13 +176,7 @@ def runPhpCsFixerTest(version) {
             docker.image("carcel/php:${version}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "project_files"
 
-                if (version == "7.0") {
-                    sh "composer require --no-update alcaeus/mongo-php-adapter"
-                }
-
-                sh "php -d memory_limit=-1 /usr/local/bin/composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "composer global require friendsofphp/php-cs-fixer ^2.0"
-                sh "cp app/config/parameters.yml.dist app/config/parameters_test.yml"
                 sh "mkdir -p app/build/logs/"
                 sh "/home/akeneo/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --diff --format=junit --config=.php_cs.dist > app/build/logs/phpcs.xml"
             }
@@ -204,9 +199,8 @@ def runBehatTest(storage, features, phpVersion, mysqlVersion, esVersion) {
             mysqlHostName = "mysql_${env.JOB_NAME}_${env.BUILD_NUMBER}_behat-${storage}".replaceAll( '/', '_' )
 
             // Configure the PIM
-            sh "cp app/config/parameters.yml.dist app/config/parameters_test.yml"
+            sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
             sh "sed -i \"s#database_host: .*#database_host: ${mysqlHostName}#g\" app/config/parameters_test.yml"
-            sh "printf \"    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" >> app/config/parameters_test.yml"
 
             // Activate MongoDB if needed
             if ('odm' == storage) {
