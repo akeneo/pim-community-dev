@@ -9,6 +9,7 @@
 - GITHUB-5337: Fixed Widget Registry. Priority is now taken in account.
 - PIM-6127: In the family import, the attributes required should be in the family
 - PIM-6125: In the family import, the attribute_as_label has to be in the family and its type has to be identifier or text
+- GITHUB-5365: Remove useless `category` filter option from `Manage option` dropdown 
 
 ## Deprecations
 
