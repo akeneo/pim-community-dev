@@ -122,14 +122,14 @@ def runGruntTest() {
     }
 }
 
-def runPhpUnitTest(version) {
+def runPhpUnitTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${version}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "pim_community_dev"
 
-                if (version == "7.0") {
+                if (phpVersion == "7.0") {
                     sh "composer remove --dev --no-update doctrine/mongodb-odm-bundle;"
                 }
 
@@ -138,21 +138,21 @@ def runPhpUnitTest(version) {
                 sh "./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test --log-junit app/build/logs/phpunit.xml"
             }
         } finally {
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${version}] /\" app/build/logs/*.xml"
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
         }
     }
 }
 
-def runPhpSpecTest(version) {
+def runPhpSpecTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${version}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "pim_community_dev"
 
-                if (version == "7.0") {
+                if (phpVersion == "7.0") {
                     sh "composer remove --dev --no-update doctrine/mongodb-odm-bundle;"
                 }
 
@@ -161,21 +161,21 @@ def runPhpSpecTest(version) {
                 sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
             }
         } finally {
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${version}] /\" app/build/logs/*.xml"
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
         }
     }
 }
 
-def runPhpCsFixerTest(version) {
+def runPhpCsFixerTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${version}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "pim_community_dev"
 
-                if (version == "7.0") {
+                if (phpVersion == "7.0") {
                     sh "composer remove --dev --no-update doctrine/mongodb-odm-bundle;"
                 }
 
@@ -184,7 +184,7 @@ def runPhpCsFixerTest(version) {
                 sh "./bin/php-cs-fixer fix --diff --format=junit --config=.php_cs.dist > app/build/logs/phpcs.xml"
             }
         } finally {
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${version}] /\" app/build/logs/*.xml"
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
         }
