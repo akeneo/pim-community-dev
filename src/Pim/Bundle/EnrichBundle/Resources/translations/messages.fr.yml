@@ -655,6 +655,7 @@ pim_title.dashboard: "Tableau de bord"
 pim_catalog_identifier: Identifiant
 pim_catalog_text: Texte
 pim_catalog_textarea: Zone de texte
+pim_catalog_text_collection: Collection de textes
 pim_catalog_number: Nombre
 pim_catalog_price_collection: Prix
 pim_catalog_multiselect: Liste à choix multiples

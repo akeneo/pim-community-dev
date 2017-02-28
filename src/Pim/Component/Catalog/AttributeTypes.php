@@ -23,6 +23,7 @@ final class AttributeTypes
     const PRICE_COLLECTION = 'pim_catalog_price_collection';
     const TEXTAREA = 'pim_catalog_textarea';
     const TEXT = 'pim_catalog_text';
+    const TEXT_COLLECTION = 'pim_catalog_text_collection';
     const REFERENCE_DATA_MULTI_SELECT = 'pim_reference_data_multiselect';
     const REFERENCE_DATA_SIMPLE_SELECT = 'pim_reference_data_simpleselect';
 
@@ -42,4 +43,5 @@ final class AttributeTypes
     const BACKEND_TYPE_REF_DATA_OPTIONS = 'reference_data_options';
     const BACKEND_TYPE_TEXT = 'text';
     const BACKEND_TYPE_VARCHAR = 'varchar';
+    const BACKEND_TYPE_TEXT_COLLECTION = 'textCollection';
 }

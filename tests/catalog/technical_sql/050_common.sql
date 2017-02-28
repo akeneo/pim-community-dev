@@ -94,7 +94,9 @@ INSERT INTO `pim_catalog_attribute` VALUES
 (2543,595,0,0,NULL,'','',0,NULL,NULL,0,1,NULL,NULL,'Temperature','CELSIUS',NULL,'',0,0,0,0,0,'a_metric_without_decimal_negative','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_metric','metric','a:1:{s:19:"reference_data_name";N;}','2016-10-05 13:52:34','2016-10-05 13:52:34'),
 (2544,595,0,0,NULL,'','',0,NULL,NULL,1,1,NULL,NULL,'Temperature','CELSIUS',NULL,'',0,0,0,0,0,'a_metric_negative','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_metric','metric','a:1:{s:19:"reference_data_name";N;}','2016-10-05 13:52:34','2016-10-05 13:52:34'),
 (2545,595,0,0,NULL,'','',0,NULL,NULL,0,1,NULL,NULL,'','',NULL,'',0,0,0,0,0,'a_price_without_decimal','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_price_collection','prices','a:1:{s:19:"reference_data_name";N;}','2016-10-05 13:52:34','2016-10-05 13:52:34'),
-(2546,595,0,0,NULL,'','',0,NULL,NULL,0,1,NULL,NULL,'','',NULL,'',0,0,0,0,0,'a_number_integer_negative','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_number','decimal','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49');
+(2546,595,0,0,NULL,'','',0,NULL,NULL,0,1,NULL,NULL,'','',NULL,'',0,0,0,0,0,'a_number_integer_negative','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_number','decimal','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49'),
+(2547,594,0,0,NULL,'','',0,NULL,NULL,0,0,NULL,NULL,'','',NULL,'',0,0,0,0,0,'a_text_collection','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_text_collection','textCollection','a:1:{s:19:\"reference_data_name\";N;}','2017-02-22 14:28:49','2017-02-22 14:28:49'),
+(2548,594,0,0,NULL,'','',0,NULL,NULL,0,0,NULL,NULL,'','',NULL,'',0,0,0,1,0,'a_localizable_text_collection','Pim\\Component\\Catalog\\Model\\Product','pim_catalog_text_collection','textCollection','a:1:{s:19:\"reference_data_name\";N;}','2017-02-23 14:28:49','2017-02-23 14:28:49');
 /*!40000 ALTER TABLE `pim_catalog_attribute` ENABLE KEYS */;
 
 
@@ -179,7 +181,7 @@ INSERT INTO `pim_catalog_family` VALUES (466,2523,'familyA','2016-08-04 14:28:50
 
 /*!40000 ALTER TABLE `pim_catalog_family_attribute` DISABLE KEYS */;
 DELETE FROM `pim_catalog_family_attribute`;
-INSERT INTO `pim_catalog_family_attribute` VALUES (466,2523),(466,2524),(466,2525),(466,2526),(466,2527),(466,2528),(466,2529),(466,2530),(466,2531),(466,2532),(466,2533),(466,2534),(466,2535),(466,2536),(466,2537),(466,2538),(466,2539),(466,2540),(466,2541);
+INSERT INTO `pim_catalog_family_attribute` VALUES (466,2523),(466,2524),(466,2525),(466,2526),(466,2527),(466,2528),(466,2529),(466,2530),(466,2531),(466,2532),(466,2533),(466,2534),(466,2535),(466,2536),(466,2537),(466,2538),(466,2539),(466,2540),(466,2541),(466,2547),(466,2548);
 /*!40000 ALTER TABLE `pim_catalog_family_attribute` ENABLE KEYS */;
 
 

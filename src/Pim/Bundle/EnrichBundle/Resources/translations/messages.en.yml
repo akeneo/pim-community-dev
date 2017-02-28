@@ -744,6 +744,7 @@ pim_catalog_image:            Image
 pim_catalog_boolean:          "Yes/No"
 pim_catalog_date:             Date
 pim_catalog_metric:           Metric
+pim_catalog_text_collection:  Text Collection
 
 pim_reference_data_simpleselect: Reference data simple select
 pim_reference_data_multiselect:  Reference data multi select

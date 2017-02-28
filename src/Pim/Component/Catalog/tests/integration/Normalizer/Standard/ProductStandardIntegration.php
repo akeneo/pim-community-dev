@@ -244,6 +244,25 @@ class ProductStandardIntegration extends TestCase
                             'data'   => 'une zone de texte pour les tablettes en français',
                         ],
                     ],
+                    'a_text_collection' => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => ['EAN1', 'EAN2'],
+                        ],
+                    ],
+                    'a_localizable_text_collection' => [
+                        [
+                            'locale' => 'en_US',
+                            'scope'  => null,
+                            'data'   => ['GTIN1', 'GTIN2', 'GTIN3'],
+                        ],
+                        [
+                            'locale' => 'fr_FR',
+                            'scope'  => null,
+                            'data'   => ['EAN1', 'EAN2'],
+                        ],
+                    ],
                 ],
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',

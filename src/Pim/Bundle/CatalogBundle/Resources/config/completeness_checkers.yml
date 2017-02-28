@@ -4,6 +4,7 @@ parameters:
     pim_catalog.completeness.checker.metric.class:  Pim\Component\Catalog\Completeness\Checker\MetricCompleteChecker
     pim_catalog.completeness.checker.price.class:   Pim\Component\Catalog\Completeness\Checker\PriceCompleteChecker
     pim_catalog.completeness.checker.empty.class:   Pim\Component\Catalog\Completeness\Checker\EmptyChecker
+    pim_catalog.completeness.checker.text_collection.class: Pim\Component\Catalog\Completeness\Checker\TextCollectionCompleteChecker
 
 services:
     pim_catalog.completeness.checker.chained:
@@ -26,5 +27,10 @@ services:
 
     pim_catalog.completeness.checker.price:
         class: '%pim_catalog.completeness.checker.price.class%'
+        tags:
+            - { name: pim_catalog.completeness.checker.product_value, priority: 100 }
+
+    pim_extended_attribute_type.completeness.checker.text_collection:
+        class: '%pim_catalog.completeness.checker.text_collection.class%'
         tags:
             - { name: pim_catalog.completeness.checker.product_value, priority: 100 }

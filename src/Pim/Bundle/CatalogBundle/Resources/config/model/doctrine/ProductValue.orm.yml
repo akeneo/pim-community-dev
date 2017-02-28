@@ -61,6 +61,10 @@ Pim\Component\Catalog\Model\ProductValue:
             length: 100
             nullable: true
             column: scope_code
+        textCollection:
+            type: json_array
+            nullable: true
+            column: value_text_collection
     manyToOne:
         attribute:
             targetEntity: Pim\Component\Catalog\Model\AttributeInterface

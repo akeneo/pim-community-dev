@@ -863,6 +863,40 @@ class AttributeIntegration extends AbstractStandardNormalizerTestCase
         $this->assert('a_regexp', $expected);
     }
 
+    public function testAttributeTextCollection()
+    {
+        $expected = [
+            'code'                   => 'a_text_collection',
+            'type'                   => 'pim_catalog_text_collection',
+            'group'                  => 'attributeGroupA',
+            'unique'                 => false,
+            'useable_as_grid_filter' => false,
+            'allowed_extensions'     => [],
+            'metric_family'          => null,
+            'default_metric_unit'    => null,
+            'reference_data_name'    => null,
+            'available_locales'      => [],
+            'max_characters'         => null,
+            'validation_rule'        => null,
+            'validation_regexp'      => null,
+            'wysiwyg_enabled'        => false,
+            'number_min'             => null,
+            'number_max'             => null,
+            'decimals_allowed'       => false,
+            'negative_allowed'       => false,
+            'date_min'               => null,
+            'date_max'               => null,
+            'max_file_size'          => null,
+            'minimum_input_length'   => 0,
+            'sort_order'             => 11,
+            'localizable'            => false,
+            'scopable'               => false,
+            'labels'                 => []
+        ];
+
+        $this->assert('a_text_collection', $expected);
+    }
+
     /**
      * @param string $identifier
      * @param array  $expected

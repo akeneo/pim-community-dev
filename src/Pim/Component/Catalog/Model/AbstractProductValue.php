@@ -131,8 +131,12 @@ abstract class AbstractProductValue implements ProductValueInterface
     protected $prices;
 
     /**
-     * Constructor
+     * Store text collection
+     *
+     * @var ArrayCollection|string[]
      */
+    protected $textCollection;
+
     public function __construct()
     {
         $this->options = new ArrayCollection();
@@ -651,5 +655,21 @@ abstract class AbstractProductValue implements ProductValueInterface
         }
 
         return $this->entity->isAttributeRemovable($this->attribute);
+    }
+
+    /**
+     * @return ArrayCollection|string[]
+     */
+    public function getTextCollection()
+    {
+        return $this->textCollection;
+    }
+
+    /**
+     * @param ArrayCollection|string[]|null $collection
+     */
+    public function setTextCollection($collection)
+    {
+        $this->textCollection = $collection;
     }
 }
