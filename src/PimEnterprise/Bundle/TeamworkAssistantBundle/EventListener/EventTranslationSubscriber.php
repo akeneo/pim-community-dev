@@ -18,7 +18,6 @@ use PimEnterprise\Component\TeamworkAssistant\Event\ProjectEvent;
 use PimEnterprise\Component\TeamworkAssistant\Event\ProjectEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Translate technical event in business event.

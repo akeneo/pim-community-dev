@@ -12,7 +12,6 @@
 namespace PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectDueDate;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
