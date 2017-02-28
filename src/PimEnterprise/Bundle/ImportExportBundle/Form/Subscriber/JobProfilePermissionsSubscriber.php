@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\ImportExportBundle\Form\Subscriber;
 
 use Akeneo\Component\Batch\Model\JobInstance;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;

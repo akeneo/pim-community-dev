@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
 use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
-use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
