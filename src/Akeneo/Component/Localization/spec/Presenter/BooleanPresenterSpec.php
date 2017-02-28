@@ -3,7 +3,6 @@
 namespace spec\Akeneo\Component\Localization\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class BooleanPresenterSpec extends ObjectBehavior
 {

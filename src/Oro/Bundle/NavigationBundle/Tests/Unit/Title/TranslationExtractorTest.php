@@ -3,7 +3,6 @@
 namespace Oro\Bundle\NavigationBundle\Tests\Unit\Title;
 
 use Oro\Bundle\NavigationBundle\Title\TranslationExtractor;
-use Symfony\Component\Routing\Route;
 
 class TranslationExtractorTest extends \PHPUnit_Framework_TestCase
 {

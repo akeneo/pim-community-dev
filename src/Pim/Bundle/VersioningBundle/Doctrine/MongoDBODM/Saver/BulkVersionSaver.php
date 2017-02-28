@@ -3,7 +3,6 @@
 namespace Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\Saver;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\CatalogBundle\MongoDB\Normalizer\Document\VersionNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

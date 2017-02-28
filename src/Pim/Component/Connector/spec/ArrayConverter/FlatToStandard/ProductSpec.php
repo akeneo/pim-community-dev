@@ -14,7 +14,6 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
 use Pim\Component\Connector\Exception\StructureArrayConversionException;
-use Prophecy\Argument;
 
 class ProductSpec extends ObjectBehavior
 {

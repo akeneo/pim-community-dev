@@ -3,7 +3,6 @@
 namespace Pim\Component\Catalog\Updater\Setter;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Updater\Setter\SetterInterface;
 
 /**
  * Registry of setters

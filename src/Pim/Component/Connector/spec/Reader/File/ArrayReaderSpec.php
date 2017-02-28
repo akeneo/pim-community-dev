@@ -3,10 +3,8 @@
 namespace spec\Pim\Component\Connector\Reader\File;
 
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Prophecy\Argument;
 
 class ArrayReaderSpec extends ObjectBehavior
 {

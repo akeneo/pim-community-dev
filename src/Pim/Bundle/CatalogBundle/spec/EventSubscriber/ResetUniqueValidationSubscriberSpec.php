@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Validator\UniqueValuesSet;
-use Prophecy\Argument;
 
 class ResetUniqueValidationSubscriberSpec extends ObjectBehavior
 {

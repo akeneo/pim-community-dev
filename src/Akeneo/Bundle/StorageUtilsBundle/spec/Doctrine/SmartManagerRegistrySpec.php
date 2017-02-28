@@ -5,7 +5,6 @@ namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\MongoDB\MongoDBException;
 use Doctrine\ORM\ORMException;
-use PhpSpec\Exception\Example\SkippingException;
 use PhpSpec\ObjectBehavior;
 
 /**

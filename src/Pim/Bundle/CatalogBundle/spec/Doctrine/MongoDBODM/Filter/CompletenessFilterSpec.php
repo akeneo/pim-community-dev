@@ -8,7 +8,6 @@ use Doctrine\ODM\MongoDB\Query\Expr;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Prophecy\Argument;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder

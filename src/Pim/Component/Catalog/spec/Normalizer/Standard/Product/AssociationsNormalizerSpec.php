@@ -7,7 +7,6 @@ use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class AssociationsNormalizerSpec extends ObjectBehavior
 {

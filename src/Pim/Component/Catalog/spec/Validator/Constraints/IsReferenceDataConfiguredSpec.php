@@ -3,7 +3,6 @@
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class IsReferenceDataConfiguredSpec extends ObjectBehavior
 {

@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\InstallerBundle\FixtureLoader;
 use Akeneo\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\InstallerBundle\FixtureLoader\FixturePathProvider;
-use Prophecy\Argument;
 
 class JobInstancesConfiguratorSpec extends ObjectBehavior
 {
