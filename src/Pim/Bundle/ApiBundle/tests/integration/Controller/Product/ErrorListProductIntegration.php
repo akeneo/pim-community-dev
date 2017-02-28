@@ -167,14 +167,6 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $this->assert($client, 'Attribute "a_scopable_image" expects an existing scope, "not_found" given.');
     }
 
-    public function testSearchScalarExpectedOnFilter()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $client->request('GET', '/api/rest/v1/products?search={"a_text":[{"operator":"=", "value":["text"]}]}');
-        $this->assert($client, 'Only scalar values are allowed for operators eq, neq, lt, lte, gt, gte, like, notLike, "array" given.');
-    }
-
     public function testSearchIsNotAnArray()
     {
         $client = $this->createAuthenticatedClient();

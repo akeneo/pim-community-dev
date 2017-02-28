@@ -5,7 +5,9 @@ namespace Pim\Bundle\ApiBundle\DependencyInjection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -30,5 +32,22 @@ class PimApiExtension extends Extension
         $loader->load('repositories.yml');
         $loader->load('security.yml');
         $loader->load('serializers.yml');
+
+        $this->loadStorageDriver($container);
+    }
+
+    /**
+     * Load the mapping for product and product storage
+     *
+     * @param ContainerBuilder $container
+     */
+    protected function loadStorageDriver(ContainerBuilder $container)
+    {
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
+        $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
+        if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
+            $loader->load($storageConfig);
+        }
     }
 }

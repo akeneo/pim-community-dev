@@ -11,8 +11,8 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Version;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\ViolationHttpException;
+use Pim\Component\Api\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -122,9 +122,7 @@ class AttributeController
         //@TODO add parameterValidator to validate limit and page
 
         $offset = $limit * ($page - 1);
-
-        $attributes = $this->repository->findBy([], [], $limit, $offset);
-
+        $attributes = $this->repository->searchAfterOffset([], [], $limit, $offset);
         $attributesApi = $this->normalizer->normalize($attributes, 'external_api');
 
         //@TODO use paginate method before return results

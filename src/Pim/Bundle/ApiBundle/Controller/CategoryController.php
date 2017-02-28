@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ApiBundle\Controller;
 
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -13,6 +12,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Version;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\ViolationHttpException;
+use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CategoryController
 {
-    /** @var CategoryRepositoryInterface */
+    /** @var ApiResourceRepositoryInterface */
     protected $repository;
 
     /** @var NormalizerInterface */
@@ -56,17 +56,17 @@ class CategoryController
     protected $urlDocumentation;
 
     /**
-     * @param CategoryRepositoryInterface $repository
-     * @param NormalizerInterface         $normalizer
-     * @param SimpleFactoryInterface      $factory
-     * @param ObjectUpdaterInterface      $updater
-     * @param ValidatorInterface          $validator
-     * @param SaverInterface              $saver
-     * @param RouterInterface             $router
-     * @param string                      $urlDocumentation
+     * @param ApiResourceRepositoryInterface $repository
+     * @param NormalizerInterface            $normalizer
+     * @param SimpleFactoryInterface         $factory
+     * @param ObjectUpdaterInterface         $updater
+     * @param ValidatorInterface             $validator
+     * @param SaverInterface                 $saver
+     * @param RouterInterface                $router
+     * @param string                         $urlDocumentation
      */
     public function __construct(
-        CategoryRepositoryInterface $repository,
+        ApiResourceRepositoryInterface $repository,
         NormalizerInterface $normalizer,
         SimpleFactoryInterface $factory,
         ObjectUpdaterInterface $updater,
@@ -123,8 +123,7 @@ class CategoryController
         //@TODO add parameterValidator to validate limit and page
 
         $offset = $limit * ($page - 1);
-
-        $categories = $this->repository->findBy([], ['root' => 'ASC', 'left' => 'ASC'], $limit, $offset);
+        $categories = $this->repository->searchAfterOffset([], ['root' => 'ASC', 'left' => 'ASC'], $limit, $offset);
 
         $categoriesApi = $this->normalizer->normalize($categories, 'external_api');
 
