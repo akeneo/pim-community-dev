@@ -1,3 +1,21 @@
+# 1.7.x
+
+## Web API
+
+- API-47: Use OAuth2 to authenticate users on the web API
+- API-48: As Peter, I would like to generate client_id and secret keys for OAuth2
+- API-63: As Peter, I would like to manage who can access to the web API
+- API-18: As Julia, I would like to list and filter products
+- API-9: As Julia, I would like to get/create/update/delete a product
+- API-16: As Julia, I would like to list families
+- API-23: As Julia, I would like to get/create/update a family
+- API-15: As Julia, I would like to list attributes
+- API-22: As Julia, I would like to get/create/update an attribute
+- API-17: As Julia, I would like to list categories
+- API-29: As Julia, I would like to get/create/update a category
+- API-75: As Julia, I would like to list channels
+- API-77: As Filips, I would like to discover all routes in the API
+
 # 1.7.0-ALPHA1 (2017-02-23)
 
 ## Team Work Assistant
