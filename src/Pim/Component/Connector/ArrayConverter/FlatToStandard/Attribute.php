@@ -62,8 +62,6 @@ class Attribute implements ArrayConverterInterface
             $labelTokens = explode('-', $field);
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
-        } elseif ('type' === $field) {
-            $convertedItem['attribute_type'] = $data;
         } elseif ('number_min' === $field ||
             'number_max' === $field ||
             'max_file_size'=== $field
@@ -85,7 +83,7 @@ class Attribute implements ArrayConverterInterface
             $convertedItem[$field] = $this->convertDate($data);
         } elseif (in_array($field, $booleanFields, true)) {
             $convertedItem[$field] = (bool) $data;
-        } elseif ('metric_family' === $field || '' !== $data) {
+        } elseif ('' !== $data) {
             $convertedItem[$field] = (string) $data;
         } else {
             $convertedItem[$field] = null;

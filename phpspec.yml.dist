@@ -70,6 +70,11 @@ suites:
         src_path: src/Akeneo/Bundle/MeasureBundle
 
     ## Pim Components
+    Api:
+        namespace: Pim\Component\Api
+        psr4_prefix: Pim\Component\Api
+        spec_path: src/Pim/Component/Api
+        src_path: src/Pim/Component/Api
     ReferenceData:
         namespace: Pim\Component\ReferenceData
         psr4_prefix: Pim\Component\ReferenceData
@@ -97,6 +102,11 @@ suites:
         psr4_prefix: Pim\Bundle\AnalyticsBundle
         spec_path: src/Pim/Bundle/AnalyticsBundle
         src_path: src/Pim/Bundle/AnalyticsBundle
+    ApiBundle:
+        namespace: Pim\Bundle\ApiBundle
+        psr4_prefix: Pim\Bundle\ApiBundle
+        spec_path: src/Pim/Bundle/ApiBundle
+        src_path: src/Pim/Bundle/ApiBundle
     CatalogBundle:
         namespace: Pim\Bundle\CatalogBundle
         psr4_prefix: Pim\Bundle\CatalogBundle

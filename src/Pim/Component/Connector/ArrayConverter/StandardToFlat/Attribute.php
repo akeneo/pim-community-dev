@@ -36,9 +36,6 @@ class Attribute extends AbstractSimpleArrayConverter implements ArrayConverterIn
                     $convertedItem[$labelKey] = $label;
                 }
                 break;
-            case 'attribute_type':
-                $convertedItem['type'] = $data;
-                break;
             case 'options':
             case 'available_locales':
             case 'allowed_extensions':

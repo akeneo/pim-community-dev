@@ -66,13 +66,13 @@ class AttributeSpec extends ObjectBehavior
                 'en_US' => 'SKU',
                 'fr_FR' => 'SKU',
             ],
-            'attribute_type'         => 'pim_catalog_identifier',
+            'type'                   => 'pim_catalog_identifier',
             'code'                   => 'sku',
             'group'                  => 'marketing',
             'unique'                 => true,
             'useable_as_grid_filter' => true,
             'allowed_extensions'     => [],
-            'metric_family'          => '',
+            'metric_family'          => null,
             'default_metric_unit'    => null,
             'reference_data_name'    => 'color',
             'localizable'            => false,
@@ -107,13 +107,13 @@ class AttributeSpec extends ObjectBehavior
                 'en_US' => 'SKU',
                 'fr_FR' => 'SKU',
             ],
-            'attribute_type'         => 'pim_catalog_identifier',
+            'type'                   => 'pim_catalog_identifier',
             'code'                   => 'sku',
             'group'                  => 'marketing',
             'unique'                 => true,
             'useable_as_grid_filter' => true,
             'allowed_extensions'     => [],
-            'metric_family'          => '',
+            'metric_family'          => null,
             'default_metric_unit'    => null,
             'reference_data_name'    => null,
             'localizable'            => false,
@@ -126,27 +126,27 @@ class AttributeSpec extends ObjectBehavior
     function it_fills_options_only_when_not_blank()
     {
         $itemBlank = [
-            'attribute_type' => 'pim_catalog_integer',
+            'type'           => 'pim_catalog_integer',
             'code'           => 'num',
             'number_min'     => '',
             'number_max'     => '',
         ];
         $itemFilled = [
-            'attribute_type' => 'pim_catalog_integer',
+            'type'           => 'pim_catalog_integer',
             'code'           => 'num',
             'number_min'     => '12',
             'number_max'     => '15',
         ];
         $this->convert($itemBlank)->shouldReturn([
             'labels'         => [],
-            'attribute_type' => 'pim_catalog_integer',
+            'type'           => 'pim_catalog_integer',
             'code'           => 'num',
             'number_min'     => null,
             'number_max'     => null,
         ]);
         $this->convert($itemFilled)->shouldReturn([
             'labels'         => [],
-            'attribute_type' => 'pim_catalog_integer',
+            'type'           => 'pim_catalog_integer',
             'code'           => 'num',
             'number_min'     => '12.0000',
             'number_max'     => '15.0000',

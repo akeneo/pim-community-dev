@@ -59,17 +59,14 @@ class RangeValidator extends BaseRangeValidator
      */
     protected function validateData($value, Constraint $constraint)
     {
-        if (null === $value) {
+        if (null === $value || !is_numeric($value)) {
             return;
         }
 
         $message = null;
         $params = [];
 
-        if (!is_numeric($value)) {
-            $message = $constraint->invalidMessage;
-            $params = ['{{ value }}' => $value];
-        } elseif (null !== $constraint->max && $value > $constraint->max) {
+        if (null !== $constraint->max && $value > $constraint->max) {
             $message = $constraint->maxMessage;
             $params = [
                 '{{ value }}' => $value,

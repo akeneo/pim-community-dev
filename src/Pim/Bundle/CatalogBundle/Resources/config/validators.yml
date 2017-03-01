@@ -19,6 +19,7 @@ parameters:
     pim_catalog.validator.constraint.attribute_type_for_option.class:      Pim\Component\Catalog\Validator\Constraints\AttributeTypeForOptionValidator
     pim_catalog.validator.constraint.is_reference_data_configured.class:   Pim\Component\Catalog\Validator\Constraints\IsReferenceDataConfiguredValidator
     pim_catalog.validator.constraint.unique_variant_group_type.class:      Pim\Component\Catalog\Validator\Constraints\UniqueVariantGroupTypeValidator
+    pim_catalog.validator.constraints.locale_validator.class:              Pim\Component\Catalog\Validator\Constraints\LocaleValidator
     pim_catalog.validator.constraints.channel_validator.class:             Pim\Component\Catalog\Validator\Constraints\ChannelValidator
     pim_catalog.validator.constraint_guesser.chained.class:                Pim\Component\Catalog\Validator\ChainedAttributeConstraintGuesser
     pim_catalog.validator.constraint_guesser.email.class:                  Pim\Component\Catalog\Validator\ConstraintGuesser\EmailGuesser
@@ -97,6 +98,13 @@ services:
             - '@pim_catalog.validator.unique_value_set'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_value_validator }
+
+    pim_catalog.validator.constraints.locale_validator:
+        class: '%pim_catalog.validator.constraints.locale_validator.class%'
+        arguments:
+            - '@pim_catalog.repository.locale'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_locale_validator }
 
     pim_catalog.validator.constraints.channel_validator:
         class: '%pim_catalog.validator.constraints.channel_validator.class%'

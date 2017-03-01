@@ -20,7 +20,7 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
             $this->createAttribute([
                 'code'                => 'a_localizable_date',
-                'attribute_type'      => AttributeTypes::DATE,
+                'type'                => AttributeTypes::DATE,
                 'localizable'         => true,
                 'scopable'            => false
             ]);

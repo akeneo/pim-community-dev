@@ -27,6 +27,9 @@ class FamilyRequirements extends Constraint
     public $messageAttribute = 'The attribute "%attribute%" cannot be an attribute required for the channel '.
         '"%channel%" as it does not belong to this family';
 
+    /** @var string */
+    public $propertyPath = 'attribute_requirements';
+
     /**
      * {@inheritdoc}
      */

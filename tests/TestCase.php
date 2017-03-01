@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 abstract class TestCase extends KernelTestCase
 {
-    /** @var int Count of test inside the same test class */
+    /** @var int Count of executed tests inside the same test class */
     protected static $count = 0;
 
     /**

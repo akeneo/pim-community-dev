@@ -20,7 +20,7 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
             $this->createAttribute([
                 'code'                => 'a_localizable_media',
-                'attribute_type'      => AttributeTypes::IMAGE,
+                'type'                => AttributeTypes::IMAGE,
                 'localizable'         => true,
                 'scopable'            => false
             ]);
