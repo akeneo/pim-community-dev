@@ -11,11 +11,13 @@ define(
     [
         'jquery',
         'underscore',
+        'pim/fetcher-registry',
         'pim/common/add-attribute'
     ],
     function (
         $,
         _,
+        FetcherRegistry,
         AddAttribute
     ) {
         return AddAttribute.extend({
@@ -32,12 +34,19 @@ define(
              * {@inheritdoc}
              */
             getExcludedAttributes: function () {
-                return $.Deferred().resolve(
-                    _.pluck(
-                        this.getFormData().attributes,
-                        'code'
-                    )
-                );
+                return FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
+                    .then(function (identifier) {
+                        var existingAttributes = _.pluck(
+                            this.getFormData().attributes,
+                            'code'
+                        );
+
+                        if (!_.contains(existingAttributes, identifier.code)) {
+                            existingAttributes.push(identifier.code);
+                        }
+
+                        return existingAttributes;
+                    }.bind(this));
             }
         });
     }
