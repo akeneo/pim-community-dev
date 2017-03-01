@@ -1,0 +1,53 @@
+extensions:
+    pim-mass-family-edit-form:
+        module: pim/form/common/edit-form
+
+    pim-mass-family-edit-form-cache-invalidator:
+        module: pim/cache-invalidator
+        parent: pim-mass-family-edit-form
+        position: 1000
+
+    pim-mass-family-edit-form-attributes-toolbar:
+        module: pim/family-edit-form/attributes/toolbar
+        parent: pim-mass-family-edit-form
+        targetZone: content
+        aclResourceId: pim_enrich_family_edit_attributes
+        position: 160
+
+    pim-mass-family-edit-form-attributes-toolbar-add-attribute-by-group:
+        module: pim/family-edit-form/attributes/toolbar/add-attribute-group
+        parent: pim-mass-family-edit-form-attributes-toolbar
+        targetZone: attributes-toolbar
+        position: 170
+        config:
+            select2:
+                placeholder: pim_enrich.form.mass_edit.family.attributes.toolbox.select_attributes_by_groups
+                buttonTitle: pim_enrich.form.mass_edit.family.attributes.toolbox.add
+                title:       pim_enrich.form.mass_edit.family.attributes.toolbox.add
+                emptyText:   pim_enrich.form.mass_edit.family.attributes.toolbox.no_attribute_groups_available
+                countTitle:  pim_enrich.form.mass_edit.family.attributes.toolbox.attributes_groups_selected
+
+    pim-mass-family-edit-form-attributes-toolbar-add-attribute:
+        module: pim/family-edit-form/attributes/toolbar/add-attribute
+        parent: pim-mass-family-edit-form-attributes-toolbar
+        targetZone: attributes-toolbar
+        position: 180
+        config:
+            select2:
+                placeholder: pim_enrich.form.mass_edit.family.attributes.toolbox.select_attributes
+                buttonTitle: pim_enrich.form.mass_edit.family.attributes.toolbox.add
+                title:       pim_enrich.form.mass_edit.family.attributes.toolbox.add
+                emptyText:   pim_enrich.form.mass_edit.family.attributes.toolbox.no_attributes_available
+
+    pim-mass-family-edit-form-attributes-attributes:
+        module: pim/family-edit-form/attributes/attributes
+        parent: pim-mass-family-edit-form
+        targetZone: content
+        position: 190
+        config:
+            label: pim_enrich.form.mass_edit.family.attributes.label_label
+
+    pim-mass-family-edit-form-hidden-field-updater:
+        module: pim/mass-family-edit-form/hidden-field-updater
+        parent: pim-mass-family-edit-form
+        position: 500

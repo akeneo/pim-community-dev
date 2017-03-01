@@ -201,7 +201,10 @@ define([
              */
             addToAttributeRequirements: function (attribute, channel) {
                 var data = this.getFormData();
-                data.attribute_requirements[channel].push(attribute);
+                var requirements = data.attribute_requirements[channel] || [];
+                requirements.push(attribute);
+                data.attribute_requirements[channel] = requirements;
+
                 return this.setData(data);
             },
 
@@ -214,10 +217,11 @@ define([
             removeFromAttributeRequirements: function (attribute, channel) {
                 var data = this.getFormData();
                 data.attribute_requirements[channel] = data
-                    .attribute_requirements[channel]
-                    .filter(function (item) {
-                        return attribute !== item;
-                    });
+                    .attribute_requirements[channel] ?
+                        data.attribute_requirements[channel]
+                            .filter(function (item) {
+                                return attribute !== item;
+                            }) : [];
                 this.setData(data);
             },
 
@@ -289,17 +293,21 @@ define([
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
 
-                FetcherRegistry.getFetcher('attribute-group')
-                    .search({
-                        options: {
-                            identifiers: event.codes,
-                            limit: event.codes.length
-                        }
-                    }).then(function (attributeGroups) {
+                $.when(
+                    FetcherRegistry.getFetcher('attribute-group')
+                        .search({
+                            options: {
+                                identifiers: event.codes,
+                                limit: event.codes.length
+                            }
+                        }),
+                    FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
+                ).then(function (attributeGroups, identifier) {
                     var existingAttributes = _.pluck(this.getFormData().attributes, 'code');
                     var groupsAttributes = [].concat.apply([], _.pluck(attributeGroups, 'attributes'));
                     var attributesToAdd = _.filter(groupsAttributes, function (attribute) {
-                        return !_.contains(existingAttributes, attribute);
+                        return !_.contains(existingAttributes, attribute) &&
+                            attribute !== identifier.code;
                     });
 
                     return FetcherRegistry.getFetcher('attribute')

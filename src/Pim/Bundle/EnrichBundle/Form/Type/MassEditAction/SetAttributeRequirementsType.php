@@ -31,18 +31,7 @@ class SetAttributeRequirementsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add(
-                'attributeRequirements',
-                'collection',
-                [
-                    'type'    => 'pim_enrich_attribute_requirement',
-                    'options' => [
-                        'keep_non_required' => true
-                    ],
-                    'allow_delete' => true,
-                ]
-            );
+        $builder->add('values', 'hidden');
     }
 
     /**
