@@ -48,3 +48,9 @@ parameters:
 
     # Number of items returned by default if limit is not filled in request
     api_pagination_limit_by_default: 10
+
+    # Maximum length in bytes of the resource's json representation when updating a list of resources
+    api_input_buffer_size: 1000000
+
+    # Maximum number of resources when updating a list of resources
+    api_input_max_resources_number: 100

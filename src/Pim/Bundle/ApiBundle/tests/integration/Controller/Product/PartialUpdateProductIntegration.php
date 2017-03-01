@@ -686,7 +686,7 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'   => ['groups'   => ['groupA'], 'products' => ['product_categories', 'product_family']],
+                'PACK'   => ['groups'   => ['groupA'], 'products' => ['product_family', 'product_categories']],
                 'X_SELL' => ['groups'   => ['groupA'], 'products' => ['product_categories']],
             ],
         ];

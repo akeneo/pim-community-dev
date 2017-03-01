@@ -111,6 +111,7 @@ services:
             - '@pim_catalog.saver.product'
             - '@router'
             - '@pim_catalog.comparator.filter.product'
+            - '@pim_api.stream.product_partial_update_stream'
             - '%pim_api.configuration%'
 
     pim_api.controller.root_endpoint:
