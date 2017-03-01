@@ -14,9 +14,10 @@ define(
         'backbone',
         'routing',
         'pim/fetcher-registry',
+        'pim/user-context',
         'text!teamwork-assistant/templates/widget/project-completeness-data'
     ],
-    function ($, _, __, BaseForm, Backbone, Routing, FetcherRegistry, template) {
+    function ($, _, __, BaseForm, Backbone, Routing, FetcherRegistry, UserContext, template) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'AknProjectWidget-boxes',
@@ -55,6 +56,8 @@ define(
                             ratioInProgressLabel: __(this.config.labels.ratioInProgress),
                             ratioDoneLabel: __(this.config.labels.ratioDone),
                             doneLabel: __(this.config.labels.done),
+                            username: UserContext.get('username'),
+                            contributorUsername: contributorUsername,
                             url: Routing.generate(
                                 'teamwork_assistant_project_show',
                                 {identifier: data.currentProjectCode}

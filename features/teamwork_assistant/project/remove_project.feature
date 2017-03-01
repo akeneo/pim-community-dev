@@ -1,6 +1,6 @@
 @javascript
 Feature: Remove project
-  In order to keep a clean team work assistant
+  In order to keep a clean teamwork assistant
   As a project creator
   I need to be able to remove a project
 

@@ -88,10 +88,10 @@ Feature: Follow project completeness
   Scenario: Successfully display completeness on widget
     Given I am logged in as "Claude"
     And I am on the dashboard page
-    Then I should see the team work assistant widget
+    Then I should see the teamwork assistant widget
     And I should see the text "Collection Winter 2030 E-Commerce | English (United States)"
     And I should not see the contributor selector
-    And I should see the following team work assistant completeness:
+    And I should see the following teamwork assistant completeness:
       | todo | in_progress | done |
       | 0    | 2           | 1    |
     And I should see the text "0% PRODUCTS TO ENRICH"
@@ -102,7 +102,7 @@ Feature: Follow project completeness
     When I select "Collection Summer 2030" project
     Then I should see the text "Collection Summer 2030 E-Commerce | English (United States)"
     And I should not see the contributor selector
-    And I should see the following team work assistant completeness:
+    And I should see the following teamwork assistant completeness:
       | todo | in_progress | done |
       | 0    | 2           | 1    |
     And I should see the text "0% PRODUCTS TO ENRICH"

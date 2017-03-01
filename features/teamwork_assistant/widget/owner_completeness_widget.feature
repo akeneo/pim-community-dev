@@ -97,7 +97,7 @@ Feature: Follow project completeness
     Given I am on the dashboard page
     And I should see the text "Collection Winter 2030 E-Commerce | English (United States)"
     And I should see the text "all contributors"
-    And I should see the following team work assistant completeness:
+    And I should see the following teamwork assistant completeness:
       | todo | in_progress | done |
       | 0    | 3           | 0    |
     And I should see the text "0% PRODUCTS TO ENRICH"
@@ -108,7 +108,7 @@ Feature: Follow project completeness
     When I select "Collection Summer 2030" project
     Then I should see the text "Collection Summer 2030 E-Commerce | English (United States)"
     And I should see the text "all contributors"
-    And I should see the following team work assistant completeness:
+    And I should see the following teamwork assistant completeness:
       | todo | in_progress | done |
       | 0    | 6           | 0    |
     And I should see the text "0% PRODUCTS TO ENRICH"
@@ -119,7 +119,7 @@ Feature: Follow project completeness
     When I select "Claude Yachifeur" contributor
     Then I should see the text "Collection Summer 2030 E-Commerce | English (United States)"
     And I should see the text "Claude Yachifeur"
-    And I should see the following team work assistant completeness:
+    And I should see the following teamwork assistant completeness:
       | todo | in_progress | done |
       | 0    | 2           | 1    |
     And I should see the text "0% PRODUCTS TO ENRICH"

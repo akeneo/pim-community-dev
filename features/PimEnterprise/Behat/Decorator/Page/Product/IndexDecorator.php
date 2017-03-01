@@ -71,7 +71,7 @@ class IndexDecorator extends ElementDecorator
     }
 
     /**
-     * Return the decorated team work assistant widget
+     * Return the decorated teamwork assistant widget
      *
      * @return ElementDecorator
      */
@@ -79,7 +79,7 @@ class IndexDecorator extends ElementDecorator
     {
         $widget = $this->spin(function () {
             return $this->find('css', '#teamwork-assistant-widget');
-        }, 'team work assistant widget not found.');
+        }, 'teamwork assistant widget not found.');
 
         return $this->decorate(
             $widget,

@@ -1,5 +1,5 @@
 @javascript
-Feature: Display team work assistant projects in the datagrid view selector
+Feature: Display teamwork assistant projects in the datagrid view selector
   In order to display and select the projects I can work on
   As a contributor
   I need to be able to display the projects in the view selector
