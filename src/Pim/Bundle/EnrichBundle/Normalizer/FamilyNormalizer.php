@@ -77,6 +77,10 @@ class FamilyNormalizer implements NormalizerInterface
             $normalizedFamily['attributes']
         );
 
+        $normalizedFamily['attribute_requirements'] = $this->normalizeRequirements(
+            $normalizedFamily['attribute_requirements']
+        );
+
         $firstVersion = $this->versionManager->getOldestLogEntry($family);
         $lastVersion = $this->versionManager->getNewestLogEntry($family);
 
@@ -130,5 +134,32 @@ class FamilyNormalizer implements NormalizerInterface
         }
 
         return $normalizedAttributes;
+    }
+
+    /**
+     * Normalize the requirements
+     *
+     * It filters the requirements to the viewable ones
+     *
+     * @param array $requirements
+     *
+     * @return array
+     */
+    protected function normalizeRequirements($requirements)
+    {
+        $result = [];
+
+        foreach ($requirements as $channel => $attributeCodes) {
+            $filteredAttributes = $this->collectionFilter->filterCollection(
+                $this->attributeRepository->findBy(['code' => $attributeCodes]),
+                'pim.internal_api.attribute.view'
+            );
+
+            $result[$channel] = array_map(function ($attribute) {
+                return $attribute->getCode();
+            }, $filteredAttributes);
+        }
+
+        return $result;
     }
 }
