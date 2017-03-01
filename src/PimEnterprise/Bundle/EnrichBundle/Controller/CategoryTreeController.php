@@ -103,22 +103,17 @@ class CategoryTreeController extends BaseCategoryTreeController
         $selectNodeId = $request->get('select_node_id', -1);
         $context = $request->get('context', false);
 
+        try {
+            $selectNode = $this->findGrantedCategory($selectNodeId, $context);
+        } catch (NotFoundHttpException $e) {
+            $selectNode = $this->userContext->getUserProductCategoryTree();
+        } catch (AccessDeniedException $e) {
+            $selectNode = $this->userContext->getUserProductCategoryTree();
+        }
+
         if (self::CONTEXT_MANAGE === $context) {
-            try {
-                $selectNode = $this->findCategory($selectNodeId);
-            } catch (NotFoundHttpException $e) {
-                $selectNode = $this->userContext->getUserProductCategoryTree();
-            }
             $grantedTrees = $this->categoryRepository->getTrees();
         } else {
-            try {
-                $selectNode = $this->findGrantedCategory($selectNodeId, $context);
-            } catch (NotFoundHttpException $e) {
-                $selectNode = $this->userContext->getAccessibleUserTree();
-            } catch (AccessDeniedException $e) {
-                $selectNode = $this->userContext->getAccessibleUserTree();
-            }
-
             $grantedCategoryIds = $this->getGrantedCategories();
             $grantedTrees = $this->categoryRepository->getGrantedTrees($grantedCategoryIds);
         }
@@ -137,7 +132,12 @@ class CategoryTreeController extends BaseCategoryTreeController
      */
     protected function getChildrenCategories(Request $request, $selectNode, $parent)
     {
-        $parent = $this->findCategory($request->get('id'));
+        try {
+            $parent = $this->findCategory($request->get('id'));
+        } catch (NotFoundHttpException $e) {
+            $parent = $this->userContext->getUserProductCategoryTree();
+        }
+
         $isEditGranted = $this->securityFacade->isGranted($this->buildAclName('category_edit'));
         $context = $request->get('context', false);
 

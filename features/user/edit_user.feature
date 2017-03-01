@@ -16,7 +16,6 @@ Feature: Edit a user
       | john_deere     | IT support | view   |
     And I am logged in as "Peter"
 
-  @javascript
   Scenario: Product grid filters preference applies on the published product grid
     When I edit the "Peter" user
     And I visit the "Additional" tab
@@ -27,7 +26,6 @@ Feature: Edit a user
     And I should see the filters name, family and sku
     And I should not see the filters Status
 
-  @javascript
   Scenario: Successfully edit and apply user preferences
     When I edit the "Peter" user
     And I visit the "Additional" tab
