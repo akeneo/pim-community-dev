@@ -32,9 +32,9 @@ interface ProjectCompletenessRepositoryInterface
     /**
      * @param ProjectInterface $project
      * @param integer          $status
-     * @param string|null      $username
+     * @param string           $username
      *
      * @return array
      */
-    public function findProductIds(ProjectInterface $project, $status, $username = null);
+    public function findProductIds(ProjectInterface $project, $status, $username);
 }

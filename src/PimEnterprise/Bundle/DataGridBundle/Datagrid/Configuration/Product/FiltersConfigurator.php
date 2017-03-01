@@ -13,8 +13,13 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator as BaseFiltersConfigurator;
 use PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter;
+use PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter;
+use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectRepositoryInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Override filters configurator to add is owner filter in product grid
@@ -23,6 +28,37 @@ use PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter;
  */
 class FiltersConfigurator extends BaseFiltersConfigurator
 {
+    /** @var RequestStack */
+    private $stack;
+
+    /** @var ProjectRepositoryInterface */
+    private $projectRepository;
+
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
+    private $isProject = null;
+    private $isProjectOwner = null;
+
+    /**
+     * @param ConfigurationRegistry      $registry
+     * @param RequestStack               $stack
+     * @param ProjectRepositoryInterface $projectRepository
+     * @param TokenStorageInterface      $tokenStorage
+     */
+    public function __construct(
+        ConfigurationRegistry $registry,
+        RequestStack $stack,
+        ProjectRepositoryInterface $projectRepository,
+        TokenStorageInterface $tokenStorage
+    ) {
+        parent::__construct($registry);
+
+        $this->stack = $stack;
+        $this->projectRepository = $projectRepository;
+        $this->tokenStorage = $tokenStorage;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -30,8 +66,32 @@ class FiltersConfigurator extends BaseFiltersConfigurator
     {
         parent::configure($configuration);
 
+        $this->retrieveTeamworkAssistantInformations();
+
         $this->addIsOwnerFilter($configuration);
         $this->addProjectCompletenessFilter($configuration);
+    }
+
+    protected function retrieveTeamworkAssistantInformations()
+    {
+        $parameters = $request = $this->stack->getCurrentRequest()->get('product-grid');
+
+        if (!isset($parameters['_parameters']['view']['id']) || empty($parameters['_parameters']['view']['id'])) {
+            return;
+        }
+
+        $viewId = $parameters['_parameters']['view']['id'];
+        $project = $this->projectRepository->findOneBy(['datagridView' => $viewId]);
+
+        if (null === $project) {
+            return;
+        }
+
+        $this->isProject = (null === $this->isProject) ? true : $this->isProject;
+
+        if ($this->tokenStorage->getToken()->getUsername() === $project->getOwner()->getUsername()) {
+            $this->isProjectOwner = (null === $this->isProjectOwner) ? true : $this->isProjectOwner;
+        }
     }
 
     /**
@@ -67,6 +127,22 @@ class FiltersConfigurator extends BaseFiltersConfigurator
      */
     protected function addProjectCompletenessFilter($configuration)
     {
+        if (!$this->isProject) {
+            return;
+        }
+
+        $choices = [
+            ProjectCompletenessFilter::CONTRIBUTOR_TODO        => 'TODO (Contributor)',
+            ProjectCompletenessFilter::CONTRIBUTOR_IN_PROGRESS => 'IN PROGRESS (Contributor)',
+            ProjectCompletenessFilter::CONTRIBUTOR_DONE        => 'DONE (Contributor)',
+        ];
+
+        if ($this->isProjectOwner) {
+            $choices[ProjectCompletenessFilter::OWNER_TODO] = 'TODO (Owner)';
+            $choices[ProjectCompletenessFilter::OWNER_IN_PROGRESS] = 'IN PROGRESS (Owner)';
+            $choices[ProjectCompletenessFilter::OWNER_DONE] = 'DONE (Owner)';
+        }
+
         $filter = [
             'type'      => 'project_completeness',
             'ftype'     => 'choice',
@@ -75,11 +151,7 @@ class FiltersConfigurator extends BaseFiltersConfigurator
             'options'   => [
                 'field_options' => [
                     'multiple' => false,
-                    'choices'  => [
-                        1  => 'TODO',
-                        2 => 'IN PROGRESS',
-                        3 => 'DONE',
-                    ]
+                    'choices'  => $choices
                 ]
             ]
         ];

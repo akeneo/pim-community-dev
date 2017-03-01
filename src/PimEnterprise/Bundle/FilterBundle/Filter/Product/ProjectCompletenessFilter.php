@@ -18,6 +18,13 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ProjectCompletenessFilter extends OroChoiceFilter
 {
+    const OWNER_TODO = 1;
+    const OWNER_IN_PROGRESS = 2;
+    const OWNER_DONE = 3;
+    const CONTRIBUTOR_TODO = 4;
+    const CONTRIBUTOR_IN_PROGRESS = 5;
+    const CONTRIBUTOR_DONE = 6;
+
     /** @var RequestParameters */
     protected $requestParams;
 

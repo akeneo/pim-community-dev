@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManager;
+use PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\TableNameMapper;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
@@ -50,29 +51,119 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
         return new ProjectCompleteness($completeness['todo'], $completeness['in_progress'], $completeness['done']);
     }
 
-    public function findProductIds(ProjectInterface $project, $status, $username = null)
+    /**
+     * {@inheritdoc}
+     */
+    public function findProductIds(ProjectInterface $project, $status, $username)
+    {
+        switch ($status) {
+            case ProjectCompletenessFilter::CONTRIBUTOR_TODO:
+            case ProjectCompletenessFilter::CONTRIBUTOR_IN_PROGRESS:
+            case ProjectCompletenessFilter::CONTRIBUTOR_DONE:
+                return $this->findProductIdsAsContributor($project, $status, $username);
+            case ProjectCompletenessFilter::OWNER_TODO:
+            case ProjectCompletenessFilter::OWNER_IN_PROGRESS:
+            case ProjectCompletenessFilter::OWNER_DONE:
+                return $this->findProductIdsAsOwner($project, $status);
+        }
+
+        return [];
+    }
+
+    protected function findProductIdsAsContributor(ProjectInterface $project, $status, $username)
+    {
+        $parameters = $this->buildQueryParameters($project, $username);
+
+        // Filter on the categories the user can edit
+        $filterByCategoryPermissionJoins = <<<FILTER_USER
+LEFT JOIN `@pim_user.entity.user#groups@` AS `user_group`
+ON `product_category_access`.`user_group_id` = `user_group`.`group_id`
+LEFT JOIN `@pim_user.entity.user@` AS `user`
+ON `user_group`.`user_id` = `user`.`id`
+FILTER_USER;
+
+        $filterByCategoryPermissionByConditions = <<<FILTER_USER
+AND `user`.`username` = :username
+FILTER_USER;
+
+        // Filter on the attribute groups the user can edit
+        $filterByAttributeGroupPermissions = <<<ATTRIBUTE_GROUP_FILTER
+INNER JOIN `@pimee_security.entity.attribute_group_access@` AS `attribute_group_access`
+    ON `completeness_per_attribute_group`.`attribute_group_id` = `attribute_group_access`.`attribute_group_id`
+    AND `attribute_group_access`.`edit_attributes` = 1
+INNER JOIN`@pimee_teamwork_assistant.model.project#userGroups@` AS `project_contributor_group`
+    ON `project_contributor_group`.`user_group_id` = `attribute_group_access`.`user_group_id`
+    AND `project_contributor_group`.`project_id` = :project_id
+INNER JOIN `@pim_user.entity.user#groups@` AS `user_group`
+    ON `project_contributor_group`.`user_group_id` = `user_group`.`group_id`
+INNER JOIN `@pim_user.entity.user@` AS `user`
+    ON `user_group`.`user_id` = `user`.`id`
+WHERE `user`.`username` = :username
+ATTRIBUTE_GROUP_FILTER;
+
+        $sql = <<<SQL
+SELECT `completeness_per_attribute_group`.`product_id`
+FROM (
+    SELECT DISTINCT `project_product`.`product_id`
+    FROM `@pimee_teamwork_assistant.project_product@` AS `project_product`
+    LEFT JOIN `@pim_catalog.entity.product#categories@` AS `category_product`
+        ON `project_product`.`product_id` = `category_product`.`product_id`
+    WHERE `project_product`.`project_id` = :project_id
+    AND (
+        `category_product`.`category_id` IS NULL
+        OR `category_product`.`category_id` IN (
+            SELECT `product_category_access`.`category_id`
+            FROM `@pimee_security.entity.product_category_access@` AS `product_category_access`
+            $filterByCategoryPermissionJoins
+            WHERE `product_category_access`.`edit_items` = 1
+            $filterByCategoryPermissionByConditions
+        )
+    )
+) AS `product_selection`
+
+INNER JOIN `@pimee_teamwork_assistant.completeness_per_attribute_group@` AS `completeness_per_attribute_group`
+    ON `completeness_per_attribute_group`.`product_id` = `product_selection`.`product_id`
+    AND `completeness_per_attribute_group`.`channel_id` = :channel_id
+    AND `completeness_per_attribute_group`.`locale_id` = :locale_id
+$filterByAttributeGroupPermissions
+GROUP BY `completeness_per_attribute_group`.`product_id`
+SQL;
+
+        // Todo
+        if ($status === ProjectCompletenessFilter::CONTRIBUTOR_TODO) {
+            $sql .= <<<SQL
+HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) = 0 AND COUNT(`completeness_per_attribute_group`.`product_id`) = 0)
+SQL;
+        }
+
+        // IN PROGRESS
+        if ($status === ProjectCompletenessFilter::CONTRIBUTOR_IN_PROGRESS) {
+            $sql .= <<<SQL
+HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) > 0 OR COUNT(`completeness_per_attribute_group`.`product_id`) > 0)
+AND SUM(`completeness_per_attribute_group`.`is_complete`) <> COUNT(`completeness_per_attribute_group`.`product_id`)
+SQL;
+        }
+
+        // DONE
+        if ($status === ProjectCompletenessFilter::CONTRIBUTOR_DONE) {
+            $sql .= <<<SQL
+HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) = COUNT(`completeness_per_attribute_group`.`product_id`))
+SQL;
+        }
+
+        $connection = $this->entityManager->getConnection();
+        $sql = $this->tableNameMapper->createQuery($sql);
+        $productIds = $connection->fetchAll($sql, $parameters);
+
+        return array_column($productIds, 'product_id');
+    }
+
+    protected function findProductIdsAsOwner(ProjectInterface $project, $status)
     {
         $parameters = [
             'locale_code' => $project->getLocale()->getCode(),
             'channel_code' => $project->getChannel()->getCode(),
         ];
-
-        $permissionSql = '';
-
-        if (null !== $username) {
-            $permissionSql = <<<SQL
-INNER JOIN `@pimee_security.entity.attribute_group_access@` AS `attribute_group_access`
-    ON `completeness_per_attribute_group`.`attribute_group_id` = `attribute_group_access`.`attribute_group_id`
-    AND `attribute_group_access`.`edit_attributes` = 1
-INNER JOIN `@pim_user.entity.user#groups@` AS `user_group`
-    ON `attribute_group_access`.`user_group_id` = `user_group`.`group_id`
-INNER JOIN `@pim_user.entity.user@` AS `user`
-    ON `user_group`.`user_id` = `user`.`id`
-WHERE `user`.`username` = :username
-SQL;
-
-            $parameters['username'] = $username;
-        }
 
         $sql = <<<SQL
 SELECT `completeness_per_attribute_group`.`product_id`
@@ -81,21 +172,20 @@ INNER JOIN `@pim_catalog.entity.channel@` AS `channel`
 	ON `completeness_per_attribute_group`.`channel_id` = `channel`.`id`
 INNER JOIN `@pim_catalog.entity.locale@` AS `locale`
 	ON `completeness_per_attribute_group`.`locale_id` = `locale`.`id`
-$permissionSql
 AND `channel`.`code` = :channel_code
 AND `locale`.`code` = :locale_code
 GROUP BY `completeness_per_attribute_group`.`product_id`
 SQL;
 
         // Todo
-        if ($status === 1) {
+        if ($status === ProjectCompletenessFilter::OWNER_TODO) {
             $sql .= <<<SQL
 HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) = 0 AND COUNT(`completeness_per_attribute_group`.`product_id`) = 0)
 SQL;
         }
 
         // IN PROGRESS
-        if ($status === 2) {
+        if ($status === ProjectCompletenessFilter::OWNER_IN_PROGRESS) {
             $sql .= <<<SQL
 HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) > 0 OR COUNT(`completeness_per_attribute_group`.`product_id`) > 0)
 AND SUM(`completeness_per_attribute_group`.`is_complete`) <> COUNT(`completeness_per_attribute_group`.`product_id`)
@@ -103,7 +193,7 @@ SQL;
         }
 
         // DONE
-        if ($status === 3) {
+        if ($status === ProjectCompletenessFilter::OWNER_DONE) {
             $sql .= <<<SQL
 HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) = COUNT(`completeness_per_attribute_group`.`product_id`))
 SQL;
