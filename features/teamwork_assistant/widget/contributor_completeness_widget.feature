@@ -94,7 +94,7 @@ Feature: Follow project completeness
     And I should see the following team work assistant completeness:
       | todo | in_progress | done |
       | 0    | 2           | 1    |
-    And I should see the text "0% PRODUCTS TO ENRICH"
+    And I should see the text "0% PRODUCTS TO START"
     And I should see the text "67% PRODUCTS IN PROGRESS"
     And I should see the text "33% PRODUCTS DONE"
     And I should see the text "Please do your best to finish before Winter."
@@ -105,7 +105,7 @@ Feature: Follow project completeness
     And I should see the following team work assistant completeness:
       | todo | in_progress | done |
       | 0    | 2           | 1    |
-    And I should see the text "0% PRODUCTS TO ENRICH"
+    And I should see the text "0% PRODUCTS TO START"
     And I should see the text "67% PRODUCTS IN PROGRESS"
     And I should see the text "33% PRODUCTS DONE"
     And I should see the text "Please do your best to finish before Summer."

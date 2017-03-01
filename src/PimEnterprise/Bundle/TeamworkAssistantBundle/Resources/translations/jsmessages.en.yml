@@ -46,7 +46,7 @@ teamwork_assistant:
             contributor_selector: Search contributor
             project_selector: Search project
         completeness:
-            to_enrich: PRODUCTS TO ENRICH
+            to_start: PRODUCTS TO START
             in_progress: PRODUCTS IN PROGRESS
             done: PRODUCTS DONE
 
