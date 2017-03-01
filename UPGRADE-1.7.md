@@ -69,7 +69,44 @@ fos_oauth_server:
             user_provider:        pim_user.provider.user
     ```
 
-4. Update your application Kernel `$PIM_DIR/app/AppKernel.php`:
+4. Update the security configuration `$PIM_DIR/app/config/security.yml`:
+
+    Add these new lines under `security.firewalls`:
+   
+    ```YAML
+oauth_token:
+        pattern:                        ^/api/oauth/v1/token
+        security:                       false
+api_index:
+        pattern:                        ^/api/rest/v1$
+        security:                       false
+api:
+        pattern:                        ^/api
+        fos_oauth:                      true
+        stateless:                      true
+        access_denied_handler:          pim_api.security.access_denied_handler
+    ```
+
+    Add these new lines under `security.access_control`:
+    
+    ```YAML
+- { path: ^/api/rest/v1$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+- { path: ^/api/, role: pim_api_overall_access }
+    ```
+
+    Remove these lines under `security.firewalls`:
+    
+    ```YAML
+wsse_secured:
+        pattern:                        ^/api/(rest|soap).*
+        wsse:
+            lifetime:                   3600
+            realm:                      "Secured API"
+            profile:                    "UsernameToken"
+        context:                        main
+    ```
+    
+5. Update your application Kernel `$PIM_DIR/app/AppKernel.php`:
 
     * Remove the following bundles:
 
@@ -100,7 +137,7 @@ new Pim\Bundle\ApiBundle\PimApiBundle()
 new PimEnterprise\Bundle\TeamworkAssistantBundle\PimEnterpriseTeamworkAssistantBundle()
           ```
 
-5. Update your routing configuration `$PIM_DIR/app/config/routing.yml`:
+6. Update your routing configuration `$PIM_DIR/app/config/routing.yml`:
 
     * Remove the following lines:
 
@@ -117,15 +154,16 @@ pimee_teamwork_assistant:
 
 pim_api:
         resource: "@PimApiBundle/Resources/config/routing.yml"
+        prefix: /api
     ```
 
-6. Then remove your old upgrades folder:
+7. Then remove your old upgrades folder:
 
     ```bash
 rm -rf $PIM_DIR/upgrades/schema
     ```
 
-7. Now update your dependencies:
+8. Now update your dependencies:
 
     * [Optional] If you had added dependencies to your project, you will need to do it again in your `composer.json`.
       You can display the differences of your previous composer.json in `$PIM_DIR/composer.json.bak`.
@@ -147,7 +185,7 @@ php -d memory_limit=3G composer update
         If you have custom code in your project, this step may raise errors in the "post-script" command.
         In this case, go to the chapter "Migrate your custom code" before running the database migration.
 
-8. Then you can migrate your database using:
+9. Then you can migrate your database using:
 
     ```bash
 php app/console cache:clear --env=prod
@@ -157,7 +195,7 @@ php app/console doctrine:migration:migrate --env=prod
     The issues of missing services or missing classes are often due to custom code.
     Please refer to the [Migrate your custom code](#migrate-your-custom-code) section before continuing with this section.
 
-9. Then, generate JS translations and re-generate the PIM assets:
+10. Then, generate JS translations and re-generate the PIM assets:
 
     ```bash
 rm -rf $PIM_DIR/web/js/translation/*
