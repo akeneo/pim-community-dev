@@ -107,6 +107,14 @@ class RootEndpointIntegration extends ApiTestCase
             "pim_api_product_partial_update": {
                 "route": "/api/rest/v1/products/{code}",
                 "methods": ["PATCH"]
+            },
+            "pim_api_locale_list": {
+                "route": "/api/rest/v1/locales",
+                "methods": ["GET"]
+            },
+            "pim_api_locale_get": {
+                "route": "/api/rest/v1/locales/{code}",
+                "methods": ["GET"]
             }
         }
     }

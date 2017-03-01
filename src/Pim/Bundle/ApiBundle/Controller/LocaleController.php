@@ -135,6 +135,10 @@ class LocaleController
      */
     protected function validateSearchCriterias(Request $request)
     {
+        if (!$request->query->has('search')) {
+            return [];
+        }
+
         $searchString = $request->query->get('search', '');
         $searchParameters = json_decode($searchString, true);
 
