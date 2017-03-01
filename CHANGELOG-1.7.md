@@ -10,6 +10,7 @@
 - PIM-6127: In the family import, the attributes required should be in the family
 - PIM-6125: In the family import, the attribute_as_label has to be in the family and its type has to be identifier or text
 - GITHUB-4772: Switching between tabs of family edit form removes newly added attributes
+- GITHUB-3435: Sort order products datagrid `Manage filter` options
 
 ## Functional improvements
 
