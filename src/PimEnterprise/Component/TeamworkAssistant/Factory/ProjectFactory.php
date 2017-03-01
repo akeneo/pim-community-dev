@@ -14,7 +14,6 @@ namespace PimEnterprise\Component\TeamworkAssistant\Factory;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\DatagridViewTypes;
-use PimEnterprise\Component\TeamworkAssistant\Factory\ProjectFactoryInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>

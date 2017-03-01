@@ -14,7 +14,6 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository;
 use Akeneo\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;

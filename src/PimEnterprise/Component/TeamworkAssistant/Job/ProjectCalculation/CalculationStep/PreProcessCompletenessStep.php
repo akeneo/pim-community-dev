@@ -11,11 +11,9 @@
 
 namespace PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep;
 
-use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\TeamworkAssistant\Calculator\ProjectItemCalculatorInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\FamilyRequirementRepositoryInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\PreProcessingRepositoryInterface;
 
 /**

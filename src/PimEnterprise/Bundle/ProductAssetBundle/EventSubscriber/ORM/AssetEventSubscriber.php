@@ -15,7 +15,6 @@ use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
-use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

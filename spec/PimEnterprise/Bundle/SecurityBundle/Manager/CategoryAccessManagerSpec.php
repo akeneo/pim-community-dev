@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
