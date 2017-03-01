@@ -103,8 +103,8 @@ class HasVariantAxesValidatorSpec extends ObjectBehavior
         $violationBuilder->atPath('variant_group')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
-        $violation->atPath(Argument::any())->willReturn($violation);
-        $violation->addViolation(Argument::any())->shouldBeCalled();
+        $violationBuilder->atPath('variant_group')->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($product, $constraint);
     }
