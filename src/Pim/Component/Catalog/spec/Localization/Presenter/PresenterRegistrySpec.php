@@ -6,7 +6,6 @@ use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Prophecy\Argument;
 
 class PresenterRegistrySpec extends ObjectBehavior
 {

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\EventSubscriber;
 
-use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\DataGridBundle\DataTransformer\DefaultViewDataTransformer;
 use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;

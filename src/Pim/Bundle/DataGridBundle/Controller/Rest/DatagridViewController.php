@@ -7,7 +7,6 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\DataGridBundle\Manager\DatagridViewManager;
 use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;

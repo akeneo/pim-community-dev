@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\EnrichBundle\Manager;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository;
 use Pim\Bundle\EnrichBundle\Entity\SequentialEdit;

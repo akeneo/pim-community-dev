@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\AnalyticsBundle\Controller;
 
 use Akeneo\Component\Analytics\ChainedDataCollector;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class DataControllerSpec extends ObjectBehavior
 {

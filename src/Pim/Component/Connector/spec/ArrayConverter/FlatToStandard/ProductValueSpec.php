@@ -8,7 +8,6 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ValueConverterRegistryInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger;
-use Pim\Component\Connector\Exception\StructureArrayConversionException;
 use Prophecy\Argument;
 
 class ProductValueSpec extends ObjectBehavior

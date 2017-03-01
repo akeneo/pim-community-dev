@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\UserBundle\Entity\Repository;
+namespace Pim\Bundle\UserBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\UserBundle\Entity\Repository\RoleRepository as BaseRoleRepository;
@@ -12,8 +12,6 @@ use Pim\Bundle\UserBundle\Entity\User;
  * @author    Julien Janvier <julien.janvier@gmail.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @deprecated will be moved to Pim\Bundle\UserBundle\Doctrine\ORM\Repository in 1.4
  */
 class RoleRepository extends BaseRoleRepository implements
     IdentifiableObjectRepositoryInterface

@@ -6,7 +6,6 @@ use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Prophecy\Exception\Prediction\FailedPredictionException;
 
 class OutputFileFetcherSpec extends ObjectBehavior
