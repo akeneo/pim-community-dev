@@ -32,6 +32,8 @@ abstract class TestCase extends KernelTestCase
      */
     protected function setUp()
     {
+        date_default_timezone_set('Europe/Paris');
+
         static::bootKernel(['debug' => false]);
 
         $configuration = $this->getConfiguration();
