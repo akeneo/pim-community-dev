@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  *
- * @deprecated Will be removed in 1.7
+ * @deprecated Will be removed in 1.8
  */
 class CategoryManager
 {

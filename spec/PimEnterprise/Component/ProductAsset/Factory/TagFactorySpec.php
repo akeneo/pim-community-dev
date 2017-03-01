@@ -20,6 +20,6 @@ class TagFactorySpec extends ObjectBehavior
 
     function it_creates_a_tag()
     {
-        $this->createTag()->shouldReturnAnInstanceOf(self::TAG_CLASS);
+        $this->create()->shouldReturnAnInstanceOf(self::TAG_CLASS);
     }
 }
