@@ -37,6 +37,9 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     /** @var array */
     protected $attributes;
 
+    /** @var string */
+    protected $values;
+
     /**
      * @param ChannelRepositoryInterface   $channelRepository
      * @param AttributeRepositoryInterface $attributeRepository
@@ -55,6 +58,8 @@ class SetAttributeRequirements extends AbstractMassEditOperation
         $this->attributeRepository = $attributeRepository;
         $this->factory = $factory;
         $this->attRequirements = new ArrayCollection();
+
+        $this->values = '';
     }
 
     /**
@@ -173,4 +178,29 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     {
         return 'set-attribute-requirements';
     }
+
+    /**
+     * Gets values
+     *
+     * @return string
+     */
+    public function getValues()
+    {
+        return $this->values;
+    }
+
+    /**
+     * Sets values
+     *
+     * @param string $values
+     *
+     * @return $this
+     */
+    public function setValues($values)
+    {
+        $this->values = $values;
+
+        return $this;
+    }
+
 }
