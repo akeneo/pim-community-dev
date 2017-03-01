@@ -66,7 +66,7 @@ class FamilyFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \LogicException
+     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "family" is not supported or does not support operator "BETWEEN"
      */
     public function testErrorOperatorNotSupported()

@@ -112,7 +112,7 @@ class DateTimeFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \LogicException
+     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "updated" is not supported or does not support operator "IN CHILDREN"
      */
     public function testErrorOperatorNotSupported()

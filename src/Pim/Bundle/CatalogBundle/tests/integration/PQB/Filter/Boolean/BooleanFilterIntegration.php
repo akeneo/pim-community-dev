@@ -68,7 +68,7 @@ class BooleanFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \LogicException
+     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "a_yes_no" is not supported or does not support operator "CONTAINS"
      */
     public function testErrorOperatorNotSupported()

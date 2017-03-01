@@ -110,7 +110,7 @@ class MediaFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \LogicException
+     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "an_image" is not supported or does not support operator "BETWEEN"
      */
     public function testErrorOperatorNotSupported()

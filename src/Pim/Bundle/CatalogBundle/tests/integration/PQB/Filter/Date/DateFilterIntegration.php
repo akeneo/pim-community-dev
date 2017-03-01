@@ -137,7 +137,7 @@ class DateFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \LogicException
+     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "a_date" is not supported or does not support operator "CONTAINS"
      */
     public function testErrorOperatorNotSupported()

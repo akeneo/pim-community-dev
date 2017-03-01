@@ -61,7 +61,7 @@ class CategoryFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \LogicException
+     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "categories" is not supported or does not support operator ">="
      */
     public function testErrorOperatorNotSupported()

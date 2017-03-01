@@ -118,7 +118,7 @@ class StringFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \LogicException
+     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "a_text" is not supported or does not support operator ">="
      */
     public function testErrorOperatorNotSupported()

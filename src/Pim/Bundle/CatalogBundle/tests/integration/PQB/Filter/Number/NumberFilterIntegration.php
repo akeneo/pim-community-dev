@@ -119,7 +119,7 @@ class NumberFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
-     * @expectedException \LogicException
+     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "a_number_float_negative" is not supported or does not support operator "BETWEEN"
      */
     public function testErrorOperatorNotSupported()
