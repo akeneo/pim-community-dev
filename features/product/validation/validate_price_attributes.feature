@@ -7,11 +7,11 @@ Feature: Validate price attributes of a product
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | code    | label-en_US | type                         | scopable | negative_allowed | decimals_allowed | number_min | number_max | group |
-      | cost    | Cost        | pim_catalog_price_collection | 0        | 0                | 0                |            |            | other |
-      | price   | Price       | pim_catalog_price_collection | 1        | 0                | 0                |            |            | other |
-      | tax     | Tax         | pim_catalog_price_collection | 0        |                  | 1                | 10         | 100        | other |
-      | customs | Customs     | pim_catalog_price_collection | 1        |                  | 1                | 10         | 100        | other |
+      | code    | label-en_US | type                         | scopable | decimals_allowed | number_min | number_max | group |
+      | cost    | Cost        | pim_catalog_price_collection | 0        | 0                |            |            | other |
+      | price   | Price       | pim_catalog_price_collection | 1        | 0                |            |            | other |
+      | tax     | Tax         | pim_catalog_price_collection | 0        | 1                | 10         | 100        | other |
+      | customs | Customs     | pim_catalog_price_collection | 1        | 1                | 10         | 100        | other |
     And the following family:
       | code | label-en_US | attributes                 |
       | baz  | Baz         | sku,cost,price,tax,customs |
@@ -20,18 +20,6 @@ Feature: Validate price attributes of a product
       | foo | baz    |
     And I am logged in as "Mary"
     And I am on the "foo" product page
-
-  Scenario: Validate the negative allowed constraint of price attribute
-    Given I change the "Cost" to "-10 USD"
-    And I save the product
-    Then I should see validation tooltip "This value should be 0 or more."
-    And there should be 1 error in the "Other" tab
-
-  Scenario: Validate the negative allowed constraint of scopable price attribute
-    Given I change the "Price" to "-10 USD"
-    And I save the product
-    Then I should see validation tooltip "This value should be 0 or more."
-    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the decimals allowed constraint of price attribute
     Given I change the "Cost" to "2.7 USD"
@@ -70,8 +58,8 @@ Feature: Validate price attributes of a product
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the type constraint of price attribute
-    Given I change the "Tax" to "bar USD"
-    And I change the "Tax" to "qux EUR"
+    Given I change the "Cost" to "bar USD"
+    And I change the "Cost" to "qux EUR"
     And I save the product
     Then I should see validation tooltip "This value should be a valid number."
     Then I should see validation tooltip "This value should be 10 or more."

@@ -13,8 +13,8 @@ Feature: Edit a product
       | name        | pim_catalog_text     | 0           |                 | Name        | 0        | other |
       | other_name  | pim_catalog_text     | 1           |                 | Other Name  | 1        | other |
     And the following attributes:
-      | code   | label-en_US | type               | metric_family | default_metric_unit | group |
-      | length | Shoes size  | pim_catalog_metric | Length        | CENTIMETER          | other |
+      | code   | label-en_US | type               | metric_family | default_metric_unit | group | decimals_allowed | negative_allowed |
+      | length | Shoes size  | pim_catalog_metric | Length        | CENTIMETER          | other | 0                | 0                |
     And the following products:
       | sku    |
       | sandal |

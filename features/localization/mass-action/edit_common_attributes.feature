@@ -7,10 +7,10 @@ Feature: Edit common localized attributes of many products at once
   Background:
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code   | label-en_US | type               | metric_family | default_metric_unit | decimals_allowed | group |
-      | weight | Weight      | pim_catalog_metric | Weight        | GRAM                | 1                | other |
-      | time   | Time        | pim_catalog_number |               |                     | 1                | other |
-      | date   | Date        | pim_catalog_date   |               |                     |                  | other |
+      | code   | label-en_US | type               | metric_family | default_metric_unit | decimals_allowed | negative_allowed | group |
+      | weight | Weight      | pim_catalog_metric | Weight        | GRAM                | 1                | 0                | other |
+      | time   | Time        | pim_catalog_number |               |                     | 1                | 0                | other |
+      | date   | Date        | pim_catalog_date   |               |                     |                  |                  | other |
     And the following family:
       | code       | attributes                                                                                                                  |
       | high_heels | sku,name,description,price,rating,size,color,manufacturer                                                                   |

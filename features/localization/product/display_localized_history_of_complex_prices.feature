@@ -7,10 +7,10 @@ Feature: Display the localized product history for complex prices
   Background:
     Given a "apparel" catalog configuration
     And the following attributes:
-      | code            | label-en_US     | label-fr_FR     | type                         | decimals_allowed | negative_allowed | group | available_locales | localizable | scopable |
-      | localized_price | localized_price | localized_price | pim_catalog_price_collection | 1                | 0                | other | fr_FR,en_US       | 1           | 0        |
-      | scoped_price    | scoped_price    | scoped_price    | pim_catalog_price_collection | 1                | 0                | other |                   | 0           | 1        |
-      | complex_price   | complex_price   | complex_price   | pim_catalog_price_collection | 1                | 0                | other | fr_FR,en_US       | 1           | 1        |
+      | code            | label-en_US     | label-fr_FR     | type                         | decimals_allowed | group | available_locales | localizable | scopable |
+      | localized_price | localized_price | localized_price | pim_catalog_price_collection | 1                | other | fr_FR,en_US       | 1           | 0        |
+      | scoped_price    | scoped_price    | scoped_price    | pim_catalog_price_collection | 1                | other |                   | 0           | 1        |
+      | complex_price   | complex_price   | complex_price   | pim_catalog_price_collection | 1                | other | fr_FR,en_US       | 1           | 1        |
     And I am logged in as "admin"
     And I am on the products page
     And I create a new product

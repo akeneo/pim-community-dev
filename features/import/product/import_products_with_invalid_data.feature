@@ -370,14 +370,14 @@ Feature: Execute a job
 
   Scenario: Skip new products with invalid price during an import
     Given the following attributes:
-      | label-en_US  | type                         | negative_allowed | group | code        |
+      | label-en_US  | type                         | decimals_allowed | group | code        |
       | Public Price | pim_catalog_price_collection | 0                | other | publicPrice |
     And the following CSV file to import:
       """
       sku;publicPrice
       renault-kangoo;20000 EUR
       honda-civic;15 notExisting
-      seat-ibiza;-111 USD
+      seat-ibiza;111.11 USD
       """
     And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -391,8 +391,8 @@ Feature: Execute a job
 
   Scenario: Skip new products with invalid price (many columns) during an import
     Given the following attributes:
-      | label-en_US  | type                         | group | code        |
-      | Public Price | pim_catalog_price_collection | other | publicPrice |
+      | label-en_US  | type                         | decimals_allowed | group | code        |
+      | Public Price | pim_catalog_price_collection | 0                | other | publicPrice |
     And the following CSV file to import:
       """
       sku;publicPrice-EUR
