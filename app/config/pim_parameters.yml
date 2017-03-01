@@ -46,3 +46,6 @@ parameters:
 
     # Maximum number of items returned in the paginated responses of the API
     api_pagination_limit_max: 100
+
+    # Number of items returned by default if limit is not filled in request
+    api_pagination_limit_by_default: 10

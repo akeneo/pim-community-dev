@@ -7,7 +7,7 @@ Feature: Show localized rules
   Background:
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code                   | label-en_US            | type                         | decimals_allowed | metric_family | default metric unit | group |
+      | code                   | label-en_US            | type                         | decimals_allowed | metric_family | default_metric_unit | group |
       | decimal_number         | decimal_number         | pim_catalog_number           | 1                |               |                     | other |
       | another_decimal_number | another_decimal_number | pim_catalog_number           | 1                |               |                     | other |
       | decimal_price          | decimal_price          | pim_catalog_price_collection | 1                |               |                     | other |
