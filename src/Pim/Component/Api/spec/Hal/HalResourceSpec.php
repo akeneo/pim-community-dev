@@ -134,7 +134,7 @@ class HalResourceSpec extends ObjectBehavior
     function it_throws_an_exception_when_data_use_a_reserved_hal_property()
     {
         $this
-            ->shouldThrow(new ReservedPropertyKeyException('Resource data could not contain a reserved HAL property key.'))
+            ->shouldThrow(new ReservedPropertyKeyException('Resource data cannot contain a reserved HAL property key.'))
             ->during('__construct', ['http://akeneo.com/self', [], ['items' => []], ['_links' => 'links']]);
     }
 }
