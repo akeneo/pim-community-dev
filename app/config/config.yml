@@ -3,7 +3,6 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: '@PimEnterpriseEnrichBundle/Resources/config/pimee.yml' }
-    - { resource: '@PimApiBundle/Resources/config/api.yml' }
 
 framework:
     #esi:             ~
