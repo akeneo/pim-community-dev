@@ -74,4 +74,5 @@ Feature: Validate price attributes of a draft
     And I change the Tax to "qux EUR"
     And I save the product
     Then I should see validation error "This value should be a valid number."
-    And there should be 1 error in the "Product information" tab
+    Then I should see validation error "This value should be 10 or more."
+    And there should be 2 error in the "Product information" tab
