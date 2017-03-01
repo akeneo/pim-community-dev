@@ -52,7 +52,7 @@ extensions:
         module: pim/channel-edit-form/save
         parent: pim-channel-edit-form
         targetZone: buttons
-        position: 0
+        position: 110
         config:
             redirectUrl: pim_enrich_channel_edit
 
