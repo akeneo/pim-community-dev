@@ -1,5 +1,9 @@
 # 1.7.x
 
+## Functional improvements
+
+- AMS-27: Add badges next to fields to inform the user that the field need to be filled.
+
 ## Web API
 
 - API-47: Use OAuth2 to authenticate users on the web API

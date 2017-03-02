@@ -161,12 +161,26 @@ class Form extends Base
     public function visitGroup($group)
     {
         $this->spin(function () use ($group) {
-            $group = $this->find('css', sprintf($this->elements['Group']['css'], $group));
-            if (null !== $group && $group->isVisible()) {
+            $group = $this->findGroup($group);
+            if ($group->isVisible()) {
                 $group->click();
 
                 return true;
             }
+        }, sprintf('Cannot click the group "%s".', $group));
+    }
+
+    /**
+     * Get the specified group
+     *
+     * @param string $group
+     */
+    public function findGroup($group)
+    {
+        return $this->spin(function () use ($group) {
+            $group = $this->find('css', sprintf($this->elements['Group']['css'], $group));
+
+            return $group;
         }, sprintf('Cannot find the group "%s".', $group));
     }
 
