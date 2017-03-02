@@ -2,12 +2,15 @@
 
 namespace Pim\Bundle\ApiBundle\Controller;
 
+use Akeneo\Component\FileStorage\FilesystemProvider;
+use Akeneo\Component\FileStorage\StreamedFileResponse;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Pagination\HalPaginator;
 use Pim\Component\Api\Pagination\ParameterValidator;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -31,8 +34,14 @@ class MediaFileController
     /** @var HalPaginator */
     protected $paginator;
 
+    /** @var FilesystemProvider */
+    protected $filesystemProvider;
+
     /** @var array */
     protected $apiConfiguration;
+
+    /** @var array */
+    protected $filesystemAliases;
 
     /** @var string */
     protected $urlDocumentation;
@@ -42,6 +51,8 @@ class MediaFileController
      * @param NormalizerInterface            $normalizer
      * @param ParameterValidator             $parameterValidator
      * @param HalPaginator                   $paginator
+     * @param FilesystemProvider             $filesystemProvider
+     * @param array                          $filesystemAliases
      * @param array                          $apiConfiguration
      * @param string                         $urlDocumentation
      */
@@ -50,6 +61,8 @@ class MediaFileController
         NormalizerInterface $normalizer,
         ParameterValidator $parameterValidator,
         HalPaginator $paginator,
+        FilesystemProvider $filesystemProvider,
+        array $filesystemAliases,
         array $apiConfiguration,
         $urlDocumentation
     ) {
@@ -57,6 +70,8 @@ class MediaFileController
         $this->normalizer = $normalizer;
         $this->parameterValidator = $parameterValidator;
         $this->paginator = $paginator;
+        $this->filesystemProvider = $filesystemProvider;
+        $this->filesystemAliases = $filesystemAliases;
         $this->apiConfiguration = $apiConfiguration;
         $this->urlDocumentation = $urlDocumentation;
     }
@@ -71,7 +86,7 @@ class MediaFileController
     {
         $media = $this->mediaRepository->findOneByIdentifier($code);
         if (null === $media) {
-            throw new NotFoundHttpException(sprintf('Media file "%s" does not exist', $code));
+            throw new NotFoundHttpException(sprintf('Media file "%s" does not exist.', $code));
         }
 
         $mediaApi = $this->normalizer->normalize($media, 'external_api');
@@ -110,5 +125,37 @@ class MediaFileController
         );
 
         return new JsonResponse($paginatedMedias);
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $code
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return StreamedFileResponse
+     */
+    public function downloadAction(Request $request, $code)
+    {
+        $filename = urldecode($code);
+
+        foreach ($this->filesystemAliases as $alias) {
+            $fs = $this->filesystemProvider->getFilesystem($alias);
+            if ($fs->has($filename)) {
+                $stream = $fs->readStream($filename);
+                $headers = [];
+
+                if (null !== $fileInfo = $this->mediaRepository->findOneByIdentifier($filename)) {
+                    $headers['Content-Disposition'] = sprintf(
+                        'attachment; filename="%s"',
+                        $fileInfo->getOriginalFilename()
+                    );
+                }
+
+                return new StreamedFileResponse($stream, Response::HTTP_OK, $headers);
+            }
+        }
+
+        throw new NotFoundHttpException(sprintf('Media file "%s" does not exist.', $filename));
     }
 }
