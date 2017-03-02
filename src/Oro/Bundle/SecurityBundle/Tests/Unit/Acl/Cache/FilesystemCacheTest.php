@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Cache;
 
-
 class FilesystemCacheTest extends \PHPUnit_Framework_TestCase
 {
     /**
