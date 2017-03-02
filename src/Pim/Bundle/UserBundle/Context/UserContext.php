@@ -319,7 +319,7 @@ class UserContext
     protected function getSessionLocale()
     {
         $request = $this->getCurrentRequest();
-        if (null !== $request) {
+        if (null !== $request && $request->hasPreviousSession()) {
             $localeCode = $request->getSession()->get('dataLocale');
             if (null !== $localeCode) {
                 $locale = $this->localeRepository->findOneByIdentifier($localeCode);

@@ -48,12 +48,19 @@ class LocaleSubscriber implements EventSubscriberInterface
      */
     public function onPostUpdate(GenericEvent $event)
     {
+        $request = $event->getRequest();
+
+        if (!$request->attributes->has(FOSRestBundle::ZONE_ATTRIBUTE)) {
+            return;
+        }
+
         $user = $event->getSubject();
 
         if ($user === $event->getArgument('current_user')) {
             $request = $this->requestStack->getMasterRequest();
             $request->getSession()->set('_locale', $user->getUiLocale()->getCode());
             $this->translator->setLocale($user->getUiLocale()->getCode());
+            $request->getSession()->save();
         }
     }
 
@@ -93,8 +100,16 @@ class LocaleSubscriber implements EventSubscriberInterface
      */
     protected function getLocale(Request $request)
     {
-        return null !== $request->getSession() && null !== $request->getSession()->get('_locale') ?
+        if (!$request->hasPreviousSession()) {
+            return $this->getLocaleFromOroConfigValue();
+        }
+
+        $locale = null !== $request->getSession()->get('_locale') ?
             $request->getSession()->get('_locale') : $this->getLocaleFromOroConfigValue();
+
+        $request->getSession()->save();
+
+        return $locale;
     }
 
     /**
