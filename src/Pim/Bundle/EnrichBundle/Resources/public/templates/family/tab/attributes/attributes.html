@@ -1,0 +1,63 @@
+<div class="AknGridContainer">
+    <table class="AknGrid AknGrid--unclickable groups">
+        <thead>
+            <th class="AknGrid-headerCell"><%- label %></th>
+            <% _.each(channels, function (channel) { %>
+            <th class="AknGrid-headerCell AknGrid-headerCell--center channel">
+                <%- i18n.getLabel(channel.labels, catalogLocale, channel.code) %>
+            </th>
+            <% }) %>
+            <th class="AknGrid-headerCell">&nbsp;</th>
+        </thead>
+        <% _.each(_.keys(groupedAttributes), function (group) { %>
+        <tbody>
+            <tr class="AknGrid-bodyRow AknGrid-bodyRow--highlight group">
+                <td class="AknGrid-bodyCell" colspan="<%- colspan %>">
+                    <i class="icon-collapse-alt"></i>
+                    <% var attributeGroup = _.findWhere(attributeGroups, {code: group}) %>
+                    <%-
+                        i18n.getLabel(
+                            attributeGroup.labels,
+                            catalogLocale,
+                            attributeGroup.code
+                        )
+                    %>
+                </td>
+            </tr>
+            <% _.each(groupedAttributes[group], function (attribute) { %>
+            <tr class="AknGrid-bodyRow">
+                <td class="AknGrid-bodyCell">
+                    <%- i18n.getLabel(attribute.labels, catalogLocale, attribute.code) %>
+                </td>
+                <% _.each(channels, function (channel) { %>
+                <td class="AknGrid-bodyCell AknGrid-bodyCell--center">
+                    <div class="attribute-requirement">
+                        <% required = _.contains(attributeRequirements[channel.code], attribute.code) %>
+                        <i
+                                class="AknAcl-icon <%- required ? 'AknAcl-icon--granted icon-ok required' : 'icon-circle non-required' %>"
+                                data-toggle="tooltip"
+                                data-attribute="<%- attribute.code %>"
+                                data-channel="<%- channel.code %>"
+                                data-type="<%- attribute.type %>"
+                                data-required="<%- required %>"
+                                data-original-title="<%- required ? requiredLabel : notRequiredLabel %>"
+                                data-placement="right"></i>
+                    </div>
+                </td>
+                <% }) %><!-- end each channel -->
+                <td class="AknGrid-bodyCell AknGrid-bodyCell--right">
+                    <% if (identifierAttribute !== attribute.type) { %>
+                    <a href="#"
+                       class="AknIconButton AknIconButton--small AknIconButton--grey remove-attribute"
+                       data-attribute="<%- attribute.code %>"
+                    >
+                        <i class="icon-trash"></i>
+                    </a>
+                    <% } %>
+                </td>
+            </tr>
+            <% }) %><!-- end each attribute -->
+        </tbody>
+        <% }) %><!-- end each group -->
+    </table>
+</div>

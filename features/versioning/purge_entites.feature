@@ -14,7 +14,8 @@ Feature: purge versions
     And I visit the "Attributes" tab
     And I add available attributes Weather conditions
     And I press the "Save" button
-    And I switch the attribute "Manufacturer" requirement in channel "Mobile"
+    Then I should not see the text "There are unsaved changes."
+    And I switch the attribute "manufacturer" requirement in channel "mobile"
     And I press the "Save" button
     And I visit the "History" tab
     Then there should be 4 updates

@@ -1,8 +1,12 @@
-# 1.6.x
+# 1.6.12 (2017-02-28)
 
 ## Bug fixes
 
 - PIM-6162: Fix families rendering when editing product export
+
+## Improvements
+
+- TIP-500: Dispatch events during installation process
 
 # 1.6.11 (2017-02-14)
 
