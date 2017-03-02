@@ -1,5 +1,7 @@
 # 1.7.0-BETA1 (2017-03-02)
 
+- PIM-5448: Filters are not applied after approval of a proposal
+
 ## Web API
 
 - API-47: Use OAuth2 to authenticate users on the web API
