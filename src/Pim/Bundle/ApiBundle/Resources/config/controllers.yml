@@ -113,7 +113,7 @@ services:
     pim_api.controller.media_file:
         class: '%pim_api.controller.media_file.class%'
         arguments:
-            - '@akeneo_file_storage.repository.file_info'
+            - '@pim_api.repository.media_file'
             - '@pim_serializer'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.pagination.paginator'
