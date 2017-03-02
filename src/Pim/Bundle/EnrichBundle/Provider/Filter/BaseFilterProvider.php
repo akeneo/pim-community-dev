@@ -52,6 +52,9 @@ class BaseFilterProvider implements FilterProviderInterface
         AttributeTypes::DATE => [
             'product-export-builder' => 'akeneo-attribute-date-filter'
         ],
+        AttributeTypes::TEXT_COLLECTION => [
+            'product-export-builder' => 'akeneo-attribute-text-collection-filter'
+        ],
     ];
 
     /**
