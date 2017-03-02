@@ -157,6 +157,10 @@ CREATE TABLE `pimee_teamwork_assistant_project_status` (
 ALTER TABLE `pimee_teamwork_assistant_project_status` ADD CONSTRAINT FK_2A911294A76ED395 FOREIGN KEY (user_id) REFERENCES `@pim_user.entity.user@` (id);
 ALTER TABLE `pimee_teamwork_assistant_project_status` ADD CONSTRAINT FK_2A911294166D1F9C FOREIGN KEY (project_id) REFERENCES `pimee_teamwork_assistant_project` (id) ON DELETE CASCADE;
 ALTER TABLE `pimee_security_attribute_group_access` ADD KEY `attr_grp_editable_permission_index` (`edit_attributes`, `attribute_group_id`);
+
+INSERT INTO akeneo_batch_job_instance (`code`, `label`, `alias`, `status`, `connector`, `rawConfiguration`, `type`) VALUES
+('project_calculation', 'Project calculation', 'project_calculation', 0, 'teamwork assistant', '', 'project_calculation')
+('attribute_group_completeness_calculation', 'Refresh project completeness', 'attribute_group_completeness_calculation', 0, 'teamwork assistant', '', 'attribute_group_completeness_calculation');
 SQL;
 
         $sql = $this->container->get('pimee_teamwork_assistant.table_name_mapper')->createQuery($sql);

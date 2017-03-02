@@ -47,11 +47,14 @@ class ProjectCalculationJobLauncher
     }
 
     /**
-     * {@inheritdoc}
+     * @param ProjectInterface $project
      */
     public function launch(ProjectInterface $project)
     {
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->projectCalculationJobName);
+        if (null === $jobInstance) {
+            throw new \RuntimeException('Cannot run project calculation, there is not an available job');
+        }
 
         $this->simpleJobLauncher->launch($jobInstance, $project->getOwner(), ['project_code' => $project->getCode()]);
     }

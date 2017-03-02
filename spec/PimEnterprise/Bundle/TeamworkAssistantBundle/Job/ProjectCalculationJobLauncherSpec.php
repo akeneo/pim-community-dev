@@ -34,4 +34,14 @@ class ProjectCalculationJobLauncherSpec extends ObjectBehavior
 
         $this->launch($project);
     }
+
+
+    function it_throws_an_exception_if_the_job_instance_does_not_exist(
+        $jobInstanceRepository,
+        ProjectInterface $project
+    ) {
+        $jobInstanceRepository->findOneByIdentifier('job_name')->willReturn(null);
+
+        $this->shouldThrow(\RuntimeException::class)->during('launch', [$project]);
+    }
 }

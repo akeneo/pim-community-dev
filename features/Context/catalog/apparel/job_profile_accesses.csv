@@ -39,3 +39,5 @@ xlsx_variant_group_export;IT support,Manager,Redactor;
 xlsx_group_export;IT support,Manager,Redactor;
 classify_assets;All;
 add_tags_to_assets;All;
+project_calculation;All;
+attribute_group_completeness_calculation;All;

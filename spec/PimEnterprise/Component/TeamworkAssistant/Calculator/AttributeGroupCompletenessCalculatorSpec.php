@@ -12,7 +12,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\TeamworkAssistant\Calculator\AttributeGroupCompletenessCalculator;
 use PimEnterprise\Component\TeamworkAssistant\Calculator\ProjectItemCalculatorInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
+use PimEnterprise\Component\TeamworkAssistant\Model\AttributeGroupCompleteness;
 use PimEnterprise\Component\TeamworkAssistant\Repository\FamilyRequirementRepositoryInterface;
 use PimEnterprise\Component\Catalog\Model\ProductValueInterface;
 
@@ -23,7 +23,6 @@ class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
         ProductValueCompleteCheckerInterface $productValueChecker,
         FamilyInterface $family,
         ProductInterface $product,
-        ProjectInterface $project,
         ChannelInterface $projectChannel,
         LocaleInterface $projectLocale,
         ProductValueInterface $skuValue,
@@ -46,10 +45,7 @@ class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
         );
 
         $projectChannel->getCode()->willReturn('ecommerce');
-        $project->getChannel()->willReturn($projectChannel);
-
         $projectLocale->getCode()->willReturn('en_US');
-        $project->getLocale()->willReturn($projectLocale);
 
         $product->getFamily()->willReturn($family);
         $family->getCode()->willReturn('camcorder');
@@ -102,7 +98,6 @@ class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
         $familyRequirementRepository,
         $productValueChecker,
         $product,
-        $project,
         $projectChannel,
         $projectLocale,
         $skuValue,
@@ -127,7 +122,7 @@ class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
         $productValueChecker->isComplete($heightValue, $projectChannel, $projectLocale)->willReturn(true);
         $productValueChecker->isComplete($documentationValue, $projectChannel, $projectLocale)->willReturn(true);
 
-        $familyRequirementRepository->findRequiredAttributes($product, $project)->willReturn(
+        $familyRequirementRepository->findRequiredAttributes($product, $projectChannel, $projectLocale)->willReturn(
             [
                 40 => [
                     'sku',
@@ -140,7 +135,7 @@ class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
             ]
         );
 
-        $result = $this->calculate($project, $product);
+        $result = $this->calculate($product, $projectChannel, $projectLocale);
         $result->shouldBeArray();
         $result[0]->shouldBeAnInstanceOf('PimEnterprise\Component\TeamworkAssistant\Model\AttributeGroupCompleteness');
         $result[1]->shouldBeAnInstanceOf('PimEnterprise\Component\TeamworkAssistant\Model\AttributeGroupCompleteness');
@@ -156,7 +151,6 @@ class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
         $familyRequirementRepository,
         $productValueChecker,
         $product,
-        $project,
         $projectChannel,
         $projectLocale,
         $skuValue,
@@ -172,7 +166,7 @@ class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
         $productValueChecker->isComplete($skuValue, $projectChannel, $projectLocale)->willReturn(true);
         $productValueChecker->isComplete($documentationValue, $projectChannel, $projectLocale)->willReturn(true);
 
-        $familyRequirementRepository->findRequiredAttributes($product, $project)
+        $familyRequirementRepository->findRequiredAttributes($product, $projectChannel, $projectLocale)
             ->willReturn(
                 [
                     40 => [
@@ -182,7 +176,7 @@ class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
                 ]
             );
 
-        $result = $this->calculate($project, $product);
+        $result = $this->calculate($product, $projectChannel, $projectLocale);
         $result->shouldBeArray();
         $result[0]->shouldBeAnInstanceOf('PimEnterprise\Component\TeamworkAssistant\Model\AttributeGroupCompleteness');
         $result[0]->getAttributeGroupId()->shouldReturn(40);
@@ -194,7 +188,6 @@ class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
         $familyRequirementRepository,
         $productValueChecker,
         $product,
-        $project,
         $projectChannel,
         $projectLocale,
         $documentationValue
@@ -207,7 +200,7 @@ class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
 
         $productValueChecker->isComplete($documentationValue, $projectChannel, $projectLocale)->willReturn(true);
 
-        $familyRequirementRepository->findRequiredAttributes($product, $project)
+        $familyRequirementRepository->findRequiredAttributes($product, $projectChannel, $projectLocale)
             ->willReturn(
                 [
                     40 => [
@@ -221,10 +214,10 @@ class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
                 ]
             );
 
-        $result = $this->calculate($project, $product);
+        $result = $this->calculate($product, $projectChannel, $projectLocale);
         $result->shouldBeArray();
-        $result[0]->shouldBeAnInstanceOf('PimEnterprise\Component\TeamworkAssistant\Model\AttributeGroupCompleteness');
-        $result[1]->shouldBeAnInstanceOf('PimEnterprise\Component\TeamworkAssistant\Model\AttributeGroupCompleteness');
+        $result[0]->shouldBeAnInstanceOf(AttributeGroupCompleteness::class);
+        $result[1]->shouldBeAnInstanceOf(AttributeGroupCompleteness::class);
         $result[0]->getAttributeGroupId()->shouldReturn(40);
         $result[0]->hasAtLeastOneAttributeFilled()->shouldReturn(0);
         $result[0]->isComplete()->shouldReturn(0);

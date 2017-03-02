@@ -514,3 +514,13 @@ jobs:
         alias:     add_tags_to_assets
         label:     Add tags to assets
         type:      mass_edit
+    project_calculation:
+        connector: team work assistant
+        alias:     project_calculation
+        label:     Project calculation
+        type:      project_calculation
+    attribute_group_completeness_calculation:
+        connector: teamwork assistant
+        alias:     attribute_group_completeness_calculation
+        label:     Refresh project completeness
+        type:      attribute_group_completeness_calculation

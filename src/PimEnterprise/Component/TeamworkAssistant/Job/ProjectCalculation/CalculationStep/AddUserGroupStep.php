@@ -39,7 +39,11 @@ class AddUserGroupStep implements CalculationStepInterface
      */
     public function execute(ProductInterface $product, ProjectInterface $project)
     {
-        $contributorGroups = $this->contributorGroupCalculator->calculate($project, $product);
+        $contributorGroups = $this->contributorGroupCalculator->calculate(
+            $product,
+            $project->getChannel(),
+            $project->getLocale()
+        );
 
         foreach ($contributorGroups as $contributorGroup) {
             $project->addUserGroup($contributorGroup);

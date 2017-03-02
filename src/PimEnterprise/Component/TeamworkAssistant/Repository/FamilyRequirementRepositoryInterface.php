@@ -13,8 +13,8 @@ namespace PimEnterprise\Component\TeamworkAssistant\Repository;
 
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -47,9 +47,14 @@ interface FamilyRequirementRepositoryInterface
      * ];
      *
      * @param ProductInterface $product
-     * @param ProjectInterface $project
+     * @param ChannelInterface $channel
+     * @param LocaleInterface $locale
      *
      * @return array
      */
-    public function findRequiredAttributes(ProductInterface $product, ProjectInterface $project);
+    public function findRequiredAttributes(
+        ProductInterface $product,
+        ChannelInterface $channel,
+        LocaleInterface $locale
+    );
 }

@@ -1,0 +1,67 @@
+<?php
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2017 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace PimEnterprise\Component\TeamworkAssistant\Job\AttributeGroupCompleteness;
+
+use Akeneo\Component\Batch\Job\JobInterface;
+use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
+use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
+use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\NotBlank;
+
+/**
+ * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
+ */
+class AttributeGroupCompletenessJobParameter implements
+    DefaultValuesProviderInterface,
+    ConstraintCollectionProviderInterface
+{
+    /** @var string */
+    protected $attributeGroupCompletenessCalculationJobName;
+
+    /**
+     * @param $attributeGroupCompletenessCalculationJobName
+     */
+    public function __construct($attributeGroupCompletenessCalculationJobName)
+    {
+        $this->attributeGroupCompletenessCalculationJobName = $attributeGroupCompletenessCalculationJobName;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConstraintCollection()
+    {
+        return new Collection([
+            'fields' => [
+                'product_identifier' => new NotBlank(),
+                'locale_identifier'  => new NotBlank(),
+                'channel_identifier' => new NotBlank(),
+            ],
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultValues()
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supports(JobInterface $job)
+    {
+        return $this->attributeGroupCompletenessCalculationJobName === $job->getName();
+    }
+}
