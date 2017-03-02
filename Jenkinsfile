@@ -47,8 +47,8 @@ stage("Checkout") {
         if ('akeneo' != ceOwner) {
             sh "composer config repositories.pim-community-dev vcs \"https://github.com/${ceOwner}/pim-community-dev.git\""
         }
-
         sh "composer require --no-update \"akeneo/pim-community-dev\":\"${ceBranch}\""
+
         stash "project_files"
     }
 
@@ -60,6 +60,7 @@ stage("Checkout") {
             sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
             sh "app/console oro:requirejs:generate-config"
             sh "app/console assets:install"
+
             stash "project_files_full"
         }
         deleteDir()
@@ -109,7 +110,7 @@ def runGruntTest() {
             docker.image('digitallyseamless/nodejs-bower-grunt').inside("") {
                 unstash "project_files_full"
                 sh "npm install"
-                sh "grunt travis"
+                sh "grunt --force"
             }
         } finally {
             deleteDir()
@@ -117,14 +118,14 @@ def runGruntTest() {
     }
 }
 
-def runPhpSpecTest(version) {
+def runPhpSpecTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${version}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "project_files"
 
-                if (version != "5.6") {
+                if (phpVersion != "5.6") {
                     sh "composer require --no-update alcaeus/mongo-php-adapter"
                 }
 
@@ -133,22 +134,22 @@ def runPhpSpecTest(version) {
                 sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
             }
         } finally {
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${version}] /\" app/build/logs/*.xml"
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
         }
     }
 }
 
-def runIntegrationTest(version) {
+def runIntegrationTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
             docker.image("mysql:5.5").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim") {
-                docker.image("carcel/php:${version}").inside("--link mysql:mysql -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+                docker.image("carcel/php:${phpVersion}").inside("--link mysql:mysql -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                     unstash "project_files"
 
-                    if (version != "5.6") {
+                    if (phpVersion != "5.6") {
                         sh "composer require --no-update alcaeus/mongo-php-adapter"
                     }
 
@@ -162,26 +163,30 @@ def runIntegrationTest(version) {
                 }
             }
         } finally {
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${version}] /\" app/build/logs/*.xml"
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
         }
     }
 }
 
-def runPhpCsFixerTest(version) {
+def runPhpCsFixerTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${version}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "project_files"
 
-                sh "composer global require friendsofphp/php-cs-fixer ^2.0"
+                if (phpVersion != "5.6") {
+                    sh "composer require --no-update alcaeus/mongo-php-adapter"
+                }
+
+                sh "php -d memory_limit=-1 /usr/local/bin/composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
-                sh "/home/akeneo/.composer/vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --diff --format=junit --config=.php_cs.dist > app/build/logs/phpcs.xml"
+                sh "./bin/php-cs-fixer fix --diff --format=junit --config=.php_cs.dist > app/build/logs/phpcs.xml"
             }
         } finally {
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${version}] /\" app/build/logs/*.xml"
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
         }
