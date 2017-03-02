@@ -86,5 +86,6 @@ services:
         class: '%pim_api.normalizer.file.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.file'
+            - '@router'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }

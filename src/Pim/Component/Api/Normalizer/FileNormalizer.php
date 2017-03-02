@@ -3,6 +3,9 @@
 namespace Pim\Component\Api\Normalizer;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Pim\Component\Api\Hal\Link;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -15,12 +18,17 @@ class FileNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $stdNormalizer;
 
+    /** @var RouterInterface */
+    protected $router;
+
     /**
      * @param NormalizerInterface $stdNormalizer
+     * @param RouterInterface     $router
      */
-    public function __construct(NormalizerInterface $stdNormalizer)
+    public function __construct(NormalizerInterface $stdNormalizer, RouterInterface $router)
     {
         $this->stdNormalizer = $stdNormalizer;
+        $this->router = $router;
     }
 
     /**
@@ -28,7 +36,18 @@ class FileNormalizer implements NormalizerInterface
      */
     public function normalize($attribute, $format = null, array $context = [])
     {
-        return $this->stdNormalizer->normalize($attribute, 'standard', $context);
+        $standardFile = $this->stdNormalizer->normalize($attribute, 'standard', $context);
+        $apiFile = $standardFile;
+
+        $route = $this->router->generate(
+            'pim_api_media_file_download',
+            ['code' => $apiFile['code']],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+        $link = new Link('download', $route);
+        $apiFile['_links'] = $link->toArray();
+
+        return $apiFile;
     }
 
     /**
