@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\NavigationBundle\Entity\Builder;
 
-
 class ItemFactory
 {
     /**
