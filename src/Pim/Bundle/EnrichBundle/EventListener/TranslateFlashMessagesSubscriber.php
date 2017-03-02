@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\EventListener;
 
+use FOS\RestBundle\FOSRestBundle;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
@@ -51,7 +52,9 @@ class TranslateFlashMessagesSubscriber implements EventSubscriberInterface
      */
     public function translate(KernelEvent $event)
     {
-        if (!$event->getRequest()->hasSession()) {
+        $request = $event->getRequest();
+
+        if ($request->attributes->has(FOSRestBundle::ZONE_ATTRIBUTE)) {
             return;
         }
 

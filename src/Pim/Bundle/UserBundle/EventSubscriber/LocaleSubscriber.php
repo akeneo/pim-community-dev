@@ -3,6 +3,7 @@
 namespace Pim\Bundle\UserBundle\EventSubscriber;
 
 use Doctrine\ORM\EntityManager;
+use FOS\RestBundle\FOSRestBundle;
 use Pim\Bundle\UserBundle\Event\UserEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -62,6 +63,11 @@ class LocaleSubscriber implements EventSubscriberInterface
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
+
+        if ($request->attributes->has(FOSRestBundle::ZONE_ATTRIBUTE)) {
+            return;
+        }
+
         $locale = $this->getLocale($request);
 
         if (null !== $locale) {
