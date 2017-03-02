@@ -126,6 +126,8 @@ services:
         class: '%pimee_teamwork_assistant.event_subscriber.catalog_updates.class%'
         arguments:
             - '@pimee_teamwork_assistant.project_remover.chained'
+            - '@pimee_teamwork_assistant.launcher.job.attribute_group_completeness_calculation'
+            - '@request_stack'
         tags:
             - { name: kernel.event_subscriber }
 

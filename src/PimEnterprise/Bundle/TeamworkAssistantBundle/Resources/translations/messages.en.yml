@@ -31,6 +31,9 @@ batch_jobs:
             label: Project calculation
         prepare_project_calculation:
             label: Prepare the project calculation
+    attribute_group_completeness_calculation:
+        attribute_group_completeness_calculation:
+            label: Refresh project completeness
 
 job_execution:
     summary:
