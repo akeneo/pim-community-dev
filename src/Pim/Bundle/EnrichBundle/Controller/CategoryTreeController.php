@@ -179,7 +179,7 @@ class CategoryTreeController extends Controller
      *
      * @Template
      *
-     * @return array
+     * @return Response
      */
     public function childrenAction(Request $request)
     {
