@@ -32,7 +32,7 @@ class WidgetContext extends PimContext
     }
 
     /**
-     * @Then /^I should see the team work assistant widget$/
+     * @Then /^I should see the teamwork assistant widget$/
      */
     public function iShouldSeeTheTeamworkAssistantWidget()
     {
@@ -60,7 +60,7 @@ class WidgetContext extends PimContext
     }
 
     /**
-     * @Then /^I should see the following team work assistant completeness:$/
+     * @Then /^I should see the following teamwork assistant completeness:$/
      *
      * @param TableNode $table
      *
@@ -115,7 +115,25 @@ class WidgetContext extends PimContext
     }
 
     /**
-     * @When /^I click on the "([^"]*)" section of the team work assistant widget$/
+     * @Then /^I should not see the select project link in the "([^"]*)" section of the teamwork assistant widget$/
+     *
+     * @param string $sectionName
+     */
+    public function iShouldNotSeeTheSelectProjectLinkInTheSection($sectionName)
+    {
+        $this->spin(function () use ($sectionName) {
+            try {
+                $link = $this->getTeamworkAssistantWidget()->getLinkFromSection($sectionName);
+
+                return null !== $link ? false : true;
+            } catch (TimeoutException $e) {
+                return true;
+            }
+        }, sprintf('The "%s" section in the widget should not be clickable.', $sectionName));
+    }
+
+    /**
+     * @When /^I click on the "([^"]*)" section of the teamwork assistant widget$/
      *
      * @param string $sectionName
      */
@@ -125,7 +143,7 @@ class WidgetContext extends PimContext
     }
 
     /**
-     * Get the decorated team work assistant widget
+     * Get the decorated teamwork assistant widget
      *
      * @return TeamworkAssistantWidgetDecorator
      */
