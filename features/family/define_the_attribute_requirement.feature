@@ -55,7 +55,6 @@ Feature: Define the attribute requirement
     And I should see the flash message "Family successfully updated"
     And I should not see the text "There are unsaved changes."
     When I remove the "rating" attribute
-    And I confirm the deletion
     And I save the family
     And I should not see the text "There are unsaved changes."
     Then I should not see the "rating" attribute

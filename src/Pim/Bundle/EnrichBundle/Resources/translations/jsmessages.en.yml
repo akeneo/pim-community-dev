@@ -417,9 +417,6 @@ pim_enrich:
                         attributes_groups_selected: '{{ itemsCount }} group(s) selected'
                     not_required_label: Not required
                     required_label: Required
-                    dialog:
-                        delete_message: Are you sure you want to remove the attribute  {{ name }} from this family?
-                        delete_title: Delete confirmation
                 history:
                     title: History
 
