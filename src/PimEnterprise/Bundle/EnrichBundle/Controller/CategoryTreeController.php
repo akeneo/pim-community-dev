@@ -106,9 +106,9 @@ class CategoryTreeController extends BaseCategoryTreeController
         try {
             $selectNode = $this->findGrantedCategory($selectNodeId, $context);
         } catch (NotFoundHttpException $e) {
-            $selectNode = $this->userContext->getUserProductCategoryTree();
+            $selectNode = $this->userContext->getAccessibleUserTree();
         } catch (AccessDeniedException $e) {
-            $selectNode = $this->userContext->getUserProductCategoryTree();
+            $selectNode = $this->userContext->getAccessibleUserTree();
         }
 
         if (self::CONTEXT_MANAGE === $context) {
