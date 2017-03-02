@@ -3,9 +3,16 @@ pim_api_media_file_list:
     defaults: { _controller: pim_api.controller.media_file:listAction, _format: json }
     methods: [GET]
 
+pim_api_media_file_download:
+    path: /media-files/{code}/download
+    defaults: { _controller: pim_api.controller.media_file:downloadAction, _format: json }
+    methods: [GET]
+    requirements:
+        code: ([a-zA-Z0-9_./]+)
+
 pim_api_media_file_get:
     path: /media-files/{code}
     defaults: { _controller: pim_api.controller.media_file:getAction, _format: json }
     methods: [GET]
     requirements:
-        code: .+
+        code: ([a-zA-Z0-9_./]+)

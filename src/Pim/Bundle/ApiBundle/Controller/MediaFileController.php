@@ -2,10 +2,16 @@
 
 namespace Pim\Bundle\ApiBundle\Controller;
 
+use Akeneo\Component\FileStorage\Exception\FileTransferException;
+use Akeneo\Component\FileStorage\File\FileFetcherInterface;
+use Akeneo\Component\FileStorage\FilesystemProvider;
+use Akeneo\Component\FileStorage\StreamedFileResponse;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Pagination\HalPaginator;
 use Pim\Component\Api\Pagination\ParameterValidator;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
+use Pim\Component\Catalog\FileStorage;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -32,6 +38,12 @@ class MediaFileController
     /** @var HalPaginator */
     protected $paginator;
 
+    /** @var FilesystemProvider */
+    protected $filesystemProvider;
+
+    /** @var FileFetcherInterface */
+    protected $fileFetcher;
+
     /** @var array */
     protected $apiConfiguration;
 
@@ -43,6 +55,8 @@ class MediaFileController
      * @param NormalizerInterface            $normalizer
      * @param ParameterValidator             $parameterValidator
      * @param HalPaginator                   $paginator
+     * @param FilesystemProvider             $filesystemProvider
+     * @param FileFetcherInterface           $fileFetcher
      * @param array                          $apiConfiguration
      * @param string                         $urlDocumentation
      */
@@ -51,6 +65,8 @@ class MediaFileController
         NormalizerInterface $normalizer,
         ParameterValidator $parameterValidator,
         HalPaginator $paginator,
+        FilesystemProvider $filesystemProvider,
+        FileFetcherInterface $fileFetcher,
         array $apiConfiguration,
         $urlDocumentation
     ) {
@@ -58,8 +74,10 @@ class MediaFileController
         $this->normalizer = $normalizer;
         $this->parameterValidator = $parameterValidator;
         $this->paginator = $paginator;
+        $this->filesystemProvider = $filesystemProvider;
         $this->apiConfiguration = $apiConfiguration;
         $this->urlDocumentation = $urlDocumentation;
+        $this->fileFetcher = $fileFetcher;
     }
 
     /**
@@ -72,9 +90,9 @@ class MediaFileController
      */
     public function getAction(Request $request, $code)
     {
-        $media = $this->mediaRepository->findOneByIdentifier($code);
+        $media = $this->mediaRepository->findOneByIdentifier(urldecode($code));
         if (null === $media) {
-            throw new NotFoundHttpException(sprintf('Media file "%s" does not exist', $code));
+            throw new NotFoundHttpException(sprintf('Media file "%s" does not exist.', $code));
         }
 
         $mediaApi = $this->normalizer->normalize($media, 'external_api');
@@ -118,5 +136,42 @@ class MediaFileController
         );
 
         return new JsonResponse($paginatedMedias);
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $code
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return StreamedFileResponse
+     */
+    public function downloadAction(Request $request, $code)
+    {
+        $filename = urldecode($code);
+        $fileInfo = $this->mediaRepository->findOneBy([
+            'key'     => $filename,
+            'storage' => FileStorage::CATALOG_STORAGE_ALIAS
+        ]);
+
+        if (null === $fileInfo) {
+            throw new NotFoundHttpException(sprintf('Media file "%s" does not exist.', $filename));
+        }
+
+        $fs = $this->filesystemProvider->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
+        $options = [
+            'headers' => [
+                'Content-Type'        => $fileInfo->getMimeType(),
+                'Content-Disposition' => sprintf('attachment; filename="%s"', $fileInfo->getOriginalFilename())
+            ]
+        ];
+
+        try {
+            return $this->fileFetcher->fetch($fs, $filename, $options);
+        } catch (FileTransferException $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        } catch (FileNotFoundException $e) {
+            throw new NotFoundHttpException(sprintf('Media file "%s" is not present on the filesystem.', $filename), $e);
+        }
     }
 }

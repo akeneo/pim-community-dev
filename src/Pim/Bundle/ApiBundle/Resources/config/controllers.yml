@@ -130,5 +130,7 @@ services:
             - '@pim_serializer'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.pagination.paginator'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
             - '%pim_api.configuration%'
             - 'https://docs.akeneo.com/%s/reference/standard_format/products.html'
