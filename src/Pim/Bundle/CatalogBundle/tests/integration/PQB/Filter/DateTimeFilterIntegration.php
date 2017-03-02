@@ -112,6 +112,15 @@ class DateTimeFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
+     * @expectedException \LogicException
+     * @expectedExceptionMessage Filter on property "updated" is not supported or does not support operator ">="
+     */
+    public function testErrorOperatorNotSupported()
+    {
+        $this->execute([['updated', Operators::GREATER_OR_EQUAL_THAN, ['2016-08-29 00:00:01']]]);
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function getConfiguration()
