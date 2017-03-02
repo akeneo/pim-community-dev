@@ -17,7 +17,13 @@ class FileNormalizer implements NormalizerInterface
      */
     public function normalize($file, $format = null, array $context = [])
     {
-        return $file->getKey();
+        return [
+            'code'              => $file->getKey(),
+            'original_filename' => $file->getOriginalFilename(),
+            'mime_type'         => $file->getMimeType(),
+            'size'              => $file->getSize(),
+            'extension'         => $file->getExtension()
+        ];
     }
 
     /**
