@@ -12,7 +12,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
-use Prophecy\Argument;
 use Prophecy\Promise\ReturnPromise;
 
 class BulkMediaFetcherSpec extends ObjectBehavior

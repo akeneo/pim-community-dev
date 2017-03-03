@@ -112,6 +112,15 @@ class DateTimeFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
+     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
+     * @expectedExceptionMessage Filter on property "updated" is not supported or does not support operator "IN CHILDREN"
+     */
+    public function testErrorOperatorNotSupported()
+    {
+        $this->execute([['updated', Operators::IN_CHILDREN_LIST, ['2016-08-29 00:00:01']]]);
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function getConfiguration()

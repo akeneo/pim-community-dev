@@ -3,8 +3,8 @@
 namespace Pim\Bundle\UserBundle\Form\Type;
 
 use Oro\Bundle\UserBundle\Form\EventListener\UserSubscriber;
-use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
-use Pim\Bundle\UserBundle\Entity\Repository\RoleRepository;
+use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
+use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\RoleRepository;
 use Pim\Bundle\UserBundle\Event\UserFormBuilderEvent;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

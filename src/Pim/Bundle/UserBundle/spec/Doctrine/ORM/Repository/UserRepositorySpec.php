@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\UserBundle\Entity\Repository;
+namespace spec\Pim\Bundle\UserBundle\Doctrine\ORM\Repository;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
@@ -35,7 +35,7 @@ class UserRepositorySpec extends ObjectBehavior
     function it_is_a_user_repository()
     {
         $this->shouldHaveType('Doctrine\ORM\EntityRepository');
-        $this->shouldHaveType('Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface');
+        $this->shouldHaveType('Pim\Bundle\UserBundle\Repository\UserRepositoryInterface');
     }
 
     function it_get_identifier_properties()

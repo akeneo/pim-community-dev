@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ApiBundle\Command;
 
-use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;

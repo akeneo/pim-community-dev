@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
-use Akeneo\Component\Localization\Localizer\DateLocalizer;
 use Akeneo\Component\Localization\Localizer\NumberLocalizer;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;

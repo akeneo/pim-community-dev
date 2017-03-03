@@ -102,7 +102,7 @@ config:
                             list: pim_enrich_channel_rest_index
                             get: pim_enrich_channel_rest_get
                 locale:
-                    module: pim/base-fetcher
+                    module: pim/locale-fetcher
                     options:
                         urls:
                             list: pim_enrich_locale_rest_index
@@ -215,6 +215,7 @@ config:
         pim/base-fetcher:            pimenrich/js/fetcher/base-fetcher
         pim/attribute-fetcher:       pimenrich/js/fetcher/attribute-fetcher
         pim/attribute-group-fetcher: pimenrich/js/fetcher/attribute-group-fetcher
+        pim/locale-fetcher:          pimenrich/js/fetcher/locale-fetcher
         pim/completeness-fetcher:    pimenrich/js/fetcher/completeness-fetcher
         pim/product-fetcher:         pimenrich/js/fetcher/product-fetcher
         pim/variant-group-fetcher:   pimenrich/js/fetcher/variant-group-fetcher
@@ -296,6 +297,7 @@ config:
         pim/product-edit-form/attributes/validation-error: pimenrich/js/product/form/attributes/validation-error
         pim/product-edit-form/attributes/variant-group:    pimenrich/js/product/form/attributes/variant-group
         pim/product-edit-form/attributes/locale-specific:  pimenrich/js/product/form/attributes/locale-specific
+        pim/product-edit-form/attributes/completeness:     pimenrich/js/product/form/attributes/completeness
         pim/product-edit-form/attributes/localizable:      pimenrich/js/product/form/attributes/localizable
         pim/product-edit-form/categories:                  pimenrich/js/product/form/categories
         pim/product-edit-form/associations:                pimenrich/js/product/form/associations
@@ -369,6 +371,7 @@ config:
 
         # Product edit form
         pim/field-manager: pimenrich/js/product/field-manager
+        pim/provider/to-fill-field-provider: pimenrich/js/provider/to-fill-field-provider
 
         # Product create form
         pim/product-create:      pimenrich/js/product/create/create

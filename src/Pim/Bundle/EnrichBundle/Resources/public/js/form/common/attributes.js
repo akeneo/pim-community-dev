@@ -211,7 +211,7 @@ define(
 
                 $.when(
                     FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(attributeCodes),
-                    FetcherRegistry.getFetcher('locale').search({'activated': true}),
+                    FetcherRegistry.getFetcher('locale').fetchActivated(),
                     FetcherRegistry.getFetcher('channel').fetchAll(),
                     FetcherRegistry.getFetcher('currency').fetchAll()
                 ).then(function (attributes, locales, channels, currencies) {

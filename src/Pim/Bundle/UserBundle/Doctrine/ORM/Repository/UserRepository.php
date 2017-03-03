@@ -1,8 +1,9 @@
 <?php
 
-namespace Pim\Bundle\UserBundle\Entity\Repository;
+namespace Pim\Bundle\UserBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
 
 /**
  * User repository

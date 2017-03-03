@@ -49,7 +49,7 @@ Feature: Export families
       tractors;;sku;sku;sku;sku
       """
 
-  @javascript @jira https://akeneo.atlassian.net/browse/SDS-511
+  @ce @javascript @jira https://akeneo.atlassian.net/browse/SDS-511
   Scenario: Successfully export families after activating new locales
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_family_export" configuration:

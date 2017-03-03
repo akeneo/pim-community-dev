@@ -9,7 +9,6 @@ use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class JobInstanceUpdaterSpec extends ObjectBehavior
 {
