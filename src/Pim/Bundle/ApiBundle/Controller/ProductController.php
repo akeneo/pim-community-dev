@@ -503,11 +503,6 @@ class ProductController
                 $pqb->addFilter($propertyCode, $filter['operator'], $value, $context);
             }
         }
-
-        $identifierCode = $this->attributeRepository->getIdentifierCode();
-        if (null !== $identifierCode) {
-            $pqb->addSorter($identifierCode, 'asc');
-        }
     }
 
     /**
