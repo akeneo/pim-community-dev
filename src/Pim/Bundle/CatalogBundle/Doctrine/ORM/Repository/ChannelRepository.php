@@ -122,10 +122,9 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     public function getLabelsIndexedByCode($localeCode)
     {
         $qb = $this->createQueryBuilder('c');
-        $qb->leftJoin('c.translations', 'tr');
-        $qb->select('c.code, tr.label');
+        $qb->leftJoin('c.translations', 'tr', 'WITH', 'tr.locale = :userLocaleCode');
+        $qb->select('c.code, COALESCE(NULLIF(tr.label, \'\'), CONCAT(\'[\', c.code, \']\')) as label');
 
-        $qb->where('tr.locale = :userLocaleCode');
         $qb->setParameter('userLocaleCode', $localeCode);
 
         $channels = $qb->getQuery()->getArrayResult();
