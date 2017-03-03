@@ -85,7 +85,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function getDatabasePurger()
     {
-        return new DatabasePurger(static::$kernel->getContainer());
+        return new DatabasePurger(static::$kernel);
     }
 
     /**
@@ -95,7 +95,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function getFixturesLoader(Configuration $configuration)
     {
-        return new FixturesLoader(static::$kernel->getContainer(), $configuration);
+        return new FixturesLoader(static::$kernel, $configuration);
     }
 
     /**

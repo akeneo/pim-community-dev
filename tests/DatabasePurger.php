@@ -2,10 +2,11 @@
 
 namespace Akeneo\Test\Integration;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
-use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
@@ -14,15 +15,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class DatabasePurger
 {
+    /** @var KernelInterface */
+    protected $kernel;
+
     /** @var ContainerInterface */
     protected $container;
 
     /**
-     * @param ContainerInterface $container
+     * @param KernelInterface $kernel
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(KernelInterface $kernel)
     {
-        $this->container = $container;
+        $this->kernel = $kernel;
+        $this->container = $kernel->getContainer();
     }
 
     /**
@@ -30,29 +35,20 @@ class DatabasePurger
      */
     public function purge()
     {
-        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $this->container->getParameter('pim_catalog_product_storage_driver')) {
-            $purgers[] = new MongoDBPurger($this->container->get('doctrine_mongodb')->getManager());
-        }
+        $application = new Application($this->kernel);
+        $application->setAutoExit(false);
 
-        $em = $this->container->get('doctrine')->getManager();
-        $purgers[] = new ORMPurger($em);
+        $input = new ArrayInput([
+            'command' => 'doctrine:schema:drop',
+            '--env' => 'test',
+            '--force' => true,
+        ]);
+        $output = new BufferedOutput();
 
-        foreach ($purgers as $purger) {
-            $purger->purge();
-        }
+        $exitCode = $application->run($input, $output);
 
-        $connection = $em->getConnection();
-
-        foreach ([
-            'acl_classes',
-            'acl_entries',
-            'acl_object_identities',
-            'acl_object_identity_ancestors',
-            'acl_security_identities'
-        ] as $aclTableName) {
-            $connection->query('SET FOREIGN_KEY_CHECKS=0');
-            $connection->executeUpdate('TRUNCATE `'.$aclTableName.'`');
-            $connection->query('SET FOREIGN_KEY_CHECKS=1');
+        if (0 !== $exitCode) {
+            throw new \Exception(sprintf('Impossible to purge the database! "%s"', $output->fetch()));
         }
     }
 }

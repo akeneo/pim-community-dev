@@ -2,11 +2,12 @@
 
 namespace Akeneo\Test\Integration;
 
-use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
@@ -21,14 +22,22 @@ class FixturesLoader
     /** @var Configuration */
     protected $configuration;
 
+    /** @var KernelInterface */
+    protected $kernel;
+
+    /** @var Application */
+    protected $cli;
     /**
-     * @param ContainerInterface $container
-     * @param Configuration      $configuration
+     * @param KernelInterface $kernel
+     * @param Configuration   $configuration
      */
-    public function __construct(ContainerInterface $container, Configuration $configuration)
+    public function __construct(KernelInterface $kernel, Configuration $configuration)
     {
-        $this->container = $container;
+        $this->kernel = $kernel;
+        $this->container = $kernel->getContainer();
         $this->configuration = $configuration;
+        $this->cli = new Application($kernel);
+        $this->cli->setAutoExit(false);
     }
 
     public function __destruct()
@@ -46,6 +55,7 @@ class FixturesLoader
      */
     public function load()
     {
+        $this->createSchema();
         $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
         $filesByType = $this->getFilesToLoadByType($files);
 
@@ -117,27 +127,20 @@ class FixturesLoader
         $jobLoader = $this->container->get('pim_installer.fixture_loader.job_loader');
         $jobLoader->loadJobInstances($replacePaths);
 
-        // setup application to be able to run akeneo:batch:job command
-        $application = new Application();
-        $application->add(new BatchCommand());
-        $batchJobCommand = $application->find('akeneo:batch:job');
-        $batchJobCommand->setContainer($this->container);
-        $command = new CommandTester($batchJobCommand);
-
         // install the catalog via the job instances
         $jobInstances = $jobLoader->getLoadedJobInstances();
         foreach ($jobInstances as $jobInstance) {
-            $exitCode = $command->execute(
-                [
-                    'command'  => $batchJobCommand->getName(),
-                    'code'     => $jobInstance->getCode(),
-                    '--no-log' => true,
-                    '-v'       => true
-                ]
-            );
+            $input = new ArrayInput([
+                'command'  => 'akeneo:batch:job',
+                'code'     => $jobInstance->getCode(),
+                '--no-log' => true,
+                '-v'       => true
+            ]);
+            $output = new BufferedOutput();
+            $exitCode = $this->cli->run($input, $output);
 
             if (0 !== $exitCode) {
-                throw new \Exception(sprintf('Catalog not installable! "%s"', $command->getDisplay()));
+                throw new \Exception(sprintf('Catalog not installable! "%s"', $output->fetch()));
             }
         }
 
@@ -254,5 +257,20 @@ class FixturesLoader
         }
 
         return $files;
+    }
+
+    private function createSchema()
+    {
+        $input = new ArrayInput([
+            'command' => 'doctrine:schema:create',
+            '--env' => 'test',
+        ]);
+        $output = new BufferedOutput();
+
+        $exitCode = $this->cli->run($input, $output);
+
+        if (0 !== $exitCode) {
+            throw new \Exception(sprintf('Catalog not installable! "%s"', $output->fetch()));
+        }
     }
 }
