@@ -13,7 +13,7 @@ define(
     ) {
         var FormView = BaseForm.extend({
             tagName: 'span',
-            className: 'draft-status',
+            className: 'AknTitleContainer-metaItem draft-status',
             template: _.template(formTemplate),
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
