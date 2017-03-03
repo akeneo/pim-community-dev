@@ -2516,7 +2516,8 @@ class WebUser extends RawMinkContext
      *
      * @return integer
      */
-    protected function getTabErrorsCount($tab) {
+    protected function getTabErrorsCount($tab)
+    {
         $badge = $tab->find('css', '.invalid-badge');
 
         return (null === $badge) ? 0 : intval($badge->getText());
