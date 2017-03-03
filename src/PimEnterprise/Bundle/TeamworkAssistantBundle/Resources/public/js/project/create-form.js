@@ -21,6 +21,8 @@ define(
         'pim/datagrid/state',
         'pim/user-context',
         'pim/formatter/date',
+        'pim/fetcher-registry',
+        'pim/i18n',
         'text!teamwork-assistant/templates/grid/create-project-modal-content',
         'text!teamwork-assistant/templates/field-error'
     ],
@@ -39,6 +41,8 @@ define(
         DatagridState,
         UserContext,
         DateFormatter,
+        FetcherRegistry,
+        i18n,
         template,
         errorTemplate
     ) {
@@ -237,30 +241,70 @@ define(
                     return this;
                 }
 
-                var model = this.getFormModel();
+                $.when(
+                    this.getLocaleLabel(),
+                    this.getChannelLabel()
+                ).then(function (localeValue, channelValue) {
+                    var model = this.getFormModel();
 
-                this.$el.html(this.template({
-                    labelValue: model.get('label'),
-                    labelLabel: __('teamwork_assistant.project.label'),
-                    labelPlaceholder: __('teamwork_assistant.' + this.formType + '_project_modal.label_placeholder'),
-                    descriptionValue: model.get('description'),
-                    descriptionLabel: __('teamwork_assistant.project.description'),
-                    descriptionPlaceholder: __(
-                        'teamwork_assistant.' + this.formType + '_project_modal.description_placeholder'
-                    ),
-                    dueDateValue: DateFormatter.format(
-                        model.get('due_date'),
-                        'yyyy-MM-dd',
-                        DateContext.get('date').format
-                    ),
-                    dueDateLabel: __('teamwork_assistant.project.due_date'),
-                    errors: this.validationErrors,
-                    requiredLabel: __('teamwork_assistant.common.required')
-                }));
+                    if ('edit' === this.formType) {
+                        var channel = model.get('channel');
+
+                        localeValue = model.get('locale').label;
+                        channelValue = i18n.getLabel(channel.labels, UserContext.get('catalogLocale'), channel.code);
+                    }
+
+                    this.$el.html(this.template({
+                        channelLabel: __('teamwork_assistant.project.channel'),
+                        channelValue: channelValue,
+                        localeLabel: __('teamwork_assistant.project.locale'),
+                        localeValue: localeValue,
+                        labelValue: model.get('label'),
+                        labelLabel: __('teamwork_assistant.project.label'),
+                        descriptionValue: model.get('description'),
+                        descriptionLabel: __('teamwork_assistant.project.description'),
+                        dueDateValue: DateFormatter.format(
+                            model.get('due_date'),
+                            'yyyy-MM-dd',
+                            DateContext.get('date').format
+                        ),
+                        dueDateLabel: __('teamwork_assistant.project.due_date'),
+                        errors: this.validationErrors,
+                        requiredLabel: __('teamwork_assistant.common.required'),
+                        warning: __('teamwork_assistant.common.warning')
+                    }));
+                }.bind(this));
 
                 this.initializeDatepicker();
 
                 return this.renderExtensions();
+            },
+
+            /**
+             * get user context locale
+             *
+             * @return {Promise}
+             */
+            getLocaleLabel: function () {
+                var catalogLocale = UserContext.get('catalogLocale');
+
+                return FetcherRegistry.getFetcher('locale').fetch(catalogLocale).then(function (locale) {
+                    return locale.label;
+                });
+            },
+
+            /**
+             * Get localized user context Channel label
+             *
+             * @return {Promise}
+             */
+            getChannelLabel: function () {
+                var catalogChannel = UserContext.get('catalogScope');
+                var catalogLocale = UserContext.get('catalogLocale');
+
+                return FetcherRegistry.getFetcher('channel').fetch(catalogChannel).then(function (channel) {
+                    return i18n.getLabel(channel, catalogLocale, catalogChannel);
+                });
             },
 
             /**
