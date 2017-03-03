@@ -236,40 +236,26 @@ class WebUser extends RawMinkContext
 
     /**
      * @Given /^there should be (\d+) errors? in the "([^"]*)" tab$/
+     *
+     * @param $expectedErrorsCount
+     * @param $tabName
+     *
+     * @throws TimeoutException
      */
-    public function thereShouldBeErrorsInTheTab($number, $name)
+    public function thereShouldBeErrorsInTheTab($expectedErrorsCount, $tabName)
     {
-        $tab = $this->getCurrentPage()->getTab($name);
-        if (!$tab) {
-            throw $this->createExpectationException(
-                sprintf('Tab "%s" not found', $name)
-            );
-        }
+        $tab = $this->spin(function () use ($tabName) {
+            return $this->getCurrentPage()->getTab($tabName);
+        }, sprintf('Tab "%s" not found', $tabName));
 
-        $badge = $tab->find('css', '.invalid-badge');
-        if (!$badge && 0 < (int) $number) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expecting to find "%d" errors in the tab "%s", no errors found',
-                    $number,
-                    $name
-                )
-            );
-        } elseif (!$badge && 0 === (int) $number) {
-            return;
-        }
-
-        $errors = $badge->getText();
-        if ($errors != $number) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expecting to find "%d" errors in the tab "%s", found %s instead',
-                    $number,
-                    $name,
-                    $errors
-                )
-            );
-        }
+        $this->spin(function () use ($tab, $expectedErrorsCount) {
+            return $this->getTabErrorsCount($tab) === intval($expectedErrorsCount);
+        }, sprintf(
+            'Expecting to see %d errors on tab "%s", found %s',
+            $expectedErrorsCount,
+            $tabName,
+            $this->getTabErrorsCount($tab)
+        ));
     }
 
     /* -------------------- Other methods -------------------- */
@@ -2523,5 +2509,16 @@ class WebUser extends RawMinkContext
         } else {
             assertEquals((int) $expectedCount, count($items));
         }
+    }
+
+    /**
+     * @param NodeElement $tab
+     *
+     * @return integer
+     */
+    protected function getTabErrorsCount($tab) {
+        $badge = $tab->find('css', '.invalid-badge');
+
+        return (null === $badge) ? 0 : intval($badge->getText());
     }
 }
