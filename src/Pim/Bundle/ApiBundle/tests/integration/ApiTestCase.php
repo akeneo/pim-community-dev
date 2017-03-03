@@ -198,7 +198,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function getDatabasePurger()
     {
-        return new DatabasePurger(static::$kernel->getContainer());
+        return new DatabasePurger(static::$kernel);
     }
 
     /**
@@ -208,7 +208,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function getFixturesLoader(Configuration $configuration)
     {
-        return new FixturesLoader(static::$kernel->getContainer(), $configuration);
+        return new FixturesLoader(static::$kernel, $configuration);
     }
 
     /**
