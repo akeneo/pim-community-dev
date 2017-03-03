@@ -180,18 +180,18 @@ Feature: Associate a product
     When I follow "Upsell"
     Then the grid should contain 6 elements
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5593
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-5593
   Scenario: Keep product associations grids context
     Given I edit the "shoelaces" product
     And I visit the "Associations" tab
     And I select the "Substitution" association
     Then the grid should contain 6 elements
-    When I filter by "sku" with operator "Contains" and value "gr"
+    When I filter by "SKU" with value "gr"
     And I press the "Show groups" button
-    And I filter by "type" with operator "equals" and value "[RELATED]"
+    And I filter by "Type" with value "[RELATED]"
     When I edit the "gray-boots" product
-    Then I should be on the "Substitution" association
-    And I should see the text "Show products"
+    And I select the "Substitution" association
+    Then I should see the text "Show products"
     And I should see the text "Type: [RELATED]"
     When I press the "Show products" button
     Then I should see the text "SKU: Contains \"gr\""
