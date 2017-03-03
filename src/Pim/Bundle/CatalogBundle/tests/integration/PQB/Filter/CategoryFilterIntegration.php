@@ -61,6 +61,15 @@ class CategoryFilterIntegration extends AbstractFilterTestCase
     }
 
     /**
+     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
+     * @expectedExceptionMessage Filter on property "categories" is not supported or does not support operator ">="
+     */
+    public function testErrorOperatorNotSupported()
+    {
+        $this->execute([['categories', Operators::GREATER_OR_EQUAL_THAN, ['categoryA1']]]);
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function getConfiguration()

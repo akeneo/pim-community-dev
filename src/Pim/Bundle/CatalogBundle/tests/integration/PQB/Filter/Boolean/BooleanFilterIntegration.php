@@ -66,4 +66,13 @@ class BooleanFilterIntegration extends AbstractFilterTestCase
     {
         $this->execute([['a_yes_no', Operators::NOT_EQUAL, null]]);
     }
+
+    /**
+     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
+     * @expectedExceptionMessage Filter on property "a_yes_no" is not supported or does not support operator "CONTAINS"
+     */
+    public function testErrorOperatorNotSupported()
+    {
+        $this->execute([['a_yes_no', Operators::CONTAINS, true]]);
+    }
 }

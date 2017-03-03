@@ -144,4 +144,13 @@ class MetricFilterIntegration extends AbstractFilterTestCase
     {
         $this->execute([['a_metric', Operators::NOT_EQUAL, ['amount' => 10, 'unit' => 'NOT_FOUND']]]);
     }
+
+    /**
+     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
+     * @expectedExceptionMessage Filter on property "a_metric" is not supported or does not support operator "BETWEEN"
+     */
+    public function testErrorOperatorNotSupported()
+    {
+        $this->execute([['a_metric', Operators::BETWEEN, ['amount' => 15, 'unit' => 'KILOWATT']]]);
+    }
 }
