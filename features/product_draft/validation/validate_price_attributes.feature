@@ -7,11 +7,11 @@ Feature: Validate price attributes of a draft
   Background:
     Given the "clothing" catalog configuration
     And the following attributes:
-      | code      | label-en_US | type                         | scopable | negative_allowed | decimals_allowed | number_min | number_max | group |
-      | cost      | Cost        | pim_catalog_price_collection | 0        | 0                | 0                |            |            | info  |
-      | net_price | Price       | pim_catalog_price_collection | 1        | 0                | 0                |            |            | info  |
-      | tax       | Tax         | pim_catalog_price_collection | 0        |                  | 1                | 10         | 100        | info  |
-      | customs   | Customs     | pim_catalog_price_collection | 1        |                  | 1                | 10         | 100        | info  |
+      | code      | label-en_US | type                         | scopable | decimals_allowed | number_min | number_max | group |
+      | cost      | Cost        | pim_catalog_price_collection | 0        | 0                |            |            | info  |
+      | net_price | Price       | pim_catalog_price_collection | 1        | 0                |            |            | info  |
+      | tax       | Tax         | pim_catalog_price_collection | 0        | 1                | 10         | 100        | info  |
+      | customs   | Customs     | pim_catalog_price_collection | 1        | 1                | 10         | 100        | info  |
     And the following family:
       | code | label-en_US | attributes                     |
       | baz  | Baz         | sku,cost,net_price,tax,customs |
@@ -20,18 +20,6 @@ Feature: Validate price attributes of a draft
       | foo | baz    | summer_collection |
     And I am logged in as "Mary"
     And I am on the "foo" product page
-
-  Scenario: Validate the negative allowed constraint of price attribute
-    Given I change the Cost to "-10 USD"
-    And I save the product
-    Then I should see validation error "This value should be 0 or more."
-    And there should be 1 error in the "Product information" tab
-
-  Scenario: Validate the negative allowed constraint of scopable price attribute
-    Given I change the Price to "-10 USD"
-    And I save the product
-    Then I should see validation error "This value should be 0 or more."
-    And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the decimals allowed constraint of price attribute
     Given I change the Cost to "2.7 USD"

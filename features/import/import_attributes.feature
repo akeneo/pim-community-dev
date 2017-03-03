@@ -14,7 +14,7 @@ Feature: Import attributes
       pim_assets_collection;scopable_attribute;;info;0;0;;;;assets;0;1;2
       pim_assets_collection;localizable_attribute;;info;0;0;;;;assets;1;0;3
       pim_assets_collection;valid_attribute;;info;0;0;;;;assets;0;0;4
-      pim_assets_collection;empty_attribute;;info;0;0;;;;assets;;;5
+      pim_assets_collection;empty_attribute;;info;0;0;;;;assets;0;0;5
       pim_catalog_text;other_attribute;;info;0;0;;;;;1;1;6
       """
     And the following job "csv_footwear_attribute_import" configuration:
