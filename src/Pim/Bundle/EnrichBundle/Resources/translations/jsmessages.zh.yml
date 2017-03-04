@@ -96,9 +96,9 @@ pim:
     mass_action:
       quick_export:
         csv_all: CSV （所有属性）
-        csv_grid_context: CSV （网格内容）
+        csv_grid_context: CSV （界面内容）
         xlsx_all: Excel （所有属性）
-        xlsx_grid_context: Excel （网格上下文）
+        xlsx_grid_context: Excel （界面内容）
       delete: 删除产品
       mass_edit: 更改产品信息
       category_edit: 在类别中移动产品
