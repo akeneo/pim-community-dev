@@ -228,6 +228,14 @@ pim_enrich:
         updated_by: Actualitzat per
       btn:
         save: Desar
+    family:
+      meta:
+        created: Creat
+        created_by: Creat per
+        updated: Actualitzat
+        updated_by: Actualitzat per
+      btn:
+        save: Desar
     attribute_option:
       code: Codi
       label: Etiqueta
@@ -365,6 +373,24 @@ pim_enrich:
           label_conversion_units: Tria una unitat de conversió per cada mètrica d'atribut que farem servir per la exportació del producte
           conversion_unit:
             do_not_convert: No convertir
+    family:
+      tab:
+        properties:
+          title: Propietats
+          general: General
+          code: Codi
+          attribute_as_label: Atribut utilitzat com a etiqueta
+          label_translations: Traduccions d'etiquetes
+        attributes:
+          title: Atributs
+          label_label: Etiqueta
+          toolbox:
+            select_attributes: Afegir atributs
+            add: Afegir
+          not_required_label: No és obligatori
+          required_label: Obligatori
+        history:
+          title: Històric
     attribute_option:
       flash:
         option_created: Opció d'atribut creat correctament
