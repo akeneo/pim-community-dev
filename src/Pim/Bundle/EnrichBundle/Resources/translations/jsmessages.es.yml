@@ -240,6 +240,16 @@ pim_enrich:
         updated_by: Actualizado por
       btn:
         save: Guardar
+    family:
+      info:
+        create_successful: Canal creado correctamente.
+      meta:
+        created: Creado
+        created_by: Creado por
+        updated: Actualizado
+        updated_by: Actualizado por
+      btn:
+        save: Guardar
     attribute_option:
       code: Código
       label: Etiqueta
@@ -380,6 +390,26 @@ pim_enrich:
           label_conversion_units: Elegir una unidad de conversión para cada atributo métrico que se utilizará durante la exportación del producto
           conversion_unit:
             do_not_convert: No convertir
+    family:
+      tab:
+        properties:
+          title: Propiedades
+          general: General
+          code: Código
+          attribute_as_label: Atributo utilizado como etiqueta
+          label_translations: Traducciones de etiqueta
+        attributes:
+          title: Atributos
+          label_label: Etiqueta
+          toolbox:
+            select_attributes: Agregar atributos
+            add: Agregar
+          not_required_label: No requerido
+          required_label: Requerido
+          dialog:
+            delete_title: Confirmación de borrado
+        history:
+          title: Histórico
     attribute_option:
       flash:
         option_created: Opción del atributo creada con éxito

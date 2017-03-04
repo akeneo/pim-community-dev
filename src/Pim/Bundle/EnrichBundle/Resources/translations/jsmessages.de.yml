@@ -240,6 +240,16 @@ pim_enrich:
         updated_by: Aktualisiert von
       btn:
         save: Speichern
+    family:
+      info:
+        create_successful: Ausgabekanal erfolgreich angelegt.
+      meta:
+        created: Erstellt
+        created_by: Erstellt von
+        updated: Aktualisiert
+        updated_by: Aktualisiert von
+      btn:
+        save: Speichern
     attribute_option:
       code: Code
       label: Bezeichnung
@@ -380,6 +390,26 @@ pim_enrich:
           label_conversion_units: Wählen Sie eine Umrechnungseinheit für jedes metrische Attribut, welche beim Produkt-Export verwendet werden soll
           conversion_unit:
             do_not_convert: Werden nicht konvertiert
+    family:
+      tab:
+        properties:
+          title: Eigenschaften
+          general: Allgemein
+          code: Code
+          attribute_as_label: Attribut als Label verwendet
+          label_translations: Feldbezeichner-Übersetzungen
+        attributes:
+          title: Attribute
+          label_label: Bezeichnung
+          toolbox:
+            select_attributes: Attribute hinzufügen
+            add: Hinzufügen
+          not_required_label: Nicht erforderlich
+          required_label: Erforderlich
+          dialog:
+            delete_title: Löschbestätigung
+        history:
+          title: Historie
     attribute_option:
       flash:
         option_created: Attributoption erfolgreich erstellt

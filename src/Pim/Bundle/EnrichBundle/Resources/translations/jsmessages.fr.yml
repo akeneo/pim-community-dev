@@ -240,6 +240,19 @@ pim_enrich:
         updated_by: Mis à jour par
       btn:
         save: Enregistrer
+    family:
+      info:
+        update_successful: Famille mise à jour avec succès.
+        create_successful: Canal créé avec succès.
+        cant_remove_attribute_as_label: Impossible de supprimer un attribut utilisé comme étiquette
+        attribute_edit_permission_is_not_granted: Vous n'avez pas les permissions pour mettre à jour les attributs de la famille
+      meta:
+        created: Créé
+        created_by: Créé par
+        updated: Mis à jour
+        updated_by: Mis à jour par
+      btn:
+        save: Enregistrer
     attribute_option:
       code: Code
       label: Libellé
@@ -285,6 +298,7 @@ pim_enrich:
     job_instance:
       info:
         update_failed: Le profil n'a pas pu être mis à jour.
+        update_successful: Le profil a été mis à jour avec succès.
   confirmation:
     leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
     discard_changes: Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.
@@ -380,6 +394,29 @@ pim_enrich:
           label_conversion_units: Choisissez une unité de conversion pour chaque unité de mesure. Elle sera utilisée lors de l'export du produit
           conversion_unit:
             do_not_convert: Ne pas convertir
+    family:
+      tab:
+        properties:
+          title: Propriétés
+          general: Général
+          code: Code
+          attribute_as_label: Attribut utilisé comme étiquette
+          label_translations: Traduction des libellés
+        attributes:
+          title: Attributs
+          label_label: Libellé
+          toolbox:
+            select_attributes_by_groups: Ajouter par groupes
+            select_attributes: Ajouter des attributs
+            add: Ajouter
+            attributes_groups_selected: '{{ itemsCount }} groupe(s) sélectionné(s)'
+          not_required_label: Non requis
+          required_label: Obligatoire
+          dialog:
+            delete_message: Êtes vous sûr(e) de vouloir retirer l'attribut {{ name }} de cette famille ?
+            delete_title: Confirmation de la suppression
+        history:
+          title: Historique
     attribute_option:
       flash:
         option_created: L'option d'attribut a été créée avec succès.
