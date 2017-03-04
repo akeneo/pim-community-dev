@@ -43,7 +43,6 @@ job_execution.summary:
     title: 'Bestandscodering:'
     skipped: overgeslagen, extensie in whitelist
   product_skipped_no_diff: overgeslagen product (geen verschillen)
-  product_skipped_no_associations: product overgeslagen (geen associaties gedetecteerd)
   item_position: lees de lijnen
 batch_jobs:
   csv_product_export:
@@ -67,9 +66,6 @@ batch_jobs:
   csv_variant_group_export:
     label: Variant groep export in CSV
     export.label: Variant groep export
-  csv_family_export:
-    label: Familie export in CSV
-    export.label: Familie export
   csv_product_import:
     label: Productimport in CSV
     validation.label: Bestandsvalidatie
@@ -92,9 +88,7 @@ batch_jobs:
     validation.label: Bestandsvalidatie
     import.label: Associatietype-import
   csv_family_import:
-    label: Familie import in CSV
     validation.label: Bestandsvalidatie
-    import.label: Familie import
   csv_group_import:
     label: Groep importeren in CSV
     validation.label: Bestandsvalidatie
@@ -157,7 +151,6 @@ batch_jobs:
   xlsx_family_import:
     label: Familie import in XLSX
     validation.label: Bestandsvalidatie
-    import.label: Familie import
   xlsx_product_export:
     label: Product export in XLSX
     export.label: Productexport
@@ -182,7 +175,6 @@ batch_jobs:
     import.label: Variant Groep import
   xlsx_family_export:
     label: Familie export in XLSX
-    export.label: Familie export
   xlsx_category_export:
     label: Categorie export in XLSX
     export.label: Categorie-export

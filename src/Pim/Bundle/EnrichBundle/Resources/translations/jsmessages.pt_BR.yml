@@ -220,6 +220,12 @@ pim_enrich:
         updated: Atualizado
       btn:
         save: Salvar
+    family:
+      meta:
+        created: Criado
+        updated: Atualizado
+      btn:
+        save: Salvar
     attribute_option:
       code: Código
       label: Rótulo
@@ -343,6 +349,26 @@ pim_enrich:
           label_conversion_units: Escolha uma unidade de conversão para cada atributo métrico que será usado durante a exportação de produto
           conversion_unit:
             do_not_convert: Não converter
+    family:
+      tab:
+        properties:
+          title: Propriedades
+          general: Geral
+          code: Código
+          attribute_as_label: Atributo usado como rótulo
+          label_translations: Traduções do rótulo
+        attributes:
+          title: Atributos
+          label_label: Rótulo
+          toolbox:
+            select_attributes: Adicionar atributos
+            add: Adicionar
+          not_required_label: Não obrigatório
+          required_label: Obrigatório
+          dialog:
+            delete_title: Confirmação de exclusão
+        history:
+          title: Histórico
     attribute_option:
       flash:
         option_created: Opção de atributo criada com sucesso

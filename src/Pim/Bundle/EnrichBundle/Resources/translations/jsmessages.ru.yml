@@ -228,6 +228,14 @@ pim_enrich:
         updated_by: Обновлена
       btn:
         save: Сохранить
+    family:
+      meta:
+        created: Создано
+        created_by: Создана
+        updated: Обновлено
+        updated_by: Обновлена
+      btn:
+        save: Сохранить
     attribute_option:
       code: Код
       label: Метка
@@ -361,6 +369,26 @@ pim_enrich:
           label_conversion_units: Выбрать единицу преобразования для каждого метрического атрибута, которая будет использована во время экспорта продуктов
           conversion_unit:
             do_not_convert: Не преобразовывать
+    family:
+      tab:
+        properties:
+          title: Свойства
+          general: Основные
+          code: Код
+          attribute_as_label: Атрибут используется в качестве метки
+          label_translations: Переводы меток
+        attributes:
+          title: Атрибуты
+          label_label: Метка
+          toolbox:
+            select_attributes: Добавить атрибуты
+            add: Добавить
+          not_required_label: Не обязательно
+          required_label: Обязательно
+          dialog:
+            delete_title: Подтверждение удаления
+        history:
+          title: Журнал
     attribute_option:
       flash:
         option_created: Элемент в списке атрибута успешно создан
