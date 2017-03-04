@@ -13,6 +13,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class VariantGroupNormalizer implements NormalizerInterface
 {
+    /** @var string[] */
+    protected $supportedFormats = ['standard'];
+
     /** @var NormalizerInterface */
     protected $translationNormalizer;
 
@@ -56,7 +59,7 @@ class VariantGroupNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof GroupInterface && $data->getType()->isVariant() && 'standard' === $format;
+        return $data instanceof GroupInterface && $data->getType()->isVariant() && in_array($format, $this->supportedFormats);
     }
 
     /**
