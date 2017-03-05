@@ -55,7 +55,6 @@ class FixturesLoader
      */
     public function load()
     {
-        $this->createSchema();
         $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
         $filesByType = $this->getFilesToLoadByType($files);
 
@@ -257,20 +256,5 @@ class FixturesLoader
         }
 
         return $files;
-    }
-
-    private function createSchema()
-    {
-        $input = new ArrayInput([
-            'command' => 'doctrine:schema:create',
-            '--env' => 'test',
-        ]);
-        $output = new BufferedOutput();
-
-        $exitCode = $this->cli->run($input, $output);
-
-        if (0 !== $exitCode) {
-            throw new \Exception(sprintf('Catalog not installable! "%s"', $output->fetch()));
-        }
     }
 }

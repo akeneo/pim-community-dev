@@ -5,7 +5,6 @@ namespace Akeneo\Test\Integration;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -13,13 +12,13 @@ use Symfony\Component\HttpKernel\KernelInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class DatabasePurger
+class DatabaseSchemaHandler
 {
     /** @var KernelInterface */
     protected $kernel;
 
-    /** @var ContainerInterface */
-    protected $container;
+    /** @var Application */
+    protected $cli;
 
     /**
      * @param KernelInterface $kernel
@@ -27,17 +26,18 @@ class DatabasePurger
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
-        $this->container = $kernel->getContainer();
+        $this->cli = new Application($this->kernel);
+        $this->cli->setAutoExit(false);
     }
 
-    /**
-     * Calls the appropriates purgers depending on the storage.
-     */
-    public function purge()
+    public function reset()
     {
-        $application = new Application($this->kernel);
-        $application->setAutoExit(false);
+        $this->drop();
+        $this->create();
+    }
 
+    private function drop()
+    {
         $input = new ArrayInput([
             'command' => 'doctrine:schema:drop',
             '--env' => 'test',
@@ -45,10 +45,25 @@ class DatabasePurger
         ]);
         $output = new BufferedOutput();
 
-        $exitCode = $application->run($input, $output);
+        $exitCode = $this->cli->run($input, $output);
 
         if (0 !== $exitCode) {
-            throw new \Exception(sprintf('Impossible to purge the database! "%s"', $output->fetch()));
+            throw new \Exception(sprintf('Impossible to drop the database schema! "%s"', $output->fetch()));
+        }
+    }
+
+    private function create()
+    {
+        $input = new ArrayInput([
+            'command' => 'doctrine:schema:create',
+            '--env' => 'test',
+        ]);
+        $output = new BufferedOutput();
+
+        $exitCode = $this->cli->run($input, $output);
+
+        if (0 !== $exitCode) {
+            throw new \Exception(sprintf('Impossible to create the database schema! "%s"', $output->fetch()));
         }
     }
 }

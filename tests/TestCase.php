@@ -41,8 +41,7 @@ abstract class TestCase extends KernelTestCase
         self::$count++;
 
         if ($configuration->isDatabasePurgedForEachTest() || 1 === self::$count) {
-            $databasePurger = $this->getDatabasePurger();
-            $databasePurger->purge();
+            $this->getDatabaseSchemaHandler()->reset();
 
             $fixturesLoader = $this->getFixturesLoader($configuration);
             $fixturesLoader->load();
@@ -81,11 +80,11 @@ abstract class TestCase extends KernelTestCase
     }
 
     /**
-     * @return DatabasePurger
+     * @return DatabaseSchemaHandler
      */
-    protected function getDatabasePurger()
+    protected function getDatabaseSchemaHandler()
     {
-        return new DatabasePurger(static::$kernel);
+        return new DatabaseSchemaHandler(static::$kernel);
     }
 
     /**
