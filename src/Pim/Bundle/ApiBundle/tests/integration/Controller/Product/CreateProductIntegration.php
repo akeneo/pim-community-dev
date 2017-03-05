@@ -987,6 +987,9 @@ JSON;
         $standardizedProduct = static::sanitizeMediaAttributeData($standardizedProduct);
         $expectedProduct = static::sanitizeMediaAttributeData($expectedProduct);
 
+        ksort($expectedProduct['values']);
+        ksort($standardizedProduct['values']);
+
         $this->assertSame($expectedProduct, $standardizedProduct);
     }
 

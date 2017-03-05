@@ -91,7 +91,7 @@ class CreateMediaFileIntegration extends ApiTestCase
     "message": "Validation failed.",
     "errors": [
         {
-            "field": "values",
+            "property": "values",
             "message": "The file extension is not allowed (allowed extensions: jpg, gif, png).",
             "attribute": "an_image",
             "locale": null,

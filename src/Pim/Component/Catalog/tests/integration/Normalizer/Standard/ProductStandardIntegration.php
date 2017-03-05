@@ -269,6 +269,9 @@ class ProductStandardIntegration extends TestCase
         $expected = $this->sanitizeDateFields($expected);
         $expected = $this->sanitizeMediaAttributeData($expected);
 
+        ksort($expected['values']);
+        ksort($result['values']);
+
         $this->assertSame($expected, $result);
     }
 

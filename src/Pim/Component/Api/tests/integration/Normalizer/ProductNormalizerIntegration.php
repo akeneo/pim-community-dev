@@ -356,6 +356,13 @@ class ProductNormalizerIntegration extends TestCase
         $expected = $this->sanitizeDateFields($expected);
         $expected = $this->sanitizeMediaAttributeData($expected);
 
+        if (is_array($expected['values'])) {
+            ksort($expected['values']);
+        }
+        if (is_array($result['values'])) {
+            ksort($result['values']);
+        }
+
         $this->assertEquals($expected, $result);
     }
 
