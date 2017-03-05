@@ -1,13 +1,13 @@
 db.pim_catalog_product.insert({
   "_id" : ObjectId("57f6c4e9b392ea5f146b2087"),
   "enabled" : false,
-  "created" : ISODate("2016-10-06T21:40:57Z"),
-  "updated" : ISODate("2016-10-06T21:40:57Z"),
+  "created" : ISODate("2016-08-04T14:28:51Z"),
+  "updated" : ISODate("2016-08-04T01:28:51Z"),
   "groupIds" : [ ],
   "categoryIds" : [ ],
   "normalizedData" : {
-    "created" : NumberLong(1475790057),
-    "updated" : NumberLong(1475790057),
+    "created" : NumberLong(1470313731),
+    "updated" : NumberLong(1470266931),
     "sku" : "bar",
     "completenesses" : [ ],
     "enabled" : false
@@ -29,13 +29,13 @@ db.pim_catalog_product.insert({
 db.pim_catalog_product.insert({
   "_id" : ObjectId("57f6c51fb392ea7d286b208a"),
   "enabled" : true,
-  "created" : ISODate("2016-10-06T21:41:51Z"),
-  "updated" : ISODate("2016-10-06T21:41:51Z"),
+  "created" : ISODate("2016-08-25T01:28:51Z"),
+  "updated" : ISODate("2016-08-25T00:00:00Z"),
   "groupIds" : [ ],
   "categoryIds" : [ ],
   "normalizedData" : {
-    "created" : NumberLong(1475790111),
-    "updated" : NumberLong(1475790111),
+    "created" : NumberLong(1472081331),
+    "updated" : NumberLong(1472076000),
     "sku" : "baz",
     "completenesses" : [ ],
     "enabled" : true
@@ -56,8 +56,8 @@ db.pim_catalog_product.insert({
 
 db.pim_catalog_product.insert({
   "_id" : ObjectId("57f6c66cb392eae7456b2087"),
-  "created" : ISODate("2016-10-06T21:47:24Z"),
-  "updated" : ISODate("2016-10-07T21:33:56Z"),
+  "created" : ISODate("2016-08-29T14:28:51Z"),
+  "updated" : ISODate("2016-08-29T00:00:00Z"),
   "family" : NumberLong(466),
   "enabled" : true,
   "groupIds" : [
@@ -454,8 +454,8 @@ db.pim_catalog_product.insert({
     "in_group_240" : true,
     "in_group_241" : true,
     "in_group_239" : true,
-    "created" : NumberLong(1475790444),
-    "updated" : NumberLong(1475876036),
+    "created" : NumberLong(1472473731),
+    "updated" : NumberLong(1472421600),
     "sku" : "foo",
     "a_date" : NumberLong(1465768800),
     "a_metric" : {
