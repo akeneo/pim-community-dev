@@ -22,7 +22,7 @@ class RangeGuesser implements ConstraintGuesserInterface
     public function supportAttribute(AttributeInterface $attribute)
     {
         return in_array(
-            $attribute->getAttributeType(),
+            $attribute->getType(),
             [
                 AttributeTypes::METRIC,
                 AttributeTypes::NUMBER,
@@ -38,7 +38,7 @@ class RangeGuesser implements ConstraintGuesserInterface
     {
         $constraints = [];
 
-        if (AttributeTypes::DATE === $attribute->getAttributeType()) {
+        if (AttributeTypes::DATE === $attribute->getType()) {
             $min = $attribute->getDateMin();
             $max = $attribute->getDateMax();
         } else {

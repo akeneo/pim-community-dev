@@ -5,7 +5,7 @@ parameters:
 
     pim_enrich.attribute.general_parameters.allowed_form_types:
         - code
-        - attributeType
+        - type
         - scopable
         - reference_data_name
         - localizable

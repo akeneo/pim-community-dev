@@ -5,9 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\EntityToIdentifierTransformer;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

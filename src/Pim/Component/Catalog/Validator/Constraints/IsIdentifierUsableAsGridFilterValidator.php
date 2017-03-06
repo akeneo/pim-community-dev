@@ -20,7 +20,7 @@ class IsIdentifierUsableAsGridFilterValidator extends ConstraintValidator
     public function validate($attribute, Constraint $constraint)
     {
         if ($attribute instanceof AttributeInterface &&
-            AttributeTypes::IDENTIFIER === $attribute->getAttributeType() &&
+            AttributeTypes::IDENTIFIER === $attribute->getType() &&
             !$attribute->isUseableAsGridFilter()
         ) {
             $this->context

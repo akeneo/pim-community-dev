@@ -51,7 +51,7 @@ class DummyFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
-        return in_array($attribute->getAttributeType(), $this->supportedAttributeTypes);
+        return in_array($attribute->getType(), $this->supportedAttributeTypes);
     }
 
     /**

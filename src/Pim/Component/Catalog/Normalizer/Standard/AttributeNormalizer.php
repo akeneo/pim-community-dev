@@ -39,7 +39,7 @@ class AttributeNormalizer implements NormalizerInterface
     {
         return [
             'code'                   => $attribute->getCode(),
-            'type'                   => $attribute->getAttributeType(),
+            'type'                   => $attribute->getType(),
             'group'                  => ($attribute->getGroup()) ? $attribute->getGroup()->getCode() : null,
             'unique'                 => (bool) $attribute->isUnique(),
             'useable_as_grid_filter' => (bool) $attribute->isUseableAsGridFilter(),

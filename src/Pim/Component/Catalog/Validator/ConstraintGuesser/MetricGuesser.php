@@ -21,9 +21,9 @@ class MetricGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AttributeInterface $attribute)
     {
-        return [
-            new ValidMetric()
-        ];
+        $numericGuesser = new NumericGuesser();
+
+        return array_merge([new ValidMetric()], $numericGuesser->guessConstraints($attribute));
     }
 
     /**
@@ -31,6 +31,6 @@ class MetricGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AttributeInterface $attribute)
     {
-        return AttributeTypes::METRIC === $attribute->getAttributeType();
+        return AttributeTypes::METRIC === $attribute->getType();
     }
 }

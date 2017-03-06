@@ -14,17 +14,17 @@ class MetricGuesserSpec extends ObjectBehavior
 
     function it_enforces_attribute_type(AttributeInterface $attribute)
     {
-        $attribute->getAttributeType()
+        $attribute->getType()
             ->willReturn('pim_catalog_metric');
         $this->supportAttribute($attribute)
             ->shouldReturn(true);
 
-        $attribute->getAttributeType()
+        $attribute->getType()
             ->willReturn('pim_catalog_text');
         $this->supportAttribute($attribute)
             ->shouldReturn(false);
 
-        $attribute->getAttributeType()
+        $attribute->getType()
             ->willReturn('foo');
         $this->supportAttribute($attribute)
             ->shouldReturn(false);
@@ -34,9 +34,11 @@ class MetricGuesserSpec extends ObjectBehavior
     {
         $constraints = $this->guessConstraints($attribute);
 
-        $constraints->shouldHaveCount(1);
+        $constraints->shouldHaveCount(2);
 
         $constraint = $constraints[0];
         $constraint->shouldBeAnInstanceOf('Pim\Component\Catalog\Validator\Constraints\ValidMetric');
+        $constraint = $constraints[1];
+        $constraint->shouldBeAnInstanceOf('Pim\Component\Catalog\Validator\Constraints\IsNumeric');
     }
 }

@@ -20,7 +20,7 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
             $this->createAttribute([
                 'code'                => 'a_localizable_price',
-                'attribute_type'      => AttributeTypes::PRICE_COLLECTION,
+                'type'                => AttributeTypes::PRICE_COLLECTION,
                 'localizable'         => true,
                 'scopable'            => false
             ]);
@@ -108,6 +108,9 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
     {
         $result = $this->execute([['a_localizable_price', Operators::IS_EMPTY, ['amount' => '', 'currency' => ''], ['locale' => 'en_US']]]);
         $this->assert($result, ['empty_product']);
+
+        $result = $this->execute([['a_localizable_price', Operators::IS_EMPTY, [], ['locale' => 'en_US']]]);
+        $this->assert($result, ['empty_product']);
     }
 
     public function testOperatorNotEmpty()
@@ -119,6 +122,9 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
         $this->assert($result, []);
 
         $result = $this->execute([['a_localizable_price', Operators::IS_NOT_EMPTY, ['amount' => '', 'currency' => ''], ['locale' => 'en_US']]]);
+        $this->assert($result, []);
+
+        $result = $this->execute([['a_localizable_price', Operators::IS_NOT_EMPTY, [], ['locale' => 'en_US']]]);
         $this->assert($result, []);
     }
 

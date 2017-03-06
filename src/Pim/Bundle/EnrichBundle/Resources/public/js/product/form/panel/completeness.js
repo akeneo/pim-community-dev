@@ -35,7 +35,7 @@ define(
                     label: _.__('pim_enrich.form.product.panel.completeness.title')
                 });
 
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.update);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.onChangeFamily);
                 this.listenTo(UserContext, 'change:catalogLocale', this.render);
 
@@ -53,7 +53,7 @@ define(
                 if (this.getFormData().meta) {
                     $.when(
                         this.fetchCompleteness(),
-                        FetcherRegistry.getFetcher('locale').search({'activated': true})
+                        FetcherRegistry.getFetcher('locale').fetchActivated()
                     ).then(function (completeness, locales) {
                         this.$el.html(
                             this.template({
@@ -125,17 +125,6 @@ define(
                         scope: event.currentTarget.dataset.channel
                     }
                 );
-            },
-
-            /**
-             * Update the completeness by fetching it from the backend
-             */
-            update: function () {
-                if (this.getFormData().meta) {
-                    FetcherRegistry.getFetcher('product-completeness').clear(this.getFormData().meta.id);
-                }
-
-                this.render();
             },
 
             /**

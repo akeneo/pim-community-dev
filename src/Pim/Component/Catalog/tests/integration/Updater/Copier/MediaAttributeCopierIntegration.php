@@ -3,6 +3,7 @@
 namespace tests\integration\Pim\Component\Catalog\Updater\Copier;
 
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\MediaSanitizer;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -13,9 +14,6 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 class MediaAttributeCopierIntegration extends TestCase
 {
-    const MEDIA_ATTRIBUTE_DATA_PATTERN = '#[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]{40}_\w+\.[a-zA-Z]+$#';
-    const MEDIA_ATTRIBUTE_DATA_COMPARISON = 'this is a media identifier';
-
     protected function getConfiguration()
     {
         return new Configuration(
@@ -213,21 +211,9 @@ class MediaAttributeCopierIntegration extends TestCase
     protected function sanitizeMediaAttributeData(array $data)
     {
         foreach ($data as $index => $value) {
-            if ($this->assertMediaAttributeDataPattern($value['data'])) {
-                $data[$index]['data'] = self::MEDIA_ATTRIBUTE_DATA_COMPARISON;
-            }
+            $data[$index]['data'] = MediaSanitizer::sanitize($value['data']);
         }
 
         return $data;
-    }
-
-    /**
-     * @param string $data
-     *
-     * @return bool
-     */
-    protected function assertMediaAttributeDataPattern($data)
-    {
-        return 1 === preg_match(self::MEDIA_ATTRIBUTE_DATA_PATTERN, $data);
     }
 }

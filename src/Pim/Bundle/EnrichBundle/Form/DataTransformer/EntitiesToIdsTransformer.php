@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\DataTransformer;
 
-use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;

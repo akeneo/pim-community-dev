@@ -68,7 +68,7 @@ class AttributeValuesResolver
             } else {
                 $requiredValues[] = [
                     'attribute' => $attribute->getCode(),
-                    'type'      => $attribute->getAttributeType(),
+                    'type'      => $attribute->getType(),
                     'locale'    => null,
                     'scope'     => null
                 ];
@@ -118,7 +118,7 @@ class AttributeValuesResolver
         foreach ($locales as $locale) {
             $localeRows[] = [
                 'attribute' => $attribute->getCode(),
-                'type'      => $attribute->getAttributeType(),
+                'type'      => $attribute->getType(),
                 'locale'    => $locale->getCode(),
                 'scope'     => null
             ];
@@ -141,7 +141,7 @@ class AttributeValuesResolver
         foreach ($channels as $channel) {
             $scopeRows[] = [
                 'attribute' => $attribute->getCode(),
-                'type'      => $attribute->getAttributeType(),
+                'type'      => $attribute->getType(),
                 'locale'    => null,
                 'scope'     => $channel->getCode()
             ];
@@ -165,7 +165,7 @@ class AttributeValuesResolver
             foreach ($channel->getLocales() as $locale) {
                 $scopeToLocaleRows[] = [
                     'attribute' => $attribute->getCode(),
-                    'type'      => $attribute->getAttributeType(),
+                    'type'      => $attribute->getType(),
                     'locale'    => $locale->getCode(),
                     'scope'     => $channel->getCode()
                 ];

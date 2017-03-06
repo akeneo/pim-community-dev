@@ -3,7 +3,6 @@
 namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

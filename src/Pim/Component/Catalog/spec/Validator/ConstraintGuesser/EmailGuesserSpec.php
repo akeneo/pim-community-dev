@@ -14,7 +14,7 @@ class EmailGuesserSpec extends ObjectBehavior
 
     public function it_supports_text_attributes(AttributeInterface $attribute)
     {
-        $attribute->getAttributeType()
+        $attribute->getType()
             ->willReturn('pim_catalog_text');
         $this->supportAttribute($attribute)
             ->shouldReturn(true);
@@ -22,7 +22,7 @@ class EmailGuesserSpec extends ObjectBehavior
 
     public function it_does_not_support_other_attributes(AttributeInterface $attribute)
     {
-        $attribute->getAttributeType()
+        $attribute->getType()
             ->willReturn('pim_catalog_image');
         $this->supportAttribute($attribute)
             ->shouldReturn(false);

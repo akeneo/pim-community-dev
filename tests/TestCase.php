@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 abstract class TestCase extends KernelTestCase
 {
-    /** @var int Count of test inside the same test class */
+    /** @var int Count of executed tests inside the same test class */
     protected static $count = 0;
 
     /**
@@ -32,6 +32,8 @@ abstract class TestCase extends KernelTestCase
      */
     protected function setUp()
     {
+        date_default_timezone_set('Europe/Paris');
+
         static::bootKernel(['debug' => false]);
 
         $configuration = $this->getConfiguration();
@@ -39,8 +41,7 @@ abstract class TestCase extends KernelTestCase
         self::$count++;
 
         if ($configuration->isDatabasePurgedForEachTest() || 1 === self::$count) {
-            $databasePurger = $this->getDatabasePurger();
-            $databasePurger->purge();
+            $this->getDatabaseSchemaHandler()->reset();
 
             $fixturesLoader = $this->getFixturesLoader($configuration);
             $fixturesLoader->load();
@@ -79,11 +80,11 @@ abstract class TestCase extends KernelTestCase
     }
 
     /**
-     * @return DatabasePurger
+     * @return DatabaseSchemaHandler
      */
-    protected function getDatabasePurger()
+    protected function getDatabaseSchemaHandler()
     {
-        return new DatabasePurger(static::$kernel->getContainer());
+        return new DatabaseSchemaHandler(static::$kernel);
     }
 
     /**
@@ -93,7 +94,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function getFixturesLoader(Configuration $configuration)
     {
-        return new FixturesLoader(static::$kernel->getContainer(), $configuration);
+        return new FixturesLoader(static::$kernel, $configuration);
     }
 
     /**

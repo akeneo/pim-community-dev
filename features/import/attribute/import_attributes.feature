@@ -136,7 +136,7 @@ Feature: Import attributes
     And I launch the import job
     And I wait for the "csv_footwear_attribute_import" job to finish
     Then I should see "skipped 1"
-    And I should see "Property \"attribute_type\" does not expect an empty value."
+    And I should see "Property \"type\" does not expect an empty value."
 
   Scenario: Successfully import and update existing attribute
     Given the "footwear" catalog configuration
@@ -244,7 +244,7 @@ Feature: Import attributes
     And I wait for the "csv_footwear_attribute_import" job to finish
     Then I should see "read lines 1"
     Then I should see "skipped 1"
-    Then I should see "attributeType: This property cannot be changed.: SKU"
+    Then I should see "type: This property cannot be changed.: SKU"
     Then I should see "localizable: This property cannot be changed.: SKU"
     Then I should see "unique: This property cannot be changed.: SKU"
 

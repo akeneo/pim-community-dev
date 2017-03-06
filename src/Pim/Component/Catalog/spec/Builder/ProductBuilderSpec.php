@@ -92,17 +92,17 @@ class ProductBuilderSpec extends ObjectBehavior
         $attributeClass = Attribute::class;
 
         $sku->getCode()->willReturn('sku');
-        $sku->getAttributeType()->willReturn('pim_catalog_identifier');
+        $sku->getType()->willReturn('pim_catalog_identifier');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
         $name->getCode()->willReturn('name');
-        $name->getAttributeType()->willReturn('pim_catalog_text');
+        $name->getType()->willReturn('pim_catalog_text');
         $name->isLocalizable()->willReturn(true);
         $name->isScopable()->willReturn(false);
 
         $desc->getCode()->willReturn('description');
-        $desc->getAttributeType()->willReturn('pim_catalog_text');
+        $desc->getType()->willReturn('pim_catalog_text');
         $desc->isLocalizable()->willReturn(true);
         $desc->isScopable()->willReturn(true);
 

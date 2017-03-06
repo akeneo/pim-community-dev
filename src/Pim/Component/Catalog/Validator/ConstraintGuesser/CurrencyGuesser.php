@@ -31,6 +31,6 @@ class CurrencyGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AttributeInterface $attribute)
     {
-        return AttributeTypes::PRICE_COLLECTION === $attribute->getAttributeType();
+        return AttributeTypes::PRICE_COLLECTION === $attribute->getType();
     }
 }

@@ -51,6 +51,6 @@ class PriceCompleteChecker implements ProductValueCompleteCheckerInterface
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        return AttributeTypes::PRICE_COLLECTION === $productValue->getAttribute()->getAttributeType();
+        return AttributeTypes::PRICE_COLLECTION === $productValue->getAttribute()->getType();
     }
 }

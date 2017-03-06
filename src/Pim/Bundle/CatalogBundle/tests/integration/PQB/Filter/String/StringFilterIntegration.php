@@ -116,4 +116,13 @@ class StringFilterIntegration extends AbstractFilterTestCase
     {
         $this->execute([['a_text', Operators::NOT_EQUAL, [[]]]]);
     }
+
+    /**
+     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
+     * @expectedExceptionMessage Filter on property "a_text" is not supported or does not support operator ">="
+     */
+    public function testErrorOperatorNotSupported()
+    {
+        $this->execute([['a_text', Operators::GREATER_OR_EQUAL_THAN, 'dog']]);
+    }
 }

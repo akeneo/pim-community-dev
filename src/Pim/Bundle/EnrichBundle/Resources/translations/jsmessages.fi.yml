@@ -228,6 +228,14 @@ pim_enrich:
         updated_by: Päivittäjä
       btn:
         save: Tallenna
+    family:
+      meta:
+        created: Luotu
+        created_by: Luoja
+        updated: Päivitetty
+        updated_by: Päivittäjä
+      btn:
+        save: Tallenna
     attribute_option:
       code: Koodi
       label: Nimike
@@ -361,6 +369,24 @@ pim_enrich:
           label_conversion_units: Valitse muunnosyksikkö jokaisella metrimääritteelle jota käytetään tuotteen viennin yhteydessä
           conversion_unit:
             do_not_convert: Älä muunna
+    family:
+      tab:
+        properties:
+          title: Ominaisuudet
+          general: Yleinen
+          code: Koodi
+          attribute_as_label: Attribuutti käytössä otsikkona
+          label_translations: Nimikkeiden käännökset
+        attributes:
+          title: Attribuutit
+          label_label: Nimike
+          toolbox:
+            select_attributes: Lisää attribuutteja
+            add: Lisää
+          not_required_label: Ei vaadittu
+          required_label: Vaadittu
+        history:
+          title: Historia
     attribute_option:
       flash:
         option_created: Määritteen asetuksen luominen onnistui

@@ -26,10 +26,10 @@ class PriceCompleteCheckerSpec extends ObjectBehavior
         LocaleInterface $locale
     ) {
         $productValue->getAttribute()->willReturn($attribute);
-        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $attribute->getType()->willReturn('pim_catalog_price_collection');
         $this->supportsValue($productValue, $channel, $locale)->shouldReturn(true);
 
-        $attribute->getAttributeType()->willReturn('other');
+        $attribute->getType()->willReturn('other');
         $this->supportsValue($productValue, $channel, $locale)->shouldReturn(false);
     }
 

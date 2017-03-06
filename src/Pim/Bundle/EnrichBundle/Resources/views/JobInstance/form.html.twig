@@ -62,7 +62,6 @@
                                                     navigation.setPinButtonsData('title', navTitle);
                                                     navigation.setPinButtonsData('title-rendered-short', newTitle);
                                                     HistoryItemManager.save(navigation.url, navTitle);
-
                                                     form.setData(jobProfile);
 
                                                     mediator.trigger('pim_enrich:form:entity:post_fetch', jobProfile);

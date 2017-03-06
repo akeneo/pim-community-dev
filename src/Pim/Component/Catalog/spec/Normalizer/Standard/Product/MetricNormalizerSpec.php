@@ -6,7 +6,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Prophecy\Argument;
 
 class MetricNormalizerSpec extends ObjectBehavior
 {

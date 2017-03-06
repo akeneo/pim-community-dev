@@ -94,4 +94,13 @@ class OptionFilterIntegration extends AbstractFilterTestCase
     {
         $this->execute([['a_simple_select', Operators::IN_LIST, ['NOT_FOUND']]]);
     }
+
+    /**
+     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
+     * @expectedExceptionMessage Filter on property "a_simple_select" is not supported or does not support operator "BETWEEN"
+     */
+    public function testErrorOperatorNotSupported()
+    {
+        $this->execute([['a_simple_select', Operators::BETWEEN, ['NOT_FOUND']]]);
+    }
 }

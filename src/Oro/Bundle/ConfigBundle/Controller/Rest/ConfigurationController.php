@@ -31,11 +31,16 @@ class ConfigurationController
 
     /**
      * @param ConfigManager $configManager
+     * @param FileLocator   $fileLocator
      * @param string        $loadingMessagesFile
      * @param array         $options
      */
-    public function __construct(ConfigManager $configManager, FileLocator $fileLocator, $loadingMessagesFile, array $options = [])
-    {
+    public function __construct(
+        ConfigManager $configManager,
+        FileLocator $fileLocator,
+        $loadingMessagesFile,
+        array $options = []
+    ) {
         $this->configManager = $configManager;
         $this->fileLocator = $fileLocator;
         $this->loadingMessagesFile = $loadingMessagesFile;

@@ -89,6 +89,7 @@ function($, _, mediator) {
         setViewDesign: function(view) {
             view.$('.ui-multiselect').removeClass('ui-widget').removeClass('ui-state-default');
             view.$('.ui-multiselect span.ui-icon').remove();
+            view.$('span:first-child').addClass('filter-criteria-hint');
         },
 
         /**

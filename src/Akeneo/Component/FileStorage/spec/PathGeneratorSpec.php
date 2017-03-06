@@ -3,7 +3,6 @@
 namespace spec\Akeneo\Component\FileStorage;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class PathGeneratorSpec extends ObjectBehavior
 {

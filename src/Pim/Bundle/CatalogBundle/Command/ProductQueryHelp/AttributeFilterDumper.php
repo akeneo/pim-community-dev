@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Command\ProductQueryHelp;
 
 use Pim\Bundle\CatalogBundle\Command\DumperInterface;
-use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -87,7 +86,7 @@ class AttributeFilterDumper implements DumperInterface
     protected function getFilterInformationForAttribute(AttributeInterface $attribute, array $attributeFilters)
     {
         $field = $attribute->getCode();
-        $attributeType = $attribute->getAttributeType();
+        $attributeType = $attribute->getType();
         $isLocalizable = $attribute->isLocalizable() ? 'yes' : 'no';
         $isScopable = $attribute->isScopable() ? 'yes' : 'no';
 

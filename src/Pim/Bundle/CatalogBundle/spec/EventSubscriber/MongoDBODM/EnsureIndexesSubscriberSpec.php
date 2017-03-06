@@ -40,7 +40,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
         LifecycleEventArgs $args
     ) {
         $ean->isUseableAsGridFilter()->willReturn(false);
-        $ean->getAttributeType()->willReturn('pim_catalog_text');
+        $ean->getType()->willReturn('pim_catalog_text');
         $ean->isUnique()->willReturn(true);
 
         $args->getEntity()->willReturn($ean);
@@ -56,7 +56,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
         LifecycleEventArgs $args
     ) {
         $ean->isUseableAsGridFilter()->willReturn(false);
-        $ean->getAttributeType()->willReturn('pim_catalog_text');
+        $ean->getType()->willReturn('pim_catalog_text');
         $ean->isUnique()->willReturn(true);
 
         $args->getEntity()->willReturn($ean);
@@ -72,7 +72,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
         LifecycleEventArgs $args
     ) {
         $sku->isUseableAsGridFilter()->willReturn(false);
-        $sku->getAttributeType()->willReturn('pim_catalog_identifier');
+        $sku->getType()->willReturn('pim_catalog_identifier');
         $sku->isUnique()->willReturn(false);
 
         $args->getEntity()->willReturn($sku);
@@ -88,7 +88,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
         LifecycleEventArgs $args
     ) {
         $sku->isUseableAsGridFilter()->willReturn(false);
-        $sku->getAttributeType()->willReturn('pim_catalog_identifier');
+        $sku->getType()->willReturn('pim_catalog_identifier');
         $sku->isUnique()->willReturn(false);
 
         $args->getEntity()->willReturn($sku);
@@ -104,7 +104,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
         LifecycleEventArgs $args
     ) {
         $name->isUseableAsGridFilter()->willReturn(true);
-        $name->getAttributeType()->willReturn('pim_catalog_text');
+        $name->getType()->willReturn('pim_catalog_text');
         $name->isUnique()->willReturn(false);
 
         $args->getEntity()->willReturn($name);
@@ -120,7 +120,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
         LifecycleEventArgs $args
     ) {
         $name->isUseableAsGridFilter()->willReturn(true);
-        $name->getAttributeType()->willReturn('pim_catalog_text');
+        $name->getType()->willReturn('pim_catalog_text');
         $name->isUnique()->willReturn(false);
 
         $args->getEntity()->willReturn($name);
@@ -136,7 +136,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
         LifecycleEventArgs $args
     ) {
         $description->isUseableAsGridFilter()->willReturn(false);
-        $description->getAttributeType()->willReturn('pim_catalog_textarea');
+        $description->getType()->willReturn('pim_catalog_textarea');
         $description->isUnique()->willReturn(false);
 
         $args->getEntity()->willReturn($description);
@@ -152,7 +152,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
         LifecycleEventArgs $args
     ) {
         $description->isUseableAsGridFilter()->willReturn(false);
-        $description->getAttributeType()->willReturn('pim_catalog_textarea');
+        $description->getType()->willReturn('pim_catalog_textarea');
         $description->isUnique()->willReturn(false);
 
         $args->getEntity()->willReturn($description);
@@ -256,7 +256,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
         LifecycleEventArgs $args
     ) {
         $name->isUseableAsGridFilter()->willReturn(true);
-        $name->getAttributeType()->willReturn('pim_catalog_text');
+        $name->getType()->willReturn('pim_catalog_text');
         $name->isUnique()->willReturn(false);
 
         $args->getEntity()->willReturn($name);

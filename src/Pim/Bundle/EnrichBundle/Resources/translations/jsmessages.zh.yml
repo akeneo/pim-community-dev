@@ -101,9 +101,9 @@ pim:
     mass_action:
       quick_export:
         csv_all: CSV （所有属性）
-        csv_grid_context: CSV （网格内容）
+        csv_grid_context: CSV （界面内容）
         xlsx_all: Excel （所有属性）
-        xlsx_grid_context: Excel （网格上下文）
+        xlsx_grid_context: Excel （界面内容）
       delete: 删除产品
       mass_edit: 更改产品信息
       category_edit: 在类别中移动产品
@@ -151,6 +151,7 @@ pim_enrich:
         property: 属性
         old_values: 原值
         new_values: 新值
+        actions: 操作
       info:
         deletion_successful: 产品被成功删除。
         deletion_failed: 产品不能被删除。
@@ -227,9 +228,18 @@ pim_enrich:
         updated_by: 更新者：
       btn:
         save: 保存
+    family:
+      meta:
+        created: 已创建
+        created_by: '创建者:'
+        updated: 已更新
+        updated_by: 更新者：
+      btn:
+        save: 保存
     attribute_option:
       code: 代码
       label: 标签
+      actions: 操作
     variant_group:
       title: 款式组
       info:
@@ -357,6 +367,24 @@ pim_enrich:
           label_conversion_units: 在产品导出时，为每一个计量单位选择一个转位单位。
           conversion_unit:
             do_not_convert: 不转换
+    family:
+      tab:
+        properties:
+          title: 属性
+          general: 一般信息
+          code: 代码
+          attribute_as_label: 属性作为标签
+          label_translations: 标签翻译
+        attributes:
+          title: 属性
+          label_label: 标签
+          toolbox:
+            select_attributes: 添加属性
+            add: 增加
+          not_required_label: 不需要
+          required_label: 必填
+        history:
+          title: 历史
     attribute_option:
       flash:
         option_created: 属性选项成功创建
@@ -410,7 +438,7 @@ pim_enrich:
         edit.title: 编辑
         export.title: 现在导出
         import.launch: 现在导入
-        import.upload: 现在上载并导入
+        import.upload: 现在上传并导入
       meta:
         job: 任务
         connector: 连接器

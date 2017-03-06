@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
@@ -132,5 +133,39 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
                 ]
             ]
         );
+    }
+
+    function it_throws_an_exception_when_code_is_not_scalar(AttributeOptionInterface $attributeOption)
+    {
+        $values = [
+            'code' => [],
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::scalarExpected(
+                    'code',
+                    'Pim\Component\Catalog\Updater\AttributeOptionUpdater',
+                    []
+                )
+            )
+            ->during('update', [$attributeOption, $values, []]);
+    }
+
+    function it_throws_an_exception_when_labels_is_not_an_array(AttributeOptionInterface $attributeOption)
+    {
+        $values = [
+            'labels' => 'not_an_array',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::arrayExpected(
+                    'labels',
+                    'Pim\Component\Catalog\Updater\AttributeOptionUpdater',
+                    'not_an_array'
+                )
+            )
+            ->during('update', [$attributeOption, $values, []]);
     }
 }

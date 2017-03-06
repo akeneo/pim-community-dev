@@ -29,7 +29,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end();
 
-        SettingsBuilder::append($rootNode, ['loading_message_enabled' => ['value' => true]]);
+        SettingsBuilder::append($rootNode, ['loading_message_enabled' => ['value' => false]]);
 
         return $treeBuilder;
     }

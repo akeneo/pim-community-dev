@@ -1,7 +1,7 @@
 parameters:
-    pim_user.repository.role.class:  Pim\Bundle\UserBundle\Entity\Repository\RoleRepository
-    pim_user.repository.group.class: Pim\Bundle\UserBundle\Entity\Repository\GroupRepository
-    pim_user.repository.user.class:  Pim\Bundle\UserBundle\Entity\Repository\UserRepository
+    pim_user.repository.role.class:  Pim\Bundle\UserBundle\Doctrine\ORM\Repository\RoleRepository
+    pim_user.repository.group.class: Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository
+    pim_user.repository.user.class:  Pim\Bundle\UserBundle\Doctrine\ORM\Repository\UserRepository
 
 services:
     pim_user.repository.role:

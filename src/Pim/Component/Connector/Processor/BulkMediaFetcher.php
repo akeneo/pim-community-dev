@@ -63,7 +63,7 @@ class BulkMediaFetcher
         $target = DIRECTORY_SEPARATOR !== substr($target, -1) ? $target . DIRECTORY_SEPARATOR : $target;
 
         foreach ($values as $value) {
-            if (in_array($value->getAttribute()->getAttributeType(), $this->mediaAttributeTypes)
+            if (in_array($value->getAttribute()->getType(), $this->mediaAttributeTypes)
                 && null !== $media = $value->getMedia()) {
                 $exportPath = $this->fileExporterPath->generate(
                     [
