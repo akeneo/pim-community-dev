@@ -101,7 +101,7 @@ class FixturesLoader
      *
      * @param array $files
      *
-     * @throws \Exception
+     * @throws \RuntimeException
      */
     protected function loadImportFiles(array $files)
     {
@@ -139,7 +139,7 @@ class FixturesLoader
             $exitCode = $this->cli->run($input, $output);
 
             if (0 !== $exitCode) {
-                throw new \Exception(sprintf('Catalog not installable! "%s"', $output->fetch()));
+                throw new \RuntimeException(sprintf('Catalog not installable! "%s"', $output->fetch()));
             }
         }
 
