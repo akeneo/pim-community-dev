@@ -4,8 +4,6 @@ namespace spec\Pim\Bundle\AnalyticsBundle\Twig;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\AnalyticsBundle\UrlGenerator\UrlGeneratorInterface;
-use Prophecy\Argument;
 
 class UpdateExtensionSpec extends ObjectBehavior
 {

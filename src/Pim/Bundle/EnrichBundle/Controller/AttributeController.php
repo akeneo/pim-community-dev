@@ -205,7 +205,7 @@ class AttributeController
             'locales'         => $this->localeRepository->getActivatedLocaleCodes(),
             'disabledLocales' => $this->localeRepository->findBy(['activated' => false]),
             'measures'        => $this->measuresConfig,
-            'attributeType'   => $attributeType
+            'type'            => $attributeType
         ];
     }
 
@@ -287,7 +287,7 @@ class AttributeController
     public function createOptionAction(Request $request, $id, $dataLocale)
     {
         $attribute = $this->findAttributeOr404($id);
-        if (!$request->isXmlHttpRequest() || !in_array($attribute->getAttributeType(), $this->choiceAttributeTypes)) {
+        if (!$request->isXmlHttpRequest() || !in_array($attribute->getType(), $this->choiceAttributeTypes)) {
             return new RedirectResponse(
                 $this->router->generate('pim_enrich_attribute_edit', ['id' => $attribute->getId()])
             );
@@ -383,7 +383,7 @@ class AttributeController
      */
     protected function validateRemoval(AttributeInterface $attribute)
     {
-        if (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
+        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
             $errorMessage = 'flash.attribute.identifier not removable';
             $messageParameters = [];
         } else {

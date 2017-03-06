@@ -248,6 +248,20 @@ pim_enrich:
                 updated_by: Updated by
             btn:
                 save: Save
+        family:
+            info:
+                update_successful: Family successfully updated.
+                create_successful: Channel successfully created.
+                update_failed: An error occured during family update.
+                cant_remove_attribute_as_label: Can not remove attribute used as label
+                attribute_edit_permission_is_not_granted: You have no rights to edit family's attributes
+            meta:
+                created: Created
+                created_by: Created by
+                updated: Updated
+                updated_by: Updated by
+            btn:
+                save: Save
         attribute_option:
             code: Code
             label: Label
@@ -289,6 +303,7 @@ pim_enrich:
         job_instance:
             info:
                 update_failed: The job profile could not be updated.
+                update_successful: The job profile has been successfully updated.
     confirmation:
         leave:           Are you sure you want to leave this page?
         discard_changes: You will lose changes to the {{ entity }} if you leave the page.
@@ -384,6 +399,26 @@ pim_enrich:
                     label_conversion_units: Pick a conversion unit for each metric attribute that will be used during product export
                     conversion_unit:
                         do_not_convert: Do not convert
+        family:
+            tab:
+                properties:
+                    title: Properties
+                    general: General
+                    code: Code
+                    attribute_as_label: Attribute used as label
+                    label_translations: Label translations
+                attributes:
+                    title: Attributes
+                    label_label: Label
+                    toolbox:
+                        select_attributes_by_groups: Add by groups
+                        select_attributes: Add attributes
+                        add: Add
+                        attributes_groups_selected: '{{ itemsCount }} group(s) selected'
+                    not_required_label: Not required
+                    required_label: Required
+                history:
+                    title: History
 
         attribute_option:
             flash:

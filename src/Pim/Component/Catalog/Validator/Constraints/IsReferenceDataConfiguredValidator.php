@@ -39,7 +39,7 @@ class IsReferenceDataConfiguredValidator extends ConstraintValidator
         $referenceDataName = $attribute->getProperty('reference_data_name');
 
         if (null !== $this->registry &&
-            in_array($attribute->getAttributeType(), $this->referenceDataType) &&
+            in_array($attribute->getType(), $this->referenceDataType) &&
             !$this->registry->has($referenceDataName)
         ) {
             $references = array_keys($this->registry->all());

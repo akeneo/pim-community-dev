@@ -47,7 +47,7 @@ define(
              * @returns {Promise}
              */
             getDisplayedLocales: function () {
-                return FetcherRegistry.getFetcher('locale').search({'activated': true});
+                return FetcherRegistry.getFetcher('locale').fetchActivated();
             },
 
             /**

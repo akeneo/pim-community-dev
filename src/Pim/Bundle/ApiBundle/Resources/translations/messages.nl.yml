@@ -1,0 +1,12 @@
+pim_api:
+  acl:
+    attribute:
+      list: Attributen weergeven
+    category:
+      list: Categorieën weergeven
+    family:
+      list: Families weergeven
+  acl_group:
+    attribute: Attributen
+    category: Categorieën
+    family: Families

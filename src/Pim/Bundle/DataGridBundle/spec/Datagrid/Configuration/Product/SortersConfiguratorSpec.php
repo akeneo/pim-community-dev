@@ -6,7 +6,6 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
 use Prophecy\Argument;
@@ -17,12 +16,12 @@ class SortersConfiguratorSpec extends ObjectBehavior
     {
         $attributes = [
             'sku' => [
-                'code'          => 'sku',
-                'attributeType' => 'pim_catalog_identifier'
+                'code' => 'sku',
+                'type' => 'pim_catalog_identifier',
             ],
             'name' => [
-                'code'          => 'name',
-                'attributeType' => 'pim_catalog_text'
+                'code' => 'name',
+                'type' => 'pim_catalog_text',
             ]
         ];
 

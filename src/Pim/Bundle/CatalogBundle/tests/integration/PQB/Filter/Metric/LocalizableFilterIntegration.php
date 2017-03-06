@@ -20,7 +20,7 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
             $this->createAttribute([
                 'code'                => 'a_localizable_metric',
-                'attribute_type'      => AttributeTypes::METRIC,
+                'type'                => AttributeTypes::METRIC,
                 'localizable'         => true,
                 'decimals_allowed'    => false,
                 'metric_family'       => 'Length',

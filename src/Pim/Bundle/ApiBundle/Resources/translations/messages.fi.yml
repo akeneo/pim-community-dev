@@ -1,0 +1,12 @@
+pim_api:
+  acl:
+    attribute:
+      list: Listaa attribuutit
+    category:
+      list: Listaa kategoriat
+    family:
+      list: Listaa tuoteperheet
+  acl_group:
+    attribute: Attribuutit
+    category: Kategoriat
+    family: Perheet

@@ -20,7 +20,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
             $this->createAttribute([
                 'code'                => 'a_localizable_scopable_number',
-                'attribute_type'      => AttributeTypes::NUMBER,
+                'type'                => AttributeTypes::NUMBER,
                 'localizable'         => true,
                 'scopable'            => true,
                 'negative_allowed'    => true

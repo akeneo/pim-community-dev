@@ -44,8 +44,9 @@ class Form extends Base
                 'Save'                            => ['css' => '.AknButton--apply'],
                 'Panel sidebar'                   => [
                     'css'        => '.edit-form > .content',
-                    'decorators' => ['Pim\Behat\Decorator\Page\PanelableDecorator']
-                ]
+                    'decorators' => ['Pim\Behat\Decorator\Page\PanelableDecorator'],
+                ],
+                'Tooltips'                         => ['css' => '.icon-info-sign'],
             ],
             $this->elements
         );
@@ -160,12 +161,26 @@ class Form extends Base
     public function visitGroup($group)
     {
         $this->spin(function () use ($group) {
-            $group = $this->find('css', sprintf($this->elements['Group']['css'], $group));
-            if (null !== $group && $group->isVisible()) {
+            $group = $this->findGroup($group);
+            if ($group->isVisible()) {
                 $group->click();
 
                 return true;
             }
+        }, sprintf('Cannot click the group "%s".', $group));
+    }
+
+    /**
+     * Get the specified group
+     *
+     * @param string $group
+     */
+    public function findGroup($group)
+    {
+        return $this->spin(function () use ($group) {
+            $group = $this->find('css', sprintf($this->elements['Group']['css'], $group));
+
+            return $group;
         }, sprintf('Cannot find the group "%s".', $group));
     }
 
@@ -243,6 +258,23 @@ class Form extends Base
         }
 
         return $errors;
+    }
+
+    /**
+     * Get tooltips messages
+     *
+     * @return string[]
+     */
+    public function getTooltipMessages()
+    {
+        $tooltips = $this->findAll('css', $this->elements['Tooltips']['css']);
+
+        $messages = [];
+        foreach ($tooltips as $tooltip) {
+            $messages[] = $tooltip->getAttribute('data-original-title');
+        }
+
+        return $messages;
     }
 
     /**

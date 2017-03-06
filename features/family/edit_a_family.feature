@@ -33,6 +33,7 @@ Feature: Edit a family
     When I fill in the following information:
       | Attribute used as label | String |
     And I save the family
+    And I should not see the text "There are unsaved changes."
     When I am on the products page
     And I should see "Elixir"
 
@@ -41,6 +42,7 @@ Feature: Edit a family
     When I fill in the following information:
       | English (United States) | NewBoots |
     And I save the family
+    Then I should not see the text "There are unsaved changes."
     Then I should see "NewBoots"
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
@@ -70,7 +72,7 @@ Feature: Edit a family
     And the field Attribute used as label should be disabled
     And the field English (United States) should be disabled
 
-  Scenario: Disable attribute fields when the user can't edit a family
+  Scenario: Fail switching attribute requirements when the user can't edit a family attributes
     Given I am on the "Administrator" role page
     And I visit the "Permissions" tab
     And I visit the "Families" group
@@ -80,5 +82,30 @@ Feature: Edit a family
     When I am on the "sneakers" family page
     And I visit the "Attributes" tab
     Then attribute "name" should be required in channels mobile and tablet
-    When I switch the attribute "Name" requirement in channel "Tablet"
+    When I switch the attribute "name" requirement in channel "tablet"
     Then attribute "name" should be required in channels mobile and tablet
+
+  Scenario: Fail removing attributes when the user can't edit family attributes
+    Given I am on the "Administrator" role page
+    And I visit the "Permissions" tab
+    And I visit the "Families" group
+    And I revoke rights to resource Edit attributes of a family
+    And I save the role
+    Then I should not see the text "There are unsaved changes."
+    When I am on the "sneakers" family page
+    And I visit the "Attributes" tab
+    Then I should see attributes "SKU, Name, Manufacturer, Weather conditions, Description" in group "Product information"
+    And I remove the "manufacturer" attribute
+    Then I should see attributes "SKU, Name, Manufacturer, Weather conditions, Description" in group "Product information"
+
+  Scenario: Fail adding attributes when the user can't edit family attributes
+    Given I am on the "Administrator" role page
+    And I visit the "Permissions" tab
+    And I visit the "Families" group
+    And I revoke rights to resource Edit attributes of a family
+    And I save the role
+    Then I should not see the text "There are unsaved changes."
+    When I am on the "sneakers" family page
+    And I visit the "Attributes" tab
+    Then I should not see an "Available attributes" element
+    And I should not see an "Available groups" element

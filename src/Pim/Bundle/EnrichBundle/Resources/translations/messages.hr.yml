@@ -902,7 +902,7 @@ job_tracker:
     started_at: Počeo u
 pim_enrich_attribute_form:
   code: Kod
-  attributeType: Tip atributa
+  type: Tip atributa
   reference_data_name: Naziv refernce podataka
   scopable: Djelokrug
   localizable: Moguće je lokalizirati

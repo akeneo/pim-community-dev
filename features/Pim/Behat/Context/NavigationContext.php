@@ -142,14 +142,14 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
 
     /**
      * @param string $path
-     * @param string $referer
+     * @param string $referrer
      *
      * @Given /^I am on the relative path ([^"]+) from ([^"]+)$/
      */
-    public function iAmOnTheRelativePath($path, $referer)
+    public function iAmOnTheRelativePath($path, $referrer)
     {
         $basePath = parse_url($this->baseUrl)['path'];
-        $uri = sprintf('%s%s/#url=%s%s', $this->baseUrl, $referer, $basePath, $path);
+        $uri = sprintf('%s%s/#url=%s%s', $this->baseUrl, $referrer, $basePath, $path);
 
         $this->getSession()->visit($uri);
     }
@@ -221,7 +221,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      * @param string $page
      *
      * @Given /^I edit the "([^"]*)" (\w+)$/
-     * @Given /^I am on the "([^"]*)" ((?!channel)\w+) page$/
+     * @Given /^I am on the "([^"]*)" ((?!channel)(?!family)\w+) page$/
      */
     public function iAmOnTheEntityEditPage($identifier, $page)
     {
@@ -235,7 +235,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      * @param string $identifier
      * @param string $page
      *
-     * @Given /^I am on the "([^"]*)" (channel) page$/
+     * @Given /^I am on the "([^"]*)" (channel|family) page$/
      */
     public function iAmOnTheRedoEntityEditPage($identifier, $page)
     {
@@ -366,6 +366,22 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         $message = trim($messageNode->getHtml());
 
         assertNotEquals('Loading ...', $message, 'The loading message should not equals the default value');
+    }
+
+    /**
+     * @Then /^I should not see a nice loading message$/
+     */
+    public function iShouldNotSeeANiceLoadingMessage()
+    {
+        $messageNode = $this->spin(function () {
+            return $this->getSession()
+                ->getPage()
+                ->find('css', $this->elements['Loading message']['css']);
+        }, 'Unable to find any loading message');
+
+        $message = trim($messageNode->getHtml());
+
+        assertEquals('Loading ...', $message, 'The loading message should equals the default value');
     }
 
     /**

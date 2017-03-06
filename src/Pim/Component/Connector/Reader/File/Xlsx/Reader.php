@@ -13,7 +13,6 @@ use Pim\Component\Connector\Exception\DataArrayConversionException;
 use Pim\Component\Connector\Exception\InvalidItemFromViolationsException;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Xlsx Reader

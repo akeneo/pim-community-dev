@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -28,6 +29,22 @@ class EnabledFieldSetter extends AbstractFieldSetter
      */
     public function setFieldData(ProductInterface $product, $field, $data, array $options = [])
     {
+        if (0 === $data || '0' === $data) {
+            $data = false;
+        }
+
+        if (1 === $data || '1' === $data) {
+            $data = true;
+        }
+
+        if (!is_bool($data)) {
+            throw InvalidPropertyTypeException::booleanExpected(
+                $field,
+                static::class,
+                $data
+            );
+        }
+
         $product->setEnabled($data);
     }
 }

@@ -5,7 +5,6 @@ namespace spec\Akeneo\Component\Analytics;
 use Akeneo\Component\Analytics\ChainedDataCollector;
 use Akeneo\Component\Analytics\DataCollectorInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ChainedDataCollectorSpec extends ObjectBehavior
 {

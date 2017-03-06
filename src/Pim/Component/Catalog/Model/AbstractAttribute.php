@@ -40,11 +40,11 @@ abstract class AbstractAttribute implements AttributeInterface
     protected $entityType;
 
     /**
-     * Attribute type (service alias))
+     * Attribute type
      *
      * @var string
      */
-    protected $attributeType;
+    protected $type;
 
     /**
      * Kind of field to store values
@@ -289,7 +289,15 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     public function getAttributeType()
     {
-        return $this->attributeType;
+        return $this->getType();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**
@@ -434,7 +442,7 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     public function getGroupSequence()
     {
-        $groups = ['Attribute', $this->getAttributeType()];
+        $groups = ['Attribute', $this->getType()];
 
         if ($this->isUnique()) {
             $groups[] = 'unique';
@@ -915,7 +923,7 @@ abstract class AbstractAttribute implements AttributeInterface
     public function getTranslation($locale = null)
     {
         $locale = ($locale) ? $locale : $this->locale;
-        if (!$locale) {
+        if (null === $locale) {
             return null;
         }
         foreach ($this->getTranslations() as $translation) {
@@ -1004,8 +1012,16 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     public function setAttributeType($type)
     {
-        $this->attributeType = $type;
-        if (AttributeTypes::IDENTIFIER === $this->attributeType) {
+        return $this->setType($type);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        if (AttributeTypes::IDENTIFIER === $this->type) {
             $this->required = true;
         }
 

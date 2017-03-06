@@ -30,11 +30,17 @@ class FamilyAttributeAsLabelValidator extends ConstraintValidator
         }
 
         if (!$this->doesAttributeAsLabelBelongToFamily($family)) {
-            $this->context->buildViolation($constraint->messageAttribute)->addViolation();
+            $this->context
+                ->buildViolation($constraint->messageAttribute)
+                ->atPath($constraint->propertyPath)
+                ->addViolation();
         }
 
         if (!$this->isAttributeAsLabelTypeValid($family)) {
-            $this->context->buildViolation($constraint->messageAttributeType)->addViolation();
+            $this->context
+                ->buildViolation($constraint->messageAttributeType)
+                ->atPath($constraint->propertyPath)
+                ->addViolation();
         }
     }
 
@@ -55,7 +61,7 @@ class FamilyAttributeAsLabelValidator extends ConstraintValidator
      */
     protected function isAttributeAsLabelTypeValid(FamilyInterface $family)
     {
-        return in_array($family->getAttributeAsLabel()->getAttributeType(), [
+        return in_array($family->getAttributeAsLabel()->getType(), [
                 AttributeTypes::IDENTIFIER,
                 AttributeTypes::TEXT
             ]);

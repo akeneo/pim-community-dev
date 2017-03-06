@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Filter;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;

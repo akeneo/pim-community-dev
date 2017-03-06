@@ -24,10 +24,10 @@ class MetricCompleteCheckerSpec extends ObjectBehavior
         LocaleInterface $locale
     ) {
         $productValue->getAttribute()->willReturn($attribute);
-        $attribute->getAttributeType()->willReturn(AttributeTypes::METRIC);
+        $attribute->getType()->willReturn(AttributeTypes::METRIC);
         $this->supportsValue($productValue, $channel, $locale)->shouldReturn(true);
 
-        $attribute->getAttributeType()->willReturn('other');
+        $attribute->getType()->willReturn('other');
         $this->supportsValue($productValue, $channel, $locale)->shouldReturn(false);
     }
 

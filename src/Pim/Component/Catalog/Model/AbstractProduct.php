@@ -479,7 +479,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function isAttributeRemovable(AttributeInterface $attribute)
     {
-        if (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
+        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
             return false;
         }
 

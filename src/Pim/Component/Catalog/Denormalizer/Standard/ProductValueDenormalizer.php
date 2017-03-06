@@ -64,7 +64,7 @@ class ProductValueDenormalizer implements SerializerAwareInterface, Denormalizer
             $attribute,
             $data['scope'],
             $data['locale'],
-            $this->serializer->denormalize($data['data'], $attribute->getAttributeType(), $format, $context)
+            $this->serializer->denormalize($data['data'], $attribute->getType(), $format, $context)
         );
     }
 

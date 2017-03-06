@@ -60,7 +60,7 @@ class VariantGroupAxisValidatorSpec extends ObjectBehavior
         $variantGroup->getType()->willReturn($type);
         $type->isVariant()->willReturn(true);
         $variantGroup->getAxisAttributes()->willReturn([$axisAttribute]);
-        $axisAttribute->getAttributeType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
+        $axisAttribute->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($variantGroup, $constraint);
@@ -126,7 +126,7 @@ class VariantGroupAxisValidatorSpec extends ObjectBehavior
         $variantGroup->getCode()->willReturn('tshirt');
         $type->isVariant()->willReturn(true);
         $variantGroup->getAxisAttributes()->willReturn([$invalidAxis]);
-        $invalidAxis->getAttributeType()->willReturn(AttributeTypes::TEXT);
+        $invalidAxis->getType()->willReturn(AttributeTypes::TEXT);
         $invalidAxis->getCode()->willReturn('name');
 
         $violationData = [

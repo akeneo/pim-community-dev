@@ -196,6 +196,8 @@ pim_enrich:
         unavailable: Dit specifiek veld van de landinstelling is niet beschikbaar in deze landinstelling
       localizable:
         channel_locale_unavailable: Dit lokaliseerbaar veld is niet beschikbaar voor locale '{{ locale }}' en kanaal '{{ channel }}'
+      media:
+        upload: Klik en sleep om te uploaden of klik hier
       create_popin:
         title: Een nieuw product aanmaken
         labels:
@@ -204,6 +206,10 @@ pim_enrich:
           cancel: Annuleren
     association_type:
       info:
+        deletion_successful: Associatietype succesvol verwijderd.
+        deletion_failed: Associatietype kon niet worden verwijderd.
+        update_successful: Associatietype succesvol bijgewerkt.
+        update_failed: Het associatietype kon niet worden bijgewerkt.
         field_not_ready:
           The association type cannot be saved right now. The following fields are not ready:
             - velden
@@ -216,9 +222,25 @@ pim_enrich:
         save: Opslaan
     channel:
       info:
+        deletion_successful: Kanaal succesvol verwijderd.
+        deletion_failed: Het kanaal kon niet worden verwijderd.
+        update_successful: Kanaal succesvol bijgewerkt.
+        update_failed: Het kanaal kon niet worden bijgewerkt.
+        create_successful: Kanaal succesvol aangemaakt.
+        create_failed: Het kanaal kon niet aangemaakt worden.
         field_not_ready:
           The channel cannot be saved right now. The following fields are not ready:
             - velden
+      meta:
+        created: Aangemaakt
+        created_by: Aangemaakt door
+        updated: Bijgewerkt
+        updated_by: Bijgewerkt door
+      btn:
+        save: Opslaan
+    family:
+      info:
+        create_successful: Kanaal succesvol aangemaakt.
       meta:
         created: Aangemaakt
         created_by: Aangemaakt door
@@ -253,6 +275,10 @@ pim_enrich:
     group:
       title: Groep
       info:
+        deletion_successful: Groep succesvol verwijderd.
+        deletion_failed: Groep kon niet verwijderd worden.
+        update_successful: Groep succesvol bijgewerkt.
+        update_failed: De groep kon niet worden bijgewerkt.
         field_not_ready:
           The group cannot be saved right now. The following fields are not ready:
             - velden
@@ -264,10 +290,15 @@ pim_enrich:
         created_by: Aangemaakt door
         updated: Bijgewerkt
         updated_by: Bijgewerkt door
+    job_instance:
+      info:
+        update_failed: Het jobprofiel kon niet worden bijgewerkt.
   confirmation:
     leave: Weet u zeker dat u deze pagina wilt verlaten?
     discard_changes: Als u deze pagina verlaat worden veranderingen aan {{ entity }} niet opgeslagen.
     delete_item: Verwijderen bevestigen
+    delete:
+      attribute: Bent u zeker dat u dit attribuut wil verwijderen van het product?
   info:
     not_applicable: Niet beschikbaar
     entity:
@@ -355,6 +386,26 @@ pim_enrich:
           category_tree: Categoriestructuur
           label_translations: Labelvertalingen
           label_conversion_units: Kies een conversie-eenheid voor elke metrisch attribuut dat zal worden gebruikt tijdens de productexport
+          conversion_unit:
+            do_not_convert: Niet converteren
+    family:
+      tab:
+        properties:
+          title: Eigenschappen
+          general: Algemeen
+          code: Code
+          attribute_as_label: Attribuut gebruikt als label
+          label_translations: Labelvertalingen
+        attributes:
+          title: Attributen
+          label_label: Label
+          toolbox:
+            select_attributes: Attributen toevoegen
+            add: Toevoegen
+          not_required_label: Niet verplicht
+          required_label: Verplicht
+        history:
+          title: Geschiedenis
     attribute_option:
       flash:
         option_created: Attribuut optie succesvol aangemaakt
@@ -404,6 +455,9 @@ pim_enrich:
             search_attributes: Zoeken...
             no_available_attributes: Er zijn geen attributen meer om toe te voegen
     job_instance:
+      title:
+        import: Profiel importeren
+        export: Profiel exporteren
       button:
         edit.title: Bewerken
         export.title: Nu exporteren
@@ -421,6 +475,12 @@ pim_enrich:
             title: Code
           label:
             title: Label
+          decimal_separator:
+            title: Decimaal scheidingsteken
+            help: Bepaal het decimaal scheidingsteken
+          date_format:
+            title: Datumnotatie
+            help: Bepaal het formaat van de datumvelden
           file_path:
             title: Bestandspad
             help: Waar het gegenereerde bestand op het bestandssysteem op te slaan
@@ -457,11 +517,16 @@ pim_enrich:
           enabled:
             title: Het product inschakelen
             help: Of geïmporteerd product moet worden ingeschakeld
+          enabled_comparison:
+            title: Vergelijk de waarden
+            help: Activeer de vergelijking tussen originele en geïmporteerde waarden. Kan import versnellen als geïmporteerde waarden erg gelijkaardig zijn aan originele waarden
           real_time_versioning:
             title: Real-time geschiedenis bijwerken
             help: Betekent dat de productgeschiedenis automatisch wordt bijgewerkt. Dit kan worden uitgeschakeld om de prestaties te verbeteren
         history:
           title: Geschiedenis
+  job:
+    upload: Klik en sleep om te uploaden of klik hier
   export:
     product:
       data:
@@ -501,6 +566,7 @@ pim_enrich:
             "NOT IN": Niet in de lijst
             EMPTY: Producten die geen familie hebben
             "NOT EMPTY": Producten die een familie hebben
+          empty_selection: Geen voorwaarde voor families
         updated:
           title: Tijdsvoorwaarde
           operators:
@@ -526,6 +592,7 @@ pim_enrich:
           empty_selection: Selecteer een familie
         category:
           title: Categorie
+          help: Gebruik de productcategorieën in de boom (gedefinieerd door het bovenstaande kanaal) om de producten te selecteren om te exporteren
         identifier:
           title: Id
         metric:

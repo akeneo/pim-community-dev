@@ -55,7 +55,7 @@ class AttributeRepositorySpec extends ObjectBehavior
         AbstractQuery $query
     ) {
         $queryBuilder->expr()->willreturn($in, $notScopable, $notLocalizable);
-        $in->in('a.attributeType', [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT])
+        $in->in('a.type', [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT])
             ->willReturn($in);
         $notScopable->neq('a.scopable', 1)->willReturn($notScopable);
         $notLocalizable->neq('a.localizable', 1)->willReturn($notLocalizable);

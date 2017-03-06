@@ -11,8 +11,6 @@ use Pim\Component\Catalog\tests\integration\Normalizer\Standard\AbstractStandard
  */
 class CategoryIntegration extends AbstractStandardNormalizerTestCase
 {
-    protected $purgeDatabaseForEachTest = false;
-
     public function testCategoryRoot()
     {
         $expected = [
@@ -29,7 +27,10 @@ class CategoryIntegration extends AbstractStandardNormalizerTestCase
         $expected = [
             'code'   => 'categoryA',
             'parent' => 'master',
-            'labels' => []
+            'labels' => [
+                'en_US' => 'Category A',
+                'fr_FR' => 'Catégorie A'
+            ]
         ];
 
         $this->assert('categoryA', $expected);

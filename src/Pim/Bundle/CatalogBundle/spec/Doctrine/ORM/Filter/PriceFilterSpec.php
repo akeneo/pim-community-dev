@@ -183,7 +183,7 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_checks_if_attribute_is_supported(AttributeInterface $attribute)
     {
-        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $attribute->getType()->willReturn('pim_catalog_price_collection');
         $this->supportsAttribute($attribute)->shouldReturn(true);
     }
 
@@ -221,6 +221,98 @@ class PriceFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($price, 'EMPTY', $value);
     }
 
+    function it_adds_an_empty_filter_in_the_query_without_values(
+        QueryBuilder $queryBuilder,
+        AttributeInterface $price,
+        Expr $expr,
+        Comparison $comparison
+    ) {
+        $price->getId()->willReturn(42);
+        $price->getCode()->willReturn('price');
+        $price->getBackendType()->willReturn('prices');
+        $price->isLocalizable()->willReturn(false);
+        $price->isScopable()->willReturn(false);
+
+        $queryBuilder->expr()->willReturn(new Expr());
+        $queryBuilder->getRootAlias()->willReturn('p');
+
+        $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
+
+        $queryBuilder->leftJoin(Argument::any(), Argument::any())->shouldBeCalled();
+        $queryBuilder->expr()->willReturn($expr);
+
+        $expr->literal('')->willReturn('');
+        $expr->eq(Argument::any(), '')->willReturn($comparison);
+        $expr->isNull(Argument::any())->willReturn('filterPprice.data IS NOT NULL');
+        $expr->isNull(Argument::any())->willReturn('filterPprice.id IS NOT NULL');
+        $expr->orX(Argument::any(), Argument::any())->shouldBeCalled();
+        $queryBuilder->andWhere(null)->shouldBeCalled();
+
+        $this->addAttributeFilter($price, 'EMPTY', []);
+    }
+
+    function it_adds_an_empty_filter_in_the_query_without_amount(
+        $currencyRepository,
+        QueryBuilder $queryBuilder,
+        AttributeInterface $price,
+        Expr $expr,
+        Comparison $comparison
+    ) {
+        $price->getId()->willReturn(42);
+        $price->getCode()->willReturn('price');
+        $price->getBackendType()->willReturn('prices');
+        $price->isLocalizable()->willReturn(false);
+        $price->isScopable()->willReturn(false);
+
+        $queryBuilder->expr()->willReturn(new Expr());
+        $queryBuilder->getRootAlias()->willReturn('p');
+
+        $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+
+        $queryBuilder->leftJoin(Argument::any(), Argument::any())->shouldBeCalled();
+        $queryBuilder->expr()->willReturn($expr);
+
+        $expr->literal('EUR')->willReturn('EUR');
+        $expr->eq(Argument::any(), 'EUR')->willReturn($comparison);
+        $expr->isNull(Argument::any())->willReturn('filterPprice.data IS NOT NULL');
+        $expr->isNull(Argument::any())->willReturn('filterPprice.id IS NOT NULL');
+        $expr->orX(Argument::any(), Argument::any())->shouldBeCalled();
+        $queryBuilder->andWhere(null)->shouldBeCalled();
+
+        $this->addAttributeFilter($price, 'EMPTY', ['currency' => 'EUR']);
+    }
+
+    function it_adds_an_empty_filter_in_the_query_without_currency(
+        QueryBuilder $queryBuilder,
+        AttributeInterface $price,
+        Expr $expr,
+        Comparison $comparison
+    ) {
+        $price->getId()->willReturn(42);
+        $price->getCode()->willReturn('price');
+        $price->getBackendType()->willReturn('prices');
+        $price->isLocalizable()->willReturn(false);
+        $price->isScopable()->willReturn(false);
+
+        $queryBuilder->expr()->willReturn(new Expr());
+        $queryBuilder->getRootAlias()->willReturn('p');
+
+        $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
+
+        $queryBuilder->leftJoin(Argument::any(), Argument::any())->shouldBeCalled();
+        $queryBuilder->expr()->willReturn($expr);
+
+        $expr->literal('')->willReturn('');
+        $expr->eq(Argument::any(), '')->willReturn($comparison);
+        $expr->isNull(Argument::any())->willReturn('filterPprice.data IS NOT NULL');
+        $expr->isNull(Argument::any())->willReturn('filterPprice.id IS NOT NULL');
+        $expr->orX(Argument::any(), Argument::any())->shouldBeCalled();
+        $queryBuilder->andWhere(null)->shouldBeCalled();
+
+        $this->addAttributeFilter($price, 'EMPTY', ['amount' => null]);
+    }
+
     function it_adds_a_not_empty_filter_in_the_query(
         $currencyRepository,
         QueryBuilder $queryBuilder,
@@ -252,6 +344,96 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->andWhere(null)->shouldBeCalled();
 
         $this->addAttributeFilter($price, 'NOT EMPTY', $value);
+    }
+
+    function it_adds_a_not_empty_filter_in_the_query_without_values(
+        QueryBuilder $queryBuilder,
+        AttributeInterface $price,
+        Expr $expr,
+        Comparison $comparison
+    ) {
+        $price->getId()->willReturn(42);
+        $price->getCode()->willReturn('price');
+        $price->getBackendType()->willReturn('prices');
+        $price->isLocalizable()->willReturn(false);
+        $price->isScopable()->willReturn(false);
+
+        $queryBuilder->expr()->willReturn(new Expr());
+        $queryBuilder->getRootAlias()->willReturn('p');
+
+        $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
+
+        $queryBuilder->leftJoin(Argument::any(), Argument::any())->shouldBeCalled();
+        $queryBuilder->expr()->willReturn($expr);
+
+        $expr->literal('')->willReturn('');
+        $expr->eq(Argument::any(), '')->willReturn($comparison);
+        $expr->isNotNull(Argument::any())->shouldBeCalledTimes(2);
+        $expr->andX(Argument::any(), Argument::any())->shouldBeCalled();
+        $queryBuilder->andWhere(null)->shouldBeCalled();
+
+        $this->addAttributeFilter($price, 'NOT EMPTY', []);
+    }
+
+    function it_adds_a_not_empty_filter_in_the_query_without_currency(
+        QueryBuilder $queryBuilder,
+        AttributeInterface $price,
+        Expr $expr,
+        Comparison $comparison
+    ) {
+        $price->getId()->willReturn(42);
+        $price->getCode()->willReturn('price');
+        $price->getBackendType()->willReturn('prices');
+        $price->isLocalizable()->willReturn(false);
+        $price->isScopable()->willReturn(false);
+
+        $queryBuilder->expr()->willReturn(new Expr());
+        $queryBuilder->getRootAlias()->willReturn('p');
+
+        $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
+
+        $queryBuilder->leftJoin(Argument::any(), Argument::any())->shouldBeCalled();
+        $queryBuilder->expr()->willReturn($expr);
+
+        $expr->literal('')->willReturn('');
+        $expr->eq(Argument::any(), '')->willReturn($comparison);
+        $expr->isNotNull(Argument::any())->shouldBeCalledTimes(2);
+        $expr->andX(Argument::any(), Argument::any())->shouldBeCalled();
+        $queryBuilder->andWhere(null)->shouldBeCalled();
+
+        $this->addAttributeFilter($price, 'NOT EMPTY', ['amount' => null]);
+    }
+
+    function it_adds_a_not_empty_filter_in_the_query_without_amount(
+        $currencyRepository,
+        QueryBuilder $queryBuilder,
+        AttributeInterface $price,
+        Expr $expr,
+        Comparison $comparison
+    ) {
+        $price->getId()->willReturn(42);
+        $price->getCode()->willReturn('price');
+        $price->getBackendType()->willReturn('prices');
+        $price->isLocalizable()->willReturn(false);
+        $price->isScopable()->willReturn(false);
+
+        $queryBuilder->expr()->willReturn(new Expr());
+        $queryBuilder->getRootAlias()->willReturn('p');
+
+        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
+
+        $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
+
+        $queryBuilder->leftJoin(Argument::any(), Argument::any())->shouldBeCalled();
+        $queryBuilder->expr()->willReturn($expr);
+
+        $expr->literal('EUR')->willReturn('EUR');
+        $expr->eq(Argument::any(), 'EUR')->willReturn($comparison);
+        $expr->isNotNull(Argument::any())->shouldBeCalledTimes(2);
+        $expr->andX(Argument::any(), Argument::any())->shouldBeCalled();
+        $queryBuilder->andWhere(null)->shouldBeCalled();
+
+        $this->addAttributeFilter($price, 'NOT EMPTY', ['currency' => 'EUR']);
     }
 
     function it_adds_a_not_equal_filter_in_the_query(

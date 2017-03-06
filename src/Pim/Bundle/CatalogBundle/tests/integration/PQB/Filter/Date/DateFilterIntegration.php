@@ -135,4 +135,13 @@ class DateFilterIntegration extends AbstractFilterTestCase
     {
         $this->execute([['a_date', Operators::BETWEEN, '2016-12-12T00:00:00']]);
     }
+
+    /**
+     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
+     * @expectedExceptionMessage Filter on property "a_date" is not supported or does not support operator "CONTAINS"
+     */
+    public function testErrorOperatorNotSupported()
+    {
+        $this->execute([['a_date', Operators::CONTAINS, '2017-02-07']]);
+    }
 }

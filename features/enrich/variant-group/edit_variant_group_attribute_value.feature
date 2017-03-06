@@ -37,7 +37,7 @@ Feature: Editing attribute values of a variant group also updates products
       | sku  | groups            | color | size |
       | boot | caterpillar_boots | black | 40   |
     And the following attributes:
-      | code                         | label-en_US           | label-fr_FR           | type                     | group     | allowedExtensions    | localizable | available_locales |
+      | code                         | label-en_US           | label-fr_FR           | type                     | group     | allowed_extensions   | localizable | available_locales |
       | technical_description        | Technical description | Description technique | pim_catalog_file         | media     | gif,png,jpeg,jpg,txt |             |                   |
       | simple_select_local_specific | Simple                | Simple                | pim_catalog_simpleselect | marketing |                      | 1           | fr_FR,en_US       |
       | multi_select_local_specific  | Multi                 | Multi                 | pim_catalog_multiselect  | marketing |                      | 1           | fr_FR,en_US       |

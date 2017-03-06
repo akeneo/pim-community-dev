@@ -57,6 +57,6 @@ class MetricCompleteChecker implements ProductValueCompleteCheckerInterface
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        return AttributeTypes::METRIC === $productValue->getAttribute()->getAttributeType();
+        return AttributeTypes::METRIC === $productValue->getAttribute()->getType();
     }
 }

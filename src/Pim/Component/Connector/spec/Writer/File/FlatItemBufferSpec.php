@@ -3,7 +3,6 @@
 namespace spec\Pim\Component\Connector\Writer\File;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class FlatItemBufferSpec extends ObjectBehavior
 {

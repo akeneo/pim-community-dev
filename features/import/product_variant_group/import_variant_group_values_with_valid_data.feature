@@ -258,7 +258,7 @@ Feature: Execute an import with valid data
 
   Scenario: Successfully import a csv file of variant group values with medias and files
     Given the following attributes:
-      | label-en_US | type              | allowed extensions | group | code       |
+      | label-en_US | type              | allowed_extensions | group | code       |
       | Front view  | pim_catalog_image | gif, jpg           | other | frontView  |
       | User manual | pim_catalog_file  | txt, pdf           | other | userManual |
     And the following CSV file to import:

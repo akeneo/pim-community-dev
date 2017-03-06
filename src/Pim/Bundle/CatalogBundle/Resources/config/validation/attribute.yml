@@ -7,7 +7,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         - Pim\Component\Catalog\Validator\Constraints\Immutable:
             properties:
                 - code
-                - attributeType
+                - type
                 - scopable
                 - localizable
                 - metricFamily
@@ -27,7 +27,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             properties:
                 - reference_data_name
     properties:
-        attributeType:
+        type:
             - NotBlank: ~
         code:
             - NotBlank: ~
@@ -167,6 +167,9 @@ Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
         label:
             - Length:
                 max: 100
+        locale:
+            - Pim\Component\Catalog\Validator\Constraints\Locale:
+                propertyPath: labels
 
 Pim\Bundle\CatalogBundle\Entity\AttributeOption:
     constraints:
@@ -183,4 +186,5 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
             - Length:
                 max: 255
         attribute:
+            - NotBlank: ~
             - Valid: ~

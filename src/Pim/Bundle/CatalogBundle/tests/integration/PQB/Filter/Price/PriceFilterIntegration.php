@@ -114,6 +114,9 @@ class PriceFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorEmpty()
     {
+        $result = $this->execute([['a_price', Operators::IS_EMPTY, []]]);
+        $this->assert($result, ['empty_product']);
+
         $result = $this->execute([['a_price', Operators::IS_EMPTY, ['amount' => '', 'currency' => '']]]);
         $this->assert($result, ['empty_product']);
     }
@@ -127,6 +130,9 @@ class PriceFilterIntegration extends AbstractFilterTestCase
         $this->assert($result, ['product_one']);
 
         $result = $this->execute([['a_price', Operators::IS_NOT_EMPTY, ['amount' => '', 'currency' => '']]]);
+        $this->assert($result, []);
+
+        $result = $this->execute([['a_price', Operators::IS_NOT_EMPTY, []]]);
         $this->assert($result, []);
     }
 
@@ -170,5 +176,14 @@ class PriceFilterIntegration extends AbstractFilterTestCase
     public function testErrorCurrencyNotFound()
     {
         $this->execute([['a_price', Operators::NOT_EQUAL, ['amount' => 10, 'currency' => 'NOT_FOUND']]]);
+    }
+
+    /**
+     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
+     * @expectedExceptionMessage Filter on property "a_price" is not supported or does not support operator "BETWEEN"
+     */
+    public function testErrorOperatorNotSupported()
+    {
+        $this->execute([['a_price', Operators::BETWEEN, ['amount' => 15, 'currency' => 'EUR']]]);
     }
 }

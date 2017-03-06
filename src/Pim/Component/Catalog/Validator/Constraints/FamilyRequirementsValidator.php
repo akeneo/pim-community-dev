@@ -69,7 +69,7 @@ class FamilyRequirementsValidator extends ConstraintValidator
                     '%channels%'  => implode(', ', $missingChannelCodes)
 
                 ]
-            )->addViolation();
+            )->atPath($constraint->propertyPath)->addViolation();
         }
     }
 
@@ -90,6 +90,7 @@ class FamilyRequirementsValidator extends ConstraintValidator
                         '%attribute%' => $attributeRequirement->getAttributeCode(),
                         '%channel%'   => $attributeRequirement->getChannelCode(),
                     ])
+                    ->atPath($constraint->propertyPath)
                     ->addViolation();
             }
         }

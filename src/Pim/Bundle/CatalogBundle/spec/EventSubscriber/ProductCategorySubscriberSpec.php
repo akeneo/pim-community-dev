@@ -8,7 +8,6 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Prophecy\Argument;
 
 class ProductCategorySubscriberSpec extends ObjectBehavior
 {
