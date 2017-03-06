@@ -1,0 +1,9 @@
+username;first_name;last_name;email;password;catalog_locale;user_locale;catalog_scope;default_tree;roles;groups;enabled;api_key;default_asset_tree
+admin;John;Doe;admin@example.com;admin;en_US;en_US;ecommerce;default;ROLE_ADMINISTRATOR;Read Only;1;admin_api_key;asset_main_catalog
+Peter;Peter;Williams;Peter@example.com;Peter;en_US;en_US;ecommerce;default;ROLE_ADMINISTRATOR;Read Only;1;Peter_api_key;asset_main_catalog
+Julia;Julia;Stark;Julia@example.com;Julia;en_US;en_US;ecommerce;default;ROLE_CATALOG_MANAGER;Marketing,Technical Clothing,Technical High-Tech,All;1;Julia_api_key;asset_main_catalog
+Mary;Mary;Smith;Mary@example.com;Mary;en_US;en_US;ecommerce;default;ROLE_USER;Marketing;1;Mary_api_key;asset_main_catalog
+Claude;Claude;Yachifeur;claude@example.com;Claude;en_US;en_US;ecommerce;default;ROLE_USER;Technical Clothing;1;Kevin_api_key;asset_main_catalog
+Teddy;Teddy;Ferant;teddy@example.com;Teddy;en_US;en_US;ecommerce;default;ROLE_USER;Technical High-Tech;1;Teddy_api_key;asset_main_catalog
+Kathy;Kathy;Peneflame;kathy@example.com;Kathy;en_US;en_US;ecommerce;default;ROLE_USER;Media manager;1;Kathy_api_key;asset_main_catalog
+Marc;Marc;Assin;Marc@example.com;Marc;en_US;en_US;ecommerce;default;ROLE_CATALOG_MANAGER;Technical Clothing,Technical High-Tech;1;Marc_api_key;asset_main_catalog

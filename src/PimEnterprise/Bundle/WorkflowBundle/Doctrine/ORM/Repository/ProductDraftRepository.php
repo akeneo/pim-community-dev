@@ -16,6 +16,7 @@ use Doctrine\ORM\QueryBuilder;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -201,7 +202,7 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
     {
         $qb = $this->createQueryBuilder('d');
         $qb->where($qb->expr()->in('d.id', ':product_draft_ids'));
-        $qb->setParameter(':product_draft_ids', $productDraftIds);
+        $qb->setParameter('product_draft_ids', $productDraftIds);
 
         return $qb->getQuery()->getResult();
     }
@@ -213,11 +214,17 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
     {
         $alias = 'p';
         $authorField = $alias.'.author';
-        $queryBuilder = $this->_em->createQueryBuilder()
+        $statusField = $alias.'.status';
+
+        $queryBuilder = $this->_em->createQueryBuilder();
+
+        $queryBuilder
             ->select($authorField)
             ->from($this->_entityName, $alias, $authorField)
+            ->where($queryBuilder->expr()->eq($statusField, ':productDraftStatus'))
             ->distinct(true)
-            ->orderBy($authorField);
+            ->orderBy($authorField)
+            ->setParameter('productDraftStatus', ProductDraft::READY);
 
         $authors = $queryBuilder->getQuery()->getArrayResult();
         $authorCodes = array_keys($authors);

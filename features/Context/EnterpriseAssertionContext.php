@@ -36,12 +36,12 @@ class EnterpriseAssertionContext extends BaseAssertionContext
             $this->getAssetGalleryItem($entity, $fieldContainer);
         }
 
-        if (count($fieldContainer->findAll('css', '.asset-gallery li')) !== count($entities)) {
+        if (count($fieldContainer->findAll('css', '.AknAssetCollectionField-listItem')) !== count($entities)) {
             throw $this->createExpectationException(
                 sprintf(
                     'Incorrect item count in asset gallery (expected: %s, current: %s',
                     count($entities),
-                    count($fieldContainer->findAll('css', '.asset-gallery li'))
+                    count($fieldContainer->findAll('css', '.AknAssetCollectionField li'))
                 )
             );
         }
@@ -80,7 +80,7 @@ class EnterpriseAssertionContext extends BaseAssertionContext
     {
         $baksetItem = $this->getAssetBasketItem($code);
         $thumbnail  = $this->spin(function () use ($baksetItem) {
-            return $baksetItem->find('css', '.asset-thumbnail');
+            return $baksetItem->find('css', '.AknAssetCollectionField-assetThumbnail');
         }, 'Impossible to find the thumbnail');
 
         $this->checkThumbnailUrlForContext($thumbnail, $code, $channelCode, $localeCode);
@@ -100,7 +100,7 @@ class EnterpriseAssertionContext extends BaseAssertionContext
     {
         $fieldContainer = $this->getCurrentPage()->findFieldContainer($field);
         $galleryItem    = $this->getAssetGalleryItem($code, $fieldContainer);
-        $thumbnail      = $galleryItem->find('css', '.asset-thumbnail');
+        $thumbnail      = $galleryItem->find('css', '.AknAssetCollectionField-assetThumbnail');
 
         $this->checkThumbnailUrlForContext($thumbnail, $code, $channelCode, $localeCode);
     }
@@ -166,8 +166,8 @@ class EnterpriseAssertionContext extends BaseAssertionContext
     protected function getAssetGalleryItem($code, NodeElement $fieldContainer)
     {
         return $this->spin(function () use ($code, $fieldContainer) {
-            return $fieldContainer->find('css', sprintf('.asset-gallery li[data-asset="%s"]', $code));
-        }, sprintf('Cannot find the gallery item %s', $code));
+            return $fieldContainer->find('css', sprintf('.AknAssetCollectionField-listItem[data-asset="%s"]', $code));
+        }, sprintf('Cannot find the gallery item "%s"', $code));
     }
 
     /**

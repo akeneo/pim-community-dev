@@ -19,8 +19,10 @@ pimee_enrich:
       tab:
         permission:
           title: Permissions
+          added: Le groupe {{ group }} sera autorisé à {{ permission }} le profil
           execute.label: Autorisé à exécuter les profils
           edit.label: Autorisé à éditer les profils
+          removed: Le groupe {{ group }} ne sera pas autorisé à {{ permission }} le profil
     channel:
       tab:
         asset-transformation:

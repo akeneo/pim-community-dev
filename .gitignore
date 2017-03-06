@@ -13,6 +13,7 @@ app/uploads/*
 app/uploads/product/*
 app/file_storage/*
 app/bootstrap.php.cache
+app/phpunit.xml
 build/
 vendor
 bin

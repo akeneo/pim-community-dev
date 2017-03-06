@@ -57,11 +57,20 @@ define(
                                 locale: _.isEmpty($this.data('locale')) ? null : $this.data('locale'),
                                 comment: _.isUndefined(myFormData.comment) ? null : myFormData.comment
                             })).then(function () {
-                                mediator.trigger('datagrid:doRefresh:' + gridName);
                                 messenger.notificationFlashMessage(
                                     'success',
                                     _.__('pimee_workflow.proposal.partial_' + action + '.modal.success')
                                 );
+
+                                /**
+                                 * Hard reload of the page, if deleted the last grid proposal,
+                                 * in order to refresh proposal grid filters.
+                                 */
+                                if (1 === $('table.proposal-changes').length) {
+                                    window.location.reload();
+                                } else {
+                                    mediator.trigger('datagrid:doRefresh:' + gridName);
+                                }
                             }).fail(function () {
                                 messenger.notificationFlashMessage(
                                     'error',

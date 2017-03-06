@@ -1,0 +1,59 @@
+teamwork_assistant:
+  common:
+    required: Verplicht
+  grid:
+    view_selector:
+      create: Project aanmaken
+      edit: Project bewerken
+      remove: Project verwijderen
+      create_from_view: Project aanmaken vanuit deze weergave
+      loading: Laden...
+      start_new_project: Nieuw project starten
+      confirmation:
+        remove: Weet je zeker dat je het project wilt verwijderen?
+        delete: Bevestig verwijderen
+  project:
+    label: Label
+    label_maxlength: Deze waarde is te lang. Het moet {{ max }} karakters of minder bevatten.
+    description: Beschrijving
+    due_date: Inleverdatum
+    due_date_past: Je kan geen datum in het verleden selecteren.
+  edit_project_modal:
+    label_placeholder: Projectnaam
+    description_placeholder: Projectbeschrijving
+    saved: Het project werd opgeslagen.
+    title: Project bewerken
+    confirm: Opslaan
+    cancel: Annuleren
+  create_project_modal:
+    label_placeholder: Naam van het nieuwe project
+    description_placeholder: Beschrijving van het nieuwe project
+    saved: Het project werd opgeslagen, je wordt gewaarschuwd wanneer de berekening is uitgevoerd.
+    title: Project aanmaken
+    confirm: Opslaan
+    cancel: Annuleren
+  widget:
+    no_project: Je hebt geen huidig project
+    no_project_create: nieuw project starten
+    description: Beschrijving
+    due_date: Inleverdatum
+    todo: TE DOEN
+    in_progress: IN UITVOERING
+    done: KLAAR
+    all_contributors: Alle medewerkers
+    display_products: Producten weergeven
+    placeholder:
+      contributor_selector: Zoek medewerker
+      project_selector: Zoek project
+    completeness:
+      to_enrich: PRODUCTEN OM TE VERRIJKEN
+      in_progress: PRODUCTEN IN UITVOERING
+      done: PRODUCTEN GEDAAN
+pim_datagrid:
+  view_selector:
+    project: Projecten
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        project_calculation: Projectberekening

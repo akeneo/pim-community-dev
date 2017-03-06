@@ -25,7 +25,7 @@ class FilePresenterSpec extends ObjectBehavior
         ProductValueInterface $value,
         AttributeInterface $attribute
     ) {
-        $attribute->getAttributeType()->willReturn('pim_catalog_file');
+        $attribute->getType()->willReturn('pim_catalog_file');
         $value->getAttribute()->willReturn($attribute);
 
         $this->supports($value)->shouldBe(true);

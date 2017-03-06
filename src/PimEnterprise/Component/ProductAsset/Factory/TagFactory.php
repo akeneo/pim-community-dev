@@ -39,16 +39,4 @@ class TagFactory implements SimpleFactoryInterface
     {
         return new $this->tagClass();
     }
-
-    /**
-     * Create a new empty Tag
-     *
-     * @return TagInterface
-     *
-     * @deprecated Will be removed in 1.7. Use create() instead.
-     */
-    public function createTag()
-    {
-        return $this->create();
-    }
 }

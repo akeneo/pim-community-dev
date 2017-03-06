@@ -1,0 +1,144 @@
+parameters:
+    pimee_teamwork_assistant.table_name_mapper.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\TableNameMapper'
+    pimee_teamwork_assistant.repository.user.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\UserRepository'
+    pimee_teamwork_assistant.repository.product.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\ProductRepository'
+    pimee_teamwork_assistant.repository.family_requirement.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\FamilyRequirementRepository'
+    pimee_teamwork_assistant.repository.attribute_permission.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\AttributePermissionRepository'
+    pimee_teamwork_assistant.repository.pre_processing.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\PreProcessingRepository'
+    pimee_teamwork_assistant.repository.project_status.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\ProjectStatusRepository'
+    pimee_teamwork_assistant.factory.project_calculation_notification.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectCalculationNotificationFactory'
+    pimee_teamwork_assistant.factory.project_notification.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectNotificationFactory'
+    pimee_teamwork_assistant.event_subscriber.catalog_updates.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\CatalogUpdatesSubscriber'
+    pimee_teamwork_assistant.converter.filter.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\FilterConverter'
+    pimee_teamwork_assistant.event_subscriber.notification.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\NotificationSubscriber'
+    pimee_teamwork_assistant.notifier.project_created.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectCreatedNotifier'
+    pimee_teamwork_assistant.notifier.project_finished.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectFinishedNotifier'
+    pimee_teamwork_assistant.notifier.project_due_date_reminder.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectDueDateReminderNotifier'
+    pimee_teamwork_assistant.reminder.days: [7, 3, 1]
+    pimee_teamwork_assistant.calculator.attribute_group_completeness.class: 'PimEnterprise\Component\TeamworkAssistant\Calculator\AttributeGroupCompletenessCalculator'
+    pimee_teamwork_assistant.calculator.contributor_group.class: 'PimEnterprise\Component\TeamworkAssistant\Calculator\ContributorGroupCalculator'
+
+services:
+    pimee_teamwork_assistant.table_name_mapper:
+        class: '%pimee_teamwork_assistant.table_name_mapper.class%'
+        arguments:
+            - '@akeneo_storage_utils.doctrine.table_name_builder'
+            - '%pimee_teamwork_assistant.pre_processing.tables%'
+
+    ### Repositories
+    pimee_teamwork_assistant.repository.user:
+        class: '%pimee_teamwork_assistant.repository.user.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%pim_user.entity.user.class%'
+
+    pimee_teamwork_assistant.repository.product:
+        class: '%pimee_teamwork_assistant.repository.product.class%'
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pimee_security.repository.category_access'
+
+    pimee_teamwork_assistant.repository.family_requirement:
+        class: '%pimee_teamwork_assistant.repository.family_requirement.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%pim_catalog.entity.attribute_requirement.class%'
+
+    pimee_teamwork_assistant.repository.attribute_permission:
+        class: '%pimee_teamwork_assistant.repository.attribute_permission.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%pimee_security.entity.attribute_group_access.class%'
+
+    pimee_teamwork_assistant.repository.pre_processing:
+        class: '%pimee_teamwork_assistant.repository.pre_processing.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@pimee_teamwork_assistant.table_name_mapper'
+
+    pimee_teamwork_assistant.repository.project_status:
+        class: '%pimee_teamwork_assistant.repository.project_status.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%pimee_teamwork_assistant.model.project_status.class%'
+
+    ### Notifications
+    pimee_teamwork_assistant.factory.project_calculation_notification:
+        class: '%pimee_teamwork_assistant.factory.project_calculation_notification.class%'
+        arguments:
+            - '@pimee_teamwork_assistant.repository.project'
+            - '@pim_catalog.localization.presenter.date'
+            - ['project_calculation']
+            - '%pim_notification.entity.notification.class%'
+        public: false
+        tags:
+            - { name: pim_notification.factory.notification }
+
+    pimee_teamwork_assistant.factory.project_notification:
+        class: '%pimee_teamwork_assistant.factory.project_notification.class%'
+        arguments:
+            - '%pim_notification.entity.notification.class%'
+
+    pimee_teamwork_assistant.notifier.project_created:
+        class: '%pimee_teamwork_assistant.notifier.project_created.class%'
+        arguments:
+            - '@pimee_teamwork_assistant.factory.project_notification'
+            - '@pim_notification.notifier'
+            - '@pim_catalog.localization.presenter.date'
+            - '@pimee_teamwork_assistant.repository.project_status'
+
+    pimee_teamwork_assistant.notifier.project_finished:
+        class: '%pimee_teamwork_assistant.notifier.project_finished.class%'
+        arguments:
+            - '@pimee_teamwork_assistant.factory.project_notification'
+            - '@pim_notification.notifier'
+            - '@pim_catalog.localization.presenter.date'
+            - '@pimee_teamwork_assistant.repository.project_status'
+
+    pimee_teamwork_assistant.notifier.project_due_date_reminder:
+        class: '%pimee_teamwork_assistant.notifier.project_due_date_reminder.class%'
+        arguments:
+            - '@pimee_teamwork_assistant.factory.project_notification'
+            - '@pim_notification.notifier'
+            - '@pim_catalog.localization.presenter.date'
+            - '%pimee_teamwork_assistant.reminder.days%'
+
+    pimee_teamwork_assistant.event_subscriber.notification:
+        class: '%pimee_teamwork_assistant.event_subscriber.notification.class%'
+        arguments:
+            - '@pimee_teamwork_assistant.repository.user'
+            - '@pimee_teamwork_assistant.factory.project_status'
+            - '@pimee_teamwork_assistant.repository.project_status'
+            - '@pimee_teamwork_assistant.saver.project_status'
+            - '@pimee_teamwork_assistant.repository.project_completeness'
+            - '@pimee_teamwork_assistant.notifier.project_created'
+            - '@pimee_teamwork_assistant.notifier.project_finished'
+        tags:
+            - { name: kernel.event_subscriber}
+
+    ### Datagrid
+    pimee_teamwork_assistant.converter.filter:
+        class: '%pimee_teamwork_assistant.converter.filter.class%'
+        arguments:
+            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+
+    pimee_teamwork_assistant.event_subscriber.catalog_updates:
+        class: '%pimee_teamwork_assistant.event_subscriber.catalog_updates.class%'
+        arguments:
+            - '@pimee_teamwork_assistant.project_remover.chained'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ### Calculators
+    pimee_teamwork_assistant.calculator.attribute_group_completeness:
+        class: '%pimee_teamwork_assistant.calculator.attribute_group_completeness.class%'
+        arguments:
+            - '@pim_catalog.completeness.checker'
+            - '@pimee_teamwork_assistant.repository.family_requirement'
+
+    pimee_teamwork_assistant.calculator.contributor_group:
+        class: '%pimee_teamwork_assistant.calculator.contributor_group.class%'
+        arguments:
+            - '@pimee_security.repository.category_access'
+            - '@pimee_teamwork_assistant.repository.family_requirement'
+            - '@pimee_teamwork_assistant.repository.attribute_permission'

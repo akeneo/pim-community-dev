@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\ImportExport;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use Symfony\Component\EventDispatcher\GenericEvent;

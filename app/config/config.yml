@@ -122,24 +122,5 @@ pim_reference_data:
 akeneo_storage_utils:
     mapping_overrides:
         -
-            original: Pim\Component\Catalog\Model\ProductValue
-            override: PimEnterprise\Component\Catalog\Model\ProductValue
-        -
-            original: PimEnterprise\Component\Catalog\Model\ProductValue
-            override: AcmeEnterprise\Bundle\AppBundle\Model\ProductValue
-        -
-            original: PimEnterprise\Component\Workflow\Model\PublishedProductValue
-            override: AcmeEnterprise\Bundle\AppBundle\Model\PublishedProductValue
-        -
             original: Pim\Bundle\UserBundle\Entity\User
             override: PimEnterprise\Bundle\UserBundle\Entity\User
-
-pim_elastic_search:
-    client:
-        product:
-            index_name: "%pim_es_index_name%"
-        published_product:
-            index_name: "%pim_es_published_product_index%"
-        config:
-            host: "%pim_es_host%"
-            port: "%pim_es_port%"

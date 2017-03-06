@@ -1,6 +1,0 @@
-extensions:
-    activity-manager-grid-view-selector-footer-create-project:
-        module: activity-manager/grid/view-selector/footer/create/project
-        parent: pim-grid-view-selector-footer-create
-        targetZone: action-list
-        position: 100

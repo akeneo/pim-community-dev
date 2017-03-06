@@ -198,7 +198,7 @@ class ProductDraftChangesExtension extends \Twig_Extension
     protected function createFakeValue($code)
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($code);
-        $newAttribute = $this->attributeFactory->createAttribute($attribute->getAttributeType());
+        $newAttribute = $this->attributeFactory->createAttribute($attribute->getType());
         $newAttribute->setCode($code);
         $value = $this->productBuilder->createProductValue($newAttribute);
 

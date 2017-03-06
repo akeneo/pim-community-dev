@@ -1,0 +1,146 @@
+parameters:
+    pimee_teamwork_assistant.project_calculation.connector_name: 'teamwork assistant'
+
+    pimee_teamwork_assistant.prepare_project_calculation.tasklet_name: 'prepare_project_calculation'
+    pimee_teamwork_assistant.project_calculation.tasklet_name: 'project_calculation'
+    pimee_teamwork_assistant.project_calculation.job_name: 'project_calculation'
+    pimee_teamwork_assistant.project_calculation.job_type: 'project_calculation'
+    pimee_teamwork_assistant.clean_contributor_group.tasklet_name: 'clean_contributor_group'
+
+    pimee_teamwork_assistant.tasklet.prepare_project_calculation.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\PrepareProjectCalculationTasklet'
+    pimee_teamwork_assistant.tasklet.clean_contributor_group.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CleanContributorGroupTasklet'
+    pimee_teamwork_assistant.tasklet.project_calculation.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\ProjectCalculationTasklet'
+    pimee_teamwork_assistant.calculation_step.chained.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\ChainedCalculationStep'
+    pimee_teamwork_assistant.calculation_step.add_user_group.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\AddUserGroupStep'
+    pimee_teamwork_assistant.calculation_step.add_product.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\AddProductStep'
+    pimee_teamwork_assistant.calculation_step.link_product_category.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\LinkProductAndCategoryStep'
+    pimee_teamwork_assistant.calculation_step.process_attribute_group_completeness.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\ProcessAttributeGroupCompletenessStep'
+    pimee_teamwork_assistant.launcher.job.project_calculation.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Job\ProjectCalculationJobLauncher'
+    pimee_teamwork_assistant.job.project_calculation_parameter.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\ProjectCalculationJobParameters'
+
+services:
+    ### Tasklet
+    pimee_teamwork_assistant.tasklet.project_calculation:
+        class: '%pimee_teamwork_assistant.tasklet.project_calculation.class%'
+        arguments:
+            - '@pimee_teamwork_assistant.repository.product'
+            - '@pimee_teamwork_assistant.repository.project'
+            - '@pimee_teamwork_assistant.calculation_step.chained'
+            - '@pimee_teamwork_assistant.saver.project'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+        public: false
+
+    pimee_teamwork_assistant.tasklet.prepare_project_calculation:
+        class: '%pimee_teamwork_assistant.tasklet.prepare_project_calculation.class%'
+        arguments:
+            - '@pimee_teamwork_assistant.repository.pre_processing'
+            - '@pimee_teamwork_assistant.repository.project'
+        public: false
+
+    pimee_teamwork_assistant.tasklet.clean_contributor_group:
+        class: '%pimee_teamwork_assistant.tasklet.clean_contributor_group.class%'
+        arguments:
+            - '@pimee_security.repository.locale_access'
+            - '@pimee_teamwork_assistant.repository.project'
+            - '@pimee_teamwork_assistant.saver.project'
+        public: false
+
+    ### Steps
+    pimee_teamwork_assistant.step.project_calculation:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - '%pimee_teamwork_assistant.project_calculation.tasklet_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_teamwork_assistant.tasklet.project_calculation'
+        public: false
+
+    pimee_teamwork_assistant.step.prepare_project_calculation:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - '%pimee_teamwork_assistant.prepare_project_calculation.tasklet_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_teamwork_assistant.tasklet.prepare_project_calculation'
+        public: false
+
+    pimee_teamwork_assistant.step.clean_contributor_group:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - '%pimee_teamwork_assistant.clean_contributor_group.tasklet_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_teamwork_assistant.tasklet.clean_contributor_group'
+        public: false
+
+    ### Job
+    pimee_teamwork_assistant.job.project_calculation:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_teamwork_assistant.project_calculation.job_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_teamwork_assistant.step.prepare_project_calculation'
+                - '@pimee_teamwork_assistant.step.project_calculation'
+                - '@pimee_teamwork_assistant.step.clean_contributor_group'
+        public: false
+        tags:
+            - { name: akeneo_batch.job, connector: '%pimee_teamwork_assistant.project_calculation.connector_name%', type: '%pimee_teamwork_assistant.project_calculation.job_type%' }
+
+    ### Calculation step
+    pimee_teamwork_assistant.calculation_step.add_user_group:
+        class: '%pimee_teamwork_assistant.calculation_step.add_user_group.class%'
+        arguments:
+            - '@pimee_teamwork_assistant.calculator.contributor_group'
+        public: false
+        tags:
+            - { name: pimee_teamwork_assistant.calculation_step, priority: 100 }
+
+    pimee_teamwork_assistant.calculation_step.add_product:
+        class: '%pimee_teamwork_assistant.calculation_step.add_product.class%'
+        arguments:
+            - '@pimee_teamwork_assistant.repository.pre_processing'
+        public: false
+        tags:
+            - { name: pimee_teamwork_assistant.calculation_step, priority: 200 }
+
+    pimee_teamwork_assistant.calculation_step.link_product_category:
+        class: '%pimee_teamwork_assistant.calculation_step.link_product_category.class%'
+        arguments:
+            - '@pimee_teamwork_assistant.repository.pre_processing'
+        public: false
+        tags:
+            - { name: pimee_teamwork_assistant.calculation_step, priority: 300 }
+
+    pimee_teamwork_assistant.calculation_step.process_attribute_group_completeness:
+        class: '%pimee_teamwork_assistant.calculation_step.process_attribute_group_completeness.class%'
+        arguments:
+            - '@pimee_teamwork_assistant.repository.pre_processing'
+            - '@pimee_teamwork_assistant.calculator.attribute_group_completeness'
+        public: false
+        tags:
+            - { name: pimee_teamwork_assistant.calculation_step, priority: 400 }
+
+    pimee_teamwork_assistant.calculation_step.chained:
+        class: '%pimee_teamwork_assistant.calculation_step.chained.class%'
+        arguments:
+            - []
+
+    ### Job launcher
+    pimee_teamwork_assistant.launcher.job.project_calculation:
+        class: '%pimee_teamwork_assistant.launcher.job.project_calculation.class%'
+        arguments:
+            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '%pimee_teamwork_assistant.project_calculation.job_name%'
+
+    ### Job Parameters
+    pimee_teamwork_assistant.job.project_calculation_parameter:
+        class: '%pimee_teamwork_assistant.job.project_calculation_parameter.class%'
+        arguments:
+            - '%pimee_teamwork_assistant.project_calculation.job_name%'
+        public: false
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

@@ -28,7 +28,7 @@ abstract class AbstractProductValuePresenter implements PresenterInterface, Rend
     public function supports($data)
     {
         if ($data instanceof ProductValueInterface) {
-            return $this->supportsChange($data->getAttribute()->getAttributeType());
+            return $this->supportsChange($data->getAttribute()->getType());
         }
 
         return false;

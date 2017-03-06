@@ -13,11 +13,8 @@ namespace PimEnterprise\Bundle\EnrichBundle\Connector\Job\JobParameters\Constrai
 
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
-use Pim\Component\Catalog\Validator\Constraints\IsString;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * Constraints for mass publish.

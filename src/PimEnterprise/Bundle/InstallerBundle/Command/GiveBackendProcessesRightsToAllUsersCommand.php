@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\InstallerBundle\Command;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -109,7 +110,7 @@ class GiveBackendProcessesRightsToAllUsersCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return \Pim\Bundle\UserBundle\Entity\Repository\GroupRepository
+     * @return GroupRepository
      */
     protected function getUserGroupRepository()
     {
