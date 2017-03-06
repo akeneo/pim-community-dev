@@ -12,6 +12,8 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
+ * Allow to filter products regarding their completeness in a given Teamwork Assistant project.
+ *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
@@ -62,8 +64,6 @@ class ProjectCompletenessFilter extends OroChoiceFilter
     }
 
     /**
-     * Filter by permissions on category ids (category with owner permissions or not classified at all)
-     *
      * {@inheritdoc}
      */
     public function apply(FilterDatasourceAdapterInterface $ds, $data)
@@ -72,7 +72,6 @@ class ProjectCompletenessFilter extends OroChoiceFilter
             return false;
         }
 
-        // RECUP ID VIEW
         $parameters = $this->requestParams->getRootParameterValue();
         $viewId = null;
         if (isset($parameters['_parameters']['view']['id']) && !empty($parameters['_parameters']['view']['id'])) {
@@ -83,14 +82,11 @@ class ProjectCompletenessFilter extends OroChoiceFilter
             return false;
         }
 
-        // RECUP PROJET
         $project = $this->projectRepository->findOneBy(['datagridView' => $parameters['_parameters']['view']['id']]);
-
         if (null === $project) {
             return false;
         }
 
-        // APPEL DU REPO
         $username = $this->tokenStorage->getToken()->getUsername();
         $productIds = $this->projectCompletenessRepo->findProductIds($project, $data['value'], $username);
         $productIds = empty($productIds) ? ['-1'] : $productIds;
@@ -101,9 +97,7 @@ class ProjectCompletenessFilter extends OroChoiceFilter
     }
 
     /**
-     * @param array $data
-     *
-     * @return array|false
+     * {@inheritdoc}
      */
     protected function parseData($data)
     {

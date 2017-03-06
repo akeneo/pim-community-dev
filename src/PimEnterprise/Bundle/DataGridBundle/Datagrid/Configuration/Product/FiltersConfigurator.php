@@ -37,7 +37,10 @@ class FiltersConfigurator extends BaseFiltersConfigurator
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
+    /** @var bool */
     private $isProject = null;
+
+    /** @var bool */
     private $isProjectOwner = null;
 
     /**
@@ -72,6 +75,10 @@ class FiltersConfigurator extends BaseFiltersConfigurator
         $this->addProjectCompletenessFilter($configuration);
     }
 
+    /**
+     * Read the request stack to guess if the user is on a datagrid view, and especially on a
+     * Teamwork Assistant project. If so, stores the information locally just for the time of the request.
+     */
     protected function retrieveTeamworkAssistantInformations()
     {
         $parameters = $request = $this->stack->getCurrentRequest()->get('product-grid');
@@ -96,6 +103,8 @@ class FiltersConfigurator extends BaseFiltersConfigurator
 
     /**
      * Add the is owner filter in the datagrid configuration
+     *
+     * @param DatagridConfiguration $configuration
      */
     protected function addIsOwnerFilter(DatagridConfiguration $configuration)
     {
@@ -123,6 +132,9 @@ class FiltersConfigurator extends BaseFiltersConfigurator
     }
 
     /**
+     * Add the Teamwork Assistant project completeness filter in the datagrid configuration.
+     * The filter is only added if the user is currently on a Teamwork Assistant project.
+     *
      * @param $configuration
      */
     protected function addProjectCompletenessFilter($configuration)
@@ -132,22 +144,22 @@ class FiltersConfigurator extends BaseFiltersConfigurator
         }
 
         $choices = [
-            ProjectCompletenessFilter::CONTRIBUTOR_TODO        => 'TODO (Contributor)',
-            ProjectCompletenessFilter::CONTRIBUTOR_IN_PROGRESS => 'IN PROGRESS (Contributor)',
-            ProjectCompletenessFilter::CONTRIBUTOR_DONE        => 'DONE (Contributor)',
+            ProjectCompletenessFilter::CONTRIBUTOR_TODO        => 'teamwork_assistant.datagrid.contributor_todo',
+            ProjectCompletenessFilter::CONTRIBUTOR_IN_PROGRESS => 'teamwork_assistant.datagrid.contributor_in_progress',
+            ProjectCompletenessFilter::CONTRIBUTOR_DONE        => 'teamwork_assistant.datagrid.contributor_done',
         ];
 
         if ($this->isProjectOwner) {
-            $choices[ProjectCompletenessFilter::OWNER_TODO] = 'TODO (Owner)';
-            $choices[ProjectCompletenessFilter::OWNER_IN_PROGRESS] = 'IN PROGRESS (Owner)';
-            $choices[ProjectCompletenessFilter::OWNER_DONE] = 'DONE (Owner)';
+            $choices[ProjectCompletenessFilter::OWNER_TODO] = 'teamwork_assistant.datagrid.owner_todo';
+            $choices[ProjectCompletenessFilter::OWNER_IN_PROGRESS] = 'teamwork_assistant.datagrid.owner_in_progress';
+            $choices[ProjectCompletenessFilter::OWNER_DONE] = 'teamwork_assistant.datagrid.owner_done';
         }
 
         $filter = [
             'type'      => 'project_completeness',
             'ftype'     => 'choice',
             'data_name' => 'project_completeness',
-            'label'     => 'PROJECT COMPLETENESS',
+            'label'     => 'teamwork_assistant.datagrid.project_completeness',
             'options'   => [
                 'field_options' => [
                     'multiple' => false,

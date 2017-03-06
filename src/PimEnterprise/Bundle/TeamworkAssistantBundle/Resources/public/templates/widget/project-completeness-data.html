@@ -1,8 +1,8 @@
 <div class="AknProjectWidget-boxContainer">
     <span class="AknProjectWidget-boxLabel"><%- todoLabel %></span>
     <div class="AknProjectWidget-box AknProjectWidget-box--important">
-        <% if (username === contributorUsername || null === contributorUsername) { %>
-            <a class="AknProjectWidget-boxHover" href="<%- url %>">
+        <% if (displayLinks) { %>
+            <a class="AknProjectWidget-boxHover" href="<%- urls.todo %>">
                 <span class="AknProjectWidget-boxHoverText"><%- displayProductsLabel %></span>
             </a>
         <% } %>
@@ -15,8 +15,8 @@
 <div class="AknProjectWidget-boxContainer">
     <span class="AknProjectWidget-boxLabel"><%- inProgressLabel %></span>
     <div class="AknProjectWidget-box AknProjectWidget-box--warning">
-        <% if (username === contributorUsername || null === contributorUsername) { %>
-            <a class="AknProjectWidget-boxHover" href="<%- url %>">
+        <% if (displayLinks) { %>
+            <a class="AknProjectWidget-boxHover" href="<%- urls.inprogress %>">
                 <span class="AknProjectWidget-boxHoverText"><%- displayProductsLabel %></span>
             </a>
         <% } %>
@@ -29,6 +29,12 @@
 <div class="AknProjectWidget-boxContainer">
     <span class="AknProjectWidget-boxLabel"><%- doneLabel %></span>
     <div class="AknProjectWidget-box AknProjectWidget-box--success">
+        <% if (displayLinks) { %>
+        <a class="AknProjectWidget-boxHover" href="<%- urls.done %>">
+            <span class="AknProjectWidget-boxHoverText"><%- displayProductsLabel %></span>
+        </a>
+        <% } %>
+
         <div class="AknProjectWidget-boxData teamwork-assistant-completeness-done"><%- completeness.products_count_done %></div>
         <%- completeness.ratio_done %>% <%- ratioDoneLabel %>
     </div>

@@ -11,13 +11,15 @@
             'use strict';
 
             $(function() {
+                var extraFilter = '&f%5Bproject_completeness%5D%5Bvalue%5D=' + {{ status }};
+
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo('#loading-project-filtered-grid');
                 loadingMask.show();
 
                 DatagridState.set('product-grid', {
                     view: {{ view.id }},
-                    filters: '{{ view.filters|raw }}',
+                    filters: '{{ view.filters|raw }}' + extraFilter,
                     columns: '{{ view.columns|join(',') }}'
                 });
 
