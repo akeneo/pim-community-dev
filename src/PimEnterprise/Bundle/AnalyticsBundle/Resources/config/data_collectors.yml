@@ -5,9 +5,9 @@ services:
     pimee_analytics.data_collector.database:
         class: '%pimee_analytics.data_collector.database.class%'
         arguments:
-            - '@pimee_workflow.repository.product_draft'
-            - '@pimee_teamwork_assistant.repository.project'
-            - '@pimee_product_asset.repository.asset'
+            - '@pimee_analytics.repository.product_draft'
+            - '@pimee_analytics.repository.project'
+            - '@pimee_analytics.repository.asset'
             - '@pimee_workflow.repository.published_product'
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }

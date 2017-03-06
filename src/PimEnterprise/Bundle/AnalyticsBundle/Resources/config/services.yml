@@ -1,0 +1,23 @@
+parameters:
+  pimee_analytics.repository.product_draft.class: PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\ProductDraftRepository
+  pimee_analytics.repository.asset.class:         PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\AssetRepository
+  pimee_analytics.repository.project.class:       PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\ProjectRepository
+
+services:
+    pimee_analytics.repository.product_draft:
+        class: '%pimee_analytics.repository.product_draft.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%pimee_workflow.model.product_draft.class%'
+
+    pimee_analytics.repository.asset:
+        class: '%pimee_analytics.repository.asset.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%pimee_product_asset.model.asset.class%'
+
+    pimee_analytics.repository.project:
+        class: '%pimee_analytics.repository.project.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%pimee_teamwork_assistant.model.project.class%'

@@ -121,11 +121,4 @@ interface AssetRepositoryInterface extends
      * @return array
      */
     public function findByIds(array $assetIds);
-
-    /**
-     * Count the total number of assets
-     *
-     * @return integer
-     */
-    public function countAll();
 }

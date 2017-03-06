@@ -368,19 +368,6 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function countAll()
-    {
-        $qb = $this->createQueryBuilder('a');
-
-        return (int) $qb
-            ->select('count(a.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
-    }
-
-    /**
      * Apply an in list filter
      *
      * @param QueryBuilder $qb

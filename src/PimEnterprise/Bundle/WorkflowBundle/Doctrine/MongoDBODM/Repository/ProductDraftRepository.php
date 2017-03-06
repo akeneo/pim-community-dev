@@ -239,17 +239,6 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function countAll()
-    {
-        $qb = $this->createQueryBuilder('ProductDraft')->hydrate(false);
-        $count = $qb->getQuery()->execute()->count();
-
-        return $count;
-    }
-
-    /**
      * Creates a QB with proposals that are approvable by the user
      *
      * @param UserInterface $user

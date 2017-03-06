@@ -12,9 +12,9 @@
 namespace PimEnterprise\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Component\Analytics\DataCollectorInterface;
-use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectRepositoryInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\AssetRepository;
+use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\ProductDraftRepository;
+use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\ProjectRepository;
 use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 
 /**
@@ -28,28 +28,28 @@ use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterf
  */
 class DBDataCollector implements DataCollectorInterface
 {
-    /** @var ProductDraftRepositoryInterface */
+    /** @var ProductDraftRepository */
     protected $draftRepository;
 
-    /** @var ProjectRepositoryInterface */
+    /** @var ProjectRepository */
     protected $projectRepository;
 
-    /** @var AssetRepositoryInterface */
+    /** @var AssetRepository */
     protected $assetRepository;
 
     /** @var PublishedProductRepositoryInterface */
     protected $publishedRepository;
 
     /**
-     * @param ProductDraftRepositoryInterface     $draftRepository
-     * @param ProjectRepositoryInterface          $projectRepository
-     * @param AssetRepositoryInterface            $assetRepository
+     * @param ProductDraftRepository              $draftRepository
+     * @param ProjectRepository                   $projectRepository
+     * @param AssetRepository                     $assetRepository
      * @param PublishedProductRepositoryInterface $publishedRepository
      */
     public function __construct(
-        ProductDraftRepositoryInterface $draftRepository,
-        ProjectRepositoryInterface $projectRepository,
-        AssetRepositoryInterface $assetRepository,
+        ProductDraftRepository $draftRepository,
+        ProjectRepository $projectRepository,
+        AssetRepository $assetRepository,
         PublishedProductRepositoryInterface $publishedRepository
     ) {
         $this->draftRepository = $draftRepository;
