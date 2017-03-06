@@ -4,7 +4,7 @@ namespace Pim\Bundle\ApiBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\ConnectionCloser;
-use Akeneo\Test\Integration\DatabasePurger;
+use Akeneo\Test\Integration\DatabaseSchemaHandler;
 use Akeneo\Test\Integration\FixturesLoader;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -60,8 +60,7 @@ abstract class ApiTestCase extends WebTestCase
         self::$count++;
 
         if ($configuration->isDatabasePurgedForEachTest() || 1 === self::$count) {
-            $databasePurger = $this->getDatabasePurger();
-            $databasePurger->purge();
+            $this->getDatabaseSchemaHandler()->reset();
 
             $fixturesLoader = $this->getFixturesLoader($configuration);
             $fixturesLoader->load();
@@ -194,11 +193,11 @@ abstract class ApiTestCase extends WebTestCase
     }
 
     /**
-     * @return DatabasePurger
+     * @return DatabaseSchemaHandler
      */
-    protected function getDatabasePurger()
+    protected function getDatabaseSchemaHandler()
     {
-        return new DatabasePurger(static::$kernel->getContainer());
+        return new DatabaseSchemaHandler(static::$kernel);
     }
 
     /**
@@ -208,7 +207,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function getFixturesLoader(Configuration $configuration)
     {
-        return new FixturesLoader(static::$kernel->getContainer(), $configuration);
+        return new FixturesLoader(static::$kernel, $configuration);
     }
 
     /**
