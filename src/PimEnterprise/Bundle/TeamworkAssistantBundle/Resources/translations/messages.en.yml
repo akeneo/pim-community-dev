@@ -31,6 +31,8 @@ batch_jobs:
             label: Project calculation
         prepare_project_calculation:
             label: Prepare the project calculation
+        clean_contributor_group:
+            label: Check users permission on project's locale
 
 job_execution:
     summary:
