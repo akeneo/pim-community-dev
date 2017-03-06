@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Command;
 
 use Pim\Bundle\CatalogBundle\Command\QueryProductCommand;
-use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 

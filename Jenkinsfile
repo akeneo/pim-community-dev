@@ -73,8 +73,10 @@ if (launchUnitTests.equals("yes")) {
 
         tasks["phpspec-5.6"] = {runPhpSpecTest("5.6")}
         tasks["phpspec-7.0"] = {runPhpSpecTest("7.0")}
+        tasks["phpspec-7.1"] = {runPhpSpecTest("7.1")}
         tasks["php-cs-fixer-5.6"] = {runPhpCsFixerTest("5.6")}
         tasks["php-cs-fixer-7.0"] = {runPhpCsFixerTest("7.0")}
+        tasks["php-cs-fixer-7.1"] = {runPhpCsFixerTest("7.1")}
         tasks["grunt"] = {runGruntTest()}
 
         parallel tasks
@@ -85,8 +87,12 @@ if (launchIntegrationTests.equals("yes")) {
     stage("Integration tests") {
         def tasks = [:]
 
-        tasks["phpunit-5.6"] = {runIntegrationTest("5.6")}
-        tasks["phpunit-7.0"] = {runIntegrationTest("7.0")}
+        tasks["phpunit-5.6-orm"] = {runIntegrationTest("5.6", "orm")}
+        tasks["phpunit-7.0-orm"] = {runIntegrationTest("7.0", "orm")}
+        tasks["phpunit-7.1-orm"] = {runIntegrationTest("7.1", "orm")}
+        tasks["phpunit-5.6-odm"] = {runIntegrationTest("5.6", "odm")}
+        tasks["phpunit-7.0-odm"] = {runIntegrationTest("7.0", "odm")}
+        tasks["phpunit-7.1-odm"] = {runIntegrationTest("7.1", "odm")}
 
         parallel tasks
     }
@@ -126,7 +132,7 @@ def runPhpSpecTest(phpVersion) {
                 unstash "project_files"
 
                 if (phpVersion != "5.6") {
-                    sh "composer require --no-update alcaeus/mongo-php-adapter"
+                    sh "composer require --no-update --ignore-platform-reqs alcaeus/mongo-php-adapter"
                 }
 
                 sh "php -d memory_limit=-1 /usr/local/bin/composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -141,29 +147,40 @@ def runPhpSpecTest(phpVersion) {
     }
 }
 
-def runIntegrationTest(phpVersion) {
+def runIntegrationTest(phpVersion, storage) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("mysql:5.5").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim") {
-                docker.image("carcel/php:${phpVersion}").inside("--link mysql:mysql -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
-                    unstash "project_files"
+            docker.image("mongo:2.4").withRun("--name mongodb", "--smallfiles") {
+                docker.image("mysql:5.5").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim") {
+                    docker.image("carcel/php:${phpVersion}").inside("--link mysql:mysql --link mongodb:mongodb -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+                        unstash "project_files"
 
-                    if (phpVersion != "5.6") {
-                        sh "composer require --no-update alcaeus/mongo-php-adapter"
+                        if (phpVersion != "5.6") {
+                            sh "composer require --ignore-platform-reqs --no-update alcaeus/mongo-php-adapter"
+                        }
+
+                        sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                        sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
+                        sh "sed -i 's/database_host:     localhost/database_host:     mysql/' app/config/parameters_test.yml"
+
+                        // Activate MongoDB if needed
+                        if ('odm' == storage) {
+                           sh "sed -i \"s@// new Doctrine@new Doctrine@g\" app/AppKernel.php"
+                           sh "sed -i \"s@# mongodb_database: .*@mongodb_database: akeneo_pim@g\" app/config/pim_parameters.yml"
+                           sh "sed -i \"s@# mongodb_server: .*@mongodb_server: 'mongodb://mongodb:27017'@g\" app/config/pim_parameters.yml"
+                           sh "printf \"    pim_catalog_product_storage_driver: doctrine/mongodb-odm\n\" >> app/config/parameters_test.yml"
+                        }
+
+                        sh "./app/console --env=test pim:install --force"
+
+                        sh "mkdir -p app/build/logs/"
+                        sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
                     }
-
-                    sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                    sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
-                    sh "sed -i 's/database_host:     localhost/database_host:     mysql/' app/config/parameters_test.yml"
-                    sh "./app/console --env=test pim:install --force"
-
-                    sh "mkdir -p app/build/logs/"
-                    sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
                 }
             }
         } finally {
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}-${storage}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
         }
@@ -183,7 +200,7 @@ def runPhpCsFixerTest(phpVersion) {
 
                 sh "php -d memory_limit=-1 /usr/local/bin/composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
-                sh "./bin/php-cs-fixer fix --diff --format=junit --config=.php_cs.dist > app/build/logs/phpcs.xml"
+                sh "./bin/php-cs-fixer fix --diff --dry-run --format=junit --config=.php_cs.php > app/build/logs/phpcs.xml"
             }
         } finally {
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"

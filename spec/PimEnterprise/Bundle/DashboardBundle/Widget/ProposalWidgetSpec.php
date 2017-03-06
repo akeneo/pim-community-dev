@@ -97,7 +97,7 @@ class ProposalWidgetSpec extends ObjectBehavior
 
         $options = ['locale' => 'en'];
         $presenter->present($firstCreatedAt, $options)->willReturn($firstCreatedAt->format('m/d/Y'));
-        $presenter->present($firstCreatedAt, $options)->willReturn($secondCreatedAt->format('m/d/Y'));
+        $presenter->present($secondCreatedAt, $options)->willReturn($secondCreatedAt->format('m/d/Y'));
 
         $this->getData()->shouldReturn(
             [
@@ -153,7 +153,7 @@ class ProposalWidgetSpec extends ObjectBehavior
 
         $options = ['locale' => 'en'];
         $presenter->present($firstCreatedAt, $options)->willReturn($firstCreatedAt->format('m/d/Y'));
-        $presenter->present($firstCreatedAt, $options)->willReturn($secondCreatedAt->format('m/d/Y'));
+        $presenter->present($secondCreatedAt, $options)->willReturn($secondCreatedAt->format('m/d/Y'));
 
         $this->getData()->shouldReturn(
             [

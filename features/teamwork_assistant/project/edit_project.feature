@@ -26,7 +26,11 @@ Feature: Edit basic project informations
     And I switch view selector type to "Projects"
     And I should see the text "Star Wars Collection"
     When I click on the edit project button
-    And I fill in the following information in the popin:
+    Then the field project-locale should contain "English (United States)"
+    And the field project-locale should be disabled
+    And the field project-channel should contain "Tablet"
+    And the field project-channel should be disabled
+    When I fill in the following information in the popin:
       | project-label       | Star Wars: Rogue One Collection |
       | project-due-date    | 05/20/2051                      |
       | project-description | A rebellion built on hope       |

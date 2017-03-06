@@ -13,7 +13,7 @@ Feature: Follow project completeness
       | other     | Other       | other | pim_catalog_text |
       | media     | Media       | other | pim_catalog_text |
     And the following attributes:
-      | code         | label-en_US  | type                   | localizable | scopable | decimals_allowed | metric_family | default metric unit | useable_as_grid_filter | group     | allowed extensions |
+      | code         | label-en_US  | type                   | localizable | scopable | decimals_allowed | metric_family | default_metric_unit | useable_as_grid_filter | group     | allowed_extensions |
       | sku          | SKU          | pim_catalog_identifier | 0           | 0        |                  |               |                     | 1                      | other     |                    |
       | name         | Name         | pim_catalog_text       | 1           | 0        |                  |               |                     | 1                      | marketing |                    |
       | description  | Description  | pim_catalog_text       | 1           | 1        |                  |               |                     | 0                      | marketing |                    |
@@ -97,10 +97,10 @@ Feature: Follow project completeness
     Given I am on the dashboard page
     And I should see the text "Collection Winter 2030 E-Commerce | English (United States)"
     And I should see the text "all contributors"
-    And I should see the following team work assistant completeness:
+    And I should see the following teamwork assistant completeness:
       | todo | in_progress | done |
       | 0    | 3           | 0    |
-    And I should see the text "0% PRODUCTS TO ENRICH"
+    And I should see the text "0% PRODUCTS TO START"
     And I should see the text "100% PRODUCTS IN PROGRESS"
     And I should see the text "0% PRODUCTS DONE"
     And I should see the text "Please do your best to finish before Winter."
@@ -108,10 +108,10 @@ Feature: Follow project completeness
     When I select "Collection Summer 2030" project
     Then I should see the text "Collection Summer 2030 E-Commerce | English (United States)"
     And I should see the text "all contributors"
-    And I should see the following team work assistant completeness:
+    And I should see the following teamwork assistant completeness:
       | todo | in_progress | done |
       | 0    | 6           | 0    |
-    And I should see the text "0% PRODUCTS TO ENRICH"
+    And I should see the text "0% PRODUCTS TO START"
     And I should see the text "100% PRODUCTS IN PROGRESS"
     And I should see the text "0% PRODUCTS DONE"
     And I should see the text "Please do your best to finish before Summer."
@@ -119,10 +119,10 @@ Feature: Follow project completeness
     When I select "Claude Yachifeur" contributor
     Then I should see the text "Collection Summer 2030 E-Commerce | English (United States)"
     And I should see the text "Claude Yachifeur"
-    And I should see the following team work assistant completeness:
+    And I should see the following teamwork assistant completeness:
       | todo | in_progress | done |
       | 0    | 2           | 1    |
-    And I should see the text "0% PRODUCTS TO ENRICH"
+    And I should see the text "0% PRODUCTS TO START"
     And I should see the text "66.67% PRODUCTS IN PROGRESS"
     And I should see the text "33.33% PRODUCTS DONE"
     And I should see the text "Please do your best to finish before Summer."

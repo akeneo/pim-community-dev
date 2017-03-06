@@ -12,7 +12,6 @@
 namespace PimEnterprise\Component\TeamworkAssistant\Factory;
 
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>

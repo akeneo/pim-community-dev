@@ -130,8 +130,8 @@ Feature: Publish a product
   @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Fail to delete attribute options if it's used by a published product
     Given the following attributes:
-      | code    | label-en_US | type                    | scopable | localizable | allowedExtensions | metric_family | default_metric_unit | group |
-      | climate | Climate     | pim_catalog_multiselect | 0        | 0           |                   |               |                     | other |
+      | code    | label-en_US | type                    | scopable | localizable | allowed_extensions | metric_family | default_metric_unit | group |
+      | climate | Climate     | pim_catalog_multiselect | 0        | 0           |                    |               |                     | other |
     And the following product:
       | sku       | family  | name-en_US |
       | my-jacket | jackets | Jackets    |

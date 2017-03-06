@@ -31,4 +31,9 @@ class AttributeGroupCompletenessSpec extends ObjectBehavior
     {
         $this->isComplete()->shouldReturn(1);
     }
+
+    function it_has_calculated_at()
+    {
+        $this->getCalculatedAt()->shouldHaveType(\DateTimeInterface::class);
+    }
 }

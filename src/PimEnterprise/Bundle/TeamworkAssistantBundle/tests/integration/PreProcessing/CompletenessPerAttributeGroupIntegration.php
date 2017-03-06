@@ -237,22 +237,19 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
          * Set a value to simple and multiple reference data properties
          */
         $productIdentifier = 'full-technical-product';
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productIdentifier);
-        $this->get('pim_catalog.updater.product')->update($product, [
-            'values' => [
-                'simple_reference_data_attribute' => [[
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => 'red',
-                ]],
-                'multi_reference_data_attribute' => [[
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => ['latex'],
-                ]]
-            ]
+
+        $this->updateProduct($productIdentifier, [
+            'simple_reference_data_attribute' => [[
+                'locale' => null,
+                'scope'  => null,
+                'data'   => 'red',
+            ]],
+            'multi_reference_data_attribute' => [[
+                'locale' => null,
+                'scope'  => null,
+                'data'   => ['latex'],
+            ]]
         ]);
-        $this->get('pim_catalog.saver.product')->save($product);
 
         /**
          * Check the project completeness
@@ -296,6 +293,56 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
         $result = $this->get('pimee_teamwork_assistant.calculator.contributor_group')->calculate($project, $product);
 
         $this->assertSame($result, [$catalogManager, $marketing]);
+    }
+
+    /**
+     * Test the smart pre processing updates
+     *
+     * 1 created project with the product 'poster-movie-contact':
+     *     - Channel: ecommerce
+     *     - Locale: en_US
+     *     - 3 attribute groups completeness are processed
+     */
+    public function testSmartProcessingUpdate()
+    {
+        $productIdentifier = 'poster-movie-contact';
+        $posterEcommerceEn = $this->createProject('poster-movie-contact', 'Julia', 'en_US', 'ecommerce', [[
+            'field'    => 'sku',
+            'operator' => '=',
+            'value'    => $productIdentifier,
+        ]]);
+
+        $otherPosterEcommerceEn = $this->createProject('other-poster-movie-contact', 'Julia', 'en_US', 'ecommerce', [[
+            'field'    => 'sku',
+            'operator' => '=',
+            'value'    => $productIdentifier,
+        ]]);
+
+        /**
+         * We recalculate the project but the product has not been updated so we don't update the attribute completeness
+         */
+        $datetimeAfterCalculation = new \DateTime('now');
+        $this->checkSmartPreProcessingUpdate($posterEcommerceEn, $datetimeAfterCalculation, 0);
+
+        /**
+         * Now a product has been update before a calculation
+         */
+        $this->updateProduct($productIdentifier, [
+            'name' => [[
+                'locale' => 'en_US',
+                'scope'  => null,
+                'data'   => 'Super poster',
+            ]]
+        ]);
+        $this->checkSmartPreProcessingUpdate($posterEcommerceEn, $datetimeAfterCalculation, 3);
+
+
+        /**
+         * We calculate another project that have the same product, so we don't refresh the attribute
+         * complete completeness because it was already computed by the previous.
+         */
+        $datetimeAfterCalculation = new \DateTime('now');
+        $this->checkSmartPreProcessingUpdate($otherPosterEcommerceEn, $datetimeAfterCalculation, 0);
     }
 
     /**
@@ -395,5 +442,52 @@ SQL
             $expectedCount,
             sprintf('Invalid number of calculated attribute group completeness for the project %s', $project->getCode())
         );
+    }
+
+    /**
+     * Check the number of attribute group completeness that have been updated since a date
+     *
+     * @param ProjectInterface $project
+     * @param \DateTime $since
+     * @param int $expectedUpdates
+     */
+    private function checkSmartPreProcessingUpdate(ProjectInterface $project, \DateTime $since, $expectedUpdates)
+    {
+        $this->calculateProject($project);
+
+        $completenessUpdatedCount = $this->getConnection()->fetchColumn(
+            <<<SQL
+SELECT count(*)
+FROM `pimee_teamwork_assistant_project` AS `p`
+INNER JOIN `pimee_teamwork_assistant_project_product` AS `pp`
+	ON `pp`.`project_id` = `p`.`id`
+INNER JOIN `pimee_teamwork_assistant_completeness_per_attribute_group` AS `cag`
+	ON `pp`.`product_id` = `cag`.`product_id` AND `p`.`channel_id` = `cag`.`channel_id` AND `p`.`locale_id` = `cag`.`locale_id`
+WHERE `p`.`id` = :project_id
+AND calculated_at > :calculated_at
+SQL
+            ,
+            [
+                'calculated_at' => $since->format('Y-m-d H:i:s'),
+                'project_id'    => $project->getId(),
+            ]
+        );
+
+        $this->assertEquals($expectedUpdates, $completenessUpdatedCount);
+    }
+
+    /**
+     * Update a product
+     *
+     * @param $productIdentifier
+     * @param array $values
+     */
+    private function updateProduct($productIdentifier, array $values)
+    {
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productIdentifier);
+        $this->get('pim_catalog.updater.product')->update($product, [
+            'values' => $values
+        ]);
+        $this->get('pim_catalog.saver.product')->save($product);
     }
 }

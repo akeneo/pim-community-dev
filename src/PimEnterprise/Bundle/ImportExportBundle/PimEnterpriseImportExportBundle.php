@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\ImportExportBundle;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**

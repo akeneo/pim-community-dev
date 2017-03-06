@@ -2,13 +2,13 @@
 
 namespace PimEnterprise\Behat\Decorator\Widget;
 
+use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
-use Context\Spin\TimeoutException;
 use Pim\Behat\Decorator\ElementDecorator;
 use Pim\Behat\Decorator\Field\Select2Decorator;
 
 /**
- * team work assistant widget decorator
+ * teamwork assistant widget decorator
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
@@ -45,7 +45,7 @@ class TeamworkAssistantWidgetDecorator extends ElementDecorator
     }
 
     /**
-     * Get the completeness from team work assistant widget
+     * Get the completeness from teamwork assistant widget
      * Returns ['todo' => (string), 'in_progress' => (string), 'done' => (string)]
      *
      * @return array
@@ -80,16 +80,26 @@ class TeamworkAssistantWidgetDecorator extends ElementDecorator
      */
     public function clickOnSection($sectionName)
     {
+        $this->getLinkFromSection($sectionName)->click();
+    }
+
+    /**
+     * Get link to product grid from a teamwork assistant widget section
+     *
+     * @param string $sectionName
+     *
+     * @return NodeElement
+     */
+    public function getLinkFromSection($sectionName)
+    {
         $box = $this->spin(function () use ($sectionName) {
             return $this->find('css', sprintf('.teamwork-assistant-completeness-%s', $sectionName));
         }, sprintf('"%s" box not found in completeness.', $sectionName));
 
         $box->getParent()->mouseOver();
 
-        $link = $this->spin(function () use ($box) {
+        return $this->spin(function () use ($box) {
             return $box->getParent()->find('css', 'a');
-        }, sprintf('Link not found in box "%s" of the team work assistant widget.', $sectionName));
-
-        $link->click();
+        }, sprintf('Link not found in box "%s" of the teamwork assistant widget.', $sectionName));
     }
 }

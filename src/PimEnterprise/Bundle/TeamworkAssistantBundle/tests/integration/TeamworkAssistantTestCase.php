@@ -37,9 +37,9 @@ class TeamworkAssistantTestCase extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function getDatabasePurger()
+    protected function getDatabaseSchemaHandler()
     {
-        return new DatabasePurger(static::$kernel->getContainer());
+        return new DatabaseSchemaHandler(static::$kernel);
     }
 
     /**
@@ -63,6 +63,7 @@ class TeamworkAssistantTestCase extends TestCase
      * @param string $channel
      * @param array  $filters
      *
+     * @throws \Exception
      * @return ProjectInterface
      */
     protected function createProject($label, $owner, $locale, $channel, array $filters)

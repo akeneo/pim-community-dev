@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\ImportExportBundle\Form\Subscriber;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use Prophecy\Argument;
 use Symfony\Component\Form\Form;

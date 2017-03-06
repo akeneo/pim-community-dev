@@ -176,7 +176,7 @@ class PublishedProductController
      *
      * @param int|string $id
      *
-     * @deprecated To be removed in 1.5
+     * @deprecated To be removed in 1.8
      *
      * @return Response
      */

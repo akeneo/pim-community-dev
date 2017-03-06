@@ -11,8 +11,6 @@
 
 namespace PimEnterprise\Component\TeamworkAssistant\Remover;
 
-use Doctrine\ORM\EntityRepository;
-
 /**
  * Chained project remover rule
  *

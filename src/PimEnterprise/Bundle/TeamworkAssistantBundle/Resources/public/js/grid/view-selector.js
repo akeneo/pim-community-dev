@@ -30,7 +30,13 @@ define(
             /**
              * {@inheritdoc}
              */
-            configure: function () {
+            configure: function (gridAlias) {
+                this.gridAlias = gridAlias;
+
+                if ('product-grid' !== this.gridAlias) {
+                    this.config.viewTypes = ['views'];
+                }
+
                 this.listenTo(this.getRoot(), 'grid:view-selector:project-edited', this.onProjectEdited.bind(this));
                 this.listenTo(this.getRoot(), 'grid:view-selector:project-removed', this.onProjectRemoved.bind(this));
 

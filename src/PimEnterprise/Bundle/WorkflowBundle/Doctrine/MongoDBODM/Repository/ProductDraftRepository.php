@@ -17,6 +17,7 @@ use Doctrine\ORM\AbstractQuery;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -209,6 +210,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
         $qb = $this->createQueryBuilder('ProductDraft');
 
         $authors = $qb
+            ->field('status')->equals(ProductDraftInterface::READY)
             ->distinct('author')
             ->getQuery()
             ->execute();

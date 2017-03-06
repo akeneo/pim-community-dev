@@ -345,11 +345,11 @@ Feature: Read a single product by applying rules
 
   Scenario: Successfully execute a rule with copier actions to update non empty values on all kind of attributes
     Given the following attributes:
-      | code            | label-en_US     | type                         | scopable | localizable | allowedExtensions | metric_family | default_metric_unit | group |
-      | made_in_france  | Made in France  | pim_catalog_boolean          | 0        | 0           |                   |               |                     | other |
-      | report          | Report          | pim_catalog_file             | 0        | 0           | txt               |               |                     | other |
-      | climate         | Climate         | pim_catalog_multiselect      | 0        | 0           |                   |               |                     | other |
-      | promotion_price | Promotion price | pim_catalog_price_collection | 0        | 0           |                   |               |                     | other |
+      | code            | label-en_US     | type                         | scopable | localizable | allowed_extensions | metric_family | default_metric_unit | group |
+      | made_in_france  | Made in France  | pim_catalog_boolean          | 0        | 0           |                    |               |                     | other |
+      | report          | Report          | pim_catalog_file             | 0        | 0           | txt                |               |                     | other |
+      | climate         | Climate         | pim_catalog_multiselect      | 0        | 0           |                    |               |                     | other |
+      | promotion_price | Promotion price | pim_catalog_price_collection | 0        | 0           |                    |               |                     | other |
     And the following products:
       | sku       | family  | weather_conditions |
       | my-jacket | jackets | dry                |
@@ -451,11 +451,11 @@ Feature: Read a single product by applying rules
 
   Scenario: Successfully execute a rule with copier actions to update empty values on all kind of attributes
     Given the following attributes:
-      | code            | label-en_US     | type                         | scopable | localizable | allowedExtensions | metric_family | default_metric_unit | group |
-      | made_in_france  | Made in France  | pim_catalog_boolean          | 0        | 0           |                   |               |                     | other |
-      | report          | Report          | pim_catalog_file             | 0        | 0           | txt               |               |                     | other |
-      | climate         | Climate         | pim_catalog_multiselect      | 0        | 0           |                   |               |                     | other |
-      | promotion_price | Promotion price | pim_catalog_price_collection | 0        | 0           |                   |               |                     | other |
+      | code            | label-en_US     | type                         | scopable | localizable | allowed_extensions | metric_family | default_metric_unit | group |
+      | made_in_france  | Made in France  | pim_catalog_boolean          | 0        | 0           |                    |               |                     | other |
+      | report          | Report          | pim_catalog_file             | 0        | 0           | txt                |               |                     | other |
+      | climate         | Climate         | pim_catalog_multiselect      | 0        | 0           |                    |               |                     | other |
+      | promotion_price | Promotion price | pim_catalog_price_collection | 0        | 0           |                    |               |                     | other |
     And the following products:
       | sku       | family  | weather_conditions |
       | my-jacket | jackets | dry                |
