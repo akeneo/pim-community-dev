@@ -7,7 +7,7 @@ Feature: Edit common attributes of many products at once
   Background:
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code         | label-en_US | type               | metric family | default metric unit | group |
+      | code         | label-en_US | type               | metric_family | default_metric_unit | group |
       | weight       | Weight      | pim_catalog_metric | Weight        | GRAM                | other |
       | heel_height  | Heel Height | pim_catalog_metric | Length        | CENTIMETER          | other |
       | buckle_color | Buckle      | pim_catalog_text   |               |                     | other |
@@ -49,10 +49,10 @@ Feature: Edit common attributes of many products at once
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the product "boots" should have the following values:
-      | name-en_US         | Product       |
+      | name-en_US         | Product      |
       | weather_conditions | [wet], [cold] |
     And the product "highheels" should have the following values:
-      | name-en_US | Product |
+      | name-en_US | Product  |
 
   @jira https://akeneo.atlassian.net/browse/PIM-2183
   Scenario: Allow edition on common attributes with value not in family and no value on family

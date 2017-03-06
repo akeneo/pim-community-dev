@@ -26,7 +26,8 @@ class FamilyAttributeAsLabelValidatorSpec extends ObjectBehavior
         $minimumRequirements,
         $context,
         FamilyInterface $family,
-        AttributeInterface $attributeAsLabel
+        AttributeInterface $attributeAsLabel,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $attributeAsLabel->getCode()->willReturn('attributeAsLabelCode');
@@ -34,7 +35,7 @@ class FamilyAttributeAsLabelValidatorSpec extends ObjectBehavior
         $attributeAsLabel->getType()->willReturn('pim_catalog_text');
 
         $this->validate($family, $minimumRequirements);
-        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+        $context->buildViolation(Argument::cetera())->willReturn($violation)->shouldNotBeCalled();
     }
 
     function it_invalidates_family_when_attribute_as_label_is_not_present(
@@ -50,6 +51,8 @@ class FamilyAttributeAsLabelValidatorSpec extends ObjectBehavior
         $attributeAsLabel->getType()->willReturn('pim_catalog_text');
 
         $context->buildViolation(Argument::any())->willReturn($violation)->shouldBeCalled();
+        $violation->atPath(Argument::any())->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate($family, $minimumRequirements);
     }
@@ -67,6 +70,8 @@ class FamilyAttributeAsLabelValidatorSpec extends ObjectBehavior
         $attributeAsLabel->getType()->willReturn('wrong_type');
 
         $context->buildViolation(Argument::any())->willReturn($violation)->shouldBeCalled();
+        $violation->atPath(Argument::any())->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate($family, $minimumRequirements);
     }

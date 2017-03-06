@@ -41,15 +41,12 @@ define([
             attributeNotRequiredIconClass: 'AknAcl-icon icon-circle non-required',
             requiredLabel: __('pim_enrich.form.family.tab.attributes.required_label'),
             notRequiredLabel: __('pim_enrich.form.family.tab.attributes.not_required_label'),
-            deleteDialogTitle: __('pim_enrich.form.family.tab.attributes.dialog.delete_title'),
-            deleteDialogMessage: __('pim_enrich.form.family.tab.attributes.dialog.delete_message'),
             identifierAttribute: 'pim_catalog_identifier',
             template: _.template(template),
             errors: [],
             catalogLocale: UserContext.get('catalogLocale'),
             channels: null,
             attributeGroups: null,
-            attributeToRemove: null,
             events: {
                 'click .group': 'toggleGroup',
                 'click .attribute-requirement i': 'toggleAttribute',
@@ -240,13 +237,9 @@ define([
                     return false;
                 }
 
-                this.attributeToRemove = event.currentTarget.dataset.attribute;
-                var attr = _.findWhere(
-                    this.getFormData().attributes,
-                    {code: this.attributeToRemove}
-                );
+                var attributeToRemove = event.currentTarget.dataset.attribute;
 
-                if (attributeAsLabel === attr.code) {
+                if (attributeAsLabel === attributeToRemove) {
                     Messanger.notificationFlashMessage(
                         'error',
                         __('pim_enrich.entity.family.info.cant_remove_attribute_as_label')
@@ -254,14 +247,8 @@ define([
 
                     return false;
                 }
-                var name = i18n.getLabel(attr.labels, this.catalogLocale, attr.code);
 
-                Dialog.confirm(
-                    this.deleteDialogTitle,
-                    this.deleteDialogMessage
-                        .replace('%name%', name),
-                    this.removeAttribute.bind(this)
-                );
+                return this.removeAttribute(attributeToRemove);
             },
 
             /**
@@ -338,10 +325,7 @@ define([
              *
              * @return {Object}
              */
-            removeAttribute: function () {
-                var attribute = this.attributeToRemove;
-                this.attributeToRemove = null;
-
+            removeAttribute: function (attribute) {
                 _.each(this.channels, function (channel) {
                     this.removeFromAttributeRequirements(attribute, channel.code);
                 }.bind(this));

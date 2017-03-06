@@ -6,9 +6,9 @@ Feature: Update metric fields
   Scenario: Successfully update a metric field
     Given a "default" catalog configuration
     And the following attributes:
-      | code   | type               | metricFamily | defaultMetricUnit | group |
-      | width  | pim_catalog_metric | Length       | METER             | other |
-      | height | pim_catalog_metric | Length       | METER             | other |
+      | code   | type               | metric_family | default_metric_unit | group |
+      | width  | pim_catalog_metric | Length        | METER               | other |
+      | height | pim_catalog_metric | Length        | METER               | other |
     And the following products:
       | sku  | width         |
       | BOX1 | 30 CENTIMETER |

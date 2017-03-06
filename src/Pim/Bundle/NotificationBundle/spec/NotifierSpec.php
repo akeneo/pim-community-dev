@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\NotificationBundle;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\Tests\Common\DataFixtures\TestEntity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\Entity\UserNotificationInterface;

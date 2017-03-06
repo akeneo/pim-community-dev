@@ -1,0 +1,14 @@
+parameters:
+    pim_api.pagination.parameter_validator.class: Pim\Component\Api\Pagination\ParameterValidator
+    pim_api.pagination.paginator.class: Pim\Component\Api\Pagination\HalPaginator
+
+services:
+    pim_api.pagination.parameter_validator:
+        class: '%pim_api.pagination.parameter_validator.class%'
+        arguments:
+            - '%pim_api.configuration%'
+
+    pim_api.pagination.paginator:
+        class: '%pim_api.pagination.paginator.class%'
+        arguments:
+            - '@router'

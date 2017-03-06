@@ -3,6 +3,8 @@
 namespace tests\integration\Pim\Component\Catalog\Normalizer\Standard;
 
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\DateSanitizer;
+use Akeneo\Test\Integration\MediaSanitizer;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -11,12 +13,6 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 class ProductStandardIntegration extends TestCase
 {
-    const DATE_FIELD_COMPARISON = 'this is a date formatted to ISO-8601';
-    const MEDIA_ATTRIBUTE_DATA_COMPARISON = 'this is a media identifier';
-
-    const DATE_FIELD_PATTERN = '#[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\+[0-9]{2}:[0-9]{2}$#';
-    const MEDIA_ATTRIBUTE_DATA_PATTERN = '#[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]{40}_\w+\.[a-zA-Z]+$#';
-
     protected function getConfiguration()
     {
         return new Configuration(
@@ -297,12 +293,8 @@ class ProductStandardIntegration extends TestCase
      */
     private function sanitizeDateFields(array $data)
     {
-        if ($this->assertDateFieldPattern($data['created']) &&
-            $this->assertDateFieldPattern($data['updated'])
-        ) {
-            $data['created'] = self::DATE_FIELD_COMPARISON;
-            $data['updated'] = self::DATE_FIELD_COMPARISON;
-        }
+        $data['created'] = DateSanitizer::sanitize($data['created']);
+        $data['updated'] = DateSanitizer::sanitize($data['updated']);
 
         return $data;
     }
@@ -319,33 +311,11 @@ class ProductStandardIntegration extends TestCase
         foreach ($data['values'] as $attributeCode => $values) {
             if (1 === preg_match('/.*(file|image).*/', $attributeCode)) {
                 foreach ($values as $index => $value) {
-                    if ($this->assertMediaAttributeDataPattern($value['data'])) {
-                        $data['values'][$attributeCode][$index]['data'] = self::MEDIA_ATTRIBUTE_DATA_COMPARISON;
-                    }
+                    $data['values'][$attributeCode][$index]['data'] = MediaSanitizer::sanitize($value['data']);
                 }
             }
         }
 
         return $data;
-    }
-
-    /**
-     * @param string $field
-     *
-     * @return bool
-     */
-    private function assertDateFieldPattern($field)
-    {
-        return 1 === preg_match(self::DATE_FIELD_PATTERN, $field);
-    }
-
-    /**
-     * @param string $data
-     *
-     * @return bool
-     */
-    private function assertMediaAttributeDataPattern($data)
-    {
-        return 1 === preg_match(self::MEDIA_ATTRIBUTE_DATA_PATTERN, $data);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Catalog\Denormalizer\Standard;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;

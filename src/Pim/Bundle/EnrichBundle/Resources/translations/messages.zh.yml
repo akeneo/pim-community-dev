@@ -329,7 +329,7 @@ group type:
   edit: 编辑分组类型
 variant group:
   title: 属性组
-  overview: 属性组概述
+  overview: 款式组概述
   create: 创建款式组
   edit: 编辑属性组
 association type:
@@ -651,7 +651,7 @@ pim_title.mass_edit_family_action:
 pim_title.job_tracker:
   index: 过程跟踪器
   show: "过程跟踪器 |显示作业"
-pim_title.dashboard: "监控面板"
+pim_title.dashboard: "主界面"
 pim_catalog_identifier: 标识
 pim_catalog_text: 文本
 pim_catalog_textarea: 文本区域
@@ -879,17 +879,17 @@ batch_jobs:
     perform:
       label: Csv 产品快速导出
   csv_product_grid_context_quick_export:
-    quick_export.label: CSV产品网格背景下快速导出
+    quick_export.label: CSV 产品界面内容下快速导出
     perform:
-      label: CSV产品网格背景下快速导出
+      label: CSV 产品界面内容下快速导出
   xlsx_product_quick_export:
     quick_export.label: XLSX产品快速导出
     perform:
       label: XLSX产品快速导出
   xlsx_product_grid_context_quick_export:
-    quick_export.label: XLSX产品网格背景下快速导出
+    quick_export.label: XLSX产品界面内容下快速导出
     perform:
-      label: XLSX产品网格背景下快速导出
+      label: XLSX产品界面内容下快速导出
   add_to_variant_group:
     label: 添加到款式组
     perform:

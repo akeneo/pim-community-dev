@@ -3,6 +3,8 @@
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -26,19 +28,25 @@ class ProductUpdater implements ObjectUpdaterInterface
     /** @var array */
     protected $supportedFields = [];
 
+    /** @var array */
+    protected $ignoredFields = [];
+
     /**
      * @param PropertySetterInterface         $propertySetter
      * @param ProductTemplateUpdaterInterface $templateUpdater
      * @param array                           $supportedFields
+     * @param array                           $ignoredFields
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
         ProductTemplateUpdaterInterface $templateUpdater,
-        array $supportedFields
+        array $supportedFields,
+        array $ignoredFields
     ) {
         $this->propertySetter = $propertySetter;
         $this->templateUpdater = $templateUpdater;
         $this->supportedFields = $supportedFields;
+        $this->ignoredFields = $ignoredFields;
     }
 
     /**
@@ -123,7 +131,10 @@ class ProductUpdater implements ObjectUpdaterInterface
             if (in_array($code, $this->supportedFields)) {
                 $this->updateProductFields($product, $code, $values);
             } elseif ('values' === $code) {
+                $this->checkProductValuesData($values);
                 $this->updateProductValues($product, $values);
+            } elseif (!in_array($code, $this->ignoredFields)) {
+                throw UnknownPropertyException::unknownProperty($code);
             }
         }
         $this->updateProductVariantValues($product, $data);
@@ -192,6 +203,73 @@ class ProductUpdater implements ObjectUpdaterInterface
             }
             if ($shouldEraseData) {
                 $this->templateUpdater->update($template, [$product]);
+            }
+        }
+    }
+
+    /**
+     * Check the structure of the product values.
+     *
+     * @param mixed $values
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function checkProductValuesData($values)
+    {
+        if (!is_array($values)) {
+            throw InvalidPropertyTypeException::arrayExpected('values', static::class, $values);
+        }
+
+        foreach ($values as $code => $productValues) {
+            if (!is_array($productValues)) {
+                throw InvalidPropertyTypeException::arrayExpected($code, static::class, $productValues);
+            }
+
+            foreach ($productValues as $productValue) {
+                if (!is_array($productValue)) {
+                    throw InvalidPropertyTypeException::validArrayStructureExpected(
+                        $code,
+                        'one of the product values is not an array.',
+                        static::class,
+                        $productValues
+                    );
+                }
+
+                if (!array_key_exists('locale', $productValue)) {
+                    throw InvalidPropertyTypeException::arrayKeyExpected($code, 'locale', static::class, $productValue);
+                }
+
+                if (!array_key_exists('scope', $productValue)) {
+                    throw InvalidPropertyTypeException::arrayKeyExpected($code, 'scope', static::class, $productValue);
+                }
+
+                if (!array_key_exists('data', $productValue)) {
+                    throw InvalidPropertyTypeException::arrayKeyExpected($code, 'data', static::class, $productValue);
+                }
+
+                if (null !== $productValue['locale'] && !is_string($productValue['locale'])) {
+                    $message = 'Property "%s" expects a product value with a string as locale, "%s" given.';
+
+                    throw new InvalidPropertyTypeException(
+                        $code,
+                        $productValue['locale'],
+                        static::class,
+                        sprintf($message, $code, gettype($productValue['locale'])),
+                        InvalidPropertyTypeException::STRING_EXPECTED_CODE
+                    );
+                }
+
+                if (null !== $productValue['scope'] && !is_string($productValue['scope'])) {
+                    $message = 'Property "%s" expects a product value with a string as scope, "%s" given.';
+
+                    throw new InvalidPropertyTypeException(
+                        $code,
+                        $productValue['scope'],
+                        static::class,
+                        sprintf($message, $code, gettype($productValue['scope'])),
+                        InvalidPropertyTypeException::STRING_EXPECTED_CODE
+                    );
+                }
             }
         }
     }

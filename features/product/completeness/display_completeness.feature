@@ -36,6 +36,15 @@ Feature: Display the completeness of a product
       | tablet  | fr_FR  | warning | Description, Side view | 78%   |
     When I am on the products page
     Then I am on the "sandals" product page
+    And the Name field should be highlighted
+    And the Description field should be highlighted
+    And the Manufacturer field should not be highlighted
+    And the SKU field should not be highlighted
+    And the Product information group should be highlighted
+    And the Marketing group should be highlighted
+    And the Sizes group should be highlighted
+    And the Colors group should not be highlighted
+    And the Media group should be highlighted
     And I open the "Completeness" panel
     Then I should see the "en_US" completeness in position 1
     And The completeness "fr_FR" should be closed

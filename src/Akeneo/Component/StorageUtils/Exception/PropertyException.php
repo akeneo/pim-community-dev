@@ -3,9 +3,7 @@
 namespace Akeneo\Component\StorageUtils\Exception;
 
 /**
- * This exception is the root exception for updaters.
- * It can be thrown by an updater when performing an action on an object.
- * Updaters should not throw any other exception.
+ * This exception is the root exception when performing an action that failed on a property.
  *
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

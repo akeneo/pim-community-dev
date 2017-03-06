@@ -5,7 +5,6 @@ namespace spec\Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider;
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class VariantGroupXlsxExportSpec extends ObjectBehavior
 {

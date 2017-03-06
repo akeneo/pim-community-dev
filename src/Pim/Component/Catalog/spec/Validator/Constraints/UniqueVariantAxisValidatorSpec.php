@@ -136,6 +136,8 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
             ]
         )->shouldBeCalled()
         ->willReturn($violation);
+        $violation->atPath(Argument::any())->willReturn($violation);
+        $violation->addViolation(Argument::any())->shouldBeCalled();
 
         $this->validate($tShirtVariantGroup, $uniqueVariantAxisConstraint);
     }
@@ -265,6 +267,9 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
             ]
         )->shouldBeCalled()
         ->willReturn($violation);
+
+        $violation->atPath(Argument::any())->willReturn($violation);
+        $violation->addViolation(Argument::any())->shouldBeCalled();
 
         $this->validate($redTShirtProduct, $uniqueVariantAxisConstraint);
     }

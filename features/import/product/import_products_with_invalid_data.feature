@@ -199,7 +199,7 @@ Feature: Execute a job
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip new products with non-existing media attributes during an import
     Given the following attributes:
-      | label-en_US | type              | allowed extensions | group | code       |
+      | label-en_US | type              | allowed_extensions | group | code       |
       | Front view  | pim_catalog_image | gif, jpg           | other | frontView  |
       | User manual | pim_catalog_file  | txt, pdf           | other | userManual |
     And the following CSV file to import:
@@ -230,7 +230,7 @@ Feature: Execute a job
       | bic-core-148        | sneakers | Bic Core 148        | 2014_collection |
       | fanatic-freewave-76 | sneakers | Fanatic Freewave 76 | 2014_collection |
     And the following attributes:
-      | label-en_US | type              | allowed extensions | group | code       |
+      | label-en_US | type              | allowed_extensions | group | code       |
       | Front view  | pim_catalog_image | gif, jpg           | other | frontView  |
       | User manual | pim_catalog_file  | txt, pdf           | other | userManual |
     And the following CSV file to import:

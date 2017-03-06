@@ -1,3 +1,27 @@
+# 1.7.0-BETA2 (2017-03-06)
+
+# 1.7.0-BETA1 (2017-03-02)
+
+## Functional improvements
+
+- AMS-27: Add badges next to fields to inform the user that the field need to be filled.
+
+## Web API
+
+- API-47: Use OAuth2 to authenticate users on the web API
+- API-48: As Peter, I would like to generate client_id and secret keys for OAuth2
+- API-63: As Peter, I would like to manage who can access to the web API
+- API-18: As Julia, I would like to list and filter products
+- API-9: As Julia, I would like to get/create/update/delete a product
+- API-16: As Julia, I would like to list families
+- API-23: As Julia, I would like to get/create/update a family
+- API-15: As Julia, I would like to list attributes
+- API-22: As Julia, I would like to get/create/update an attribute
+- API-17: As Julia, I would like to list categories
+- API-29: As Julia, I would like to get/create/update a category
+- API-75: As Julia, I would like to list channels
+- API-77: As Filips, I would like to discover all routes in the API
+
 # 1.7.0-ALPHA1 (2017-02-23)
 
 ## Bug Fixes
@@ -167,6 +191,10 @@
 - Move `Pim\Component\Catalog\Normalizer\Structured\ProductValuesNormalizer` to `Pim\Component\Catalog\Normalizer\Standard\Product\ProductValuesNormalizer`
 - Move `Pim\Component\Catalog\Normalizer\Structured\TranslationNormalizer` to `Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer`
 - Move `Pim\Bundle\CommentBundle\Normalizer\Structured\CommentNormalizer` to `Pim\Bundle\CommentBundle\Normalizer\Standard\CommentNormalizer` and remove `Akeneo\Component\Localization\Presenter\PresenterInterface` and `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver` from constructor.
+- Move `Pim\Bundle\UserBundle\Entity\Repository\GroupRepository` to `Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository`
+- Move `Pim\Bundle\UserBundle\Entity\Repository\RoleRepository` to `Pim\Bundle\UserBundle\Doctrine\ORM\Repository\RoleRepository`
+- Move `Pim\Bundle\UserBundle\Entity\Repository\UserRepository` to `Pim\Bundle\UserBundle\Doctrine\ORM\Repository\UserRepository`
+- Move `Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface` to `Pim\Bundle\Repository\UserRepositoryInterface`
 - `Pim\Component\Catalog\Model\ChannelInterface` implements `Akeneo\Component\Localization\Model\TranslatableInterface`
 - Update classes and services to use the interface `Pim\Component\User\Model\GroupInterface` in place of `Oro\Bundle\UserBundle\Entity\Group`
 
@@ -236,6 +264,7 @@
 - Remove deprecated method `getDeletedLocaleIdsForChannel` from `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ChannelRepository` and `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`
 - Remove deprecated method `removeAttributeFromProduct` from `Pim\Component\Catalog\Builder\ProductBuilder` and `Pim\Component\Catalog\Builder\ProductBuilderInterface`
 - Remove deprecated methods `addAttribute`, `removeAttribute`, `getAttributes`, `setAttributes` and `getAttributeIds` from `Pim\Bundle\CatalogBundle\Entity\Group` and `Pim\Component\Catalog\Model\GroupInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\ProductUpdater` to add an array parameter
 - Add a new argument `$localeCode` (string) in `Pim\Component\Catalog\Repository\ChannelRepositoryInterface::getLabelsIndexedByCode()`
 - Add a new argument `$localeCode` (string) in `Pim\Component\Catalog\Repository\CompletenessRepositoryInterface::getProductsCountPerChannels()` and `Pim\Component\Catalog\CompletenessRepositoryInterface::getCompleteProductsCountPerChannels()`
 - Add method `getAllChildrenCodes` to `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface`
@@ -250,6 +279,7 @@
 - Change exception `\InvalidArgumentException` by `Akeneo\Component\StorageUtils\Exception\PropertyException` thrown by `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface:update()`
 - Change exception `Pim\Component\Catalog\Exception\InvalidArgumentException` and `\RuntimeException` by `Akeneo\Component\StorageUtils\Exception\PropertyException` thrown by `Pim\Component\Catalog\Updater\Copier\AttributeCopierInterface:copyAttributeData()`
 - Change exception `Pim\Component\Catalog\Exception\InvalidArgumentException` and `\RuntimeException` by `Akeneo\Component\StorageUtils\Exception\PropertyException` thrown by `Pim\Component\Catalog\Updater\Copier\FieldCopierInterface:copyFieldData()`
+- Replace arguments `$action, $type` by `$className` (string) on `Pim\Component\Catalog\Exception\InvalidArgumentException` 
 - Add exception `Akeneo\Component\StorageUtils\Exception\PropertyException` thrown by `Pim\Component\Catalog\Updater\Adder\AttributeAdderInterface:addAttributeData()`
 - Add exception `Akeneo\Component\StorageUtils\Exception\PropertyException` thrown by `Pim\Component\Catalog\Updater\Adder\FieldAdderInterface:addFieldData()`
 - Add exception `Akeneo\Component\StorageUtils\Exception\PropertyException` thrown by `Pim\Component\Catalog\Updater\Remover\AttributeRemoverInterface:removeAttributeData()`

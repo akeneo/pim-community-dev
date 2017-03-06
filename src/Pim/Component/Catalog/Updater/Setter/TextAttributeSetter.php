@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -43,6 +44,7 @@ class TextAttributeSetter extends AbstractAttributeSetter
     ) {
         $options = $this->resolver->resolve($options);
         $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
+        $this->checkData($attribute, $data);
 
         $this->setData($product, $attribute, $data, $options['locale'], $options['scope']);
     }
@@ -65,6 +67,22 @@ class TextAttributeSetter extends AbstractAttributeSetter
         if (is_string($data) && '' === trim($data)) {
             $data = null;
         }
+
         $value->setData($data);
+    }
+
+    /**
+     * Check if data is valid
+     *
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function checkData(AttributeInterface $attribute, $data)
+    {
+        if (!is_string($data) && null !== $data) {
+            throw InvalidPropertyTypeException::stringExpected($attribute->getCode(), static::class, $data);
+        }
     }
 }

@@ -9,14 +9,16 @@
  */
 define(
     [
+        'jquery',
         'underscore',
         'pim/form/common/group-selector',
         'pim/attribute-group-manager',
         'text!pim/template/form/tab/attribute/attribute-group-selector',
         'pim/user-context',
-        'pim/i18n'
+        'pim/i18n',
+        'pim/provider/to-fill-field-provider'
     ],
-    function (_, GroupSelectorForm, AttributeGroupManager, template, UserContext, i18n) {
+    function ($, _, GroupSelectorForm, AttributeGroupManager, template, UserContext, i18n, toFillFieldProvider) {
         return GroupSelectorForm.extend({
             template: _.template(template),
 
@@ -26,6 +28,8 @@ define(
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.onValidationError);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.onPostFetch);
+                this.listenTo(UserContext, 'change:catalogLocale', this.render);
+                this.listenTo(UserContext, 'change:catalogScope', this.render);
 
                 return GroupSelectorForm.prototype.configure.apply(this, arguments);
             },
@@ -78,16 +82,28 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                this.$el.empty();
-                this.$el.html(this.template({
-                    current: this.getCurrent(),
-                    elements: this.getElements(),
-                    badges: this.badges,
-                    locale: UserContext.get('catalogLocale'),
-                    i18n: i18n
-                }));
+                $.when(
+                    toFillFieldProvider.getFields(this.getRoot(), this.getFormData()),
+                    AttributeGroupManager.getAttributeGroupsForObject(this.getFormData())
+                ).then(function (attributes, attributeGroups) {
+                    var toFillAttributeGroups = _.uniq(_.map(attributes, function (attribute) {
+                        return AttributeGroupManager.getAttributeGroupForAttribute(
+                            attributeGroups,
+                            attribute
+                        );
+                    }));
 
-                this.delegateEvents();
+                    this.$el.html(this.template({
+                        current: this.getCurrent(),
+                        elements: this.getElements(),
+                        badges: this.badges,
+                        locale: UserContext.get('catalogLocale'),
+                        toFillAttributeGroups: toFillAttributeGroups,
+                        i18n: i18n
+                    }));
+
+                    this.delegateEvents();
+                }.bind(this));
 
                 return this;
             }

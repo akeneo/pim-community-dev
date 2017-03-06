@@ -4,7 +4,6 @@ namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;

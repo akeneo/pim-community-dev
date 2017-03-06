@@ -228,6 +228,14 @@ pim_enrich:
         updated_by: Ažurirao korisnik
       btn:
         save: Spremi
+    family:
+      meta:
+        created: Kreirano
+        created_by: Kreirao korisnik
+        updated: Ažurirano
+        updated_by: Ažurirao korisnik
+      btn:
+        save: Spremi
     attribute_option:
       code: Kod
       label: Oznaka
@@ -365,6 +373,24 @@ pim_enrich:
           label_conversion_units: Odaberite jedinicu pretvorbe za svaki atribut metrike koji će se koristiti tijekom izvoza proizvoda
           conversion_unit:
             do_not_convert: Ne pretvaraj
+    family:
+      tab:
+        properties:
+          title: Svojstva
+          general: Općenito
+          code: Kod
+          attribute_as_label: Atribut se koristi kao oznaka
+          label_translations: Prijevodi oznaka
+        attributes:
+          title: Atributi
+          label_label: Oznaka
+          toolbox:
+            select_attributes: Dodaj atribute
+            add: Dodaj
+          not_required_label: Nije obavezno
+          required_label: Obavezno
+        history:
+          title: Povijest
     attribute_option:
       flash:
         option_created: Opcija atributa je uspješno kreirana

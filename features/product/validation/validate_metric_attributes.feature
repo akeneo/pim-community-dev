@@ -77,4 +77,5 @@ Feature: Validate metric attributes of a product
     Given I change the Power to "bar Watt"
     And I save the product
     Then I should see validation tooltip "This value should be a valid number."
-    And there should be 1 error in the "Other" tab
+    Then I should see validation tooltip "This value should be -100 or less."
+    And there should be 2 error in the "Other" tab

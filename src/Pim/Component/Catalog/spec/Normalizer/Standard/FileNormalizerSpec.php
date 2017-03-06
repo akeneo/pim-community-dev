@@ -3,9 +3,7 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Standard;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class FileNormalizerSpec extends ObjectBehavior
 {

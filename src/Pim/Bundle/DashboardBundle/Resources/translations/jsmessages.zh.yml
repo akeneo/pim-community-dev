@@ -5,7 +5,7 @@ pim_dashboard:
       status: 状态
       date: 日期
       type: 类型
-      profile_name: 配置方案名称
+      profile_name: 方案名称
       details: 详细资料
       job_type:
         import: 导入

@@ -23,7 +23,6 @@ Feature: Remove attribute from a family
     Given I am on the "Bags" family page
     And I visit the "Attributes" tab
     When I remove the "manufacturer" attribute
-    And I confirm the deletion
     And I save the family
     And I should not see the text "There are unsaved changes."
     Then I should see the flash message "Attribute successfully removed from the family"
@@ -35,9 +34,10 @@ Feature: Remove attribute from a family
   Scenario: Successfully update product completeness when removing a required attribute from a family
     Given I am on the "Bags" family page
     And I visit the "Attributes" tab
-    And I switch the attribute "Manufacturer" requirement in channel "E-Commerce"
-    And I switch the attribute "Manufacturer" requirement in channel "Mobile"
+    And I switch the attribute "manufacturer" requirement in channel "ecommerce"
+    And I switch the attribute "manufacturer" requirement in channel "mobile"
     And I save the family
+    Then I should not see the text "There are unsaved changes."
     When I launched the completeness calculator
     And I am on the "bag-noname" product page
     And I open the "Completeness" panel
@@ -49,8 +49,9 @@ Feature: Remove attribute from a family
       | mobile     | French (France)         | warning  | 1 missing value | 50%   |
     When I am on the "Bags" family page
     And I visit the "Attributes" tab
-    And I remove the "Manufacturer" attribute
-    Then I should see the flash message "Attribute successfully removed from the family"
+    And I remove the "manufacturer" attribute
+    And I save the family
+    Then I should not see the text "There are unsaved changes."
     When I am on the "bag-noname" product page
     And I open the "Completeness" panel
     Then I should see the completeness:

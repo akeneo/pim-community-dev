@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeInterface;
@@ -64,7 +65,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $data = [
             'labels' => ['en_US' => 'Test1', 'fr_FR' => 'Test2'],
             'group' => 'marketing',
-            'attribute_type' => 'pim_catalog_text',
+            'type' => 'pim_catalog_text',
             'date_min' => '2016-12-12T00:00:00+01:00'
         ];
 
@@ -87,7 +88,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $attributeType->getBackendType()->willReturn('backend');
         $attributeType->isUnique()->willReturn(true);
 
-        $accessor->setValue($attribute, 'attribute_type', 'pim_catalog_text');
+        $accessor->setValue($attribute, 'type', 'pim_catalog_text');
 
         $this->update($attribute, $data);
     }
@@ -105,7 +106,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $data = [
             'labels' => ['en_US' => 'Test1', 'fr_FR' => 'Test2'],
             'group' => 'marketing',
-            'attribute_type' => 'pim_catalog_text'
+            'type' => 'pim_catalog_text'
         ];
 
         $attribute->setLocale('en_US')->shouldBeCalled();
@@ -138,10 +139,10 @@ class AttributeUpdaterSpec extends ObjectBehavior
     function it_throws_an_exception_if_it_attribute_type_is_empty(AttributeInterface $attribute)
     {
         $this->shouldThrow(
-            InvalidPropertyException::valueNotEmptyExpected('attribute_type', 'Pim\Component\Catalog\Updater\AttributeUpdater')
+            InvalidPropertyException::valueNotEmptyExpected('type', 'Pim\Component\Catalog\Updater\AttributeUpdater')
         )->during(
             'update',
-            [$attribute, ['attribute_type' => '']]
+            [$attribute, ['type' => '']]
         );
     }
 
@@ -151,13 +152,13 @@ class AttributeUpdaterSpec extends ObjectBehavior
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
-                'attribute_type',
+                'type',
                 'attribute type',
                 'The attribute type does not exist',
                 'Pim\Component\Catalog\Updater\AttributeUpdater',
                 'unknown_type'
             )
-        )->during('update', [$attribute, ['attribute_type' => 'unknown_type']]);
+        )->during('update', [$attribute, ['type' => 'unknown_type']]);
     }
 
     function it_throws_an_exception_if_data_is_not_a_date(AttributeInterface $attribute)
@@ -210,7 +211,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
             'non_existent_field' => 'field',
             'labels' => ['en_US' => 'Test1', 'fr_FR' => 'Test2'],
             'group' => 'marketing',
-            'attribute_type' => 'pim_catalog_text'
+            'type' => 'pim_catalog_text'
         ];
 
         $this
@@ -234,5 +235,57 @@ class AttributeUpdaterSpec extends ObjectBehavior
                 'foo'
             )
         )->during('update', [$attribute, $values, []]);
+    }
+
+    function it_throws_an_exception_when_code_is_not_scalar(AttributeInterface $attribute)
+    {
+        $values = [
+            'code' => [],
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::scalarExpected('code', 'Pim\Component\Catalog\Updater\AttributeUpdater', [])
+            )
+            ->during('update', [$attribute, $values, []]);
+    }
+
+    function it_throws_an_exception_when_labels_is_not_an_array(AttributeInterface $attribute)
+    {
+        $values = [
+            'labels' => 'not_an_array',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::arrayExpected('labels', 'Pim\Component\Catalog\Updater\AttributeUpdater', 'not_an_array')
+            )
+            ->during('update', [$attribute, $values, []]);
+    }
+
+    function it_throws_an_exception_when_available_locales_is_not_an_array(AttributeInterface $attribute)
+    {
+        $values = [
+            'available_locales' => 'not_an_array',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::arrayExpected('available_locales', 'Pim\Component\Catalog\Updater\AttributeUpdater', 'not_an_array')
+            )
+            ->during('update', [$attribute, $values, []]);
+    }
+
+    function it_throws_an_exception_when_allowed_extensions_is_not_an_array(AttributeInterface $attribute)
+    {
+        $values = [
+            'allowed_extensions' => 'not_an_array',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::arrayExpected('allowed_extensions', 'Pim\Component\Catalog\Updater\AttributeUpdater', 'not_an_array')
+            )
+            ->during('update', [$attribute, $values, []]);
     }
 }

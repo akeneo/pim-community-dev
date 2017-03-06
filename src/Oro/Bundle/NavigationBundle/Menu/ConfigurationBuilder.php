@@ -3,7 +3,6 @@
 namespace Oro\Bundle\NavigationBundle\Menu;
 
 use Knp\Menu\ItemInterface;
-use Oro\Bundle\NavigationBundle\Menu\BuilderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ConfigurationBuilder implements BuilderInterface
