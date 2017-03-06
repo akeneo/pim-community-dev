@@ -110,6 +110,9 @@ class AttributeGroupAccessUpdater implements ObjectUpdaterInterface
                 $groupAccess->setViewAttributes($data);
                 break;
             case 'edit_attributes':
+                if (true === $data) {
+                    $groupAccess->setViewAttributes($data);
+                }
                 $groupAccess->setEditAttributes($data);
                 break;
         }

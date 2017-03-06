@@ -111,9 +111,16 @@ class AssetCategoryAccessUpdater implements ObjectUpdaterInterface
                 $categoryAccess->setViewItems($data);
                 break;
             case 'edit_items':
+                if (true === $data) {
+                    $categoryAccess->setViewItems($data);
+                }
                 $categoryAccess->setEditItems($data);
                 break;
             case 'own_items':
+                if (true === $data) {
+                    $categoryAccess->setViewItems($data);
+                    $categoryAccess->setEditItems($data);
+                }
                 $categoryAccess->setOwnItems($data);
                 break;
         }
