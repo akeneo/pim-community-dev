@@ -1,0 +1,23 @@
+project_calculation: Projectberekening
+teamwork_assistant:
+  project:
+    required: Deze waarde mag niet leeg zijn.
+    label_maxlength: Deze waarde is te lang. Het moet {{ max }} karakters of minder bevatten.
+    project_identifier: Het project {{ project }} bestaat niet.
+    project_due_date: Je kan geen datum in het verleden selecteren.
+  notification:
+    project_calculation:
+      start: Start
+    project_finished:
+      show: Toon
+    due_date:
+      start: Start
+batch_jobs:
+  project_calculation:
+    project_calculation:
+      label: Projectberekening
+    prepare_project_calculation:
+      label: Bereid de projectberekening voor
+job_execution:
+  summary:
+    processed_products: Verwerkte producten

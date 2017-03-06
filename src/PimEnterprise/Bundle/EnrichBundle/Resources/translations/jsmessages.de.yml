@@ -19,8 +19,10 @@ pimee_enrich:
       tab:
         permission:
           title: Berechtigungen
+          added: Die Gruppe {{ group }} wird das Recht haben Job-Profile zu {{ permission }}
           execute.label: Berechtigt Job-Profil auszuführen
           edit.label: Berechtigt Job-Profil zu bearbeiten
+          removed: Die Gruppe {{ group }} wird nicht das Recht haben Job-Profile zu {{ permission }}
     channel:
       tab:
         asset-transformation:
