@@ -30,12 +30,22 @@ class DatabaseSchemaHandler
         $this->cli->setAutoExit(false);
     }
 
+    /**
+     * Drop and recreate the database schema.
+     *
+     * @throws \RuntimeException
+     */
     public function reset()
     {
         $this->drop();
         $this->create();
     }
 
+    /**
+     * Drop the database schema.
+     *
+     * @throws \RuntimeException
+     */
     private function drop()
     {
         $input = new ArrayInput([
@@ -48,10 +58,15 @@ class DatabaseSchemaHandler
         $exitCode = $this->cli->run($input, $output);
 
         if (0 !== $exitCode) {
-            throw new \Exception(sprintf('Impossible to drop the database schema! "%s"', $output->fetch()));
+            throw new \RuntimeException(sprintf('Impossible to drop the database schema! "%s"', $output->fetch()));
         }
     }
 
+    /**
+     * Create the database schema.
+     *
+     * @throws \RuntimeException
+     */
     private function create()
     {
         $input = new ArrayInput([
@@ -63,7 +78,7 @@ class DatabaseSchemaHandler
         $exitCode = $this->cli->run($input, $output);
 
         if (0 !== $exitCode) {
-            throw new \Exception(sprintf('Impossible to create the database schema! "%s"', $output->fetch()));
+            throw new \RuntimeException(sprintf('Impossible to create the database schema! "%s"', $output->fetch()));
         }
     }
 }
