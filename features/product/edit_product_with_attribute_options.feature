@@ -110,7 +110,7 @@ Feature: Edit a product with attribute options
       | product    | attribute | value      |
       | rick_morty | multi     | hammer,2,3 |
     And I am logged in as "Julia"
-    And I edit the "rick_morty" product
+    When I edit the "rick_morty" product
     And I switch the scope to "ecommerce"
     And I switch the locale to "de_DE"
     And I visit the "[other]" group
@@ -132,7 +132,7 @@ Feature: Edit a product with attribute options
       | product    | attribute | value  |
       | rick_morty | simple    | hammer |
     And I am logged in as "Julia"
-    And I edit the "rick_morty" product
+    When I edit the "rick_morty" product
     And I switch the scope to "ecommerce"
     And I switch the locale to "de_DE"
     And I visit the "[other]" group
