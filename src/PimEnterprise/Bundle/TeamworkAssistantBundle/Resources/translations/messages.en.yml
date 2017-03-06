@@ -13,7 +13,7 @@ teamwork_assistant:
         project_calculation:
             error:   Project's calculation for <strong>%project_label%</strong> failed
             warning: Project's calculation for <strong>%project_label%</strong> finished with some warnings
-            success: Project's calculation is finished for <strong>%project_label%</strong>. Due date is %due_date%
+            success: The project <strong>%project_label%</strong> is ready and the contributors are notified. Let's start!
             start:   Start
         message: You have new products to enrich for "%project_label%". Due date is "%due_date%".
         project_finished:
