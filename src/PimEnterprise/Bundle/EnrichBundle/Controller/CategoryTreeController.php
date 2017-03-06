@@ -23,7 +23,9 @@ use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Component\Security\Attributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -103,17 +105,18 @@ class CategoryTreeController extends BaseCategoryTreeController
         $selectNodeId = $request->get('select_node_id', -1);
         $context = $request->get('context', false);
 
-        try {
-            $selectNode = $this->findGrantedCategory($selectNodeId, $context);
-        } catch (NotFoundHttpException $e) {
-            $selectNode = $this->userContext->getAccessibleUserTree();
-        } catch (AccessDeniedException $e) {
-            $selectNode = $this->userContext->getAccessibleUserTree();
-        }
-
         if (self::CONTEXT_MANAGE === $context) {
+            $selectNode = $this->userContext->getDefaultTree();
             $grantedTrees = $this->categoryRepository->getTrees();
         } else {
+            try {
+                $selectNode = $this->findGrantedCategory($selectNodeId, $context);
+            } catch (NotFoundHttpException $e) {
+                $selectNode = $this->userContext->getAccessibleUserTree();
+            } catch (AccessDeniedException $e) {
+                $selectNode = $this->userContext->getAccessibleUserTree();
+            }
+
             $grantedCategoryIds = $this->getGrantedCategories();
             $grantedTrees = $this->categoryRepository->getGrantedTrees($grantedCategoryIds);
         }
@@ -130,14 +133,19 @@ class CategoryTreeController extends BaseCategoryTreeController
     /**
      * {@inheritdoc}
      */
-    protected function getChildrenCategories(Request $request, $selectNode)
+    protected function getChildrenCategories(Request $request, $selectNode, $parent)
     {
-        $parent = $this->findCategory($request->get('id'));
+        try {
+            $parent = $this->findCategory($request->get('id'));
+        } catch (NotFoundHttpException $e) {
+            $parent = $this->userContext->getUserProductCategoryTree();
+        }
+
         $isEditGranted = $this->securityFacade->isGranted($this->buildAclName('category_edit'));
         $context = $request->get('context', false);
 
         if ($isEditGranted && self::CONTEXT_MANAGE === $context) {
-            $categories = parent::getChildrenCategories($request, $selectNode);
+            $categories = parent::getChildrenCategories($request, $selectNode, $parent);
         } else {
             $grantedCategoryIds = $this->getGrantedCategories();
 
@@ -196,5 +204,71 @@ class CategoryTreeController extends BaseCategoryTreeController
         }
 
         return $category;
+    }
+
+    /**
+     * List children of a category.
+     * The parent category is provided via its id ('id' request parameter).
+     * The node category to select is given by 'select_node_id' request parameter.
+     *
+     * If the node to select is not a direct child of the parent category, the tree
+     * is expanded until the selected node is found amongs the children
+     *
+     * @param Request $request
+     *
+     * @throws AccessDeniedException
+     *
+     * @Template
+     *
+     * @return Response
+     */
+    public function childrenAction(Request $request)
+    {
+        if (false === $this->securityFacade->isGranted($this->buildAclName('category_list'))) {
+            throw new AccessDeniedException();
+        }
+
+        try {
+            $parent = $this->findCategory($request->get('id'));
+        } catch (\Exception $e) {
+            $parent = $this->userContext->getAccessibleUserTree();
+        }
+
+        $selectNodeId = $request->get('select_node_id', -1);
+
+        try {
+            $selectNode = $this->findCategory($selectNodeId);
+
+            if (!$this->categoryRepository->isAncestor($parent, $selectNode)) {
+                $selectNode = null;
+            }
+        } catch (NotFoundHttpException $e) {
+            $selectNode = null;
+        }
+
+        $categories = $this->getChildrenCategories($request, $selectNode, $parent);
+
+        if (null === $selectNode) {
+            $view = 'PimEnrichBundle:CategoryTree:children.json.twig';
+        } else {
+            $view = 'PimEnrichBundle:CategoryTree:children-tree.json.twig';
+        }
+
+        $withItemsCount = (bool) $request->get('with_items_count', false);
+        $includeParent = (bool) $request->get('include_parent', false);
+        $includeSub = (bool) $request->get('include_sub', false);
+
+        return $this->render(
+            $view,
+            [
+                'categories'     => $categories,
+                'parent'         => ($includeParent) ? $parent : null,
+                'include_sub'    => $includeSub,
+                'item_count'     => $withItemsCount,
+                'select_node'    => $selectNode,
+                'related_entity' => $this->rawConfiguration['related_entity']
+            ],
+            new JsonResponse()
+        );
     }
 }

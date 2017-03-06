@@ -27,16 +27,20 @@ class AttributeGroupCompleteness
     /** @var int */
     protected $isComplete;
 
+    /** @var \DateTime */
+    protected $calculatedAt;
+
     /**
-     * @param string $attributeGroupId
-     * @param bool   $hasAtLeastOneAttributeFilled
-     * @param bool   $isComplete
+     * @param int $attributeGroupId
+     * @param int $hasAtLeastOneAttributeFilled
+     * @param int $isComplete
      */
     public function __construct($attributeGroupId, $hasAtLeastOneAttributeFilled, $isComplete)
     {
         $this->attributeGroupId = $attributeGroupId;
         $this->hasAtLeastOneAttributeFilled = $hasAtLeastOneAttributeFilled;
         $this->isComplete = $isComplete;
+        $this->calculatedAt = new \DateTime('now');
     }
 
     /**
@@ -67,5 +71,13 @@ class AttributeGroupCompleteness
     public function isComplete()
     {
         return $this->isComplete;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCalculatedAt()
+    {
+        return $this->calculatedAt;
     }
 }

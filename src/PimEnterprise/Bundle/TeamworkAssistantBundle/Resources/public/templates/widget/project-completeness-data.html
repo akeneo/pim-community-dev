@@ -1,9 +1,11 @@
 <div class="AknProjectWidget-boxContainer">
     <span class="AknProjectWidget-boxLabel"><%- todoLabel %></span>
     <div class="AknProjectWidget-box AknProjectWidget-box--important">
-        <a class="AknProjectWidget-boxHover" href="<%- url %>">
-            <span class="AknProjectWidget-boxHoverText"><%- displayProductsLabel %></span>
-        </a>
+        <% if (username === contributorUsername || null === contributorUsername) { %>
+            <a class="AknProjectWidget-boxHover" href="<%- url %>">
+                <span class="AknProjectWidget-boxHoverText"><%- displayProductsLabel %></span>
+            </a>
+        <% } %>
 
         <div class="AknProjectWidget-boxData teamwork-assistant-completeness-todo"><%- completeness.products_count_todo %></div>
         <%- completeness.ratio_todo %>% <%- ratioTodoLabel %>
@@ -13,9 +15,11 @@
 <div class="AknProjectWidget-boxContainer">
     <span class="AknProjectWidget-boxLabel"><%- inProgressLabel %></span>
     <div class="AknProjectWidget-box AknProjectWidget-box--warning">
-        <a class="AknProjectWidget-boxHover" href="<%- url %>">
-            <span class="AknProjectWidget-boxHoverText"><%- displayProductsLabel %></span>
-        </a>
+        <% if (username === contributorUsername || null === contributorUsername) { %>
+            <a class="AknProjectWidget-boxHover" href="<%- url %>">
+                <span class="AknProjectWidget-boxHoverText"><%- displayProductsLabel %></span>
+            </a>
+        <% } %>
 
         <div class="AknProjectWidget-boxData teamwork-assistant-completeness-in-progress"><%- completeness.products_count_in_progress %></div>
         <%- completeness.ratio_in_progress %>% <%- ratioInProgressLabel %>

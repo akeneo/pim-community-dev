@@ -25,7 +25,7 @@ Feature: Display proposals in datagrid
       | my-jacket | Mary   | price     | €75.00, $45.00 | $5.00 |
 
   Scenario: Successfully display only updated price attribute
-    Given  Mary proposed the following change to "my-jacket":
+    Given Mary proposed the following change to "my-jacket":
       | field | value | tab       |
       | Price | 5 USD | Marketing |
     When I am logged in as "Julia"

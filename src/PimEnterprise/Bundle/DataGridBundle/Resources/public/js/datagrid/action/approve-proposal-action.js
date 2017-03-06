@@ -63,17 +63,25 @@ define(
             /**
              * Override the default handler to trigger the event containing the new product data
              *
-             * @param product
+             * @param response
              */
-            _onAjaxSuccess: function (product) {
+            _onAjaxSuccess: function (response) {
                 messenger.notificationFlashMessage(
                     'success',
                     __('pimee_enrich.entity.product.tab.proposals.messages.approve.success')
                 );
 
-                this.datagrid.collection.fetch();
+                mediator.trigger('pim_enrich:form:proposal:post_approve:success', response);
 
-                mediator.trigger('pim_enrich:form:proposal:post_approve:success', product);
+                /**
+                 * Hard reload of the page, if deleted the last grid proposal,
+                 * in order to refresh proposal grid filters.
+                 */
+                if (1 === this.datagrid.collection.models.length && 'proposal-grid' === this.datagrid.name) {
+                    window.location.reload();
+                } else {
+                    this.datagrid.collection.fetch();
+                }
             },
 
             /**

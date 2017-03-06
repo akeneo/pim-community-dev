@@ -7,7 +7,7 @@ Feature: Show localized attributes in compare mode
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | code           | label-en_US    | type                         | decimals_allowed | metric_family | default metric unit | localizable | group |
+      | code           | label-en_US    | type                         | decimals_allowed | metric_family | default_metric_unit | localizable | group |
       | decimal_price  | decimal_price  | pim_catalog_price_collection | 1                |               |                     | 1           | other |
       | decimal_number | decimal_number | pim_catalog_number           | 1                |               |                     | 1           | other |
       | decimal_metric | decimal_metric | pim_catalog_metric           | 1                | Length        | CENTIMETER          | 1           | other |

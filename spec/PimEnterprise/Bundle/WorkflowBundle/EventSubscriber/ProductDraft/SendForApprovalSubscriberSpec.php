@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
-use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
+use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;

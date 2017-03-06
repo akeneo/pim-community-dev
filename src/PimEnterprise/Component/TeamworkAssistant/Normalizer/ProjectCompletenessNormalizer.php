@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Component\TeamworkAssistant\Normalizer;
 
-use Doctrine\Common\Util\ClassUtils;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

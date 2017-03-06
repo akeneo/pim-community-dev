@@ -27,7 +27,7 @@ extensions:
         position: 100
         config:
             labels:
-                ratioTodo: teamwork_assistant.widget.completeness.to_enrich
+                ratioTodo: teamwork_assistant.widget.completeness.to_start
                 ratioInProgress: teamwork_assistant.widget.completeness.in_progress
                 ratioDone: teamwork_assistant.widget.completeness.done
                 todo: teamwork_assistant.widget.todo

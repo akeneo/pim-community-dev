@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\InstallerBundle\Command;
 
+use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -53,7 +54,7 @@ class CleanAttributeGroupAccessesCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return \Pim\Bundle\UserBundle\Entity\Repository\GroupRepository
+     * @return GroupRepository
      */
     protected function getUserGroupRepository()
     {

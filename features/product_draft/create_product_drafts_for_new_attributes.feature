@@ -13,6 +13,8 @@ Feature: Create product drafts for new attributes added to the product
     Given I am on the "tees" family page
     And I visit the "Attributes" tab
     And I add available attribute Comment
+    And I save the family
+    And I should not see the text "There are unsaved changes"
     When I am on the "tshirt" product page
     And I visit the "Other" group
     And I change the Comment to "tshirt"

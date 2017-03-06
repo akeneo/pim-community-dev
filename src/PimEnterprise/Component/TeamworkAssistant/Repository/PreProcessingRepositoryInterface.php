@@ -62,4 +62,14 @@ interface PreProcessingRepositoryInterface
      * @param ProjectInterface $project
      */
     public function remove(ProjectInterface $project);
+
+    /**
+     * Check if product attribute group completeness has to be preprocessed.
+     *
+     * @param ProductInterface $product
+     * @param ProjectInterface $project
+     *
+     * @return boolean
+     */
+    public function isProcessableAttributeGroupCompleteness(ProductInterface $product, ProjectInterface $project);
 }

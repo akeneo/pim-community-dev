@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
-use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;

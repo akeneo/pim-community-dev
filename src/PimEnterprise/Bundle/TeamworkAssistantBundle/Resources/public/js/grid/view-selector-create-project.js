@@ -39,6 +39,10 @@ define(
              * {@inheritdoc}
              */
             render: function () {
+                if (!_.contains(this.getRoot().config.viewTypes, 'project')) {
+                    return this;
+                }
+
                 var label = '';
                 var icon = '';
 

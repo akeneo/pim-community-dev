@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
-use Pim\Bundle\NotificationBundle\Email\NotifierInterface;
-use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
+use Pim\Bundle\NotificationBundle\NotifierInterface;
+use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Console\Input\InputArgument;

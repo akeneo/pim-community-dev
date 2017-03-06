@@ -13,7 +13,7 @@ Feature: Select a project to display products to enrich
       | other     | Other       | other | pim_catalog_text |
       | media     | Media       | other | pim_catalog_text |
     And the following attributes:
-      | code         | label-en_US  | type                   | localizable | scopable | decimals_allowed | metric_family | default metric unit | useable_as_grid_filter | group     | allowed extensions |
+      | code         | label-en_US  | type                   | localizable | scopable | decimals_allowed | metric_family | default_metric_unit | useable_as_grid_filter | group     | allowed_extensions |
       | sku          | SKU          | pim_catalog_identifier | 0           | 0        |                  |               |                     | 1                      | other     |                    |
       | name         | Name         | pim_catalog_text       | 1           | 0        |                  |               |                     | 1                      | marketing |                    |
       | description  | Description  | pim_catalog_text       | 1           | 1        |                  |               |                     | 0                      | marketing |                    |
@@ -114,18 +114,35 @@ Feature: Select a project to display products to enrich
     Then I should see products tshirt-skyrim and tshirt-the-witcher-3
     And I should see the text "2016 summer collection"
 
-  Scenario: A contributor can select a project by clicking on the TODO section of the widget
+  Scenario: A contributor can select a project by clicking on its own TODO section of the widget
     Given I am logged in as "Mary"
     And I am on the dashboard page
-    When I click on the "todo" section of the team work assistant widget
+    When I click on the "todo" section of the teamwork assistant widget
     Then I should be on the products page
     And I should see products tshirt-skyrim and tshirt-the-witcher-3
     And I should see the text "2016 summer collection"
 
-  Scenario: A contributor can select a project by clicking on the IN PROGRESS section of the widget
+  Scenario: A contributor can select a project by clicking on its own IN PROGRESS section of the widget
     Given I am logged in as "Mary"
     And I am on the dashboard page
-    When I click on the "in-progress" section of the team work assistant widget
+    When I click on the "in-progress" section of the teamwork assistant widget
+    Then I should be on the products page
+    And I should see products tshirt-skyrim and tshirt-the-witcher-3
+    And I should see the text "2016 summer collection"
+
+  Scenario: The owner can not click on contributors section of the widget to select project
+    Given I am logged in as "Julia"
+    And I am on the dashboard page
+    When I select "Mary" contributor
+    Then I should not see the select project link in the "todo" section of the teamwork assistant widget
+    And I should not see the select project link in the "in-progress" section of the teamwork assistant widget
+    When I select "Julia" contributor
+    And I click on the "in-progress" section of the teamwork assistant widget
+    Then I should be on the products page
+    And I should see products tshirt-skyrim and tshirt-the-witcher-3
+    And I should see the text "2016 summer collection"
+    When I am on the dashboard page
+    And I click on the "in-progress" section of the teamwork assistant widget
     Then I should be on the products page
     And I should see products tshirt-skyrim and tshirt-the-witcher-3
     And I should see the text "2016 summer collection"

@@ -1,10 +1,34 @@
+project_calculation: Calcul du projet
+project_created: Projet créé
+project_finished: Projet fini
 teamwork_assistant:
   project:
     required: Cette valeur ne doit pas être vide.
+    label_maxlength: Cette valeur est trop longue. Elle doit avoir {{ max }} caractères ou moins.
+    project_identifier: Le projet {{ project }} n’existe pas.
+    project_locale: '{{ locale }} locale du projet doit être activée.'
+    project_due_date: Vous ne pouvez pas sélectionner une date dans le passé.
   notification:
     project_calculation:
+      error: Calcul du projet de <strong>%project_label%</strong> a échoué
+      warning: Calcul du projet pour <strong>%project_label%</strong> terminé mais il y a des avertissements
+      success: Calcul du projet est fini pour <strong>%project_label%</strong>. La dtae d'échéance est %due_date%
       start: Début
+    message: Vous avez de nouveaux produits à enrichir pour "%project_label%". La date d'échéance est "%due_date%".
     project_finished:
+      contributor: Félicitations ! Vous avez réalisé 100 % du %project_label%.
+      owner: '%project_label% pour le %due_date% est terminé. »'
       show: Afficher
     due_date:
+      contributor: Vous avez réalisé %percent% % du projet %project_label%. N’oubliez pas de remplir les derniers produits pour le %due_date%.
+      owner: '%project_label% pour le %due_date% n’est pas terminé.'
       start: Début
+batch_jobs:
+  project_calculation:
+    project_calculation:
+      label: Calcul du projet
+    prepare_project_calculation:
+      label: Préparer le calcul de projet
+job_execution:
+  summary:
+    processed_products: Produits traités

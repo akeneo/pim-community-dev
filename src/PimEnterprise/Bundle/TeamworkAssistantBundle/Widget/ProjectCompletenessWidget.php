@@ -12,9 +12,6 @@
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Widget;
 
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectRepositoryInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Widget to display project progress

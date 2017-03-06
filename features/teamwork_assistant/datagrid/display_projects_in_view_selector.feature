@@ -1,5 +1,5 @@
 @javascript
-Feature: Display team work assistant projects in the datagrid view selector
+Feature: Display teamwork assistant projects in the datagrid view selector
   In order to display and select the projects I can work on
   As a contributor
   I need to be able to display the projects in the view selector
@@ -13,7 +13,7 @@ Feature: Display team work assistant projects in the datagrid view selector
       | other     | Other       | other | pim_catalog_text |
       | media     | Media       | other | pim_catalog_text |
     And the following attributes:
-      | code         | label-en_US  | type                   | localizable | scopable | decimals_allowed | metric_family | default metric unit | useable_as_grid_filter | group     | allowed extensions |
+      | code         | label-en_US  | type                   | localizable | scopable | decimals_allowed | metric_family | default_metric_unit | useable_as_grid_filter | group     | allowed_extensions |
       | sku          | SKU          | pim_catalog_identifier | 0           | 0        |                  |               |                     | 1                      | other     |                    |
       | name         | Name         | pim_catalog_text       | 1           | 0        |                  |               |                     | 1                      | marketing |                    |
       | description  | Description  | pim_catalog_text       | 1           | 1        |                  |               |                     | 0                      | marketing |                    |

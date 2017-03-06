@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Doctrine\ORM\EntityManager;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\TableNameMapper;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;

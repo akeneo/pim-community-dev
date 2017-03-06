@@ -11,8 +11,6 @@
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;

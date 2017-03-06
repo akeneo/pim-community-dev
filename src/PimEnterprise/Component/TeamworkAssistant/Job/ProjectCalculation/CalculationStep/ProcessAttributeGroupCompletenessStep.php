@@ -11,11 +11,9 @@
 
 namespace PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep;
 
-use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\TeamworkAssistant\Calculator\ProjectItemCalculatorInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\FamilyRequirementRepositoryInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\PreProcessingRepositoryInterface;
 
 /**
@@ -23,7 +21,7 @@ use PimEnterprise\Component\TeamworkAssistant\Repository\PreProcessingRepository
  *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class PreProcessCompletenessStep implements CalculationStepInterface
+class ProcessAttributeGroupCompletenessStep implements CalculationStepInterface
 {
     /** @var PreProcessingRepositoryInterface */
     protected $preProcessingRepository;
@@ -48,6 +46,10 @@ class PreProcessCompletenessStep implements CalculationStepInterface
      */
     public function execute(ProductInterface $product, ProjectInterface $project)
     {
+        if (false === $this->preProcessingRepository->isProcessableAttributeGroupCompleteness($product, $project)) {
+            return null;
+        }
+
         $attributeGroupCompleteness = $this->attributeGroupCompletenessCalculator
             ->calculate($project, $product);
 
