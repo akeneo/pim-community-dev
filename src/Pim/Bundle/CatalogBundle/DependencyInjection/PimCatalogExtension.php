@@ -55,6 +55,7 @@ class PimCatalogExtension extends Extension
         $loader->load('validators.yml');
         $loader->load('versions.yml');
         $loader->load('serializers.yml');
+        $loader->load('serializers_indexing.yml');
         $loader->load('serializers_standard.yml');
         $loader->load('serializers_storage.yml');
         $loader->load('converters.yml');
