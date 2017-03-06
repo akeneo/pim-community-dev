@@ -254,7 +254,7 @@ def runBehatTest(edition, features, phpVersion) {
             sh "cp behat.ci.yml behat.yml"
 
             try {
-                sh "php /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE}/behat-${edition} ${env.BUILD_NUMBER} orm ${features} ${env.JOB_NAME} 5 ${phpVersion} 5.7 \"${tags}\" \"behat-${edition}-\" -e 5.2 --exit_on_failure"
+                sh "php /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE}/behat-${edition} ${env.BUILD_NUMBER} orm ${features} ${env.JOB_NAME} 5 ${phpVersion} 5.7 \"${tags}\" \"behat-${edition}\" -e 5.2 --exit_on_failure"
             } finally {
                 sh "sed -i \"s/ name=\\\"/ name=\\\"[${edition}] /\" app/build/logs/behat/*.xml"
                 junit 'app/build/logs/behat/*.xml'
