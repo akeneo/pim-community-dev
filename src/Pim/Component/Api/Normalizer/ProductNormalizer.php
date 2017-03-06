@@ -2,8 +2,12 @@
 
 namespace Pim\Component\Api\Normalizer;
 
+use Pim\Component\Api\Hal\Link;
 use Pim\Component\Api\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -19,16 +23,22 @@ class ProductNormalizer implements NormalizerInterface
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var RouterInterface */
+    protected $router;
+
     /**
      * @param NormalizerInterface          $productNormalizer
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param RouterInterface              $router
      */
     public function __construct(
         NormalizerInterface $productNormalizer,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        RouterInterface $router
     ) {
         $this->productNormalizer = $productNormalizer;
         $this->attributeRepository = $attributeRepository;
+        $this->router = $router;
     }
 
     /**
@@ -43,11 +53,13 @@ class ProductNormalizer implements NormalizerInterface
             unset($productStandard['values'][$identifier]);
         }
 
-        if (isset($context['attributes'])) {
-            foreach ($productStandard['values'] as $attributeCode => $values) {
-                if (!in_array($attributeCode, $context['attributes'])) {
-                    unset($productStandard['values'][$attributeCode]);
-                }
+        $mediaAttributeCodes = $this->attributeRepository->getMediaAttributeCodes();
+        foreach ($productStandard['values'] as $attributeCode => $values) {
+            // if $context['attributes'] is defined, returns only these attributes
+            if (isset($context['attributes']) && !in_array($attributeCode, $context['attributes'])) {
+                unset($productStandard['values'][$attributeCode]);
+            } elseif (in_array($attributeCode, $mediaAttributeCodes)) {
+                $productStandard['values'][$attributeCode] = $this->addDownloadLink($values);
             }
         }
 
@@ -60,5 +72,27 @@ class ProductNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ProductInterface && 'external_api' === $format;
+    }
+
+    /**
+     * @param array  $values
+     *
+     * @return array
+     */
+    protected function addDownloadLink(array $values)
+    {
+        foreach ($values as $index => $value) {
+            if (null !== $value['data']) {
+                $route = $this->router->generate(
+                    'pim_api_media_file_download',
+                    ['code' => $value['data']],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                );
+                $download = new Link('download', $route);
+                $values[$index]['_links'] = $download->toArray();
+            }
+        }
+
+        return $values;
     }
 }
