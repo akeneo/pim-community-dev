@@ -40,6 +40,7 @@ define(
     ) {
         return BaseForm.extend({
             tagName: 'div',
+            targetElement: 'input[type="hidden"]',
             className: 'AknButtonList-item add-attribute-group',
             template: _.template(template),
             config: {},
@@ -94,7 +95,7 @@ define(
              * Initialize select2 and format elements.
              */
             initializeSelectWidget: function () {
-                var $select = this.$('input[type="hidden"]');
+                var $select = this.$(this.targetElement);
 
                 var opts = {
                     dropdownCssClass: 'select2--bigDrop select2--annotedLabels add-attribute-group',

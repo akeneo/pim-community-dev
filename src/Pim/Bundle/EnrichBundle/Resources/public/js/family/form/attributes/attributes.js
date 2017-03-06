@@ -304,7 +304,10 @@ define([
                     FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
                 ).then(function (attributeGroups, identifier) {
                     var existingAttributes = _.pluck(this.getFormData().attributes, 'code');
-                    var groupsAttributes = [].concat.apply([], _.pluck(attributeGroups, 'attributes'));
+                    var groupsAttributes = [].concat.apply(
+                        [],
+                        _.pluck(attributeGroups, 'attributes')
+                    );
                     var attributesToAdd = _.filter(groupsAttributes, function (attribute) {
                         return !_.contains(existingAttributes, attribute) &&
                             attribute !== identifier.code;
