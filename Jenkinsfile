@@ -296,7 +296,7 @@ def runBehatTest(edition, storage, features, phpVersion, mysqlVersion, esVersion
             sh "mkdir -p app/build/logs/behat app/build/logs/consumer app/build/screenshots"
             sh "cp behat.ci.yml behat.yml"
             try {
-                sh "php /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE}/behat-${edition}-${storage} ${env.BUILD_NUMBER} ${storage} ${features} ${env.JOB_NAME} 5 5.6 5.5 \"${tags}\" \"behat-${edition}-${storage}\" -e ${esVersion} --exit_on_failure"
+                sh "php /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE}/behat-${edition}-${storage} ${env.BUILD_NUMBER} ${storage} ${features} ${env.JOB_NAME} 5 ${phpVersion} ${mysqlVersion} \"${tags}\" \"behat-${edition}-${storage}\" -e ${esVersion} --exit_on_failure"
             } finally {
                 sh "sed -i \"s/ name=\\\"/ name=\\\"[${edition}-${storage}] /\" app/build/logs/behat/*.xml"
                 junit 'app/build/logs/behat/*.xml'
