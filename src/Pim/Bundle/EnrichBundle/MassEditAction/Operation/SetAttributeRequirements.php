@@ -2,10 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
-use Pim\Component\Catalog\Model\AttributeRequirementInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
@@ -13,6 +9,7 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
  *
  * Applied on family grid
  *
+ * @author    Alexandr Jeliuc <alex@jeliuc.com>
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -22,99 +19,41 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var AttributeRequirementFactory */
-    protected $factory;
-
-    /** @var ArrayCollection */
-    protected $attRequirements;
-
     /** @var array */
     protected $channels;
-
-    /** @var array */
-    protected $attributes;
 
     /** @var string */
     protected $values;
 
+    /** @var array */
+    protected $attributes = [];
+
+    /** @var array */
+    protected $requirements = [];
+
+    /** @var array */
+    protected $attributeRequirements;
+
     /**
      * @param ChannelRepositoryInterface   $channelRepository
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param AttributeRequirementFactory  $factory
      * @param string                       $jobInstanceCode
      */
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        AttributeRequirementFactory $factory,
         $jobInstanceCode
     ) {
         parent::__construct($jobInstanceCode);
 
         $this->channelRepository = $channelRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->factory = $factory;
-        $this->attRequirements = new ArrayCollection();
-
-        $this->values = '';
     }
 
-    /**
-     * Get attribute requirements
-     *
-     * @return ArrayCollection
-     */
-    public function getAttributeRequirements()
-    {
-        return $this->attRequirements;
-    }
 
     /**
-     * Add an attribute requirement
-     *
-     * @param AttributeRequirementInterface $attributeRequirement
+     * {@inheritdoc}
      */
-    public function addAttributeRequirement(AttributeRequirementInterface $attributeRequirement)
+    public function initialize()
     {
-        if (!$this->attRequirements->contains($attributeRequirement)) {
-            $this->attRequirements->set(
-                sprintf(
-                    '%s_%s',
-                    $attributeRequirement->getAttributeCode(),
-                    $attributeRequirement->getChannelCode()
-                ),
-                $attributeRequirement
-            );
-        }
-    }
-
-    /**
-     * Remove an attribute requirement
-     *
-     * @param AttributeRequirementInterface $attributeRequirement
-     */
-    public function removeAttributeRequirement(AttributeRequirementInterface $attributeRequirement)
-    {
-        $this->attRequirements->removeElement($attributeRequirement);
-    }
-
-    /**
-     * @return array
-     */
-    public function getChannels()
-    {
-        return $this->channels;
-    }
-
-    /**
-     * @return array
-     */
-    public function getAttributes()
-    {
-        return $this->attributes;
+        $this->channels = $this->channelRepository->findAll();
     }
 
     /**
@@ -128,43 +67,20 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function getActions()
     {
-        $this->channels = $this->channelRepository->findAll();
 
-        foreach ($this->attributeRepository->getNonIdentifierAttributes() as $attribute) {
-            $this->attributes[(string) $attribute->getGroup()][] = $attribute;
+        $this->attributeRequirements = [];
 
-            foreach ($this->channels as $channel) {
-                $this->addAttributeRequirement(
-                    $this->factory->createAttributeRequirement($attribute, $channel, false)
-                );
-            }
+        foreach ($this->getAttributes() as $attribute) {
+            $this->setAttributesRequirements($attribute);
         }
+
+        return $this->attributeRequirements;
     }
 
     /**
      * {@inheritdoc}
-     */
-    public function getActions()
-    {
-        $attrRequirements = [];
-
-        foreach ($this->attRequirements as $attributeRequirement) {
-            $attrRequirements[] = [
-                'attribute_code' => $attributeRequirement->getAttribute()->getCode(),
-                'channel_code'   => $attributeRequirement->getChannel()->getCode(),
-                'is_required'    => $attributeRequirement->isRequired()
-            ];
-        }
-
-        return $attrRequirements;
-    }
-
-    /**
-     * Get the form options to configure the operation
-     *
-     * @return array
      */
     public function getFormOptions()
     {
@@ -190,17 +106,72 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     }
 
     /**
-     * Sets values
+     * Sets values and converts to attribute and requirements arrays
      *
      * @param string $values
-     *
-     * @return $this
      */
     public function setValues($values)
     {
         $this->values = $values;
 
+        $data = (array) json_decode($values, true);
+
+        $this->requirements = array_key_exists(
+            'attribute_requirements',
+            $data
+        ) ? $data['attribute_requirements'] : [];
+        $this->attributes = array_key_exists(
+            'attributes',
+            $data
+        ) ? $data['attributes'] : [];
+
         return $this;
     }
 
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    public function getRequirements()
+    {
+        return $this->requirements;
+    }
+
+    /**
+     * Creates attributes requirements array
+     *
+     * @param string $attribute
+     */
+    protected function setAttributesRequirements($attribute)
+    {
+        foreach ($this->channels as $channel) {
+            $channelCode = $channel->getCode();
+
+            $this->attributeRequirements[] = [
+                'attribute_code' => $attribute,
+                'channel_code'   => $channelCode,
+                'is_required'    => $this->isAttributeRequired($attribute, $channelCode)
+            ];
+        }
+    }
+
+    /**
+     * Checks if attribute is required for channel
+     *
+     * @param string $attribute
+     * @param string $channel
+     *
+     * @return bool
+     */
+    protected function isAttributeRequired($attribute, $channel)
+    {
+        if (array_key_exists($channel, $this->getRequirements()) &&
+            in_array($attribute, $this->requirements[$channel])
+        ) {
+            return true;
+        }
+
+        return false;
+    }
 }

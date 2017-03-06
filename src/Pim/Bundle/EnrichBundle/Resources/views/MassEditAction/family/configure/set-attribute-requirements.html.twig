@@ -4,8 +4,8 @@
     <div id="family-edit-form"></div>
     {{ form_widget(form.operation.values) }}
     <script>
-        require(['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error', 'oro/navigation', 'oro/translator', 'pim/i18n'],
-            function($, FetcherRegistry, FormBuilder, UserContext, Dialog, mediator, Error, Navigation, __, i18n) {
+        require(['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'oro/translator'],
+            function($, FetcherRegistry, FormBuilder, UserContext, Dialog, mediator, __) {
                 $(function() {
                     var family = {
                         attributes: [],
@@ -14,7 +14,7 @@
                     };
 
                     FetcherRegistry.initialize().done(function () {
-                        FormBuilder.build('pim-mass-family-edit-form')
+                        FormBuilder.build('pim-family-mass-edit-form')
                             .then(function (form) {
                                 form.setData(family);
                                 mediator.trigger('pim_enrich:form:entity:post_fetch', family);
@@ -26,36 +26,4 @@
                 });
             });
     </script>
-    {# Requirements grid #}
-    {#<table class="AknGrid AknGrid--unclickable table groups attributes">#}
-        {#<thead>#}
-            {#<th class="AknGrid-headerCell">{{ 'Label'|trans|upper }}</th>#}
-            {#{% for channel in form.operation.vars.value.channels %}#}
-                {#<th class="AknGrid-headerCell AknGrid-headerCell--center channel">{{ channel.label|upper }}</th>#}
-            {#{% endfor %}#}
-            {#<th class="AknGrid-headerCell">&nbsp;</th>#}
-        {#</thead>#}
-        {#{% for groupLabel, attributes in form.operation.vars.value.attributes %}#}
-        {#<tbody>#}
-            {#<tr class="AknGrid-bodyRow hide group">#}
-                {#<td class="AknGrid-bodyCell" colspan="10"><i class="icon-collapse-alt"></i>{{ groupLabel }}</td>#}
-            {#</tr>#}
-            {#{% for attribute in attributes %}#}
-            {#<tr class="AknGrid-bodyRow hide attribute" data-code="{{ attribute.code }}">#}
-                {#<td class="AknGrid-bodyCell">{{ attribute.label }}</td>#}
-                {#{% for channel in form.operation.vars.value.channels %}#}
-                    {#<td class="AknGrid-bodyCell AknGrid-bodyCell--center">#}
-                        {#<div class="AknAcl AknAcl--centered">#}
-                            {#{{ form_widget(form.operation.attributeRequirements[(attribute.code ~ '_' ~ channel.code)]) }}#}
-                        {#</div>#}
-                    {#</td>#}
-                {#{% endfor %}#}
-                {#<td class="AknGrid-bodyCell AknGrid-bodyCell--right">#}
-                    {#<i class="AknIconButton AknIconButton--grey AknIconButton--small icon-trash remove-attribute" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>#}
-                {#</td>#}
-            {#</tr>#}
-            {#{% endfor %}#}
-        {#</tbody>#}
-        {#{% endfor %}#}
-    {#</table>#}
 {% endblock %}

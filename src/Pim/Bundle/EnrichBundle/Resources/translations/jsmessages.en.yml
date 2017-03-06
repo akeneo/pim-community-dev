@@ -542,6 +542,16 @@ pim_enrich:
                         help: Means that the product history is automatically updated, can be switched off to improve performances
                 history:
                     title: History
+        mass_edit:
+            family:
+                attributes:
+                    label_label: Label
+                    toolbox:
+                        select_attributes_by_groups: Add by groups
+                        select_attributes: Add attributes
+                        add: Add
+                        attributes_groups_selected: '{{ itemsCount }} group(s) selected'
+
     job:
         upload: Drag and drop file or click here
     export:
