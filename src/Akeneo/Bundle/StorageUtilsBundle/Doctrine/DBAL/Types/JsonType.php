@@ -2,8 +2,8 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types;
 
-use Doctrine\DBAL\Types\JsonArrayType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\JsonArrayType;
 
 /**
  * Be able to use the native MySQL 5.7 JSON type in our current Doctrine DBAL version.

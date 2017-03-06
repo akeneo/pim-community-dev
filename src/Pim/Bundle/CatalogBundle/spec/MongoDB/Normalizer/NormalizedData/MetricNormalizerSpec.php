@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\MetricInterface;
 
 /**
- * @require \MongoId
+ * @require Doctrine\ODM\MongoDB\DocumentManager
  */
 class MetricNormalizerSpec extends ObjectBehavior
 {
