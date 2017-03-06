@@ -21,7 +21,7 @@ use PimEnterprise\Component\TeamworkAssistant\Repository\PreProcessingRepository
  *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class PreProcessCompletenessStep implements CalculationStepInterface
+class ProcessAttributeGroupCompletenessStep implements CalculationStepInterface
 {
     /** @var PreProcessingRepositoryInterface */
     protected $preProcessingRepository;
@@ -46,6 +46,10 @@ class PreProcessCompletenessStep implements CalculationStepInterface
      */
     public function execute(ProductInterface $product, ProjectInterface $project)
     {
+        if (false === $this->preProcessingRepository->isProcessableAttributeGroupCompleteness($product, $project)) {
+            return null;
+        }
+
         $attributeGroupCompleteness = $this->attributeGroupCompletenessCalculator
             ->calculate($project, $product);
 

@@ -7,12 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\TableNameMapper;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\PreProcessingRepository;
-use PimEnterprise\Component\TeamworkAssistant\Model\AttributeGroupCompleteness;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\PreProcessingRepositoryInterface;
 
@@ -33,64 +30,6 @@ class PreProcessingRepositorySpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(PreProcessingRepository::class);
-    }
-
-    function it_adds_the_pre_processed_completeness_for_product(
-        $connection,
-        $tableNameMapper,
-        ProductInterface $product,
-        ProjectInterface $project,
-        ChannelInterface $channel,
-        LocaleInterface $locale
-    ) {
-        $project->getChannel()->willreturn($channel);
-        $channel->getId()->willreturn(13);
-
-        $project->getLocale()->willreturn($locale);
-        $locale->getId()->willreturn(37);
-
-        $product->getId()->willreturn(42);
-
-        $tableNameMapper->getTableName('pimee_teamwork_assistant.completeness_per_attribute_group')
-            ->willReturn('pimee_teamwork_assistant_completeness_per_attribute_group');
-
-        $connection->delete(
-            'pimee_teamwork_assistant_completeness_per_attribute_group',
-            [
-                'product_id' => 42,
-                'channel_id' => 13,
-                'locale_id' => 37,
-            ]
-        )->shouldBeCalled();
-
-        $connection->insert(
-            'pimee_teamwork_assistant_completeness_per_attribute_group',
-            [
-                'product_id' => 42,
-                'channel_id' => 13,
-                'locale_id' => 37,
-                'attribute_group_id' => 40,
-                'has_at_least_one_required_attribute_filled' => 0,
-                'is_complete' => 1,
-            ]
-        )->shouldBeCalled();
-
-        $connection->insert(
-            'pimee_teamwork_assistant_completeness_per_attribute_group',
-            [
-                'product_id' => 42,
-                'channel_id' => 13,
-                'locale_id' => 37,
-                'attribute_group_id' => 33,
-                'has_at_least_one_required_attribute_filled' => 1,
-                'is_complete' => 1,
-            ]
-        )->shouldBeCalled();
-
-        $this->addAttributeGroupCompleteness($product, $project,[
-            new AttributeGroupCompleteness(40,  0, 1),
-            new AttributeGroupCompleteness(33,  1, 1),
-        ])->shouldReturn(null);
     }
 
     function it_adds_products_to_a_project(
