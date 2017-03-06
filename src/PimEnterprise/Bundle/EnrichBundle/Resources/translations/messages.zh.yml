@@ -163,17 +163,17 @@ batch_jobs:
     perform:
       label: 快速导出已发布的产品至Csv文件
   csv_published_product_grid_context_quick_export:
-    export.label: 已发布的产品内容（格子）快速导出至Csv
+    export.label: 已发布的产品内容（网页界面）快速导出至Csv
     perform:
-      label: 已发布的产品内容（格子）快速导出至Csv
+      label: 已发布的产品内容（网页界面）快速导出至CSV
   xlsx_published_product_quick_export:
     export.label: 快速导出已发布的产品至Xlsx文件
     perform:
       label: 快速导出已发布的产品至Xlsx文件
   xlsx_published_product_grid_context_quick_export:
-    export.label: 已发布的产品内容（格子）快速导出至Xlsx
+    export.label: 已发布的产品内容（网页界面）快速导出至XLSX
     perform:
-      label: 已发布的产品内容（格子）快速导出至Xlsx
+      label: 已发布的产品内容（网页界面）快速导出至XLSX
 add_to_variant_group_with_rules:
   steps.perform: 将产品添加到款式组
   steps.excluded.title: 被排除在外的产品
