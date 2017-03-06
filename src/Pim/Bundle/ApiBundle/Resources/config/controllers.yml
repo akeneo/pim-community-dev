@@ -7,6 +7,7 @@ parameters:
     pim_api.controller.token.class: Pim\Bundle\ApiBundle\Controller\TokenController
     pim_api.controller.product.class: Pim\Bundle\ApiBundle\Controller\ProductController
     pim_api.controller.root_endpoint.class: Pim\Bundle\ApiBundle\Controller\RootEndpointController
+    pim_api.controller.media_file.class: Pim\Bundle\ApiBundle\Controller\MediaFileController
 
 services:
     pim_api.controller.category:
@@ -108,3 +109,15 @@ services:
         class: '%pim_api.controller.root_endpoint.class%'
         arguments:
             - '@router'
+
+    pim_api.controller.media_file:
+        class: '%pim_api.controller.media_file.class%'
+        arguments:
+            - '@pim_api.repository.media_file'
+            - '@pim_serializer'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.paginator'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - ['catalogStorage']
+            - '%pim_api.configuration%'
+            - 'https://docs.akeneo.com/%s/reference/standard_format/products.html'

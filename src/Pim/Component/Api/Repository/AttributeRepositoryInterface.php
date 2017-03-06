@@ -19,4 +19,13 @@ interface AttributeRepositoryInterface extends PageableRepositoryInterface, Iden
      * @return string
      */
     public function getIdentifierCode();
+
+    /**
+     * Get attribute type by code attributes
+     *
+     * @param array $codes
+     *
+     * @return array
+     */
+    public function getAttributeTypeByCodes(array $codes);
 }

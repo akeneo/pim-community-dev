@@ -16,7 +16,7 @@ namespace Akeneo\Test\Integration;
 class MediaSanitizer
 {
     const MEDIA_ATTRIBUTE_DATA_COMPARISON = 'this is a media identifier';
-    const MEDIA_ATTRIBUTE_DATA_PATTERN = '#[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]{40}_\w+\.[a-zA-Z]+$#';
+    const MEDIA_ATTRIBUTE_DATA_PATTERN = '#[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]{40}_\w+\.[a-zA-Z]+(/download)?$#';
 
     /**
      * Replaces media attributes data in the $data array by self::MEDIA_ATTRIBUTE_DATA_COMPARISON.

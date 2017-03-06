@@ -52,3 +52,10 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.family.class%'
             - '@pim_catalog.repository.family'
+
+    pim_api.repository.media_file:
+        class: '%pim_api.repository.api_resource.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%akeneo_file_storage.model.file_info.class%'
+            - '@akeneo_file_storage.repository.file_info'

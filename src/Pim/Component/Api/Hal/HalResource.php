@@ -2,8 +2,6 @@
 
 namespace Pim\Component\Api\Hal;
 
-use Pim\Component\Api\Exception\ReservedPropertyKeyException;
-
 /**
  * Basic implementation of a HAL resource.
  *
@@ -23,25 +21,15 @@ class HalResource
     protected $data = [];
 
     /**
-     * @param string $url      url of the self link
      * @param Link[] $links    links of the resource
      * @param array  $embedded associative array where the key is the name of the relationship, and the value an array of
      *                         embedded resources for this key.
      *                         Example : ['items' => Resource[]]
      * @param array  $data     data associated to the resource
-     *
-     * @throws ReservedPropertyKeyException
      */
-    public function __construct($url, array $links, array $embedded, array $data)
+    public function __construct(array $links, array $embedded, array $data)
     {
-        if (array_key_exists('_links', $data) || array_key_exists('_embedded', $data)) {
-            throw new ReservedPropertyKeyException('Resource data could not contain a reserved HAL property key.');
-        }
-
         $this->data = $data;
-
-        $selfLink = new Link('self', $url);
-        $this->addLink($selfLink);
 
         foreach ($links as $link) {
             $this->addLink($link);
@@ -99,6 +87,9 @@ class HalResource
      *                   'self' => [
      *                       'href' => 'http://akeneo.com/api/resource/id',
      *                   ],
+     *                   'other' => [
+     *                       'href' => 'http://akeneo.com/api/resource/other',
+     *                   ]
      *               ],
      *               'data' => 'item_data',
      *           ],
@@ -110,10 +101,19 @@ class HalResource
      */
     public function toArray()
     {
-        $data['_links'] = $this->normalizeLinks($this->links);
+        $data = [];
+
+        $links = $this->normalizeLinks($this->links);
+        if (!empty($links)) {
+            $data['_links'] = $links;
+        }
 
         foreach ($this->data as $key => $value) {
-            $data[$key] = $value;
+            if (isset($data[$key]) && is_array($value)) {
+                $data[$key] = array_merge($data[$key], $value);
+            } else {
+                $data[$key] = $value;
+            }
         }
 
         foreach ($this->embedded as $rel => $embedded) {
