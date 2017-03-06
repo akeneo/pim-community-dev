@@ -134,7 +134,8 @@ new Pim\Bundle\ApiBundle\PimApiBundle()
         - `getPimEnterpriseBundles()`:
         
           ```PHP
-new PimEnterprise\Bundle\TeamworkAssistantBundle\PimEnterpriseTeamworkAssistantBundle()
+new PimEnterprise\Bundle\TeamworkAssistantBundle\PimEnterpriseTeamworkAssistantBundle(),
+new PimEnterprise\Bundle\AnalyticsBundle\PimEnterpriseAnalyticsBundle()
           ```
 
 6. Update your routing configuration `$PIM_DIR/app/config/routing.yml`:
