@@ -90,7 +90,7 @@ class ScalarProductValueFactory implements ProductValueFactoryInterface
             $data = null;
         }
 
-        if (AttributeTypes::BOOLEAN === $attribute->getAttributeType() &&
+        if (AttributeTypes::BOOLEAN === $attribute->getType() &&
             (1 === $data || '1' === $data || 0 === $data || '0' === $data)
         ) {
             $data = boolval($data);

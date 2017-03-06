@@ -16,10 +16,9 @@ class VariantGroupNormalizerSpec extends ObjectBehavior
 {
     function let(
         TranslationNormalizer $transNormalizer,
-        NormalizerInterface $valuesNormalizer,
-        DenormalizerInterface $valuesDenormalizer
+        NormalizerInterface $valuesNormalizer
     ) {
-        $this->beConstructedWith($transNormalizer, $valuesNormalizer, $valuesDenormalizer);
+        $this->beConstructedWith($transNormalizer, $valuesNormalizer);
     }
 
     function it_is_a_serializer_aware_normalizer()
@@ -52,11 +51,10 @@ class VariantGroupNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_variant_group_and_sorts_axis_attributes(
         $transNormalizer,
         $valuesNormalizer,
-        $valuesDenormalizer,
         GroupInterface $group,
         GroupTypeInterface $groupType,
         ProductTemplateInterface $productTemplate,
-        ProductValueInterface $productValue1,
+        ProductValueInterface $productValue,
         AttributeInterface $attr1,
         AttributeInterface $attr2,
         AttributeInterface $attr3
@@ -71,10 +69,8 @@ class VariantGroupNormalizerSpec extends ObjectBehavior
 
         $group->getProductTemplate()->willReturn($productTemplate);
 
-        $valuesData = ['name' => 'Light saber model'];
-        $productTemplate->getValuesData()->willReturn($valuesData);
-        $valuesDenormalizer->denormalize($valuesData, 'ProductValue[]', 'standard')->willReturn([$productValue1]);
-        $valuesNormalizer->normalize($productValue1, 'flat', [])->willReturn(['name' => 'Light saber model']);
+        $productTemplate->getValues()->willReturn([$productValue]);
+        $valuesNormalizer->normalize($productValue, 'flat', [])->willReturn(['name' => 'Light saber model']);
 
         $group->getAxisAttributes()->willReturn([$attr1, $attr2, $attr3]);
 
@@ -94,7 +90,6 @@ class VariantGroupNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_variant_group_with_its_values(
         $transNormalizer,
         $valuesNormalizer,
-        $valuesDenormalizer,
         GroupInterface $group,
         GroupTypeInterface $groupType,
         AttributeInterface $attr,
@@ -106,16 +101,10 @@ class VariantGroupNormalizerSpec extends ObjectBehavior
         $groupType->isVariant()->willReturn(true);
         $group->getCode()->willReturn('laser_sabers');
 
-        $valuesData = [
-            'name' => 'Light saber model',
-            'size' => '120'
-        ];
-
         $context = ['with_variant_group_values' => true];
         $format = 'flat';
 
-        $productTemplate->getValuesData()->willReturn($valuesData);
-        $valuesDenormalizer->denormalize($valuesData, 'ProductValue[]', 'standard')->willReturn(
+        $productTemplate->getValues()->willReturn(
             [
                 $productValue1,
                 $productValue2

@@ -37,7 +37,7 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('price_collection_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $attribute->getType()->willReturn('pim_catalog_price_collection');
         $attribute->getBackendType()->willReturn('prices');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -64,7 +64,7 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('price_collection_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $attribute->getType()->willReturn('pim_catalog_price_collection');
         $attribute->getBackendType()->willReturn('prices');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -95,7 +95,7 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('price_collection_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $attribute->getType()->willReturn('pim_catalog_price_collection');
         $attribute->getBackendType()->willReturn('prices');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -125,7 +125,7 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('price_collection_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $attribute->getType()->willReturn('pim_catalog_price_collection');
         $attribute->getBackendType()->willReturn('prices');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -153,7 +153,7 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('price_collection_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $attribute->getType()->willReturn('pim_catalog_price_collection');
         $attribute->getBackendType()->willReturn('prices');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -173,7 +173,7 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('price_collection_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $attribute->getType()->willReturn('pim_catalog_price_collection');
         $attribute->getBackendType()->willReturn('prices');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -193,7 +193,7 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('price_collection_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $attribute->getType()->willReturn('pim_catalog_price_collection');
         $attribute->getBackendType()->willReturn('prices');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -214,7 +214,7 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('price_collection_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $attribute->getType()->willReturn('pim_catalog_price_collection');
         $attribute->getBackendType()->willReturn('prices');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 

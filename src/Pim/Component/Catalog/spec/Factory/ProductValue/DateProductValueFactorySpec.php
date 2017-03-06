@@ -32,7 +32,7 @@ class DateProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('date_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_date');
+        $attribute->getType()->willReturn('pim_catalog_date');
         $attribute->getBackendType()->willReturn('date');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -55,7 +55,7 @@ class DateProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('date_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_date');
+        $attribute->getType()->willReturn('pim_catalog_date');
         $attribute->getBackendType()->willReturn('date');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -80,7 +80,7 @@ class DateProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('date_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_date');
+        $attribute->getType()->willReturn('pim_catalog_date');
         $attribute->getBackendType()->willReturn('date');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -103,7 +103,7 @@ class DateProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('date_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_date');
+        $attribute->getType()->willReturn('pim_catalog_date');
         $attribute->getBackendType()->willReturn('date');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -128,7 +128,7 @@ class DateProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('date_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_date');
+        $attribute->getType()->willReturn('pim_catalog_date');
         $attribute->getBackendType()->willReturn('date');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -148,7 +148,7 @@ class DateProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('date_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_date');
+        $attribute->getType()->willReturn('pim_catalog_date');
         $attribute->getBackendType()->willReturn('date');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -169,7 +169,7 @@ class DateProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('date_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_date');
+        $attribute->getType()->willReturn('pim_catalog_date');
         $attribute->getBackendType()->willReturn('date');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 

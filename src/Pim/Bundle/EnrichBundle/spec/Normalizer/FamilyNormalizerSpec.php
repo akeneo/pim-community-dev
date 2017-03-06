@@ -112,12 +112,12 @@ class FamilyNormalizerSpec extends ObjectBehavior
         $marketingAttributeGroup->getCode()->willReturn('marketing');
 
         $name->getCode()->willReturn('name');
-        $name->getAttributeType()->willReturn('pim_catalog_text');
+        $name->getType()->willReturn('pim_catalog_text');
         $name->getGroup()->willReturn($marketingAttributeGroup);
         $name->getSortOrder()->willReturn(1);
 
         $price->getCode()->willReturn('price');
-        $price->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $price->getType()->willReturn('pim_catalog_price_collection');
         $price->getGroup()->willReturn($marketingAttributeGroup);
         $price->getSortOrder()->willReturn(3);
 

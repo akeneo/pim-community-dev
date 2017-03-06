@@ -40,7 +40,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ProductValueInterface $identifier,
         AttributeInterface $attribute
     ) {
-        $attribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $attribute->getType()->willReturn('pim_catalog_identifier');
         $attribute->getCode()->willReturn('identifier');
         $identifier->getAttribute()->willReturn($attribute);
         $product->getValues()->willReturn($productValues);
@@ -92,7 +92,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ProductValueInterface $description,
         AttributeInterface $attribute
     ) {
-        $attribute->getAttributeType()->willReturn('pim_catalog_text');
+        $attribute->getType()->willReturn('pim_catalog_text');
         $attribute->getCode()->willReturn('description');
         $description->getAttribute()->willReturn($attribute);
         $description->getLocale()->willReturn('en_US');

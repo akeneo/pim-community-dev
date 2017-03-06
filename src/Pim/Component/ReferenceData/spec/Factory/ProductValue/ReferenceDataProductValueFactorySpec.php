@@ -44,7 +44,7 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('reference_data_simple_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_reference_data_catalog_simpleselect');
+        $attribute->getType()->willReturn('pim_reference_data_catalog_simpleselect');
         $attribute->getBackendType()->willReturn('reference_data_option');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('color');
@@ -72,7 +72,7 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('reference_data_simple_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_reference_data_catalog_simpleselect');
+        $attribute->getType()->willReturn('pim_reference_data_catalog_simpleselect');
         $attribute->getBackendType()->willReturn('reference_data_option');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('color');
@@ -104,7 +104,7 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('reference_data_simple_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_reference_data_catalog_simpleselect');
+        $attribute->getType()->willReturn('pim_reference_data_catalog_simpleselect');
         $attribute->getBackendType()->willReturn('reference_data_option');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('color');
@@ -135,7 +135,7 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('reference_data_simple_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_reference_data_catalog_simpleselect');
+        $attribute->getType()->willReturn('pim_reference_data_catalog_simpleselect');
         $attribute->getBackendType()->willReturn('reference_data_option');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('color');
@@ -164,7 +164,7 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('reference_data_simple_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_reference_data_catalog_simpleselect');
+        $attribute->getType()->willReturn('pim_reference_data_catalog_simpleselect');
         $attribute->getBackendType()->willReturn('reference_data_option');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('color');
@@ -186,7 +186,7 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('reference_data_simple_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_reference_data_catalog_simpleselect');
+        $attribute->getType()->willReturn('pim_reference_data_catalog_simpleselect');
         $attribute->getBackendType()->willReturn('reference_data_option');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('color');
