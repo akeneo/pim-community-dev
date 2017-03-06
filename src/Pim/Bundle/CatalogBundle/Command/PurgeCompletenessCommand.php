@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Pim\Component\Catalog\Manager\CompletenessManager;
+use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -42,16 +42,17 @@ class PurgeCompletenessCommand extends ContainerAwareCommand
 
         foreach ($paginator as $family) {
             $output->writeln(sprintf('Purging completenesses of the family "%s"...', $family->getCode()));
-            $this->getCompletenessManager()->scheduleForFamily($family);
+            // TODO: TIP-694: Make that command work again.
+            // $this->getCompletenessManager()->scheduleForFamily($family);
         }
 
         $output->writeln('<info>Completenesses purged.</info>');
     }
 
     /**
-     * @return CompletenessManager
+     * @return CompletenessCalculatorInterface
      */
-    protected function getCompletenessManager()
+    protected function getCompletenessCalculator()
     {
         return $this
             ->getContainer()
@@ -71,7 +72,7 @@ class PurgeCompletenessCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return EntityManager
+     * @return EntityManagerInterface
      */
     protected function getEntityManager()
     {

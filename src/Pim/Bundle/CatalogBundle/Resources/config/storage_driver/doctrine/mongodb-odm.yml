@@ -4,7 +4,6 @@ parameters:
     pim_catalog.repository.completeness.class:              Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\CompletenessRepository
     pim_catalog.repository.product_mass_action.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductMassActionRepository
     pim_catalog.repository.product_category.class:          Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductCategoryRepository
-    pim_catalog.doctrine.completeness_generator.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator
     pim_catalog.doctrine.index_creator.class:               Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator
     pim_catalog.doctrine.index_purger.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger
     pim_catalog.doctrine.naming_utility.class:              Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility
@@ -83,14 +82,6 @@ services:
 
     pim_catalog.object_manager.association:
         alias: doctrine.odm.mongodb.document_manager
-
-    pim_catalog.doctrine.completeness_generator:
-        class: '%pim_catalog.doctrine.completeness_generator.class%'
-        arguments:
-            - '@doctrine.odm.mongodb.document_manager'
-            - '%pim_catalog.entity.product.class%'
-            - '@pim_catalog.repository.channel'
-            - '@pim_catalog.repository.family'
 
     pim_catalog.doctrine.index_creator:
         class: '%pim_catalog.doctrine.index_creator.class%'

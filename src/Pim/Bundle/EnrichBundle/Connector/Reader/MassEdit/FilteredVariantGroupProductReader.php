@@ -9,8 +9,8 @@ use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\Converter\MetricConverter;
-use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -52,7 +52,7 @@ class FilteredVariantGroupProductReader extends ProductReader
     /**
      * @param ProductQueryBuilderFactoryInterface   $pqbFactory
      * @param ChannelRepositoryInterface            $channelRepository
-     * @param CompletenessManager                   $completenessManager
+     * @param CompletenessCalculatorInterface       $completenessCalculator
      * @param MetricConverter                       $metricConverter
      * @param bool                                  $generateCompleteness
      * @param PaginatorFactoryInterface             $paginatorFactory
@@ -64,7 +64,7 @@ class FilteredVariantGroupProductReader extends ProductReader
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
-        CompletenessManager $completenessManager,
+        CompletenessCalculatorInterface $completenessCalculator,
         MetricConverter $metricConverter,
         $generateCompleteness,
         PaginatorFactoryInterface $paginatorFactory,
@@ -76,7 +76,7 @@ class FilteredVariantGroupProductReader extends ProductReader
         parent::__construct(
             $pqbFactory,
             $channelRepository,
-            $completenessManager,
+            $completenessCalculator,
             $metricConverter,
             $generateCompleteness
         );

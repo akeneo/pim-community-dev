@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\EventListener\Storage;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface;
+use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -25,22 +25,22 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
     /** @var BulkSaverInterface */
     protected $saver;
 
-    /** @var CompletenessGeneratorInterface */
-    protected $completeness;
+    /** @var CompletenessCalculatorInterface */
+    protected $completenessCalculator;
 
     /**
-     * @param LocaleRepositoryInterface      $repository
-     * @param BulkSaverInterface             $saver
-     * @param CompletenessGeneratorInterface $completeness
+     * @param LocaleRepositoryInterface       $repository
+     * @param BulkSaverInterface              $saver
+     * @param CompletenessCalculatorInterface $completenessCalculator
      */
     public function __construct(
         LocaleRepositoryInterface $repository,
         BulkSaverInterface $saver,
-        CompletenessGeneratorInterface $completeness
+        CompletenessCalculatorInterface $completenessCalculator
     ) {
         $this->repository = $repository;
         $this->saver = $saver;
-        $this->completeness = $completeness;
+        $this->completenessCalculator = $completenessCalculator;
     }
 
     /**

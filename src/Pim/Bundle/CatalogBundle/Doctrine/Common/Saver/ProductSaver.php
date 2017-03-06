@@ -5,9 +5,11 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Manager\CompletenessManager;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManagerInterface;
+use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -21,27 +23,27 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class ProductSaver implements SaverInterface, BulkSaverInterface
 {
-    /** @var ObjectManager */
-    protected $objectManager;
+    /** @var EntityManagerInterface */
+    protected $entityManager;
 
-    /** @var CompletenessManager */
-    protected $completenessManager;
+    /** @var CompletenessCalculatorInterface */
+    protected $completenessCalculator;
 
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
     /**
-     * @param ObjectManager            $om
-     * @param CompletenessManager      $completenessManager
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param EntityManagerInterface          $entityManager
+     * @param CompletenessCalculatorInterface $completenessCalculator
+     * @param EventDispatcherInterface        $eventDispatcher
      */
     public function __construct(
-        ObjectManager $om,
-        CompletenessManager $completenessManager,
+        EntityManagerInterface $entityManager,
+        CompletenessCalculatorInterface $completenessCalculator,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->objectManager = $om;
-        $this->completenessManager = $completenessManager;
+        $this->entityManager = $entityManager;
+        $this->completenessCalculator = $completenessCalculator;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -56,13 +58,10 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
 
-        // TODO: Temporary fix to allow the PIM to install. To remove once new storage works.
-        // $this->completenessManager->schedule($product);
+        $this->calculateProductCompletenesses($product);
 
-        $this->objectManager->persist($product);
-        $this->objectManager->flush();
-
-        // $this->completenessManager->generateMissingForProduct($product);
+        $this->entityManager->persist($product);
+        $this->entityManager->flush();
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
     }
@@ -85,16 +84,14 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
 
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
 
-            // $this->completenessManager->schedule($product);
+            $this->calculateProductCompletenesses($product);
 
-            $this->objectManager->persist($product);
+            $this->entityManager->persist($product);
         }
 
-        $this->objectManager->flush();
+        $this->entityManager->flush();
 
         foreach ($products as $product) {
-            // $this->completenessManager->generateMissingForProduct($product);
-
             $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
         }
 
@@ -114,5 +111,51 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
                 )
             );
         }
+    }
+
+    /**
+     * Calculates current product completenesses.
+     *
+     * The current completenesses collection is first cleared, then newly calculated ones are set to the product.
+     *
+     * @param ProductInterface $product
+     */
+    protected function calculateProductCompletenesses(ProductInterface $product)
+    {
+        $completenessesCollection = $product->getCompletenesses();
+
+        if (!$completenessesCollection->isEmpty()) {
+            $this->dropCompletenesses($completenessesCollection);
+        }
+
+        $newCompletenesses = $this->completenessCalculator->calculate($product);
+
+        foreach ($newCompletenesses as $completenessesByChannel) {
+            foreach ($completenessesByChannel as $completenessByChannelAndLocale) {
+                $completenessesCollection->add($completenessByChannelAndLocale);
+            }
+        }
+    }
+
+    /**
+     * Drops the current completenesses and missing attributes from the database and clear them from the product.
+     *
+     * @param Collection $completenessesCollection
+     */
+    protected function dropCompletenesses(Collection $completenessesCollection)
+    {
+        $completenessesIDs = [];
+        foreach ($completenessesCollection->getValues() as $completeness) {
+            $completenessesIDs[] = $completeness->getId();
+        }
+
+        $stmt = $this->entityManager->getConnection()->executeQuery(
+            'DELETE c FROM pim_catalog_completeness c WHERE c.id IN (?)',
+            [$completenessesIDs],
+            [Connection::PARAM_INT_ARRAY]
+        );
+        $stmt->execute();
+
+        $completenessesCollection->clear();
     }
 }

@@ -1,7 +1,6 @@
 parameters:
-    pim_catalog.manager.attribute_options_sorter.class: Pim\Component\Catalog\Manager\AttributeOptionsSorter
-    pim_catalog.manager.attribute_group.class:     Pim\Component\Catalog\Manager\AttributeGroupManager
-    pim_catalog.manager.completeness.class:        Pim\Component\Catalog\Manager\CompletenessManager
+    pim_catalog.manager.attribute_options_sorter.class:  Pim\Component\Catalog\Manager\AttributeOptionsSorter
+    pim_catalog.manager.attribute_group.class:           Pim\Component\Catalog\Manager\AttributeGroupManager
     pim_catalog.manager.product_template_media.class:    Pim\Component\Catalog\Manager\ProductTemplateMediaManager
     pim_catalog.applier.product_template.class:          Pim\Component\Catalog\Manager\ProductTemplateApplier
     pim_catalog.resolver.variant_group_attributes.class: Pim\Component\Catalog\Manager\VariantGroupAttributesResolver
@@ -20,16 +19,6 @@ services:
             - '@pim_catalog.repository.attribute_group'
             - '@pim_catalog.saver.attribute_group'
             - '@pim_catalog.saver.attribute'
-
-    pim_catalog.manager.completeness:
-        class: '%pim_catalog.manager.completeness.class%'
-        arguments:
-            - '@pim_catalog.repository.family'
-            - '@pim_catalog.repository.channel'
-            - '@pim_catalog.repository.locale'
-            - '@pim_catalog.doctrine.completeness_generator'
-            - '@pim_catalog.completeness.checker'
-            - '%pim_catalog.entity.completeness.class%'
 
     pim_catalog.manager.product_template_media:
         class: '%pim_catalog.manager.product_template_media.class%'

@@ -17,8 +17,8 @@ services:
     pim_catalog.saver.product:
         class: '%pim_catalog.saver.product.class%'
         arguments:
-            - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.manager.completeness'
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.completeness.calculator'
             - '@event_dispatcher'
 
     pim_catalog.saver.group:
@@ -39,7 +39,6 @@ services:
         class: '%pim_catalog.saver.family.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.manager.completeness'
             - '@event_dispatcher'
 
     pim_catalog.saver.association_type:

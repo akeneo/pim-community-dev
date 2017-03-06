@@ -4,8 +4,8 @@ namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Exception\MissingIdentifierException;
 
 /**
  * Abstract product
@@ -55,7 +55,7 @@ abstract class AbstractProduct implements ProductInterface
     /** @var int */
     protected $familyId;
 
-    /** @var ArrayCollection $categories */
+    /** @var Collection $categories */
     protected $categories;
 
     /** @var array */
@@ -64,16 +64,16 @@ abstract class AbstractProduct implements ProductInterface
     /** @var bool $enabled */
     protected $enabled = true;
 
-    /** @var ArrayCollection $groups */
+    /** @var Collection $groups */
     protected $groups;
 
     /** @var array */
     protected $groupIds = [];
 
-    /** @var ArrayCollection $associations */
+    /** @var Collection $associations */
     protected $associations;
 
-    /** @var ArrayCollection $completenesses */
+    /** @var Collection $completenesses */
     protected $completenesses;
 
     /** @var string */
@@ -642,7 +642,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setCompletenesses(ArrayCollection $completenesses)
+    public function setCompletenesses(Collection $completenesses)
     {
         $this->completenesses = $completenesses;
 

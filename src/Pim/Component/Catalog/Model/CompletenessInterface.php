@@ -12,6 +12,11 @@ namespace Pim\Component\Catalog\Model;
 interface CompletenessInterface
 {
     /**
+     * @return int
+     */
+    public function getId();
+
+    /**
      * Getter required count
      *
      * @return int
@@ -64,7 +69,7 @@ interface CompletenessInterface
     /**
      * Getter locale
      *
-     * @return Locale
+     * @return LocaleInterface
      */
     public function getLocale();
 
@@ -106,4 +111,25 @@ interface CompletenessInterface
      * @return CompletenessInterface
      */
     public function setRatio($ratio);
+
+    /**
+     * Get the missing attributes
+     *
+     * @return AttributeInterface[]
+     */
+    public function getMissingAttributes();
+
+    /**
+     * @param $missingAttributes AttributeInterface[]
+     *
+     * @return CompletenessInterface
+     */
+    public function setMissingAttributes(array $missingAttributes);
+
+    /**
+     * @param AttributeInterface $attribute
+     *
+     * @return CompletenessInterface
+     */
+    public function addMissingAttribute(AttributeInterface $attribute);
 }

@@ -7,7 +7,6 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -24,24 +23,16 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var CompletenessManager */
-    protected $completenessManager;
-
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
     /**
-     * @param ObjectManager                  $objectManager
-     * @param CompletenessManager            $completenessManager
-     * @param EventDispatcherInterface       $eventDispatcher
+     * @param ObjectManager            $objectManager
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(
-        ObjectManager $objectManager,
-        CompletenessManager $completenessManager,
-        EventDispatcherInterface $eventDispatcher
-    ) {
+    public function __construct(ObjectManager $objectManager, EventDispatcherInterface $eventDispatcher)
+    {
         $this->objectManager = $objectManager;
-        $this->completenessManager = $completenessManager;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -58,7 +49,8 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
 
         $this->objectManager->persist($family);
 
-        $this->completenessManager->scheduleForFamily($family);
+        // TODO: TIP-694: This should be done in a batch job.
+        // $this->completenessCalculator->scheduleForFamily($family);
 
         $this->objectManager->flush();
 
@@ -85,7 +77,8 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
 
             $this->objectManager->persist($family);
 
-            $this->completenessManager->scheduleForFamily($family);
+            // TODO: TIP-694: This should be done in a batch job.
+            // $this->completenessCalculator->scheduleForFamily($family);
         }
 
         $this->objectManager->flush();
