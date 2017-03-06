@@ -33,7 +33,7 @@ class AssetRepositorySpec extends ObjectBehavior
         $select = 'asset.id as id, CONCAT(\'[\', asset.code, \']\') as text';
 
         $em->createQueryBuilder()->willReturn($qb);
-        $qb->select('asset')->willReturn($qb);
+        $qb->select('asset', null)->willReturn($qb);
         $qb->select($select)->willReturn($qb);
         $qb->from(Argument::any(), Argument::any(), Argument::any())->willReturn($qb);
         $qb->orderBy('asset.sortOrder', 'DESC')->willReturn($qb);
@@ -98,8 +98,8 @@ class AssetRepositorySpec extends ObjectBehavior
     {
         $em->createQueryBuilder()->willReturn($qb);
 
-        $qb->select('asset')->willReturn($qb);
-        $qb->from('PimEnterprise\Component\ProductAsset\Model\Asset', 'asset')->willReturn($qb);
+        $qb->select('asset', null)->willReturn($qb);
+        $qb->from('PimEnterprise\Component\ProductAsset\Model\Asset', 'asset', null)->willReturn($qb);
         $qb->addGroupBy('asset.id')->willReturn($qb);
 
         $this->createAssetDatagridQueryBuilder([]);
