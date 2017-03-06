@@ -41,4 +41,11 @@ interface ProjectRepositoryInterface extends
      * @return CursorInterface
      */
     public function findByChannel(ChannelInterface $channel);
+
+    /**
+     * Count the total number of projects
+     *
+     * @return integer
+     */
+    public function countAll();
 }

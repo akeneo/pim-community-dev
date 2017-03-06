@@ -17,7 +17,6 @@ use Doctrine\ORM\AbstractQuery;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -237,6 +236,17 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
 
         // remove limit of the query
         $qb->limit(null);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countAll()
+    {
+        $qb = $this->createQueryBuilder('ProductDraft')->hydrate(false);
+        $count = $qb->getQuery()->execute()->count();
+
+        return $count;
     }
 
     /**

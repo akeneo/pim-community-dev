@@ -130,4 +130,11 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      * @return mixed
      */
     public function applyMassActionParameters($qb, $inset, array $values);
+
+    /**
+     * Count the total number of product drafts
+     *
+     * @return integer
+     */
+    public function countAll();
 }

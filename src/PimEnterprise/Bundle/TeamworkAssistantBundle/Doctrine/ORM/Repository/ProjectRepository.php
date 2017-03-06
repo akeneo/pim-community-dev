@@ -166,6 +166,19 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function countAll()
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        return (int) $qb
+            ->select('count(p.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
      * Initialize, configure and returns an options resolver for findBySearch query.
      *
      * @return OptionsResolver
