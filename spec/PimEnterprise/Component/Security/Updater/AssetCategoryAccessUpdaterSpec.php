@@ -39,7 +39,7 @@ class AssetCategoryAccessUpdaterSpec extends ObjectBehavior
         )->during('update', [new \stdClass(), []]);
     }
 
-    function it_updates_a_asset_category_access(
+    function it_updates_an_asset_category_access(
         $groupRepository,
         $categoryRepository,
         AssetCategoryAccess $categoryAccess,
