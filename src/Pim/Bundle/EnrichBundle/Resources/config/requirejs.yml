@@ -380,9 +380,14 @@ config:
         # Mass product edit form
         pim/mass-product-edit-form/hidden-field-updater: pimenrich/js/product/form/mass-edit/hidden-field-updater
         pim/mass-product-edit-form/attributes:           pimenrich/js/product/form/mass-edit/attributes
+        pim/mass-product-edit-form/add-attribute:        pimenrich/js/product/form/mass-edit/add-attribute
 
         # Mass family edit
-        pim/mass-family-edit-form/hidden-field-updater: pimenrich/js/family/form/mass-edit/hidden-field-updater
+        pim/family-mass-edit/base-form:                   pimenrich/js/family/mass-edit/base-form
+        pim/family-mass-edit/attributes:                  pimenrich/js/family/mass-edit/attributes
+        pim/family-mass-edit/hidden-field-updater:        pimenrich/js/family/mass-edit/hidden-field-updater
+        pim/family-mass-edit/toolbar/add-attribute:       pimenrich/js/family/mass-edit/toolbar/add-attribute
+        pim/family-mass-edit/toolbar/add-attribute-group: pimenrich/js/family/mass-edit/toolbar/add-attribute-group
 
         # Attribute option form
         pim/attribute-option-form:          pimenrich/js/attribute-option/form
@@ -600,3 +605,6 @@ config:
         pim/template/grid/view-selector/save-view: pimenrich/templates/grid/view-selector-save-view.html
         pim/template/grid/view-selector/remove-view: pimenrich/templates/grid/view-selector-remove-view.html
         pim/template/grid/view-selector/current: pimenrich/templates/grid/view-selector-current.html
+
+        # Mass edit
+        pim/template/family-mass-edit/base-form: pimenrich/templates/family/mass-edit/base-form
