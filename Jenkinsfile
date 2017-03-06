@@ -1,7 +1,6 @@
 #!groovy
 
 def editions = ["ce"]
-def features = "features,vendor/akeneo/pim-community-dev/features"
 def phpVersion = "5.6"
 def features = "features"
 def launchUnitTests = "yes"
