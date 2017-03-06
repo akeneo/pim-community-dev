@@ -1,3 +1,5 @@
+# 1.7.0-BETA2 (2017-03-06)
+
 # 1.7.0-BETA1 (2017-03-02)
 
 ## Functional improvements
