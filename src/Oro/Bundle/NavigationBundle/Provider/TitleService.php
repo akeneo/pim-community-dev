@@ -3,7 +3,6 @@
 namespace Oro\Bundle\NavigationBundle\Provider;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityRepository;
 use JMS\Serializer\Exception\RuntimeException;
 use JMS\Serializer\Serializer;
 use Oro\Bundle\ConfigBundle\Config\UserConfigManager;

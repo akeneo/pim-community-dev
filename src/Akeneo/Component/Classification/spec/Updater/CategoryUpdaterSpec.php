@@ -3,6 +3,8 @@
 namespace spec\Akeneo\Component\Classification\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -59,15 +61,123 @@ class CategoryUpdaterSpec extends ObjectBehavior
         $this->update($category, $values, []);
     }
 
-    function it_throws_an_exception_when_trying_to_update_a_non_existent_field(CategoryInterface $category) {
+    function it_updates_a_null_parent_category(CategoryInterface $category)
+    {
+        $category->setCode('mycode')->shouldBeCalled();
+        $category->setParent(null)->shouldBeCalled();
+
+        $values = [
+            'code'   => 'mycode',
+            'parent' => null
+        ];
+
+        $this->update($category, $values, []);
+    }
+
+    function it_throws_an_exception_when_trying_to_update_a_non_existent_field(CategoryInterface $category)
+    {
         $values = [
             'non_existent_field' => 'field',
-            'code'               => 'mycode',
-            'parent'             => 'master',
         ];
 
         $this
             ->shouldThrow(UnknownPropertyException::unknownProperty('non_existent_field', new NoSuchPropertyException()))
+            ->during('update', [$category, $values, []]);
+    }
+
+    function it_throws_an_exception_when_trying_to_update_an_unknown_parent_category(
+        $categoryRepository,
+        CategoryInterface $category
+    ) {
+        $categoryRepository->findOneByIdentifier('unknown')->willReturn(null);
+
+        $values = [
+            'parent' => 'unknown',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyException::validEntityCodeExpected(
+                    'parent',
+                    'category code',
+                    'The category does not exist',
+                    'Akeneo\Component\Classification\Updater\CategoryUpdater',
+                    'unknown'
+                )
+            )
+            ->during('update', [$category, $values, []]);
+    }
+
+    function it_throws_an_exception_when_code_is_not_a_scalar(CategoryInterface $category)
+    {
+        $values = [
+            'code' => [],
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::scalarExpected('code', 'Akeneo\Component\Classification\Updater\CategoryUpdater', [])
+            )
+            ->during('update', [$category, $values, []]);
+    }
+
+    function it_throws_an_exception_when_parent_is_not_a_scalar(CategoryInterface $category)
+    {
+        $values = [
+            'parent' => [],
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::scalarExpected('parent', 'Akeneo\Component\Classification\Updater\CategoryUpdater', [])
+            )
+            ->during('update', [$category, $values, []]);
+    }
+
+    function it_throws_an_exception_when_labels_is_not_an_array(CategoryInterface $category)
+    {
+        $values = [
+            'labels' => 'foo',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::arrayExpected('labels', 'Akeneo\Component\Classification\Updater\CategoryUpdater', 'foo')
+            )
+            ->during('update', [$category, $values, []]);
+    }
+
+    function it_throws_an_exception_when_one_of_the_labels_in_label_property_is_not_a_scalar(CategoryInterface $category)
+    {
+        $values = [
+            'labels' => [
+                'en_US' => 'foo',
+                'fr_FR' => [],
+            ],
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::validArrayStructureExpected(
+                    'labels',
+                    'one of the labels is not a scalar',
+                    'Akeneo\Component\Classification\Updater\CategoryUpdater',
+                    $values['labels']
+                )
+            )
+            ->during('update', [$category, $values, []]);
+    }
+
+    function it_throws_an_exception_when_a_property_is_unknown(CategoryInterface $category)
+    {
+        $values = [
+            'unknown' => 'foo',
+        ];
+
+        $this
+            ->shouldThrow(
+                UnknownPropertyException::unknownProperty('unknown')
+            )
             ->during('update', [$category, $values, []]);
     }
 }

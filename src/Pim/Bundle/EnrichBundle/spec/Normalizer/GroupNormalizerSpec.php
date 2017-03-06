@@ -12,7 +12,6 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
-use Prophecy\Argument;
 use Prophecy\Promise\ReturnPromise;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

@@ -74,7 +74,8 @@ Feature: Validate localized price attributes of a product
     And I change the "Taxe" to "qux EUR"
     And I save the product
     Then I should see validation tooltip "Cette valeur doit être un nombre."
-    And there should be 1 error in the "[other]" tab
+    Then I should see validation tooltip "Cette valeur doit être supérieure ou égale à 10."
+    And there should be 2 error in the "[other]" tab
 
   Scenario: Validate the decimal separator constraint of price attribute
     Given I change the "Taxe" to "50.50 EUR"

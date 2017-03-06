@@ -42,10 +42,10 @@ define([
                             isReadOnly: !SecurityContext.isGranted('pim_enrich_family_edit_properties')
                         }));
 
-                        this.delegateEvents();
-
                         this.renderExtensions();
                     }.bind(this));
+
+                this.delegateEvents();
             }
         });
     }

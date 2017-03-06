@@ -7,11 +7,8 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Prophecy\Argument;
-use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormView;
 
 class DateRangeFilterSpec extends ObjectBehavior
 {

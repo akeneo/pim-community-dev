@@ -6,7 +6,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Gedmo\Tree\RepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Form\Factory\IdentifiableModelTransformerFactory;
-use Prophecy\Argument;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

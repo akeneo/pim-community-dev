@@ -20,6 +20,9 @@ class UniqueVariantGroup extends Constraint
      */
     public $message = 'The product "%product%" cannot belong to many variant groups: "%groups%"';
 
+    /** @var string */
+    public $propertyPath = 'variant_group';
+
     /**
      * {@inheritdoc}
      */

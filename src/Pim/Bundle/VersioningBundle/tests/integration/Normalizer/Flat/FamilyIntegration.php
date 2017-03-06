@@ -14,11 +14,12 @@ class FamilyIntegration extends AbstractFlatNormalizerTestCase
     public function testFamily()
     {
         $expected = [
-            'code'                   => 'familyA',
-            'attributes'             => 'a_date,a_file,a_localizable_image,a_localized_and_scopable_text_area,a_metric,a_multi_select,a_number_float,a_number_float_negative,a_number_integer,a_price,a_ref_data_multi_select,a_ref_data_simple_select,a_scopable_price,a_simple_select,a_text,a_text_area,a_yes_no,an_image,sku',
-            'attribute_as_label'     => 'sku',
-            'requirements-ecommerce' => 'a_date,a_file,a_localizable_image,a_localized_and_scopable_text_area,a_metric,a_multi_select,a_number_float,a_number_float_negative,a_number_integer,a_price,a_ref_data_multi_select,a_ref_data_simple_select,a_scopable_price,a_simple_select,a_text,a_text_area,a_yes_no,an_image,sku',
-            'requirements-tablet'    => 'a_date,a_file,a_localizable_image,a_localized_and_scopable_text_area,a_metric,a_multi_select,a_number_float,a_number_float_negative,a_number_integer,a_price,a_ref_data_multi_select,a_ref_data_simple_select,a_scopable_price,a_simple_select,a_text,a_text_area,a_yes_no,an_image,sku'
+            'code'                         => 'familyA',
+            'attributes'                   => 'a_date,a_file,a_localizable_image,a_localized_and_scopable_text_area,a_metric,a_multi_select,a_number_float,a_number_float_negative,a_number_integer,a_price,a_ref_data_multi_select,a_ref_data_simple_select,a_scopable_price,a_simple_select,a_text,a_text_area,a_yes_no,an_image,sku',
+            'attribute_as_label'           => 'sku',
+            'requirements-ecommerce'       => 'a_date,a_file,a_localizable_image,a_localized_and_scopable_text_area,a_metric,a_multi_select,a_number_float,a_number_float_negative,a_number_integer,a_price,a_ref_data_multi_select,a_ref_data_simple_select,a_scopable_price,a_simple_select,a_text,a_text_area,a_yes_no,an_image,sku',
+            'requirements-ecommerce_china' => 'sku',
+            'requirements-tablet'          => 'a_date,a_file,a_localizable_image,a_localized_and_scopable_text_area,a_metric,a_multi_select,a_number_float,a_number_float_negative,a_number_integer,a_price,a_ref_data_multi_select,a_ref_data_simple_select,a_scopable_price,a_simple_select,a_text,a_text_area,a_yes_no,an_image,sku'
         ];
 
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('familyA');

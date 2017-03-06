@@ -3,11 +3,11 @@
 namespace Oro\Bundle\SecurityBundle\EventListener;
 
 use Doctrine\Common\Util\ClassUtils;
+use Oro\Bundle\SecurityBundle\Exception\AccessDeniedException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ControllerListener
 {
@@ -41,6 +41,7 @@ class ControllerListener
      * This method is executed just before any controller action.
      *
      * @param  FilterControllerEvent $event
+     *
      * @throws AccessDeniedException
      */
     public function onKernelController(FilterControllerEvent $event)
@@ -52,21 +53,21 @@ class ControllerListener
          */
         if (is_array($controller)) {
             list($object, $method) = $controller;
-            $className = ClassUtils::getClass($object);
+            $controllerClass = ClassUtils::getClass($object);
 
             $this->logger->debug(
                 sprintf(
                     'Invoked controller "%s::%s". (%s)',
-                    $className,
+                    $controllerClass,
                     $method,
                     $event->getRequestType() === HttpKernelInterface::MASTER_REQUEST ? 'MASTER_REQUEST' : 'SUB_REQUEST'
                 )
             );
 
-            if (!$this->securityFacade->isClassMethodGranted($className, $method)) {
-                if ($event->getRequestType() === HttpKernelInterface::MASTER_REQUEST) {
-                    throw new AccessDeniedException(sprintf('Access denied to %s::%s.', $className, $method));
-                }
+            if (!$this->securityFacade->isClassMethodGranted($controllerClass, $method) &&
+                $event->getRequestType() === HttpKernelInterface::MASTER_REQUEST
+            ) {
+                throw AccessDeniedException::create($controllerClass, $method);
             }
         }
     }

@@ -4,7 +4,6 @@ namespace spec\Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider;
 
 use Akeneo\Component\Batch\Job\JobInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class SimpleCsvExportSpec extends ObjectBehavior
 {

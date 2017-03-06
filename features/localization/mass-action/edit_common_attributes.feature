@@ -7,7 +7,7 @@ Feature: Edit common localized attributes of many products at once
   Background:
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code   | label-en_US | type               | metric family | default metric unit | decimals_allowed | group |
+      | code   | label-en_US | type               | metric_family | default_metric_unit | decimals_allowed | group |
       | weight | Weight      | pim_catalog_metric | Weight        | GRAM                | 1                | other |
       | time   | Time        | pim_catalog_number |               |                     | 1                | other |
       | date   | Date        | pim_catalog_date   |               |                     |                  | other |

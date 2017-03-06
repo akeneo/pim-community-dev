@@ -41,34 +41,34 @@ export profile:
 export report:
   overview: 导出报告
 import profile:
-  title: 导入配置文件
-  overview: 导入配置文件概述
-  create: 创建导入配置文件
-  edit: 编辑导入配置文件
+  title: 导入方案
+  overview: 导入方案列表
+  create: 创建导入方案
+  edit: 编辑导入方案
 import report:
   overview: 导入报表
 pim_importexport:
   acl:
     export_profile:
-      index: 查看导出配置文件列表
-      create: 创建导出配置文件
-      show: 显示导出配置文件
-      edit: 编辑导出配置文件
-      remove: 删除导出配置文件
-      launch: 启动导出配置文件
-      property_edit: 编辑导出的配置文件的一般属性
-      property_show: 显示导出配置文件一般属性
-      history: 查看导出配置文件历史记录
-      content_edit: 编辑导出配置文件内容
-      content_show: 显示导出配置文件内容
+      index: 查看导出方案列表
+      create: 创建导出方案
+      show: 显示导出方案
+      edit: 编辑导出方案
+      remove: 删除导出方案
+      launch: 启动导出方案
+      property_edit: 编辑导出方案的常规属性
+      property_show: 显示导出方案的常规属性
+      history: 查看导出方案历史记录
+      content_edit: 编辑导出方案内容
+      content_show: 显示导出方案内容
     import_profile:
-      index: 查看导入配置文件列表
-      create: 创建导入配置文件
-      show: 显示导入配置文件
-      edit: 编辑导入配置文件
-      remove: 删除导入配置文件
-      launch: 启动导入配置文件
-      history: 查看导入配置文件历史记录
+      index: 查看导入方案列表
+      create: 创建一个导入方案
+      show: 显示导入方案
+      edit: 编辑导入方案
+      remove: 删除导入方案
+      launch: 启动导入方案
+      history: 查看导入方案历史记录
     export_execution:
       index: 查看导出报告列表
       show: 查看导出报告详细信息
@@ -81,18 +81,18 @@ pim_importexport:
       dl_files: 下载导入的文件
   acl_group:
     export: 导出配置文件
-    import: 导入配置文件
+    import: 导入方案
 btn:
   create:
     export profile: 创建导出配置文件
-    import profile: 创建导入配置文件
-Upload and import now: 现在上载并导入
+    import profile: 创建导入方案
+Upload and import now: 现在上传并导入
 import now: 现在导入
 export now: 现在导出
 confirmation:
   remove:
     export profile: 你确定你想要删除导出配置文件 %name%？
-    import profile: 你确定你想要删除导入配置文件 %name%？
+    import profile: 你确定要删除导入方案 %name%？
 flash:
   export:
     created: 导出已成功创建
@@ -109,7 +109,7 @@ pim_menu:
     export_history: 导出历史
     export_profile: 导出配置文件
     import_history: 导入历史
-    import_profile: 导入配置文件
+    import_profile: 导入方案
 General properties: 常规属性
 History: 历史
 pane.accordion:
@@ -118,7 +118,7 @@ pane.accordion:
   filters: 过滤器
 popin.create:
   export_profile.title: 创建新的导出配置文件
-  import_profile.title: 创建新的导入配置文件
+  import_profile.title: 新建的导入方案
 'Display item': 显示条目
 'Hide item': 隐藏条目
 'Collecting data about job execution...': 正在收集有关作业执行的数据...

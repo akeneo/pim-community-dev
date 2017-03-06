@@ -13,7 +13,7 @@ Feature: Edit a product
       | name        | pim_catalog_text     | 0           |                 | Name        | 0        | other |
       | other_name  | pim_catalog_text     | 1           |                 | Other Name  | 1        | other |
     And the following attributes:
-      | code   | label-en_US | type               | metric family | default metric unit | group |
+      | code   | label-en_US | type               | metric_family | default_metric_unit | group |
       | length | Shoes size  | pim_catalog_metric | Length        | CENTIMETER          | other |
     And the following products:
       | sku    |

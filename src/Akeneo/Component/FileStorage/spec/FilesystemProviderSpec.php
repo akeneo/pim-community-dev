@@ -5,7 +5,6 @@ namespace spec\Akeneo\Component\FileStorage;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class FilesystemProviderSpec extends ObjectBehavior
 {

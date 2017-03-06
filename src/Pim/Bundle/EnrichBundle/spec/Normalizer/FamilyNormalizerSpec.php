@@ -9,7 +9,6 @@ use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -102,6 +101,9 @@ class FamilyNormalizerSpec extends ObjectBehavior
         $collectionFilter->filterCollection([$name, $description, $price], 'pim.internal_api.attribute.view')
             ->willReturn([$name, $price]);
 
+        $attributeRepository->findBy(['code' =>['name', 'price']])->willReturn([$name, $price]);
+        $collectionFilter->filterCollection([$name, $price], 'pim.internal_api.attribute.view')
+            ->willReturn([$name, $price]);
 
         $translationNormalizer->normalize(Argument::cetera())->willReturn([]);
         $family->getCode()->willReturn('tshirts');

@@ -238,6 +238,16 @@ pim_enrich:
         updated_by: Bijgewerkt door
       btn:
         save: Opslaan
+    family:
+      info:
+        create_successful: Kanaal succesvol aangemaakt.
+      meta:
+        created: Aangemaakt
+        created_by: Aangemaakt door
+        updated: Bijgewerkt
+        updated_by: Bijgewerkt door
+      btn:
+        save: Opslaan
     attribute_option:
       code: Code
       label: Label
@@ -378,6 +388,24 @@ pim_enrich:
           label_conversion_units: Kies een conversie-eenheid voor elke metrisch attribuut dat zal worden gebruikt tijdens de productexport
           conversion_unit:
             do_not_convert: Niet converteren
+    family:
+      tab:
+        properties:
+          title: Eigenschappen
+          general: Algemeen
+          code: Code
+          attribute_as_label: Attribuut gebruikt als label
+          label_translations: Labelvertalingen
+        attributes:
+          title: Attributen
+          label_label: Label
+          toolbox:
+            select_attributes: Attributen toevoegen
+            add: Toevoegen
+          not_required_label: Niet verplicht
+          required_label: Verplicht
+        history:
+          title: Geschiedenis
     attribute_option:
       flash:
         option_created: Attribuut optie succesvol aangemaakt

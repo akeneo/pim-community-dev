@@ -61,4 +61,15 @@ class AttributeTypeForOptionValidatorSpec extends ObjectBehavior
 
         $this->validate($attributeOption, $constraint);
     }
+
+    function it_does_not_add_violations_if_attribute_is_null(
+        $context,
+        AttributeOptionInterface $attributeOption,
+        AttributeTypeForOption $constraint
+    ) {
+        $attributeOption->getAttribute()->willReturn(null);
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate($attributeOption, $constraint);
+    }
 }

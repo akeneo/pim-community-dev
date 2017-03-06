@@ -7,7 +7,7 @@ Feature: Mass edit common attributes for reference data
   Background:
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code        | label-en_US | type               | metric family | default metric unit | group |
+      | code        | label-en_US | type               | metric_family | default_metric_unit | group |
       | heel_height | Heel height | pim_catalog_metric | Length        | CENTIMETER          | other |
     And the following family:
       | code           | attributes                                                    |

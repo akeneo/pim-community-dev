@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Command\ProductQueryHelp;
 
 use Pim\Bundle\CatalogBundle\Command\DumperInterface;
-use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;

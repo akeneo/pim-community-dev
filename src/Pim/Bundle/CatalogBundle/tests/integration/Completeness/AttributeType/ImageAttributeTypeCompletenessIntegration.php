@@ -1,0 +1,74 @@
+<?php
+
+namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
+
+use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessPerAttributeTypeIntegration;
+use Pim\Component\Catalog\AttributeTypes;
+
+/**
+ * Checks that the completeness has been well calculated for image attribute type.
+ *
+ * @author    Damien Carcel (damien.carcel@akeneo.com)
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+class ImageAttributeTypeCompletenessIntegration extends AbstractCompletenessPerAttributeTypeIntegration
+{
+    public function testCompleteImage()
+    {
+        $family = $this->createFamilyWithRequirement(
+            'another_family',
+            'ecommerce',
+            'an_image',
+            AttributeTypes::IMAGE
+        );
+
+        $productComplete = $this->createProductWithStandardValues(
+            $family,
+            'product_complete',
+            [
+                'values' => [
+                    'an_image' => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => $this->getFixturePath('akeneo.jpg'),
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $this->assertComplete($productComplete);
+    }
+
+    public function testNotCompleteImage()
+    {
+        $family = $this->createFamilyWithRequirement(
+            'another_family',
+            'ecommerce',
+            'an_image',
+            AttributeTypes::IMAGE
+        );
+
+        $productDataNull = $this->createProductWithStandardValues(
+            $family,
+            'product_empty',
+            [
+                'values' => [
+                    'an_image' => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => null,
+                        ],
+                    ],
+                ],
+            ]
+        );
+        $this->assertNotComplete($productDataNull);
+
+        $productWithoutValues = $this->createProductWithStandardValues($family, 'product_without_values');
+        $this->assertNotComplete($productWithoutValues);
+    }
+}
