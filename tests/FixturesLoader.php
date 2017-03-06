@@ -252,7 +252,7 @@ class FixturesLoader
             if (false === $realFilePath = realpath($rawFilePath)) {
                 continue;
             }
-            $files[] = $rawFilePath;
+            $files[] = $realFilePath;
         }
 
         return $files;
