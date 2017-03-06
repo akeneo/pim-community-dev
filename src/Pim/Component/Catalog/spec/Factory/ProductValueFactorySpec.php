@@ -35,7 +35,7 @@ class ProductValueFactorySpec extends ObjectBehavior
         $attribute->getCode()->willReturn('simple_attribute');
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
-        $attribute->getAttributeType()->willReturn('text');
+        $attribute->getType()->willReturn('text');
 
         $attributeValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
         $attributeValidatorHelper->validateScope($attribute, null)->shouldBeCalled();
@@ -61,7 +61,7 @@ class ProductValueFactorySpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
-        $attribute->getAttributeType()->willReturn('text');
+        $attribute->getType()->willReturn('text');
 
         $attributeValidatorHelper->validateScope($attribute, 'ecommerce')->shouldBeCalled();
         $attributeValidatorHelper->validateLocale($attribute, 'en_US')->shouldBeCalled();
@@ -76,7 +76,7 @@ class ProductValueFactorySpec extends ObjectBehavior
         AttributeInterface $attribute
     ) {
         $this->registerFactory($factory);
-        $attribute->getAttributeType()->willReturn('text');
+        $attribute->getType()->willReturn('text');
 
         $factory->supports('text')->willReturn(false);
 

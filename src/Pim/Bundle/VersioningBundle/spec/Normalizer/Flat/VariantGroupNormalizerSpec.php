@@ -72,7 +72,7 @@ class VariantGroupNormalizerSpec extends ObjectBehavior
         $group->getProductTemplate()->willReturn($productTemplate);
 
         $valuesData = ['name' => 'Light saber model'];
-        $productTemplate->getValuesData()->willReturn($valuesData);
+        $productTemplate->getValues()->willReturn($valuesData);
         $valuesDenormalizer->denormalize($valuesData, 'ProductValue[]', 'standard')->willReturn([$productValue1]);
         $valuesNormalizer->normalize($productValue1, 'flat', [])->willReturn(['name' => 'Light saber model']);
 
@@ -114,7 +114,7 @@ class VariantGroupNormalizerSpec extends ObjectBehavior
         $context = ['with_variant_group_values' => true];
         $format = 'flat';
 
-        $productTemplate->getValuesData()->willReturn($valuesData);
+        $productTemplate->getValues()->willReturn($valuesData);
         $valuesDenormalizer->denormalize($valuesData, 'ProductValue[]', 'standard')->willReturn(
             [
                 $productValue1,

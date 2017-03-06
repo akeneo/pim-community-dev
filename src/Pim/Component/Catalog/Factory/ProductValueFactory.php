@@ -55,7 +55,7 @@ class ProductValueFactory
         $this->attributeValidatorHelper->validateScope($attribute, $channelCode);
         $this->attributeValidatorHelper->validateLocale($attribute, $localeCode);
 
-        $factory = $this->getFactory($attribute->getAttributeType());
+        $factory = $this->getFactory($attribute->getType());
         $value = $factory->create($attribute, $channelCode, $localeCode, $data);
 
         return $value;

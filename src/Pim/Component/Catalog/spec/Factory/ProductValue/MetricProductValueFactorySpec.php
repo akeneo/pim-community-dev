@@ -37,7 +37,7 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('metric_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $attribute->getType()->willReturn('pim_catalog_metric');
         $attribute->getBackendType()->willReturn('metric');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -69,7 +69,7 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('metric_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $attribute->getType()->willReturn('pim_catalog_metric');
         $attribute->getBackendType()->willReturn('metric');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -103,7 +103,7 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('metric_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $attribute->getType()->willReturn('pim_catalog_metric');
         $attribute->getBackendType()->willReturn('metric');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -135,7 +135,7 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('metric_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $attribute->getType()->willReturn('pim_catalog_metric');
         $attribute->getBackendType()->willReturn('metric');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -166,7 +166,7 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('metric_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $attribute->getType()->willReturn('pim_catalog_metric');
         $attribute->getBackendType()->willReturn('metric');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -189,7 +189,7 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('metric_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $attribute->getType()->willReturn('pim_catalog_metric');
         $attribute->getBackendType()->willReturn('metric');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -213,7 +213,7 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('metric_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $attribute->getType()->willReturn('pim_catalog_metric');
         $attribute->getBackendType()->willReturn('metric');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 

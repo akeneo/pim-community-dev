@@ -37,7 +37,7 @@ class OptionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('simple_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $attribute->getType()->willReturn('pim_catalog_simpleselect');
         $attribute->getBackendType()->willReturn('option');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -64,7 +64,7 @@ class OptionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('simple_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $attribute->getType()->willReturn('pim_catalog_simpleselect');
         $attribute->getBackendType()->willReturn('option');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -94,7 +94,7 @@ class OptionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('simple_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $attribute->getType()->willReturn('pim_catalog_simpleselect');
         $attribute->getBackendType()->willReturn('option');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -122,7 +122,7 @@ class OptionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('simple_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $attribute->getType()->willReturn('pim_catalog_simpleselect');
         $attribute->getBackendType()->willReturn('option');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -149,7 +149,7 @@ class OptionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('simple_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $attribute->getType()->willReturn('pim_catalog_simpleselect');
         $attribute->getBackendType()->willReturn('option');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -181,7 +181,7 @@ class OptionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('simple_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $attribute->getType()->willReturn('pim_catalog_simpleselect');
         $attribute->getBackendType()->willReturn('option');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
