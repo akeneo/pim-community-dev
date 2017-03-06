@@ -66,6 +66,63 @@ class AssetCategoryAccessUpdaterSpec extends ObjectBehavior
         $this->update($categoryAccess, $values, []);
     }
 
+    function it_updates_an_asset_category_access_with_edit_permission_only(
+        $groupRepository,
+        $categoryRepository,
+        AssetCategoryAccess $categoryAccess,
+        GroupInterface $userGroup,
+        CategoryInterface $category
+    ) {
+        $values = [
+            'category'   => 'videos',
+            'user_group'  => 'IT Manager',
+            'view_items' => false,
+            'edit_items' => true,
+            'own_items'  => false,
+        ];
+
+        $categoryAccess->setCategory($category)->shouldBeCalled();
+        $categoryAccess->setUserGroup($userGroup)->shouldBeCalled();
+        $categoryAccess->setViewItems(false)->shouldBeCalled();
+        $categoryAccess->setViewItems(true)->shouldBeCalled();
+        $categoryAccess->setEditItems(true)->shouldBeCalled();
+        $categoryAccess->setOwnItems(false)->shouldBeCalled();
+
+        $groupRepository->findOneByIdentifier('IT Manager')->willReturn($userGroup);
+        $categoryRepository->findOneByIdentifier('videos')->willReturn($category);
+
+        $this->update($categoryAccess, $values, []);
+    }
+
+    function it_updates_an_asset_category_access_with_own_permission_only(
+        $groupRepository,
+        $categoryRepository,
+        AssetCategoryAccess $categoryAccess,
+        GroupInterface $userGroup,
+        CategoryInterface $category
+    ) {
+        $values = [
+            'category'   => 'videos',
+            'user_group'  => 'IT Manager',
+            'view_items' => false,
+            'edit_items' => false,
+            'own_items'  => true,
+        ];
+
+        $categoryAccess->setCategory($category)->shouldBeCalled();
+        $categoryAccess->setUserGroup($userGroup)->shouldBeCalled();
+        $categoryAccess->setViewItems(false)->shouldBeCalled();
+        $categoryAccess->setEditItems(false)->shouldBeCalled();
+        $categoryAccess->setViewItems(true)->shouldBeCalled();
+        $categoryAccess->setEditItems(true)->shouldBeCalled();
+        $categoryAccess->setOwnItems(true)->shouldBeCalled();
+
+        $groupRepository->findOneByIdentifier('IT Manager')->willReturn($userGroup);
+        $categoryRepository->findOneByIdentifier('videos')->willReturn($category);
+
+        $this->update($categoryAccess, $values, []);
+    }
+
     function it_throws_an_exception_if_group_not_found(
         $groupRepository,
         AssetCategoryAccess $categoryAccess
