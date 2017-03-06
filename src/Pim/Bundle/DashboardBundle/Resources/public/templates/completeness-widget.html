@@ -12,7 +12,7 @@
                     <tr class="AknGrid-bodyRow">
                         <td class="AknGrid-bodyCell locale"><%- locale %></td>
                         <td class="AknGrid-bodyCell">
-                            <div class="AknProgress <%- localeResult.ratio === 100 ? options.completeBar : options.inCompleteBar %>">
+                            <div class="AknProgress AknProgress--small <%- localeResult.ratio === 100 ? options.completeBar : options.inCompleteBar %>">
                                 <div class="AknProgress-bar" style="width: <%= localeResult.ratio %>%"></div>
                             </div>
                         </td>
