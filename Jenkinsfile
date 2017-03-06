@@ -160,7 +160,7 @@ def runPhpUnitTest(phpVersion) {
 
                 sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
-                sh "./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test --log-junit app/build/logs/phpunit.xml"
+                sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit app/build/logs/phpunit.xml"
             }
         } finally {
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
@@ -175,7 +175,7 @@ def runIntegrationTest(phpVersion, storage) {
         deleteDir()
         try {
             docker.image("mongo:2.4").withRun("--name mongodb", "--smallfiles") {
-                docker.image("mysql:5.5").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim") {
+                docker.image("mysql:5.5").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim", "--sql_mode=ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION") {
                     docker.image("carcel/php:${phpVersion}").inside("--link mysql:mysql --link mongodb:mongodb -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                         unstash "pim_community_dev"
 
@@ -198,7 +198,7 @@ def runIntegrationTest(phpVersion, storage) {
                         sh "./app/console --env=test pim:install --force"
 
                         sh "mkdir -p app/build/logs/"
-                        sh "./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
+                        sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
                     }
                 }
             }
@@ -246,7 +246,7 @@ def runPhpCsFixerTest(phpVersion) {
 
                 sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
-                sh "./bin/php-cs-fixer fix --diff --format=junit --config=.php_cs.dist > app/build/logs/phpcs.xml"
+                sh "./bin/php-cs-fixer fix --diff --dry-run --format=junit --config=.php_cs.php > app/build/logs/phpcs.xml"
             }
         } finally {
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"

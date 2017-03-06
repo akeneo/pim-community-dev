@@ -1,0 +1,12 @@
+pim_api:
+  acl:
+    attribute:
+      list: 列出属性
+    category:
+      list: 列出目录
+    family:
+      list: 列出品类
+  acl_group:
+    attribute: 属性
+    category: 分类
+    family: 品类

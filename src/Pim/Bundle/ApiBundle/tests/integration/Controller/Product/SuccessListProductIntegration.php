@@ -1173,13 +1173,13 @@ JSON;
         "items" : [
             {
                 "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/products/product_china"}
+                    "self" : {"href" : "http://localhost/api/rest/v1/products/localizable_and_scopable"}
                 },
-                "identifier"    : "product_china",
+                "identifier"    : "localizable_and_scopable",
                 "family"        : null,
                 "groups"        : [],
                 "variant_group" : null,
-                "categories"    : ["master_china"],
+                "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : [],
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -1188,13 +1188,13 @@ JSON;
             },
             {
                 "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/products/product_without_category"}
+                    "self" : {"href" : "http://localhost/api/rest/v1/products/scopable"}
                 },
-                "identifier"    : "product_without_category",
+                "identifier"    : "scopable",
                 "family"        : null,
                 "groups"        : [],
                 "variant_group" : null,
-                "categories"    : [],
+                "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : [],
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -1338,6 +1338,13 @@ JSON;
                 $expected['_embedded']['items'][$index] = $this->sanitizeMediaAttributeData($expected['_embedded']['items'][$index]);
             }
         }
+
+        $sortValues = function ($a, $b) {
+            return $a['identifier'] > $b['identifier'] ? 1 : -1;
+        };
+
+        usort($result['_embedded']['items'], $sortValues);
+        usort($expected['_embedded']['items'], $sortValues);
 
         $this->assertJsonStringEqualsJsonString(json_encode($expected), json_encode($result));
     }

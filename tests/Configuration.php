@@ -105,6 +105,50 @@ class Configuration
     /**
      * @return string
      */
+    public static function getMinimalCatalogPath()
+    {
+        return realpath(self::getRootDirectory() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Pim' .
+            DIRECTORY_SEPARATOR . 'Bundle' . DIRECTORY_SEPARATOR . 'InstallerBundle' . DIRECTORY_SEPARATOR .
+            'Resources' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'minimal');
+    }
+
+    /**
+     * @return string
+     */
+    public static function getReferenceDataFixtures()
+    {
+        return realpath(self::getRootDirectory() . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Acme' .
+            DIRECTORY_SEPARATOR . 'Bundle' . DIRECTORY_SEPARATOR . 'AppBundle' . DIRECTORY_SEPARATOR . 'Resources' .
+            DIRECTORY_SEPARATOR . 'fixtures');
+    }
+
+    /**
+     * Returns the path to a given functional (aka behat) catalog.
+     *
+     * @param $catalog
+     *
+     * @return string
+     */
+    public static function getFunctionalCatalog($catalog)
+    {
+        return realpath(self::getRootDirectory(). DIRECTORY_SEPARATOR . 'features'. DIRECTORY_SEPARATOR . 'Context' .
+            DIRECTORY_SEPARATOR .'catalog'. DIRECTORY_SEPARATOR . $catalog);
+    }
+
+    /**
+     * Returns the path to a functional (aka behat) fixture folder.
+     *
+     * @return string
+     */
+    public static function getFunctionalFixtures()
+    {
+        return realpath(self::getRootDirectory(). DIRECTORY_SEPARATOR . 'features'. DIRECTORY_SEPARATOR . 'Context' .
+            DIRECTORY_SEPARATOR .'fixtures');
+    }
+
+    /**
+     * @return string
+     */
     private static function getRootDirectory()
     {
         return realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR);
