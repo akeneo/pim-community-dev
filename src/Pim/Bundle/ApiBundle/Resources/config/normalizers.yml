@@ -44,6 +44,7 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.product'
             - '@pim_api.repository.attribute'
+            - '@router'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

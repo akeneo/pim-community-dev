@@ -2,8 +2,11 @@
 
 namespace Pim\Component\Api\Normalizer;
 
+use Pim\Component\Api\Hal\Link;
 use Pim\Component\Api\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -19,16 +22,22 @@ class ProductNormalizer implements NormalizerInterface
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var RouterInterface */
+    protected $router;
+
     /**
      * @param NormalizerInterface          $productNormalizer
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param RouterInterface              $router
      */
     public function __construct(
         NormalizerInterface $productNormalizer,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        RouterInterface $router
     ) {
         $this->productNormalizer = $productNormalizer;
         $this->attributeRepository = $attributeRepository;
+        $this->router = $router;
     }
 
     /**
@@ -43,10 +52,17 @@ class ProductNormalizer implements NormalizerInterface
             unset($productStandard['values'][$identifier]);
         }
 
-        if (isset($context['attributes'])) {
-            foreach ($productStandard['values'] as $attributeCode => $values) {
-                if (!in_array($attributeCode, $context['attributes'])) {
-                    unset($productStandard['values'][$attributeCode]);
+        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($productStandard['values']));
+        foreach ($productStandard['values'] as $attributeCode => $values) {
+            // if $context['attributes'] is defined, returns only these attributes
+            if (isset($context['attributes']) && !in_array($attributeCode, $context['attributes'])) {
+                unset($productStandard['values'][$attributeCode]);
+            } elseif (in_array($attributeTypes[$attributeCode], [AttributeTypes::FILE, AttributeTypes::IMAGE])) {
+                // returns the URI to download the file
+                foreach ($values as $index => $value) {
+                    $route = $this->router->generate('pim_api_media_file_download', ['code' => $value['data']]);
+                    $download = new Link('download', $route);
+                    $productStandard['values'][$attributeCode][$index]['_links'] = $download->toArray();
                 }
             }
         }
