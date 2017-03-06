@@ -10,8 +10,8 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Form\Type;
 
-use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
-use Pim\Bundle\UserBundle\Entity\Repository\RoleRepository;
+use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
+use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\RoleRepository;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber as CEUserPreferencesSubscriber;
 use Pim\Bundle\UserBundle\Form\Type\UserType as BaseUserType;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;

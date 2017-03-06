@@ -1,0 +1,19 @@
+teamwork_assistant:
+  common:
+    required: Requerido
+  grid:
+    view_selector:
+      loading: Cargando...
+      confirmation:
+        delete: Confirmación de borrado
+  project:
+    label: Etiqueta
+    description: Descripción
+  edit_project_modal:
+    confirm: Guardar
+    cancel: Cancelar
+  create_project_modal:
+    confirm: Guardar
+    cancel: Cancelar
+  widget:
+    description: Descripción

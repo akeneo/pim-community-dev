@@ -1,8 +1,0 @@
-activity_manager:
-  notification:
-    project_calculation:
-      start: Start
-    project_finished:
-      show: Anzeigen
-    due_date:
-      start: Start

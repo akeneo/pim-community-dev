@@ -4,12 +4,12 @@ namespace Context;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
-use PimEnterprise\Behat\Context\ActivityManager\ProjectContext;
-use PimEnterprise\Behat\Context\ActivityManager\WidgetContext;
 use PimEnterprise\Behat\Context\DashboardContext;
 use PimEnterprise\Behat\Context\HookContext;
 use PimEnterprise\Behat\Context\JobContext;
 use PimEnterprise\Behat\Context\NavigationContext;
+use PimEnterprise\Behat\Context\TeamworkAssistant\ProjectContext;
+use PimEnterprise\Behat\Context\TeamworkAssistant\WidgetContext;
 use PimEnterprise\Behat\Context\ViewSelectorContext;
 
 /**
@@ -58,17 +58,15 @@ class EnterpriseFeatureContext extends FeatureContext
      */
     public function iShouldSeeThatFieldIsAModifiedValue($label)
     {
-        $icons = $this->spin(function () use ($label) {
-            return $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($label);
-        }, sprintf('Could not find field icons %s', $label));
+        $this->spin(function () use ($label) {
+            $icons = $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($label);
 
-        foreach ($icons as $icon) {
-            if ($icon->hasClass('modified-by-draft')) {
-                return true;
+            foreach ($icons as $icon) {
+                if ($icon->hasClass('modified-by-draft')) {
+                    return true;
+                }
             }
-        }
-
-        throw $this->createExpectationException(sprintf('Field "%s" should be marked as modified by draft', $label));
+        }, sprintf('Field "%s" should be marked as modified by draft', $label));
     }
 
     /**

@@ -1,0 +1,24 @@
+{% extends 'PimDashboardBundle:Widget:base.html.twig' %}
+
+{% set widgetContent %}
+    <div id="teamwork-assistant-widget" class="AknProjectWidget"></div>
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pim/form-builder', 'pim/fetcher-registry', 'oro/loading-mask'],
+            function ($, FormBuilder, FetcherRegistry, LoadingMask) {
+                $(function () {
+                    var loadingMask = new LoadingMask();
+                    loadingMask.render().$el.appendTo('#teamwork-assistant-widget');
+                    loadingMask.show();
+
+                    FetcherRegistry.initialize().done(function () {
+                        FormBuilder.build('teamwork-assistant-widget').then(function (form) {
+                            form.setElement('#teamwork-assistant-widget').render();
+                        })
+                    });
+                });
+            }
+        );
+    </script>
+{% endset %}

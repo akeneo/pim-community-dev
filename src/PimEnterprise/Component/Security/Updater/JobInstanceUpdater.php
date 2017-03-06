@@ -4,7 +4,6 @@ namespace PimEnterprise\Component\Security\Updater;
 
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityRepository;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 

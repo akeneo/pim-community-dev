@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Workflow\Presenter;
 
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
-use PimEnterprise\Bundle\WorkflowBundle\Presenter\AbstractProductValuePresenter;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
@@ -101,6 +100,6 @@ class AssetsCollectionPresenter implements PresenterInterface
      */
     public function supports($value)
     {
-        return AttributeTypes::ASSETS_COLLECTION === $value->getAttribute()->getAttributeType();
+        return AttributeTypes::ASSETS_COLLECTION === $value->getAttribute()->getType();
     }
 }

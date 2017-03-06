@@ -1,0 +1,73 @@
+<div class="control-group modal-project-form">
+    <% _.each(_.where(errors, {status_code: 500}), function (error) { %>
+        <div class="AknFlash AknFlash--danger">
+            <i class="icon-warning-sign"></i> <%- error.status_text %>
+        </div>
+    <% }); %>
+
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label"><%- localeLabel %></label>
+        </div>
+        <div class="AknFieldContainer-inputContainer">
+            <input type="text" value="<%- localeValue %>" name="project-locale" class="AknTextField AknTextField--disabled" disabled/>
+        </div>
+    </div>
+
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label"><%- channelLabel %></label>
+        </div>
+        <div class="AknFieldContainer-inputContainer">
+            <input type="text" value="<%- channelValue %>" name="project-channel" class="AknTextField AknTextField--disabled" disabled/>
+        </div>
+    </div>
+
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label"><%- labelLabel %> (<%- requiredLabel %>)</label>
+        </div>
+        <div class="AknFieldContainer-inputContainer">
+            <input type="text" value="<%- labelValue %>" name="project-label" class="AknTextField project-field" required />
+        </div>
+        <div class="AknFieldContainer-footer">
+            <div class="AknFieldContainer-validationErrors label-errors">
+                <% _.each(_.where(errors, {field: 'label'}), function (error) { %>
+                    <div class="AknFieldContainer-validationError">
+                        <i class="icon-warning-sign"></i> <%- error.message %>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label"><%- dueDateLabel %> (<%- requiredLabel %>)</label>
+        </div>
+        <div class="AknFieldContainer-inputContainer">
+            <span class="date-wrapper">
+                <input type="text" value="<%- dueDateValue %>" name="project-due-date" class="AknTextField project-field add-on"/>
+            </span>
+        </div>
+        <div class="AknFieldContainer-footer">
+            <div class="AknFieldContainer-validationErrors dueDate-errors">
+                <% _.each(_.where(errors, {field: 'dueDate'}), function (error) { %>
+                    <div class="AknFieldContainer-validationError">
+                        <i class="icon-warning-sign"></i> <%- error.message %>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label"><%- descriptionLabel %></label>
+        </div>
+        <div class="AknFieldContainer-inputContainer">
+            <textarea name="project-description" class="AknTextareaField project-field"><%- descriptionValue %></textarea>
+        </div>
+    </div>
+    <span><%- warning %></span>
+</div>

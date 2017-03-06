@@ -17,14 +17,14 @@
             "Pim\\Behat": "vendor/akeneo/pim-community-dev/features/"
         },
         "psr-4": {
+            "Akeneo\\TestEnterprise\\Integration\\": "tests/",
             "Pim\\Upgrade\\": "upgrades/",
             "Akeneo\\Test\\Integration\\": "vendor/akeneo/pim-community-dev/tests/"
         }
     },
     "require": {
         "akeneo/pim-community-dev": "dev-TIP-613-unified",
-        "phpspec/php-diff": "1.0.2",
-        "akeneo/elasticsearch-bundle": "dev-poc-single-storage"
+        "phpspec/php-diff": "1.0.2"
     },
     "require-dev": {
         "behat/behat": "2.5.5",
@@ -53,11 +53,6 @@
         "pim-community-dev": {
             "type": "vcs",
             "url": "https://github.com/jjanvier/pim-community-dev.git",
-            "branch": "master"
-        },
-        "elasticsearch": {
-            "type": "vcs",
-            "url": "https://github.com/akeneo/ElasticSearchBundle.git",
             "branch": "master"
         }
     },

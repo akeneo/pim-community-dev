@@ -8,12 +8,11 @@ use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
+use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

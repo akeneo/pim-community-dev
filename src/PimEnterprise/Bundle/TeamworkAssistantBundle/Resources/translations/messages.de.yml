@@ -1,0 +1,28 @@
+project_calculation: Projekt-Kalkulation
+teamwork_assistant:
+  project:
+    required: Dieser Wert sollte nicht leer sein.
+    label_maxlength: Dieser Wert ist zu lang. Er sollte {{ max }} oder weniger Zeichen haben.
+    project_identifier: Das Projekt {{ project }} existiert nicht.
+    project_due_date: Sie können kein Datum in der Vergangenheit auswählen.
+  notification:
+    project_calculation:
+      start: Start
+    message: Es müssen neue Produkte angereichert werden für "%project_label%". Das Fälligkeitsdatum ist "%due_date%".
+    project_finished:
+      contributor: Glückwunsch! Sie haben 100% vollständige Produkte in %project_label%.
+      owner: '%project_label% für den %due_date% ist fertiggestellt.'''
+      show: Anzeigen
+    due_date:
+      contributor: Sie haben %percent%% der Produkte in %project_label% vollständig. Vergessen Sie nicht, die fehlenden Produkte bis zum %due_date% zu vervollständigen.
+      owner: '%project_label% für den %due_date% ist fertiggestellt.'''
+      start: Start
+batch_jobs:
+  project_calculation:
+    project_calculation:
+      label: Projekt-Kalkulation
+    prepare_project_calculation:
+      label: Projekt-Kalkulation vorbereiten
+job_execution:
+  summary:
+    processed_products: Bearbeitete Produkte

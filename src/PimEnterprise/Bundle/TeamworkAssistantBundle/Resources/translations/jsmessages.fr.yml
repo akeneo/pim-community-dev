@@ -1,0 +1,60 @@
+teamwork_assistant:
+  common:
+    required: Obligatoire
+  grid:
+    view_selector:
+      create: Créer un projet
+      edit: Modifier le projet
+      remove: Supprimer ce projet
+      create_from_view: Créer un projet basé sur cette vue
+      loading: Chargement en cours...
+      start_new_project: Démarrer un nouveau projet
+      confirmation:
+        remove: Etes vous sûr de vouloir supprimer ce projet?
+        delete: Confirmation de la suppression
+  project:
+    label: Libellé
+    label_maxlength: Cette valeur est trop longue. Elle doit avoir {{ max }} caractères ou moins.
+    description: Description
+    due_date: Date d'échéance
+    due_date_past: Vous ne pouvez pas sélectionner une date dans le passé.
+    leaving_scope: Vous quittez le périmètre du projet.
+  edit_project_modal:
+    label_placeholder: Nom du projet 
+    description_placeholder: Description du projet
+    saved: Le projet a été enregistré.
+    title: Modifier le projet
+    confirm: Enregistrer
+    cancel: Annuler
+  create_project_modal:
+    label_placeholder: Nom du nouveau projet
+    description_placeholder: Description du nouveau projet
+    saved: Le projet a été enregistré, vous serez notifié quand le calcul sera terminé.
+    title: Créer un projet
+    confirm: Enregistrer
+    cancel: Annuler
+  widget:
+    no_project: Vous n'avez aucun projet courant
+    no_project_create: Démarrer un nouveau projet
+    description: Description
+    due_date: Date d’échéance
+    todo: A FAIRE
+    in_progress: EN COURS
+    done: FINI
+    all_contributors: Tous les contributeurs
+    display_products: Afficher les produits
+    placeholder:
+      contributor_selector: Rechercher un contributeur
+      project_selector: Rechercher un projet
+    completeness:
+      to_enrich: PRODUITS A ENRICHIR
+      in_progress: PRODUITS EN COURS
+      done: PRODUITS TERMINÉS
+pim_datagrid:
+  view_selector:
+    project: Projets
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        project_calculation: Calcul du projet

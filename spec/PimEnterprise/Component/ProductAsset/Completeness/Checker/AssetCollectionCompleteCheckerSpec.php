@@ -18,14 +18,16 @@ class AssetCollectionCompleteCheckerSpec extends ObjectBehavior
 
     public function it_suports_asset_collection_attribute(
         ProductValueInterface $productValue,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        ChannelInterface $channel,
+        LocaleInterface $locale
     ) {
         $productValue->getAttribute()->willReturn($attribute);
-        $attribute->getAttributeType()->willReturn('pim_assets_collection');
-        $this->supportsValue($productValue)->shouldReturn(true);
+        $attribute->getType()->willReturn('pim_assets_collection');
+        $this->supportsValue($productValue, $channel, $locale)->shouldReturn(true);
 
-        $attribute->getAttributeType()->willReturn('other');
-        $this->supportsValue($productValue)->shouldReturn(false);
+        $attribute->getType()->willReturn('other');
+        $this->supportsValue($productValue, $channel, $locale)->shouldReturn(false);
     }
 
     public function it_succesfully_checks_empty_asset_collection(

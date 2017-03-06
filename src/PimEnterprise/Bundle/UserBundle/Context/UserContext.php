@@ -157,6 +157,18 @@ class UserContext extends BaseUserContext
     }
 
     /**
+     * Get the default tree
+     *
+     * @return CategoryInterface
+     */
+    public function getDefaultTree()
+    {
+        $defaultTree = $this->getUserOption($this->treeOptionKey);
+
+        return $defaultTree;
+    }
+
+    /**
      * Get granted categories
      *
      * @return int[]

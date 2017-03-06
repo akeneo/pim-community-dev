@@ -73,4 +73,5 @@ Feature: Validate metric attributes of a draft
     Given I change the Power to "bar"
     And I save the product
     Then I should see validation error "This value should be a valid number."
-    And there should be 1 error in the "Product information" tab
+    Then I should see validation error "This value should be -100 or less."
+    And there should be 2 error in the "Product information" tab
