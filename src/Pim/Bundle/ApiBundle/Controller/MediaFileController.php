@@ -121,7 +121,8 @@ class MediaFileController
         }
 
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
-        $medias = $this->mediaRepository->searchAfterOffset([], [], $queryParameters['limit'], $offset);
+        $criteria = ['storage' => FileStorage::CATALOG_STORAGE_ALIAS];
+        $medias = $this->mediaRepository->searchAfterOffset($criteria, [], $queryParameters['limit'], $offset);
 
         $parameters = [
             'query_parameters' => array_merge($request->query->all(), $queryParameters),
@@ -132,7 +133,7 @@ class MediaFileController
         $paginatedMedias = $this->paginator->paginate(
             $this->normalizer->normalize($medias, 'external_api'),
             $parameters,
-            $this->mediaRepository->count()
+            $this->mediaRepository->count($criteria)
         );
 
         return new JsonResponse($paginatedMedias);
