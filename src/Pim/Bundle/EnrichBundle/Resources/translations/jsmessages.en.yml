@@ -496,6 +496,26 @@ pim_enrich:
                     info:
                         search_attributes: Search...
                         no_available_attributes: There are no more attributes to add
+        job_execution:
+            loading:          Loading...
+            title.details:    Execution details
+            refreshBtn.title: Refresh
+            meta:
+                status.title: Status
+            button:
+                show_profile.title: Show profile
+                download_log.title: Download log
+                download_file.title: Download generated file
+                download_archive.title: Downlaod generated archive
+            summary:
+                fetching:        Collecting data about job execution...
+                warning:         Warning
+                header.step:     Step
+                header.status:   Status
+                header.warnings: Warnings
+                header.summary:  Summary
+                header.start:    Start
+                header.end:      End
         job_instance:
             fail:
                 launch: Failed to launch the job profile. Make sure it is valid and that you have right to launch it.
@@ -716,3 +736,44 @@ pim_enrich:
 
 pim_enrich.error:
     exception.title: Oh snap! A {{ status_code }} error occured...
+
+# Batch job labels
+batch_jobs:
+    add_product_value:
+        label: Add product value
+        perform:
+            label: Add product value
+    update_product_value:
+        label: Update product value
+        perform:
+            label: Update product value
+    edit_common_attributes:
+        label: Edit common attributes
+        perform:
+            label: Edit common attributes
+        cleaner:
+            label: Clean files for common attributes
+    set_attribute_requirements:
+        label: Set attribute requirements
+        perform:
+            label: Set attribute requirements
+    csv_product_quick_export:
+        quick_export.label: Csv product quick export
+        perform:
+            label: Csv product quick export
+    csv_product_grid_context_quick_export:
+        quick_export.label: Csv product grid context quick export
+        perform:
+            label: Csv product grid context quick export
+    xlsx_product_quick_export:
+        quick_export.label: Xlsx product quick export
+        perform:
+            label: Xlsx product quick export
+    xlsx_product_grid_context_quick_export:
+        quick_export.label: Xlsx product grid context quick export
+        perform:
+            label: Xlsx product grid context quick export
+    add_to_variant_group:
+        label: Add to variant group
+        perform:
+            label: Add to variant group

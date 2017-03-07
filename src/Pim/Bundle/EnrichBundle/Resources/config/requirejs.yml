@@ -180,6 +180,13 @@ config:
                     options:
                         urls:
                             list: pim_user_user_group_rest_index
+
+                job-execution:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            get: pim_enrich_job_execution_rest_get
+
     paths:
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector
@@ -355,6 +362,9 @@ config:
         pim/job/common/edit/launch:                                  pimenrich/js/job/common/edit/launch
         pim/job/common/edit/upload:                                  pimenrich/js/job/common/edit/upload
         pim/job/common/edit/upload-launch:                           pimenrich/js/job/common/edit/upload-launch
+        pim/job/common/label:                                        pimenrich/js/job/common/label
+        pim/job/execution/summary-table:                             pimenrich/js/job/execution/summary-table
+        pim/job/execution/auto-refresh:                              pimenrich/js/job/execution/auto-refresh
 
         # Filters
         pim/filter/filter:                     pimenrich/js/filter/filter
@@ -436,9 +446,11 @@ config:
         pim/form/common/state:                               pimenrich/js/form/common/state
         pim/form/common/meta/created:                        pimenrich/js/form/common/meta/created
         pim/form/common/meta/updated:                        pimenrich/js/form/common/meta/updated
+        pim/form/common/meta/status:                         pimenrich/js/form/common/meta/status
         pim/form/common/attributes:                          pimenrich/js/form/common/attributes
         pim/form/common/attributes/copy:                     pimenrich/js/form/common/attributes/copy
         pim/form/common/attributes/copy-field:               pimenrich/js/form/common/attributes/copy-field
+        pim/form/common/download-file:                       pimenrich/js/form/common/download-file
 
         # Fields
         pim/field:                  pimenrich/js/product/field/field
@@ -488,6 +500,7 @@ config:
         pim/template/form/state:                                  pimenrich/templates/form/state.html
         pim/template/form/meta/created:                           pimenrich/templates/form/meta/created.html
         pim/template/form/meta/updated:                           pimenrich/templates/form/meta/updated.html
+        pim/template/form/meta/status:                            pimenrich/templates/form/meta/status.html
         pim/template/form/tab/attributes:                         pimenrich/templates/form/tab/attributes.html
         pim/template/form/save-buttons:                           pimenrich/templates/form/save-buttons.html
         pim/template/form/edit-form:                              pimenrich/templates/form/edit-form.html
@@ -495,6 +508,7 @@ config:
         pim/template/form/tab/attribute/copy:                     pimenrich/templates/form/tab/attributes/copy.html
         pim/template/form/tab/attribute/copy-field:               pimenrich/templates/form/tab/attributes/copy-field.html
         pim/template/form/redirect:                               pimenrich/templates/form/redirect.html
+        pim/template/form/download-file:                          pimenrich/templates/form/download-file.html
 
         pim/template/association-type/tab/properties/general:     pimenrich/templates/association-type/tab/properties/general.html
 
@@ -608,3 +622,7 @@ config:
         pim/template/grid/view-selector/save-view: pimenrich/templates/grid/view-selector-save-view.html
         pim/template/grid/view-selector/remove-view: pimenrich/templates/grid/view-selector-remove-view.html
         pim/template/grid/view-selector/current: pimenrich/templates/grid/view-selector-current.html
+
+        # Job execution
+        pim/template/job-execution/summary-table:    pimenrich/templates/job-execution/summary-table.html
+        pim/template/job-execution/auto-refresh:     pimenrich/templates/job-execution/auto-refresh.html

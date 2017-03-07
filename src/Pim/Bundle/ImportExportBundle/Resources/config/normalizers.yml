@@ -8,6 +8,7 @@ services:
         arguments:
             - '@translator'
             - '@pim_import_export.job_label.translated_label_provider'
+            - '@pim_catalog.normalizer.standard.job_instance'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
             - { name: pim_versioning.serializer.normalizer, priority: 90 }

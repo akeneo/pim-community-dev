@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Normalizer\Standard\JobInstanceNormalizer;
 use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
@@ -23,14 +24,19 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
     /** @var TranslatedLabelProvider */
     protected $labelProvider;
 
+    /** @var JobInstanceNormalizer */
+    protected $jobInstanceNormalizer;
+
     /**
      * @param TranslatorInterface $translator
-     * @param TranslatedLabelProvider    $labelProvider
+     * @param TranslatedLabelProvider $labelProvider
+     * @param JobInstanceNormalizer $jobInstanceNormalizer
      */
-    public function __construct(TranslatorInterface $translator, TranslatedLabelProvider $labelProvider)
+    public function __construct(TranslatorInterface $translator, TranslatedLabelProvider $labelProvider, JobInstanceNormalizer $jobInstanceNormalizer)
     {
         $this->translator = $translator;
         $this->labelProvider = $labelProvider;
+        $this->jobInstanceNormalizer = $jobInstanceNormalizer;
     }
 
     /**
@@ -48,7 +54,6 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
         }
 
         return [
-            'label'          => $this->labelProvider->getJobLabel($object->getJobInstance()->getJobName()),
             'failures'       => array_map(
                 function ($exception) {
                     return $this->translator->trans($exception['message'], $exception['messageParameters']);
@@ -59,7 +64,8 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
             'isRunning'      => $object->isRunning(),
             'status'         => $this->translator->trans(
                 sprintf('pim_import_export.batch_status.%d', $object->getStatus()->getValue())
-            )
+            ),
+            'jobInstance'    => $this->jobInstanceNormalizer->normalize($object->getJobInstance(), 'standard', $context)
         ];
     }
 

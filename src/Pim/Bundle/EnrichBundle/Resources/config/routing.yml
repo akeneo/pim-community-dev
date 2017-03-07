@@ -89,3 +89,7 @@ navigation_history_rest:
 job_instance_rest:
     resource: '@PimEnrichBundle/Resources/config/routing/job_instance.yml'
     prefix: /job_instance
+
+job_execution_rest:
+    resource: '@PimEnrichBundle/Resources/config/routing/job_execution.yml'
+    prefix: /job_execution
