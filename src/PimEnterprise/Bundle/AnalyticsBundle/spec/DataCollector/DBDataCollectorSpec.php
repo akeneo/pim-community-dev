@@ -4,9 +4,9 @@ namespace spec\PimEnterprise\Bundle\AnalyticsBundle\DataCollector;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\AssetAnalyticProvider;
-use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\AttributeGroupAccessRepository;
-use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\CategoryAccessRepository;
-use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\LocaleAccessRepository;
+use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\AttributeGroupAccessAnalyticProvider;
+use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\CategoryAccessAnalyticProvider;
+use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\LocaleAccessAnalyticProvider;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\ProductDraftRepository;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\ProjectRepository;
 use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
@@ -18,9 +18,9 @@ class DBDataCollectorSpec extends ObjectBehavior
         ProjectRepository $projectRepository,
         AssetAnalyticProvider $assetRepository,
         PublishedProductRepositoryInterface $publishedRepository,
-        LocaleAccessRepository $localeAccessRepository,
-        CategoryAccessRepository $categoryAccessRepository,
-        AttributeGroupAccessRepository $attributeGroupAccessRepository
+        LocaleAccessAnalyticProvider $localeAccessRepository,
+        CategoryAccessAnalyticProvider $categoryAccessRepository,
+        AttributeGroupAccessAnalyticProvider $attributeGroupAccessRepository
     ) {
         $this->beConstructedWith(
             $draftRepository,

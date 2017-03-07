@@ -7,9 +7,6 @@ services:
         arguments:
             - '@pimee_analytics.repository.product_draft'
             - '@pimee_workflow.repository.published_product'
-            - '@pimee_analytics.repository.locale_access'
-            - '@pimee_analytics.repository.category_access'
-            - '@pimee_analytics.repository.attribute_group_access'
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }
             - { name: pim_analytics.data_collector, type: system_info_report }

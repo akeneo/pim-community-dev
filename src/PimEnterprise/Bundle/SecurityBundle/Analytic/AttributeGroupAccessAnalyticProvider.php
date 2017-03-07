@@ -9,48 +9,51 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository;
+namespace PimEnterprise\Bundle\SecurityBundle\Analytic;
 
+use Akeneo\Component\Analytics\DataCollectorInterface;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\UserBundle\Entity\User;
 
 /**
- * Locale Access Repository
+ * Data collector to return the attribute Group Access count
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class LocaleAccessRepository extends EntityRepository
+class AttributeGroupAccessAnalyticProvider implements DataCollectorInterface
 {
+    /** @var EntityManager  */
+    protected $em;
+
+    /** @var string */
+    protected $entityName;
+
     /**
      * @param EntityManager $em
-     * @param ClassMetadata $class
+     * @param string        $class
      */
     public function __construct(EntityManager $em, $class)
     {
-        parent::__construct($em, $em->getClassMetadata($class));
+        $this->em = $em;
+        $this->entityName = $em->getClassMetadata($class)->getName();
     }
 
     /**
-     * Count the accesses of the activated locales for user groups other than 'ALL'
+     * {@inheritdoc}
      */
-    public function countCustomAccesses()
+    public function collect()
     {
-        $associationMappings = $this->_em->getClassMetadata($this->_entityName)->getAssociationMappings();
-        $localeClass = $associationMappings['locale']['targetEntity'];
-
-        $qb = $this->createQueryBuilder('a');
-
-        return (int) $qb
-            ->select('COUNT(DISTINCT l.id)')
+        $result = (int) $this->em->createQueryBuilder('a')
+            ->select('COUNT(DISTINCT a.attributeGroup)')
+            ->from($this->entityName, 'a')
             ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
-            ->innerJoin($localeClass, 'l', 'WITH', 'a.locale = l.id')
             ->where('g.name <> :default_group')
-            ->andWhere('l.activated = :is_activated')
             ->setParameter('default_group', User::GROUP_DEFAULT)
-            ->setParameter('is_activated', true)
             ->getQuery()
             ->getSingleScalarResult();
+
+        return ['nb_custom_attribute_group_accesses' => $result];
     }
 }
