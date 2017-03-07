@@ -57,8 +57,8 @@ class AssetsCollectionPresenter implements PresenterInterface
         $afterCodes = $change['data'];
 
         return [
-            'before' => $this->presentAssets($afterCodes),
-            'after'  => $this->presentAssets($beforeCodes)
+            'before' => $this->presentAssets($beforeCodes),
+            'after'  => $this->presentAssets($afterCodes)
         ];
     }
 
