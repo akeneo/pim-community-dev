@@ -81,7 +81,7 @@ class ProjectCompletenessFilter extends OroChoiceFilter
 
         $parameters = $this->requestParams->getRootParameterValue();
         $viewId = null;
-        if (isset($parameters['_parameters']['view']['id']) && !empty($parameters['_parameters']['view']['id'])) {
+        if (isset($parameters['_parameters']['view']['id']) && '' !== $parameters['_parameters']['view']['id']) {
             $viewId = $parameters['_parameters']['view']['id'];
         }
 
@@ -96,6 +96,9 @@ class ProjectCompletenessFilter extends OroChoiceFilter
 
         $username = $this->tokenStorage->getToken()->getUsername();
         $productIds = $this->projectCompletenessRepo->findProductIds($project, $data['value'], $username);
+
+        // If the user has access to zero product in the project, we have to return "no result". So we add an
+        // "always-false" filter by looking for products with "id = '-1'"
         $productIds = empty($productIds) ? ['-1'] : $productIds;
 
         $this->util->applyFilter($ds, 'id', 'IN', $productIds);

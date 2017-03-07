@@ -38,10 +38,10 @@ class FiltersConfigurator extends BaseFiltersConfigurator
     protected $tokenStorage;
 
     /** @var bool */
-    protected $isProject = null;
+    protected $isProject = false;
 
     /** @var bool */
-    protected $isProjectOwner = null;
+    protected $isProjectOwner = false;
 
     /**
      * @param ConfigurationRegistry      $registry
@@ -81,23 +81,26 @@ class FiltersConfigurator extends BaseFiltersConfigurator
      */
     protected function retrieveTeamworkAssistantInformations()
     {
-        $parameters = $this->stack->getCurrentRequest()->get('product-grid');
+        $currentRequest = $this->stack->getCurrentRequest();
+        if (null === $currentRequest) {
+            return;
+        }
 
-        if (!isset($parameters['_parameters']['view']['id']) || empty($parameters['_parameters']['view']['id'])) {
+        $parameters = $currentRequest->get('product-grid');
+        if (!isset($parameters['_parameters']['view']['id']) || '' === $parameters['_parameters']['view']['id']) {
             return;
         }
 
         $viewId = $parameters['_parameters']['view']['id'];
         $project = $this->projectRepository->findOneBy(['datagridView' => $viewId]);
-
         if (null === $project) {
             return;
         }
 
-        $this->isProject = (null === $this->isProject) ? true : $this->isProject;
+        $this->isProject = true;
 
         if ($this->tokenStorage->getToken()->getUsername() === $project->getOwner()->getUsername()) {
-            $this->isProjectOwner = (null === $this->isProjectOwner) ? true : $this->isProjectOwner;
+            $this->isProjectOwner = true;
         }
     }
 
@@ -135,9 +138,9 @@ class FiltersConfigurator extends BaseFiltersConfigurator
      * Add the Teamwork Assistant project completeness filter in the datagrid configuration.
      * The filter is only added if the user is currently on a Teamwork Assistant project.
      *
-     * @param $configuration
+     * @param DatagridConfiguration $configuration
      */
-    protected function addProjectCompletenessFilter($configuration)
+    protected function addProjectCompletenessFilter(DatagridConfiguration $configuration)
     {
         if (!$this->isProject) {
             return;
