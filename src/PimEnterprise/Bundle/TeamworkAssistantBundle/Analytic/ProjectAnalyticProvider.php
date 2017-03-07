@@ -9,40 +9,47 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository;
+namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Analytic;
 
+use Akeneo\Component\Analytics\DataCollectorInterface;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * Project Repository
+ * Data collector to return the projects count
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class ProjectRepository extends EntityRepository
+class ProjectAnalyticProvider implements DataCollectorInterface
 {
+    /** @var EntityManager  */
+    protected $em;
+
+    /** @var string */
+    protected $entityName;
+
     /**
      * @param EntityManager $em
-     * @param ClassMetadata $class
+     * @param string        $class
      */
     public function __construct(EntityManager $em, $class)
     {
-        parent::__construct($em, $em->getClassMetadata($class));
+        $this->em = $em;
+        $this->entityName = $em->getClassMetadata($class)->getName();
     }
 
     /**
-     * Count the total number of projects
-     *
-     * @return integer
+     * {@inheritdoc}
      */
-    public function countAll()
+    public function collect()
     {
-        $qb = $this->createQueryBuilder('p');
-
-        return (int) $qb
+        $value = (int) $this->em->createQueryBuilder('p')
+            ->from($this->entityName, 'p')
             ->select('count(p.id)')
             ->getQuery()
             ->getSingleScalarResult();
+
+        return ['nb_projects' => $value];
     }
 }

@@ -17,7 +17,6 @@ use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\AttributeGroupA
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\LocaleAccessRepository;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\ProductDraftRepository;
-use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\ProjectRepository;
 use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 
 /**
@@ -25,7 +24,6 @@ use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterf
  * - Proposals count
  * - Projects count
  * - Assets count
- * - Published products count
  * - Number of locales with custom accesses
  * - Number of categories with custom accesses
  * - Number of attribute groups with custom accesses
@@ -36,9 +34,6 @@ class DBDataCollector implements DataCollectorInterface
 {
     /** @var ProductDraftRepository */
     protected $draftRepository;
-
-    /** @var ProjectRepository */
-    protected $projectRepository;
 
     /** @var AssetRepository */
     protected $assetRepository;
@@ -57,7 +52,6 @@ class DBDataCollector implements DataCollectorInterface
 
     /**
      * @param ProductDraftRepository              $draftRepository
-     * @param ProjectRepository                   $projectRepository
      * @param AssetRepository                     $assetRepository
      * @param PublishedProductRepositoryInterface $publishedRepository
      * @param LocaleAccessRepository              $localeAccessRepository
@@ -66,7 +60,6 @@ class DBDataCollector implements DataCollectorInterface
      */
     public function __construct(
         ProductDraftRepository $draftRepository,
-        ProjectRepository $projectRepository,
         AssetRepository $assetRepository,
         PublishedProductRepositoryInterface $publishedRepository,
         LocaleAccessRepository $localeAccessRepository,
@@ -74,7 +67,6 @@ class DBDataCollector implements DataCollectorInterface
         AttributeGroupAccessRepository $groupAccessRepository
     ) {
         $this->draftRepository = $draftRepository;
-        $this->projectRepository = $projectRepository;
         $this->assetRepository = $assetRepository;
         $this->publishedRepository = $publishedRepository;
         $this->localeAccessRepository = $localeAccessRepository;
@@ -89,7 +81,6 @@ class DBDataCollector implements DataCollectorInterface
     {
         return [
             'nb_product_drafts'                  => $this->draftRepository->countAll(),
-            'nb_projects'                        => $this->projectRepository->countAll(),
             'nb_assets'                          => $this->assetRepository->countAll(),
             'nb_published_products'              => $this->publishedRepository->countAll(),
             'nb_custom_locale_accesses'          => $this->localeAccessRepository->countCustomAccesses(),
