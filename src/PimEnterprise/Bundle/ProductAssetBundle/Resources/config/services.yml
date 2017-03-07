@@ -3,7 +3,6 @@ parameters:
     pimee_product_asset.variation_file_generator.class:              PimEnterprise\Component\ProductAsset\VariationFileGenerator
     pimee_product_asset.variations_collection_files_generator.class: PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGenerator
     pimee_product_asset.command_launcher.class:                      Akeneo\Component\Console\CommandLauncher
-    pimee_product_asset.analytic.asset.class:                        PimEnterprise\Bundle\ProductAssetBundle\Analytic\AssetAnalyticProvider
 
 services:
     pimee_product_asset.variation_file_generator:
@@ -29,12 +28,3 @@ services:
         arguments:
           - '%kernel.root_dir%'
           - '%kernel.environment%'
-
-    pimee_product_asset.analytic.asset:
-        class: '%pimee_product_asset.analytic.asset.class%'
-        arguments:
-            - '@doctrine.orm.default_entity_manager'
-            - '%pimee_product_asset.model.asset.class%'
-        tags:
-            - { name: pim_analytics.data_collector, type: update_checker }
-            - { name: pim_analytics.data_collector, type: system_info_report }

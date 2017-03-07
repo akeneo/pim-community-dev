@@ -10,6 +10,7 @@
  */
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Analytic;
+
 use Akeneo\Component\Analytics\DataCollectorInterface;
 use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 

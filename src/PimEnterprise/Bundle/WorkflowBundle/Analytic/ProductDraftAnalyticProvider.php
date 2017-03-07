@@ -15,6 +15,7 @@ use Akeneo\Component\Analytics\DataCollectorInterface;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 
 /**
  * Returns count of Product Draft
@@ -23,20 +24,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductDraftAnalyticProvider implements DataCollectorInterface
 {
-    /** @var EntityManager  */
-    protected $em;
-
-    /** @var string */
-    protected $entityName;
+    /** @var ProductDraftRepositoryInterface */
+    protected $draftRepository;
 
     /**
-     * @param EntityManager $em
-     * @param string        $class
+     * @param ProductDraftRepositoryInterface $draftRepository
      */
-    public function __construct(EntityManager $em, $class)
-    {
-        $this->em = $em;
-        $this->entityName = $em->getClassMetadata($class)->getName();
+    public function __construct(
+        ProductDraftRepositoryInterface $draftRepository
+    ) {
+        $this->draftRepository = $draftRepository;
     }
 
     /**
@@ -44,12 +41,6 @@ class ProductDraftAnalyticProvider implements DataCollectorInterface
      */
     public function collect()
     {
-        $result = $this->em->createQueryBuilder('p')
-            ->from($this->entityName, 'p')
-            ->select('count(p.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        return ['nb_product_drafts' => $result];
+        return ['nb_product_drafts' => $this->draftRepository->countAll()];
     }
 }

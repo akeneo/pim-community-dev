@@ -6,8 +6,7 @@ services:
     pimee_workflow.analytic.product_draft:
         class: '%pimee_workflow.analytic.product_draft.class%'
         arguments:
-            - '@doctrine.orm.default_entity_manager'
-            - '%pimee_workflow.model.product_draft.class%'
+            - '@pimee_workflow.repository.product_draft'
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }
             - { name: pim_analytics.data_collector, type: system_info_report }

@@ -273,6 +273,17 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function countAll()
+    {
+        return (int) $this->createQueryBuilder('p')
+            ->select('count(p.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
      * @param UserInterface $user
      *
      * @return QueryBuilder
