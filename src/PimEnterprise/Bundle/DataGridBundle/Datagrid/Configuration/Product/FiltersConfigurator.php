@@ -29,19 +29,19 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class FiltersConfigurator extends BaseFiltersConfigurator
 {
     /** @var RequestStack */
-    private $stack;
+    protected $stack;
 
     /** @var ProjectRepositoryInterface */
-    private $projectRepository;
+    protected $projectRepository;
 
     /** @var TokenStorageInterface */
-    private $tokenStorage;
+    protected $tokenStorage;
 
     /** @var bool */
-    private $isProject = null;
+    protected $isProject = null;
 
     /** @var bool */
-    private $isProjectOwner = null;
+    protected $isProjectOwner = null;
 
     /**
      * @param ConfigurationRegistry      $registry
@@ -81,7 +81,7 @@ class FiltersConfigurator extends BaseFiltersConfigurator
      */
     protected function retrieveTeamworkAssistantInformations()
     {
-        $parameters = $request = $this->stack->getCurrentRequest()->get('product-grid');
+        $parameters = $this->stack->getCurrentRequest()->get('product-grid');
 
         if (!isset($parameters['_parameters']['view']['id']) || empty($parameters['_parameters']['view']['id'])) {
             return;

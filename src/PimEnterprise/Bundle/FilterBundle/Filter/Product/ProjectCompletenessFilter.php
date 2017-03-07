@@ -82,7 +82,7 @@ class ProjectCompletenessFilter extends OroChoiceFilter
             return false;
         }
 
-        $project = $this->projectRepository->findOneBy(['datagridView' => $parameters['_parameters']['view']['id']]);
+        $project = $this->projectRepository->findOneBy(['datagridView' => $viewId]);
         if (null === $project) {
             return false;
         }
