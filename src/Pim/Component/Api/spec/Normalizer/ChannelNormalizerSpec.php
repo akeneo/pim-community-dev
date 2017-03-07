@@ -20,7 +20,7 @@ class ChannelNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(ChannelNormalizer::class);
     }
 
-    function it_supports_a_category(ChannelInterface $channel)
+    function it_supports_a_channel(ChannelInterface $channel)
     {
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'external_api')->shouldReturn(false);
@@ -28,7 +28,7 @@ class ChannelNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($channel, 'external_api')->shouldReturn(true);
     }
 
-    function it_normalizes_a_category($stdNormalizer, ChannelInterface $channel)
+    function it_normalizes_a_channel($stdNormalizer, ChannelInterface $channel)
     {
         $data = ['code' => 'my_channel'];
 

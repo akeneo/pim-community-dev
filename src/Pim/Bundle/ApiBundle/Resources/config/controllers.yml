@@ -4,6 +4,7 @@ parameters:
     pim_api.controller.attribute.class: Pim\Bundle\ApiBundle\Controller\AttributeController
     pim_api.controller.attribute_option.class: Pim\Bundle\ApiBundle\Controller\AttributeOptionController
     pim_api.controller.channel.class: Pim\Bundle\ApiBundle\Controller\ChannelController
+    pim_api.controller.locale.class: Pim\Bundle\ApiBundle\Controller\LocaleController
     pim_api.controller.token.class: Pim\Bundle\ApiBundle\Controller\TokenController
     pim_api.controller.product.class: Pim\Bundle\ApiBundle\Controller\ProductController
     pim_api.controller.root_endpoint.class: Pim\Bundle\ApiBundle\Controller\RootEndpointController
@@ -72,6 +73,15 @@ services:
         class: '%pim_api.controller.channel.class%'
         arguments:
             - '@pim_api.repository.channel'
+            - '@pim_serializer'
+            - '@pim_api.pagination.paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '%pim_api.configuration%'
+
+    pim_api.controller.locale:
+        class: '%pim_api.controller.locale.class%'
+        arguments:
+            - '@pim_api.repository.locale'
             - '@pim_serializer'
             - '@pim_api.pagination.paginator'
             - '@pim_api.pagination.parameter_validator'
