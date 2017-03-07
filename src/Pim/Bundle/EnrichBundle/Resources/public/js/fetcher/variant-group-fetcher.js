@@ -1,6 +1,7 @@
 'use strict';
 
-define([
+define(
+    [
         'jquery',
         'pim/base-fetcher',
         'module',
@@ -8,7 +9,8 @@ define([
         'oro/mediator',
         'pim/cache-invalidator',
         'pim/product-manager'
-    ], function (
+    ],
+    function (
         $,
         BaseFetcher,
         module,
