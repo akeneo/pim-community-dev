@@ -35,7 +35,7 @@ class AttributeGroupAccessRepository extends EntityRepository
     /**
      * Count the accesses of the categories for user groups other than 'ALL'
      */
-    public function countCustomAttributeGroupAccesses()
+    public function countCustomAccesses()
     {
         $qb = $this->createQueryBuilder('a');
 

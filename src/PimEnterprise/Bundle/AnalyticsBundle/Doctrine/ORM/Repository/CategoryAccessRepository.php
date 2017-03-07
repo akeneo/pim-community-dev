@@ -35,7 +35,7 @@ class CategoryAccessRepository extends EntityRepository
     /**
      * Count the accesses of the categories for user groups other than 'ALL'
      */
-    public function countCustomCategoryAccesses()
+    public function countCustomAccesses()
     {
         $qb = $this->createQueryBuilder('a');
 

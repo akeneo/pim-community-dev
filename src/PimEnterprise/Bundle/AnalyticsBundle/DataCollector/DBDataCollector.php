@@ -26,6 +26,9 @@ use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterf
  * - Projects count
  * - Assets count
  * - Published products count
+ * - Number of locales with custom accesses
+ * - Number of categories with custom accesses
+ * - Number of attribute groups with custom accesses
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
@@ -47,10 +50,10 @@ class DBDataCollector implements DataCollectorInterface
     protected $localeAccessRepository;
 
     /** @var CategoryAccessRepository */
-    protected $categoryAccessRepository;
+    protected $categAccessRepository;
 
     /** @var AttributeGroupAccessRepository */
-    protected $attributeGroupAccessRepository;
+    protected $groupAccessRepository;
 
     /**
      * @param ProductDraftRepository              $draftRepository
@@ -58,8 +61,8 @@ class DBDataCollector implements DataCollectorInterface
      * @param AssetRepository                     $assetRepository
      * @param PublishedProductRepositoryInterface $publishedRepository
      * @param LocaleAccessRepository              $localeAccessRepository
-     * @param CategoryAccessRepository            $categoryAccessRepository
-     * @param AttributeGroupAccessRepository      $attributeGroupAccessRepository
+     * @param CategoryAccessRepository            $categAccessRepository
+     * @param AttributeGroupAccessRepository      $groupAccessRepository
      */
     public function __construct(
         ProductDraftRepository $draftRepository,
@@ -67,16 +70,16 @@ class DBDataCollector implements DataCollectorInterface
         AssetRepository $assetRepository,
         PublishedProductRepositoryInterface $publishedRepository,
         LocaleAccessRepository $localeAccessRepository,
-        CategoryAccessRepository $categoryAccessRepository,
-        AttributeGroupAccessRepository $attributeGroupAccessRepository
+        CategoryAccessRepository $categAccessRepository,
+        AttributeGroupAccessRepository $groupAccessRepository
     ) {
         $this->draftRepository = $draftRepository;
         $this->projectRepository = $projectRepository;
         $this->assetRepository = $assetRepository;
         $this->publishedRepository = $publishedRepository;
         $this->localeAccessRepository = $localeAccessRepository;
-        $this->categoryAccessRepository = $categoryAccessRepository;
-        $this->attributeGroupAccessRepository = $attributeGroupAccessRepository;
+        $this->categAccessRepository = $categAccessRepository;
+        $this->groupAccessRepository = $groupAccessRepository;
     }
 
     /**
@@ -89,10 +92,9 @@ class DBDataCollector implements DataCollectorInterface
             'nb_projects'                        => $this->projectRepository->countAll(),
             'nb_assets'                          => $this->assetRepository->countAll(),
             'nb_published_products'              => $this->publishedRepository->countAll(),
-            'nb_custom_locale_accesses'          => $this->localeAccessRepository->countCustomLocaleAccesses(),
-            'nb_custom_category_accesses'        => $this->categoryAccessRepository->countCustomCategoryAccesses(),
-            'nb_custom_attribute_group_accesses' =>
-                $this->attributeGroupAccessRepository->countCustomAttributeGroupAccesses(),
+            'nb_custom_locale_accesses'          => $this->localeAccessRepository->countCustomAccesses(),
+            'nb_custom_category_accesses'        => $this->categAccessRepository->countCustomAccesses(),
+            'nb_custom_attribute_group_accesses' => $this->groupAccessRepository->countCustomAccesses(),
         ];
     }
 }

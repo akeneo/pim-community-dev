@@ -35,7 +35,7 @@ class LocaleAccessRepository extends EntityRepository
     /**
      * Count the accesses of the activated locales for user groups other than 'ALL'
      */
-    public function countCustomLocaleAccesses()
+    public function countCustomAccesses()
     {
         $associationMappings = $this->_em->getClassMetadata($this->_entityName)->getAssociationMappings();
         $localeClass = $associationMappings['locale']['targetEntity'];
