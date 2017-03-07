@@ -5,6 +5,7 @@ namespace spec\PimEnterprise\Component\TeamworkAssistant\Calculator;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\TeamworkAssistant\Calculator\ContributorGroupCalculator;
@@ -48,7 +49,8 @@ class ContributorGroupCalculatorSpec extends ObjectBehavior
         ProductInterface $product,
         ProjectInterface $project,
         FamilyInterface $family,
-        ChannelInterface $channel
+        ChannelInterface $channel,
+        LocaleInterface $locale
     ) {
         $categoryAccessRepository->getGrantedUserGroupsForProduct($product, Attributes::EDIT_ITEMS)
             ->willreturn(
@@ -70,6 +72,6 @@ class ContributorGroupCalculatorSpec extends ObjectBehavior
         $userGroup->getName()->willReturn('Redactor');
         $otherUserGroup->getName()->willReturn('It support');
 
-        $this->calculate($project, $product)->shouldReturn([$userGroup]);
+        $this->calculate($product, $channel, $locale)->shouldReturn([$userGroup]);
     }
 }

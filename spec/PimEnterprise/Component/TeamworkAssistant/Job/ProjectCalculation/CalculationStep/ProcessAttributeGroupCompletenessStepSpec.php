@@ -2,6 +2,8 @@
 
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep;
 
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\TeamworkAssistant\Calculator\ProjectItemCalculatorInterface;
 use PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
@@ -35,17 +37,22 @@ class ProcessAttributeGroupCompletenessStepSpec extends ObjectBehavior
         $preProcessingRepository,
         $attributeGroupCompletenessCalculator,
         ProductInterface $product,
-        ProjectInterface $project
+        ProjectInterface $project,
+        LocaleInterface $locale,
+        ChannelInterface $channel
     ) {
         $preProcessingRepository->isProcessableAttributeGroupCompleteness($product, $project)->willReturn(true);
 
+        $project->getChannel()->willReturn($channel);
+        $project->getLocale()->willReturn($locale);
+
         $attributeGroupCompleteness1 = new AttributeGroupCompleteness(40, 0, 1);
         $attributeGroupCompleteness2 = new AttributeGroupCompleteness(33, 0, 1);
-        $attributeGroupCompletenessCalculator->calculate($project, $product)->willReturn(
+        $attributeGroupCompletenessCalculator->calculate($product, $channel, $locale)->willReturn(
             [$attributeGroupCompleteness1, $attributeGroupCompleteness2]
         );
 
-        $preProcessingRepository->addAttributeGroupCompleteness($product, $project, [
+        $preProcessingRepository->addAttributeGroupCompleteness($product, $channel, $locale, [
             $attributeGroupCompleteness1,
             $attributeGroupCompleteness2,
         ])->shouldBeCalled();

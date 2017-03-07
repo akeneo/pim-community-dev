@@ -290,7 +290,11 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
 
         $catalogManager = $this->get('pim_user.repository.group')->findOneByIdentifier('Catalog Manager');
         $marketing = $this->get('pim_user.repository.group')->findOneByIdentifier('Marketing');
-        $result = $this->get('pimee_teamwork_assistant.calculator.contributor_group')->calculate($project, $product);
+        $result = $this->get('pimee_teamwork_assistant.calculator.contributor_group')->calculate(
+            $product,
+            $project->getChannel(),
+            $project->getLocale()
+        );
 
         $this->assertSame($result, [$catalogManager, $marketing]);
     }
@@ -321,7 +325,7 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
         /**
          * We recalculate the project but the product has not been updated so we don't update the attribute completeness
          */
-        $datetimeAfterCalculation = new \DateTime('now');
+        $datetimeAfterCalculation = new \DateTime('now', new \DateTimeZone('UTC'));
         $this->checkSmartPreProcessingUpdate($posterEcommerceEn, $datetimeAfterCalculation, 0);
 
         /**
@@ -341,7 +345,7 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
          * We calculate another project that have the same product, so we don't refresh the attribute
          * complete completeness because it was already computed by the previous.
          */
-        $datetimeAfterCalculation = new \DateTime('now');
+        $datetimeAfterCalculation = new \DateTime('now', new \DateTimeZone('UTC'));
         $this->checkSmartPreProcessingUpdate($otherPosterEcommerceEn, $datetimeAfterCalculation, 0);
     }
 
@@ -454,6 +458,7 @@ SQL
     private function checkSmartPreProcessingUpdate(ProjectInterface $project, \DateTime $since, $expectedUpdates)
     {
         $this->calculateProject($project);
+        $sinceDate = $since->format('Y-m-d H:i:s');
 
         $completenessUpdatedCount = $this->getConnection()->fetchColumn(
             <<<SQL
@@ -468,12 +473,16 @@ AND calculated_at > :calculated_at
 SQL
             ,
             [
-                'calculated_at' => $since->format('Y-m-d H:i:s'),
+                'calculated_at' => $sinceDate,
                 'project_id'    => $project->getId(),
             ]
         );
 
-        $this->assertEquals($expectedUpdates, $completenessUpdatedCount);
+        $this->assertEquals(
+            $expectedUpdates,
+            $completenessUpdatedCount,
+            sprintf('Invalid number of updated attribute group completeness after %s', $sinceDate)
+        );
     }
 
     /**
