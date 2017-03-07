@@ -35,21 +35,21 @@ class CatalogUpdatesSubscriber implements EventSubscriberInterface
     protected $requestStack;
 
     /** @var AttributeGroupCompletenessJobLauncher */
-    protected $attributeGroupCompletenessCalculationJobLauncher;
+    protected $jobLauncher;
 
     /**
      * @param ChainedProjectRemover                 $chainedProjectRemover
-     * @param AttributeGroupCompletenessJobLauncher $attributeGroupCompletenessCalculationJobLauncher
+     * @param AttributeGroupCompletenessJobLauncher $jobLauncher
      * @param RequestStack                          $requestStack
      */
     public function __construct(
         ChainedProjectRemover $chainedProjectRemover,
-        AttributeGroupCompletenessJobLauncher $attributeGroupCompletenessCalculationJobLauncher,
+        AttributeGroupCompletenessJobLauncher $jobLauncher,
         RequestStack $requestStack
     ) {
         $this->chainedProjectRemover = $chainedProjectRemover;
         $this->requestStack = $requestStack;
-        $this->attributeGroupCompletenessCalculationJobLauncher = $attributeGroupCompletenessCalculationJobLauncher;
+        $this->jobLauncher = $jobLauncher;
     }
 
     /**
@@ -86,7 +86,7 @@ class CatalogUpdatesSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->attributeGroupCompletenessCalculationJobLauncher->launch(
+        $this->jobLauncher->launch(
             $product,
             $product->getScope(),
             $product->getLocale()

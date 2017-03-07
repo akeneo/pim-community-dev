@@ -91,7 +91,7 @@ jobs:
         label:     Add tags to assets
         type:      mass_edit
     project_calculation:
-        connector: team work assistant
+        connector: teamwork assistant
         alias:     project_calculation
         label:     Project calculation
         type:      project_calculation

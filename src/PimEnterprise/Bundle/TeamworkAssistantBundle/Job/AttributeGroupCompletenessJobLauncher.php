@@ -63,15 +63,14 @@ class AttributeGroupCompletenessJobLauncher
         $token = $this->tokenStorage->getToken();
         if (null === $token) {
             throw new \RuntimeException(
-                'Cannot run refresh project completeness, there is not an available security token'
+                'Cannot run refresh project completeness, there is no available security token'
             );
         }
 
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->attributeGroupCompletenessJobName);
         if (null === $jobInstance) {
-            throw new \RuntimeException('Cannot run refresh project completeness, there is not an available job');
+            throw new \RuntimeException('Cannot run refresh project completeness, there is no available job');
         }
-
 
         $this->simpleJobLauncher->launch($jobInstance, $token->getUser(), [
             'product_identifier' => $product->getId(),
