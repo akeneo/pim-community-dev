@@ -3,24 +3,24 @@
 namespace spec\Pim\Component\Catalog\Updater\Remover;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
-use Prophecy\Argument;
 
 class MultiSelectAttributeRemoverSpec extends ObjectBehavior
 {
     function let(
         AttributeValidatorHelper $attrValidatorHelper,
-        IdentifiableObjectRepositoryInterface $attrOptionRepository
+        ProductBuilderInterface $productBuilder
     ) {
         $this->beConstructedWith(
             $attrValidatorHelper,
-            $attrOptionRepository,
+            $productBuilder,
             ['pim_catalog_multiselect']
         );
     }
@@ -41,32 +41,34 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 
-    function it_should_checks_locale_and_scope_when_removing_an_attribute_data(
-        $attrValidatorHelper,
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
-
-        $this->removeAttributeData($product, $attribute, [], ['locale' => 'fr_FR', 'scope' => 'mobile']);
-    }
-
     function it_should_removes_an_attribute_data_multi_select_value_to_a_product_value(
+        $productBuilder,
         AttributeInterface $attribute,
         ProductInterface $product,
         ProductValueInterface $productValue,
-        AttributeOptionInterface $attributeOption,
-        $attrOptionRepository
+        ArrayCollection $options,
+        AttributeOptionInterface $vneck,
+        AttributeOptionInterface $round,
+        \ArrayIterator $optionsIterator
     ) {
         $attribute->getCode()->willReturn('tshirt_style');
-        $attrOptionRepository->findOneByIdentifier('tshirt_style.vneck')->willReturn($attributeOption);
 
         $product->getValue('tshirt_style', 'fr_FR', 'mobile')->willReturn($productValue);
-        $productValue->removeOption($attributeOption)->shouldBeCalled();
 
-        $data = ['vneck'];
-        $this->removeAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
+        $productValue->getData()->willReturn($options);
+
+        $options->getIterator()->willReturn($optionsIterator);
+        $optionsIterator->rewind()->shouldBeCalled();
+        $optionsIterator->valid()->willReturn(true, true, false);
+        $optionsIterator->current()->willReturn($vneck, $round);
+        $optionsIterator->next()->shouldBeCalled();
+
+        $round->getCode()->willReturn('round');
+        $vneck->getCode()->willReturn('vneck');
+
+        $productBuilder->addOrReplaceProductValue($product, $attribute, 'fr_FR', 'mobile', ['round'])->shouldBeCalled();
+
+        $this->removeAttributeData($product, $attribute, ['vneck'], ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
     function it_should_throws_an_error_if_attribute_data_value_is_not_an_array(

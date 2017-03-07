@@ -2,14 +2,12 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Abstract setter
+ * Abstract data setter.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -17,31 +15,24 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 abstract class AbstractAttributeSetter implements AttributeSetterInterface
 {
-    /** @var array */
+    /** @var string[] */
     protected $supportedTypes = [];
 
-    /** @var AttributeValidatorHelper */
-    protected $attrValidatorHelper;
-
-    /** @var \Pim\Component\Catalog\Builder\ProductBuilderInterface */
+    /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var OptionsResolver */
     protected $resolver;
 
     /**
-     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface  $productBuilder
-     * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param ProductBuilderInterface $productBuilder
      */
-    public function __construct(
-        ProductBuilderInterface $productBuilder,
-        AttributeValidatorHelper $attrValidatorHelper
-    ) {
+    public function __construct(ProductBuilderInterface $productBuilder)
+    {
         $this->productBuilder = $productBuilder;
-        $this->attrValidatorHelper = $attrValidatorHelper;
 
         $this->resolver = new OptionsResolver();
-        $this->configureOptions($this->resolver);
+        $this->resolver->setRequired(['locale', 'scope']);
     }
 
     /**
@@ -50,38 +41,5 @@ abstract class AbstractAttributeSetter implements AttributeSetterInterface
     public function supportsAttribute(AttributeInterface $attribute)
     {
         return in_array($attribute->getType(), $this->supportedTypes);
-    }
-
-    /**
-     * Check locale and scope are valid
-     *
-     * @param AttributeInterface $attribute
-     * @param string             $locale
-     * @param string             $scope
-     *
-     * @throws InvalidPropertyException
-     */
-    protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope)
-    {
-        try {
-            $this->attrValidatorHelper->validateLocale($attribute, $locale);
-            $this->attrValidatorHelper->validateScope($attribute, $scope);
-        } catch (\LogicException $e) {
-            throw InvalidPropertyException::expectedFromPreviousException(
-                $attribute->getCode(),
-                static::class,
-                $e
-            );
-        }
-    }
-
-    /**
-     * Configure the option resolver
-     *
-     * @param OptionsResolver $resolver
-     */
-    protected function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setRequired(['locale', 'scope']);
     }
 }

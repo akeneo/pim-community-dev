@@ -6,12 +6,14 @@ use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductValueCollection;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
@@ -234,124 +236,40 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      * @param GroupInterface $variantGroup
      * @param array          $newValues
      */
-    public function setValues(GroupInterface $variantGroup, array $newValues)
+    protected function setValues(GroupInterface $variantGroup, array $newValues)
     {
         $template = $this->getProductTemplate($variantGroup);
-        $originalValues = $template->getValuesData();
-        $mergedValuesData = $this->mergeValues($originalValues, $newValues);
+        $originalValues = $template->getValues();
 
-        $mergedValues = $this->transformArrayToValues($mergedValuesData);
-        $mergedValuesData = $this->replaceMediaLocalPathsByStoredPaths($mergedValues, $mergedValuesData);
+        if (null === $originalValues) {
+            $originalValues = new ProductValueCollection();
+        }
+        $mergedValues = $this->updateTemplateValues($originalValues, $newValues);
 
         $template->setValues($mergedValues);
-        $template->setValuesData($mergedValuesData);
 
         $variantGroup->setProductTemplate($template);
     }
 
     /**
-     * Merges original and new values (keeping original ones if missing in the new ones)
-     * Iterates on every new attribute and then on every localized and/or scoped value to compare it
-     * with the original values.
+     * Update the values of the variant group product template.
      *
-     * Example :
+     * New values respect the standard format, so we can use the product updater
+     * on a temporary product.
      *
-     * Given $originalValues =
-     *     "description": [
-     *          {
-     *              "locale": "fr_FR",
-     *              "scope": "ecommerce",
-     *              "data": "original description fr_FR",
-     *          },
-     *          {
-     *              "locale": "en_US",
-     *              "scope": "ecommerce",
-     *              "data": "original descriptionen_US",
-     *          }
-     *      ]
+     * @param ProductValueCollectionInterface $values
+     * @param array                           $newValues
      *
-     * And $newValues =
-     *     "description": [
-     *          {
-     *              "locale": "de_DE",
-     *              "scope": "ecommerce",
-     *              "data": "new description de_DE",
-     *          },
-     *          {
-     *              "locale": "en_US",
-     *              "scope": "ecommerce",
-     *              "data": "new descriptionen_US",
-     *          }
-     *      ]
-     *
-     * Then $mergedValues will be =
-     *     "description": [
-     *          {
-     *              "locale": "fr_FR",
-     *              "scope": "ecommerce",
-     *              "data": "original description fr_FR",
-     *          },
-     *          {
-     *              "locale": "de_DE",
-     *              "scope": "ecommerce",
-     *              "data": "new description de_DE",
-     *          },
-     *          {
-     *              "locale": "en_US",
-     *              "scope": "ecommerce",
-     *              "data": "new descriptionen_US",
-     *          }
-     *      ]
-     *
-     * @param  array $originalValues
-     * @param  array $newValues
-     *
-     * @return array
+     * @return ProductValueCollectionInterface
      */
-    protected function mergeValues(array $originalValues, array $newValues)
-    {
-        $mergedValues = $originalValues;
-
-        foreach ($newValues as $newValueCode => $newValueArray) {
-            foreach ($newValueArray as $newValue) {
-                $originalValueFound = false;
-
-                if (isset($originalValues[$newValueCode])) {
-                    foreach ($originalValues[$newValueCode] as $originalValueIndex => $originalValue) {
-                        if ($newValue['locale'] === $originalValue['locale'] &&
-                            $newValue['scope'] === $originalValue['scope']
-                        ) {
-                            $originalValueFound = true;
-                            $mergedValues[$newValueCode][$originalValueIndex]['data'] = $newValue['data'];
-                        }
-                    }
-                }
-
-                if (!$originalValueFound) {
-                    $mergedValues[$newValueCode][] = $newValue;
-                }
-            }
-        }
-
-        return $mergedValues;
-    }
-
-    /**
-     * Transform an array of values to ProductValues
-     *
-     * @param array $arrayValues
-     *
-     * @return ArrayCollection
-     */
-    protected function transformArrayToValues(array $arrayValues)
+    protected function updateTemplateValues(ProductValueCollectionInterface $values, array $newValues)
     {
         $product = $this->productBuilder->createProduct();
-        $this->productUpdater->update($product, ['values' => $arrayValues]);
+        $product->setValues($values);
 
-        $values = $product->getValues();
-        $values->removeElement($product->getIdentifier());
+        $this->productUpdater->update($product, ['values' => $newValues]);
 
-        return $values;
+        return $product->getValues();
     }
 
     /**
@@ -386,49 +304,21 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * Replace media local paths by stored paths in the merged values data as
-     * the file has already been stored during the construction of the product values
-     * (in the method transformArrayToValues).
-     *
-     * @param Collection $mergedValues
-     * @param array      $mergedValuesData
-     *
-     * @return array
-     */
-    protected function replaceMediaLocalPathsByStoredPaths(Collection $mergedValues, array $mergedValuesData)
-    {
-        foreach ($mergedValues as $value) {
-            if (null !== $value->getMedia()) {
-                $attributeCode = $value->getAttribute()->getCode();
-                foreach ($mergedValuesData[$attributeCode] as $index => $mergedValuesDataValues) {
-                    if ($value->getLocale() === $mergedValuesDataValues['locale'] &&
-                        $value->getScope() === $mergedValuesDataValues['scope']
-                    ) {
-                        $mergedValuesData[$attributeCode][$index]['data'] = $value->getMedia()->getKey();
-                    }
-                }
-            }
-        }
-
-        return $mergedValuesData;
-    }
-
-    /**
      * @param GroupInterface $variantGroup
-     * @param array          $productIds
+     * @param array          $productIdentifiers
      */
-    protected function setProducts(GroupInterface $variantGroup, array $productIds)
+    protected function setProducts(GroupInterface $variantGroup, array $productIdentifiers)
     {
         foreach ($variantGroup->getProducts() as $product) {
             $variantGroup->removeProduct($product);
         }
 
-        if (empty($productIds)) {
+        if (empty($productIdentifiers)) {
             return;
         }
 
         $pqb = $this->productQueryBuilderFactory->create();
-        $pqb->addFilter('id', 'IN', $productIds);
+        $pqb->addFilter('identifier', Operators::IN_LIST, $productIdentifiers);
 
         $products = $pqb->execute();
 

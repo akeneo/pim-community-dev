@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Hydrate results of Doctrine ORM query as ResultRecord array
@@ -20,6 +21,7 @@ class ProductHydrator implements HydratorInterface
     public function hydrate($qb, array $options = [])
     {
         $localeCode = $options['locale_code'];
+        $channelCode = $options['scope_code'];
 
         $query = $qb->getQuery();
         $results = $query->getArrayResult();
@@ -33,14 +35,48 @@ class ProductHydrator implements HydratorInterface
             }
             $otherFields = $result;
             $result = $entityFields + $otherFields;
-            $result = $this->prepareValues($result);
+            // TODO - TIP-664: make the datagrid work with ES
+            $result['productLabel'] = $this->retrieveLabel(
+                $result,
+                $result['attributeCodeAsLabel'],
+                $channelCode,
+                $localeCode
+            );
+            $result = $this->prepareValues($result, $channelCode, $localeCode);
             $result = $this->prepareGroups($result);
             $result['dataLocale'] = $localeCode;
+            unset($result['rawValues']);
 
             $rows[] = new ResultRecord($result);
         }
 
         return $rows;
+    }
+
+    /**
+     * @param array  $rawProduct
+     * @param string $attributeAsLabel
+     * @param string $channelCode
+     * @param string $localeCode
+     *
+     * @return string
+     */
+    protected function retrieveLabel(array $rawProduct, $attributeAsLabel, $channelCode, $localeCode)
+    {
+        $rawValues = $rawProduct['rawValues'];
+
+        $label = $this->getValueEventuallyByLocaleAndScope(
+            $rawValues,
+            $attributeAsLabel,
+            $channelCode,
+            $localeCode
+        );
+
+        if (null !== $label) {
+            return $label;
+        }
+
+        return $rawProduct['identifier'];
     }
 
     /**
@@ -83,5 +119,34 @@ class ProductHydrator implements HydratorInterface
         }
 
         return $result;
+    }
+
+    /**
+     * @param array  $rawValues
+     * @param string $attributeCode
+     * @param string $channelCode
+     * @param string $localeCode
+     *
+     * @return string
+     */
+    private function getValueEventuallyByLocaleAndScope(array $rawValues, $attributeCode, $channelCode, $localeCode)
+    {
+        if (isset($rawValues[$attributeCode]['<all_channels>']['<all_locales>'])) {
+            return $rawValues[$attributeCode]['<all_channels>']['<all_locales>'];
+        }
+
+        if (null !== $channelCode && null !== $localeCode && isset($rawValues[$attributeCode][$channelCode][$localeCode])) {
+            return $rawValues[$attributeCode][$channelCode][$localeCode];
+        }
+
+        if (null !== $channelCode && isset($rawValues[$attributeCode][$channelCode]['<all_locales>'])) {
+            return $rawValues[$attributeCode][$channelCode]['<all_locales>'];
+        }
+
+        if (null !== $localeCode && isset($rawValues[$attributeCode]['<all_channels>'][$localeCode])) {
+            return $rawValues[$attributeCode]['<all_channels>'][$localeCode];
+        }
+
+        return null;
     }
 }

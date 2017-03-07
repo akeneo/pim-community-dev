@@ -7,14 +7,14 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Prophecy\Argument;
 
 class GroupsFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb, ObjectIdResolverInterface $objectIdResolver)
+    function let(QueryBuilder $qb)
     {
-        $this->beConstructedWith($objectIdResolver, ['groups'], ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']);
+        $this->beConstructedWith(['groups'], ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']);
         $this->setQueryBuilder($qb);
     }
 
@@ -35,70 +35,52 @@ class GroupsFilterSpec extends ObjectBehavior
         $this->getFields()->shouldReturn(['groups']);
     }
 
-    function it_adds_a_filter_on_codes_by_default($qb, $objectIdResolver, Expr $expr)
+    function it_adds_a_filter_on_codes_by_default($qb, Expr $expr)
     {
         $qb->getRootAlias()->willReturn('f');
         $qb->leftJoin('f.groups', Argument::any())->willReturn($qb);
-        $qb->andWhere('filtergroups.id IN (1, 2)')->willReturn($qb);
+        $qb->andWhere('filtergroups.code IN ("foo", "bar")')->willReturn($qb);
 
-        $expr->in(Argument::any(), [1, 2])->willReturn('filtergroups.id IN (1, 2)');
+        $expr->in(Argument::any(), ['foo', 'bar'])->willReturn('filtergroups.code IN ("foo", "bar")');
         $qb->expr()->willReturn($expr);
-
-        $objectIdResolver->getIdsFromCodes('group', ['foo', 'bar'])->willReturn([1, 2]);
 
         $this->addFieldFilter('groups', 'IN', ['foo', 'bar']);
     }
 
-    function it_adds_a_filter_on_codes($qb, $objectIdResolver, Expr $expr)
+    function it_adds_a_filter_on_codes($qb, Expr $expr)
     {
         $qb->getRootAlias()->willReturn('f');
         $qb->leftJoin('f.groups', Argument::any())->willReturn($qb);
-        $qb->andWhere('filtergroups.id IN (1, 2)')->willReturn($qb);
+        $qb->andWhere('filtergroups.code IN ("foo", "bar")')->willReturn($qb);
 
-        $expr->in(Argument::any(), [1, 2])->willReturn('filtergroups.id IN (1, 2)');
+        $expr->in(Argument::any(), ['foo', 'bar'])->willReturn('filtergroups.code IN ("foo", "bar")');
         $qb->expr()->willReturn($expr);
-
-        $objectIdResolver->getIdsFromCodes('group', ['foo', 'bar'])->willReturn([1, 2]);
 
         $this->addFieldFilter('groups', 'IN', ['foo', 'bar']);
-    }
-
-    function it_adds_a_filter_on_ids($qb, $objectIdResolver, Expr $expr)
-    {
-        $qb->getRootAlias()->willReturn('f');
-        $qb->leftJoin('f.groups', Argument::any())->willReturn($qb);
-        $qb->andWhere('filtergroups.id IN (1, 2)')->willReturn($qb);
-
-        $expr->in(Argument::any(), [1, 2])->willReturn('filtergroups.id IN (1, 2)');
-        $qb->expr()->willReturn($expr);
-
-        $objectIdResolver->getIdsFromCodes(Argument::cetera())->shouldNotBeCalled();
-
-        $this->addFieldFilter('groups.id', 'IN', [1, 2]);
     }
 
     function it_adds_a_in_filter_on_a_field_in_the_query($qb, Expr $expr)
     {
         $qb->getRootAlias()->willReturn('f');
         $qb->leftJoin('f.groups', Argument::any())->willReturn($qb);
-        $qb->andWhere('filtergroups.id IN (1, 2)')->willReturn($qb);
+        $qb->andWhere('filtergroups.code IN ("foo", "bar")')->willReturn($qb);
 
-        $expr->in(Argument::any(), [1, 2])->willReturn('filtergroups.id IN (1, 2)');
+        $expr->in(Argument::any(), ['foo', 'bar'])->willReturn('filtergroups.code IN ("foo", "bar")');
         $qb->expr()->willReturn($expr);
 
-        $this->addFieldFilter('groups.id', 'IN', [1, 2]);
+        $this->addFieldFilter('groups', 'IN', ['foo', 'bar']);
     }
 
     function it_adds_an_empty_filter_on_a_field_in_the_query($qb, Expr $expr)
     {
         $qb->getRootAlias()->willReturn('f');
         $qb->leftJoin('f.groups', Argument::any())->willReturn($qb);
-        $qb->andWhere('filtergroups.id IS NULL')->willReturn($qb);
+        $qb->andWhere('filtergroups.code IS NULL')->willReturn($qb);
 
-        $expr->isNull(Argument::any())->willReturn('filtergroups.id IS NULL');
+        $expr->isNull(Argument::any())->willReturn('filtergroups.code IS NULL');
         $qb->expr()->willReturn($expr);
 
-        $this->addFieldFilter('groups.id', 'EMPTY', null);
+        $this->addFieldFilter('groups', 'EMPTY', null);
     }
 
     function it_adds_an_not_in_filter_on_a_field_in_the_query(
@@ -114,11 +96,11 @@ class GroupsFilterSpec extends ObjectBehavior
         $qb->getEntityManager()->willReturn($em);
         $em->createQueryBuilder()->willReturn($notInQb);
         $qb->getRootEntities()->willReturn(['ProductClassName']);
-        $notInQb->select(Argument::containingString('.id'))->shouldBeCalled()->willReturn($notInQb);
+        $notInQb->select(Argument::containingString('.code'))->shouldBeCalled()->willReturn($notInQb);
         $notInQb->from(
             'ProductClassName',
             Argument::any(),
-            Argument::containingString('.id')
+            Argument::containingString('.code')
         )->shouldBeCalled()->willReturn($notInQb);
         $notInQb->getRootAlias()->willReturn('ep');
         $notInQb->innerJoin(
@@ -126,19 +108,19 @@ class GroupsFilterSpec extends ObjectBehavior
             Argument::containingString('filtergroups')
         )->shouldBeCalled()->willReturn($notInQb);
         $notInQb->expr()->willReturn($expr);
-        $expr->in(Argument::containingString('.id'), [3])
+        $expr->in(Argument::containingString('.code'), ["foo"])
             ->shouldBeCalled()
             ->willReturn($inFunc);
         $notInQb->where($inFunc)->shouldBeCalled();
         $notInQb->getDQL()->willReturn('excluded products DQL');
 
         $qb->expr()->willReturn($expr);
-        $expr->notIn('f.id', 'excluded products DQL')
+        $expr->notIn('f.code', 'excluded products DQL')
             ->shouldBeCalled()
             ->willReturn($whereFunc);
         $qb->andWhere($whereFunc)->shouldBeCalled();
 
-        $this->addFieldFilter('groups.id', 'NOT IN', [3]);
+        $this->addFieldFilter('groups', 'NOT IN', ['foo']);
     }
 
     function it_checks_if_field_is_supported()

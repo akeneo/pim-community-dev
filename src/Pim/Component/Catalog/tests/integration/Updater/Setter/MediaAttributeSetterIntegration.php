@@ -17,7 +17,7 @@ class MediaAttributeSetterIntegration extends TestCase
     {
         return new Configuration(
             [Configuration::getTechnicalCatalogPath()],
-            false
+            true
         );
     }
 

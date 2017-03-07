@@ -35,7 +35,7 @@ class FamilyRepositorySpec extends ObjectBehavior
     {
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('f')->willReturn($queryBuilder);
-        $queryBuilder->from('family', 'f')->willReturn($queryBuilder);
+        $queryBuilder->from('family', 'f', null)->willReturn($queryBuilder);
         $queryBuilder->select('COUNT(f.id)')->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
         $query->getSingleScalarResult()->shouldBeCalled();
@@ -47,7 +47,7 @@ class FamilyRepositorySpec extends ObjectBehavior
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('f')->willReturn($queryBuilder);
         $queryBuilder->select('COUNT(f.id)')->willReturn($queryBuilder);
-        $queryBuilder->from('family', 'f')->willReturn($queryBuilder);
+        $queryBuilder->from('family', 'f', null)->willReturn($queryBuilder);
         $queryBuilder->leftJoin('f.attributes', 'a')->willReturn($queryBuilder);
         $queryBuilder->where('f.id = :id')->willReturn($queryBuilder);
         $queryBuilder->andWhere('a.code = :code')->willReturn($queryBuilder);

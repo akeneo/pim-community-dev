@@ -34,7 +34,7 @@ Feature: Execute a job
     Then there should be 10 products
     And the family of the product "SKU-006" should be "boots"
     And product "SKU-007" should be enabled
-    And the english tablet name of "SKU-001" should be "Donec"
+    And the english name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-002" should be "Pellentesque habitant morbi tristique senectus et netus et malesuada fames"
 
   Scenario: Successfully import a csv file of product with carriage return in product description
@@ -70,7 +70,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
-    And the english tablet name of "SKU-001" should be "Donec"
+    And the english name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-001" should be "dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est"
 
   Scenario: Successfully update an existing product
@@ -88,7 +88,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
-    And the english tablet name of "SKU-001" should be "Donec"
+    And the english name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-001" should be "dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est"
 
   Scenario: Successfully import products through file upload

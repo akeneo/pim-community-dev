@@ -35,7 +35,8 @@ interface AttributeCopierInterface extends CopierInterface
     );
 
     /**
-     * Supports the source and destination attributes
+     * Supports the source and destination attributes, and ensure both attributes
+     * are of the same type.
      *
      * @param AttributeInterface $fromAttribute
      * @param AttributeInterface $toAttribute

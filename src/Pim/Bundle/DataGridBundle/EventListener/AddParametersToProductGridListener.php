@@ -71,9 +71,6 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
         // TODO : strange that we need to set it here, would expect from the datasource
         $this->catalogContext->setLocaleCode($dataLocale);
 
-        $dataScope = $this->getScope();
-        $queryParameters['scopeCode'] = $dataScope;
-
         return $queryParameters;
     }
 

@@ -6,14 +6,14 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Prophecy\Argument;
 
 class FamilyFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb, ObjectIdResolverInterface $objectIdResolver)
+    function let(QueryBuilder $qb)
     {
-        $this->beConstructedWith($objectIdResolver, ['family', 'groups'], ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']);
+        $this->beConstructedWith(['family'], ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']);
         $this->setQueryBuilder($qb);
     }
 
@@ -24,7 +24,7 @@ class FamilyFilterSpec extends ObjectBehavior
 
     function it_returns_supported_fields()
     {
-        $this->getFields()->shouldReturn(['family', 'groups']);
+        $this->getFields()->shouldReturn(['family']);
     }
 
     function it_supports_operators()
@@ -34,59 +34,38 @@ class FamilyFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_a_filter_on_codes_by_default($qb, $objectIdResolver, Expr $expr)
+    function it_adds_a_filter_on_codes_by_default($qb, Expr $expr)
     {
         $qb->getRootAlias()->willReturn('f');
         $qb->leftJoin('f.family', Argument::any())->willReturn($qb);
-        $qb->andWhere('filterfamily.id IN (1, 2)')->willReturn($qb);
+        $qb->andWhere('filterfamily.code IN ("foo", "bar")')->willReturn($qb);
 
-        $expr->in(Argument::any(), [1, 2])->willReturn('filterfamily.id IN (1, 2)');
+        $expr->in(Argument::any(), ['foo', 'bar'])->willReturn('filterfamily.code IN ("foo", "bar")');
         $qb->expr()->willReturn($expr);
-
-        $objectIdResolver->getIdsFromCodes('family', ['foo', 'bar'])->willReturn([1, 2]);
-
-        $this->addFieldFilter('family', 'IN', ['foo', 'bar']);
-
-    }
-
-    function it_adds_a_filter_on_codes($qb, $objectIdResolver, Expr $expr)
-    {
-        $qb->getRootAlias()->willReturn('f');
-        $qb->leftJoin('f.family', Argument::any())->willReturn($qb);
-        $qb->andWhere('filterfamily.id IN (1, 2)')->willReturn($qb);
-
-        $expr->in(Argument::any(), [1, 2])->willReturn('filterfamily.id IN (1, 2)');
-        $qb->expr()->willReturn($expr);
-
-        $objectIdResolver->getIdsFromCodes('family', ['foo', 'bar'])->willReturn([1, 2]);
 
         $this->addFieldFilter('family', 'IN', ['foo', 'bar']);
     }
 
-    function it_adds_a_filter_on_ids($qb, $objectIdResolver, Expr $expr)
+    function it_adds_a_filter_on_codes($qb, Expr $expr)
     {
         $qb->getRootAlias()->willReturn('f');
         $qb->leftJoin('f.family', Argument::any())->willReturn($qb);
-        $qb->andWhere('filterfamily.id IN (1, 2)')->willReturn($qb);
+        $qb->andWhere('filterfamily.code IN ("foo", "bar")')->willReturn($qb);
 
-        $expr->in(Argument::any(), [1, 2])->willReturn('filterfamily.id IN (1, 2)');
+        $expr->in(Argument::any(), ['foo', 'bar'])->willReturn('filterfamily.code IN ("foo", "bar")');
         $qb->expr()->willReturn($expr);
 
-        $objectIdResolver->getIdsFromCodes(Argument::cetera())->shouldNotBeCalled();
-
-        $this->addFieldFilter('family.id', 'IN', [1, 2]);
+        $this->addFieldFilter('family', 'IN', ['foo', 'bar']);
     }
 
-    function it_adds_a_in_filter_on_a_field_in_the_query($qb, $objectIdResolver, Expr $expr)
+    function it_adds_a_in_filter_on_a_field_in_the_query($qb, Expr $expr)
     {
         $qb->getRootAlias()->willReturn('f');
         $qb->leftJoin('f.family', Argument::any())->willReturn($qb);
-        $qb->andWhere('filterfamily.id IN (1, 2)')->willReturn($qb);
+        $qb->andWhere('filterfamily.code IN ("foo", "bar")')->willReturn($qb);
 
-        $expr->in(Argument::any(), [1, 2])->willReturn('filterfamily.id IN (1, 2)');
+        $expr->in(Argument::any(), ['foo', 'bar'])->willReturn('filterfamily.code IN ("foo", "bar")');
         $qb->expr()->willReturn($expr);
-
-        $objectIdResolver->getIdsFromCodes('family', ['foo', 'bar'])->willReturn([1, 2]);
 
         $this->addFieldFilter('family', 'IN', ['foo', 'bar']);
     }
@@ -95,29 +74,27 @@ class FamilyFilterSpec extends ObjectBehavior
     {
         $qb->getRootAlias()->willReturn('f');
         $qb->leftJoin('f.family', Argument::any())->willReturn($qb);
-        $qb->andWhere('filterfamily.id IS NULL')->willReturn($qb);
+        $qb->andWhere('filterfamily.code IS NULL')->willReturn($qb);
 
-        $expr->isNull(Argument::any())->willReturn('filterfamily.id IS NULL');
+        $expr->isNull(Argument::any())->willReturn('filterfamily.code IS NULL');
         $qb->expr()->willReturn($expr);
 
         $this->addFieldFilter('family', 'EMPTY', null);
     }
 
-    function it_adds_a_not_in_filter_on_a_field_in_the_query($qb, $objectIdResolver, Expr $expr)
+    function it_adds_a_not_in_filter_on_a_field_in_the_query($qb, Expr $expr)
     {
         $qb->getRootAlias()->willReturn('f');
         $qb->leftJoin('f.family', Argument::any())->willReturn($qb);
-        $qb->andWhere('filterfamily.id NOT IN(3)'.'filterfamily.id IS NULL')->willReturn($qb);
+        $qb->andWhere('filterfamily.code NOT IN ("foo")'.'filterfamily.code IS NULL')->willReturn($qb);
         $qb->expr()->willReturn($expr);
 
-        $expr->notIn(Argument::any(), [3])->willReturn('filterfamily.id NOT IN');
-        $expr->isNull(Argument::any())->willReturn('filterfamily.id IS NULL');
+        $expr->notIn(Argument::any(), ['foo'])->willReturn('filterfamily.code NOT IN');
+        $expr->isNull(Argument::any())->willReturn('filterfamily.code IS NULL');
 
-        $expr->orX('filterfamily.id NOT IN', 'filterfamily.id IS NULL')
+        $expr->orX('filterfamily.code NOT IN', 'filterfamily.code IS NULL')
             ->shouldBeCalled()
-            ->willReturn('filterfamily.id NOT IN(3)'.'filterfamily.id IS NULL');
-
-        $objectIdResolver->getIdsFromCodes('family', ['foo'])->willReturn([3]);
+            ->willReturn('filterfamily.code NOT IN ("foo")'.'filterfamily.code IS NULL');
 
         $this->addFieldFilter('family', 'NOT IN', ['foo']);
     }

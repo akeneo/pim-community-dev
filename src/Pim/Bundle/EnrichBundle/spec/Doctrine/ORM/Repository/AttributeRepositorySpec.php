@@ -47,7 +47,7 @@ class AttributeRepositorySpec extends ObjectBehavior
         $queryBuilder->select('a.code')->willReturn($queryBuilder);
         $queryBuilder->addSelect('COALESCE(NULLIF(at.label, \'\'), CONCAT(\'[\', a.code, \']\')) as attribute_label')->willReturn($queryBuilder);
         $queryBuilder->addSelect('COALESCE(NULLIF(gt.label, \'\'), CONCAT(\'[\', g.code, \']\')) as group_label')->willReturn($queryBuilder);
-        $queryBuilder->from('attribute', 'a')->willReturn($queryBuilder);
+        $queryBuilder->from('attribute', 'a', null)->willReturn($queryBuilder);
         $queryBuilder->leftJoin('a.translations', 'at', 'WITH', 'at.locale = :locale_code')->willReturn($queryBuilder);
         $queryBuilder->leftJoin('a.group', 'g')->willReturn($queryBuilder);
         $queryBuilder->leftJoin('g.translations', 'gt', 'WITH', 'gt.locale = :locale_code')->willReturn($queryBuilder);

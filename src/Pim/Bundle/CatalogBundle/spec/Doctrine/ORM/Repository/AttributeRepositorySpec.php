@@ -37,7 +37,7 @@ class AttributeRepositorySpec extends ObjectBehavior
     {
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('a')->willReturn($queryBuilder);
-        $queryBuilder->from('attribute', 'a')->willReturn($queryBuilder);
+        $queryBuilder->from('attribute', 'a', null)->willReturn($queryBuilder);
         $queryBuilder->select('COUNT(a.id)')->willReturn($queryBuilder);
 
         $queryBuilder->getQuery()->willReturn($query);
@@ -65,7 +65,7 @@ class AttributeRepositorySpec extends ObjectBehavior
         $queryBuilder->select('a')->willReturn($queryBuilder);
         $queryBuilder->select('a.id')->willReturn($queryBuilder);
         $queryBuilder->addSelect('COALESCE(NULLIF(t.label, \'\'), CONCAT(\'[\', a.code, \']\')) as label')->willReturn($queryBuilder);
-        $queryBuilder->from('attribute', 'a')->willReturn($queryBuilder);
+        $queryBuilder->from('attribute', 'a', null)->willReturn($queryBuilder);
         $queryBuilder->leftJoin('a.translations', 't')->willReturn($queryBuilder);
         $queryBuilder->andWhere($in)->willReturn($queryBuilder);
         $queryBuilder->andWhere($notScopable)->willReturn($queryBuilder);

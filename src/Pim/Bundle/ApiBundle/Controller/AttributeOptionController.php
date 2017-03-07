@@ -199,7 +199,7 @@ class AttributeOptionController
      */
     protected function isAttributeSupportingOptions($attribute)
     {
-        $attributeType = $attribute->getAttributeType();
+        $attributeType = $attribute->getType();
         if (!in_array($attributeType, $this->supportedAttributeTypes)) {
             throw new NotFoundHttpException(
                 sprintf(

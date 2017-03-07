@@ -62,9 +62,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
 
-        $price = new ProductPrice();
-        $price->setData(42);
-        $price->setCurrency('EUR');
+        $price = new ProductPrice(42, 'EUR');
         $collection = new ArrayCollection([$price]);
 
         $value->getData()->willReturn($collection);

@@ -38,7 +38,7 @@ Feature: Product creation
     And I fill in the following information in the popin:
       | SKU | sandals |
     And I press the "Save" button in the popin
-    Then I should see validation error "The value sandals is already set on another product for the unique attribute sku"
+    Then I should see validation error "The same identifier is already set on another product"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4706
   Scenario: Fail to create a product with a comma in the identifier

@@ -1,4 +1,7 @@
 ## Rename this file in phpspec.yml to customize the phpspec configuration
+extensions:
+    Akeneo\SkipExampleExtension: ~
+
 suites:
     ## Akeneo Components
     Analytics:
@@ -68,6 +71,11 @@ suites:
         psr4_prefix: Akeneo\Bundle\MeasureBundle
         spec_path: src/Akeneo/Bundle/MeasureBundle
         src_path: src/Akeneo/Bundle/MeasureBundle
+    StorageUtilsBundle:
+        namespace: Akeneo\Bundle\StorageUtilsBundle
+        psr4_prefix: Akeneo\Bundle\StorageUtilsBundle
+        spec_path: src/Akeneo/Bundle/StorageUtilsBundle
+        src_path: src/Akeneo/Bundle/StorageUtilsBundle
 
     ## Pim Components
     Api:

@@ -379,7 +379,7 @@ class FixturesContext extends BaseFixturesContext
         $optionLabelPattern = 'Option %d for attribute %d';
 
         $attributeConfig = [
-            'type'                   => $this->getAttributeType($type . 'select'),
+            'type'                   => $this->getType($type . 'select'),
             'group'                  => 'other',
             'useable_as_grid_filter' => (bool) $filterable
         ];
@@ -1453,7 +1453,7 @@ class FixturesContext extends BaseFixturesContext
         $mountManager = $this->getMountManager();
 
         foreach ($product->getValues() as $value) {
-            if (in_array($value->getAttribute()->getAttributeType(), [AttributeTypes::IMAGE, AttributeTypes::FILE])) {
+            if (in_array($value->getAttribute()->getType(), [AttributeTypes::IMAGE, AttributeTypes::FILE])) {
                 $media = $value->getData();
                 if (null !== $media) {
                     $fs = $mountManager->getFilesystem($media->getStorage());
