@@ -6,7 +6,7 @@
 
 ## Technical improvements
 
-- PIM-6204: Add AnalyticsBundle for Enterprise Edition
+- PIM-6204: Add analytics providers for Enterprise Edition
 
 # 1.7.0-BETA2 (2017-03-06)
 

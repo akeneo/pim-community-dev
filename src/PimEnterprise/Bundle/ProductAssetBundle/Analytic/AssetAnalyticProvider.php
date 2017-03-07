@@ -24,19 +24,19 @@ use Doctrine\ORM\EntityRepository;
 class AssetAnalyticProvider implements DataCollectorInterface
 {
     /** @var EntityManager  */
-    protected $em;
+    protected $entityManager;
 
     /** @var string */
     protected $entityName;
 
     /**
-     * @param EntityManager $em
-     * @param string        $class
+     * @param EntityManager $entityManager
+     * @param string        $entityName
      */
-    public function __construct(EntityManager $em, $class)
+    public function __construct(EntityManager $entityManager, $entityName)
     {
-        $this->em = $em;
-        $this->entityName = $em->getClassMetadata($class)->getName();
+        $this->entityManager = $entityManager;
+        $this->entityName = $entityName;
     }
 
     /**
@@ -44,7 +44,7 @@ class AssetAnalyticProvider implements DataCollectorInterface
      */
     public function collect()
     {
-        $result = (int) $this->em->createQueryBuilder('a')
+        $result = (int) $this->entityManager->createQueryBuilder('a')
             ->select('count(a.id)')
             ->from($this->entityName, 'a')
             ->getQuery()

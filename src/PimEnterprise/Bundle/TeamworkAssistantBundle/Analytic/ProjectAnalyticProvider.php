@@ -24,19 +24,19 @@ use Doctrine\ORM\EntityRepository;
 class ProjectAnalyticProvider implements DataCollectorInterface
 {
     /** @var EntityManager  */
-    protected $em;
+    protected $entityManager;
 
     /** @var string */
     protected $entityName;
 
     /**
-     * @param EntityManager $em
-     * @param string        $class
+     * @param EntityManager $entityManager
+     * @param string        $entityName
      */
-    public function __construct(EntityManager $em, $class)
+    public function __construct(EntityManager $entityManager, $entityName)
     {
-        $this->em = $em;
-        $this->entityName = $em->getClassMetadata($class)->getName();
+        $this->entityManager = $entityManager;
+        $this->entityName = $entityName;
     }
 
     /**
@@ -44,7 +44,7 @@ class ProjectAnalyticProvider implements DataCollectorInterface
      */
     public function collect()
     {
-        $value = (int) $this->em->createQueryBuilder('p')
+        $value = (int) $this->entityManager->createQueryBuilder('p')
             ->from($this->entityName, 'p')
             ->select('count(p.id)')
             ->getQuery()

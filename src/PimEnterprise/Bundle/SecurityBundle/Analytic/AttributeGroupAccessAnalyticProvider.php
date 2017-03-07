@@ -25,19 +25,19 @@ use Pim\Bundle\UserBundle\Entity\User;
 class AttributeGroupAccessAnalyticProvider implements DataCollectorInterface
 {
     /** @var EntityManager  */
-    protected $em;
+    protected $entityManager;
 
     /** @var string */
     protected $entityName;
 
     /**
-     * @param EntityManager $em
-     * @param string        $class
+     * @param EntityManager $entityManager
+     * @param string        $entityName
      */
-    public function __construct(EntityManager $em, $class)
+    public function __construct(EntityManager $entityManager, $entityName)
     {
-        $this->em = $em;
-        $this->entityName = $em->getClassMetadata($class)->getName();
+        $this->entityManager = $entityManager;
+        $this->entityName = $entityName;
     }
 
     /**
@@ -45,10 +45,10 @@ class AttributeGroupAccessAnalyticProvider implements DataCollectorInterface
      */
     public function collect()
     {
-        $result = (int) $this->em->createQueryBuilder('a')
+        $result = (int) $this->entityManager->createQueryBuilder('a')
             ->select('COUNT(DISTINCT a.attributeGroup)')
             ->from($this->entityName, 'a')
-            ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
+            ->innerJoin('a.userGroup', 'g')
             ->where('g.name <> :default_group')
             ->setParameter('default_group', User::GROUP_DEFAULT)
             ->getQuery()
