@@ -4,3 +4,4 @@ pim_analytics:
         nb_projects: Number of projects
         nb_assets: Number of assets
         nb_published_products: Number of published products
+        nb_custom_locale_accesses: Number of locales with custom access

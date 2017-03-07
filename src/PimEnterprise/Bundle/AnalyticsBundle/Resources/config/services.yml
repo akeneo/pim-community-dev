@@ -2,6 +2,7 @@ parameters:
   pimee_analytics.repository.product_draft.class: PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\ProductDraftRepository
   pimee_analytics.repository.asset.class:         PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\AssetRepository
   pimee_analytics.repository.project.class:       PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\ProjectRepository
+  pimee_analytics.repository.locale_access.class: PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\LocaleAccessRepository
 
 services:
     pimee_analytics.repository.product_draft:
@@ -21,3 +22,10 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '%pimee_teamwork_assistant.model.project.class%'
+
+    pimee_analytics.repository.locale_access:
+        class: '%pimee_analytics.repository.locale_access.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '%pimee_security.entity.locale_access.class%'
+

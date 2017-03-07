@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Component\Analytics\DataCollectorInterface;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\AssetRepository;
+use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\LocaleAccessRepository;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\ProductDraftRepository;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\ProjectRepository;
 use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
@@ -40,22 +41,28 @@ class DBDataCollector implements DataCollectorInterface
     /** @var PublishedProductRepositoryInterface */
     protected $publishedRepository;
 
+    /** @var LocaleAccessRepository */
+    protected $localeAccessRepository;
+
     /**
      * @param ProductDraftRepository              $draftRepository
      * @param ProjectRepository                   $projectRepository
      * @param AssetRepository                     $assetRepository
      * @param PublishedProductRepositoryInterface $publishedRepository
+     * @param LocaleAccessRepository              $localeAccessRepository
      */
     public function __construct(
         ProductDraftRepository $draftRepository,
         ProjectRepository $projectRepository,
         AssetRepository $assetRepository,
-        PublishedProductRepositoryInterface $publishedRepository
+        PublishedProductRepositoryInterface $publishedRepository,
+        LocaleAccessRepository $localeAccessRepository
     ) {
         $this->draftRepository = $draftRepository;
         $this->projectRepository = $projectRepository;
         $this->assetRepository = $assetRepository;
         $this->publishedRepository = $publishedRepository;
+        $this->localeAccessRepository = $localeAccessRepository;
     }
 
     /**
@@ -64,10 +71,11 @@ class DBDataCollector implements DataCollectorInterface
     public function collect()
     {
         return [
-            'nb_product_drafts'     => $this->draftRepository->countAll(),
-            'nb_projects'           => $this->projectRepository->countAll(),
-            'nb_assets'             => $this->assetRepository->countAll(),
-            'nb_published_products' => $this->publishedRepository->countAll(),
+            'nb_product_drafts'         => $this->draftRepository->countAll(),
+            'nb_projects'               => $this->projectRepository->countAll(),
+            'nb_assets'                 => $this->assetRepository->countAll(),
+            'nb_published_products'     => $this->publishedRepository->countAll(),
+            'nb_custom_locale_accesses' => $this->localeAccessRepository->countCustomLocaleAccesses(),
         ];
     }
 }
