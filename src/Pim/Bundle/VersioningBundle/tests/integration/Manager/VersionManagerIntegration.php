@@ -34,7 +34,10 @@ class VersionManagerIntegration extends TestCase
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
-    public function setUp()
+    /**
+     * @{@inheritdoc}
+     */
+    protected function setUp()
     {
         parent::setUp();
 
