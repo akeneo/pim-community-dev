@@ -5,16 +5,19 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Constraint to check if properties are not left blank
+ * Constraint to check if properties are not left null.
  *
  * @author    Fabien Lemoine <fabien.lemoine@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class NotBlankProperties extends Constraint
+class NotNullProperties extends Constraint
 {
     /** @var string */
     public $message = 'This value should not be blank.';
+
+    /** @var string */
+    public $propertyPath = 'properties';
 
     /** @var array */
     public $properties = [];

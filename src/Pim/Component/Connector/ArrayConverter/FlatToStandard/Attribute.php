@@ -81,7 +81,7 @@ class Attribute implements ArrayConverterInterface
             'date_max'=== $field
         ) {
             $convertedItem[$field] = $this->convertDate($data);
-        } elseif (in_array($field, $booleanFields, true)) {
+        } elseif (in_array($field, $booleanFields, true) && '' !== $data) {
             $convertedItem[$field] = (bool) $data;
         } elseif ('' !== $data) {
             $convertedItem[$field] = (string) $data;

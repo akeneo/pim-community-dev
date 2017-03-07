@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CreateAttributeIntegration extends ApiTestCase
 {
-    public function testHttpHeadersInResponseWhenACategoryIsCreated()
+    public function testHttpHeadersInResponseWhenAnAttributeIsCreated()
     {
         $client = $this->createAuthenticatedClient();
 
@@ -32,7 +32,7 @@ JSON;
         $this->assertSame('', $response->getContent());
     }
 
-    public function testFormatStandardWhenAnAttributeIsCreatedButIncompleted()
+    public function testStandardFormatWhenAnAttributeIsCreatedButIncomplete()
     {
         $client = $this->createAuthenticatedClient();
 
@@ -63,15 +63,15 @@ JSON;
             'max_characters'         => null,
             'validation_rule'        => null,
             'validation_regexp'      => null,
-            'wysiwyg_enabled'        => false,
+            'wysiwyg_enabled'        => null,
             'number_min'             => null,
             'number_max'             => null,
-            'decimals_allowed'       => false,
-            'negative_allowed'       => false,
+            'decimals_allowed'       => null,
+            'negative_allowed'       => null,
             'date_min'               => null,
             'date_max'               => null,
             'max_file_size'          => null,
-            'minimum_input_length'   => 0,
+            'minimum_input_length'   => null,
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
@@ -105,15 +105,15 @@ JSON;
         "max_characters":null,
         "validation_rule":null,
         "validation_regexp":null,
-        "wysiwyg_enabled":false,
+        "wysiwyg_enabled":null,
         "number_min":null,
         "number_max":null,
-        "decimals_allowed":false,
-        "negative_allowed":false,
+        "decimals_allowed":null,
+        "negative_allowed":null,
         "date_min":null,
         "date_max":null,
         "max_file_size":null,
-        "minimum_input_length":0,
+        "minimum_input_length":null,
         "sort_order":12,
         "localizable":false,
         "scopable":false,
@@ -139,15 +139,15 @@ JSON;
             'max_characters'         => null,
             'validation_rule'        => null,
             'validation_regexp'      => null,
-            'wysiwyg_enabled'        => false,
+            'wysiwyg_enabled'        => null,
             'number_min'             => null,
             'number_max'             => null,
-            'decimals_allowed'       => false,
-            'negative_allowed'       => false,
+            'decimals_allowed'       => null,
+            'negative_allowed'       => null,
             'date_min'               => null,
             'date_max'               => null,
             'max_file_size'          => null,
-            'minimum_input_length'   => 0,
+            'minimum_input_length'   => null,
             'sort_order'             => 12,
             'localizable'            => false,
             'scopable'               => false,
@@ -579,15 +579,15 @@ JSON;
         "max_characters":null,
         "validation_rule":null,
         "validation_regexp":null,
-        "wysiwyg_enabled":false,
+        "wysiwyg_enabled":null,
         "number_min":null,
         "number_max":null,
-        "decimals_allowed":false,
-        "negative_allowed":false,
+        "decimals_allowed":null,
+        "negative_allowed":null,
         "date_min":null,
         "date_max":null,
         "max_file_size":null,
-        "minimum_input_length":0,
+        "minimum_input_length":null,
         "sort_order":12,
         "localizable":false,
         "scopable":false,
@@ -635,15 +635,15 @@ JSON;
         "max_characters":null,
         "validation_rule":null,
         "validation_regexp":null,
-        "wysiwyg_enabled":false,
+        "wysiwyg_enabled":null,
         "number_min":null,
         "number_max":null,
-        "decimals_allowed":false,
-        "negative_allowed":false,
+        "decimals_allowed":null,
+        "negative_allowed":null,
         "date_min":null,
         "date_max":null,
         "max_file_size":null,
-        "minimum_input_length":0,
+        "minimum_input_length":null,
         "sort_order":12,
         "localizable":false,
         "scopable":false,

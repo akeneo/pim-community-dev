@@ -11,9 +11,9 @@ Feature: Filter products with multiples number fields filters
       | furniture |
       | library   |
     And the following attributes:
-      | code      | label-en_US | type               | useable_as_grid_filter | group |
-      | component | Component   | pim_catalog_number | 1                      | other |
-      | supplier  | Supplier    | pim_catalog_number | 1                      | other |
+      | code      | label-en_US | type               | useable_as_grid_filter | group | decimals_allowed | negative_allowed |
+      | component | Component   | pim_catalog_number | 1                      | other | 0                | 0                |
+      | supplier  | Supplier    | pim_catalog_number | 1                      | other | 0                | 0                |
     And the following products:
       | sku    | family    | supplier | component |
       | BOOK   | library   |          |           |

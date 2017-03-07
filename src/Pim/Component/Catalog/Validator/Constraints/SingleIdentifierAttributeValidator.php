@@ -41,7 +41,7 @@ class SingleIdentifierAttributeValidator extends ConstraintValidator
 
             if ($identifier && $identifier->getId() !== $attribute->getId()) {
                 $this->context->buildViolation($constraint->message)
-                    ->atPath('attribute_type')
+                    ->atPath($constraint->propertyPath)
                     ->addViolation();
             }
         }

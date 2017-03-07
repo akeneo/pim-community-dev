@@ -65,7 +65,7 @@ class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
         AttributeInterface $attribute,
         AttributeInterface $identifier,
         SingleIdentifierAttribute $constraint,
-        ConstraintViolationBuilderInterface $violation
+        ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $attribute->getType()->willReturn('pim_catalog_identifier');
         $attribute->getId()->willReturn(2);
@@ -77,10 +77,10 @@ class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
         $context
             ->buildViolation($constraint->message)
             ->shouldBeCalled()
-            ->willReturn($violation);
+            ->willReturn($violationBuilder);
 
-        $violation->atPath('attribute_type')->shouldBeCalled()->willReturn($violation);
-        $violation->addViolation()->shouldBeCalled();
+        $violationBuilder->atPath('type')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($attribute, $constraint);
     }

@@ -4,9 +4,9 @@ Feature: When I mass edit I should be able to see how many items will be edited
   Background:
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code        | label-en_US | type               | metric_family | default_metric_unit | group |
-      | weight      | Weight      | pim_catalog_metric | Weight        | GRAM                | other |
-      | heel_height | Heel Height | pim_catalog_metric | Length        | CENTIMETER          | other |
+      | code        | label-en_US | type               | metric_family | default_metric_unit | group | decimals_allowed | negative_allowed |
+      | weight      | Weight      | pim_catalog_metric | Weight        | GRAM                | other | 0                | 0                |
+      | heel_height | Heel Height | pim_catalog_metric | Length        | CENTIMETER          | other | 0                | 0                |
     And the following family:
       | code       | attributes                                                                                                        |
       | high_heels | sku,name,description,price,rating,size,color,manufacturer,heel_height                                             |

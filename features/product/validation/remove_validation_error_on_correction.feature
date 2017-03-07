@@ -7,8 +7,8 @@ Feature: Validate that validation is removed on correction
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | code | label-en_US | type                         | scopable | negative_allowed | decimals_allowed | number_min | number_max | group |
-      | cost | Cost        | pim_catalog_price_collection | 0        | 0                | 0                |            |            | other |
+      | code | label-en_US | type                         | scopable | decimals_allowed | number_min | number_max | group |
+      | cost | Cost        | pim_catalog_price_collection | 0        | 0                |            |            | other |
     And the following family:
       | code | label-en_US | attributes |
       | baz  | Baz         | sku,cost   |
@@ -19,12 +19,11 @@ Feature: Validate that validation is removed on correction
     And I am on the "foo" product page
 
   Scenario: Validate that the validation error is removed on error correction
-    Given I change the "Cost" to "-10 USD"
+    Given I change the "Cost" to "10.9 USD"
     And I save the product
-    Then I should see validation tooltip "This value should be 0 or more."
+    Then I should see validation tooltip "This value should not be a decimal."
     And there should be 1 error in the "Other" tab
     Then I change the "Cost" to "10 USD"
     And I save the product
-    Then I should not see validation tooltip "This value should be 0 or more."
+    Then I should not see validation tooltip "This value should not be a decimal."
     And there should be 0 error in the "Other" tab
-

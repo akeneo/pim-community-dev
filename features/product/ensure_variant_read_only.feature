@@ -8,14 +8,14 @@ Feature: Disable attribute fields updated by a variant group
     Given the "default" catalog configuration
     And I add the "english" locale to the "mobile" channel
     And the following attributes:
-      | code        | label-en_US | type                         | scopable | localizable | metric_family | default_metric_unit | group |
-      | options     | Options     | pim_catalog_multiselect      | 1        | 0           |               |                     | other |
-      | color       | Color       | pim_catalog_simpleselect     | 0        | 0           |               |                     | other |
-      | name        | Name        | pim_catalog_text             | 0        | 1           |               |                     | other |
-      | description | Description | pim_catalog_textarea         | 0        | 0           |               |                     | other |
-      | dimension   | Dimension   | pim_catalog_number           | 1        | 1           |               |                     | other |
-      | price       | Price       | pim_catalog_price_collection | 0        | 0           |               |                     | other |
-      | length      | Length      | pim_catalog_metric           | 0        | 0           | Length        | CENTIMETER          | other |
+      | code        | label-en_US | type                         | scopable | localizable | metric_family | default_metric_unit | group | decimals_allowed | negative_allowed |
+      | options     | Options     | pim_catalog_multiselect      | 1        | 0           |               |                     | other |                  |                  |
+      | color       | Color       | pim_catalog_simpleselect     | 0        | 0           |               |                     | other |                  |                  |
+      | name        | Name        | pim_catalog_text             | 0        | 1           |               |                     | other |                  |                  |
+      | description | Description | pim_catalog_textarea         | 0        | 0           |               |                     | other |                  |                  |
+      | dimension   | Dimension   | pim_catalog_number           | 1        | 1           |               |                     | other | 0                | 0                |
+      | price       | Price       | pim_catalog_price_collection | 0        | 0           |               |                     | other | 0                |                  |
+      | length      | Length      | pim_catalog_metric           | 0        | 0           | Length        | CENTIMETER          | other | 0                | 0                |
     And the following "options" attribute options: Blue
     And the following "color" attribute options: Red, black and Green
     And the following variant groups:

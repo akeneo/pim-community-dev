@@ -7,11 +7,11 @@ Feature: Set the attribute used as label
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | label-en_US | type                 | group | code        |
-      | Brand       | pim_catalog_text     | other | brand       |
-      | Model       | pim_catalog_text     | other | model       |
-      | Size        | pim_catalog_number   | other | size        |
-      | Description | pim_catalog_textarea | other | description |
+      | label-en_US | type                 | group | code        | decimals_allowed | negative_allowed |
+      | Brand       | pim_catalog_text     | other | brand       |                  |                  |
+      | Model       | pim_catalog_text     | other | model       |                  |                  |
+      | Size        | pim_catalog_number   | other | size        | 0                | 0                |
+      | Description | pim_catalog_textarea | other | description |                  |                  |
     And the following family:
       | code | attributes                   |
       | Bags | brand,model,size,description |

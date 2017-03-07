@@ -36,7 +36,7 @@ class IsReferenceDataConfiguredValidator extends ConstraintValidator
      */
     public function validate($attribute, Constraint $constraint)
     {
-        $referenceDataName = $attribute->getProperty('reference_data_name');
+        $referenceDataName = $attribute->getReferenceDataName();
 
         if (null !== $this->registry &&
             in_array($attribute->getType(), $this->referenceDataType) &&
@@ -48,6 +48,7 @@ class IsReferenceDataConfiguredValidator extends ConstraintValidator
                 ->buildViolation($constraint->message)
                 ->setParameter('%reference_data_name%', $referenceDataName)
                 ->setParameter('%references%', implode(', ', $references))
+                ->atPath($constraint->propertyPath)
                 ->addViolation();
         }
     }

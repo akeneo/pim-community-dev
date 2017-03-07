@@ -6,7 +6,6 @@ use Doctrine\Common\Inflector\Inflector;
 use Pim\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -55,7 +54,7 @@ class ViolationNormalizer implements NormalizerInterface
 
         foreach ($violations as $violation) {
             $error = [
-                'field'   => Inflector::tableize($violation->getPropertyPath()),
+                'field'   => $this->getErrorField($violation),
                 'message' => $violation->getMessage()
             ];
 
@@ -68,6 +67,26 @@ class ViolationNormalizer implements NormalizerInterface
         }
 
         return $errors;
+    }
+
+    /**
+     * Returns the field concerned by the violation. It must be standard format valid.
+     * If a name has been set in the constraint payload it is used, else it fallbacks on a tableized version of the
+     * entity property (example: 'metricFamily' -> 'metric_family').
+     *
+     * @param ConstraintViolationInterface $violation
+     *
+     * @return string
+     */
+    protected function getErrorField(ConstraintViolationInterface $violation)
+    {
+        $constraint = $violation->getConstraint();
+
+        if (null !== $constraint && isset($constraint->payload['standardPropertyName'])) {
+            return $constraint->payload['standardPropertyName'];
+        }
+
+        return Inflector::tableize($violation->getPropertyPath());
     }
 
     /**
