@@ -13,12 +13,12 @@ define(
         'oro/translator',
         'pim/form',
         'routing',
-        'oro/navigation',
+        'pim/router',
         'pim/common/property',
         'oro/messenger',
         'text!pim/template/export/common/edit/launch'
     ],
-    function ($, _, __, BaseForm, Routing, Navigation, propertyAccessor, messenger, template) {
+    function ($, _, __, BaseForm, Routing, router, propertyAccessor, messenger, template) {
         return BaseForm.extend({
             template: _.template(template),
             events: {
@@ -57,7 +57,7 @@ define(
             launch: function () {
                 $.post(this.getUrl())
                     .then(function (response) {
-                        Navigation.getInstance().setLocation(response.redirectUrl);
+                        router.redirect(response.redirectUrl);
                     })
                     .fail(function () {
                         messenger.notificationFlashMessage('error', __('pim_enrich.form.job_instance.fail.launch'));

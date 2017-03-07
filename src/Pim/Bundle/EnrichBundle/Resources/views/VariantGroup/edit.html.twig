@@ -24,8 +24,8 @@
                     </div>
                     <script>
                         require(
-                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/variant-group-manager', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error', 'oro/navigation'],
-                            function($, FetcherRegistry, FormBuilder, VariantGroupManager, UserContext, Dialog, mediator, Error, Navigation) {
+                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/variant-group-manager', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error'],
+                            function($, FetcherRegistry, FormBuilder, VariantGroupManager, UserContext, Dialog, mediator, Error) {
                                 $(function() {
                                     FetcherRegistry.initialize().done(function () {
                                         FetcherRegistry.getFetcher('variant-group').fetch('{{ code }}', {cached: false, generateMissing: true})
@@ -34,11 +34,12 @@
                                                 var newTitle = document.title.replace('%group.label%', label);
 
                                                 document.title  = newTitle;
-                                                var navigation  = Navigation.getInstance();
-                                                var navTitle    = navigation.getPinButtonsData('title');
-                                                navTitle.params = {'%group.label%': label};
-                                                navigation.setPinButtonsData('title', navTitle);
-                                                navigation.setPinButtonsData('title-rendered-short', newTitle);
+                                                //TODOnav
+                                                // var navigation  = Navigation.getInstance();
+                                                // var navTitle    = navigation.getPinButtonsData('title');
+                                                // navTitle.params = {'%group.label%': label};
+                                                // navigation.setPinButtonsData('title', navTitle);
+                                                // navigation.setPinButtonsData('title-rendered-short', newTitle);
 
                                                 FormBuilder.build(group.meta.form)
                                                     .then(function (form) {

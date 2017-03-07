@@ -20,7 +20,7 @@ define(
         'pim/user-context',
         'routing',
         'module',
-        'oro/navigation'
+        'pim/router'
     ],
     function (
         $,
@@ -34,7 +34,7 @@ define(
         UserContext,
         Routing,
         module,
-        Navigation
+        router
     ) {
         return BaseSave.extend({
             updateSuccessMessage: __('pim_enrich.entity.channel.info.update_successful'),
@@ -53,8 +53,7 @@ define(
                         'success',
                         this.createSuccessMessage
                     );
-                    var navigation = Navigation.getInstance();
-                    navigation.setLocation(Routing.generate(this.config.redirectUrl, {'code': code}));
+                    router.redirectToRoute(this.config.redirectUrl, {'code': code});
                     return;
                 }
 

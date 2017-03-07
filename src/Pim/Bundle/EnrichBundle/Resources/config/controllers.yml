@@ -32,7 +32,6 @@ parameters:
     pim_enrich.controller.rest.locale.class:                  Pim\Bundle\EnrichBundle\Controller\Rest\LocaleController
     pim_enrich.controller.rest.measures.class:                Pim\Bundle\EnrichBundle\Controller\Rest\MeasuresController
     pim_enrich.controller.rest.media.class:                   Pim\Bundle\EnrichBundle\Controller\Rest\MediaController
-    pim_enrich.controller.rest.navigation_history.class:      Pim\Bundle\EnrichBundle\Controller\Rest\NavigationHistoryController
     pim_enrich.controller.rest.product.class:                 Pim\Bundle\EnrichBundle\Controller\Rest\ProductController
     pim_enrich.controller.rest.product_category.class:        Pim\Bundle\EnrichBundle\Controller\Rest\ProductCategoryController
     pim_enrich.controller.rest.product_comment.class:         Pim\Bundle\EnrichBundle\Controller\Rest\ProductCommentController
@@ -373,14 +372,6 @@ services:
             - '@pim_enrich.normalizer.group_violation'
             - '@pim_catalog.saver.group'
             - '@pim_catalog.remover.group'
-
-    pim_enrich.controller.rest.navigation_history:
-        class: '%pim_enrich.controller.rest.navigation_history.class%'
-        arguments:
-            - '@security.token_storage'
-            - '@pim_navigation.repository.navigation_history'
-            - '@oro_navigation.item.factory'
-            - '@pim_navigation.saver.navigation_history_item'
 
     pim_enrich.controller.rest.locale:
         class: '%pim_enrich.controller.rest.locale.class%'

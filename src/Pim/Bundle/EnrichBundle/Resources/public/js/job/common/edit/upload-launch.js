@@ -12,10 +12,10 @@ define(
         'underscore',
         'oro/translator',
         'pim/job/common/edit/launch',
-        'oro/navigation',
+        'pim/router',
         'oro/messenger'
     ],
-    function ($, _, __, BaseLaunch, Navigation, messenger) {
+    function ($, _, __, BaseLaunch, router, messenger) {
         return BaseLaunch.extend({
             /**
              * {@inherit}
@@ -54,7 +54,7 @@ define(
                         processData: false
                     })
                     .then(function (response) {
-                        Navigation.getInstance().setLocation(response.redirectUrl);
+                        router.redirect(response.redirectUrl);
                     }.bind(this))
                     .fail(function () {
                         messenger.notificationFlashMessage('error', __('pim_enrich.form.job_instance.fail.launch'));
@@ -62,7 +62,7 @@ define(
                 } else {
                     $.post(this.getUrl(), {method: 'POST'}).
                         then(function (response) {
-                            Navigation.getInstance().setLocation(response.redirectUrl);
+                            router.redirect(response.redirectUrl);
                         })
                         .fail(function () {
                             messenger.notificationFlashMessage('error', __('pim_enrich.form.job_instance.fail.launch'));

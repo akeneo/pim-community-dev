@@ -44,7 +44,7 @@ pim_api:
 oro_default:
     path:  /
     defaults:
-        template:    PimDashboardBundle:Dashboard:index.html.twig
+        template:    PimEnrichBundle::index.html.twig
         _controller: FrameworkBundle:Template:template
 
 oro_user:

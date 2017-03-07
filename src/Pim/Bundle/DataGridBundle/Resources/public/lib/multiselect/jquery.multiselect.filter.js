@@ -13,7 +13,7 @@
  *   http://www.gnu.org/licenses/gpl.html
  *
  */
-(function($) {
+define(['jquery'], function ($) {
   var rEscape = /[\-\[\]{}()*+?.,\\\^$|#\s]/g;
 
   $.widget('ech.multiselectfilter', {
@@ -182,4 +182,4 @@
     }
   });
 
-})(jQuery);
+});

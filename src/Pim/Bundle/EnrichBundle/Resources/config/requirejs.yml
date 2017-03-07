@@ -174,7 +174,60 @@ config:
                     options:
                         urls:
                             list: pim_user_user_group_rest_index
+
+        pim/controller-registry:
+            defaultController: pim/controller/template
+            controllers:
+                pim_enrich_associationtype_edit:               pim/controller/form
+                pim_enrich_attribute_create:                   pim/controller/form
+                pim_enrich_attribute_edit:                     pim/controller/form
+                pim_enrich_attributegroup_create:              pim/controller/form
+                pim_enrich_attributegroup_edit:                pim/controller/form
+                pim_enrich_categorytree_create:                pim/controller/form
+                pim_enrich_categorytree_edit:                  pim/controller/form
+                pim_enrich_categorytree_index:                 pim/controller/form
+                pim_enrich_channel_edit:                       pim/controller/channel
+                pim_enrich_channel_create:                     pim/controller/channel
+                pim_enrich_family_edit:                        pim/controller/form
+                pim_enrich_group_edit:                         pim/controller/form
+                pim_enrich_grouptype_edit:                     pim/controller/form
+                pim_enrich_product_edit:                       pim/controller/product
+                pim_enrich_variant_group_edit:                 pim/controller/variant-group
+                pim_importexport_export_profile_edit:          pim/controller/form
+                pim_importexport_import_profile_edit:          pim/controller/form
+                pim_enrich_currency_toggle:                    pim/controller/redirect
+                pim_enrich_mass_edit_action_sequential_edit:   pim/controller/redirect
+                oro_user_create:                               pim/controller/form
+                oro_user_update:                               pim/controller/form
+                oro_user_role_create:                          pim/controller/form
+                oro_user_role_update:                          pim/controller/form
+                oro_user_group_create:                         pim/controller/form
+                oro_user_group_update:                         pim/controller/form
+                pim_enrich_mass_edit_action_choose:            pim/controller/form
+                pim_enrich_mass_edit_action_configure:         pim/controller/form
+                pim_importexport_import_profile_launch_upload: pim/controller/redirect
+                pim_importexport_import_profile_launch:        pim/controller/redirect
+                pim_importexport_import_profile_remove:        pim/controller/redirect
+                pim_importexport_import_profile_show:          pim/controller/form
+                pim_importexport_export_profile_launch:        pim/controller/redirect
+                pim_importexport_export_profile_remove:        pim/controller/redirect
+                oro_user_profile_update:                       pim/controller/form
+
+
     paths:
+        pim/app:                            pimenrich/js/app
+        pim/router:                         pimenrich/js/router
+        pim/route-matcher:                  pimenrich/js/route-matcher
+        pim/page-title:                     pimenrich/js/page-title
+
+        # Controllers
+        pim/controller-registry:            pimenrich/js/controller/registry
+        pim/controller/base:                pimenrich/js/controller/base
+        pim/controller/template:            pimenrich/js/controller/template
+        pim/controller/form:                pimenrich/js/controller/form
+        pim/controller/product:             pimenrich/js/controller/product
+        pim/controller/redirect:            pimenrich/js/controller/redirect
+
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector
         jstree/nested_switch:               pimenrich/js/jstree/jquery.jstree.nested_switch
@@ -264,7 +317,6 @@ config:
         pim/channel-edit-form/properties/general:               pimenrich/js/channel/form/properties/general
         pim/channel-edit-form/properties/general/currencies:    pimenrich/js/channel/form/properties/general/currencies
         pim/channel-edit-form/properties/general/locales:       pimenrich/js/channel/form/properties/general/locales
-        pim/channel-edit-form/properties/general/category:      pimenrich/js/channel/form/properties/general/category
         pim/channel-edit-form/properties/conversion-unit:       pimenrich/js/channel/form/properties/conversion-unit
 
         # Family
@@ -318,7 +370,6 @@ config:
         pim/product-edit-form/status-switcher:             pimenrich/js/product/form/status-switcher
         pim/product-edit-form/download-pdf:                pimenrich/js/product/form/download-pdf
         pim/product-edit-form/attributes:                  pimenrich/js/product/form/attributes
-        pim/product-edit-form/back-to-grid:                pimenrich/js/product/form/back-to-grid
 
         # Exports
         pim/job/product/edit/content:                                pimenrich/js/job/product/edit/content
@@ -350,8 +401,6 @@ config:
 
         # Filters
         pim/filter/filter:                     pimenrich/js/filter/filter
-        pim/filter/text:                       pimenrich/js/filter/text
-        pim/filter/simpleselect:               pimenrich/js/filter/simpleselect
         pim/filter/product/family:             pimenrich/js/filter/product/family
         pim/filter/product/enabled:            pimenrich/js/filter/product/enabled
         pim/filter/product/updated:            pimenrich/js/filter/product/updated
@@ -386,7 +435,6 @@ config:
         pim/attribute-option/create:        pimenrich/js/attribute-option/create
 
         # Variant group
-        pim/variant-group-edit-form/products:               pimenrich/js/variant-group/form/products
         pim/variant-group-edit-form/delete:                 pimenrich/js/variant-group/form/delete
         pim/variant-group-edit-form/no-attribute:           pimenrich/js/variant-group/form/no-attribute
         pim/variant-group-edit-form/properties/general:     pimenrich/js/variant-group/form/properties/general
@@ -450,7 +498,6 @@ config:
 
         # Grid view selector
         pim/grid/view-selector/selector: pimenrich/js/grid/view-selector
-        pim/grid/view-selector/footer: pimenrich/js/grid/view-selector-footer
         pim/grid/view-selector/line: pimenrich/js/grid/view-selector-line
         pim/grid/view-selector/create-view: pimenrich/js/grid/view-selector-create-view
         pim/grid/view-selector/save-view: pimenrich/js/grid/view-selector-save-view
@@ -563,11 +610,9 @@ config:
         pim/template/export/common/edit/validation:                             pimenrich/templates/export/common/edit/validation.html
         pim/template/export/common/edit/launch:                                 pimenrich/templates/export/common/edit/launch.html
         pim/template/export/common/edit/upload:                                 pimenrich/templates/export/common/edit/upload.html
-        pim/template/export/common/edit/upload-launch:                          pimenrich/templates/export/common/edit/upload-launch.html
 
         # Filters
         pim/template/filter/filter:                     pimenrich/templates/filter/filter.html
-        pim/template/filter/text:                       pimenrich/templates/filter/text.html
         pim/template/filter/simpleselect:               pimenrich/templates/filter/simpleselect.html
         pim/template/filter/product/family:             pimenrich/templates/filter/product/family.html
         pim/template/filter/product/enabled:            pimenrich/templates/filter/product/enabled.html
@@ -587,12 +632,8 @@ config:
 
         # Grid view selector
         pim/template/grid/view-selector: pimenrich/templates/grid/view-selector.html
-        pim/template/grid/view-selector/footer: pimenrich/templates/grid/view-selector-footer.html
-        pim/template/grid/view-selector/footer/create: pimenrich/templates/grid/view-selector-footer-create.html
-        pim/template/grid/view-selector/footer/create-dropdown-item: pimenrich/templates/grid/view-selector-footer-create-dropdown-item.html
         pim/template/grid/view-selector/create-view-label-input: pimenrich/templates/grid/view-selector-create-view-label-input.html
         pim/template/grid/view-selector/line: pimenrich/templates/grid/view-selector-line.html
-        pim/template/grid/view-selector/line/remove: pimenrich/templates/grid/view-selector-line-remove.html
         pim/template/grid/view-selector/create-view: pimenrich/templates/grid/view-selector-create-view.html
         pim/template/grid/view-selector/save-view: pimenrich/templates/grid/view-selector-save-view.html
         pim/template/grid/view-selector/remove-view: pimenrich/templates/grid/view-selector-remove-view.html

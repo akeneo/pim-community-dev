@@ -13,10 +13,9 @@ define(
         'pim/form',
         'text!pim/template/form/back-to-grid',
         'routing',
-        'pim/user-context',
-        'oro/navigation'
+        'pim/user-context'
     ],
-    function (_, BaseForm, template, Routing, UserContext, Navigation) {
+    function (_, BaseForm, template, Routing, UserContext) {
         return BaseForm.extend({
             tagName: 'a',
             className: 'AknTitleContainer-backLink back-link',
@@ -54,8 +53,6 @@ define(
                         dataLocale: UserContext.get('catalogLocale')
                     }
                 ));
-
-                Navigation.getInstance().processClicks(this.$el);
 
                 return this;
             }

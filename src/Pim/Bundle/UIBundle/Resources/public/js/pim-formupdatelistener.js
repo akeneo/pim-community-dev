@@ -1,7 +1,7 @@
 /* global console */
 define(
-    ['jquery', 'backbone', 'pim/dialog', 'oro/navigation'],
-    function ($, Backbone, Dialog, Navigation) {
+    ['jquery', 'backbone', 'pim/dialog', 'pim/router'],
+    function ($, Backbone, Dialog, router) {
         'use strict';
 
         return function ($form) {
@@ -44,7 +44,7 @@ define(
                 e.preventDefault();
                 var url      = $(this).attr('href');
                 var doAction = function () {
-                    Navigation.getInstance().setLocation(url);
+                    router.redirect(url);
                 };
                 if (!self.updated) {
                     doAction();

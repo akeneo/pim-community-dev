@@ -7,9 +7,9 @@ define(
         'routing',
         'oro/loading-mask',
         'oro/mediator',
-        'oro/navigation'
+        'pim/router'
     ],
-    function ($, _, __, Backbone, Routing, LoadingMask, mediator, Navigation) {
+    function ($, _, __, Backbone, Routing, LoadingMask, mediator, router) {
         'use strict';
 
         return Backbone.View.extend({
@@ -62,12 +62,8 @@ define(
                 return this;
             },
 
-            isDashboardPage: function () {
-                return Navigation.getInstance().url === Routing.generate('oro_default');
-            },
-
             loadData: function () {
-                if (!this.isDashboardPage()) {
+                if (!this.needsData) {
                     this.loadTimeout = null;
 
                     return;

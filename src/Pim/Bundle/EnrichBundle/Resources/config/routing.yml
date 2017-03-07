@@ -82,10 +82,6 @@ media_rest:
     resource: '@PimEnrichBundle/Resources/config/routing/media_rest.yml'
     prefix: /rest/media
 
-navigation_history_rest:
-    resource: '@PimEnrichBundle/Resources/config/routing/navigation_history.yml'
-    prefix: /rest/navigation-history
-
 job_instance_rest:
     resource: '@PimEnrichBundle/Resources/config/routing/job_instance.yml'
     prefix: /job_instance

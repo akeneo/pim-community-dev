@@ -33,7 +33,6 @@
                                 'pim/dialog',
                                 'oro/mediator',
                                 'pim/error',
-                                'oro/navigation',
                                 'pim/history-item-manager',
                                 'oro/loading-mask'
                             ],
@@ -46,7 +45,6 @@
                                 Dialog,
                                 mediator,
                                 Error,
-                                Navigation,
                                 HistoryItemManager,
                                 LoadingMask
                             ) {
@@ -60,11 +58,12 @@
                                                 var newTitle = document.title.replace('%product.sku%', sku);
 
                                                 document.title  = newTitle;
-                                                var navigation  = Navigation.getInstance();
-                                                var navTitle    = navigation.getPinButtonsData('title');
-                                                navTitle.params = {'%product.sku%': sku};
-                                                navigation.setPinButtonsData('title', navTitle);
-                                                navigation.setPinButtonsData('title-rendered-short', newTitle);
+                                                //TODOnav
+                                                // var navigation  = Navigation.getInstance();
+                                                // var navTitle    = navigation.getPinButtonsData('title');
+                                                // navTitle.params = {'%product.sku%': sku};
+                                                // navigation.setPinButtonsData('title', navTitle);
+                                                // navigation.setPinButtonsData('title-rendered-short', newTitle);
                                                 HistoryItemManager.save(navigation.url, navTitle);
 
                                                 FormBuilder.build(product.meta.form)

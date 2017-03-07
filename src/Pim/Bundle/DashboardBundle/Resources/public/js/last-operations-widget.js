@@ -2,13 +2,12 @@ define(
     [
         'jquery',
         'underscore',
-        'routing',
-        'oro/navigation',
+        'pim/router',
         'pim/dashboard/abstract-widget',
         'text!pim/dashboard/template/last-operations-widget',
         'text!pim/dashboard/template/view-all-btn'
     ],
-    function ($, _, Routing, Navigation, AbstractWidget, template, viewAllBtnTemplate) {
+    function ($, _, router, AbstractWidget, template, viewAllBtnTemplate) {
         'use strict';
 
         return AbstractWidget.extend({
@@ -49,20 +48,18 @@ define(
                 switch (operationType) {
                     case 'import':
                     case 'export':
-                        route = Routing.generate(
+                        router.redirectToRoute(
                             'pim_importexport_' + operationType + '_execution_show',
                             { id: $(event.currentTarget).data('id') }
                         );
                         break;
                     default:
-                        route = Routing.generate(
+                        router.redirectToRoute(
                             'pim_enrich_job_tracker_show',
                             { id: $(event.currentTarget).data('id') }
                         );
                         break;
                 }
-
-                Navigation.getInstance().setLocation(route);
             },
 
             /**
@@ -73,7 +70,7 @@ define(
             showTracker: function (event) {
                 event.preventDefault();
 
-                Navigation.getInstance().setLocation(Routing.generate('pim_enrich_job_tracker_index'));
+                router.redirectToRoute('pim_enrich_job_tracker_index');
             },
 
             /**

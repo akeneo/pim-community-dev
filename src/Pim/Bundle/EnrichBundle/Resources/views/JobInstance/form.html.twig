@@ -31,7 +31,6 @@
                                 'pim/form-builder',
                                 'oro/loading-mask',
                                 'pim/history-item-manager',
-                                'oro/navigation',
                                 'oro/mediator'
                             ],
                             function(
@@ -41,7 +40,6 @@
                                 formBuilder,
                                 LoadingMask,
                                 HistoryItemManager,
-                                Navigation,
                                 mediator
                             ) {
                                 $(function () {
@@ -55,13 +53,13 @@
                                                     var label      = _.escape(jobProfile.label);
                                                     var newTitle = document.title.replace('%job.label%', label);
 
-                                                    document.title  = newTitle;
-                                                    var navigation  = Navigation.getInstance();
-                                                    var navTitle    = navigation.getPinButtonsData('title');
-                                                    navTitle.params = {'%job.label%': label};
-                                                    navigation.setPinButtonsData('title', navTitle);
-                                                    navigation.setPinButtonsData('title-rendered-short', newTitle);
-                                                    HistoryItemManager.save(navigation.url, navTitle);
+                                                    document.title  = newTitle;                                                    //TODOnav
+                                                    // var navigation  = Navigation.getInstance();
+                                                    // var navTitle    = navigation.getPinButtonsData('title');
+                                                    // navTitle.params = {'%job.label%': label};
+                                                    // navigation.setPinButtonsData('title', navTitle);
+                                                    // navigation.setPinButtonsData('title-rendered-short', newTitle);
+                                                    // HistoryItemManager.save(navigation.url, navTitle);
                                                     form.setData(jobProfile);
 
                                                     mediator.trigger('pim_enrich:form:entity:post_fetch', jobProfile);

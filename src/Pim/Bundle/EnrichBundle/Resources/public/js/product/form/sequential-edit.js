@@ -16,7 +16,7 @@ define(
         'pim/form',
         'text!pim/template/product/sequential-edit',
         'routing',
-        'oro/navigation',
+        'pim/router',
         'pim/fetcher-registry',
         'pim/user-context',
         'bootstrap'
@@ -29,7 +29,7 @@ define(
         BaseForm,
         template,
         Routing,
-        Navigation,
+        router,
         FetcherRegistry,
         UserContext
     ) {
@@ -163,15 +163,13 @@ define(
                 });
             },
             goToProduct: function (id) {
-                Navigation.getInstance().setLocation(
-                    Routing.generate(
-                        'pim_enrich_product_edit',
-                        { id: id }
-                    )
+                router.redirectToRoute(
+                    'pim_enrich_product_edit',
+                    { id: id }
                 );
             },
             finish: function () {
-                Navigation.getInstance().setLocation(Routing.generate('pim_enrich_product_index'));
+                router.redirectToRoute('pim_enrich_product_index');
             }
         });
     }

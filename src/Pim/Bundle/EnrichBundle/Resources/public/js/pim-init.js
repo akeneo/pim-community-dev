@@ -1,7 +1,7 @@
 define(
-    ['jquery', 'backbone', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog',
-     'pim/saveformstate', 'pim/asynctab', 'pim/ui', 'oro/loading-mask'],
-    function ($, Backbone, __, mediator, Navigation, messenger, Dialog, saveformstate, loadTab, UI, LoadingMask) {
+    ['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/messenger', 'pim/dialog',
+     'pim/saveformstate', 'pim/asynctab', 'pim/ui', 'oro/loading-mask', 'pim/router'],
+    function ($, _, Backbone, mediator, messenger, Dialog, saveformstate, loadTab, UI, LoadingMask, router) {
         'use strict';
         var initialized = false;
         return function () {
@@ -9,6 +9,15 @@ define(
                 return;
             }
             initialized = true;
+            var setFullHeight = function ($target) {
+                if (!$target) {
+                    $target = $('body');
+                }
+                var $container = $('.scrollable-container');
+                $target.find('.fullheight').filter(':visible').each(function () {
+                    $(this).height($container.height() - $(this).position().top + $container.position().top);
+                });
+            };
             var pageInit = function ($target) {
                 if (!$target) {
                     $target = $('body');
@@ -28,7 +37,7 @@ define(
                 var $localizableIcon = $('<i>', {
                     'class': 'icon-globe',
                     'attr': {
-                        'data-original-title': __('Localized value'),
+                        'data-original-title': _.__('Localized value'),
                         'data-toggle': 'tooltip',
                         'data-placement': 'right'
                     }
@@ -50,11 +59,33 @@ define(
                 $target.find('a[data-toggle="tab"]').on('show.bs.tab', function () {
                     loadTab(this);
                 });
+
+                //Flash messages:
+                if (window.flashMessages) {
+                    _.each(window.flashMessages, function (messages, type) {
+                        _.each(messages, function (message) {
+                            messenger.notificationFlashMessage(
+                                type,
+                                message
+                            );
+                        });
+                    });
+                }
+                window.flashMessages = [];
+
+                setFullHeight($target);
             };
 
             $(function () {
                 $(document).on('tab.loaded', 'form.form-horizontal, [data-saveformstate]', function (e, tab) {
                     pageInit($(tab));
+                });
+
+                $(document).on('shown', 'a[data-toggle="tab"]', function () {
+                    var target = $(this).attr('href');
+                    if (target && target !== '#' && target.indexOf('javascript') !== 0) {
+                        setFullHeight($(target).parent());
+                    }
                 });
 
                 var secret = '38384040373937396665';
@@ -96,12 +127,9 @@ define(
                             data: { _method: $el.data('method') },
                             success: function () {
                                 loadingMask.hide().$el.remove();
-                                var navigation = Navigation.getInstance();
-                                var targetUrl = '#url=' + $el.attr('data-redirect-url');
-                                // If already on the desired page, make sure it is refreshed
-                                Backbone.history.fragment = new Date().getTime();
-                                navigation.navigate(targetUrl, { trigger: true });
-                                navigation.addFlashMessage('success', $el.attr('data-success-message'));
+                                var targetUrl = $el.attr('data-redirect-url');
+                                router.redirect(targetUrl, {trigger: true});
+                                messenger.notificationFlashMessage('success', $el.attr('data-success-message'));
                             },
                             error: function (xhr) {
                                 loadingMask.hide().$el.remove();
@@ -125,7 +153,7 @@ define(
 
                 pageInit();
             });
-            mediator.bind('hash_navigation_request:complete pim:reinit', function () {
+            mediator.on('route_complete pim:reinit', function () {
                 pageInit();
             });
         };

@@ -1,7 +1,5 @@
 {% spaceless %}
-{% if elements is not defined %}
-    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
-{% endif %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {% set parentId = form.vars.value.parent ? form.vars.value.parent.id : null %}
 
@@ -46,7 +44,7 @@
                 {{ elements.deleteLink(
                     path(route ~ '_categorytree_remove', { id: form.vars.value.id }),
                     'pim_enrich_product_category_remove',
-                    form.vars.value.parent ? path(route ~ '_categorytree_edit', { id: form.vars.value.parent.id }) : path(route ~ '_categorytree_create'),
+                    form.vars.value.parent ? path(route ~ '_categorytree_edit', { id: form.vars.value.parent.id }) : path(route ~ '_categorytree_create', { parent: 0}),
                     'confirmation.remove.category'|trans({ '%name%': form.vars.value.label }) ~ '<br />'
                         ~ 'info.category.remove children'|trans ~ '<br />'
                         ~ 'info.category.keep products'|trans,

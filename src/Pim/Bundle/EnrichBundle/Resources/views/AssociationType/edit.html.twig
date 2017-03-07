@@ -24,8 +24,8 @@
                     </div>
                     <script>
                         require(
-                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error', 'oro/navigation'],
-                            function($, FetcherRegistry, FormBuilder, UserContext, Dialog, mediator, Error, Navigation) {
+                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error'],
+                            function($, FetcherRegistry, FormBuilder, UserContext, Dialog, mediator, Error) {
                                 $(function() {
                                     FetcherRegistry.initialize().done(function () {
                                         FetcherRegistry.getFetcher('association-type').fetch('{{ code }}', {cached: false, generateMissing: true})
@@ -34,11 +34,12 @@
                                                 var newTitle = document.title.replace('%association type.label%', label);
 
                                                 document.title  = newTitle;
-                                                var navigation  = Navigation.getInstance();
-                                                var navTitle    = navigation.getPinButtonsData('title');
-                                                navTitle.params = {'%association type.label%': label};
-                                                navigation.setPinButtonsData('title', navTitle);
-                                                navigation.setPinButtonsData('title-rendered-short', newTitle);
+                                                // TODOnav
+                                                // var navigation  = Navigation.getInstance();
+                                                // var navTitle    = navigation.getPinButtonsData('title');
+                                                // navTitle.params = {'%association type.label%': label};
+                                                // navigation.setPinButtonsData('title', navTitle);
+                                                // navigation.setPinButtonsData('title-rendered-short', newTitle);
 
                                                 FormBuilder.build(associationType.meta.form)
                                                     .then(function (form) {

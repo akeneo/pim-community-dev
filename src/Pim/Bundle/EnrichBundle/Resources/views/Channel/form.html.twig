@@ -24,8 +24,8 @@
                     </div>
                     <script>
                         require(
-                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error', 'oro/navigation', 'oro/translator'],
-                            function($, FetcherRegistry, FormBuilder, UserContext, Dialog, mediator, Error, Navigation, __) {
+                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error', 'oro/translator'],
+                            function($, FetcherRegistry, FormBuilder, UserContext, Dialog, mediator, Error, __) {
                                 $(function() {
                                     var code = '{{ code is defined ? code : '' }}';
                                     FetcherRegistry.initialize().done(function () {
@@ -62,13 +62,13 @@
                                         var newTitle = document.title.replace('%channel.label%', label);
 
                                         document.title  = newTitle;
+                                        //TODOnav
+                                        // var navigation  = Navigation.getInstance();
+                                        // var navTitle    = navigation.getPinButtonsData('title');
 
-                                        var navigation  = Navigation.getInstance();
-                                        var navTitle    = navigation.getPinButtonsData('title');
-
-                                        navTitle.params = {'%channel.label%': label};
-                                        navigation.setPinButtonsData('title', navTitle);
-                                        navigation.setPinButtonsData('title-rendered-short', newTitle);
+                                        // navTitle.params = {'%channel.label%': label};
+                                        // navigation.setPinButtonsData('title', navTitle);
+                                        // navigation.setPinButtonsData('title-rendered-short', newTitle);
 
                                         FormBuilder.build(formExtension)
                                             .then(function (form) {

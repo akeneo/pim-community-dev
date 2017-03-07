@@ -2,8 +2,6 @@
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 {% import 'PimUIBundle::macros.html.twig' as UI %}
 
-{% oro_title_set({params : { "%role%": form.vars.value.label } }) %}
-
 {% block head_script %}
     {{ parent() }}
     <script type="text/javascript">

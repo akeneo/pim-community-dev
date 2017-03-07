@@ -13,11 +13,11 @@ define(
         'oro/translator',
         'pim/form',
         'routing',
-        'oro/navigation',
+        'pim/router',
         'pim/common/property',
         'text!pim/template/form/redirect'
     ],
-    function ($, _, __, BaseForm, Routing, Navigation, propertyAccessor, template) {
+    function ($, _, __, BaseForm, Routing, router, propertyAccessor, template) {
         return BaseForm.extend({
             template: _.template(template),
             events: {
@@ -54,7 +54,7 @@ define(
              * Redirect to the route given in the config
              */
             redirect: function () {
-                Navigation.getInstance().setLocation(this.getUrl());
+                router.redirect(this.getUrl());
             },
 
             /**
