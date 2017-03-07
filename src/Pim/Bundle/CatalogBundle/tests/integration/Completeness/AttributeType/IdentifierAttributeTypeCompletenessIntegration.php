@@ -20,9 +20,14 @@ class IdentifierAttributeTypeCompletenessIntegration extends AbstractCompletenes
     {
         $family = $this->createFamily('another_family');
 
-        $productComplete = $this->createProductWithStandardValues(
+        $productCompleteWithIdentifier = $this->createProductWithStandardValues(
             $family,
-            'product_complete',
+            'product_complete_with_identifier'
+        );
+
+        $productCompleteWithIdentifierUpdated = $this->createProductWithStandardValues(
+            $family,
+            'product_complete_with_identifier_updated',
             [
                 'values' => [
                     'sku' => [
@@ -36,7 +41,8 @@ class IdentifierAttributeTypeCompletenessIntegration extends AbstractCompletenes
             ]
         );
 
-        $this->assertComplete($productComplete);
+        $this->assertComplete($productCompleteWithIdentifier);
+        $this->assertComplete($productCompleteWithIdentifierUpdated);
     }
 
     /**
