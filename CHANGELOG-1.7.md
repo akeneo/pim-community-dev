@@ -4,6 +4,7 @@
 
 - PIM-6210: fix unused fields on import profiles
 - PIM-6203: Fix various design bugs
+- PIM-6200: Only the owner of a view can save and remove it.
 
 # 1.7.0-BETA2 (2017-03-06)
 
@@ -286,7 +287,7 @@
 - Change exception `\InvalidArgumentException` by `Akeneo\Component\StorageUtils\Exception\PropertyException` thrown by `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface:update()`
 - Change exception `Pim\Component\Catalog\Exception\InvalidArgumentException` and `\RuntimeException` by `Akeneo\Component\StorageUtils\Exception\PropertyException` thrown by `Pim\Component\Catalog\Updater\Copier\AttributeCopierInterface:copyAttributeData()`
 - Change exception `Pim\Component\Catalog\Exception\InvalidArgumentException` and `\RuntimeException` by `Akeneo\Component\StorageUtils\Exception\PropertyException` thrown by `Pim\Component\Catalog\Updater\Copier\FieldCopierInterface:copyFieldData()`
-- Replace arguments `$action, $type` by `$className` (string) on `Pim\Component\Catalog\Exception\InvalidArgumentException`
+- Replace arguments `$action, $type` by `$className` (string) on `Pim\Component\Catalog\Exception\InvalidArgumentException` 
 - Add exception `Akeneo\Component\StorageUtils\Exception\PropertyException` thrown by `Pim\Component\Catalog\Updater\Adder\AttributeAdderInterface:addAttributeData()`
 - Add exception `Akeneo\Component\StorageUtils\Exception\PropertyException` thrown by `Pim\Component\Catalog\Updater\Adder\FieldAdderInterface:addFieldData()`
 - Add exception `Akeneo\Component\StorageUtils\Exception\PropertyException` thrown by `Pim\Component\Catalog\Updater\Remover\AttributeRemoverInterface:removeAttributeData()`

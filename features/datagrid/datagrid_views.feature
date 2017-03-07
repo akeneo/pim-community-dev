@@ -92,6 +92,25 @@ Feature: Datagrid views
     But I should not see "Boots only"
     And I should see products black-boots, purple-sneakers and black-sneakers
 
+  Scenario: Can not delete nor save a view that is not mine
+    Given I am on the products page
+    And I filter by "family" with operator "in list" and value "Boots"
+    And I create the view:
+      | new-view-label | Boots only |
+    Then I should be on the products page
+    And I should see the flash message "Datagrid view successfully created"
+    And I should see the text "Boots only"
+    And I should see product black-boots
+    But I should not see products purple-sneakers and black-sneakers
+    When I logout
+    And I am logged in as "Julia"
+    And I am on the products page
+    And I apply the "Boots only" view
+    Then I should be on the products page
+    And I should not be able to remove the view
+    When I filter by "family" with operator "in list" and value "Sneakers"
+    Then I should not be able to save the view
+
   Scenario: Keep view per page
     Given I am on the products page
     When I change the page size to 25

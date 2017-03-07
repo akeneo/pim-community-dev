@@ -1029,6 +1029,26 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^I should not be able to remove the view$/
+     */
+    public function iShouldNotBeAbleToRemoveTheView()
+    {
+        if (true === $this->getCurrentPage()->isViewDeletable()) {
+            throw $this->createExpectationException('The current view should not be allowed to be removed.');
+        }
+    }
+
+    /**
+     * @Then /^I should not be able to save the view$/
+     */
+    public function iShouldNotBeAbleToSaveTheView()
+    {
+        if (true === $this->getCurrentPage()->isViewCanBeSaved()) {
+            throw $this->createExpectationException('The current view should not be allowed to be saved.');
+        }
+    }
+
+    /**
      * @param TableNode $table
      *
      * @return Then[]
