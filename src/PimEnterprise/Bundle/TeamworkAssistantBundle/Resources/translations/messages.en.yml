@@ -1,5 +1,5 @@
 project_calculation: Project calculation
-project_created: Project created
+project_created: A new project for you
 project_finished: Project finished
 
 teamwork_assistant:
@@ -13,7 +13,7 @@ teamwork_assistant:
         project_calculation:
             error:   Project's calculation for <strong>%project_label%</strong> failed
             warning: Project's calculation for <strong>%project_label%</strong> finished with some warnings
-            success: Project's calculation is finished for <strong>%project_label%</strong>. Due date is %due_date%
+            success: The project <strong>%project_label%</strong> is ready and the contributors are notified. Let's start!
             start:   Start
         message: You have new products to enrich for "%project_label%". Due date is "%due_date%".
         project_finished:
@@ -31,6 +31,8 @@ batch_jobs:
             label: Project calculation
         prepare_project_calculation:
             label: Prepare the project calculation
+        clean_contributor_group:
+            label: Check users permission on project's locale
 
 job_execution:
     summary:

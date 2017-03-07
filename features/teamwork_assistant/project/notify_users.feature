@@ -103,8 +103,8 @@ Feature: Notify users after a project creation
     # Project creator must not be notified for project creation but only once the job is over.
     And I should have 1 new notification
     And I should see notification:
-      | type    | message                                                                              |
-      | success | Project's calculation is finished for 2016 summer collection. Due date is 12/13/2018 |
+      | type    | message                                                                                     |
+      | success | The project 2016 summer collection is ready and the contributors are notified. Let's start! |
     When I logout
     And I am logged in as "admin"
     # John has only read on categories and attribute groups. He can't edit, so he's not notified.
@@ -162,8 +162,8 @@ Feature: Notify users after a project creation
     # Project creator must not be notified for project creation but only once the job is over.
     And I should have 1 new notification
     And I should see notification:
-      | type    | message                                                                              |
-      | success | Project's calculation is finished for 2016 summer collection. Due date is 12/13/2018 |
+      | type    | message                                                                                     |
+      | success | The project 2016 summer collection is ready and the contributors are notified. Let's start! |
     When I logout
     And I am logged in as "admin"
     # John has only read on categories and attribute groups. He can't edit, so he's not notified.
@@ -225,8 +225,8 @@ Feature: Notify users after a project creation
     # Project creator must not be notified for project creation but only once the job is over.
     And I should have 1 new notification
     And I should see notification:
-      | type    | message                                                                              |
-      | success | Project's calculation is finished for 2016 summer collection. Due date is 12/13/2018 |
+      | type    | message                                                                                     |
+      | success | The project 2016 summer collection is ready and the contributors are notified. Let's start! |
     When I logout
     And I am logged in as "admin"
     # John has only read on categories and attribute groups. He can't edit, so he's not notified.
@@ -284,8 +284,8 @@ Feature: Notify users after a project creation
     # Project creator must not be notified for project creation but only once the job is over.
     And I should have 1 new notification
     And I should see notification:
-      | type    | message                                                                              |
-      | success | Project's calculation is finished for 2016 summer collection. Due date is 12/13/2018 |
+      | type    | message                                                                                     |
+      | success | The project 2016 summer collection is ready and the contributors are notified. Let's start! |
     When I logout
     And I am logged in as "admin"
     # John has only read on categories and attribute groups. He can't edit, so he's not notified.
@@ -387,7 +387,7 @@ Feature: Notify users after a project creation
     # Is notified for the end of the project computation
     Then I should have 1 new notification
     Then I open the notification panel
-    And I should see the text "Project's calculation is finished for 2016 summer collection. Due date is 12/13/2018"
+    And I should see the text "The project 2016 summer collection is ready and the contributors are notified. Let's start!"
     When I logout
     And I am logged in as "Julia"
     And I am on the homepage
