@@ -6,3 +6,4 @@ pim_analytics:
         nb_published_products: Number of published products
         nb_custom_locale_accesses: Number of locales with custom access
         nb_custom_category_accesses: Number of categories with custom access
+        nb_custom_attribute_group_accesses: Number of attribute groups with custom access

@@ -53,5 +53,4 @@ class LocaleAccessRepository extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
-
 }

@@ -17,11 +17,11 @@ use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\UserBundle\Entity\User;
 
 /**
- * Category Access Repository
+ * Attribute Group Access Repository
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class CategoryAccessRepository extends EntityRepository
+class AttributeGroupAccessRepository extends EntityRepository
 {
     /**
      * @param EntityManager $em
@@ -35,12 +35,12 @@ class CategoryAccessRepository extends EntityRepository
     /**
      * Count the accesses of the categories for user groups other than 'ALL'
      */
-    public function countCustomCategoryAccesses()
+    public function countCustomAttributeGroupAccesses()
     {
         $qb = $this->createQueryBuilder('a');
 
         return (int) $qb
-            ->select('COUNT(DISTINCT a.category)')
+            ->select('COUNT(DISTINCT a.attributeGroup)')
             ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
             ->where('g.name <> :default_group')
             ->setParameter('default_group', User::GROUP_DEFAULT)

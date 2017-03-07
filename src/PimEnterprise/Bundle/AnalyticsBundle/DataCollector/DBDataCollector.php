@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Component\Analytics\DataCollectorInterface;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\AssetRepository;
+use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\LocaleAccessRepository;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\ProductDraftRepository;
@@ -48,6 +49,9 @@ class DBDataCollector implements DataCollectorInterface
     /** @var CategoryAccessRepository */
     protected $categoryAccessRepository;
 
+    /** @var AttributeGroupAccessRepository */
+    protected $attributeGroupAccessRepository;
+
     /**
      * @param ProductDraftRepository              $draftRepository
      * @param ProjectRepository                   $projectRepository
@@ -55,6 +59,7 @@ class DBDataCollector implements DataCollectorInterface
      * @param PublishedProductRepositoryInterface $publishedRepository
      * @param LocaleAccessRepository              $localeAccessRepository
      * @param CategoryAccessRepository            $categoryAccessRepository
+     * @param AttributeGroupAccessRepository      $attributeGroupAccessRepository
      */
     public function __construct(
         ProductDraftRepository $draftRepository,
@@ -62,7 +67,8 @@ class DBDataCollector implements DataCollectorInterface
         AssetRepository $assetRepository,
         PublishedProductRepositoryInterface $publishedRepository,
         LocaleAccessRepository $localeAccessRepository,
-        CategoryAccessRepository $categoryAccessRepository
+        CategoryAccessRepository $categoryAccessRepository,
+        AttributeGroupAccessRepository $attributeGroupAccessRepository
     ) {
         $this->draftRepository = $draftRepository;
         $this->projectRepository = $projectRepository;
@@ -70,6 +76,7 @@ class DBDataCollector implements DataCollectorInterface
         $this->publishedRepository = $publishedRepository;
         $this->localeAccessRepository = $localeAccessRepository;
         $this->categoryAccessRepository = $categoryAccessRepository;
+        $this->attributeGroupAccessRepository = $attributeGroupAccessRepository;
     }
 
     /**
@@ -78,12 +85,14 @@ class DBDataCollector implements DataCollectorInterface
     public function collect()
     {
         return [
-            'nb_product_drafts'           => $this->draftRepository->countAll(),
-            'nb_projects'                 => $this->projectRepository->countAll(),
-            'nb_assets'                   => $this->assetRepository->countAll(),
-            'nb_published_products'       => $this->publishedRepository->countAll(),
-            'nb_custom_locale_accesses'   => $this->localeAccessRepository->countCustomLocaleAccesses(),
-            'nb_custom_category_accesses' => $this->categoryAccessRepository->countCustomCategoryAccesses(),
+            'nb_product_drafts'                  => $this->draftRepository->countAll(),
+            'nb_projects'                        => $this->projectRepository->countAll(),
+            'nb_assets'                          => $this->assetRepository->countAll(),
+            'nb_published_products'              => $this->publishedRepository->countAll(),
+            'nb_custom_locale_accesses'          => $this->localeAccessRepository->countCustomLocaleAccesses(),
+            'nb_custom_category_accesses'        => $this->categoryAccessRepository->countCustomCategoryAccesses(),
+            'nb_custom_attribute_group_accesses' =>
+                $this->attributeGroupAccessRepository->countCustomAttributeGroupAccesses(),
         ];
     }
 }

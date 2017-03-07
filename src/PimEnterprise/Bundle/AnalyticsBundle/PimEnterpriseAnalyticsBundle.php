@@ -21,10 +21,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimEnterpriseAnalyticsBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
-    {
-    }
 }
