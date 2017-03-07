@@ -65,11 +65,20 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
             case ProjectCompletenessFilter::OWNER_IN_PROGRESS:
             case ProjectCompletenessFilter::OWNER_DONE:
                 return $this->findProductIdsAsOwner($project, $status);
+            default:
+                return [];
         }
-
-        return [];
     }
 
+    /**
+     * Find product ids for a given $project with the given $status, only for the $username contributor.
+     *
+     * @param ProjectInterface $project
+     * @param string           $status
+     * @param string           $username
+     *
+     * @return array
+     */
     protected function findProductIdsAsContributor(ProjectInterface $project, $status, $username)
     {
         $parameters = $this->buildQueryParameters($project, $username);
@@ -158,6 +167,14 @@ SQL;
         return array_column($productIds, 'product_id');
     }
 
+    /**
+     * Find product ids for a given $project with the given $status, from a project overview (as owner).
+     *
+     * @param ProjectInterface $project
+     * @param string           $status
+     *
+     * @return array
+     */
     protected function findProductIdsAsOwner(ProjectInterface $project, $status)
     {
         $parameters = [
