@@ -53,7 +53,7 @@ class ProjectCalculationJobLauncher
     {
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->projectCalculationJobName);
         if (null === $jobInstance) {
-            throw new \RuntimeException('Cannot run project calculation, there is not an available job');
+            throw new \RuntimeException('Cannot run project calculation, there is no available job');
         }
 
         $this->simpleJobLauncher->launch($jobInstance, $project->getOwner(), ['project_code' => $project->getCode()]);

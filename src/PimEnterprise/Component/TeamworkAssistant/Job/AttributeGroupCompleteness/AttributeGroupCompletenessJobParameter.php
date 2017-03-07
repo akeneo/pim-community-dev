@@ -25,14 +25,14 @@ class AttributeGroupCompletenessJobParameter implements
     ConstraintCollectionProviderInterface
 {
     /** @var string */
-    protected $attributeGroupCompletenessCalculationJobName;
+    protected $jobName;
 
     /**
-     * @param $attributeGroupCompletenessCalculationJobName
+     * @param $jobName
      */
-    public function __construct($attributeGroupCompletenessCalculationJobName)
+    public function __construct($jobName)
     {
-        $this->attributeGroupCompletenessCalculationJobName = $attributeGroupCompletenessCalculationJobName;
+        $this->jobName = $jobName;
     }
 
     /**
@@ -62,6 +62,6 @@ class AttributeGroupCompletenessJobParameter implements
      */
     public function supports(JobInterface $job)
     {
-        return $this->attributeGroupCompletenessCalculationJobName === $job->getName();
+        return $this->jobName === $job->getName();
     }
 }
