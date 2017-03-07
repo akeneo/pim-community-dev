@@ -199,7 +199,12 @@ jobs:
         label:     Add tags to assets
         type:      mass_edit
     project_calculation:
-        connector: team work assistant
+        connector: teamwork assistant
         alias:     project_calculation
         label:     Project calculation
         type:      project_calculation
+    attribute_group_completeness_calculation:
+        connector: teamwork assistant
+        alias:     attribute_group_completeness_calculation
+        label:     Refresh project completeness
+        type:      attribute_group_completeness_calculation

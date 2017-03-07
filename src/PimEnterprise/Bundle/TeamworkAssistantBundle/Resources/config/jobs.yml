@@ -1,10 +1,11 @@
 parameters:
     pimee_teamwork_assistant.project_calculation.connector_name: 'teamwork assistant'
 
-    pimee_teamwork_assistant.prepare_project_calculation.tasklet_name: 'prepare_project_calculation'
-    pimee_teamwork_assistant.project_calculation.tasklet_name: 'project_calculation'
+    ### Project calulcation job
     pimee_teamwork_assistant.project_calculation.job_name: 'project_calculation'
     pimee_teamwork_assistant.project_calculation.job_type: 'project_calculation'
+    pimee_teamwork_assistant.prepare_project_calculation.tasklet_name: 'prepare_project_calculation'
+    pimee_teamwork_assistant.project_calculation.tasklet_name: 'project_calculation'
     pimee_teamwork_assistant.clean_contributor_group.tasklet_name: 'clean_contributor_group'
 
     pimee_teamwork_assistant.tasklet.prepare_project_calculation.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\PrepareProjectCalculationTasklet'
@@ -18,7 +19,18 @@ parameters:
     pimee_teamwork_assistant.launcher.job.project_calculation.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Job\ProjectCalculationJobLauncher'
     pimee_teamwork_assistant.job.project_calculation_parameter.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\ProjectCalculationJobParameters'
 
+    ### Attribute group completeness calculation
+    pimee_teamwork_assistant.attribute_group_completeness_calculation.job_name: 'attribute_group_completeness_calculation'
+    pimee_teamwork_assistant.attribute_group_completeness_calculation.job_type: 'attribute_group_completeness_calculation'
+    pimee_teamwork_assistant.attribute_group_completeness_calculation.tasklet_name: 'attribute_group_completeness_calculation'
+
+    pimee_teamwork_assistant.launcher.job.attribute_group_completeness_calculation.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Job\AttributeGroupCompletenessJobLauncher'
+    pimee_teamwork_assistant.tasklet.attribute_group_completeness_calculation.class: 'PimEnterprise\Component\TeamworkAssistant\Job\AttributeGroupCompleteness\AttributeGroupCompletenessTasklet'
+    pimee_teamwork_assistant.job.attribute_group_completeness_calculation_parameter.class: 'PimEnterprise\Component\TeamworkAssistant\Job\AttributeGroupCompleteness\AttributeGroupCompletenessJobParameter'
+
 services:
+    ### Project calculation
+
     ### Tasklet
     pimee_teamwork_assistant.tasklet.project_calculation:
         class: '%pimee_teamwork_assistant.tasklet.project_calculation.class%'
@@ -140,6 +152,64 @@ services:
         class: '%pimee_teamwork_assistant.job.project_calculation_parameter.class%'
         arguments:
             - '%pimee_teamwork_assistant.project_calculation.job_name%'
+        public: false
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    ### Attribute group completeness calculation
+
+    ### Tasklet
+    pimee_teamwork_assistant.tasklet.attribute_group_completeness_calculation:
+        class: '%pimee_teamwork_assistant.tasklet.attribute_group_completeness_calculation.class%'
+        arguments:
+            - '@pimee_teamwork_assistant.calculator.attribute_group_completeness'
+            - '@pimee_teamwork_assistant.repository.pre_processing'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.product'
+        public: false
+
+    ### Steps
+    pimee_teamwork_assistant.step.attribute_group_completeness_calculation:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - '%pimee_teamwork_assistant.attribute_group_completeness_calculation.tasklet_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_teamwork_assistant.tasklet.attribute_group_completeness_calculation'
+        public: false
+
+    ### Job
+    pimee_teamwork_assistant.job.attribute_group_completeness_calculation:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_teamwork_assistant.attribute_group_completeness_calculation.job_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_teamwork_assistant.step.attribute_group_completeness_calculation'
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: '%pimee_teamwork_assistant.project_calculation.connector_name%'
+                type: '%pimee_teamwork_assistant.attribute_group_completeness_calculation.job_type%'
+
+    ### Job launcher
+    pimee_teamwork_assistant.launcher.job.attribute_group_completeness_calculation:
+        class: '%pimee_teamwork_assistant.launcher.job.attribute_group_completeness_calculation.class%'
+        arguments:
+            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@security.token_storage'
+            - '%pimee_teamwork_assistant.attribute_group_completeness_calculation.job_name%'
+
+    ### Job Parameters
+    pimee_teamwork_assistant.job.attribute_group_completeness_calculation_parameter:
+        class: '%pimee_teamwork_assistant.job.attribute_group_completeness_calculation_parameter.class%'
+        arguments:
+            - '%pimee_teamwork_assistant.attribute_group_completeness_calculation.job_name%'
         public: false
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

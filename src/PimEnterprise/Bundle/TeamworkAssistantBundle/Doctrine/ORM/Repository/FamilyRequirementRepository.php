@@ -15,8 +15,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\FamilyRequirementRepositoryInterface;
 
 /**
@@ -60,8 +60,11 @@ class FamilyRequirementRepository extends EntityRepository implements FamilyRequ
     /**
      * {@inheritdoc}
      */
-    public function findRequiredAttributes(ProductInterface $product, ProjectInterface $project)
-    {
+    public function findRequiredAttributes(
+        ProductInterface $product,
+        ChannelInterface $channel,
+        LocaleInterface $locale
+    ) {
         $queryBuilder = $this->createQueryBuilder('ar');
 
         $queryBuilder->select('a.code as attribute_code, g.id as attribute_group_id')
@@ -74,7 +77,7 @@ class FamilyRequirementRepository extends EntityRepository implements FamilyRequ
             ->andWhere('ar.required = :required')
             ->setParameters([
                 'family_code'  => $product->getFamily()->getCode(),
-                'channel_code' => $project->getChannel()->getCode(),
+                'channel_code' => $channel->getCode(),
                 'required'     => true,
             ]);
 
