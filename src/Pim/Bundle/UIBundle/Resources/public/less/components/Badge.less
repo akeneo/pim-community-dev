@@ -49,11 +49,11 @@
   }
 
   &--warning {
-    background: lighten(@AknOrange, 30%);
-    color: darken(@AknOrange, 20%);
+    background: @AknOrange;
+    color: white;
 
     &:hover {
-      background: lighten(@AknOrange, 20%);
+      background: darken(@AknOrange, 10%);
     }
   }
 
@@ -89,6 +89,11 @@
 
   &--round {
     border-radius: 10px;
+
+    &:not(:empty) {
+      padding-left: 7px;
+      padding-right: 7px;
+    }
   }
 
   &--grey &-icon {

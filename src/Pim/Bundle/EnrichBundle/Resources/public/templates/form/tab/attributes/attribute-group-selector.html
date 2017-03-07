@@ -6,8 +6,7 @@
             <span class="badge-elements-container">
                 <span
                     class="AknBadge AknBadge--round AknBadge--highlight <%- !_.contains(toFillAttributeGroups, element.code) ? 'AknBadge--light' : '' %>"
-                >
-                </span>
+                ></span>
                 <% _.each(badges[element.code], function(badge, type) { %>
                     <span class="AknBadge AknBadge--<%- type %> <%- type %>-badge label"><%- badge %></span>
                 <% }) %>
