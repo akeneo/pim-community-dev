@@ -38,7 +38,7 @@ class AttributeValidationContext extends PimContext
                         assertEquals($value, $attribute->getTranslation($matches['locale'])->getLabel());
                         break;
                     case 'type':
-                        assertEquals($value, $attribute->getAttributeType());
+                        assertEquals($value, $attribute->getType());
                         break;
                     case 'localizable':
                         assertEquals('1' === $value, $attribute->isLocalizable());

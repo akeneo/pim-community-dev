@@ -38,7 +38,7 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('multi_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_multiselect');
+        $attribute->getType()->willReturn('pim_catalog_multiselect');
         $attribute->getBackendType()->willReturn('options');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -65,7 +65,7 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('multi_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_multiselect');
+        $attribute->getType()->willReturn('pim_catalog_multiselect');
         $attribute->getBackendType()->willReturn('options');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -96,7 +96,7 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('multi_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_multiselect');
+        $attribute->getType()->willReturn('pim_catalog_multiselect');
         $attribute->getBackendType()->willReturn('options');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -127,7 +127,7 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('multi_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_multiselect');
+        $attribute->getType()->willReturn('pim_catalog_multiselect');
         $attribute->getBackendType()->willReturn('options');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -158,7 +158,7 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('multi_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_multiselect');
+        $attribute->getType()->willReturn('pim_catalog_multiselect');
         $attribute->getBackendType()->willReturn('options');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -182,7 +182,7 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('multi_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_multiselect');
+        $attribute->getType()->willReturn('pim_catalog_multiselect');
         $attribute->getBackendType()->willReturn('options');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -207,7 +207,7 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('multi_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_multiselect');
+        $attribute->getType()->willReturn('pim_catalog_multiselect');
         $attribute->getBackendType()->willReturn('options');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 

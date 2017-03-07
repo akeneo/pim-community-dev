@@ -34,7 +34,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('text_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_text');
+        $attribute->getType()->willReturn('pim_catalog_text');
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -65,7 +65,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('text_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_text');
+        $attribute->getType()->willReturn('pim_catalog_text');
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -98,7 +98,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('text_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_text');
+        $attribute->getType()->willReturn('pim_catalog_text');
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -129,7 +129,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('text_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_text');
+        $attribute->getType()->willReturn('pim_catalog_text');
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -162,7 +162,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('textarea_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $attribute->getType()->willReturn('pim_catalog_textarea');
         $attribute->getBackendType()->willReturn('varchar');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -193,7 +193,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('textarea_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $attribute->getType()->willReturn('pim_catalog_textarea');
         $attribute->getBackendType()->willReturn('varchar');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -226,7 +226,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('textarea_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $attribute->getType()->willReturn('pim_catalog_textarea');
         $attribute->getBackendType()->willReturn('varchar');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -257,7 +257,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('textarea_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $attribute->getType()->willReturn('pim_catalog_textarea');
         $attribute->getBackendType()->willReturn('varchar');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -290,7 +290,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('integer_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_number');
+        $attribute->getType()->willReturn('pim_catalog_number');
         $attribute->getBackendType()->willReturn('integer');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -321,7 +321,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('integer_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_number');
+        $attribute->getType()->willReturn('pim_catalog_number');
         $attribute->getBackendType()->willReturn('integer');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -354,7 +354,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('integer_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_number');
+        $attribute->getType()->willReturn('pim_catalog_number');
         $attribute->getBackendType()->willReturn('integer');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -385,7 +385,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('integer_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_number');
+        $attribute->getType()->willReturn('pim_catalog_number');
         $attribute->getBackendType()->willReturn('integer');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -418,7 +418,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('boolean_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_boolean');
+        $attribute->getType()->willReturn('pim_catalog_boolean');
         $attribute->getBackendType()->willReturn('boolean');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -449,7 +449,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('boolean_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_boolean');
+        $attribute->getType()->willReturn('pim_catalog_boolean');
         $attribute->getBackendType()->willReturn('boolean');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -483,7 +483,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('boolean_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_boolean');
+        $attribute->getType()->willReturn('pim_catalog_boolean');
         $attribute->getBackendType()->willReturn('boolean');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -514,7 +514,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('boolean_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_boolean');
+        $attribute->getType()->willReturn('pim_catalog_boolean');
         $attribute->getBackendType()->willReturn('boolean');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -548,7 +548,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('identifier_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $attribute->getType()->willReturn('pim_catalog_identifier');
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -579,7 +579,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('identifier_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $attribute->getType()->willReturn('pim_catalog_identifier');
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -610,7 +610,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('text_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_text');
+        $attribute->getType()->willReturn('pim_catalog_text');
         $attribute->getBackendType()->willReturn('text');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 

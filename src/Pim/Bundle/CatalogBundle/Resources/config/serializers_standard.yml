@@ -167,7 +167,6 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.translation'
             - '@pim_catalog.normalizer.standard.product.product_values'
-            - '@pim_catalog.denormalizer.standard.product_values'
 
     pim_catalog.normalizer.standard.job_instance:
         class: '%pim_catalog.normalizer.standard.job_instance.class%'

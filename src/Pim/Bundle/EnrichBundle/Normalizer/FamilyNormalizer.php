@@ -126,7 +126,7 @@ class FamilyNormalizer implements NormalizerInterface
         foreach ($attributes as $attribute) {
             $normalizedAttributes[] = [
                 'code' => $attribute->getCode(),
-                'type' => $attribute->getAttributeType(),
+                'type' => $attribute->getType(),
                 'group_code' => $attribute->getGroup()->getCode(),
                 'labels' => $this->translationNormalizer->normalize($attribute, 'standard', []),
                 'sort_order' => $attribute->getSortOrder(),

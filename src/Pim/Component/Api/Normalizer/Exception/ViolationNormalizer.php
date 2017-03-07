@@ -96,7 +96,7 @@ class ViolationNormalizer implements NormalizerInterface
     protected function getProductValuesErrors(ConstraintViolationInterface $violation, $attributeCode)
     {
         $productValue = $violation->getRoot()->getValues()[$attributeCode];
-        $attributeType = $productValue->getAttribute()->getAttributeType();
+        $attributeType = $productValue->getAttribute()->getType();
 
         if (AttributeTypes::IDENTIFIER === $attributeType) {
             return [

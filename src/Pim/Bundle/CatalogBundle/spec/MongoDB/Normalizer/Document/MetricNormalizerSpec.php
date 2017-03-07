@@ -10,6 +10,7 @@ use Pim\Component\Catalog\Model\Metric;
 
 /**
  * @require \MongoId
+ * @require Doctrine\ODM\MongoDB\DocumentManager
  */
 class MetricNormalizerSpec extends ObjectBehavior
 {

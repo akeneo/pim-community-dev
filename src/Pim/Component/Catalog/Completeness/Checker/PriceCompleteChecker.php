@@ -28,7 +28,7 @@ class PriceCompleteChecker implements ProductValueCompleteCheckerInterface
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $expectedCurrencies = $channel->getCurrencies()->map(function($currency) {
+        $expectedCurrencies = $channel->getCurrencies()->map(function ($currency) {
             return $currency->getCode();
         });
 

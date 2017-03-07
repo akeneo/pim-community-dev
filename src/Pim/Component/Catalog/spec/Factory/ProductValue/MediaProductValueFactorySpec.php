@@ -34,7 +34,7 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('file_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_file');
+        $attribute->getType()->willReturn('pim_catalog_file');
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -66,7 +66,7 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('file_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_file');
+        $attribute->getType()->willReturn('pim_catalog_file');
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -101,7 +101,7 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('file_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_file');
+        $attribute->getType()->willReturn('pim_catalog_file');
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -134,7 +134,7 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('file_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_file');
+        $attribute->getType()->willReturn('pim_catalog_file');
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -166,7 +166,7 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('image_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_image');
+        $attribute->getType()->willReturn('pim_catalog_image');
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -198,7 +198,7 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('image_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_image');
+        $attribute->getType()->willReturn('pim_catalog_image');
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -233,7 +233,7 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('image_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_image');
+        $attribute->getType()->willReturn('pim_catalog_image');
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -266,7 +266,7 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('image_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_image');
+        $attribute->getType()->willReturn('pim_catalog_image');
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -301,7 +301,7 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('image_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_image');
+        $attribute->getType()->willReturn('pim_catalog_image');
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
@@ -331,7 +331,7 @@ class MediaProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('image_attribute');
-        $attribute->getAttributeType()->willReturn('pim_catalog_image');
+        $attribute->getType()->willReturn('pim_catalog_image');
         $attribute->getBackendType()->willReturn('media');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 

@@ -46,7 +46,7 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('reference_data_multi_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_reference_data_catalog_multiselect');
+        $attribute->getType()->willReturn('pim_reference_data_catalog_multiselect');
         $attribute->getBackendType()->willReturn('reference_data_options');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('fabrics');
@@ -76,7 +76,7 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('reference_data_multi_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_reference_data_catalog_multiselect');
+        $attribute->getType()->willReturn('pim_reference_data_catalog_multiselect');
         $attribute->getBackendType()->willReturn('reference_data_options');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('fabrics');
@@ -110,7 +110,7 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('reference_data_multi_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_reference_data_catalog_multiselect');
+        $attribute->getType()->willReturn('pim_reference_data_catalog_multiselect');
         $attribute->getBackendType()->willReturn('reference_data_options');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('fabrics');
@@ -143,7 +143,7 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('reference_data_multi_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_reference_data_catalog_multiselect');
+        $attribute->getType()->willReturn('pim_reference_data_catalog_multiselect');
         $attribute->getBackendType()->willReturn('reference_data_options');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('fabrics');
@@ -173,7 +173,7 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('reference_data_multi_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_reference_data_catalog_multiselect');
+        $attribute->getType()->willReturn('pim_reference_data_catalog_multiselect');
         $attribute->getBackendType()->willReturn('reference_data_options');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('fabrics');
@@ -192,7 +192,7 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('reference_data_multi_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_reference_data_catalog_multiselect');
+        $attribute->getType()->willReturn('pim_reference_data_catalog_multiselect');
         $attribute->getBackendType()->willReturn('reference_data_options');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('fabrics');
@@ -215,7 +215,7 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('reference_data_multi_select_attribute');
-        $attribute->getAttributeType()->willReturn('pim_reference_data_catalog_multiselect');
+        $attribute->getType()->willReturn('pim_reference_data_catalog_multiselect');
         $attribute->getBackendType()->willReturn('reference_data_options');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('fabrics');

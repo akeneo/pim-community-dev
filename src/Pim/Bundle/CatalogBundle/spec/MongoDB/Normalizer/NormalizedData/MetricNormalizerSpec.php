@@ -5,6 +5,9 @@ namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer\NormalizedData;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\MetricInterface;
 
+/**
+ * @require Doctrine\ODM\MongoDB\DocumentManager
+ */
 class MetricNormalizerSpec extends ObjectBehavior
 {
     function it_is_a_normalizer()

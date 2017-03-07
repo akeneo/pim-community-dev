@@ -1,7 +1,6 @@
 #!groovy
 
 def editions = ["ce"]
-def features = "features,vendor/akeneo/pim-community-dev/features"
 def phpVersion = "5.6"
 def features = "features"
 def launchUnitTests = "yes"
@@ -84,12 +83,15 @@ if (launchUnitTests.equals("yes")) {
         tasks["phpunit-5.6"] = {runPhpUnitTest("5.6")}
         tasks["phpunit-7.0"] = {runPhpUnitTest("7.0")}
         tasks["phpunit-7.1"] = {runPhpUnitTest("7.1")}
+
         tasks["phpspec-5.6"] = {runPhpSpecTest("5.6")}
         tasks["phpspec-7.0"] = {runPhpSpecTest("7.0")}
         tasks["phpspec-7.1"] = {runPhpSpecTest("7.1")}
+
         tasks["php-cs-fixer-5.6"] = {runPhpCsFixerTest("5.6")}
         tasks["php-cs-fixer-7.0"] = {runPhpCsFixerTest("7.0")}
         tasks["php-cs-fixer-7.1"] = {runPhpCsFixerTest("7.1")}
+
         tasks["grunt"] = {runGruntTest()}
 
         parallel tasks
