@@ -588,27 +588,6 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * TODO: to remove with API-114
-     *
-     * @param QueryBuilder $qb
-     *
-     * @return int
-     */
-    public function count(QueryBuilder $qb)
-    {
-        try {
-            return (int) $qb->select('COUNT(DISTINCT o.id)')
-                ->setMaxResults(null)
-                ->setFirstResult(null)
-                ->resetDQLPart('orderBy')
-                ->getQuery()
-                ->getSingleScalarResult();
-        } catch (UnexpectedResultException $e) {
-            return 0;
-        }
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function findProductIdsForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
