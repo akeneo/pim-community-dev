@@ -11,12 +11,12 @@ stage("Checkout") {
     milestone 1
     if (env.BRANCH_NAME =~ /^PR-/) {
         userInput = input(message: 'Launch tests?', parameters: [
-            choice(choices: 'yes\nno', description: 'Run unit tests', name: 'launchUnitTests'),
-            choice(choices: 'yes\nno', description: 'Run functional tests', name: 'launchBehatTests'),
-            string(defaultValue: 'odm,orm', description: 'Storage used for the build (comma separated values)', name: 'storages'),
-            string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
             string(defaultValue: '1.5.x-dev', description: 'Community Edition branch used for the build', name: 'ce_branch'),
-            string(defaultValue: 'akeneo', description: 'Owner of the repository on GitHub', name: 'ce_owner')
+            string(defaultValue: 'akeneo', description: 'Owner of the repository on GitHub', name: 'ce_owner'),
+            choice(choices: 'yes\nno', description: 'Run unit tests and code style checks', name: 'launchUnitTests'),
+            choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehatTests'),
+            string(defaultValue: 'odm,orm', description: 'Storage used for the behat tests (comma separated values)', name: 'storages'),
+            string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features')
         ])
 
         storages = userInput['storages'].tokenize(',')
@@ -63,9 +63,9 @@ if (launchUnitTests.equals("yes")) {
         tasks["phpspec-5.5"] = {runPhpSpecTest("5.5")}
         tasks["phpspec-5.6"] = {runPhpSpecTest("5.6")}
         tasks["phpspec-7.0"] = {runPhpSpecTest("7.0")}
-        tasks["php-cs-fixer-5.5"] = {runPhpCsFixerTest("5.5")}
-        tasks["php-cs-fixer-5.6"] = {runPhpCsFixerTest("5.6")}
-        tasks["php-cs-fixer-7.0"] = {runPhpCsFixerTest("7.0")}
+
+        tasks["php-cs-fixer"] = {runPhpCsFixerTest()}
+
         tasks["grunt"] = {runGruntTest()}
 
         parallel tasks
@@ -90,7 +90,8 @@ def runGruntTest() {
             docker.image('digitallyseamless/nodejs-bower-grunt').inside("") {
                 unstash "project_files_full"
                 sh "npm install"
-                sh "grunt --force"
+
+                sh "grunt"
             }
         } finally {
             deleteDir()
@@ -108,9 +109,9 @@ def runPhpSpecTest(phpVersion) {
                 if (phpVersion == "7.0") {
                     sh "composer remove --dev --no-update doctrine/mongodb-odm-bundle;"
                 }
-
                 sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
+
                 sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
             }
         } finally {
@@ -121,23 +122,21 @@ def runPhpSpecTest(phpVersion) {
     }
 }
 
-def runPhpCsFixerTest(phpVersion) {
+def runPhpCsFixerTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:7.0").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "project_files"
 
-                if (phpVersion == "7.0") {
-                    sh "composer remove --dev --no-update doctrine/mongodb-odm-bundle;"
-                }
-
+                sh "composer remove --dev --no-update doctrine/mongodb-odm-bundle;"
                 sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
+
                 sh "./bin/php-cs-fixer fix --diff --dry-run --format=junit --config=.php_cs.php > app/build/logs/phpcs.xml"
             }
         } finally {
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-cs-fixer] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
         }
