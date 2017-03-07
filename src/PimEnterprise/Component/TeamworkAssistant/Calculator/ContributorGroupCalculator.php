@@ -11,11 +11,12 @@
 
 namespace PimEnterprise\Component\TeamworkAssistant\Calculator;
 
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\AttributePermissionRepositoryInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\FamilyRequirementRepositoryInterface;
 
@@ -51,10 +52,13 @@ class ContributorGroupCalculator implements ProjectItemCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function calculate(ProjectInterface $project, ProductInterface $product)
-    {
+    public function calculate(
+        ProductInterface $product,
+        ChannelInterface $channel,
+        LocaleInterface $locale
+    ) {
         $productContributorsGroupNames = $this->findUserGroupNamesForProduct($product);
-        $attributeContributorGroups = $this->findUserGroupForAttribute($product, $project);
+        $attributeContributorGroups = $this->findUserGroupForAttribute($product, $channel);
 
         if (in_array('All', $productContributorsGroupNames)) {
             return $attributeContributorGroups;
@@ -93,15 +97,15 @@ class ContributorGroupCalculator implements ProjectItemCalculatorInterface
      * Find contributor groups that can edit at least one product attribute (attribute GroupInterface permission).
      *
      * @param ProductInterface $product
-     * @param ProjectInterface $project
+     * @param ChannelInterface $channel
      *
      * @return GroupInterface[]
      */
-    protected function findUserGroupForAttribute(ProductInterface $product, ProjectInterface $project)
+    protected function findUserGroupForAttribute(ProductInterface $product, ChannelInterface $channel)
     {
         $attributeGroupIdentifiers = $this->familyRequirementRepository->findAttributeGroupIdentifiers(
             $product->getFamily(),
-            $project->getChannel()
+            $channel
         );
 
         return $this->attributePermissionRepository->findContributorsUserGroups($attributeGroupIdentifiers);

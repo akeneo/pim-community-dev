@@ -11,8 +11,9 @@
 
 namespace PimEnterprise\Component\TeamworkAssistant\Calculator;
 
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
@@ -20,10 +21,15 @@ use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 interface ProjectItemCalculatorInterface
 {
     /**
-     * @param ProjectInterface $project
      * @param ProductInterface $product
+     * @param ChannelInterface $channel
+     * @param LocaleInterface  $locale
      *
      * @return array
      */
-    public function calculate(ProjectInterface $project, ProductInterface $product);
+    public function calculate(
+        ProductInterface $product,
+        ChannelInterface $channel,
+        LocaleInterface $locale
+    );
 }

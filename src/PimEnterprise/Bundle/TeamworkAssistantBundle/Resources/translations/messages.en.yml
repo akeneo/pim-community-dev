@@ -33,6 +33,9 @@ batch_jobs:
             label: Prepare the project calculation
         clean_contributor_group:
             label: Check users permission on project's locale
+    attribute_group_completeness_calculation:
+        attribute_group_completeness_calculation:
+            label: Refresh project completeness
 
 job_execution:
     summary:

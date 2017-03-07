@@ -32,3 +32,4 @@ classify_assets;All;
 add_tags_to_assets;All;
 csv_default_product_import;All;
 project_calculation;All;
+attribute_group_completeness_calculation;All;
