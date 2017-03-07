@@ -17,7 +17,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * Asset Repository
+ * Returns the Asset count
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */

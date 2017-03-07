@@ -9,40 +9,47 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository;
+namespace PimEnterprise\Bundle\WorkflowBundle\Analytic;
 
+use Akeneo\Component\Analytics\DataCollectorInterface;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * Product Draft Repository
+ * Returns count of Product Draft
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class ProductDraftRepository extends EntityRepository
+class ProductDraftAnalyticProvider implements DataCollectorInterface
 {
+    /** @var EntityManager  */
+    protected $em;
+
+    /** @var string */
+    protected $entityName;
+
     /**
      * @param EntityManager $em
-     * @param ClassMetadata $class
+     * @param string        $class
      */
     public function __construct(EntityManager $em, $class)
     {
-        parent::__construct($em, $em->getClassMetadata($class));
+        $this->em = $em;
+        $this->entityName = $em->getClassMetadata($class)->getName();
     }
 
     /**
-     * Count the total number of product drafts
-     *
-     * @return integer
+     * {@inheritdoc}
      */
-    public function countAll()
+    public function collect()
     {
-        $qb = $this->createQueryBuilder('p');
-
-        return (int) $qb
+        $result = $this->em->createQueryBuilder('p')
+            ->from($this->entityName, 'p')
             ->select('count(p.id)')
             ->getQuery()
             ->getSingleScalarResult();
+
+        return ['nb_product_drafts' => $result];
     }
 }

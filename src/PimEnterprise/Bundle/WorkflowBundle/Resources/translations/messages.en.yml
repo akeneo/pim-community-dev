@@ -170,3 +170,8 @@ batch_jobs:
     xlsx_product_proposal_import:
         label: Product proposal import in XLSX
         import.label: Product proposal import in XLSX
+
+pim_analytics:
+    info_type:
+        nb_published_products: Number of published product
+        nb_product_drafts: Number of product drafts

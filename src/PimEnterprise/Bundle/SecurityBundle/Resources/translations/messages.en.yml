@@ -4,3 +4,9 @@ pimee_enrich.acl.attribute_group.edit_permissions: Manage attribute group permis
 pimee_importexport.acl.export_profile.edit_permissions: Manage export profile permissions
 pimee_importexport.acl.import_profile.edit_permissions: Manage import profile permissions
 pimee_enrich.groups.label: Owner groups
+
+pim_analytics:
+    info_type:
+        nb_custom_locale_accesses: Number of custom locale accesses
+        nb_custom_category_accesses: Number of custom category accesses
+        nb_custom_attribute_group_accesses: Number of custom attribute group accesses

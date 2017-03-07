@@ -1,9 +1,0 @@
-parameters:
-  pimee_analytics.repository.product_draft.class:          PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\ProductDraftRepository
-
-services:
-    pimee_analytics.repository.product_draft:
-        class: '%pimee_analytics.repository.product_draft.class%'
-        arguments:
-            - '@doctrine.orm.default_entity_manager'
-            - '%pimee_workflow.model.product_draft.class%'
