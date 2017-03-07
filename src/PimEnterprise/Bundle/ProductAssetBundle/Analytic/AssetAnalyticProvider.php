@@ -9,8 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository;
+namespace PimEnterprise\Bundle\ProductAssetBundle\Analytic;
 
+use Akeneo\Component\Analytics\DataCollectorInterface;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -20,29 +21,35 @@ use Doctrine\ORM\EntityRepository;
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class AssetRepository extends EntityRepository
+class AssetAnalyticProvider implements DataCollectorInterface
 {
+    /** @var EntityManager  */
+    protected $em;
+
+    /** @var string */
+    protected $entityName;
+
     /**
      * @param EntityManager $em
-     * @param ClassMetadata $class
+     * @param string        $class
      */
     public function __construct(EntityManager $em, $class)
     {
-        parent::__construct($em, $em->getClassMetadata($class));
+        $this->em = $em;
+        $this->entityName = $em->getClassMetadata($class)->getName();
     }
 
     /**
-     * Count the total number of assets
-     *
-     * @return integer
+     * {@inheritdoc}
      */
-    public function countAll()
+    public function collect()
     {
-        $qb = $this->createQueryBuilder('a');
-
-        return (int) $qb
+        $result = (int) $this->em->createQueryBuilder('a')
             ->select('count(a.id)')
+            ->from($this->entityName, 'a')
             ->getQuery()
             ->getSingleScalarResult();
+
+        return ['nb_assets' => $result];
     }
 }

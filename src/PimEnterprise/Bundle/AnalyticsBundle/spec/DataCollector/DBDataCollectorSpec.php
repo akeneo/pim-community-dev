@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\AnalyticsBundle\DataCollector;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\AssetRepository;
+use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\AssetAnalyticProvider;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\LocaleAccessRepository;
@@ -16,7 +16,7 @@ class DBDataCollectorSpec extends ObjectBehavior
     function let(
         ProductDraftRepository $draftRepository,
         ProjectRepository $projectRepository,
-        AssetRepository $assetRepository,
+        AssetAnalyticProvider $assetRepository,
         PublishedProductRepositoryInterface $publishedRepository,
         LocaleAccessRepository $localeAccessRepository,
         CategoryAccessRepository $categoryAccessRepository,

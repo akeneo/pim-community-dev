@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Component\Analytics\DataCollectorInterface;
-use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\AssetRepository;
+use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\AssetAnalyticProvider;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\LocaleAccessRepository;
@@ -35,9 +35,6 @@ class DBDataCollector implements DataCollectorInterface
     /** @var ProductDraftRepository */
     protected $draftRepository;
 
-    /** @var AssetRepository */
-    protected $assetRepository;
-
     /** @var PublishedProductRepositoryInterface */
     protected $publishedRepository;
 
@@ -52,7 +49,6 @@ class DBDataCollector implements DataCollectorInterface
 
     /**
      * @param ProductDraftRepository              $draftRepository
-     * @param AssetRepository                     $assetRepository
      * @param PublishedProductRepositoryInterface $publishedRepository
      * @param LocaleAccessRepository              $localeAccessRepository
      * @param CategoryAccessRepository            $categAccessRepository
@@ -60,14 +56,12 @@ class DBDataCollector implements DataCollectorInterface
      */
     public function __construct(
         ProductDraftRepository $draftRepository,
-        AssetRepository $assetRepository,
         PublishedProductRepositoryInterface $publishedRepository,
         LocaleAccessRepository $localeAccessRepository,
         CategoryAccessRepository $categAccessRepository,
         AttributeGroupAccessRepository $groupAccessRepository
     ) {
         $this->draftRepository = $draftRepository;
-        $this->assetRepository = $assetRepository;
         $this->publishedRepository = $publishedRepository;
         $this->localeAccessRepository = $localeAccessRepository;
         $this->categAccessRepository = $categAccessRepository;
@@ -81,7 +75,6 @@ class DBDataCollector implements DataCollectorInterface
     {
         return [
             'nb_product_drafts'                  => $this->draftRepository->countAll(),
-            'nb_assets'                          => $this->assetRepository->countAll(),
             'nb_published_products'              => $this->publishedRepository->countAll(),
             'nb_custom_locale_accesses'          => $this->localeAccessRepository->countCustomAccesses(),
             'nb_custom_category_accesses'        => $this->categAccessRepository->countCustomAccesses(),

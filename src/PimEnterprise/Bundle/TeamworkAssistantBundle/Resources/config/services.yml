@@ -17,7 +17,7 @@ parameters:
     pimee_teamwork_assistant.reminder.days: [7, 3, 1]
     pimee_teamwork_assistant.calculator.attribute_group_completeness.class: 'PimEnterprise\Component\TeamworkAssistant\Calculator\AttributeGroupCompletenessCalculator'
     pimee_teamwork_assistant.calculator.contributor_group.class: 'PimEnterprise\Component\TeamworkAssistant\Calculator\ContributorGroupCalculator'
-    pimee_teamwork_assistant.analytics.project.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Analytic\ProjectAnalyticProvider'
+    pimee_teamwork_assistant.analytic.project.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Analytic\ProjectAnalyticProvider'
 
 services:
     pimee_teamwork_assistant.table_name_mapper:
@@ -145,8 +145,8 @@ services:
             - '@pimee_teamwork_assistant.repository.attribute_permission'
 
     ### Analytics
-    pimee_teamwork_assistant.analytics.project:
-        class: '%pimee_teamwork_assistant.analytics.project.class%'
+    pimee_teamwork_assistant.analytic.project:
+        class: '%pimee_teamwork_assistant.analytic.project.class%'
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '%pimee_teamwork_assistant.model.project.class%'

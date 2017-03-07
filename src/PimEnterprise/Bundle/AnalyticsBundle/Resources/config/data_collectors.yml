@@ -6,7 +6,6 @@ services:
         class: '%pimee_analytics.data_collector.database.class%'
         arguments:
             - '@pimee_analytics.repository.product_draft'
-            - '@pimee_analytics.repository.asset'
             - '@pimee_workflow.repository.published_product'
             - '@pimee_analytics.repository.locale_access'
             - '@pimee_analytics.repository.category_access'
