@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Component\Analytics\DataCollectorInterface;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\AssetRepository;
+use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\LocaleAccessRepository;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\ProductDraftRepository;
 use PimEnterprise\Bundle\AnalyticsBundle\Doctrine\ORM\Repository\ProjectRepository;
@@ -44,25 +45,31 @@ class DBDataCollector implements DataCollectorInterface
     /** @var LocaleAccessRepository */
     protected $localeAccessRepository;
 
+    /** @var CategoryAccessRepository */
+    protected $categoryAccessRepository;
+
     /**
      * @param ProductDraftRepository              $draftRepository
      * @param ProjectRepository                   $projectRepository
      * @param AssetRepository                     $assetRepository
      * @param PublishedProductRepositoryInterface $publishedRepository
      * @param LocaleAccessRepository              $localeAccessRepository
+     * @param CategoryAccessRepository            $categoryAccessRepository
      */
     public function __construct(
         ProductDraftRepository $draftRepository,
         ProjectRepository $projectRepository,
         AssetRepository $assetRepository,
         PublishedProductRepositoryInterface $publishedRepository,
-        LocaleAccessRepository $localeAccessRepository
+        LocaleAccessRepository $localeAccessRepository,
+        CategoryAccessRepository $categoryAccessRepository
     ) {
         $this->draftRepository = $draftRepository;
         $this->projectRepository = $projectRepository;
         $this->assetRepository = $assetRepository;
         $this->publishedRepository = $publishedRepository;
         $this->localeAccessRepository = $localeAccessRepository;
+        $this->categoryAccessRepository = $categoryAccessRepository;
     }
 
     /**
@@ -71,11 +78,12 @@ class DBDataCollector implements DataCollectorInterface
     public function collect()
     {
         return [
-            'nb_product_drafts'         => $this->draftRepository->countAll(),
-            'nb_projects'               => $this->projectRepository->countAll(),
-            'nb_assets'                 => $this->assetRepository->countAll(),
-            'nb_published_products'     => $this->publishedRepository->countAll(),
-            'nb_custom_locale_accesses' => $this->localeAccessRepository->countCustomLocaleAccesses(),
+            'nb_product_drafts'           => $this->draftRepository->countAll(),
+            'nb_projects'                 => $this->projectRepository->countAll(),
+            'nb_assets'                   => $this->assetRepository->countAll(),
+            'nb_published_products'       => $this->publishedRepository->countAll(),
+            'nb_custom_locale_accesses'   => $this->localeAccessRepository->countCustomLocaleAccesses(),
+            'nb_custom_category_accesses' => $this->categoryAccessRepository->countCustomCategoryAccesses(),
         ];
     }
 }
