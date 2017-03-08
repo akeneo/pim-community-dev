@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
 
 /**
  * Abstract product completeness entity
@@ -17,6 +18,9 @@ abstract class AbstractCompleteness implements CompletenessInterface
     /** @var int|string */
     protected $id;
 
+    /** @var ProductInterface */
+    protected $product;
+
     /** @var LocaleInterface */
     protected $locale;
 
@@ -24,26 +28,41 @@ abstract class AbstractCompleteness implements CompletenessInterface
     protected $channel;
 
     /** @var int */
-    protected $ratio = 100;
+    protected $ratio;
 
     /** @var int */
-    protected $missingCount = 0;
+    protected $missingCount;
 
     /** @var int */
-    protected $requiredCount = 0;
-
-    /** @var ProductInterface */
-    protected $product;
+    protected $requiredCount;
 
     /** @var Collection */
     protected $missingAttributes;
 
     /**
-     * Creates a new completeness.
+     * @param ProductInterface $product
+     * @param ChannelInterface $channel
+     * @param LocaleInterface  $locale
+     * @param Collection       $missingAttributes
+     * @param int              $missingCount
+     * @param int              $requiredCount
      */
-    public function __construct()
-    {
-        $this->missingAttributes = new ArrayCollection();
+    public function __construct(
+        ProductInterface $product,
+        ChannelInterface $channel,
+        LocaleInterface $locale,
+        Collection $missingAttributes,
+        $missingCount,
+        $requiredCount
+    ) {
+        $this->product = $product;
+        $this->channel = $channel;
+        $this->locale = $locale;
+        $this->missingAttributes = $missingAttributes;
+        $this->missingCount = $missingCount;
+        $this->requiredCount = $requiredCount;
+
+        $this->ratio = (int) round(100 * ($this->requiredCount - $this->missingCount) / $this->requiredCount);
     }
 
     /**
@@ -65,16 +84,6 @@ abstract class AbstractCompleteness implements CompletenessInterface
     /**
      * {@inheritdoc}
      */
-    public function setLocale(LocaleInterface $locale)
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getChannel()
     {
         return $this->channel;
@@ -83,29 +92,9 @@ abstract class AbstractCompleteness implements CompletenessInterface
     /**
      * {@inheritdoc}
      */
-    public function setChannel(ChannelInterface $channel)
-    {
-        $this->channel = $channel;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getRatio()
     {
-        return 100 * $this->missingCount / $this->requiredCount;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setRatio($ratio)
-    {
-        $this->ratio = $ratio;
-
-        return $this;
+        return $this->ratio;
     }
 
     /**
@@ -119,29 +108,9 @@ abstract class AbstractCompleteness implements CompletenessInterface
     /**
      * {@inheritdoc}
      */
-    public function setMissingCount($missingCount)
-    {
-        $this->missingCount = $missingCount;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getRequiredCount()
     {
         return $this->requiredCount;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setRequiredCount($requiredCount)
-    {
-        $this->requiredCount = $requiredCount;
-
-        return $this;
     }
 
     /**
@@ -155,40 +124,8 @@ abstract class AbstractCompleteness implements CompletenessInterface
     /**
      * {@inheritdoc}
      */
-    public function setProduct(ProductInterface $product)
-    {
-        $this->product = $product;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getMissingAttributes()
     {
         return $this->missingAttributes;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setMissingAttributes(array $missingAttributes)
-    {
-        $this->missingAttributes = $missingAttributes;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addMissingAttribute(AttributeInterface $attribute)
-    {
-        if ($this->missingAttributes->contains($attribute)) {
-            return $this;
-        }
-        $this->missingCount++;
-        $this->missingAttributes->add($attribute);
-        return $this;
     }
 }

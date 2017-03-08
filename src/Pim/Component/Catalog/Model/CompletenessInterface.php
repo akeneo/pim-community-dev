@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Doctrine\Common\Collections\Collection;
+
 /**
  * Product completeness interface
  *
@@ -24,47 +26,11 @@ interface CompletenessInterface
     public function getRequiredCount();
 
     /**
-     * Setter locale
-     *
-     * @param LocaleInterface $locale
-     *
-     * @return CompletenessInterface
-     */
-    public function setLocale(LocaleInterface $locale);
-
-    /**
      * Getter ratio
      *
      * @return int
      */
     public function getRatio();
-
-    /**
-     * Setter missing count
-     *
-     * @param int $missingCount
-     *
-     * @return CompletenessInterface
-     */
-    public function setMissingCount($missingCount);
-
-    /**
-     * Setter channel
-     *
-     * @param ChannelInterface $channel
-     *
-     * @return CompletenessInterface
-     */
-    public function setChannel(ChannelInterface $channel);
-
-    /**
-     * Setter product
-     *
-     * @param ProductInterface $product
-     *
-     * @return CompletenessInterface
-     */
-    public function setProduct(ProductInterface $product);
 
     /**
      * Getter locale
@@ -95,41 +61,9 @@ interface CompletenessInterface
     public function getProduct();
 
     /**
-     * Setter required count
-     *
-     * @param int $requiredCount
-     *
-     * @return CompletenessInterface
-     */
-    public function setRequiredCount($requiredCount);
-
-    /**
-     * Setter ratio
-     *
-     * @param int $ratio
-     *
-     * @return CompletenessInterface
-     */
-    public function setRatio($ratio);
-
-    /**
      * Get the missing attributes
      *
-     * @return AttributeInterface[]
+     * @return Collection
      */
     public function getMissingAttributes();
-
-    /**
-     * @param $missingAttributes AttributeInterface[]
-     *
-     * @return CompletenessInterface
-     */
-    public function setMissingAttributes(array $missingAttributes);
-
-    /**
-     * @param AttributeInterface $attribute
-     *
-     * @return CompletenessInterface
-     */
-    public function addMissingAttribute(AttributeInterface $attribute);
 }

@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Completeness;
 
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\Completeness;
@@ -160,11 +161,8 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
         $channel = $this->channelRepository->findOneByIdentifier($channelCode);
         $locale = $this->localeRepository->findOneByIdentifier($localeCode);
 
-        $completeness = new Completeness();
-        $completeness->setProduct($product);
-        $completeness->setChannel($channel);
-        $completeness->setLocale($locale);
-
+        $missingAttributes = new ArrayCollection();
+        $missingCount = 0;
         $requiredCount = 0;
 
         foreach ($requiredProductValueCollection as $requiredProductValue) {
@@ -177,12 +175,25 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
             if (null === $productValue ||
                 !$this->productValueCompleteChecker->isComplete($productValue, $channel, $locale)
             ) {
-                $completeness->addMissingAttribute($requiredProductValue->getAttribute());
-                $requiredCount++;
+                $attribute = $requiredProductValue->getAttribute();
+
+                if (!$missingAttributes->contains($attribute)) {
+                    $missingAttributes->add($attribute);
+                    $missingCount++;
+                }
             }
+
+            $requiredCount++;
         }
 
-        $completeness->setRequiredCount($requiredCount);
+        $completeness = new Completeness(
+            $product,
+            $channel,
+            $locale,
+            $missingAttributes,
+            $missingCount,
+            $requiredCount
+        );
 
         return $completeness;
     }
