@@ -11,10 +11,10 @@ stage("Checkout") {
     milestone 1
     if (env.BRANCH_NAME =~ /^PR-/) {
         userInput = input(message: 'Launch tests?', parameters: [
-            choice(choices: 'yes\nno', description: 'Run unit tests', name: 'launchUnitTests'),
+            choice(choices: 'yes\nno', description: 'Run unit tests and code style checks', name: 'launchUnitTests'),
             choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
-            choice(choices: 'yes\nno', description: 'Run functional tests', name: 'launchBehatTests'),
-            string(defaultValue: 'ee,ce', description: 'PIM edition the tests should run to (comma separated values)', name: 'editions'),
+            choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehatTests'),
+            string(defaultValue: 'ee,ce', description: 'PIM edition the behat tests should run on (comma separated values)', name: 'editions'),
             string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
             choice(choices: '5.6\n7.0\n7.1', description: 'PHP version to run behat with', name: 'phpVersion'),
         ])
@@ -49,9 +49,11 @@ stage("Checkout") {
             deleteDir()
             docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "pim_community_dev"
+
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "app/console oro:requirejs:generate-config"
                 sh "app/console assets:install"
+
                 stash "pim_community_dev_full"
             }
             deleteDir()
@@ -63,9 +65,11 @@ stage("Checkout") {
                 deleteDir()
                 docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                     unstash "pim_enterprise_dev"
+
                     sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                     sh "app/console oro:requirejs:generate-config"
                     sh "app/console assets:install"
+
                     stash "pim_enterprise_dev_full"
                 }
                 deleteDir()
@@ -88,9 +92,7 @@ if (launchUnitTests.equals("yes")) {
         tasks["phpspec-7.0"] = {runPhpSpecTest("7.0")}
         tasks["phpspec-7.1"] = {runPhpSpecTest("7.1")}
 
-        tasks["php-cs-fixer-5.6"] = {runPhpCsFixerTest("5.6")}
-        tasks["php-cs-fixer-7.0"] = {runPhpCsFixerTest("7.0")}
-        tasks["php-cs-fixer-7.1"] = {runPhpCsFixerTest("7.1")}
+        tasks["php-cs-fixer"] = {runPhpCsFixerTest()}
 
         tasks["grunt"] = {runGruntTest()}
 
@@ -128,7 +130,8 @@ def runGruntTest() {
             docker.image('digitallyseamless/nodejs-bower-grunt').inside("") {
                 unstash "pim_community_dev_full"
                 sh "npm install"
-                sh "grunt --force"
+
+                sh "grunt"
             }
         } finally {
             deleteDir()
@@ -145,6 +148,7 @@ def runPhpUnitTest(phpVersion) {
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
+
                 sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit app/build/logs/phpunit.xml"
             }
         } finally {
@@ -159,9 +163,9 @@ def runIntegrationTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("elasticsearch:5.2").withRun("--name elasticsearch") {
-                docker.image("mysql:5.7").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim", "--sql_mode=ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION") {
-                    docker.image("carcel/php:${phpVersion}").inside("--link mysql:mysql --link elasticsearch:elasticsearch -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("elasticsearch:5.2").withRun("--name ${env.BRANCH_NAME}-elasticsearch") {
+                docker.image("mysql:5.7").withRun("--name ${env.BRANCH_NAME}-mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim", "--sql_mode=ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION") {
+                    docker.image("carcel/php:${phpVersion}").inside("--link ${env.BRANCH_NAME}-mysql:mysql --link ${env.BRANCH_NAME}-elasticsearch:elasticsearch -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                         unstash "pim_community_dev"
 
                         sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -193,6 +197,7 @@ def runPhpSpecTest(phpVersion) {
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
+
                 sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
             }
         } finally {
@@ -203,19 +208,20 @@ def runPhpSpecTest(phpVersion) {
     }
 }
 
-def runPhpCsFixerTest(phpVersion) {
+def runPhpCsFixerTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:7.1").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "pim_community_dev"
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
+
                 sh "./bin/php-cs-fixer fix --diff --dry-run --format=junit --config=.php_cs.php > app/build/logs/phpcs.xml"
             }
         } finally {
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-cs-fixer] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
         }

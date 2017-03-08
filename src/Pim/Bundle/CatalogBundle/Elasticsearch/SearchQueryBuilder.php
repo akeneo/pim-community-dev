@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\ElasticSearch;
+namespace Pim\Bundle\CatalogBundle\Elasticsearch;
 
 /**
  * TODO: /////////////////////////////////////////////////////////////////////////////////

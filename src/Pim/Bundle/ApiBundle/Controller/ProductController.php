@@ -197,13 +197,17 @@ class ProductController
         $products = $this->productRepository->searchAfterOffset($pqb, $queryParameters['limit'], $offset);
         $count = $this->productRepository->count($pqb);
 
+        $parameters = [
+            'query_parameters'    => array_merge($request->query->all(), $queryParameters),
+            'list_route_name'     => 'pim_api_product_list',
+            'item_route_name'     => 'pim_api_product_get',
+            'item_identifier_key' => 'identifier',
+        ];
+
         $paginatedProducts = $this->paginator->paginate(
             $this->normalizer->normalize($products, 'external_api', $normalizerOptions),
-            array_merge($request->query->all(), $queryParameters),
-            $count,
-            'pim_api_product_list',
-            'pim_api_product_get',
-            'identifier'
+            $parameters,
+            $count
         );
 
         return new JsonResponse($paginatedProducts);

@@ -1,12 +1,16 @@
 'use strict';
 
-define([
+define(
+    [
         'jquery',
+        'underscore',
         'pim/base-fetcher',
         'routing'
 
-    ], function (
+    ],
+    function (
         $,
+        _,
         BaseFetcher,
         Routing
     ) {
