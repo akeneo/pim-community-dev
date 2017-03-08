@@ -110,6 +110,10 @@ class JobProfileAccessUpdater implements ObjectUpdaterInterface
                 $jobProfileAccess->setExecuteJobProfile($data);
                 break;
             case 'edit_job_profile':
+                if (true === $data) {
+                    $jobProfileAccess->setExecuteJobProfile($data);
+                }
+
                 $jobProfileAccess->setEditJobProfile($data);
                 break;
         }
