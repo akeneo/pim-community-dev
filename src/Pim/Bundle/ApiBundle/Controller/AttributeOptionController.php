@@ -10,7 +10,10 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Version;
 use Pim\Component\Api\Exception\DocumentedHttpException;
+use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
+use Pim\Component\Api\Pagination\HalPaginator;
+use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Pim\Component\Api\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -19,6 +22,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\RouterInterface;
@@ -56,6 +60,15 @@ class AttributeOptionController
     /** @var RouterInterface */
     protected $router;
 
+    /** @var HalPaginator */
+    protected $paginator;
+
+    /** @var ParameterValidatorInterface */
+    protected $parameterValidator;
+
+    /** @var array */
+    protected $apiConfiguration;
+
     /** @var array */
     protected $supportedAttributeTypes;
 
@@ -71,6 +84,9 @@ class AttributeOptionController
      * @param ValidatorInterface             $validator
      * @param SaverInterface                 $saver
      * @param RouterInterface                $router
+     * @param HalPaginator                   $paginator
+     * @param ParameterValidatorInterface    $parameterValidator
+     * @param array                          $apiConfiguration
      * @param array                          $supportedAttributeTypes
      * @param string                         $urlDocumentation
      */
@@ -83,6 +99,9 @@ class AttributeOptionController
         ValidatorInterface $validator,
         SaverInterface $saver,
         RouterInterface $router,
+        HalPaginator $paginator,
+        ParameterValidatorInterface $parameterValidator,
+        array $apiConfiguration,
         array $supportedAttributeTypes,
         $urlDocumentation
     ) {
@@ -94,6 +113,9 @@ class AttributeOptionController
         $this->validator = $validator;
         $this->saver = $saver;
         $this->router = $router;
+        $this->paginator = $paginator;
+        $this->parameterValidator = $parameterValidator;
+        $this->apiConfiguration = $apiConfiguration;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->urlDocumentation = sprintf($urlDocumentation, substr(Version::VERSION, 0, 3));
     }
@@ -101,7 +123,7 @@ class AttributeOptionController
     /**
      * @param Request $request
      * @param string  $attributeCode
-     * @param string  $optionCode
+     * @param string  $code
      *
      * @throws NotFoundHttpException
      *
@@ -109,17 +131,17 @@ class AttributeOptionController
      *
      * @AclAncestor("pim_api_attribute_option_list")
      */
-    public function getAction(Request $request, $attributeCode, $optionCode)
+    public function getAction(Request $request, $attributeCode, $code)
     {
         $attribute = $this->getAttribute($attributeCode);
         $this->isAttributeSupportingOptions($attribute);
 
-        $attributeOption = $this->attributeOptionsRepository->findOneByIdentifier($attributeCode . '.' . $optionCode);
+        $attributeOption = $this->attributeOptionsRepository->findOneByIdentifier($attributeCode . '.' . $code);
         if (null === $attributeOption) {
             throw new NotFoundHttpException(
                 sprintf(
                     'Attribute option "%s" does not exist or is not an option of the attribute "%s".',
-                    $optionCode,
+                    $code,
                     $attributeCode
                 )
             );
@@ -128,6 +150,53 @@ class AttributeOptionController
         $attributeOptionApi = $this->normalizer->normalize($attributeOption, 'external_api');
 
         return new JsonResponse($attributeOptionApi);
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $attributeCode
+     *
+     * @throws HttpException
+     *
+     * @return JsonResponse
+     *
+     * @AclAncestor("pim_api_attribute_option_list")
+     */
+    public function listAction(Request $request, $attributeCode)
+    {
+        $attribute = $this->getAttribute($attributeCode);
+        $this->isAttributeSupportingOptions($attribute);
+
+        $queryParameters = [
+            'page'  => $request->query->get('page', 1),
+            'limit' => $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default'])
+        ];
+
+        try {
+            $this->parameterValidator->validate($queryParameters);
+        } catch (PaginationParametersException $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        }
+
+        $criteria['attribute'] = $attribute->getId();
+
+        $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
+        $attributeOptions = $this->attributeOptionsRepository->searchAfterOffset($criteria, [], $queryParameters['limit'], $offset);
+
+        $parameters = [
+            'query_parameters'    => array_merge($request->query->all(), $queryParameters),
+            'uri_parameters'      => ['attributeCode' => $attributeCode],
+            'list_route_name'     => 'pim_api_attribute_option_list',
+            'item_route_name'     => 'pim_api_attribute_option_get',
+        ];
+
+        $paginatedAttributeOptions = $this->paginator->paginate(
+            $this->normalizer->normalize($attributeOptions, 'external_api'),
+            $parameters,
+            $this->attributeOptionsRepository->count($criteria)
+        );
+
+        return new JsonResponse($paginatedAttributeOptions);
     }
 
     /**
@@ -178,7 +247,7 @@ class AttributeOptionController
      *
      * @throws NotFoundHttpException
      *
-     * @return mixed
+     * @return AttributeInterface
      */
     protected function getAttribute($attributeCode)
     {
@@ -197,7 +266,7 @@ class AttributeOptionController
      *
      * @throws NotFoundHttpException
      */
-    protected function isAttributeSupportingOptions($attribute)
+    protected function isAttributeSupportingOptions(AttributeInterface $attribute)
     {
         $attributeType = $attribute->getType();
         if (!in_array($attributeType, $this->supportedAttributeTypes)) {
@@ -274,7 +343,7 @@ class AttributeOptionController
             'pim_api_attribute_option_get',
             [
                 'attributeCode' => $attribute->getCode(),
-                'optionCode'    => $attributeOption->getCode(),
+                'code'    => $attributeOption->getCode(),
             ],
             true
         );

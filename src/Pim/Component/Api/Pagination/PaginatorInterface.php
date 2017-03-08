@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Api\Pagination;
 
+use Pim\Component\Api\Exception\PaginationParametersException;
+
 /**
  * Paginator interface.
  *
@@ -17,14 +19,13 @@ interface PaginatorInterface
      *
      * Items should be already normalized.
      *
-     * @param array  $items          normalized items of the collection to render
-     * @param array  $parameters     parameters of the pagination, such as request parameters
-     * @param int    $count          total number of items without pagination
-     * @param string $listRouteName  route name of the collection
-     * @param string $itemRouteName  route name of the items in the collection
-     * @param string $itemIdentifier identifier key of an item
+     * @param array $items      normalized items of the collection to render
+     * @param array $parameters parameters to generate the different urls, such as uri parameters and query parameters
+     * @param int   $count      total number of items without pagination
+     *
+     * @throws PaginationParametersException if a parameter is either invalid, undefined parameter or missing
      *
      * @return array
      */
-    public function paginate(array $items, array $parameters, $count, $listRouteName, $itemRouteName, $itemIdentifier);
+    public function paginate(array $items, array $parameters, $count);
 }

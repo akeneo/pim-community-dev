@@ -8,6 +8,7 @@ parameters:
     pim_api.normalizer.attribute.class: Pim\Component\Api\Normalizer\AttributeNormalizer
     pim_api.normalizer.attribute_option.class: Pim\Component\Api\Normalizer\AttributeOptionNormalizer
     pim_api.normalizer.channel.class: Pim\Component\Api\Normalizer\ChannelNormalizer
+    pim_api.normalizer.locale.class: Pim\Component\Api\Normalizer\LocaleNormalizer
 
 services:
     fos_rest.serializer:
@@ -78,5 +79,12 @@ services:
         class: '%pim_api.normalizer.channel.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.channel'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.locale:
+        class: '%pim_api.normalizer.locale.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.locale'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
