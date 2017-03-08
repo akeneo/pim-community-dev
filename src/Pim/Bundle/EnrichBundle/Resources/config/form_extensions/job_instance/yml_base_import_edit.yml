@@ -68,7 +68,7 @@ extensions:
     pim-job-instance-yml-base-import-edit-properties-file-upload:
         module: pim/job/common/edit/field/switch
         parent: pim-job-instance-yml-base-import-edit-properties
-        position: 140
+        position: 130
         targetZone: global-settings
         config:
             fieldCode: configuration.uploadAllowed

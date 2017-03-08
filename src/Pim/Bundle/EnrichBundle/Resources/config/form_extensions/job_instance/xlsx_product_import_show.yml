@@ -67,21 +67,21 @@ extensions:
             label: pim_enrich.form.job_instance.tab.properties.file_path.title
             tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
 
-    pim-job-instance-xlsx-product-import-show-properties-with-header:
+    pim-job-instance-xlsx-product-import-show-properties-file-upload:
         module: pim/job/common/edit/field/switch
         parent: pim-job-instance-xlsx-product-import-show-properties
-        position: 160
+        position: 130
         targetZone: global-settings
         config:
-            fieldCode: configuration.withHeader
+            fieldCode: configuration.uploadAllowed
             readOnly: true
-            label: pim_enrich.form.job_instance.tab.properties.with_header.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.with_header.help
+            label: pim_enrich.form.job_instance.tab.properties.upload_allowed.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.upload_allowed.help
 
     pim-job-instance-xlsx-product-import-show-properties-categories-column:
         module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-product-import-show-properties
-        position: 180
+        position: 140
         targetZone: global-settings
         config:
             fieldCode: configuration.categoriesColumn
@@ -89,10 +89,32 @@ extensions:
             label: pim_enrich.form.job_instance.tab.properties.categories_column.title
             tooltip: pim_enrich.form.job_instance.tab.properties.categories_column.help
 
+    pim-job-instance-xlsx-product-import-show-properties-date-format:
+        module: pim/job/product/edit/field/date-format
+        parent: pim-job-instance-xlsx-product-import-show-properties
+        position: 150
+        targetZone: global-settings
+        config:
+            fieldCode: configuration.dateFormat
+            readOnly: true
+            label: pim_enrich.form.job_instance.tab.properties.date_format.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.date_format.help
+
+    pim-job-instance-xlsx-product-import-show-properties-enabled:
+        module: pim/job/common/edit/field/switch
+        parent: pim-job-instance-xlsx-product-import-show-properties
+        position: 160
+        targetZone: global-settings
+        config:
+            fieldCode: configuration.enabled
+            readOnly: true
+            label: pim_enrich.form.job_instance.tab.properties.enabled.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.enabled.help
+
     pim-job-instance-xlsx-product-import-show-properties-family-column:
         module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-product-import-show-properties
-        position: 190
+        position: 170
         targetZone: global-settings
         config:
             fieldCode: configuration.familyColumn
@@ -103,7 +125,7 @@ extensions:
     pim-job-instance-xlsx-product-import-show-properties-groups-column:
         module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-product-import-show-properties
-        position: 200
+        position: 180
         targetZone: global-settings
         config:
             fieldCode: configuration.groupsColumn
@@ -111,32 +133,10 @@ extensions:
             label: pim_enrich.form.job_instance.tab.properties.groups_column.title
             tooltip: pim_enrich.form.job_instance.tab.properties.groups_column.help
 
-    pim-job-instance-xlsx-product-import-show-properties-enabled:
-        module: pim/job/common/edit/field/switch
-        parent: pim-job-instance-xlsx-product-import-show-properties
-        position: 210
-        targetZone: global-settings
-        config:
-            fieldCode: configuration.enabled
-            readOnly: true
-            label: pim_enrich.form.job_instance.tab.properties.enabled.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.enabled.help
-
-    pim-job-instance-xlsx-product-import-show-properties-date-format:
-        module: pim/job/product/edit/field/date-format
-        parent: pim-job-instance-xlsx-product-import-show-properties
-        position: 230
-        targetZone: global-settings
-        config:
-            fieldCode: configuration.dateFormat
-            readOnly: true
-            label: pim_enrich.form.job_instance.tab.properties.date_format.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.date_format.help
-
     pim-job-instance-xlsx-product-import-show-properties-enabled-comparison:
         module: pim/job/common/edit/field/switch
         parent: pim-job-instance-xlsx-product-import-show-properties
-        position: 210
+        position: 190
         targetZone: global-settings
         config:
             fieldCode: configuration.enabledComparison
@@ -147,24 +147,13 @@ extensions:
     pim-job-instance-xlsx-product-import-show-properties-real-time-versioning:
         module: pim/job/common/edit/field/switch
         parent: pim-job-instance-xlsx-product-import-show-properties
-        position: 220
+        position: 200
         targetZone: global-settings
         config:
             fieldCode: configuration.realTimeVersioning
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.real_time_versioning.title
             tooltip: pim_enrich.form.job_instance.tab.properties.real_time_versioning.help
-
-    pim-job-instance-xlsx-product-import-show-properties-file-upload:
-        module: pim/job/common/edit/field/switch
-        parent: pim-job-instance-xlsx-product-import-show-properties
-        position: 230
-        targetZone: global-settings
-        config:
-            fieldCode: configuration.uploadAllowed
-            readOnly: true
-            label: pim_enrich.form.job_instance.tab.properties.upload_allowed.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.upload_allowed.help
 
     pim-job-instance-xlsx-product-import-show-label:
         module: pim/job/common/edit/label
