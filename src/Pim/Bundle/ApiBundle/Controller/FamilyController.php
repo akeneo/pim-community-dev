@@ -150,13 +150,16 @@ class FamilyController
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
         $families = $this->repository->searchAfterOffset([], [], $queryParameters['limit'], $offset);
 
+        $parameters = [
+            'query_parameters'    => array_merge($request->query->all(), $queryParameters),
+            'list_route_name'     => 'pim_api_family_list',
+            'item_route_name'     => 'pim_api_family_get',
+        ];
+
         $paginatedFamilies = $this->paginator->paginate(
             $this->normalizer->normalize($families, 'external_api'),
-            array_merge($request->query->all(), $queryParameters),
-            $this->repository->count(),
-            'pim_api_family_list',
-            'pim_api_family_get',
-            'code'
+            $parameters,
+            $this->repository->count()
         );
 
         return new JsonResponse($paginatedFamilies);

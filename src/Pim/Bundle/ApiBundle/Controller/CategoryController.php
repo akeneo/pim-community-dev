@@ -152,13 +152,16 @@ class CategoryController
         $order = ['root' => 'ASC', 'left' => 'ASC'];
         $categories = $this->repository->searchAfterOffset([], $order, $queryParameters['limit'], $offset);
 
+        $parameters = [
+            'query_parameters'    => array_merge($request->query->all(), $queryParameters),
+            'list_route_name'     => 'pim_api_category_list',
+            'item_route_name'     => 'pim_api_category_get',
+        ];
+
         $paginatedCategories = $this->paginator->paginate(
             $this->normalizer->normalize($categories, 'external_api'),
-            array_merge($request->query->all(), $queryParameters),
-            $this->repository->count(),
-            'pim_api_category_list',
-            'pim_api_category_get',
-            'code'
+            $parameters,
+            $this->repository->count()
         );
 
         return new JsonResponse($paginatedCategories);

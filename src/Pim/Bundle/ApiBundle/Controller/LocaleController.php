@@ -110,13 +110,16 @@ class LocaleController
             $offset
         );
 
+        $parameters = [
+            'query_parameters' => array_merge($request->query->all(), $queryParameters),
+            'list_route_name'  => 'pim_api_locale_list',
+            'item_route_name'  => 'pim_api_locale_get',
+        ];
+
         $paginatedLocales = $this->paginator->paginate(
             $this->normalizer->normalize($locales, 'external_api'),
-            array_merge($request->query->all(), $queryParameters),
-            $this->repository->count($criterias),
-            'pim_api_locale_list',
-            'pim_api_locale_get',
-            'code'
+            $parameters,
+            $this->repository->count($criterias)
         );
 
         return new JsonResponse($paginatedLocales);
