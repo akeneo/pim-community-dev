@@ -29,6 +29,7 @@ class PimEnterpriseWorkflowExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('analytics.yml');
         $loader->load('appliers.yml');
         $loader->load('builder.yml');
         $loader->load('category_counters.yml');
