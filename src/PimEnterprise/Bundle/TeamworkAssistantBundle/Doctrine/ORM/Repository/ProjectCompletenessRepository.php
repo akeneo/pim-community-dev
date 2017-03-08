@@ -255,41 +255,34 @@ SQL;
      */
     protected function buildSqlQuery($username = null)
     {
-        $filterByCategoryPermissionJoins =
-        $filterByCategoryPermissionByConditions =
+        $filterByUsername =
+        $joinUserTable =
         $filterByAttributeGroupPermissions = null;
 
         if (null !== $username) {
-            // Filter on the categories the user can edit
-            $filterByCategoryPermissionJoins = <<<FILTER_USER
-LEFT JOIN `@pim_user.entity.user#groups@` AS `user_group`
-    ON `product_category_access`.`user_group_id` = `user_group`.`group_id`
-LEFT JOIN `@pim_user.entity.user@` AS `user`
-    ON `user_group`.`user_id` = `user`.`id`
+            $filterByUsername = <<<FILTER_USER
+AND `user`.`username` = :username
 FILTER_USER;
 
-            $filterByCategoryPermissionByConditions = <<<FILTER_USER
-AND `user`.`username` = :username
+            $joinUserTable = <<<FILTER_USER
+JOIN `@pim_user.entity.user@` AS `user`
+    ON `user_group`.`user_id` = `user`.`id`
 FILTER_USER;
 
             // Filter on the attribute groups the user can edit
             $filterByAttributeGroupPermissions = <<<ATTRIBUTE_GROUP_FILTER
-INNER JOIN `@pimee_security.entity.attribute_group_access@` AS `attribute_group_access`
-    ON `completeness_per_attribute_group`.`attribute_group_id` = `attribute_group_access`.`attribute_group_id`
-    AND `attribute_group_access`.`edit_attributes` = 1
-INNER JOIN`@pimee_teamwork_assistant.model.project#userGroups@` AS `project_contributor_group`
-    ON `project_contributor_group`.`user_group_id` = `attribute_group_access`.`user_group_id`
-    AND `project_contributor_group`.`project_id` = :project_id
-INNER JOIN `@pim_user.entity.user#groups@` AS `user_group`
-    ON `project_contributor_group`.`user_group_id` = `user_group`.`group_id`
-INNER JOIN `@pim_user.entity.user@` AS `user`
-    ON `user_group`.`user_id` = `user`.`id`
-WHERE `user`.`username` = :username
+JOIN @pim_user.entity.user#groups@ user_group
+    ON attribute_group_access.user_group_id = user_group.group_id
+    AND attribute_group_access.edit_attributes = 1
+$joinUserTable
+JOIN @pimee_teamwork_assistant.project_product@ AS project_product
+    ON project_product.project_id = :project_id
+    AND project_product.product_id = completeness_attribute_group.product_id
 ATTRIBUTE_GROUP_FILTER;
         }
 
         $sql = <<<SQL
-SELECT
+SELECT 
     COALESCE(
         SUM(
             CASE
@@ -318,35 +311,37 @@ SELECT
         0
     ) AS `done`
 FROM (
+SELECT *
+FROM
+(
     SELECT
-		SUM(`completeness_per_attribute_group`.`has_at_least_one_required_attribute_filled`) AS `attribute_group_in_progress`,
-		SUM(`completeness_per_attribute_group`.`is_complete`) AS `attribute_group_done`,
-		COUNT(`completeness_per_attribute_group`.`product_id`) AS `total_attribute_group`
-	FROM (
-	    SELECT DISTINCT `project_product`.`product_id`
-        FROM `@pimee_teamwork_assistant.project_product@` AS `project_product`
-        LEFT JOIN `@pim_catalog.entity.product#categories@` AS `category_product`
-            ON `project_product`.`product_id` = `category_product`.`product_id`
-        WHERE `project_product`.`project_id` = :project_id
-        AND (
-			`category_product`.`category_id` IS NULL
-			OR `category_product`.`category_id` IN (
-				SELECT `product_category_access`.`category_id`
-				FROM `@pimee_security.entity.product_category_access@` AS `product_category_access`
-				$filterByCategoryPermissionJoins
-				WHERE `product_category_access`.`edit_items` = 1
-				$filterByCategoryPermissionByConditions
-			)
-        )
-    ) AS `product_selection`
-
-    INNER JOIN `@pimee_teamwork_assistant.completeness_per_attribute_group@` AS `completeness_per_attribute_group`
-        ON `completeness_per_attribute_group`.`product_id` = `product_selection`.`product_id`
-        AND `completeness_per_attribute_group`.`channel_id` = :channel_id
-        AND `completeness_per_attribute_group`.`locale_id` = :locale_id
-    $filterByAttributeGroupPermissions
-	GROUP BY `completeness_per_attribute_group`.`product_id`
-) `completeness`
+            completeness_attribute_group.product_id,
+            SUM(completeness_attribute_group.has_at_least_one_required_attribute_filled) AS attribute_group_in_progress,
+            SUM(completeness_attribute_group.is_complete) AS attribute_group_done,
+            COUNT(completeness_attribute_group.product_id) AS total_attribute_group
+        FROM @pimee_teamwork_assistant.completeness_per_attribute_group@ AS completeness_attribute_group
+            JOIN pimee_security_attribute_group_access AS attribute_group_access
+                ON attribute_group_access.attribute_group_id = completeness_attribute_group.attribute_group_id
+            $filterByAttributeGroupPermissions    
+        WHERE
+            completeness_attribute_group.locale_id = :locale_id
+            AND completeness_attribute_group.channel_id = :channel_id
+            $filterByUsername
+      GROUP BY completeness_attribute_group.product_id
+) AS completeness_processed
+    WHERE EXISTS (
+        SELECT *
+         FROM oro_user_access_group user_group
+            JOIN @pimee_security.entity.product_category_access@ AS category_access
+                ON category_access.user_group_id = user_group.group_id    
+            $joinUserTable
+            LEFT JOIN @pim_catalog.entity.product#categories@ AS category_product
+                ON category_access.category_id = category_product.category_id
+                AND (category_access.edit_items = 1 OR category_access.edit_items IS NULL)
+            WHERE category_product.product_id = completeness_processed.product_id
+            $filterByUsername   
+    )
+) completeness
 SQL;
 
         return $this->tableNameMapper->createQuery($sql);
