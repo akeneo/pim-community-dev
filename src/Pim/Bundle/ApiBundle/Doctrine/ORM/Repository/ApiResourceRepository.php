@@ -51,7 +51,7 @@ class ApiResourceRepository extends EntityRepository implements ApiResourceRepos
         $qb = $this->createQueryBuilder('r');
 
         foreach ($criteria as $field => $criterion) {
-            $qb->andWhere($qb->expr()->eq(sprintf('r.%s ', $field), $criterion));
+            $qb->andWhere($qb->expr()->eq(sprintf('r.%s ', $field), $qb->expr()->literal($criterion)));
         }
 
         foreach ($orders as $field => $sort) {
@@ -73,14 +73,14 @@ class ApiResourceRepository extends EntityRepository implements ApiResourceRepos
     public function count(array $criteria = [])
     {
         try {
-            $qb = $this->createQueryBuilder('o');
+            $qb = $this->createQueryBuilder('r');
 
             foreach ($criteria as $field => $criterion) {
-                $qb->andWhere($qb->expr()->eq(sprintf('r.%s ', $field), $criterion));
+                $qb->andWhere($qb->expr()->eq(sprintf('r.%s ', $field), $qb->expr()->literal($criterion)));
             }
 
             return (int) $qb
-                ->select('COUNT(DISTINCT o.id)')
+                ->select('COUNT(DISTINCT r.id)')
                 ->getQuery()
                 ->getSingleScalarResult();
         } catch (UnexpectedResultException $e) {
