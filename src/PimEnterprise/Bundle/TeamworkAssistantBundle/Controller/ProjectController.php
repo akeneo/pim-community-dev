@@ -335,7 +335,7 @@ class ProjectController
             }
 
             $statusCode = $ownerStatuses[$status];
-        } else if (array_key_exists($status, $contributorStatuses)) {
+        } elseif (array_key_exists($status, $contributorStatuses)) {
             $statusCode = $contributorStatuses[$status];
         }
 

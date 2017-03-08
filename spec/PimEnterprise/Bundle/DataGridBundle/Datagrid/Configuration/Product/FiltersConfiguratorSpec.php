@@ -7,12 +7,20 @@ use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
+use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectRepositoryInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class FiltersConfiguratorSpec extends ObjectBehavior
 {
-    function let(DatagridConfiguration $configuration, ConfigurationRegistry $registry)
-    {
-        $this->beConstructedWith($registry, 'Pim/Catalog/ProductInterface');
+    function let(
+        DatagridConfiguration $configuration,
+        ConfigurationRegistry $registry,
+        RequestStack $stack,
+        ProjectRepositoryInterface $projectRepository,
+        TokenStorageInterface $tokenStorage
+    ) {
+        $this->beConstructedWith($registry, $stack, $projectRepository, $tokenStorage);
     }
 
     function it_is_a_configurator()
