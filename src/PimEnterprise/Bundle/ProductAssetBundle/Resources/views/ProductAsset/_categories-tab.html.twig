@@ -17,7 +17,7 @@
     {{ form_widget(form.categories) }}
 
     <div class="tabbable tabs-left">
-        <ul class="AknVerticalNavtab AknVerticalNavtab--condensed nav nav-tabs" id="trees-list">
+        <ul class="AknVerticalNavtab nav nav-tabs" id="trees-list">
             <li class="AknVerticalNavtab-item AknVerticalNavtab-header"></li>
             {% for tree in trees %}
                 {% set aClass = "" %}
@@ -32,7 +32,7 @@
                             <i class="icon-ok AknAcl-icon {{ iClass }}"></i>
                             {{ tree['tree'].label }}
                         </div>
-                        <span class="badge" data-tree-id="{{ tree['tree'].code }}">{{ tree['itemCount'] }}</span>
+                        <span class="AknBadge AknBadge--grey badge" data-tree-id="{{ tree['tree'].code }}">{{ tree['itemCount'] }}</span>
                     </a>
                 </li>
             {% endfor %}
