@@ -248,7 +248,6 @@ jobs:
         type:      export
         configuration:
             filePath: /tmp/rules.yml
-            header:   rules
     csv_product_proposal_import:
         connector: Akeneo CSV Connector
         alias:     csv_product_proposal_import
@@ -471,7 +470,6 @@ jobs:
         type:      export
         configuration:
             filePath: /tmp/asset_channel_configurations.yml
-            header:   asset_channel_configurations
     csv_family_import:
         connector: Akeneo CSV Connector
         alias:     csv_family_import
