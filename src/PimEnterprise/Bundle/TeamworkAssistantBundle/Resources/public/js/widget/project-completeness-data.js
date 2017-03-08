@@ -48,10 +48,13 @@ define(
                 var displayLinks = _.contains([UserContext.get('username'), null], contributorUsername);
                 var urls = {};
 
+                var noContributor = null === contributorUsername;
+                var isOwner = data.currentProject.owner.username === UserContext.get('username');
+
                 _.each(['todo', 'inprogress', 'done'], function (status) {
                     urls[status] = Routing.generate('teamwork_assistant_project_show', {
                         identifier: data.currentProjectCode,
-                        status: (null === contributorUsername) ? 'owner-' + status : 'contributor-' + status
+                        status: (noContributor && isOwner) ? 'owner-' + status : 'contributor-' + status
                     });
                 });
 
