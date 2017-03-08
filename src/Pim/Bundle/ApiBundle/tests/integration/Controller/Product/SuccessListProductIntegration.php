@@ -132,9 +132,36 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                 "enabled"       : true,
                 "values"        : {
                     "a_localizable_image" : [
-                        {"locale" : "en_US", "scope" : null, "data" : "8/5/6/e/856e7f47e3e53415d9c4ce8efe9bb51c8b2c68d5_akeneo.jpg"},
-                        {"locale" : "fr_FR", "scope" : null, "data" : "5/5/9/6/559681bb0b2df7ae0eaf3bda76af5819c08bd6ae_akeneo.jpg"},
-                        {"locale" : "zh_CN", "scope" : null, "data" : "5/5/9/6/559681bb0b2df7ae0eaf3bda76af5819c08bd6ae_akeneo.jpg"}
+                        {
+                            "locale" : "en_US",
+                            "scope" : null,
+                            "data" : "8/5/6/e/856e7f47e3e53415d9c4ce8efe9bb51c8b2c68d5_akeneo.jpg",
+                            "_links": {
+                                "download": {
+                                    "href": "http://localhost/api/rest/v1/8/5/6/e/856e7f47e3e53415d9c4ce8efe9bb51c8b2c68d5_akeneo.jpg/download"
+                                }
+                            }
+                        },
+                        {
+                            "locale" : "fr_FR",
+                            "scope" : null,
+                            "data" : "5/5/9/6/559681bb0b2df7ae0eaf3bda76af5819c08bd6ae_akeneo.jpg",
+                            "_links": {
+                                "download": {
+                                    "href": "http://localhost/api/rest/v1/5/5/9/6/559681bb0b2df7ae0eaf3bda76af5819c08bd6ae_akeneo.jpg/download"
+                                }
+                            }
+                        },
+                        {
+                            "locale" : "zh_CN",
+                            "scope" : null,
+                            "data" : "5/5/9/6/559681bb0b2df7ae0eaf3bda76af5819c08bd6ae_akeneo.jpg",
+                            "_links": {
+                                "download": {
+                                    "href": "http://localhost/api/rest/v1/5/5/9/6/559681bb0b2df7ae0eaf3bda76af5819c08bd6ae_akeneo.jpg/download"
+                                }
+                            }
+                        }
                     ]
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -285,6 +312,8 @@ JSON;
      *    - scope = "ecommerce"
      *    - locale = "en_US" or null
      * Then only products in "master" tree are returned
+     *
+     * @group test
      */
     public function testListProductsWithEcommerceChannel()
     {
@@ -315,7 +344,16 @@ JSON;
                 "enabled"       : true,
                 "values"        : {
                     "a_localizable_image" : [
-                        {"locale" : "en_US", "scope" : null, "data" : "8/5/6/e/856e7f47e3e53415d9c4ce8efe9bb51c8b2c68d5_akeneo.jpg"}
+                        {
+                            "locale" : "en_US",
+                            "scope" : null,
+                            "data" : "8/5/6/e/856e7f47e3e53415d9c4ce8efe9bb51c8b2c68d5_akeneo.jpg",
+                            "_links": {
+                                "download": {
+                                    "href": "http://localhost/api/rest/v1/8/5/6/e/856e7f47e3e53415d9c4ce8efe9bb51c8b2c68d5_akeneo.jpg/download"
+                                }
+                            }
+                        }
                     ]
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -445,8 +483,26 @@ JSON;
                 "enabled"       : true,
                 "values"        : {
                     "a_localizable_image" : [
-                        {"locale" : "en_US", "scope" : null, "data" : "8/5/6/e/856e7f47e3e53415d9c4ce8efe9bb51c8b2c68d5_akeneo.jpg"},
-                        {"locale" : "fr_FR", "scope" : null, "data" : "5/5/9/6/559681bb0b2df7ae0eaf3bda76af5819c08bd6ae_akeneo.jpg"}
+                        {
+                            "locale" : "en_US",
+                            "scope" : null,
+                            "data" : "8/5/6/e/856e7f47e3e53415d9c4ce8efe9bb51c8b2c68d5_akeneo.jpg",
+                            "_links": {
+                                "download": {
+                                    "href": "http://localhost/api/rest/v1/8/5/6/e/856e7f47e3e53415d9c4ce8efe9bb51c8b2c68d5_akeneo.jpg/download"
+                                }
+                            }
+                        },
+                        {
+                            "locale" : "fr_FR",
+                            "scope" : null,
+                            "data" : "5/5/9/6/559681bb0b2df7ae0eaf3bda76af5819c08bd6ae_akeneo.jpg",
+                            "_links": {
+                                "download": {
+                                    "href": "http://localhost/api/rest/v1/5/5/9/6/559681bb0b2df7ae0eaf3bda76af5819c08bd6ae_akeneo.jpg/download"
+                                }
+                            }
+                        }
                     ]
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -577,7 +633,16 @@ JSON;
                 "enabled"       : true,
                 "values"        : {
                     "a_localizable_image" : [
-                        {"locale" : "fr_FR", "scope" : null, "data" : "5/5/9/6/559681bb0b2df7ae0eaf3bda76af5819c08bd6ae_akeneo.jpg"}
+                        {
+                            "locale" : "fr_FR",
+                            "scope" : null,
+                            "data" : "5/5/9/6/559681bb0b2df7ae0eaf3bda76af5819c08bd6ae_akeneo.jpg",
+                            "_links": {
+                                "download": {
+                                    "href": "http://localhost/api/rest/v1/5/5/9/6/559681bb0b2df7ae0eaf3bda76af5819c08bd6ae_akeneo.jpg/download"
+                                }
+                            }
+                        }
                     ]
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -773,8 +838,26 @@ JSON;
                 "enabled"       : true,
                 "values"        : {
                     "a_localizable_image" : [
-                        {"locale" : "en_US", "scope" : null, "data" : "8/5/6/e/856e7f47e3e53415d9c4ce8efe9bb51c8b2c68d5_akeneo.jpg"},
-                        {"locale" : "zh_CN", "scope" : null, "data" : "5/5/9/6/559681bb0b2df7ae0eaf3bda76af5819c08bd6ae_akeneo.jpg"}
+                        {
+                            "locale" : "en_US",
+                            "scope" : null,
+                            "data" : "8/5/6/e/856e7f47e3e53415d9c4ce8efe9bb51c8b2c68d5_akeneo.jpg",
+                            "_links": {
+                                "download": {
+                                    "href": "http://localhost/api/rest/v1/8/5/6/e/856e7f47e3e53415d9c4ce8efe9bb51c8b2c68d5_akeneo.jpg/download"
+                                }
+                            }
+                        },
+                        {
+                            "locale" : "zh_CN",
+                            "scope" : null,
+                            "data" : "5/5/9/6/559681bb0b2df7ae0eaf3bda76af5819c08bd6ae_akeneo.jpg",
+                            "_links": {
+                                "download": {
+                                    "href": "http://localhost/api/rest/v1/5/5/9/6/559681bb0b2df7ae0eaf3bda76af5819c08bd6ae_akeneo.jpg/download"
+                                }
+                            }
+                        }
                     ]
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -1343,9 +1426,13 @@ JSON;
             return $a['identifier'] > $b['identifier'] ? 1 : -1;
         };
 
-        usort($result['_embedded']['items'], $sortValues);
-        usort($expected['_embedded']['items'], $sortValues);
+        if (isset($result['_embedded']['items'])) {
+            usort($result['_embedded']['items'], $sortValues);
+        }
+        if (isset($expected['_embedded']['items'])) {
+            usort($expected['_embedded']['items'], $sortValues);
+        }
 
-        $this->assertJsonStringEqualsJsonString(json_encode($expected), json_encode($result));
+        $this->assertEquals($expected, $result);
     }
 }

@@ -27,14 +27,14 @@ class GetMediaFileIntegration extends AbstractMediaFileTestCase
 
         $expected = <<<JSON
 {
-    "_links": {
-        "download": {"href": "http://localhost/api/rest/v1/media-files/8/6/d/5/86d5d517bdff522f16ce60b24e06086db0af85f9_akeneo.jpg/download"}
-    },
     "code": "8/6/d/5/86d5d517bdff522f16ce60b24e06086db0af85f9_akeneo.jpg",
     "original_filename": "akeneo.jpg",
     "mime_type": "image/jpeg",
     "size": 10584,
-    "extension": "jpg"
+    "extension": "jpg",
+    "_links": {
+        "download": {"href": "http://localhost/api/rest/v1/media-files/8/6/d/5/86d5d517bdff522f16ce60b24e06086db0af85f9_akeneo.jpg/download"}
+    }
 }
 JSON;
 

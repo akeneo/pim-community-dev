@@ -26,6 +26,11 @@ class GetProductIntegration extends AbstractProductTestCase
                         'locale' => null,
                         'scope'  => null,
                         'data'   => '4/d/e/b/4deb535f0979dea59cf34661e22336459a56bed3_fileA.txt',
+                        '_links' => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/media-files/4/d/e/b/4deb535f0979dea59cf34661e22336459a56bed3_fileA.txt/download'
+                            ]
+                        ]
                     ],
                 ],
                 'an_image'                           => [
@@ -33,6 +38,11 @@ class GetProductIntegration extends AbstractProductTestCase
                         'locale' => null,
                         'scope'  => null,
                         'data'   => '1/5/7/5/15757827125efa686c1c0f1e7930ca0c528f1c2c_imageA.jpg',
+                        '_links' => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/media-files/1/5/7/5/15757827125efa686c1c0f1e7930ca0c528f1c2c_imageA.jpg/download'
+                            ]
+                        ]
                     ],
                 ],
                 'a_date'                             => [
@@ -132,11 +142,21 @@ class GetProductIntegration extends AbstractProductTestCase
                         'locale' => 'en_US',
                         'scope'  => null,
                         'data'   => '6/2/e/3/62e376e75300d27bfec78878db4d30ff1490bc53_imageB_en_US.jpg',
+                        '_links' => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/media-files/6/2/e/3/62e376e75300d27bfec78878db4d30ff1490bc53_imageB_en_US.jpg/download'
+                            ]
+                        ]
                     ],
                     [
                         'locale' => 'fr_FR',
                         'scope'  => null,
                         'data'   => '0/f/5/0/0f5058de76f68446bb6b2371f19cd2234b245c00_imageB_fr_FR.jpg',
+                        '_links' => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/media-files/0/f/5/0/0f5058de76f68446bb6b2371f19cd2234b245c00_imageB_fr_FR.jpg/download'
+                            ]
+                        ]
                     ],
                 ],
                 'a_scopable_price'                   => [
