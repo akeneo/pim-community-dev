@@ -150,13 +150,16 @@ class AttributeController
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
         $attributes = $this->repository->searchAfterOffset([], [], $queryParameters['limit'], $offset);
 
+        $parameters = [
+            'query_parameters'    => array_merge($request->query->all(), $queryParameters),
+            'list_route_name'     => 'pim_api_attribute_list',
+            'item_route_name'     => 'pim_api_attribute_get',
+        ];
+
         $paginatedAttributes = $this->paginator->paginate(
             $this->normalizer->normalize($attributes, 'external_api'),
-            array_merge($request->query->all(), $queryParameters),
-            $this->repository->count(),
-            'pim_api_attribute_list',
-            'pim_api_attribute_get',
-            'code'
+            $parameters,
+            $this->repository->count()
         );
 
         return new JsonResponse($paginatedAttributes);

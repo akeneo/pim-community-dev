@@ -765,24 +765,6 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * TODO: to remove with API-114
-     *
-     * @param QueryBuilder $qb
-     *
-     * @return int
-     */
-    public function count(QueryBuilder $qb)
-    {
-        $qb = clone $qb;
-
-        return $qb->select('_id')
-            ->hydrate(false)
-            ->getQuery()
-            ->execute()
-            ->count();
-    }
-
-    /**
      * @param mixed $productId
      *
      * @return array

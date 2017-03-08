@@ -18,12 +18,17 @@ pim_api_attribute_get:
     defaults: { _controller: pim_api.controller.attribute:getAction, _format: json }
     methods: [GET]
 
+pim_api_attribute_option_list:
+    path: /attributes/{attributeCode}/options
+    defaults: { _controller: pim_api.controller.attribute_option:listAction, _format: json }
+    methods: [GET]
+
 pim_api_attribute_option_create:
     path: /attributes/{attributeCode}/options
     defaults: { _controller: pim_api.controller.attribute_option:createAction, _format: json }
     methods: [POST]
 
 pim_api_attribute_option_get:
-    path: /attributes/{attributeCode}/options/{optionCode}
+    path: /attributes/{attributeCode}/options/{code}
     defaults: { _controller: pim_api.controller.attribute_option:getAction, _format: json }
     methods: [GET]
