@@ -287,7 +287,7 @@ class PimCatalogTextIndexConfigurationIntegration extends TestCase
     }
 
     /**
-     * TODO: From ElasticSearchBundle but could be generated from the global configuration
+     * TODO: From ElasticsearchBundle but could be generated from the global configuration
      *
      * Returns the full configuration for a product index
      *

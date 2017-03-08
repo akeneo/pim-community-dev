@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\ElasticSearch;
+namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use PhpSpec\ObjectBehavior;
 
@@ -8,7 +8,7 @@ class SearchQueryBuilderSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\ElasticSearch\SearchQueryBuilder');
+        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder');
     }
 
     function it_generates_an_empty_query()

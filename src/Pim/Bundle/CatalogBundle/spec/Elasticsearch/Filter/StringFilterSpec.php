@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\ElasticSearch\Filter;
+namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\ElasticSearch\SearchQueryBuilder;
+use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
@@ -23,13 +23,13 @@ class StringFilterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('\Pim\Bundle\CatalogBundle\ElasticSearch\Filter\StringFilter');
+        $this->shouldHaveType('\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\StringFilter');
     }
 
     function it_is_a_filter()
     {
         $this->shouldImplement('\Pim\Component\Catalog\Query\Filter\AttributeFilterInterface');
-        $this->shouldBeAnInstanceOf('\Pim\Bundle\CatalogBundle\ElasticSearch\Filter\AbstractFilter');
+        $this->shouldBeAnInstanceOf('\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\AbstractFilter');
     }
 
     function it_supports_operators()
@@ -229,7 +229,7 @@ class StringFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::stringExpected(
                 'name',
-                'Pim\Bundle\CatalogBundle\ElasticSearch\Filter\StringFilter',
+                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\StringFilter',
                 123
             )
         )->during('addAttributeFilter', [$name, Operators::CONTAINS, 123, 'en_US', 'ecommerce', []]);
@@ -271,7 +271,7 @@ class StringFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyException::expectedFromPreviousException(
                 'name',
-                'Pim\Bundle\CatalogBundle\ElasticSearch\Filter\StringFilter',
+                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\StringFilter',
                 $e
             )
         )->during('addAttributeFilter', [$name, Operators::CONTAINS, 'Sony', 'en_US', 'ecommerce', []]);
@@ -294,7 +294,7 @@ class StringFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyException::expectedFromPreviousException(
                 'name',
-                'Pim\Bundle\CatalogBundle\ElasticSearch\Filter\StringFilter',
+                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\StringFilter',
                 $e
             )
         )->during('addAttributeFilter', [$name, Operators::CONTAINS, 'Sony', 'en_US', 'ecommerce', []]);

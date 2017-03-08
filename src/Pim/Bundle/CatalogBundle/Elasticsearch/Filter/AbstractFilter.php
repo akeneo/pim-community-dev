@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\ElasticSearch\Filter;
+namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Pim\Bundle\CatalogBundle\ElasticSearch\SearchQueryBuilder;
+use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\FilterInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
