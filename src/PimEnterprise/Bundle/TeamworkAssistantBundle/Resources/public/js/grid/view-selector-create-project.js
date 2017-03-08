@@ -80,7 +80,7 @@ define(
 
                 var modalBody = modal.$('.modal-body');
                 modalBody.css('min-height', 150);
-                modalBody.css('overflow-y', 'hidden');
+                modalBody.css('overflow-y', 'auto');
 
                 this.form = new CreateForm();
                 this.form.configure();

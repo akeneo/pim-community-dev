@@ -12,9 +12,10 @@
 namespace PimEnterprise\Component\TeamworkAssistant\Calculator;
 
 use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\AttributeGroupCompleteness;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\FamilyRequirementRepositoryInterface;
 
 /**
@@ -46,10 +47,17 @@ class AttributeGroupCompletenessCalculator implements ProjectItemCalculatorInter
      *
      * {@inheritdoc}
      */
-    public function calculate(ProjectInterface $project, ProductInterface $product)
-    {
-        $requiredAttributes = $this->familyRequirementRepository->findRequiredAttributes($product, $project);
-        $filledAttributes = $this->findFilledAttributes($product, $project);
+    public function calculate(
+        ProductInterface $product,
+        ChannelInterface $channel,
+        LocaleInterface $locale
+    ) {
+        $requiredAttributes = $this->familyRequirementRepository->findRequiredAttributes(
+            $product,
+            $channel,
+            $locale
+        );
+        $filledAttributes = $this->findFilledAttributes($product, $channel, $locale);
 
         $result = [];
         foreach ($requiredAttributes as $attributeGroupId => $attributes) {
@@ -84,22 +92,26 @@ class AttributeGroupCompletenessCalculator implements ProjectItemCalculatorInter
      * ];
      *
      * @param ProductInterface $product
-     * @param ProjectInterface $project
+     * @param ChannelInterface $channel
+     * @param LocaleInterface $locale
      *
      * @return array
      */
-    protected function findFilledAttributes(ProductInterface $product, ProjectInterface $project)
-    {
+    protected function findFilledAttributes(
+        ProductInterface $product,
+        ChannelInterface $channel,
+        LocaleInterface $locale
+    ) {
         $filledAttributes = [];
         foreach ($product->getValues() as $value) {
             $attribute = $value->getAttribute();
-            if ($attribute->isScopable() && $value->getScope() !== $project->getChannel()->getCode() ||
-                $attribute->isLocalizable() && $value->getLocale() !== $project->getLocale()->getCode()
+            if ($attribute->isScopable() && $value->getScope() !== $channel->getCode() ||
+                $attribute->isLocalizable() && $value->getLocale() !== $locale->getCode()
             ) {
                 continue;
             }
 
-            if ($this->productValueChecker->isComplete($value, $project->getChannel(), $project->getLocale())) {
+            if ($this->productValueChecker->isComplete($value, $channel, $locale)) {
                 $filledAttributes[$attribute->getGroup()->getId()][] = $attribute->getCode();
             }
         }

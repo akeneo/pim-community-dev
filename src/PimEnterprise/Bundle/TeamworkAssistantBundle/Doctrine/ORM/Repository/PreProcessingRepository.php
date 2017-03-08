@@ -13,6 +13,8 @@ namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\TableNameMapper;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
@@ -74,20 +76,43 @@ SQL;
     /**
      * {@inheritdoc}
      */
+    public function belongsToAProject(ProductInterface $product)
+    {
+        $query = <<<SQL
+SELECT count(project_id)
+FROM @pimee_teamwork_assistant.project_product@ AS project_product
+WHERE product_id = :product_id
+SQL;
+
+        $connection = $this->entityManager->getConnection();
+        $query = $this->tableNameMapper->createQuery($query);
+        $projects = $connection->fetchColumn($query, ['product_id' => $product->getId()]);
+
+        return 0 < $projects;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addAttributeGroupCompleteness(
         ProductInterface $product,
-        ProjectInterface $project,
+        ChannelInterface $channel,
+        LocaleInterface $locale,
         array $attributeGroupCompleteness
     ) {
         $connection = $this->entityManager->getConnection();
         $sqlTable = $this->tableNameMapper->getTableName('pimee_teamwork_assistant.completeness_per_attribute_group');
 
+        $productId = $product->getId();
+        $channelId = $channel->getId();
+        $localeId = $locale->getId();
+
         $connection->delete(
             $sqlTable,
             [
-                'product_id' => $product->getId(),
-                'channel_id' => $project->getChannel()->getId(),
-                'locale_id'  => $project->getLocale()->getId(),
+                'product_id' => $productId,
+                'channel_id' => $channelId,
+                'locale_id'  => $localeId,
             ]
         );
 
@@ -95,14 +120,13 @@ SQL;
             $connection->insert(
                 $sqlTable,
                 [
-                    'product_id'                                 => $product->getId(),
-                    'channel_id'                                 => $project->getChannel()->getId(),
-                    'locale_id'                                  => $project->getLocale()->getId(),
+                    'product_id'                                 => $productId,
+                    'channel_id'                                 => $channelId,
+                    'locale_id'                                  => $localeId,
                     'attribute_group_id'                         => $attributeGroup->getAttributeGroupId(),
                     'has_at_least_one_required_attribute_filled' => $attributeGroup->hasAtLeastOneAttributeFilled(),
                     'is_complete'                                => $attributeGroup->isComplete(),
-                    'calculated_at'                              => $attributeGroup->getCalculatedAt()
-                        ->format('Y-m-d H:i:s'),
+                    'calculated_at'                              => $attributeGroup->getCalculatedAt()->format('Y-m-d H:i:s'),
                 ]
             );
         }
@@ -167,14 +191,15 @@ SQL;
         $projectId = $project->getId();
         $query = <<<SQL
 DELETE completeness
-FROM pimee_teamwork_assistant_completeness_per_attribute_group AS completeness
-INNER JOIN pimee_teamwork_assistant_project_product AS project_product1
+FROM @pimee_teamwork_assistant.completeness_per_attribute_group@ AS completeness
+INNER JOIN @pimee_teamwork_assistant.project_product@ AS project_product1
     ON project_product1.product_id = completeness.product_id
-LEFT OUTER JOIN pimee_teamwork_assistant_project_product AS project_product2
+LEFT OUTER JOIN @pimee_teamwork_assistant.project_product@ AS project_product2
     ON project_product2.product_id = completeness.product_id AND project_product2.project_id <> :project_id
 WHERE project_product1.project_id = :project_id AND project_product2.product_id IS NULL
 SQL;
 
+        $query = $this->tableNameMapper->createQuery($query);
         $connection->executeUpdate($query, ['project_id' => $projectId]);
         $connection->delete($sqlTable, [
             'project_id' => $projectId,

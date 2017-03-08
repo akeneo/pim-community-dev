@@ -20,7 +20,7 @@ Feature: Create enrichment project
     And the field project-locale should contain "English (United States)"
     And the field project-locale should be disabled
     And I should see the text "Channel"
-    And the field project-channel should contain "[tablet]"
+    And the field project-channel should contain "Tablet"
     And the field project-channel should be disabled
     And I should see the text "Name"
     And I should see the text "Due date"
