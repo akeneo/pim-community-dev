@@ -80,7 +80,7 @@ class ApiResourceRepository extends EntityRepository implements ApiResourceRepos
             }
 
             return (int) $qb
-                ->select('COUNT(DISTINCT r.id)')
+                ->select('COUNT(r.id)')
                 ->getQuery()
                 ->getSingleScalarResult();
         } catch (UnexpectedResultException $e) {

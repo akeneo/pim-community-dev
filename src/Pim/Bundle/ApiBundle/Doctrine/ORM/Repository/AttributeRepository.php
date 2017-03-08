@@ -80,7 +80,7 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
             }
 
             return (int) $qb
-                ->select('COUNT(DISTINCT r.id)')
+                ->select('COUNT(r.id)')
                 ->getQuery()
                 ->getSingleScalarResult();
         } catch (UnexpectedResultException $e) {
