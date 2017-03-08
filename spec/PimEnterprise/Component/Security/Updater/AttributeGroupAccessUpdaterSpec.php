@@ -64,6 +64,32 @@ class AttributeGroupAccessUpdaterSpec extends ObjectBehavior
         $this->update($groupAccess, $values, []);
     }
 
+    function it_updates_a_asset_category_access_with_edit_permission_only(
+        $userGroupRepo,
+        $attributeGroupRepo,
+        AttributeGroupAccessInterface $groupAccess,
+        GroupInterface $userGroup,
+        AttributeGroupInterface $attributeGroup
+    ) {
+        $values = [
+            'attribute_group'  => 'other',
+            'user_group'      => 'IT Manager',
+            'view_attributes' => false,
+            'edit_attributes' => true,
+        ];
+
+        $groupAccess->setAttributeGroup($attributeGroup)->shouldBeCalled();
+        $groupAccess->setUserGroup($userGroup)->shouldBeCalled();
+        $groupAccess->setViewAttributes(false)->shouldBeCalled();
+        $groupAccess->setViewAttributes(true)->shouldBeCalled();
+        $groupAccess->setEditAttributes(true)->shouldBeCalled();
+
+        $userGroupRepo->findOneByIdentifier('IT Manager')->willReturn($userGroup);
+        $attributeGroupRepo->findOneByIdentifier('other')->willReturn($attributeGroup);
+
+        $this->update($groupAccess, $values, []);
+    }
+
     function it_throws_an_exception_if_group_not_found(
         $userGroupRepo,
         AttributeGroupAccessInterface $groupAccess

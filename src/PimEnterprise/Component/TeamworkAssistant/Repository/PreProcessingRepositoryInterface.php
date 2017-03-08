@@ -12,7 +12,10 @@
 namespace PimEnterprise\Component\TeamworkAssistant\Repository;
 
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Component\TeamworkAssistant\Model\AttributeGroupCompleteness;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 
 /**
@@ -23,13 +26,15 @@ interface PreProcessingRepositoryInterface
     /**
      * Inserts data into the pre processing table.
      *
-     * @param ProductInterface $product
-     * @param ProjectInterface $project
-     * @param array            $attributeGroupCompleteness
+     * @param ProductInterface             $product
+     * @param ChannelInterface             $channel
+     * @param LocaleInterface              $locale
+     * @param AttributeGroupCompleteness[] $attributeGroupCompleteness
      */
     public function addAttributeGroupCompleteness(
         ProductInterface $product,
-        ProjectInterface $project,
+        ChannelInterface $channel,
+        LocaleInterface $locale,
         array $attributeGroupCompleteness
     );
 
@@ -62,6 +67,15 @@ interface PreProcessingRepositoryInterface
      * @param ProjectInterface $project
      */
     public function remove(ProjectInterface $project);
+
+    /**
+     * Check if a product belongs to a project
+     *
+     * @param ProductInterface $product
+     *
+     * @return bool
+     */
+    public function belongsToAProject(ProductInterface $product);
 
     /**
      * Check if product attribute group completeness has to be preprocessed.

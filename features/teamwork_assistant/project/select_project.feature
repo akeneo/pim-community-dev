@@ -150,7 +150,7 @@ Feature: Select a project to display products to enrich
   Scenario: A contributor can select a project from the project creation notification
     Given I am logged in as "Mary"
     And I am on the dashboard page
-    When I click on the notification "Project created"
+    When I click on the notification "A new project for you"
     Then I should be on the products page
     And I should see products tshirt-skyrim and tshirt-the-witcher-3
     And I should see the text "2016 summer collection"

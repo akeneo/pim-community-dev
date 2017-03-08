@@ -2,6 +2,8 @@
 
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep;
 
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
 use PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\AddUserGroupStep;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
@@ -32,9 +34,14 @@ class AddUserGroupStepSpec extends ObjectBehavior
         ProjectInterface $project,
         ProductInterface $product,
         Group $userGroup,
-        Group $otherUserGroup
+        Group $otherUserGroup,
+        LocaleInterface $locale,
+        ChannelInterface $channel
     ) {
-        $contributorGroupCalculator->calculate($project, $product)->willReturn([$userGroup]);
+        $project->getChannel()->willReturn($channel);
+        $project->getLocale()->willReturn($locale);
+
+        $contributorGroupCalculator->calculate($product, $channel, $locale)->willReturn([$userGroup]);
 
         $project->addUserGroup($userGroup)->shouldBeCalled();
         $project->addUserGroup($otherUserGroup)->shouldNotBeCalled();

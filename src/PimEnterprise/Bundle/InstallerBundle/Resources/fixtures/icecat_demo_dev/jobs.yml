@@ -973,4 +973,9 @@ jobs:
         connector: teamwork assistant
         alias:     project_calculation
         label:     Project calculation
-        type: project_calculation
+        type:      project_calculation
+    attribute_group_completeness_calculation:
+        connector: teamwork assistant
+        alias:     attribute_group_completeness_calculation
+        label:     Refresh project completeness
+        type:      attribute_group_completeness_calculation

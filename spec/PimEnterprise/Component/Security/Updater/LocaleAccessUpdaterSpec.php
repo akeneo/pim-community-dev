@@ -64,6 +64,32 @@ class LocaleAccessUpdaterSpec extends ObjectBehavior
         $this->update($localeAccess, $values, []);
     }
 
+    function it_updates_an_attribute_group_with_only_edit_permission(
+        $groupRepository,
+        $localeRepository,
+        LocaleAccessInterface $localeAccess,
+        GroupInterface $userGroup,
+        LocaleInterface $locale
+    ) {
+        $values = [
+            'locale'        => 'en_US',
+            'user_group'    => 'IT Manager',
+            'view_products' => false,
+            'edit_products' => true,
+        ];
+
+        $localeAccess->setLocale($locale)->shouldBeCalled();
+        $localeAccess->setUserGroup($userGroup)->shouldBeCalled();
+        $localeAccess->setViewProducts(false)->shouldBeCalled();
+        $localeAccess->setViewProducts(true)->shouldBeCalled();
+        $localeAccess->setEditProducts(true)->shouldBeCalled();
+
+        $groupRepository->findOneByIdentifier('IT Manager')->willReturn($userGroup);
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($locale);
+
+        $this->update($localeAccess, $values, []);
+    }
+
     function it_throws_an_exception_if_group_not_found(
         $groupRepository,
         LocaleAccessInterface $localeAccess

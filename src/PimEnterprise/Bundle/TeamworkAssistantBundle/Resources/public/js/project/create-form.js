@@ -273,11 +273,11 @@ define(
                         requiredLabel: __('teamwork_assistant.common.required'),
                         warning: __('teamwork_assistant.common.warning')
                     }));
+
+                    this.initializeDatepicker();
+
+                    return this.renderExtensions();
                 }.bind(this));
-
-                this.initializeDatepicker();
-
-                return this.renderExtensions();
             },
 
             /**
@@ -303,7 +303,7 @@ define(
                 var catalogLocale = UserContext.get('catalogLocale');
 
                 return FetcherRegistry.getFetcher('channel').fetch(catalogChannel).then(function (channel) {
-                    return i18n.getLabel(channel, catalogLocale, catalogChannel);
+                    return i18n.getLabel(channel.labels, catalogLocale, catalogChannel);
                 });
             },
 

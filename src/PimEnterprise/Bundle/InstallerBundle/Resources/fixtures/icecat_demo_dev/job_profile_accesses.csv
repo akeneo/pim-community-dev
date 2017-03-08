@@ -103,3 +103,4 @@ xlsx_locale_export;All;IT support,Manager
 xlsx_group_type_export;All;IT support,Manager
 xlsx_attribute_group_export;All;IT support,Manager
 project_calculation;All;IT support,Manager
+attribute_group_completeness_calculation;All;IT support,Manager

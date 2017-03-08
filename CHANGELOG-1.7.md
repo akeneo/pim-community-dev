@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug fixes
+
+- PIM-6201: Add automatically the view permission to the user if this one has edit permission during fixtures import.
+
 # 1.7.0-BETA2 (2017-03-06)
 
 # 1.7.0-BETA1 (2017-03-02)

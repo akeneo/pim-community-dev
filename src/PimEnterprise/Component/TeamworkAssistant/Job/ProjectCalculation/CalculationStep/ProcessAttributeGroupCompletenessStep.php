@@ -50,12 +50,16 @@ class ProcessAttributeGroupCompletenessStep implements CalculationStepInterface
             return null;
         }
 
+        $channel = $project->getChannel();
+        $locale = $project->getLocale();
+
         $attributeGroupCompleteness = $this->attributeGroupCompletenessCalculator
-            ->calculate($project, $product);
+            ->calculate($product, $channel, $locale);
 
         $this->preProcessingRepository->addAttributeGroupCompleteness(
             $product,
-            $project,
+            $channel,
+            $locale,
             $attributeGroupCompleteness
         );
     }

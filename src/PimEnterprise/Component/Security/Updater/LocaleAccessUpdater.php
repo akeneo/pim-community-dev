@@ -110,6 +110,10 @@ class LocaleAccessUpdater implements ObjectUpdaterInterface
                 $localeAccess->setViewProducts($data);
                 break;
             case 'edit_products':
+                if (true === $data) {
+                    $localeAccess->setViewProducts($data);
+                }
+
                 $localeAccess->setEditProducts($data);
                 break;
         }
