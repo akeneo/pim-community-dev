@@ -42,7 +42,7 @@ class IsReferenceDataConfiguredValidatorSpec extends ObjectBehavior
 
         $violationBuilder->setParameter('%reference_data_name%', 'foo')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->setParameter('%references%', 'bar')->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->atPath('referenceDataName')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('reference_data_name')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($attribute, $constraint);
@@ -82,7 +82,7 @@ class IsReferenceDataConfiguredValidatorSpec extends ObjectBehavior
 
         $violationBuilder->setParameter('%reference_data_name%', 'foo')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->setParameter('%references%', 'bar')->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->atPath('referenceDataName')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('reference_data_name')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($attribute, $constraint);

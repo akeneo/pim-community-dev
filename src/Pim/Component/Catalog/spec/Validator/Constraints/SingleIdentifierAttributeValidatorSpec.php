@@ -79,7 +79,6 @@ class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($violationBuilder);
 
-        $violationBuilder->atPath('type')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($attribute, $constraint);

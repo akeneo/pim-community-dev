@@ -16,9 +16,6 @@ class NotNullProperties extends Constraint
     /** @var string */
     public $message = 'This value should not be blank.';
 
-    /** @var string */
-    public $propertyPath = 'properties';
-
     /** @var array */
     public $properties = [];
 

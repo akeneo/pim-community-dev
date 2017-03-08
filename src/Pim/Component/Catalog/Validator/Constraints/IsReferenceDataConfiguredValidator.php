@@ -38,6 +38,10 @@ class IsReferenceDataConfiguredValidator extends ConstraintValidator
     {
         $referenceDataName = $attribute->getReferenceDataName();
 
+        if (null === $referenceDataName || '' === $referenceDataName) {
+            return;
+        }
+
         if (null !== $this->registry &&
             in_array($attribute->getType(), $this->referenceDataType) &&
             !$this->registry->has($referenceDataName)

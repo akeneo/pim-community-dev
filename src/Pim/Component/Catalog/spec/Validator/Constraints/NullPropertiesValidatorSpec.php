@@ -57,7 +57,7 @@ class NullPropertiesValidatorSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($violationBuilder);
         $violationBuilder
-            ->atPath('properties')
+            ->atPath('my_property')
             ->shouldBeCalled()
             ->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();

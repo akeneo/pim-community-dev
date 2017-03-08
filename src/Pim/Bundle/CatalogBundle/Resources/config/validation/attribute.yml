@@ -1,7 +1,9 @@
 Pim\Bundle\CatalogBundle\Entity\Attribute:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
-        - Pim\Component\Catalog\Validator\Constraints\SingleIdentifierAttribute: ~
+        - Pim\Component\Catalog\Validator\Constraints\SingleIdentifierAttribute:
+            payload:
+                standardPropertyName: type
         - Pim\Component\Catalog\Validator\Constraints\IsReferenceDataConfigured: ~
         - Pim\Component\Catalog\Validator\Constraints\IsIdentifierUsableAsGridFilter: ~
         - Pim\Component\Catalog\Validator\Constraints\Immutable:
@@ -27,10 +29,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             properties:
                 - reference_data_name
             groups:
-                - pim_catalog_reference_data_multiselect
-                - pim_catalog_reference_data_simpleselect
-            payload:
-                standardPropertyName: reference_data_name
+                - pim_reference_data_multiselect
+                - pim_reference_data_simpleselect
         - Pim\Component\Catalog\Validator\Constraints\NullProperties:
             message: This attribute cannot be linked to reference data.
             properties:
@@ -48,8 +48,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 - pim_catalog_boolean
                 - pim_catalog_date
                 - pim_catalog_metric
-            payload:
-                standardPropertyName: reference_data_name
     properties:
         type:
             - Type: string
@@ -97,8 +95,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_boolean
                     - pim_catalog_date
                     - pim_catalog_metric
-                    - pim_catalog_reference_data_multiselect
-                    - pim_catalog_reference_data_simpleselect
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         decimalsAllowed:
             - Type: bool
             - NotNull:
@@ -117,8 +115,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_image
                     - pim_catalog_boolean
                     - pim_catalog_date
-                    - pim_catalog_reference_data_multiselect
-                    - pim_catalog_reference_data_simpleselect
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         negativeAllowed:
             - Type: bool
             - NotNull:
@@ -137,8 +135,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_image
                     - pim_catalog_boolean
                     - pim_catalog_date
-                    - pim_catalog_reference_data_multiselect
-                    - pim_catalog_reference_data_simpleselect
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         maxCharacters:
             - Type: numeric
             - Pim\Component\Catalog\Validator\Constraints\NotDecimal: {}
@@ -168,8 +166,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_boolean
                     - pim_catalog_date
                     - pim_catalog_metric
-                    - pim_catalog_reference_data_multiselect
-                    - pim_catalog_reference_data_simpleselect
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         sortOrder:
             - NotNull: ~
             - Type: numeric
@@ -196,8 +194,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_boolean
                     - pim_catalog_date
                     - pim_catalog_metric
-                    - pim_catalog_reference_data_multiselect
-                    - pim_catalog_reference_data_simpleselect
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         unique:
             - Type: bool
             - NotNull: ~
@@ -216,8 +214,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_file
                     - pim_catalog_metric
                     - pim_catalog_boolean
-                    - pim_catalog_reference_data_multiselect
-                    - pim_catalog_reference_data_simpleselect
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         maxFileSize:
             - Type: numeric
             - Range:
@@ -238,8 +236,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_boolean
                     - pim_catalog_date
                     - pim_catalog_metric
-                    - pim_catalog_reference_data_multiselect
-                    - pim_catalog_reference_data_simpleselect
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         dateMin:
             - DateTime: ~
             - IsNull:
@@ -255,8 +253,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_image
                     - pim_catalog_boolean
                     - pim_catalog_metric
-                    - pim_catalog_reference_data_multiselect
-                    - pim_catalog_reference_data_simpleselect
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         dateMax:
             - DateTime: ~
             - IsNull:
@@ -272,8 +270,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_image
                     - pim_catalog_boolean
                     - pim_catalog_metric
-                    - pim_catalog_reference_data_multiselect
-                    - pim_catalog_reference_data_simpleselect
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         validationRule:
             - Choice:
                 choices: [null, url, email, regexp]
@@ -295,8 +293,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_file
                     - pim_catalog_image
                     - pim_catalog_metric
-                    - pim_catalog_reference_data_multiselect
-                    - pim_catalog_reference_data_simpleselect
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         validationRegexp:
             - Type: string
             - IsNull:
@@ -311,8 +309,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_file
                     - pim_catalog_image
                     - pim_catalog_metric
-                    - pim_catalog_reference_data_multiselect
-                    - pim_catalog_reference_data_simpleselect
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
             - Pim\Component\Catalog\Validator\Constraints\ValidRegex:
                 groups:
                     - pim_catalog_text
@@ -331,8 +329,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_boolean
                     - pim_catalog_date
                     - pim_catalog_metric
-                    - pim_catalog_reference_data_multiselect
-                    - pim_catalog_reference_data_simpleselect
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         translations:
             - Valid: ~
         group:
@@ -350,8 +348,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_image
                     - pim_catalog_boolean
                     - pim_catalog_date
-                    - pim_catalog_reference_data_multiselect
-                    - pim_catalog_reference_data_simpleselect
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         numberMax:
             - Type: numeric
             - IsNull:
@@ -365,8 +363,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_image
                     - pim_catalog_boolean
                     - pim_catalog_date
-                    - pim_catalog_reference_data_multiselect
-                    - pim_catalog_reference_data_simpleselect
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         metricFamily:
             - Type: string
             - IsNull:
@@ -382,8 +380,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_number
                     - pim_catalog_boolean
                     - pim_catalog_date
-                    - pim_catalog_reference_data_multiselect
-                    - pim_catalog_reference_data_simpleselect
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         defaultMetricUnit:
             - Type: string
             - IsNull:
@@ -399,8 +397,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_number
                     - pim_catalog_boolean
                     - pim_catalog_date
-                    - pim_catalog_reference_data_multiselect
-                    - pim_catalog_reference_data_simpleselect
+                    - pim_reference_data_multiselect
+                    - pim_reference_data_simpleselect
         availableLocales:
             - Count:
                 min: 0

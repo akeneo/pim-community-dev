@@ -47,7 +47,7 @@ class GlobalConstraintsIntegration extends AbstractAttributeTestCase
 
         $this->assertCount(1, $violations);
         $this->assertSame('Reference data "brand" does not exist. Allowed values are: fabrics, color', $violations->get(0)->getMessage());
-        $this->assertSame('referenceDataName', $violations->get(0)->getPropertyPath());
+        $this->assertSame('reference_data_name', $violations->get(0)->getPropertyPath());
     }
 
     public function testCodeIsImmutable()

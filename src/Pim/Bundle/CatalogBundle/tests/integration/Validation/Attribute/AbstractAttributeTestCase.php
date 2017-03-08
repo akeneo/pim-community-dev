@@ -137,8 +137,7 @@ abstract class AbstractAttributeTestCase extends TestCase
 
         $this->assertCount(1, $violations);
         $this->assertSame('This attribute cannot be linked to reference data.', $violations->get(0)->getMessage());
-        $this->assertSame('properties', $violations->get(0)->getPropertyPath());
-        $this->assertSame('reference_data_name', $violations->get(0)->getConstraint()->payload['standardPropertyName']);
+        $this->assertSame('reference_data_name', $violations->get(0)->getPropertyPath());
     }
 
     protected function assertMaxCharactersIsNotGreaterThan($type, $limit)
