@@ -69,7 +69,7 @@ extensions:
     pim-job-instance-xlsx-base-import-show-properties-file-upload:
         module: pim/job/common/edit/field/switch
         parent: pim-job-instance-xlsx-base-import-show-properties
-        position: 160
+        position: 130
         targetZone: global-settings
         config:
             fieldCode: configuration.uploadAllowed

@@ -35,7 +35,7 @@ class HalResource
     public function __construct($url, array $links, array $embedded, array $data)
     {
         if (array_key_exists('_links', $data) || array_key_exists('_embedded', $data)) {
-            throw new ReservedPropertyKeyException('Resource data could not contain a reserved HAL property key.');
+            throw new ReservedPropertyKeyException('Resource data cannot contain a reserved HAL property key.');
         }
 
         $this->data = $data;
