@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\CatalogUpdatesSubscriber;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Job\AttributeGroupCompletenessJobLauncher;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\Job\RefreshProjectCompletenessJobLauncher;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Remover\ChainedProjectRemover;
 use Prophecy\Argument;
@@ -22,7 +22,7 @@ class CatalogUpdatesSubscriberSpec extends ObjectBehavior
 {
     function let(
         ChainedProjectRemover $chainedRemover,
-        AttributeGroupCompletenessJobLauncher $attributeGroupCompletenessJobLauncher,
+        RefreshProjectCompletenessJobLauncher $attributeGroupCompletenessJobLauncher,
         RequestStack $requestStack
     ) {
         $this->beConstructedWith($chainedRemover, $attributeGroupCompletenessJobLauncher, $requestStack);

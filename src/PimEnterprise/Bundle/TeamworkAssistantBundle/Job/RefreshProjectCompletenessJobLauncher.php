@@ -20,7 +20,7 @@ use Symfony\Component\Process\PhpExecutableFinder;
  *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class AttributeGroupCompletenessJobLauncher
+class RefreshProjectCompletenessJobLauncher
 {
     /** @var JobInstanceRepository */
     protected $jobInstanceRepository;

@@ -5,10 +5,10 @@ namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Job;
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Job\AttributeGroupCompletenessJobLauncher;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\Job\RefreshProjectCompletenessJobLauncher;
 use PhpSpec\ObjectBehavior;
 
-class AttributeGroupCompletenessJobLauncherSpec extends ObjectBehavior
+class RefreshProjectCompletenessJobLauncherSpec extends ObjectBehavior
 {
     function let(JobInstanceRepository $jobInstanceRepository)
     {
@@ -17,7 +17,7 @@ class AttributeGroupCompletenessJobLauncherSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(AttributeGroupCompletenessJobLauncher::class);
+        $this->shouldHaveType(RefreshProjectCompletenessJobLauncher::class);
     }
 
     function it_launch_the_attribute_groups_completeness_calculation(
