@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * Validator to check if one of the specified properties is set but is null or blank.
+ * Validator to check if one of the specified properties is not set but, null or blank.
  *
  * @author    Fabien Lemoine <fabien.lemoine@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -37,8 +37,9 @@ class NotNullPropertiesValidator extends ConstraintValidator
         $values = $attribute->getProperties();
 
         foreach ($constraint->properties as $propertyCode) {
-            if (array_key_exists($propertyCode, $values) &&
-                (null === $values[$propertyCode] || '' === $values[$propertyCode])
+            if (!array_key_exists($propertyCode, $values) ||
+                null === $values[$propertyCode] ||
+                '' === $values[$propertyCode]
             ) {
                 $this->context->buildViolation($constraint->message)
                     ->atPath($propertyCode)
