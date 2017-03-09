@@ -202,7 +202,9 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
             });
 
             this.selectWidget.setViewDesign(this);
-            this.$(this.buttonSelector).append('<span class="AknActionButton-caret AknCaret"></span>');
+            this.$(this.buttonSelector)
+                .append('<span class="AknActionButton-caret AknCaret"></span>')
+                .find('span:first-child').addClass('filter-criteria-hint');
         },
 
         /**

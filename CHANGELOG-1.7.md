@@ -1,8 +1,9 @@
-# 1.7.0-BETA3
+# 1.7.x
 
-## Bug Fixes
+## Bug fixes
 
 - PIM-6210: fix unused fields on import profiles
+- PIM-6203: Fix various design bugs
 
 # 1.7.0-BETA2 (2017-03-06)
 
