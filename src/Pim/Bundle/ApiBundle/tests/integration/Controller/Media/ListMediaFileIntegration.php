@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Media;
 
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\MediaSanitizer;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -168,5 +169,16 @@ JSON;
         }
 
         return $data;
+    }
+
+    /**
+     * @return Configuration
+     */
+    protected function getConfiguration()
+    {
+        return new Configuration(
+            [Configuration::getTechnicalCatalogPath()],
+            true
+        );
     }
 }

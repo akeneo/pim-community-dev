@@ -9,6 +9,7 @@ fos_rest:
             json: true
     format_listener:
         rules:
+            - { path: '^/api/rest/v\d+/media-files', methods: ['POST'], priorities: ['form'], fallback_format: json, prefer_extension: true }
             - { path: '^/api', priorities: ['json'], fallback_format: json, prefer_extension: true }
             - { path: '', stop: true }
     body_listener:

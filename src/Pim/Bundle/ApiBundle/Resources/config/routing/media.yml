@@ -16,3 +16,8 @@ pim_api_media_file_get:
     methods: [GET]
     requirements:
         code: ([a-zA-Z0-9_./]+)
+
+pim_api_media_file_create:
+    path: /media-files
+    defaults: { _controller: pim_api.controller.media_file:createAction, _format: json }
+    methods: [POST]
