@@ -428,11 +428,14 @@
 
 // Fix for Retina icons
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi)  {
-  .select2-search input,
   .select2-search-choice-close,
   .select2-container .select2-choice abbr,
   .select2-container .select2-choice .select2-arrow b {
     background-size: 90px 48px !important
+  }
+  
+  .select2-search input {
+    background: none !important;
   }
 
   .select2-search-choice-close {
