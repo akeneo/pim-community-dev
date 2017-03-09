@@ -4,6 +4,7 @@ parameters:
     pim_catalog.repository.completeness.class:                       Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CompletenessRepository
     pim_catalog.repository.product_mass_action.class:                Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository
     pim_catalog.repository.product_category.class:                   Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductCategoryRepository
+    pim_catalog.doctrine.completeness_generator.class:               Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator
     pim_catalog.event_subscriber.orm.inject_product_reference.class: Pim\Bundle\CatalogBundle\EventSubscriber\ORM\InjectProductReferenceSubscriber
 
     pim_catalog.doctrine.query.filter.product_id.class:   Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\ProductIdFilter
@@ -39,6 +40,14 @@ services:
 
     pim_catalog.object_manager.association:
         alias: doctrine.orm.entity_manager
+
+    pim_catalog.doctrine.completeness_generator:
+        class: '%pim_catalog.doctrine.completeness_generator.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.product.class%'
+            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.attribute.class%'
 
     pim_catalog.event_subscriber.orm.inject_product_reference:
         class: '%pim_catalog.event_subscriber.orm.inject_product_reference.class%'

@@ -49,8 +49,7 @@ class PriceFactory
                 'currency',
                 'code',
                 'The currency does not exist',
-                'price',
-                'factory',
+                static::class,
                 $currency
             );
         }

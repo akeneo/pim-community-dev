@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
-use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -32,20 +31,19 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("<info>Generating missing completenesses...</info>");
-        // TODO: TIP-694: Make that command work again.
-        // $this->getCompletenessCalculator()->calculate();
+        $this->getCompletenessManager()->generateMissing();
         $output->writeln("<info>Missing completenesses generated.</info>");
     }
 
     /**
      * Get the completeness repository
      *
-     * @return CompletenessCalculatorInterface
+     * @return \Pim\Component\Catalog\Manager\CompletenessManager
      */
-    protected function getCompletenessCalculator()
+    protected function getCompletenessManager()
     {
         return $this
             ->getContainer()
-            ->get('pim_catalog.completeness.calculator');
+            ->get('pim_catalog.manager.completeness');
     }
 }

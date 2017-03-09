@@ -250,6 +250,7 @@ services:
     pim_enrich.controller.completeness:
         class: '%pim_enrich.controller.completeness.class%'
         arguments:
+            - '@pim_catalog.manager.completeness'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.channel'
             - '@pim_user.context.user'
@@ -333,7 +334,7 @@ services:
     pim_enrich.controller.rest.completeness:
         class: '%pim_enrich.controller.rest.completeness.class%'
         arguments:
-            - '@pim_catalog.completeness.calculator'
+            - '@pim_catalog.manager.completeness'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.channel'
             - '@pim_user.context.user'
