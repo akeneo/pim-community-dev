@@ -2,7 +2,6 @@
 
 .AknProgress {
   height: @AknMicroButtonSize;
-  border: 1px solid @AknBorderColor;
   overflow: hidden;
   background-color: @AknLightGray;
   border-radius: 200px;
@@ -11,7 +10,7 @@
 
   &-bar {
     font-size: @AknDefaultFontSize;
-    background-color: @AknPurple;
+    background-color: lighten(@AknGrey, 25%);
     float: left;
     width: 0;
     height: 100%;
