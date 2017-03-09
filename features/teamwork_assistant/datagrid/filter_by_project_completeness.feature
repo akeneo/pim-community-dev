@@ -1,8 +1,8 @@
 @javascript
-Feature: Select a project to display products to enrich
-  In order to easily display products I have to enrich in a project
-  As a contributor
-  I need to be able to select a project from many locations
+Feature: Filter by project completeness in the product datagrid
+  In order to display relevant products in a project
+  As a contributor or project owner
+  I need to be able to filter products by their project completeness status
 
   Background:
     Given the "teamwork_assistant" catalog configuration
@@ -30,7 +30,7 @@ Feature: Select a project to display products to enrich
       | decoration | Decoration  | default |
     And the following product category accesses:
       | product category | user group          | access |
-      | clothing         | Marketing           | edit   |
+      | clothing         | Marketing           | own    |
       | clothing         | Technical Clothing  | edit   |
       | clothing         | Technical High-Tech | none   |
       | clothing         | Read Only           | view   |
@@ -68,10 +68,10 @@ Feature: Select a project to display products to enrich
       | media           | Read Only           | view   | other | pim_catalog_text |
       | media           | Media manager       | edit   | other | pim_catalog_text |
     And the following families:
-      | code     | label-en_US | attributes                                             | requirements-ecommerce             | requirements-mobile                |
-      | tshirt   | TShirts     | sku,name,description,size,weight,release_date,material | sku,name,size,description,material | sku,name,size,description,material |
-      | usb_keys | USB Keys    | sku,name,description,size,weight,release_date,capacity | sku,name,size,description,capacity | sku,name,size,description,capacity |
-      | posters  | Posters     | sku,name,description,size,release_date,picture         | sku,name,size,description,picture  | sku,name,size,description,picture  |
+      | code     | label-en_US | attributes                                                     | requirements-ecommerce                     | requirements-mobile                |
+      | tshirt   | TShirts     | sku,name,description,size,weight,release_date,material         | sku,name,size,description,material         | sku,name,size,description,material |
+      | usb_keys | USB Keys    | sku,name,description,size,weight,release_date,capacity,picture | sku,name,size,description,capacity,picture | sku,name,size,description,capacity |
+      | posters  | Posters     | sku,name,description,size,release_date,picture                 | sku,name,size,description,picture          | sku,name,size,description,picture  |
     And the following products:
       | sku                  | family   | categories         | name-en_US                | size-en_US | weight-en_US | weight-en_US-unit | release_date-en_US | release_date-fr_FR | material-en_US | capacity | capacity-unit |
       | tshirt-the-witcher-3 | tshirt   | clothing           | T-Shirt "The Witcher III" | M          | 5            | OUNCE             | 2015-06-20         | 2015-06-20         | cotton         |          |               |
@@ -80,8 +80,8 @@ Feature: Select a project to display products to enrich
       | usb-key-big          | usb_keys | high_tech          | USB Key Big 64Go          |            | 1            | OUNCE             | 2016-08-13         | 2016-10-13         |                |          |               |
       | usb-key-small        | usb_keys | high_tech          |                           |            | 1            | OUNCE             |                    |                    |                | 8        | GIGABYTE      |
       | poster-movie-contact | posters  | decoration         | Movie poster "Contact"    | A1         |              |                   |                    |                    |                |          |               |
-    And I am logged in as "Julia"
-    When I am on the products page
+    And I am logged in as "Mary"
+    And I am on the products page
     And I filter by "category" with operator "" and value "clothing"
     And I show the filter "weight"
     And I filter by "weight" with operator "<" and value "6 Ounce"
@@ -96,71 +96,105 @@ Feature: Select a project to display products to enrich
     And I wait for the "project_calculation" job to finish
     And I logout
 
-  Scenario: A message is displayed if I have no projects to work on
-    Given I am logged in as "Kathy"
+  Scenario: The project completeness filter is hidden if the user is not on a project
+    And I am logged in as "Julia"
+    When I am on the products page
+    Then I should see the text "Default view"
+    But I should not see the text "Project completeness"
+    When I switch view selector type to "Projects"
+    Then I should see the text "2016 summer collection"
+    And I should see the text "Project completeness"
+
+  Scenario: Project overview options are hidden for contributors
+    And I am logged in as "Julia"
+    When I am on the products page
+    Then I should see the text "Default view"
+    When I switch view selector type to "Projects"
+    Then I should see the text "2016 summer collection"
+    And I should see the text "Project completeness"
+    And I should not see the available option "Todo (project overview)" in the filter "project_completeness"
+    And I should not see the available option "In progress (project overview)" in the filter "project_completeness"
+    And I should not see the available option "Done (project overview)" in the filter "project_completeness"
+    But I should see the available option "Todo" in the filter "project_completeness"
+    And I should see the available option "In progress" in the filter "project_completeness"
+    And I should see the available option "Done" in the filter "project_completeness"
+
+  Scenario: A contributor can filter by project completeness
+    And I am logged in as "Julia"
+    When I am on the products page
+    Then I should see the text "Default view"
+    When I switch view selector type to "Projects"
+    Then I should see the text "2016 summer collection"
+    And I should be able to use the following filters:
+      | filter               | operator | value       | result                              |
+      | project_completeness |          | Todo        |                                     |
+      | project_completeness |          | In progress | tshirt-the-witcher-3, tshirt-skyrim |
+      | project_completeness |          | Done        |                                     |
+    When I am on the "tshirt-skyrim" product page
+    And I fill in the following information:
+      | Description | A t-shirt with a dragon |
+    And I visit the "Technical" group
+    And I fill in the following information:
+      | Material | Silk |
+    And I save the product
+    And I run computation of the project "2016-summer-collection-ecommerce-en-us"
     And I am on the products page
-    And I switch view selector type to "Projects"
-    Then I should see the text "Start a new project"
-    When I filter by "category" with operator "" and value "clothing"
-    Then the grid should contain 3 elements
-    And I should see the text "Start a new project"
+    Then I should be able to use the following filters:
+      | filter               | operator | value       | result               |
+      | project_completeness |          | Todo        |                      |
+      | project_completeness |          | In progress | tshirt-the-witcher-3 |
+      | project_completeness |          | Done        | tshirt-skyrim        |
 
-  Scenario: A contributor can select a project by selecting it in the datagrid view selector
-    Given I am logged in as "Mary"
+  Scenario: A project owner can filter by project completeness
+    And I am logged in as "Julia"
+    When I am on the "tshirt-skyrim" product page
+    And I fill in the following information:
+      | Description | A t-shirt with a dragon |
+    And I visit the "Technical" group
+    And I fill in the following information:
+      | Material | Silk |
+    And I save the product
+    When I am on the "tshirt-the-witcher-3" product page
+    And I visit the "Technical" group
+    And I fill in the following information:
+      | Material |  |
+    And I save the product
+    And I run computation of the project "2016-summer-collection-ecommerce-en-us"
+    And I logout
+    And I am logged in as "Mary"
+    When I am on the products page
+    Then I should see the text "Default view"
+    When I switch view selector type to "Projects"
+    Then I should see the text "2016 summer collection"
+    And I should be able to use the following filters:
+      | filter               | operator | value                          | result               |
+      | project_completeness |          | Todo                           |                      |
+      | project_completeness |          | In progress                    | tshirt-the-witcher-3 |
+      | project_completeness |          | Done                           | tshirt-skyrim        |
+      | project_completeness |          | Todo (project overview)        |                      |
+      | project_completeness |          | In progress (project overview) | tshirt-the-witcher-3 |
+      | project_completeness |          | Done (project overview)        | tshirt-skyrim        |
+    When I am on the "tshirt-the-witcher-3" product page
+    And I fill in the following information:
+      | Description | A tshirt with Geralt |
+    And I save the product
+    And I run computation of the project "2016-summer-collection-ecommerce-en-us"
     And I am on the products page
-    And I switch view selector type to "Projects"
-    And I open the view selector
-    When I apply the "2016 summer collection" project
-    Then I should see products tshirt-skyrim and tshirt-the-witcher-3
-    And I should see the text "2016 summer collection"
+    And I should be able to use the following filters:
+      | filter               | operator | value                          | result                              |
+      | project_completeness |          | Todo                           |                                     |
+      | project_completeness |          | In progress                    |                                     |
+      | project_completeness |          | Done                           | tshirt-the-witcher-3, tshirt-skyrim |
+      | project_completeness |          | Todo (project overview)        |                                     |
+      | project_completeness |          | In progress (project overview) | tshirt-the-witcher-3                |
+      | project_completeness |          | Done (project overview)        | tshirt-skyrim                       |
 
-  Scenario: A contributor can select a project by clicking on its own TODO section of the widget
-    Given I am logged in as "Mary"
-    And I am on the dashboard page
-    When I click on the "todo" section of the teamwork assistant widget
-    Then I should be on the products page
-    And I should see the text "2016 summer collection"
-
-  Scenario: A contributor can select a project by clicking on its own IN PROGRESS section of the widget
-    Given I am logged in as "Mary"
-    And I am on the dashboard page
-    When I click on the "in-progress" section of the teamwork assistant widget
-    Then I should be on the products page
-    And I should see products tshirt-skyrim and tshirt-the-witcher-3
-    And I should see the text "2016 summer collection"
-
-  Scenario: The owner can not click on contributors section of the widget to select project
-    Given I am logged in as "Julia"
-    And I am on the dashboard page
-    When I select "Mary" contributor
-    Then I should not see the select project link in the "todo" section of the teamwork assistant widget
-    And I should not see the select project link in the "in-progress" section of the teamwork assistant widget
-    When I select "Julia" contributor
-    And I click on the "in-progress" section of the teamwork assistant widget
-    Then I should be on the products page
-    And I should see products tshirt-skyrim and tshirt-the-witcher-3
-    And I should see the text "2016 summer collection"
-    When I am on the dashboard page
-    And I click on the "in-progress" section of the teamwork assistant widget
-    Then I should be on the products page
-    And I should see products tshirt-skyrim and tshirt-the-witcher-3
-    And I should see the text "2016 summer collection"
-
-  Scenario: A contributor can select a project from the project creation notification
-    Given I am logged in as "Mary"
-    And I am on the dashboard page
-    When I click on the notification "A new project for you"
-    Then I should be on the products page
-    And I should see products tshirt-skyrim and tshirt-the-witcher-3
-    And I should see the text "2016 summer collection"
-
-  Scenario: A contributor must be alerted if he's leaving project scope by changing grid filters
-    Given I am logged in as "Mary"
-    And I am on the products page
-    And I switch view selector type to "Projects"
-    And I open the view selector
-    When I apply the "2016 summer collection" project
-    Then I should see products tshirt-skyrim and tshirt-the-witcher-3
-    And I should see the text "2016 summer collection"
-    When I filter by "category" with operator "" and value "high_tech"
-    Then I should see the text "You're leaving project scope."
+  Scenario: Filtering by project completeness doesn't leave the project context
+    And I am logged in as "Julia"
+    When I am on the products page
+    Then I should see the text "Default view"
+    When I switch view selector type to "Projects"
+    Then I should see the text "2016 summer collection"
+    When I filter by "project_completeness" with operator "" and value "Todo"
+    Then I should see the text "2016 summer collection"
+    But I should not see the text "2016 summer collection *"

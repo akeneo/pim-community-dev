@@ -24,6 +24,14 @@ teamwork_assistant:
             contributor: You're %percent%% of product done with %project_label%. Don't forget, to fill in the last products for the %due_date%.
             owner: %project_label% for the %due_date% is not 100% done.
             start: Start
+    datagrid:
+        project_completeness: Project completeness
+        contributor_todo: Todo
+        contributor_in_progress: In progress
+        contributor_done: Done
+        owner_todo: Todo (project overview)
+        owner_in_progress: In progress (project overview)
+        owner_done: Done (project overview)
 
 batch_jobs:
     project_calculation:

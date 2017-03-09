@@ -95,7 +95,7 @@ class ProjectDueDateReminderNotifierSpec extends ObjectBehavior
         $parameters = ['%project_label%' => 'Project label', '%due_date%' => $date->format('Y-m-d'), '%percent%' => 30];
 
         $projectNotificationFactory->create(
-            ['identifier' => 'project-code'],
+            ['identifier' => 'project-code', 'status' => 'all'],
             $parameters,
             $context,
             'teamwork_assistant.notification.due_date.contributor'
@@ -141,7 +141,7 @@ class ProjectDueDateReminderNotifierSpec extends ObjectBehavior
         $parameters = ['%project_label%' => 'Project label', '%due_date%' => $date->format('Y-m-d'), '%percent%' => 30];
 
         $projectNotificationFactory->create(
-            ['identifier' => 'project-code'],
+            ['identifier' => 'project-code', 'status' => 'all'],
             $parameters,
             $context,
             'teamwork_assistant.notification.due_date.owner'

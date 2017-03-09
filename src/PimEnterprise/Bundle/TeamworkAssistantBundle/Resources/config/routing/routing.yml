@@ -15,7 +15,7 @@ teamwork_assistant_project_search:
     methods: [GET]
 
 teamwork_assistant_project_show:
-    path: /projects/{identifier}/show
+    path: /projects/{identifier}/show/{status}
     defaults: { _controller: pimee_teamwork_assistant.controller.project_controller:showAction }
     methods: [GET]
 

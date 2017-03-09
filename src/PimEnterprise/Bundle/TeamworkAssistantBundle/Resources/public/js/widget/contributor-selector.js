@@ -21,7 +21,7 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             lineTemplate: _.template(lineTemplate),
-            resultsPerPage: 2,
+            resultsPerPage: 10,
             queryTimer: null,
             searchParameters: {},
 

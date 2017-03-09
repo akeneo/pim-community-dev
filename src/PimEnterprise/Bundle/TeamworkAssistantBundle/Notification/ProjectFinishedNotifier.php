@@ -88,7 +88,7 @@ class ProjectFinishedNotifier implements ProjectNotifierInterface
             ];
 
             $notification = $this->projectNotificationFactory->create(
-                ['identifier' => $parameters['project_code']],
+                ['identifier' => $parameters['project_code'], 'status' => 'all'],
                 $parameters,
                 $context,
                 $message

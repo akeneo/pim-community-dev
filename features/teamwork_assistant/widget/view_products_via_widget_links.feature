@@ -1,8 +1,8 @@
 @javascript
-Feature: Select a project to display products to enrich
-  In order to easily display products I have to enrich in a project
-  As a contributor
-  I need to be able to select a project from many locations
+Feature: View products via widget completeness links
+  In order to display detailed products from the widget completeness
+  As a contributor or project owner
+  I need to be able to click on them and display a filtered grid
 
   Background:
     Given the "teamwork_assistant" catalog configuration
@@ -30,7 +30,7 @@ Feature: Select a project to display products to enrich
       | decoration | Decoration  | default |
     And the following product category accesses:
       | product category | user group          | access |
-      | clothing         | Marketing           | edit   |
+      | clothing         | Marketing           | own    |
       | clothing         | Technical Clothing  | edit   |
       | clothing         | Technical High-Tech | none   |
       | clothing         | Read Only           | view   |
@@ -68,10 +68,10 @@ Feature: Select a project to display products to enrich
       | media           | Read Only           | view   | other | pim_catalog_text |
       | media           | Media manager       | edit   | other | pim_catalog_text |
     And the following families:
-      | code     | label-en_US | attributes                                             | requirements-ecommerce             | requirements-mobile                |
-      | tshirt   | TShirts     | sku,name,description,size,weight,release_date,material | sku,name,size,description,material | sku,name,size,description,material |
-      | usb_keys | USB Keys    | sku,name,description,size,weight,release_date,capacity | sku,name,size,description,capacity | sku,name,size,description,capacity |
-      | posters  | Posters     | sku,name,description,size,release_date,picture         | sku,name,size,description,picture  | sku,name,size,description,picture  |
+      | code     | label-en_US | attributes                                                     | requirements-ecommerce                     | requirements-mobile                |
+      | tshirt   | TShirts     | sku,name,description,size,weight,release_date,material         | sku,name,size,description,material         | sku,name,size,description,material |
+      | usb_keys | USB Keys    | sku,name,description,size,weight,release_date,capacity,picture | sku,name,size,description,capacity,picture | sku,name,size,description,capacity |
+      | posters  | Posters     | sku,name,description,size,release_date,picture                 | sku,name,size,description,picture          | sku,name,size,description,picture  |
     And the following products:
       | sku                  | family   | categories         | name-en_US                | size-en_US | weight-en_US | weight-en_US-unit | release_date-en_US | release_date-fr_FR | material-en_US | capacity | capacity-unit |
       | tshirt-the-witcher-3 | tshirt   | clothing           | T-Shirt "The Witcher III" | M          | 5            | OUNCE             | 2015-06-20         | 2015-06-20         | cotton         |          |               |
@@ -80,8 +80,8 @@ Feature: Select a project to display products to enrich
       | usb-key-big          | usb_keys | high_tech          | USB Key Big 64Go          |            | 1            | OUNCE             | 2016-08-13         | 2016-10-13         |                |          |               |
       | usb-key-small        | usb_keys | high_tech          |                           |            | 1            | OUNCE             |                    |                    |                | 8        | GIGABYTE      |
       | poster-movie-contact | posters  | decoration         | Movie poster "Contact"    | A1         |              |                   |                    |                    |                |          |               |
-    And I am logged in as "Julia"
-    When I am on the products page
+    And I am logged in as "Mary"
+    And I am on the products page
     And I filter by "category" with operator "" and value "clothing"
     And I show the filter "weight"
     And I filter by "weight" with operator "<" and value "6 Ounce"
@@ -96,71 +96,56 @@ Feature: Select a project to display products to enrich
     And I wait for the "project_calculation" job to finish
     And I logout
 
-  Scenario: A message is displayed if I have no projects to work on
-    Given I am logged in as "Kathy"
-    And I am on the products page
-    And I switch view selector type to "Projects"
-    Then I should see the text "Start a new project"
-    When I filter by "category" with operator "" and value "clothing"
-    Then the grid should contain 3 elements
-    And I should see the text "Start a new project"
+  Scenario: A contributor can display his products todo, in progress and done
+    Given I am logged in as "Julia"
+    And I am on the dashboard page
+    When I click on the "todo" section of the teamwork assistant widget
+    Then I should be on the products page
+    And I should see the text "Project completeness: Todo"
+    When I am on the dashboard page
+    And I click on the "in-progress" section of the teamwork assistant widget
+    Then I should be on the products page
+    And I should see the text "Project completeness: In progress"
+    When I am on the dashboard page
+    And I click on the "done" section of the teamwork assistant widget
+    Then I should be on the products page
+    And I should see the text "Project completeness: Done"
 
-  Scenario: A contributor can select a project by selecting it in the datagrid view selector
-    Given I am logged in as "Mary"
-    And I am on the products page
-    And I switch view selector type to "Projects"
-    And I open the view selector
-    When I apply the "2016 summer collection" project
-    Then I should see products tshirt-skyrim and tshirt-the-witcher-3
-    And I should see the text "2016 summer collection"
-
-  Scenario: A contributor can select a project by clicking on its own TODO section of the widget
+  Scenario: A project owner can display project products todo, in progress and done
     Given I am logged in as "Mary"
     And I am on the dashboard page
     When I click on the "todo" section of the teamwork assistant widget
     Then I should be on the products page
-    And I should see the text "2016 summer collection"
-
-  Scenario: A contributor can select a project by clicking on its own IN PROGRESS section of the widget
-    Given I am logged in as "Mary"
-    And I am on the dashboard page
-    When I click on the "in-progress" section of the teamwork assistant widget
-    Then I should be on the products page
-    And I should see products tshirt-skyrim and tshirt-the-witcher-3
-    And I should see the text "2016 summer collection"
-
-  Scenario: The owner can not click on contributors section of the widget to select project
-    Given I am logged in as "Julia"
-    And I am on the dashboard page
-    When I select "Mary" contributor
-    Then I should not see the select project link in the "todo" section of the teamwork assistant widget
-    And I should not see the select project link in the "in-progress" section of the teamwork assistant widget
-    When I select "Julia" contributor
-    And I click on the "in-progress" section of the teamwork assistant widget
-    Then I should be on the products page
-    And I should see products tshirt-skyrim and tshirt-the-witcher-3
-    And I should see the text "2016 summer collection"
+    And I should see the text "Project completeness: Todo (project overview)"
     When I am on the dashboard page
     And I click on the "in-progress" section of the teamwork assistant widget
     Then I should be on the products page
-    And I should see products tshirt-skyrim and tshirt-the-witcher-3
-    And I should see the text "2016 summer collection"
+    And I should see the text "Project completeness: In progress (project overview)"
+    When I am on the dashboard page
+    And I click on the "done" section of the teamwork assistant widget
+    Then I should be on the products page
+    And I should see the text "Project completeness: Done (project overview)"
 
-  Scenario: A contributor can select a project from the project creation notification
+  Scenario: A project owner can display his products todo, in progress and done
     Given I am logged in as "Mary"
     And I am on the dashboard page
-    When I click on the notification "A new project for you"
+    And I select "Mary" contributor
+    Then I should see the text "2016 summer collection E-Commerce | English (United States)"
+    And I should see the text "Mary Smith"
+    When I click on the "todo" section of the teamwork assistant widget
     Then I should be on the products page
-    And I should see products tshirt-skyrim and tshirt-the-witcher-3
-    And I should see the text "2016 summer collection"
-
-  Scenario: A contributor must be alerted if he's leaving project scope by changing grid filters
-    Given I am logged in as "Mary"
-    And I am on the products page
-    And I switch view selector type to "Projects"
-    And I open the view selector
-    When I apply the "2016 summer collection" project
-    Then I should see products tshirt-skyrim and tshirt-the-witcher-3
-    And I should see the text "2016 summer collection"
-    When I filter by "category" with operator "" and value "high_tech"
-    Then I should see the text "You're leaving project scope."
+    And I should see the text "Project completeness: Todo"
+    When I am on the dashboard page
+    And I select "Mary" contributor
+    Then I should see the text "2016 summer collection E-Commerce | English (United States)"
+    And I should see the text "Mary Smith"
+    And I click on the "in-progress" section of the teamwork assistant widget
+    Then I should be on the products page
+    And I should see the text "Project completeness: In progress"
+    When I am on the dashboard page
+    And I select "Mary" contributor
+    Then I should see the text "2016 summer collection E-Commerce | English (United States)"
+    And I should see the text "Mary Smith"
+    And I click on the "done" section of the teamwork assistant widget
+    Then I should be on the products page
+    And I should see the text "Project completeness: Done"
