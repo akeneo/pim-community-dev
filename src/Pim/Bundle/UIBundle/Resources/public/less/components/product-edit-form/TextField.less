@@ -62,3 +62,14 @@
     cursor: not-allowed;
   }
 }
+
+@-moz-document url-prefix() {
+  // CSS for Firefox
+  .AknTextField {
+    &--file {
+      -moz-box-sizing: content-box;
+      height: @AknFormHeight - 2px;
+      padding-left: 0;
+    }
+  }
+}
