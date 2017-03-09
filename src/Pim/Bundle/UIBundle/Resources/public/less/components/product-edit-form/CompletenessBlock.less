@@ -3,8 +3,8 @@
 .AknCompletenessBlock {
   &-header {
     border: 1px solid @AknBorderColor;
-    height: @AknDefaultButtonSize;
-    line-height: @AknDefaultButtonSize;
+    height: @AknTabHeight;
+    line-height: @AknTabHeight;
     font-size: @AknFontSizeBig;
     display: flex;
   }
@@ -22,9 +22,8 @@
   }
 
   &-headerButton {
-    flex-basis: @AknDefaultButtonSize;
+    flex-basis: @AknTabHeight;
     border-left: 1px solid @AknBorderColor;
-    background-color: lighten(@AknGrey, 25%);
     font-size: @AknTitleFontSize;
     text-align: center;
     cursor: pointer;
@@ -38,8 +37,7 @@
     border-left: 1px solid @AknBorderColor;
     border-right: 1px solid @AknBorderColor;
     border-bottom: 1px solid @AknBorderColor;
-    padding: 10px;
-    background: white;
+    padding: 20px;
   }
 
   &-channel {
@@ -55,6 +53,7 @@
 
   &-channelTitle {
     text-transform: capitalize;
+    font-size: @AknFontSizeBig;
   }
 
   &-missing {
@@ -66,6 +65,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
   }
 
   &-progress {

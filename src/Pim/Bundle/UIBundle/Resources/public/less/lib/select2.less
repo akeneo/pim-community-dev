@@ -24,7 +24,7 @@
 
   &.select2-container-disabled .select2-choice {
     background: @AknDisabledInputColor;
-    color: lighten(@AknDefaultFontColor, 20%);
+    color: @AknLightFontColor;
     border-color: @AknBorderColor;
     cursor: not-allowed;
     background-image: url("../../images/icon-lock.svg");
@@ -212,6 +212,7 @@
 .grid-view-selector {
   .select2-container {
     width: 200px;
+    font-size: @AknFontSizeBig;
 
     &.stickedLeft .select2-choice {
       border-top-left-radius: 0px;
@@ -427,11 +428,14 @@
 
 // Fix for Retina icons
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi)  {
-  .select2-search input,
   .select2-search-choice-close,
   .select2-container .select2-choice abbr,
   .select2-container .select2-choice .select2-arrow b {
     background-size: 90px 48px !important
+  }
+  
+  .select2-search input {
+    background: none !important;
   }
 
   .select2-search-choice-close {

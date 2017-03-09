@@ -746,6 +746,33 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param boolean $not
+     * @param string  $option
+     * @param string  $filterName
+     *
+     * @Given /^I should( not)? see the available option "([^"]*)" in the filter "([^"]*)"$/
+     */
+    public function iShouldNotSeeTheAvailableOptionInTheFilter($not, $option, $filterName)
+    {
+        $filter = $this->datagrid->getFilter($filterName);
+        $filter->open();
+
+        if ($not && in_array($option, $filter->getAvailableValues())) {
+            throw $this->createExpectationException(
+                sprintf('Option "%s" should not be available for the filter "%s"', $option, $filterName)
+            );
+        }
+
+        if (!$not && !in_array($option, $filter->getAvailableValues())) {
+            throw $this->createExpectationException(
+                sprintf('Option "%s" should be available for the filter "%s"', $option, $filterName)
+            );
+        }
+
+        $filter->open();
+    }
+
+    /**
      * @param string $row
      *
      * @When /^I click on the "([^"]*)" row$/

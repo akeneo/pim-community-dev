@@ -27,6 +27,22 @@
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
     cursor: pointer;
+
+    &--errored {
+      font-weight: bold;
+      color: @AknRed;
+
+      & :before {
+        display: inline-block;
+        margin-right: 5px;
+        font-family: 'FontAwesome';
+        font-style: normal;
+        text-decoration: inherit;
+        -webkit-font-smoothing: antialiased;
+        content: "\f06a";
+        text-indent: 0;
+      }
+    }
   };
 
   &-item:not(&-item--active) &-link:not(&-link--active):hover {

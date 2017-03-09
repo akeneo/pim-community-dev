@@ -91,7 +91,7 @@ class HalPaginator implements PaginatorInterface
             $links[] = $nextLink;
         }
 
-        $collection = $this->createResource($parameters['list_route_name'], $uriParameters, $data, $links, ['items' => $embedded]);
+        $collection = $this->createResource($parameters['list_route_name'], $uriParameters, $data, ['items' => $embedded], $links);
 
         return $collection->toArray();
     }
@@ -124,7 +124,9 @@ class HalPaginator implements PaginatorInterface
     {
         $url = $this->getUrl($routeName, $parameters);
 
-        return new HalResource($url, $embedded, $links, $data);
+        array_unshift($links, new Link('self', $url));
+
+        return new HalResource($links, $embedded, $data);
     }
 
     /**

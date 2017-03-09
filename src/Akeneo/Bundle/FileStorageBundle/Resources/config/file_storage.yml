@@ -2,6 +2,7 @@ parameters:
     akeneo_file_storage.file_storage.file.file_storer.class: Akeneo\Component\FileStorage\File\FileStorer
     akeneo_file_storage.file_storage.file.file_fetcher.class: Akeneo\Component\FileStorage\File\FileFetcher
     akeneo_file_storage.file_storage.file.output_file_fetcher.class: Akeneo\Component\FileStorage\File\OutputFileFetcher
+    akeneo_file_storage.file_storage.file.streamed_file_fetcher.class: Akeneo\Component\FileStorage\File\StreamedFileFetcher
     akeneo_file_storage.file_storage.file_info_factory.class: Akeneo\Component\FileStorage\FileInfoFactory
     akeneo_file_storage.file_storage.path_generator.class: Akeneo\Component\FileStorage\PathGenerator
     akeneo_file_storage.file_storage.filesystem_provider.class: Akeneo\Component\FileStorage\FilesystemProvider
@@ -21,6 +22,9 @@ services:
 
     akeneo_file_storage.file_storage.file.output_file_fetcher:
         class: '%akeneo_file_storage.file_storage.file.output_file_fetcher.class%'
+
+    akeneo_file_storage.file_storage.file.streamed_file_fetcher:
+        class: '%akeneo_file_storage.file_storage.file.streamed_file_fetcher.class%'
 
     akeneo_file_storage.file_storage.file_info_factory:
         class: '%akeneo_file_storage.file_storage.file_info_factory.class%'

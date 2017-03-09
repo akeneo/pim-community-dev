@@ -36,7 +36,7 @@ define(
     ) {
         return BaseForm.extend({
             tagName: 'i',
-            className: 'icon-pencil change-family',
+            className: 'icon-pencil change-family AknTitleContainer-metaLink',
             modalTemplate: _.template(modalTemplate),
             events: {
                 'click': 'showModal'

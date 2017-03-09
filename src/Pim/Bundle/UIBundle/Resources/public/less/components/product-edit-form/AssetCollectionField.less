@@ -2,6 +2,7 @@
 
 .AknAssetCollectionField {
   @itemWidth: (@AknMaxFormWidth - 4 * 10px) / 3 - 1;
+  @itemHeight: 110px;
 
   width: 100%;
   border: 1px solid @AknBorderColor;
@@ -18,6 +19,7 @@
     padding: 10px;
     margin-right: -10px;
     margin-bottom: -10px;
+    min-height: @itemHeight;
   }
 
   &-listItem {
@@ -32,7 +34,7 @@
 
   &-assetThumbnail {
     width: @itemWidth - 2*10px;
-    height: 110px;
+    height: @itemHeight;
     background-size: 100% auto;
     background-position: center center;
   }
