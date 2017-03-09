@@ -28,9 +28,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         - Pim\Component\Catalog\Validator\Constraints\NotNullProperties:
             properties:
                 - reference_data_name
-            groups:
-                - pim_reference_data_multiselect
-                - pim_reference_data_simpleselect
         - Pim\Component\Catalog\Validator\Constraints\NullProperties:
             message: This attribute cannot be linked to reference data.
             properties:

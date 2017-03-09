@@ -42,4 +42,12 @@ class NotNullProperties extends Constraint
     {
         return ['properties'];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validatedBy()
+    {
+        return 'pim_not_null_properties_validator';
+    }
 }
