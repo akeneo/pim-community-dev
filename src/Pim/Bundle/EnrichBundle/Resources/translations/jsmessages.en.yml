@@ -249,6 +249,7 @@ pim_enrich:
             btn:
                 save: Save
         family:
+            title: family
             info:
                 update_successful: Family successfully updated.
                 create_successful: Channel successfully created.
