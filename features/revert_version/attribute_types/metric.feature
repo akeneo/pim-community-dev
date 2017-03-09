@@ -21,10 +21,11 @@ Feature: Revert product attributes to a previous version
     And I visit the "Sizes" group
     And I fill in "Length" with "70"
     And I save the product
-
+    And I should not see the text "There are unsaved changes"
     And I visit the "Sizes" group
     And I fill in "Length" with ""
     And I save the product
+    And I should not see the text "There are unsaved changes"
     And the history of the product "t-shirt" has been built
     And I open the history
     Then I should see 3 versions in the history
@@ -44,6 +45,7 @@ Feature: Revert product attributes to a previous version
     And I visit the "Sizes" group
     And I fill in "Length" with "120"
     And I save the product
+    And I should not see the text "There are unsaved changes"
     And the history of the product "marcel" has been built
     And I open the history
     Then I should see 2 versions in the history
