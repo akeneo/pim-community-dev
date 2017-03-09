@@ -777,3 +777,11 @@ batch_jobs:
         label: Add to variant group
         perform:
             label: Add to variant group
+
+Pim_mass_edit:
+    download_archive:
+        archive: download generated archive|download generated archives
+        output:  download generated file|download generated files
+        input:   download read file|download read files
+        invalid_xlsx: download invalid data
+        invalid_csv: download invalid data
