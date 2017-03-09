@@ -13,10 +13,12 @@ use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
-use Pim\Component\Api\Pagination\HalPaginator;
+use Pim\Component\Api\Pagination\PaginationTypes;
+use Pim\Component\Api\Pagination\PaginatorInterface;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Repository\AttributeRepositoryInterface;
 use Pim\Component\Api\Repository\ProductRepositoryInterface;
+use Pim\Component\Api\Security\PrimaryKeyEncrypter;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
@@ -63,8 +65,11 @@ class ProductController
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /** @var HalPaginator */
-    protected $paginator;
+    /** @var PaginatorInterface */
+    protected $offsetPaginator;
+
+    /** @var PaginatorInterface */
+    protected $searchAfterPaginator;
 
     /** @var ParameterValidatorInterface */
     protected $parameterValidator;
@@ -93,6 +98,9 @@ class ProductController
     /** @var StreamResourceResponse */
     protected $partialUpdateStreamResource;
 
+    /** @var  PrimaryKeyEncrypter */
+    protected $primaryKeyEncrypter;
+
     /** @var array */
     protected $apiConfiguration;
 
@@ -103,7 +111,8 @@ class ProductController
      * @param IdentifiableObjectRepositoryInterface $localeRepository
      * @param AttributeRepositoryInterface          $attributeRepository
      * @param ProductRepositoryInterface            $productRepository
-     * @param HalPaginator                          $paginator
+     * @param PaginatorInterface                    $offsetPaginator
+     * @param PaginatorInterface                    $searchAfterPaginator
      * @param ParameterValidatorInterface           $parameterValidator
      * @param ValidatorInterface                    $productValidator
      * @param ProductBuilderInterface               $productBuilder
@@ -113,6 +122,7 @@ class ProductController
      * @param RouterInterface                       $router
      * @param ProductFilterInterface                $emptyValuesFilter
      * @param StreamResourceResponse                $partialUpdateStreamResource
+     * @param PrimaryKeyEncrypter                   $primaryKeyEncrypter
      * @param array                                 $apiConfiguration
      */
     public function __construct(
@@ -122,7 +132,8 @@ class ProductController
         IdentifiableObjectRepositoryInterface $localeRepository,
         AttributeRepositoryInterface $attributeRepository,
         ProductRepositoryInterface $productRepository,
-        HalPaginator $paginator,
+        PaginatorInterface $offsetPaginator,
+        PaginatorInterface $searchAfterPaginator,
         ParameterValidatorInterface $parameterValidator,
         ValidatorInterface $productValidator,
         ProductBuilderInterface $productBuilder,
@@ -132,6 +143,7 @@ class ProductController
         RouterInterface $router,
         ProductFilterInterface $emptyValuesFilter,
         StreamResourceResponse $partialUpdateStreamResource,
+        PrimaryKeyEncrypter $primaryKeyEncrypter,
         array $apiConfiguration
     ) {
         $this->pqbFactory = $pqbFactory;
@@ -140,7 +152,8 @@ class ProductController
         $this->localeRepository = $localeRepository;
         $this->attributeRepository = $attributeRepository;
         $this->productRepository = $productRepository;
-        $this->paginator = $paginator;
+        $this->offsetPaginator = $offsetPaginator;
+        $this->searchAfterPaginator = $searchAfterPaginator;
         $this->parameterValidator = $parameterValidator;
         $this->productValidator = $productValidator;
         $this->productBuilder = $productBuilder;
@@ -150,6 +163,7 @@ class ProductController
         $this->router = $router;
         $this->emptyValuesFilter = $emptyValuesFilter;
         $this->partialUpdateStreamResource = $partialUpdateStreamResource;
+        $this->primaryKeyEncrypter = $primaryKeyEncrypter;
         $this->apiConfiguration = $apiConfiguration;
     }
 
@@ -162,13 +176,8 @@ class ProductController
      */
     public function listAction(Request $request)
     {
-        $queryParameters = [
-            'page'  => $request->query->get('page', 1),
-            'limit' => $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default'])
-        ];
-
         try {
-            $this->parameterValidator->validate($queryParameters);
+            $this->parameterValidator->validate($request->query->all(), ['support_search_after' => true]);
         } catch (PaginationParametersException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
@@ -198,22 +207,16 @@ class ProductController
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
 
-        $offset = ($queryParameters['page'] - 1) * $queryParameters['limit'];
-        $products = $this->productRepository->searchAfterOffset($pqb, $queryParameters['limit'], $offset);
-        $count = $this->productRepository->count($pqb);
-
-        $parameters = [
-            'query_parameters'    => array_merge($request->query->all(), $queryParameters),
-            'list_route_name'     => 'pim_api_product_list',
-            'item_route_name'     => 'pim_api_product_get',
-            'item_identifier_key' => 'identifier',
+        $defaultParameters = [
+            'pagination_type' => PaginationTypes::OFFSET,
+            'limit'           => $this->apiConfiguration['pagination']['limit_by_default'],
         ];
 
-        $paginatedProducts = $this->paginator->paginate(
-            $this->normalizer->normalize($products, 'external_api', $normalizerOptions),
-            $parameters,
-            $count
-        );
+        $queryParameters = array_merge($defaultParameters, $request->query->all());
+
+        $paginatedProducts = PaginationTypes::OFFSET === $queryParameters['pagination_type'] ?
+            $this->searchAfterOffset($pqb, $queryParameters, $normalizerOptions) :
+            $this->searchAfterIdentifier($pqb, $queryParameters, $normalizerOptions);
 
         return new JsonResponse($paginatedProducts);
     }
@@ -659,5 +662,93 @@ class ProductController
                 )
             );
         }
+    }
+
+    /**
+     * @param ProductQueryBuilderInterface $pqb
+     * @param array                        $queryParameters
+     * @param array                        $normalizerOptions
+     *
+     * @return array
+     */
+    protected function searchAfterOffset(
+        ProductQueryBuilderInterface $pqb,
+        array $queryParameters,
+        array $normalizerOptions
+    ) {
+        if (!isset($queryParameters['page'])) {
+            $queryParameters['page'] = 1;
+        }
+
+        $offset = ($queryParameters['page'] - 1) * $queryParameters['limit'];
+        $products = $this->productRepository->searchAfterOffset($pqb, $queryParameters['limit'], $offset);
+        $count = $this->productRepository->count($pqb);
+
+        $parameters = [
+            'query_parameters'    => $queryParameters,
+            'list_route_name'     => 'pim_api_product_list',
+            'item_route_name'     => 'pim_api_product_get',
+            'item_identifier_key' => 'identifier',
+        ];
+
+        $paginatedProducts = $this->offsetPaginator->paginate(
+            $this->normalizer->normalize($products, 'external_api', $normalizerOptions),
+            $parameters,
+            $count
+        );
+
+        return $paginatedProducts;
+    }
+
+    /**
+     * @param ProductQueryBuilderInterface $pqb
+     * @param array                        $queryParameters
+     * @param array                        $normalizerOptions
+     *
+     * @return array
+     */
+    protected function searchAfterIdentifier(
+        ProductQueryBuilderInterface $pqb,
+        array $queryParameters,
+        array $normalizerOptions
+    ) {
+        $encryptedId = isset($queryParameters['search_after']) ? $queryParameters['search_after'] : null;
+        $id = null !== $encryptedId ? $this->primaryKeyEncrypter->decrypt($encryptedId) : null;
+
+        $productCursor = $this->productRepository->searchAfterIdentifier($pqb, $queryParameters['limit'], $id);
+
+        // we have to iterate to get the last element.
+        // An element can be false because of a bug in the cursor
+        // TODO : remove with TIP-613
+        $products = [];
+        foreach ($productCursor as $product) {
+            if (false !== $product) {
+                $products[] = $product;
+            }
+        }
+
+        $lastProduct = end($products);
+        $nextEncryptedId = false !== $lastProduct ? $this->primaryKeyEncrypter->encrypt($lastProduct->getId()) : null;
+
+        reset($products);
+
+        $parameters = [
+            'query_parameters'         => $queryParameters,
+            'search_after' => [
+                'self' => $encryptedId,
+                'next' => $nextEncryptedId,
+            ],
+            'list_route_name'          => 'pim_api_product_list',
+            'item_route_name'          => 'pim_api_product_get',
+            'item_identifier_key'      => 'identifier'
+        ];
+
+        $paginatedProducts = $this->searchAfterPaginator->paginate(
+            $this->normalizer->normalize($products, 'external_api', $normalizerOptions),
+            $parameters,
+            null
+        );
+
+        return $paginatedProducts;
     }
 }

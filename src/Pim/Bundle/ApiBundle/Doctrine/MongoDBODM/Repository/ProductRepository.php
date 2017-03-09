@@ -49,8 +49,27 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
         $qb = clone $pqb->getQueryBuilder();
 
         return $qb
+            ->sort('_id', 'ASC')
             ->limit($limit)
             ->skip($offset)
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function searchAfterIdentifier(ProductQueryBuilderInterface $pqb, $limit, $searchAfterIdentifier)
+    {
+        $qb = clone $pqb->getQueryBuilder();
+
+        if (null !== $searchAfterIdentifier) {
+            $qb->field('_id')->gt($searchAfterIdentifier);
+        }
+
+        return $qb
+            ->sort('_id', 'ASC')
+            ->limit($limit)
             ->getQuery()
             ->execute();
     }

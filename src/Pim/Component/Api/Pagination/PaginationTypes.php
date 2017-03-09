@@ -2,13 +2,6 @@
 
 namespace Pim\Component\Api\Pagination;
 
-use Pim\Component\Api\Exception\PaginationParametersException;
-use Pim\Component\Api\Hal\HalResource;
-use Pim\Component\Api\Hal\Link;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
-
 /**
  * PaginationType
  *

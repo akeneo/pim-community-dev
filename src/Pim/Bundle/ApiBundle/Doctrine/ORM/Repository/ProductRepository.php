@@ -46,7 +46,10 @@ class ProductRepository extends EntityRepository implements ProductRepositoryInt
     {
         $qb = clone $pqb->getQueryBuilder();
 
+        $rootAlias = $qb->getRootAliases()[0];
+
         return $qb
+            ->orderBy(sprintf('%s.id', $rootAlias), 'ASC')
             ->setMaxResults($limit)
             ->setFirstResult($offset)
             ->getQuery()
@@ -56,13 +59,38 @@ class ProductRepository extends EntityRepository implements ProductRepositoryInt
     /**
      * {@inheritdoc}
      */
+    public function searchAfterIdentifier(ProductQueryBuilderInterface $pqb, $limit, $searchAfterIdentifier)
+    {
+        $qb = clone $pqb->getQueryBuilder();
+
+        $rootAlias = $qb->getRootAliases()[0];
+
+        if (null !== $searchAfterIdentifier) {
+            $qb->andWhere(sprintf('%s.id > :id', $rootAlias))
+                ->setParameter(':id', $searchAfterIdentifier);
+        }
+
+        return $qb
+            ->orderBy(sprintf('%s.id', $rootAlias), 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->execute();
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function count(ProductQueryBuilderInterface $pqb)
     {
+
         try {
             $qb = clone $pqb->getQueryBuilder();
 
+            $rootAlias = $qb->getRootAliases()[0];
+
             return (int) $qb
-                ->select('COUNT(DISTINCT o.id)')
+                ->select(sprintf('COUNT(DISTINCT %s.id)', $rootAlias))
                 ->setMaxResults(null)
                 ->setFirstResult(null)
                 ->resetDQLParts(['orderBy', 'groupBy'])
