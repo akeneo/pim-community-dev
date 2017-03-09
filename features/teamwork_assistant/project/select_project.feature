@@ -119,7 +119,6 @@ Feature: Select a project to display products to enrich
     And I am on the dashboard page
     When I click on the "todo" section of the teamwork assistant widget
     Then I should be on the products page
-    And I should see products tshirt-skyrim and tshirt-the-witcher-3
     And I should see the text "2016 summer collection"
 
   Scenario: A contributor can select a project by clicking on its own IN PROGRESS section of the widget
