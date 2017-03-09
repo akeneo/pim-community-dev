@@ -4,7 +4,7 @@ namespace Pim\Bundle\ApiBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Component\Api\Exception\PaginationParametersException;
-use Pim\Component\Api\Pagination\HalPaginator;
+use Pim\Component\Api\Pagination\OffsetHalPaginator;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,7 +26,7 @@ class ChannelController
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var HalPaginator */
+    /** @var OffsetHalPaginator */
     protected $paginator;
 
     /** @var ParameterValidatorInterface */
@@ -38,14 +38,14 @@ class ChannelController
     /**
      * @param ApiResourceRepositoryInterface $repository
      * @param NormalizerInterface            $normalizer
-     * @param HalPaginator                   $paginator
+     * @param OffsetHalPaginator             $paginator
      * @param ParameterValidatorInterface    $parameterValidator
      * @param array                          $apiConfiguration
      */
     public function __construct(
         ApiResourceRepositoryInterface $repository,
         NormalizerInterface $normalizer,
-        HalPaginator $paginator,
+        OffsetHalPaginator $paginator,
         ParameterValidatorInterface $parameterValidator,
         array $apiConfiguration
     ) {

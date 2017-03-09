@@ -14,7 +14,7 @@ use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
-use Pim\Component\Api\Pagination\HalPaginator;
+use Pim\Component\Api\Pagination\OffsetHalPaginator;
 use Pim\Component\Api\Pagination\ParameterValidator;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
@@ -57,7 +57,7 @@ class CategoryController
     /** @var RouterInterface */
     protected $router;
 
-    /** @var HalPaginator */
+    /** @var OffsetHalPaginator */
     protected $paginator;
 
     /** @var ParameterValidator */
@@ -77,7 +77,7 @@ class CategoryController
      * @param ValidatorInterface             $validator
      * @param SaverInterface                 $saver
      * @param RouterInterface                $router
-     * @param HalPaginator                   $paginator
+     * @param OffsetHalPaginator             $paginator
      * @param ParameterValidator             $parameterValidator
      * @param StreamResourceResponse         $partialUpdateStreamResource
      * @param array                          $apiConfiguration
@@ -90,7 +90,7 @@ class CategoryController
         ValidatorInterface $validator,
         SaverInterface $saver,
         RouterInterface $router,
-        HalPaginator $paginator,
+        OffsetHalPaginator $paginator,
         ParameterValidator $parameterValidator,
         StreamResourceResponse $partialUpdateStreamResource,
         array $apiConfiguration

@@ -11,7 +11,7 @@ use Pim\Bundle\ApiBundle\Documentation;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
-use Pim\Component\Api\Pagination\HalPaginator;
+use Pim\Component\Api\Pagination\OffsetHalPaginator;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Pim\Component\Api\Repository\AttributeRepositoryInterface;
@@ -59,7 +59,7 @@ class AttributeOptionController
     /** @var RouterInterface */
     protected $router;
 
-    /** @var HalPaginator */
+    /** @var OffsetHalPaginator */
     protected $paginator;
 
     /** @var ParameterValidatorInterface */
@@ -80,7 +80,7 @@ class AttributeOptionController
      * @param ValidatorInterface             $validator
      * @param SaverInterface                 $saver
      * @param RouterInterface                $router
-     * @param HalPaginator                   $paginator
+     * @param OffsetHalPaginator             $paginator
      * @param ParameterValidatorInterface    $parameterValidator
      * @param array                          $apiConfiguration
      * @param array                          $supportedAttributeTypes
@@ -94,7 +94,7 @@ class AttributeOptionController
         ValidatorInterface $validator,
         SaverInterface $saver,
         RouterInterface $router,
-        HalPaginator $paginator,
+        OffsetHalPaginator $paginator,
         ParameterValidatorInterface $parameterValidator,
         array $apiConfiguration,
         array $supportedAttributeTypes

@@ -7,7 +7,7 @@ use Pim\Component\Api\Exception\PaginationParametersException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-class HalPaginatorSpec extends ObjectBehavior
+class OffsetHalPaginatorSpec extends ObjectBehavior
 {
     function let(
         RouterInterface $router
@@ -17,7 +17,7 @@ class HalPaginatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Api\Pagination\HalPaginator');
+        $this->shouldHaveType('Pim\Component\Api\Pagination\OffsetHalPaginator');
     }
 
     function it_is_a_paginator()

@@ -16,13 +16,14 @@ use Symfony\Component\Routing\RouterInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class HalPaginator implements PaginatorInterface
+class OffsetHalPaginator implements PaginatorInterface
 {
     /** @var RouterInterface */
     protected $router;
 
     /** @var OptionsResolver */
     protected $resolver;
+
     /**
      * @param RouterInterface $router
      */
@@ -70,13 +71,18 @@ class HalPaginator implements PaginatorInterface
         foreach ($items as $item) {
             $itemIdentifier = $item[$parameters['item_identifier_key']];
             $itemUriParameters = array_merge($parameters['uri_parameters'], ['code' => $itemIdentifier]);
-            $resourceItem = $this->createResource($parameters['item_route_name'], $itemUriParameters, $item);
-            $embedded[] = $resourceItem;
+
+            $itemLinks = [
+                $this->createLink($parameters['item_route_name'], $itemUriParameters, 'self')
+            ];
+
+            $embedded[] = new HalResource($itemLinks, [], $item);
         }
 
         $uriParameters = array_merge($parameters['uri_parameters'], $parameters['query_parameters']);
 
         $links = [
+            $this->createLink($parameters['list_route_name'], $uriParameters, 'self'),
             $this->createFirstLink($parameters['list_route_name'], $uriParameters),
             $this->createLastLink($parameters['list_route_name'], $uriParameters, $count),
         ];
@@ -91,42 +97,9 @@ class HalPaginator implements PaginatorInterface
             $links[] = $nextLink;
         }
 
-        $collection = $this->createResource($parameters['list_route_name'], $uriParameters, $data, ['items' => $embedded], $links);
+        $collection = new HalResource($links, ['items' => $embedded], $data);
 
         return $collection->toArray();
-    }
-
-    /**
-     * Generate an absolute URL for a specific route based on the given parameters.
-     *
-     * @param string $routeName
-     * @param array  $parameters
-     *
-     * @return string
-     */
-    protected function getUrl($routeName, array $parameters)
-    {
-        return $this->router->generate($routeName, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
-    }
-
-    /**
-     * Create a resource from a route name.
-     *
-     * @param string $routeName
-     * @param array  $parameters
-     * @param array  $data
-     * @param array  $embedded
-     * @param array  $links
-     *
-     * @return HalResource
-     */
-    protected function createResource($routeName, array $parameters, array $data = [], array $embedded = [], array $links = [])
-    {
-        $url = $this->getUrl($routeName, $parameters);
-
-        array_unshift($links, new Link('self', $url));
-
-        return new HalResource($links, $embedded, $data);
     }
 
     /**
@@ -140,7 +113,7 @@ class HalPaginator implements PaginatorInterface
      */
     protected function createLink($routeName, array $parameters, $linkName)
     {
-        $url = $this->getUrl($routeName, $parameters);
+        $url = $this->router->generate($routeName, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
 
         return new Link($linkName, $url);
     }
