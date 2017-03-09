@@ -64,7 +64,7 @@ class CreateMediaFileIntegration extends ApiTestCase
         $this->assertSame($productValueFile->getData(), $fileInfo);
 
         // check if file has been created on file system
-        $this->assertTrue($this->isFileExists($fileInfo->getKey()));
+        $this->assertTrue($this->doesFileExist($fileInfo->getKey()));
 
         // remove file from the file system
         $this->unlinkFile($fileInfo->getKey());
@@ -72,7 +72,7 @@ class CreateMediaFileIntegration extends ApiTestCase
 
     public function testErrorWhenExtensionIsForbidden()
     {
-        $client = $this->createAuthenticatedClient();
+        $client = $this->createAuthenticatedClient([], ['CONTENT_TYPE' => 'multipart/form-data']);
         $this->assertCount(0, $this->fileRepository->findAll());
 
         $file = new UploadedFile($this->files['file'], 'akeneo.txt');
@@ -254,7 +254,7 @@ JSON;
      *
      * @return bool
      */
-    protected function isFileExists($pathFile)
+    protected function doesFileExist($pathFile)
     {
         return $this->fileSystem->has($pathFile);
     }
