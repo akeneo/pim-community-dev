@@ -26,7 +26,7 @@ class RefreshProjectCompletenessJobLauncher
     protected $jobInstanceRepository;
 
     /** @var string */
-    protected $refreshProjectCompletenessJobName;
+    protected $jobName;
 
     /** @var string */
     protected $rootDirectory;
@@ -36,18 +36,18 @@ class RefreshProjectCompletenessJobLauncher
 
     /**
      * @param JobInstanceRepository $jobInstanceRepository
-     * @param string                $refreshProjectCompletenessJobName
+     * @param string                $JobName
      * @param string                $rootDirectory
      * @param string                $environment
      */
     public function __construct(
         JobInstanceRepository $jobInstanceRepository,
-        $refreshProjectCompletenessJobName,
+        $JobName,
         $rootDirectory,
         $environment
     ) {
         $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->refreshProjectCompletenessJobName = $refreshProjectCompletenessJobName;
+        $this->jobName = $JobName;
         $this->rootDirectory = $rootDirectory;
         $this->environment = $environment;
     }
@@ -59,7 +59,7 @@ class RefreshProjectCompletenessJobLauncher
      */
     public function launch(ProductInterface $product, $channel, $locale)
     {
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->refreshProjectCompletenessJobName);
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
         if (null === $jobInstance) {
             throw new \RuntimeException('Cannot run refresh project completeness, there is no available job');
         }
