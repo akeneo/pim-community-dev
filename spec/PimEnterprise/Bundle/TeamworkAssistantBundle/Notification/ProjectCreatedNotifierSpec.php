@@ -88,7 +88,7 @@ class ProjectCreatedNotifierSpec extends ObjectBehavior
         $parameters = ['%project_label%' => 'Project label', '%due_date%' => '12/01/2030'];
 
         $projectNotificationFactory->create(
-            ['identifier' => 'project-code'],
+            ['identifier' => 'project-code', 'status' => 'all'],
             $parameters,
             $context,
             'teamwork_assistant.notification.message'
