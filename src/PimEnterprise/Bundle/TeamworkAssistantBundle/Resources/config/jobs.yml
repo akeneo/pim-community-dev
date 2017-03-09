@@ -200,10 +200,10 @@ services:
     pimee_teamwork_assistant.launcher.job.attribute_group_completeness_calculation:
         class: '%pimee_teamwork_assistant.launcher.job.attribute_group_completeness_calculation.class%'
         arguments:
-            - '@akeneo_batch.launcher.simple_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
-            - '@security.token_storage'
             - '%pimee_teamwork_assistant.attribute_group_completeness_calculation.job_name%'
+            - '%kernel.root_dir%'
+            - '%kernel.environment%'
 
     ### Job Parameters
     pimee_teamwork_assistant.job.attribute_group_completeness_calculation_parameter:
