@@ -12,24 +12,15 @@ extensions:
             backUrl: pim_importexport_export_profile_index
 
     pim-job-execution-form-download-file:
-        module: pim/form/common/download-file
+        module: pim/form/common/download-files
         parent: pim-job-execution-form
         targetZone: buttons
         aclResourceId: pim_pdf_generator_product_download
         position: 70
         config:
-            label: pim_enrich.form.job_execution.button.download_file.title
             iconName: download-alt
-
-    pim-job-execution-form-download-archive:
-        module: pim/form/common/download-file
-        parent: pim-job-execution-form
-        targetZone: buttons
-        aclResourceId: pim_pdf_generator_product_download
-        position: 80
-        config:
-            label: pim_enrich.form.job_execution.button.download_archive.title
-            iconName: download-alt
+            url: pim_enrich_job_tracker_download_file
+            updateOnEvent : pim-job-execution-form:newData
 
     pim-job-execution-form-download-log:
         module: pim/form/common/download-file
@@ -40,13 +31,14 @@ extensions:
         config:
             label: pim_enrich.form.job_execution.button.download_log.title
             iconName: download-alt
+            isVisiblePath: meta.log
             url: pim_importexport_export_execution_download_log
             urlParams:
-              - property: id
-                path: meta.jobId
+                - property: id
+                  path: meta.jobId
 
     pim-job-execution-form-show-profile:
-        module: pim/common/redirect
+        module: pim/job/execution/show-profile
         parent: pim-job-execution-form
         targetZone: buttons
         position: 100
@@ -54,9 +46,6 @@ extensions:
             iconName: eye-open
             label: pim_enrich.form.job_execution.button.show_profile.title
             route: pim_importexport_import_profile_edit
-            identifier:
-                path: code
-                name: code
 
     pim-job-execution-form-status:
         module: pim/form/common/meta/status

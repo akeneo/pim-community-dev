@@ -365,6 +365,7 @@ config:
         pim/job/common/label:                                        pimenrich/js/job/common/label
         pim/job/execution/summary-table:                             pimenrich/js/job/execution/summary-table
         pim/job/execution/auto-refresh:                              pimenrich/js/job/execution/auto-refresh
+        pim/job/execution/show-profile:                              pimenrich/js/job/execution/show-profile
 
         # Filters
         pim/filter/filter:                     pimenrich/js/filter/filter
@@ -451,6 +452,7 @@ config:
         pim/form/common/attributes/copy:                     pimenrich/js/form/common/attributes/copy
         pim/form/common/attributes/copy-field:               pimenrich/js/form/common/attributes/copy-field
         pim/form/common/download-file:                       pimenrich/js/form/common/download-file
+        pim/form/common/download-files:                       pimenrich/js/form/common/download-files
 
         # Fields
         pim/field:                  pimenrich/js/product/field/field
@@ -509,6 +511,7 @@ config:
         pim/template/form/tab/attribute/copy-field:               pimenrich/templates/form/tab/attributes/copy-field.html
         pim/template/form/redirect:                               pimenrich/templates/form/redirect.html
         pim/template/form/download-file:                          pimenrich/templates/form/download-file.html
+        pim/template/form/download-files:                          pimenrich/templates/form/download-files.html
 
         pim/template/association-type/tab/properties/general:     pimenrich/templates/association-type/tab/properties/general.html
 

@@ -9,8 +9,8 @@
     {{ parent() }}
     <script>
         require(
-            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/variant-group-manager', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error', 'oro/navigation'],
-            function ($, FetcherRegistry, FormBuilder, VariantGroupManager, UserContext, Dialog, mediator, Error, Navigation) {
+            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/error'],
+            function ($, FetcherRegistry, FormBuilder, Error) {
                 $(function () {
                     FetcherRegistry.initialize().done(function () {
                         FetcherRegistry.getFetcher('job-execution').fetch('{{ id }}', {id: '{{ id }}'})
@@ -23,8 +23,10 @@
                                     });
 
                             })
-                            .fail(function (response, textStatus, errorThrown) {
-                                var errorView = new Error(response.responseJSON.message, response.status);
+                            .fail(function (response) {
+                                var errorView = response ?
+                                    new Error(response.responseJSON.message, response.status) :
+                                    new Error('No response from fetcher', 'unknown');
                                 errorView.setElement('#job-execution-form').render();
                             });
                     })

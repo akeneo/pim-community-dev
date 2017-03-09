@@ -17,29 +17,33 @@ define(
         'pim/user-context',
         'pim/common/property'
     ],
-    function (
-        _,
-        __,
-        BaseForm,
-        template,
-        Routing,
-        UserContext,
-        propertyAccessor
-    ) {
+    function (_,
+              __,
+              BaseForm,
+              template,
+              Routing,
+              UserContext,
+              propertyAccessor) {
 
         return BaseForm.extend({
-            tagName: 'a',
-            className: 'AknButton AknButton--grey AknButton--withIcon AknTitleContainer-rightButton btn-download',
             template: _.template(template),
 
             /**
-             * @param {Object} meta
+             * {@inheritdoc}
              */
             initialize: function (meta) {
                 this.config = meta.config;
+
+                BaseForm.prototype.initialize.apply(this, arguments);
             },
 
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
+                if (!this.isVisible()) {
+                    return this;
+                }
                 this.$el.html(this.template({
                     btnLabel: __(this.config.label),
                     btnIcon: this.config.iconName
@@ -49,6 +53,10 @@ define(
                 return this;
             },
 
+            /**
+             * Get the url with parameters
+             * @returns {*}
+             */
             getUrl: function () {
                 if (this.config.url) {
                     var parameters = {};
@@ -66,6 +74,19 @@ define(
                 } else {
                     return '';
                 }
+            },
+
+            /**
+             * Returns true if the extension should be visible
+             * @returns {*}
+             */
+            isVisible: function () {
+                return this.config.isVisiblePath ?
+                    propertyAccessor.accessProperty(
+                        this.getFormData(),
+                        this.config.isVisiblePath
+                    )
+                    : true;
             }
         });
     }
