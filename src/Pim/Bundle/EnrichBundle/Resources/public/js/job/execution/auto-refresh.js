@@ -25,7 +25,7 @@ define(
             _autoRefreshDelay: 1000, //1 second
             _autoRefreshTimeout: null,
 
-            _stopAutoRefreshDelay: 10/*2 * 60*/ * 1000, //2 minutes
+            _stopAutoRefreshDelay: 2 * 60 * 1000, //2 minutes
             _stopAutoUpdateTimeout: null,
 
             _object: null, //Store the last object that has been fetch
