@@ -43,8 +43,6 @@ Feature: Edit an import
     And the "Enclosure" field should contain "'"
     And I should see the text "Escape"
     And the "Escape" field should contain "\\"
-    And I should see the text "With header"
-    And the "With header" field should contain "on"
     And I should see the text "Real time history"
     And the "Real time history" field should contain ""
     And I should see the text "Enable the product"

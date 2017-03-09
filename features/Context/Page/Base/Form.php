@@ -808,7 +808,11 @@ class Form extends Base
             return $this->find('css', sprintf('#%s', $for));
         }, sprintf('Cannot find element field with id %s', $for));
 
-        $field->setValue($value);
+        $this->spin(function () use ($field, $value) {
+            $field->setValue($value);
+
+            return $field->getValue() === $value;
+        }, sprintf('Cannot fill field "%s" with value "%s"', $label->getHtml(), $value));
 
         $this->getSession()->executeScript(
             sprintf("$('#%s').trigger('change');", $for)
