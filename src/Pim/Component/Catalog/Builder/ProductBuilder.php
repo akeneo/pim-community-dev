@@ -93,6 +93,8 @@ class ProductBuilder implements ProductBuilderInterface
 
         if (null !== $identifier) {
             $product->setIdentifier($identifier);
+            $identifierAttribute = $this->attributeRepository->getIdentifier();
+            $this->addOrReplaceProductValue($product, $identifierAttribute, null, null, $identifier);
         }
 
         if (null !== $familyCode) {
