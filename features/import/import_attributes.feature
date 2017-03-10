@@ -14,7 +14,7 @@ Feature: Import attributes
       pim_assets_collection;scopable_attribute;;info;0;0;;;;assets;0;1;2
       pim_assets_collection;localizable_attribute;;info;0;0;;;;assets;1;0;3
       pim_assets_collection;valid_attribute;;info;0;0;;;;assets;0;0;4
-      pim_assets_collection;empty_attribute;;info;0;0;;;;assets;;;5
+      pim_assets_collection;empty_attribute;;info;0;0;;;;assets;0;0;5
       pim_catalog_text;other_attribute;;info;0;0;;;;;1;1;6
       """
     And the following job "csv_footwear_attribute_import" configuration:
@@ -63,7 +63,7 @@ Feature: Import attributes
     And I launch the import job
     And I wait for the "csv_clothing_attribute_import" job to finish
     Then I should see the text "skipped 1"
-    And I should see the text "Reference data \"\" does not exist. Allowed values are: fabrics, color, assets: [assets]"
+    And I should see the text "reference_data_name: This value should not be blank.: [assets]"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6016
   Scenario: Fail to import assets without reference_data_name column
@@ -80,4 +80,4 @@ Feature: Import attributes
     And I launch the import job
     And I wait for the "csv_clothing_attribute_import" job to finish
     Then I should see the text "skipped 1"
-    And I should see the text "Reference data \"\" does not exist. Allowed values are: fabrics, color, assets: [assets]"
+    And I should see the text "reference_data_name: This value should not be blank.: [assets]"
