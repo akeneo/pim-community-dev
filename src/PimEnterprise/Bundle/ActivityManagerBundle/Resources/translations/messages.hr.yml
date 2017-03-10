@@ -1,0 +1,8 @@
+activity_manager:
+  notification:
+    project_calculation:
+      start: Početak
+    project_finished:
+      show: Prikaži
+    due_date:
+      start: Početak

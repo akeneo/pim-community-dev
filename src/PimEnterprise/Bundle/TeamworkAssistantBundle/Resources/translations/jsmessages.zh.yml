@@ -7,7 +7,9 @@ teamwork_assistant:
       confirmation:
         delete: 删除确认
   project:
-    label: 标签
+    label: 名称
+    locale: 本地化语言
+    channel: 通道
     description: 描述
   edit_project_modal:
     confirm: 保存

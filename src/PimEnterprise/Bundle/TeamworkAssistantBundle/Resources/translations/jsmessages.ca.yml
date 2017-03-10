@@ -7,7 +7,9 @@ teamwork_assistant:
       confirmation:
         delete: Confirmació de l'eliminació
   project:
-    label: Etiqueta
+    label: Nom
+    locale: Configuració Regional
+    channel: Canal
     description: Descripció
   edit_project_modal:
     confirm: Desar

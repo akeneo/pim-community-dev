@@ -7,7 +7,9 @@ teamwork_assistant:
       confirmation:
         delete: Confirmación de borrado
   project:
-    label: Etiqueta
+    label: Nombre
+    locale: Local
+    channel: Canal
     description: Descripción
   edit_project_modal:
     confirm: Guardar
