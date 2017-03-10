@@ -1,12 +1,18 @@
 project_calculation: Projekt-Kalkulation
+project_created: Ein neues Projekt für Sie
+project_finished: Projekt abgeschlossen
 teamwork_assistant:
   project:
     required: Dieser Wert sollte nicht leer sein.
     label_maxlength: Dieser Wert ist zu lang. Er sollte {{ max }} oder weniger Zeichen haben.
     project_identifier: Das Projekt {{ project }} existiert nicht.
+    project_locale: Das Gebietsschema {{ locale }} des Projektes muss aktiviert sein.
     project_due_date: Sie können kein Datum in der Vergangenheit auswählen.
   notification:
     project_calculation:
+      error: Kalkulation für Projekt <strong>%project_label%</strong> ist fehlgeschlagen
+      warning: Kalkulation für Projekt <strong>%project_label%</strong> abgeschlossen mit Warnungen
+      success: Das Projekt <strong>%project_label%</strong> ist fertig und die Mitarbeiter wurden benachrichtigt. Los gehts!
       start: Start
     message: Es müssen neue Produkte angereichert werden für "%project_label%". Das Fälligkeitsdatum ist "%due_date%".
     project_finished:
@@ -23,6 +29,11 @@ batch_jobs:
       label: Projekt-Kalkulation
     prepare_project_calculation:
       label: Projekt-Kalkulation vorbereiten
+    clean_contributor_group:
+      label: Überprüfe Benutzerberechtigung für das Gebietsschema des Projekts
+  attribute_group_completeness_calculation:
+    attribute_group_completeness_calculation:
+      label: Projektvollständigkeit aktualisieren
 job_execution:
   summary:
     processed_products: Bearbeitete Produkte
