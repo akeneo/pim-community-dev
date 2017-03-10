@@ -66,7 +66,7 @@ class ListAttributeIntegration extends ApiTestCase
                 "sort_order"             : 0,
                 "localizable"            : false,
                 "scopable"               : false,
-                "labels"                 : []
+                "labels"                 : {}
             },
             {
                 "_links": {
@@ -99,7 +99,7 @@ class ListAttributeIntegration extends ApiTestCase
                 "sort_order"             : 2,
                 "localizable"            : false,
                 "scopable"               : false,
-                "labels"                 : []
+                "labels"                 : {}
             },
             {
                 "_links": {
@@ -132,7 +132,7 @@ class ListAttributeIntegration extends ApiTestCase
                 "sort_order"             : 1,
                 "localizable"            : false,
                 "scopable"               : false,
-                "labels"                 : []
+                "labels"                 : {}
             },
             {
                 "_links": {
@@ -165,7 +165,7 @@ class ListAttributeIntegration extends ApiTestCase
                 "sort_order"             : 0,
                 "localizable"            : false,
                 "scopable"               : false,
-                "labels"                 : []
+                "labels"                 : {}
             },
             {
                 "_links": {
@@ -198,7 +198,7 @@ class ListAttributeIntegration extends ApiTestCase
                 "sort_order"             : null,
                 "localizable"            : false,
                 "scopable"               : false,
-                "labels"                 : []
+                "labels"                 : {}
             },
             {
                 "_links": {
@@ -231,7 +231,7 @@ class ListAttributeIntegration extends ApiTestCase
                 "sort_order"             : 0,
                 "localizable"            : false,
                 "scopable"               : false,
-                "labels"                 : []
+                "labels"                 : {}
             },
             {
                 "_links": {
@@ -264,7 +264,7 @@ class ListAttributeIntegration extends ApiTestCase
                 "sort_order"             : 0,
                 "localizable"            : false,
                 "scopable"               : false,
-                "labels"                 : []
+                "labels"                 : {}
             },
             {
                 "_links": {
@@ -297,7 +297,7 @@ class ListAttributeIntegration extends ApiTestCase
                 "sort_order"             : 0,
                 "localizable"            : false,
                 "scopable"               : false,
-                "labels"                 : []
+                "labels"                 : {}
             },
             {
                 "_links": {
@@ -330,7 +330,7 @@ class ListAttributeIntegration extends ApiTestCase
                 "sort_order"             : 0,
                 "localizable"            : false,
                 "scopable"               : false,
-                "labels"                 : []
+                "labels"                 : {}
             },
             {
                 "_links": {
@@ -363,7 +363,7 @@ class ListAttributeIntegration extends ApiTestCase
                 "sort_order"             : 0,
                 "localizable"            : false,
                 "scopable"               : false,
-                "labels"                 : []
+                "labels"                 : {}
             }
         ]
     }
@@ -436,7 +436,7 @@ JSON;
                 "sort_order"             : 0,
                 "localizable"            : false,
                 "scopable"               : false,
-                "labels"                 : []
+                "labels"                 : {}
             },
             {
                 "_links": {
@@ -469,7 +469,7 @@ JSON;
                 "sort_order"             : 0,
                 "localizable"            : false,
                 "scopable"               : false,
-                "labels"                 : []
+                "labels"                 : {}
             },
             {
                 "_links": {
@@ -502,7 +502,7 @@ JSON;
                 "sort_order"             : 0,
                 "localizable"            : false,
                 "scopable"               : false,
-                "labels"                 : []
+                "labels"                 : {}
             },
             {
                 "_links": {
@@ -535,7 +535,7 @@ JSON;
                 "sort_order"             : 0,
                 "localizable"            : false,
                 "scopable"               : false,
-                "labels"                 : []
+                "labels"                 : {}
             },
             {
                 "_links": {
@@ -568,7 +568,7 @@ JSON;
                 "sort_order"             : 0,
                 "localizable"            : false,
                 "scopable"               : false,
-                "labels"                 : []
+                "labels"                 : {}
             }
         ]
     }

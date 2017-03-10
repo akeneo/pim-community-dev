@@ -13,83 +13,82 @@ class GetFamilyIntegration extends ApiTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/families/familyA');
-        $standardFamily = [
-            'code'       => 'familyA',
-            'attributes' => [
-                0  => 'a_date',
-                1  => 'a_file',
-                2  => 'a_localizable_image',
-                3  => 'a_localized_and_scopable_text_area',
-                4  => 'a_metric',
-                5  => 'a_multi_select',
-                6  => 'a_number_float',
-                7  => 'a_number_float_negative',
-                8  => 'a_number_integer',
-                9  => 'a_price',
-                10 => 'a_ref_data_multi_select',
-                11 => 'a_ref_data_simple_select',
-                12 => 'a_scopable_price',
-                13 => 'a_simple_select',
-                14 => 'a_text',
-                15 => 'a_text_area',
-                16 => 'a_yes_no',
-                17 => 'an_image',
-                18 => 'sku',
-            ],
-            'attribute_as_label'     => 'sku',
-            'attribute_requirements' => [
-                'ecommerce' => [
-                    0  => 'a_date',
-                    1  => 'a_file',
-                    2  => 'a_localizable_image',
-                    3  => 'a_localized_and_scopable_text_area',
-                    4  => 'a_metric',
-                    5  => 'a_multi_select',
-                    6  => 'a_number_float',
-                    7  => 'a_number_float_negative',
-                    8  => 'a_number_integer',
-                    9  => 'a_price',
-                    10 => 'a_ref_data_multi_select',
-                    11 => 'a_ref_data_simple_select',
-                    12 => 'a_scopable_price',
-                    13 => 'a_simple_select',
-                    14 => 'a_text',
-                    15 => 'a_text_area',
-                    16 => 'a_yes_no',
-                    17 => 'an_image',
-                    18 => 'sku',
-                ],
-                'ecommerce_china' => [
-                    0 => 'sku'
-                ],
-                'tablet' => [
-                    0  => 'a_date',
-                    1  => 'a_file',
-                    2  => 'a_localizable_image',
-                    3  => 'a_localized_and_scopable_text_area',
-                    4  => 'a_metric',
-                    5  => 'a_multi_select',
-                    6  => 'a_number_float',
-                    7  => 'a_number_float_negative',
-                    8  => 'a_number_integer',
-                    9  => 'a_price',
-                    10 => 'a_ref_data_multi_select',
-                    11 => 'a_ref_data_simple_select',
-                    12 => 'a_scopable_price',
-                    13 => 'a_simple_select',
-                    14 => 'a_text',
-                    15 => 'a_text_area',
-                    16 => 'a_yes_no',
-                    17 => 'an_image',
-                    18 => 'sku',
-                ],
-            ],
-            'labels'     => [],
-        ];
-
+        $expected = <<<JSON
+{
+    "code": "familyA",
+    "attributes" : [
+        "a_date",
+        "a_file",
+        "a_localizable_image",
+        "a_localized_and_scopable_text_area",
+        "a_metric",
+        "a_multi_select",
+        "a_number_float",
+        "a_number_float_negative",
+        "a_number_integer",
+        "a_price",
+        "a_ref_data_multi_select",
+        "a_ref_data_simple_select",
+        "a_scopable_price",
+        "a_simple_select",
+        "a_text",
+        "a_text_area",
+        "a_yes_no",
+        "an_image",
+        "sku"
+    ],
+    "attribute_as_label": "sku",
+    "attribute_requirements": {
+        "ecommerce" : [
+            "a_date",
+            "a_file",
+            "a_localizable_image",
+            "a_localized_and_scopable_text_area",
+            "a_metric",
+            "a_multi_select",
+            "a_number_float",
+            "a_number_float_negative",
+            "a_number_integer",
+            "a_price",
+            "a_ref_data_multi_select",
+            "a_ref_data_simple_select",
+            "a_scopable_price",
+            "a_simple_select",
+            "a_text",
+            "a_text_area",
+            "a_yes_no",
+            "an_image",
+            "sku"
+        ],
+        "ecommerce_china" : ["sku"],
+        "tablet" : [
+            "a_date",
+            "a_file",
+            "a_localizable_image",
+            "a_localized_and_scopable_text_area",
+            "a_metric",
+            "a_multi_select",
+            "a_number_float",
+            "a_number_float_negative",
+            "a_number_integer",
+            "a_price",
+            "a_ref_data_multi_select",
+            "a_ref_data_simple_select",
+            "a_scopable_price",
+            "a_simple_select",
+            "a_text",
+            "a_text_area",
+            "a_yes_no",
+            "an_image",
+            "sku"
+        ]
+    },
+    "labels": {}
+}
+JSON;
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertSame($standardFamily, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
     public function testNotFoundFamily()

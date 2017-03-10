@@ -100,7 +100,7 @@ class ListFamilyIntegration extends ApiTestCase
                         "sku"
                     ]
                 },
-                "labels": []
+                "labels": {}
             },
             {
                 "_links": {
@@ -116,7 +116,7 @@ class ListFamilyIntegration extends ApiTestCase
                     "ecommerce_china": ["sku"],
                     "tablet": ["a_file", "a_localizable_image", "sku"]
                 },
-                "labels": []
+                "labels": {}
             },
             {
                 "_links": {
@@ -132,7 +132,7 @@ class ListFamilyIntegration extends ApiTestCase
                     "ecommerce_china": ["sku"],
                     "tablet": ["a_number_float", "sku"]
                 },
-                "labels": []
+                "labels": {}
             }
         ]
     }

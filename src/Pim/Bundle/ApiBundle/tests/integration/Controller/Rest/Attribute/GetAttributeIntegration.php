@@ -14,38 +14,40 @@ class GetAttributeIntegration extends ApiTestCase
 
         $client->request('GET', 'api/rest/v1/attributes/sku');
 
-        $standardAttribute = [
-            'code'                   => 'sku',
-            'type'                   => 'pim_catalog_identifier',
-            'group'                  => 'attributeGroupA',
-            'unique'                 => true,
-            'useable_as_grid_filter' => true,
-            'allowed_extensions'     => [],
-            'metric_family'          => null,
-            'default_metric_unit'    => null,
-            'reference_data_name'    => null,
-            'available_locales'      => [],
-            'max_characters'         => null,
-            'validation_rule'        => null,
-            'validation_regexp'      => null,
-            'wysiwyg_enabled'        => null,
-            'number_min'             => null,
-            'number_max'             => null,
-            'decimals_allowed'       => null,
-            'negative_allowed'       => null,
-            'date_min'               => null,
-            'date_max'               => null,
-            'max_file_size'          => null,
-            'minimum_input_length'   => null,
-            'sort_order'             => 0,
-            'localizable'            => false,
-            'scopable'               => false,
-            'labels'                 => [],
-        ];
+        $standardAttribute = <<<JSON
+{
+    "code": "sku",
+    "type": "pim_catalog_identifier",
+    "group": "attributeGroupA",
+    "unique": true,
+    "useable_as_grid_filter": true,
+    "allowed_extensions": [],
+    "metric_family": null,
+    "default_metric_unit": null,
+    "reference_data_name": null,
+    "available_locales": [],
+    "max_characters": null,
+    "validation_rule": null,
+    "validation_regexp": null,
+    "wysiwyg_enabled": null,
+    "number_min": null,
+    "number_max": null,
+    "decimals_allowed": null,
+    "negative_allowed": null,
+    "date_min": null,
+    "date_max": null,
+    "max_file_size": null,
+    "minimum_input_length": null,
+    "sort_order": 0,
+    "localizable": false,
+    "scopable": false,
+    "labels": {}
+}
+JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertSame($standardAttribute, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($standardAttribute, $response->getContent());
     }
 
     public function testNotFoundAnAttribute()

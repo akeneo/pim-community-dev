@@ -28,7 +28,17 @@ class ChannelNormalizer implements NormalizerInterface
      */
     public function normalize($channel, $format = null, array $context = [])
     {
-        return $this->stdNormalizer->normalize($channel, $format, $context);
+        $normalizedChannel = $this->stdNormalizer->normalize($channel, 'standard', $context);
+
+        if (empty($normalizedChannel['labels'])) {
+            $normalizedChannel['labels'] = (object) $normalizedChannel['labels'];
+        }
+
+        if (empty($normalizedChannel['conversion_units'])) {
+            $normalizedChannel['conversion_units'] = (object) $normalizedChannel['conversion_units'];
+        }
+
+        return $normalizedChannel;
     }
 
     /**

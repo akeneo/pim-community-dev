@@ -26,9 +26,19 @@ class FamilyNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($attribute, $format = null, array $context = [])
+    public function normalize($family, $format = null, array $context = [])
     {
-        return $this->stdNormalizer->normalize($attribute, $format, $context);
+        $normalizedFamily = $this->stdNormalizer->normalize($family, 'standard', $context);
+
+        if (empty($normalizedFamily['labels'])) {
+            $normalizedFamily['labels'] = (object) $normalizedFamily['labels'];
+        }
+
+        if (empty($normalizedFamily['attribute_requirements'])) {
+            $normalizedFamily['attribute_requirements'] = (object) $normalizedFamily['attribute_requirements'];
+        }
+
+        return $normalizedFamily;
     }
 
     /**

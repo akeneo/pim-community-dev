@@ -34,9 +34,9 @@ class FileNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($attribute, $format = null, array $context = [])
+    public function normalize($file, $format = null, array $context = [])
     {
-        $normalizedFile = $this->stdNormalizer->normalize($attribute, 'standard', $context);
+        $normalizedFile = $this->stdNormalizer->normalize($file, 'standard', $context);
 
         $route = $this->router->generate(
             'pim_api_media_file_download',

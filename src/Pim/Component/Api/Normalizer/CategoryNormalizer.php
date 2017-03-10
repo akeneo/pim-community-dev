@@ -26,9 +26,15 @@ class CategoryNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($attribute, $format = null, array $context = [])
+    public function normalize($category, $format = null, array $context = [])
     {
-        return $this->stdNormalizer->normalize($attribute, $format, $context);
+        $normalizedCategory = $this->stdNormalizer->normalize($category, 'standard', $context);
+
+        if (empty($normalizedCategory['labels'])) {
+            $normalizedCategory['labels'] = (object) $normalizedCategory['labels'];
+        }
+
+        return $normalizedCategory;
     }
 
     /**
