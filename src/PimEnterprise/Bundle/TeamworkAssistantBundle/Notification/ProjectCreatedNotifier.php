@@ -80,7 +80,7 @@ class ProjectCreatedNotifier implements ProjectNotifierInterface
 
             if ($user->getUsername() !== $project->getOwner()->getUsername()) {
                 $notification = $this->projectNotificationFactory->create(
-                    ['identifier' => $project->getCode(), 'status' => 'all'],
+                    ['identifier' => $project->getCode(), 'status' => 'contributor-todo'],
                     ['%project_label%' => $project->getLabel(), '%due_date%' => $formattedDate],
                     $context,
                     'teamwork_assistant.notification.message'

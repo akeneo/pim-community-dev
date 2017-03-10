@@ -151,8 +151,9 @@ Feature: Select a project to display products to enrich
     And I am on the dashboard page
     When I click on the notification "A new project for you"
     Then I should be on the products page
-    And I should see products tshirt-skyrim and tshirt-the-witcher-3
     And I should see the text "2016 summer collection"
+    And I should see the text "Project progress: Todo"
+    And the grid should contain 0 element
 
   Scenario: A contributor must be alerted if he's leaving project scope by changing grid filters
     Given I am logged in as "Mary"
