@@ -84,8 +84,8 @@ class TextareaIntegration extends AbstractAttributeTestCase
         $this->assertDoesNotHaveADateMax('pim_catalog_textarea');
     }
 
-    public function testTextShouldNotHaveAMaxFileSize()
+    public function testTextareaShouldNotHaveAMaxFileSize()
     {
-        $this->assertDoesNotHaveAMaxFileSize('pim_catalog_text');
+        $this->assertDoesNotHaveAMaxFileSize('pim_catalog_textarea');
     }
 }

@@ -237,14 +237,17 @@ class GlobalConstraintsIntegration extends AbstractAttributeTestCase
         $this->assertSame('code', $violations->get(0)->getPropertyPath());
     }
 
-    public function testReservedCode()
+    /**
+     * @dataProvider reservedCodesProvider
+     */
+    public function testReservedCode($code)
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'  => 'associations',
+                'code'  => $code,
                 'type'  => 'pim_catalog_text',
                 'group' => 'attributeGroupA',
             ]
@@ -255,6 +258,14 @@ class GlobalConstraintsIntegration extends AbstractAttributeTestCase
         $this->assertCount(1, $violations);
         $this->assertSame('This code is not available', $violations->get(0)->getMessage());
         $this->assertSame('code', $violations->get(0)->getPropertyPath());
+    }
+
+    public function reservedCodesProvider()
+    {
+        return [
+            'id', 'associations', 'associationTypes', 'category', 'categoryId', 'categories', 'completeness', 'enabled',
+            'family', 'groups', 'products', 'scope', 'treeId', 'values', 'my_groups', 'my_products'
+        ];
     }
 
     public function testLocalizableIsNotNull()
