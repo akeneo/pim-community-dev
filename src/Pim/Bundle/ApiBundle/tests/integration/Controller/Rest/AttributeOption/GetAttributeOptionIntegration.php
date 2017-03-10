@@ -14,18 +14,21 @@ class GetAttributeOptionIntegration extends ApiTestCase
 
         $client->request('GET', 'api/rest/v1/attributes/a_multi_select/options/optionA');
 
-        $standardAttributeOption = [
-            'code'       => 'optionA',
-            'attribute'  => 'a_multi_select',
-            'sort_order' => 10,
-            'labels'     => [
-                'en_US' => 'Option A',
-            ],
-        ];
+        $expectedContent =
+<<<JSON
+    {
+        "code" : "optionA",
+        "sort_order" : 10,
+        "attribute" : "a_multi_select",
+        "labels" : {
+          "en_US" : "Option A"
+        }
+    }
+JSON;
 
         $response = $client->getResponse();
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertSame($standardAttributeOption, json_decode($response->getContent(), true));
     }
 
     public function testNotFoundAnAttribute()
@@ -34,12 +37,17 @@ class GetAttributeOptionIntegration extends ApiTestCase
 
         $client->request('GET', 'api/rest/v1/attributes/not_found/options/not_found');
 
+        $expectedContent =
+<<<JSON
+    {
+      "message" : "Attribute \"not_found\" does not exist.",
+      "code" : 404
+    }
+JSON;
+
         $response = $client->getResponse();
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-        $content = json_decode($response->getContent(), true);
-        $this->assertCount(2, $content, 'response contains 2 items');
-        $this->assertSame(Response::HTTP_NOT_FOUND, $content['code']);
-        $this->assertSame('Attribute "not_found" does not exist.', $content['message']);
     }
 
     public function testNotSupportedOptionsAttribute()
@@ -48,15 +56,17 @@ class GetAttributeOptionIntegration extends ApiTestCase
 
         $client->request('GET', 'api/rest/v1/attributes/sku/options/sku');
 
+        $expectedContent =
+<<<JSON
+    {
+      "message" : "Attribute \"sku\" does not support options. Only attributes of type \"pim_catalog_simpleselect\", \"pim_catalog_multiselect\" support options.",
+      "code" : 404
+    }
+JSON;
+
         $response = $client->getResponse();
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-        $content = json_decode($response->getContent(), true);
-        $this->assertCount(2, $content, 'response contains 2 items');
-        $this->assertSame(Response::HTTP_NOT_FOUND, $content['code']);
-        $this->assertSame(
-            'Attribute "sku" does not support options. Only attributes of type "pim_catalog_simpleselect", "pim_catalog_multiselect" support options.',
-            $content['message']
-        );
     }
 
     public function testNotExistingOptionsAttribute()
@@ -64,15 +74,18 @@ class GetAttributeOptionIntegration extends ApiTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/attributes/a_multi_select/options/not_existing_option');
+
+        $expectedContent =
+<<<JSON
+    {
+      "message" : "Attribute option \"not_existing_option\" does not exist or is not an option of the attribute \"a_multi_select\".",
+      "code" : 404
+    }
+JSON;
+
         $response = $client->getResponse();
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-        $content = json_decode($response->getContent(), true);
-        $this->assertCount(2, $content, 'response contains 2 items');
-        $this->assertSame(Response::HTTP_NOT_FOUND, $content['code']);
-        $this->assertSame(
-            'Attribute option "not_existing_option" does not exist or is not an option of the attribute "a_multi_select".',
-            $content['message']
-        );
     }
 
     /**

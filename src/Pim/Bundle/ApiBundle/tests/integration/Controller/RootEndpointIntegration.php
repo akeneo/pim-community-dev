@@ -64,7 +64,7 @@ class RootEndpointIntegration extends ApiTestCase
                 "route": "/api/rest/v1/attributes",
                 "methods": ["POST"]
             },
-            "pim_api_attribute_update": {
+            "pim_api_attribute_partial_update": {
                 "route": "/api/rest/v1/attributes/{code}",
                 "methods": ["PATCH"]
             },
@@ -83,6 +83,10 @@ class RootEndpointIntegration extends ApiTestCase
             "pim_api_attribute_option_get": {
                 "route": "/api/rest/v1/attributes/{attributeCode}/options/{code}",
                 "methods": ["GET"]
+            },
+            "pim_api_attribute_option_partial_update": {
+                "route": "/api/rest/v1/attributes/{attributeCode}/options/{optionCode}",
+                "methods": ["PATCH"]
             },
             "pim_api_channel_list": {
                 "route": "/api/rest/v1/channels",

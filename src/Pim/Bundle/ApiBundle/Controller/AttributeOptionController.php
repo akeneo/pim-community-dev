@@ -203,39 +203,67 @@ class AttributeOptionController
      * @param Request $request
      * @param string  $attributeCode
      *
+     * @throws HttpException
+     *
      * @return Response
      *
      * @AclAncestor("pim_api_attribute_option_edit")
      */
     public function createAction(Request $request, $attributeCode)
     {
-        $data = $this->getDecodedContent($request->getContent());
-
         $attribute = $this->getAttribute($attributeCode);
 
-        $this->isAttributeSupportingOptions($attribute);
+        $data = $this->getDecodedContent($request->getContent());
 
-        if (isset($data['attribute']) && $data['attribute'] !== $attributeCode) {
-            throw new UnprocessableEntityHttpException(
-                sprintf(
-                    'Attribute code "%s" in the request body must match "%s" in the URI.',
-                    $data['attribute'],
-                    $attributeCode
-                )
-            );
-        }
+        $this->validateCodeConsistency($attributeCode, null, $data, true);
 
+        $data['attribute'] = $attributeCode;
         $attributeOption = $this->factory->create();
         $this->updateAttributeOption($attributeOption, $data);
-
-        $violations = $this->validator->validate($attributeOption);
-        if (0 !== $violations->count()) {
-            throw new ViolationHttpException($violations);
-        }
+        $this->validateAttributeOption($attributeOption);
 
         $this->saver->save($attributeOption);
 
-        $response = $this->getCreateResponse($attribute, $attributeOption);
+        $response = $this->getResponse($attribute, $attributeOption, Response::HTTP_CREATED);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $attributeCode
+     * @param string  $optionCode
+     *
+     * @throws HttpException
+     *
+     * @return Response
+     *
+     * @AclAncestor("pim_api_attribute_option_edit")
+     */
+    public function partialUpdateAction(Request $request, $attributeCode, $optionCode)
+    {
+        $attribute = $this->getAttribute($attributeCode);
+
+        $data = $this->getDecodedContent($request->getContent());
+
+        $attributeOption = $this->attributeOptionsRepository->findOneByIdentifier($attributeCode . '.' . $optionCode);
+        $isCreation = null === $attributeOption;
+
+        $this->validateCodeConsistency($attributeCode, $optionCode, $data, $isCreation);
+
+        if ($isCreation) {
+            $attributeOption = $this->factory->create();
+        }
+
+        $data['attribute'] = array_key_exists('attribute', $data) ? $data['attribute'] : $attributeCode;
+        $data['code'] = array_key_exists('code', $data) ? $data['code'] : $optionCode;
+        $this->updateAttributeOption($attributeOption, $data);
+        $this->validateAttributeOption($attributeOption);
+
+        $this->saver->save($attributeOption);
+
+        $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
+        $response = $this->getResponse($attribute, $attributeOption, $status);
 
         return $response;
     }
@@ -305,6 +333,8 @@ class AttributeOptionController
      *
      * @param AttributeOptionInterface $attributeOption
      * @param array                    $data
+     *
+     * @throws DocumentedHttpException
      */
     protected function updateAttributeOption(AttributeOptionInterface $attributeOption, $data)
     {
@@ -329,16 +359,33 @@ class AttributeOptionController
     }
 
     /**
-     * Get a response with HTTP code 201 when an object is created.
+     * Validate an attribute option. It throws an error 422 with every violated constraints if
+     * the validation failed.
+     *
+     * @param AttributeOptionInterface $attributeOption
+     *
+     * @throws ViolationHttpException
+     */
+    protected function validateAttributeOption(AttributeOptionInterface $attributeOption)
+    {
+        $violations = $this->validator->validate($attributeOption);
+        if (0 !== $violations->count()) {
+            throw new ViolationHttpException($violations);
+        }
+    }
+
+    /**
+     * Get a response with a location header to the created or updated resource.
      *
      * @param AttributeInterface       $attribute
      * @param AttributeOptionInterface $attributeOption
+     * @param int                      $status
      *
      * @return Response
      */
-    protected function getCreateResponse(AttributeInterface $attribute, AttributeOptionInterface $attributeOption)
+    protected function getResponse(AttributeInterface $attribute, AttributeOptionInterface $attributeOption, $status)
     {
-        $response = new Response(null, Response::HTTP_CREATED);
+        $response = new Response(null, $status);
         $route = $this->router->generate(
             'pim_api_attribute_option_get',
             [
@@ -350,5 +397,46 @@ class AttributeOptionController
         $response->headers->set('Location', $route);
 
         return $response;
+    }
+
+    /**
+     * Throw an exception if the attribute code and the option code provided in the url don't match
+     * attribute code and option code provided in the body.
+     *
+     * Attribute code and option code are optionals in the body when creating or updating a resource with a PATCH,
+     * because they are already provided in the url.
+     *
+     * Option code is mandatory in the body when creating a resource with a POST, because it is not provided in the url.
+     *
+     * When it's a creation, attribute code and option code provided in the url should match those provided in the body.
+     *
+     * @param string      $attributeCode attribute code provided in the url
+     * @param string|null $optionCode    option code provided in the url (in PATCH), null otherwise (in POST)
+     * @param array       $data          body of the request already decoded
+     * @param boolean     $isCreation    true if it's a creation, false if it's an update
+     *
+     * @throws UnprocessableEntityHttpException
+     */
+    protected function validateCodeConsistency($attributeCode, $optionCode, array $data, $isCreation)
+    {
+        if ($isCreation && array_key_exists('attribute', $data) && $attributeCode !== $data['attribute']) {
+            throw new UnprocessableEntityHttpException(
+                sprintf(
+                    'The attribute code "%s" provided in the request body must match the attribute code "%s" provided in the url.',
+                    $data['attribute'],
+                    $attributeCode
+                )
+            );
+        }
+
+        if ($isCreation && null !== $optionCode && array_key_exists('code', $data) && $optionCode !== $data['code']) {
+            throw new UnprocessableEntityHttpException(
+                sprintf(
+                    'The option code "%s" provided in the request body must match the option code "%s" provided in the url.',
+                    $data['code'],
+                    $optionCode
+                )
+            );
+        }
     }
 }
