@@ -140,7 +140,7 @@ job_execution.summary:
 published products: Опубликованные товары
 batch_jobs:
   csv_published_product_export:
-    label: Экспорт опубликованных товаров в CSV
+    label: Экспорт размещенных товаров в CSV
     export.label: Экспорт опубликованных товаров
   csv_product_proposal_import:
     label: Импорт предложений из CSV
