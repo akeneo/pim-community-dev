@@ -17,6 +17,9 @@ teamwork_assistant:
       contributor: Sie haben %percent%% der Produkte in %project_label% vollständig. Vergessen Sie nicht, die fehlenden Produkte bis zum %due_date% zu vervollständigen.
       owner: '%project_label% für den %due_date% ist fertiggestellt.'''
       start: Start
+  datagrid:
+    contributor_in_progress: In Arbeit
+    contributor_done: Fertig
 batch_jobs:
   project_calculation:
     project_calculation:

@@ -7,7 +7,9 @@ teamwork_assistant:
       confirmation:
         delete: Подтверждение удаления
   project:
-    label: Метка
+    label: Имя
+    locale: Локаль
+    channel: Канал
     description: Описание
   edit_project_modal:
     confirm: Сохранить
