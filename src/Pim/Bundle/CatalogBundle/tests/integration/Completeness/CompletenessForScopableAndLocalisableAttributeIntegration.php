@@ -151,8 +151,8 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
      * @param string           $channelCode
      * @param string           $localeCode
      *
-     * @return CompletenessInterface
      * @throws \Exception
+     * @return CompletenessInterface
      */
     private function getCompletenessByChannelAndLocaleCodes(ProductInterface $product, $channelCode, $localeCode)
     {
@@ -172,6 +172,9 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         ));
     }
 
+    /**
+     * @return array
+     */
     private function getSandalStandardValues()
     {
         return [
@@ -204,6 +207,9 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         ];
     }
 
+    /**
+     * @return array
+     */
     private function getSneakerStandardValues()
     {
         return [

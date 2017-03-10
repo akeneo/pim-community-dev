@@ -130,10 +130,8 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
 
         $newCompletenesses = $this->completenessCalculator->calculate($product);
 
-        foreach ($newCompletenesses as $completenessesByChannel) {
-            foreach ($completenessesByChannel as $completenessByChannelAndLocale) {
-                $completenessesCollection->add($completenessByChannelAndLocale);
-            }
+        foreach ($newCompletenesses as $completeness) {
+            $completenessesCollection->add($completeness);
         }
     }
 
