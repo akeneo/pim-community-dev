@@ -1,8 +1,0 @@
-activity_manager:
-  notification:
-    project_calculation:
-      start: 开始
-    project_finished:
-      show: 展示
-    due_date:
-      start: 开始
