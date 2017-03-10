@@ -24,7 +24,7 @@ class Edit extends ProductEditForm
     /**
      * @var string
      */
-    protected $path = '/enrich/product/{id}';
+    protected $path = '#/enrich/product/{id}';
 
     /**
      * {@inheritdoc}

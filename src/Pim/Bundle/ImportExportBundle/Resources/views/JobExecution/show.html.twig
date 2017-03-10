@@ -1,4 +1,4 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {% block content %}
 
@@ -14,7 +14,7 @@
         <span id="log"></span>
         {{ elements.link(
             'Show profile',
-            path(show_profile_route, { 'code': execution.jobInstance.code }),
+            '#' ~ path(show_profile_route, { 'code': execution.jobInstance.code }),
             { icon: 'eye-open', class: 'AknButton AknButton--action AknButtonList-item' })
         }}
     {% endset %}
@@ -45,11 +45,6 @@
             </tbody>
         </table>
     </div>
-
-{% endblock %}
-
-{% block head_script %}
-    {{ parent() }}
 
     <script type="text/template" id="job-execution-summary">
         {% block job_execution_summary %}

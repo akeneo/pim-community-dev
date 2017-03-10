@@ -37,26 +37,6 @@ class ImportProfileController extends JobProfileController
     /**
      * {@inheritdoc}
      *
-     * @AclAncestor("pim_importexport_import_profile_create")
-     */
-    public function createAction(Request $request)
-    {
-        return parent::createAction($request);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @AclAncestor("pim_importexport_import_profile_show")
-     */
-    public function showAction($code)
-    {
-        return parent::showAction($code);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
      * @AclAncestor("pim_importexport_import_profile_edit")
      */
     public function editAction($code)

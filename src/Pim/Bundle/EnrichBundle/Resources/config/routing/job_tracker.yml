@@ -1,22 +1,18 @@
 pim_enrich_job_tracker_index:
-    path: /.{_format}
-    defaults: { _controller: pim_enrich.controller.job_tracker:indexAction, _format: html }
-    requirements:
-        _format: html|json
+    path: /
+    defaults: { _controller: pim_enrich.controller.job_tracker:indexAction }
 
 pim_enrich_job_tracker_download_log:
     path: /{id}/download
     defaults: { _controller: pim_enrich.controller.job_tracker:downloadLogFileAction }
     requirements:
         id: \d+
-        _format: html|json
 
 pim_enrich_job_tracker_show:
-    path: show/{id}.{_format}
-    defaults: { _controller: pim_enrich.controller.job_tracker:showAction, _format: html }
+    path: show/{id}
+    defaults: { _controller: pim_enrich.controller.job_tracker:showAction }
     requirements:
         id: \d+
-        _format: html|json
 
 pim_enrich_job_tracker_download_file:
     path: /{id}/download/{archiver}/{key}

@@ -14,7 +14,7 @@
                                     <input name="{{ groupId }}" type="hidden" value="{{ loop.index }}">
                                 </span>
                                 {% if editGranted %}
-                                    <a class="AknVerticalList-itemLink" href="{{ path('pim_enrich_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
+                                    <a class="AknVerticalList-itemLink" href="#{{ path('pim_enrich_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
                                 {% else %}
                                     <span class="AknVerticalList-itemLink">{{ groupName }}</span>
                                 {% endif %}
@@ -27,7 +27,7 @@
                     {% for groupId, groupName in groups %}
                         <li class="{{ groupId == currentGroup ? 'active' : '' }}" data-id="{{ groupId }}">
                             {% if editGranted %}
-                                <a href="{{ path('pim_enrich_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
+                                <a href="#{{ path('pim_enrich_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
                             {% else %}
                                 {{ groupName }}
                             {% endif %}
@@ -44,7 +44,7 @@
                         <br/>
                         {{ 'attribute group.or'|trans }}
                         <br/>
-                        <a class="AknButton AknButton--withIcon AknButton--apply" href="{{ path('pim_enrich_attributegroup_create') }}">
+                        <a class="AknButton AknButton--withIcon AknButton--apply" href="#{{ path('pim_enrich_attributegroup_create') }}">
                             <i class="AknButton-icon icon-plus"></i>
                             {{ 'attribute group.create new'|trans }}
                         </a>

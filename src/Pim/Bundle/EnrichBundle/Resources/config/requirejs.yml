@@ -176,43 +176,180 @@ config:
                             list: pim_user_user_group_rest_index
 
         pim/controller-registry:
-            defaultController: pim/controller/template
+            defaultController:
+                module: pim/controller/template
             controllers:
-                pim_enrich_associationtype_edit:               pim/controller/form
-                pim_enrich_attribute_create:                   pim/controller/form
-                pim_enrich_attribute_edit:                     pim/controller/form
-                pim_enrich_attributegroup_create:              pim/controller/form
-                pim_enrich_attributegroup_edit:                pim/controller/form
-                pim_enrich_categorytree_create:                pim/controller/form
-                pim_enrich_categorytree_edit:                  pim/controller/form
-                pim_enrich_categorytree_index:                 pim/controller/form
-                pim_enrich_channel_edit:                       pim/controller/channel
-                pim_enrich_channel_create:                     pim/controller/channel
-                pim_enrich_family_edit:                        pim/controller/form
-                pim_enrich_group_edit:                         pim/controller/form
-                pim_enrich_grouptype_edit:                     pim/controller/form
-                pim_enrich_product_edit:                       pim/controller/product
-                pim_enrich_variant_group_edit:                 pim/controller/variant-group
-                pim_importexport_export_profile_edit:          pim/controller/form
-                pim_importexport_import_profile_edit:          pim/controller/form
-                pim_enrich_currency_toggle:                    pim/controller/redirect
-                pim_enrich_mass_edit_action_sequential_edit:   pim/controller/redirect
-                oro_user_create:                               pim/controller/form
-                oro_user_update:                               pim/controller/form
-                oro_user_role_create:                          pim/controller/form
-                oro_user_role_update:                          pim/controller/form
-                oro_user_group_create:                         pim/controller/form
-                oro_user_group_update:                         pim/controller/form
-                pim_enrich_mass_edit_action_choose:            pim/controller/form
-                pim_enrich_mass_edit_action_configure:         pim/controller/form
-                pim_importexport_import_profile_launch_upload: pim/controller/redirect
-                pim_importexport_import_profile_launch:        pim/controller/redirect
-                pim_importexport_import_profile_remove:        pim/controller/redirect
-                pim_importexport_import_profile_show:          pim/controller/form
-                pim_importexport_export_profile_launch:        pim/controller/redirect
-                pim_importexport_export_profile_remove:        pim/controller/redirect
-                oro_user_profile_update:                       pim/controller/form
-
+                pim_enrich_associationtype_edit:
+                    module: pim/controller/association-type
+                    aclResourceId: pim_enrich_associationtype_edit
+                pim_enrich_attribute_create:
+                    module: pim/controller/form
+                    aclResourceId: pim_enrich_attribute_create
+                pim_enrich_attribute_edit:
+                    module: pim/controller/form
+                    aclResourceId: pim_enrich_attribute_edit
+                pim_enrich_attributegroup_create:
+                    module: pim/controller/form
+                    aclResourceId: pim_enrich_attributegroup_create
+                pim_enrich_attributegroup_edit:
+                    module: pim/controller/form
+                    aclResourceId: pim_enrich_attributegroup_edit
+                pim_enrich_categorytree_create:
+                    module: pim/controller/form
+                    aclResourceId: pim_enrich_categorytree_create
+                pim_enrich_categorytree_edit:
+                    module: pim/controller/form
+                    aclResourceId: pim_enrich_categorytree_edit
+                pim_enrich_categorytree_index:
+                    module: pim/controller/form
+                    aclResourceId: pim_enrich_categorytree_index
+                pim_enrich_channel_edit:
+                    module: pim/controller/channel
+                    aclResourceId: pim_enrich_channel_edit
+                pim_enrich_channel_create:
+                    module: pim/controller/channel
+                    aclResourceId: pim_enrich_channel_create
+                pim_enrich_family_edit:
+                    module: pim/controller/family
+                    aclResourceId: pim_enrich_family_index
+                pim_enrich_grouptype_edit:
+                    module: pim/controller/form
+                    aclResourceId: pim_enrich_grouptype_edit
+                pim_enrich_product_edit:
+                    module: pim/controller/product
+                    aclResourceId: pim_enrich_product_edit_attributes
+                pim_enrich_group_edit:
+                    module: pim/controller/variant-group
+                    aclResourceId: pim_enrich_group_edit
+                pim_enrich_variant_group_edit:
+                    module: pim/controller/variant-group
+                    aclResourceId: pim_enrich_variant_group_edit
+                pim_importexport_export_profile_edit:
+                    module: pim/controller/job-instance
+                    aclResourceId: pim_importexport_export_profile_edit
+                pim_importexport_import_profile_edit:
+                    module: pim/controller/job-instance
+                    aclResourceId: pim_importexport_import_profile_edit
+                pim_importexport_import_profile_show:
+                    module: pim/controller/job-instance
+                    aclResourceId: pim_importexport_import_profile_show
+                pim_importexport_export_profile_show:
+                    module: pim/controller/job-instance
+                    aclResourceId: pim_importexport_export_profile_show
+                pim_enrich_currency_toggle:
+                    module: pim/controller/redirect
+                    aclResourceId: pim_enrich_currency_toggle
+                pim_enrich_mass_edit_action_sequential_edit:
+                    module: pim/controller/redirect
+                    aclResourceId: pim_enrich_mass_edit_action_sequential_edit
+                oro_user_create:
+                    module: pim/controller/form
+                oro_user_update:
+                    module: pim/controller/form
+                oro_user_role_create:
+                    module: pim/controller/form
+                oro_user_role_update:
+                    module: pim/controller/role
+                oro_user_group_create:
+                    module: pim/controller/form
+                oro_user_group_update:
+                    module: pim/controller/form
+                pim_enrich_mass_edit_action_choose:
+                    module: pim/controller/form
+                    aclResourceId: pim_enrich_mass_edit_action_choose
+                pim_enrich_mass_edit_action_configure:
+                    module: pim/controller/form
+                    aclResourceId: pim_enrich_mass_edit_action_configure
+                pim_importexport_import_profile_launch_upload:
+                    module: pim/controller/redirect
+                    aclResourceId: pim_importexport_import_profile_launch_upload
+                pim_importexport_import_profile_launch:
+                    module: pim/controller/redirect
+                    aclResourceId: pim_importexport_import_profile_launch
+                pim_importexport_import_profile_remove:
+                    module: pim/controller/redirect
+                    aclResourceId: pim_importexport_import_profile_remove
+                pim_importexport_export_profile_launch:
+                    module: pim/controller/redirect
+                    aclResourceId: pim_importexport_export_profile_launch
+                pim_importexport_export_profile_remove:
+                    module: pim/controller/redirect
+                    aclResourceId: pim_importexport_export_profile_remove
+                oro_user_profile_update:
+                    module: pim/controller/form
+                    aclResourceId: oro_user_profile_update
+                pim_enrich_attributegroup_index:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_attributegroup_index
+                pim_enrich_attributegroup_sort:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_attributegroup_sort
+                pim_enrich_attributegroup_remove:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_attributegroup_remove
+                pim_enrich_channel_index:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_channel_index
+                pim_enrich_currency_index:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_currency_index
+                pim_enrich_family_index:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_family_index
+                pim_enrich_family_create:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_family_create
+                pim_enrich_locale_index:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_locale_index
+                pim_enrich_attribute_index:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_attribute_index
+                pim_enrich_attribute_sort:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_attribute_sort
+                pim_enrich_attribute_remove:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_attribute_remove
+                pim_enrich_product_index:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_product_index
+                pim_enrich_product_create:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_product_create
+                pim_enrich_variant_group_index:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_variant_group_index
+                pim_enrich_variant_group_create:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_variant_group_create
+                pim_enrich_group_index:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_group_index
+                pim_enrich_group_create:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_group_create
+                pim_enrich_group_history:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_group_history
+                pim_enrich_associationtype_index:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_associationtype_index
+                pim_enrich_associationtype_create:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_associationtype_create
+                pim_enrich_grouptype_index:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_grouptype_index
+                pim_enrich_grouptype_create:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_grouptype_create
+                pim_enrich_grouptype_remove:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_grouptype_remove
+                pim_enrich_job_tracker_index:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_job_tracker_index
 
     paths:
         pim/app:                            pimenrich/js/app
@@ -226,7 +363,13 @@ config:
         pim/controller/template:            pimenrich/js/controller/template
         pim/controller/form:                pimenrich/js/controller/form
         pim/controller/product:             pimenrich/js/controller/product
+        pim/controller/family:              pimenrich/js/controller/family
+        pim/controller/channel:             pimenrich/js/controller/channel
+        pim/controller/association-type:    pimenrich/js/controller/association-type
         pim/controller/redirect:            pimenrich/js/controller/redirect
+        pim/controller/job-instance:        pimenrich/js/controller/job-instance
+        pim/controller/variant-group:       pimenrich/js/controller/variant-group
+        pim/controller/role:                pimenrich/js/controller/role
 
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector

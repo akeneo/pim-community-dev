@@ -7,7 +7,7 @@
             {% set url = null %}
         {% endif %}
         {% set title = ('btn.create.' ~ entity)|trans|capitalize %}
-        <a class="AknButton AknButton--apply{% if attr.class is defined %} {{ attr.class }}{% endif %} {% if icon %} AknButton--withIcon {% endif %}" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
+        <a class="AknButton AknButton--apply{% if attr.class is defined %} {{ attr.class }}{% endif %} {% if icon %} AknButton--withIcon {% endif %}" href="{{ url ? '#' ~ url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
         {% if icon %}
             <i class="AknButton-icon icon-{{ icon }}"></i>
           {% endif %}
@@ -62,7 +62,7 @@
 {% macro backLink(url, title) %}
 {% spaceless %}
     {% set title = title|default('btn.to grid') %}
-    <a class="AknTitleContainer-backLink back-link" title="{{ title|trans|capitalize }}" href="{{ url }}">
+    <a class="AknTitleContainer-backLink back-link" title="{{ title|trans|capitalize }}" href="#{{ url }}">
         <i class="icon-chevron-left"></i>
     </a>
 {% endspaceless %}

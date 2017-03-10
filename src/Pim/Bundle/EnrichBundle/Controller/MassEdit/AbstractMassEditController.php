@@ -7,9 +7,9 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\OperationJobLauncher;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -82,7 +82,7 @@ abstract class AbstractMassEditController
      * @param Request $request
      * @param string  $operationGroup
      *
-     * @return RedirectResponse|Response
+     * @return JsonResponse|Response
      */
     public function chooseAction(Request $request, $operationGroup)
     {
@@ -100,11 +100,12 @@ abstract class AbstractMassEditController
                 $queryParams += ['operationAlias' => $data['operationAlias']];
                 $queryParams += ['operationGroup' => $operationGroup];
 
-                $configureRoute = $this
-                    ->router
-                    ->generate($this->getChooseOperationRoute(), $queryParams);
-
-                return new RedirectResponse($configureRoute);
+                return new JsonResponse(
+                    [
+                        'route'  => $this->getChooseOperationRoute(),
+                        'params' => $queryParams
+                    ]
+                );
             }
         }
 
@@ -200,8 +201,11 @@ abstract class AbstractMassEditController
 
             $redirectRoute = $this->getPerformOperationRedirectRoute();
 
-            return new RedirectResponse(
-                $this->router->generate($redirectRoute, ['dataLocale' => $queryParams['dataLocale']])
+            return new JsonResponse(
+                [
+                    'route'  => $redirectRoute,
+                    'params' => ['dataLocale' => $queryParams['dataLocale']]
+                ]
             );
         }
 

@@ -1,8 +1,6 @@
 pim_enrich_grouptype_index:
-    path: /.{_format}
-    defaults: { _controller: pim_enrich.controller.group_type:indexAction, _format: html }
-    requirements:
-        _format: html|json
+    path: /
+    defaults: { _controller: pim_enrich.controller.group_type:indexAction }
 
 pim_enrich_grouptype_create:
     path: /create

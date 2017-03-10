@@ -9,10 +9,8 @@ oro_user_group_update:
         id: \d+
 
 oro_user_group_index:
-    path: /user/group/{_format}
-    defaults: { _controller: OroUserBundle:Group:index, _format: html }
-    requirements:
-        _format: html|json
+    path: /user/group/
+    defaults: { _controller: OroUserBundle:Group:index }
 
 oro_user_group_delete:
     path: /user/group/delete/{id}
@@ -54,10 +52,8 @@ oro_user_role_update:
         id: \d+
 
 oro_user_role_index:
-    path: /user/role/{_format}
-    defaults: { _controller: OroUserBundle:Role:index, _format: html }
-    requirements:
-        _format: html|json
+    path: /user/role/
+    defaults: { _controller: OroUserBundle:Role:index }
 
 oro_user_role_delete:
     path: /user/role/delete/{id}
@@ -103,10 +99,8 @@ oro_user_update:
         id: \d+
 
 oro_user_index:
-    path: /user/{_format}
-    defaults: { _controller: OroUserBundle:User:index, _format: html }
-    requirements:
-        _format: html|json
+    path: /user/
+    defaults: { _controller: OroUserBundle:User:index }
 
 oro_user_user_delete:
     path: /user/delete/{id}

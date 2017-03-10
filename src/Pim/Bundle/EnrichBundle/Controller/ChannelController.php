@@ -28,32 +28,4 @@ class ChannelController
     {
         return [];
     }
-
-    /**
-     * Create channel
-     *
-     * @Template("PimEnrichBundle:Channel:form.html.twig")
-     * @AclAncestor("pim_enrich_channel_create")
-     *
-     * @return array|Response
-     */
-    public function createAction()
-    {
-        return [];
-    }
-
-    /**
-     * Edit channel
-     *
-     * @Template("PimEnrichBundle:Channel:form.html.twig")
-     * @AclAncestor("pim_enrich_channel_edit")
-     *
-     * @param string $code
-     *
-     * @return array|Response
-     */
-    public function editAction($code)
-    {
-        return ['code' => $code];
-    }
 }

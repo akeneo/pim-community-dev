@@ -1,20 +1,20 @@
 pim_enrich_attributeoption_index:
     path: /{attributeId}
-    defaults: { _controller: pim_enrich.controller.attribute_option:indexAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.attribute_option:indexAction }
     requirements:
         attributeId: \d+
         _method:  GET
 
 pim_enrich_attributeoption_create:
     path: /{attributeId}
-    defaults: { _controller: pim_enrich.controller.attribute_option:createAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.attribute_option:createAction }
     requirements:
         attributeId: \d+
         _method:  POST
 
 pim_enrich_attributeoption_update:
     path: /{attributeId}/{attributeOptionId}
-    defaults: { _controller: pim_enrich.controller.attribute_option:updateAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.attribute_option:updateAction }
     requirements:
         attributeId: \d+
         attributeOptionId: \d+
@@ -22,7 +22,7 @@ pim_enrich_attributeoption_update:
 
 pim_enrich_attributeoption_delete:
     path: /{attributeId}/{attributeOptionId}
-    defaults: { _controller: pim_enrich.controller.attribute_option:deleteAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.attribute_option:deleteAction }
     requirements:
         attributeId: \d+
         attributeOptionId: \d+
@@ -30,14 +30,14 @@ pim_enrich_attributeoption_delete:
 
 pim_enrich_attributeoption_update_sorting:
     path: /{attributeId}/update-sorting
-    defaults: { _controller: pim_enrich.controller.attribute_option:updateSortingAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.attribute_option:updateSortingAction }
     requirements:
         attributeId: \d+
         _method:  PUT
 
 pim_enrich_attributeoption_get:
     path: /attribute/{identifier}/option
-    defaults: { _controller: pim_enrich.controller.rest.attribute_option:getAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.attribute_option:getAction }
     requirements:
         identifier: '[a-zA-Z0-9_]+'
     methods: [GET]

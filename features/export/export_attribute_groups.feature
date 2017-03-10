@@ -1,9 +1,9 @@
+@javascript
 Feature: Export attribute groups
   In order to be able to access and modify attribute groups data outside PIM
   As an administrator
   I need to be able to export attribute groups
 
-  @javascript
   Scenario: Successfully export attribute groups
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_attribute_group_export" configuration:

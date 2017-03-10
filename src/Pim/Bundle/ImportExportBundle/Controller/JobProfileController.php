@@ -133,45 +133,6 @@ class JobProfileController
     }
 
     /**
-     * Show a job instance
-     *
-     * @param Request $request
-     * @param string  $code
-     *
-     * @return Response
-     */
-    public function showAction($code)
-    {
-        return $this->templating->renderResponse(
-            'PimEnrichBundle:JobInstance:form.html.twig',
-            [
-                'jobInstanceIdentifier' => $code,
-                'mode'                  => 'show',
-                'type'                  => $this->getJobType()
-            ]
-        );
-    }
-
-    /**
-     * Edit a job instance
-     *
-     * @param string $code
-     *
-     * @return Response
-     */
-    public function editAction($code)
-    {
-        return $this->templating->renderResponse(
-            'PimEnrichBundle:JobInstance:form.html.twig',
-            [
-                'jobInstanceIdentifier' => $code,
-                'mode'                  => 'edit',
-                'type'                  => $this->getJobType()
-            ]
-        );
-    }
-
-    /**
      * Return the job type of the controller
      *
      * @return string

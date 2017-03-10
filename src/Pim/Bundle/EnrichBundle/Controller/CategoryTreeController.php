@@ -17,7 +17,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -259,7 +258,7 @@ class CategoryTreeController extends Controller
      *
      * @throws AccessDeniedException
      *
-     * @return Response|RedirectResponse
+     * @return Response
      */
     public function createAction(Request $request, $parent = null)
     {
@@ -286,9 +285,12 @@ class CategoryTreeController extends Controller
                 $this->addFlash('success', $message);
                 $this->eventDispatcher->dispatch(CategoryEvents::POST_CREATE, new GenericEvent($category));
 
-                return $this->redirectToRoute($this->buildRouteName('categorytree_edit'), [
-                    'id' => $category->getId()
-                ]);
+                return new JsonResponse(
+                    [
+                        'route'  => 'categorytree_edit',
+                        'params' => ['id' => $category->getId()]
+                    ]
+                );
             }
         }
 
@@ -352,7 +354,7 @@ class CategoryTreeController extends Controller
      *
      * @throws AccessDeniedException
      *
-     * @return Response|RedirectResponse
+     * @return Response
      */
     public function removeAction($id)
     {
@@ -366,11 +368,7 @@ class CategoryTreeController extends Controller
 
         $this->categoryRemover->remove($category);
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return $this->redirectToRoute($this->buildRouteName('categorytree_index'), $params);
-        }
+        return new Response('', 204);
     }
 
     /**

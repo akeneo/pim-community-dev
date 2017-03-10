@@ -1,6 +1,6 @@
 pim_importexport_export_execution_index:
-    path: /.{_format}
-    defaults: { _controller: pim_import_export.controller.export_execution:indexAction, _format: html }
+    path: /
+    defaults: { _controller: pim_import_export.controller.export_execution:indexAction }
     requirements:
         _format: html|json
 
@@ -11,11 +11,10 @@ pim_importexport_export_execution_download_log:
         id: \d+
 
 pim_importexport_export_execution_show:
-    path: /{id}.{_format}
-    defaults: { _controller: pim_import_export.controller.export_execution:showAction, _format: html }
+    path: /{id}
+    defaults: { _controller: pim_import_export.controller.export_execution:showAction }
     requirements:
         id: \d+
-        _format: html|json
 
 pim_importexport_export_execution_download_file:
     path: /{id}/download/{archiver}/{key}

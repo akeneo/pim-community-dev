@@ -1,8 +1,6 @@
 pim_enrich_variant_group_index:
-    path: /.{_format}
-    defaults: { _controller: pim_enrich.controller.variant_group:indexAction, _format: html }
-    requirements:
-        _format: html|json
+    path: /
+    defaults: { _controller: pim_enrich.controller.variant_group:indexAction }
 
 pim_enrich_variant_group_create:
     path: /create
@@ -16,35 +14,34 @@ pim_enrich_variant_group_edit:
 
 pim_enrich_variant_group_rest_remove_attribute:
     path: /rest/{code}/{attributeId}
-    defaults: { _controller: pim_enrich.controller.rest.variant_group_attribute:removeAttributeAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.variant_group_attribute:removeAttributeAction }
     requirements:
         code: '[a-zA-Z0-9_]+'
         attributeId: '\d+'
-        _format: json
     methods: [DELETE]
 
 pim_enrich_variant_group_rest_index:
     path: /rest
-    defaults: { _controller: pim_enrich.controller.rest.variant_group:indexAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.variant_group:indexAction }
     methods: [GET]
 
 pim_enrich_variant_group_rest_get:
     path: /rest/{code}
-    defaults: { _controller: pim_enrich.controller.rest.variant_group:getAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.variant_group:getAction }
     requirements:
         code: '[a-zA-Z0-9_]+'
     methods: [GET]
 
 pim_enrich_variant_group_rest_post:
     path: /rest/{code}
-    defaults: { _controller: pim_enrich.controller.rest.variant_group:postAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.variant_group:postAction }
     requirements:
         code: '[a-zA-Z0-9_]+'
     methods: [POST]
 
 pim_enrich_variant_group_rest_remove:
     path: /rest/{code}
-    defaults: { _controller: pim_enrich.controller.rest.variant_group:removeAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.variant_group:removeAction }
     requirements:
         code: '[a-zA-Z0-9_]+'
     methods: [DELETE]

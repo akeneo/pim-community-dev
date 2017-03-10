@@ -13,5 +13,5 @@ use Context\Page\Base\Index as BaseIndex;
  */
 class Index extends BaseIndex
 {
-    protected $path = '/configuration/attribute-group';
+    protected $path = '#/configuration/attribute-group';
 }

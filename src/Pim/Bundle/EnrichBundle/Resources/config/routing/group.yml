@@ -1,8 +1,6 @@
 pim_enrich_group_index:
-    path: /.{_format}
-    defaults: { _controller: pim_enrich.controller.group:indexAction, _format: html }
-    requirements:
-        _format: html|json
+    path: /
+    defaults: { _controller: pim_enrich.controller.group:indexAction }
 
 pim_enrich_group_create:
     path: /create
@@ -16,40 +14,39 @@ pim_enrich_group_edit:
 
 pim_enrich_group_history:
     path: /{id}/history.{_format}
-    defaults: { _controller: pim_enrich.controller.group:historyAction, _format: html }
+    defaults: { _controller: pim_enrich.controller.group:historyAction }
     requirements:
         id: \d+
-        _format: html|json
 
 pim_enrich_group_rest_index:
     path: /rest
-    defaults: { _controller: pim_enrich.controller.rest.group:indexAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.group:indexAction }
     methods: [GET]
 
 pim_enrich_group_rest_get:
     path: /rest/{identifier}
-    defaults: { _controller: pim_enrich.controller.rest.group:getAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.group:getAction }
     requirements:
         identifier: '[a-zA-Z0-9_]+'
     methods: [GET]
 
 pim_enrich_group_rest_post:
     path: /rest/{code}
-    defaults: { _controller: pim_enrich.controller.rest.group:postAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.group:postAction }
     requirements:
         code: '[a-zA-Z0-9_]+'
     methods: [POST]
 
 pim_enrich_group_rest_list_products:
     path: /rest/{identifier}/products
-    defaults: { _controller: pim_enrich.controller.rest.group:listProductsAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.group:listProductsAction }
     requirements:
         identifier: '[a-zA-Z0-9_]+'
     methods: [GET]
 
 pim_enrich_group_rest_remove:
     path: /rest/{code}
-    defaults: { _controller: pim_enrich.controller.rest.group:removeAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.group:removeAction }
     requirements:
         code: '[a-zA-Z0-9_]+'
     methods: [DELETE]

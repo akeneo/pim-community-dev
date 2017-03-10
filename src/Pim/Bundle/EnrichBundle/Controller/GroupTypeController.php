@@ -10,7 +10,6 @@ use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -88,14 +87,10 @@ class GroupTypeController
      * @Template
      * @AclAncestor("pim_enrich_grouptype_create")
      *
-     * @return Response|RedirectResponse
+     * @return Response
      */
     public function createAction(Request $request)
     {
-        if (!$request->isXmlHttpRequest()) {
-            return new RedirectResponse($this->router->generate('pim_enrich_grouptype_index'));
-        }
-
         $groupType = new GroupType();
 
         if ($this->groupTypeHandler->process($groupType)) {
@@ -143,7 +138,7 @@ class GroupTypeController
      *
      * @AclAncestor("pim_enrich_grouptype_remove")
      *
-     * @return Response|RedirectResponse
+     * @return Response
      */
     public function removeAction(GroupType $groupType)
     {
@@ -155,10 +150,6 @@ class GroupTypeController
             $this->groupTypeRemover->remove($groupType);
         }
 
-        if ($this->request->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return new RedirectResponse($this->router->generate('pim_enrich_grouptype_index'));
-        }
+        return new Response('', 204);
     }
 }

@@ -15,7 +15,7 @@
     {% else %}
         {% if resource_granted('pim_user_user_edit') %}
             {{ UI.button({
-                'path' : path('oro_user_update', { id: entity.id }),
+                'path' : '#' ~ path('oro_user_update', { id: entity.id }),
                 'iClass' : 'icon-pencil ',
                 'title' : 'Edit user',
                 'label' : 'Edit',

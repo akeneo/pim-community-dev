@@ -29,6 +29,9 @@ define(['routing'], function (Routing) {
 
         /* jshint loopfunc:true */
         for (var name in routes) {
+            // if (name === 'pim_enrich_categorytree_create_tree') {
+            //     debugger;
+            // }
             route = routes[name];
             var pattern = '';
             var variables = [];

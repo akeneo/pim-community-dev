@@ -46,7 +46,7 @@ extensions:
         module: pim/form/common/save-buttons
         parent: pim-association-type-edit-form
         targetZone: buttons
-        position: 100
+        position: 110
 
     pim-association-type-edit-form-save:
         module: pim/association-type-edit-form/save

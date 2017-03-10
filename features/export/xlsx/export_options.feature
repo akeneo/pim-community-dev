@@ -55,7 +55,6 @@ Feature: Export options in XSLX
       | lace_color         | laces_brown | 2          | Brown       |
       | lace_color         | laces_white | 3          | White       |
 
-  @javascript
   Scenario: Successfully export groups in XLSX into several files
     Given the following job "xlsx_footwear_option_export" configuration:
       | filePath     | %tmp%/xlsx_footwear_option_export/xlsx_footwear_option_export.xlsx |

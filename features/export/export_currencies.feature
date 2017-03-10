@@ -1,9 +1,9 @@
+@javascript
 Feature: Export currencies
   In order to be able to access and modify currencies data outside PIM
   As an administrator
   I need to be able to export currencies
 
-  @javascript
   Scenario: Successfully export currencies
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_currency_export" configuration:

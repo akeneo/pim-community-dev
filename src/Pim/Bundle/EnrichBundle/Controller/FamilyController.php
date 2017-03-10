@@ -8,7 +8,6 @@ use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Pim\Component\Catalog\Factory\FamilyFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -80,10 +79,6 @@ class FamilyController
      */
     public function createAction()
     {
-        if (!$this->request->isXmlHttpRequest()) {
-            return new RedirectResponse($this->router->generate('pim_enrich_family_index'));
-        }
-
         $family = $this->familyFactory->create();
 
         if ($this->familyHandler->process($family)) {
@@ -102,23 +97,6 @@ class FamilyController
 
         return [
             'form' => $this->familyForm->createView()
-        ];
-    }
-
-    /**
-     * Edit a family
-     *
-     * @param int $code
-     *
-     * @Template
-     * @AclAncestor("pim_enrich_family_index")
-     *
-     * @return array|Response
-     */
-    public function editAction($code)
-    {
-        return [
-            'code' => $code,
         ];
     }
 }

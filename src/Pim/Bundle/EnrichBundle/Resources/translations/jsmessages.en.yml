@@ -320,7 +320,7 @@ pim_enrich:
     error:
         upload: An error occured during the upload of the file
     alert:
-        not_allowed: You are not allowed to access this page
+        not_allowed: Forbidden. You are not allowed to access this page
         error_occured: An error occured during the loading of the page
     form:
         required: (required)
@@ -691,3 +691,5 @@ pim_enrich:
 
 pim_enrich.error:
     exception.title: Oh snap! A {{ status_code }} error occured...
+    http:
+        403: Forbidden. You are not allowed to access this page

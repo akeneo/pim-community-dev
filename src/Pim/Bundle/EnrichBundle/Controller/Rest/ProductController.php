@@ -167,23 +167,6 @@ class ProductController
     }
 
     /**
-     * Edit product
-     *
-     * @param int $id
-     *
-     * @Template("PimEnrichBundle:Product:edit.html.twig")
-     * @AclAncestor("pim_enrich_product_index")
-     *
-     * @return array
-     */
-    public function editAction($id)
-    {
-        return [
-            'productId' => $id
-        ];
-    }
-
-    /**
      * @param string $id Product id
      *
      * @throws NotFoundHttpException If product is not found or the user cannot see it

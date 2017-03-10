@@ -16,8 +16,8 @@ class Index extends Form
     /**
      * @var string
      */
-    protected $path = '/system';
-    
+    protected $path = '#/system';
+
     /**
      * {@inheritdoc}
      */

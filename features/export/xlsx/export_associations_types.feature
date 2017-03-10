@@ -1,3 +1,4 @@
+@javascript
 Feature: Export associations in XLSX
   In order to be able to access and modify association types data outside PIM
   As a product manager
@@ -7,7 +8,6 @@ Feature: Export associations in XLSX
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully export association types
     Given the following job "xlsx_footwear_association_type_export" configuration:
       | filePath | %tmp%/association_type_export/association_type_export.xlsx |
@@ -16,7 +16,6 @@ Feature: Export associations in XLSX
     And I wait for the "xlsx_footwear_association_type_export" job to finish
     Then xlsx file "%tmp%/association_type_export/association_type_export.xlsx" should contain 5 rows
 
-  @javascript
   Scenario: Successfully export associations into several files
     Given the following job "xlsx_footwear_association_type_export" configuration:
       | filePath     | %tmp%/xlsx_footwear_association_type_export/xlsx_footwear_association_type_export.xlsx |

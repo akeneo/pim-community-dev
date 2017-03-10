@@ -18,7 +18,6 @@ Feature: Edit a family
     Then I should see "Family successfully updated"
     And I should see "My family"
 
-  @javascript
   Scenario: Successfully edit a family
     And the following attributes:
       | label-en_US | type             | useable_as_grid_filter | group | code   |

@@ -11,7 +11,6 @@ use Pim\Component\Catalog\Repository\AssociationRepositoryInterface;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -98,14 +97,10 @@ class AssociationTypeController
      * @Template
      * @AclAncestor("pim_enrich_associationtype_create")
      *
-     * @return Response|RedirectResponse
+     * @return Response
      */
     public function createAction(Request $request)
     {
-        if (!$request->isXmlHttpRequest()) {
-            return new RedirectResponse($this->router->generate('pim_enrich_associationtype_index'));
-        }
-
         $associationType = new AssociationType();
 
         if ($this->assocTypeHandler->process($associationType)) {

@@ -1,3 +1,4 @@
+@javascript
 Feature: Import attribute options
   In order to define choices for a choice attribute
   As a product manager
@@ -13,7 +14,6 @@ Feature: Import attribute options
       | Attribute group | Other |
     And I save the attribute
 
-  @javascript
   Scenario: Successfully show default translation when blank text
     Given the following CSV file to import:
       """

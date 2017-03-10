@@ -20,7 +20,7 @@
                 {% endfor %}
 
                 {% for code, label in attributeTypes|sort %}
-                    <a class="AknButtonList-item AknButton AknButton--withIcon attribute-choice" href="{{ path('pim_enrich_attribute_create', { attribute_type: code }) }}">
+                    <a class="AknButtonList-item AknButton AknButton--withIcon attribute-choice" href="#{{ path('pim_enrich_attribute_create', { attribute_type: code }) }}">
                         <i class="AknButton-icon icon-{{ attribute_icon(code) }}"></i>
                         {{ label }}
                     </a>

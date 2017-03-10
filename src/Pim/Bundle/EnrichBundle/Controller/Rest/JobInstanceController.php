@@ -347,7 +347,7 @@ class JobInstanceController
         $jobExecution = $this->launchJob($jobInstance);
 
         return new JsonResponse([
-            'redirectUrl' => $this->router->generate(
+            'redirectUrl' => '#' . $this->router->generate(
                 sprintf('pim_importexport_%s_execution_show', $jobInstance->getType()),
                 ['id' => $jobExecution->getId()]
             )

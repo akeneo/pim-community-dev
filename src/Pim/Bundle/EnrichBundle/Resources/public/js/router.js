@@ -4,15 +4,29 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'backbone',
         'routing',
         'pim/route-matcher',
         'oro/loading-mask',
         'pim/controller-registry',
         'oro/mediator',
-        'pim/error'
+        'pim/error',
+        'pim/security-context'
     ],
-    function ($, _, Backbone, Routing, RouteMatcher, LoadingMask, ControllerRegistry, mediator, Error) {
+    function (
+        $,
+        _,
+        __,
+        Backbone,
+        Routing,
+        RouteMatcher,
+        LoadingMask,
+        ControllerRegistry,
+        mediator,
+        Error,
+        securityContext
+    ) {
         var currentController = null;
 
         var Router = Backbone.Router.extend({
@@ -63,19 +77,26 @@ define(
                 this.showLoadingMask();
 
                 this.triggerStart(route);
-
-                ControllerRegistry.get(route.name).done(_.bind(function (Controller) {
+                ControllerRegistry.get(route.name).done(function (controller) {
                     if (currentController) {
                         currentController.remove();
                     }
+                    console.log(controller.aclResourceId);
+                    console.log(controller.module);
+                    console.log(securityContext.isGranted(controller.aclResourceId));
                     $('#container').empty();
                     var $view = $('<div>', {'class': 'view'}).appendTo($('#container'));
-                    currentController = new Controller({ el: $view});
+
+                    if (controller.aclResourceId && !securityContext.isGranted(controller.aclResourceId)) {
+                        this.displayErrorPage(__('pim_enrich.error.http.403'), '403');
+                    }
+
+                    currentController = new controller.class({ el: $view});
                     currentController.setActive(true);
                     currentController.renderRoute(route, path).done(_.bind(function () {
                         this.triggerComplete(route);
                     }, this)).fail(this.handleError.bind(this)).always(this.hideLoadingMask);
-                }, this));
+                }.bind(this));
             },
 
             /**

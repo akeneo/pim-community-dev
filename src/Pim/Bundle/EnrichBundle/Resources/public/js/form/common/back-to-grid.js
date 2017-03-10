@@ -12,12 +12,15 @@ define(
         'underscore',
         'pim/form',
         'text!pim/template/form/back-to-grid',
-        'routing',
+        'pim/router',
         'pim/user-context'
     ],
-    function (_, BaseForm, template, Routing, UserContext) {
+    function (_, BaseForm, template, router, UserContext) {
         return BaseForm.extend({
             tagName: 'a',
+            events: {
+                'click': 'backToGrid'
+            },
             className: 'AknTitleContainer-backLink back-link',
             template: _.template(template),
             config: {},
@@ -47,14 +50,17 @@ define(
              */
             render: function () {
                 this.$el.html(this.template());
-                this.$el.attr('href', Routing.generate(
+
+                return this;
+            },
+
+            backToGrid: function () {
+                router.redirectToRoute(
                     this.config.backUrl,
                     {
                         dataLocale: UserContext.get('catalogLocale')
                     }
-                ));
-
-                return this;
+                );
             }
         });
     }

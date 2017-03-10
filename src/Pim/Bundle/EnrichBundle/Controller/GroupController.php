@@ -10,7 +10,6 @@ use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -100,14 +99,10 @@ class GroupController
      * @Template
      * @AclAncestor("pim_enrich_group_create")
      *
-     * @return Response|RedirectResponse
+     * @return Response
      */
     public function createAction(Request $request)
     {
-        if (!$request->isXmlHttpRequest()) {
-            return new RedirectResponse($this->router->generate('pim_enrich_group_index'));
-        }
-
         $group = $this->groupFactory->createGroup();
 
         if ($this->groupHandler->process($group)) {

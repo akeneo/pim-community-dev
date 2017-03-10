@@ -33,7 +33,7 @@ extensions:
         parent: pim-channel-edit-form
         targetZone: buttons
         aclResourceId: pim_enrich_channel_remove
-        position: 100
+        position: 90
         config:
             trans:
                 title: confirmation.remove.channel

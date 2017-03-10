@@ -44,26 +44,6 @@ class ExportProfileController extends JobProfileController
 
     /**
      * {@inheritdoc}
-     *
-     * @AclAncestor("pim_importexport_export_profile_show")
-     */
-    public function showAction($code)
-    {
-        return parent::showAction($code);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @AclAncestor("pim_importexport_export_profile_edit")
-     */
-    public function editAction($code)
-    {
-        return parent::editAction($code);
-    }
-
-    /**
-     * {@inheritdoc}
      */
     protected function getJobType()
     {

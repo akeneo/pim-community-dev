@@ -1,6 +1,6 @@
 <div class="AknDashboardButtons">
     {% for link in links %}
-        <a href="{{ path(link.route) }}" class="AknDashboardButtons-item" title="{{ link.label|trans }}">
+        <a href="#/{{ path(link.route) }}" class="AknDashboardButtons-item" title="{{ link.label|trans }}">
             <img class="AknDashboardButtons-image" src="{{ asset('bundles/pimdashboard/images/' ~ link.image) }}"/>
             {{ link.label|trans }}
         </a>

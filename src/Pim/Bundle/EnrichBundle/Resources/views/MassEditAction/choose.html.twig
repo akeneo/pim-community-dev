@@ -10,7 +10,7 @@
 
     {{ parent() }}
 
-    {{ form_start(form, { 'action': path(actionPath, queryParams) }) }}
+    {{ form_start(form, { 'action': '#' ~ path(actionPath, queryParams) }) }}
 
         <div class="AknWidget">
             <div class="AknWidget-header">
@@ -19,7 +19,7 @@
             <div class="AknWidget-content AknWidget-content--withPadding">
                 {{ form_widget(form.operationAlias) }}
                 <div class="AknButtonList AknButtonList--right configuration">
-                    {{ elements.link('btn.cancel', path(canceledPath), {icon: 'chevron-left', class: 'AknButtonList-item btn-cancel'}) }}
+                    {{ elements.link('btn.cancel', '#' ~ path(canceledPath), {icon: 'chevron-left', class: 'AknButtonList-item btn-cancel'}) }}
                     {{ elements.submitBtn('btn.next', 'chevron-right', 'AknButtonList-item') }}
                 </div>
             </div>

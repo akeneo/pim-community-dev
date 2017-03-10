@@ -1,9 +1,8 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 {% import 'PimUIBundle::macros.html.twig' as UI %}
 
 {% block head_script %}
-    {{ parent() }}
     <script type="text/javascript">
         require(
             ['jquery'],
@@ -63,6 +62,7 @@
                 });
             }
         );
+        require('pim/page-title').set({'role': '{{ form.vars.value.label }}'});
     </script>
 {% endblock %}
 

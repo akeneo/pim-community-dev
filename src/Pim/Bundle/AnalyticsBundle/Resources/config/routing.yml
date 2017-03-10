@@ -1,11 +1,11 @@
 pim_analytics_data_collect:
     path: /analytics/collect_data
-    defaults: { _controller: 'pim_analytics.controller.data:collectAction', _format: json }
+    defaults: { _controller: 'pim_analytics.controller.data:collectAction' }
 
 pim_analytics_system_info_index:
     path: /system_info
-    defaults: { _controller: 'pim_analytics.controller.system_info:indexAction', _format: html }
+    defaults: { _controller: 'pim_analytics.controller.system_info:indexAction' }
 
 pim_analytics_system_info_download:
     path: /system_info/download
-    defaults: { _controller: 'pim_analytics.controller.system_info:indexAction', _format: txt }
+    defaults: { _controller: 'pim_analytics.controller.system_info:indexAction' }

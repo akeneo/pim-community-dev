@@ -240,7 +240,7 @@ extensions:
             types: [pim_catalog_identifier]
 
     pim-job-instance-xlsx-product-export-edit-content-data-help:
-        module: pim/job/product/edit/content/data/help
+        module: pim/job/common/edit/content/data/help
         parent: pim-job-instance-xlsx-product-export-edit-content-data
 
     pim-job-instance-xlsx-product-export-edit-content-data-add-filter:

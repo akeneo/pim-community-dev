@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Component\Catalog\Exception\LinkedChannelException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -62,7 +62,7 @@ class CurrencyController
      *
      * @AclAncestor("pim_enrich_currency_toggle")
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return JsonResponse
      */
     public function toggleAction(Currency $currency)
     {
@@ -78,6 +78,6 @@ class CurrencyController
             $this->request->getSession()->getFlashBag()->add('error', new Message('flash.error ocurred'));
         }
 
-        return new RedirectResponse($this->router->generate('pim_enrich_currency_index'));
+        return new JsonResponse(['route' => 'pim_enrich_currency_index']);
     }
 }

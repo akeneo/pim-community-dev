@@ -41,5 +41,5 @@ pim_enrich_attributegroup_removeattribute:
 
 pim_enrich_attributegroup_rest_index:
     path: /rest
-    defaults: { _controller: pim_enrich.controller.rest.attribute_group:indexAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.attribute_group:indexAction }
     methods: [GET, POST]

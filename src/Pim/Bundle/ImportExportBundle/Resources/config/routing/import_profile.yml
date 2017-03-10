@@ -1,8 +1,6 @@
 pim_importexport_import_profile_index:
-    path: /.{_format}
-    defaults: { _controller: pim_import_export.controller.import_profile:indexAction, _format: html }
-    requirements:
-        _format: html|json
+    path: /
+    defaults: { _controller: pim_import_export.controller.import_profile:indexAction }
 
 pim_importexport_import_profile_create:
     path: /create
