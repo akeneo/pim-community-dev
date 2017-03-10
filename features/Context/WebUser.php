@@ -2465,30 +2465,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * Check the user API key
-     *
-     * @Then /^The API key should (not )?be (.+)$/
-     */
-    public function theApiKeyShouldBe($not, $value)
-    {
-        $this->spin(function () use ($not, $value) {
-            $apiKey = $this->getCurrentPage()->getApiKey();
-
-            if ($not) {
-                if ($apiKey === $value) {
-                    throw new SpinException('API key should not be ' . $apiKey);
-                }
-            } else {
-                if ($apiKey !== $value) {
-                    throw new SpinException('API key should be ' . $apiKey);
-                }
-            }
-
-            return true;
-        }, 'Problem occurred with API Key.');
-    }
-
-    /**
      * Check the number of items in a select2 autocomplete. This function spins when autocomplete is searching; it
      * returns 0 only if special dom item is found.
      *
