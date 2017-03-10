@@ -1,0 +1,8 @@
+activity_manager:
+  notification:
+    project_calculation:
+      start: Начало
+    project_finished:
+      show: Показать
+    due_date:
+      start: Начало
