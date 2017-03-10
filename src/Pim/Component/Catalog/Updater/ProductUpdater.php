@@ -8,7 +8,10 @@ use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Updates a product
@@ -25,6 +28,9 @@ class ProductUpdater implements ObjectUpdaterInterface
     /** @var ProductTemplateUpdaterInterface */
     protected $templateUpdater;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /** @var array */
     protected $supportedFields = [];
 
@@ -34,17 +40,20 @@ class ProductUpdater implements ObjectUpdaterInterface
     /**
      * @param PropertySetterInterface         $propertySetter
      * @param ProductTemplateUpdaterInterface $templateUpdater
+     * @param EventDispatcherInterface        $eventDispatcher
      * @param array                           $supportedFields
      * @param array                           $ignoredFields
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
         ProductTemplateUpdaterInterface $templateUpdater,
+        EventDispatcherInterface $eventDispatcher,
         array $supportedFields,
         array $ignoredFields
     ) {
         $this->propertySetter = $propertySetter;
         $this->templateUpdater = $templateUpdater;
+        $this->eventDispatcher = $eventDispatcher;
         $this->supportedFields = $supportedFields;
         $this->ignoredFields = $ignoredFields;
     }
@@ -138,6 +147,8 @@ class ProductUpdater implements ObjectUpdaterInterface
             }
         }
         $this->updateProductVariantValues($product, $data);
+
+        $this->eventDispatcher->dispatch(ProductEvents::POST_UPDATE, new GenericEvent($product));
 
         return $this;
     }
