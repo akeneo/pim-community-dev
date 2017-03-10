@@ -223,6 +223,7 @@ pim_enrich:
       btn:
         save: Guardar
     channel:
+      title: canal
       info:
         deletion_successful: Canal eliminado correctamente.
         deletion_failed: No se ha podido eliminar el canal.
@@ -241,6 +242,7 @@ pim_enrich:
       btn:
         save: Guardar
     family:
+      title: familia
       info:
         create_successful: Canal creado correctamente.
       meta:

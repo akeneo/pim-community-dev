@@ -217,6 +217,7 @@ pim_enrich:
       btn:
         save: 保存
     channel:
+      title: 频道
       info:
         field_not_ready:
           The channel cannot be saved right now. The following fields are not ready:
@@ -229,6 +230,7 @@ pim_enrich:
       btn:
         save: 保存
     family:
+      title: 分类
       meta:
         created: 已创建
         created_by: '创建者:'

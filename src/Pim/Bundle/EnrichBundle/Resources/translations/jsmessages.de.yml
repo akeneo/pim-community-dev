@@ -223,6 +223,7 @@ pim_enrich:
       btn:
         save: Speichern
     channel:
+      title: Ausgabekanal
       info:
         deletion_successful: Ausgabekanal erfolgreich entfernt.
         deletion_failed: Ausgabekanal konnte nicht gelöscht werden.
@@ -241,6 +242,7 @@ pim_enrich:
       btn:
         save: Speichern
     family:
+      title: Produktfamilie
       info:
         create_successful: Ausgabekanal erfolgreich angelegt.
       meta:
