@@ -3,6 +3,7 @@
 namespace Pim\Component\Api\Normalizer\Exception;
 
 use Pim\Component\Api\Exception\DocumentedHttpException;
+use Pim\Component\Api\Hal\Link;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -19,16 +20,13 @@ class DocumentedNormalizer implements NormalizerInterface
      */
     public function normalize($exception, $format = null, array $context = [])
     {
-        // TODO: call new Link() when pagination will be done
         $data = [
             'code'    => $exception->getStatusCode(),
-            'message' => $exception->getMessage(),
-            '_links'  => [
-                'documentation' => [
-                    'href' => $exception->getHref()
-                ]
-            ]
+            'message' => $exception->getMessage()
         ];
+
+        $link = new Link('documentation', $exception->getHref());
+        $data['_links'] = $link->toArray();
 
         return $data;
     }
