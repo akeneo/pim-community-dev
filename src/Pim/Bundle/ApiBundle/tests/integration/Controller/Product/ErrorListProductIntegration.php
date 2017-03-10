@@ -117,6 +117,14 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $this->assert($client, 'Attribute "a_localizable_image" expects a locale, none given.');
     }
 
+    public function testSearchWithMissingLocales()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', '/api/rest/v1/products?search={"completeness":[{"operator":"GREATER THAN ON ALL LOCALES", "scope":"ecommerce", "value":100}]}');
+        $this->assert($client, 'Property "completeness" expects an array of arrays as data.');
+    }
+
     public function testSearchWithMissingScope()
     {
         $client = $this->createAuthenticatedClient();
