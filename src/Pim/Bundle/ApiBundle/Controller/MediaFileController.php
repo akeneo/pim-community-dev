@@ -55,7 +55,6 @@ class MediaFileController
      * @param FilesystemProvider             $filesystemProvider
      * @param FileFetcherInterface           $fileFetcher
      * @param array                          $apiConfiguration
-     * @param string                         $urlDocumentation
      */
     public function __construct(
         ApiResourceRepositoryInterface $mediaRepository,
@@ -72,7 +71,6 @@ class MediaFileController
         $this->paginator = $paginator;
         $this->filesystemProvider = $filesystemProvider;
         $this->apiConfiguration = $apiConfiguration;
-        $this->urlDocumentation = $urlDocumentation;
         $this->fileFetcher = $fileFetcher;
     }
 

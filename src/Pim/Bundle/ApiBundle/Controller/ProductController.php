@@ -378,7 +378,7 @@ class ProductController
             }
         } catch (UnknownPropertyException $exception) {
             throw new DocumentedHttpException(
-                $this->urlDocumentation,
+                Documentation::URL . 'patch_products__code_',
                 sprintf(
                     'Property "%s" does not exist. Check the standard format documentation.',
                     $exception->getPropertyName()

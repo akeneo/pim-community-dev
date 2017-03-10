@@ -212,7 +212,7 @@ class AttributeOptionController
 
         $data['attribute'] = $attributeCode;
         $attributeOption = $this->factory->create();
-        $this->updateAttributeOption($attributeOption, $data);
+        $this->updateAttributeOption($attributeOption, $data, 'post_attributes__attribute_code__options');
         $this->validateAttributeOption($attributeOption);
 
         $this->saver->save($attributeOption);

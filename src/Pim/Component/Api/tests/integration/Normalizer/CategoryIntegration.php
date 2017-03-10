@@ -16,7 +16,7 @@ class CategoryIntegration extends AbstractNormalizerTestCase
         $expected = [
             'code'   => 'master',
             'parent' => null,
-            'labels' => []
+            'labels' => new \StdClass()
         ];
 
         $this->assert('master', $expected);
@@ -43,6 +43,6 @@ class CategoryIntegration extends AbstractNormalizerTestCase
 
         $result = $serializer->normalize($repository->findOneByIdentifier($identifier), 'external_api');
 
-        $this->assertSame($expected, $result);
+        $this->assertEquals($expected, $result);
     }
 }

@@ -230,7 +230,7 @@ JSON;
             'message' => 'Property "extra_property" does not exist. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#family', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_families'
                 ],
             ],
         ];
@@ -353,7 +353,7 @@ JSON;
     "message": "Property \"attribute_requirements\" expects a valid code. The channel does not exist, \"ecommerce2\" given. Check the standard format documentation.",
     "_links": {
         "documentation": {
-            "href": 'http://api.akeneo.com/api-reference.html#post_families'
+            "href": "http://api.akeneo.com/api-reference.html#post_families"
         }
     }
 }

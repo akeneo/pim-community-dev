@@ -211,7 +211,7 @@ class CategoryController
             $category = $this->factory->create();
         }
 
-        $this->updateCategory($category, $data, 'patch_products__code_');
+        $this->updateCategory($category, $data, 'patch_categories__code_');
         $this->validateCategory($category, $data);
 
         try {

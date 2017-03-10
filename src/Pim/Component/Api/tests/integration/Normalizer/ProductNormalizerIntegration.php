@@ -30,10 +30,10 @@ class ProductNormalizerIntegration extends TestCase
             'variant_group' => null,
             'categories'    => [],
             'enabled'       => false,
-            'values'        => [],
+            'values'        => new \StdClass(),
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
+            'associations'  => new \StdClass(),
         ];
 
         $this->assertProduct('bar', $expected, []);
@@ -48,10 +48,10 @@ class ProductNormalizerIntegration extends TestCase
             'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
-            'values'        => [],
+            'values'        => new \StdClass(),
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
+            'associations'  => new \StdClass(),
         ];
 
         $this->assertProduct('baz', $expected, []);
@@ -356,7 +356,7 @@ class ProductNormalizerIntegration extends TestCase
         $expected = $this->sanitizeDateFields($expected);
         $expected = $this->sanitizeMediaAttributeData($expected);
 
-        $this->assertSame($expected, $result);
+        $this->assertEquals($expected, $result);
     }
 
     /**
