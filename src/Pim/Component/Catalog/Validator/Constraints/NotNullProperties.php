@@ -16,9 +16,6 @@ class NotNullProperties extends Constraint
     /** @var string */
     public $message = 'This value should not be blank.';
 
-    /** @var string */
-    public $propertyPath = 'properties';
-
     /** @var array */
     public $properties = [];
 
@@ -44,5 +41,13 @@ class NotNullProperties extends Constraint
     public function getRequiredOptions()
     {
         return ['properties'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validatedBy()
+    {
+        return 'pim_not_null_properties_validator';
     }
 }

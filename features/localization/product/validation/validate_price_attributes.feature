@@ -58,8 +58,8 @@ Feature: Validate localized price attributes of a product
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the type constraint of price attribute
-    Given I change the "Coût" to "bar USD"
-    And I change the "Coût" to "qux EUR"
+    Given I change the "Taxe" to "bar USD"
+    And I change the "Taxe" to "qux EUR"
     And I save the product
     Then I should see validation tooltip "Cette valeur doit être un nombre."
     Then I should see validation tooltip "Cette valeur doit être supérieure ou égale à 10."

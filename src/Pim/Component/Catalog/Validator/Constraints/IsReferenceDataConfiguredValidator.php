@@ -19,15 +19,15 @@ class IsReferenceDataConfiguredValidator extends ConstraintValidator
     protected $registry;
 
     /** @var array */
-    protected $referenceDataType;
+    protected $referenceDataTypes;
 
     /**
-     * @param array                               $referenceDataType
+     * @param array                               $referenceDataTypes
      * @param ConfigurationRegistryInterface|null $registry
      */
-    public function __construct(array $referenceDataType, ConfigurationRegistryInterface $registry = null)
+    public function __construct(array $referenceDataTypes, ConfigurationRegistryInterface $registry = null)
     {
-        $this->referenceDataType = $referenceDataType;
+        $this->referenceDataTypes = $referenceDataTypes;
         $this->registry = $registry;
     }
 
@@ -38,8 +38,12 @@ class IsReferenceDataConfiguredValidator extends ConstraintValidator
     {
         $referenceDataName = $attribute->getReferenceDataName();
 
+        if (null === $referenceDataName || '' === $referenceDataName) {
+            return;
+        }
+
         if (null !== $this->registry &&
-            in_array($attribute->getType(), $this->referenceDataType) &&
+            in_array($attribute->getType(), $this->referenceDataTypes) &&
             !$this->registry->has($referenceDataName)
         ) {
             $references = array_keys($this->registry->all());

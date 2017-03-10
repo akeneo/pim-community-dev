@@ -17,7 +17,7 @@ class IsReferenceDataConfigured extends Constraint
     public $message = 'Reference data "%reference_data_name%" does not exist. Allowed values are: %references%';
 
     /** @var string */
-    public $propertyPath = 'referenceDataName';
+    public $propertyPath = 'reference_data_name';
 
     /**
      * {@inheritdoc}

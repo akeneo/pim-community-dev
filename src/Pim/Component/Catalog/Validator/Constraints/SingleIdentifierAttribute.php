@@ -20,9 +20,6 @@ class SingleIdentifierAttribute extends Constraint
      */
     public $message = 'An identifier attribute already exists.';
 
-    /** @var string */
-    public $propertyPath = 'type';
-
     /**
      * {@inheritdoc}
      */

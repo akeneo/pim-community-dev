@@ -24,7 +24,7 @@ class NullPropertiesValidator extends ConstraintValidator
         foreach ($constraint->properties as $propertyCode) {
             if (array_key_exists($propertyCode, $values) && null !== $values[$propertyCode]) {
                 $this->context->buildViolation($constraint->message)
-                    ->atPath($constraint->propertyPath)
+                    ->atPath($propertyCode)
                     ->addViolation();
             }
         }
