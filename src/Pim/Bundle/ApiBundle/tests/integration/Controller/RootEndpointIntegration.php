@@ -135,6 +135,10 @@ class RootEndpointIntegration extends ApiTestCase
             "pim_api_media_file_get": {
                 "route": "/api/rest/v1/media-files/{code}",
                 "methods": ["GET"]
+            },
+            "pim_api_media_file_create": {
+                "route": "/api/rest/v1/media-files",
+                "methods": ["POST"]
             }
         }
     }
