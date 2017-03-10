@@ -720,32 +720,23 @@ class Form extends Base
      *
      * @param NodeElement $label
      * @param string      $value
-     *
-     * @throws \InvalidArgumentException
      */
     protected function fillSelect2Field(NodeElement $label, $value)
     {
-        if (trim($value)) {
-            $container = $this->getClosest($label, 'AknFieldContainer');
-            $link = $container->find('css', '.select2-choice');
+        $container = $this->getClosest($label, 'AknFieldContainer');
 
-            if (null !== $link) {
-                $link->click();
-                $this->getSession()->wait($this->getTimeout(), '!$.active');
+        $select2Container = $this->spin(function () use ($container) {
+            return $container->find('css', '.select2-container');
+        }, 'Can not find the select2 container.');
 
-                $field = $this->spin(function () use ($value) {
-                    return $this->find('css', sprintf('#select2-drop li:contains("%s")', $value));
-                }, sprintf('Cannot find "%s" select2 element', $value));
+        $field = $this->decorate(
+            $select2Container,
+            ['Pim\Behat\Decorator\Field\Select2Decorator']
+        );
 
-                $field->click();
+        $field->setValue($value);
 
-                return;
-            }
-
-            throw new \InvalidArgumentException(
-                sprintf('Could not find select2 widget inside %s', $container->getHtml())
-            );
-        }
+        return;
     }
 
     /**

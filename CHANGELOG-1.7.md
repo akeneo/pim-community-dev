@@ -1,5 +1,9 @@
 # 1.7.x
 
+## Functional improvements
+
+- API-126: Change attribute form "scope" input to a yes/no switch
+
 ## Bug fixes
 
 - PIM-6210: fix unused fields on import profiles

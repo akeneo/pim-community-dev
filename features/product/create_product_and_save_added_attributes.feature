@@ -8,8 +8,8 @@ Feature: Create product and save a new product value
   Scenario: Successfully create a product, fill in product values with 0 and save
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code      | label-en_US | type                         | group     |
-      | tmp_price | Tmp Price   | pim_catalog_price_collection | marketing |
+      | code      | label-en_US | type                         | group     | decimals_allowed |
+      | tmp_price | Tmp Price   | pim_catalog_price_collection | marketing | 0                |
     And I am logged in as "Julia"
     And I am on the products page
     And I create a new product

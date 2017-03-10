@@ -6,8 +6,8 @@ Feature: Update price fields
   Scenario: Successfully update a price field
     Given a "default" catalog configuration
     And the following attributes:
-      | code  | type                         | localizable | scopable | group |
-      | price | pim_catalog_price_collection | 1           | 0        | other |
+      | code  | type                         | localizable | scopable | group | decimals_allowed |
+      | price | pim_catalog_price_collection | 1           | 0        | other | 1                |
     And the following products:
       | sku  | price-fr_FR  |
       | BOX1 |              |
