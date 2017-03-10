@@ -171,6 +171,21 @@ define(
                 if ('project' === this.currentViewType && this.hasNoProject) {
                     this.disableSelect2();
                 }
+            },
+
+            /**
+             * {@inheritdoc}
+             *
+             * Override to set a limit of 3 to fetch projects
+             */
+            getSelectSearchParameters: function () {
+                var parameters = ViewSelector.prototype.getSelectSearchParameters.apply(this, arguments);
+
+                return $.extend(true, parameters, {
+                    options: {
+                        limit: ('project' === this.currentViewType) ? 3 : this.resultsPerPage
+                    }
+                });
             }
         });
     }
