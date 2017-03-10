@@ -6,3 +6,6 @@ teamwork_assistant:
       show: Показать
     due_date:
       start: Начало
+  datagrid:
+    contributor_in_progress: В процессе
+    contributor_done: Готово

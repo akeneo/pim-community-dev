@@ -6,3 +6,5 @@ teamwork_assistant:
       show: Prikaži
     due_date:
       start: Početak
+  datagrid:
+    contributor_done: Gotovo

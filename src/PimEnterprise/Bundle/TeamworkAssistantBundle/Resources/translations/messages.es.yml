@@ -6,3 +6,6 @@ teamwork_assistant:
       show: Mostrar
     due_date:
       start: Iniciar
+  datagrid:
+    contributor_in_progress: En progreso
+    contributor_done: Hecho
