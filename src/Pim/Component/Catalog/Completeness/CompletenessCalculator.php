@@ -100,6 +100,11 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
                     $localeCode = $locale->getCode();
 
                     $attribute = $attributeRequirement->getAttribute();
+
+                    if ($attribute->isLocaleSpecific() && !in_array($locale, $attribute->getAvailableLocaleCodes())) {
+                        continue;
+                    }
+
                     $value = $this->productValueFactory->create(
                         $attribute,
                         $attribute->isScopable()? $channelCode : null,
