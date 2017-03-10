@@ -233,6 +233,7 @@ pim_enrich:
             btn:
                 save: Save
         channel:
+            title: channel
             info:
                 deletion_successful: Channel successfully deleted.
                 deletion_failed: Channel could not be deleted.
@@ -302,6 +303,7 @@ pim_enrich:
                 updated: Updated
                 updated_by: Updated by
         job_instance:
+            title: job profile
             info:
                 update_failed: The job profile could not be updated.
                 update_successful: The job profile has been successfully updated.
