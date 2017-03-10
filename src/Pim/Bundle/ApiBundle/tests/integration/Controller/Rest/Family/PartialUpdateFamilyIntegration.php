@@ -4,7 +4,6 @@ namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Rest\Family;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Pim\Bundle\CatalogBundle\Version;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateFamilyIntegration extends ApiTestCase
@@ -386,13 +385,12 @@ JSON;
     }
 JSON;
 
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "extra_property" does not exist. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#family', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#patch_families__code_'
                 ],
             ],
         ];
@@ -415,13 +413,12 @@ JSON;
     }
 JSON;
 
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "labels" expects an array as data, "NULL" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#family', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#patch_families__code_'
                 ],
             ],
         ];

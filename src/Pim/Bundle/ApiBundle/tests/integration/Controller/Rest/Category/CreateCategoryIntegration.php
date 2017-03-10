@@ -4,7 +4,6 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Rest\Category;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Pim\Bundle\CatalogBundle\Version;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateCategoryIntegration extends ApiTestCase
@@ -192,13 +191,12 @@ JSON;
     }
 JSON;
 
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "extra_property" does not exist. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#category', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_categories'
                 ],
             ],
         ];
@@ -221,13 +219,12 @@ JSON;
     }
 JSON;
 
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "labels" expects an array as data, "NULL" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#category', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_categories'
                 ],
             ],
         ];

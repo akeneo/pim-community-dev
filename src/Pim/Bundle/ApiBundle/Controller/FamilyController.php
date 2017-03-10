@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Version;
+use Pim\Bundle\ApiBundle\Documentation;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
@@ -63,9 +63,6 @@ class FamilyController
     /** @var array */
     protected $apiConfiguration;
 
-    /** @var string */
-    protected $documentationUrl;
-
     /**
      * @param ApiResourceRepositoryInterface $repository
      * @param NormalizerInterface            $normalizer
@@ -77,7 +74,6 @@ class FamilyController
      * @param HalPaginator                   $paginator
      * @param ParameterValidator             $parameterValidator
      * @param array                          $apiConfiguration
-     * @param string                         $documentationUrl
      */
     public function __construct(
         ApiResourceRepositoryInterface $repository,
@@ -89,8 +85,7 @@ class FamilyController
         RouterInterface $router,
         HalPaginator $paginator,
         ParameterValidator $parameterValidator,
-        array $apiConfiguration,
-        $documentationUrl
+        array $apiConfiguration
     ) {
         $this->repository = $repository;
         $this->normalizer = $normalizer;
@@ -102,7 +97,6 @@ class FamilyController
         $this->paginator = $paginator;
         $this->parameterValidator = $parameterValidator;
         $this->apiConfiguration = $apiConfiguration;
-        $this->documentationUrl = sprintf($documentationUrl, substr(Version::VERSION, 0, 3));
     }
 
     /**
@@ -180,7 +174,7 @@ class FamilyController
         $data = $this->getDecodedContent($request->getContent());
 
         $family = $this->factory->create();
-        $this->updateFamily($family, $data);
+        $this->updateFamily($family, $data, 'post_families');
         $this->validateFamily($family);
 
         $this->saver->save($family);
@@ -214,7 +208,7 @@ class FamilyController
             $family = $this->factory->create();
         }
 
-        $this->updateFamily($family, $data);
+        $this->updateFamily($family, $data, 'patch_families__code_');
         $this->validateFamily($family);
 
         $this->saver->save($family);
@@ -250,25 +244,17 @@ class FamilyController
      *
      * @param FamilyInterface $family family to update
      * @param array           $data   data of the request already decoded, it should be the standard format
+     * @param string          $anchor
      *
-     * @throws UnprocessableEntityHttpException
+     * @throws DocumentedHttpException
      */
-    protected function updateFamily(FamilyInterface $family, array $data)
+    protected function updateFamily(FamilyInterface $family, array $data, $anchor)
     {
         try {
             $this->updater->update($family, $data);
-        } catch (UnknownPropertyException $exception) {
-            throw new DocumentedHttpException(
-                $this->documentationUrl,
-                sprintf(
-                    'Property "%s" does not exist. Check the standard format documentation.',
-                    $exception->getPropertyName()
-                ),
-                $exception
-            );
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
-                $this->documentationUrl,
+                Documentation::URL . $anchor,
                 sprintf('%s Check the standard format documentation.', $exception->getMessage()),
                 $exception
             );

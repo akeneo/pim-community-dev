@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
-use Pim\Bundle\CatalogBundle\Version;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateProductIntegration extends AbstractProductTestCase
@@ -917,14 +916,12 @@ JSON;
 JSON;
 
         $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
-
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "extra_property" does not exist. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/products.html', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_products'
                 ],
             ],
         ];
@@ -959,14 +956,12 @@ JSON;
 JSON;
 
         $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
-
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "unknown_attribute" does not exist. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/products.html', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_products'
                 ],
             ],
         ];

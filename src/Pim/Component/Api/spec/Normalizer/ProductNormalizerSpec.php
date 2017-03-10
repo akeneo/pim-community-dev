@@ -60,6 +60,12 @@ class ProductNormalizerSpec extends ObjectBehavior
                     ]
                 ]
             ],
+            'associations' => [
+                'X_SELL' => [
+                    'groups' => ['bar'],
+                    'products' => ['foo']
+                ]
+            ]
         ];
 
         $stdNormalizer->normalize($product, 'standard', [])->willReturn($productStandard);
@@ -118,6 +124,12 @@ class ProductNormalizerSpec extends ObjectBehavior
                     ]
                 ]
             ],
+            'associations' => [
+                'UPSELL' => [
+                    'groups' => ['foo'],
+                    'products' => ['bar']
+                ]
+            ]
         ];
 
         $context = ['attributes' => ['number']];
@@ -133,5 +145,38 @@ class ProductNormalizerSpec extends ObjectBehavior
         $router->generate(Argument::any(), ['code' => 'a/b/c/artyui_file.txt'], Argument::any())->shouldNotBeCalled();
 
         $this->normalize($product, 'external_api', $context)->shouldReturn($productExternal);
+    }
+
+    function it_normalizes_empty_values_and_associations(
+        $stdNormalizer,
+        $attributeRepository,
+        ProductInterface $product
+    ) {
+        $productStandard = [
+            'identifier'   => 'foo',
+            'values'       => [],
+            'associations' => []
+        ];
+
+        $stdNormalizer->normalize($product, 'standard', [])->willReturn($productStandard);
+
+        $attributeRepository->getMediaAttributeCodes()->willReturn(['file']);
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
+
+        $normalizedProduct = $this->normalize($product, 'external_api', []);
+        $normalizedProduct->shouldHaveValues($productStandard);
+        $normalizedProduct->shouldHaveAssociations($productStandard);
+    }
+
+    public function getMatchers()
+    {
+        return [
+            'haveAssociations' => function ($subject) {
+                return is_object($subject['associations']);
+            },
+            'haveValues' => function ($subject) {
+                return is_object($subject['values']);
+            }
+        ];
     }
 }

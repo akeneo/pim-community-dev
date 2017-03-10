@@ -30,10 +30,24 @@ class FamilyNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_family($stdNormalizer, FamilyInterface $family)
     {
-        $data = ['code' => 'my_family'];
+        $data = ['code' => 'my_family', 'labels' => [], 'attribute_requirements' => []];
 
-        $stdNormalizer->normalize($family, 'external_api', [])->willReturn($data);
+        $stdNormalizer->normalize($family, 'standard', [])->willReturn($data);
 
-        $this->normalize($family, 'external_api', [])->shouldReturn($data);
+        $normalizedFamily = $this->normalize($family, 'external_api', []);
+        $normalizedFamily->shouldHaveLabels($data);
+        $normalizedFamily->shouldHaveAttributeRequirements($data);
+    }
+
+    public function getMatchers()
+    {
+        return [
+            'haveLabels' => function ($subject) {
+                return is_object($subject['labels']);
+            },
+            'haveAttributeRequirements' => function ($subject) {
+                return is_object($subject['attribute_requirements']);
+            }
+        ];
     }
 }

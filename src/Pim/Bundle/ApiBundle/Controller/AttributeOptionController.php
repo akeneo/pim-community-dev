@@ -3,12 +3,11 @@
 namespace Pim\Bundle\ApiBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
-use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Version;
+use Pim\Bundle\ApiBundle\Documentation;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
@@ -72,9 +71,6 @@ class AttributeOptionController
     /** @var array */
     protected $supportedAttributeTypes;
 
-    /** @var string */
-    protected $urlDocumentation;
-
     /**
      * @param AttributeRepositoryInterface   $attributeRepository
      * @param ApiResourceRepositoryInterface $attributeOptionsRepository
@@ -88,7 +84,6 @@ class AttributeOptionController
      * @param ParameterValidatorInterface    $parameterValidator
      * @param array                          $apiConfiguration
      * @param array                          $supportedAttributeTypes
-     * @param string                         $urlDocumentation
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
@@ -102,8 +97,7 @@ class AttributeOptionController
         HalPaginator $paginator,
         ParameterValidatorInterface $parameterValidator,
         array $apiConfiguration,
-        array $supportedAttributeTypes,
-        $urlDocumentation
+        array $supportedAttributeTypes
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->attributeOptionsRepository = $attributeOptionsRepository;
@@ -117,7 +111,6 @@ class AttributeOptionController
         $this->parameterValidator = $parameterValidator;
         $this->apiConfiguration = $apiConfiguration;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->urlDocumentation = sprintf($urlDocumentation, substr(Version::VERSION, 0, 3));
     }
 
     /**
@@ -257,7 +250,7 @@ class AttributeOptionController
 
         $data['attribute'] = array_key_exists('attribute', $data) ? $data['attribute'] : $attributeCode;
         $data['code'] = array_key_exists('code', $data) ? $data['code'] : $optionCode;
-        $this->updateAttributeOption($attributeOption, $data);
+        $this->updateAttributeOption($attributeOption, $data, 'post_attributes__attribute_code__options');
         $this->validateAttributeOption($attributeOption);
 
         $this->saver->save($attributeOption);
@@ -333,25 +326,17 @@ class AttributeOptionController
      *
      * @param AttributeOptionInterface $attributeOption
      * @param array                    $data
+     * @param string                   $anchor
      *
      * @throws DocumentedHttpException
      */
-    protected function updateAttributeOption(AttributeOptionInterface $attributeOption, $data)
+    protected function updateAttributeOption(AttributeOptionInterface $attributeOption, $data, $anchor)
     {
         try {
             $this->updater->update($attributeOption, $data);
-        } catch (UnknownPropertyException $exception) {
-            throw new DocumentedHttpException(
-                $this->urlDocumentation,
-                sprintf(
-                    'Property "%s" does not exist. Check the standard format documentation.',
-                    $exception->getPropertyName()
-                ),
-                $exception
-            );
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
-                $this->urlDocumentation,
+                Documentation::URL . $anchor,
                 sprintf('%s Check the standard format documentation.', $exception->getMessage()),
                 $exception
             );

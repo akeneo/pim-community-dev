@@ -32,7 +32,7 @@ class LocaleNormalizerSpec extends ObjectBehavior
     {
         $data = ['code' => 'en_US'];
 
-        $stdNormalizer->normalize($locale, 'external_api', [])->willReturn($data);
+        $stdNormalizer->normalize($locale, 'standard', [])->willReturn($data);
 
         $this->normalize($locale, 'external_api', [])->shouldReturn($data);
     }

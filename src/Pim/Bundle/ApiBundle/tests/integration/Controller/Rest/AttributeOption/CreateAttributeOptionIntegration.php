@@ -4,7 +4,6 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Rest\AttributeOption
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Pim\Bundle\CatalogBundle\Version;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateAttributeOptionIntegration extends ApiTestCase
@@ -290,15 +289,13 @@ JSON;
     }
 JSON;
 
-        $version = substr(Version::VERSION, 0, 3);
-
         $expectedContent =
 <<<JSON
     {
     	"message": "Property \"extra_property\" does not exist. Check the standard format documentation.",
     	"_links": {
     		"documentation": {
-    			"href": "https://docs.akeneo.com/${version}/reference/standard_format/other_entities.html#attribute-option"
+    			"href": 'href' => "http://api.akeneo.com/api-reference.html#post_attributes__attribute_code__options"
     		}
     	},
     	"code": 422
@@ -324,8 +321,31 @@ JSON;
     }
 JSON;
 
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent =
+<<<JSON
+    {
+        "code": 422,
+        "message": "Property \"labels\" expects an array as data, \"NULL\" given. Check the standard format documentation.",
+        "_links": {
+            "documentation": {
+                 "href" => "http://api.akeneo.com/api-reference.html#post_attributes__attribute_code__options"
+            }
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+    }
+
+    public function testResponseWhenAttributeIsNotInRequestBody()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
 <<<JSON
     {
         "code": 422,

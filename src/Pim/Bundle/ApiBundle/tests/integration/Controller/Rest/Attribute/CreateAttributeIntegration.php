@@ -4,7 +4,6 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Rest\Attribute;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Pim\Bundle\CatalogBundle\Version;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateAttributeIntegration extends ApiTestCase
@@ -237,13 +236,12 @@ JSON;
     }
 JSON;
 
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "code" expects a scalar as data, "array" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
                 ]
             ]
         ];
@@ -268,13 +266,12 @@ JSON;
     }
 JSON;
 
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "group" expects a valid code. The attribute group does not exist, "attributeGroupC" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
                 ]
             ]
         ];
@@ -296,14 +293,12 @@ JSON;
         "type":null
     }
 JSON;
-
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "type" does not expect an empty value. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
                 ]
             ]
         ];
@@ -327,14 +322,12 @@ JSON;
         "group":"attributeGroupC"
     }
 JSON;
-
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "type" expects a valid attribute type. The attribute type does not exist, "pim_catalog_matrix" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
                 ]
             ]
         ];
@@ -359,14 +352,12 @@ JSON;
         "extra_property": ""
     }
 JSON;
-
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "extra_property" does not exist. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
                 ],
             ],
         ];
@@ -390,14 +381,12 @@ JSON;
         "date_min":"a date"
     }
 JSON;
-
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "date_min" expects a string with the format "yyyy-mm-dd" as data, "a date" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
                 ]
             ]
         ];
@@ -419,14 +408,12 @@ JSON;
         "available_locales":["akeneo_PIM"]
     }
 JSON;
-
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "available_locales" expects a valid locale code. The locale does not exist, "akeneo_PIM" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
                 ]
             ]
         ];
@@ -450,14 +437,12 @@ JSON;
         }
     }
 JSON;
-
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "available_locales" expects an array with valid data, one of the "available_locales" values is not a scalar. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
                 ]
             ]
         ];
@@ -483,14 +468,12 @@ JSON;
         $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
 
         $response = $client->getResponse();
-
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "allowed_extensions" expects an array as data, "NULL" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
                 ],
             ],
         ];
@@ -513,14 +496,12 @@ JSON;
         $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
 
         $response = $client->getResponse();
-
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "labels" expects an array as data, "NULL" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
                 ],
             ],
         ];
@@ -543,14 +524,12 @@ JSON;
         $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
 
         $response = $client->getResponse();
-
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "available_locales" expects an array as data, "NULL" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
                 ],
             ],
         ];

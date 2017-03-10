@@ -4,7 +4,6 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Rest\Family;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Pim\Bundle\CatalogBundle\Version;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateFamilyIntegration extends ApiTestCase
@@ -226,7 +225,6 @@ JSON;
     }
 JSON;
 
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "extra_property" does not exist. Check the standard format documentation.',
@@ -255,13 +253,12 @@ JSON;
     }
 JSON;
 
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "labels" expects an array as data, "NULL" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#family', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#post_families'
                 ],
             ],
         ];
@@ -350,14 +347,13 @@ JSON;
 }
 JSON;
 
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = <<<JSON
 {
     "code": 422,
     "message": "Property \"attribute_requirements\" expects a valid code. The channel does not exist, \"ecommerce2\" given. Check the standard format documentation.",
     "_links": {
         "documentation": {
-            "href": "https://docs.akeneo.com/${version}/reference/standard_format/other_entities.html#family"
+            "href": 'http://api.akeneo.com/api-reference.html#post_families'
         }
     }
 }

@@ -47,9 +47,6 @@ class MediaFileController
     /** @var array */
     protected $apiConfiguration;
 
-    /** @var string */
-    protected $urlDocumentation;
-
     /**
      * @param ApiResourceRepositoryInterface $mediaRepository
      * @param NormalizerInterface            $normalizer
@@ -67,8 +64,7 @@ class MediaFileController
         HalPaginator $paginator,
         FilesystemProvider $filesystemProvider,
         FileFetcherInterface $fileFetcher,
-        array $apiConfiguration,
-        $urlDocumentation
+        array $apiConfiguration
     ) {
         $this->mediaRepository = $mediaRepository;
         $this->normalizer = $normalizer;
