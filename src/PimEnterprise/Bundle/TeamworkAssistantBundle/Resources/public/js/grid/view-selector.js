@@ -178,7 +178,7 @@ define(
              *
              * Override to set a limit of 3 to fetch projects
              */
-            getSelectSearchParameters: function (term, page) {
+            getSelectSearchParameters: function () {
                 var parameters = ViewSelector.prototype.getSelectSearchParameters.apply(this, arguments);
 
                 return $.extend(true, parameters, {
