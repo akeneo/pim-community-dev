@@ -25,7 +25,7 @@ teamwork_assistant:
             owner: %project_label% for the %due_date% is not 100% done.
             start: Start
     datagrid:
-        project_completeness: Project completeness
+        project_completeness: Project progress
         contributor_todo: Todo
         contributor_in_progress: In progress
         contributor_done: Done

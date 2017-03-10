@@ -100,10 +100,10 @@ Feature: Filter by project completeness in the product datagrid
     And I am logged in as "Julia"
     When I am on the products page
     Then I should see the text "Default view"
-    But I should not see the text "Project completeness"
+    But I should not see the text "Project progress"
     When I switch view selector type to "Projects"
     Then I should see the text "2016 summer collection"
-    And I should see the text "Project completeness"
+    And I should see the text "Project progress"
 
   Scenario: Project overview options are hidden for contributors
     And I am logged in as "Julia"
@@ -111,7 +111,7 @@ Feature: Filter by project completeness in the product datagrid
     Then I should see the text "Default view"
     When I switch view selector type to "Projects"
     Then I should see the text "2016 summer collection"
-    And I should see the text "Project completeness"
+    And I should see the text "Project progress"
     And I should not see the available option "Todo (project overview)" in the filter "project_completeness"
     And I should not see the available option "In progress (project overview)" in the filter "project_completeness"
     And I should not see the available option "Done (project overview)" in the filter "project_completeness"
