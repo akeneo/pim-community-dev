@@ -217,6 +217,7 @@ pim_enrich:
       btn:
         save: Desar
     channel:
+      title: canal
       info:
         field_not_ready:
           The channel cannot be saved right now. The following fields are not ready:
@@ -229,6 +230,7 @@ pim_enrich:
       btn:
         save: Desar
     family:
+      title: família
       meta:
         created: Creat
         created_by: Creat per

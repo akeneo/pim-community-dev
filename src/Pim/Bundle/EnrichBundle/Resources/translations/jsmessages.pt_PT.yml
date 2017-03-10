@@ -200,6 +200,7 @@ pim_enrich:
       btn:
         save: Guardar
     channel:
+      title: canal
       info:
         field_not_ready:
           The channel cannot be saved right now. The following fields are not ready:
@@ -210,6 +211,7 @@ pim_enrich:
       btn:
         save: Guardar
     family:
+      title: família
       meta:
         created: Criado
         updated: Atualizado

@@ -221,6 +221,7 @@ pim_enrich:
       btn:
         save: Opslaan
     channel:
+      title: kanaal
       info:
         deletion_successful: Kanaal succesvol verwijderd.
         deletion_failed: Het kanaal kon niet worden verwijderd.
@@ -239,6 +240,7 @@ pim_enrich:
       btn:
         save: Opslaan
     family:
+      title: familie
       info:
         create_successful: Kanaal succesvol aangemaakt.
       meta:
