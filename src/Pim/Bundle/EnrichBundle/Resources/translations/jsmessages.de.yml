@@ -242,7 +242,11 @@ pim_enrich:
         save: Speichern
     family:
       info:
+        update_successful: Produktfamilie erfolgreich aktualisiert.
         create_successful: Ausgabekanal erfolgreich angelegt.
+        update_failed: Beim Aktualisieren der Produktfamilie ist ein Fehler aufgetreten.
+        cant_remove_attribute_as_label: Als Label verwendetes Attribut kann nicht entfernt werden
+        attribute_edit_permission_is_not_granted: Sie haben keine Berechtigungen um die Attribute der Produktfamilie zu bearbeiten
       meta:
         created: Erstellt
         created_by: Erstellt von
@@ -295,6 +299,7 @@ pim_enrich:
     job_instance:
       info:
         update_failed: Das Job-Profil konnte nicht aktualisiert werden.
+        update_successful: Das Job-Profil wurde erfolgreich aktualisiert.
   confirmation:
     leave: Möchten Sie diese Seite wirklich verlassen?
     discard_changes: Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.
@@ -402,8 +407,10 @@ pim_enrich:
           title: Attribute
           label_label: Bezeichnung
           toolbox:
+            select_attributes_by_groups: Nach Gruppen hinzufügen
             select_attributes: Attribute hinzufügen
             add: Hinzufügen
+            attributes_groups_selected: '{{ itemsCount }} Gruppe(n) ausgewählt'
           not_required_label: Nicht erforderlich
           required_label: Erforderlich
         history:
