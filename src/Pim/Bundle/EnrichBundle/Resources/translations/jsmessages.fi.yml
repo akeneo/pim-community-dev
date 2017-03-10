@@ -484,7 +484,7 @@ pim_enrich:
             title: Kategoriasarake
             help: Kategoriasarakkeen nimi
           escape:
-            title: Poistu
+            title: Koodinvaihto
             help: Yhtä merkkiä käytetään kentän "poistu" määrittämiseen
           family_column:
             title: Perhesarake
