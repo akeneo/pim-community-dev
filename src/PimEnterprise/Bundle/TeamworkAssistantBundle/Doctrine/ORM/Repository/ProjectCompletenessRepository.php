@@ -297,9 +297,12 @@ SQL;
             SUM(completeness_attribute_group.is_complete) AS attribute_group_done,
             COUNT(completeness_attribute_group.product_id) AS total_attribute_group
         FROM @pimee_teamwork_assistant.completeness_per_attribute_group@ AS completeness_attribute_group
+        JOIN @pimee_teamwork_assistant.project_product@ AS project_product
+            ON project_product.product_id = completeness_attribute_group.product_id
         WHERE
             completeness_attribute_group.locale_id = :locale_id
             AND completeness_attribute_group.channel_id = :channel_id
+            AND project_product.project_id = :project_id
       GROUP BY completeness_attribute_group.product_id
 ) completeness
 SQL;

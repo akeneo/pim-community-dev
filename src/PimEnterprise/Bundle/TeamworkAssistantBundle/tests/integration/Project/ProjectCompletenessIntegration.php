@@ -24,6 +24,14 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
      */
     public function testCreateAProjectOnTheTshirtFamily()
     {
+        $this->createProject('project', 'Julia', 'en_US', 'ecommerce', [
+            [
+                'field'    => 'family',
+                'operator' => 'IN',
+                'value'    => ['usb_keys'],
+            ],
+        ]);
+
         $project = $this->createProject('Tshirt - ecommerce', 'Julia', 'en_US',  'ecommerce', [
             [
                 'field'    => 'family',
