@@ -2,9 +2,13 @@
 
 ## Functional improvements
 
+- API-84: As Julia, I would like to list/get/download a media file
+- API-85: As Julia, I would like to create a media file
+- API-76: As Julia, I would like to list locales
+- API-31: As Julia, I would like to list attribute options
 - API-126: Change attribute form "scope" input to a yes/no switch
 
-## Bug fixes
+## Bug Fixes
 
 - PIM-6210: fix unused fields on import profiles
 - PIM-6203: Fix various design bugs
