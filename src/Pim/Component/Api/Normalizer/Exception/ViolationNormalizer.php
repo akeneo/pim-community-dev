@@ -54,8 +54,8 @@ class ViolationNormalizer implements NormalizerInterface
 
         foreach ($violations as $violation) {
             $error = [
-                'field'   => $this->getErrorField($violation),
-                'message' => $violation->getMessage()
+                'property' => $this->getErrorField($violation),
+                'message'  => $violation->getMessage()
             ];
 
             if ($violation->getRoot() instanceof ProductInterface &&
@@ -119,13 +119,13 @@ class ViolationNormalizer implements NormalizerInterface
 
         if (AttributeTypes::IDENTIFIER === $attributeType) {
             return [
-                'field'     => 'identifier',
+                'property'  => 'identifier',
                 'message'   => $violation->getMessage()
             ];
         }
 
         $error = [
-            'field'     => 'values',
+            'property'  => 'values',
             'message'   => $violation->getMessage(),
             'attribute' => $productValue->getAttribute()->getCode(),
             'locale'    => $productValue->getLocale(),

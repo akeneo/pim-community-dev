@@ -321,8 +321,8 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'identifier',
-                    'message' => 'This value should not be blank.',
+                    'property' => 'identifier',
+                    'message'  => 'This value should not be blank.',
                 ],
             ],
         ];
@@ -1303,8 +1303,8 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'identifier',
-                    'message' => 'The value product_family is already set on another product for the unique attribute sku',
+                    'property' => 'identifier',
+                    'message'  => 'The value product_family is already set on another product for the unique attribute sku',
                 ],
             ],
         ];

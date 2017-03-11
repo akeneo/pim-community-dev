@@ -137,8 +137,8 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'code',
-                    'message' => 'This value is already used.',
+                    'property' => 'code',
+                    'message'  => 'This value is already used.',
                 ]
             ],
         ];
@@ -166,8 +166,8 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'code',
-                    'message' => 'This value should not be blank.',
+                    'property' => 'code',
+                    'message'  => 'This value should not be blank.',
                 ],
             ],
         ];
@@ -255,8 +255,8 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'labels',
-                    'message' => 'The locale "" does not exist.',
+                    'property' => 'labels',
+                    'message'  => 'The locale "" does not exist.',
                 ],
             ],
         ];
@@ -287,8 +287,8 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'labels',
-                    'message' => 'The locale "foo" does not exist.',
+                    'property' => 'labels',
+                    'message'  => 'The locale "foo" does not exist.',
                 ],
             ],
         ];

@@ -298,8 +298,8 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'code',
-                    'message' => 'This property cannot be changed.',
+                    'property' => 'code',
+                    'message'  => 'This property cannot be changed.',
                 ],
             ],
         ];

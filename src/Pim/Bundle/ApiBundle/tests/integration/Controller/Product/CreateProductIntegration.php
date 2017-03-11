@@ -770,7 +770,7 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'identifier',
+                    'property'   => 'identifier',
                     'message' => 'This value should not be blank.',
                 ],
             ],
@@ -795,8 +795,8 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'identifier',
-                    'message' => 'This value should not be blank.',
+                    'property' => 'identifier',
+                    'message'  => 'This value should not be blank.',
                 ],
             ],
         ];
@@ -842,15 +842,15 @@ JSON;
     "message": "Validation failed.",
     "errors": [
         {
-            "field": "variant_group",
+            "property": "variant_group",
             "message": "The product \"wrong_amount\" is in the variant group \"variantB\" but it misses the following axes: a_simple_select."
         },
         {
-            "field": "variant_group",
+            "property": "variant_group",
             "message": "Product \"wrong_amount\" should have value for axis \"a_simple_select\" of variant group \"Variant B\""
         },
         {
-            "field": "values",
+            "property": "values",
             "message": "This value should be a valid number.",
             "attribute": "a_scopable_price",
             "locale": null,
@@ -858,7 +858,7 @@ JSON;
             "currency": "EUR"
         },
         {
-            "field": "values",
+            "property": "values",
             "message": "This value should be -250 or more.",
             "attribute": "a_number_float_negative",
             "locale": null,
@@ -892,8 +892,8 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'identifier',
-                    'message' => 'The value simple is already set on another product for the unique attribute sku',
+                    'property' => 'identifier',
+                    'message'  => 'The value simple is already set on another product for the unique attribute sku',
                 ],
             ],
         ];

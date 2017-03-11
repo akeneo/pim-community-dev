@@ -25,8 +25,8 @@ class ViolationNormalizerSpec extends ObjectBehavior
             'code'    => Response::HTTP_UNPROCESSABLE_ENTITY,
             'message' => 'Validation failed.',
             'errors'  => [
-                ['field' => 'code', 'message' => 'Not Blank'],
-                ['field' => 'name', 'message' => 'Too long']
+                ['property' => 'code', 'message' => 'Not Blank'],
+                ['property' => 'name', 'message' => 'Too long']
             ]
         ]);
     }
@@ -81,7 +81,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
             'code'    => Response::HTTP_UNPROCESSABLE_ENTITY,
             'message' => '',
             'errors'  => [
-                ['field' => 'identifier', 'message' => 'Not Blank'],
+                ['property' => 'identifier', 'message' => 'Not Blank'],
             ]
         ]);
     }
@@ -139,7 +139,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
             'message' => '',
             'errors'  => [
                 [
-                    'field'     => 'values',
+                    'property'  => 'values',
                     'message'   => 'Not Blank',
                     'attribute' => 'description',
                     'locale'    => 'en_US',
@@ -183,7 +183,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
             'message' => '',
             'errors'  => [
                 [
-                    'field'     => 'labels',
+                    'property'  => 'labels',
                     'message'   => 'The locale "ab_CD" does not exist.',
                 ],
             ]
