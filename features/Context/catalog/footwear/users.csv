@@ -1,7 +1,7 @@
-username;first_name;last_name;email;password;catalog_locale;user_locale;catalog_scope;default_tree;roles;groups;enabled;api_key
-admin;John;Doe;admin@example.com;admin;en_US;en_US;mobile;2014_collection;ROLE_ADMINISTRATOR;IT support;1;admin_api_key
-Julia;Julia;Stark;Julia@example.com;Julia;en_US;en_US;tablet;2014_collection;ROLE_CATALOG_MANAGER;Manager;1;Julia_api_key
-Peter;Peter;Williams;Peter@example.com;Peter;en_US;en_US;mobile;2014_collection;ROLE_ADMINISTRATOR;IT support;1;Peter_api_key
-Mary;Mary;Smith;Mary@example.com;Mary;en_US;en_US;tablet;2014_collection;ROLE_USER;Redactor;1;Mary_api_key
-Sandra;Sandra;Harvey;Sandra@example.com;Sandra;en_US;en_US;mobile;2014_collection;ROLE_USER;Redactor;1;Sandra_api_key
-Julien;Julien;Février;Julien@example.com;Julien;fr_FR;fr_FR;mobile;2014_collection;ROLE_USER;Redactor;1;Julien_api_key
+username;first_name;last_name;email;password;catalog_locale;user_locale;catalog_scope;default_tree;roles;groups;enabled
+admin;John;Doe;admin@example.com;admin;en_US;en_US;mobile;2014_collection;ROLE_ADMINISTRATOR;IT support;1
+Julia;Julia;Stark;Julia@example.com;Julia;en_US;en_US;tablet;2014_collection;ROLE_CATALOG_MANAGER;Manager;1
+Peter;Peter;Williams;Peter@example.com;Peter;en_US;en_US;mobile;2014_collection;ROLE_ADMINISTRATOR;IT support;1
+Mary;Mary;Smith;Mary@example.com;Mary;en_US;en_US;tablet;2014_collection;ROLE_USER;Redactor;1
+Sandra;Sandra;Harvey;Sandra@example.com;Sandra;en_US;en_US;mobile;2014_collection;ROLE_USER;Redactor;1
+Julien;Julien;Février;Julien@example.com;Julien;fr_FR;fr_FR;mobile;2014_collection;ROLE_USER;Redactor;1
