@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\UserBundle\Entity\Role;
-use Oro\Bundle\UserBundle\Entity\UserApi;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -368,14 +367,6 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getApi()
-    {
-        return $this->api;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isEnabled()
     {
         return $this->enabled;
@@ -598,16 +589,6 @@ class User implements UserInterface
     public function setLoginCount($count)
     {
         $this->loginCount = $count;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setApi(UserApi $api)
-    {
-        $this->api = $api;
 
         return $this;
     }

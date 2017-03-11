@@ -14,6 +14,22 @@
 - PIM-6203: Fix various design bugs
 - PIM-6200: Only the owner of a view can save and remove it.
 
+## BC breaks
+
+### Methods
+
+- Remove `getApi` and `setApi` methods from `Pim\Bundle\UserBundle\Entity\UserInterface`
+
+### Classes
+
+- Remove class `Oro\Bundle\UserBundle\Entity\UserApi`
+- Remove class `Oro\Bundle\UserBundle\Form\EventListener\UserApiSubscriber`
+- Remove class `Oro\Bundle\UserBundle\Form\Type\UserApiType`
+- Remove class `Oro\Bundle\UserBundle\Command\GenerateWSSEHeaderCommand`
+- Remove class `Oro\Bundle\UserBundle\Security\WsseAuthListener`
+- Remove class `Oro\Bundle\UserBundle\Security\WsseAuthListener`
+- Remove class `Oro\Bundle\UserBundle\Security\WsseUserProvider`
+
 # 1.7.0-BETA2 (2017-03-06)
 
 # 1.7.0-BETA1 (2017-03-02)
