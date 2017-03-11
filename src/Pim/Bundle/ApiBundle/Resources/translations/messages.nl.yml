@@ -1,12 +1,22 @@
 pim_api:
   acl:
+    rights: Web API machtigingen
     attribute:
+      edit: Attributen aanmaken en bijwerken
       list: Attributen weergeven
+    attribute_option:
+      edit: Attribuutopties aanmaken en bijwerken
+      list: Attribuutopties oplijsten
     category:
+      edit: Categorieën aanmaken en bijwerken
       list: Categorieën weergeven
     family:
+      edit: Families aanmaken en bijwerken
       list: Families weergeven
   acl_group:
+    overall_access: Algemene Web API-toegang
     attribute: Attributen
+    attribute_option: Attribuutopties
     category: Categorieën
     family: Families
+rights.api: Web API machtigingen
