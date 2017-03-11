@@ -189,6 +189,8 @@ pim_enrich:
     leave: Tem certeza de que deseja sair desta página?
     discard_changes: Você perderá as alterações feitas em %entity% se sair dessa página.
     delete_item: Confirmar exclusão
+    delete:
+      product_attribute: Tem certeza que deseja eliminar este atributo do produto?
   info:
     not_applicable: Não aplicável
     entity:

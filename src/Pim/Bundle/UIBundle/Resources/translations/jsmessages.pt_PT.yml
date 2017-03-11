@@ -99,10 +99,14 @@ datetimepicker:
 oro_config:
   form:
     config:
+      title: Configuração de Sistema
       tab:
         system:
           title: Sistema
       group:
+        localization:
+          title: Localização
+          system_locale: Idioma
         notification:
           title: Notificações
           system_notification: Notificações de novas versões
