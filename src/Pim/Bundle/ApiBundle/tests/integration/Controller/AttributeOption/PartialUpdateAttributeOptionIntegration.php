@@ -361,7 +361,7 @@ JSON;
         "code": 422,
         "message": "Validation failed.",
         "errors": [{
-            "field": "attribute",
+            "property": "attribute",
             "message": "Attribute \"sku\" does not support options. Only attributes of type \"pim_catalog_simpleselect\", \"pim_catalog_multiselect\" support options"
         }]
     }
@@ -392,10 +392,10 @@ JSON;
     	"code": 422,
     	"message": "Validation failed.",
     	"errors": [{
-    		"field": "code",
+    		"property": "code",
     		"message": "This property cannot be changed."
     	},{
-    		"field": "attribute",
+    		"property": "attribute",
     		"message": "This property cannot be changed."
     	}]
     }
@@ -539,7 +539,7 @@ JSON;
         "code": 422,
         "message": "Validation failed.",
         "errors": [{
-            "field": "labels",
+            "property": "labels",
             "message": "The locale \"foo\" does not exist."
         }]
     }

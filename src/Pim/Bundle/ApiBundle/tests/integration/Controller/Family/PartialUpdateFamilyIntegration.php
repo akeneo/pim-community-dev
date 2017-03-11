@@ -357,12 +357,12 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'code',
-                    'message' => 'This property cannot be changed.',
+                    'property' => 'code',
+                    'message'  => 'This property cannot be changed.',
                 ],
                 [
-                    'field'   => 'code',
-                    'message' => 'Family code may contain only letters, numbers and underscores',
+                    'property' => 'code',
+                    'message'  => 'Family code may contain only letters, numbers and underscores',
                 ],
             ],
         ];

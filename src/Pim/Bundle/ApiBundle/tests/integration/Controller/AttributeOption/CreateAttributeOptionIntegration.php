@@ -182,7 +182,7 @@ JSON;
     {
     	"message": "Validation failed.",
     	"errors": [{
-    		"field": "code",
+    		"property": "code",
     		"message": "This value should not be blank."
     	}],
     	"code": 422
@@ -239,7 +239,7 @@ JSON;
         "code": 422,
         "message": "Validation failed.",
         "errors": [{
-            "field": "attribute",
+            "property": "attribute",
             "message": "Attribute \"sku\" does not support options. Only attributes of type \"pim_catalog_simpleselect\", \"pim_catalog_multiselect\" support options"
         }]
     }

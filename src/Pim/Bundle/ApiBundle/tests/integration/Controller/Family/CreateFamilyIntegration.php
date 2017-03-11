@@ -154,8 +154,8 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'code',
-                    'message' => 'This value is already used.',
+                    'property' => 'code',
+                    'message'  => 'This value is already used.',
                 ],
             ],
         ];
@@ -188,19 +188,19 @@ JSON;
     "message": "Validation failed.",
     "errors": [
         {
-            "field":"attribute_requirements",
+            "property":"attribute_requirements",
             "message":"The attribute \"a_text\" cannot be an attribute required for the channel \"ecommerce\" as it does not belong to this family"
         },
         {
-            "field":"attribute_as_label",
+            "property":"attribute_as_label",
             "message":"Property 'attribute_as_label' must belong to the family"
         },
         {
-            "field":"attribute_as_label",
+            "property":"attribute_as_label",
             "message":"Property 'attribute_as_label' only supports 'pim_catalog_text' and 'pim_catalog_identifier' attribute types for the family"
         },
         {
-            "field":"code",
+            "property":"code",
             "message":"This value should not be blank."
         }
     ]
@@ -289,8 +289,8 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'labels',
-                    'message' => 'The locale "" does not exist.',
+                    'property' => 'labels',
+                    'message'  => 'The locale "" does not exist.',
                 ],
             ],
         ];
@@ -321,8 +321,8 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'labels',
-                    'message' => 'The locale "foo" does not exist.',
+                    'property' => 'labels',
+                    'message'  => 'The locale "foo" does not exist.',
                 ],
             ],
         ];

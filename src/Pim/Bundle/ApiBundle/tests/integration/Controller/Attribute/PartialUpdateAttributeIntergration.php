@@ -112,12 +112,12 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'attributeType',
-                    'message' => 'This value should not be blank.',
+                    'property' => 'attributeType',
+                    'message'  => 'This value should not be blank.',
                 ],
                 [
-                    'field'   => 'group',
-                    'message' => 'This value should not be blank.',
+                    'property' => 'group',
+                    'message'  => 'This value should not be blank.',
                 ],
             ],
         ];
@@ -427,8 +427,8 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'code',
-                    'message' => 'This property cannot be changed.',
+                    'property' => 'code',
+                    'message'  => 'This property cannot be changed.',
                 ],
             ],
         ];
