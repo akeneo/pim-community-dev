@@ -243,6 +243,7 @@ pim_enrich:
     family:
       info:
         create_successful: Canal creado correctamente.
+        update_failed: Ha ocurrido un error durante la actualización de la familia.
       meta:
         created: Creado
         created_by: Creado por
@@ -295,6 +296,7 @@ pim_enrich:
     job_instance:
       info:
         update_failed: No se ha podido actualizar el perfil de trabajo.
+        update_successful: El perfil de trabajo ha sido actualizado exitosamente.
   confirmation:
     leave: '¿Está seguro que desea salir de esta página?'
     discard_changes: Perderá los cambios realizados sobre {{ entity }} si abandona esta página.

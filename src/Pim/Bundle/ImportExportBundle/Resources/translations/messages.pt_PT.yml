@@ -135,6 +135,7 @@ job_execution.summary:
   displayed: primeiros avisos exibidos
   charset_validator:
     title: 'codificação do ficheiro:'
+    skipped: ignorado, extensão na lista branca
 Step: Passo
 Status: Estado
 Summary: Resumo
