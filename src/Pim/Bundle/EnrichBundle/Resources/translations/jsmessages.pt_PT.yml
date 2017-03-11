@@ -126,11 +126,15 @@ pim_enrich:
         save_and_back: Gravar e voltar à grelha
       history:
         version: Versão
+        author: Autor
+        logged_at: Iniciado sessão em
         more: Mais
         less: Menos
         from: De
         modified: Modificado
         property: Propriedade
+        old_values: Valores antigos
+        new_values: Novos valores
       info:
         deletion_successful: Produto eliminado com sucesso.
         deletion_failed: Não foi possível eliminar o produto.
@@ -184,6 +188,8 @@ pim_enrich:
     leave: Tem certeza que deseja sair desta página?
     discard_changes: Irá perderá as alterações para {{ entity }}, se abandonar a página.
     delete_item: Confirmar eliminação
+    delete:
+      product_attribute: Tem certeza que deseja eliminar este atributo do produto?
   info:
     not_applicable: N/A
     entity:

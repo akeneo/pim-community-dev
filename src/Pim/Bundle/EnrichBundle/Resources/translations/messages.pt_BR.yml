@@ -501,6 +501,7 @@ info:
   completeness:
     not calculated: Ainda não calculado
 color:
+  title: Cor
   gray: Cinza
   white: Branco
   yellow: Amarelo
