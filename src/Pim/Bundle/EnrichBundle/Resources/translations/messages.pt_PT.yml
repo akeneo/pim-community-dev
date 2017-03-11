@@ -47,6 +47,7 @@ pim_enrich:
     axis.help: 'Os eixos definem os atributos sobre os quais os produtos do grupo devem variar. Os eixos são atributos com opções, não localizáveis e sem âmbito. Eles não podem ser alterados após a criação do grupo variante.'
     type:
       VARIANT: Variante
+      X_SELL: X-Sell
       ADDITIONAL: Adicional
       RELATED: Relacionado
     tab:
@@ -56,6 +57,7 @@ pim_enrich:
   variant_group:
     type:
       VARIANT: Variante
+      X_SELL: X-Sell
       ADDITIONAL: Adicional
       RELATED: Relacionado
     tab:
@@ -540,6 +542,7 @@ Parameters: Parâmetros
 System: Sistema
 Values: Valores
 General parameters: Parâmetros gerais
+Backend parameters: Parâmetros de back-end
 Label: Rótulo
 Default label: Rótulo padrão
 Default value: Valor padrão
@@ -588,6 +591,7 @@ General Properties: Propriedades Gerais
 Group values: Valores do grupo
 New group: Novo grupo
 Groups overview: Visão geral de grupos
+'Y-m-d h:i:s': 'd-m-Y h:i:s'
 Max characters: Máximo de carateres
 Validation rule: Regra de validação
 Validation regexp: Validação "regexp"
@@ -598,6 +602,7 @@ Decimals allowed: Permitir decimais
 Negative allowed: Permitir valores negativos
 Date min: Data mínima
 Date max: Data máxima
+Metric family: Família métrica
 Default metric unit: Unidade métrica padrão
 Max file size: Tamanho máximo do ficheiro (MB)
 Allowed extensions: Extensões permitidas
@@ -764,6 +769,7 @@ pane.accordion:
   node_values: Valores de nó
   general_properties: Propriedades gerais
   locale_values: Valores multilingue
+  backend_parameters: Parâmetros de back-end
   general_parameters: Parâmetros gerais
   validation_parameters: Parâmetros de validação
   label_translations: Traduções de rótulo
@@ -786,10 +792,49 @@ Updated At: Atualizado em
 Enabled: Ativo
 Disabled: Inativo
 Status: Estado
+Change History: Histórico de alterações
+Data Audit: Auditoria de dados
+Data Audit - System: 'Auditoria de dados - sistema'
+Action: Acção
 Version: Versão
+Entity type: Tipo de entidade
+Entity name: Nome da entidade
+Entity id: Identificação da entidade
+Data: Dados
+Author: Autor
+Logged at: Iniciado sessão em
+Deleted: Eliminado
+Old values: Valores antigos
+New values: Novos valores
+System configuration: Configuração de Sistema
+General setup: Configuração geral
+Localization: Localização
+Localization options: Opções de localização
+Locale: Local
+Location: Localização
+Format address by address country: Formatar endereço por endereço do país
+Language: Idioma
+Timezone: Fuso horário
+Currency: Moeda
 oro.locale:
+  address_format:
+    region_name_type:
+      parish: "freguesia"
+      state: "estado"
+      island: "Ilha"
+      county: "Condado"
+      area: "área"
+      prefecture: "Prefeitura"
+      department: "departamento"
+      district: "distrito"
+      province: "província"
   form:
     tooltip:
+      locale: "Selecione a opção de local usada para formatar números, endereços, nomes e datas"
+      location: " A Localização será usada para formatar endereços quando a opção 'Formato endereço pelo endereço país'  estiver desativada"
+      format_address_by_address_country: "Selecionando esta opção será habilitada endereços a ser formatado pelo país em que estão. Desativando esta opção fará com que os endereços sejam formatado no seu formato de endereço de localização"
+      language: "Selecione o idioma de sistema que você deseja usar"
+      timezone: "Selecione o fuso horário para exibir a data e hora"
       currency: "Selecione a moeda padrão"
 Selected products successfully deleted: Os produtos selecionados foram eliminados com êxito
 pim_mass_edit:
