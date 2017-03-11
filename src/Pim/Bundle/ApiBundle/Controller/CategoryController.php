@@ -9,7 +9,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Gedmo\Exception\UnexpectedValueException;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Version;
+use Pim\Bundle\ApiBundle\Documentation;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
@@ -64,9 +64,6 @@ class CategoryController
     /** @var array */
     protected $apiConfiguration;
 
-    /** @var string */
-    protected $urlDocumentation;
-
     /**
      * @param ApiResourceRepositoryInterface $repository
      * @param NormalizerInterface            $normalizer
@@ -78,7 +75,6 @@ class CategoryController
      * @param HalPaginator                   $paginator
      * @param ParameterValidator             $parameterValidator
      * @param array                          $apiConfiguration
-     * @param string                         $urlDocumentation
      */
     public function __construct(
         ApiResourceRepositoryInterface $repository,
@@ -90,8 +86,7 @@ class CategoryController
         RouterInterface $router,
         HalPaginator $paginator,
         ParameterValidator $parameterValidator,
-        array $apiConfiguration,
-        $urlDocumentation
+        array $apiConfiguration
     ) {
         $this->repository = $repository;
         $this->normalizer = $normalizer;
@@ -103,7 +98,6 @@ class CategoryController
         $this->parameterValidator = $parameterValidator;
         $this->paginator = $paginator;
         $this->apiConfiguration = $apiConfiguration;
-        $this->urlDocumentation = sprintf($urlDocumentation, substr(Version::VERSION, 0, 3));
     }
 
     /**
@@ -182,7 +176,7 @@ class CategoryController
         $data = $this->getDecodedContent($request->getContent());
 
         $category = $this->factory->create();
-        $this->updateCategory($category, $data);
+        $this->updateCategory($category, $data, 'post_categories');
         $this->validateCategory($category);
 
         $this->saver->save($category);
@@ -217,7 +211,7 @@ class CategoryController
             $category = $this->factory->create();
         }
 
-        $this->updateCategory($category, $data);
+        $this->updateCategory($category, $data, 'patch_categories__code_');
         $this->validateCategory($category, $data);
 
         try {
@@ -257,25 +251,17 @@ class CategoryController
      *
      * @param CategoryInterface $category category to update
      * @param array             $data     data of the request already decoded
+     * @param string            $anchor
      *
-     * @throws UnprocessableEntityHttpException
+     * @throws DocumentedHttpException
      */
-    protected function updateCategory(CategoryInterface $category, array $data)
+    protected function updateCategory(CategoryInterface $category, array $data, $anchor)
     {
         try {
             $this->updater->update($category, $data);
-        } catch (UnknownPropertyException $exception) {
-            throw new DocumentedHttpException(
-                $this->urlDocumentation,
-                sprintf(
-                    'Property "%s" does not exist. Check the standard format documentation.',
-                    $exception->getPropertyName()
-                ),
-                $exception
-            );
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
-                $this->urlDocumentation,
+                Documentation::URL . $anchor,
                 sprintf('%s Check the standard format documentation.', $exception->getMessage()),
                 $exception
             );

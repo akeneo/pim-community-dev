@@ -24,7 +24,6 @@ services:
             - '@pim_api.pagination.paginator'
             - '@pim_api.pagination.parameter_validator'
             - '%pim_api.configuration%'
-            - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#category'
 
     pim_api.controller.family:
         class: '%pim_api.controller.family.class%'
@@ -39,7 +38,6 @@ services:
             - '@pim_api.pagination.paginator'
             - '@pim_api.pagination.parameter_validator'
             - '%pim_api.configuration%'
-            - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#family'
 
     pim_api.controller.attribute:
         class: '%pim_api.controller.attribute.class%'
@@ -54,7 +52,6 @@ services:
             - '@pim_api.pagination.paginator'
             - '@pim_api.pagination.parameter_validator'
             - '%pim_api.configuration%'
-            - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute'
 
     pim_api.controller.attribute_option:
         class: '%pim_api.controller.attribute_option.class%'
@@ -71,7 +68,6 @@ services:
             - '@pim_api.pagination.parameter_validator'
             - '%pim_api.configuration%'
             - ['pim_catalog_simpleselect', 'pim_catalog_multiselect']
-            - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute-option'
 
     pim_api.controller.channel:
         class: '%pim_api.controller.channel.class%'
@@ -116,7 +112,6 @@ services:
             - '@router'
             - '@pim_catalog.comparator.filter.product'
             - '%pim_api.configuration%'
-            - 'https://docs.akeneo.com/%s/reference/standard_format/products.html'
 
     pim_api.controller.root_endpoint:
         class: '%pim_api.controller.root_endpoint.class%'
@@ -133,4 +128,3 @@ services:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
             - '%pim_api.configuration%'
-            - 'https://docs.akeneo.com/%s/reference/standard_format/products.html'

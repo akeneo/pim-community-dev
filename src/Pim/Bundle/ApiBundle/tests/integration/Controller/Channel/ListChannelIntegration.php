@@ -34,7 +34,7 @@ class ListChannelIntegration extends ApiTestCase
                 "currencies"       : ["USD", "EUR"],
                 "locales"          : ["en_US"],
                 "category_tree"    : "master",
-                "conversion_units" : [],
+                "conversion_units" : {},
                 "labels"           : {
                     "en_US" : "Ecommerce",
                     "fr_FR" : "Ecommerce"
@@ -48,7 +48,7 @@ class ListChannelIntegration extends ApiTestCase
                 "currencies"       : ["CNY"],
                 "locales"          : ["en_US", "zh_CN"],
                 "category_tree"    : "master_china",
-                "conversion_units" : [],
+                "conversion_units" : {},
                 "labels"           : {
                     "en_US" : "Ecommerce china",
                     "fr_FR" : "Ecommerce chine"
@@ -62,7 +62,7 @@ class ListChannelIntegration extends ApiTestCase
                 "currencies"       : ["USD", "EUR"],
                 "locales"          : ["de_DE", "en_US", "fr_FR"],
                 "category_tree"    : "master",
-                "conversion_units" : [],
+                "conversion_units" : {},
                 "labels"           : {
                     "en_US" : "Tablet",
                     "fr_FR" : "Tablette"
@@ -132,7 +132,7 @@ JSON;
                 "currencies"       : ["USD", "EUR"],
                 "locales"          : ["de_DE", "en_US", "fr_FR"],
                 "category_tree"    : "master",
-                "conversion_units" : [],
+                "conversion_units" : {},
                 "labels"           : {
                     "en_US" : "Tablet",
                     "fr_FR" : "Tablette"

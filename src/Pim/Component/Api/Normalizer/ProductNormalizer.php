@@ -63,6 +63,14 @@ class ProductNormalizer implements NormalizerInterface
             }
         }
 
+        if (empty($productStandard['values'])) {
+            $productStandard['values'] = (object) $productStandard['values'];
+        }
+
+        if (empty($productStandard['associations'])) {
+            $productStandard['associations'] = (object) $productStandard['associations'];
+        }
+
         return $productStandard;
     }
 

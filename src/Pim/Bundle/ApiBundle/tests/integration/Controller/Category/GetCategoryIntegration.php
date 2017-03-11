@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Rest\Category;
+namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Category;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
@@ -14,15 +14,17 @@ class GetCategoryIntegration extends ApiTestCase
 
         $client->request('GET', 'api/rest/v1/categories/master');
 
-        $standardCategory = [
-            'code'   => 'master',
-            'parent' => null,
-            'labels' => []
-        ];
+        $standardCategory = <<<JSON
+{
+    "code": "master",
+    "parent": null,
+    "labels": {}
+}
+JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertSame($standardCategory, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($standardCategory, $response->getContent());
     }
 
     public function testGetACompleteCategory()
@@ -31,18 +33,20 @@ class GetCategoryIntegration extends ApiTestCase
 
         $client->request('GET', 'api/rest/v1/categories/categoryA');
 
-        $standardCategory = [
-            'code'   => 'categoryA',
-            'parent' => 'master',
-            'labels' => [
-                'en_US' => 'Category A',
-                'fr_FR' => 'Catégorie A'
-            ]
-        ];
+        $standardCategory = <<<JSON
+{
+    "code": "categoryA",
+    "parent": "master",
+    "labels": {
+        "en_US": "Category A",
+        "fr_FR": "Catégorie A"
+    }
+}
+JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertSame($standardCategory, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($standardCategory, $response->getContent());
     }
 
     public function testNotFoundACategory()

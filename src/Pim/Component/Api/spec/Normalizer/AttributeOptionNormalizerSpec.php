@@ -30,10 +30,20 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_attribute_option($stdNormalizer, AttributeOptionInterface $attributeOption)
     {
-        $data = ['code' => 'my_attribute_option'];
+        $data = ['code' => 'my_attribute_option', 'labels' => []];
 
-        $stdNormalizer->normalize($attributeOption, 'external_api', [])->willReturn($data);
+        $stdNormalizer->normalize($attributeOption, 'standard', [])->willReturn($data);
 
-        $this->normalize($attributeOption, 'external_api', [])->shouldReturn($data);
+        $normalizedOption = $this->normalize($attributeOption, 'external_api', []);
+        $normalizedOption->shouldHaveLabels($data);
+    }
+
+    public function getMatchers()
+    {
+        return [
+            'haveLabels' => function ($subject) {
+                return is_object($subject['labels']);
+            }
+        ];
     }
 }

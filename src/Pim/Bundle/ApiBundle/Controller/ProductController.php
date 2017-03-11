@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Bundle\CatalogBundle\Version;
+use Pim\Bundle\ApiBundle\Documentation;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
@@ -90,9 +90,6 @@ class ProductController
     /** @var array */
     protected $apiConfiguration;
 
-    /** @var string */
-    protected $urlDocumentation;
-
     /**
      * @param ProductQueryBuilderFactoryInterface   $pqbFactory
      * @param NormalizerInterface                   $normalizer
@@ -110,7 +107,6 @@ class ProductController
      * @param RouterInterface                       $router
      * @param ProductFilterInterface                $emptyValuesFilter
      * @param array                                 $apiConfiguration
-     * @param string                                $urlDocumentation
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -128,8 +124,7 @@ class ProductController
         SaverInterface $saver,
         RouterInterface $router,
         ProductFilterInterface $emptyValuesFilter,
-        array $apiConfiguration,
-        $urlDocumentation
+        array $apiConfiguration
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->normalizer = $normalizer;
@@ -147,7 +142,6 @@ class ProductController
         $this->router = $router;
         $this->emptyValuesFilter = $emptyValuesFilter;
         $this->apiConfiguration = $apiConfiguration;
-        $this->urlDocumentation = sprintf($urlDocumentation, substr(Version::VERSION, 0, 3));
     }
 
     /**
@@ -268,7 +262,7 @@ class ProductController
 
         $product = $this->productBuilder->createProduct();
 
-        $this->updateProduct($product, $data);
+        $this->updateProduct($product, $data, 'post_products');
         $this->validateProduct($product);
         $this->saver->save($product);
 
@@ -306,7 +300,7 @@ class ProductController
             $data = $this->filterEmptyValues($product, $data);
         }
 
-        $this->updateProduct($product, $data);
+        $this->updateProduct($product, $data, 'patch_products__code_');
         $this->validateProduct($product);
         $this->saver->save($product);
 
@@ -341,25 +335,17 @@ class ProductController
      *
      * @param ProductInterface $product category to update
      * @param array            $data    data of the request already decoded
+     * @param string           $anchor
      *
-     * @throws UnprocessableEntityHttpException
+     * @throws DocumentedHttpException
      */
-    protected function updateProduct(ProductInterface $product, array $data)
+    protected function updateProduct(ProductInterface $product, array $data, $anchor)
     {
         try {
             $this->updater->update($product, $data);
-        } catch (UnknownPropertyException $exception) {
-            throw new DocumentedHttpException(
-                $this->urlDocumentation,
-                sprintf(
-                    'Property "%s" does not exist. Check the standard format documentation.',
-                    $exception->getPropertyName()
-                ),
-                $exception
-            );
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
-                $this->urlDocumentation,
+                Documentation::URL . $anchor,
                 sprintf('%s Check the standard format documentation.', $exception->getMessage()),
                 $exception
             );
@@ -392,7 +378,7 @@ class ProductController
             }
         } catch (UnknownPropertyException $exception) {
             throw new DocumentedHttpException(
-                $this->urlDocumentation,
+                Documentation::URL . 'patch_products__code_',
                 sprintf(
                     'Property "%s" does not exist. Check the standard format documentation.',
                     $exception->getPropertyName()
@@ -502,6 +488,7 @@ class ProductController
 
                 $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $request->query->get('search_locale');
                 $context['scope'] = isset($filter['scope']) ? $filter['scope'] : $request->query->get('search_scope');
+                $context['locales'] = isset($filter['locales']) ? $filter['locales'] : null;
                 $value = isset($filter['value']) ? $filter['value'] : null;
 
                 $pqb->addFilter($propertyCode, $filter['operator'], $value, $context);

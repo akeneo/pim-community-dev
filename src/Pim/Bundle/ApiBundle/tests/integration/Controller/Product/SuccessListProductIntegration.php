@@ -166,7 +166,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -189,7 +189,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -201,10 +201,10 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                 "variant_group" : null,
                 "categories"    : ["master_china"],
                 "enabled"       : true,
-                "values"        : [],
+                "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -227,7 +227,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -263,7 +263,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -296,7 +296,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             }
         ]
     }
@@ -358,7 +358,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -377,7 +377,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -404,7 +404,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -437,7 +437,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             }
         ]
     }
@@ -507,7 +507,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -527,7 +527,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -554,7 +554,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -587,7 +587,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             }
         ]
     }
@@ -647,7 +647,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -666,7 +666,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -693,7 +693,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -726,7 +726,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             }
         ]
     }
@@ -777,7 +777,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -789,10 +789,10 @@ JSON;
                 "variant_group" : null,
                 "categories"    : ["master_china"],
                 "enabled"       : true,
-                "values"        : [],
+                "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             }
         ]
     }
@@ -862,7 +862,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -883,7 +883,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -895,10 +895,10 @@ JSON;
                 "variant_group" : null,
                 "categories"    : ["master_china"],
                 "enabled"       : true,
-                "values"        : [],
+                "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -921,7 +921,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -957,7 +957,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -990,7 +990,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             }
         ]
     }
@@ -1027,10 +1027,10 @@ JSON;
                 "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
-                "values"        : [],
+                "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -1042,10 +1042,10 @@ JSON;
                 "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
-                "values"        : [],
+                "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -1057,10 +1057,10 @@ JSON;
                 "variant_group" : null,
                 "categories"    : ["master_china"],
                 "enabled"       : true,
-                "values"        : [],
+                "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -1072,10 +1072,10 @@ JSON;
                 "variant_group" : null,
                 "categories"    : [],
                 "enabled"       : true,
-                "values"        : [],
+                "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -1087,10 +1087,10 @@ JSON;
                 "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
-                "values"        : [],
+                "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -1113,7 +1113,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             }
         ]
     }
@@ -1150,10 +1150,10 @@ JSON;
                 "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
-                "values"        : [],
+                "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -1172,7 +1172,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -1199,7 +1199,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -1225,7 +1225,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             }
         ]
     }
@@ -1264,10 +1264,10 @@ JSON;
                 "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
-                "values"        : [],
+                "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -1279,10 +1279,10 @@ JSON;
                 "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
-                "values"        : [],
+                "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             }
         ]
     }
@@ -1366,7 +1366,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
+                "associations"  : {}
             }
         ]
     }

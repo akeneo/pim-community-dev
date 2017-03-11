@@ -39,7 +39,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('sku', $expected);
@@ -73,7 +73,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 2,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_date', $expected);
@@ -107,7 +107,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 1,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_file', $expected);
@@ -141,7 +141,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('an_image', $expected);
@@ -175,7 +175,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_metric', $expected);
@@ -209,7 +209,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_metric_without_decimal', $expected);
@@ -243,7 +243,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_metric_without_decimal_negative', $expected);
@@ -277,7 +277,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_metric_negative', $expected);
@@ -311,7 +311,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_multi_select', $expected);
@@ -345,7 +345,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_number_float', $expected);
@@ -379,7 +379,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_number_float_negative', $expected);
@@ -413,7 +413,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_number_integer', $expected);
@@ -447,7 +447,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_number_integer_negative', $expected);
@@ -481,7 +481,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 3,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_price', $expected);
@@ -515,7 +515,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 11,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_price_without_decimal', $expected);
@@ -549,7 +549,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 4,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_ref_data_multi_select', $expected);
@@ -583,7 +583,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 5,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_ref_data_simple_select', $expected);
@@ -617,7 +617,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_simple_select', $expected);
@@ -651,7 +651,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 6,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_text', $expected);
@@ -685,7 +685,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 7,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_text_area', $expected);
@@ -719,7 +719,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 8,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_yes_no', $expected);
@@ -753,7 +753,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 0,
             'localizable'            => true,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_localizable_image', $expected);
@@ -787,7 +787,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 9,
             'localizable'            => false,
             'scopable'               => true,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_scopable_price', $expected);
@@ -821,7 +821,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 10,
             'localizable'            => true,
             'scopable'               => true,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_localized_and_scopable_text_area', $expected);
@@ -855,7 +855,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $this->assert('a_regexp', $expected);
@@ -872,6 +872,6 @@ class AttributeIntegration extends AbstractNormalizerTestCase
 
         $result = $serializer->normalize($repository->findOneByIdentifier($identifier), 'external_api');
 
-        $this->assertSame($expected, $result);
+        $this->assertEquals($expected, $result);
     }
 }

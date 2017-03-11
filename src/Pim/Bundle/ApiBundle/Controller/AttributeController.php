@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Version;
+use Pim\Bundle\ApiBundle\Documentation;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
@@ -63,9 +63,6 @@ class AttributeController
     /** @var ParameterValidator */
     protected $parameterValidator;
 
-    /** @var string */
-    protected $urlDocumentation;
-
     /**
      * @param AttributeRepositoryInterface $repository
      * @param NormalizerInterface          $normalizer
@@ -77,7 +74,6 @@ class AttributeController
      * @param HalPaginator                 $paginator
      * @param ParameterValidator           $parameterValidator
      * @param array                        $apiConfiguration
-     * @param string                       $urlDocumentation
      */
     public function __construct(
         AttributeRepositoryInterface $repository,
@@ -89,8 +85,7 @@ class AttributeController
         RouterInterface $router,
         HalPaginator $paginator,
         ParameterValidator $parameterValidator,
-        array $apiConfiguration,
-        $urlDocumentation
+        array $apiConfiguration
     ) {
         $this->repository = $repository;
         $this->normalizer = $normalizer;
@@ -102,7 +97,6 @@ class AttributeController
         $this->parameterValidator = $parameterValidator;
         $this->paginator = $paginator;
         $this->apiConfiguration = $apiConfiguration;
-        $this->urlDocumentation = sprintf($urlDocumentation, substr(Version::VERSION, 0, 3));
     }
 
     /**
@@ -180,7 +174,7 @@ class AttributeController
         $data = $this->getDecodedContent($request->getContent());
 
         $attribute = $this->factory->create();
-        $this->updateAttribute($attribute, $data);
+        $this->updateAttribute($attribute, $data, 'post_attributes');
         $this->validateAttribute($attribute);
 
         $this->saver->save($attribute);
@@ -210,7 +204,7 @@ class AttributeController
             $attribute = $this->factory->create();
         }
 
-        $this->updateAttribute($attribute, $data);
+        $this->updateAttribute($attribute, $data, 'patch_attributes__code_');
         $this->validateAttribute($attribute);
 
         $this->saver->save($attribute);
@@ -246,25 +240,17 @@ class AttributeController
      *
      * @param AttributeInterface $attribute
      * @param array              $data
+     * @param string             $anchor
      *
      * @throws DocumentedHttpException
      */
-    protected function updateAttribute(AttributeInterface $attribute, array $data)
+    protected function updateAttribute(AttributeInterface $attribute, array $data, $anchor)
     {
         try {
             $this->updater->update($attribute, $data);
-        } catch (UnknownPropertyException $exception) {
-            throw new DocumentedHttpException(
-                $this->urlDocumentation,
-                sprintf(
-                    'Property "%s" does not exist. Check the standard format documentation.',
-                    $exception->getPropertyName()
-                ),
-                $exception
-            );
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
-                $this->urlDocumentation,
+                Documentation::URL . $anchor,
                 sprintf('%s Check the standard format documentation.', $exception->getMessage()),
                 $exception
             );

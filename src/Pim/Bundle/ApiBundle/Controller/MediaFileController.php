@@ -47,9 +47,6 @@ class MediaFileController
     /** @var array */
     protected $apiConfiguration;
 
-    /** @var string */
-    protected $urlDocumentation;
-
     /**
      * @param ApiResourceRepositoryInterface $mediaRepository
      * @param NormalizerInterface            $normalizer
@@ -58,7 +55,6 @@ class MediaFileController
      * @param FilesystemProvider             $filesystemProvider
      * @param FileFetcherInterface           $fileFetcher
      * @param array                          $apiConfiguration
-     * @param string                         $urlDocumentation
      */
     public function __construct(
         ApiResourceRepositoryInterface $mediaRepository,
@@ -67,8 +63,7 @@ class MediaFileController
         HalPaginator $paginator,
         FilesystemProvider $filesystemProvider,
         FileFetcherInterface $fileFetcher,
-        array $apiConfiguration,
-        $urlDocumentation
+        array $apiConfiguration
     ) {
         $this->mediaRepository = $mediaRepository;
         $this->normalizer = $normalizer;
@@ -76,7 +71,6 @@ class MediaFileController
         $this->paginator = $paginator;
         $this->filesystemProvider = $filesystemProvider;
         $this->apiConfiguration = $apiConfiguration;
-        $this->urlDocumentation = $urlDocumentation;
         $this->fileFetcher = $fileFetcher;
     }
 

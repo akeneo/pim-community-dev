@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Rest\Category;
+namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Category;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
@@ -40,7 +40,7 @@ class ListCategoryIntegration extends ApiTestCase
                 },
                 "code": "master",
                 "parent": null,
-                "labels": []
+                "labels": {}
             },
             {
                 "_links": {
@@ -63,7 +63,7 @@ class ListCategoryIntegration extends ApiTestCase
                 },
                 "code": "categoryA1",
                 "parent": "categoryA",
-                "labels": []
+                "labels": {}
             },
             {
                 "_links": {
@@ -73,7 +73,7 @@ class ListCategoryIntegration extends ApiTestCase
                 },
                 "code": "categoryA2",
                 "parent": "categoryA",
-                "labels": []
+                "labels": {}
             },
             {
                 "_links": {
@@ -83,7 +83,7 @@ class ListCategoryIntegration extends ApiTestCase
                 },
                 "code": "categoryB",
                 "parent": "master",
-                "labels": []
+                "labels": {}
             },
             {
                 "_links": {
@@ -93,7 +93,7 @@ class ListCategoryIntegration extends ApiTestCase
                 },
                 "code": "master_china",
                 "parent": null,
-                "labels": []
+                "labels": {}
             }
         ]
     }

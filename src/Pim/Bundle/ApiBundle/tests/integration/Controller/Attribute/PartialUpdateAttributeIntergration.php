@@ -1,10 +1,9 @@
 <?php
 
-namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Rest\Attribute;
+namespace tests\integration\Pim\Bundle\ApiBundle\Controller\Attribute;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Pim\Bundle\CatalogBundle\Version;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateAttributeIntergration extends ApiTestCase
@@ -452,16 +451,12 @@ JSON;
     }
 JSON;
 
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "extra_property" does not exist. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf(
-                        'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute',
-                        $version
-                    ),
+                    'href' => 'http://api.akeneo.com/api-reference.html#patch_attributes__code_'
                 ],
             ],
         ];
@@ -484,16 +479,12 @@ JSON;
     }
 JSON;
 
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "labels" expects an array. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf(
-                        'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute',
-                        $version
-                    ),
+                    'href' => 'http://api.akeneo.com/api-reference.html#patch_attributes__code_'
                 ],
             ],
         ];
