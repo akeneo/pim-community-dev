@@ -1,6 +1,6 @@
 extensions:
     pim-family-mass-edit-form:
-        module: pim/family-mass-edit/base-form
+        module: pim/form/common/edit-form
 
     pim-family-mass-edit-form-cache-invalidator:
         module: pim/cache-invalidator

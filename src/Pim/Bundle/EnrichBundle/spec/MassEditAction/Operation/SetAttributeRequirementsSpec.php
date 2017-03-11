@@ -25,9 +25,7 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
     }
 
     function it_converts_given_values_to_attributes_and_requirements() {
-        $data = "{\"attributes\":[\"foo_attribute\",\"bar_attribute\"]," .
-            "\"attribute_requirements\":{\"channel_a\":[\"foo_attribute\"]," .
-            "\"channel_b\":[\"bar_attribute\"]}}";
+        $data = $this->getData();
 
         $this->setValues($data)->getAttributes()->shouldReturn(
             [
@@ -51,9 +49,7 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
 
     function it_returns_well_formatted_actions_for_batch_job() {
 
-        $data = "{\"attributes\":[\"foo_attribute\",\"bar_attribute\"]," .
-            "\"attribute_requirements\":{\"channel_a\":[\"foo_attribute\"]," .
-            "\"channel_b\":[\"bar_attribute\"]}}";
+        $data = $this->getData();
 
         $this->setValues($data)->getActions()->shouldReturn([
             [
@@ -77,5 +73,12 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
                 'is_required' => true
             ]
         ]);
+    }
+
+    protected function getData()
+    {
+        return "{\"attributes\":[\"foo_attribute\",\"bar_attribute\"]," .
+            "\"attribute_requirements\":{\"channel_a\":[\"foo_attribute\"]," .
+            "\"channel_b\":[\"bar_attribute\"]}}";
     }
 }
