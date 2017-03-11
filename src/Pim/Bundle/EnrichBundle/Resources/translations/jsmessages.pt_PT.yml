@@ -127,11 +127,15 @@ pim_enrich:
         save_and_back: Gravar e voltar à grelha
       history:
         version: Versão
+        author: Autor
+        logged_at: Iniciado sessão em
         more: Mais
         less: Menos
         from: De
         modified: Modificado
         property: Propriedade
+        old_values: Valores antigos
+        new_values: Novos valores
         actions: Ações
       info:
         deletion_successful: Produto eliminado com sucesso.
@@ -205,6 +209,8 @@ pim_enrich:
     leave: Tem certeza que deseja sair desta página?
     discard_changes: Irá perderá as alterações para {{ entity }}, se abandonar a página.
     delete_item: Confirmar eliminação
+    delete:
+      attribute: Tem certeza que deseja eliminar este atributo do produto?
   info:
     not_applicable: N/A
     entity:
@@ -327,6 +333,8 @@ pim_enrich:
           all_group: Todos os grupos
         family:
           title: Família
+          operators:
+            IN: Na lista
         updated:
           operators:
             ALL: Sem restrição de data
@@ -345,9 +353,29 @@ pim_enrich:
             LOWER THAN ON ALL LOCALES: Não completo em todas as linguagens escolhidas
         identifier:
           title: Identificador
+        metric:
+          operators:
+            EMPTY: Está vazio
         string:
           operators:
             ALL: Tudo
+            EMPTY: Está vazio
+        price-collection:
+          operators:
+            EMPTY: Está vazio
+        multi_select:
+          operators:
+            IN: Na lista
+            EMPTY: Está vazio
+        media:
+          operators:
+            EMPTY: Está vazio
+        date:
+          operators:
+            EMPTY: Está vazio
+        number:
+          operators:
+            EMPTY: Está vazio
   mass_edit_action:
     edit_common_attributes:
       description: Os atributos dos produtos selecionados serão editados com os seguintes dados para a linguagem <span class="highlight">{{ locale }}</span> e o canal <span class="highlight">{{ channel }}</span>, escolhidos na grelha de produtos.

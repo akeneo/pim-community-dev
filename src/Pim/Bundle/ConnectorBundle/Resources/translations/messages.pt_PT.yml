@@ -167,6 +167,7 @@ job_execution.summary:
   displayed: primeiros avisos exibidos
   charset_validator:
     title: 'codificação do ficheiro:'
+    skipped: ignorado, extensão na lista branca
   product_skipped_no_diff: produtos ignorados (sem diferenças)
 batch_jobs:
   csv_product_export:
