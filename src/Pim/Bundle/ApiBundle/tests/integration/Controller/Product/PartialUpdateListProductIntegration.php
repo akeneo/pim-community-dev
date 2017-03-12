@@ -30,8 +30,8 @@ JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"identifier":"product_family","code":204}
-{"line":2,"identifier":"my_identifier","code":201}
+{"line":1,"identifier":"product_family","status_code":204}
+{"line":2,"identifier":"my_identifier","status_code":201}
 JSON;
 
 
@@ -92,8 +92,8 @@ JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"identifier":"my_identifier","code":201}
-{"line":2,"identifier":"my_identifier","code":204}
+{"line":1,"identifier":"my_identifier","status_code":201}
+{"line":2,"identifier":"my_identifier","status_code":204}
 JSON;
 
 
@@ -114,7 +114,7 @@ JSON;
         $data = implode(PHP_EOL, $data);
 
         for ($i = 0; $i < $maxNumberResources; $i++) {
-            $expectedContent[] = sprintf('{"line":%s,"identifier":"my_identifier_%s","code":201}', $i + 1, $i);
+            $expectedContent[] = sprintf('{"line":%s,"identifier":"my_identifier_%s","status_code":201}', $i + 1, $i);
         }
         $expectedContent = implode(PHP_EOL, $expectedContent);
 
@@ -183,16 +183,16 @@ JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"code":400,"message":"Invalid json message received"}
-{"line":2,"code":400,"message":"Invalid json message received"}
-{"line":3,"code":400,"message":"Invalid json message received"}
-{"line":4,"code":413,"message":"Line is too long."}
-{"line":5,"code":413,"message":"Line is too long."}
-{"line":6,"code":413,"message":"Line is too long."}
-{"line":7,"code":413,"message":"Line is too long."}
-{"line":8,"code":413,"message":"Line is too long."}
-{"line":9,"code":413,"message":"Line is too long."}
-{"line":10,"code":400,"message":"Invalid json message received"}
+{"line":1,"status_code":400,"message":"Invalid json message received"}
+{"line":2,"status_code":400,"message":"Invalid json message received"}
+{"line":3,"status_code":400,"message":"Invalid json message received"}
+{"line":4,"status_code":413,"message":"Line is too long."}
+{"line":5,"status_code":413,"message":"Line is too long."}
+{"line":6,"status_code":413,"message":"Line is too long."}
+{"line":7,"status_code":413,"message":"Line is too long."}
+{"line":8,"status_code":413,"message":"Line is too long."}
+{"line":9,"status_code":413,"message":"Line is too long."}
+{"line":10,"status_code":400,"message":"Invalid json message received"}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
@@ -216,11 +216,11 @@ JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"code":422,"message":"Identifier is missing."}
-{"line":2,"code":422,"message":"Identifier is missing."}
-{"line":3,"code":422,"message":"Identifier is missing."}
-{"line":4,"code":422,"message":"Identifier is missing."}
-{"line":5,"code":422,"message":"Identifier is missing."}
+{"line":1,"status_code":422,"message":"Identifier is missing."}
+{"line":2,"status_code":422,"message":"Identifier is missing."}
+{"line":3,"status_code":422,"message":"Identifier is missing."}
+{"line":4,"status_code":422,"message":"Identifier is missing."}
+{"line":5,"status_code":422,"message":"Identifier is missing."}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
@@ -239,7 +239,7 @@ JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"identifier":"foo","code":422,"message":"Property \"variant_group\" expects a valid variant group code. The variant group does not exist, \"bar\" given. Check the standard format documentation.","_links":{"documentation":{"href":"http://api.akeneo.com/api-reference.html#patch_products__code_"}}}
+{"line":1,"identifier":"foo","status_code":422,"message":"Property \"variant_group\" expects a valid variant group code. The variant group does not exist, \"bar\" given. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
@@ -258,7 +258,7 @@ JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"identifier":"foo,","code":422,"message":"Validation failed.","errors":[{"field":"identifier","message":"This field should not contain any comma or semicolon."}]}
+{"line":1,"identifier":"foo,","status_code":422,"message":"Validation failed.","errors":[{"property":"identifier","message":"This field should not contain any comma or semicolon."}]}
 JSON;
 
 
