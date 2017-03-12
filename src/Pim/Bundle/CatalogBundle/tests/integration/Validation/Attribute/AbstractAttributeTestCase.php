@@ -140,6 +140,27 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('reference_data_name', $violations->get(0)->getPropertyPath());
     }
 
+    public function assertDoesNotHaveMaxCharacters($type)
+    {
+        $attribute = $this->createAttribute();
+
+        $this->updateAttribute(
+            $attribute,
+            [
+                'code'           => 'new_attribute',
+                'type'           => $type,
+                'group'          => 'attributeGroupA',
+                'max_characters' => 42,
+            ]
+        );
+
+        $violations = $this->validateAttribute($attribute);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This value should be null.', $violations->get(0)->getMessage());
+        $this->assertSame('maxCharacters', $violations->get(0)->getPropertyPath());
+    }
+
     protected function assertMaxCharactersIsNotGreaterThan($type, $limit)
     {
         $attribute = $this->createAttribute();
@@ -203,7 +224,7 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('validationRegexp', $violations->get(0)->getPropertyPath());
     }
 
-    public function assertDoesNotHaveWysiwygEnabled($type)
+    protected function assertDoesNotHaveWysiwygEnabled($type)
     {
         $attribute = $this->createAttribute();
 
@@ -224,7 +245,7 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('wysiwygEnabled', $violations->get(0)->getPropertyPath());
     }
 
-    public function assertDoesNotHaveANumberMin($type)
+    protected function assertDoesNotHaveANumberMin($type)
     {
         $attribute = $this->createAttribute();
 
@@ -245,7 +266,7 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('numberMin', $violations->get(0)->getPropertyPath());
     }
 
-    public function assertDoesNotHaveANumberMax($type)
+    protected function assertDoesNotHaveANumberMax($type)
     {
         $attribute = $this->createAttribute();
 
@@ -266,7 +287,7 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('numberMax', $violations->get(0)->getPropertyPath());
     }
 
-    public function assertDoesNotHaveDecimalsAllowed($type)
+    protected function assertDoesNotHaveDecimalsAllowed($type)
     {
         $attribute = $this->createAttribute();
 
@@ -287,7 +308,7 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('decimalsAllowed', $violations->get(0)->getPropertyPath());
     }
 
-    public function assertDoesNotHaveNegativeAllowed($type)
+    protected function assertDoesNotHaveNegativeAllowed($type)
     {
         $attribute = $this->createAttribute();
 
@@ -308,7 +329,7 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('negativeAllowed', $violations->get(0)->getPropertyPath());
     }
 
-    public function assertDoesNotHaveADateMin($type)
+    protected function assertDoesNotHaveADateMin($type)
     {
         $attribute = $this->createAttribute();
 
@@ -329,7 +350,7 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('dateMin', $violations->get(0)->getPropertyPath());
     }
 
-    public function assertDoesNotHaveADateMax($type)
+    protected function assertDoesNotHaveADateMax($type)
     {
         $attribute = $this->createAttribute();
 
@@ -350,7 +371,7 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('dateMax', $violations->get(0)->getPropertyPath());
     }
 
-    public function assertDoesNotHaveAMaxFileSize($type)
+    protected function assertDoesNotHaveAMaxFileSize($type)
     {
         $attribute = $this->createAttribute();
 
