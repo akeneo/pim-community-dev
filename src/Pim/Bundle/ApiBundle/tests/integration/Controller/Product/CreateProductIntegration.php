@@ -242,18 +242,6 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                "PACK"         => [
-                    "groups"   => [],
-                    "products" => [],
-                ],
-                "SUBSTITUTION" => [
-                    "groups"   => [],
-                    "products" => [],
-                ],
-                "UPSELL"       => [
-                    "groups"   => [],
-                    "products" => [],
-                ],
                 "X_SELL"       => [
                     "groups"   => ["groupA"],
                     "products" => ["simple"],
@@ -986,6 +974,9 @@ JSON;
 
         $standardizedProduct = static::sanitizeMediaAttributeData($standardizedProduct);
         $expectedProduct = static::sanitizeMediaAttributeData($expectedProduct);
+
+        ksort($expectedProduct['values']);
+        ksort($standardizedProduct['values']);
 
         $this->assertSame($expectedProduct, $standardizedProduct);
     }
