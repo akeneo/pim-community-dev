@@ -290,7 +290,7 @@ JSON;
 <<<JSON
     {
         "code": 415,
-        "message": "\"application\/json\" in \"Content-Type\" header is not valid. Only \"application\/vnd.akeneopim+json\" is allowed."
+        "message": "\"application\/json\" in \"Content-Type\" header is not valid. Only \"application\/vnd.akeneo.collection+json\" is allowed."
     }
 JSON;
 

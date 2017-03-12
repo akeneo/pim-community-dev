@@ -9,7 +9,7 @@ fos_rest:
             json: true
         mime_types:
             form_data: ['multipart/form-data']
-            akeneo_multi_json: ['application/vnd.akeneopim+json']
+            akeneo_multi_json: ['application/vnd.akeneo.collection+json']
     format_listener:
         rules:
             - { path: '^/api/rest/v\d+/media-files', methods: ['POST'], priorities: ['form_data'], fallback_format: json, prefer_extension: true }
