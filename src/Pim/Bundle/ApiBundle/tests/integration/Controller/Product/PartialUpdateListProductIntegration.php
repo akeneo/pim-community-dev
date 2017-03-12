@@ -4,7 +4,6 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
-use Pim\Bundle\CatalogBundle\Version;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateListProductIntegration extends AbstractProductTestCase
@@ -238,13 +237,10 @@ JSON;
     {"identifier": "foo", "variant_group":"bar"}
 JSON;
 
-
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent =
 <<<JSON
-{"line":1,"identifier":"foo","code":422,"message":"Property \"variant_group\" expects a valid variant group code. The variant group does not exist, \"bar\" given. Check the standard format documentation.","_links":{"documentation":{"href":"https:\/\/docs.akeneo.com\/${version}\/reference\/standard_format\/products.html"}}}
+{"line":1,"identifier":"foo","code":422,"message":"Property \"variant_group\" expects a valid variant group code. The variant group does not exist, \"bar\" given. Check the standard format documentation.","_links":{"documentation":{"href":"http://api.akeneo.com/api-reference.html#patch_products__code_"}}}
 JSON;
-
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
         $httpResponse = $response['http_response'];
