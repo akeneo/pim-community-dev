@@ -96,7 +96,6 @@ class StreamResourceResponse
                     if (null === $data) {
                         throw new BadRequestHttpException('Invalid json message received');
                     }
-
                     if (!isset($data[$this->identifierKey]) || '' === trim($data[$this->identifierKey])) {
                         throw new UnprocessableEntityHttpException(sprintf('%s is missing.', ucfirst($this->identifierKey)));
                     }
@@ -109,15 +108,21 @@ class StreamResourceResponse
                     $subResponse = $this->forward(['code' => $data[$this->identifierKey]], $line);
 
                     if ('' !== $subResponse->getContent()) {
-                        $response =  array_merge($response, json_decode($subResponse->getContent(), true));
+                        $subResponse = json_decode($subResponse->getContent(), true);
+                        if (isset($subResponse['code'])) {
+                            $response['status_code'] = $subResponse['code'];
+                            unset($subResponse['code']);
+                        }
+
+                        $response = array_merge($response, $subResponse);
                     } else {
-                        $response['code'] = $subResponse->getStatusCode();
+                        $response['status_code'] = $subResponse->getStatusCode();
                     }
                 } catch (HttpException $e) {
                     $response = [
-                        'line'    => $lineNumber,
-                        'code'    => $e->getStatusCode(),
-                        'message' => $e->getMessage(),
+                        'line'        => $lineNumber,
+                        'status_code' => $e->getStatusCode(),
+                        'message'     => $e->getMessage(),
                     ];
                 }
 
