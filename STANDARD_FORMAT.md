@@ -150,6 +150,8 @@ Each element in the array "groups" represents the *code* of the *Pim\Component\C
 
 Each element in the array "products" represents the *identifier* of the *Pim\Component\Catalog\Model\ProductInterface*
 
+If an association type does not contain neither element in groups, nor element in products, it is not returned.
+
 
 ### Product values
 
