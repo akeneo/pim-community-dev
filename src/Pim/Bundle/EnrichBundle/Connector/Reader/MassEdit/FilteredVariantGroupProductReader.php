@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 
 use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -129,7 +130,7 @@ class FilteredVariantGroupProductReader extends ProductReader
         $variantGroup = $this->groupRepository->findOneByIdentifier($variantGroupCode);
 
         $axisAttributeCodes = $this->getAxisAttributeCodes($variantGroup);
-        $eligibleProductIds = $this->productRepository->getEligibleProductIdsForVariantGroup($variantGroup->getId());
+        $eligibleProducts = $this->productRepository->getEligibleProductsForVariantGroup($variantGroup->getId());
 
         $cursor = $this->getProductsCursor($filters);
         $paginator = $this->paginatorFactory->createPaginator($cursor);
@@ -137,7 +138,7 @@ class FilteredVariantGroupProductReader extends ProductReader
         list($productAttributeAxis, $acceptedIds) = $this->filterDuplicateAxisCombinations(
             $stepExecution,
             $paginator,
-            $eligibleProductIds,
+            $eligibleProducts,
             $axisAttributeCodes
         );
 
@@ -298,7 +299,7 @@ class FilteredVariantGroupProductReader extends ProductReader
      *
      * @param StepExecution      $stepExecution
      * @param PaginatorInterface $paginator
-     * @param array              $eligibleProductIds
+     * @param CursorInterface    $eligibleProducts
      * @param array              $axisAttributeCodes
      *
      * @return array
@@ -306,11 +307,17 @@ class FilteredVariantGroupProductReader extends ProductReader
     protected function filterDuplicateAxisCombinations(
         StepExecution $stepExecution,
         PaginatorInterface $paginator,
-        array $eligibleProductIds,
+        CursorInterface $eligibleProducts,
         array $axisAttributeCodes
     ) {
         $productAttributeAxis = [];
         $acceptedIds = [];
+
+        $eligibleProductIds = [];
+        foreach ($eligibleProducts as $eligibleProduct) {
+            $eligibleProductIds = $eligibleProduct->getId();
+        }
+
         foreach ($paginator as $productsPage) {
             foreach ($productsPage as $product) {
                 if (in_array($product->getId(), $eligibleProductIds)) {

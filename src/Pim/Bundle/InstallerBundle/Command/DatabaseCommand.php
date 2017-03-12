@@ -114,7 +114,7 @@ class DatabaseCommand extends ContainerAwareCommand
         $this->getEventDispatcher()->dispatch(InstallerEvents::POST_LOAD_FIXTURES);
 
         // TODO: Should be in an event subscriber
-        $this->launchCommands($input, $output);
+        $this->launchCommands();
 
         return $this;
     }
@@ -200,18 +200,13 @@ class DatabaseCommand extends ContainerAwareCommand
     }
 
     /**
-     * Launchs all commands needed after fixtures loading
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * Launches all commands needed after fixtures loading
      *
      * @return DatabaseCommand
      */
-    protected function launchCommands(InputInterface $input, OutputInterface $output)
+    protected function launchCommands()
     {
-        $this->commandExecutor
-            ->runCommand('pim:versioning:refresh')
-            ->runCommand('pim:completeness:calculate');
+        $this->commandExecutor->runCommand('pim:versioning:refresh');
 
         return $this;
     }

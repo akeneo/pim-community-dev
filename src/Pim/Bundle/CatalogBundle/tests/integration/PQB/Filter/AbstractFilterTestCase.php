@@ -80,7 +80,7 @@ abstract class AbstractFilterTestCase extends TestCase
     {
         $products = [];
         foreach ($result as $product) {
-            $products[] = $product->getIdentifier()->getData();
+            $products[] = $product->getIdentifier();
         }
 
         $this->assertSame($products, $expected);

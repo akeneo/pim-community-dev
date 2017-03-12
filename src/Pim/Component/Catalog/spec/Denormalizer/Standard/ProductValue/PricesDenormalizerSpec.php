@@ -2,18 +2,17 @@
 
 namespace spec\Pim\Component\Catalog\Denormalizer\Standard\ProductValue;
 
-use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Factory\PriceFactory;
+use Pim\Component\Catalog\Model\PriceCollection;
+use Pim\Component\Catalog\Model\ProductPrice;
+use Pim\Component\Catalog\Model\ProductPriceInterface;
 
 class PricesDenormalizerSpec extends ObjectBehavior
 {
-    function let(LocalizerInterface $localizer)
+    function let(PriceFactory $priceFactory)
     {
-        $this->beConstructedWith(
-            ['pim_catalog_price_collection'],
-            $localizer,
-            'Pim\Component\Catalog\Model\ProductPrice'
-        );
+        $this->beConstructedWith(['pim_catalog_price_collection'], $priceFactory);
     }
 
     function it_is_initializable()
@@ -40,75 +39,35 @@ class PricesDenormalizerSpec extends ObjectBehavior
         $this->denormalize([], 'pim_catalog_price_collection', 'standard')->shouldReturn(null);
     }
 
-    function it_denormalizes_data_into_price_collection_with_en_US_locale($localizer)
-    {
-        $context = ['locale' => 'en_US'];
-
-        $localizer->localize(10, $context)->willReturn(10);
-        $localizer->localize(15.45, $context)->willReturn(15.45);
-
-        $prices = $this
-            ->denormalize(
-                [
-                    [
-                        'amount'   => 10,
-                        'currency' => 'EUR'
-                    ],
-                    [
-                        'amount'   => 15.45,
-                        'currency' => 'USD'
-                    ]
-                ],
-                'pim_catalog_price_collection',
-                'standard',
-                $context
-            );
-
-        $prices->shouldHaveType('Doctrine\Common\Collections\ArrayCollection');
-        $prices->shouldHaveCount(2);
-
-        $prices[0]->shouldBeAnInstanceOf('Pim\Component\Catalog\Model\ProductPriceInterface');
-        $prices[0]->getData()->shouldReturn(10);
-        $prices[0]->getCurrency()->shouldReturn('EUR');
-
-        $prices[0]->shouldBeAnInstanceOf('Pim\Component\Catalog\Model\ProductPriceInterface');
-        $prices[1]->getData()->shouldReturn(15.45);
-        $prices[1]->getCurrency()->shouldReturn('USD');
-    }
-
-    function it_denormalizes_data_into_price_collection_with_fr_FR_locale($localizer)
-    {
-        $context = ['locale' => 'fr_FR'];
-
-        $localizer->localize(10, $context)->willReturn(10);
-        $localizer->localize(15.45, $context)->willReturn('15,45');
+    function it_denormalizes_data_into_price_collection(
+        $priceFactory,
+        ProductPrice $priceEUR,
+        ProductPrice $priceUSD
+    ) {
+        $priceFactory->createPrice(10, 'EUR')->willReturn($priceEUR);
+        $priceFactory->createPrice(15.45, 'USD')->willReturn($priceUSD);
 
         $prices = $this
             ->denormalize(
                 [
                     [
                         'amount'   => 10,
-                        'currency' => 'EUR'
+                        'currency' => 'EUR',
                     ],
                     [
                         'amount'   => 15.45,
-                        'currency' => 'USD'
+                        'currency' => 'USD',
                     ]
                 ],
                 'pim_catalog_price_collection',
                 'standard',
-                $context
+                []
             );
 
-        $prices->shouldHaveType('Doctrine\Common\Collections\ArrayCollection');
+        $prices->shouldHaveType(PriceCollection::class);
         $prices->shouldHaveCount(2);
 
-        $prices[0]->shouldBeAnInstanceOf('Pim\Component\Catalog\Model\ProductPriceInterface');
-        $prices[0]->getData()->shouldReturn(10);
-        $prices[0]->getCurrency()->shouldReturn('EUR');
-
-        $prices[0]->shouldBeAnInstanceOf('Pim\Component\Catalog\Model\ProductPriceInterface');
-        $prices[1]->getData()->shouldReturn('15,45');
-        $prices[1]->getCurrency()->shouldReturn('USD');
+        $prices->get(0)->shouldReturn($priceEUR);
+        $prices->get(1)->shouldReturn($priceUSD);
     }
 }

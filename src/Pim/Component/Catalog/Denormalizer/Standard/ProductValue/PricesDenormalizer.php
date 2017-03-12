@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Denormalizer\Standard\ProductValue;
 
-use Akeneo\Component\Localization\Localizer\LocalizerInterface;
-use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Component\Catalog\Factory\PriceFactory;
+use Pim\Component\Catalog\Model\PriceCollection;
 
 /**
  * Price collection denormalizer used for attribute type:
@@ -15,23 +15,18 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class PricesDenormalizer extends AbstractValueDenormalizer
 {
-    /** @var string */
-    protected $productPriceClass;
-
-    /** @var LocalizerInterface */
-    protected $localizer;
+    /** @var PriceFactory */
+    protected $priceFactory;
 
     /**
-     * @param string[]           $supportedTypes
-     * @param LocalizerInterface $localizer
-     * @param string             $productPriceClass
+     * @param string[]     $supportedTypes
+     * @param PriceFactory $priceFactory
      */
-    public function __construct(array $supportedTypes, LocalizerInterface $localizer, $productPriceClass)
+    public function __construct(array $supportedTypes, PriceFactory $priceFactory)
     {
         parent::__construct($supportedTypes);
 
-        $this->localizer = $localizer;
-        $this->productPriceClass = $productPriceClass;
+        $this->priceFactory = $priceFactory;
     }
 
     /**
@@ -43,11 +38,10 @@ class PricesDenormalizer extends AbstractValueDenormalizer
             return null;
         }
 
-        $prices = new ArrayCollection();
+        $prices = new PriceCollection();
 
         foreach ($data as $priceData) {
-            $data = $this->localizer->localize($priceData['amount'], $context);
-            $prices->add(new $this->productPriceClass($data, $priceData['currency']));
+            $prices->add($this->priceFactory->createPrice($priceData['amount'], $priceData['currency']));
         }
 
         return $prices;

@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Normalizer\Standard\Product;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -51,15 +52,15 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
         $context = array_merge(['filter_types' => ['pim.transform.product_value.structured']], $context);
         $data = [];
 
-        $data[self::FIELD_IDENTIFIER] = $product->getIdentifier()->getData();
+        $data[self::FIELD_IDENTIFIER] = $product->getIdentifier();
         $data[self::FIELD_FAMILY] = $product->getFamily() ? $product->getFamily()->getCode() : null;
         $data[self::FIELD_GROUPS] = $this->normalizeGroups($product);
         $data[self::FIELD_VARIANT_GROUP] = $product->getVariantGroup() ? $product->getVariantGroup()->getCode() : null;
         $data[self::FIELD_CATEGORIES] = $product->getCategoryCodes();
         $data[self::FIELD_ENABLED] = (bool) $product->isEnabled();
-        $data[self::FIELD_VALUES] = $this->normalizeValues($product->getValues(), $context);
-        $data[self::FIELD_CREATED] = $this->serializer->normalize($product->getCreated(), 'standard');
-        $data[self::FIELD_UPDATED] = $this->serializer->normalize($product->getUpdated(), 'standard');
+        $data[self::FIELD_VALUES] = $this->normalizeValues($product->getValues(), $format, $context);
+        $data[self::FIELD_CREATED] = $this->serializer->normalize($product->getCreated(), $format);
+        $data[self::FIELD_UPDATED] = $this->serializer->normalize($product->getUpdated(), $format);
 
         return $data;
     }
@@ -75,21 +76,19 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
     /**
      * Normalize the values of the product
      *
-     * @param ArrayCollection $values
-     * @param array           $context
+     * @param ProductValueCollectionInterface $values
+     * @param string                          $format
+     * @param array                           $context
      *
      * @return ArrayCollection
      */
-    private function normalizeValues(ArrayCollection $values, array $context = [])
+    private function normalizeValues(ProductValueCollectionInterface $values, $format, array $context = [])
     {
         foreach ($context['filter_types'] as $filterType) {
             $values = $this->filter->filterCollection($values, $filterType, $context);
         }
 
-        $data = [];
-        foreach ($values as $value) {
-            $data[$value->getAttribute()->getCode()][] = $this->serializer->normalize($value, 'standard', $context);
-        }
+        $data = $this->serializer->normalize($values, $format, $context);
 
         return $data;
     }

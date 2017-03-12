@@ -15,20 +15,14 @@ use Doctrine\Common\Collections\Collection;
  */
 abstract class AbstractProductValue implements ProductValueInterface
 {
-    /** @var int|string */
-    protected $id;
-
-    /** @var \Pim\Component\Catalog\Model\AttributeInterface */
+    /** @var AttributeInterface */
     protected $attribute;
 
     /** @var mixed */
     protected $data;
 
-    /** @var ProductInterface */
-    protected $entity;
-
     /**
-     * LocaleInterface code
+     * Locale code
      *
      * @var string
      */
@@ -79,7 +73,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Store date value
      *
-     * @var date
+     * @var \DateTime
      */
     protected $date;
 
@@ -95,7 +89,7 @@ abstract class AbstractProductValue implements ProductValueInterface
      *
      * This field must by overrided in concret value class
      *
-     * @var ArrayCollection
+     * @var Collection
      */
     protected $options;
 
@@ -126,35 +120,25 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Store prices value
      *
-     * @var ArrayCollection
+     * @var PriceCollectionInterface
      */
     protected $prices;
 
     /**
-     * Constructor
+     * @param AttributeInterface $attribute
+     * @param string             $channel
+     * @param string             $locale
+     * @param mixed              $data
      */
-    public function __construct()
+    public function __construct(AttributeInterface $attribute, $channel, $locale, $data)
     {
         $this->options = new ArrayCollection();
-        $this->prices = new ArrayCollection();
-    }
+        $this->prices = new PriceCollection();
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
+        $this->setAttribute($attribute);
+        $this->setScope($channel);
+        $this->setLocale($locale);
+        $this->setData($data);
     }
 
     /**
@@ -163,21 +147,6 @@ abstract class AbstractProductValue implements ProductValueInterface
     public function hasData()
     {
         return !is_null($this->getData());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setAttribute(AttributeInterface $attribute = null)
-    {
-        if (is_object($this->attribute) && ($attribute != $this->attribute)) {
-            throw new \LogicException(
-                sprintf('An attribute (%s) has already been set for this value', $this->attribute->getCode())
-            );
-        }
-        $this->attribute = $attribute;
-
-        return $this;
     }
 
     /**
@@ -199,90 +168,9 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale)
-    {
-        if ($locale && $this->getAttribute() && $this->getAttribute()->isLocalizable() === false) {
-            $attributeCode = $this->getAttribute()->getCode();
-            throw new \LogicException(
-                "This value '".$this->getId()."' can't be localized, see attribute '".$attributeCode."' configuration"
-            );
-        }
-
-        $this->locale = $locale;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getScope()
     {
         return $this->scope;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setScope($scope)
-    {
-        if ($scope && $this->getAttribute() && $this->getAttribute()->isScopable() === false) {
-            $attributeCode = $this->getAttribute()->getCode();
-            throw new \LogicException(
-                "This value '".$this->getId()."' can't be scoped, see attribute '".$attributeCode."' configuration"
-            );
-        }
-
-        $this->scope = $scope;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getEntity()
-    {
-        return $this->entity;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProduct()
-    {
-        return $this->entity;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setEntity(ProductInterface $entity = null)
-    {
-        $this->entity = $entity;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProduct(ProductInterface $product = null)
-    {
-        $this->entity = $product;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setData($data)
-    {
-        $setter = $this->attribute->getBackendType();
-        if ($this->attribute->isBackendTypeReferenceData()) {
-            $setter = $this->attribute->getReferenceDataName();
-        }
-
-        $setter = 'set'.ucfirst($setter);
-
-        return $this->$setter($data);
     }
 
     /**
@@ -303,37 +191,9 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * {@inheritdoc}
      */
-    public function addData($data)
-    {
-        $backendType = $this->attribute->getBackendType();
-        if ($this->attribute->isBackendTypeReferenceData()) {
-            $backendType = $this->attribute->getReferenceDataName();
-        }
-
-        if (substr($backendType, -1, 1) === 's') {
-            $backendType = substr($backendType, 0, strlen($backendType) - 1);
-        }
-        $name = 'add'.ucfirst($backendType);
-
-        return $this->$name($data);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getVarchar()
     {
         return $this->varchar;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setVarchar($varchar)
-    {
-        $this->varchar = $varchar;
-
-        return $this;
     }
 
     /**
@@ -347,29 +207,9 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * {@inheritdoc}
      */
-    public function setInteger($integer)
-    {
-        $this->integer = $integer;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDecimal()
     {
         return $this->decimal;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDecimal($decimal)
-    {
-        $this->decimal = $decimal;
-
-        return $this;
     }
 
     /**
@@ -383,29 +223,9 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * {@inheritdoc}
      */
-    public function setBoolean($boolean)
-    {
-        $this->boolean = $boolean;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getText()
     {
         return $this->text;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setText($text)
-    {
-        $this->text = $text;
-
-        return $this;
     }
 
     /**
@@ -419,43 +239,9 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * {@inheritdoc}
      */
-    public function setDate($date)
-    {
-        if ($this->date != $date) {
-            $this->date = $date;
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDatetime()
     {
         return $this->datetime;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDatetime($datetime)
-    {
-        if ($this->datetime != $datetime) {
-            $this->datetime = $datetime;
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOption(AttributeOptionInterface $option = null)
-    {
-        $this->option = $option;
-
-        return $this;
     }
 
     /**
@@ -477,33 +263,11 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * {@inheritdoc}
      */
-    public function setOptions($options)
+    public function isEqual(ProductValueInterface $productValue)
     {
-        $this->options = $options;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addOption(AttributeOptionInterface $option)
-    {
-        if (!$this->options->contains($option)) {
-            $this->options->add($option);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeOption(AttributeOptionInterface $option)
-    {
-        $this->options->removeElement($option);
-
-        return $this;
+        return $this->getData() === $productValue->getData() &&
+            $this->scope === $productValue->getScope() &&
+            $this->locale === $productValue->getLocale();
     }
 
     /**
@@ -513,7 +277,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     {
         $data = $this->getData();
 
-        if ($data instanceof \DateTime) {
+        if ($data instanceof \DateTimeInterface) {
             $data = $data->format(\DateTime::ISO8601);
         }
 
@@ -545,34 +309,9 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * {@inheritdoc}
      */
-    public function setMedia(FileInfoInterface $media = null)
-    {
-        $this->media = $media;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getMetric()
     {
-        if (is_object($this->metric)) {
-            $this->metric->setValue($this);
-        }
-
         return $this->metric;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setMetric(MetricInterface $metric)
-    {
-        $metric->setValue($this);
-        $this->metric = $metric;
-
-        return $this;
     }
 
     /**
@@ -580,14 +319,7 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function getPrices()
     {
-        $prices = [];
-        foreach ($this->prices as $price) {
-            $prices[$price->getCurrency()] = $price;
-        }
-
-        ksort($prices);
-
-        return new ArrayCollection($prices);
+        return $this->prices;
     }
 
     /**
@@ -605,51 +337,248 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Set attribute
+     *
+     * @param AttributeInterface $attribute
+     *
+     * @throws \LogicException
+     *
+     * @return ProductValueInterface
      */
-    public function setPrices($prices)
+    protected function setAttribute(AttributeInterface $attribute = null)
     {
-        foreach ($prices as $price) {
-            $this->addPrice($price);
+        if (is_object($this->attribute) && ($attribute != $this->attribute)) {
+            throw new \LogicException(
+                sprintf('An attribute (%s) has already been set for this value', $this->attribute->getCode())
+            );
+        }
+        $this->attribute = $attribute;
+
+        return $this;
+    }
+
+    /**
+     * Set used scope code
+     *
+     * @param string $scope
+     */
+    protected function setScope($scope)
+    {
+        if ($scope && $this->getAttribute() && $this->getAttribute()->isScopable() === false) {
+            $attributeCode = $this->getAttribute()->getCode();
+            throw new \LogicException(
+                "The product value cannot be scoped, see attribute '".$attributeCode."' configuration"
+            );
+        }
+
+        $this->scope = $scope;
+    }
+
+    /**
+     * Set used locale code
+     *
+     * @param string $locale
+     */
+    protected function setLocale($locale)
+    {
+        if ($locale && $this->getAttribute() && $this->getAttribute()->isLocalizable() === false) {
+            $attributeCode = $this->getAttribute()->getCode();
+            throw new \LogicException(
+                "The product value cannot be localized, see attribute '".$attributeCode."' configuration"
+            );
+        }
+
+        $this->locale = $locale;
+    }
+
+    /**
+     * Set data
+     *
+     * @param mixed $data
+     *
+     * @return ProductValueInterface
+     */
+    protected function setData($data)
+    {
+        $setter = $this->attribute->getBackendType();
+        if ($this->attribute->isBackendTypeReferenceData()) {
+            $setter = $this->attribute->getReferenceDataName();
+        }
+
+        $setter = 'set'.ucfirst($setter);
+
+        return $this->$setter($data);
+    }
+
+    /**
+     * Set varchar data
+     *
+     * @param string $varchar
+     *
+     * @return ProductValueInterface
+     */
+    protected function setVarchar($varchar)
+    {
+        $this->varchar = $varchar;
+
+        return $this;
+    }
+
+    /**
+     * Set integer data
+     *
+     * @param int $integer
+     *
+     * @return ProductValueInterface
+     */
+    protected function setInteger($integer)
+    {
+        $this->integer = $integer;
+
+        return $this;
+    }
+
+    /**
+     * Set decimal data
+     *
+     * @param float $decimal
+     *
+     * @return ProductValueInterface
+     */
+    protected function setDecimal($decimal)
+    {
+        $this->decimal = $decimal;
+
+        return $this;
+    }
+
+    /**
+     * Set boolean data
+     *
+     * @param bool $boolean
+     *
+     * @return ProductValueInterface
+     */
+    protected function setBoolean($boolean)
+    {
+        $this->boolean = $boolean;
+
+        return $this;
+    }
+
+    /**
+     * Set text data
+     *
+     * @param string $text
+     *
+     * @return ProductValueInterface
+     */
+    protected function setText($text)
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    /**
+     * Set date data
+     *
+     * @param \Datetime $date
+     *
+     * @return ProductValueInterface
+     */
+    protected function setDate($date)
+    {
+        if ($this->date != $date) {
+            $this->date = $date;
         }
 
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * Set datetime data
+     *
+     * @param \Datetime $datetime
+     *
+     * @return ProductValueInterface
      */
-    public function addPrice(ProductPriceInterface $price)
+    protected function setDatetime($datetime)
     {
-        if (null !== $actualPrice = $this->getPrice($price->getCurrency())) {
-            $this->removePrice($actualPrice);
+        if ($this->datetime != $datetime) {
+            $this->datetime = $datetime;
         }
-
-        $this->prices->add($price);
-        $price->setValue($this);
 
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * Set option, used for simple select to set single option
+     *
+     * @param AttributeOptionInterface $option
+     *
+     * @return ProductValueInterface
      */
-    public function removePrice(ProductPriceInterface $price)
+    protected function setOption(AttributeOptionInterface $option = null)
     {
-        $this->prices->removeElement($price);
+        $this->option = $option;
 
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * Set options, used for multi select to set many options
+     *
+     * @param Collection $options An array collection of AttributeOptionInterface
+     *
+     * @return ProductValueInterface
      */
-    public function isRemovable()
+    protected function setOptions(Collection $options)
     {
-        if (null === $this->entity) {
-            return true;
-        }
+        $this->options = $options;
 
-        return $this->entity->isAttributeRemovable($this->attribute);
+        return $this;
+    }
+
+    /**
+     * Set media
+     *
+     * @param FileInfoInterface $media
+     *
+     * @return ProductValueInterface
+     */
+    protected function setMedia(FileInfoInterface $media = null)
+    {
+        $this->media = $media;
+
+        return $this;
+    }
+
+    /**
+     * Set metric
+     *
+     * @param MetricInterface $metric
+     *
+     * @return ProductValueInterface
+     */
+    protected function setMetric(MetricInterface $metric)
+    {
+        $this->metric = $metric;
+
+        return $this;
+    }
+
+    /**
+     * Set prices, used for multi select to set many prices
+     *
+     * @param PriceCollectionInterface $prices
+     *
+     * @return ProductValueInterface
+     */
+    protected function setPrices(PriceCollectionInterface $prices)
+    {
+        $this->prices = $prices;
+
+        return $this;
     }
 }

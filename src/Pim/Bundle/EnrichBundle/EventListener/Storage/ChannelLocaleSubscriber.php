@@ -96,7 +96,8 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
         foreach ($oldLocales as $locale) {
             $locale->removeChannel($channel);
             $updatedLocales[] = $locale;
-            $this->completeness->scheduleForChannelAndLocale($channel, $locale);
+            // TODO TIP-694: disabling completeness calculation
+            // $this->completeness->scheduleForChannelAndLocale($channel, $locale);
         }
 
         foreach ($newLocales as $locale) {

@@ -23,7 +23,7 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
      *
      * Note: completeness is not calculated for ecommerce-fr_FR because locale is not activated for this channel
      */
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 

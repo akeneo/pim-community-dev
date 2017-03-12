@@ -12,13 +12,16 @@ class CustomFormExtension extends AbstractExtension
      */
     protected $initialTypes = [];
 
+    /**
+     * @param array $initialTypes
+     */
     public function __construct(array $initialTypes)
     {
         $this->initialTypes = $initialTypes;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function loadTypes()
     {

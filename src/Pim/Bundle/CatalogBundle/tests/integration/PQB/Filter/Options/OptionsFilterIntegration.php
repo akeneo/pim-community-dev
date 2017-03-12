@@ -12,7 +12,10 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  */
 class OptionsFilterIntegration extends AbstractFilterTestCase
 {
-    public function setUp()
+    /**
+     * @{@inheritdoc}
+     */
+    protected function setUp()
     {
         parent::setUp();
 

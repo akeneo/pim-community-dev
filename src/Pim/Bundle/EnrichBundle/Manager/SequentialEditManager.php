@@ -122,7 +122,7 @@ class SequentialEditManager
         $objectSet = $sequentialEdit->getObjectSet();
         $productCount = $sequentialEdit->countObjectSet();
         while (++$currentKey < $productCount && null === $next) {
-            $next = $this->productRepository->findOneByWithValues($objectSet[$currentKey]);
+            $next = $this->productRepository->find($objectSet[$currentKey]);
         }
 
         return $next;
@@ -141,7 +141,7 @@ class SequentialEditManager
         $previous = null;
         $objectSet = $sequentialEdit->getObjectSet();
         while ($currentKey-- > 0 && null === $previous) {
-            $previous = $this->productRepository->findOneByWithValues($objectSet[$currentKey]);
+            $previous = $this->productRepository->find($objectSet[$currentKey]);
         }
 
         return $previous;

@@ -24,7 +24,10 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractCompletenessIntegration
 {
-    public function setUp()
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
     {
         parent::setUp();
 
@@ -271,7 +274,8 @@ class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractComple
         );
         $this->assertCompleteOnChannel($productMissingPrice, 'ecommerce');
         $this->assertNotCompleteOnChannel($productMissingPrice, 'print');
-        $this->assertNotCompleteOnChannel($productMissingPrice, 'tablet');    }
+        $this->assertNotCompleteOnChannel($productMissingPrice, 'tablet');
+    }
 
     /**
      * @param string $channelCode

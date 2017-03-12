@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Component\Catalog\Manager;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
@@ -15,6 +14,7 @@ use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
@@ -75,7 +75,7 @@ class CompletenessManagerSpec extends ObjectBehavior
         $name->isLocaleSpecific()->willReturn(true);
         $name->hasLocaleSpecific($en)->willReturn(true);
 
-        $product->getValues()->willReturn(new ArrayCollection());
+        $product->getValues()->willReturn(new ProductValueCollection());
         $productValueCompleteChecker->supportsValue($nameValue);
         $productValueCompleteChecker->isComplete($nameValue, $mobile, $en);
 
@@ -134,7 +134,7 @@ class CompletenessManagerSpec extends ObjectBehavior
         $name->isLocaleSpecific()->willReturn(true);
         $name->hasLocaleSpecific($en)->willReturn(false);
 
-        $product->getValues()->willReturn(new ArrayCollection());
+        $product->getValues()->willReturn(new ProductValueCollection());
         $productValueCompleteChecker->supportsValue($nameValue);
         $productValueCompleteChecker->isComplete($nameValue, $mobile, $en);
 

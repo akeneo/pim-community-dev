@@ -6,13 +6,12 @@ use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Component\FileStorage\FilesystemProvider;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
-use Prophecy\Promise\ReturnPromise;
 
 class BulkMediaFetcherSpec extends ObjectBehavior
 {
@@ -40,7 +39,7 @@ class BulkMediaFetcherSpec extends ObjectBehavior
         $mediaFetcher,
         $filesystemProvider,
         FileInfoInterface $fileInfo,
-        ArrayCollection $productValuesCollection,
+        ProductValueCollectionInterface $productValuesCollection,
         \ArrayIterator $valuesIterator,
         ProductValueInterface $productValue,
         AttributeInterface $attribute,
@@ -59,14 +58,9 @@ class BulkMediaFetcherSpec extends ObjectBehavior
 
         $productValuesCollection->getIterator()->willReturn($valuesIterator);
         $valuesIterator->rewind()->shouldBeCalled();
-        $valuesCount = 1;
-        $valuesIterator->valid()->will(
-            function () use (&$valuesCount) {
-                return $valuesCount-- > 0;
-            }
-        );
+        $valuesIterator->valid()->willReturn(true, false);
+        $valuesIterator->current()->willReturn($productValue);
         $valuesIterator->next()->shouldBeCalled();
-        $valuesIterator->current()->will(new ReturnPromise([$productValue]));
 
         $filesystemProvider->getFilesystem('storageAlias')->willReturn($filesystem);
 
@@ -85,7 +79,7 @@ class BulkMediaFetcherSpec extends ObjectBehavior
         $fileExporterPath,
         FileInfoInterface $fileInfo,
         FileInfoInterface $fileInfo2,
-        ArrayCollection $productValuesCollection,
+        ProductValueCollectionInterface $productValuesCollection,
         \ArrayIterator $valuesIterator,
         ProductValueInterface $productValue,
         ProductValueInterface $productValue2,
@@ -115,14 +109,9 @@ class BulkMediaFetcherSpec extends ObjectBehavior
 
         $productValuesCollection->getIterator()->willReturn($valuesIterator);
         $valuesIterator->rewind()->shouldBeCalled();
-        $valuesCount = 2;
-        $valuesIterator->valid()->will(
-            function () use (&$valuesCount) {
-                return $valuesCount-- > 0;
-            }
-        );
+        $valuesIterator->valid()->willReturn(true, true, false);
+        $valuesIterator->current()->willReturn($productValue, $productValue2);
         $valuesIterator->next()->shouldBeCalled();
-        $valuesIterator->current()->will(new ReturnPromise([$productValue, $productValue2]));
 
         $filesystemProvider->getFilesystem('storageAlias')->willReturn($filesystem);
 

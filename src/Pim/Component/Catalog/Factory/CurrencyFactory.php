@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Factory;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 
 /**
- * Class CurrencyFactory
+ * Creates and configures a currency instance.
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)

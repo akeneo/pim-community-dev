@@ -6,7 +6,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
@@ -62,100 +61,21 @@ interface ProductBuilderInterface
     public function addAttributeToProduct(ProductInterface $product, AttributeInterface $attribute);
 
     /**
-     * Add a product price with currency and data to the value. If the price
-     * already exists, its data is updated and it is returned.
-     *
-     * @param ProductValueInterface $value
-     * @param string                $currency
-     * @param float|int|null        $amount
-     *
-     * @return null|ProductPriceInterface
-     *
-     * @deprecated will be removed in 1.8
-     */
-    public function addPriceForCurrency(ProductValueInterface $value, $currency, $amount = null);
-
-    /**
-     * Add a product price with currency and data to the value. If the price already exists, its data is
-     * updated and it is returned.
-     *
-     * @param ProductValueInterface $value
-     * @param string                $currency
-     * @param float|int             $amount
-     *
-     * @return null|ProductPriceInterface
-     *
-     * @deprecated Will be removed in 1.8.
-     */
-    public function addPriceForCurrencyWithData(ProductValueInterface $value, $currency, $amount);
-
-    /**
-     * Remove extra prices that are not in the currencies passed in arguments
-     *
-     * @param ProductValueInterface $value
-     * @param array                 $currencies
-     *
-     * @deprecated will be removed in 1.8.
-     */
-    public function removePricesNotInCurrency(ProductValueInterface $value, array $currencies);
-
-    /**
-     * Add missing prices to a product value
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return ProductValueInterface
-     *
-     * @deprecated will be removed in 1.8.
-     */
-    public function addMissingPrices(ProductValueInterface $value);
-
-    /**
-     * Add a missing value to the product
-     *
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     * @param string             $locale
-     * @param string             $scope
-     *
-     * @return ProductValueInterface
-     *
-     * @deprecated will be removed in 1.8. Please use "addOrReplaceProductValue" instead.
-     */
-    public function addProductValue(
-        ProductInterface $product,
-        AttributeInterface $attribute,
-        $locale = null,
-        $scope = null
-    );
-
-    /**
      * Add or replace a product value.
      *
      * @param ProductInterface   $product
      * @param AttributeInterface $attribute
      * @param string             $locale
      * @param string             $scope
+     * @param mixed              $data
      *
      * @return ProductValueInterface
      */
     public function addOrReplaceProductValue(
         ProductInterface $product,
         AttributeInterface $attribute,
-        $locale = null,
-        $scope = null
+        $locale,
+        $scope,
+        $data
     );
-
-    /**
-     * Create a productValue
-     *
-     * @param AttributeInterface $attribute
-     * @param string             $locale
-     * @param string             $scope
-     *
-     * @return ProductValueInterface
-     *
-     * @deprecated will be removed in 1.8. Please use ProductValueFactory::create instead.
-     */
-    public function createProductValue(AttributeInterface $attribute, $locale = null, $scope = null);
 }

@@ -2,11 +2,10 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Standard\Product;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer;
 use PhpSpec\ObjectBehavior;
@@ -45,12 +44,9 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $filter,
         $serializer,
         ProductInterface $product,
-        AttributeInterface $attribute,
-        ProductValueInterface $value,
         FamilyInterface $family,
-        ArrayCollection $values,
-        \ArrayIterator $iterator,
-        ProductValueInterface $identifier
+        ProductValueCollection $values,
+        \ArrayIterator $iterator
     ) {
         $values->getIterator()->willReturn($iterator);
 
@@ -60,34 +56,18 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getVariantGroup()->willReturn(null);
         $product->getCategoryCodes()->willReturn([]);
         $product->isEnabled()->willReturn(true);
-
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('name');
-
-        $product->getIdentifier()->willReturn($identifier);
-        $identifier->getData()->willReturn('my_code');
-
+        $product->getIdentifier()->willReturn('my_code');
         $product->getValues()->willReturn($values);
 
         $filter->filterCollection($values, 'pim.transform.product_value.structured', Argument::type('array'))
             ->shouldBeCalled()
             ->willReturn($values);
 
-        $iterator->rewind()->willReturn(null);
-        $valueCount = 1;
-        $iterator->valid()->will(
-            function () use (&$valueCount) {
-                return $valueCount-- > 0;
-            }
-        );
-        $iterator->current()->willReturn($value);
-        $iterator->next()->willReturn(null);
-
         $context = ['filter_types' => ['pim.transform.product_value.structured']];
 
         $serializer
-            ->normalize($value, 'standard', $context)
-            ->willReturn(['locale' => null, 'scope' => null, 'value' => 'foo']);
+            ->normalize($values, 'standard', $context)
+            ->willReturn(['name' => [['locale' => null, 'scope' => null, 'value' => 'foo']]]);
 
         $created = new \DateTime('2010-06-23');
         $product->getCreated()->willReturn($created);

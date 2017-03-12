@@ -81,8 +81,7 @@ services:
         class: '%pim_catalog.denormalizer.standard.prices.class%'
         arguments:
             - ['pim_catalog_price_collection']
-            - '@pim_catalog.localization.localizer.metric'
-            - '%pim_catalog.entity.product_price.class%'
+            - '@pim_catalog.factory.price'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -91,7 +90,6 @@ services:
         arguments:
             - ['pim_catalog_metric']
             - '@pim_catalog.factory.metric'
-            - '@pim_catalog.localization.localizer.metric'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

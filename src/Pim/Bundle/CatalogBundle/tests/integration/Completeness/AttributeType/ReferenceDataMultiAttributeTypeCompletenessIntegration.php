@@ -53,23 +53,22 @@ class ReferenceDataMultiAttributeTypeCompletenessIntegration extends AbstractCom
             AttributeTypes::REFERENCE_DATA_MULTI_SELECT
         );
 
-//        TODO: This cannot work now, but will on TIP-613. Test is added now so it will not forgotten.
-//        $productDataNull = $this->createProductWithStandardValues(
-//            $family,
-//            'product_data_null',
-//            [
-//                'values' => [
-//                    'a_multi_select_reference_data' => [
-//                        [
-//                            'locale' => null,
-//                            'scope'  => null,
-//                            'data'   => null,
-//                        ],
-//                    ],
-//                ],
-//            ]
-//        );
-//        $this->assertNotComplete($productDataNull);
+        $productDataNull = $this->createProductWithStandardValues(
+            $family,
+            'product_data_null',
+            [
+                'values' => [
+                    'a_multi_select_reference_data' => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => null,
+                        ],
+                    ],
+                ],
+            ]
+        );
+        $this->assertNotComplete($productDataNull);
 
         $productDataEmptyArray = $this->createProductWithStandardValues(
             $family,

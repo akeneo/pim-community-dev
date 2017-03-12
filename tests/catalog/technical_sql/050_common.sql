@@ -144,6 +144,13 @@ DELETE FROM `pim_catalog_channel`;
 INSERT INTO `pim_catalog_channel` VALUES (209,895,'ecommerce','a:0:{}'),(210,895,'tablet','a:0:{}');
 /*!40000 ALTER TABLE `pim_catalog_channel` ENABLE KEYS */;
 
+--
+-- Dumping data for table `pim_catalog_currency`
+--
+
+/*!40000 ALTER TABLE `pim_catalog_channel_currency` DISABLE KEYS */;
+INSERT INTO `pim_catalog_currency` VALUES (10101,'USD',1),(10102,'EUR',1);
+/*!40000 ALTER TABLE `pim_catalog_channel_currency` ENABLE KEYS */;
 
 --
 -- Dumping data for table `pim_catalog_channel_currency`

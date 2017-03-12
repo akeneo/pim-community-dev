@@ -16,9 +16,6 @@ class FieldFilterHelper
     /** @var string */
     const CODE_PROPERTY = 'code';
 
-    /** @var string */
-    const ID_PROPERTY = 'id';
-
     /**
      * Get field code part
      *

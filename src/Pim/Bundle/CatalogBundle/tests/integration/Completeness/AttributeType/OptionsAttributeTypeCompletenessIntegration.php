@@ -74,23 +74,22 @@ class OptionsAttributeTypeCompletenessIntegration extends AbstractCompletenessPe
         );
         $this->assertNotComplete($productDataEmptyArray);
 
-//        TODO: This cannot work now, but will on TIP-613. Test is added now so it will not forgotten.
-//        $productDataNull = $this->createProductWithStandardValues(
-//            $family,
-//            'product_data_null',
-//            [
-//                'values' => [
-//                    'a_multi_select' => [
-//                        [
-//                            'locale' => null,
-//                            'scope'  => null,
-//                            'data'   => null,
-//                        ],
-//                    ],
-//                ],
-//            ]
-//        );
-//        $this->assertNotComplete($productDataNull);
+        $productDataNull = $this->createProductWithStandardValues(
+            $family,
+            'product_data_null',
+            [
+                'values' => [
+                    'a_multi_select' => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => null,
+                        ],
+                    ],
+                ],
+            ]
+        );
+        $this->assertNotComplete($productDataNull);
     }
 
     /**

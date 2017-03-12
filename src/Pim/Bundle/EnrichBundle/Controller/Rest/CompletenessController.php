@@ -84,7 +84,7 @@ class CompletenessController
      */
     public function getAction($id)
     {
-        $product = $this->productRepository->getFullProduct($id);
+        $product = $this->productRepository->find($id);
         if (null === $product->getFamily()) {
             return new JsonResponse();
         }

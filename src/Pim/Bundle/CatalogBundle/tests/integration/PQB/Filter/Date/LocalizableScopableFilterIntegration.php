@@ -13,7 +13,10 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  */
 class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
 {
-    public function setUp()
+    /**
+     * @{@inheritdoc}
+     */
+    protected function setUp()
     {
         parent::setUp();
 
