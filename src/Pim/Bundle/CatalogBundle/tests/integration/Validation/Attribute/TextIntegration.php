@@ -114,7 +114,7 @@ class TextIntegration extends AbstractAttributeTestCase
 
     public function testTextShouldNotHaveADateMax()
     {
-        $this->assertDoesNotHaveADateMin('pim_catalog_text');
+        $this->assertDoesNotHaveADateMax('pim_catalog_text');
     }
 
     public function testTextShouldNotHaveAMaxFileSize()
