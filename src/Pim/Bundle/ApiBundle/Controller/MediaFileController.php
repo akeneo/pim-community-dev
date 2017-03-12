@@ -16,7 +16,8 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Api\Pagination\HalPaginator;
-use Pim\Component\Api\Pagination\ParameterValidator;
+use Pim\Component\Api\Pagination\PaginatorInterface;
+use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Pim\Component\Api\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\FileStorage;
@@ -47,10 +48,10 @@ class MediaFileController
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var ParameterValidator */
+    /** @var ParameterValidatorInterface */
     protected $parameterValidator;
 
-    /** @var HalPaginator */
+    /** @var PaginatorInterface */
     protected $paginator;
 
     /** @var FilesystemProvider */
@@ -89,8 +90,8 @@ class MediaFileController
     /**
      * @param ApiResourceRepositoryInterface $mediaRepository
      * @param NormalizerInterface            $normalizer
-     * @param ParameterValidator             $parameterValidator
-     * @param HalPaginator                   $paginator
+     * @param ParameterValidatorInterface    $parameterValidator
+     * @param PaginatorInterface             $paginator
      * @param FilesystemProvider             $filesystemProvider
      * @param FileFetcherInterface           $fileFetcher
      * @param ProductRepositoryInterface     $productRepository
@@ -106,8 +107,8 @@ class MediaFileController
     public function __construct(
         ApiResourceRepositoryInterface $mediaRepository,
         NormalizerInterface $normalizer,
-        ParameterValidator $parameterValidator,
-        HalPaginator $paginator,
+        ParameterValidatorInterface $parameterValidator,
+        PaginatorInterface $paginator,
         FilesystemProvider $filesystemProvider,
         FileFetcherInterface $fileFetcher,
         ProductRepositoryInterface $productRepository,
@@ -166,25 +167,27 @@ class MediaFileController
      */
     public function listAction(Request $request)
     {
-        $queryParameters = [
-            'page'  => $request->query->get('page', 1),
-            'limit' => $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default'])
-        ];
-
         try {
-            $this->parameterValidator->validate($queryParameters);
+            $this->parameterValidator->validate($request->query->all());
         } catch (PaginationParametersException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
+
+        $defaultParameters = [
+            'page'  => 1,
+            'limit' => $this->apiConfiguration['pagination']['limit_by_default']
+        ];
+
+        $queryParameters = array_merge($defaultParameters, $request->query->all());
 
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
         $criteria = ['storage' => FileStorage::CATALOG_STORAGE_ALIAS];
         $medias = $this->mediaRepository->searchAfterOffset($criteria, [], $queryParameters['limit'], $offset);
 
         $parameters = [
-            'query_parameters' => array_merge($request->query->all(), $queryParameters),
+            'query_parameters' => $queryParameters,
             'list_route_name'  => 'pim_api_media_file_list',
-            'item_route_name'  => 'pim_api_media_file_get'
+            'item_route_name'  => 'pim_api_media_file_get',
         ];
 
         $paginatedMedias = $this->paginator->paginate(

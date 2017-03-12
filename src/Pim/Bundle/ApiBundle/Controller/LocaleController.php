@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ApiBundle\Controller;
 
 use Pim\Component\Api\Exception\PaginationParametersException;
-use Pim\Component\Api\Pagination\OffsetHalPaginator;
+use Pim\Component\Api\Pagination\PaginatorInterface;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -27,7 +27,7 @@ class LocaleController
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var OffsetHalPaginator */
+    /** @var PaginatorInterface */
     protected $paginator;
 
     /** @var ParameterValidatorInterface */
@@ -42,14 +42,14 @@ class LocaleController
     /**
      * @param ApiResourceRepositoryInterface $repository
      * @param NormalizerInterface            $normalizer
-     * @param OffsetHalPaginator             $paginator
+     * @param PaginatorInterface             $paginator
      * @param ParameterValidatorInterface    $parameterValidator
      * @param array                          $apiConfiguration
      */
     public function __construct(
         ApiResourceRepositoryInterface $repository,
         NormalizerInterface $normalizer,
-        OffsetHalPaginator $paginator,
+        PaginatorInterface $paginator,
         ParameterValidatorInterface $parameterValidator,
         array $apiConfiguration
     ) {
@@ -91,16 +91,18 @@ class LocaleController
         $searchCriterias = $this->validateSearchCriterias($request);
         $criterias = $this->prepareSearchCriterias($searchCriterias);
 
-        $queryParameters = [
-            'page'  => $request->query->get('page', 1),
-            'limit' => $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default']),
-        ];
-
         try {
-            $this->parameterValidator->validate($queryParameters);
+            $this->parameterValidator->validate($request->query->all());
         } catch (PaginationParametersException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
+
+        $defaultParameters = [
+            'page'  => 1,
+            'limit' => $this->apiConfiguration['pagination']['limit_by_default']
+        ];
+
+        $queryParameters = array_merge($defaultParameters, $request->query->all());
 
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
         $locales = $this->repository->searchAfterOffset(
@@ -111,7 +113,7 @@ class LocaleController
         );
 
         $parameters = [
-            'query_parameters' => array_merge($request->query->all(), $queryParameters),
+            'query_parameters' => $queryParameters,
             'list_route_name'  => 'pim_api_locale_list',
             'item_route_name'  => 'pim_api_locale_get',
         ];

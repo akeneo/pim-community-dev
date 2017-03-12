@@ -153,9 +153,9 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self": {"href": "http://localhost/api/rest/v1/families?limit=10&page=2"},
-        "first": {"href": "http://localhost/api/rest/v1/families?limit=10&page=1"},
-        "last": {"href": "http://localhost/api/rest/v1/families?limit=10&page=1"}
+        "self": {"href": "http://localhost/api/rest/v1/families?page=2&limit=10"},
+        "first": {"href": "http://localhost/api/rest/v1/families?page=1&limit=10"},
+        "last": {"href": "http://localhost/api/rest/v1/families?page=1&limit=10"}
     },
     "current_page": 2,
     "pages_count": 1,

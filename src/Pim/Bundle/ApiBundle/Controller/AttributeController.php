@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ApiBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
-use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -13,8 +12,8 @@ use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
-use Pim\Component\Api\Pagination\OffsetHalPaginator;
-use Pim\Component\Api\Pagination\ParameterValidator;
+use Pim\Component\Api\Pagination\PaginatorInterface;
+use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -56,17 +55,17 @@ class AttributeController
     /** @var RouterInterface */
     protected $router;
 
-    /** @var array */
-    protected $apiConfiguration;
-
-    /** @var OffsetHalPaginator */
+    /** @var PaginatorInterface */
     protected $paginator;
 
-    /** @var ParameterValidator */
+    /** @var ParameterValidatorInterface */
     protected $parameterValidator;
 
     /** @var StreamResourceResponse */
     protected $partialUpdateStreamResource;
+
+    /** @var array */
+    protected $apiConfiguration;
 
     /**
      * @param AttributeRepositoryInterface $repository
@@ -76,8 +75,8 @@ class AttributeController
      * @param ValidatorInterface           $validator
      * @param SaverInterface               $saver
      * @param RouterInterface              $router
-     * @param OffsetHalPaginator           $paginator
-     * @param ParameterValidator           $parameterValidator
+     * @param PaginatorInterface           $paginator
+     * @param ParameterValidatorInterface  $parameterValidator
      * @param StreamResourceResponse       $partialUpdateStreamResource
      * @param array                        $apiConfiguration
      */
@@ -89,8 +88,8 @@ class AttributeController
         ValidatorInterface $validator,
         SaverInterface $saver,
         RouterInterface $router,
-        OffsetHalPaginator $paginator,
-        ParameterValidator $parameterValidator,
+        PaginatorInterface $paginator,
+        ParameterValidatorInterface $parameterValidator,
         StreamResourceResponse $partialUpdateStreamResource,
         array $apiConfiguration
     ) {
@@ -138,22 +137,24 @@ class AttributeController
      */
     public function listAction(Request $request)
     {
-        $queryParameters = [
-            'page'  => $request->query->get('page', 1),
-            'limit' => $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default'])
-        ];
-
         try {
-            $this->parameterValidator->validate($queryParameters);
+            $this->parameterValidator->validate($request->query->all());
         } catch (PaginationParametersException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
 
+        $defaultParameters = [
+            'page'  => 1,
+            'limit' => $this->apiConfiguration['pagination']['limit_by_default']
+        ];
+
+        $queryParameters = array_merge($defaultParameters, $request->query->all());
+
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
-        $attributes = $this->repository->searchAfterOffset([], [], $queryParameters['limit'], $offset);
+        $attributes = $this->repository->searchAfterOffset([], ['code' => 'ASC'], $queryParameters['limit'], $offset);
 
         $parameters = [
-            'query_parameters'    => array_merge($request->query->all(), $queryParameters),
+            'query_parameters'    => $queryParameters,
             'list_route_name'     => 'pim_api_attribute_list',
             'item_route_name'     => 'pim_api_attribute_get',
         ];

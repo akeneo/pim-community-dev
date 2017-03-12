@@ -11,7 +11,7 @@ use Pim\Bundle\ApiBundle\Documentation;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
-use Pim\Component\Api\Pagination\OffsetHalPaginator;
+use Pim\Component\Api\Pagination\PaginatorInterface;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Pim\Component\Api\Repository\AttributeRepositoryInterface;
@@ -59,7 +59,7 @@ class AttributeOptionController
     /** @var RouterInterface */
     protected $router;
 
-    /** @var OffsetHalPaginator */
+    /** @var PaginatorInterface */
     protected $paginator;
 
     /** @var ParameterValidatorInterface */
@@ -80,7 +80,7 @@ class AttributeOptionController
      * @param ValidatorInterface             $validator
      * @param SaverInterface                 $saver
      * @param RouterInterface                $router
-     * @param OffsetHalPaginator             $paginator
+     * @param PaginatorInterface             $paginator
      * @param ParameterValidatorInterface    $parameterValidator
      * @param array                          $apiConfiguration
      * @param array                          $supportedAttributeTypes
@@ -94,7 +94,7 @@ class AttributeOptionController
         ValidatorInterface $validator,
         SaverInterface $saver,
         RouterInterface $router,
-        OffsetHalPaginator $paginator,
+        PaginatorInterface $paginator,
         ParameterValidatorInterface $parameterValidator,
         array $apiConfiguration,
         array $supportedAttributeTypes
@@ -160,24 +160,31 @@ class AttributeOptionController
         $attribute = $this->getAttribute($attributeCode);
         $this->isAttributeSupportingOptions($attribute);
 
-        $queryParameters = [
-            'page'  => $request->query->get('page', 1),
-            'limit' => $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default'])
-        ];
-
         try {
-            $this->parameterValidator->validate($queryParameters);
+            $this->parameterValidator->validate($request->query->all());
         } catch (PaginationParametersException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
 
+        $defaultParameters = [
+            'page'  => 1,
+            'limit' => $this->apiConfiguration['pagination']['limit_by_default'],
+        ];
+
+        $queryParameters = array_merge($defaultParameters, $request->query->all());
+
         $criteria['attribute'] = $attribute->getId();
 
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
-        $attributeOptions = $this->attributeOptionsRepository->searchAfterOffset($criteria, [], $queryParameters['limit'], $offset);
+        $attributeOptions = $this->attributeOptionsRepository->searchAfterOffset(
+            $criteria,
+            ['code' => 'ASC'],
+            $queryParameters['limit'],
+            $offset
+        );
 
         $parameters = [
-            'query_parameters'    => array_merge($request->query->all(), $queryParameters),
+            'query_parameters'    => $queryParameters,
             'uri_parameters'      => ['attributeCode' => $attributeCode],
             'list_route_name'     => 'pim_api_attribute_option_list',
             'item_route_name'     => 'pim_api_attribute_option_get',

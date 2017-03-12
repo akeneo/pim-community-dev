@@ -116,13 +116,13 @@ JSON;
 {
     "_links": {
         "self": {
-            "href": "http://localhost/api/rest/v1/categories?limit=10&page=2"
+            "href": "http://localhost/api/rest/v1/categories?page=2&limit=10"
         },
         "last": {
-            "href": "http://localhost/api/rest/v1/categories?limit=10&page=1"
+            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10"
         },
         "first": {
-            "href": "http://localhost/api/rest/v1/categories?limit=10&page=1"
+            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10"
         }
     },
     "current_page": 2,
