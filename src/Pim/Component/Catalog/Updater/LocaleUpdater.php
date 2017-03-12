@@ -5,7 +5,10 @@ namespace Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Event\LocaleEvents;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Updates a locale
@@ -16,6 +19,17 @@ use Pim\Component\Catalog\Model\LocaleInterface;
  */
 class LocaleUpdater implements ObjectUpdaterInterface
 {
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
     /**
      * {@inheritdoc}
      *
@@ -36,6 +50,8 @@ class LocaleUpdater implements ObjectUpdaterInterface
         foreach ($data as $field => $value) {
             $this->setData($locale, $field, $value);
         }
+
+        $this->eventDispatcher->dispatch(LocaleEvents::POST_UPDATE, new GenericEvent($locale));
 
         return $this;
     }

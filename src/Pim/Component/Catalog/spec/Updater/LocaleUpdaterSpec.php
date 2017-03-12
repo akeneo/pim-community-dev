@@ -5,9 +5,16 @@ namespace spec\Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class LocaleUpdaterSpec extends ObjectBehavior
 {
+    function let(
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->beConstructedWith($eventDispatcher);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType('Pim\Component\Catalog\Updater\LocaleUpdater');

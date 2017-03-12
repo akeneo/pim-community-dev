@@ -11,12 +11,13 @@ use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AttributeOptionUpdaterSpec extends ObjectBehavior
 {
-    function let(AttributeRepositoryInterface $attributeRepository)
+    function let(AttributeRepositoryInterface $attributeRepository, EventDispatcherInterface $eventDispatcher)
     {
-        $this->beConstructedWith($attributeRepository);
+        $this->beConstructedWith($attributeRepository, $eventDispatcher);
     }
 
     function it_is_initializable()

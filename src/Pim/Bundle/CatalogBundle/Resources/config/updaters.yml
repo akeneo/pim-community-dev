@@ -109,6 +109,7 @@ services:
         class: '%pim_catalog.updater.attribute_option.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
+            - '@event_dispatcher'
 
     pim_catalog.updater.attribute:
         class: '%pim_catalog.updater.attribute.class%'
@@ -116,6 +117,7 @@ services:
             - '@pim_catalog.repository.attribute_group'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.registry.attribute_type'
+            - '@event_dispatcher'
 
     pim_catalog.updater.category:
         class: '%akeneo_classification.updater.category.class%'
@@ -138,6 +140,7 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.factory.attribute_requirement'
             - '@pim_catalog.repository.attribute_requirement'
+            - '@event_dispatcher'
 
     pim_catalog.updater.channel:
         class: '%pim_catalog.updater.channel.class%'
@@ -147,15 +150,19 @@ services:
             - '@pim_catalog.repository.currency'
             - '@pim_catalog.repository.attribute'
             - '@akeneo_measure.manager'
+            - '@event_dispatcher'
 
     pim_catalog.updater.locale:
         class: '%pim_catalog.updater.locale.class%'
+        arguments:
+            - '@event_dispatcher'
 
     pim_catalog.updater.attribute_group:
         class: '%pim_catalog.updater.attribute_group.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.attribute_group'
+            - '@event_dispatcher'
 
     pim_catalog.updater.group_type:
         class: '%pim_catalog.updater.group_type.class%'

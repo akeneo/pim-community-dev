@@ -8,9 +8,12 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Event\AttributeOptionEvents;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Updates and validates an attribute option
@@ -24,12 +27,19 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /**
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param EventDispatcherInterface     $eventDispatcher
      */
-    public function __construct(AttributeRepositoryInterface $attributeRepository)
-    {
+    public function __construct(
+        AttributeRepositoryInterface $attributeRepository,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->attributeRepository = $attributeRepository;
+        $this->eventDispatcher     = $eventDispatcher;
     }
 
     /**
@@ -60,6 +70,8 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
             $this->validateDataType($field, $value);
             $this->setData($attributeOption, $field, $value);
         }
+
+        $this->eventDispatcher->dispatch(AttributeOptionEvents::POST_UPDATE, new GenericEvent($attributeOption));
 
         return $this;
     }

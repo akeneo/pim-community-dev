@@ -13,6 +13,7 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ChannelTranslationInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ChannelUpdaterSpec extends ObjectBehavior
 {
@@ -21,14 +22,16 @@ class ChannelUpdaterSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $currencyRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        MeasureManager $measureManager
+        MeasureManager $measureManager,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->beConstructedWith(
             $categoryRepository,
             $localeRepository,
             $currencyRepository,
             $attributeRepository,
-            $measureManager
+            $measureManager,
+            $eventDispatcher
         );
     }
 
