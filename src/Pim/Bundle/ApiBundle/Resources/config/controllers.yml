@@ -23,6 +23,7 @@ services:
             - '@router'
             - '@pim_api.pagination.paginator'
             - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.stream.category_partial_update_stream'
             - '%pim_api.configuration%'
 
     pim_api.controller.family:
