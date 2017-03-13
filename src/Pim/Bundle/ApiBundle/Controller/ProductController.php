@@ -20,6 +20,7 @@ use Pim\Component\Api\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
+use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Exception\UnsupportedFilterException;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -192,6 +193,8 @@ class ProductController
         } catch (UnsupportedFilterException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         } catch (InvalidOperatorException $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        } catch (ObjectNotFoundException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
 
@@ -509,7 +512,11 @@ class ProductController
 
                 $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $request->query->get('search_locale');
                 $context['scope'] = isset($filter['scope']) ? $filter['scope'] : $request->query->get('search_scope');
-                $context['locales'] = isset($filter['locales']) ? $filter['locales'] : null;
+
+                if (isset($filter['locales'])) {
+                    $context['locales'] = $filter['locales'];
+                }
+
                 $value = isset($filter['value']) ? $filter['value'] : null;
 
                 $pqb->addFilter($propertyCode, $filter['operator'], $value, $context);

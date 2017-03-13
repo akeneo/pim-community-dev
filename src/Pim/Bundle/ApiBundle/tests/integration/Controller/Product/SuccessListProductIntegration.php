@@ -1402,6 +1402,31 @@ JSON;
         $this->assertResponse($client->getResponse(), $expected);
     }
 
+    public function testListProductsWithCompletenessPQBFilters()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $search = '{"completeness":[{"operator":"GREATER THAN ON ALL LOCALES","value":50,"locales":["fr_FR"],"scope":"ecommerce"}],"categories":[{"operator":"IN", "value":["categoryB"]}], "a_yes_no":[{"operator":"=","value":true}]}';
+        $client->request('GET', 'api/rest/v1/products?search=' . $search);
+        $searchEncoded = urlencode($search);
+        $expected = <<<JSON
+{
+    "_links": {
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?search=${searchEncoded}&page=1&limit=10"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?search=${searchEncoded}&page=1&limit=10"},
+        "last"  : {"href" : "http://localhost/api/rest/v1/products?search=${searchEncoded}&page=1&limit=10"}
+    },
+    "current_page" : 1,
+    "pages_count"  : 1,
+    "items_count"  : 0,
+    "_embedded"    : {
+        "items" : []
+    }
+}
+JSON;
+
+        $this->assertResponse($client->getResponse(), $expected);
+    }
 
     /**
      * @param Response $response
