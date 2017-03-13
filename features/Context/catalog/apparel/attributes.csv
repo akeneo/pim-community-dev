@@ -27,5 +27,5 @@ number_in_stock;Number in stock;Number in stock;Nombre en stock;Anzahl auf Lager
 customs_tax;Customs tax;Customs tax;Taxe de douanes;Zollsteuer;pim_catalog_price_collection;internal;1;0;0;3;1;0;;;;1;1000;1;;;;de_DE
 under_european_law;Under European law;Under European law;Sous la loi Européenne;Nach europäischem Recht;pim_catalog_boolean;general;1;0;0;4;0;0;;;;;;;;;;de_DE,fr_FR
 datasheet;Datasheet;Datasheet;Fiche technique;Datenblatt;pim_catalog_file;internal;0;0;0;4;0;0;;10;txt,pdf,doc,docx,csv,rtf;;;;;;;
-attachment;Attachment;Attachment;Attachements;Befestigung;pim_catalog_file;internal;0;0;0;5;0;0;;10;zip,rar,7z,txt,pdf,doc,docx,csv,rtf;;;;;;;
+attachment;Attachment;Attachment;Attachements;Befestigung;pim_catalog_file;internal;0;0;0;5;0;0;;10;txt,pdf,doc,docx,csv,rtf;;;;;;;
 localizable_image;Localizable image;Localizable image;Image localisée;Lokalisiertes Bild;pim_catalog_image;media;0;0;0;3;1;0;;1;gif,png,jpeg,jpg;;;;;;;

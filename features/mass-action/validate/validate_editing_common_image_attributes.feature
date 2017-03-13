@@ -27,7 +27,7 @@ Feature: Validate editing common image attributes of multiple products
       | code      | label-en_US | type                 | allowed_extensions | date_min   | max_characters | group |
       | available | Available   | pim_catalog_boolean  |                    |            |                | other |
       | date      | Date        | pim_catalog_date     |                    | 2014-01-01 |                | other |
-      | file      | File        | pim_catalog_file     | gif                |            |                | other |
+      | file      | File        | pim_catalog_file     | txt                |            |                | other |
       | info      | Info        | pim_catalog_textarea |                    |            | 25             | other |
     And the following family:
       | code          | attributes                                                                                                  |
