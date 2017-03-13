@@ -213,7 +213,7 @@ abstract class AbstractAttributeTestCase extends TestCase
                 'code'              => 'new_attribute',
                 'type'              => $type,
                 'group'             => 'attributeGroupA',
-                'validation_regexp' => 'email',
+                'validation_regexp' => '/[a-z]+/',
             ]
         );
 
