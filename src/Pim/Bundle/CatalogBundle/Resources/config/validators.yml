@@ -2,6 +2,7 @@ parameters:
     symfony.validator.recursive.class:                                     Symfony\Component\Validator\Validator\RecursiveValidator
 
     pim_catalog.validator.helper.attribute.class:                          Pim\Component\Catalog\Validator\AttributeValidatorHelper
+    pim_catalog.validator.constraint.allowed_extensions.class:             Pim\Component\Catalog\Validator\Constraints\AllowedExtensionsValidator
     pim_catalog.validator.constraint.valid_metric.class:                   Pim\Component\Catalog\Validator\Constraints\ValidMetricValidator
     pim_catalog.validator.constraint.currency.class:                       Pim\Component\Catalog\Validator\Constraints\CurrencyValidator
     pim_catalog.validator.constraint.single_identifier.class:              Pim\Component\Catalog\Validator\Constraints\SingleIdentifierAttributeValidator
@@ -184,6 +185,20 @@ services:
             - ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect']
         tags:
             - { name: validator.constraint_validator, alias: pim_not_null_properties_validator }
+
+    pim_catalog.validator.constraint.file_allowed_extensions:
+        class: '%pim_catalog.validator.constraint.allowed_extensions.class%'
+        arguments:
+            - '%pim_catalog_file_allowed_extensions%'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_file_allowed_extensions_validator }
+
+    pim_catalog.validator.constraint.image_allowed_extensions:
+        class: '%pim_catalog.validator.constraint.allowed_extensions.class%'
+        arguments:
+            - '%pim_catalog_image_allowed_extensions%'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_image_allowed_extensions_validator }
 
     # Attribute constraint guesser
     pim_catalog.validator.constraint_guesser.chained_attribute:

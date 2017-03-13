@@ -31,10 +31,10 @@ Feature: Denormalize product values
       | image_loc             | pim_catalog_image            | 1           | 0        |               |                     | png,jpg,gif        | other |                  |                  |
       | image_scop            | pim_catalog_image            | 0           | 1        |               |                     | png,jpg,gif        | other |                  |                  |
       | image_loc_scop        | pim_catalog_image            | 1           | 1        |               |                     | png,jpg,gif        | other |                  |                  |
-      | file                  | pim_catalog_file             | 0           | 0        |               |                     | txt,png            | other |                  |                  |
-      | file_loc              | pim_catalog_file             | 1           | 0        |               |                     | txt,png            | other |                  |                  |
-      | file_scop             | pim_catalog_file             | 0           | 1        |               |                     | txt,png            | other |                  |                  |
-      | file_loc_scop         | pim_catalog_file             | 1           | 1        |               |                     | txt,png            | other |                  |                  |
+      | file                  | pim_catalog_file             | 0           | 0        |               |                     | txt                | other |                  |                  |
+      | file_loc              | pim_catalog_file             | 1           | 0        |               |                     | txt                | other |                  |                  |
+      | file_scop             | pim_catalog_file             | 0           | 1        |               |                     | txt                | other |                  |                  |
+      | file_loc_scop         | pim_catalog_file             | 1           | 1        |               |                     | txt                | other |                  |                  |
       | simpleselect          | pim_catalog_simpleselect     | 0           | 0        |               |                     |                    | other |                  |                  |
       | simpleselect_loc      | pim_catalog_simpleselect     | 1           | 0        |               |                     |                    | other |                  |                  |
       | simpleselect_scop     | pim_catalog_simpleselect     | 0           | 1        |               |                     |                    | other |                  |                  |
@@ -120,10 +120,10 @@ Feature: Denormalize product values
       | first   | file_loc              | %fixtures%/akeneo2.txt             | en_US  |           |
       | first   | file_loc              | %fixtures%/bic-core-148.txt        | fr_FR  |           |
       | first   | file_scop             | %fixtures%/fanatic-freewave-76.txt |        | ecommerce |
-      | first   | file_scop             | %fixtures%/SNKRS-1C-s.png          |        | mobile    |
-      | first   | file_loc_scop         | %fixtures%/SNKRS-1C-t.png          | en_US  | ecommerce |
-      | first   | file_loc_scop         | %fixtures%/SNKRS-1C-t.png          | fr_FR  | ecommerce |
-      | first   | file_loc_scop         | %fixtures%/SNKRS-1R.png            | fr_FR  | mobile    |
+      | first   | file_scop             | %fixtures%/akeneo.txt              |        | mobile    |
+      | first   | file_loc_scop         | %fixtures%/akeneo.txt              | en_US  | ecommerce |
+      | first   | file_loc_scop         | %fixtures%/akeneo.txt              | fr_FR  | ecommerce |
+      | first   | file_loc_scop         | %fixtures%/akeneo.txt              | fr_FR  | mobile    |
       | first   | simpleselect          | s1                                 |        |           |
       | first   | simpleselect_loc      | s2                                 | en_US  |           |
       | first   | simpleselect_loc      | s3                                 | fr_FR  |           |
