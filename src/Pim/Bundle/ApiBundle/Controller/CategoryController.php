@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ApiBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
-use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -14,8 +13,8 @@ use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
-use Pim\Component\Api\Pagination\HalPaginator;
-use Pim\Component\Api\Pagination\ParameterValidator;
+use Pim\Component\Api\Pagination\PaginatorInterface;
+use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -57,10 +56,10 @@ class CategoryController
     /** @var RouterInterface */
     protected $router;
 
-    /** @var HalPaginator */
+    /** @var PaginatorInterface */
     protected $paginator;
 
-    /** @var ParameterValidator */
+    /** @var ParameterValidatorInterface */
     protected $parameterValidator;
 
     /** @var StreamResourceResponse */
@@ -77,8 +76,8 @@ class CategoryController
      * @param ValidatorInterface             $validator
      * @param SaverInterface                 $saver
      * @param RouterInterface                $router
-     * @param HalPaginator                   $paginator
-     * @param ParameterValidator             $parameterValidator
+     * @param PaginatorInterface             $paginator
+     * @param ParameterValidatorInterface    $parameterValidator
      * @param StreamResourceResponse         $partialUpdateStreamResource
      * @param array                          $apiConfiguration
      */
@@ -90,8 +89,8 @@ class CategoryController
         ValidatorInterface $validator,
         SaverInterface $saver,
         RouterInterface $router,
-        HalPaginator $paginator,
-        ParameterValidator $parameterValidator,
+        PaginatorInterface $paginator,
+        ParameterValidatorInterface $parameterValidator,
         StreamResourceResponse $partialUpdateStreamResource,
         array $apiConfiguration
     ) {
@@ -139,31 +138,35 @@ class CategoryController
      */
     public function listAction(Request $request)
     {
-        $queryParameters = [
-            'page'  => $request->query->get('page', 1),
-            'limit' => $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default'])
-        ];
-
         try {
-            $this->parameterValidator->validate($queryParameters);
+            $this->parameterValidator->validate($request->query->all());
         } catch (PaginationParametersException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
+
+        $defaultParameters = [
+            'page'       => 1,
+            'limit'      => $this->apiConfiguration['pagination']['limit_by_default'],
+            'with_count' => 'false',
+        ];
+
+        $queryParameters = array_merge($defaultParameters, $request->query->all());
 
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
         $order = ['root' => 'ASC', 'left' => 'ASC'];
         $categories = $this->repository->searchAfterOffset([], $order, $queryParameters['limit'], $offset);
 
         $parameters = [
-            'query_parameters'    => array_merge($request->query->all(), $queryParameters),
+            'query_parameters'    => $queryParameters,
             'list_route_name'     => 'pim_api_category_list',
             'item_route_name'     => 'pim_api_category_get',
         ];
 
+        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count() : null;
         $paginatedCategories = $this->paginator->paginate(
             $this->normalizer->normalize($categories, 'external_api'),
             $parameters,
-            $this->repository->count()
+            $count
         );
 
         return new JsonResponse($paginatedCategories);

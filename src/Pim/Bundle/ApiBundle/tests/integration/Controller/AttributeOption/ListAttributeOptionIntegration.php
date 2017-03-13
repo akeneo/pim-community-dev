@@ -19,17 +19,64 @@ class ListAttributeOptionIntegration extends ApiTestCase
     {
         "_links": {
             "self": {
-                "href": "http://localhost/api/rest/v1/attributes/a_simple_select/options?page=1&limit=10"
-            },
-            "last": {
-                "href": "http://localhost/api/rest/v1/attributes/a_simple_select/options?page=1&limit=10"
+                "href": "http://localhost/api/rest/v1/attributes/a_simple_select/options?page=1&limit=10&with_count=false"
             },
             "first": {
-                "href": "http://localhost/api/rest/v1/attributes/a_simple_select/options?page=1&limit=10"
+                "href": "http://localhost/api/rest/v1/attributes/a_simple_select/options?page=1&limit=10&with_count=false"
             }
         },
         "current_page": 1,
-        "pages_count": 1,
+        "_embedded": {
+            "items": [
+                {
+                    "_links": {
+                        "self": {
+                            "href": "http://localhost/api/rest/v1/attributes/a_simple_select/options/optionA"
+                        }
+                    },
+                    "code": "optionA",
+                    "attribute": "a_simple_select",
+                    "sort_order": 10,
+                    "labels": {"en_US": "Option A"}
+                },
+                {
+                    "_links": {
+                        "self": {
+                            "href": "http://localhost/api/rest/v1/attributes/a_simple_select/options/optionB"
+                        }
+                    },
+                    "code": "optionB",
+                    "attribute": "a_simple_select",
+                    "sort_order": 20,
+                    "labels": {"en_US": "Option B"}
+                }
+            ]
+        }
+    }
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+    public function testListAttributeOptionsWithCount()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/attributes/a_simple_select/options?with_count=true');
+
+        $expected =
+<<<JSON
+    {
+        "_links": {
+            "self": {
+                "href": "http://localhost/api/rest/v1/attributes/a_simple_select/options?page=1&limit=10&with_count=true"
+            },
+            "first": {
+                "href": "http://localhost/api/rest/v1/attributes/a_simple_select/options?page=1&limit=10&with_count=true"
+            }
+        },
+        "current_page": 1,
         "items_count": 2,
         "_embedded": {
             "items": [
@@ -76,18 +123,16 @@ JSON;
     {
         "_links": {
             "self": {
-                "href": "http://localhost/api/rest/v1/attributes/a_simple_select/options?limit=10&page=2"
-            },
-            "last": {
-                "href": "http://localhost/api/rest/v1/attributes/a_simple_select/options?limit=10&page=1"
+                "href": "http://localhost/api/rest/v1/attributes/a_simple_select/options?page=2&limit=10&with_count=false"
             },
             "first": {
-                "href": "http://localhost/api/rest/v1/attributes/a_simple_select/options?limit=10&page=1"
+                "href": "http://localhost/api/rest/v1/attributes/a_simple_select/options?page=1&limit=10&with_count=false"
+            },
+            "previous": {
+                "href": "http://localhost/api/rest/v1/attributes/a_simple_select/options?page=1&limit=10&with_count=false"
             }
         },
         "current_page": 2,
-        "pages_count": 1,
-        "items_count": 2,
         "_embedded": {
             "items": []
         }

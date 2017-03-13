@@ -16,13 +16,14 @@ use Symfony\Component\Routing\RouterInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class HalPaginator implements PaginatorInterface
+class OffsetHalPaginator implements PaginatorInterface
 {
     /** @var RouterInterface */
     protected $router;
 
     /** @var OptionsResolver */
     protected $resolver;
+
     /**
      * @param RouterInterface $router
      */
@@ -60,73 +61,44 @@ class HalPaginator implements PaginatorInterface
             throw new PaginationParametersException($e->getMessage(), $e->getCode(), $e);
         }
 
-        $data = [
-            'current_page' => (int) $parameters['query_parameters']['page'],
-            'pages_count'  => $this->getLastPage($parameters['query_parameters']['limit'], $count),
-            'items_count'  => $count,
-        ];
+        $data = ['current_page' => (int) $parameters['query_parameters']['page']];
+
+        if (null !== $count) {
+            $data['items_count'] = $count;
+        }
 
         $embedded = [];
         foreach ($items as $item) {
             $itemIdentifier = $item[$parameters['item_identifier_key']];
             $itemUriParameters = array_merge($parameters['uri_parameters'], ['code' => $itemIdentifier]);
-            $resourceItem = $this->createResource($parameters['item_route_name'], $itemUriParameters, $item);
-            $embedded[] = $resourceItem;
+
+            $itemLinks = [
+                $this->createLink($parameters['item_route_name'], $itemUriParameters, 'self')
+            ];
+
+            $embedded[] = new HalResource($itemLinks, [], $item);
         }
 
         $uriParameters = array_merge($parameters['uri_parameters'], $parameters['query_parameters']);
 
         $links = [
+            $this->createLink($parameters['list_route_name'], $uriParameters, 'self'),
             $this->createFirstLink($parameters['list_route_name'], $uriParameters),
-            $this->createLastLink($parameters['list_route_name'], $uriParameters, $count),
         ];
 
-        $previousLink = $this->createPreviousLink($parameters['list_route_name'], $uriParameters, $count);
+        $previousLink = $this->createPreviousLink($parameters['list_route_name'], $uriParameters);
         if (null !== $previousLink) {
             $links[] = $previousLink;
         }
 
-        $nextLink = $this->createNextLink($parameters['list_route_name'], $uriParameters, $count);
+        $nextLink = $this->createNextLink($parameters['list_route_name'], $uriParameters, $items);
         if (null !== $nextLink) {
             $links[] = $nextLink;
         }
 
-        $collection = $this->createResource($parameters['list_route_name'], $uriParameters, $data, ['items' => $embedded], $links);
+        $collection = new HalResource($links, ['items' => $embedded], $data);
 
         return $collection->toArray();
-    }
-
-    /**
-     * Generate an absolute URL for a specific route based on the given parameters.
-     *
-     * @param string $routeName
-     * @param array  $parameters
-     *
-     * @return string
-     */
-    protected function getUrl($routeName, array $parameters)
-    {
-        return $this->router->generate($routeName, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
-    }
-
-    /**
-     * Create a resource from a route name.
-     *
-     * @param string $routeName
-     * @param array  $parameters
-     * @param array  $data
-     * @param array  $embedded
-     * @param array  $links
-     *
-     * @return HalResource
-     */
-    protected function createResource($routeName, array $parameters, array $data = [], array $embedded = [], array $links = [])
-    {
-        $url = $this->getUrl($routeName, $parameters);
-
-        array_unshift($links, new Link('self', $url));
-
-        return new HalResource($links, $embedded, $data);
     }
 
     /**
@@ -140,7 +112,7 @@ class HalPaginator implements PaginatorInterface
      */
     protected function createLink($routeName, array $parameters, $linkName)
     {
-        $url = $this->getUrl($routeName, $parameters);
+        $url = $this->router->generate($routeName, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
 
         return new Link($linkName, $url);
     }
@@ -161,38 +133,21 @@ class HalPaginator implements PaginatorInterface
     }
 
     /**
-     * Create the link to the last page.
-     *
-     * @param string $routeName
-     * @param array  $parameters
-     * @param int    $count
-     *
-     * @return Link
-     */
-    protected function createLastLink($routeName, array $parameters, $count)
-    {
-        $parameters['page'] = $this->getLastPage($parameters['limit'], $count);
-
-        return $this->createLink($routeName, $parameters, 'last');
-    }
-
-    /**
      * Create the link to the next page if it exists.
      *
      * @param string $routeName
      * @param array  $parameters
-     * @param int    $count
+     * @param array  $items
      *
      * @return Link|null return either a link to the next page or null if there is not a next page
      */
-    protected function createNextLink($routeName, array $parameters, $count)
+    protected function createNextLink($routeName, array $parameters, $items)
     {
-        $lastPage = $this->getLastPage($parameters['limit'], $count);
-        $nextPage = ++$parameters['page'];
-
-        if ($nextPage > $lastPage) {
+        if (count($items) < (int) $parameters['limit']) {
             return null;
         }
+
+        $parameters['page']++;
 
         return $this->createLink($routeName, $parameters, 'next');
     }
@@ -202,34 +157,19 @@ class HalPaginator implements PaginatorInterface
      *
      * @param string $routeName
      * @param array  $parameters
-     * @param int    $count
      *
      * @return Link|null return either a link to the previous page or null if there is not a previous page
      */
-    protected function createPreviousLink($routeName, array $parameters, $count)
+    protected function createPreviousLink($routeName, array $parameters)
     {
-        $lastPage    = $this->getLastPage($parameters['limit'], $count);
         $currentPage = $parameters['page'];
 
-        if ($currentPage < 2 || $currentPage > $lastPage) {
+        if ($currentPage < 2) {
             return null;
         }
 
         $parameters['page']--;
 
         return $this->createLink($routeName, $parameters, 'previous');
-    }
-
-    /**
-     * Calculate the last page depending on the number of total items and the limit.
-     *
-     * @param int $limit
-     * @param int $count
-     *
-     * @return int
-     */
-    protected function getLastPage($limit, $count)
-    {
-        return 0 === $count ? 1 : (int) ceil($count / $limit);
     }
 }

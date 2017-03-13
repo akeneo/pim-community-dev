@@ -28,13 +28,10 @@ class ListMediaFileIntegration extends AbstractMediaFileTestCase
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href" : "http://localhost/api/rest/v1/media-files?page=1&limit=10"},
-        "first" : {"href" : "http://localhost/api/rest/v1/media-files?page=1&limit=10"},
-        "last"  : {"href" : "http://localhost/api/rest/v1/media-files?page=1&limit=10"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/media-files?page=1&limit=10&with_count=false"},
+        "first" : {"href" : "http://localhost/api/rest/v1/media-files?page=1&limit=10&with_count=false"}
     },
     "current_page": 1,
-    "pages_count": 1,
-    "items_count": 3,
     "_embedded": {
         "items" : [
             {
@@ -92,12 +89,36 @@ JSON;
         $expected = <<<JSON
 {
     "_links"       : {
-        "self": {"href" : "http://localhost/api/rest/v1/media-files?page=3&limit=2"},
-        "first": {"href" : "http://localhost/api/rest/v1/media-files?page=1&limit=2"},
-        "last": {"href" : "http://localhost/api/rest/v1/media-files?page=2&limit=2"}
+        "self": {"href" : "http://localhost/api/rest/v1/media-files?page=3&limit=2&with_count=false"},
+        "first": {"href" : "http://localhost/api/rest/v1/media-files?page=1&limit=2&with_count=false"},
+        "previous": {"href" : "http://localhost/api/rest/v1/media-files?page=2&limit=2&with_count=false"}
     },
     "current_page" : 3,
-    "pages_count"  : 2,
+    "_embedded"    : {
+        "items" : []
+    }
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
+    public function testListMediaFilesWithCount()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', '/api/rest/v1/media-files?page=3&limit=2&with_count=true');
+
+        $expected = <<<JSON
+{
+    "_links"       : {
+        "self": {"href" : "http://localhost/api/rest/v1/media-files?page=3&limit=2&with_count=true"},
+        "first": {"href" : "http://localhost/api/rest/v1/media-files?page=1&limit=2&with_count=true"},
+        "previous": {"href" : "http://localhost/api/rest/v1/media-files?page=2&limit=2&with_count=true"}
+    },
+    "current_page" : 3,
     "items_count"  : 3,
     "_embedded"    : {
         "items" : []
@@ -119,14 +140,11 @@ JSON;
         $expected = <<<JSON
 {
     "_links"       : {
-        "self": {"href" : "http://localhost/api/rest/v1/media-files?page=2&limit=2"},
-        "first": {"href" : "http://localhost/api/rest/v1/media-files?page=1&limit=2"},
-        "last": {"href" : "http://localhost/api/rest/v1/media-files?page=2&limit=2"},
-        "previous": {"href" : "http://localhost/api/rest/v1/media-files?page=1&limit=2"}
+        "self": {"href" : "http://localhost/api/rest/v1/media-files?page=2&limit=2&with_count=false"},
+        "first": {"href" : "http://localhost/api/rest/v1/media-files?page=1&limit=2&with_count=false"},
+        "previous": {"href" : "http://localhost/api/rest/v1/media-files?page=1&limit=2&with_count=false"}
     },
     "current_page" : 2,
-    "pages_count"  : 2,
-    "items_count"  : 3,
     "_embedded"    : {
         "items" : [
             {

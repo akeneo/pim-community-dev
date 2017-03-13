@@ -15,6 +15,14 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $this->assert($client, 'Scope "not_found" does not exist.');
     }
 
+    public function testUnknownPaginationType()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/products?pagination_type=unknown');
+        $this->assert($client, 'Pagination type does not exist.');
+    }
+
     public function testNotFoundLocale()
     {
         $client = $this->createAuthenticatedClient();
