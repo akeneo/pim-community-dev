@@ -509,7 +509,11 @@ class ProductController
 
                 $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $request->query->get('search_locale');
                 $context['scope'] = isset($filter['scope']) ? $filter['scope'] : $request->query->get('search_scope');
-                $context['locales'] = isset($filter['locales']) ? $filter['locales'] : null;
+
+                if (isset($filter['locales'])) {
+                    $context['locales'] = $filter['locales'];
+                }
+
                 $value = isset($filter['value']) ? $filter['value'] : null;
 
                 $pqb->addFilter($propertyCode, $filter['operator'], $value, $context);
