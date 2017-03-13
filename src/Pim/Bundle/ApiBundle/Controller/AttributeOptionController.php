@@ -167,8 +167,9 @@ class AttributeOptionController
         }
 
         $defaultParameters = [
-            'page'  => 1,
-            'limit' => $this->apiConfiguration['pagination']['limit_by_default'],
+            'page'       => 1,
+            'limit'      => $this->apiConfiguration['pagination']['limit_by_default'],
+            'with_count' => 'false',
         ];
 
         $queryParameters = array_merge($defaultParameters, $request->query->all());
@@ -190,10 +191,11 @@ class AttributeOptionController
             'item_route_name'     => 'pim_api_attribute_option_get',
         ];
 
+        $count = true === $request->query->getBoolean('with_count') ? $this->attributeOptionsRepository->count($criteria) : null;
         $paginatedAttributeOptions = $this->paginator->paginate(
             $this->normalizer->normalize($attributeOptions, 'external_api'),
             $parameters,
-            $this->attributeOptionsRepository->count($criteria)
+            $count
         );
 
         return new JsonResponse($paginatedAttributeOptions);

@@ -84,12 +84,12 @@ class SearchAfterHalPaginator implements PaginatorInterface
         ];
 
         if (count($items) === (int) $parameters['query_parameters']['limit']) {
-           $links[] = $this->createLink(
-               $parameters['list_route_name'],
-               $uriParameters,
-               $parameters['search_after']['next'],
-               'next'
-           );
+            $links[] = $this->createLink(
+                $parameters['list_route_name'],
+                $uriParameters,
+                $parameters['search_after']['next'],
+                'next'
+            );
         }
 
         $collection = new HalResource($links, ['items' => $embedded], []);

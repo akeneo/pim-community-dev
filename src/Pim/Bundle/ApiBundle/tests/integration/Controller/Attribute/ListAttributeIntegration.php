@@ -20,21 +20,16 @@ class ListAttributeIntegration extends ApiTestCase
 {
 	"_links": {
 		"self": {
-			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=10"
+			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=10&with_count=false"
 		},
 		"next": {
-			"href": "http://localhost/api/rest/v1/attributes?page=2&limit=10"
-		},
-		"last": {
-			"href": "http://localhost/api/rest/v1/attributes?page=3&limit=10"
+			"href": "http://localhost/api/rest/v1/attributes?page=2&limit=10&with_count=false"
 		},
 		"first": {
-			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=10"
+			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=10&with_count=false"
 		}
 	},
 	"current_page": 1,
-	"pages_count": 3,
-	"items_count": 27,
     "_embedded" : {
         "items" : [
             {$standardizedAttributes['a_date']},
@@ -62,7 +57,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/attributes?limit=5&page=2');
+        $client->request('GET', 'api/rest/v1/attributes?limit=5&page=2&with_count=false');
 
         $standardizedAttributes = $this->getStandardizedAttributes();
 
@@ -70,23 +65,62 @@ JSON;
 {
 	"_links": {
 		"self": {
-			"href": "http://localhost/api/rest/v1/attributes?page=2&limit=5"
+			"href": "http://localhost/api/rest/v1/attributes?page=2&limit=5&with_count=false"
 		},
 		"first": {
-			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=5"
-		},
-		"last": {
-			"href": "http://localhost/api/rest/v1/attributes?page=6&limit=5"
+			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=5&with_count=false"
 		},
 		"previous": {
-			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=5"
+			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=5&with_count=false"
 		},
 		"next": {
-			"href": "http://localhost/api/rest/v1/attributes?page=3&limit=5"
+			"href": "http://localhost/api/rest/v1/attributes?page=3&limit=5&with_count=false"
 		}
 	},
 	"current_page": 2,
-	"pages_count": 6,
+    "_embedded" : {
+        "items" : [
+            {$standardizedAttributes['a_metric']},
+            {$standardizedAttributes['a_metric_negative']},
+            {$standardizedAttributes['a_metric_without_decimal']},
+            {$standardizedAttributes['a_metric_without_decimal_negative']},
+            {$standardizedAttributes['a_multi_select']}
+        ]
+    }
+}
+JSON;
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
+    public function testAttributesWithCount()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/attributes?limit=5&page=2&with_count=true');
+
+        $standardizedAttributes = $this->getStandardizedAttributes();
+
+        $expected = <<<JSON
+{
+	"_links": {
+		"self": {
+			"href": "http://localhost/api/rest/v1/attributes?page=2&limit=5&with_count=true"
+		},
+		"first": {
+			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=5&with_count=true"
+		},
+		"previous": {
+			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=5&with_count=true"
+		},
+		"next": {
+			"href": "http://localhost/api/rest/v1/attributes?page=3&limit=5&with_count=true"
+		}
+	},
+	"current_page": 2,
 	"items_count": 27,
     "_embedded" : {
         "items" : [
@@ -116,18 +150,16 @@ JSON;
 {
     "_links": {
         "self": {
-            "href": "http://localhost/api/rest/v1/attributes?page=2&limit=100"
-        },
-        "last": {
-            "href": "http://localhost/api/rest/v1/attributes?page=1&limit=100"
+            "href": "http://localhost/api/rest/v1/attributes?page=2&limit=100&with_count=false"
         },
         "first": {
-            "href": "http://localhost/api/rest/v1/attributes?page=1&limit=100"
+            "href": "http://localhost/api/rest/v1/attributes?page=1&limit=100&with_count=false"
+        },
+        "previous": {
+            "href": "http://localhost/api/rest/v1/attributes?page=1&limit=100&with_count=false"
         }
     },
     "current_page": 2,
-    "pages_count": 1,
-    "items_count": 27,
     "_embedded": {
         "items": []
     }
@@ -178,7 +210,8 @@ JSON;
     /**
      * @return array
      */
-    protected function getStandardizedAttributes() {
+    protected function getStandardizedAttributes()
+    {
         $standardizedAttributes['a_date'] = <<<JSON
 {
     "_links": {

@@ -98,8 +98,9 @@ class LocaleController
         }
 
         $defaultParameters = [
-            'page'  => 1,
-            'limit' => $this->apiConfiguration['pagination']['limit_by_default']
+            'page'       => 1,
+            'limit'      => $this->apiConfiguration['pagination']['limit_by_default'],
+            'with_count' => 'false',
         ];
 
         $queryParameters = array_merge($defaultParameters, $request->query->all());
@@ -118,10 +119,11 @@ class LocaleController
             'item_route_name'  => 'pim_api_locale_get',
         ];
 
+        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count($criterias) : null;
         $paginatedLocales = $this->paginator->paginate(
             $this->normalizer->normalize($locales, 'external_api'),
             $parameters,
-            $this->repository->count($criterias)
+            $count
         );
 
         return new JsonResponse($paginatedLocales);

@@ -46,8 +46,8 @@ class PrimaryKeyEncrypter
      *
      * @return string
      */
-    public function encrypt($primaryKey) {
-
+    public function encrypt($primaryKey)
+    {
         return openssl_encrypt($primaryKey, $this->method, $this->key, 0, $this->initializationVector);
     }
 
@@ -58,8 +58,8 @@ class PrimaryKeyEncrypter
      *
      * @return string
      */
-    public function decrypt($primaryKey) {
+    public function decrypt($primaryKey)
+    {
         return openssl_decrypt($primaryKey, $this->method, $this->key, 0, $this->initializationVector);
     }
-
 }

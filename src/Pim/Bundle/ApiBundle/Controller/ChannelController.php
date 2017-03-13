@@ -94,14 +94,14 @@ class ChannelController
         }
 
         $defaultParameters = [
-            'page'  => 1,
-            'limit' => $this->apiConfiguration['pagination']['limit_by_default']
+            'page'       => 1,
+            'limit'      => $this->apiConfiguration['pagination']['limit_by_default'],
+            'with_count' => 'false',
         ];
 
         $queryParameters = array_merge($defaultParameters, $request->query->all());
 
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
-        $count = $this->repository->count();
         $channels = $this->repository->searchAfterOffset([], ['code' => 'ASC'], $queryParameters['limit'], $offset);
 
         $parameters = [
@@ -110,6 +110,7 @@ class ChannelController
             'item_route_name'  => 'pim_api_channel_get',
         ];
 
+        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count() : null;
         $paginatedChannels = $this->paginator->paginate(
             $this->normalizer->normalize($channels, 'external_api'),
             $parameters,

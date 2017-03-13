@@ -112,18 +112,72 @@ class SuccessListProductIntegration extends AbstractProductTestCase
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&page=1"},
-        "first" : {"href": "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&page=1"},
-        "last"  : {"href": "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&page=1"}
+        "self"  : {"href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10"},
+        "first" : {"href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10"}
     },
     "current_page" : 1,
-    "pages_count"  : 1,
-    "items_count"  : 6,
     "_embedded"    : {
 		"items": [
             {$standardizedProducts['simple']},
             {$standardizedProducts['localizable']},
             {$standardizedProducts['scopable']},
+            {$standardizedProducts['localizable_and_scopable']},
+            {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_without_category']}
+		]
+    }
+}
+JSON;
+
+        $this->assertResponse($client->getResponse(), $expected);
+    }
+
+    public function testDefaultPaginationFirstPageListProductsWithCount()
+    {
+        $standardizedProducts = $this->getStandardizedProducts();
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/products?with_count=true&limit=3');
+        $expected = <<<JSON
+{
+    "_links": {
+        "self"  : {"href": "http://localhost/api/rest/v1/products?page=1&with_count=true&pagination_type=page&limit=3"},
+        "first" : {"href": "http://localhost/api/rest/v1/products?page=1&with_count=true&pagination_type=page&limit=3"},
+        "next"  : {"href": "http://localhost/api/rest/v1/products?page=2&with_count=true&pagination_type=page&limit=3"}
+    },
+    "current_page" : 1,
+    "items_count"  : 6,
+    "_embedded"    : {
+		"items": [
+            {$standardizedProducts['simple']},
+            {$standardizedProducts['localizable']},
+            {$standardizedProducts['scopable']}
+		]
+    }
+}
+JSON;
+
+        $this->assertResponse($client->getResponse(), $expected);
+    }
+
+    public function testDefaultPaginationLastPageListProductsWithCount()
+    {
+        $standardizedProducts = $this->getStandardizedProducts();
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/products?with_count=true&limit=3&page=2');
+        $expected = <<<JSON
+{
+    "_links": {
+        "self"     : {"href": "http://localhost/api/rest/v1/products?page=2&with_count=true&pagination_type=page&limit=3"},
+        "first"    : {"href": "http://localhost/api/rest/v1/products?page=1&with_count=true&pagination_type=page&limit=3"},
+        "previous" : {"href": "http://localhost/api/rest/v1/products?page=1&with_count=true&pagination_type=page&limit=3"},
+        "next"     : {"href": "http://localhost/api/rest/v1/products?page=3&with_count=true&pagination_type=page&limit=3"}
+    },
+    "current_page" : 2,
+    "items_count"  : 6,
+    "_embedded"    : {
+		"items": [
             {$standardizedProducts['localizable_and_scopable']},
             {$standardizedProducts['product_china']},
             {$standardizedProducts['product_without_category']}
@@ -153,13 +207,10 @@ JSON;
         $expected = <<<JSON
 {
     "_links"       : {
-        "self"  : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&scope=ecommerce&page=1"},
-        "first" : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&scope=ecommerce&page=1"},
-        "last"  : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&scope=ecommerce&page=1"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&scope=ecommerce"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&scope=ecommerce"}
     },
     "current_page" : 1,
-    "pages_count"  : 1,
-    "items_count"  : 4,
     "_embedded"    : {
         "items" : [
             {$standardizedProducts['simple']},
@@ -261,13 +312,10 @@ JSON;
         $expected = <<<JSON
 {
     "_links"       : {
-        "self"  : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&scope=tablet&page=1"},
-        "first" : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&scope=tablet&page=1"},
-        "last"  : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&scope=tablet&page=1"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&scope=tablet"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&scope=tablet"}
     },
     "current_page" : 1,
-    "pages_count"  : 1,
-    "items_count"  : 4,
     "_embedded"    : {
         "items" : [
             {$standardizedProducts['simple']},
@@ -380,13 +428,10 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&scope=tablet&locales=fr_FR&page=1"},
-        "first" : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&scope=tablet&locales=fr_FR&page=1"},
-        "last"  : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&scope=tablet&locales=fr_FR&page=1"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&scope=tablet&locales=fr_FR"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&scope=tablet&locales=fr_FR"}
     },
     "current_page" : 1,
-    "pages_count"  : 1,
-    "items_count"  : 4,
     "_embedded"    : {
         "items" : [
             {$standardizedProducts['simple']},
@@ -487,13 +532,10 @@ JSON;
         $expected = <<<JSON
 {
     "_links"       : {
-        "self"  : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&scope=ecommerce_china&page=1"},
-        "first" : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&scope=ecommerce_china&page=1"},
-        "last"  : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&scope=ecommerce_china&page=1"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&scope=ecommerce_china"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&scope=ecommerce_china"}
     },
     "current_page" : 1,
-    "pages_count"  : 1,
-    "items_count"  : 2,
     "_embedded"    : {
         "items" : [
             {
@@ -553,13 +595,10 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&locales=en_US%2Czh_CN&page=1"},
-        "first" : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&locales=en_US%2Czh_CN&page=1"},
-        "last"  : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&locales=en_US%2Czh_CN&page=1"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&locales=en_US%2Czh_CN"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&locales=en_US%2Czh_CN"}
     },
     "current_page" : 1,
-    "pages_count"  : 1,
-    "items_count"  : 6,
     "_embedded"    : {
         "items" : [
             {$standardizedProducts['simple']},
@@ -676,13 +715,10 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&attributes=a_text&page=1"},
-        "first" : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&attributes=a_text&page=1"},
-        "last"  : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&attributes=a_text&page=1"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&attributes=a_text"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&attributes=a_text"}
     },
     "current_page" : 1,
-    "pages_count"  : 1,
-    "items_count"  : 6,
     "_embedded"    : {
         "items" : [
             {
@@ -799,13 +835,10 @@ JSON;
         $expected = <<<JSON
 {
     "_links"       : {
-        "self"  : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&scope=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area&page=1"},
-        "first" : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&scope=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area&page=1"},
-        "last"  : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&scope=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area&page=1"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&scope=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&scope=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area"}
     },
     "current_page" : 1,
-    "pages_count"  : 1,
-    "items_count"  : 4,
     "_embedded"    : {
         "items" : [
             {
@@ -903,23 +936,20 @@ JSON;
         $this->assertResponse($client->getResponse(), $expected);
     }
 
-    public function testTheSecondPageOfTheListOfProductsWithOffsetPagination()
+    public function testTheSecondPageOfTheListOfProductsWithOffsetPaginationWithoutCount()
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?attributes=a_text&page=2&limit=2&pagination_type=page');
+        $client->request('GET', 'api/rest/v1/products?attributes=a_text&page=2&limit=2&pagination_type=page&with_count=false');
         $expected = <<<JSON
 {
     "_links"       : {
-        "self"     : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=2&attributes=a_text&page=2"},
-        "first"    : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=2&attributes=a_text&page=1"},
-        "last"     : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=2&attributes=a_text&page=3"},
-        "previous" : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=2&attributes=a_text&page=1"},
-        "next"     : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=2&attributes=a_text&page=3"}
+        "self"     : {"href" : "http://localhost/api/rest/v1/products?page=2&with_count=false&pagination_type=page&limit=2&attributes=a_text"},
+        "first"    : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=2&attributes=a_text"},
+        "previous" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=2&attributes=a_text"},
+        "next"     : {"href" : "http://localhost/api/rest/v1/products?page=3&with_count=false&pagination_type=page&limit=2&attributes=a_text"}
     },
     "current_page" : 2,
-    "pages_count"  : 3,
-    "items_count"  : 6,
     "_embedded"    : {
         "items" : [
             {
@@ -964,16 +994,15 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?page=2&pagination_type=page');
+        $client->request('GET', 'api/rest/v1/products?page=2&pagination_type=page&with_count=true');
         $expected = <<<JSON
 {
     "_links"       : {
-        "self"     : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&page=2"},
-        "first"    : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&page=1"},
-        "last"     : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&page=1"}
+        "self"        : {"href" : "http://localhost/api/rest/v1/products?page=2&with_count=true&pagination_type=page&limit=10"},
+        "first"       : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=true&pagination_type=page&limit=10"},
+        "previous"    : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=true&pagination_type=page&limit=10"}
     },
     "current_page" : 2,
-    "pages_count"  : 1,
     "items_count"  : 6,
     "_embedded"    : {
         "items" : []
@@ -994,13 +1023,10 @@ JSON;
         $expected = <<<JSON
 {
     "_links"       : {
-        "self"  : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&search=${searchEncoded}&page=1"},
-        "first" : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&search=${searchEncoded}&page=1"},
-        "last"  : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&search=${searchEncoded}&page=1"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
     },
     "current_page" : 1,
-    "pages_count"  : 1,
-    "items_count"  : 1,
     "_embedded"    : {
         "items" : [
             {
@@ -1054,13 +1080,10 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&search=${searchEncoded}&page=1"},
-        "first" : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&search=${searchEncoded}&page=1"},
-        "last"  : {"href" : "http://localhost/api/rest/v1/products?pagination_type=page&limit=10&search=${searchEncoded}&page=1"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
     },
     "current_page" : 1,
-    "pages_count"  : 1,
-    "items_count"  : 0,
     "_embedded"    : {
         "items" : []
     }
@@ -1080,13 +1103,10 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href" : "http://localhost/api/rest/v1/products?search=${searchEncoded}&page=1&limit=10"},
-        "first" : {"href" : "http://localhost/api/rest/v1/products?search=${searchEncoded}&page=1&limit=10"},
-        "last"  : {"href" : "http://localhost/api/rest/v1/products?search=${searchEncoded}&page=1&limit=10"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
     },
     "current_page" : 1,
-    "pages_count"  : 1,
-    "items_count"  : 0,
     "_embedded"    : {
         "items" : []
     }

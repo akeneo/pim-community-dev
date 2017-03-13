@@ -676,13 +676,17 @@ class ProductController
         array $queryParameters,
         array $normalizerOptions
     ) {
-        if (!isset($queryParameters['page'])) {
-            $queryParameters['page'] = 1;
-        }
+        $defaultParameters = [
+            'page'       => 1,
+            'with_count' => 'false',
+        ];
+
+        $queryParameters = array_merge($defaultParameters, $queryParameters);
 
         $offset = ($queryParameters['page'] - 1) * $queryParameters['limit'];
         $products = $this->productRepository->searchAfterOffset($pqb, $queryParameters['limit'], $offset);
-        $count = $this->productRepository->count($pqb);
+
+        $count = 'true' === $queryParameters['with_count'] ? $this->productRepository->count($pqb) : null;
 
         $parameters = [
             'query_parameters'    => $queryParameters,

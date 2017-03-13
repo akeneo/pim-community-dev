@@ -145,8 +145,9 @@ class CategoryController
         }
 
         $defaultParameters = [
-            'page'  => 1,
-            'limit' => $this->apiConfiguration['pagination']['limit_by_default']
+            'page'       => 1,
+            'limit'      => $this->apiConfiguration['pagination']['limit_by_default'],
+            'with_count' => 'false',
         ];
 
         $queryParameters = array_merge($defaultParameters, $request->query->all());
@@ -161,10 +162,11 @@ class CategoryController
             'item_route_name'     => 'pim_api_category_get',
         ];
 
+        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count() : null;
         $paginatedCategories = $this->paginator->paginate(
             $this->normalizer->normalize($categories, 'external_api'),
             $parameters,
-            $this->repository->count()
+            $count
         );
 
         return new JsonResponse($paginatedCategories);

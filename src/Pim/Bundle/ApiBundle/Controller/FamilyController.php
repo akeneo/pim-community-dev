@@ -144,8 +144,9 @@ class FamilyController
         }
 
         $defaultParameters = [
-            'page'  => 1,
-            'limit' => $this->apiConfiguration['pagination']['limit_by_default']
+            'page'       => 1,
+            'limit'      => $this->apiConfiguration['pagination']['limit_by_default'],
+            'with_count' => 'false',
         ];
 
         $queryParameters = array_merge($defaultParameters, $request->query->all());
@@ -159,10 +160,11 @@ class FamilyController
             'item_route_name'     => 'pim_api_family_get',
         ];
 
+        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count() : null;
         $paginatedFamilies = $this->paginator->paginate(
             $this->normalizer->normalize($families, 'external_api'),
             $parameters,
-            $this->repository->count()
+            $count
         );
 
         return new JsonResponse($paginatedFamilies);

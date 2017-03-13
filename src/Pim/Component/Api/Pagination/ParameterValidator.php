@@ -33,7 +33,7 @@ class ParameterValidator implements ParameterValidatorInterface
             $parameters['pagination_type'] = PaginationTypes::OFFSET;
         }
 
-        switch($parameters['pagination_type']) {
+        switch ($parameters['pagination_type']) {
             case PaginationTypes::SEARCH_AFTER:
                 if (isset($options['support_search_after']) && true === $options['support_search_after']) {
                     $this->validateLimit($parameters);
@@ -44,6 +44,7 @@ class ParameterValidator implements ParameterValidatorInterface
             case PaginationTypes::OFFSET:
                 $this->validateLimit($parameters);
                 $this->validatePage($parameters);
+                $this->validateWithCount($parameters);
                 break;
             default:
                 throw new PaginationParametersException('Pagination type does not exist.');
@@ -88,6 +89,27 @@ class ParameterValidator implements ParameterValidatorInterface
         $limitMax = $this->configuration['pagination']['limit_max'];
         if ($limitMax < $limit) {
             throw new PaginationParametersException(sprintf('You cannot request more than %d items.', $limitMax));
+        }
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @throws PaginationParametersException
+     */
+    protected function validateWithCount(array $parameters)
+    {
+        if (!isset($parameters['with_count'])) {
+            return;
+        }
+
+        if (!in_array($parameters['with_count'], ['true', 'false'], true)) {
+            throw new PaginationParametersException(
+                sprintf(
+                    'Parameter "with_count" has to be a boolean. Only "true" or "false" allowed, "%s" given.',
+                    $parameters['with_count']
+                )
+            );
         }
     }
 

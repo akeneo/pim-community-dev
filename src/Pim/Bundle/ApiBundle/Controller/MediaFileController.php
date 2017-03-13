@@ -174,8 +174,9 @@ class MediaFileController
         }
 
         $defaultParameters = [
-            'page'  => 1,
-            'limit' => $this->apiConfiguration['pagination']['limit_by_default']
+            'page'       => 1,
+            'limit'      => $this->apiConfiguration['pagination']['limit_by_default'],
+            'with_count' => 'false',
         ];
 
         $queryParameters = array_merge($defaultParameters, $request->query->all());
@@ -190,10 +191,12 @@ class MediaFileController
             'item_route_name'  => 'pim_api_media_file_get',
         ];
 
+        $count = true === $request->query->getBoolean('with_count') ? $this->mediaRepository->count($criteria) : null;
+
         $paginatedMedias = $this->paginator->paginate(
             $this->normalizer->normalize($medias, 'external_api'),
             $parameters,
-            $this->mediaRepository->count($criteria)
+            $count
         );
 
         return new JsonResponse($paginatedMedias);

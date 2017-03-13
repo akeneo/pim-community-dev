@@ -44,6 +44,18 @@
                 ->duringValidate($parameters);
         }
 
+        function it_validates_with_count_with_boolean_string_values()
+        {
+            $this->validate(['with_count' => 'true']);
+            $this->validate(['with_count' => 'false']);
+        }
+
+        function it_ignores_with_count_with_search_after_pagination()
+        {
+            $this->validate(['with_count' => '1', 'pagination_type' => 'search_after'], ['support_search_after' => true]);
+            $this->validate(['with_count' => '0', 'pagination_type' => 'search_after'], ['support_search_after' => true]);
+        }
+
         function it_validates_integer_values_with_offset_pagination()
         {
             $parameters = [
@@ -164,5 +176,20 @@
 
             $this ->shouldThrow(new PaginationParametersException('Pagination type does not exist.'))
                 ->duringValidate(['pagination_type' => 'unknown'], ['support_search_after' => false]);
+        }
+
+        function it_throws_an_exception_when_parameter_with_count_is_not_a_boolean()
+        {
+            $this ->shouldThrow(
+                new PaginationParametersException(
+                    'Parameter "with_count" has to be a boolean. Only "true" or "false" allowed, "1" given.'
+                ))
+                ->duringValidate(['with_count' => '1']);
+
+            $this ->shouldThrow(
+            new PaginationParametersException(
+                'Parameter "with_count" has to be a boolean. Only "true" or "false" allowed, "0" given.'
+            ))
+                ->duringValidate(['with_count' => '0']);
         }
     }

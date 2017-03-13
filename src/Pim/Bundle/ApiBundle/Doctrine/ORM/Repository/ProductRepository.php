@@ -75,7 +75,6 @@ class ProductRepository extends EntityRepository implements ProductRepositoryInt
             ->setMaxResults($limit)
             ->getQuery()
             ->execute();
-
     }
 
     /**
@@ -83,7 +82,6 @@ class ProductRepository extends EntityRepository implements ProductRepositoryInt
      */
     public function count(ProductQueryBuilderInterface $pqb)
     {
-
         try {
             $qb = clone $pqb->getQueryBuilder();
 

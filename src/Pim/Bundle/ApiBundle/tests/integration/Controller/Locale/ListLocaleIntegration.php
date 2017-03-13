@@ -16,14 +16,11 @@ class ListLocaleIntegration extends ApiTestCase
 
         $apiLocales = [
             '_links'       => [
-                'self'  => ['href' => 'http://localhost/api/rest/v1/locales?page=1&limit=10'],
-                'first' => ['href' => 'http://localhost/api/rest/v1/locales?page=1&limit=10'],
-                'last'  => ['href' => 'http://localhost/api/rest/v1/locales?page=2&limit=10'],
-                'next'  => ['href' => 'http://localhost/api/rest/v1/locales?page=2&limit=10'],
+                'self'  => ['href' => 'http://localhost/api/rest/v1/locales?page=1&limit=10&with_count=false'],
+                'first' => ['href' => 'http://localhost/api/rest/v1/locales?page=1&limit=10&with_count=false'],
+                'next'  => ['href' => 'http://localhost/api/rest/v1/locales?page=2&limit=10&with_count=false'],
             ],
             'current_page' => 1,
-            'pages_count'  => 2,
-            'items_count'  => 15,
             '_embedded'    => [
                 'items' => [
                     [
@@ -113,16 +110,14 @@ class ListLocaleIntegration extends ApiTestCase
         $client->request('GET', 'api/rest/v1/locales?page=25&limit=12');
 
         $apiLocales = [
-            '_links' => [
-                'self'  => ['href' => 'http://localhost/api/rest/v1/locales?page=25&limit=12'],
-                'first' => ['href' => 'http://localhost/api/rest/v1/locales?page=1&limit=12'],
-                'last'  => ['href' => 'http://localhost/api/rest/v1/locales?page=2&limit=12'],
+            '_links'       => [
+                'self'     => ['href' => 'http://localhost/api/rest/v1/locales?page=25&limit=12&with_count=false'],
+                'first'    => ['href' => 'http://localhost/api/rest/v1/locales?page=1&limit=12&with_count=false'],
+                'previous' => ['href' => 'http://localhost/api/rest/v1/locales?page=24&limit=12&with_count=false'],
             ],
             'current_page' => 25,
-            'pages_count'  => 2,
-            'items_count'  => 15,
             '_embedded'    => [
-                'items' => []
+                'items' => [],
             ]
         ];
 
@@ -139,15 +134,12 @@ class ListLocaleIntegration extends ApiTestCase
 
         $apiLocales = [
             '_links' => [
-                'self'     => ['href' => 'http://localhost/api/rest/v1/locales?page=2&limit=5'],
-                'first'    => ['href' => 'http://localhost/api/rest/v1/locales?page=1&limit=5'],
-                'last'     => ['href' => 'http://localhost/api/rest/v1/locales?page=3&limit=5'],
-                'previous' => ['href' => 'http://localhost/api/rest/v1/locales?page=1&limit=5'],
-                'next'     => ['href' => 'http://localhost/api/rest/v1/locales?page=3&limit=5']
+                'self'     => ['href' => 'http://localhost/api/rest/v1/locales?page=2&limit=5&with_count=false'],
+                'first'    => ['href' => 'http://localhost/api/rest/v1/locales?page=1&limit=5&with_count=false'],
+                'previous' => ['href' => 'http://localhost/api/rest/v1/locales?page=1&limit=5&with_count=false'],
+                'next'     => ['href' => 'http://localhost/api/rest/v1/locales?page=3&limit=5&with_count=false']
             ],
             'current_page' => 2,
-            'pages_count'  => 3,
-            'items_count'  => 15,
             '_embedded'    => [
                 'items' => [
                     [
@@ -184,6 +176,46 @@ class ListLocaleIntegration extends ApiTestCase
                         ],
                         'code'    => 'fr_FR',
                         'enabled' => true
+                    ]
+                ]
+            ]
+        ];
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertSame($apiLocales, json_decode($response->getContent(), true));
+    }
+
+    public function testListOfLocalesWithCount()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/locales?page=2&limit=2&with_count=true');
+
+        $apiLocales = [
+            '_links' => [
+                'self'     => ['href' => 'http://localhost/api/rest/v1/locales?page=2&limit=2&with_count=true'],
+                'first'    => ['href' => 'http://localhost/api/rest/v1/locales?page=1&limit=2&with_count=true'],
+                'previous' => ['href' => 'http://localhost/api/rest/v1/locales?page=1&limit=2&with_count=true'],
+                'next'     => ['href' => 'http://localhost/api/rest/v1/locales?page=3&limit=2&with_count=true']
+            ],
+            'current_page' => 2,
+            'items_count' => 15,
+            '_embedded'    => [
+                'items' => [
+                    [
+                        '_links' => [
+                            'self' => ['href' => 'http://localhost/api/rest/v1/locales/de_DE']
+                        ],
+                        'code'    => 'de_DE',
+                        'enabled' => true,
+                    ],
+                    [
+                        '_links' => [
+                            'self' => ['href' => 'http://localhost/api/rest/v1/locales/en_GB']
+                        ],
+                        'code'    => 'en_GB',
+                        'enabled' => false,
                     ]
                 ]
             ]

@@ -61,11 +61,11 @@ class OffsetHalPaginator implements PaginatorInterface
             throw new PaginationParametersException($e->getMessage(), $e->getCode(), $e);
         }
 
-        $data = [
-            'current_page' => (int) $parameters['query_parameters']['page'],
-            'pages_count'  => $this->getLastPage($parameters['query_parameters']['limit'], $count),
-            'items_count'  => $count,
-        ];
+        $data = ['current_page' => (int) $parameters['query_parameters']['page']];
+
+        if (null !== $count) {
+            $data['items_count'] = $count;
+        }
 
         $embedded = [];
         foreach ($items as $item) {
@@ -84,15 +84,14 @@ class OffsetHalPaginator implements PaginatorInterface
         $links = [
             $this->createLink($parameters['list_route_name'], $uriParameters, 'self'),
             $this->createFirstLink($parameters['list_route_name'], $uriParameters),
-            $this->createLastLink($parameters['list_route_name'], $uriParameters, $count),
         ];
 
-        $previousLink = $this->createPreviousLink($parameters['list_route_name'], $uriParameters, $count);
+        $previousLink = $this->createPreviousLink($parameters['list_route_name'], $uriParameters);
         if (null !== $previousLink) {
             $links[] = $previousLink;
         }
 
-        $nextLink = $this->createNextLink($parameters['list_route_name'], $uriParameters, $count);
+        $nextLink = $this->createNextLink($parameters['list_route_name'], $uriParameters, $items);
         if (null !== $nextLink) {
             $links[] = $nextLink;
         }
@@ -134,38 +133,21 @@ class OffsetHalPaginator implements PaginatorInterface
     }
 
     /**
-     * Create the link to the last page.
-     *
-     * @param string $routeName
-     * @param array  $parameters
-     * @param int    $count
-     *
-     * @return Link
-     */
-    protected function createLastLink($routeName, array $parameters, $count)
-    {
-        $parameters['page'] = $this->getLastPage($parameters['limit'], $count);
-
-        return $this->createLink($routeName, $parameters, 'last');
-    }
-
-    /**
      * Create the link to the next page if it exists.
      *
      * @param string $routeName
      * @param array  $parameters
-     * @param int    $count
+     * @param array  $items
      *
      * @return Link|null return either a link to the next page or null if there is not a next page
      */
-    protected function createNextLink($routeName, array $parameters, $count)
+    protected function createNextLink($routeName, array $parameters, $items)
     {
-        $lastPage = $this->getLastPage($parameters['limit'], $count);
-        $nextPage = ++$parameters['page'];
-
-        if ($nextPage > $lastPage) {
+        if (count($items) < (int) $parameters['limit']) {
             return null;
         }
+
+        $parameters['page']++;
 
         return $this->createLink($routeName, $parameters, 'next');
     }
@@ -175,34 +157,19 @@ class OffsetHalPaginator implements PaginatorInterface
      *
      * @param string $routeName
      * @param array  $parameters
-     * @param int    $count
      *
      * @return Link|null return either a link to the previous page or null if there is not a previous page
      */
-    protected function createPreviousLink($routeName, array $parameters, $count)
+    protected function createPreviousLink($routeName, array $parameters)
     {
-        $lastPage    = $this->getLastPage($parameters['limit'], $count);
         $currentPage = $parameters['page'];
 
-        if ($currentPage < 2 || $currentPage > $lastPage) {
+        if ($currentPage < 2) {
             return null;
         }
 
         $parameters['page']--;
 
         return $this->createLink($routeName, $parameters, 'previous');
-    }
-
-    /**
-     * Calculate the last page depending on the number of total items and the limit.
-     *
-     * @param int $limit
-     * @param int $count
-     *
-     * @return int
-     */
-    protected function getLastPage($limit, $count)
-    {
-        return 0 === $count ? 1 : (int) ceil($count / $limit);
     }
 }
