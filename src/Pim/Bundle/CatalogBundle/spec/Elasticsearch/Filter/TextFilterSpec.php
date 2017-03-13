@@ -6,24 +6,25 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
+use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
-class StringFilterSpec extends ObjectBehavior
+class TextFilterSpec extends ObjectBehavior
 {
     function let(AttributeValidatorHelper $attributeValidatorHelper)
     {
         $this->beConstructedWith(
             $attributeValidatorHelper,
-            ['pim_catalog_text', 'pim_catalog_textarea'],
+            ['pim_catalog_text'],
             ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'IN', 'EMPTY', 'NOT EMPTY', '!=']
         );
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\StringFilter');
+        $this->shouldHaveType('\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\TextFilter');
     }
 
     function it_is_a_filter()
@@ -85,6 +86,11 @@ class StringFilterSpec extends ObjectBehavior
                 'term' => [
                     'values.name-varchar.en_US.ecommerce' => 'Sony',
                 ],
+            ]
+        )->shouldBeCalled();
+
+        $sqb->addFilter([
+                'exists' => ['field' => 'values.name-varchar.en_US.ecommerce'],
             ]
         )->shouldBeCalled();
 
@@ -170,13 +176,20 @@ class StringFilterSpec extends ObjectBehavior
         $attributeValidatorHelper->validateLocale($name, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($name, 'ecommerce')->shouldBeCalled();
 
-        $sqb->addMustNot([
+        $sqb->addMustNot(
+            [
                 'query_string' => [
                     'default_field' => 'values.name-varchar.en_US.ecommerce',
                     'query'         => '*sony*',
                 ],
             ]
         )->shouldBeCalled();
+
+        $sqb->addFilter([
+            'exists' => [
+                'field' => 'values.name-varchar.en_US.ecommerce'
+            ],
+        ])->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($name, Operators::DOES_NOT_CONTAIN, 'sony', 'en_US', 'ecommerce', []);
@@ -229,7 +242,7 @@ class StringFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::stringExpected(
                 'name',
-                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\StringFilter',
+                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\TextFilter',
                 123
             )
         )->during('addAttributeFilter', [$name, Operators::CONTAINS, 123, 'en_US', 'ecommerce', []]);
@@ -249,7 +262,10 @@ class StringFilterSpec extends ObjectBehavior
         $this->setQueryBuilder($sqb);
 
         $this->shouldThrow(
-            new \InvalidArgumentException('This filter does not support operator "IN CHILDREN".')
+            InvalidOperatorException::notSupported(
+                'IN CHILDREN',
+                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\TextFilter'
+            )
         )->during('addAttributeFilter', [$name, Operators::IN_CHILDREN_LIST, 'Sony', 'en_US', 'ecommerce', []]);
     }
 
@@ -271,7 +287,7 @@ class StringFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyException::expectedFromPreviousException(
                 'name',
-                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\StringFilter',
+                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\TextFilter',
                 $e
             )
         )->during('addAttributeFilter', [$name, Operators::CONTAINS, 'Sony', 'en_US', 'ecommerce', []]);
@@ -294,7 +310,7 @@ class StringFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyException::expectedFromPreviousException(
                 'name',
-                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\StringFilter',
+                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\TextFilter',
                 $e
             )
         )->during('addAttributeFilter', [$name, Operators::CONTAINS, 'Sony', 'en_US', 'ecommerce', []]);

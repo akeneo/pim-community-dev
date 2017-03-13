@@ -31,7 +31,7 @@ Depending on the field format (string, number, date, etc....), some specific ana
 As new attributes can be added dynamically to Akeneo, we will use the dynamic mapping feature of Elasticsearch and provides specific suffix that will specify the analyzer to use.
 
 For example:
- - description-text: the ``-text`` suffix is applied, meaning that we must apply a specific analyzer for text
+ - description-text: the ``-text`` suffix is applied, meaning that we must apply a specific analyzer for a text area attribute.
 
 
 List of suffix and their mapping to Akeneo
@@ -40,9 +40,9 @@ List of suffix and their mapping to Akeneo
 ===============================   ==========================
 Akeneo attribute type             Elasticsearch field suffix
 ===============================   ==========================
- pim_catalog_identifier            -ident
- pim_catalog_text                  -text
- pim_catalog_textarea              -text_area
+ pim_catalog_identifier            -varchar
+ pim_catalog_text                  -varchar
+ pim_catalog_textarea              -text
  pim_catalog_metric                -metric
  pim_catalog_boolean               -bool
  pim_catalog_simpleselect          -option
@@ -60,9 +60,10 @@ Naming
 ~~~~~~
  - Elasticsearch fields for attribute follow this naming scheme:
 
-``attribute_code-l-locale-s-scope-es_suffix``
+``attribute_code-backend_type.channel.locale.es_suffix``
 
-Please note that locale code is prefixed by ``l-`` and scope code is prefixed by ``s-``, to avoid collision between them.
+- When the attribute is not localizable: ``locale`` becomes ``<all_locales>``
+- When the attribute is not scopable: ``channel`` becomes ``<all_channels>``
 
 Fitering
 ~~~~~~~~
@@ -74,52 +75,59 @@ If there's no Akeneo filter needing full-text capability, we will perform a ``fi
 search without query and with only a ``bool`` filter with ``must`` typed occurence of the following form (as
 Akeneo product builder supported only AND relation between conditions):
 
-.. code-block:: yaml
+.. code-block:: php
 
-    filtered:
-        filter:
-            bool:
-                must:
-                    -
-                        prefix:
-                             name-text: "Tshirt"
-                    -
-                        term:
-                            price-prices: 30
+    [
+        'query' => [
+            'bool' => [
+                'filter' => [
+                    'term' => [
+                        'name-text' => 'Tshirt',
+                    ],
+                    'prefix' => [
+                        'name-text' => 'Tshirt'
+                    ]
+                ]
+            ]
+        ]
+    ]
 
 If we have one or more filter needing full-text capability, we will need to combine query
 and filter with a ``bool`` query with ``must`` typed occurence of the following form:
 
-.. code-block:: yaml
+.. code-block:: php
 
-    filtered:
-        query:
-            bool:
-                must:
-                    -
-                        match_phrase:
-                            description-en_US-mobile-text_area: "30 pages"
-                    -
-                        match_phrase:
-                            name-text: "canon"
-        filter:
-            bool:
-                must:
-                    -
-                        prefix:
-                            name-text: "Tshirt"
-                    -
-                        term:
-                            price-prices: 30
+    [
+        'query' => [
+            'bool' => [
+                'filter' => [
+                    'match_phrase' => [
+                        'description-text-en_US-mobile' => '30 pages'
+
+                    ],
+                    'match_phrase' => [
+                            'name-text' => "canon"
+                    ],
+                    'prefix' => [
+                        'name-text' => 'Tshirt'
+                    ],
+                    'term' => [
+                        'price-prices' => 30
+                    ]
+                ]
+            ]
+        ]
+    ]
 
 Sorting
 ~~~~~~~
  - sorting will be applied with the following ``sort`` node:
 
-.. code-block:: yaml
+.. code-block:: php
 
-    sort:
-        name-text: "asc"
+    'sort' => [
+        'name-varchar' => "asc"
+    ]
 
 Sorting and tokenization
 ........................
@@ -129,10 +137,11 @@ For those fields (mainly string fields), a multi-fields must be created with the
 
 In this case, the sort becomes:
 
-.. code-block:: yaml
+.. code-block:: php
 
-    sort:
-        name-text.raw: "asc"
+    'sort' => [
+        'name-text.raw' => 'asc'
+    ]
 
 Text area
 *********
@@ -141,14 +150,13 @@ Text area
 :Analyzer: HTML char filter + standard tokenizer + lowercase token filter
 
     Other fields analyzer:
-     - raw: non-tokenized (Keyword Tokenizer) + lower case token filter
-     - reverse: non-tokenized (Keyword Tokenizer) + reversing filter (Reverse Token Filter)
+     - raw: Keyword datatype + non-tokenized (Keyword Tokenizer) + lower case token filter
 
 Data model
 ~~~~~~~~~~
 .. code-block:: yaml
 
-  my_description-l-fr_FR-s-mobile-text_area: "My description"
+  my_description-text-fr_FR-mobile: 'My description'
 
 
 Filtering
@@ -157,65 +165,67 @@ Operators
 .........
 STARTS WITH
 """""""""""
-:Type: Query
 :Specific field: raw
 
     Must be applied on the non-analyzed version of the field or will try to
     match on all tokens.
 
-.. code-block:: yaml
+.. code-block:: php
 
-    query_string:
-        default_field: "description-text_area.raw"
-        query: "My*"
-        analyze_wildcard: true
+    'filter' => [
+        'query_string' => [
+            'default_field' => 'description-text.raw',
+            'query' => "My*"
+        ]
+    ]
 
 Note: All spaces must be escaped (with ``\\``) to prevent interpretation as separator. This applies on all query using a query_string.
 
 
 Example:
 
-.. code-block:: yaml
+.. code-block:: php
 
-    query_string:
-        default_field: "description-text_area.raw"
-        query: "My\\ description*"
-        analyze_wildcard: true
+    'filter' => [
+        'query_string' => [
+            'default_field' => 'description-text.raw',
+            'query' => 'My\\ description*'
+        ]
+    ]
 
-
-ENDS WITH
-"""""""""
-:Type: Query
-:Specific Field: reverse
-
-.. code-block:: yaml
-
-    query_string:
-        default_field: "description-text_area.reverse"
-        query: "description*"
-        analyze_wildcard: true
 
 CONTAINS
 """"""""
-:Type: Query
+:Specific field: raw
 
-.. code-block:: yaml
+.. code-block:: php
 
-    match_phrase:
-        description-text_area: "cool product"
+    'filter' => [
+        'query_string' => [
+            'default_field' => 'description-text.raw',
+            'query' => 'cool\\ product'
+        ]
+    ]
 
 DOES NOT CONTAIN
 """"""""""""""""
-:Type: Query
+:Specific field: raw
 
-Same syntax than the ``contains`` but must be included in a ``must_not`` boolean occured type instead of ``must``.
+Same syntax than the ``contains`` but must be included in a ``must_not`` boolean occured type instead of ``filter``.
 
-.. code-block:: yaml
+.. code-block:: php
 
-  bool:
-    must_not:
-        match_phrase :
-            description-text_area: "Do not want"
+    'bool' => [
+        'must_not' => [
+            'query_string' => [
+                'default_field' => 'description-text.raw',
+                'query' => 'cool\\ product'
+            ]
+        ],
+        'filter' => [
+            'exists' => ['field' => 'description-text.raw'
+        ]
+    ]
 
 Equals (=)
 """"""""""
@@ -224,34 +234,37 @@ Equals (=)
 
     Equality will not work with tokenized field, so we will use the untokenized sub-field:
 
-.. code-block:: yaml
+.. code-block:: php
 
-    term:
-        description-text_area.raw: "My full lookup text"
+    'filter' => [
+        'term' => [
+            'description-text.raw' => 'My full lookup text'
+        ]
+    ]
 
 EMPTY
 """""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    missing:
-        field : "description-text_area"
+    'must_not' => [
+        'exists => [
+            'field' => 'description-text'
+        ]
+    ]
 
-String
-******
+Text
+****
 
 :Apply: pim_catalog_text attributes
 :Analyzer: keyword tokenizer + lowercase token filter
 
-    Other fields analyzer:
-     - reverse: non-tokenized (Keyword Tokenizer) + lowercase token filter + reversing filter (Reverse Token Filter)
-
 Data model
 ~~~~~~~~~~
-.. code-block:: yaml
+.. code-block:: php
 
-  name-text: "My product name"
+  name-varchar: "My product name"
 
 Filtering
 ~~~~~~~~~
@@ -261,27 +274,38 @@ All operators except CONTAINS and DOES NOT CONTAINS are the same than with the t
 
 CONTAINS
 """"""""
-.. code-block:: yaml
+.. code-block:: php
 
-    query_string:
-        default_field: "name-text"
-        query: "*my_text*"
-        analyze_wildcard: true
+    'filter' => [
+        'query_string' => [
+            'default_field' => 'name-varchar',
+            'query' => '*my_text*'
+        ]
+    ]
 
 Note:
 In case of performances problems, a faster solution would be to add a subfield with a n-gram analyzer.
 
 DOES NOT CONTAIN
 """"""""""""""""
-:Type: Query
 
-Same syntax than the contains but must be include in a ``must_not`` boolean occured type instead of ``must``.
+Same syntax than the contains but must be include in a ``must_not`` boolean occured type instead of ``filter``.
 
 .. code-block:: yaml
 
-  bool:
-    must_not:
-        TO BE DEFINED
+    'query' => [
+        'bool' => [
+            'must_not' => [
+                'query_string' => [
+                    'default_field' => 'name-varchar',
+                    'query' => '*my_text*'
+                ]
+            ],
+            'filter' => [
+                'exists' => ['field' => 'name-varchar']
+            ]
+        ]
+    ]
 
 Identifier
 **********

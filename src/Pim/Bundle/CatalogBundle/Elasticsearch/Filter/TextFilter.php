@@ -3,19 +3,20 @@
 namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
- * String Filter for an Elasticsearch query
+ * Text filter for an Elasticsearch query
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class StringFilter extends AbstractFilter implements AttributeFilterInterface
+class TextFilter extends AbstractFilter implements AttributeFilterInterface
 {
     /**
      * @param AttributeValidatorHelper $attrValidatorHelper
@@ -51,40 +52,17 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
 
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($attribute, $value);
+            $value = $this->escapeValue($value);
         }
 
         $attributePath = $this->getAttributePath($attribute, $locale, $scope);
 
         switch ($operator) {
-            case Operators::EQUALS:
+            case Operators::STARTS_WITH:
                 $clause = [
-                    'term' => [
-                        $attributePath => $value,
-                    ],
-                ];
-                $this->searchQueryBuilder->addFilter($clause);
-                break;
-
-            case Operators::NOT_EQUAL:
-                $clause = [
-                    'term' => [
-                        $attributePath => $value,
-                    ],
-                ];
-                $this->searchQueryBuilder->addMustNot($clause);
-                break;
-            case Operators::IS_EMPTY:
-                $clause = [
-                    'exists' => [
-                        'field' => $attributePath,
-                    ],
-                ];
-                $this->searchQueryBuilder->addMustNot($clause);
-                break;
-            case Operators::IS_NOT_EMPTY:
-                $clause = [
-                    'exists' => [
-                        'field' => $attributePath,
+                    'query_string' => [
+                        'default_field' => $attributePath,
+                        'query'         => $value . '*',
                     ],
                 ];
                 $this->searchQueryBuilder->addFilter($clause);
@@ -101,27 +79,66 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
                 break;
 
             case Operators::DOES_NOT_CONTAIN:
-                $clause = [
+                $mustNotClause = [
                     'query_string' => [
                         'default_field' => $attributePath,
                         'query'         => '*' . $value . '*',
                     ],
                 ];
+
+                $filterClause = [
+                    'exists' => ['field' => $attributePath],
+                ];
+
+                $this->searchQueryBuilder->addMustNot($mustNotClause);
+                $this->searchQueryBuilder->addFilter($filterClause);
+                break;
+
+            case Operators::EQUALS:
+                $clause = [
+                    'term' => [
+                        $attributePath => $value,
+                    ],
+                ];
+                $this->searchQueryBuilder->addFilter($clause);
+                break;
+
+            case Operators::NOT_EQUAL:
+                $mustNotClause = [
+                    'term' => [
+                        $attributePath => $value,
+                    ],
+                ];
+
+                $filterClause = [
+                    'exists' => [
+                        'field' => $attributePath,
+                    ],
+                ];
+                $this->searchQueryBuilder->addMustNot($mustNotClause);
+                $this->searchQueryBuilder->addFilter($filterClause);
+                break;
+
+            case Operators::IS_EMPTY:
+                $clause = [
+                    'exists' => [
+                        'field' => $attributePath,
+                    ],
+                ];
                 $this->searchQueryBuilder->addMustNot($clause);
                 break;
 
-            case Operators::STARTS_WITH:
+            case Operators::IS_NOT_EMPTY:
                 $clause = [
-                    'query_string' => [
-                        'default_field' => $attributePath,
-                        'query'         => $value . '*',
+                    'exists' => [
+                        'field' => $attributePath,
                     ],
                 ];
                 $this->searchQueryBuilder->addFilter($clause);
                 break;
 
             default:
-                throw new \InvalidArgumentException(sprintf('This filter does not support operator "%s".', $operator));
+                throw InvalidOperatorException::notSupported($operator, static::class);
         }
 
         return $this;
@@ -138,5 +155,21 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
         if (!is_string($value) && null !== $value) {
             throw InvalidPropertyTypeException::stringExpected($attribute->getCode(), static::class, $value);
         }
+    }
+
+    /**
+     * Escapes value
+     *
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#_reserved_characters
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    protected function escapeValue($value)
+    {
+        $regex = '#[-+=|! &(){}\[\]^"~*<>?:/\\\]#';
+
+        return preg_replace($regex, '\\\$0', $value);
     }
 }

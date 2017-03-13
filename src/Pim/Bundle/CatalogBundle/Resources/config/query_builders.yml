@@ -10,7 +10,8 @@ parameters:
     pim_catalog.doctrine.query.filter.object_code_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver
     pim_catalog.doctrine.query.filter.dummy.class:              Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\DummyFilter
 
-    pim_catalog.elasticsearch.query.filter.string.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\StringFilter
+    pim_catalog.elasticsearch.query.filter.text.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\TextFilter
+    pim_catalog.elasticsearch.query.filter.text_area.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\TextAreaFilter
 
 services:
     pim_catalog.query.product_query_builder_factory:
@@ -199,11 +200,20 @@ services:
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
-    pim_catalog.elasticsearch.query.filter.string:
-        class: '%pim_catalog.elasticsearch.query.filter.string.class%'
+    pim_catalog.elasticsearch.query.filter.text:
+        class: '%pim_catalog.elasticsearch.query.filter.text.class%'
         arguments:
             - '@pim_catalog.validator.helper.attribute'
-            - ['pim_catalog_text', 'pim_catalog_textarea']
+            - ['pim_catalog_text']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.elasticsearch.query.filter.text_area:
+        class: '%pim_catalog.elasticsearch.query.filter.text_area.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_textarea']
             - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }

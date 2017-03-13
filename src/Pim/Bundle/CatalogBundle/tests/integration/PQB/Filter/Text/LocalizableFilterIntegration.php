@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\String;
+namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Text;
 
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
 use Pim\Component\Catalog\AttributeTypes;
@@ -69,18 +69,6 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
 
         $result = $this->execute([['a_localizable_text', Operators::STARTS_WITH, 'cat', ['locale' => 'en_US']]]);
         $this->assert($result, ['cattle']);
-    }
-
-    public function testOperatorEndsWith()
-    {
-        $result = $this->execute([['a_localizable_text', Operators::ENDS_WITH, 'ca', ['locale' => 'en_US']]]);
-        $this->assert($result, []);
-
-        $result = $this->execute([['a_localizable_text', Operators::ENDS_WITH, 'cat', ['locale' => 'fr_FR']]]);
-        $this->assert($result, []);
-
-        $result = $this->execute([['a_localizable_text', Operators::ENDS_WITH, 'cat', ['locale' => 'en_US']]]);
-        $this->assert($result, ['cat']);
     }
 
     public function testOperatorContains()
