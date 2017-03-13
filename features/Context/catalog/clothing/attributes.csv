@@ -9,7 +9,6 @@ price;pim_catalog_price_collection;marketing;0;0;1;1;Price;;;;0;0;;1;200;1;;;;;;
 rating;pim_catalog_simpleselect;marketing;0;0;1;2;Rating;;;;0;0;;;;;;;;;;
 side_view;pim_catalog_image;media;0;0;0;1;Side view;;;;0;0;;;;;;1;gif,png,jpeg,jpg;;;
 top_view;pim_catalog_image;media;0;0;0;2;Top view;;;;0;0;;;;;;1;gif,png,jpeg,jpg;;;
-video;pim_catalog_file;media;0;0;0;2;Video;;;;0;0;;;;;;1;avi;;;
 datasheet;pim_catalog_file;media;0;0;0;3;Datasheet;;;;0;0;;;;;;;txt,pdf,doc,docx,csv,rtf;;;
 size;pim_catalog_simpleselect;sizes;0;0;1;1;Size;;;;0;0;;;;;;;;;;
 main_color;pim_catalog_simpleselect;colors;0;0;1;1;Main color;;;;0;0;;;;;;;;;;
