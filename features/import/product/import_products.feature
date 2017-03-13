@@ -326,3 +326,20 @@ Feature: Execute a job
       | channel | locale | state   | missing_values                        | ratio |
       | mobile  | en_US  | success |                                       | 100%  |
       | tablet  | en_US  | warning | Weather conditions, Rating, Side view | 67%   |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6085
+  Scenario: Successfully import product associations with modified column name
+    Given the following CSV file to import:
+      """
+      sku;family;groups;categories;name-en_US;description-en_US-tablet;price;size;color
+      SKU-001;boots;similar_boots;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est;"100 EUR, 90 USD";40;
+      SKU-002;sneakers;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames;"100 EUR, 90 USD";37;red
+      """
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath          | %file to import% |
+      | enabledComparison | yes              |
+      | categoriesColumn  | catégories       |
+      | groupsColumn      | groupes          |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish

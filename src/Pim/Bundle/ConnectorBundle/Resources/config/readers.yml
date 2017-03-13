@@ -243,10 +243,12 @@ services:
             - '@pim_connector.array_converter.flat_to_standard.association_type'
 
     pim_connector.reader.file.xlsx_association:
-        class: '%pim_connector.reader.file.xlsx.class%'
+        class: '%pim_connector.reader.file.xlsx_product.class%'
         arguments:
-            - '@pim_connector.reader.file.xlsx_iterator_factory'
-            - '@pim_connector.array_converter.flat_to_standard.product_association'
+           - '@pim_connector.reader.file.xlsx_iterator_factory'
+           - '@pim_connector.array_converter.flat_to_standard.product_delocalized'
+           - '@pim_connector.reader.file.media_path_transformer'
+           - []
 
     pim_connector.reader.file.xlsx_group:
         class: '%pim_connector.reader.file.xlsx.class%'
