@@ -18,6 +18,11 @@ pim_api_attribute_get:
     defaults: { _controller: pim_api.controller.attribute:getAction, _format: json }
     methods: [GET]
 
+pim_api_attribute_partial_update_list:
+    path: /attributes
+    defaults: { _controller: pim_api.controller.attribute:partialUpdateListAction, _format: json }
+    methods: [PATCH]
+
 pim_api_attribute_option_list:
     path: /attributes/{attributeCode}/options
     defaults: { _controller: pim_api.controller.attribute_option:listAction, _format: json }

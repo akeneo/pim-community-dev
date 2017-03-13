@@ -23,6 +23,7 @@ services:
             - '@router'
             - '@pim_api.pagination.paginator'
             - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.stream.category_partial_update_stream'
             - '%pim_api.configuration%'
 
     pim_api.controller.family:
@@ -37,6 +38,7 @@ services:
             - '@router'
             - '@pim_api.pagination.paginator'
             - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.stream.family_partial_update_stream'
             - '%pim_api.configuration%'
 
     pim_api.controller.attribute:
@@ -51,6 +53,7 @@ services:
             - '@router'
             - '@pim_api.pagination.paginator'
             - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.stream.attribute_partial_update_stream'
             - '%pim_api.configuration%'
 
     pim_api.controller.attribute_option:
@@ -111,6 +114,7 @@ services:
             - '@pim_catalog.saver.product'
             - '@router'
             - '@pim_catalog.comparator.filter.product'
+            - '@pim_api.stream.product_partial_update_stream'
             - '%pim_api.configuration%'
 
     pim_api.controller.root_endpoint:

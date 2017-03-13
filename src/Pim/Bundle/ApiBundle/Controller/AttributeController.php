@@ -9,6 +9,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\ApiBundle\Documentation;
+use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
@@ -20,6 +21,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\RouterInterface;
@@ -63,6 +65,9 @@ class AttributeController
     /** @var ParameterValidator */
     protected $parameterValidator;
 
+    /** @var StreamResourceResponse */
+    protected $partialUpdateStreamResource;
+
     /**
      * @param AttributeRepositoryInterface $repository
      * @param NormalizerInterface          $normalizer
@@ -73,6 +78,7 @@ class AttributeController
      * @param RouterInterface              $router
      * @param HalPaginator                 $paginator
      * @param ParameterValidator           $parameterValidator
+     * @param StreamResourceResponse       $partialUpdateStreamResource
      * @param array                        $apiConfiguration
      */
     public function __construct(
@@ -85,6 +91,7 @@ class AttributeController
         RouterInterface $router,
         HalPaginator $paginator,
         ParameterValidator $parameterValidator,
+        StreamResourceResponse $partialUpdateStreamResource,
         array $apiConfiguration
     ) {
         $this->repository = $repository;
@@ -96,6 +103,7 @@ class AttributeController
         $this->router = $router;
         $this->parameterValidator = $parameterValidator;
         $this->paginator = $paginator;
+        $this->partialUpdateStreamResource = $partialUpdateStreamResource;
         $this->apiConfiguration = $apiConfiguration;
     }
 
@@ -180,6 +188,21 @@ class AttributeController
         $this->saver->save($attribute);
 
         $response = $this->getResponse($attribute, Response::HTTP_CREATED);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @throws HttpException
+     *
+     * @return Response
+     */
+    public function partialUpdateListAction(Request $request)
+    {
+        $resource = $request->getContent(true);
+        $response = $this->partialUpdateStreamResource->streamResponse($resource);
 
         return $response;
     }

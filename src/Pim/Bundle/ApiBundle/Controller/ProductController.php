@@ -9,6 +9,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\ApiBundle\Documentation;
+use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
@@ -29,6 +30,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\RouterInterface;
@@ -87,6 +89,9 @@ class ProductController
     /** @var ProductFilterInterface */
     protected $emptyValuesFilter;
 
+    /** @var StreamResourceResponse */
+    protected $partialUpdateStreamResource;
+
     /** @var array */
     protected $apiConfiguration;
 
@@ -106,6 +111,7 @@ class ProductController
      * @param SaverInterface                        $saver
      * @param RouterInterface                       $router
      * @param ProductFilterInterface                $emptyValuesFilter
+     * @param StreamResourceResponse                $partialUpdateStreamResource
      * @param array                                 $apiConfiguration
      */
     public function __construct(
@@ -124,6 +130,7 @@ class ProductController
         SaverInterface $saver,
         RouterInterface $router,
         ProductFilterInterface $emptyValuesFilter,
+        StreamResourceResponse $partialUpdateStreamResource,
         array $apiConfiguration
     ) {
         $this->pqbFactory = $pqbFactory;
@@ -141,6 +148,7 @@ class ProductController
         $this->saver = $saver;
         $this->router = $router;
         $this->emptyValuesFilter = $emptyValuesFilter;
+        $this->partialUpdateStreamResource = $partialUpdateStreamResource;
         $this->apiConfiguration = $apiConfiguration;
     }
 
@@ -275,7 +283,7 @@ class ProductController
      * @param Request $request
      * @param string  $code
      *
-     * @throws BadRequestHttpException
+     * @throws HttpException
      *
      * @return Response
      */
@@ -283,20 +291,18 @@ class ProductController
     {
         $data = $this->getDecodedContent($request->getContent());
 
-        $isCreation = false;
         $product = $this->productRepository->findOneByIdentifier($code);
+        $isCreation = null === $product;
 
-        if (null === $product) {
-            $isCreation = true;
-
+        if ($isCreation) {
             $this->validateCodeConsistency($code, $data);
-            $data['identifier'] = $code;
-            $data = $this->populateIdentifierProductValue($data);
-
             $product = $this->productBuilder->createProduct();
-        } else {
-            $data['identifier'] = array_key_exists('identifier', $data) ? $data['identifier'] : $code;
-            $data = $this->populateIdentifierProductValue($data);
+        }
+
+        $data['identifier'] = array_key_exists('identifier', $data) ? $data['identifier'] : $code;
+        $data = $this->populateIdentifierProductValue($data);
+
+        if (!$isCreation) {
             $data = $this->filterEmptyValues($product, $data);
         }
 
@@ -306,6 +312,21 @@ class ProductController
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
         $response = $this->getResponse($product, $status);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @throws HttpException
+     *
+     * @return Response
+     */
+    public function partialUpdateListAction(Request $request)
+    {
+        $resource = $request->getContent(true);
+        $response = $this->partialUpdateStreamResource->streamResponse($resource);
 
         return $response;
     }
