@@ -1359,19 +1359,7 @@ class WebUser extends RawMinkContext
      * @param string $oldOptionName
      * @param string $newOptionName
      *
-     * @Given /^I edit the "([^"]*)" option and turn it to "([^"]*)"$/
-     */
-    public function iEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
-    {
-        $this->getCurrentPage()->editOption($oldOptionName, $newOptionName);
-        $this->wait();
-    }
-
-    /**
-     * @param string $oldOptionName
-     * @param string $newOptionName
-     *
-     * @Given /^I edit the code "([^"]*)" to turn it to "([^"]*)" and cancel$/
+     * @Given /^I edit the attribute option "([^"]*)" to turn it to "([^"]*)" and cancel$/
      */
     public function iEditAndCancelToEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
     {
@@ -1397,7 +1385,7 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string locator
+     * @param string $locator
      *
      * @When /^I hover over the element "([^"]*)"$/
      */
