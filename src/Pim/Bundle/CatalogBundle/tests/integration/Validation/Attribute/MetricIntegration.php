@@ -221,7 +221,7 @@ class MetricIntegration extends AbstractAttributeTestCase
                 'default_metric_unit' => 'METER',
                 'decimals_allowed'    => true,
                 'negative_allowed'    => false,
-                'validation_regexp'   => 'email',
+                'validation_regexp'   => '/[a-z]+/',
             ]
         );
 
