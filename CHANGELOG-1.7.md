@@ -10,6 +10,7 @@
 
 ## Bug fixes
 
+- PIM-6205: Fix asset collection field rendering on view mode
 - PIM-6201: Add automatically the view permission to the user if this one has edit permission during fixtures import
 
 ## Technical improvements

@@ -42,7 +42,8 @@ define(
                         assets: assets,
                         locale: this.context.locale,
                         scope: this.context.scope,
-                        thumbnailFilter: 'thumbnail'
+                        thumbnailFilter: 'thumbnail',
+                        editMode: this.context.editMode
                     }));
 
                     this.delegateEvents();
