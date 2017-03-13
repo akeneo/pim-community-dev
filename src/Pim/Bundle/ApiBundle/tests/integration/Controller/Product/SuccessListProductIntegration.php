@@ -1436,7 +1436,7 @@ JSON;
     {
         $result = json_decode($response->getContent(), true);
         $expected = json_decode($expected, true);
-print_r($result);
+
         foreach ($result['_embedded']['items'] as $index => $product) {
             $product = $this->sanitizeDateFields($product);
             $result['_embedded']['items'][$index] = $this->sanitizeMediaAttributeData($product);
