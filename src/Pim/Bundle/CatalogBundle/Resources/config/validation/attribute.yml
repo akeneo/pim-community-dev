@@ -313,7 +313,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_text
                     - pim_catalog_identifier
         allowedExtensions:
-            # TODO: validate extensions
             - Blank:
                 groups:
                     - pim_catalog_identifier
@@ -328,6 +327,12 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     - pim_catalog_metric
                     - pim_reference_data_multiselect
                     - pim_reference_data_simpleselect
+            - Pim\Component\Catalog\Validator\Constraints\FileAllowedExtensions:
+                groups:
+                    - pim_catalog_file
+            - Pim\Component\Catalog\Validator\Constraints\ImageAllowedExtensions:
+                groups:
+                    - pim_catalog_image
         translations:
             - Valid: ~
         group:
