@@ -14,7 +14,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  * Channel controller
  *
  * @author    Alban Alnot <alban.alnot@consertotech.pro>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class JobExecutionController
@@ -35,11 +35,11 @@ class JobExecutionController
     protected $jobExecutionRepo;
 
     /**
-     * @param TranslatorInterface      $translator
-     * @param JobExecutionArchivist    $archivist
-     * @param SerializerInterface      $serializer
-     * @param JobExecutionManager      $jobExecutionManager
-     * @param JobExecutionRepository   $jobExecutionRepo
+     * @param TranslatorInterface    $translator
+     * @param JobExecutionArchivist  $archivist
+     * @param SerializerInterface    $serializer
+     * @param JobExecutionManager    $jobExecutionManager
+     * @param JobExecutionRepository $jobExecutionRepo
      */
     public function __construct(
         TranslatorInterface $translator,
@@ -86,12 +86,11 @@ class JobExecutionController
         // limit the number of step execution returned to avoid memory overflow
         $context = ['limit_warnings' => 100];
 
-
         $jobResponse = $this->serializer->normalize($jobExecution, 'standard', $context);
         $jobResponse['meta'] = [
-            "log"           => file_exists($jobExecution->getLogFile()),
-            "archives"      => $archives,
-            "jobId"         => $id
+            'log'           => file_exists($jobExecution->getLogFile()),
+            'archives'      => $archives,
+            'id'         => $id
         ];
         return new JsonResponse($jobResponse);
     }

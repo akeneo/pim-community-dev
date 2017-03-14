@@ -3,7 +3,7 @@
  * Download file extension
  *
  * @author    Alban Alnot <alban.alnot@consertotech.pro>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(
@@ -26,7 +26,7 @@ define(
             template: _.template(template),
 
             /**
-             * @param {Object} meta
+             * {@inheritdoc}
              */
             initialize: function (meta) {
                 this.config = meta.config;
@@ -57,7 +57,7 @@ define(
                 this.$el.html(this.template({
                     __: __,
                     archives: formData.meta.archives,
-                    executionId: formData.meta.jobId,
+                    executionId: formData.meta.id,
                     generateRoute: this.getUrl.bind(this)
                 }));
 
@@ -66,6 +66,7 @@ define(
 
             /**
              * Get the url from parameters
+             * @returns {string}
              */
             getUrl: function (parameters) {
                 return Routing.generate(

@@ -3,7 +3,7 @@
  * Auto refresh
  *
  * @author    Alban Alnot <alban.alnot@consertotech.pro>
- * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(
@@ -79,15 +79,15 @@ define(
              */
             fetchData: function (jobExecution) {
 
-                if (jobExecution && jobExecution.meta && jobExecution.meta.jobId) {
+                if (jobExecution && jobExecution.meta && jobExecution.meta.id) {
 
                     if (jobExecution.isRunning) {
                         this.$('img').removeClass('transparent');
-                        var jobId = jobExecution.meta.jobId;
+                        var jobId = jobExecution.meta.id;
                         FetcherRegistry.getFetcher('job-execution').fetch(jobId, {id: jobId, cached: false})
                             .then(function (newJobExecution) {
                                 this._object = newJobExecution;
-                                this.getRoot().trigger('pim-job-execution-form:newData', newJobExecution);
+                                this.getRoot().trigger('pim-job-execution-form:new-data', newJobExecution);
                                 this.restartAutoRefreshTimeout(newJobExecution);
                             }.bind(this));
                     } else {

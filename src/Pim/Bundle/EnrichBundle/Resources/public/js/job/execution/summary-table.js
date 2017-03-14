@@ -3,7 +3,7 @@
  * Launch button
  *
  * @author    Alban Alnot <alban.alnot@consertotech.pro>
- * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(
@@ -51,7 +51,7 @@ define(
              * {@inheritDoc}
              */
             configure: function () {
-                this.listenTo(this.getRoot(), 'pim-job-execution-form:newData',
+                this.listenTo(this.getRoot(), 'pim-job-execution-form:new-data',
                     function (newData) {
                         this.setData(newData);
                         this.render();
@@ -70,7 +70,7 @@ define(
                     __: __,
                     stepExecutions: model.stepExecutions,
                     failures: model.failures,
-                    jobId: model.meta.jobId
+                    id: model.meta.id
                 }));
 
                 return this;

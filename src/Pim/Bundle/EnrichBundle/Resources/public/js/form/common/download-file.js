@@ -4,7 +4,7 @@
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @author    Alban Alnot <alban.alnot@consertotech.pro>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(
@@ -69,7 +69,7 @@ define(
 
             /**
              * Get the url with parameters
-             * @returns {*}
+             * @returns {string}
              */
             getUrl: function () {
                 if (this.config.url) {
@@ -92,9 +92,10 @@ define(
 
             /**
              * Returns true if the extension should be visible
-             * @returns {*}
+             * @returns {boolean}
              */
             isVisible: function () {
+
                 return this.config.isVisiblePath ?
                     propertyAccessor.accessProperty(
                         this.getFormData(),
