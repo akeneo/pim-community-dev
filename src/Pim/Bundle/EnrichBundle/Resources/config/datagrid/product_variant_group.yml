@@ -128,4 +128,4 @@ datagrid:
                     data_name: values.scope
                     options:
                         field_options:
-                            choices: '@pim_catalog.repository.channel->getLabelsIndexedByCode(@pim_user.context.user->getUiLocaleCode())'
+                            choices: '@pim_catalog.repository.channel->getLabelsIndexedByCode(@pim_user.context.user->getCurrentLocaleCode())'
