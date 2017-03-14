@@ -93,7 +93,7 @@ Feature: Import XLSX products
   Scenario: Successfully import product associations with modified column name
     Given the following XLSX file to import:
       """
-      sku;family;groups;categories;name-en_US;description-en_US-tablet;price;size;color
+      sku;famille;groupes;catégories;name-en_US;description-en_US-tablet;price;size;color
       SKU-001;boots;similar_boots;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est;"100 EUR, 90 USD";40;
       SKU-002;sneakers;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames;"100 EUR, 90 USD";37;red
       """
@@ -105,3 +105,5 @@ Feature: Import XLSX products
     When I am on the "xlsx_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "xlsx_footwear_product_import" job to finish
+    Then I should not see the text "The fields \"catégories, famille, groupes\" do not exist"
+    Then there should be 2 products

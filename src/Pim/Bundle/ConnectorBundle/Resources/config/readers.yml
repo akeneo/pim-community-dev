@@ -15,6 +15,7 @@ parameters:
 
     pim_connector.reader.file.xlsx.class: Pim\Component\Connector\Reader\File\Xlsx\Reader
     pim_connector.reader.file.xlsx_product.class: Pim\Component\Connector\Reader\File\Xlsx\ProductReader
+    pim_connector.reader.file.xlsx_association.class: Pim\Component\Connector\Reader\File\Xlsx\ProductAssociationReader
 
     pim_connector.reader.file.yaml.class: Pim\Component\Connector\Reader\File\Yaml\Reader
 
@@ -243,12 +244,10 @@ services:
             - '@pim_connector.array_converter.flat_to_standard.association_type'
 
     pim_connector.reader.file.xlsx_association:
-        class: '%pim_connector.reader.file.xlsx_product.class%'
+        class: '%pim_connector.reader.file.xlsx_association.class%'
         arguments:
-           - '@pim_connector.reader.file.xlsx_iterator_factory'
-           - '@pim_connector.array_converter.flat_to_standard.product_delocalized'
-           - '@pim_connector.reader.file.media_path_transformer'
-           - []
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.product_association'
 
     pim_connector.reader.file.xlsx_group:
         class: '%pim_connector.reader.file.xlsx.class%'
