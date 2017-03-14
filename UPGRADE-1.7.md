@@ -35,17 +35,17 @@
 
 1. Download and extract the latest standard archive,
 
-    * Download it from the website [PIM community standard](http://www.akeneo.com/download/) and extract:
+* Download it from the website [PIM community standard](http://www.akeneo.com/download/) and extract:
 
-    ```bash
+```bash
 wget http://download.akeneo.com/pim-community-standard-v1.7-latest.tar.gz
 tar -zxf pim-community-standard-v1.7-latest.tar.gz
 cd pim-community-standard/
-    ```
+```
 
 2. Copy the following files to your PIM installation:
 
-    ```bash
+```bash
 export PIM_DIR=/path/to/your/pim/installation
 cp app/SymfonyRequirements.php $PIM_DIR/app
 cp app/PimRequirements.php $PIM_DIR/app
@@ -55,11 +55,11 @@ cp app/config/pim_parameters.yml $PIM_DIR/app/config
 
 mv $PIM_DIR/composer.json $PIM_DIR/composer.json.bak
 cp composer.json $PIM_DIR/
-    ```
+```
 
 3. Update the configuration of your application `$PIM_DIR/app/config/config.yml` to add these new lines:
 
-    ```YAML
+```YAML
 # FOSOAuthServer Configuration
 fos_oauth_server:
         db_driver:                orm
@@ -69,13 +69,13 @@ fos_oauth_server:
         auth_code_class:          Pim\Bundle\ApiBundle\Entity\AuthCode
         service:
             user_provider:        pim_user.provider.user
-    ```
+```
 
 4. Update the security configuration `$PIM_DIR/app/config/security.yml`:
 
     Add these new lines under `security.firewalls`:
    
-    ```YAML
+```YAML
 oauth_token:
         pattern:                        ^/api/oauth/v1/token
         security:                       false
@@ -87,18 +87,18 @@ api:
         fos_oauth:                      true
         stateless:                      true
         access_denied_handler:          pim_api.security.access_denied_handler
-    ```
+```
 
     Add these new lines under `security.access_control`:
     
-    ```YAML
+```YAML
 - { path: ^/api/rest/v1$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 - { path: ^/api/, role: pim_api_overall_access }
-    ```
+```
 
-    Remove these lines under `security.firewalls`:
+Remove these lines under `security.firewalls`:
     
-    ```YAML
+```YAML
 wsse_secured:
         pattern:                        ^/api/(rest|soap).*
         wsse:
@@ -106,90 +106,90 @@ wsse_secured:
             realm:                      "Secured API"
             profile:                    "UsernameToken"
         context:                        main
-    ```
+```
 
 5. Update your application Kernel `$PIM_DIR/app/AppKernel.php`:
 
-    * Remove the following bundles:
+* Remove the following bundles:
 
-    ```PHP
+```PHP
 Oro\Bundle\UIBundle\OroUIBundle,
 Oro\Bundle\FormBundle\OroFormBundle,
 Pim\Bundle\WebServiceBundle\PimWebServiceBundle,
-    ```
+```
 
-    * Add the following bundles in the following functions:
+* Add the following bundles in the following functions:
 
-        - `getPimDependenciesBundles()`:
+- `getPimDependenciesBundles()`:
 
-          ```PHP
+```PHP
 new FOS\OAuthServerBundle\FOSOAuthServerBundle()
-          ```
+```
 
-        - `getPimBundles()`:
+- `getPimBundles()`:
 
-          ```PHP
+```PHP
 new Pim\Bundle\ApiBundle\PimApiBundle()
-          ```
+```
 
 6. Update your routing configuration `$PIM_DIR/app/config/routing.yml`:
 
-    * Remove the following lines:
+* Remove the following lines:
 
-    ```YAML
+```YAML
 pim_webservice:
         resource: "@PimWebServiceBundle/Resources/config/routing.yml"
-    ```
+```
 
-    * Add the following lines:
+* Add the following lines:
 
-    ```YAML
+```YAML
 pim_api:
         resource: "@PimApiBundle/Resources/config/routing.yml"
         prefix: /api
-    ```
+```
 
 7. Then remove your old upgrades folder:
 
-    ```bash
+```bash
 rm -rf $PIM_DIR/upgrades/schema
-    ```
+```
 
 8. Now update your dependencies:
 
-    * [Optional] If you had added dependencies to your project, you will need to do it again in your `composer.json`.
-      You can display the differences of your previous composer.json in `$PIM_DIR/composer.json.bak`.
+* [Optional] If you had added dependencies to your project, you will need to do it again in your `composer.json`.
+  You can display the differences of your previous composer.json in `$PIM_DIR/composer.json.bak`.
 
-        ```JSON
+```JSON
     "require": {
             "your/dependency": "version",
             "your/other-dependency": "version",
     }
-        ```
+```
 
-    * Then run the command to update your dependencies:
+* Then run the command to update your dependencies:
 
-        ```bash
+```bash
 php -d memory_limit=3G composer update
-        ```
+```
 
-        This step will copy the upgrades folder from `pim-community-dev/` to your Pim project root in order to migrate.
-        If you have custom code in your project, this step may raise errors in the "post-script" command.
-        In this case, go to the chapter "Migrate your custom code" before running the database migration.
+This step will copy the upgrades folder from `pim-community-dev/` to your Pim project root in order to migrate.
+If you have custom code in your project, this step may raise errors in the "post-script" command.
+In this case, go to the chapter "Migrate your custom code" before running the database migration.
 
 9. Then you can migrate your database using:
 
-    ```bash
+```bash
 php app/console cache:clear --env=prod
 php app/console doctrine:migration:migrate --env=prod
-    ```
+```
 
 10. Then, generate JS translations and re-generate the PIM assets:
 
-    ```bash
+```bash
 rm -rf $PIM_DIR/web/js/translation/*
 php app/console pim:installer:assets
-    ```
+```
 
 ## Migrate your custom code
 
@@ -373,6 +373,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_user_user_rest_get/pim_user
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ImportExportBundle\\Validator\\Constraints\\WritableDirectory/Pim\\Component\\Catalog\\Validator\\Constraints\\WritableDirectory/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Validator\\Constraints\\Channel/Pim\\Component\\Catalog\\Validator\\Constraints\\Channel/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_import_export\.repository\.job_instance/akeneo_batch\.job\.job_instance_repository/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ImportExportBundle\\Entity\\Repository\\JobInstanceRepository/Akeneo\\Bundle\\BatchBundle\\Job\\JobInstanceRepository/g'
 ```
 
 ### CSS Refactoring
