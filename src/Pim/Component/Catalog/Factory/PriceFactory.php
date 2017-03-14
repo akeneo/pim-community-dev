@@ -36,8 +36,8 @@ class PriceFactory
      * exists.
      * Amount and currency are directly set during price instantiation.
      *
-     * @param $amount
-     * @param $currency
+     * @param float  $amount
+     * @param string $currency
      *
      * @throws \InvalidArgumentException
      * @return ProductPriceInterface
@@ -49,10 +49,13 @@ class PriceFactory
                 'currency',
                 'code',
                 'The currency does not exist',
-                'price',
-                'factory',
+                static::class,
                 $currency
             );
+        }
+
+        if ('' === $amount) {
+            $amount = null;
         }
 
         $price = new $this->priceClass($amount, $currency);

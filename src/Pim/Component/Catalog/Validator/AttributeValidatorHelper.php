@@ -86,12 +86,12 @@ class AttributeValidatorHelper
             );
         }
 
-        if ($attribute->isLocaleSpecific() && !in_array($locale, $attribute->getLocaleSpecificCodes())) {
+        if ($attribute->isLocaleSpecific() && !in_array($locale, $attribute->getAvailableLocaleCodes())) {
             throw new \LogicException(
                 sprintf(
                     'Attribute "%s" is locale specific and expects one of these locales: %s, "%s" given.',
                     $attribute->getCode(),
-                    implode($attribute->getLocaleSpecificCodes(), ', '),
+                    implode($attribute->getAvailableLocaleCodes(), ', '),
                     $locale
                 )
             );

@@ -34,10 +34,8 @@ class ProductValueCompleteChecker implements ProductValueCompleteCheckerInterfac
         LocaleInterface $locale
     ) {
         foreach ($this->productValueCheckers as $productValueChecker) {
-            if ($productValueChecker->supportsValue($productValue, $channel, $locale)
-                && $productValueChecker->isComplete($productValue, $channel, $locale)
-            ) {
-                return true;
+            if ($productValueChecker->supportsValue($productValue, $channel, $locale)) {
+                return $productValueChecker->isComplete($productValue, $channel, $locale);
             }
         }
 

@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Catalog\Factory;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
+use Pim\Component\Catalog\Factory\PriceFactory;
 use Pim\Component\Catalog\Model\ProductPrice;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 
@@ -59,8 +60,7 @@ class PriceFactorySpec extends ObjectBehavior
             'currency',
             'code',
             'The currency does not exist',
-            'price',
-            'factory',
+            PriceFactory::class,
             'FOOBAR'
         );
 

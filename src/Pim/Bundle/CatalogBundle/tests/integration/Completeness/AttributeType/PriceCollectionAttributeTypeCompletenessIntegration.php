@@ -224,34 +224,6 @@ class PriceCollectionAttributeTypeCompletenessIntegration extends AbstractComple
         $this->assertNotCompleteOnChannel($productAmountNull, 'print');
         $this->assertNotCompleteOnChannel($productAmountNull, 'tablet');
 
-        $productCurrencyEmptyString = $this->createProductWithStandardValues(
-            $family,
-            'product_currency_empty_string',
-            [
-                'values' => [
-                    'a_price_collection' => [
-                        [
-                            'locale' => null,
-                            'scope'  => null,
-                            'data'   => [
-                                [
-                                    'amount'   => 7,
-                                    'currency' => 'USD',
-                                ],
-                                [
-                                    'amount'   => 87,
-                                    'currency' => '',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ]
-        );
-        $this->assertCompleteOnChannel($productCurrencyEmptyString, 'ecommerce');
-        $this->assertNotCompleteOnChannel($productCurrencyEmptyString, 'print');
-        $this->assertNotCompleteOnChannel($productCurrencyEmptyString, 'tablet');
-
         $productMissingPrice = $this->createProductWithStandardValues(
             $family,
             'product_missing_price',

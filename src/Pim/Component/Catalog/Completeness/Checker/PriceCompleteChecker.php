@@ -8,7 +8,10 @@ use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
- * Check if a product price collection complete or not.
+ * Check if a product price collection complete or not for a provided channel.
+ *
+ * For the product value to be complete, it has to contain a price with an amount
+ * for every currency activated in the channel.
  *
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -32,15 +35,18 @@ class PriceCompleteChecker implements ProductValueCompleteCheckerInterface
             return $currency->getCode();
         });
 
+        $completeForCurrency = [];
+
         foreach ($expectedCurrencies as $currency) {
+            $completeForCurrency[$currency] = false;
             foreach ($productValue->getData() as $price) {
-                if ($price->getCurrency() === $currency && null === $price->getData()) {
-                    return false;
+                if ($currency === $price->getCurrency() && null !== $price->getData()) {
+                    $completeForCurrency[$currency] = true;
                 }
             }
         }
 
-        return true;
+        return !in_array(false, $completeForCurrency);
     }
 
     /**

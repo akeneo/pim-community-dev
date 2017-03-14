@@ -5,9 +5,8 @@ namespace Pim\Component\Catalog\Model;
 use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\Localization\Model\LocalizableInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
-use Pim\Component\Catalog\Exception\MissingIdentifierException;
 
 /**
  * Product interface
@@ -116,7 +115,7 @@ interface ProductInterface extends
     /**
      * Get the product groups
      *
-     * @return ArrayCollection
+     * @return Collection
      */
     public function getGroups();
 
@@ -162,7 +161,7 @@ interface ProductInterface extends
     /**
      * Get types of associations
      *
-     * @return AssociationInterface[]|ArrayCollection
+     * @return AssociationInterface[]|Collection
      */
     public function getAssociations();
 
@@ -239,11 +238,11 @@ interface ProductInterface extends
     /**
      * Set product completenesses
      *
-     * @param Collection $completenesses CompletenessInterface
+     * @param Collection $completenesses
      *
      * @return ProductInterface
      */
-    public function setCompletenesses(ArrayCollection $completenesses);
+    public function setCompletenesses(Collection $completenesses);
 
     /**
      * Get the attributes of the product

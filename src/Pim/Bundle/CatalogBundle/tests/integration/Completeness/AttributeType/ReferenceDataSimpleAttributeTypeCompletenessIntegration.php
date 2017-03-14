@@ -69,23 +69,6 @@ class ReferenceDataSimpleAttributeTypeCompletenessIntegration extends AbstractCo
         );
         $this->assertNotComplete($productDataNull);
 
-        $productDataEmptyString = $this->createProductWithStandardValues(
-            $family,
-            'product_data_empty_string',
-            [
-                'values' => [
-                    'a_simple_select_reference_data' => [
-                        [
-                            'locale' => null,
-                            'scope'  => null,
-                            'data'   => '',
-                        ],
-                    ],
-                ],
-            ]
-        );
-        $this->assertNotComplete($productDataEmptyString);
-
         $productWithoutValues = $this->createProductWithStandardValues($family, 'product_without_values');
         $this->assertNotComplete($productWithoutValues);
     }
