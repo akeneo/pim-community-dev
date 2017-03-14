@@ -48,3 +48,8 @@ parameters:
 
     # Number of items returned by default if limit is not filled in request
     api_pagination_limit_by_default: 10
+
+    # Files used as configuration for the Elasticsearch index
+    elasticsearch_index_configuration_files:
+        - 'path/to/foo.yml'
+        - 'path/to/bar.yml'

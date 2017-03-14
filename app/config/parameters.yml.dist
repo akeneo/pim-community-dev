@@ -7,6 +7,5 @@ parameters:
     database_password: akeneo_pim
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
-    pim_es_index_name: product_index
-    pim_es_host:       localhost
-    pim_es_port:       9200
+    index_name:        akeneo_pim
+    index_hosts:       'localhost: 9200'
