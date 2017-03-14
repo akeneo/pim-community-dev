@@ -23,10 +23,6 @@ Feature: Quick export products
     When I press "CSV (Grid context)" on the "Quick Export" dropdown button
     And I wait for the "csv_product_grid_context_quick_export" quick export to finish
     And I am on the dashboard page
-    Then I should have 1 new notification
-    And I should see notification:
-      | type    | message                                                     |
-      | success | Quick export CSV product quick export grid context finished |
     When I go on the last executed job resume of "csv_product_grid_context_quick_export"
     Then I should see the text "COMPLETED"
     And I should see the text "csv_product_grid_context_quick_export"
