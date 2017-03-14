@@ -6,14 +6,12 @@ use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
-use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\Completeness;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
  * Calculates the completenesses for a provided product.
@@ -71,14 +69,12 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
 
         $completenesses = [];
         $requiredProductValues = $this->getRequiredProductValues($product->getFamily());
-        $actualValues = $product->getValues();
 
         foreach ($requiredProductValues as $channelCode => $requiredProductValuesByChannel) {
             foreach ($requiredProductValuesByChannel as $localeCode => $requiredProductValuesByChannelAndLocale) {
                 $completenesses[] = $this->generateCompleteness(
                     $product,
                     $requiredProductValuesByChannelAndLocale,
-                    $actualValues,
                     $channelCode,
                     $localeCode
                 );
@@ -90,7 +86,7 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
 
     /**
      * Generates a two dimensional array indexed by channel and locale containing
-     * the required product values for thos channel/locale combinations. These
+     * the required product values for those channel/locale combinations. Those
      * are determined from the attribute requirements of the product family and
      * from the channel activated locales.
      *
@@ -103,7 +99,41 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
      * - "short_description" is scopable,
      * - "long_description" is scobable and localisable.
      *
-     * The resulting array of product values will be:
+     * The resulting array of product values would be like:
+     * [
+     *     "mobile" => [
+     *         "en_US" => [
+     *             ProductValueCollection {
+     *                 name product value,
+     *                 short_description-mobile product value,
+     *                 long_description-mobile-en_US product value,
+     *             }
+     *         ],
+     *         "fr_FR" => [
+     *             ProductValueCollection {
+     *                 name product value,
+     *                 short_description-mobile product value,
+     *                 long_description-mobile-fr_FR product value,
+     *             }
+     *         ],
+     *     ],
+     *     "print"  => [
+     *         "en_US" => [
+     *             ProductValueCollection {
+     *                 name product value,
+     *                 short_description-print product value,
+     *                 long_description-print-en_US product value,
+     *             }
+     *         ],
+     *         "fr_FR" => [
+     *             ProductValueCollection {
+     *                 name product value,
+     *                 short_description-print product value,
+     *                 long_description-print-fr_FR product value,
+     *             }
+     *         ],
+     *     ],
+     * ]
      *
      * @param FamilyInterface $family
      *
@@ -143,12 +173,11 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
     }
 
     /**
-     * Generates one completeness for given required product value, channel code,
-     * locale code and the product values to compare.
+     * Generates one completeness for the given required product value, channel
+     * code, locale code and the product values to compare.
      *
      * @param ProductInterface                $product
      * @param ProductValueCollectionInterface $requiredValues
-     * @param ProductValueCollectionInterface $actualValues
      * @param string                          $channelCode
      * @param string                          $localeCode
      *
@@ -157,20 +186,22 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
     protected function generateCompleteness(
         ProductInterface $product,
         ProductValueCollectionInterface $requiredValues,
-        ProductValueCollectionInterface $actualValues,
         $channelCode,
         $localeCode
     ) {
         $channel = $this->channelRepository->findOneByIdentifier($channelCode);
         $locale = $this->localeRepository->findOneByIdentifier($localeCode);
 
+        $actualValues = $product->getValues();
         $missingAttributes = new ArrayCollection();
         $missingCount = 0;
         $requiredCount = 0;
 
         foreach ($requiredValues as $requiredValue) {
+            $attribute = $requiredValue->getAttribute();
+
             $productValue = $actualValues->getByCodes(
-                $requiredValue->getAttribute()->getCode(),
+                $attribute->getCode(),
                 $requiredValue->getScope(),
                 $requiredValue->getLocale()
             );
@@ -178,8 +209,6 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
             if (null === $productValue ||
                 !$this->productValueCompleteChecker->isComplete($productValue, $channel, $locale)
             ) {
-                $attribute = $requiredValue->getAttribute();
-
                 if (!$missingAttributes->contains($attribute)) {
                     $missingAttributes->add($attribute);
                     $missingCount++;

@@ -63,8 +63,12 @@ class ProductBuilderSpec extends ObjectBehavior
 
     function it_creates_product_with_a_family_and_an_identifier(
         $familyRepository,
+        $attributeRepository,
         $eventDispatcher,
-        FamilyInterface $tshirtFamily
+        $productValueFactory,
+        FamilyInterface $tshirtFamily,
+        AttributeInterface $identifierAttribute,
+        ProductValueInterface $identifierValue
     ) {
         $eventDispatcher->dispatch(ProductEvents::CREATE, Argument::any())->shouldBeCalled();
 
@@ -72,7 +76,16 @@ class ProductBuilderSpec extends ObjectBehavior
         $tshirtFamily->getId()->shouldBeCalled();
         $tshirtFamily->getAttributes()->willReturn([]);
 
+        $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
+        $identifierAttribute->getCode()->willReturn('sku');
+
+        $productValueFactory->create($identifierAttribute, null, null, 'mysku')->willReturn($identifierValue);
+        $identifierValue->getAttribute()->willReturn($identifierAttribute);
+        $identifierValue->getLocale()->willReturn(null);
+        $identifierValue->getScope()->willReturn(null);
+
         $product = $this->createProduct('mysku', 'tshirt')->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
+
         if ('mysku' !== $product->getIdentifier()) {
             throw new FailedPredictionException('Expecting "mysku" as identifier for the product.');
         }

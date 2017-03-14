@@ -126,18 +126,19 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     {
         $completenessIDs = [];
         foreach ($products as $product) {
+            // TODO: TIP-694: Don't get the completenesses but join on product table.
             $completenesses = $product->getCompletenesses();
             foreach ($completenesses as $completeness) {
                 $completenessIDs[] = $completeness->getId();
             }
         }
 
-        $stmt = $this->entityManager->getConnection()->executeQuery(
+        $statement = $this->entityManager->getConnection()->executeQuery(
             'DELETE c FROM pim_catalog_completeness c WHERE c.id IN (?)',
             [$completenessIDs],
             [Connection::PARAM_INT_ARRAY]
         );
-        $stmt->execute();
+        $statement->execute();
     }
 
     /**
