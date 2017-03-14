@@ -1,4 +1,4 @@
-# 1.7.x
+# 1.7.0 (2017-03-14)
 
 ## Functional improvements
 
@@ -27,8 +27,8 @@
 - Remove class `Oro\Bundle\UserBundle\Form\Type\UserApiType`
 - Remove class `Oro\Bundle\UserBundle\Command\GenerateWSSEHeaderCommand`
 - Remove class `Oro\Bundle\UserBundle\Security\WsseAuthListener`
-- Remove class `Oro\Bundle\UserBundle\Security\WsseAuthListener`
 - Remove class `Oro\Bundle\UserBundle\Security\WsseUserProvider`
+- Remove Class `Pim\Bundle\UserBundle\Security\WsseUserProvider`
 
 # 1.7.0-BETA2 (2017-03-06)
 
