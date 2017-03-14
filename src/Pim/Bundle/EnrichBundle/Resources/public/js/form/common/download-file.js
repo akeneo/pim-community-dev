@@ -40,6 +40,20 @@ define(
             /**
              * {@inheritdoc}
              */
+            configure: function () {
+                if (this.config.updateOnEvent) {
+                    this.listenTo(this.getRoot(), this.config.updateOnEvent, function (newData) {
+                        this.setData(newData);
+                        this.render();
+                    });
+                }
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 if (!this.isVisible()) {
                     return this;

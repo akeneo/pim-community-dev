@@ -32,6 +32,7 @@ extensions:
             label: pim_enrich.form.job_execution.button.download_log.title
             iconName: download-alt
             isVisiblePath: meta.log
+            updateOnEvent : pim-job-execution-form:newData
             url: pim_importexport_export_execution_download_log
             urlParams:
                 - property: id

@@ -306,6 +306,28 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $code
+     *
+     * @Then /^I should be redirected on the export page of "([^"]*)"$/
+     */
+    public function iShouldBeRedirectedOnTheExportPageOf($code)
+    {
+        $page = str_replace('{code}', $code, $this->getPage('Export show')->getUrl());
+        $this->assertAddress($page);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @Then /^I should be redirected on the import page of "([^"]*)"$/
+     */
+    public function iShouldBeRedirectedOnTheImportPageOf($code)
+    {
+        $page = str_replace('{code}', $code, $this->getPage('Import show')->getUrl());
+        $this->assertAddress($page);
+    }
+
+    /**
      * @Given /^I refresh current page$/
      */
     public function iRefreshCurrentPage()
