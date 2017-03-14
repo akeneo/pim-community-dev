@@ -1,7 +1,9 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness;
+namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
+use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessIntegration;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -26,11 +28,9 @@ abstract class AbstractCompletenessPerAttributeTypeIntegration extends AbstractC
      */
     protected function assertComplete(ProductInterface $product)
     {
-        $completenesses = $product->getCompletenesses()->toArray();
-        $this->assertNotNull($completenesses);
-        $this->assertCount(1, $completenesses);
+        $this->assertCompletenessesCount($product, 1);
 
-        $completeness = current($completenesses);
+        $completeness = $this->getCurrentCompleteness($product);
 
         $this->assertNotNull($completeness->getLocale());
         $this->assertEquals('en_US', $completeness->getLocale()->getCode());
@@ -39,6 +39,7 @@ abstract class AbstractCompletenessPerAttributeTypeIntegration extends AbstractC
         $this->assertEquals(100, $completeness->getRatio());
         $this->assertEquals(2, $completeness->getRequiredCount());
         $this->assertEquals(0, $completeness->getMissingCount());
+        $this->assertEquals(0, $completeness->getMissingAttributes()->count());
     }
 
     /**
@@ -49,11 +50,9 @@ abstract class AbstractCompletenessPerAttributeTypeIntegration extends AbstractC
      */
     protected function assertNotComplete(ProductInterface $product)
     {
-        $completenesses = $product->getCompletenesses()->toArray();
-        $this->assertNotNull($completenesses);
-        $this->assertCount(1, $completenesses);
+        $this->assertCompletenessesCount($product, 1);
 
-        $completeness = current($completenesses);
+        $completeness = $this->getCurrentCompleteness($product);
 
         $this->assertNotNull($completeness->getLocale());
         $this->assertEquals('en_US', $completeness->getLocale()->getCode());
@@ -62,5 +61,16 @@ abstract class AbstractCompletenessPerAttributeTypeIntegration extends AbstractC
         $this->assertEquals(50, $completeness->getRatio());
         $this->assertEquals(2, $completeness->getRequiredCount());
         $this->assertEquals(1, $completeness->getMissingCount());
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param string[]         $expectedAttributeCodes
+     */
+    protected function assertMissingAttributeForProduct(ProductInterface $product, array $expectedAttributeCodes)
+    {
+        $completeness = $this->getCurrentCompleteness($product);
+
+        $this->assertMissingAttributeCodes($completeness, $expectedAttributeCodes);
     }
 }

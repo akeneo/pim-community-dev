@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
-use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessPerAttributeTypeIntegration;
 use Pim\Component\Catalog\AttributeTypes;
 
 /**
@@ -67,8 +66,10 @@ class DateAttributeTypeCompletenessIntegration extends AbstractCompletenessPerAt
             ]
         );
         $this->assertNotComplete($productDataNull);
+        $this->assertMissingAttributeForProduct($productDataNull, ['a_date']);
 
         $productWithoutValues = $this->createProductWithStandardValues($family, 'product_without_values');
         $this->assertNotComplete($productWithoutValues);
+        $this->assertMissingAttributeForProduct($productWithoutValues, ['a_date']);
     }
 }
