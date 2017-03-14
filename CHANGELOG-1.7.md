@@ -1,11 +1,12 @@
 # 1.7.x
 
-## Bug fixes
+## Bug Fixes
 
-- PIM-6207: correctly dismiss "Unsaved changes" message on system configuration
-- PIM-6213: remove ticks on published form
-- PIM-6242: fix UI glitch on TWA completeness filter search field
-- PIM-6239: translate scope with catalog locale
+- PIM-6085: Association import step is not working with custom column name.
+- PIM-6207: Correctly dismiss "Unsaved changes" message on system configuration.
+- PIM-6213: Remove ticks on published form
+- PIM-6242: Fix UI glitch on TWA completeness filter search field
+- PIM-6239: Translate scope with catalog locale
 
 # 1.7.0 (2017-03-14)
 
