@@ -61,6 +61,7 @@ define([
              */
             postSave: function (data) {
                 this.setData(data);
+                this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data);
 
                 SaveForm.prototype.postSave.apply(this, arguments);
             }
