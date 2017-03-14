@@ -29,13 +29,14 @@ Analyzers and dynamic mapping
 Depending on the field format (string, number, date, etc....), some specific analyzers maybe needed. For example, in case of ``identifier``, a n-gram analyzer must be added to be able to search on substring. Another example are the strings that needs a multifield to store the tokenized version for full-text search purpose and an untokenized version for sorting purpose.
 
 As new attributes can be added dynamically to Akeneo, we will use the dynamic mapping feature of Elasticsearch and provides specific suffix that will specify the analyzer to use.
+The suffixes are simply equivalent to the attribute's backend type.
 
 For example:
  - description-text: the ``-text`` suffix is applied, meaning that we must apply a specific analyzer for a text area attribute.
 
 
-List of suffix and their mapping to Akeneo
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+List of attributes and their mapping to Akeneo
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ===============================   ==========================
 Akeneo attribute type             Elasticsearch field suffix
@@ -60,10 +61,10 @@ Naming
 ~~~~~~
  - Elasticsearch fields for attribute follow this naming scheme:
 
-``attribute_code-backend_type.channel.locale.es_suffix``
+``attribute_code-es_suffix.channel.locale``
 
-- When the attribute is not localizable: ``locale`` becomes ``<all_locales>``
 - When the attribute is not scopable: ``channel`` becomes ``<all_channels>``
+- When the attribute is not localizable: ``locale`` becomes ``<all_locales>``
 
 Fitering
 ~~~~~~~~
