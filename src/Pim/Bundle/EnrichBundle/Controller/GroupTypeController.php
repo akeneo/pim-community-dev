@@ -103,7 +103,7 @@ class GroupTypeController
 
             $url = $this->router->generate(
                 'pim_enrich_grouptype_edit',
-                ['id' => $groupType->getId()]
+                ['code' => $groupType->getCode()]
             );
             $response = ['status' => 1, 'url' => $url];
 
