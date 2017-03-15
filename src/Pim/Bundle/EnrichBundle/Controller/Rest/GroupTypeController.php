@@ -118,7 +118,7 @@ class GroupTypeController
         if (0 < $violations->count()) {
             $errors = $this->normalizer->normalize(
                 $violations,
-                'internal_api'
+                'standard'
             );
 
             return new JsonResponse($errors, 400);
@@ -129,7 +129,7 @@ class GroupTypeController
         return new JsonResponse(
             $this->normalizer->normalize(
                 $groupType,
-                'internal_api',
+                'standard',
                 $this->userContext->toArray()
             )
         );
