@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
-use Pim\Bundle\CatalogBundle\Version;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateProductIntegration extends AbstractProductTestCase
@@ -38,10 +37,7 @@ class PartialUpdateProductIntegration extends AbstractProductTestCase
 
         $this->createProduct('product_associations', [
             'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => []],
-                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories']],
+                'X_SELL' => ['groups'   => ['groupA'], 'products' => ['product_categories']],
             ],
         ]);
 
@@ -71,10 +67,7 @@ class PartialUpdateProductIntegration extends AbstractProductTestCase
                 ],
             ],
             'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => []],
-                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories']],
+                'X_SELL' => ['groups'   => ['groupA'], 'products' => ['product_categories']],
             ],
         ]);
     }
@@ -322,8 +315,8 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'identifier',
-                    'message' => 'This value should not be blank.',
+                    'property' => 'identifier',
+                    'message'  => 'This value should not be blank.',
                 ],
             ],
         ];
@@ -693,10 +686,8 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups'   => ['groupA'], 'products' => ['product_categories', 'product_family']],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => []],
-                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories']],
+                'PACK'   => ['groups'   => ['groupA'], 'products' => ['product_categories', 'product_family']],
+                'X_SELL' => ['groups'   => ['groupA'], 'products' => ['product_categories']],
             ],
         ];
 
@@ -740,10 +731,7 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => []],
-                'X_SELL'       => ['groups'   => [], 'products' => ['product_categories']],
+                'X_SELL' => ['groups'   => [], 'products' => ['product_categories']],
             ],
         ];
 
@@ -791,12 +779,7 @@ JSON;
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => []],
-                'X_SELL'       => ['groups'   => [], 'products' => []],
-            ],
+            'associations'  => [],
         ];
 
         $response = $client->getResponse();
@@ -1164,10 +1147,7 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => []],
-                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories']],
+                'X_SELL' => ['groups'   => ['groupA'], 'products' => ['product_categories']],
             ],
         ];
 
@@ -1304,8 +1284,8 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'field'   => 'identifier',
-                    'message' => 'The value product_family is already set on another product for the unique attribute sku',
+                    'property' => 'identifier',
+                    'message'  => 'The value product_family is already set on another product for the unique attribute sku',
                 ],
             ],
         ];
@@ -1327,14 +1307,12 @@ JSON;
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
-
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "extra_property" does not exist. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/products.html', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'
                 ],
             ],
         ];
@@ -1393,14 +1371,12 @@ JSON;
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
-
-        $version = substr(Version::VERSION, 0, 3);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "enabled" expects a boolean as data, "NULL" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/products.html', $version),
+                    'href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'
                 ],
             ],
         ];
@@ -1429,20 +1405,17 @@ JSON;
                 "data": true
             }]
         },
-        "associations": {
-        }
+        "associations": {}
     }
 JSON;
 
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
-
-        $version = substr(Version::VERSION, 0, 3);
+        $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
         $expectedContent = [
             'code'    => 422,
             'message' => 'Property "unknown_attribute" does not exist. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
-                    'href' => sprintf('https://docs.akeneo.com/%s/reference/standard_format/products.html', $version),
+                    'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"
                 ],
             ],
         ];
@@ -1467,6 +1440,9 @@ JSON;
 
         $standardizedProduct = static::sanitizeMediaAttributeData($standardizedProduct);
         $expectedProduct = static::sanitizeMediaAttributeData($expectedProduct);
+
+        ksort($expectedProduct['values']);
+        ksort($standardizedProduct['values']);
 
         $this->assertSame($expectedProduct, $standardizedProduct);
     }

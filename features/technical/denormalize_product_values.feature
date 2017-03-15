@@ -6,51 +6,51 @@ Feature: Denormalize product values
   Scenario: Successfully normalize and denormalize product values
     Given the "default" catalog configuration
     And the following attributes:
-      | code                  | type                         | localizable | scopable | metric_family | default_metric_unit | allowed_extensions | group |
-      | text                  | pim_catalog_text             | 0           | 0        |               |                     |                    | other |
-      | text_loc              | pim_catalog_text             | 1           | 0        |               |                     |                    | other |
-      | text_scop             | pim_catalog_text             | 0           | 1        |               |                     |                    | other |
-      | text_loc_scop         | pim_catalog_text             | 1           | 1        |               |                     |                    | other |
-      | number                | pim_catalog_number           | 0           | 0        |               |                     |                    | other |
-      | number_loc            | pim_catalog_number           | 1           | 0        |               |                     |                    | other |
-      | number_scop           | pim_catalog_number           | 0           | 1        |               |                     |                    | other |
-      | number_loc_scop       | pim_catalog_number           | 1           | 1        |               |                     |                    | other |
-      | textarea              | pim_catalog_textarea         | 0           | 0        |               |                     |                    | other |
-      | textarea_loc          | pim_catalog_textarea         | 1           | 0        |               |                     |                    | other |
-      | textarea_scop         | pim_catalog_textarea         | 0           | 1        |               |                     |                    | other |
-      | textarea_loc_scop     | pim_catalog_textarea         | 1           | 1        |               |                     |                    | other |
-      | metric                | pim_catalog_metric           | 0           | 0        | Length        | CENTIMETER          |                    | other |
-      | metric_loc            | pim_catalog_metric           | 1           | 0        | Length        | CENTIMETER          |                    | other |
-      | metric_scop           | pim_catalog_metric           | 0           | 1        | Length        | CENTIMETER          |                    | other |
-      | metric_loc_scop       | pim_catalog_metric           | 1           | 1        | Length        | CENTIMETER          |                    | other |
-      | prices                | pim_catalog_price_collection | 0           | 0        |               |                     |                    | other |
-      | prices_loc            | pim_catalog_price_collection | 1           | 0        |               |                     |                    | other |
-      | prices_scop           | pim_catalog_price_collection | 0           | 1        |               |                     |                    | other |
-      | prices_loc_scop       | pim_catalog_price_collection | 1           | 1        |               |                     |                    | other |
-      | image                 | pim_catalog_image            | 0           | 0        |               |                     | png,jpg,gif        | other |
-      | image_loc             | pim_catalog_image            | 1           | 0        |               |                     | png,jpg,gif        | other |
-      | image_scop            | pim_catalog_image            | 0           | 1        |               |                     | png,jpg,gif        | other |
-      | image_loc_scop        | pim_catalog_image            | 1           | 1        |               |                     | png,jpg,gif        | other |
-      | file                  | pim_catalog_file             | 0           | 0        |               |                     | txt,png            | other |
-      | file_loc              | pim_catalog_file             | 1           | 0        |               |                     | txt,png            | other |
-      | file_scop             | pim_catalog_file             | 0           | 1        |               |                     | txt,png            | other |
-      | file_loc_scop         | pim_catalog_file             | 1           | 1        |               |                     | txt,png            | other |
-      | simpleselect          | pim_catalog_simpleselect     | 0           | 0        |               |                     |                    | other |
-      | simpleselect_loc      | pim_catalog_simpleselect     | 1           | 0        |               |                     |                    | other |
-      | simpleselect_scop     | pim_catalog_simpleselect     | 0           | 1        |               |                     |                    | other |
-      | simpleselect_loc_scop | pim_catalog_simpleselect     | 1           | 1        |               |                     |                    | other |
-      | multiselect           | pim_catalog_multiselect      | 0           | 0        |               |                     |                    | other |
-      | multiselect_loc       | pim_catalog_multiselect      | 1           | 0        |               |                     |                    | other |
-      | multiselect_scop      | pim_catalog_multiselect      | 0           | 1        |               |                     |                    | other |
-      | multiselect_loc_scop  | pim_catalog_multiselect      | 1           | 1        |               |                     |                    | other |
-      | date                  | pim_catalog_date             | 0           | 0        |               |                     |                    | other |
-      | date_loc              | pim_catalog_date             | 1           | 0        |               |                     |                    | other |
-      | date_scop             | pim_catalog_date             | 0           | 1        |               |                     |                    | other |
-      | date_loc_scop         | pim_catalog_date             | 1           | 1        |               |                     |                    | other |
-      | boolean               | pim_catalog_boolean          | 0           | 0        |               |                     |                    | other |
-      | boolean_loc           | pim_catalog_boolean          | 1           | 0        |               |                     |                    | other |
-      | boolean_scop          | pim_catalog_boolean          | 0           | 1        |               |                     |                    | other |
-      | boolean_loc_scop      | pim_catalog_boolean          | 1           | 1        |               |                     |                    | other |
+      | code                  | type                         | localizable | scopable | metric_family | default_metric_unit | allowed_extensions | group | decimals_allowed | negative_allowed |
+      | text                  | pim_catalog_text             | 0           | 0        |               |                     |                    | other |                  |                  |
+      | text_loc              | pim_catalog_text             | 1           | 0        |               |                     |                    | other |                  |                  |
+      | text_scop             | pim_catalog_text             | 0           | 1        |               |                     |                    | other |                  |                  |
+      | text_loc_scop         | pim_catalog_text             | 1           | 1        |               |                     |                    | other |                  |                  |
+      | number                | pim_catalog_number           | 0           | 0        |               |                     |                    | other | 0                | 0                |
+      | number_loc            | pim_catalog_number           | 1           | 0        |               |                     |                    | other | 0                | 0                |
+      | number_scop           | pim_catalog_number           | 0           | 1        |               |                     |                    | other | 0                | 0                |
+      | number_loc_scop       | pim_catalog_number           | 1           | 1        |               |                     |                    | other | 0                | 0                |
+      | textarea              | pim_catalog_textarea         | 0           | 0        |               |                     |                    | other |                  |                  |
+      | textarea_loc          | pim_catalog_textarea         | 1           | 0        |               |                     |                    | other |                  |                  |
+      | textarea_scop         | pim_catalog_textarea         | 0           | 1        |               |                     |                    | other |                  |                  |
+      | textarea_loc_scop     | pim_catalog_textarea         | 1           | 1        |               |                     |                    | other |                  |                  |
+      | metric                | pim_catalog_metric           | 0           | 0        | Length        | CENTIMETER          |                    | other | 0                | 0                |
+      | metric_loc            | pim_catalog_metric           | 1           | 0        | Length        | CENTIMETER          |                    | other | 0                | 0                |
+      | metric_scop           | pim_catalog_metric           | 0           | 1        | Length        | CENTIMETER          |                    | other | 0                | 0                |
+      | metric_loc_scop       | pim_catalog_metric           | 1           | 1        | Length        | CENTIMETER          |                    | other | 0                | 0                |
+      | prices                | pim_catalog_price_collection | 0           | 0        |               |                     |                    | other | 0                |                  |
+      | prices_loc            | pim_catalog_price_collection | 1           | 0        |               |                     |                    | other | 0                |                  |
+      | prices_scop           | pim_catalog_price_collection | 0           | 1        |               |                     |                    | other | 0                |                  |
+      | prices_loc_scop       | pim_catalog_price_collection | 1           | 1        |               |                     |                    | other | 0                |                  |
+      | image                 | pim_catalog_image            | 0           | 0        |               |                     | png,jpg,gif        | other |                  |                  |
+      | image_loc             | pim_catalog_image            | 1           | 0        |               |                     | png,jpg,gif        | other |                  |                  |
+      | image_scop            | pim_catalog_image            | 0           | 1        |               |                     | png,jpg,gif        | other |                  |                  |
+      | image_loc_scop        | pim_catalog_image            | 1           | 1        |               |                     | png,jpg,gif        | other |                  |                  |
+      | file                  | pim_catalog_file             | 0           | 0        |               |                     | txt                | other |                  |                  |
+      | file_loc              | pim_catalog_file             | 1           | 0        |               |                     | txt                | other |                  |                  |
+      | file_scop             | pim_catalog_file             | 0           | 1        |               |                     | txt                | other |                  |                  |
+      | file_loc_scop         | pim_catalog_file             | 1           | 1        |               |                     | txt                | other |                  |                  |
+      | simpleselect          | pim_catalog_simpleselect     | 0           | 0        |               |                     |                    | other |                  |                  |
+      | simpleselect_loc      | pim_catalog_simpleselect     | 1           | 0        |               |                     |                    | other |                  |                  |
+      | simpleselect_scop     | pim_catalog_simpleselect     | 0           | 1        |               |                     |                    | other |                  |                  |
+      | simpleselect_loc_scop | pim_catalog_simpleselect     | 1           | 1        |               |                     |                    | other |                  |                  |
+      | multiselect           | pim_catalog_multiselect      | 0           | 0        |               |                     |                    | other |                  |                  |
+      | multiselect_loc       | pim_catalog_multiselect      | 1           | 0        |               |                     |                    | other |                  |                  |
+      | multiselect_scop      | pim_catalog_multiselect      | 0           | 1        |               |                     |                    | other |                  |                  |
+      | multiselect_loc_scop  | pim_catalog_multiselect      | 1           | 1        |               |                     |                    | other |                  |                  |
+      | date                  | pim_catalog_date             | 0           | 0        |               |                     |                    | other |                  |                  |
+      | date_loc              | pim_catalog_date             | 1           | 0        |               |                     |                    | other |                  |                  |
+      | date_scop             | pim_catalog_date             | 0           | 1        |               |                     |                    | other |                  |                  |
+      | date_loc_scop         | pim_catalog_date             | 1           | 1        |               |                     |                    | other |                  |                  |
+      | boolean               | pim_catalog_boolean          | 0           | 0        |               |                     |                    | other |                  |                  |
+      | boolean_loc           | pim_catalog_boolean          | 1           | 0        |               |                     |                    | other |                  |                  |
+      | boolean_scop          | pim_catalog_boolean          | 0           | 1        |               |                     |                    | other |                  |                  |
+      | boolean_loc_scop      | pim_catalog_boolean          | 1           | 1        |               |                     |                    | other |                  |                  |
     And the following family:
       | code | attributes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
       | all  | text,text_loc,text_scop,text_loc_scop,number,number_loc,number_scop,number_loc_scop,textarea,textarea_loc,textarea_scop,textarea_loc_scop,metric,metric_loc,metric_scop,metric_loc_scop,prices,prices_loc,prices_scop,prices_loc_scop,image,image_loc,image_scop,image_loc_scop,file,file_loc,file_scop,file_loc_scop,simpleselect,simpleselect_loc,simpleselect_scop,simpleselect_loc_scop,multiselect,multiselect_loc,multiselect_scop,multiselect_loc_scop,date,date_loc,date_scop,date_loc_scop,boolean,boolean_loc,boolean_scop,boolean_loc_scop |
@@ -120,10 +120,10 @@ Feature: Denormalize product values
       | first   | file_loc              | %fixtures%/akeneo2.txt             | en_US  |           |
       | first   | file_loc              | %fixtures%/bic-core-148.txt        | fr_FR  |           |
       | first   | file_scop             | %fixtures%/fanatic-freewave-76.txt |        | ecommerce |
-      | first   | file_scop             | %fixtures%/SNKRS-1C-s.png          |        | mobile    |
-      | first   | file_loc_scop         | %fixtures%/SNKRS-1C-t.png          | en_US  | ecommerce |
-      | first   | file_loc_scop         | %fixtures%/SNKRS-1C-t.png          | fr_FR  | ecommerce |
-      | first   | file_loc_scop         | %fixtures%/SNKRS-1R.png            | fr_FR  | mobile    |
+      | first   | file_scop             | %fixtures%/akeneo.txt              |        | mobile    |
+      | first   | file_loc_scop         | %fixtures%/akeneo.txt              | en_US  | ecommerce |
+      | first   | file_loc_scop         | %fixtures%/akeneo.txt              | fr_FR  | ecommerce |
+      | first   | file_loc_scop         | %fixtures%/akeneo.txt              | fr_FR  | mobile    |
       | first   | simpleselect          | s1                                 |        |           |
       | first   | simpleselect_loc      | s2                                 | en_US  |           |
       | first   | simpleselect_loc      | s3                                 | fr_FR  |           |

@@ -102,6 +102,19 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             'addFieldData',
             [$product, 'associations', ['assoc_type_code' => ['products' => [], 'groups' => [2]]]]
         );
+
+        $this->shouldThrow(
+            new InvalidPropertyTypeException(
+                'products',
+                'string',
+                'Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder',
+                'Property "products" in association "assoc_type_code" expects an array as data, "string" given.',
+                200
+            )
+        )->during(
+            'addFieldData',
+            [$product, 'associations', ['assoc_type_code' => ['products' => 'string', 'groups' => []]]]
+        );
     }
 
     function it_adds_association_field(

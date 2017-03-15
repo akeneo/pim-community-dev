@@ -62,9 +62,9 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $options = $this->resolver->resolve($options);
         } catch (\Exception $e) {
             throw InvalidPropertyException::expectedFromPreviousException(
-                $e,
                 $attribute->getCode(),
-                static::class
+                static::class,
+                $e
             );
         }
 

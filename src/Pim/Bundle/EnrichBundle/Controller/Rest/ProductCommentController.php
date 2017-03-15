@@ -112,17 +112,15 @@ class ProductCommentController
             $product->getId()
         );
 
-        $context = ['locale' => $this->localeResolver->getCurrentLocale()];
-
         $comments = $this->normalizer->normalize($comments, 'standard');
 
-        foreach ($comments as $comment) {
-            $comment['created'] = $this->datetimePresenter->present($comment['created'], $context);
-            $comment['replied'] = $this->datetimePresenter->present($comment['created'], $context);
+        foreach ($comments as $commentKey => $comment) {
+            $comments[$commentKey]['created'] = $this->presentDate($comment['created']);
+            $comments[$commentKey]['replied'] = $this->presentDate($comment['replied']);
 
-            foreach ($comment['replies'] as $reply) {
-                $reply['created'] = $this->datetimePresenter->present($reply['created'], $context);
-                $reply['replied'] = $this->datetimePresenter->present($reply['created'], $context);
+            foreach ($comment['replies'] as $replyKey => $reply) {
+                $comments[$commentKey]['replies'][$replyKey]['created'] = $this->presentDate($reply['created']);
+                $comments[$commentKey]['replies'][$replyKey]['replied'] = $this->presentDate($reply['created']);
             }
         }
 
@@ -251,5 +249,17 @@ class ProductCommentController
         }
 
         return $user;
+    }
+
+    /**
+     * @param string $date
+     *
+     * @return string
+     */
+    protected function presentDate($date)
+    {
+        $context = ['locale' => $this->localeResolver->getCurrentLocale()];
+
+        return $this->datetimePresenter->present($date, $context);
     }
 }

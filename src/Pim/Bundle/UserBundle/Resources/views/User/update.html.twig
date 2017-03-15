@@ -32,10 +32,10 @@
 
                     var checkRoles = function() {
                         if ($roles.find('input:checked').length) {
-                            $('a[href="#pim_user-user-tab-group_and_role"]').removeClass('error');
+                            $('a[href="#pim_user-user-tab-group_and_role"]').removeClass('AknHorizontalNavtab-link--errored error');
                             $roles.parent().removeClass('validation-error');
                         } else {
-                            $('a[href="#pim_user-user-tab-group_and_role"]').addClass('error');
+                            $('a[href="#pim_user-user-tab-group_and_role"]').addClass('AknHorizontalNavtab-link--errored error');
                             $roles.addClass('error').parent().addClass('validation-error');
                         }
                     };

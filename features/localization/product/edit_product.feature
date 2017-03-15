@@ -13,8 +13,8 @@ Feature: Edit a product with localized attributes
       | code   | label-fr_FR | type                         | scopable | unique | negative_allowed | decimals_allowed | group | metric_family | default_metric_unit |
       | number | Nombre      | pim_catalog_number           | 0        | 0      | 1                | 1                | other |               |                     |
       | weight | Poids       | pim_catalog_metric           | 0        | 0      | 1                | 1                | other | Weight        | GRAM                |
-      | price  | Prix        | pim_catalog_price_collection | 0        | 0      | 0                | 1                | other |               |                     |
-      | date   | Date        | pim_catalog_date             | 0        | 0      | 0                | 0                | other |               |                     |
+      | price  | Prix        | pim_catalog_price_collection | 0        | 0      |                  | 1                | other |               |                     |
+      | date   | Date        | pim_catalog_date             | 0        | 0      |                  |                  | other |               |                     |
     And the following family:
       | code | label-en_US | attributes                   |
       | baz  | Baz         | sku,number,weight,price,date |

@@ -30,10 +30,20 @@ class AttributeNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_attribute($stdNormalizer, AttributeInterface $attribute)
     {
-        $data = ['code' => 'my_attribute'];
+        $data = ['code' => 'my_attribute', 'labels' => []];
 
-        $stdNormalizer->normalize($attribute, 'external_api', [])->willReturn($data);
+        $stdNormalizer->normalize($attribute, 'standard', [])->willReturn($data);
 
-        $this->normalize($attribute, 'external_api', [])->shouldReturn($data);
+        $normalizedAttribute = $this->normalize($attribute, 'external_api', []);
+        $normalizedAttribute->shouldHaveLabels($data);
+    }
+
+    public function getMatchers()
+    {
+        return [
+            'haveLabels' => function ($subject) {
+                return is_object($subject['labels']);
+            }
+        ];
     }
 }

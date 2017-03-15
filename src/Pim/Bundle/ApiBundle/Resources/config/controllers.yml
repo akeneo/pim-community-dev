@@ -8,6 +8,7 @@ parameters:
     pim_api.controller.token.class: Pim\Bundle\ApiBundle\Controller\TokenController
     pim_api.controller.product.class: Pim\Bundle\ApiBundle\Controller\ProductController
     pim_api.controller.root_endpoint.class: Pim\Bundle\ApiBundle\Controller\RootEndpointController
+    pim_api.controller.media_file.class: Pim\Bundle\ApiBundle\Controller\MediaFileController
 
 services:
     pim_api.controller.category:
@@ -20,10 +21,10 @@ services:
             - '@validator'
             - '@pim_catalog.saver.category'
             - '@router'
-            - '@pim_api.pagination.paginator'
+            - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.stream.category_partial_update_stream'
             - '%pim_api.configuration%'
-            - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#category'
 
     pim_api.controller.family:
         class: '%pim_api.controller.family.class%'
@@ -35,10 +36,10 @@ services:
             - '@validator'
             - '@pim_catalog.saver.family'
             - '@router'
-            - '@pim_api.pagination.paginator'
+            - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.stream.family_partial_update_stream'
             - '%pim_api.configuration%'
-            - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#family'
 
     pim_api.controller.attribute:
         class: '%pim_api.controller.attribute.class%'
@@ -50,10 +51,10 @@ services:
             - '@validator'
             - '@pim_catalog.saver.attribute'
             - '@router'
-            - '@pim_api.pagination.paginator'
+            - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.stream.attribute_partial_update_stream'
             - '%pim_api.configuration%'
-            - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute'
 
     pim_api.controller.attribute_option:
         class: '%pim_api.controller.attribute_option.class%'
@@ -66,18 +67,17 @@ services:
             - '@validator'
             - '@pim_catalog.saver.attribute_option'
             - '@router'
-            - '@pim_api.pagination.paginator'
+            - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
             - '%pim_api.configuration%'
             - ['pim_catalog_simpleselect', 'pim_catalog_multiselect']
-            - 'https://docs.akeneo.com/%s/reference/standard_format/other_entities.html#attribute-option'
 
     pim_api.controller.channel:
         class: '%pim_api.controller.channel.class%'
         arguments:
             - '@pim_api.repository.channel'
             - '@pim_serializer'
-            - '@pim_api.pagination.paginator'
+            - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
             - '%pim_api.configuration%'
 
@@ -86,7 +86,7 @@ services:
         arguments:
             - '@pim_api.repository.locale'
             - '@pim_serializer'
-            - '@pim_api.pagination.paginator'
+            - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
             - '%pim_api.configuration%'
 
@@ -105,7 +105,8 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_api.repository.attribute'
             - '@pim_api.repository.product'
-            - '@pim_api.pagination.paginator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.search_after_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_catalog.validator.product'
             - '@pim_catalog.builder.product'
@@ -114,10 +115,30 @@ services:
             - '@pim_catalog.saver.product'
             - '@router'
             - '@pim_catalog.comparator.filter.product'
+            - '@pim_api.stream.product_partial_update_stream'
+            - '@pim_api.security.primary_key_encrypter'
             - '%pim_api.configuration%'
-            - 'https://docs.akeneo.com/%s/reference/standard_format/products.html'
 
     pim_api.controller.root_endpoint:
         class: '%pim_api.controller.root_endpoint.class%'
         arguments:
             - '@router'
+
+    pim_api.controller.media_file:
+        class: '%pim_api.controller.media_file.class%'
+        arguments:
+            - '@pim_api.repository.media_file'
+            - '@pim_serializer'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
+            - '@pim_api.repository.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.validator.product'
+            - '@akeneo_file_storage.saver.file'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@akeneo_file_storage.remover.file'
+            - '@router'
+            - '%pim_api.configuration%'

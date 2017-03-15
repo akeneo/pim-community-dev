@@ -92,12 +92,6 @@ oro_user_profile_update:
     path: /user/profile/edit
     defaults: { _controller: OroUserBundle:User:updateProfile }
 
-oro_user_apigen:
-    path: /user/apigen/{id}
-    defaults: { _controller: OroUserBundle:User:apigen }
-    requirements:
-        id: \d+
-
 oro_user_create:
     path: /user/create
     defaults: { _controller: OroUserBundle:User:create }

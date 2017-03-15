@@ -145,7 +145,7 @@ abstract class AbstractAttribute implements AttributeInterface
     protected $allowedExtensions;
 
     /** @var int */
-    protected $minimumInputLength = 0;
+    protected $minimumInputLength;
 
     /**
      * Used locale to override Translation listener's locale

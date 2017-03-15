@@ -3,16 +3,15 @@
 namespace Pim\Bundle\ApiBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
-use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Version;
+use Pim\Bundle\ApiBundle\Documentation;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
-use Pim\Component\Api\Pagination\HalPaginator;
+use Pim\Component\Api\Pagination\PaginatorInterface;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Pim\Component\Api\Repository\AttributeRepositoryInterface;
@@ -60,7 +59,7 @@ class AttributeOptionController
     /** @var RouterInterface */
     protected $router;
 
-    /** @var HalPaginator */
+    /** @var PaginatorInterface */
     protected $paginator;
 
     /** @var ParameterValidatorInterface */
@@ -72,9 +71,6 @@ class AttributeOptionController
     /** @var array */
     protected $supportedAttributeTypes;
 
-    /** @var string */
-    protected $urlDocumentation;
-
     /**
      * @param AttributeRepositoryInterface   $attributeRepository
      * @param ApiResourceRepositoryInterface $attributeOptionsRepository
@@ -84,11 +80,10 @@ class AttributeOptionController
      * @param ValidatorInterface             $validator
      * @param SaverInterface                 $saver
      * @param RouterInterface                $router
-     * @param HalPaginator                   $paginator
+     * @param PaginatorInterface             $paginator
      * @param ParameterValidatorInterface    $parameterValidator
      * @param array                          $apiConfiguration
      * @param array                          $supportedAttributeTypes
-     * @param string                         $urlDocumentation
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
@@ -99,11 +94,10 @@ class AttributeOptionController
         ValidatorInterface $validator,
         SaverInterface $saver,
         RouterInterface $router,
-        HalPaginator $paginator,
+        PaginatorInterface $paginator,
         ParameterValidatorInterface $parameterValidator,
         array $apiConfiguration,
-        array $supportedAttributeTypes,
-        $urlDocumentation
+        array $supportedAttributeTypes
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->attributeOptionsRepository = $attributeOptionsRepository;
@@ -117,7 +111,6 @@ class AttributeOptionController
         $this->parameterValidator = $parameterValidator;
         $this->apiConfiguration = $apiConfiguration;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->urlDocumentation = sprintf($urlDocumentation, substr(Version::VERSION, 0, 3));
     }
 
     /**
@@ -167,33 +160,42 @@ class AttributeOptionController
         $attribute = $this->getAttribute($attributeCode);
         $this->isAttributeSupportingOptions($attribute);
 
-        $queryParameters = [
-            'page'  => $request->query->get('page', 1),
-            'limit' => $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default'])
-        ];
-
         try {
-            $this->parameterValidator->validate($queryParameters);
+            $this->parameterValidator->validate($request->query->all());
         } catch (PaginationParametersException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
 
+        $defaultParameters = [
+            'page'       => 1,
+            'limit'      => $this->apiConfiguration['pagination']['limit_by_default'],
+            'with_count' => 'false',
+        ];
+
+        $queryParameters = array_merge($defaultParameters, $request->query->all());
+
         $criteria['attribute'] = $attribute->getId();
 
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
-        $attributeOptions = $this->attributeOptionsRepository->searchAfterOffset($criteria, [], $queryParameters['limit'], $offset);
+        $attributeOptions = $this->attributeOptionsRepository->searchAfterOffset(
+            $criteria,
+            ['code' => 'ASC'],
+            $queryParameters['limit'],
+            $offset
+        );
 
         $parameters = [
-            'query_parameters'    => array_merge($request->query->all(), $queryParameters),
+            'query_parameters'    => $queryParameters,
             'uri_parameters'      => ['attributeCode' => $attributeCode],
             'list_route_name'     => 'pim_api_attribute_option_list',
             'item_route_name'     => 'pim_api_attribute_option_get',
         ];
 
+        $count = true === $request->query->getBoolean('with_count') ? $this->attributeOptionsRepository->count($criteria) : null;
         $paginatedAttributeOptions = $this->paginator->paginate(
             $this->normalizer->normalize($attributeOptions, 'external_api'),
             $parameters,
-            $this->attributeOptionsRepository->count($criteria)
+            $count
         );
 
         return new JsonResponse($paginatedAttributeOptions);
@@ -203,39 +205,67 @@ class AttributeOptionController
      * @param Request $request
      * @param string  $attributeCode
      *
+     * @throws HttpException
+     *
      * @return Response
      *
      * @AclAncestor("pim_api_attribute_option_edit")
      */
     public function createAction(Request $request, $attributeCode)
     {
-        $data = $this->getDecodedContent($request->getContent());
-
         $attribute = $this->getAttribute($attributeCode);
 
-        $this->isAttributeSupportingOptions($attribute);
+        $data = $this->getDecodedContent($request->getContent());
 
-        if (isset($data['attribute']) && $data['attribute'] !== $attributeCode) {
-            throw new UnprocessableEntityHttpException(
-                sprintf(
-                    'Attribute code "%s" in the request body must match "%s" in the URI.',
-                    $data['attribute'],
-                    $attributeCode
-                )
-            );
-        }
+        $this->validateCodeConsistency($attributeCode, null, $data, true);
 
+        $data['attribute'] = $attributeCode;
         $attributeOption = $this->factory->create();
-        $this->updateAttributeOption($attributeOption, $data);
-
-        $violations = $this->validator->validate($attributeOption);
-        if (0 !== $violations->count()) {
-            throw new ViolationHttpException($violations);
-        }
+        $this->updateAttributeOption($attributeOption, $data, 'post_attributes__attribute_code__options');
+        $this->validateAttributeOption($attributeOption);
 
         $this->saver->save($attributeOption);
 
-        $response = $this->getCreateResponse($attribute, $attributeOption);
+        $response = $this->getResponse($attribute, $attributeOption, Response::HTTP_CREATED);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $attributeCode
+     * @param string  $optionCode
+     *
+     * @throws HttpException
+     *
+     * @return Response
+     *
+     * @AclAncestor("pim_api_attribute_option_edit")
+     */
+    public function partialUpdateAction(Request $request, $attributeCode, $optionCode)
+    {
+        $attribute = $this->getAttribute($attributeCode);
+
+        $data = $this->getDecodedContent($request->getContent());
+
+        $attributeOption = $this->attributeOptionsRepository->findOneByIdentifier($attributeCode . '.' . $optionCode);
+        $isCreation = null === $attributeOption;
+
+        $this->validateCodeConsistency($attributeCode, $optionCode, $data, $isCreation);
+
+        if ($isCreation) {
+            $attributeOption = $this->factory->create();
+        }
+
+        $data['attribute'] = array_key_exists('attribute', $data) ? $data['attribute'] : $attributeCode;
+        $data['code'] = array_key_exists('code', $data) ? $data['code'] : $optionCode;
+        $this->updateAttributeOption($attributeOption, $data, 'post_attributes__attribute_code__options');
+        $this->validateAttributeOption($attributeOption);
+
+        $this->saver->save($attributeOption);
+
+        $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
+        $response = $this->getResponse($attribute, $attributeOption, $status);
 
         return $response;
     }
@@ -305,23 +335,17 @@ class AttributeOptionController
      *
      * @param AttributeOptionInterface $attributeOption
      * @param array                    $data
+     * @param string                   $anchor
+     *
+     * @throws DocumentedHttpException
      */
-    protected function updateAttributeOption(AttributeOptionInterface $attributeOption, $data)
+    protected function updateAttributeOption(AttributeOptionInterface $attributeOption, $data, $anchor)
     {
         try {
             $this->updater->update($attributeOption, $data);
-        } catch (UnknownPropertyException $exception) {
-            throw new DocumentedHttpException(
-                $this->urlDocumentation,
-                sprintf(
-                    'Property "%s" does not exist. Check the standard format documentation.',
-                    $exception->getPropertyName()
-                ),
-                $exception
-            );
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
-                $this->urlDocumentation,
+                Documentation::URL . $anchor,
                 sprintf('%s Check the standard format documentation.', $exception->getMessage()),
                 $exception
             );
@@ -329,16 +353,33 @@ class AttributeOptionController
     }
 
     /**
-     * Get a response with HTTP code 201 when an object is created.
+     * Validate an attribute option. It throws an error 422 with every violated constraints if
+     * the validation failed.
+     *
+     * @param AttributeOptionInterface $attributeOption
+     *
+     * @throws ViolationHttpException
+     */
+    protected function validateAttributeOption(AttributeOptionInterface $attributeOption)
+    {
+        $violations = $this->validator->validate($attributeOption);
+        if (0 !== $violations->count()) {
+            throw new ViolationHttpException($violations);
+        }
+    }
+
+    /**
+     * Get a response with a location header to the created or updated resource.
      *
      * @param AttributeInterface       $attribute
      * @param AttributeOptionInterface $attributeOption
+     * @param int                      $status
      *
      * @return Response
      */
-    protected function getCreateResponse(AttributeInterface $attribute, AttributeOptionInterface $attributeOption)
+    protected function getResponse(AttributeInterface $attribute, AttributeOptionInterface $attributeOption, $status)
     {
-        $response = new Response(null, Response::HTTP_CREATED);
+        $response = new Response(null, $status);
         $route = $this->router->generate(
             'pim_api_attribute_option_get',
             [
@@ -350,5 +391,46 @@ class AttributeOptionController
         $response->headers->set('Location', $route);
 
         return $response;
+    }
+
+    /**
+     * Throw an exception if the attribute code and the option code provided in the url don't match
+     * attribute code and option code provided in the body.
+     *
+     * Attribute code and option code are optionals in the body when creating or updating a resource with a PATCH,
+     * because they are already provided in the url.
+     *
+     * Option code is mandatory in the body when creating a resource with a POST, because it is not provided in the url.
+     *
+     * When it's a creation, attribute code and option code provided in the url should match those provided in the body.
+     *
+     * @param string      $attributeCode attribute code provided in the url
+     * @param string|null $optionCode    option code provided in the url (in PATCH), null otherwise (in POST)
+     * @param array       $data          body of the request already decoded
+     * @param boolean     $isCreation    true if it's a creation, false if it's an update
+     *
+     * @throws UnprocessableEntityHttpException
+     */
+    protected function validateCodeConsistency($attributeCode, $optionCode, array $data, $isCreation)
+    {
+        if ($isCreation && array_key_exists('attribute', $data) && $attributeCode !== $data['attribute']) {
+            throw new UnprocessableEntityHttpException(
+                sprintf(
+                    'The attribute code "%s" provided in the request body must match the attribute code "%s" provided in the url.',
+                    $data['attribute'],
+                    $attributeCode
+                )
+            );
+        }
+
+        if ($isCreation && null !== $optionCode && array_key_exists('code', $data) && $optionCode !== $data['code']) {
+            throw new UnprocessableEntityHttpException(
+                sprintf(
+                    'The option code "%s" provided in the request body must match the option code "%s" provided in the url.',
+                    $data['code'],
+                    $optionCode
+                )
+            );
+        }
     }
 }

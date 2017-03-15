@@ -48,8 +48,8 @@ Feature: Display many datagrid filters
       | sku      | family |
       | les-paul | guitar |
     And the following attributes:
-      | code | label-en_US | type               | metric_family | default_metric_unit | useable_as_grid_filter | group |
-      | ID   | ID          | pim_catalog_metric | Length        | CENTIMETER          | 1                      | other |
+      | code | label-en_US | type               | metric_family | default_metric_unit | useable_as_grid_filter | group | decimals_allowed | negative_allowed |
+      | ID   | ID          | pim_catalog_metric | Length        | CENTIMETER          | 1                      | other | 0                | 0                |
     When I am logged in as "Mary"
     And I am on the products page
     And I refresh the grid

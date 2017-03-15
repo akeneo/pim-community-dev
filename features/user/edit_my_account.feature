@@ -14,9 +14,3 @@ Feature: Change my profile
     And I save the user
     Then I should see the flash message "User saved"
     And I should not see the default avatar
-
-  Scenario: Successfully generate API key
-    Given I am on the my account page
-    Then The API key should be Peter_api_key
-    When I press the "btn-apigen" button
-    Then The API key should not be Peter_api_key

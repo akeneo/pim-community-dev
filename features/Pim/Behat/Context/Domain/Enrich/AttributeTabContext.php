@@ -95,7 +95,7 @@ class AttributeTabContext extends PimContext
         $field = $this->getCurrentPage()->findField($fieldName);
         try {
             $badge = $this->spin(function () use ($field) {
-                return $field->getParent()->getParent()->find('css', '.AknBadge--highlight:not(.AknBadge--light)');
+                return $field->getParent()->getParent()->find('css', '.AknBadge--highlight:not(.AknBadge--hidden)');
             }, 'Cannot find the badge element');
         } catch (TimeoutException $e) {
             if ('not ' !== $not) {
@@ -126,7 +126,7 @@ class AttributeTabContext extends PimContext
         $group = $this->getCurrentPage()->findGroup($groupName);
         try {
             $badge = $this->spin(function () use ($group) {
-                return $group->getParent()->find('css', '.AknBadge--highlight:not(.AknBadge--light)');
+                return $group->getParent()->find('css', '.AknBadge--highlight:not(.AknBadge--hidden)');
             }, 'Cannot find the badge element');
         } catch (TimeoutException $e) {
             if ('not ' !== $not) {

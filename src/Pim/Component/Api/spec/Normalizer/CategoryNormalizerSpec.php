@@ -30,10 +30,20 @@ class CategoryNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_category($stdNormalizer, CategoryInterface $category)
     {
-        $data = ['code' => 'my_category'];
+        $data = ['code' => 'my_category', 'labels' => []];
 
-        $stdNormalizer->normalize($category, 'external_api', [])->willReturn($data);
+        $stdNormalizer->normalize($category, 'standard', [])->willReturn($data);
 
-        $this->normalize($category, 'external_api', [])->shouldReturn($data);
+        $normalizedCategory = $this->normalize($category, 'external_api', []);
+        $normalizedCategory->shouldHaveLabels($data);
+    }
+
+    public function getMatchers()
+    {
+        return [
+            'haveLabels' => function ($subject) {
+                return is_object($subject['labels']);
+            }
+        ];
     }
 }

@@ -746,6 +746,33 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param boolean $not
+     * @param string  $option
+     * @param string  $filterName
+     *
+     * @Given /^I should( not)? see the available option "([^"]*)" in the filter "([^"]*)"$/
+     */
+    public function iShouldNotSeeTheAvailableOptionInTheFilter($not, $option, $filterName)
+    {
+        $filter = $this->datagrid->getFilter($filterName);
+        $filter->open();
+
+        if ($not && in_array($option, $filter->getAvailableValues())) {
+            throw $this->createExpectationException(
+                sprintf('Option "%s" should not be available for the filter "%s"', $option, $filterName)
+            );
+        }
+
+        if (!$not && !in_array($option, $filter->getAvailableValues())) {
+            throw $this->createExpectationException(
+                sprintf('Option "%s" should be available for the filter "%s"', $option, $filterName)
+            );
+        }
+
+        $filter->open();
+    }
+
+    /**
      * @param string $row
      *
      * @When /^I click on the "([^"]*)" row$/
@@ -999,6 +1026,26 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iDeleteTheView()
     {
         $this->getCurrentPage()->removeView();
+    }
+
+    /**
+     * @Then /^I should not be able to remove the view$/
+     */
+    public function iShouldNotBeAbleToRemoveTheView()
+    {
+        if (true === $this->getCurrentPage()->isViewDeletable()) {
+            throw $this->createExpectationException('The current view should not be allowed to be removed.');
+        }
+    }
+
+    /**
+     * @Then /^I should not be able to save the view$/
+     */
+    public function iShouldNotBeAbleToSaveTheView()
+    {
+        if (true === $this->getCurrentPage()->isViewCanBeSaved()) {
+            throw $this->createExpectationException('The current view should not be allowed to be saved.');
+        }
     }
 
     /**

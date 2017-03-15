@@ -8,8 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
 {
-    protected $purgeDatabaseForEachTest = false;
-
     public function testErrorIfAcceptHeaderIsXml()
     {
         $client = $this->createAuthenticatedClient();
@@ -80,6 +78,50 @@ class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode(), 'Page is accessible without error');
+    }
+
+    public function testErrorIfContentTypeHeaderIsJsonOnListPatch()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('PATCH', 'api/rest/v1/categories', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+        ], '{"code": "my_category"}');
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE, $response->getStatusCode(), 'Header is not acceptable');
+        $expected = <<<JSON
+{
+    "code": 415,
+    "message": "\"application/json\" in \"Content-Type\" header is not valid. Only \"application/vnd.akeneo.collection+json\" is allowed."
+}
+JSON;
+
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
+    public function testSuccessIfContentTypeHeaderIsVndOnListPatch()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('PATCH', 'api/rest/v1/categories', [], [], [
+            'CONTENT_TYPE' => 'application/vnd.akeneo.collection+json',
+        ]);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode(), 'Header is acceptable');
+    }
+
+    public function testSuccessIfContentTypeHeaderIsJsonOnPatch()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('PATCH', 'api/rest/v1/categories/master', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+        ], '{"code": "master"}');
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode(), 'Header is acceptable');
     }
 
     /**

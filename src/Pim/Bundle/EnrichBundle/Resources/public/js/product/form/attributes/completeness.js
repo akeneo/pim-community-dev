@@ -30,10 +30,10 @@ define(
              * @param {object} event
              */
             addFieldFilter: function (event) {
-                event.filters.push(fetcherRegistry.getFetcher('product-completeness').fetchForProduct(
-                    this.getFormData().meta.id,
-                    this.getFormData().family
-                ).then(function (completenesses) {
+                event.filters.push($.Deferred().resolve({
+                    completenesses: this.getFormData().meta.completenesses,
+                    family: this.getFormData().family
+                }).then(function (completenesses) {
                     if (null === completenesses.family) {
                         return $.Deferred().resolve([]);
                     }
