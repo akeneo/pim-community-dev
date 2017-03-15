@@ -9,12 +9,14 @@
  */
 define(
     [
+        'jquery',
         'underscore',
         'oro/translator',
         'pim/form',
         'text!pim/template/variant-group/form/no-attribute'
     ],
     function (
+        $,
         _,
         __,
         BaseForm,
@@ -29,6 +31,7 @@ define(
              */
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:field:to-fill-filter', this.addFieldFilter);
 
                 BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -47,6 +50,17 @@ define(
                 }
 
                 return this;
+            },
+
+            /**
+             * Add filter on field to make it readonly.
+             *
+             * @param {object} event
+             */
+            addFieldFilter: function (event) {
+                event.filters.push($.Deferred().resolve(function () {
+                    return [];
+                }));
             }
         });
     }
