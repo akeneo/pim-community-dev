@@ -160,7 +160,7 @@ ALTER TABLE `pimee_security_attribute_group_access` ADD KEY `attr_grp_editable_p
 
 INSERT INTO akeneo_batch_job_instance (`code`, `label`, `alias`, `status`, `connector`, `rawConfiguration`, `type`) VALUES
 ('project_calculation', 'Project calculation', 'project_calculation', 0, 'teamwork assistant', '', 'project_calculation')
-('attribute_group_completeness_calculation', 'Refresh project completeness', 'attribute_group_completeness_calculation', 0, 'teamwork assistant', '', 'attribute_group_completeness_calculation');
+('refresh_project_completeness_calculation', 'Refresh project completeness', 'refresh_project_completeness_calculation', 0, 'teamwork assistant', '', 'refresh_project_completeness_calculation');
 SQL;
 
         $sql = $this->container->get('pimee_teamwork_assistant.table_name_mapper')->createQuery($sql);

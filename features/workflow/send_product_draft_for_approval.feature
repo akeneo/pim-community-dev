@@ -42,6 +42,7 @@ Feature: Send a product draft for approval
   Scenario: Successfully restore the product draft data when I send it for approval with unsaved changes
     Given I change the "Name" to "Baggy"
     And I save the product
+    And I should see that Name is a modified value
     And I change the "Name" to "Extra large baggy"
     Then I should see the text "There are unsaved changes."
     When I press the Send for approval button

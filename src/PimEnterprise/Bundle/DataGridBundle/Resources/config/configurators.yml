@@ -18,6 +18,14 @@ services:
         calls:
             - [setRequest, ['@?request=']]
 
+    pim_datagrid.datagrid.configuration.product.filters_configurator:
+        class: '%pim_datagrid.datagrid.configuration.product.filters_configurator.class%'
+        arguments:
+            - '@pim_datagrid.datagrid.configuration.product.configuration_registry'
+            - '@request_stack'
+            - '@pimee_teamwork_assistant.repository.project'
+            - '@security.token_storage'
+
     pimee_datagrid.datagrid.configuration.proposal.context_configurator:
         class: '%pimee_datagrid.datagrid.configuration.proposal.context_configurator.class%'
         arguments:

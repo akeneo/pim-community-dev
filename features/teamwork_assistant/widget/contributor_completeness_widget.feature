@@ -13,16 +13,16 @@ Feature: Follow project completeness
       | other     | Other       | other | pim_catalog_text |
       | media     | Media       | other | pim_catalog_text |
     And the following attributes:
-      | code         | label-en_US  | type                   | localizable | scopable | decimals_allowed | metric_family | default_metric_unit | useable_as_grid_filter | group     | allowed_extensions |
-      | sku          | SKU          | pim_catalog_identifier | 0           | 0        |                  |               |                     | 1                      | other     |                    |
-      | name         | Name         | pim_catalog_text       | 1           | 0        |                  |               |                     | 1                      | marketing |                    |
-      | description  | Description  | pim_catalog_text       | 1           | 1        |                  |               |                     | 0                      | marketing |                    |
-      | size         | Size         | pim_catalog_text       | 1           | 0        |                  |               |                     | 1                      | marketing |                    |
-      | weight       | Weight       | pim_catalog_metric     | 1           | 0        | 0                | Weight        | GRAM                | 1                      | technical |                    |
-      | release_date | Release date | pim_catalog_date       | 1           | 0        |                  |               |                     | 1                      | other     |                    |
-      | capacity     | Capacity     | pim_catalog_metric     | 0           | 0        | 0                | Binary        | GIGABYTE            | 1                      | technical |                    |
-      | material     | Material     | pim_catalog_text       | 1           | 0        |                  |               |                     | 1                      | technical |                    |
-      | picture      | Picture      | pim_catalog_image      | 0           | 1        |                  |               |                     | 0                      | media     | jpg                |
+      | code         | label-en_US  | type                   | localizable | scopable | decimals_allowed | negative_allowed | metric_family | default_metric_unit | useable_as_grid_filter | group     | allowed_extensions |
+      | sku          | SKU          | pim_catalog_identifier | 0           | 0        |                  |                  |               |                     | 1                      | other     |                    |
+      | name         | Name         | pim_catalog_text       | 1           | 0        |                  |                  |               |                     | 1                      | marketing |                    |
+      | description  | Description  | pim_catalog_text       | 1           | 1        |                  |                  |               |                     | 0                      | marketing |                    |
+      | size         | Size         | pim_catalog_text       | 1           | 0        |                  |                  |               |                     | 1                      | marketing |                    |
+      | weight       | Weight       | pim_catalog_metric     | 1           | 0        | 0                | 0                | Weight        | GRAM                | 1                      | technical |                    |
+      | release_date | Release date | pim_catalog_date       | 1           | 0        |                  |                  |               |                     | 1                      | other     |                    |
+      | capacity     | Capacity     | pim_catalog_metric     | 0           | 0        | 0                | 0                | Binary        | GIGABYTE            | 1                      | technical |                    |
+      | material     | Material     | pim_catalog_text       | 1           | 0        |                  |                  |               |                     | 1                      | technical |                    |
+      | picture      | Picture      | pim_catalog_image      | 0           | 1        |                  |                  |               |                     | 0                      | media     | jpg                |
     And the following categories:
       | code       | label-en_US | parent  |
       | clothing   | Clothing    | default |
@@ -82,7 +82,7 @@ Feature: Follow project completeness
       | poster-movie-contact | posters  | decoration         | Movie poster "Contact"    | A1         |              |                   |                    |                    |                |          |               |
     And the following projects:
       | label                  | owner | due_date   | description                                  | channel   | locale | product_filters                                                 |
-      | Collection Summer 2030 | julia | 2030-10-25 | Please do your best to finish before Summer. | ecommerce | en_US  | []                                                              |
+      | Collection Summer 2030 | mary  | 2030-10-25 | Please do your best to finish before Summer. | ecommerce | en_US  | []                                                              |
       | Collection Winter 2030 | julia | 2030-08-25 | Please do your best to finish before Winter. | ecommerce | en_US  | [{"field":"family.code", "operator":"IN", "value": ["tshirt"]}] |
 
   Scenario: Successfully display completeness on widget
@@ -110,6 +110,20 @@ Feature: Follow project completeness
     And I should see the text "33% PRODUCTS DONE"
     And I should see the text "Please do your best to finish before Summer."
     And I should see the text "Due date: 10/25/2030"
+
+  Scenario: I should not see the contributor selector if I'm not owner of the project
+    Given I am logged in as "Mary"
+    And I am on the dashboard page
+    Then I should see the teamwork assistant widget
+    And I should see the text "Collection Winter 2030 E-Commerce | English (United States)"
+    And I should not see the contributor selector
+    When I select "Collection Summer 2030" project
+    Then I should see the text "Collection Summer 2030 E-Commerce | English (United States)"
+    When I select "Mary Smith" contributor
+    And I should see the text "Mary Smith"
+    When I select "Collection Winter 2030" project
+    And I should see the text "Collection Winter 2030 E-Commerce | English (United States)"
+    But I should not see the contributor selector
 
   Scenario: Successfully display the widget without project
     Given I am logged in as "admin"

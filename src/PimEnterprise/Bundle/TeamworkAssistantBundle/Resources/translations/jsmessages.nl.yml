@@ -48,8 +48,3 @@ teamwork_assistant:
 pim_datagrid:
   view_selector:
     project: Projecten
-pim_dashboard:
-  widget:
-    last_operations:
-      job_type:
-        project_calculation: Projectberekening

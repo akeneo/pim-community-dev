@@ -250,3 +250,7 @@ batch_jobs:
         perform.label: Move assets to categories
     add_tags_to_assets:
         perform.label: Add tags to assets
+
+pim_analytics:
+    info_type:
+        nb_assets: Number of assets

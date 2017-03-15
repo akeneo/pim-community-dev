@@ -6,3 +6,6 @@ teamwork_assistant:
       show: 展示
     due_date:
       start: 开始
+  datagrid:
+    contributor_in_progress: 正在处理
+    contributor_done: 已完成

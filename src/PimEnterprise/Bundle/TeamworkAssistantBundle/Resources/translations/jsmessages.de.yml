@@ -56,4 +56,5 @@ pim_dashboard:
   widget:
     last_operations:
       job_type:
-        project_calculation: Projekt-Kalkulation
+        attribute_group_completeness_calculation: Teamwork Assistant
+        project_calculation: Teamwork Assistant

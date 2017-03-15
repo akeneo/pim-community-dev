@@ -1,15 +1,15 @@
 <?php
 
-namespace spec\PimEnterprise\Component\TeamworkAssistant\Job\AttributeGroupCompleteness;
+namespace spec\PimEnterprise\Component\TeamworkAssistant\Job\RefreshProjectCompleteness;
 
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
-use PimEnterprise\Component\TeamworkAssistant\Job\AttributeGroupCompleteness\AttributeGroupCompletenessJobParameter;
+use PimEnterprise\Component\TeamworkAssistant\Job\RefreshProjectCompleteness\RefreshProjectCompletenessJobParameter;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\Constraints\Collection;
 
-class AttributeGroupCompletenessJobParameterSpec extends ObjectBehavior
+class RefreshProjectCompletenessJobParameterSpec extends ObjectBehavior
 {
     function let()
     {
@@ -18,7 +18,7 @@ class AttributeGroupCompletenessJobParameterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(AttributeGroupCompletenessJobParameter::class);
+        $this->shouldHaveType(RefreshProjectCompletenessJobParameter::class);
     }
 
     function it_is_default_value_provider()

@@ -45,6 +45,19 @@ define(
                     contributorUsername = data.currentContributorUsername;
                 }
 
+                var displayLinks = _.contains([UserContext.get('username'), null], contributorUsername);
+                var urls = {};
+
+                var noContributor = null === contributorUsername;
+                var isOwner = data.currentProject.owner.username === UserContext.get('username');
+
+                _.each(['todo', 'inprogress', 'done'], function (status) {
+                    urls[status] = Routing.generate('teamwork_assistant_project_show', {
+                        identifier: data.currentProjectCode,
+                        status: (noContributor && isOwner) ? 'owner-' + status : 'contributor-' + status
+                    });
+                });
+
                 FetcherRegistry.getFetcher('project').getCompleteness(data.currentProjectCode, contributorUsername)
                     .then(function (completeness) {
                         this.$el.html(this.template({
@@ -56,12 +69,8 @@ define(
                             ratioInProgressLabel: __(this.config.labels.ratioInProgress),
                             ratioDoneLabel: __(this.config.labels.ratioDone),
                             doneLabel: __(this.config.labels.done),
-                            username: UserContext.get('username'),
-                            contributorUsername: contributorUsername,
-                            url: Routing.generate(
-                                'teamwork_assistant_project_show',
-                                {identifier: data.currentProjectCode}
-                            )
+                            displayLinks: displayLinks,
+                            urls: urls
                         }));
                     }.bind(this));
             }
