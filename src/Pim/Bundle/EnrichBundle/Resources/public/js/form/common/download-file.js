@@ -23,8 +23,8 @@ define(
               template,
               Routing,
               UserContext,
-              propertyAccessor) {
-
+              propertyAccessor
+    ) {
         return BaseForm.extend({
             template: _.template(template),
 
@@ -80,9 +80,9 @@ define(
 
                     return Routing.generate(
                         this.config.url,
-                        parameters);
+                        parameters
+                    );
                 } else {
-
                     return '';
                 }
             },

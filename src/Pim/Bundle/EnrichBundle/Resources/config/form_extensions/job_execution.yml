@@ -27,11 +27,9 @@ extensions:
         config:
             label: pim_enrich.form.job_execution.button.download_log.title
             iconName: download-alt
-            isVisiblePath: meta.log
+            isVisiblePath: meta.logExists
             url: pim_importexport_export_execution_download_log
-            urlParams:
-                - property: id
-                  path: meta.id
+            urlParams: [{ property: id, path: meta.id }]
 
     pim-job-execution-form-show-profile:
         module: pim/job/execution/show-profile

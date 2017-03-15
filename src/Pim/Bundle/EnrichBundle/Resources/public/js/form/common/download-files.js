@@ -18,7 +18,8 @@ define(
               __,
               BaseForm,
               template,
-              Routing) {
+              Routing
+    ) {
         return BaseForm.extend({
             tagName: 'a',
             className: 'AknButtonList',
