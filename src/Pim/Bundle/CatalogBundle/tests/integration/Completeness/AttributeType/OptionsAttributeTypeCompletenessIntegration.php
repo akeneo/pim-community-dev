@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
-use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessPerAttributeTypeIntegration;
 use Pim\Component\Catalog\AttributeTypes;
 
 /**
@@ -73,6 +72,7 @@ class OptionsAttributeTypeCompletenessIntegration extends AbstractCompletenessPe
             ]
         );
         $this->assertNotComplete($productDataEmptyArray);
+        $this->assertMissingAttributeForProduct($productDataEmptyArray, ['a_multi_select']);
 
         $productDataNull = $this->createProductWithStandardValues(
             $family,
@@ -90,6 +90,7 @@ class OptionsAttributeTypeCompletenessIntegration extends AbstractCompletenessPe
             ]
         );
         $this->assertNotComplete($productDataNull);
+        $this->assertMissingAttributeForProduct($productDataNull, ['a_multi_select']);
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
-use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessPerAttributeTypeIntegration;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 

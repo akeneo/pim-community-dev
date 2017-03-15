@@ -67,3 +67,5 @@
 - Change the constructor of `Pim\Component\Catalog\Updater\ProductTemplateUpdater` to add `Symfony\Component\Serializer\Normalizer\NormalizerInterface` as second argument
 - Remove third argument `$locale` from `addAttributes` method of `Pim\Component\Catalog\Builder\ProductTemplateBuilderInterface`
 - Make protected the method `setValues` in `Pim\Component\Catalog\Updater\VariantGroupUpdater`
+- Change the constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver` to replace `Pim\Component\Catalog\Manager\CompletenessManager` by `Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface`
+- Add method `getId` and remove `setMissingCount`, `setChannel`, `setLocale`, `setProduct`, `setRequiredCount` from `Pim\Component\Catalog\Model\CompletenessInterface` and `Pim\Component\Catalog\Model\AbstractCompleteness`

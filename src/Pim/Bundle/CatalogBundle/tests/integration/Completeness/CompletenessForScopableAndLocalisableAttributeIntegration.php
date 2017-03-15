@@ -39,6 +39,7 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         $this->assertEquals(40, $completeness->getRatio());
         $this->assertEquals(5, $completeness->getRequiredCount());
         $this->assertEquals(3, $completeness->getMissingCount());
+        $this->assertMissingAttributeCodes($completeness, ['name', 'price', 'size']);
 
         $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'tablet', 'en_US');
         $this->assertNotNull($completeness->getLocale());
@@ -48,6 +49,10 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         $this->assertEquals(25, $completeness->getRatio());
         $this->assertEquals(8, $completeness->getRequiredCount());
         $this->assertEquals(6, $completeness->getMissingCount());
+        $this->assertMissingAttributeCodes(
+            $completeness,
+            ['name', 'price', 'size', 'description', 'rating', 'side_view']
+        );
 
         $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'mobile', 'fr_FR');
         $this->assertNotNull($completeness->getLocale());
@@ -57,6 +62,7 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         $this->assertEquals(60, $completeness->getRatio());
         $this->assertEquals(5, $completeness->getRequiredCount());
         $this->assertEquals(2, $completeness->getMissingCount());
+        $this->assertMissingAttributeCodes($completeness, ['price', 'size']);
 
         $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'tablet', 'fr_FR');
         $this->assertNotNull($completeness->getLocale());
@@ -66,6 +72,7 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         $this->assertEquals(50, $completeness->getRatio());
         $this->assertEquals(8, $completeness->getRequiredCount());
         $this->assertEquals(4, $completeness->getMissingCount());
+        $this->assertMissingAttributeCodes($completeness, ['price', 'size', 'rating', 'side_view']);
     }
 
     public function testProductCompleteOnOneChannel()
@@ -90,6 +97,7 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         $this->assertEquals(100, $completeness->getRatio());
         $this->assertEquals(5, $completeness->getRequiredCount());
         $this->assertEquals(0, $completeness->getMissingCount());
+        $this->assertEquals(0, $completeness->getMissingAttributes()->count());
 
         $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'tablet', 'en_US');
         $this->assertNotNull($completeness->getLocale());
@@ -99,6 +107,7 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         $this->assertEquals(89, $completeness->getRatio());
         $this->assertEquals(9, $completeness->getRequiredCount());
         $this->assertEquals(1, $completeness->getMissingCount());
+        $this->assertMissingAttributeCodes($completeness, ['side_view']);
 
         $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'mobile', 'fr_FR');
         $this->assertNotNull($completeness->getLocale());
@@ -108,6 +117,7 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         $this->assertEquals(100, $completeness->getRatio());
         $this->assertEquals(5, $completeness->getRequiredCount());
         $this->assertEquals(0, $completeness->getMissingCount());
+        $this->assertEquals(0, $completeness->getMissingAttributes()->count());
 
         $completeness = $this->getCompletenessByChannelAndLocaleCodes($sandals, 'tablet', 'fr_FR');
         $this->assertNotNull($completeness->getLocale());
@@ -117,6 +127,7 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         $this->assertEquals(78, $completeness->getRatio());
         $this->assertEquals(9, $completeness->getRequiredCount());
         $this->assertEquals(2, $completeness->getMissingCount());
+        $this->assertMissingAttributeCodes($completeness, ['description', 'side_view']);
     }
 
     /**
