@@ -4,6 +4,7 @@
 
 - PIM-6207: correctly dismiss "Unsaved changes" message on system configuration
 - PIM-6213: remove ticks on published form
+- PIM-6242: fix UI glitch on TWA completeness filter search field
 
 # 1.7.0 (2017-03-14)
 
