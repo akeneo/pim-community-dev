@@ -24,4 +24,38 @@ class ChoiceDecorator extends ElementDecorator
         $field = $this->decorate($field, ['Pim\Behat\Decorator\Field\MultiSelectDecorator']);
         $field->setValue($value);
     }
+
+    /**
+     * Get all available values in this filter
+     *
+     * @return array
+     */
+    public function getAvailableValues()
+    {
+        // The multiselect plugin can put many widgets in the DOM.
+        // We have to find the one that is visible and active.
+        $multiSelectWidgets = $this->spin(function () {
+            return $this->getBody()->findAll('css', '.select-filter-widget.dropdown-menu');
+        }, 'Could not find any multiselect widget');
+
+        $visibleWidgets = array_filter($multiSelectWidgets, function ($widget) {
+            return $widget->isVisible();
+        });
+
+        if (empty($visibleWidgets)) {
+            throw new \Exception('Could not find the multiselect widget');
+        }
+        $widget = end($visibleWidgets);
+
+        $options = $this->spin(function () use ($widget) {
+            return $widget->findAll('css', 'li span');
+        }, 'Cannot find options');
+
+        $values = [];
+        foreach ($options as $option) {
+            $values[] = $option->getText();
+        }
+
+        return array_filter($values);
+    }
 }

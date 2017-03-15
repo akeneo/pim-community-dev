@@ -112,6 +112,10 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             return $productValue->getData()->getCode();
         }
 
+        if (in_array($attributeType, [AttributeTypes::FILE, AttributeTypes::IMAGE])) {
+            return $productValue->getData()->getKey();
+        }
+
         return $this->serializer->normalize($productValue->getData(), $format, $context);
     }
 }

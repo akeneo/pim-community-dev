@@ -62,9 +62,9 @@ var jsfv = new function () {
                 }
 
                 if ($(target).find('.validation-tooltip').length) {
-                    $(this).addClass('error');
+                    $(this).addClass('AknHorizontalNavtab-link--errored error');
                 } else {
-                    $(this).removeClass('error');
+                    $(this).removeClass('AknHorizontalNavtab-link--errored error');
                 }
             }
         )
@@ -113,7 +113,7 @@ var jsfv = new function () {
         var value = undefined;
 
         if ($field.filter('input[type="checkbox"]').length) {
-            value = $field.filter(':checked').map(function(i, cb) { return $(cb).val(); }).get();
+            value = $field.is(':checked');
         } else if ($field.filter('input[type="radio"]').length) {
             value = $field.filter(':checked').val();
         } else {

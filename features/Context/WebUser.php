@@ -1359,19 +1359,7 @@ class WebUser extends RawMinkContext
      * @param string $oldOptionName
      * @param string $newOptionName
      *
-     * @Given /^I edit the "([^"]*)" option and turn it to "([^"]*)"$/
-     */
-    public function iEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
-    {
-        $this->getCurrentPage()->editOption($oldOptionName, $newOptionName);
-        $this->wait();
-    }
-
-    /**
-     * @param string $oldOptionName
-     * @param string $newOptionName
-     *
-     * @Given /^I edit the code "([^"]*)" to turn it to "([^"]*)" and cancel$/
+     * @Given /^I edit the attribute option "([^"]*)" to turn it to "([^"]*)" and cancel$/
      */
     public function iEditAndCancelToEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
     {
@@ -1397,7 +1385,7 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string locator
+     * @param string $locator
      *
      * @When /^I hover over the element "([^"]*)"$/
      */
@@ -2462,30 +2450,6 @@ class WebUser extends RawMinkContext
                 throw $this->createExpectationException('Status switcher should be visible');
             }
         }
-    }
-
-    /**
-     * Check the user API key
-     *
-     * @Then /^The API key should (not )?be (.+)$/
-     */
-    public function theApiKeyShouldBe($not, $value)
-    {
-        $this->spin(function () use ($not, $value) {
-            $apiKey = $this->getCurrentPage()->getApiKey();
-
-            if ($not) {
-                if ($apiKey === $value) {
-                    throw new SpinException('API key should not be ' . $apiKey);
-                }
-            } else {
-                if ($apiKey !== $value) {
-                    throw new SpinException('API key should be ' . $apiKey);
-                }
-            }
-
-            return true;
-        }, 'Problem occurred with API Key.');
     }
 
     /**

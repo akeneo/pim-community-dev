@@ -6,11 +6,11 @@ Feature: Update number fields
   Scenario: Successfully update a number field
     Given a "default" catalog configuration
     And the following attributes:
-      | code         | type               | localizable | scopable | group |
-      | item_count   | pim_catalog_number | 1           | 0        | other |
-      | car_count    | pim_catalog_number | 0           | 1        | other |
-      | wheel_count  | pim_catalog_number | 1           | 1        | other |
-      | screen_count | pim_catalog_number | 0           | 0        | other |
+      | code         | type               | localizable | scopable | group | decimals_allowed | negative_allowed |
+      | item_count   | pim_catalog_number | 1           | 0        | other | 0                | 0                |
+      | car_count    | pim_catalog_number | 0           | 1        | other | 0                | 0                |
+      | wheel_count  | pim_catalog_number | 1           | 1        | other | 0                | 0                |
+      | screen_count | pim_catalog_number | 0           | 0        | other | 0                | 0                |
     And the following products:
       | sku                     |
       | lot_of_items            |

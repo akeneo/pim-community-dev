@@ -28,7 +28,7 @@ class LocaleNormalizer implements NormalizerInterface
      */
     public function normalize($locale, $format = null, array $context = [])
     {
-        return $this->stdNormalizer->normalize($locale, $format, $context);
+        return $this->stdNormalizer->normalize($locale, 'standard', $context);
     }
 
     /**

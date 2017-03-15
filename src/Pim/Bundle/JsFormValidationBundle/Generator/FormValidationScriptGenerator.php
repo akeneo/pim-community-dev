@@ -148,7 +148,7 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
                         } elseif (is_string($constraint->fields)) {
                             $aConstraints[$constraint->fields][] = $constraint;
                         }
-                    } elseif ('NotBlankProperties' === $constraintName) {
+                    } elseif ('NotNullProperties' === $constraintName) {
                         foreach ($constraint->properties as $property) {
                             $aConstraints[$property][] = $constraint;
                         }

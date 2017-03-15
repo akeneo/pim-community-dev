@@ -7,10 +7,10 @@ Feature: Validate unique attribute of a product
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | code   | label-en_US | type               | unique | group |
-      | text   | Text        | pim_catalog_text   | 1      | other |
-      | number | Number      | pim_catalog_number | 1      | other |
-      | date   | Date        | pim_catalog_date   | 1      | other |
+      | code   | label-en_US | type               | unique | group | decimals_allowed | negative_allowed |
+      | text   | Text        | pim_catalog_text   | 1      | other |                  |                  |
+      | number | Number      | pim_catalog_number | 1      | other | 0                | 0                |
+      | date   | Date        | pim_catalog_date   | 1      | other |                  |                  |
     And the following families:
       | code        | label-en_US | attributes | requirements-ecommerce | requirements-mobile |
       | with_text   | With Text   | sku,text   | sku                    | sku                 |

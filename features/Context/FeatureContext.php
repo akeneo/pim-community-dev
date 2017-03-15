@@ -29,6 +29,8 @@ use Pim\Behat\Context\Storage\FileInfoStorage;
 use Pim\Behat\Context\Storage\ProductStorage;
 use Symfony\Component\HttpKernel\KernelInterface;
 
+require_once 'vendor/phpunit/phpunit/src/Framework/Assert/Functions.php';
+
 /**
  * Main feature context
  *
@@ -59,7 +61,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('fixtures', new FixturesContext());
         $this->useContext('catalogConfiguration', new CatalogConfigurationContext());
         $this->useContext('webUser', new WebUser());
-        $this->useContext('webApi', new WebApiContext($parameters['base_url']));
         $this->useContext('datagrid', new DataGridContext());
         $this->useContext('command', new CommandContext());
         $this->useContext('navigation', new NavigationContext($parameters['base_url']));

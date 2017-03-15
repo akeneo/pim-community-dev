@@ -13,10 +13,14 @@ pim_api:
     family:
       edit: Crear y actualizar familias
       list: Lista de familias
+    channel.list: Listar canales a través de la API Web
+    locale.list: Listar locales a través de la API Web
   acl_group:
     overall_access: Acceso general API Web
     attribute: Atributos
     attribute_option: Opciones de atributo
     category: Categorías
     family: Familias
+    channel: Acceso a canales vía API
+    locale: Acceso a los locales vía API
 rights.api: Permisiones del API Web

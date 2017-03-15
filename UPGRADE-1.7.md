@@ -373,6 +373,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_user_user_rest_get/pim_user
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ImportExportBundle\\Validator\\Constraints\\WritableDirectory/Pim\\Component\\Catalog\\Validator\\Constraints\\WritableDirectory/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Validator\\Constraints\\Channel/Pim\\Component\\Catalog\\Validator\\Constraints\\Channel/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_import_export\.repository\.job_instance/akeneo_batch\.job\.job_instance_repository/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ImportExportBundle\\Entity\\Repository\\JobInstanceRepository/Akeneo\\Bundle\\BatchBundle\\Job\\JobInstanceRepository/g'
 ```
 
 ### CSS Refactoring

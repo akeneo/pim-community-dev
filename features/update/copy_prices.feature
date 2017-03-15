@@ -6,9 +6,9 @@ Feature: Update price fields
   Scenario: Successfully update a price field
     Given a "apparel" catalog configuration
     And the following attributes:
-      | code         | type                         | group |
-      | price_winter | pim_catalog_price_collection | other |
-      | price_summer | pim_catalog_price_collection | other |
+      | code         | type                         | group | decimals_allowed |
+      | price_winter | pim_catalog_price_collection | other | 0                |
+      | price_summer | pim_catalog_price_collection | other | 0                |
     And the following products:
       | sku     | price_winter          |
       | AKN_MUG | 5 GBP, 10 EUR, 15 USD |

@@ -103,4 +103,12 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
     {
         return $this->attributeRepository->getIdentifierCode();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMediaAttributeCodes()
+    {
+        return $this->attributeRepository->findMediaAttributeCodes();
+    }
 }

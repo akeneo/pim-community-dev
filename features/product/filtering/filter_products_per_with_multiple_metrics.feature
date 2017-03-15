@@ -11,9 +11,9 @@ Feature: Filter products with multiples metrics filters
       | furniture |
       | library   |
     And the following attributes:
-      | code      | label-en_US | type               | useable_as_grid_filter | metric_family | default_metric_unit | decimals_allowed | group |
-      | weight    | Weight      | pim_catalog_metric | 1                      | Weight        | GRAM                | 1                | other |
-      | packaging | Packaging   | pim_catalog_metric | 1                      | Weight        | GRAM                | 1                | other |
+      | code      | label-en_US | type               | useable_as_grid_filter | metric_family | default_metric_unit | decimals_allowed | negative_allowed | group |
+      | weight    | Weight      | pim_catalog_metric | 1                      | Weight        | GRAM                | 1                | 0                | other |
+      | packaging | Packaging   | pim_catalog_metric | 1                      | Weight        | GRAM                | 1                | 0                | other |
     And the following products:
       | sku    | family    | packaging | weight   |
       | BOOK   | library   |           |          |

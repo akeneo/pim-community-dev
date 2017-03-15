@@ -32,8 +32,20 @@ class FileNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_file_info(FileInfoInterface $fileInfo)
     {
+        $standardFile = [
+            'code'              => 'f/2/e/6/f2e6674e076ad6fafa12012e8fd026acdc70f814_fileA.txt',
+            'original_filename' => 'file a',
+            'mime_type'         => 'plain/text',
+            'size'              => 2355,
+            'extension'         => 'txt'
+        ];
+
         $fileInfo->getKey()->willReturn('f/2/e/6/f2e6674e076ad6fafa12012e8fd026acdc70f814_fileA.txt');
-        $this->normalize($fileInfo, 'standard')
-            ->shouldReturn('f/2/e/6/f2e6674e076ad6fafa12012e8fd026acdc70f814_fileA.txt');
+        $fileInfo->getOriginalFilename()->willReturn('file a');
+        $fileInfo->getMimeType()->willReturn('plain/text');
+        $fileInfo->getSize()->willReturn(2355);
+        $fileInfo->getExtension()->willReturn('txt');
+
+        $this->normalize($fileInfo, 'standard')->shouldReturn($standardFile);
     }
 }

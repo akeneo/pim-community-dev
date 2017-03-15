@@ -40,7 +40,7 @@ class IdentifierType extends AbstractAttributeType
             ],
             'scopable' => [
                 'name'      => 'scopable',
-                'fieldType' => 'pim_enrich_scopable',
+                'fieldType' => 'switch',
                 'options'   => [
                     'data'      => false,
                     'disabled'  => true,

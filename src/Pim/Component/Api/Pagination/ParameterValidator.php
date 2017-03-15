@@ -27,40 +27,61 @@ class ParameterValidator implements ParameterValidatorInterface
     /**
      * {@inheritdoc}
      */
-    public function validate(array $parameters)
+    public function validate(array $parameters, array $options = [])
     {
-        if (!isset($parameters['page'])) {
-            throw new PaginationParametersException('Page number is missing.');
+        if (!isset($parameters['pagination_type'])) {
+            $parameters['pagination_type'] = PaginationTypes::OFFSET;
         }
 
-        if (!isset($parameters['limit'])) {
-            throw new PaginationParametersException('Limit number is missing.');
+        switch ($parameters['pagination_type']) {
+            case PaginationTypes::SEARCH_AFTER:
+                if (isset($options['support_search_after']) && true === $options['support_search_after']) {
+                    $this->validateLimit($parameters);
+                } else {
+                    throw new PaginationParametersException('Pagination type is not supported.');
+                }
+                break;
+            case PaginationTypes::OFFSET:
+                $this->validateLimit($parameters);
+                $this->validatePage($parameters);
+                $this->validateWithCount($parameters);
+                break;
+            default:
+                throw new PaginationParametersException('Pagination type does not exist.');
         }
-
-        $this->validatePage($parameters['page']);
-
-        $this->validateLimit($parameters['limit']);
     }
 
     /**
-     * @param int|string $page
+     * @param array $parameters
      *
      * @throws PaginationParametersException
      */
-    protected function validatePage($page)
+    protected function validatePage(array $parameters)
     {
+        if (!isset($parameters['page'])) {
+            return;
+        }
+
+        $page = $parameters['page'];
+
         if (!$this->isInteger($page) || $page < 1) {
             throw new PaginationParametersException(sprintf('"%s" is not a valid page number.', $page));
         }
     }
 
     /**
-     * @param int|string $limit
+     * @param array $parameters
      *
      * @throws PaginationParametersException
      */
-    protected function validateLimit($limit)
+    protected function validateLimit(array $parameters)
     {
+        if (!isset($parameters['limit'])) {
+            return;
+        }
+
+        $limit = $parameters['limit'];
+
         if (!$this->isInteger($limit) || $limit < 1) {
             throw new PaginationParametersException(sprintf('"%s" is not a valid limit number.', $limit));
         }
@@ -68,6 +89,27 @@ class ParameterValidator implements ParameterValidatorInterface
         $limitMax = $this->configuration['pagination']['limit_max'];
         if ($limitMax < $limit) {
             throw new PaginationParametersException(sprintf('You cannot request more than %d items.', $limitMax));
+        }
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @throws PaginationParametersException
+     */
+    protected function validateWithCount(array $parameters)
+    {
+        if (!isset($parameters['with_count'])) {
+            return;
+        }
+
+        if (!in_array($parameters['with_count'], ['true', 'false'], true)) {
+            throw new PaginationParametersException(
+                sprintf(
+                    'Parameter "with_count" has to be a boolean. Only "true" or "false" allowed, "%s" given.',
+                    $parameters['with_count']
+                )
+            );
         }
     }
 

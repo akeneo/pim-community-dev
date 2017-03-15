@@ -242,7 +242,24 @@ class AssociationFieldSetter extends AbstractFieldSetter
             );
         }
 
-        foreach ($items as $itemData) {
+        foreach ($items as $type => $itemData) {
+            if (!is_array($itemData)) {
+                $message = sprintf(
+                    'Property "%s" in association "%s" expects an array as data, "%s" given.',
+                    $type,
+                    $assocTypeCode,
+                    gettype($itemData)
+                );
+
+                throw new InvalidPropertyTypeException(
+                    $type,
+                    $itemData,
+                    static::class,
+                    $message,
+                    InvalidPropertyTypeException::ARRAY_EXPECTED_CODE
+                );
+            }
+
             $this->checkAssociationItems($field, $assocTypeCode, $data, $itemData);
         }
     }

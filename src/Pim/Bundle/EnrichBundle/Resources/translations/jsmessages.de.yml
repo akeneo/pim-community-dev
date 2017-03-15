@@ -223,6 +223,7 @@ pim_enrich:
       btn:
         save: Speichern
     channel:
+      title: Ausgabekanal
       info:
         deletion_successful: Ausgabekanal erfolgreich entfernt.
         deletion_failed: Ausgabekanal konnte nicht gelöscht werden.
@@ -241,6 +242,7 @@ pim_enrich:
       btn:
         save: Speichern
     family:
+      title: Produktfamilie
       info:
         update_successful: Produktfamilie erfolgreich aktualisiert.
         create_successful: Ausgabekanal erfolgreich angelegt.
@@ -297,6 +299,7 @@ pim_enrich:
         updated: Aktualisiert
         updated_by: Aktualisiert von
     job_instance:
+      title: Job-Profil
       info:
         update_failed: Das Job-Profil konnte nicht aktualisiert werden.
         update_successful: Das Job-Profil wurde erfolgreich aktualisiert.

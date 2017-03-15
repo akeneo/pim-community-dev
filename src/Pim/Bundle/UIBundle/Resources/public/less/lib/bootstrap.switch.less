@@ -2,7 +2,9 @@
 
 /* Overrides src/Pim/Bundle/UIBundle/Resources/public/lib/bootstrap-switch/bootstrap.switch.css */
 .has-switch {
-  height: @AknFormHeight;
+  @switchHeight: 32px;
+
+  height: @switchHeight;
   border-color: @AknBorderColor;
   border-radius: 2px;
 
@@ -10,8 +12,8 @@
   .switch-off,
   label.switch-small,
   span.switch-small {
-    height: @AknFormHeight - 2px;
-    line-height: @AknFormHeight - 2px;
+    height: @switchHeight - 2px;
+    line-height: @switchHeight - 2px;
     padding-bottom: 0;
     padding-top: 0;
   }

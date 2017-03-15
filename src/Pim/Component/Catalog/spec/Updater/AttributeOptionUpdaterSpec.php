@@ -105,36 +105,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
             ]
         );
     }
-
-    function it_does_not_update_readonly_fields_on_an_existing_attribute_option(
-        AttributeOptionInterface $attributeOption,
-        AttributeOptionValueInterface $attributeOptionValue
-    ) {
-        $attributeOption->getId()->willReturn(42);
-        $attributeOption->getAttribute()->willReturn(null);
-
-        // read only fields
-        $attributeOption->setCode('mycode')->shouldNotBeCalled();
-        $attributeOption->setAttribute(Argument::any())->shouldNotBeCalled();
-
-        $attributeOption->setSortOrder(12)->shouldBeCalled();
-        $attributeOption->setLocale('de_DE')->shouldBeCalled();
-        $attributeOption->getTranslation()->willReturn($attributeOptionValue);
-        $attributeOptionValue->setLabel('210 x 1219 mm')->shouldBeCalled();
-
-        $this->update(
-            $attributeOption,
-            [
-                'code' => 'mycode',
-                'attribute' => 'myattribute',
-                'sort_order' => 12,
-                'labels' => [
-                    'de_DE' => '210 x 1219 mm'
-                ]
-            ]
-        );
-    }
-
+    
     function it_throws_an_exception_when_code_is_not_scalar(AttributeOptionInterface $attributeOption)
     {
         $values = [

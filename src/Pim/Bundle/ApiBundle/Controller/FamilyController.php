@@ -3,23 +3,24 @@
 namespace Pim\Bundle\ApiBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
-use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Version;
+use Pim\Bundle\ApiBundle\Documentation;
+use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
-use Pim\Component\Api\Pagination\HalPaginator;
-use Pim\Component\Api\Pagination\ParameterValidator;
+use Pim\Component\Api\Pagination\PaginatorInterface;
+use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\RouterInterface;
@@ -54,17 +55,17 @@ class FamilyController
     /** @var RouterInterface */
     protected $router;
 
-    /** @var HalPaginator */
+    /** @var PaginatorInterface */
     protected $paginator;
 
-    /** @var ParameterValidator */
+    /** @var ParameterValidatorInterface */
     protected $parameterValidator;
+
+    /** @var StreamResourceResponse */
+    protected $partialUpdateStreamResource;
 
     /** @var array */
     protected $apiConfiguration;
-
-    /** @var string */
-    protected $documentationUrl;
 
     /**
      * @param ApiResourceRepositoryInterface $repository
@@ -74,10 +75,10 @@ class FamilyController
      * @param ValidatorInterface             $validator
      * @param SaverInterface                 $saver
      * @param RouterInterface                $router
-     * @param HalPaginator                   $paginator
-     * @param ParameterValidator             $parameterValidator
+     * @param PaginatorInterface             $paginator
+     * @param ParameterValidatorInterface    $parameterValidator
+     * @param StreamResourceResponse         $partialUpdateStreamResource
      * @param array                          $apiConfiguration
-     * @param string                         $documentationUrl
      */
     public function __construct(
         ApiResourceRepositoryInterface $repository,
@@ -87,10 +88,10 @@ class FamilyController
         ValidatorInterface $validator,
         SaverInterface $saver,
         RouterInterface $router,
-        HalPaginator $paginator,
-        ParameterValidator $parameterValidator,
-        array $apiConfiguration,
-        $documentationUrl
+        PaginatorInterface $paginator,
+        ParameterValidatorInterface $parameterValidator,
+        StreamResourceResponse $partialUpdateStreamResource,
+        array $apiConfiguration
     ) {
         $this->repository = $repository;
         $this->normalizer = $normalizer;
@@ -101,8 +102,8 @@ class FamilyController
         $this->router = $router;
         $this->paginator = $paginator;
         $this->parameterValidator = $parameterValidator;
+        $this->partialUpdateStreamResource = $partialUpdateStreamResource;
         $this->apiConfiguration = $apiConfiguration;
-        $this->documentationUrl = sprintf($documentationUrl, substr(Version::VERSION, 0, 3));
     }
 
     /**
@@ -136,30 +137,34 @@ class FamilyController
      */
     public function listAction(Request $request)
     {
-        $queryParameters = [
-            'page'  => $request->query->get('page', 1),
-            'limit' => $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default'])
-        ];
-
         try {
-            $this->parameterValidator->validate($queryParameters);
+            $this->parameterValidator->validate($request->query->all());
         } catch (PaginationParametersException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
 
+        $defaultParameters = [
+            'page'       => 1,
+            'limit'      => $this->apiConfiguration['pagination']['limit_by_default'],
+            'with_count' => 'false',
+        ];
+
+        $queryParameters = array_merge($defaultParameters, $request->query->all());
+
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
-        $families = $this->repository->searchAfterOffset([], [], $queryParameters['limit'], $offset);
+        $families = $this->repository->searchAfterOffset([], ['code' =>'ASC'], $queryParameters['limit'], $offset);
 
         $parameters = [
-            'query_parameters'    => array_merge($request->query->all(), $queryParameters),
+            'query_parameters'    => $queryParameters,
             'list_route_name'     => 'pim_api_family_list',
             'item_route_name'     => 'pim_api_family_get',
         ];
 
+        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count() : null;
         $paginatedFamilies = $this->paginator->paginate(
             $this->normalizer->normalize($families, 'external_api'),
             $parameters,
-            $this->repository->count()
+            $count
         );
 
         return new JsonResponse($paginatedFamilies);
@@ -180,12 +185,27 @@ class FamilyController
         $data = $this->getDecodedContent($request->getContent());
 
         $family = $this->factory->create();
-        $this->updateFamily($family, $data);
+        $this->updateFamily($family, $data, 'post_families');
         $this->validateFamily($family);
 
         $this->saver->save($family);
 
         $response = $this->getResponse($family, Response::HTTP_CREATED);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @throws HttpException
+     *
+     * @return Response
+     */
+    public function partialUpdateListAction(Request $request)
+    {
+        $resource = $request->getContent(true);
+        $response = $this->partialUpdateStreamResource->streamResponse($resource);
 
         return $response;
     }
@@ -214,7 +234,7 @@ class FamilyController
             $family = $this->factory->create();
         }
 
-        $this->updateFamily($family, $data);
+        $this->updateFamily($family, $data, 'patch_families__code_');
         $this->validateFamily($family);
 
         $this->saver->save($family);
@@ -250,25 +270,17 @@ class FamilyController
      *
      * @param FamilyInterface $family family to update
      * @param array           $data   data of the request already decoded, it should be the standard format
+     * @param string          $anchor
      *
-     * @throws UnprocessableEntityHttpException
+     * @throws DocumentedHttpException
      */
-    protected function updateFamily(FamilyInterface $family, array $data)
+    protected function updateFamily(FamilyInterface $family, array $data, $anchor)
     {
         try {
             $this->updater->update($family, $data);
-        } catch (UnknownPropertyException $exception) {
-            throw new DocumentedHttpException(
-                $this->documentationUrl,
-                sprintf(
-                    'Property "%s" does not exist. Check the standard format documentation.',
-                    $exception->getPropertyName()
-                ),
-                $exception
-            );
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
-                $this->documentationUrl,
+                Documentation::URL . $anchor,
                 sprintf('%s Check the standard format documentation.', $exception->getMessage()),
                 $exception
             );

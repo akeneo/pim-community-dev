@@ -217,6 +217,7 @@ pim_enrich:
       btn:
         save: Tallenna
     channel:
+      title: kanava
       info:
         field_not_ready:
           The channel cannot be saved right now. The following fields are not ready:
@@ -229,6 +230,7 @@ pim_enrich:
       btn:
         save: Tallenna
     family:
+      title: tuoteperhe
       meta:
         created: Luotu
         created_by: Luoja

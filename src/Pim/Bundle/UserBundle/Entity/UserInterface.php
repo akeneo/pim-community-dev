@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
 use Oro\Bundle\UserBundle\Entity\Role;
-use Oro\Bundle\UserBundle\Entity\UserApi;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -95,11 +94,6 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
      * @return DateTime
      */
     public function getUpdatedAt();
-
-    /**
-     * @return UserApi
-     */
-    public function getApi();
 
     /**
      * @param int $ttl
@@ -274,13 +268,6 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
      * @return UserInterface
      */
     public function setLoginCount($count);
-
-    /**
-     * @param  UserApi $api
-     *
-     * @return UserInterface
-     */
-    public function setApi(UserApi $api);
 
     /**
      * @param DateTime $createdAt

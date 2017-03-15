@@ -1,5 +1,4 @@
 parameters:
-    oro_user.form.type.user.api.class:          Oro\Bundle\UserBundle\Form\Type\UserApiType
     oro_user.form.type.reset.class:             Oro\Bundle\UserBundle\Form\Type\ResetType
     oro_user.form.type.role.api.class:          Oro\Bundle\UserBundle\Form\Type\RoleApiType
     oro_user.form.type.group.class:             Oro\Bundle\UserBundle\Form\Type\GroupType
@@ -53,13 +52,6 @@ services:
         factory_method:               createNamed
         factory_service:              form.factory
         arguments:                    ["oro_user_reset_form", "oro_user_reset", null, { validation_groups: [ResetPassword, Default] }]
-
-    oro_user.form.type.user.api:
-        scope: request
-        class:                        '%oro_user.form.type.user.api.class%'
-        arguments:                    ["@security.token_storage", "@request"]
-        tags:
-            - { name: form.type, alias: user }
 
     oro_user.form.type.change_password:
         class: '%oro_user.form.type.change_password.class%'
