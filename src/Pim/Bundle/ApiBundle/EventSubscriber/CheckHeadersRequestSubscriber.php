@@ -88,7 +88,7 @@ class CheckHeadersRequestSubscriber implements EventSubscriberInterface
                     );
                 }
 
-                if ($contentType !== $best->getValue()) {
+                if (false === strpos($contentType, $best->getValue())) {
                     throw new UnsupportedMediaTypeHttpException(
                         sprintf(
                             '"%s" in "Content-Type" header is not valid. Only "%s" is allowed.',

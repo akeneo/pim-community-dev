@@ -7,11 +7,11 @@ Feature: Validate values for unique attributes when importing products
   Background:
     Given an "footwear" catalog configuration
     And the following attributes:
-      | code                  | type               | group     | unique | scopable | localizable | useable_as_grid_filter |
-      | test_unique_attribute | pim_catalog_text   | marketing | 1      | 0        | 0           | 1                      |
-      | date                  | pim_catalog_date   | marketing | 1      | 0        | 0           | 1                      |
-      | number                | pim_catalog_number | marketing | 1      | 0        | 0           | 1                      |
-      | text                  | pim_catalog_text   | marketing | 1      | 0        | 0           | 1                      |
+      | code                  | type               | group     | unique | scopable | localizable | useable_as_grid_filter | decimals_allowed | negative_allowed |
+      | test_unique_attribute | pim_catalog_text   | marketing | 1      | 0        | 0           | 1                      |                  |                  |
+      | date                  | pim_catalog_date   | marketing | 1      | 0        | 0           | 1                      |                  |                  |
+      | number                | pim_catalog_number | marketing | 1      | 0        | 0           | 1                      | 0                | 0                |
+      | text                  | pim_catalog_text   | marketing | 1      | 0        | 0           | 1                      |                  |                  |
     And I am logged in as "Julia"
 
   Scenario: Successfully ignore duplicate unique date values

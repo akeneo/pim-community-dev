@@ -19,9 +19,9 @@ interface PaginatorInterface
      *
      * Items should be already normalized.
      *
-     * @param array $items      normalized items of the collection to render
-     * @param array $parameters parameters to generate the different urls, such as uri parameters and query parameters
-     * @param int   $count      total number of items without pagination
+     * @param array    $items      normalized items of the collection to render
+     * @param array    $parameters parameters to generate the different urls, such as uri parameters and query parameters
+     * @param int|null $count      total number of items without pagination, null if not calculated
      *
      * @throws PaginationParametersException if a parameter is either invalid, undefined parameter or missing
      *

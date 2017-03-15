@@ -56,14 +56,9 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
             );
         }
 
-        $isNew = $attributeOption->getId() === null;
-        $readOnlyFields = ['attribute', 'code'];
         foreach ($data as $field => $value) {
             $this->validateDataType($field, $value);
-            $isReadOnlyField = in_array($field, $readOnlyFields);
-            if ($isNew || !$isReadOnlyField) {
-                $this->setData($attributeOption, $field, $value);
-            }
+            $this->setData($attributeOption, $field, $value);
         }
 
         return $this;

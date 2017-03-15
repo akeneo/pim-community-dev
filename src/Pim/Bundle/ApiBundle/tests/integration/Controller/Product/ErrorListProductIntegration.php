@@ -15,6 +15,14 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $this->assert($client, 'Scope "not_found" does not exist.');
     }
 
+    public function testUnknownPaginationType()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/products?pagination_type=unknown');
+        $this->assert($client, 'Pagination type does not exist.');
+    }
+
     public function testNotFoundLocale()
     {
         $client = $this->createAuthenticatedClient();
@@ -117,6 +125,22 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $this->assert($client, 'Attribute "a_localizable_image" expects a locale, none given.');
     }
 
+    public function testSearchWithMissingLocales()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', '/api/rest/v1/products?search={"completeness":[{"operator":"GREATER THAN ON ALL LOCALES", "scope":"ecommerce", "value":100}]}');
+        $this->assert($client, 'Property "completeness" expects an array with the key "locales" as data.');
+    }
+
+    public function testSearchWithLocalesAsAString()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', '/api/rest/v1/products?search={"completeness":[{"operator":"GREATER THAN ON ALL LOCALES", "scope":"ecommerce", "value":100, "locales":"fr_FR"}]}');
+        $this->assert($client, 'Property "completeness" expects an array of arrays as data.');
+    }
+
     public function testSearchWithMissingScope()
     {
         $client = $this->createAuthenticatedClient();
@@ -165,6 +189,14 @@ class ErrorListProductIntegration extends AbstractProductTestCase
 
         $client->request('GET', '/api/rest/v1/products?search_scope=not_found&search={"a_scopable_image":[{"operator":"CONTAINS", "value":"text"}]}');
         $this->assert($client, 'Attribute "a_scopable_image" expects an existing scope, "not_found" given.');
+    }
+
+    public function testSearchWithObjectNotFound()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', '/api/rest/v1/products?search={"categories":[{"operator":"IN","value":["not_found"]}]}');
+        $this->assert($client, 'Object "category" with code "not_found" does not exist');
     }
 
     public function testSearchIsNotAnArray()

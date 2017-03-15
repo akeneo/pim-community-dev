@@ -51,13 +51,17 @@ class AttributeTypeForOptionValidatorSpec extends ObjectBehavior
         $attributeOption->getAttribute()->willReturn($notAllowedAttribute);
         $notAllowedAttribute->getType()->willReturn(AttributeTypes::TEXT);
         $notAllowedAttribute->getCode()->willReturn('attributeCode');
+        $constraint->propertyPath = 'path';
 
         $violationData = [
-            '%attribute%' => 'attributeCode'
+            '%attribute%'       => 'attributeCode',
+            '%attribute_types%' => 'pim_catalog_simpleselect", "pim_catalog_multiselect',
         ];
         $context->buildViolation($constraint->invalidAttributeMessage, $violationData)
             ->shouldBeCalled()
             ->willReturn($violation);
+        $violation->atPath('path')->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate($attributeOption, $constraint);
     }

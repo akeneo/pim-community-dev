@@ -87,6 +87,19 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             'setFieldData',
             [$product, 'associations', ['assoc_type_code' => ['products' => [], 'groups' => [2]]]]
         );
+
+        $this->shouldThrow(
+            new InvalidPropertyTypeException(
+                'products',
+                'string',
+                'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
+                'Property "products" in association "assoc_type_code" expects an array as data, "string" given.',
+                200
+            )
+        )->during(
+            'setFieldData',
+            [$product, 'associations', ['assoc_type_code' => ['products' => 'string', 'groups' => []]]]
+        );
     }
 
     function it_sets_association_field(

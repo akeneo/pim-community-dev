@@ -117,10 +117,16 @@ class AttributeValidationContext extends PimContext
                         assertEquals($value, $attribute->getMaxFileSize());
                         break;
                     case 'date_min':
-                        assertEquals($value, $attribute->getDateMin()->format('Y-m-d'));
+                        $date = $attribute->getDateMin();
+                        if (null !== $date) {
+                            assertEquals($value, $date->format('Y-m-d'));
+                        }
                         break;
                     case 'date_max':
-                        assertEquals($value, $attribute->getDateMax()->format('Y-m-d'));
+                        $date = $attribute->getDateMax();
+                        if (null !== $date) {
+                            assertEquals($value, $date->format('Y-m-d'));
+                        }
                         break;
                     case 'is_read_only':
                         assertEquals(($data['is_read_only'] == 1), $attribute->getProperty('is_read_only'));

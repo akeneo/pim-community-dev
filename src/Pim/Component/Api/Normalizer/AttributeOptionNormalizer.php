@@ -26,9 +26,15 @@ class AttributeOptionNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($attribute, $format = null, array $context = [])
+    public function normalize($option, $format = null, array $context = [])
     {
-        return $this->stdNormalizer->normalize($attribute, $format, $context);
+        $normalizedOption = $this->stdNormalizer->normalize($option, 'standard', $context);
+
+        if (empty($normalizedOption['labels'])) {
+            $normalizedOption['labels'] = (object) $normalizedOption['labels'];
+        }
+
+        return $normalizedOption;
     }
 
     /**

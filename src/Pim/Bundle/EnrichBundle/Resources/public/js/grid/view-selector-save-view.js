@@ -19,6 +19,7 @@ define(
         'pim/datagrid/state',
         'pim/dialog',
         'routing',
+        'pim/user-context',
         'pim/saver/datagrid-view',
         'oro/messenger'
     ],
@@ -31,6 +32,7 @@ define(
         DatagridState,
         Dialog,
         Routing,
+        UserContext,
         DatagridViewSaver,
         messenger
     ) {
@@ -55,7 +57,9 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                if ('view' !== this.getRoot().currentViewType) {
+                if ('view' !== this.getRoot().currentViewType ||
+                    UserContext.get('meta').id !== this.getRoot().currentView.owner_id
+                ) {
                     this.$el.html('');
 
                     return;

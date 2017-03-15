@@ -16,7 +16,6 @@ parameters:
     pim_enrich.form.type.attribute_option_create.class:             Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionCreateType
     pim_enrich.form.type.attribute_option_value.class:              Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionValueType
     pim_enrich.form.type.available_attributes.class:                Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType
-    pim_enrich.form.type.attribute_property_scopable.class:         Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\ScopableType
     pim_enrich.form.type.attribute_property_available_locale.class: Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\AvailableLocalesType
     pim_enrich.form.type.attribute_property_options.class:          Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\OptionsType
     pim_enrich.form.type.attribute_requirement.class:               Pim\Bundle\EnrichBundle\Form\Type\AttributeRequirementType
@@ -189,11 +188,6 @@ services:
             - { name: form.type, alias: pim_object_identifier }
 
     # Attribute property types
-    pim_enrich.form.type.scopable:
-        class: '%pim_enrich.form.type.attribute_property_scopable.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_scopable }
-
     pim_enrich.form.type.available_locales:
         class: '%pim_enrich.form.type.attribute_property_available_locale.class%'
         tags:

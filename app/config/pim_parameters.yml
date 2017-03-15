@@ -37,6 +37,9 @@ parameters:
     # mongodb_server: 'mongodb://localhost:27017'
     # mongodb_database: akeneo_pim
 
+    pim_catalog_image_allowed_extensions: [gif, jfif, jif, jpeg, jpg, pdf, png, psd, tif, tiff]
+    pim_catalog_file_allowed_extensions: [csv, doc, docx, mp3, pdf, ppt, pptx, rtf, svg, txt, wav]
+
     doctrine_migrations_dir: '%kernel.root_dir%/../upgrades/schema'
 
     security.exception_listener.class: Pim\Bundle\UserBundle\Security\FirewallExceptionListener
@@ -48,3 +51,9 @@ parameters:
 
     # Number of items returned by default if limit is not filled in request
     api_pagination_limit_by_default: 10
+
+    # Maximum length in bytes of the resource's json representation when updating a list of resources
+    api_input_buffer_size: 1000000
+
+    # Maximum number of resources when updating a list of resources
+    api_input_max_resources_number: 100

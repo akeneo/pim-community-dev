@@ -17,13 +17,10 @@ class ListChannelIntegration extends ApiTestCase
         $apiChannels = <<<JSON
 {
     "_links"       : {
-        "self"  : {"href" : "http://localhost/api/rest/v1/channels?page=1&limit=10"},
-        "first" : {"href" : "http://localhost/api/rest/v1/channels?page=1&limit=10"},
-        "last"  : {"href" : "http://localhost/api/rest/v1/channels?page=1&limit=10"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/channels?page=1&limit=10&with_count=false"},
+        "first" : {"href" : "http://localhost/api/rest/v1/channels?page=1&limit=10&with_count=false"}
     },
     "current_page" : 1,
-    "pages_count"  : 1,
-    "items_count"  : 3,
     "_embedded"    : {
         "items" : [
             {
@@ -34,7 +31,7 @@ class ListChannelIntegration extends ApiTestCase
                 "currencies"       : ["USD", "EUR"],
                 "locales"          : ["en_US"],
                 "category_tree"    : "master",
-                "conversion_units" : [],
+                "conversion_units" : {},
                 "labels"           : {
                     "en_US" : "Ecommerce",
                     "fr_FR" : "Ecommerce"
@@ -48,7 +45,7 @@ class ListChannelIntegration extends ApiTestCase
                 "currencies"       : ["CNY"],
                 "locales"          : ["en_US", "zh_CN"],
                 "category_tree"    : "master_china",
-                "conversion_units" : [],
+                "conversion_units" : {},
                 "labels"           : {
                     "en_US" : "Ecommerce china",
                     "fr_FR" : "Ecommerce chine"
@@ -62,7 +59,75 @@ class ListChannelIntegration extends ApiTestCase
                 "currencies"       : ["USD", "EUR"],
                 "locales"          : ["de_DE", "en_US", "fr_FR"],
                 "category_tree"    : "master",
-                "conversion_units" : [],
+                "conversion_units" : {},
+                "labels"           : {
+                    "en_US" : "Tablet",
+                    "fr_FR" : "Tablette"
+                }
+            }
+        ]
+    }
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($apiChannels, $response->getContent());
+    }
+
+    public function testListChannelsWithCount()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/channels?with_count=true');
+
+        $apiChannels = <<<JSON
+{
+    "_links"       : {
+        "self"  : {"href" : "http://localhost/api/rest/v1/channels?page=1&limit=10&with_count=true"},
+        "first" : {"href" : "http://localhost/api/rest/v1/channels?page=1&limit=10&with_count=true"}
+    },
+    "current_page" : 1,
+    "items_count"  : 3,
+    "_embedded"    : {
+        "items" : [
+            {
+                "_links" : {
+                    "self" : {"href" : "http://localhost/api/rest/v1/channels/ecommerce"}
+                },
+                "code"             : "ecommerce",
+                "currencies"       : ["USD", "EUR"],
+                "locales"          : ["en_US"],
+                "category_tree"    : "master",
+                "conversion_units" : {},
+                "labels"           : {
+                    "en_US" : "Ecommerce",
+                    "fr_FR" : "Ecommerce"
+                }
+            },
+            {
+                "_links" : {
+                    "self" : {"href" : "http://localhost/api/rest/v1/channels/ecommerce_china"}
+                },
+                "code"             : "ecommerce_china",
+                "currencies"       : ["CNY"],
+                "locales"          : ["en_US", "zh_CN"],
+                "category_tree"    : "master_china",
+                "conversion_units" : {},
+                "labels"           : {
+                    "en_US" : "Ecommerce china",
+                    "fr_FR" : "Ecommerce chine"
+                }
+            },
+            {
+                "_links" : {
+                    "self" : {"href" : "http://localhost/api/rest/v1/channels/tablet"}
+                },
+                "code"             : "tablet",
+                "currencies"       : ["USD", "EUR"],
+                "locales"          : ["de_DE", "en_US", "fr_FR"],
+                "category_tree"    : "master",
+                "conversion_units" : {},
                 "labels"           : {
                     "en_US" : "Tablet",
                     "fr_FR" : "Tablette"
@@ -87,13 +152,11 @@ JSON;
         $apiChannels = <<<JSON
 {
     "_links"       : {
-        "self": {"href" : "http://localhost/api/rest/v1/channels?page=2&limit=5"},
-        "first": {"href" : "http://localhost/api/rest/v1/channels?page=1&limit=5"},
-        "last": {"href" : "http://localhost/api/rest/v1/channels?page=1&limit=5"}
+        "self": {"href" : "http://localhost/api/rest/v1/channels?page=2&limit=5&with_count=false"},
+        "first": {"href" : "http://localhost/api/rest/v1/channels?page=1&limit=5&with_count=false"},
+        "previous": {"href" : "http://localhost/api/rest/v1/channels?page=1&limit=5&with_count=false"}
     },
     "current_page" : 2,
-    "pages_count"  : 1,
-    "items_count"  : 3,
     "_embedded"    : {
         "items" : []
     }
@@ -114,14 +177,11 @@ JSON;
         $apiChannels = <<<JSON
 {
     "_links"       : {
-        "self": {"href" : "http://localhost/api/rest/v1/channels?page=2&limit=2"},
-        "first": {"href" : "http://localhost/api/rest/v1/channels?page=1&limit=2"},
-        "last": {"href" : "http://localhost/api/rest/v1/channels?page=2&limit=2"},
-        "previous": {"href" : "http://localhost/api/rest/v1/channels?page=1&limit=2"}
+        "self": {"href" : "http://localhost/api/rest/v1/channels?page=2&limit=2&with_count=false"},
+        "first": {"href" : "http://localhost/api/rest/v1/channels?page=1&limit=2&with_count=false"},
+        "previous": {"href" : "http://localhost/api/rest/v1/channels?page=1&limit=2&with_count=false"}
     },
     "current_page" : 2,
-    "pages_count"  : 2,
-    "items_count"  : 3,
     "_embedded"    : {
         "items" : [
             {
@@ -132,7 +192,7 @@ JSON;
                 "currencies"       : ["USD", "EUR"],
                 "locales"          : ["de_DE", "en_US", "fr_FR"],
                 "category_tree"    : "master",
-                "conversion_units" : [],
+                "conversion_units" : {},
                 "labels"           : {
                     "en_US" : "Tablet",
                     "fr_FR" : "Tablette"

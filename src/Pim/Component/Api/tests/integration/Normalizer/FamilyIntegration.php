@@ -82,7 +82,7 @@ class FamilyIntegration extends AbstractNormalizerTestCase
                     'sku'
                 ]
             ],
-            'labels'                 => []
+            'labels'                 => new \StdClass()
         ];
 
         $repository = $this->get('pim_catalog.repository.family');
@@ -90,6 +90,6 @@ class FamilyIntegration extends AbstractNormalizerTestCase
 
         $result = $serializer->normalize($repository->findOneByIdentifier('familyA'), 'external_api');
 
-        $this->assertSame($expected, $result);
+        $this->assertEquals($expected, $result);
     }
 }

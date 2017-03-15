@@ -3,7 +3,6 @@
 namespace Oro\Bundle\UserBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\UserBundle\Entity\UserApi;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\UserBundle\Event\UserEvent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -45,35 +44,6 @@ class UserController extends Controller
             'oro_user_profile_update',
             ['route' => 'oro_user_profile_view']
         );
-    }
-
-    /**
-     * @AclAncestor("pim_user_user_edit")
-     *
-     * @param int $id
-     *
-     * @return JsonResponse|Response
-     */
-    public function apigenAction($id)
-    {
-        $userRepository = $this->container->get('pim_user.repository.user');
-        $user = $userRepository->findOneBy(['id' => $id]);
-
-        if (!$api = $user->getApi()) {
-            $api = new UserApi();
-        }
-
-        $api->setApiKey($api->generateKey())
-            ->setUser($user);
-
-        $em = $this->getDoctrine()->getManager();
-
-        $em->persist($api);
-        $em->flush();
-
-        return $this->getRequest()->isXmlHttpRequest()
-            ? new JsonResponse($api->getApiKey())
-            : $this->forward('OroUserBundle:User:view', ['id' => $id]);
     }
 
     /**

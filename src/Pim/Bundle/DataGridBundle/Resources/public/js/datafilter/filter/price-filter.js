@@ -87,7 +87,7 @@ define(
             popupCriteriaTemplate: _.template(
                 '<div class="AknFilterChoice currencyfilter choicefilter">' +
                     '<div class="AknFilterChoice-operator AknDropdown">' +
-                        '<button class="AknActionButton AknActionButton--noRightBorder dropdown-toggle" data-toggle="dropdown">' +
+                        '<button class="AknActionButton AknActionButton--big AknActionButton--noRightBorder dropdown-toggle" data-toggle="dropdown">' +
                             '<%= _.__("Action") %>' +
                             '<span class="AknActionButton-caret AknCaret"></span>' +
                         '</button>' +
@@ -98,9 +98,9 @@ define(
                         '</ul>' +
                         '<input class="name_input" type="hidden" name="currency_type" value=""/>' +
                     '</div>' +
-                    '<input class="AknFilterChoice-field" type="text" name="value" value="">' +
+                    '<input class="AknTextField AknTextField--noRadius AknFilterChoice-field" type="text" name="value" value="">' +
                     '<div class="AknDropdown">' +
-                        '<button class="AknActionButton AknActionButton--noRightBorder AknActionButton--noLeftBorder dropdown-toggle" data-toggle="dropdown">' +
+                        '<button class="AknActionButton AknActionButton--big AknActionButton--noRightBorder AknActionButton--noLeftBorder dropdown-toggle" data-toggle="dropdown">' +
                             '<%= _.__("Currency") %>' +
                             '<span class="AknActionButton-caret AknCaret"></span>' +
                         '</button>' +
@@ -111,7 +111,7 @@ define(
                         '</ul>' +
                         '<input class="name_input" type="hidden" name="currency_currency" value=""/>' +
                     '</div>' +
-                    '<button class="AknButton AknButton--apply AknButton--small AknButton--noLeftRadius filter-update" type="button"><%= _.__("Update") %></button>' +
+                    '<button class="AknFilterChoice-button AknButton AknButton--apply AknButton--noLeftRadius filter-update" type="button"><%= _.__("Update") %></button>' +
                 '</div>'
             ),
 

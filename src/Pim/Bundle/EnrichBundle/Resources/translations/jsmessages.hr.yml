@@ -217,6 +217,7 @@ pim_enrich:
       btn:
         save: Spremi
     channel:
+      title: kanal
       info:
         field_not_ready:
           The channel cannot be saved right now. The following fields are not ready:
@@ -229,6 +230,7 @@ pim_enrich:
       btn:
         save: Spremi
     family:
+      title: obitelj
       meta:
         created: Kreirano
         created_by: Kreirao korisnik

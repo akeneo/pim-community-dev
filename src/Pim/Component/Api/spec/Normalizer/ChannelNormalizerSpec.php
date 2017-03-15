@@ -30,10 +30,24 @@ class ChannelNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_channel($stdNormalizer, ChannelInterface $channel)
     {
-        $data = ['code' => 'my_channel'];
+        $data = ['code' => 'my_channel', 'labels' => [], 'conversion_units' => []];
 
-        $stdNormalizer->normalize($channel, 'external_api', [])->willReturn($data);
+        $stdNormalizer->normalize($channel, 'standard', [])->willReturn($data);
 
-        $this->normalize($channel, 'external_api', [])->shouldReturn($data);
+        $normalizedChannel = $this->normalize($channel, 'external_api', []);
+        $normalizedChannel->shouldHaveLabels($data);
+        $normalizedChannel->shouldHaveConversionUnits($data);
+    }
+
+    public function getMatchers()
+    {
+        return [
+            'haveLabels' => function ($subject) {
+                return is_object($subject['labels']);
+            },
+            'haveConversionUnits' => function($subject) {
+                return is_object($subject['conversion_units']);
+            }
+        ];
     }
 }

@@ -223,6 +223,7 @@ pim_enrich:
       btn:
         save: Enregistrer
     channel:
+      title: canal
       info:
         deletion_successful: Le canal a bien été supprimé.
         deletion_failed: Le canal ne peut pas être supprimé.
@@ -241,6 +242,7 @@ pim_enrich:
       btn:
         save: Enregistrer
     family:
+      title: famille
       info:
         update_successful: Famille mise à jour avec succès.
         create_successful: Canal créé avec succès.
@@ -297,6 +299,7 @@ pim_enrich:
         updated: Mis à jour
         updated_by: Mis à jour par
     job_instance:
+      title: profil
       info:
         update_failed: Le profil n'a pas pu être mis à jour.
         update_successful: Le profil a été mis à jour avec succès.

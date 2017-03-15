@@ -26,6 +26,7 @@ class IsIdentifierUsableAsGridFilterValidator extends ConstraintValidator
             $this->context
                 ->buildViolation($constraint->message)
                 ->setParameter('%code%', $attribute->getCode())
+                ->atPath($constraint->propertyPath)
                 ->addViolation();
         }
     }
