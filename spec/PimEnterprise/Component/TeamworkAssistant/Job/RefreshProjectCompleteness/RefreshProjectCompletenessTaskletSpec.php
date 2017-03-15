@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\TeamworkAssistant\Job\AttributeGroupCompleteness;
+namespace spec\PimEnterprise\Component\TeamworkAssistant\Job\RefreshProjectCompleteness;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -11,12 +11,12 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Component\TeamworkAssistant\Calculator\ProjectItemCalculatorInterface;
-use PimEnterprise\Component\TeamworkAssistant\Job\AttributeGroupCompleteness\AttributeGroupCompletenessTasklet;
+use PimEnterprise\Component\TeamworkAssistant\Job\RefreshProjectCompleteness\RefreshProjectCompletenessTasklet;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\TeamworkAssistant\Repository\PreProcessingRepositoryInterface;
 use Prophecy\Argument;
 
-class AttributeGroupCompletenessTaskletSpec extends ObjectBehavior
+class RefreshProjectCompletenessTaskletSpec extends ObjectBehavior
 {
     function let(
         ProjectItemCalculatorInterface $attributeGroupCompletenessCalculator,
@@ -36,7 +36,7 @@ class AttributeGroupCompletenessTaskletSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(AttributeGroupCompletenessTasklet::class);
+        $this->shouldHaveType(RefreshProjectCompletenessTasklet::class);
     }
 
     function it_is_a_tasklet()

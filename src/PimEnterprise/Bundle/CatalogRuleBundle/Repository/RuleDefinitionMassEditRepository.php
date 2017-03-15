@@ -23,15 +23,15 @@ class RuleDefinitionMassEditRepository implements MassActionRepositoryInterface
     protected $entityName;
 
     /** @var EntityManager */
-    protected $em;
+    protected $entityManager;
 
     /**
-     * @param EntityManager $em
+     * @param EntityManager $entityManager
      * @param string        $entityName
      */
-    public function __construct(EntityManager $em, $entityName)
+    public function __construct(EntityManager $entityManager, $entityName)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
         $this->entityName = $entityName;
     }
 
@@ -67,7 +67,7 @@ class RuleDefinitionMassEditRepository implements MassActionRepositoryInterface
             return 0;
         }
 
-        return $this->em->createQueryBuilder()
+        return $this->entityManager->createQueryBuilder()
             ->delete($this->entityName, 'r')
             ->where('r.id IN (:ids)')
             ->setParameter('ids', $ids)

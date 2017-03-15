@@ -15,6 +15,7 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\FilterConverter;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Job\ProjectCalculationJobLauncher;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Security\ProjectVoter;
@@ -217,7 +218,8 @@ class ProjectController
      */
     public function searchAction(Request $request)
     {
-        $options = $request->query->get('options', ['limit' => 20, 'page' => 1]);
+        $options = ['limit' => 20, 'page' => 1, 'completeness' => '1'];
+        $options = array_merge($options, $request->query->get('options', []));
         $contributor = $this->tokenStorage->getToken()->getUser()->getUsername();
 
         $projects = $this->projectRepository->findBySearch(
@@ -233,13 +235,16 @@ class ProjectController
 
         foreach ($projects as $project) {
             $normalizedProject = $this->projectNormalizer->normalize($project, 'internal_api');
-            $normalizedProject['completeness'] = $this->projectCompletenessNormalizer->normalize(
-                $this->projectCompletenessRepository->getProjectCompleteness(
-                    $project,
-                    $contributor
-                ),
-                'internal_api'
-            );
+
+            if ('1' === $options['completeness']) {
+                $normalizedProject['completeness'] = $this->projectCompletenessNormalizer->normalize(
+                    $this->projectCompletenessRepository->getProjectCompleteness(
+                        $project,
+                        $contributor
+                    ),
+                    'internal_api'
+                );
+            }
 
             $normalizedProjects[] = $normalizedProject;
         }
@@ -295,14 +300,16 @@ class ProjectController
 
     /**
      * The "show" action of a project means redirecting the user on the datagrid filtered with the Project's view.
+     * If a "status" is specified, we fill in the project completeness filter depending on the user permissions.
      *
      * @param string $identifier
+     * @param string $status
      *
      * @Template("PimEnterpriseTeamworkAssistantBundle:Project:filter-grid.html.twig")
      *
      * @return array|RedirectResponse
      */
-    public function showAction($identifier)
+    public function showAction($identifier, $status)
     {
         $project = $this->projectRepository->findOneByIdentifier($identifier);
 
@@ -312,8 +319,33 @@ class ProjectController
             return new RedirectResponse($this->router->generate('pim_enrich_product_index'));
         }
 
+        $ownerStatuses = [
+            'owner-todo'       => ProjectCompletenessFilter::OWNER_TODO,
+            'owner-inprogress' => ProjectCompletenessFilter::OWNER_IN_PROGRESS,
+            'owner-done'       => ProjectCompletenessFilter::OWNER_DONE,
+        ];
+
+        $contributorStatuses = [
+            'contributor-todo'       => ProjectCompletenessFilter::CONTRIBUTOR_TODO,
+            'contributor-inprogress' => ProjectCompletenessFilter::CONTRIBUTOR_IN_PROGRESS,
+            'contributor-done'       => ProjectCompletenessFilter::CONTRIBUTOR_DONE
+        ];
+
+        $statusCode = 0;
+
+        if (array_key_exists($status, $ownerStatuses)) {
+            if (!$this->authorizationChecker->isGranted([ProjectVoter::OWN], $project)) {
+                return new RedirectResponse($this->router->generate('pim_enrich_product_index'));
+            }
+
+            $statusCode = $ownerStatuses[$status];
+        } elseif (array_key_exists($status, $contributorStatuses)) {
+            $statusCode = $contributorStatuses[$status];
+        }
+
         return [
-            'view' => $project->getDatagridView()
+            'view'   => $project->getDatagridView(),
+            'status' => $statusCode
         ];
     }
 }

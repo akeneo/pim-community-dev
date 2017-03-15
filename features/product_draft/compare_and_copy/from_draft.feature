@@ -16,6 +16,7 @@ Feature: Copy value from my draft
     Given I change the Name to "That's my tee"
     And I change the Description to "Hiking tee"
     And I save the product
+    And I should see that Description is a modified value
     And I change the Name to "That's not my tee anymore"
     And I change the Description to "JA !"
     And I open the comparison panel

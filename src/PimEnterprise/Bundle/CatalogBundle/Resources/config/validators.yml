@@ -6,3 +6,10 @@ services:
             - '@?pim_reference_data.registry'
         tags:
             - { name: validator.constraint_validator, alias: pim_is_reference_data_configured_validator }
+
+    pim_catalog.validator.constraint.not_null_properties:
+        class: '%pim_catalog.validator.constraint.not_null_properties.class%'
+        arguments:
+            - ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect', 'pim_assets_collection']
+        tags:
+            - { name: validator.constraint_validator, alias: pim_not_null_properties_validator }

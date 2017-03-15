@@ -248,7 +248,6 @@ jobs:
         type:      export
         configuration:
             filePath: /tmp/rules.yml
-            header:   rules
     csv_product_proposal_import:
         connector: Akeneo CSV Connector
         alias:     csv_product_proposal_import
@@ -471,7 +470,6 @@ jobs:
         type:      export
         configuration:
             filePath: /tmp/asset_channel_configurations.yml
-            header:   asset_channel_configurations
     csv_family_import:
         connector: Akeneo CSV Connector
         alias:     csv_family_import
@@ -974,8 +972,8 @@ jobs:
         alias:     project_calculation
         label:     Project calculation
         type:      project_calculation
-    attribute_group_completeness_calculation:
+    refresh_project_completeness_calculation:
         connector: teamwork assistant
-        alias:     attribute_group_completeness_calculation
+        alias:     refresh_project_completeness_calculation
         label:     Refresh project completeness
-        type:      attribute_group_completeness_calculation
+        type:      refresh_project_completeness_calculation

@@ -156,3 +156,7 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Importar propuestas de productos en XLSX
     import.label: Importar propuestas de productos en XLSX
+pim_analytics:
+  info_type:
+    nb_published_products: Número de productos publicados
+    nb_product_drafts: Número de borradores de productos

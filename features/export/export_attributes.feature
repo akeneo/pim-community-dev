@@ -30,7 +30,6 @@ Feature: Display available field options
     rating;;;;Rating;;;;;;;marketing;0;0;;;;0;;;;;0;2;pim_catalog_simpleselect;0;1;;;
     side_view;;;;"Side view";gif,png,jpeg,jpg;;;;;;media;0;0;;1.00;;0;;;;;0;1;pim_catalog_image;0;0;;;
     top_view;;;;"Top view";gif,png,jpeg,jpg;;;;;;media;0;0;;1.00;;0;;;;;0;2;pim_catalog_image;0;0;;;
-    video;;;;Video;avi;;;;;;media;0;0;;1.00;;0;;;;;0;2;pim_catalog_file;0;0;;;
     datasheet;;;;Datasheet;txt,pdf,doc,docx,csv,rtf;;;;;;media;0;0;;;;0;;;;;0;3;pim_catalog_file;0;0;;;
     size;;;;Size;;;;;;;sizes;0;0;;;;0;;;;;0;1;pim_catalog_simpleselect;0;1;;;
     main_color;;;;"Main color";;;;;;;colors;0;0;;;;0;;;;;0;1;pim_catalog_simpleselect;0;1;;;

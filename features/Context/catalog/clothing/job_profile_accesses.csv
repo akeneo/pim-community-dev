@@ -56,4 +56,4 @@ xlsx_clothing_mobile_published_product_export;IT support,Manager,Redactor;IT sup
 classify_assets;All;
 add_tags_to_assets;All;
 project_calculation;All;
-attribute_group_completeness_calculation;All;
+refresh_project_completeness_calculation;All;

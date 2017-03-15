@@ -240,3 +240,6 @@ batch_jobs:
     perform.label: Assets in Kategorien verschieben
   add_tags_to_assets:
     perform.label: Stichworte zu Assets hinzufügen
+pim_analytics:
+  info_type:
+    nb_assets: Anzahl der Assets
