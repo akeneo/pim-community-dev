@@ -217,6 +217,7 @@ pim_enrich:
       btn:
         save: Сохранить
     channel:
+      title: канал
       info:
         field_not_ready:
           The channel cannot be saved right now. The following fields are not ready:
@@ -229,6 +230,7 @@ pim_enrich:
       btn:
         save: Сохранить
     family:
+      title: семейство
       meta:
         created: Создано
         created_by: Создана

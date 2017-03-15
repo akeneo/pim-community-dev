@@ -71,9 +71,9 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
             $options = $this->optionsResolver->resolve($options);
         } catch (\Exception $e) {
             throw InvalidPropertyException::expectedFromPreviousException(
-                $e,
                 $attribute->getCode(),
-                static::class
+                static::class,
+                $e
             );
         }
 

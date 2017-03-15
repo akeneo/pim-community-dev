@@ -27,7 +27,7 @@ Feature: Validate editing common file attributes of multiple products
       | code      | label-en_US | type                 | allowed_extensions | date_min   | max_characters | group |
       | available | Available   | pim_catalog_boolean  |                    |            |                | other |
       | date      | Date        | pim_catalog_date     |                    | 2014-01-01 |                | other |
-      | file      | File        | pim_catalog_file     | gif                |            |                | other |
+      | file      | File        | pim_catalog_file     | txt                |            |                | other |
       | info      | Info        | pim_catalog_textarea |                    |            | 25             | other |
     And the following family:
       | code          | attributes                                                                                                  |
@@ -45,9 +45,9 @@ Feature: Validate editing common file attributes of multiple products
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the File attribute
-    And I attach file "bic-core-148.gif" to "File"
+    And I attach file "bic-core-148.txt" to "File"
     And I move on to the next step
-    Then the file "file" of products boots and sneakers should be "bic-core-148.gif"
+    Then the file "file" of products boots and sneakers should be "bic-core-148.txt"
     When I am on the products page
     And I select rows boots, sandals and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
@@ -61,7 +61,7 @@ Feature: Validate editing common file attributes of multiple products
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the File attribute
-    And I attach file "akeneo.txt" to "File"
+    And I attach file "bic-core-148.gif" to "File"
     And I move on to the next step
-    Then I should see validation tooltip "The file extension is not allowed (allowed extensions: gif)."
+    Then I should see validation tooltip "The file extension is not allowed (allowed extensions: txt)."
     And the file "file" of products boots, sandals and sneakers should be ""

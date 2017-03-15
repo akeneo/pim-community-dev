@@ -30,10 +30,10 @@ class ProductNormalizerIntegration extends TestCase
             'variant_group' => null,
             'categories'    => [],
             'enabled'       => false,
-            'values'        => [],
+            'values'        => new \StdClass(),
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
+            'associations'  => new \StdClass(),
         ];
 
         $this->assertProduct('bar', $expected, []);
@@ -48,10 +48,10 @@ class ProductNormalizerIntegration extends TestCase
             'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
-            'values'        => [],
+            'values'        => new \StdClass(),
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
+            'associations'  => new \StdClass(),
         ];
 
         $this->assertProduct('baz', $expected, []);
@@ -72,6 +72,11 @@ class ProductNormalizerIntegration extends TestCase
                         'locale' => null,
                         'scope'  => null,
                         'data'   => '4/d/e/b/4deb535f0979dea59cf34661e22336459a56bed3_fileA.txt',
+                        '_links' => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/media_files/4/d/e/b/4deb535f0979dea59cf34661e22336459a56bed3_fileA.txt/download'
+                            ]
+                        ]
                     ],
                 ],
                 'an_image'                           => [
@@ -79,6 +84,11 @@ class ProductNormalizerIntegration extends TestCase
                         'locale' => null,
                         'scope'  => null,
                         'data'   => '1/5/7/5/15757827125efa686c1c0f1e7930ca0c528f1c2c_imageA.jpg',
+                        '_links' => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/media_files/1/5/7/5/15757827125efa686c1c0f1e7930ca0c528f1c2c_imageA.jpg/download'
+                            ]
+                        ]
                     ],
                 ],
                 'a_date'                             => [
@@ -178,11 +188,21 @@ class ProductNormalizerIntegration extends TestCase
                         'locale' => 'en_US',
                         'scope'  => null,
                         'data'   => '6/2/e/3/62e376e75300d27bfec78878db4d30ff1490bc53_imageB_en_US.jpg',
+                        '_links' => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/media_files/6/2/e/3/62e376e75300d27bfec78878db4d30ff1490bc53_imageB_en_US.jpg/download'
+                            ]
+                        ]
                     ],
                     [
                         'locale' => 'fr_FR',
                         'scope'  => null,
                         'data'   => '0/f/5/0/0f5058de76f68446bb6b2371f19cd2234b245c00_imageB_fr_FR.jpg',
+                        '_links' => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/media_files/0/f/5/0/0f5058de76f68446bb6b2371f19cd2234b245c00_imageB_fr_FR.jpg/download'
+                            ]
+                        ]
                     ],
                 ],
                 'a_scopable_price'                   => [
@@ -248,6 +268,11 @@ class ProductNormalizerIntegration extends TestCase
                         'locale' => null,
                         'scope'  => null,
                         'data'   => '4/d/e/b/4deb535f0979dea59cf34661e22336459a56bed3_fileA.txt',
+                        '_links' => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/media_files/4/d/e/b/4deb535f0979dea59cf34661e22336459a56bed3_fileA.txt/download'
+                            ]
+                        ]
                     ],
                 ],
                 'a_metric'                           => [
@@ -265,11 +290,21 @@ class ProductNormalizerIntegration extends TestCase
                         'locale' => 'en_US',
                         'scope'  => null,
                         'data'   => '6/2/e/3/62e376e75300d27bfec78878db4d30ff1490bc53_imageB_en_US.jpg',
+                        '_links' => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/media_files/6/2/e/3/62e376e75300d27bfec78878db4d30ff1490bc53_imageB_en_US.jpg/download'
+                            ]
+                        ]
                     ],
                     [
                         'locale' => 'fr_FR',
                         'scope'  => null,
                         'data'   => '0/f/5/0/0f5058de76f68446bb6b2371f19cd2234b245c00_imageB_fr_FR.jpg',
+                        '_links' => [
+                            'download' => [
+                                'href' => 'http://localhost/api/rest/v1/media_files/0/f/5/0/0f5058de76f68446bb6b2371f19cd2234b245c00_imageB_fr_FR.jpg/download'
+                            ]
+                        ]
                     ],
                 ],
                 'a_localized_and_scopable_text_area' => [
@@ -321,7 +356,14 @@ class ProductNormalizerIntegration extends TestCase
         $expected = $this->sanitizeDateFields($expected);
         $expected = $this->sanitizeMediaAttributeData($expected);
 
-        $this->assertSame($expected, $result);
+        if (is_array($expected['values'])) {
+            ksort($expected['values']);
+        }
+        if (is_array($result['values'])) {
+            ksort($result['values']);
+        }
+
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -365,6 +407,8 @@ class ProductNormalizerIntegration extends TestCase
             if (1 === preg_match('/.*(file|image).*/', $attributeCode)) {
                 foreach ($values as $index => $value) {
                     $data['values'][$attributeCode][$index]['data'] = MediaSanitizer::sanitize($value['data']);
+                    $download = MediaSanitizer::sanitize($value['_links']['download']['href']);
+                    $data['values'][$attributeCode][$index]['_links']['download']['href'] = $download;
                 }
             }
         }

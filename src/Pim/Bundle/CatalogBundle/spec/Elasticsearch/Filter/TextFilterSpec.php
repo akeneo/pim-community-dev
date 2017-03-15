@@ -24,13 +24,13 @@ class TextFilterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\TextFilter');
+        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Elasticsearch\Filter\TextFilter');
     }
 
     function it_is_a_filter()
     {
-        $this->shouldImplement('\Pim\Component\Catalog\Query\Filter\AttributeFilterInterface');
-        $this->shouldBeAnInstanceOf('\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\AbstractFilter');
+        $this->shouldImplement('Pim\Component\Catalog\Query\Filter\AttributeFilterInterface');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Elasticsearch\Filter\AbstractAttributeFilter');
     }
 
     function it_supports_operators()

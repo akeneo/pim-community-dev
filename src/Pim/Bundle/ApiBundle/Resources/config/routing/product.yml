@@ -18,6 +18,11 @@ pim_api_product_partial_update:
     defaults: { _controller: pim_api.controller.product:partialUpdateAction, _format: json }
     methods: [PATCH]
 
+pim_api_product_partial_update_list:
+    path: /products
+    defaults: { _controller: pim_api.controller.product:partialUpdateListAction, _format: json }
+    methods: [PATCH]
+
 pim_api_product_delete:
     path: /products/{code}
     defaults: { _controller: pim_api.controller.product:deleteAction, _format: json }

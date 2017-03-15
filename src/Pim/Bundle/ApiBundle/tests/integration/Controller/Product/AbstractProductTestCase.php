@@ -71,7 +71,12 @@ abstract class AbstractProductTestCase extends ApiTestCase
         foreach ($data['values'] as $attributeCode => $values) {
             if (1 === preg_match('/.*(file|image).*/', $attributeCode)) {
                 foreach ($values as $index => $value) {
-                    $data['values'][$attributeCode][$index]['data'] = MediaSanitizer::sanitize($value['data']);
+                    $sanitizedData = ['data' => MediaSanitizer::sanitize($value['data'])];
+                    if (isset($value['_links']['download']['href'])) {
+                        $sanitizedData['_links']['download']['href'] = MediaSanitizer::sanitize($value['_links']['download']['href']);
+                    }
+
+                    $data['values'][$attributeCode][$index] = array_replace($value, $sanitizedData);
                 }
             }
         }

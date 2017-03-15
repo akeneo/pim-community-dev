@@ -1,10 +1,15 @@
 <td class="AknGrid-bodyCell field-cell">
     <div class="AknFieldContainer AknFieldContainer--withoutMargin">
         <div class="AknFieldContainer-inputContainer">
-            <input type="text" class="AknTextField attribute_option_code exclude" value="<%- item.code %>"/>
-            <div class="AknFieldContainer-iconsContainer">
-                <i class="AknIconButton AknIconButton--important AknIconButton--hide icon-warning-sign validation-tooltip" data-placement="top" data-toggle="tooltip"></i>
-            </div>
+            <% if (item.id) { %>
+                <input type="hidden" class="attribute_option_code" value="<%- item.code %>"/>
+                <span class="option-code"><%- item.code %></span>
+            <% } else { %>
+                <input type="text" class="AknTextField attribute_option_code exclude" value="<%- item.code %>"/>
+                <div class="AknFieldContainer-iconsContainer">
+                    <i class="AknIconButton AknIconButton--important AknIconButton--hide icon-warning-sign validation-tooltip" data-placement="top" data-toggle="tooltip"></i>
+                </div>
+            <% } %>
         </div>
     </div>
 </td>

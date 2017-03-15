@@ -8,8 +8,8 @@ Feature: Validate file attributes of a product
     Given the "default" catalog configuration
     And the following attributes:
       | code       | label-en_US | type             | scopable | max_file_size | allowed_extensions | group |
-      | datasheet  | Datasheet   | pim_catalog_file | 0        | 0.01          | jpg                | other |
-      | attachment | Attachment  | pim_catalog_file | 1        | 0.01          | jpg                | other |
+      | datasheet  | Datasheet   | pim_catalog_file | 0        | 0.01          | txt                | other |
+      | attachment | Attachment  | pim_catalog_file | 1        | 0.01          | txt                | other |
     And the following family:
       | code | label-en_US | attributes               |
       | baz  | Baz         | sku,datasheet,attachment |
@@ -20,23 +20,23 @@ Feature: Validate file attributes of a product
     And I am on the "foo" product page
 
   Scenario: Validate the max file size constraint of file attribute
-    Given I attach file "akeneo.jpg" to "Datasheet"
+    Given I attach file "huge.txt" to "Datasheet"
     And I save the product
-    Then I should see the text "The file is too large (10.58 kB). Allowed maximum size is 10 kB."
+    Then I should see the text "The file is too large (11.03 kB). Allowed maximum size is 10 kB."
 
   Scenario: Validate the max file size constraint of scopable file attribute
     Given I switch the scope to "ecommerce"
-    Given I attach file "akeneo.jpg" to "Attachment"
+    Given I attach file "huge.txt" to "Attachment"
     And I save the product
-    Then I should see the text "The file is too large (10.58 kB). Allowed maximum size is 10 kB."
+    Then I should see the text "The file is too large (11.03 kB). Allowed maximum size is 10 kB."
 
   Scenario: Validate the allowed extensions constraint of file attribute
     Given I attach file "fanatic-freewave-76.gif" to "Datasheet"
     And I save the product
-    Then I should see the text "The file extension is not allowed (allowed extensions: jpg)."
+    Then I should see the text "The file extension is not allowed (allowed extensions: txt)."
 
   Scenario: Validate the allowed extensions constraint of scopable file attribute
     Given I switch the scope to "ecommerce"
     Given I attach file "fanatic-freewave-76.gif" to "Attachment"
     And I save the product
-    Then I should see the text "The file extension is not allowed (allowed extensions: jpg)."
+    Then I should see the text "The file extension is not allowed (allowed extensions: txt)."

@@ -19,18 +19,13 @@ class FilterLocaleIntegration extends ApiTestCase
         $standardLocales = [
             '_links'       => [
                 'self'  => [
-                    'href' => sprintf('http://localhost/api/rest/v1/locales?search=%s&page=1&limit=10', $searchString)
+                    'href' => sprintf('http://localhost/api/rest/v1/locales?page=1&limit=10&with_count=false&search=%s', $searchString)
                 ],
                 'first' => [
-                    'href' => sprintf('http://localhost/api/rest/v1/locales?search=%s&page=1&limit=10', $searchString)
-                ],
-                'last'  => [
-                    'href' => sprintf('http://localhost/api/rest/v1/locales?search=%s&page=1&limit=10', $searchString)
-                ],
+                    'href' => sprintf('http://localhost/api/rest/v1/locales?page=1&limit=10&with_count=false&search=%s', $searchString)
+                ]
             ],
             'current_page' => 1,
-            'pages_count'  => 1,
-            'items_count'  => 4,
             '_embedded'    => [
                 'items' => [
                     [
@@ -82,21 +77,16 @@ class FilterLocaleIntegration extends ApiTestCase
         $standardLocales = [
             '_links'       => [
                 'self'  => [
-                    'href' => sprintf('http://localhost/api/rest/v1/locales?search=%s&page=1&limit=10', $searchString)
+                    'href' => sprintf('http://localhost/api/rest/v1/locales?page=1&limit=10&with_count=false&search=%s', $searchString)
                 ],
                 'first' => [
-                    'href' => sprintf('http://localhost/api/rest/v1/locales?search=%s&page=1&limit=10', $searchString)
-                ],
-                'last'  => [
-                    'href' => sprintf('http://localhost/api/rest/v1/locales?search=%s&page=2&limit=10', $searchString)
+                    'href' => sprintf('http://localhost/api/rest/v1/locales?page=1&limit=10&with_count=false&search=%s', $searchString)
                 ],
                 'next'  => [
-                    'href' => sprintf('http://localhost/api/rest/v1/locales?search=%s&page=2&limit=10', $searchString)
+                    'href' => sprintf('http://localhost/api/rest/v1/locales?page=2&limit=10&with_count=false&search=%s', $searchString)
                 ],
             ],
             'current_page' => 1,
-            'pages_count'  => 2,
-            'items_count'  => 11,
             '_embedded'    => [
                 'items' => [
                     [

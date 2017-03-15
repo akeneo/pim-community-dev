@@ -28,7 +28,13 @@ class AttributeNormalizer implements NormalizerInterface
      */
     public function normalize($attribute, $format = null, array $context = [])
     {
-        return $this->stdNormalizer->normalize($attribute, $format, $context);
+        $normalizedAttribute = $this->stdNormalizer->normalize($attribute, 'standard', $context);
+
+        if (empty($normalizedAttribute['labels'])) {
+            $normalizedAttribute['labels'] = (object) $normalizedAttribute['labels'];
+        }
+
+        return $normalizedAttribute;
     }
 
     /**

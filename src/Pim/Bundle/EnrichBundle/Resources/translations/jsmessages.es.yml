@@ -223,6 +223,7 @@ pim_enrich:
       btn:
         save: Guardar
     channel:
+      title: canal
       info:
         deletion_successful: Canal eliminado correctamente.
         deletion_failed: No se ha podido eliminar el canal.
@@ -241,8 +242,13 @@ pim_enrich:
       btn:
         save: Guardar
     family:
+      title: familia
       info:
+        update_successful: Familia actualizada con éxito.
         create_successful: Canal creado correctamente.
+        update_failed: Ha ocurrido un error durante la actualización de la familia.
+        cant_remove_attribute_as_label: Imposible de eliminar un atributo utilizado como etiqueta
+        attribute_edit_permission_is_not_granted: No posee permisos para editar atributos de la familia
       meta:
         created: Creado
         created_by: Creado por
@@ -293,8 +299,10 @@ pim_enrich:
         updated: Actualizado
         updated_by: Actualizado por
     job_instance:
+      title: Perfil de trabajo
       info:
         update_failed: No se ha podido actualizar el perfil de trabajo.
+        update_successful: El perfil de trabajo ha sido actualizado exitosamente.
   confirmation:
     leave: '¿Está seguro que desea salir de esta página?'
     discard_changes: Perderá los cambios realizados sobre {{ entity }} si abandona esta página.
@@ -402,8 +410,10 @@ pim_enrich:
           title: Atributos
           label_label: Etiqueta
           toolbox:
+            select_attributes_by_groups: Agregar por grupos
             select_attributes: Agregar atributos
             add: Agregar
+            attributes_groups_selected: '{{ itemsCount }} grupo(s) seleccionado(s)'
           not_required_label: No requerido
           required_label: Requerido
         history:

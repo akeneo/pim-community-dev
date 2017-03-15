@@ -16,9 +16,10 @@ interface ParameterValidatorInterface
     /**
      * Validate pagination parameters.
      *
-     * @param array $parameters
+     * @param array $parameters parameters of the pagination
+     * @param array $options    options for the validation of the parameters
      *
      * @throws PaginationParametersException
      */
-    public function validate(array $parameters);
+    public function validate(array $parameters, array $options = []);
 }

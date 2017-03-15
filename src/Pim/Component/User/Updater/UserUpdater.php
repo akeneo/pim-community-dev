@@ -9,7 +9,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\UserBundle\Entity\Role;
-use Oro\Bundle\UserBundle\Entity\UserApi;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -165,13 +164,6 @@ class UserUpdater implements ObjectUpdaterInterface
                     $role = $this->findGroup($code);
                     $user->addGroup($role);
                 }
-                break;
-            case 'api_key':
-                if (null === $api = $user->getApi()) {
-                    $api = new UserApi();
-                }
-                $api->setApiKey($data)->setUser($user);
-                $user->setApi($api);
                 break;
         }
     }

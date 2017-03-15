@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 interface ProductRepositoryInterface extends IdentifiableObjectRepositoryInterface
 {
     /**
-     * Find products with offset > $offset and filtered by $criteria
+     * Find products with offset > $offset
      *
      * @param ProductQueryBuilderInterface $pqb
      * @param int                          $limit
@@ -24,6 +24,17 @@ interface ProductRepositoryInterface extends IdentifiableObjectRepositoryInterfa
      * @return array
      */
     public function searchAfterOffset(ProductQueryBuilderInterface $pqb, $limit, $offset);
+
+    /**
+     * Find products with the database identifier (the primary key) > $searchAfterIdentifier.
+     *
+     * @param ProductQueryBuilderInterface $pqb
+     * @param int                          $limit
+     * @param string                       $searchAfterIdentifier
+     *
+     * @return array
+     */
+    public function searchAfterIdentifier(ProductQueryBuilderInterface $pqb, $limit, $searchAfterIdentifier);
 
     /**
      * Return the count of products filtered by PQB

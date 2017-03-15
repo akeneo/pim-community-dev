@@ -16,7 +16,7 @@ class ChannelNormalizerIntegration extends AbstractNormalizerTestCase
             'currencies'       => ['USD', 'EUR'],
             'locales'          => ['en_US'],
             'category_tree'    => 'master',
-            'conversion_units' => [],
+            'conversion_units' => new \StdClass(),
             'labels'           => [
                 'en_US' => 'Ecommerce',
                 'fr_FR' => 'Ecommerce',
@@ -37,6 +37,6 @@ class ChannelNormalizerIntegration extends AbstractNormalizerTestCase
 
         $result = $serializer->normalize($repository->findOneByIdentifier($channelCode), 'external_api');
 
-        $this->assertSame($expected, $result);
+        $this->assertEquals($expected, $result);
     }
 }

@@ -5,6 +5,7 @@ pim_user:
       additional.title: Adicional
       group_and_role.title: Grupos e Funções
       password.title: Senha
+      business_unit.title: Unidades de negócios
       email_synchronization.title: Configurações de sincronização de e-mail
       interfaces.title: Interfaces
 oro.user.controller:
@@ -55,6 +56,7 @@ Add another email: Adicionar outro e-mail
 Catalog locale: Linguagem do catálogo
 Catalog scope: Âmbito do catálogo
 Default tree: Árvore padrão
+Business Units: Unidades de negócios
 Email synchronization settings: Configurações de sincronização de e-mail
 Host: Servidor
 Port: Porta
@@ -128,6 +130,8 @@ oro:
   security:
     access-level:
       BASIC: Utilizador
+      LOCAL: Unidade de negócios
+      DEEP: Divisão
       GLOBAL: Organização
       SYSTEM: Sistema
       NONE: Nenhum

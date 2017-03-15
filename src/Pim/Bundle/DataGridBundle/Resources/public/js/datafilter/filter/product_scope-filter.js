@@ -46,7 +46,7 @@ define(
                 if (0 === $grid.length) {
                     $grid = $('[data-type="datagrid"]:first');
                 }
-                this.$el.addClass('pull-right').insertBefore($grid.find('.actions-panel'));
+                this.$el.addClass('AknFilterBox-filter--inline').insertBefore($grid.find('.actions-panel'));
 
                 var $filterChoices = $grid.find('#add-filter-select');
                 $filterChoices.find('option[value="scope"]').remove();

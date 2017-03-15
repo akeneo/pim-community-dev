@@ -17,7 +17,9 @@
                     });
                 </script>
             {% else %}
-                <div class="well">{{ 'save_attribute_before_manage_option'|trans }}</div>
+                <div class="AknFormContainer--withPadding">
+                    <div class="AknMessageBox AknMessageBox--centered">{{ 'save_attribute_before_manage_option'|trans }}</div>
+                </div>
             {% endif %}
         {% endset %}
         {% set accordionContent = accordionContent|merge({ 'pane.accordion.options': optionsContent }) %}

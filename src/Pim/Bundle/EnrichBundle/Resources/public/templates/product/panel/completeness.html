@@ -26,7 +26,7 @@
                         <div class="AknCompletenessBlock-channel">
                             <span class="AknCompletenessBlock-channelTitle channel" data-channel="<%- channelCompleteness.completeness['channel_code'] %>"><%- channelCompleteness.completeness['channel_labels'][catalogLocale] %></span>
                             <div class="AknCompletenessBlock-progressContainer">
-                                <div class="AknCompletenessBlock-progress AknProgress AknProgress--small progress <%- channelCompleteness.completeness.ratio === 100 ? 'AknProgress--apply' : 'AknProgress--warning' %>">
+                                <div class="AknCompletenessBlock-progress AknProgress progress <%- channelCompleteness.completeness.ratio === 100 ? 'AknProgress--apply' : 'AknProgress--warning' %>">
                                     <div class="AknProgress-bar bar" data-ratio="<%- channelCompleteness.completeness.ratio %>" style="width: <%- channelCompleteness.completeness.ratio %>%;"></div>
                                 </div>
                                 <span class="AknCompletenessBlock-progressRatio literal-progress"><%- channelCompleteness.completeness.ratio %>%</span>

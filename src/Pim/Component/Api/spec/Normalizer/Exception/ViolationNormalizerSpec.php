@@ -8,6 +8,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 
@@ -24,21 +25,22 @@ class ViolationNormalizerSpec extends ObjectBehavior
             'code'    => Response::HTTP_UNPROCESSABLE_ENTITY,
             'message' => 'Validation failed.',
             'errors'  => [
-                ['field' => 'code', 'message' => 'Not Blank'],
-                ['field' => 'name', 'message' => 'Too long']
+                ['property' => 'code', 'message' => 'Not Blank'],
+                ['property' => 'name', 'message' => 'Too long']
             ]
         ]);
     }
 
     function it_normalizes_an_exception_with_error_on_product_identifier(
         ViolationHttpException $exception,
-        ConstraintViolationList $constraintViolation,
-        ConstraintViolation $violationCode,
+        ConstraintViolationList $constraintViolations,
+        ConstraintViolation $violation,
         ProductInterface $product,
         \ArrayIterator $iterator,
         \ArrayIterator $productValues,
         ProductValueInterface $identifier,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        Constraint $constraint
     ) {
         $attribute->getType()->willReturn('pim_catalog_identifier');
         $attribute->getCode()->willReturn('identifier');
@@ -55,42 +57,45 @@ class ViolationNormalizerSpec extends ObjectBehavior
         $productValues->offsetGet('sku')->willReturn($identifier);
         $productValues->next()->willReturn(null);
 
-        $violationCode->getRoot()->willReturn($product);
-        $violationCode->getMessage()->willReturn('Not Blank');
-        $violationCode->getPropertyPath()->willReturn('values[sku].varchar');
+        $violation->getRoot()->willReturn($product);
+        $violation->getMessage()->willReturn('Not Blank');
+        $violation->getPropertyPath()->willReturn('values[sku].varchar');
 
-        $constraintViolation->getIterator()->willReturn($iterator);
-        $iterator->rewind()->willReturn($violationCode);
+        $constraintViolations->getIterator()->willReturn($iterator);
+        $iterator->rewind()->willReturn($violation);
         $valueCount = 1;
         $iterator->valid()->will(
             function () use (&$valueCount) {
                 return $valueCount-- > 0;
             }
         );
-        $iterator->current()->willReturn($violationCode);
+        $iterator->current()->willReturn($violation);
         $iterator->next()->willReturn(null);
 
-        $exception->getViolations()->willReturn($constraintViolation);
-        $exception->getStatusCode()->willReturn(422);
+        $exception->getViolations()->willReturn($constraintViolations);
+        $exception->getStatusCode()->willReturn(Response::HTTP_UNPROCESSABLE_ENTITY);
+
+        $violation->getConstraint()->willReturn($constraint);
 
         $this->normalize($exception)->shouldReturn([
             'code'    => Response::HTTP_UNPROCESSABLE_ENTITY,
             'message' => '',
             'errors'  => [
-                ['field' => 'identifier', 'message' => 'Not Blank'],
+                ['property' => 'identifier', 'message' => 'Not Blank'],
             ]
         ]);
     }
 
     function it_normalizes_an_exception_with_error_on_attribute_localizable_and_scopable(
         ViolationHttpException $exception,
-        ConstraintViolationList $constraintViolation,
-        ConstraintViolation $violationDescription,
+        ConstraintViolationList $constraintViolations,
+        ConstraintViolation $violation,
         ProductInterface $product,
         \ArrayIterator $iterator,
         \ArrayIterator $productValues,
         ProductValueInterface $description,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        Constraint $constraint
     ) {
         $attribute->getType()->willReturn('pim_catalog_text');
         $attribute->getCode()->willReturn('description');
@@ -109,34 +114,77 @@ class ViolationNormalizerSpec extends ObjectBehavior
         $productValues->offsetGet('description-en_US-ecommerce')->willReturn($description);
         $productValues->next()->willReturn(null);
 
-        $violationDescription->getRoot()->willReturn($product);
-        $violationDescription->getMessage()->willReturn('Not Blank');
-        $violationDescription->getPropertyPath()->willReturn('values[description-en_US-ecommerce].varchar');
+        $violation->getRoot()->willReturn($product);
+        $violation->getMessage()->willReturn('Not Blank');
+        $violation->getPropertyPath()->willReturn('values[description-en_US-ecommerce].varchar');
 
-        $constraintViolation->getIterator()->willReturn($iterator);
-        $iterator->rewind()->willReturn($violationDescription);
+        $constraintViolations->getIterator()->willReturn($iterator);
+        $iterator->rewind()->willReturn($violation);
         $valueCount = 1;
         $iterator->valid()->will(
             function () use (&$valueCount) {
                 return $valueCount-- > 0;
             }
         );
-        $iterator->current()->willReturn($violationDescription);
+        $iterator->current()->willReturn($violation);
         $iterator->next()->willReturn(null);
 
-        $exception->getViolations()->willReturn($constraintViolation);
-        $exception->getStatusCode()->willReturn(422);
+        $exception->getViolations()->willReturn($constraintViolations);
+        $exception->getStatusCode()->willReturn(Response::HTTP_UNPROCESSABLE_ENTITY);
+
+        $violation->getConstraint()->willReturn($constraint);
 
         $this->normalize($exception)->shouldReturn([
             'code'    => Response::HTTP_UNPROCESSABLE_ENTITY,
             'message' => '',
             'errors'  => [
                 [
-                    'field'     => 'values',
+                    'property'  => 'values',
                     'message'   => 'Not Blank',
                     'attribute' => 'description',
                     'locale'    => 'en_US',
                     'scope'     => 'ecommerce'
+                ],
+            ]
+        ]);
+    }
+
+    function it_normalizes_an_exception_using_constraint_constraint_payload_instead_of_property_path(
+        ViolationHttpException $exception,
+        ConstraintViolationList $constraintViolations,
+        ConstraintViolation $violation,
+        \ArrayIterator $iterator,
+        AttributeInterface $attribute,
+        Constraint $constraint
+    ) {
+        $violation->getRoot()->willReturn($attribute);
+        $violation->getMessage()->willReturn('The locale "ab_CD" does not exist.');
+        $violation->getPropertyPath()->willReturn('translations[0].locale');
+
+        $constraintViolations->getIterator()->willReturn($iterator);
+        $iterator->rewind()->willReturn($violation);
+        $valueCount = 1;
+        $iterator->valid()->will(
+            function () use (&$valueCount) {
+                return $valueCount-- > 0;
+            }
+        );
+        $iterator->current()->willReturn($violation);
+        $iterator->next()->willReturn(null);
+
+        $exception->getViolations()->willReturn($constraintViolations);
+        $exception->getStatusCode()->willReturn(Response::HTTP_UNPROCESSABLE_ENTITY);
+
+        $violation->getConstraint()->willReturn($constraint);
+        $constraint->payload = ['standardPropertyName' => 'labels'];
+
+        $this->normalize($exception)->shouldReturn([
+            'code'    => Response::HTTP_UNPROCESSABLE_ENTITY,
+            'message' => '',
+            'errors'  => [
+                [
+                    'property'  => 'labels',
+                    'message'   => 'The locale "ab_CD" does not exist.',
                 ],
             ]
         ]);

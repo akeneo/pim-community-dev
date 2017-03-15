@@ -40,6 +40,10 @@ class RootEndpointIntegration extends ApiTestCase
                 "route": "/api/rest/v1/categories/{code}",
                 "methods": ["PATCH"]
             },
+            "pim_api_category_partial_update_list": {
+                "route": "/api/rest/v1/categories",
+                "methods": ["PATCH"]
+            },
             "pim_api_family_list": {
                 "route": "/api/rest/v1/families",
                 "methods": ["GET"]
@@ -56,6 +60,10 @@ class RootEndpointIntegration extends ApiTestCase
                 "route": "/api/rest/v1/families/{code}",
                 "methods": ["PATCH"]
             },
+            "pim_api_family_partial_update_list": {
+                "route": "/api/rest/v1/families",
+                "methods": ["PATCH"]
+            },
             "pim_api_attribute_list": {
                 "route": "/api/rest/v1/attributes",
                 "methods": ["GET"]
@@ -64,13 +72,17 @@ class RootEndpointIntegration extends ApiTestCase
                 "route": "/api/rest/v1/attributes",
                 "methods": ["POST"]
             },
-            "pim_api_attribute_update": {
+            "pim_api_attribute_partial_update": {
                 "route": "/api/rest/v1/attributes/{code}",
                 "methods": ["PATCH"]
             },
             "pim_api_attribute_get": {
                 "route": "/api/rest/v1/attributes/{code}",
                 "methods": ["GET"]
+            },
+            "pim_api_attribute_partial_update_list": {
+                "route": "/api/rest/v1/attributes",
+                "methods": ["PATCH"]
             },
             "pim_api_attribute_option_list": {
                 "route": "/api/rest/v1/attributes/{attributeCode}/options",
@@ -83,6 +95,10 @@ class RootEndpointIntegration extends ApiTestCase
             "pim_api_attribute_option_get": {
                 "route": "/api/rest/v1/attributes/{attributeCode}/options/{code}",
                 "methods": ["GET"]
+            },
+            "pim_api_attribute_option_partial_update": {
+                "route": "/api/rest/v1/attributes/{attributeCode}/options/{optionCode}",
+                "methods": ["PATCH"]
             },
             "pim_api_channel_list": {
                 "route": "/api/rest/v1/channels",
@@ -112,6 +128,10 @@ class RootEndpointIntegration extends ApiTestCase
                 "route": "/api/rest/v1/products/{code}",
                 "methods": ["PATCH"]
             },
+            "pim_api_product_partial_update_list": {
+                "route": "/api/rest/v1/products",
+                "methods": ["PATCH"]
+            },
             "pim_api_locale_list": {
                 "route": "/api/rest/v1/locales",
                 "methods": ["GET"]
@@ -119,6 +139,22 @@ class RootEndpointIntegration extends ApiTestCase
             "pim_api_locale_get": {
                 "route": "/api/rest/v1/locales/{code}",
                 "methods": ["GET"]
+            },
+            "pim_api_media_file_list": {
+                "route": "/api/rest/v1/media-files",
+                "methods": ["GET"]
+            },
+            "pim_api_media_file_download": {
+                "route": "/api/rest/v1/media-files/{code}/download",
+                "methods": ["GET"]
+            },
+            "pim_api_media_file_get": {
+                "route": "/api/rest/v1/media-files/{code}",
+                "methods": ["GET"]
+            },
+            "pim_api_media_file_create": {
+                "route": "/api/rest/v1/media-files",
+                "methods": ["POST"]
             }
         }
     }

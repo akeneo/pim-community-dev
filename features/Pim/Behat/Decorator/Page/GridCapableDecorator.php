@@ -136,6 +136,42 @@ class GridCapableDecorator extends ElementDecorator
     }
 
     /**
+     * Is the remove button available for the current view ?
+     */
+    public function isViewDeletable()
+    {
+        $selector = $this->selectors['Remove view button'];
+
+        try {
+            return $this->spin(function () use ($selector) {
+                $button = $this->find('css', $selector);
+
+                return $button ? true : false;
+            }, sprintf('Remove view button not found (%s).', $selector));
+        } catch (TimeoutException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Is the save button available for the current view ?
+     */
+    public function isViewCanBeSaved()
+    {
+        $selector = $this->selectors['Save view button'];
+
+        try {
+            return $this->spin(function () use ($selector) {
+                $button = $this->find('css', $selector);
+
+                return $button ? true : false;
+            }, sprintf('Save view button not found (%s).', $selector));
+        } catch (TimeoutException $e) {
+            return false;
+        }
+    }
+
+    /**
      * Returns the currently visible grid, if there is one
      *
      * @return NodeElement

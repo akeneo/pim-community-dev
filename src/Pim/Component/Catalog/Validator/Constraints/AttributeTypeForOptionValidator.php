@@ -27,7 +27,7 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
             $attribute = $attributeOption->getAttribute();
             $authorizedTypes = [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::OPTION_MULTI_SELECT];
             if (null !== $attribute && !in_array($attribute->getType(), $authorizedTypes)) {
-                $this->addInvalidAttributeViolation($constraint, $attributeOption);
+                $this->addInvalidAttributeViolation($constraint, $attributeOption, $authorizedTypes);
             }
         }
     }
@@ -35,16 +35,22 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
     /**
      * @param AttributeTypeForOption   $constraint
      * @param AttributeOptionInterface $option
+     * @param string[]                 $authorizedTypes
      */
     protected function addInvalidAttributeViolation(
         AttributeTypeForOption $constraint,
-        AttributeOptionInterface $option
+        AttributeOptionInterface $option,
+        array $authorizedTypes
     ) {
-        $this->context->buildViolation(
-            $constraint->invalidAttributeMessage,
-            [
-                '%attribute%' => $option->getAttribute()->getCode()
-            ]
-        )->addViolation();
+        $this->context
+            ->buildViolation(
+                $constraint->invalidAttributeMessage,
+                [
+                    '%attribute%'       => $option->getAttribute()->getCode(),
+                    '%attribute_types%' => implode('", "', $authorizedTypes),
+                ]
+            )
+            ->atPath($constraint->propertyPath)
+            ->addViolation();
     }
 }

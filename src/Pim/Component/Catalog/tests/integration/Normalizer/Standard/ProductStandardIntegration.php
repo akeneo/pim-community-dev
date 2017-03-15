@@ -272,6 +272,9 @@ class ProductStandardIntegration extends TestCase
         //TODO: why do we need that?
         $expected = $this->sanitizeMediaAttributeData($expected);
 
+        ksort($expected['values']);
+        ksort($result['values']);
+
         $this->assertSame($expected, $result);
     }
 

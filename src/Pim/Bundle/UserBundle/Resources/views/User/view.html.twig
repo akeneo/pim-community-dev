@@ -4,18 +4,6 @@
 {% set fullname = entity.fullName|default('N/A') %}
 {% oro_title_set({params : {"%username%": fullname }}) %}
 
-{% macro api_data_block(user) %}
-    <div class="AknTextField AknTextField--disabled">{{ user.api ? user.api.apiKey : 'N/A' }}</div>
-    {% if resource_granted('pim_user_user_edit') %}
-        <div class="AknFieldContainer-iconsContainer">
-            <a class="AknButton AknButton--grey AknButton no-hash" id="btn-apigen" href="{{ path('oro_user_apigen', { id: user.id }) }}"
-               data-title="{{ 'Generate key'|trans }}" data-message="{{ 'Generate key was successful. New key:'|trans }}">
-                {{ 'Generate key'|trans }}
-            </a>
-        </div>
-    {% endif %}
-{% endmacro %}
-
 {% block navButtons %}
     {% if editRoute is defined %}
         {{ UI.button({
@@ -103,8 +91,7 @@
                         entity.middleName ? UI.attibuteRow('Middle name'|trans, entity.middleName),
                         UI.attibuteRow('Last name'|trans, entity.lastName|default('N/A')),
                         entity.nameSuffix ? UI.attibuteRow('Name suffix'|trans, entity.nameSuffix),
-                        UI.attibuteRow('Birthday'|trans, entity.birthday ? entity.birthday|date_presenter : 'N/A'),
-                        UI.renderAttribute('API key'|trans, _self.api_data_block(entity))
+                        UI.attibuteRow('Birthday'|trans, entity.birthday ? entity.birthday|date_presenter : 'N/A')
                     ]
                 },
                 {

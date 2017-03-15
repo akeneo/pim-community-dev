@@ -28,9 +28,10 @@
     {% spaceless %}
         {% set attr = attr|merge({'class': attr.class is defined ? attr.class ~ ' horizontal' : 'horizontal'}) %}
         {% set attr = attr|merge({'class': attr.class ~ ' validate-group'}) %}
+        {% set attr = attr|merge({'class': attr.class ~ ' AknChoicesField'}) %}
         <div {{ block('widget_container_attributes') }}>
             {% for child in form %}
-                <div class="oro-clearfix">
+                <div class="AknChoicesField-choiceItem">
                     {{ form_widget(child) }}
                     {{ form_label(child) }}
                 </div>

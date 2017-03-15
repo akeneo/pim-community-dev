@@ -83,6 +83,9 @@ abstract class AbstractFilterTestCase extends TestCase
             $products[] = $product->getIdentifier();
         }
 
+        sort($products);
+        sort($expected);
+
         $this->assertSame($products, $expected);
     }
 }
