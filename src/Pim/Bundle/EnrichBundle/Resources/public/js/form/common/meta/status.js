@@ -26,7 +26,6 @@ define(
              */
             initialize: function (meta) {
                 this.config = meta.config;
-
                 this.label   = __(this.config.label);
                 this.value   = __(this.config.value);
 
@@ -37,12 +36,7 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                if (this.config.updateOnEvent) {
-                    this.listenTo(this.getRoot(), this.config.updateOnEvent, function (newData) {
-                        this.setData(newData);
-                        this.render();
-                    });
-                }
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -51,16 +45,14 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                var product = this.getFormData();
+                var status = this.getFormData();
                 var value = this.config.valuePath ?
-                    propertyAccessor.accessProperty(product, this.config.valuePath) : '';
+                    propertyAccessor.accessProperty(status, this.config.valuePath) : '';
 
-                var html = this.template({
+                this.$el.html(this.template({
                     label: this.label,
                     value: value
-                });
-
-                this.$el.html(html);
+                }));
 
                 return this;
             }

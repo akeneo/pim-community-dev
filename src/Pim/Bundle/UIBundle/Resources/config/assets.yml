@@ -35,6 +35,7 @@ css:
         - bundles/pimui/less/components/button/ButtonList.less
         - bundles/pimui/less/components/button/DropdownButton.less
         - bundles/pimui/less/components/button/IconButton.less
+        - bundles/pimui/less/components/button/RefreshButton.less
 
         - bundles/pimui/less/components/grid/FilterBox.less
         - bundles/pimui/less/components/grid/FilterChoice.less

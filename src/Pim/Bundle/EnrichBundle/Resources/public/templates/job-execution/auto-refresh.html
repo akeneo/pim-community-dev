@@ -1,8 +1,8 @@
-<div style="margin-top: 10px;margin-left: 20px;">
-    <img src="/bundles/pimimportexport/images/loading.gif" alt="<%= __('pim_enrich.form.job_execution.loading') %>"
-         class="transparent loading"/>
-    <a class="AknButton transparent loading btn-mini AknButton--withIcon refresh" href="" title="Refresh">
+<div class="AknRefreshButton">
+    <img src="/bundles/pimimportexport/images/loading.gif" alt="<%- __('pim_enrich.form.job_execution.loading') %>"
+         class="AknRefreshButton-img <%- loadingShown ? '': 'AknRefreshButton--hidden' %>"/>
+    <a class="AknButton AknButton--withIcon <%- refreshBtnShown ? '': 'AknRefreshButton--hidden' %>" title="Refresh">
         <i class="AknButton-icon icon-refresh"></i>
-        <%= __('pim_enrich.form.job_execution.refreshBtn.title')%>
+        <%- __('pim_enrich.form.job_execution.refreshBtn.title')%>
     </a>
 </div>

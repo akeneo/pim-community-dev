@@ -48,14 +48,12 @@ define(
             },
 
             /**
-             * {@inheritDoc}
+             * {@inheritdoc}
              */
             configure: function () {
-                this.listenTo(this.getRoot(), 'pim-job-execution-form:new-data',
-                    function (newData) {
-                        this.setData(newData);
-                        this.render();
-                    });
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
+
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**

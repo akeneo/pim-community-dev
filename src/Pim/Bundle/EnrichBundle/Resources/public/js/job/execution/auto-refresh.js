@@ -22,19 +22,20 @@ define(
             events: {
                 'click a': 'startAutoUpdateOnClick'
             },
-            _autoRefreshDelay: 1000, //1 second
-            _autoRefreshTimeout: null,
+            autoRefreshDelay: 1000, //1 second
+            autoRefreshTimeout: null,
 
-            _stopAutoRefreshDelay: 2 * 60 * 1000, //2 minutes
-            _stopAutoUpdateTimeout: null,
+            stopAutoRefreshDelay: 2 * 60 * 1000, //2 minutes
+            stopAutoUpdateTimeout: null,
 
-            _object: null, //Store the last object that has been fetch
+            status: null, //3 status: isLoading | isFinished | isNotFinished
 
             /**
              * {@inheritdoc}
              */
             initialize: function (config) {
                 this.config = config.config;
+                this.setStatus('isLoading');
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -48,29 +49,34 @@ define(
 
                 // Clear interval/timeout when changing the page
                 Backbone.Router.prototype.on('route', this.stopAll.bind(this));
+
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**
              * Restart the auto refresh timeout
              */
-            restartAutoRefreshTimeout: function (object) {
-                this._autoRefreshTimeout =
-                    setTimeout(this.fetchData.bind(this, object), this._autoRefreshDelay);
+            restartAutoRefreshTimeout: function () {
+                clearTimeout(this.autoRefreshTimeout);
+                this.autoRefreshTimeout =
+                    setTimeout(this.fetchData.bind(this, this.getFormData()), this.autoRefreshDelay);
             },
 
             /**
              * Start the auto update
              */
-            startAutoUpdate: function (object) {
-                this.$('img').toggleClass('transparent', !object.isRunning);
-                this.$('a').addClass('transparent');
+            startAutoUpdate: function () {
 
                 //Refreshing data every seconds
-                this.restartAutoRefreshTimeout(object);
+                this.restartAutoRefreshTimeout();
 
                 //After 2 minutes, stop the auto refresh and display the button 'Refresh' (only if the job is not done!)
-                this._stopAutoUpdateTimeout =
-                    setTimeout(this.stopAutoUpdate.bind(this), this._stopAutoRefreshDelay);
+                clearTimeout(this.stopAutoUpdateTimeout);
+                this.stopAutoUpdateTimeout =
+                    setTimeout(function () {
+                        this.stopAll();
+                        this.setStatus('isNotFinished');
+                    }.bind(this), this.stopAutoRefreshDelay);
             },
 
             /**
@@ -78,21 +84,20 @@ define(
              * @param jobExecution
              */
             fetchData: function (jobExecution) {
-
-                if (jobExecution && jobExecution.meta && jobExecution.meta.id) {
-
+                if (jobExecution.meta.id) {
                     if (jobExecution.isRunning) {
-                        this.$('img').removeClass('transparent');
+                        this.setStatus('isLoading');
                         var jobId = jobExecution.meta.id;
                         FetcherRegistry.getFetcher('job-execution').fetch(jobId, {id: jobId, cached: false})
                             .then(function (newJobExecution) {
-                                this._object = newJobExecution;
-                                this.getRoot().trigger('pim-job-execution-form:new-data', newJobExecution);
-                                this.restartAutoRefreshTimeout(newJobExecution);
+                                this.setData(newJobExecution);
+                                this.render();
+                                this.restartAutoRefreshTimeout();
                             }.bind(this));
                     } else {
                         ///Data are up to date!
                         this.stopAll();
+                        this.setStatus('isFinished');
                     }
 
                 } else {
@@ -102,31 +107,18 @@ define(
 
             /**
              * Called when clicking on 'Refresh' button
-             * @param event
              */
-            startAutoUpdateOnClick: function (event) {
-                event.preventDefault();
-                this.startAutoUpdate(this._object);
+            startAutoUpdateOnClick: function () {
+                this.setStatus('isLoading');
+                this.startAutoUpdate();
             },
 
             /**
-             * Stop all timeout and display the refresh button
-             */
-            stopAutoUpdate: function () {
-                clearTimeout(this._autoRefreshTimeout);
-                clearTimeout(this._stopAutoUpdateTimeout);
-                this.$('img').addClass('transparent');
-                this.$('a').removeClass('transparent');
-            },
-
-            /**
-             * Stop all timeout and hide loader and refresh button
+             * Stop all timeout
              */
             stopAll: function () {
-                clearTimeout(this._autoRefreshTimeout);
-                clearTimeout(this._stopAutoUpdateTimeout);
-                this.$('img').addClass('transparent');
-                this.$('a').addClass('transparent');
+                clearTimeout(this.autoRefreshTimeout);
+                clearTimeout(this.stopAutoUpdateTimeout);
             },
 
             /**
@@ -134,10 +126,25 @@ define(
              */
             render: function () {
                 this.$el.html(this.template({
-                    __: __
+                    __: __,
+                    status: this.status,
+                    loadingShown: this.status === 'isLoading',
+                    refreshBtnShown: this.status === 'isNotFinished'
                 }));
 
                 return this;
+            },
+
+            /**
+             * Change the status of the extension
+             * @param status (isLoading | isFinished | isNotFinished)
+             */
+            setStatus: function (status) {
+                if (status !== 'isLoading' && status !== 'isFinished' && status !== 'isNotFinished') {
+                    throw new Error('Status equal isLoading | isFinished | isNotFinished but === [' + status + ']');
+                }
+                this.status = status;
+                this.render();
             }
         });
     }

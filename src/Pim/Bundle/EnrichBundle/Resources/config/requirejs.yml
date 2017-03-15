@@ -511,7 +511,7 @@ config:
         pim/template/form/tab/attribute/copy-field:               pimenrich/templates/form/tab/attributes/copy-field.html
         pim/template/form/redirect:                               pimenrich/templates/form/redirect.html
         pim/template/form/download-file:                          pimenrich/templates/form/download-file.html
-        pim/template/form/download-files:                          pimenrich/templates/form/download-files.html
+        pim/template/form/download-files:                         pimenrich/templates/form/download-files.html
 
         pim/template/association-type/tab/properties/general:     pimenrich/templates/association-type/tab/properties/general.html
 

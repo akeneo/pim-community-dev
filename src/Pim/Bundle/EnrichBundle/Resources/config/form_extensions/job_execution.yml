@@ -18,7 +18,6 @@ extensions:
         config:
             iconName: download-alt
             url: pim_enrich_job_tracker_download_file
-            updateOnEvent : pim-job-execution-form:new-data
 
     pim-job-execution-form-download-log:
         module: pim/form/common/download-file
@@ -29,7 +28,6 @@ extensions:
             label: pim_enrich.form.job_execution.button.download_log.title
             iconName: download-alt
             isVisiblePath: meta.log
-            updateOnEvent : pim-job-execution-form:new-data
             url: pim_importexport_export_execution_download_log
             urlParams:
                 - property: id
@@ -53,7 +51,6 @@ extensions:
         config:
             label: pim_enrich.form.job_execution.meta.status.title
             valuePath: status
-            updateOnEvent : pim-job-execution-form:new-data
 
     pim-job-execution-form-label:
         module: pim/job/common/label

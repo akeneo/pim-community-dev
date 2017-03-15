@@ -41,12 +41,7 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                if (this.config.updateOnEvent) {
-                    this.listenTo(this.getRoot(), this.config.updateOnEvent, function (newData) {
-                        this.setData(newData);
-                        this.render();
-                    });
-                }
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -60,15 +55,16 @@ define(
                 }
                 this.$el.html(this.template({
                     btnLabel: __(this.config.label),
-                    btnIcon: this.config.iconName
+                    btnIcon: this.config.iconName,
+                    url: this.getUrl()
                 }));
-                this.$el.attr('href', this.getUrl());
 
                 return this;
             },
 
             /**
              * Get the url with parameters
+             *
              * @returns {string}
              */
             getUrl: function () {
@@ -86,22 +82,19 @@ define(
                         this.config.url,
                         parameters);
                 } else {
+
                     return '';
                 }
             },
 
             /**
              * Returns true if the extension should be visible
+             *
              * @returns {boolean}
              */
             isVisible: function () {
-
-                return this.config.isVisiblePath ?
-                    propertyAccessor.accessProperty(
-                        this.getFormData(),
-                        this.config.isVisiblePath
-                    )
-                    : true;
+                return !this.config.isVisiblePath ||
+                    propertyAccessor.accessProperty(this.getFormData(), this.config.isVisiblePath);
             }
         });
     }
