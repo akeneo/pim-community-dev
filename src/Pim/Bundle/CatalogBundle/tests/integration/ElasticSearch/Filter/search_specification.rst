@@ -758,7 +758,7 @@ Data model
 ~~~~~~~~~~
 .. code-block:: yaml
 
-  categories: [1, 5, 8, 9]
+  categories: ['master', 'categoryA1', 'categoryB']
 
 Filtering
 ~~~~~~~~~
@@ -768,25 +768,29 @@ IN
 ~~
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    terms:
-        categories: [5, 9]
+    'terms' => [
+        'categories' => ['categoryA1']
+    ]
 
 NOT IN
 ~~~~~~
 :Type: filter
 
-Same as ``IN``, but with ``must_not`` occured type instead of ``must``
+Same as ``IN``, but with ``must_not`` occured type instead of ``filter``
 
 UNCLASSIFIED
 ~~~~~~~~~~~~
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    missing:
-        field: "categories"
+    'filter' => [
+        'exists' => [
+            'field' => 'categories'
+        ]
+    ]
 
 IN OR UNCLASSIFIED
 ~~~~~~~~~~~~~~~~~~
@@ -794,17 +798,28 @@ IN OR UNCLASSIFIED
 
 We use the ``should`` occured type to join both conditions on a ``bool`` filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    bool:
-        should:
-            -
-                terms:
-                    categories: [1, 4]
-            -
-                missing:
-                    field: "categories"
-        minimum_should_match: 1
+    [
+        'query' => [
+            'bool' => [
+                'should' => [
+                    'terms' => [
+                        'field' => [
+                            'categories' => ['categoryA1']
+                        ]
+                    ]
+                    'bool' => [
+                        'must_not' => [
+                            'exists' => [
+                                'field' => 'categories'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
 
 IN CHILDREN
 ~~~~~~~~~~~

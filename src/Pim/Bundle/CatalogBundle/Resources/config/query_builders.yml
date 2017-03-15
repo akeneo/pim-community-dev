@@ -12,6 +12,7 @@ parameters:
 
     pim_catalog.elasticsearch.query.filter.text.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\TextFilter
     pim_catalog.elasticsearch.query.filter.text_area.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\TextAreaFilter
+    pim_catalog.elasticsearch.query.filter.category.class: Pim\Bundle\CatalogBundle\ElasticSearch\Filter\CategoryFilter
 
 services:
     pim_catalog.query.product_query_builder_factory:
@@ -67,11 +68,9 @@ services:
 
     # PQB common filter
     pim_catalog.doctrine.query.filter.category:
-        class: '%pim_catalog.doctrine.query.filter.category.class%'
+        class: '%pim_catalog.elasticsearch.query.filter.category.class%'
         arguments:
             - '@pim_catalog.repository.category'
-            - '@pim_catalog.repository.product_category'
-            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
             - ['categories']
             - ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN']
         tags:

@@ -10,13 +10,13 @@ use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
- * Text area Filter for an Elasticsearch query
+ * Text area filter for an Elasticsearch query
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TextAreaFilter extends AbstractFilter implements AttributeFilterInterface
+class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
     /**
      * @param AttributeValidatorHelper $attrValidatorHelper
@@ -41,21 +41,21 @@ class TextAreaFilter extends AbstractFilter implements AttributeFilterInterface
         $operator,
         $value,
         $locale = null,
-        $scope = null,
+        $channel = null,
         $options = []
     ) {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-        $this->checkLocaleAndScope($attribute, $locale, $scope);
+        $this->checkLocaleAndChannel($attribute, $locale, $channel);
 
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($attribute, $value);
             $value = $this->escapeValue($value);
         }
 
-        $attributePath = $this->getAttributePath($attribute, $locale, $scope);
+        $attributePath = $this->getAttributePath($attribute, $locale, $channel);
 
         switch ($operator) {
             case Operators::STARTS_WITH:
@@ -145,22 +145,6 @@ class TextAreaFilter extends AbstractFilter implements AttributeFilterInterface
         }
 
         return $this;
-    }
-
-    /**
-     * Escapes value
-     *
-     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#_reserved_characters
-     *
-     * @param string $value
-     *
-     * @return string
-     */
-    protected function escapeValue($value)
-    {
-        $regex = '#[-+=|! &(){}\[\]^"~*<>?:/\\\]#';
-
-        return preg_replace($regex, '\\\$0', $value);
     }
 
     /**

@@ -126,7 +126,59 @@ class SearchQueryBuilderSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_filter_and_must_not_clauses()
+    function it_adds_one_should_clause()
+    {
+        $this->addShould([
+            'term' => ['family' => 'camcorders'],
+        ]);
+        $this->getQuery()->shouldReturn(
+            [
+                '_source' => ['identifier'],
+                'query'   => [
+                    'bool' => [
+                        'should' => [
+                            ['term' => ['family' => 'camcorders']],
+                        ],
+                    ],
+                ],
+            ]
+        );
+    }
+
+    function it_adds_multiple_should_clauses()
+    {
+        $this->addShould([
+            'term' => ['family' => 'camcorders'],
+        ]);
+        $this->addShould([
+            'query_string' => [
+                'default_field' => 'values.description-pim_catalog_text.ecommerce.en_US',
+                'query'         => '*Best camcorder in town*',
+            ],
+        ]);
+
+        $this->getQuery()->shouldReturn(
+            [
+                '_source' => ['identifier'],
+                'query'   => [
+                    'bool' => [
+                        'should' => [
+                            ['term' => ['family' => 'camcorders']],
+                            [
+                                'query_string' => [
+                                    'default_field' => 'values.description-pim_catalog_text.ecommerce.en_US',
+                                    'query'         => '*Best camcorder in town*',
+                                ],
+
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        );
+    }
+
+    function it_adds_filter__must_not_and_shouldclauses()
     {
         $this->addFilter([
             'term' => ['family' => 'camcorders'],
@@ -147,6 +199,22 @@ class SearchQueryBuilderSpec extends ObjectBehavior
             'term' => [
                 'name' => 'cheap',
             ],
+        ]);
+
+        $this->addShould([
+            'term' => [
+                'categories' => [1, 2]
+            ]
+        ]);
+
+        $this->addShould([
+            'bool' => [
+                'must_not' => [
+                    'exists' => [
+                        'field' => 'categories'
+                    ]
+                ]
+            ]
         ]);
 
         $this->getQuery()->shouldReturn(
@@ -177,6 +245,22 @@ class SearchQueryBuilderSpec extends ObjectBehavior
                                 ],
                             ],
                         ],
+                        'should' => [
+                            [
+                                'term' => [
+                                    'categories' => [1, 2]
+                                ]
+                            ],
+                            [
+                                'bool' => [
+                                    'must_not' => [
+                                        'exists' => [
+                                            'field' => 'categories'
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
                     ],
                 ],
             ]
