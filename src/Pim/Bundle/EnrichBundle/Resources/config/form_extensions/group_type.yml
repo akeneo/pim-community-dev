@@ -1,0 +1,114 @@
+extensions:
+    pim-group-type-edit-form:
+        module: pim/form/common/edit-form
+
+    pim-group-type-edit-form-cache-invalidator:
+        module: pim/cache-invalidator
+        parent: pim-group-type-edit-form
+        position: 1000
+
+    pim-group-type-edit-form-form-tabs:
+        module: pim/form/common/form-tabs
+        parent: pim-group-type-edit-form
+        targetZone: content
+        position: 90
+
+    pim-group-type-edit-form-label:
+        module: pim/form/common/label
+        parent: pim-group-type-edit-form
+        targetZone: title
+        position: 110
+
+    pim-group-type-edit-form-back-to-grid:
+        module: pim/form/common/back-to-grid
+        parent: pim-group-type-edit-form
+        targetZone: back
+        aclResourceId: pim_enrich_grouptype_index
+        position: 80
+        config:
+            backUrl: pim_enrich_grouptype_index
+
+    pim-group-type-edit-form-delete:
+        module: pim/group-type-edit-form/delete
+        parent: pim-group-type-edit-form
+        targetZone: buttons
+        aclResourceId: pim_enrich_grouptype_remove
+        position: 100
+        config:
+            trans:
+                title: confirmation.remove.group_type
+                content: pim_enrich.confirmation.delete_item
+                success: flash.group_type.removed
+                fail: error.removing.group_type
+            redirect: pim_enrich_grouptype_index
+
+    pim-group-type-edit-form-save-buttons:
+        module: pim/form/common/save-buttons
+        parent: pim-group-type-edit-form
+        targetZone: buttons
+        position: 100
+
+    pim-group-type-edit-form-save:
+        module: pim/group-type-edit-form/save
+        parent: pim-group-type-edit-form
+        targetZone: buttons
+        position: 0
+
+    pim-group-type-edit-form-state:
+        module: pim/form/common/state
+        parent: pim-group-type-edit-form
+        targetZone: state
+        position: 900
+        config:
+            entity: pim_enrich.entity.group_type.title
+
+    pim-group-type-edit-form-created:
+        module: pim/form/common/meta/created
+        parent: pim-group-type-edit-form
+        targetZone: meta
+        position: 90
+        config:
+            label: pim_enrich.entity.group_type.meta.created
+            labelBy: pim_enrich.entity.group_type.meta.created_by
+
+    pim-group-type-edit-form-updated:
+        module: pim/form/common/meta/updated
+        parent: pim-group-type-edit-form
+        targetZone: meta
+        position: 100
+        config:
+            label: pim_enrich.entity.group_type.meta.updated
+            labelBy: pim_enrich.entity.group_type.meta.updated_by
+
+    pim-group-type-edit-form-properties:
+        module: pim/common/tab/properties
+        parent: pim-group-type-edit-form-form-tabs
+        targetZone: container
+        position: 100
+        config:
+            label: 'pim_enrich.form.group_type.tab.properties.title'
+
+    pim-group-type-edit-form-properties-general:
+        module: pim/group-type-edit-form/properties/general
+        parent: pim-group-type-edit-form-properties
+        targetZone: accordion
+        position: 100
+
+    pim-group-type-edit-form-properties-translation:
+        module: pim/common/properties/translation
+        parent: pim-group-type-edit-form-properties
+        targetZone: accordion
+        position: 110
+        config:
+            label: 'pim_enrich.form.group_type.tab.properties.label_translations'
+            fieldBaseId: 'pim_enrich_group_type_form_label_'
+
+    pim-group-type-edit-form-history:
+        module: pim/common/tab/history
+        parent: pim-group-type-edit-form-form-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_grouptype_history
+        position: 120
+        config:
+            class: 'group_type'
+            title: 'pim_enrich.form.group_type.tab.history.title'

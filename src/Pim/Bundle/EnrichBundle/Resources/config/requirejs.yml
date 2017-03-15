@@ -37,6 +37,8 @@ config:
 
         pim/remover/association-type:
             url: pim_enrich_associationtype_rest_remove
+        pim/remover/group-type:
+            url: pim_enrich_grouptype_rest_remove
         pim/remover/channel:
             url: pim_enrich_channel_rest_remove
         pim/remover/family:
@@ -53,6 +55,8 @@ config:
             url: pim_enrich_job_instance_rest_export_delete
         pim/saver/association-type:
             url: pim_enrich_associationtype_rest_post
+        pim/saver/group-type:
+            url: pim_enrich_grouptype_rest_post
         pim/saver/channel:
             postUrl: pim_enrich_channel_rest_post
             putUrl: pim_enrich_channel_rest_put
@@ -77,6 +81,12 @@ config:
                         urls:
                             list: pim_enrich_associationtype_rest_index
                             get: pim_enrich_associationtype_rest_get
+                group-type:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: pim_enrich_grouptype_rest_index
+                            get: pim_enrich_grouptype_rest_get
                 attribute-group:
                     module: pim/attribute-group-fetcher
                     options:
@@ -223,6 +233,7 @@ config:
         # Remover
         pim/remover/base:                pimenrich/js/remover/base-remover
         pim/remover/association-type:    pimenrich/js/remover/association-type-remover
+        pim/remover/group-type:          pimenrich/js/remover/group-type-remover
         pim/remover/channel:             pimenrich/js/remover/channel
         pim/remover/family:              pimenrich/js/remover/family
         pim/remover/product:             pimenrich/js/remover/product-remover
@@ -234,6 +245,7 @@ config:
         # Saver
         pim/saver/base:                pimenrich/js/saver/base-saver
         pim/saver/association-type:    pimenrich/js/saver/association-type-saver
+        pim/saver/group-type:          pimenrich/js/saver/group-type-saver
         pim/saver/channel:             pimenrich/js/saver/channel
         pim/saver/family:              pimenrich/js/saver/family
         pim/saver/product:             pimenrich/js/saver/product-saver
@@ -257,6 +269,11 @@ config:
         pim/association-type-edit-form/delete:                 pimenrich/js/association-type/form/delete
         pim/association-type-edit-form/save:                   pimenrich/js/association-type/form/save
         pim/association-type-edit-form/properties/general:     pimenrich/js/association-type/form/properties/general
+
+        # Group type
+        pim/group-type-edit-form/delete:                 pimenrich/js/group-type/form/delete
+        pim/group-type-edit-form/save:                   pimenrich/js/group-type/form/save
+        pim/group-type-edit-form/properties/general:     pimenrich/js/group-type/form/properties/general
 
         # Channel
         pim/channel-edit-form/delete:                           pimenrich/js/channel/form/delete
@@ -486,6 +503,7 @@ config:
         pim/template/form/redirect:                               pimenrich/templates/form/redirect.html
 
         pim/template/association-type/tab/properties/general:     pimenrich/templates/association-type/tab/properties/general.html
+        pim/template/group-type/tab/properties/general:           pimenrich/templates/group-type/tab/properties/general.html
 
         pim/template/channel/tab/properties/general:                pimenrich/templates/channel/tab/properties/general.html
         pim/template/channel/tab/properties/general/currencies:     pimenrich/templates/channel/tab/properties/general/currencies.html

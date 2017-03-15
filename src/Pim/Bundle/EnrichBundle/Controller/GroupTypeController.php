@@ -125,40 +125,10 @@ class GroupTypeController
      *
      * @return array
      */
-    public function editAction(GroupType $groupType)
+    public function editAction($code)
     {
-        if ($this->groupTypeHandler->process($groupType)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.group type.updated'));
-        }
-
         return [
-            'form' => $this->groupTypeForm->createView(),
+            'code' => $code
         ];
-    }
-
-    /**
-     * Remove a group type
-     *
-     * @param GroupType $groupType
-     *
-     * @AclAncestor("pim_enrich_grouptype_remove")
-     *
-     * @return Response|RedirectResponse
-     */
-    public function removeAction(GroupType $groupType)
-    {
-        if ($groupType->isVariant()) {
-            throw new DeleteException($this->translator->trans('flash.group type.cant remove variant'));
-        } elseif (count($groupType->getGroups()) > 0) {
-            throw new DeleteException($this->translator->trans('flash.group type.cant remove used'));
-        } else {
-            $this->groupTypeRemover->remove($groupType);
-        }
-
-        if ($this->request->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return new RedirectResponse($this->router->generate('pim_enrich_grouptype_index'));
-        }
     }
 }
