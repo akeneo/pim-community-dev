@@ -151,6 +151,7 @@ class AppKernel extends Kernel
     protected function getPimDependenciesBundles()
     {
         return [
+            new Akeneo\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle(),
             new Akeneo\Bundle\BatchBundle\AkeneoBatchBundle(),
             new Akeneo\Bundle\BufferBundle\AkeneoBufferBundle(),
             new Akeneo\Bundle\FileStorageBundle\AkeneoFileStorageBundle(),
