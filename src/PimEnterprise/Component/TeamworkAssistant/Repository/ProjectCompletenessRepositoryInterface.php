@@ -28,4 +28,13 @@ interface ProjectCompletenessRepositoryInterface
      * @return ProjectCompleteness
      */
     public function getProjectCompleteness(ProjectInterface $project, $username = null);
+
+    /**
+     * @param ProjectInterface $project
+     * @param integer          $status
+     * @param string           $username
+     *
+     * @return array
+     */
+    public function findProductIds(ProjectInterface $project, $status, $username);
 }

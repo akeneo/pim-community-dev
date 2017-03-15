@@ -91,7 +91,7 @@ class ProjectFinishedNotifierSpec extends ObjectBehavior
         ];
 
         $projectNotificationFactory->create(
-            ['identifier' => $parameters['project_code']],
+            ['identifier' => $parameters['project_code'], 'status' => 'all'],
             $parameters,
             $context,
             'teamwork_assistant.notification.project_finished.owner'
@@ -142,7 +142,7 @@ class ProjectFinishedNotifierSpec extends ObjectBehavior
         ];
 
         $projectNotificationFactory->create(
-            ['identifier' => 'project-code'],
+            ['identifier' => 'project-code', 'status' => 'all'],
             $parameters,
             $context,
             'teamwork_assistant.notification.project_finished.contributor'

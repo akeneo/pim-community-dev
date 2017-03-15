@@ -4,3 +4,8 @@ pimee_enrich.acl.attribute_group.edit_permissions: Attributgruppenberechtigungen
 pimee_importexport.acl.export_profile.edit_permissions: Export-Profil Berechtigungen verwalten
 pimee_importexport.acl.import_profile.edit_permissions: Import-Profil Berechtigungen verwalten
 pimee_enrich.groups.label: Eigentümer-Gruppen
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Anzahl der benutzerdefinierten Zugriffe auf das Gebietsschema
+    nb_custom_category_accesses: Anzahl der benutzerdefinierten Zugriffe auf Kategorien
+    nb_custom_attribute_group_accesses: Anzahl der benutzerdefinierten Zugriffe auf Attributgruppen
