@@ -1,3 +1,9 @@
+# 1.7.*
+
+## Bug fixes
+
+- PIM-6213: remove ticks on published form
+
 # 1.7.0 (2017-03-14)
 
 ## Bug fixes
