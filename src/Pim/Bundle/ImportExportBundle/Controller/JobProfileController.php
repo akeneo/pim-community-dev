@@ -135,7 +135,6 @@ class JobProfileController
     /**
      * Show a job instance
      *
-     * @param Request $request
      * @param string  $code
      *
      * @return Response

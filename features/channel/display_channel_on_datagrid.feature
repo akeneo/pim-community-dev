@@ -6,10 +6,8 @@ Feature: Display channels on the datagrid
 
   Background:
     Given a "footwear" catalog configuration
-    And the following locale accesses:
-      | locale | user group | access |
-      | es_MX  | All        | view   |
 
+  @ce
   Scenario: Display code of channel if no translation is available for the UI language
     Given I am logged in as "Julia"
     When I am on the products page
