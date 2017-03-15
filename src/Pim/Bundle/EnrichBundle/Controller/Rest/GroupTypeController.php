@@ -19,9 +19,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * Group type controller
  *
- * @author    Filips Alpe <filips@akeneo.com>
- * @author    Alexandr Jeliuc <alex@jeliuc.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @author    Tamara Robichet <tamara.robichet@akeneo.com>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class GroupTypeController
@@ -111,6 +110,7 @@ class GroupTypeController
         $groupType = $this->getGroupTypeOr404($code);
 
         $data = json_decode($request->getContent(), true);
+
         $this->updater->update($groupType, $data);
 
         $violations = $this->validator->validate($groupType);

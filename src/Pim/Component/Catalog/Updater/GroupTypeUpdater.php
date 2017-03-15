@@ -52,15 +52,25 @@ class GroupTypeUpdater implements ObjectUpdaterInterface
      */
     protected function setData(GroupTypeInterface $groupType, $field, $data)
     {
-        if ('code' == $field) {
+        switch ($field) {
+          case 'code':
             $groupType->setCode($data);
-        } elseif ('is_variant' == $field) {
+            break;
+          case 'is_variant':
             $groupType->setVariant($data);
-        } elseif ('label' == $field) {
+            break;
+          case 'labels':
             foreach ($data as $locale => $label) {
                 $groupType->setLocale($locale);
                 $groupType->setLabel($label);
             }
+            break;
+          case 'label':
+            foreach ($data as $locale => $label) {
+                $groupType->setLocale($locale);
+                $groupType->setLabel($label);
+            }
+            break;
         }
     }
 }
