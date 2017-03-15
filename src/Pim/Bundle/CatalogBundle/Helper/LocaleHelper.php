@@ -44,7 +44,7 @@ class LocaleHelper
      */
     public function getCurrentLocaleCode()
     {
-        return $this->userContext->getUiLocale()->getCode();
+        return $this->userContext->getCurrentLocale()->getCode();
     }
 
     /**
