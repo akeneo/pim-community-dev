@@ -22,7 +22,7 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             lineTemplate: _.template(lineTemplate),
-            resultsPerPage: 2,
+            resultsPerPage: 20,
             queryTimer: null,
             searchParameters: {},
             className: 'AknButtonList-item',
@@ -115,7 +115,8 @@ define(
                     search: term,
                     options: {
                         limit: this.resultsPerPage,
-                        page: page
+                        page: page,
+                        completeness: 0
                     }
                 });
             },

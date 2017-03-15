@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\TeamworkAssistant\Job\AttributeGroupCompleteness;
+namespace PimEnterprise\Component\TeamworkAssistant\Job\RefreshProjectCompleteness;
 
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Job\AttributeGroupCompletenessJobLauncher;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\Job\RefreshProjectCompletenessJobLauncher;
 use PimEnterprise\Component\TeamworkAssistant\Calculator\ProjectItemCalculatorInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\PreProcessingRepositoryInterface;
 
@@ -24,12 +24,12 @@ use PimEnterprise\Component\TeamworkAssistant\Repository\PreProcessingRepository
  *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class AttributeGroupCompletenessTasklet implements TaskletInterface
+class RefreshProjectCompletenessTasklet implements TaskletInterface
 {
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var AttributeGroupCompletenessJobLauncher */
+    /** @var RefreshProjectCompletenessJobLauncher */
     protected $attributeGroupCompletenessCalculator;
 
     /** @var PreProcessingRepositoryInterface */

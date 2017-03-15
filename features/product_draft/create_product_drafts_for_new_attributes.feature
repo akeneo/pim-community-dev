@@ -24,8 +24,8 @@ Feature: Create product drafts for new attributes added to the product
   Scenario: Do not save a product draft with empty attribute values
     Given a "clothing" catalog configuration
     And the following family:
-      | code           | attributes                                                    |
-      | security_vests | sku,name,length,price,side_view,video,size,weather_conditions |
+      | code           | attributes                                              |
+      | security_vests | sku,name,length,price,side_view,size,weather_conditions |
     And I am logged in as "Mary"
     And the following csv file to import:
       """

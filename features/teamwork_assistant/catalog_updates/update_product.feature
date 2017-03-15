@@ -13,14 +13,14 @@ Feature: Follow project completeness
       | other     | Other       | other |
       | media     | Media       | other |
     And the following attributes:
-      | code         | label-en_US  | label-fr_FR    | type                   | localizable | scopable | decimals_allowed | metric_family | default_metric_unit | useable_as_grid_filter | group     | allowed_extensions |
-      | sku          | SKU          | SKU            | pim_catalog_identifier | 0           | 0        |                  |               |                     | 1                      | other     |                    |
-      | name         | Name         | Nom            | pim_catalog_text       | 1           | 0        |                  |               |                     | 1                      | marketing |                    |
-      | description  | Description  | Description    | pim_catalog_text       | 1           | 1        |                  |               |                     | 0                      | marketing |                    |
-      | size         | Size         | Taille         | pim_catalog_text       | 1           | 0        |                  |               |                     | 1                      | marketing |                    |
-      | weight       | Weight       | Poid           | pim_catalog_metric     | 1           | 0        | 0                | Weight        | GRAM                | 1                      | technical |                    |
-      | release_date | Release date | Date de sortie | pim_catalog_date       | 1           | 0        |                  |               |                     | 1                      | other     |                    |
-      | material     | Material     | matière        | pim_catalog_text       | 1           | 0        |                  |               |                     | 1                      | technical |                    |
+      | code         | label-en_US  | label-fr_FR    | type                   | localizable | scopable | decimals_allowed | negative_allowed | metric_family | default_metric_unit | useable_as_grid_filter | group     | allowed_extensions |
+      | sku          | SKU          | SKU            | pim_catalog_identifier | 0           | 0        |                  |                  |               |                     | 1                      | other     |                    |
+      | name         | Name         | Nom            | pim_catalog_text       | 1           | 0        |                  |                  |               |                     | 1                      | marketing |                    |
+      | description  | Description  | Description    | pim_catalog_text       | 1           | 1        |                  |                  |               |                     | 0                      | marketing |                    |
+      | size         | Size         | Taille         | pim_catalog_text       | 1           | 0        |                  |                  |               |                     | 1                      | marketing |                    |
+      | weight       | Weight       | Poid           | pim_catalog_metric     | 1           | 0        | 0                | 0                | Weight        | GRAM                | 1                      | technical |                    |
+      | release_date | Release date | Date de sortie | pim_catalog_date       | 1           | 0        |                  |                  |               |                     | 1                      | other     |                    |
+      | material     | Material     | matière        | pim_catalog_text       | 1           | 0        |                  |                  |               |                     | 1                      | technical |                    |
     And the following categories:
       | code       | label-en_US | parent  |
       | clothing   | Clothing    | default |

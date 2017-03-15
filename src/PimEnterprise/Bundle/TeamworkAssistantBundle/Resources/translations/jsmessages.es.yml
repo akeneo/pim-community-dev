@@ -1,19 +1,60 @@
 teamwork_assistant:
   common:
     required: Requerido
+    warning: No se preocupe, el cálculo del proyecto puede tomar un tiempo. Puede que no sea visible de inmediato.
   grid:
     view_selector:
+      create: Crear proyecto
+      edit: Editar proyecto
+      remove: Eliminar proyecto
+      create_from_view: Crear un proyecto desde esta vista
       loading: Cargando...
+      start_new_project: Iniciar un proyecto nuevo
       confirmation:
+        remove: '¿Estás seguro de que deseas eliminar este proyecto?'
         delete: Confirmación de borrado
   project:
-    label: Etiqueta
+    label: Nombre
+    locale: Local
+    channel: Canal
+    label_maxlength: Este valor es demasiado largo. Debe tener {{ max }} caracteres o menos.
     description: Descripción
+    due_date: Vencimiento
+    due_date_past: No puede seleccionar una fecha en el pasado.
+    leaving_scope: Está dejando el perímetro del proyecto.
   edit_project_modal:
+    saved: Se ha guardado el proyecto.
+    title: Editar proyecto
     confirm: Guardar
     cancel: Cancelar
   create_project_modal:
+    saved: El proyecto se ha guardado, se le notificará cuando se realice el cálculo.
+    title: Crear proyecto
     confirm: Guardar
     cancel: Cancelar
   widget:
+    no_project: No tiene ningún proyecto
+    no_project_create: Crear un nuevo proyecto
     description: Descripción
+    due_date: Vencimiento
+    todo: PENDIENTES
+    in_progress: EN PROGRESO
+    done: HECHO
+    all_contributors: Todos los colaboradores
+    display_products: Mostrar productos
+    placeholder:
+      contributor_selector: Buscar colaborador
+      project_selector: Buscar proyecto
+    completeness:
+      to_start: PRODUCTOS A COMENZAR
+      in_progress: PRODUCTOS EN CURSO
+      done: PRODUCTOS TERMINADOS
+pim_datagrid:
+  view_selector:
+    project: Proyectos
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        attribute_group_completeness_calculation: Teamwork Assistant
+        project_calculation: Teamwork Assistant

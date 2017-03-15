@@ -60,8 +60,11 @@ define(
                     return BaseCurrent.prototype.areFiltersModified.apply(this, arguments);
                 }
 
-                // Regex to remove items per page (p) and current page (i) of the filters url
-                var regex = /(i=\d+&p=\d+&)/;
+                // Regex to remove:
+                // - items per page (p)
+                // - current page (i)
+                // - project completeness filter (project_completeness)
+                var regex = /(i=\d+&p=\d+)|(&f%5Bproject_completeness%5D%5Bvalue%5D=\d)/g;
 
                 return initialViewFilters.replace(regex, '') !== datagridStateFilters.replace(regex, '');
             }

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\TeamworkAssistant\Job\AttributeGroupCompleteness;
+namespace PimEnterprise\Component\TeamworkAssistant\Job\RefreshProjectCompleteness;
 
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class AttributeGroupCompletenessJobParameter implements
+class RefreshProjectCompletenessJobParameter implements
     DefaultValuesProviderInterface,
     ConstraintCollectionProviderInterface
 {

@@ -12,6 +12,9 @@ teamwork_assistant:
       show: Toon
     due_date:
       start: Start
+  datagrid:
+    contributor_in_progress: In uitvoering
+    contributor_done: Gedaan
 batch_jobs:
   project_calculation:
     project_calculation:

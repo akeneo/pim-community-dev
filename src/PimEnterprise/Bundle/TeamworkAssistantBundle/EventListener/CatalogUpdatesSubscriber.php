@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener;
 
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Job\AttributeGroupCompletenessJobLauncher;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\Job\RefreshProjectCompletenessJobLauncher;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Remover\ChainedProjectRemover;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -34,17 +34,17 @@ class CatalogUpdatesSubscriber implements EventSubscriberInterface
     /** @var RequestStack */
     protected $requestStack;
 
-    /** @var AttributeGroupCompletenessJobLauncher */
+    /** @var RefreshProjectCompletenessJobLauncher */
     protected $jobLauncher;
 
     /**
      * @param ChainedProjectRemover                 $chainedProjectRemover
-     * @param AttributeGroupCompletenessJobLauncher $jobLauncher
+     * @param RefreshProjectCompletenessJobLauncher $jobLauncher
      * @param RequestStack                          $requestStack
      */
     public function __construct(
         ChainedProjectRemover $chainedProjectRemover,
-        AttributeGroupCompletenessJobLauncher $jobLauncher,
+        RefreshProjectCompletenessJobLauncher $jobLauncher,
         RequestStack $requestStack
     ) {
         $this->chainedProjectRemover = $chainedProjectRemover;

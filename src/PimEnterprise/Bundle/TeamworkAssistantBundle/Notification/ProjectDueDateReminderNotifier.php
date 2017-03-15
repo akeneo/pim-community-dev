@@ -84,7 +84,7 @@ class ProjectDueDateReminderNotifier implements ProjectNotifierInterface
                 '%due_date%'      => $formattedDate,
                 '%percent%'       => $projectCompleteness->getRatioForDone(),
             ];
-        $routeParams = ['identifier' => $project->getCode()];
+        $routeParams = ['identifier' => $project->getCode(), 'status' => 'contributor-todo'];
 
         $message = $user->getUsername() === $project->getOwner()->getUsername()
             ? 'teamwork_assistant.notification.due_date.owner'

@@ -1,8 +1,16 @@
-# 1.7.x
+# 1.7.0 (2017-03-14)
 
 ## Bug fixes
 
-- PIM-6201: Add automatically the view permission to the user if this one has edit permission during fixtures import.
+- PIM-6201: Add automatically the view permission to the user if this one has edit permission during fixtures import
+
+## Technical improvements
+
+- PIM-6204: Add analytics providers for Enterprise Edition
+
+## Teamwork Assistant
+
+- AMS-184: As a contributor or a project creator, I can see project's products by status
 
 # 1.7.0-BETA2 (2017-03-06)
 
@@ -28,7 +36,7 @@
 
 # 1.7.0-ALPHA1 (2017-02-23)
 
-## Team Work Assistant
+## Teamwork Assistant
 
 - AMS-3: As Julia, I would like to create a project based on a selection of products
 - AMS-8: As a contributor/ manager, I would like to followup projects on my dashboard - Front

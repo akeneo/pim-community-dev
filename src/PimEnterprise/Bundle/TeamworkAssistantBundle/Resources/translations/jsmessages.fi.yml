@@ -7,7 +7,9 @@ teamwork_assistant:
       confirmation:
         delete: Poista vahvistus
   project:
-    label: Nimike
+    label: Nimi
+    locale: Lokaatio
+    channel: Kanava
     description: Kuvaus
   edit_project_modal:
     confirm: Tallenna

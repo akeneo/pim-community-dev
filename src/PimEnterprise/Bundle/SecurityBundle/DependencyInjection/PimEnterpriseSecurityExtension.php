@@ -29,6 +29,7 @@ class PimEnterpriseSecurityExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('analytics.yml');
         $loader->load('array_converters.yml');
         $loader->load('controllers.yml');
         $loader->load('entities.yml');

@@ -6,3 +6,6 @@ teamwork_assistant:
       show: Näytä
     due_date:
       start: Aloitus
+  datagrid:
+    contributor_in_progress: Toiminto käynnissä
+    contributor_done: Valmis
