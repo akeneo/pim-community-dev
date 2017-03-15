@@ -1,38 +1,53 @@
 <?php
 
-namespace Pim\Component\Catalog\Normalizer\Standard;
+namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * @author    Tamara Robichet <tamara.robichet@akeneo.com>
+ * Group type normalizer
+ *
+ * @author    Tamara Robichet <filips@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class GroupTypeNormalizer implements NormalizerInterface
 {
-    /** @var TranslationNormalizer */
-    protected $translationNormalizer;
+    /** @var array */
+    protected $supportedFormats = ['internal_api'];
+
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
+    /** @var StructureVersionProviderInterface */
+    protected $structureVersionProvider;
 
     /**
-     * @param TranslationNormalizer $translationNormalizer
+     * @param NormalizerInterface                $normalizer
+     * @param StructuredVersionProviderInterface $structureVersionProvider
      */
-    public function __construct(TranslationNormalizer $translationNormalizer)
-    {
-        $this->translationNormalizer = $translationNormalizer;
+    public function __construct(
+        NormalizerInterface $normalizer,
+        StructureVersionProviderInterface $structureVersionProvider
+    ) {
+        $this->normalizer = $normalizer;
+        $this->structureVersionProvider = $structureVersionProvider;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($groupType, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = [])
     {
-        return [
-            'code'       => $groupType->getCode(),
-            'is_variant' => (bool) $groupType->isVariant(),
-            'labels'     => $this->translationNormalizer->normalize($groupType, 'standard', $context),
+        $result = $this->normalizer->normalize($object, 'standard', $context);
+
+        $result['meta'] = [
+            'structure_version' => $this->structureVersionProvider->getStructureVersion()
         ];
+
+        return $result;
     }
 
     /**
@@ -40,6 +55,6 @@ class GroupTypeNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof GroupTypeInterface && 'standard' === $format;
+        return $data instanceof GroupTypeInterface && in_array($format, $this->supportedFormats);
     }
 }

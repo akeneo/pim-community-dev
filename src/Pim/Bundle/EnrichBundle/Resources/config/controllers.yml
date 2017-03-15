@@ -293,11 +293,10 @@ services:
             - '@pim_user.context.user'
 
     pim_enrich.controller.rest.group_type:
-        scope: request
         class: '%pim_enrich.controller.rest.group_type.class%'
         arguments:
             - '@pim_catalog.repository.group_type'
-            - '@pim_serializer'
+            - '@pim_internal_api_serializer'
             - '@pim_catalog.remover.group_type'
             - '@pim_catalog.updater.group_type'
             - '@pim_catalog.saver.group_type'

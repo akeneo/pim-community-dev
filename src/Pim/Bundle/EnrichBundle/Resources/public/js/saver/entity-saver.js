@@ -23,7 +23,17 @@ define([
              * {@inheritdoc}
              */
             getUrl: function (code) {
-                return Routing.generate(module.config().url, {code: code});
+                return Routing.generate(this.url, { code: code });
+            },
+
+            /**
+             * Sets the url
+             *
+             * @param {Sringt} url Route url
+             */
+            setUrl: function (url) {
+                this.url = url;
+                return this;
             }
         });
     }

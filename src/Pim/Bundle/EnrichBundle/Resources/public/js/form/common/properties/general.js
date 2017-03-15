@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * Module used to display the generals properties of an group type
+ * Module used to display the generals properties of an entity type
  *
- * @author    Tamara Robichet <tamara.robichet@akeneo.com>
+ * @author    Alexandr Jeliuc <alex@jeliuc.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -12,7 +12,7 @@ define([
         'oro/translator',
         'pim/form',
         'pim/fetcher-registry',
-        'text!pim/template/group-type/tab/properties/general',
+        'text!pim/template/form/properties/general',
         'jquery.select2'
     ],
     function (
@@ -30,11 +30,14 @@ define([
              * {@inheritdoc}
              */
             render: function () {
+                var config = this.options.config;
+
                 this.$el.html(this.template({
                     model: this.getFormData(),
-                    sectionTitle: __('pim_enrich.form.group_type.tab.properties.general'),
-                    codeLabel: __('pim_enrich.form.group_type.tab.properties.code'),
-                    __: __
+                    sectionTitle: __(config.sectionTitle),
+                    codeLabel: __(config.codeLabel),
+                    formRequired: __(config.formRequired),
+                    inputField: config.inputField
                 }));
 
                 this.$el.find('select.select2').select2({});

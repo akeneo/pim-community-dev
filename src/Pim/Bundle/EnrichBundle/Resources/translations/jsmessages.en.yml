@@ -232,6 +232,7 @@ pim_enrich:
                 updated_by: Updated by
             btn:
                 save: Save
+            title: association type
         group_type:
             info:
                 deletion_successful: Group type successfully deleted.
@@ -246,6 +247,7 @@ pim_enrich:
                 updated_by: Updated by
             btn:
                 save: Save
+            title: group type
         channel:
             title: channel
             info:

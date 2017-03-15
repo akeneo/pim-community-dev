@@ -60,11 +60,6 @@ class GroupTypeUpdater implements ObjectUpdaterInterface
             $groupType->setVariant($data);
             break;
           case 'labels':
-            foreach ($data as $locale => $label) {
-                $groupType->setLocale($locale);
-                $groupType->setLabel($label);
-            }
-            break;
           case 'label':
             foreach ($data as $locale => $label) {
                 $groupType->setLocale($locale);

@@ -40,9 +40,7 @@
                                                 navigation.setPinButtonsData('title', navTitle);
                                                 navigation.setPinButtonsData('title-rendered-short', newTitle);
 
-                                                console.debug(groupType)
-
-                                                FormBuilder.build(groupType.meta.form)
+                                                FormBuilder.build('pim-group-type-edit-form')
                                                     .then(function (form) {
                                                         form.setData(groupType);
                                                         mediator.trigger('pim_enrich:form:entity:post_fetch', groupType);

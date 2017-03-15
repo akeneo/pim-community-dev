@@ -49,10 +49,15 @@ extensions:
         position: 100
 
     pim-group-type-edit-form-save:
-        module: pim/group-type-edit-form/save
+        module: pim/form/common/save-form
         parent: pim-group-type-edit-form
         targetZone: buttons
         position: 0
+        config:
+            updateSuccessMessage: pim_enrich.entity.group_type.info.update_successful
+            updateFailureMessage: pim_enrich.entity.group_type.info.update_failed
+            notReadyMessage: pim_enrich.entity.group_type.info.field_not_ready
+            url: pim_enrich_grouptype_rest_post
 
     pim-group-type-edit-form-state:
         module: pim/form/common/state
@@ -62,37 +67,24 @@ extensions:
         config:
             entity: pim_enrich.entity.group_type.title
 
-    pim-group-type-edit-form-created:
-        module: pim/form/common/meta/created
-        parent: pim-group-type-edit-form
-        targetZone: meta
-        position: 90
-        config:
-            label: pim_enrich.entity.group_type.meta.created
-            labelBy: pim_enrich.entity.group_type.meta.created_by
-
-    pim-group-type-edit-form-updated:
-        module: pim/form/common/meta/updated
-        parent: pim-group-type-edit-form
-        targetZone: meta
-        position: 100
-        config:
-            label: pim_enrich.entity.group_type.meta.updated
-            labelBy: pim_enrich.entity.group_type.meta.updated_by
-
     pim-group-type-edit-form-properties:
         module: pim/common/tab/properties
         parent: pim-group-type-edit-form-form-tabs
         targetZone: container
         position: 100
         config:
-            label: 'pim_enrich.form.group_type.tab.properties.title'
+            label: pim_enrich.form.group_type.tab.properties.title
 
     pim-group-type-edit-form-properties-general:
-        module: pim/group-type-edit-form/properties/general
+        module: pim/common/properties/general
         parent: pim-group-type-edit-form-properties
         targetZone: accordion
         position: 100
+        config:
+          sectionTitle: pim_enrich.form.group_type.tab.properties.general
+          codeLabel: pim_enrich.form.group_type.tab.properties.code
+          formRequired: pim_enrich.form.required
+          inputField: pim_enrich_group_type_form_code
 
     pim-group-type-edit-form-properties-translation:
         module: pim/common/properties/translation

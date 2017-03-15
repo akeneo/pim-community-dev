@@ -48,7 +48,12 @@ class GroupTypeController
 
     /**
      * @param GroupTypeRepositoryInterface $groupTypeRepo
-     * @param NormalizerInterface                $normalizer
+     * @param NormalizerInterface          $normalizer
+     * @param RemoverInterface             $remover
+     * @param ObjectUpdaterInterface       $updater
+     * @param SaverInterface               $saver
+     * @param ValidatorInterface           $validator
+     * @param UserContext                  $userContext
      */
     public function __construct(
         GroupTypeRepositoryInterface $groupTypeRepo,
@@ -83,22 +88,25 @@ class GroupTypeController
     }
 
     /**
+     * Get action
+     *
      * @param string $identifier
      *
      * @return JsonResponse
      *
-     * @AclAncestor("pim_enrich_grouptype_edit")
+     * @AclAncestor("pim_enrich_grouptype_get")
      */
     public function getAction($identifier)
     {
         $groupType = $this->getGroupTypeOr404($identifier);
 
         return new JsonResponse(
-            $this->normalizer->normalize($groupType, 'standard')
+            $this->normalizer->normalize($groupType, 'internal_api')
         );
     }
 
     /**
+     *
      * @param Request $request
      *
      * @return JsonResponse
@@ -121,7 +129,7 @@ class GroupTypeController
                 'standard'
             );
 
-            return new JsonResponse($errors, 400);
+            return new JsonResponse($errors, Response::HTTP_BAD_REQUEST);
         }
 
         $this->saver->save($groupType);
@@ -129,7 +137,7 @@ class GroupTypeController
         return new JsonResponse(
             $this->normalizer->normalize(
                 $groupType,
-                'standard',
+                'internal_api',
                 $this->userContext->toArray()
             )
         );
@@ -138,9 +146,9 @@ class GroupTypeController
     /**
      * Remove action
      *
-     * @param $code
+     * @param string $code
      *
-     * @return JsonResponse
+     * @return Response
      *
      * @AclAncestor("pim_enrich_grouptype_remove")
      */
@@ -150,23 +158,22 @@ class GroupTypeController
 
         $this->remover->remove($groupType);
 
-        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
      * Finds group type by code or throws not found exception
      *
-     * @param $code
+     * @param string $code
      *
      * @throws NotFoundHttpException
      *
      * @return GroupTypeInterface
      */
-    private function getGroupTypeOr404($code)
+    protected function getGroupTypeOr404($code)
     {
-        $groupType = $this->groupTypeRepo->findOneBy(
-            ['code' => $code]
-        );
+        $groupType = $this->groupTypeRepo->findOneByIdentifier($code);
+
         if (null === $groupType) {
             throw new NotFoundHttpException(
                 sprintf('Group type with code "%s" not found', $code)
