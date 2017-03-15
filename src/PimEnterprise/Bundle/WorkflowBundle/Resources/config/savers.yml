@@ -9,8 +9,8 @@ services:
     pimee_workflow.saver.published_product:
         class: '%pim_catalog.saver.product.class%'
         arguments:
-            - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.manager.completeness'
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.completeness.calculator'
             - '@event_dispatcher'
 
     # product draft saver
