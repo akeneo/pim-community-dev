@@ -9,7 +9,7 @@ confirmation:
         channel:          Are you sure you want to delete this channel?
         group:            Are you sure you want to delete this group?
         variant group:    Are you sure you want to delete this variant group?
-        group type:       Are you sure you want to delete this group type?
+        group_type:       Are you sure you want to delete this group type?
         import profile:   Are you sure you want to delete this import profile?
         export profile:   Are you sure you want to delete this export profile?
         user:             Are you sure you want to delete this user?
@@ -49,7 +49,7 @@ flash:
         removed: Group successfully removed
     variant group:
         removed: Variant group successfully removed
-    group type:
+    group_type:
         removed: Group type successfully removed
     import profile:
         removed: Import profile successfully removed
