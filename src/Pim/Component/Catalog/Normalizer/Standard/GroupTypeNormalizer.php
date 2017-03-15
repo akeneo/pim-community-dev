@@ -32,6 +32,9 @@ class GroupTypeNormalizer implements NormalizerInterface
             'code'       => $groupType->getCode(),
             'is_variant' => (bool) $groupType->isVariant(),
             'labels'     => $this->translationNormalizer->normalize($groupType, 'standard', $context),
+            'meta'       => [
+              'form'     => 'pim-group-type-edit-form',
+            ]
         ];
     }
 
