@@ -12,7 +12,7 @@ parameters:
 
     pim_catalog.elasticsearch.query.filter.text.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\TextFilter
     pim_catalog.elasticsearch.query.filter.text_area.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\TextAreaFilter
-    pim_catalog.elasticsearch.query.filter.category.class: Pim\Bundle\CatalogBundle\ElasticSearch\Filter\CategoryFilter
+    pim_catalog.elasticsearch.query.filter.category.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter
 
 services:
     pim_catalog.query.product_query_builder_factory:
