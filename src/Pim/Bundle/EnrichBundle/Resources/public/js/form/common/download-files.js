@@ -12,13 +12,15 @@ define(
         'oro/translator',
         'pim/form',
         'text!pim/template/form/download-files',
-        'routing'
+        'routing',
+        'pim/common/property'
     ],
     function (_,
               __,
               BaseForm,
               template,
-              Routing
+              Routing,
+              propertyAccessor
     ) {
         return BaseForm.extend({
             tagName: 'a',
@@ -48,10 +50,9 @@ define(
              */
             render: function () {
                 var formData = this.getFormData();
-
                 this.$el.html(this.template({
                     __: __,
-                    archives: formData.meta.archives,
+                    array: propertyAccessor.accessProperty(this.getFormData(), this.config.filesPath),
                     executionId: formData.meta.id,
                     generateRoute: this.getUrl.bind(this)
                 }));

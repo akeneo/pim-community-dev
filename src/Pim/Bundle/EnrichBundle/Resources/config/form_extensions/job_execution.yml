@@ -18,6 +18,7 @@ extensions:
         config:
             iconName: download-alt
             url: pim_enrich_job_tracker_download_file
+            filesPath: meta.archives
 
     pim-job-execution-form-download-log:
         module: pim/form/common/download-file

@@ -68,23 +68,19 @@ define(
              * @returns {string}
              */
             getUrl: function () {
-                if (this.config.url) {
-                    var parameters = {};
-                    if (this.config.urlParams) {
-                        var formData = this.getFormData();
-                        this.config.urlParams.forEach(function (urlParam) {
-                            parameters[urlParam.property] =
-                                propertyAccessor.accessProperty(formData, urlParam.path);
-                        });
-                    }
-
-                    return Routing.generate(
-                        this.config.url,
-                        parameters
-                    );
-                } else {
-                    return '';
+                var parameters = {};
+                if (this.config.urlParams) {
+                    var formData = this.getFormData();
+                    this.config.urlParams.forEach(function (urlParam) {
+                        parameters[urlParam.property] =
+                            propertyAccessor.accessProperty(formData, urlParam.path);
+                    });
                 }
+
+                return Routing.generate(
+                    this.config.url,
+                    parameters
+                );
             },
 
             /**
@@ -93,8 +89,7 @@ define(
              * @returns {boolean}
              */
             isVisible: function () {
-                return !this.config.isVisiblePath ||
-                    propertyAccessor.accessProperty(this.getFormData(), this.config.isVisiblePath);
+                return propertyAccessor.accessProperty(this.getFormData(), this.config.isVisiblePath);
             }
         });
     }
