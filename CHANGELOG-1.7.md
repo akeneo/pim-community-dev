@@ -1,6 +1,7 @@
 # 1.7.x
 
-## Bug Fixes
+Bug Fixes
+---------
 
 - PIM-6085: Association import step is not working with custom column name.
 - PIM-6207: Correctly dismiss "Unsaved changes" message on system configuration.
