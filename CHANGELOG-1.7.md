@@ -7,11 +7,7 @@
 - PIM-6213: Remove ticks on published form
 - PIM-6242: Fix UI glitch on TWA completeness filter search field
 - PIM-6239: Translate scope with catalog locale
-GITHUB-5538: User without permissions access to import/export jobs through `Process tracker`
-
-## BC breaks
-
-GITHUB-5538: Change the constructor of `Pim\Bundle\EnrichBundle\Controller\JobTrackerController` add securityFacade
+- GITHUB-5538: User without permissions access to import/export jobs through `Process tracker`
 
 # 1.7.0 (2017-03-14)
 
@@ -68,10 +64,6 @@ GITHUB-5538: Change the constructor of `Pim\Bundle\EnrichBundle\Controller\JobTr
 - API-29: As Julia, I would like to get/create/update a category
 - API-75: As Julia, I would like to list channels
 - API-77: As Filips, I would like to discover all routes in the API
-
-## BC breaks
-
-- GITHUB-5538: Change the constructor of Pim\Bundle\EnrichBundle\Controller\JobTrackerController add securityFacade
 
 # 1.7.0-ALPHA1 (2017-02-23)
 

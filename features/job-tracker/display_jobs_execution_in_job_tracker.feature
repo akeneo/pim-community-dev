@@ -100,4 +100,3 @@ Feature: Display jobs execution in job tracker
     And I am on the job tracker page
     And I click on the "CSV footwear product export" row
     Then I should see the text "Process tracker"
-

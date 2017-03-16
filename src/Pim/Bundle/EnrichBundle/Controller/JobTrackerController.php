@@ -3,13 +3,12 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\FileStorage\StreamedFileResponse;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -46,6 +45,9 @@ class JobTrackerController extends Controller
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
+    /** @var JobExecutionRepository */
+    protected $jobExecutionRepo;
+
     /** @var JobExecutionArchivist */
     protected $archivist;
 
@@ -58,13 +60,12 @@ class JobTrackerController extends Controller
     /** @var SecurityFacade */
     protected $securityFacade;
 
-    /** @var JobExecutionRepository */
-    protected $jobExecutionRepo;
-
     /** @var string */
     protected $showPermissionTemplate;
 
     /**
+     * TODO To be refactored into Master to change the constructor 'null' parameters
+     *
      * @param EngineInterface          $templating
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
@@ -73,6 +74,7 @@ class JobTrackerController extends Controller
      * @param SerializerInterface      $serializer
      * @param JobExecutionManager      $jobExecutionManager
      * @param SecurityFacade           $securityFacade
+     * @param string                   $showPermissionTemplate
      */
     public function __construct(
         EngineInterface $templating,
@@ -82,8 +84,8 @@ class JobTrackerController extends Controller
         JobExecutionArchivist $archivist,
         SerializerInterface $serializer,
         JobExecutionManager $jobExecutionManager,
-        SecurityFacade $securityFacade,
-        $showPermissionTemplate
+        SecurityFacade $securityFacade = null,
+        $showPermissionTemplate = null
     ) {
         $this->templating = $templating;
         $this->translator = $translator;
@@ -122,7 +124,8 @@ class JobTrackerController extends Controller
             throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
         }
 
-        if (!$this->securityFacade->isGranted($this->getShowPermission($jobExecution))) {
+        if (null !== $this->securityFacade &&
+            !$this->securityFacade->isGranted($this->getShowPermission($jobExecution))) {
             throw new AccessDeniedException();
         }
 
@@ -181,7 +184,8 @@ class JobTrackerController extends Controller
             throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
         }
 
-        if (!$this->securityFacade->isGranted($this->getShowPermission($jobExecution))) {
+        if (null !== $this->securityFacade &&
+            !$this->securityFacade->isGranted($this->getShowPermission($jobExecution))) {
             throw new AccessDeniedException();
         }
 
@@ -210,7 +214,8 @@ class JobTrackerController extends Controller
             throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
         }
 
-        if (!$this->securityFacade->isGranted($this->getShowPermission($jobExecution))) {
+        if (null !== $this->securityFacade &&
+            !$this->securityFacade->isGranted($this->getShowPermission($jobExecution))) {
             throw new AccessDeniedException();
         }
 
@@ -235,6 +240,11 @@ class JobTrackerController extends Controller
         return $this->templating->renderResponse($view, $parameters, $response);
     }
 
+    /**
+     * @param JobExecution $jobExecution
+     *
+     * @return string
+     */
     protected function getShowPermission($jobExecution)
     {
         return sprintf(
