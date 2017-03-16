@@ -6,7 +6,7 @@ use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class PartialUpdateAttributeIntergration extends ApiTestCase
+class PartialUpdateAttributeIntegration extends ApiTestCase
 {
     public function testHttpHeadersInResponseWhenAnAttributeIsUpdated()
     {
@@ -80,15 +80,15 @@ JSON;
             'max_characters'         => null,
             'validation_rule'        => null,
             'validation_regexp'      => null,
-            'wysiwyg_enabled'        => false,
+            'wysiwyg_enabled'        => null,
             'number_min'             => null,
             'number_max'             => null,
-            'decimals_allowed'       => false,
-            'negative_allowed'       => false,
+            'decimals_allowed'       => null,
+            'negative_allowed'       => null,
             'date_min'               => null,
             'date_max'               => null,
             'max_file_size'          => null,
-            'minimum_input_length'   => 0,
+            'minimum_input_length'   => null,
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
@@ -112,7 +112,7 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'property' => 'attributeType',
+                    'property' => 'type',
                     'message'  => 'This value should not be blank.',
                 ],
                 [
@@ -158,15 +158,15 @@ JSON;
             'max_characters'         => null,
             'validation_rule'        => null,
             'validation_regexp'      => null,
-            'wysiwyg_enabled'        => false,
+            'wysiwyg_enabled'        => null,
             'number_min'             => null,
             'number_max'             => null,
-            'decimals_allowed'       => false,
-            'negative_allowed'       => false,
+            'decimals_allowed'       => null,
+            'negative_allowed'       => null,
             'date_min'               => null,
             'date_max'               => null,
             'max_file_size'          => null,
-            'minimum_input_length'   => 0,
+            'minimum_input_length'   => null,
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
@@ -207,15 +207,15 @@ JSON;
             'max_characters'         => null,
             'validation_rule'        => null,
             'validation_regexp'      => null,
-            'wysiwyg_enabled'        => false,
+            'wysiwyg_enabled'        => null,
             'number_min'             => null,
             'number_max'             => null,
-            'decimals_allowed'       => false,
-            'negative_allowed'       => false,
+            'decimals_allowed'       => null,
+            'negative_allowed'       => null,
             'date_min'               => null,
             'date_max'               => null,
             'max_file_size'          => null,
-            'minimum_input_length'   => 0,
+            'minimum_input_length'   => null,
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
@@ -234,32 +234,32 @@ JSON;
 
         $data = '{}';
 
-        $client->request('PATCH', 'api/rest/v1/attributes/an_incomplete_text', [], [], [], $data);
+        $client->request('PATCH', 'api/rest/v1/attributes/a_metric', [], [], [], $data);
 
-        $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('an_incomplete_text');
+        $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('a_metric');
         $attributeStandard = [
-            'code'                   => 'an_incomplete_text',
-            'type'                   => 'pim_catalog_text',
-            'group'                  => 'attributeGroupA',
+            'code'                   => 'a_metric',
+            'type'                   => 'pim_catalog_metric',
+            'group'                  => 'attributeGroupB',
             'unique'                 => false,
             'useable_as_grid_filter' => false,
             'allowed_extensions'     => [],
-            'metric_family'          => null,
-            'default_metric_unit'    => null,
+            'metric_family'          => 'Power',
+            'default_metric_unit'    => 'KILOWATT',
             'reference_data_name'    => null,
             'available_locales'      => [],
             'max_characters'         => null,
             'validation_rule'        => null,
             'validation_regexp'      => null,
-            'wysiwyg_enabled'        => false,
+            'wysiwyg_enabled'        => null,
             'number_min'             => null,
             'number_max'             => null,
-            'decimals_allowed'       => false,
+            'decimals_allowed'       => true,
             'negative_allowed'       => false,
             'date_min'               => null,
             'date_max'               => null,
             'max_file_size'          => null,
-            'minimum_input_length'   => 0,
+            'minimum_input_length'   => null,
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
@@ -279,41 +279,39 @@ JSON;
         $data =
 <<<JSON
     {
-        "code":"an_incomplete_text",
-        "type":"pim_catalog_text",
+        "code":"a_metric",
+        "type":"pim_catalog_metric",
         "group":"attributeGroupA",
-        "max_characters": 100,
-        "metric_family": null,
-        "default_metric_unit": null
+        "default_metric_unit":"WATT" 
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/attributes/an_incomplete_text', [], [], [], $data);
+        $client->request('PATCH', 'api/rest/v1/attributes/a_metric', [], [], [], $data);
 
-        $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('an_incomplete_text');
+        $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('a_metric');
         $attributeStandard = [
-            'code'                   => 'an_incomplete_text',
-            'type'                   => 'pim_catalog_text',
+            'code'                   => 'a_metric',
+            'type'                   => 'pim_catalog_metric',
             'group'                  => 'attributeGroupA',
             'unique'                 => false,
             'useable_as_grid_filter' => false,
             'allowed_extensions'     => [],
-            'metric_family'          => null,
-            'default_metric_unit'    => null,
+            'metric_family'          => 'Power',
+            'default_metric_unit'    => 'WATT',
             'reference_data_name'    => null,
             'available_locales'      => [],
-            'max_characters'         => 100,
+            'max_characters'         => null,
             'validation_rule'        => null,
             'validation_regexp'      => null,
-            'wysiwyg_enabled'        => false,
+            'wysiwyg_enabled'        => null,
             'number_min'             => null,
             'number_max'             => null,
-            'decimals_allowed'       => false,
+            'decimals_allowed'       => true,
             'negative_allowed'       => false,
             'date_min'               => null,
             'date_max'               => null,
             'max_file_size'          => null,
-            'minimum_input_length'   => 0,
+            'minimum_input_length'   => null,
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
@@ -333,38 +331,38 @@ JSON;
         $data =
 <<<JSON
     {
-        "type":"pim_catalog_text",
+        "type":"pim_catalog_metric",
         "group":"attributeGroupA",
-        "max_characters": 150
+        "default_metric_unit":"WATT" 
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/attributes/an_incomplete_text', [], [], [], $data);
+        $client->request('PATCH', 'api/rest/v1/attributes/a_metric', [], [], [], $data);
 
-        $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('an_incomplete_text');
+        $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('a_metric');
         $attributeStandard = [
-            'code'                   => 'an_incomplete_text',
-            'type'                   => 'pim_catalog_text',
+            'code'                   => 'a_metric',
+            'type'                   => 'pim_catalog_metric',
             'group'                  => 'attributeGroupA',
             'unique'                 => false,
             'useable_as_grid_filter' => false,
             'allowed_extensions'     => [],
-            'metric_family'          => null,
-            'default_metric_unit'    => null,
+            'metric_family'          => 'Power',
+            'default_metric_unit'    => 'WATT',
             'reference_data_name'    => null,
             'available_locales'      => [],
-            'max_characters'         => 150,
+            'max_characters'         => null,
             'validation_rule'        => null,
             'validation_regexp'      => null,
-            'wysiwyg_enabled'        => false,
+            'wysiwyg_enabled'        => null,
             'number_min'             => null,
             'number_max'             => null,
-            'decimals_allowed'       => false,
+            'decimals_allowed'       => true,
             'negative_allowed'       => false,
             'date_min'               => null,
             'date_max'               => null,
             'max_file_size'          => null,
-            'minimum_input_length'   => 0,
+            'minimum_input_length'   => null,
             'sort_order'             => 0,
             'localizable'            => false,
             'scopable'               => false,
@@ -433,7 +431,7 @@ JSON;
             ],
         ];
 
-        $client->request('PATCH', 'api/rest/v1/attributes/an_incomplete_text', [], [], [], $data);
+        $client->request('PATCH', 'api/rest/v1/attributes/a_metric', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
@@ -481,7 +479,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "labels" expects an array. Check the standard format documentation.',
+            'message' => 'Property "labels" expects an array as data, "NULL" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#patch_attributes__code_'
@@ -526,7 +524,7 @@ JSON;
     {
         return new Configuration(
             [Configuration::getTechnicalCatalogPath()],
-            false
+            true
         );
     }
 }
