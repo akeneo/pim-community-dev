@@ -7,6 +7,7 @@
 - PIM-6213: Remove ticks on published form
 - PIM-6242: Fix UI glitch on TWA completeness filter search field
 - PIM-6239: Translate scope with catalog locale
+- GITHUB-5538: User without permissions access to import/export jobs through `Process tracker`
 
 # 1.7.0 (2017-03-14)
 
