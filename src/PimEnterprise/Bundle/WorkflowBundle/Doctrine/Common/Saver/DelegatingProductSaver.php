@@ -115,10 +115,13 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
+        $productsToCompute = [];
+
         foreach ($products as $product) {
             $this->validateObject($product, 'Pim\Component\Catalog\Model\ProductInterface');
             $hasPermissions = $this->hasPermissions($product);
             if ($hasPermissions) {
+                $productsToCompute[] = $product;
                 $this->saveProduct($product, $options, false);
             } else {
                 $this->saveProductDraft($product, $options, false);
@@ -126,6 +129,14 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         }
 
         $this->objectManager->flush();
+
+        foreach ($productsToCompute as $product) {
+            $this->completenessManager->generateMissingForProduct($product);
+
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
+        }
+
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $options));
     }
 
     /**
