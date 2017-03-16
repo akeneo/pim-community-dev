@@ -139,7 +139,7 @@ class Index extends Grid
     /**
      * Returns list of filters available from "Manage filters" select/dropdown
      *
-     * @return array
+     * @return NodeElement[]
      */
     public function getFiltersList()
     {
