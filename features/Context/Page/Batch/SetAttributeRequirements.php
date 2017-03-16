@@ -5,6 +5,7 @@ namespace Context\Page\Batch;
 use Behat\Mink\Element\NodeElement;
 use Context\Page\Base\Wizard;
 use Context\Spin\SpinCapableTrait;
+use Context\Traits\ClosestTrait;
 use Pim\Behat\Decorator\Common\AddAttributeDecorator;
 use Pim\Behat\Decorator\Common\SelectGroupDecorator;
 
@@ -18,6 +19,7 @@ use Pim\Behat\Decorator\Common\SelectGroupDecorator;
 class SetAttributeRequirements extends Wizard
 {
     use SpinCapableTrait;
+    use ClosestTrait;
 
     protected $elements = [
         'Available attributes button'     => ['css' => 'button:contains("Select attributes")'],
@@ -35,6 +37,8 @@ class SetAttributeRequirements extends Wizard
     ];
 
     /**
+     * Switches attribute requirement
+     *
      * @param string $attribute
      * @param string $channel
      */
@@ -52,6 +56,8 @@ class SetAttributeRequirements extends Wizard
     }
 
     /**
+     * Gets attribute requirement cell
+     *
      * @param string $attribute
      * @param string $channel
      *
@@ -96,10 +102,12 @@ class SetAttributeRequirements extends Wizard
     }
 
     /**
+     * Gets attribute
+     *
      * @param string $attributeName
      * @param string $groupName
      *
-     * @return NodeElement|mixed|null
+     * @return NodeElement|null
      */
     public function getAttribute($attributeName, $groupName = null)
     {
@@ -111,31 +119,28 @@ class SetAttributeRequirements extends Wizard
     }
 
     /**
+     * Get attribute by group and name
+     *
      * @param $attribute
      * @param $group
      *
-     * @return NodeElement|mixed|null
+     * @return NodeElement|null
      */
     protected function getAttributeByGroupAndName($attribute, $group)
     {
-        $groupNode = $this->getElement('Attributes')->find('css', sprintf('tr.group:contains("%s")', $group));
+        $groupNode = $this->spin(function () use ($group) {
+            return $this->getElement('Attributes')->find('css', sprintf('tr.group:contains("%s")', $group));
+        }, sprintf('Couldn\'t find the attribute group "%s" in the attributes table', $group));
 
-        if (!$groupNode) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Couldn\'t find the attribute group "%s" in the attributes table',
-                    $group
-                )
-            );
-        }
-
-        return $groupNode->getParent()->find('css', sprintf('td:contains("%s")', $attribute));
+        return $this->getClosest($groupNode, 'group-wrapper')->find('css', sprintf('td:contains("%s")', $attribute));
     }
 
     /**
+     * Gets attribute by name
+     *
      * @param $attributeName
      *
-     * @return NodeElement|mixed|null
+     * @return NodeElement|null
      */
     protected function getAttributeByName($attributeName)
     {

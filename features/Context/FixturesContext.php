@@ -1494,6 +1494,23 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param string $attributes
+     * @param string $family
+     * @param string $channel
+     *
+     * @Given /^attributes "([^"]*)" should be optional in family "([^"]*)" for channel "([^"]*)"$/
+     */
+    public function attributesShouldBeOptionalInFamilyForChannel($attributes, $family, $channel)
+    {
+        foreach ($this->getMainContext()->listToArray($attributes) as $attribute) {
+            $requirement = $this->getAttributeRequirement($attribute, $family, $channel);
+
+            assertNotNull($requirement);
+            assertFalse($requirement->isRequired());
+        }
+    }
+
+    /**
      * @param string $identifier
      *
      * @Given /^the history of the product "([^"]*)" has been built$/
