@@ -11,7 +11,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pim/template/form/download-files',
+        'text!pim/template/job-execution/download-archives-buttons',
         'routing',
         'pim/common/property'
     ],
@@ -52,7 +52,7 @@ define(
                 var formData = this.getFormData();
                 this.$el.html(this.template({
                     __: __,
-                    array: propertyAccessor.accessProperty(this.getFormData(), this.config.filesPath),
+                    archives: propertyAccessor.accessProperty(this.getFormData(), this.config.filesPath),
                     executionId: formData.meta.id,
                     generateRoute: this.getUrl.bind(this)
                 }));

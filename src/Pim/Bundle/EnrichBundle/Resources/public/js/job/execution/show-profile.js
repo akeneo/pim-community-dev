@@ -33,6 +33,7 @@ define(
                 var code = this.getFormData().jobInstance.code;
                 var type = this.getFormData().jobInstance.type;
                 var route = 'pim_importexport_%type%_profile_show'.replace('%type%', type);
+
                 return Routing.generate(route, {
                     code: code
                 });
@@ -44,6 +45,7 @@ define(
              */
             isVisible: function () {
                 var type = this.getFormData().jobInstance.type;
+
                 return $.Deferred().resolve(type === 'export' || type === 'import').promise();
             }
 

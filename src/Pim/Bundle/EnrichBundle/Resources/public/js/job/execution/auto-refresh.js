@@ -57,6 +57,8 @@ define(
              * Restart the auto refresh timeout
              */
             restartAutoRefreshTimeout: function () {
+                //We do not want a setInterval here,
+                //in order to avoid to fetch every second even if a fetch is already in progress...
                 clearTimeout(this.autoRefreshTimeout);
                 this.autoRefreshTimeout =
                     setTimeout(this.fetchData.bind(this, this.getFormData()), this.autoRefreshDelay);
@@ -84,24 +86,20 @@ define(
              * @param jobExecution
              */
             fetchData: function (jobExecution) {
-                if (jobExecution.meta.id) {
-                    if (jobExecution.isRunning) {
-                        this.setStatus('isLoading');
-                        var jobId = jobExecution.meta.id;
-                        FetcherRegistry.getFetcher('job-execution').fetch(jobId, {id: jobId, cached: false})
-                            .then(function (newJobExecution) {
-                                this.setData(newJobExecution);
-                                this.render();
-                                this.restartAutoRefreshTimeout();
-                            }.bind(this));
-                    } else {
-                        ///Data are up to date!
-                        this.stopAll();
-                        this.setStatus('isFinished');
-                    }
 
+                if (jobExecution.isRunning) {
+                    this.setStatus('isLoading');
+                    var jobId = jobExecution.meta.id;
+                    FetcherRegistry.getFetcher('job-execution').fetch(jobId, {id: jobId, cached: false})
+                        .then(function (newJobExecution) {
+                            this.setData(newJobExecution);
+                            this.render();
+                            this.restartAutoRefreshTimeout();
+                        }.bind(this));
                 } else {
-                    throw new Error('In auto-refresh/fetchData , jobExecution.meta.id should exist');
+                    ///Data are up to date!
+                    this.stopAll();
+                    this.setStatus('isFinished');
                 }
             },
 

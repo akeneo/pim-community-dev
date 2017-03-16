@@ -11,7 +11,7 @@ extensions:
             backUrl: pim_importexport_export_profile_index
 
     pim-job-execution-form-download-file:
-        module: pim/form/common/download-files
+        module: pim/job/execution/download-archives-buttons
         parent: pim-job-execution-form
         targetZone: buttons
         position: 70

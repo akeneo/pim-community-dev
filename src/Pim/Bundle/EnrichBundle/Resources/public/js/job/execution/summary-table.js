@@ -30,12 +30,13 @@ define(
              * @param event
              */
             toggleDisplayWarning: function (event) {
-                event.preventDefault();
-                var link = event.currentTarget;
-                var table = link.nextElementSibling;
-                table.classList.toggle('hide');
-                link.textContent = link.textContent.trim() === link.getAttribute('data-hide-label') ?
-                    link.getAttribute('data-show-label') : link.getAttribute('data-hide-label');
+                var link = $(event.currentTarget);
+                var stepIndex = link.data('step-index');
+                var warningIndex = link.data('warning-index');
+                var model = this.getFormData();
+                model.stepExecutions[stepIndex].warnings[warningIndex].expanded =
+                    !model.stepExecutions[stepIndex].warnings[warningIndex].expanded;
+                this.render();
             },
 
             /**
