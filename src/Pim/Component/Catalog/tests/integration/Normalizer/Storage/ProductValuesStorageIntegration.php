@@ -4,12 +4,16 @@ namespace tests\integration\Pim\Component\Catalog\Normalizer\Storage;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 
 /**
  * Integration tests to verify data from database are well formatted in the storage format
  */
 class ProductValuesStorageIntegration extends TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function getConfiguration()
     {
         return new Configuration(
@@ -21,6 +25,11 @@ class ProductValuesStorageIntegration extends TestCase
     public function testProductWithAllAttributes()
     {
         $expected = [
+            'sku' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'foo',
+                ],
+            ],
             'a_file' => [
                 '<all_channels>' => [
                     '<all_locales>' => '8/b/5/c/8b5cf9bfd2e7e4725fd581e03251133ada1b2c99_fileA.txt'
@@ -203,6 +212,9 @@ class ProductValuesStorageIntegration extends TestCase
 
         $product = $repository->findOneByIdentifier($identifier);
         $result = $serializer->normalize($product->getValues(), 'storage');
+
+        NormalizedProductCleaner::cleanOnlyValues($expected);
+        NormalizedProductCleaner::cleanOnlyValues($result);
 
         $this->assertSame($expected, $result);
     }

@@ -5,10 +5,10 @@ namespace Pim\Component\Catalog\tests\integration\Normalizer;
 use Akeneo\Test\Integration\DateSanitizer;
 
 /**
- * Clean a normalized product (aka, an array of data) so that it can be compared with the expected result
+ * Cleans a normalized product (aka, an array of data) so that it can be compared with the expected result
  * of the normalization. This cleaner:
- *      - sorts recursively the values by keys
- *      - take care of the inconsistent "created_at" and "updated_at" fields
+ *      - sorts recursively the values by keys,
+ *      - takes care of the inconsistent "created_at" and "updated_at" fields.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -37,19 +37,19 @@ class NormalizedProductCleaner
 
     /**
      * @param mixed $array
-     * @param int   $sort_flags
+     * @param int   $sortFlags
      *
      * @return bool
      */
-    private static function ksortRecursive(&$array, $sort_flags = SORT_REGULAR)
+    private static function ksortRecursive(&$array, $sortFlags = SORT_REGULAR)
     {
         if (!is_array($array)) {
             return false;
         }
 
-        ksort($array, $sort_flags);
+        ksort($array, $sortFlags);
         foreach ($array as &$arr) {
-            self::ksortRecursive($arr, $sort_flags);
+            self::ksortRecursive($arr, $sortFlags);
         }
 
         return true;
