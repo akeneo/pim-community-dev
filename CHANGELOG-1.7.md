@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-6213: remove ticks on published form
+- PIM-6245: correctly switch to project channel when selecting a Teamwork Assistant project
 
 # 1.7.0 (2017-03-14)
 

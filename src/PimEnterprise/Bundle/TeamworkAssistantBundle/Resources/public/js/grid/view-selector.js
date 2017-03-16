@@ -125,7 +125,9 @@ define(
              */
             selectView: function (view) {
                 if ('project' === this.currentViewType) {
-                    view = view.datagridView;
+                    var project = view;
+                    view = project.datagridView;
+                    DatagridState.set('product-grid', 'scope', project.channel.code);
                 }
 
                 ViewSelector.prototype.selectView.apply(this, [view]);
