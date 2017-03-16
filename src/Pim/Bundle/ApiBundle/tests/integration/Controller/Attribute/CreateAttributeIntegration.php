@@ -160,6 +160,63 @@ JSON;
         $this->assertSame($attributeStandard, $normalizer->normalize($attribute));
     }
 
+    public function testAttributeCreationWithEmptyLabels()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "code":"empty_label_attribute",
+        "type":"pim_catalog_text",
+        "group":"attributeGroupA",
+        "labels": {
+            "en_US": null,
+            "fr_FR": ""
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+
+        $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('empty_label_attribute');
+
+        $attributeStandard = [
+            'code'                   => 'empty_label_attribute',
+            'type'                   => 'pim_catalog_text',
+            'group'                  => 'attributeGroupA',
+            'unique'                 => false,
+            'useable_as_grid_filter' => false,
+            'allowed_extensions'     => [],
+            'metric_family'          => null,
+            'default_metric_unit'    => null,
+            'reference_data_name'    => null,
+            'available_locales'      => [],
+            'max_characters'         => null,
+            'validation_rule'        => null,
+            'validation_regexp'      => null,
+            'wysiwyg_enabled'        => null,
+            'number_min'             => null,
+            'number_max'             => null,
+            'decimals_allowed'       => null,
+            'negative_allowed'       => null,
+            'date_min'               => null,
+            'date_max'               => null,
+            'max_file_size'          => null,
+            'minimum_input_length'   => null,
+            'sort_order'             => 0,
+            'localizable'            => false,
+            'scopable'               => false,
+            'labels'                 => [],
+        ];
+        $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSame($attributeStandard, $normalizer->normalize($attribute));
+    }
+
     public function testResponseWhenContentIsEmpty()
     {
         $client = $this->createAuthenticatedClient();
@@ -548,28 +605,6 @@ JSON;
         "code":"unknown_locale",
         "type":"pim_catalog_text",
         "group":"attributeGroupA",
-        "unique":false,
-        "useable_as_grid_filter":false,
-        "allowed_extensions":[],
-        "metric_family":null,
-        "default_metric_unit":null,
-        "reference_data_name":null,
-        "available_locales":[],
-        "max_characters":null,
-        "validation_rule":null,
-        "validation_regexp":null,
-        "wysiwyg_enabled":null,
-        "number_min":null,
-        "number_max":null,
-        "decimals_allowed":null,
-        "negative_allowed":null,
-        "date_min":null,
-        "date_max":null,
-        "max_file_size":null,
-        "minimum_input_length":null,
-        "sort_order":12,
-        "localizable":false,
-        "scopable":false,
         "labels": {
             "":"label"
         }
@@ -604,28 +639,6 @@ JSON;
         "code":"unknown_locale",
         "type":"pim_catalog_text",
         "group":"attributeGroupA",
-        "unique":false,
-        "useable_as_grid_filter":false,
-        "allowed_extensions":[],
-        "metric_family":null,
-        "default_metric_unit":null,
-        "reference_data_name":null,
-        "available_locales":[],
-        "max_characters":null,
-        "validation_rule":null,
-        "validation_regexp":null,
-        "wysiwyg_enabled":null,
-        "number_min":null,
-        "number_max":null,
-        "decimals_allowed":null,
-        "negative_allowed":null,
-        "date_min":null,
-        "date_max":null,
-        "max_file_size":null,
-        "minimum_input_length":null,
-        "sort_order":12,
-        "localizable":false,
-        "scopable":false,
         "labels": {
             "foo": "label"
         }
@@ -657,7 +670,7 @@ JSON;
     {
         return new Configuration(
             [Configuration::getTechnicalCatalogPath()],
-            false
+            true
         );
     }
 }

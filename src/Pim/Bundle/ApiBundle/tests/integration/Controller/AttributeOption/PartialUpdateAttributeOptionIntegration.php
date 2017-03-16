@@ -299,6 +299,38 @@ JSON;
         $this->assertSame($attributeOptionStandard, $normalizer->normalize($attributeOption));
     }
 
+    public function testPartialUpdateWithEmptyLabels()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "labels":{"en_US": null}
+    }
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/attributes/a_multi_select/options/optionA', [], [], [], $data);
+
+        $attributeOption = $this->get('pim_catalog.repository.attribute_option')
+            ->findOneByIdentifier('a_multi_select.optionA');
+
+        $attributeOptionStandard = [
+            'code'       => 'optionA',
+            'attribute'  => 'a_multi_select',
+            'sort_order' => 10,
+            'labels'     => [
+                'en_US' => 'Option A',
+            ],
+        ];
+        $normalizer = $this->get('pim_catalog.normalizer.standard.attribute_option');
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertSame($attributeOptionStandard, $normalizer->normalize($attributeOption));
+    }
+
     public function testResponseWhenContentIsEmpty()
     {
         $client = $this->createAuthenticatedClient();

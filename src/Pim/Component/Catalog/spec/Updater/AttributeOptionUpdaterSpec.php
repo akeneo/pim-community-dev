@@ -72,6 +72,38 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
         );
     }
 
+    function it_does_not_update_empty_labels(
+        $attributeRepository,
+        AttributeOptionInterface $attributeOption,
+        AttributeInterface $attribute,
+        AttributeOptionValueInterface $attributeOptionValue
+    ) {
+        $attributeOption->getId()->willReturn(null);
+        $attributeOption->getAttribute()->willReturn(null);
+
+        $attributeOption->setCode('mycode')->shouldBeCalled();
+        $attributeRepository->findOneByIdentifier('myattribute')->willReturn($attribute);
+        $attributeOption->setAttribute($attribute)->shouldBeCalled();
+
+        $attributeOption->setLocale('de_DE')->shouldNotBeCalled();
+        $attributeOption->setLocale('fr_FR')->shouldNotBeCalled();
+        $attributeOption->getTranslation()->shouldNotBeCalled();
+        $attributeOptionValue->setLabel(null)->shouldNotBeCalled();
+        $attributeOptionValue->setLabel('')->shouldNotBeCalled();
+
+        $this->update(
+            $attributeOption,
+            [
+                'code' => 'mycode',
+                'attribute' => 'myattribute',
+                'labels' => [
+                    'de_DE' => null,
+                    'fr_FR' => '',
+                ]
+            ]
+        );
+    }
+
     function it_throws_an_exception_when_attribute_does_not_exist(
         $attributeRepository,
         AttributeOptionInterface $attributeOption
