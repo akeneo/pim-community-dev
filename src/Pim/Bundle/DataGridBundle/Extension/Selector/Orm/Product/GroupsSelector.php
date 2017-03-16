@@ -20,9 +20,7 @@ class GroupsSelector implements SelectorInterface
      */
     public function apply(DatasourceInterface $datasource, DatagridConfiguration $configuration)
     {
-        $esQb = $datasource->getQueryBuilder();
-        $qb = $esQb->getStorageQb();
-
+        $qb = $datasource->getQueryBuilder();
         $locale = $configuration->offsetGetByPath('[source][locale_code]');
         $rootAlias = $qb->getRootAlias();
 

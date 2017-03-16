@@ -47,17 +47,11 @@ Pim\Component\Catalog\Model\Completeness:
             joinColumns:
                 product_id:
                     referencedColumnName: id
-                    onDelete: CASCADE
+
                     nullable: false
-    manyToMany:
-        missingAttributes:
-            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
-            joinTable:
-                name: pim_catalog_completeness_missing_attribute
-                joinColumns:
-                    completeness_id:
-                        referencedColumnName: id
-                        onDelete: CASCADE
-                inverseJoinColumns:
-                    missing_attribute_id:
-                        referencedColumnName: id
+    oneToMany:
+        attributeCompletenesses:
+            targetEntity: Pim\Component\Catalog\Model\AttributeCompleteness
+            mappedBy: completeness
+            cascade:
+                - persist

@@ -65,5 +65,5 @@ interface CompletenessInterface
      *
      * @return Collection
      */
-    public function getMissingAttributes();
+    public function getAttributeCompletenesses();
 }

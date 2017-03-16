@@ -12,6 +12,7 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use PimEnterprise\Component\TeamworkAssistant\Model\AttributeGroupCompleteness;
 
 /**
  * Calculates the completenesses for a provided product.
@@ -193,9 +194,12 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
         $locale = $this->localeRepository->findOneByIdentifier($localeCode);
 
         $actualValues = $product->getValues();
-        $missingAttributes = new ArrayCollection();
-        $missingCount = 0;
-        $requiredCount = 0;
+
+        $completeness = new Completeness(
+            $product,
+            $channel,
+            $locale
+        );
 
         foreach ($requiredValues as $requiredValue) {
             $attribute = $requiredValue->getAttribute();
@@ -206,26 +210,16 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
                 $requiredValue->getLocale()
             );
 
-            if (null === $productValue ||
-                !$this->productValueCompleteChecker->isComplete($productValue, $channel, $locale)
-            ) {
-                if (!$missingAttributes->contains($attribute)) {
-                    $missingAttributes->add($attribute);
-                    $missingCount++;
-                }
+            $isComplete = false;
+            if (null !== $productValue) {
+                $isComplete = $this->productValueCompleteChecker->isComplete($productValue, $channel, $locale);
             }
 
-            $requiredCount++;
+            $completeness->addRequiredAttribute(
+                $attribute,
+                $isComplete
+            );
         }
-
-        $completeness = new Completeness(
-            $product,
-            $channel,
-            $locale,
-            $missingAttributes,
-            $missingCount,
-            $requiredCount
-        );
 
         return $completeness;
     }

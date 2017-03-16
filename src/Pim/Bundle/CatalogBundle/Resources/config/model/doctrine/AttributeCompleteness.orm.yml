@@ -1,0 +1,28 @@
+Pim\Component\Catalog\Model\AttributeCompleteness:
+    type: entity
+    table: pim_catalog_attribute_completeness
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    id:
+        attribute:
+            associationKey: true
+        completeness:
+            associationKey: true
+    fields:
+        isComplete:
+            type: boolean
+            column: is_complete
+    manyToOne:
+        attribute:
+            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
+            joinColumn:
+                name: attribute_id
+                referencedColumnName: id
+                onDelete: CASCADE
+
+        completeness:
+            targetEntity: Pim\Component\Catalog\Model\CompletenessInterface
+            inversedBy: attributeCompletenesses
+            joinColumn:
+                name: completeness_id
+                referencedColumnName: id
+                onDelete: CASCADE

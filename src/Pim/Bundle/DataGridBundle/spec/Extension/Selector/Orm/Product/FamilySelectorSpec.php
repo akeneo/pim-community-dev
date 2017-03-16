@@ -31,7 +31,7 @@ class FamilySelectorSpec extends ObjectBehavior
         QueryBuilder $queryBuilder
     ) {
         $datasource->getQueryBuilder()->willReturn($esQueryBuilder);
-        $esQueryBuilder->getStorageQb()->willReturn($queryBuilder);
+        $qb = $datasource->getQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->getRootAlias()->willReturn('p');
 
         $configuration->offsetGetByPath('[source][locale_code]')->willReturn('en_US');

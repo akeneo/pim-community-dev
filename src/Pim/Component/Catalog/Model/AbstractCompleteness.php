@@ -28,41 +28,31 @@ abstract class AbstractCompleteness implements CompletenessInterface
     protected $channel;
 
     /** @var int */
-    protected $ratio;
+    protected $ratio = 100;
 
     /** @var int */
-    protected $missingCount;
+    protected $missingCount = 0;
 
     /** @var int */
-    protected $requiredCount;
+    protected $requiredCount = 0;
 
     /** @var Collection */
-    protected $missingAttributes;
+    protected $attributeCompletenesses;
 
     /**
      * @param ProductInterface $product
      * @param ChannelInterface $channel
      * @param LocaleInterface  $locale
-     * @param Collection       $missingAttributes
-     * @param int              $missingCount
-     * @param int              $requiredCount
      */
     public function __construct(
         ProductInterface $product,
         ChannelInterface $channel,
-        LocaleInterface $locale,
-        Collection $missingAttributes,
-        $missingCount,
-        $requiredCount
+        LocaleInterface $locale
     ) {
         $this->product = $product;
         $this->channel = $channel;
         $this->locale = $locale;
-        $this->missingAttributes = $missingAttributes;
-        $this->missingCount = $missingCount;
-        $this->requiredCount = $requiredCount;
-
-        $this->ratio = (int) round(100 * ($this->requiredCount - $this->missingCount) / $this->requiredCount);
+        $this->attributeCompletenesses = new ArrayCollection();
     }
 
     /**
@@ -94,7 +84,7 @@ abstract class AbstractCompleteness implements CompletenessInterface
      */
     public function getRatio()
     {
-        return $this->ratio;
+        return (int) round(100 * ($this->requiredCount - $this->missingCount) / $this->requiredCount);
     }
 
     /**
@@ -102,7 +92,13 @@ abstract class AbstractCompleteness implements CompletenessInterface
      */
     public function getMissingCount()
     {
-        return $this->missingCount;
+        $missingAttribute = $this->attributeCompletenesses->filter(
+            function (AttributeCompleteness $attributeCompleteness) {
+                return !$attributeCompleteness->isComplete();
+            }
+        );
+
+        return $missingAttribute->count();
     }
 
     /**
@@ -110,7 +106,7 @@ abstract class AbstractCompleteness implements CompletenessInterface
      */
     public function getRequiredCount()
     {
-        return $this->requiredCount;
+        return $this->attributeCompletenesses->count();
     }
 
     /**
@@ -124,8 +120,13 @@ abstract class AbstractCompleteness implements CompletenessInterface
     /**
      * {@inheritdoc}
      */
-    public function getMissingAttributes()
+    public function getAttributeCompletenesses()
     {
-        return $this->missingAttributes;
+        return $this->attributeCompletenesses;
+    }
+
+    public function addRequiredAttribute(AttributeInterface $attribute, $isComplete)
+    {
+        $this->attributeCompletenesses->add(new AttributeCompleteness($this, $attribute, $isComplete));
     }
 }

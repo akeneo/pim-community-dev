@@ -22,8 +22,7 @@ class InGroupSelector implements SelectorInterface
     {
         $currentGroupId = $configuration->offsetGetByPath('[source][current_group_id]');
 
-        $esQb = $datasource->getQueryBuilder();
-        $qb = $esQb->getStorageQb();
+        $qb = $datasource->getQueryBuilder();
         $rootAlias = $qb->getRootAlias();
 
         $inGroupExpr = sprintf('CASE WHEN :currentGroup MEMBER OF p.groups THEN true ELSE false END', $rootAlias);
