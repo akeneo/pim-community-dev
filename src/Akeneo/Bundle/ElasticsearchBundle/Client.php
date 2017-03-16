@@ -135,6 +135,7 @@ class Client
             'body'  => $body,
         ];
 
+        //TODO: refresh the index?
         return $this->client->indices()->create($params);
     }
 }
