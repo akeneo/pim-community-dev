@@ -10,7 +10,6 @@ use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Copy a media value attribute in other media value attribute
@@ -21,9 +20,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class MediaAttributeCopier extends AbstractAttributeCopier
 {
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
     /** @var FileFetcherInterface */
     protected $fileFetcher;
 
@@ -36,7 +32,6 @@ class MediaAttributeCopier extends AbstractAttributeCopier
     /**
      * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param NormalizerInterface      $normalizer
      * @param FileFetcherInterface     $fileFetcher
      * @param FileStorerInterface      $fileStorer
      * @param FilesystemProvider       $filesystemProvider
@@ -46,7 +41,6 @@ class MediaAttributeCopier extends AbstractAttributeCopier
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
-        NormalizerInterface $normalizer,
         FileFetcherInterface $fileFetcher,
         FileStorerInterface $fileStorer,
         FilesystemProvider $filesystemProvider,
@@ -55,7 +49,6 @@ class MediaAttributeCopier extends AbstractAttributeCopier
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
 
-        $this->normalizer = $normalizer;
         $this->fileFetcher = $fileFetcher;
         $this->fileStorer = $fileStorer;
         $this->filesystemProvider = $filesystemProvider;
@@ -132,7 +125,7 @@ class MediaAttributeCopier extends AbstractAttributeCopier
                 $toAttribute,
                 $toLocale,
                 $toScope,
-                null !== $file ? $this->normalizer->normalize($file, 'standard') : null
+                null !== $file ? $file->getKey() : null
             );
         }
     }
