@@ -8,7 +8,6 @@
 - PIM-6242: Fix UI glitch on TWA completeness filter search field
 - PIM-6239: Translate scope with catalog locale
 - GITHUB-3435: Sort order products datagrid `Manage filter` options
-- GITHUB-5538: User without permissions access to import/export jobs through `Process tracker`
 
 # 1.7.0 (2017-03-14)
 
@@ -65,6 +64,10 @@
 - API-29: As Julia, I would like to get/create/update a category
 - API-75: As Julia, I would like to list channels
 - API-77: As Filips, I would like to discover all routes in the API
+
+## BC breaks
+
+- GITHUB-5538: Change the constructor of Pim\Bundle\EnrichBundle\Controller\JobTrackerController add securityFacade
 
 # 1.7.0-ALPHA1 (2017-02-23)
 

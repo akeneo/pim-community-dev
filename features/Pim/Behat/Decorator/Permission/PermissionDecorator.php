@@ -167,15 +167,15 @@ class PermissionDecorator extends ElementDecorator
     /**
      * Matches searched resource
      *
-     * @param NodeElement[] $resourceElements
-     * @param string        $textToMatch
+     * @param $resourceElements
+     * @param $resource
      *
-     * @return NodeElement|null
+     * @return null
      */
-    protected function matchResource($resourceElements, $textToMatch)
+    protected function matchResource($resourceElements, $resource)
     {
         foreach ($resourceElements as $element) {
-            if ($textToMatch === $element->getText()) {
+            if ($resource === $element->getText()) {
                 return $element;
             }
         }
