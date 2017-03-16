@@ -22,15 +22,6 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     /** @var string */
     protected $values;
 
-    /** @var array */
-    protected $attributes = [];
-
-    /** @var array */
-    protected $requirements = [];
-
-    /** @var array */
-    protected $attributeRequirements;
-
     /**
      * @param ChannelRepositoryInterface   $channelRepository
      * @param string                       $jobInstanceCode
@@ -57,14 +48,22 @@ class SetAttributeRequirements extends AbstractMassEditOperation
      */
     public function getActions()
     {
+        $attributeRequirements = [];
+        $channelCodes = array_map(function ($channel) {
+            return $channel->getCode();
+        }, $this->channelRepository->findAll());
 
-        $this->attributeRequirements = [];
-
-        foreach ($this->getAttributes() as $attribute) {
-            $this->setAttributesRequirements($attribute);
+        foreach ($this->getAttributes() as $attributeCode) {
+            foreach ($channelCodes as $channelCode) {
+                $attributeRequirements[] = [
+                    'attribute_code' => $attributeCode,
+                    'channel_code'   => $channelCode,
+                    'is_required'    => $this->isAttributeRequired($attributeCode, $channelCode)
+                ];
+            }
         }
 
-        return $this->attributeRequirements;
+        return $attributeRequirements;
     }
 
     /**
@@ -104,17 +103,6 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     {
         $this->values = $values;
 
-        $data = (array) json_decode($values, true);
-
-        $this->requirements = array_key_exists(
-            'attribute_requirements',
-            $data
-        ) ? $data['attribute_requirements'] : [];
-        $this->attributes = array_key_exists(
-            'attributes',
-            $data
-        ) ? $data['attributes'] : [];
-
         return $this;
     }
 
@@ -125,7 +113,13 @@ class SetAttributeRequirements extends AbstractMassEditOperation
      */
     public function getAttributes()
     {
-        return $this->attributes;
+        $data = (array) json_decode($this->values, true);
+
+        if (array_key_exists('attributes', $data)) {
+            return $data['attributes'];
+        }
+
+        return [];
     }
 
     /**
@@ -135,40 +129,26 @@ class SetAttributeRequirements extends AbstractMassEditOperation
      */
     public function getRequirements()
     {
-        return $this->requirements;
-    }
+        $data = (array) json_decode($this->values, true);
 
-    /**
-     * Creates attribute requirements array
-     *
-     * @param string $attribute
-     */
-    protected function setAttributesRequirements($attribute)
-    {
-        $channels = $this->channelRepository->findAll();
-
-        foreach ($channels as $channel) {
-            $channelCode = $channel->getCode();
-
-            $this->attributeRequirements[] = [
-                'attribute_code' => $attribute,
-                'channel_code'   => $channelCode,
-                'is_required'    => $this->isAttributeRequired($attribute, $channelCode)
-            ];
+        if (array_key_exists('attribute_requirements', $data)) {
+            return $data['attribute_requirements'];
         }
+
+        return [];
     }
 
     /**
      * Checks if attribute is required for channel
      *
-     * @param string $attribute
-     * @param string $channel
+     * @param string $attributeCode
+     * @param string $channelCode
      *
      * @return bool
      */
-    protected function isAttributeRequired($attribute, $channel)
+    protected function isAttributeRequired($attributeCode, $channelCode)
     {
-        return array_key_exists($channel, $this->getRequirements()) &&
-            in_array($attribute, $this->requirements[$channel]);
+        return array_key_exists($channelCode, $this->getRequirements()) &&
+            in_array($attributeCode, $this->getRequirements()[$channelCode]);
     }
 }
