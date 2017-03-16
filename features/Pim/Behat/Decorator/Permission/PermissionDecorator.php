@@ -20,7 +20,7 @@ class PermissionDecorator extends ElementDecorator
     protected $selectors = [
         'Group'           => '.AknVerticalNavtab .tab:contains("%s") a span',
         'Group toggle'    => '.AknVerticalNavtab .tab:contains("%s") a .acl-group-permission-toggle',
-        'Resource'        => '.acl-permission:contains("%s")',
+        'Resource'        => '.acl-permission',
         'Resource Toggle' => '.acl-permission-toggle.granted, .acl-permission-toggle.non-granted'
     ];
 
@@ -37,25 +37,27 @@ class PermissionDecorator extends ElementDecorator
     }
 
     /**
-     * @param string $resource
+     * @param string $resourceLabel
      *
      * @return NodeElement
      */
-    public function findResource($resource)
+    public function findResource($resourceLabel)
     {
-        $resourceElements = $this->spin(function () use ($resource) {
-            return $this->findAll('css', sprintf($this->selectors['Resource'], $resource));
-        }, sprintf('Resource with label "%s" not found.', $resource));
+        $resourceElement = $this->spin(function () use ($resourceLabel) {
+            $resources = $this->findAll('css', $this->selectors['Resource']);
+            
+            foreach ($resources as $resource) {
+                if ($resourceLabel === strip_tags($resource->getOuterHtml())) {
+                    return $resource;
+                }
+            }
 
-        if (1 < count($resourceElements)) {
-            $resourceElement = $this->matchResource($resourceElements, $resource);
-        } else {
-            $resourceElement = $resourceElements[0];
-        }
+            return null;
+        }, sprintf('Resource with label "%s" not found.', $resourceLabel));
 
         return $this->spin(function () use ($resourceElement) {
             return $resourceElement->find('css', $this->selectors['Resource Toggle']);
-        }, sprintf('Resource with label "%s" found but the toggle was not found.', $resource));
+        }, sprintf('Resource with label "%s" found but the toggle was not found.', $resourceLabel));
     }
 
     /**
@@ -162,24 +164,5 @@ class PermissionDecorator extends ElementDecorator
         return $this->spin(function () use ($group) {
             return $this->find('css', sprintf($this->selectors['Group toggle'], $group));
         }, sprintf('Group icon "%s" not found', $group));
-    }
-
-    /**
-     * Matches searched resource
-     *
-     * @param NodeElement[] $resourceElements
-     * @param string        $textToMatch
-     *
-     * @return NodeElement|null
-     */
-    protected function matchResource($resourceElements, $textToMatch)
-    {
-        foreach ($resourceElements as $element) {
-            if ($textToMatch === $element->getText()) {
-                return $element;
-            }
-        }
-
-        return null;
     }
 }

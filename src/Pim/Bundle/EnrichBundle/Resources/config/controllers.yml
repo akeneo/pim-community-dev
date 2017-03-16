@@ -279,7 +279,7 @@ services:
             - '@pim_serializer'
             - '@akeneo_batch.manager.job_execution'
             - '@oro_security.security_facade'
-            - 'pim_importexport_%s_profile_show'
+            - {'import': 'pim_importexport_import_profile_show', 'export': 'pim_importexport_export_profile_show'}
 
     pim_enrich.controller.rest.association_type:
         scope: request

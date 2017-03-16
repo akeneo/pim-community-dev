@@ -9,6 +9,7 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -60,8 +61,8 @@ class JobTrackerController extends Controller
     /** @var SecurityFacade */
     protected $securityFacade;
 
-    /** @var string */
-    protected $showPermissionTemplate;
+    /** @var array */
+    protected $jobSecurityMapping;
 
     /**
      * TODO To be refactored into Master to change the constructor 'null' parameters
@@ -74,7 +75,7 @@ class JobTrackerController extends Controller
      * @param SerializerInterface      $serializer
      * @param JobExecutionManager      $jobExecutionManager
      * @param SecurityFacade           $securityFacade
-     * @param string                   $showPermissionTemplate
+     * @param string                   $jobSecurityMapping
      */
     public function __construct(
         EngineInterface $templating,
@@ -85,7 +86,7 @@ class JobTrackerController extends Controller
         SerializerInterface $serializer,
         JobExecutionManager $jobExecutionManager,
         SecurityFacade $securityFacade = null,
-        $showPermissionTemplate = null
+        $jobSecurityMapping = null
     ) {
         $this->templating = $templating;
         $this->translator = $translator;
@@ -95,7 +96,7 @@ class JobTrackerController extends Controller
         $this->serializer = $serializer;
         $this->jobExecutionManager = $jobExecutionManager;
         $this->securityFacade = $securityFacade;
-        $this->showPermissionTemplate = $showPermissionTemplate;
+        $this->jobSecurityMapping = $jobSecurityMapping;
     }
 
     /**
@@ -114,7 +115,7 @@ class JobTrackerController extends Controller
      * @param Request $request
      * @param int     $id
      *
-     * @return \Symfony\Component\HttpFoundation\Response|JsonResponse
+     * @return Response|JsonResponse
      */
     public function showAction(Request $request, $id)
     {
@@ -124,8 +125,7 @@ class JobTrackerController extends Controller
             throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
         }
 
-        if (null !== $this->securityFacade &&
-            !$this->securityFacade->isGranted($this->getShowPermission($jobExecution))) {
+        if (!$this->isGranted($jobExecution)) {
             throw new AccessDeniedException();
         }
 
@@ -184,8 +184,7 @@ class JobTrackerController extends Controller
             throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
         }
 
-        if (null !== $this->securityFacade &&
-            !$this->securityFacade->isGranted($this->getShowPermission($jobExecution))) {
+        if (!$this->isGranted($jobExecution)) {
             throw new AccessDeniedException();
         }
 
@@ -214,8 +213,7 @@ class JobTrackerController extends Controller
             throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
         }
 
-        if (null !== $this->securityFacade &&
-            !$this->securityFacade->isGranted($this->getShowPermission($jobExecution))) {
+        if (!$this->isGranted($jobExecution)) {
             throw new AccessDeniedException();
         }
 
@@ -241,15 +239,23 @@ class JobTrackerController extends Controller
     }
 
     /**
+     * Returns if a user has read permission on an import or export
+     *
      * @param JobExecution $jobExecution
      *
-     * @return string
+     * @return bool
      */
-    protected function getShowPermission($jobExecution)
+    protected function isGranted($jobExecution)
     {
-        return sprintf(
-            $this->showPermissionTemplate,
-            $jobExecution->getJobInstance()->getType()
-        );
+        if ((null === $this->securityFacade) || (null === $this->jobSecurityMapping)) {
+            return true;
+        }
+
+        $jobExecutionType = $jobExecution->getJobInstance()->getType();
+        if (!array_key_exists($jobExecutionType, $this->jobSecurityMapping)) {
+            return true;
+        }
+
+        return $this->securityFacade->isGranted($this->jobSecurityMapping[$jobExecutionType]);
     }
 }
