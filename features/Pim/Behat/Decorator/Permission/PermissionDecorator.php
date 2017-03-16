@@ -43,15 +43,9 @@ class PermissionDecorator extends ElementDecorator
      */
     public function findResource($resource)
     {
-        $resourceElements = $this->spin(function () use ($resource) {
-            return $this->findAll('css', sprintf($this->selectors['Resource'], $resource));
+        $resourceElement = $this->spin(function () use ($resource) {
+            return $this->find('css', sprintf($this->selectors['Resource'], $resource));
         }, sprintf('Resource with label "%s" not found.', $resource));
-
-        if (1 < count($resourceElements)) {
-            $resourceElement = $this->matchResource($resourceElements, $resource);
-        } else {
-            $resourceElement = $resourceElements[0];
-        }
 
         return $this->spin(function () use ($resourceElement) {
             return $resourceElement->find('css', $this->selectors['Resource Toggle']);
@@ -162,24 +156,5 @@ class PermissionDecorator extends ElementDecorator
         return $this->spin(function () use ($group) {
             return $this->find('css', sprintf($this->selectors['Group toggle'], $group));
         }, sprintf('Group icon "%s" not found', $group));
-    }
-
-    /**
-     * Matches searched resource
-     *
-     * @param NodeElement[] $resourceElements
-     * @param string        $textToMatch
-     *
-     * @return NodeElement|null
-     */
-    protected function matchResource($resourceElements, $textToMatch)
-    {
-        foreach ($resourceElements as $element) {
-            if ($textToMatch === $element->getText()) {
-                return $element;
-            }
-        }
-
-        return null;
     }
 }
