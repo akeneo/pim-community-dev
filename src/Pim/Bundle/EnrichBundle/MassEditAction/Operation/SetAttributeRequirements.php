@@ -19,9 +19,6 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var array */
-    protected $channels;
-
     /** @var string */
     protected $values;
 
@@ -100,6 +97,8 @@ class SetAttributeRequirements extends AbstractMassEditOperation
      * Sets values and converts to attribute and requirements arrays
      *
      * @param string $values
+     *
+     * @return $this
      */
     public function setValues($values)
     {
@@ -119,18 +118,28 @@ class SetAttributeRequirements extends AbstractMassEditOperation
         return $this;
     }
 
+    /**
+     * Gets attributes
+     *
+     * @return array
+     */
     public function getAttributes()
     {
         return $this->attributes;
     }
 
+    /**
+     * Gets families requirements
+     *
+     * @return array
+     */
     public function getRequirements()
     {
         return $this->requirements;
     }
 
     /**
-     * Creates attributes requirements array
+     * Creates attribute requirements array
      *
      * @param string $attribute
      */
@@ -159,12 +168,7 @@ class SetAttributeRequirements extends AbstractMassEditOperation
      */
     protected function isAttributeRequired($attribute, $channel)
     {
-        if (array_key_exists($channel, $this->getRequirements()) &&
-            in_array($attribute, $this->requirements[$channel])
-        ) {
-            return true;
-        }
-
-        return false;
+        return array_key_exists($channel, $this->getRequirements()) &&
+            in_array($attribute, $this->requirements[$channel]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Context\Page\Batch;
 
+use Behat\Mink\Element\NodeElement;
 use Context\Page\Base\Wizard;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\Common\AddAttributeDecorator;
@@ -42,6 +43,11 @@ class SetAttributeRequirements extends Wizard
         $cell        = $this->getAttributeRequirementCell($attribute, $channel);
         $requirement = $cell->find('css', 'i');
 
+        $loadingMask = $this->find('css', '.hash-loading-mask .loading-mask');
+        $this->spin(function () use ($loadingMask) {
+            return (null === $loadingMask) || !$loadingMask->isVisible();
+        }, '".loading-mask" is still visible');
+
         $requirement->click();
     }
 
@@ -56,7 +62,7 @@ class SetAttributeRequirements extends Wizard
     protected function getAttributeRequirementCell($attribute, $channel)
     {
         return $this->spin(function () use ($attribute, $channel) {
-            return $this->find('css', sprintf('i.AknAcl-icon[data-attribute="%s"][data-channel="%s"]', $attribute, $channel));
+            return $this->find('css', sprintf('.AknAcl-icon[data-attribute="%s"][data-channel="%s"]', $attribute, $channel));
         }, sprintf('The cell for attribute "%s" and channel "%s" was not found', $attribute, $channel));
     }
 
@@ -75,6 +81,11 @@ class SetAttributeRequirements extends Wizard
         $addAttributeDecorator->addAttributes($attributes);
     }
 
+    /**
+     * Adds attributes related to attribute groups selected
+     *
+     * @param string $groups
+     */
     public function addAttributesByGroup($groups)
     {
         $addGroupElement = $this->spin(function () {
@@ -88,7 +99,7 @@ class SetAttributeRequirements extends Wizard
      * @param string $attributeName
      * @param string $groupName
      *
-     * @return \Behat\Mink\Element\NodeElement|mixed|null
+     * @return NodeElement|mixed|null
      */
     public function getAttribute($attributeName, $groupName = null)
     {
@@ -103,7 +114,7 @@ class SetAttributeRequirements extends Wizard
      * @param $attribute
      * @param $group
      *
-     * @return \Behat\Mink\Element\NodeElement|mixed|null
+     * @return NodeElement|mixed|null
      */
     protected function getAttributeByGroupAndName($attribute, $group)
     {
@@ -124,7 +135,7 @@ class SetAttributeRequirements extends Wizard
     /**
      * @param $attributeName
      *
-     * @return \Behat\Mink\Element\NodeElement|mixed|null
+     * @return NodeElement|mixed|null
      */
     protected function getAttributeByName($attributeName)
     {
