@@ -65,10 +65,6 @@
 - API-75: As Julia, I would like to list channels
 - API-77: As Filips, I would like to discover all routes in the API
 
-## BC breaks
-
-- GITHUB-5538: Change the constructor of Pim\Bundle\EnrichBundle\Controller\JobTrackerController add securityFacade
-
 # 1.7.0-ALPHA1 (2017-02-23)
 
 ## Bug Fixes
