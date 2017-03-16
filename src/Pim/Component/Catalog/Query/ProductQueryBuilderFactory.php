@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Query;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
 use Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -78,8 +79,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
             'scope'  => $options['default_scope']
         ]);
 
-        $qb = $this->createQueryBuilder($options);
-        $pqb->setQueryBuilder($qb);
+        $pqb->setQueryBuilder(new SearchQueryBuilder());
 
         foreach ($options['filters'] as $filter) {
             $pqb->addFilter($filter['field'], $filter['operator'], $filter['value'], $filter['context']);
@@ -104,21 +104,6 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
         );
 
         return $pqb;
-    }
-
-    /**
-     * @param array $options
-     *
-     * @return \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder
-     */
-    protected function createQueryBuilder(array $options)
-    {
-        $repository = $this->om->getRepository($this->productClass);
-        $method = $options['repository_method'];
-        $parameters = $options['repository_parameters'];
-        $qb = $repository->$method($parameters);
-
-        return $qb;
     }
 
     /**
