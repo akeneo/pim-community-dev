@@ -22,7 +22,7 @@ class SetAttributeRequirements extends Wizard
         'Available attributes button'     => ['css' => 'button:contains("Select attributes")'],
         'Available attributes add button' => ['css' => '.pimmultiselect a:contains("Select")'],
         'Available attributes form'       => ['css' => '#pim_catalog_mass_edit_family_add_attribute'],
-        'Attributes'                      => ['css' => 'table.attributes'],
+        'Attributes'                      => ['css' => 'table.groups'],
         'Available attributes'            => [
             'css'        => '.add-attribute',
             'decorators' => [AddAttributeDecorator::class]
@@ -82,5 +82,60 @@ class SetAttributeRequirements extends Wizard
         }, 'Can not find add by group select');
 
         $addGroupElement->addItems($groups);
+    }
+
+    /**
+     * @param string $attributeName
+     * @param string $groupName
+     *
+     * @return \Behat\Mink\Element\NodeElement|mixed|null
+     */
+    public function getAttribute($attributeName, $groupName = null)
+    {
+        if (null !== $groupName) {
+            return $this->getAttributeByGroupAndName($attributeName, $groupName);
+        }
+
+        return $this->getAttributeByName($attributeName);
+    }
+
+    /**
+     * @param $attribute
+     * @param $group
+     *
+     * @return \Behat\Mink\Element\NodeElement|mixed|null
+     */
+    protected function getAttributeByGroupAndName($attribute, $group)
+    {
+        $groupNode = $this->getElement('Attributes')->find('css', sprintf('tr.group:contains("%s")', $group));
+
+        if (!$groupNode) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Couldn\'t find the attribute group "%s" in the attributes table',
+                    $group
+                )
+            );
+        }
+
+        return $groupNode->getParent()->find('css', sprintf('td:contains("%s")', $attribute));
+    }
+
+    /**
+     * @param $attributeName
+     *
+     * @return \Behat\Mink\Element\NodeElement|mixed|null
+     */
+    protected function getAttributeByName($attributeName)
+    {
+        $attributeNodes = $this->getElement('Attributes')->findAll('css', 'table.groups tbody tr:not(.group)');
+        foreach ($attributeNodes as $attributeNode) {
+            $attribute = $attributeNode->find('css', sprintf('td:contains("%s")', $attributeName));
+            if (null !== $attribute) {
+                return $attribute;
+            }
+        }
+
+        return null;
     }
 }

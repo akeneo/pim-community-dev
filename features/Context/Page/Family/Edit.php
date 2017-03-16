@@ -239,6 +239,13 @@ class Edit extends Form
         return isset($results[$attribute]) ? $results[$attribute] : null;
     }
 
+    /**
+     * Finds available attribute group
+     *
+     * @param string $group
+     *
+     * @return mixed
+     */
     public function findAvailableAttributeGroup($group)
     {
         $addGroupElement = $this->spin(function () {
@@ -263,6 +270,11 @@ class Edit extends Form
         $addAttributeDecorator->addAttributes($attributes);
     }
 
+    /**
+     * Adds attributes by group
+     *
+     * @param array $groups
+     */
     public function addAttributesByGroup($groups)
     {
         $addGroupElement = $this->spin(function () {
