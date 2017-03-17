@@ -60,11 +60,8 @@ abstract class AbstractPimCatalogIntegration extends TestCase
     {
         $conf = $this->esConfigurationLoader->load();
 
-        try {
+        if ($this->esClient->hasIndex()) {
             $this->esClient->deleteIndex();
-        } catch (\Exception $e) {
-            // maybe the index does not exist, and we have nothing to do
-            // TODO: handle that properly in the client, or add a hasIndex() method
         }
 
         $this->esClient->createIndex($conf->getAggregated());
@@ -86,14 +83,7 @@ abstract class AbstractPimCatalogIntegration extends TestCase
             $this->esClient->index(self::DOCUMENT_TYPE, $product['identifier'], $product);
         }
 
-        // The indexation in Elasticsearch is an asynchronous process.
-        // And even if this process is Near Real-Time, (see
-        // https://www.elastic.co/guide/en/elasticsearch/guide/master/near-real-time.html#near-real-time)
-        // for more information), we have to wait the indexation is
-        // finished so that our tests are green.
-        // Here, 5s is really more than enough according to the low number
-        // of products we have to index.
-        sleep(5);
+        $this->esClient->refreshIndex();
     }
 
     /**

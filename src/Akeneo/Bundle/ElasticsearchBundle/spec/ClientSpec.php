@@ -96,4 +96,20 @@ class ClientSpec extends ObjectBehavior
 
         $this->createIndex(['index configuration']);
     }
+
+    function it_checks_if_an_index_exists($client, IndicesNamespace $indices)
+    {
+        $client->indices()->willReturn($indices);
+        $indices->exists(['index' => 'an_index_name'])->shouldBeCalled();
+
+        $this->hasIndex();
+    }
+
+    function it_refreshes_an_index($client, IndicesNamespace $indices)
+    {
+        $client->indices()->willReturn($indices);
+        $indices->refresh(['index' => 'an_index_name'])->shouldBeCalled();
+
+        $this->refreshIndex();
+    }
 }
