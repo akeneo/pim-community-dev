@@ -30,7 +30,7 @@ class NormalizedProductCleaner
      *
      * @param array $values
      */
-    private static function sortValues(array &$values)
+    public static function sortValues(array &$values)
     {
         self::ksortRecursive($values);
     }

@@ -134,7 +134,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
                 $this->addEmptyAxisViolation(
                     $constraint,
                     $variantGroup->getLabel(),
-                    $product->getIdentifier()->getVarchar(),
+                    $product->getIdentifier(),
                     $attribute->getCode()
                 );
 

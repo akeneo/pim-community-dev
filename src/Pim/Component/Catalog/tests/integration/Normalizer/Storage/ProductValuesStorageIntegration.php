@@ -213,8 +213,8 @@ class ProductValuesStorageIntegration extends TestCase
         $product = $repository->findOneByIdentifier($identifier);
         $result = $serializer->normalize($product->getValues(), 'storage');
 
-        NormalizedProductCleaner::cleanOnlyValues($expected);
-        NormalizedProductCleaner::cleanOnlyValues($result);
+        NormalizedProductCleaner::sortValues($expected);
+        NormalizedProductCleaner::sortValues($result);
 
         $this->assertSame($expected, $result);
     }
