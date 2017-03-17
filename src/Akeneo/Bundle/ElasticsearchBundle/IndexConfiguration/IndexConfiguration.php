@@ -37,7 +37,7 @@ class IndexConfiguration
      *
      * @return array
      */
-    public function getAggregated()
+    public function buildAggregated()
     {
         $settings = !empty($this->settings) ? $this->settings : new \stdClass();
         $mappings = !empty($this->mappings) ? $this->mappings : new \stdClass();

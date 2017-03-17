@@ -64,7 +64,7 @@ abstract class AbstractPimCatalogIntegration extends TestCase
             $this->esClient->deleteIndex();
         }
 
-        $this->esClient->createIndex($conf->getAggregated());
+        $this->esClient->createIndex($conf->buildAggregated());
     }
 
     /**
