@@ -82,4 +82,21 @@ class AttributeSpec extends ObjectBehavior
 
         $this->convert($item)->shouldReturn($expected);
     }
+
+    function it_converts_from_standard_to_flat_format_with_null_values()
+    {
+        $expected = [
+            'wysiwyg_enabled'  => '',
+            'decimals_allowed' => '',
+            'negative_allowed' => '',
+        ];
+
+        $item = [
+            'wysiwyg_enabled'  => null,
+            'decimals_allowed' => null,
+            'negative_allowed' => null,
+        ];
+
+        $this->convert($item)->shouldReturn($expected);
+    }
 }
