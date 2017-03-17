@@ -55,6 +55,8 @@ stage("Checkout") {
     checkouts = [:];
     checkouts['community'] = {
         node('docker') {
+            sh "echo '[DEBUGW] before CE docker deleteDir()'"
+            sh "ls -l"
             deleteDir()
             docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "pim_community_dev"
@@ -65,12 +67,16 @@ stage("Checkout") {
 
                 stash "pim_community_dev_full"
             }
+            sh "echo '[DEBUGW] after CE docker deleteDir()'"
+            sh "ls -l"
             deleteDir()
         }
     }
     if (editions.contains('ee') && 'yes' == launchBehatTests) {
         checkouts['enterprise'] = {
             node('docker') {
+                sh "echo '[DEBUGW] before EE docker deleteDir()'"
+                sh "ls -l"
                 deleteDir()
                 docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                     unstash "pim_enterprise_dev"
@@ -81,6 +87,8 @@ stage("Checkout") {
 
                     stash "pim_enterprise_dev_full"
                 }
+                sh "echo '[DEBUGW] after EE docker deleteDir()'"
+                sh "ls -l"
                 deleteDir()
             }
         }
@@ -265,6 +273,8 @@ def runPhpCsFixerTest() {
 def runBehatTest(edition, storage, features, phpVersion, mysqlVersion, esVersion) {
     node() {
         dir("behat-${edition}-${storage}") {
+            sh "echo '[DEBUGW] after docker deleteDir()'"
+            sh "ls -l"
             deleteDir()
             if ('ce' == edition) {
                unstash "pim_community_dev_full"
@@ -272,8 +282,13 @@ def runBehatTest(edition, storage, features, phpVersion, mysqlVersion, esVersion
             } else {
                 unstash "pim_enterprise_dev_full"
                 dir('vendor/akeneo/pim-community-dev') {
+                    sh "echo '[DEBUGW] before CE install deleteDir()'"
+                    sh "ls -l"
                     deleteDir()
                     unstash "pim_community_dev"
+                    sh "echo '[DEBUGW] after CE unstash'"
+                    sh "ls -l"
+                    sh "git status"
                 }
                 tags = "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce"
             }
