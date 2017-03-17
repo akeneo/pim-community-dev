@@ -58,7 +58,7 @@ define(
 
                                 options.callback({
                                     results: choices,
-                                    more: choices.length >= this.resultsPerPage,
+                                    more: choices.length === this.resultsPerPage,
                                     context: {
                                         page: page + 1
                                     }
