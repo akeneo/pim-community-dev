@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\StorageUtils\StorageEvents;
+use Pim\Bundle\CatalogBundle\Elasticsearch\ProductIndexer;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -21,25 +22,15 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class IndexProductsSubscriber implements EventSubscriberInterface
 {
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var Client */
+    /** @var ProductIndexer */
     protected $indexer;
 
-    /** @var string */
-    protected $indexType;
-
     /**
-     * @param NormalizerInterface $normalizer
-     * @param Client              $indexer
-     * @param string              $indexType
+     * @param ProductIndexer $indexer
      */
-    public function __construct(NormalizerInterface $normalizer, Client $indexer, $indexType)
+    public function __construct(ProductIndexer $indexer)
     {
-        $this->normalizer = $normalizer;
         $this->indexer = $indexer;
-        $this->indexType = $indexType;
     }
 
     /**
@@ -48,7 +39,7 @@ class IndexProductsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::POST_SAVE => 'indexProduct',
+            StorageEvents::POST_SAVE     => 'indexProduct',
             StorageEvents::POST_SAVE_ALL => 'bulkIndexProducts',
         ];
     }
@@ -69,8 +60,7 @@ class IndexProductsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $normalizedProduct = $this->normalizer->normalize($product, 'indexing');
-        $this->indexer->index($this->indexType, $product->getIdentifier(), $normalizedProduct);
+        $this->indexer->index($product);
     }
 
     /**
@@ -89,19 +79,6 @@ class IndexProductsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $normalizedProducts = [];
-        foreach ($products as $product) {
-            if (!$product instanceof ProductInterface) {
-                throw new \InvalidArgumentException(
-                    'Only products "Pim\Component\Catalog\Model\ProductInterface" can be indexed in the search engine.'
-                );
-            }
-            $normalizedProducts[$product->getIdentifier()] = $this->normalizer->normalize($product, 'indexing');
-        }
-
-        // TODO TIP-709: bulk index instead => will be done in another PR
-        foreach ($normalizedProducts as $identifier => $indexedFormat) {
-            $this->indexer->index($this->indexType, $identifier, $indexedFormat);
-        }
+        $this->indexer->indexAll($products);
     }
 }

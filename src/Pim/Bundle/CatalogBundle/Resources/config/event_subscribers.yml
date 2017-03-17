@@ -114,8 +114,6 @@ services:
     pim_catalog.event_subscriber.index_products:
         class: '%pim_catalog.event_subscriber.index_products.class%'
         arguments:
-            - '@pim_serializer'
-            - '@akeneo_elasticsearch.client'
-            - 'pim_catalog_product'
+            - '@pim_catalog.elasticsearch.product_indexer'
         tags:
             - { name: kernel.event_subscriber }
