@@ -216,12 +216,10 @@ define([
              */
             removeFromAttributeRequirements: function (attribute, channel) {
                 var data = this.getFormData();
-                data.attribute_requirements[channel] = data
-                    .attribute_requirements[channel] ?
-                        data.attribute_requirements[channel]
-                            .filter(function (item) {
-                                return attribute !== item;
-                            }) : [];
+                data.attribute_requirements[channel] = data.attribute_requirements[channel] ?
+                    data.attribute_requirements[channel].filter(function (item) {
+                        return attribute !== item;
+                    }) : [];
                 this.setData(data);
             },
 

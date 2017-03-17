@@ -9,10 +9,12 @@
  */
 define(
     [
+        'underscore',
         'pim/form/common/edit-form',
         'text!pim/template/family-mass-edit/base-form'
     ],
     function (
+        _,
         BaseForm,
         template
     ) {

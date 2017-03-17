@@ -38,7 +38,7 @@ define([
             /**
              * {@inheritdoc}
              */
-            toggleAttribute: function (event) {
+            toggleAttribute: function () {
                 if (this.lock) {
                     return false;
                 }

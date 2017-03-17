@@ -5,7 +5,6 @@ namespace Context\Page\Batch;
 use Behat\Mink\Element\NodeElement;
 use Context\Page\Base\Wizard;
 use Context\Spin\SpinCapableTrait;
-use Context\Traits\ClosestTrait;
 use Pim\Behat\Decorator\Common\AddAttributeDecorator;
 use Pim\Behat\Decorator\Common\SelectGroupDecorator;
 
@@ -19,7 +18,6 @@ use Pim\Behat\Decorator\Common\SelectGroupDecorator;
 class SetAttributeRequirements extends Wizard
 {
     use SpinCapableTrait;
-    use ClosestTrait;
 
     protected $elements = [
         'Available attributes button'     => ['css' => 'button:contains("Select attributes")'],
@@ -132,7 +130,7 @@ class SetAttributeRequirements extends Wizard
             return $this->getElement('Attributes')->find('css', sprintf('tr.group:contains("%s")', $group));
         }, sprintf('Couldn\'t find the attribute group "%s" in the attributes table', $group));
 
-        return $this->getClosest($groupNode, 'group-wrapper')->find('css', sprintf('td:contains("%s")', $attribute));
+        return $groupNode->getParent()->find('css', sprintf('td:contains("%s")', $attribute));
     }
 
     /**
