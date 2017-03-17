@@ -94,7 +94,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function getQueryBuilder()
     {
-        if (!$this->qb) {
+        if (null === $this->qb) {
             throw new \LogicException('Query builder must be configured');
         }
 

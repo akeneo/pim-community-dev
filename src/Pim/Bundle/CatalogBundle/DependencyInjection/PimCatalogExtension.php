@@ -34,6 +34,7 @@ class PimCatalogExtension extends Extension
         $loader->load('completeness_checkers.yml');
         $loader->load('console.yml');
         $loader->load('context.yml');
+        $loader->load('elasticsearch.yml');
         $loader->load('entities.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('factories.yml');
@@ -55,6 +56,7 @@ class PimCatalogExtension extends Extension
         $loader->load('validators.yml');
         $loader->load('versions.yml');
         $loader->load('serializers.yml');
+        $loader->load('serializers_indexing.yml');
         $loader->load('serializers_standard.yml');
         $loader->load('serializers_storage.yml');
         $loader->load('converters.yml');

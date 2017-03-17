@@ -137,4 +137,22 @@ class Client
 
         return $this->client->indices()->create($params);
     }
+
+    /**
+     * See {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/ElasticsearchPHP_Endpoints.html#Elasticsearch_Namespaces_IndicesNamespaceexists_exists}
+     *
+     * @return bool
+     */
+    public function hasIndex()
+    {
+        return $this->client->indices()->exists(['index' => $this->indexName]);
+    }
+
+    /**
+     * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-refresh.html}
+     */
+    public function refreshIndex()
+    {
+        return $this->client->indices()->refresh(['index' => $this->indexName]);
+    }
 }

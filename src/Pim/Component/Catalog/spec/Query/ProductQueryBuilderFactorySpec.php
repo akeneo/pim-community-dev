@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository;
+use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
 use Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -36,26 +37,28 @@ class ProductQueryBuilderFactorySpec extends ObjectBehavior
         $this->shouldImplement('Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface');
     }
 
-    function it_creates_a_product_query_builder_with_the_default_repository_method($om, ProductRepository $repository)
+    function it_creates_a_product_query_builder()
     {
-        $om->getRepository(Argument::any())->willReturn($repository);
-        $repository->createQueryBuilder('o')->shouldBeCalled();
-
-        $this->create(['default_locale' => 'en_US', 'default_scope' => 'print']);
+        $pqb = $this->create(['default_locale' => 'en_US', 'default_scope' => 'print']);
+        $pqb->getQueryBuilder()->shouldBeAnInstanceOf(SearchQueryBuilder::class);
     }
 
-    function it_creates_a_product_query_builder_with_a_custom_repository_method($om, ProductRepository $repository)
-    {
-        $om->getRepository(Argument::any())->willReturn($repository);
-        $repository->createDatagridQueryBuilder(['param1'])->shouldBeCalled();
-
-        $this->create(
-            [
-                'default_locale' => 'en_US',
-                'default_scope' => 'print',
-                'repository_method' => 'createDatagridQueryBuilder',
-                'repository_parameters' => ['param1']
-            ]
-        );
-    }
+    //TODO TIP-706: enable this when we'll merge the PQB family family
+//    function it_creates_a_product_query_builder_with_filters()
+//    {
+//        $pqb = $this->create(
+//            [
+//                'default_locale' => 'en_US',
+//                'default_scope'  => 'print',
+//                'filters'        => [
+//                    [
+//                        'field'    => 'family',
+//                        'operator' => 'CONTAINS',
+//                        'value'    => 'foo'
+//                    ],
+//                ]
+//            ]
+//        );
+//        $pqb->getQueryBuilder()->shouldBeAnInstanceOf(SearchQueryBuilder::class);
+//    }
 }

@@ -33,6 +33,24 @@ class IndexConfiguration
     }
 
     /**
+     * Get the full aggregated index configuration of Settings, Mappings and Aliases.
+     *
+     * @return array
+     */
+    public function buildAggregated()
+    {
+        $settings = !empty($this->settings) ? $this->settings : new \stdClass();
+        $mappings = !empty($this->mappings) ? $this->mappings : new \stdClass();
+        $aliases = !empty($this->aliases) ? $this->aliases : new \stdClass();
+
+        return [
+            'settings' => $settings,
+            'mappings' => $mappings,
+            'aliases' => $aliases,
+        ];
+    }
+
+    /**
      * Get the index settings configuration
      *
      * @return array

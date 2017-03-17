@@ -1,6 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
+namespace tests\integration\Pim\Bundle\CatalogBundle\Elasticsearch\IndexConfiguration;
+
+use Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration\AbstractPimCatalogIntegration;
 
 /**
  * This integration tests checks that given an index configuration and some products indexed
@@ -10,11 +12,11 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfigur
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogIntegration
+class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
 {
     public function testStartWithOperator()
     {
-        $query = $this->createSearchQuery([
+        $query = [
             'query' => [
                 'bool' => [
                     'filter' => [
@@ -25,7 +27,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
                     ],
                 ],
             ],
-        ]);
+        ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -34,7 +36,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
 
     public function testStartWithOperatorWithWhiteSpace()
     {
-        $query = $this->createSearchQuery([
+        $query = [
             'query' => [
                 'bool' => [
                     'filter' => [
@@ -46,7 +48,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
                     ],
                 ],
             ],
-        ]);
+        ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -55,7 +57,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
 
     public function testContainsOperator()
     {
-        $query = $this->createSearchQuery([
+        $query = [
             'query' => [
                 'bool' => [
                     'filter' => [
@@ -66,7 +68,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
                     ],
                 ],
             ],
-        ]);
+        ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -75,7 +77,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
 
     public function testContainsOperatorWithWhiteSpace()
     {
-        $query = $this->createSearchQuery([
+        $query = [
             'query' => [
                 'bool' => [
                     'filter' => [
@@ -86,7 +88,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
                     ],
                 ],
             ],
-        ]);
+        ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -95,7 +97,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
 
     public function testDoesNotContainOperator()
     {
-        $query = $this->createSearchQuery([
+        $query = [
             'query' => [
                 'bool' => [
                     'must_not' => [
@@ -109,7 +111,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
                     ],
                 ],
             ],
-        ]);
+        ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -118,7 +120,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
 
     public function testEqualsOperator()
     {
-        $query = $this->createSearchQuery(
+        $query =
             [
                 'query' => [
                     'bool' => [
@@ -130,7 +132,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
                     ],
                 ],
             ]
-        );
+        ;
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -139,7 +141,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
 
     public function testNotEqualsOperator()
     {
-        $query = $this->createSearchQuery(
+        $query =
             [
                 'query' => [
                     'bool' => [
@@ -154,7 +156,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
                     ],
                 ],
             ]
-        );
+        ;
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -166,7 +168,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
 
     public function testEmptyOperator()
     {
-        $query = $this->createSearchQuery(
+        $query =
             [
                 'query' => [
                     'bool' => [
@@ -176,7 +178,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
                     ],
                 ],
             ]
-        );
+        ;
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -185,7 +187,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
 
     public function testNotEmptyOperator()
     {
-        $query = $this->createSearchQuery(
+        $query =
             [
                 'query' => [
                     'bool' => [
@@ -195,7 +197,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
                     ],
                 ],
             ]
-        );
+        ;
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -207,7 +209,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
 
     public function testSortAscending()
     {
-        $query = $this->createSearchQuery([
+        $query = [
             'query' => [
                 'match_all' => new \stdClass(),
             ],
@@ -219,7 +221,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
                     ],
                 ],
             ],
-        ]);
+        ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -231,7 +233,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
 
     public function testSortDescending()
     {
-        $query = $this->createSearchQuery([
+        $query = [
             'query' => [
                 'match_all' => new \stdClass(),
             ],
@@ -243,7 +245,7 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
                     ],
                 ],
             ],
-        ]);
+        ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -260,34 +262,34 @@ class PimCatalogTextIndexConfigurationIntegration extends AbstractPimCatalogInte
     {
         $products = [
             [
-                'sku-varchar'  => 'product_1',
+                'identifier'   => 'product_1',
                 'name-varchar' => 'My product',
             ],
             [
-                'sku-varchar'  => 'product_2',
+                'identifier'   => 'product_2',
                 'name-varchar' => 'Another product',
             ],
             [
-                'sku-varchar'  => 'product_3',
+                'identifier'   => 'product_3',
                 'name-varchar' => 'Yeah, love this name',
             ],
             [
-                'sku-varchar' => 'product_4',
+                'identifier'  => 'product_4',
             ],
             [
-                'sku-varchar'  => 'product_5',
+                'identifier'   => 'product_5',
                 'name-varchar' => 'And an uppercase NAME',
             ],
             [
-                'sku-varchar'  => 'product_6',
+                'identifier'   => 'product_6',
                 'name-varchar' => 'Love this product',
             ],
             [
-                'sku-varchar'  => 'product_7',
+                'identifier'   => 'product_7',
                 'name-varchar' => 'I.love.dots',
             ],
             [
-                'sku-varchar'  => 'product_8',
+                'identifier'   => 'product_8',
                 'name-varchar' => 'I-love.dots',
             ],
         ];

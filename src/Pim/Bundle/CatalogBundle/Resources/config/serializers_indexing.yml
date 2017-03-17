@@ -1,0 +1,24 @@
+parameters:
+    pim_catalog.normalizer.indexing.product.class: Pim\Component\Catalog\Normalizer\Indexing\ProductNormalizer
+    pim_catalog.normalizer.indexing.product.properties.class: Pim\Component\Catalog\Normalizer\Indexing\Product\PropertiesNormalizer
+    pim_catalog.normalizer.indexing.datetime.class: Pim\Component\Catalog\Normalizer\Indexing\DateTimeNormalizer
+
+services:
+    pim_catalog.normalizer.indexing.product:
+        class: '%pim_catalog.normalizer.indexing.product.class%'
+        arguments:
+            - '@pim_catalog.normalizer.indexing.product.properties'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing.product.properties:
+        class: '%pim_catalog.normalizer.indexing.product.properties.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 40 }
+
+    pim_catalog.normalizer.indexing.datetime:
+        class: '%pim_catalog.normalizer.indexing.datetime.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.datetime'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
