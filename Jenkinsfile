@@ -277,6 +277,7 @@ def runBehatTest(edition, storage, features, phpVersion, mysqlVersion, esVersion
                     unstash "pim_community_dev"
                     sh "echo '[DEBUGW] after CE unstash'"
                     sh "more LICENCE.txt"
+                    sh "pwd"
                 }
                 tags = "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce"
             }
