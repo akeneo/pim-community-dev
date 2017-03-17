@@ -271,11 +271,12 @@ def runBehatTest(edition, storage, features, phpVersion, mysqlVersion, esVersion
                 unstash "pim_enterprise_dev_full"
                 dir('vendor/akeneo/pim-community-dev') {
                     sh "echo '[DEBUGW] before CE install deleteDir()'"
+                    sh "more LICENCE.txt"
                     sh "ls -l"
                     deleteDir()
                     unstash "pim_community_dev"
                     sh "echo '[DEBUGW] after CE unstash'"
-                    sh "git status --branch"
+                    sh "more LICENCE.txt"
                 }
                 tags = "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce"
             }
