@@ -142,6 +142,9 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
             if ($nbSkipped > 0) {
                 $this->incrementSkippedProductsCount($nbSkipped, $skippedMessages);
             }
+            foreach ($variantGroups as $variantGroup) {
+                $this->bulkDetacher->detachAll($variantGroup->getProducts()->toArray());
+            }
         }
     }
 
