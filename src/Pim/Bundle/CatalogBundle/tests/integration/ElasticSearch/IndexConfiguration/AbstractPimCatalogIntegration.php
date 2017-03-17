@@ -67,7 +67,7 @@ abstract class AbstractPimCatalogIntegration extends TestCase
             // TODO: handle that properly in the client, or add a hasIndex() method
         }
 
-        $this->esClient->createIndex($conf->getCompiled());
+        $this->esClient->createIndex($conf->getAggregated());
     }
 
     /**

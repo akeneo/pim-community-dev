@@ -127,7 +127,7 @@ class LoaderSpec extends ObjectBehavior
         );
 
         $indexConfiguration = $this->load();
-        $indexConfiguration->getCompiled()->shouldReturn([
+        $indexConfiguration->getAggregated()->shouldReturn([
             'settings' =>
                 [
                     'analysis' => [

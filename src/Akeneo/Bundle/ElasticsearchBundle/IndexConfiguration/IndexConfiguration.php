@@ -33,11 +33,11 @@ class IndexConfiguration
     }
 
     /**
-     * Get the full and compiled index configuration of Settings, Mappings and Aliases.
+     * Get the full aggregated index configuration of Settings, Mappings and Aliases.
      *
      * @return array
      */
-    public function getCompiled()
+    public function getAggregated()
     {
         $settings = !empty($this->settings) ? $this->settings : new \stdClass();
         $mappings = !empty($this->mappings) ? $this->mappings : new \stdClass();
