@@ -153,7 +153,7 @@ class NavigationContext extends BaseNavigationContext
         $page   = 'GroupType';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+        $this->openPage(sprintf('%s edit', $page), ['code' => $entity->getCode()]);
     }
 
     /**
@@ -211,7 +211,7 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iShouldBeOnTheGroupTypePage(GroupTypeInterface $groupType)
     {
-        $expectedAddress = $this->getPage('GroupType edit')->getUrl(['id' => $groupType->getId()]);
+        $expectedAddress = $this->getPage('GroupType edit')->getUrl(['code' => $groupType->getCode()]);
         $this->assertAddress($expectedAddress);
     }
 

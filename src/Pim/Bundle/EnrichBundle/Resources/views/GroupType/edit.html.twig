@@ -1,49 +1,62 @@
 {% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
-{% oro_title_set({ params: { '%group type.label%': form.vars.value.label } }) %}
-
-{% block content %}
-    {{ JSFV(form) }}
-    {{ form_start(form, {
-        'action': path('pim_enrich_grouptype_edit', { id: form.vars.value.id}),
-        'attr': {
-            'data-updated-title': 'confirmation.leave'|trans,
-            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'group type.title'|trans })
-        }
-    }) }}
-
-        {% set title = 'group type.edit'|trans ~ ' - ' ~ form.vars.value.label %}
-
-        {% set titleButtons %}
-            {{ elements.backLink(path('pim_enrich_grouptype_index')) }}
-        {% endset %}
-
-        {% set confirmationMessage = 'confirmation.remove.group type'|trans({ '%name%': form.vars.value.label }) %}
-
-        {% set buttons %}
-            {% if not form.vars.value.isVariant %}
-                {{ elements.deleteLink(
-                    path('pim_enrich_grouptype_remove', { id: form.vars.value.id }),
-                    'pim_enrich_grouptype_remove',
-                    path('pim_enrich_grouptype_index'),
-                    confirmationMessage,
-                    'flash.group type.removed'|trans,
-                    '',
-                    'AknButtonList-item'
-                ) }}
-            {% endif %}
-            {{ elements.submitBtn('', 'ok', 'AknButtonList-item') }}
-        {% endset %}
-
-        {{ elements.page_header(title, buttons, null, null, null, titleButtons, elements.updated(form.vars.id)) }}
-
-        <div class="AknTabContainer">
-            {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
-            <div class="AknTabContainer-content tab-content">
-                {{ elements.form_errors(form) }}
-                {{ view_elements(form.vars.id ~ '.form_tab') }}
+{% block main %}
+    <div id="main">
+        {% block before_content %}
+            <div class="BreadcrumbContainer">
+                <div id="breadcrumb">
+                    {% block breadcrumb %}
+                        {% placeholder breadcrumb %}
+                    {% endblock breadcrumb %}
+                </div>
+                {{ elements.flashMessagesContainer() }}
+                {% placeholder pin_button %}
             </div>
-        </div>
+        {% endblock before_content %}
+        <div class="hash-loading-mask"></div>
+        <div id="container">
+            {% block page_container %}
+                {% block content %}
+                    {% placeholder content_before %}
+                    <div id="group-type-edit-form">
 
-    {{ form_end(form) }}
-{% endblock %}
+                    </div>
+                    <script>
+                        require(
+                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error', 'oro/navigation'],
+                            function($, FetcherRegistry, FormBuilder, UserContext, Dialog, mediator, Error, Navigation) {
+                                $(function() {
+                                    FetcherRegistry.initialize().done(function () {
+                                        FetcherRegistry.getFetcher('group-type').fetch('{{ code }}', {cached: false, generateMissing: true})
+                                            .then(function (groupType) {
+                                                var label    = _.escape(groupType.labels[UserContext.get('catalogLocale')]);
+                                                var newTitle = document.title.replace('%group type.label%', label);
+
+                                                document.title  = newTitle;
+                                                var navigation  = Navigation.getInstance();
+                                                var navTitle    = navigation.getPinButtonsData('title');
+                                                navTitle.params = {'%group type.label%': label};
+                                                navigation.setPinButtonsData('title', navTitle);
+                                                navigation.setPinButtonsData('title-rendered-short', newTitle);
+
+                                                FormBuilder.build('pim-group-type-edit-form')
+                                                    .then(function (form) {
+                                                        form.setData(groupType);
+                                                        mediator.trigger('pim_enrich:form:entity:post_fetch', groupType);
+                                                        form.setElement('#group-type-edit-form').render();
+                                                    });
+                                            }).fail(function(response, textStatus, errorThrown) {
+                                            var errorView = new Error(response.responseJSON.message, response.status);
+                                            errorView.setElement('#group-type-edit-form').render();
+                                        });
+                                    })
+                                });
+                            });
+                    </script>
+                    {% placeholder content_after %}
+                {% endblock content %}
+            {% endblock page_container %}
+        </div>
+    </div>
+{% endblock main %}

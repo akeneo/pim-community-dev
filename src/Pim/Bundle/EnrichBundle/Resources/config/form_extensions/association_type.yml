@@ -49,10 +49,15 @@ extensions:
         position: 100
 
     pim-association-type-edit-form-save:
-        module: pim/association-type-edit-form/save
+        module: pim/form/common/save-form
         parent: pim-association-type-edit-form
         targetZone: buttons
         position: 0
+        config:
+            updateSuccessMessage: pim_enrich.entity.association_type.info.update_successful
+            updateFailureMessage: pim_enrich.entity.association_type.info.update_failed
+            notReadyMessage: pim_enrich.entity.association_type.info.field_not_ready
+            url: pim_enrich_associationtype_rest_post
 
     pim-association-type-edit-form-state:
         module: pim/form/common/state
@@ -86,13 +91,18 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: 'pim_enrich.form.association_type.tab.properties.title'
+            label: pim_enrich.form.association_type.tab.properties.title
 
     pim-association-type-edit-form-properties-general:
-        module: pim/association-type-edit-form/properties/general
+        module: pim/common/properties/general
         parent: pim-association-type-edit-form-properties
         targetZone: accordion
         position: 100
+        config:
+          sectionTitle: pim_enrich.form.association_type.tab.properties.general
+          codeLabel: pim_enrich.form.association_type.tab.properties.code
+          formRequired: pim_enrich.form.required
+          inputField: pim_enrich_association_type_form_code
 
     pim-association-type-edit-form-properties-translation:
         module: pim/common/properties/translation
@@ -100,8 +110,8 @@ extensions:
         targetZone: accordion
         position: 110
         config:
-            label: 'pim_enrich.form.association_type.tab.properties.label_translations'
-            fieldBaseId: 'pim_enrich_association_type_form_label_'
+            label: pim_enrich.form.association_type.tab.properties.label_translations
+            fieldBaseId: pim_enrich_association_type_form_label_
 
     pim-association-type-edit-form-history:
         module: pim/common/tab/history
@@ -110,5 +120,5 @@ extensions:
         aclResourceId: pim_enrich_associationtype_history
         position: 120
         config:
-            class: 'association_type'
-            title: 'pim_enrich.form.association_type.tab.history.title'
+            class: association_type
+            title: pim_enrich.form.association_type.tab.history.title
