@@ -10,7 +10,7 @@
 
     {{ parent() }}
 
-    {{ form_start(form, { 'action': '#' ~ path(actionPath, queryParams) }) }}
+    {{ form_start(form, { 'action': path(actionPath, queryParams) }) }}
 
         <div class="AknWidget">
             <div class="AknWidget-header">

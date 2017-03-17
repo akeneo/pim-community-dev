@@ -1,5 +1,5 @@
 pim_enrich_mass_edit_product_action_choose:
-    path: /product/choose/{operationGroup}
+    path: /product/choose
     defaults: { _controller: pim_enrich.controller.product.mass_edit_action:chooseAction, operationGroup: mass-edit }
     requirements:
         _method: GET|POST

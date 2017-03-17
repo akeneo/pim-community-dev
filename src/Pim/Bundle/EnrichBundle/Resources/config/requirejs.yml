@@ -242,6 +242,12 @@ config:
                 pim_enrich_mass_edit_action_sequential_edit:
                     module: pim/controller/redirect
                     aclResourceId: pim_enrich_mass_edit_action_sequential_edit
+                pim_enrich_mass_edit_product_action_choose:
+                    module: pim/controller/form
+                pim_enrich_mass_edit_product_action_configure:
+                    module: pim/controller/form
+                pim_enrich_mass_edit_product_action_perform:
+                    module: pim/controller/form
                 oro_user_create:
                     module: pim/controller/form
                 oro_user_update:
