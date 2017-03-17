@@ -26,12 +26,12 @@ define(
              */
             configure: function () {
                 mediator.on(
-                    'jstree:lock',
+                    'mass-edit:form:lock',
                     this.onLock.bind(this)
                 );
 
                 mediator.on(
-                    'jstree:unlock',
+                    'mass-edit:form:unlock',
                     this.onUnlock.bind(this)
                 );
 

@@ -17,7 +17,6 @@
                         FormBuilder.build('pim-family-mass-edit-form')
                             .then(function (form) {
                                 form.setData(family);
-                                mediator.trigger('pim_enrich:form:entity:post_fetch', family);
                                 form.setElement('#family-edit-form').render();
                                 form.$el.find('.AknTitleContainer').addClass('AknTitleContainer--hidden');
 

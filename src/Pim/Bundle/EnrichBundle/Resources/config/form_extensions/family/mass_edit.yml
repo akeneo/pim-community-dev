@@ -2,11 +2,6 @@ extensions:
     pim-family-mass-edit-form:
         module: pim/form/common/edit-form
 
-    pim-family-mass-edit-form-cache-invalidator:
-        module: pim/cache-invalidator
-        parent: pim-family-mass-edit-form
-        position: 1000
-
     pim-family-mass-edit-form-attributes-toolbar:
         module: pim/family-edit-form/attributes/toolbar
         parent: pim-family-mass-edit-form
