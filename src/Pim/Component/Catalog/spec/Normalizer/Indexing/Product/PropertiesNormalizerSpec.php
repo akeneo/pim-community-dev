@@ -4,9 +4,8 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\PropertiesNormalizer;
-use Prophecy\Argument;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class PropertiesNormalizerSpec extends ObjectBehavior
@@ -30,14 +29,57 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($product, 'indexing')->shouldReturn(true);
     }
 
-    function it_normalizes_product_properties(ProductInterface $product)
-    {
+    function it_normalizes_product_properties_with_empty_fields_and_values(
+        ProductInterface $product,
+        ProductValueCollectionInterface $productValueCollection
+    ) {
         $product->getIdentifier()->willReturn('sku-001');
+
+        $product->getValues()->willReturn($productValueCollection);
+        $productValueCollection->isEmpty()->willReturn(true);
 
         $this->normalize($product, 'indexing')->shouldReturn(
             [
                 'identifier' => 'sku-001',
-                'values' => []
+                'values'     => [],
+            ]
+        );
+    }
+
+    function it_normalizes_product_values(
+        $serializer,
+        ProductInterface $product,
+        ProductValueCollectionInterface $productValueCollection
+    ) {
+        $product->getIdentifier()->willReturn('sku-001');
+
+        $product->getValues()
+            ->shouldBeCalledTimes(2)
+            ->willReturn($productValueCollection);
+        $productValueCollection->isEmpty()->willReturn(false);
+
+        $serializer->normalize($productValueCollection, 'indexing', [])
+            ->willReturn(
+                [
+                    'a_size-decimal' => [
+                        '<all_locales>' => [
+                            '<all_channels>' => '10.51',
+                        ],
+                    ],
+                ]
+            );
+
+        $this->normalize($product, 'indexing')->shouldReturn(
+            [
+                'identifier' => 'sku-001',
+                'values'     => [
+                    'a_size-decimal' => [
+                        '<all_locales>' => [
+                            '<all_channels>' => '10.51',
+                        ],
+                    ],
+                ],
+
             ]
         );
     }
