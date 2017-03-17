@@ -8,6 +8,7 @@
 - PIM-6242: Fix UI glitch on TWA completeness filter search field
 - PIM-6239: Translate scope with catalog locale
 - GITHUB-3435: Sort order products datagrid `Manage filter` options
+- PIM-6250: Fix attribute export.
 - GITHUB-5538: User without permissions access to import/export jobs through `Process tracker`
 - PIM-6253: Add missing permissions on entities of the API
 
