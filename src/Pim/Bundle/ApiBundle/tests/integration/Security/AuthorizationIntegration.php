@@ -19,15 +19,17 @@ class AuthorizationIntegration extends ApiTestCase
 
         $client->request('GET', '/api/rest/v1/categories/master');
 
-        $standardCategory = [
-            'code'   => 'master',
-            'parent' => null,
-            'labels' => []
-        ];
+        $standardCategory = <<<JSON
+{
+    "code": "master",
+    "parent": null,
+    "labels": {}
+}
+JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertSame($standardCategory, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($standardCategory, $response->getContent());
     }
 
     public function testOverallAccessDenied()
@@ -36,14 +38,16 @@ class AuthorizationIntegration extends ApiTestCase
 
         $client->request('GET', '/api/rest/v1/categories/master');
 
-        $expectedResponse = [
-            'code'    => 403,
-            'message' => 'You are not allowed to access the web API.',
-        ];
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "You are not allowed to access the web API."
+}
+JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-        $this->assertSame($expectedResponse, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
     public function testAccessGrantedForListingAttributes()
@@ -62,14 +66,16 @@ class AuthorizationIntegration extends ApiTestCase
 
         $client->request('GET', '/api/rest/v1/attributes');
 
-        $expectedResponse = [
-            'code'    => 403,
-            'message' => 'Access forbidden. You are not allowed to list attributes.',
-        ];
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to list attributes."
+}
+JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-        $this->assertSame($expectedResponse, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
     public function testAccessGrantedForEditingAttributes()
@@ -106,14 +112,16 @@ JSON;
 
         $client->request('POST', '/api/rest/v1/attributes', [], [], [], $data);
 
-        $expectedResponse = [
-            'code'    => 403,
-            'message' => 'Access forbidden. You are not allowed to create or update attributes.',
-        ];
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update attributes."
+}
+JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-        $this->assertSame($expectedResponse, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
     public function testAccessGrantedForListingAttributeOptions()
@@ -132,14 +140,16 @@ JSON;
 
         $client->request('GET', '/api/rest/v1/attributes/a_multi_select/options/optionA');
 
-        $expectedResponse = [
-            'code'    => 403,
-            'message' => 'Access forbidden. You are not allowed to list attribute options.',
-        ];
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to list attribute options."
+}
+JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-        $this->assertSame($expectedResponse, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
     public function testAccessGrantedForEditingAttributeOptions()
@@ -179,15 +189,17 @@ JSON;
 
         $client->request('POST', '/api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
 
-        $expectedResponse = [
-            'code'    => 403,
-            'message' => 'Access forbidden. You are not allowed to create or update attribute options.',
-        ];
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update attribute options."
+}
+JSON;
 
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-        $this->assertSame($expectedResponse, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
     public function testAccessGrantedForListingCategories()
@@ -206,14 +218,16 @@ JSON;
 
         $client->request('GET', '/api/rest/v1/categories');
 
-        $expectedResponse = [
-            'code'    => 403,
-            'message' => 'Access forbidden. You are not allowed to list categories.',
-        ];
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to list categories."
+}
+JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-        $this->assertSame($expectedResponse, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
     public function testAccessGrantedForEditingCategories()
@@ -246,14 +260,16 @@ JSON;
 
         $client->request('POST', '/api/rest/v1/categories', [], [], [], $data);
 
-        $expectedResponse = [
-            'code'    => 403,
-            'message' => 'Access forbidden. You are not allowed to create or update categories.',
-        ];
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update categories."
+}
+JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-        $this->assertSame($expectedResponse, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
     public function testAccessGrantedForListingChannels()
@@ -272,14 +288,44 @@ JSON;
 
         $client->request('GET', '/api/rest/v1/channels');
 
-        $expectedResponse = [
-            'code'    => 403,
-            'message' => 'Access forbidden. You are not allowed to list channels.',
-        ];
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to list channels."
+}
+JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-        $this->assertSame($expectedResponse, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
+    public function testAccessGrantedForListingLocales()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', '/api/rest/v1/locales');
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    public function testAccessDeniedForListingLocales()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
+
+        $client->request('GET', '/api/rest/v1/locales');
+
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to list locales."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
     public function testAccessGrantedForListingFamilies()
@@ -298,14 +344,16 @@ JSON;
 
         $client->request('GET', '/api/rest/v1/families');
 
-        $expectedResponse = [
-            'code'    => 403,
-            'message' => 'Access forbidden. You are not allowed to list families.',
-        ];
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to list families."
+}
+JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-        $this->assertSame($expectedResponse, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
     public function testAccessGrantedForEditingFamilies()
@@ -338,14 +386,16 @@ JSON;
 
         $client->request('POST', '/api/rest/v1/families', [], [], [], $data);
 
-        $expectedResponse = [
-            'code'    => 403,
-            'message' => 'Access forbidden. You are not allowed to create or update families.',
-        ];
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update families."
+}
+JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-        $this->assertSame($expectedResponse, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
     /**
