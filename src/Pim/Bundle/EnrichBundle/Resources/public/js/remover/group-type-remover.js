@@ -20,8 +20,13 @@ define([
     ) {
         return _.extend({}, BaseRemover, {
             /**
+             * Gets url in configuration for remover module
+             *
+             * @param {String} code Code for group type entity
+             *
              * {@inheritdoc}
              */
+            /**
             getUrl: function (code) {
                 return Routing.generate(module.config().url, {code: code});
             }
