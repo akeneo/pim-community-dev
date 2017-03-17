@@ -18,7 +18,7 @@ use Akeneo\Test\Integration\TestCase;
  */
 abstract class AbstractPimCatalogIntegration extends TestCase
 {
-    const INDEX_TYPE = 'pim_catalog_product';
+    const DOCUMENT_TYPE = 'pim_catalog_product';
 
     /** @var Client */
     private $esClient;
@@ -83,7 +83,7 @@ abstract class AbstractPimCatalogIntegration extends TestCase
     protected function indexProducts(array $products)
     {
         foreach ($products as $product) {
-            $this->esClient->index(self::INDEX_TYPE, $product['identifier'], $product);
+            $this->esClient->index(self::DOCUMENT_TYPE, $product['identifier'], $product);
         }
 
         // The indexation in Elasticsearch is an asynchronous process.
@@ -106,7 +106,7 @@ abstract class AbstractPimCatalogIntegration extends TestCase
     protected function getSearchQueryResults(array $query)
     {
         $identifiers = [];
-        $response = $this->esClient->search(self::INDEX_TYPE, $query);
+        $response = $this->esClient->search(self::DOCUMENT_TYPE, $query);
 
         foreach ($response['hits']['hits'] as $hit) {
             $identifiers[] = $hit['_source']['identifier'];
