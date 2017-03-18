@@ -901,8 +901,6 @@ pim_enrich_attribute_form:
   code: Koodi
   type: Attribuuttityyppi
   reference_data_name: Referenssidatan nimi
-  scopable: Soveltamisala
-  localizable: Lokalisoitavissa
   unique: Yksilöllinen arvo
   availableLocales: Saatavilla olevat alueet
   locale_specific: Aluespesifi

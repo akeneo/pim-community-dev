@@ -905,8 +905,6 @@ pim_enrich_attribute_form:
   code: Codi
   type: Tipus d'atribut
   reference_data_name: Nom de dades de referència
-  scopable: Abast
-  localizable: Configurable regionalment
   unique: Valor únic
   availableLocales: Configuracions regionals disponibles
   locale_specific: Configuració regional específica

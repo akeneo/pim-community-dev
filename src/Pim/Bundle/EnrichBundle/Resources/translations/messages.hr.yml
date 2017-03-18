@@ -905,8 +905,6 @@ pim_enrich_attribute_form:
   code: Kod
   type: Tip atributa
   reference_data_name: Naziv refernce podataka
-  scopable: Djelokrug
-  localizable: Moguće je lokalizirati
   unique: Jedinstvena vrijednost
   availableLocales: Dostupni lokalni parametri
   locale_specific: Specifične regionalne postavke

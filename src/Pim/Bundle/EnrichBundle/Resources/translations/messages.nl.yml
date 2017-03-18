@@ -771,8 +771,6 @@ batch_jobs:
       label: Update productwaarde
 pim_enrich_attribute_form:
   code: Code
-  scopable: Bereik
-  localizable: Lokaliseerbaar
   unique: Unieke waarde
   availableLocales: Beschikbare lokalisaties
   locale_specific: Lokalisatiespecifiek
