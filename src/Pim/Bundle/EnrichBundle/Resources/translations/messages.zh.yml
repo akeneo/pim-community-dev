@@ -905,8 +905,6 @@ pim_enrich_attribute_form:
   code: 代码
   type: 属性类型
   reference_data_name: 引用数据名称
-  scopable: 范围
-  localizable: 可本地化
   unique: 唯一性值
   availableLocales: 可用区域
   locale_specific: 特定的区域
