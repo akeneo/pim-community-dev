@@ -24,7 +24,7 @@ teamwork_assistant:
       owner: '%project_label% pour le %due_date% n’est pas terminé.'
       start: Début
   datagrid:
-    project_completeness: Complétude du projet
+    project_completeness: Avancement du projet
     contributor_todo: À faire
     contributor_in_progress: En cours
     contributor_done: Fait
@@ -39,8 +39,9 @@ batch_jobs:
       label: Préparer le calcul de projet
     clean_contributor_group:
       label: Vérifier les autorisations des utilisateurs sur les locales du projet
-  attribute_group_completeness_calculation:
-    attribute_group_completeness_calculation:
+  refresh_project_completeness_calculation:
+    label: Rafraîchir la complétude du projet
+    refresh_project_completeness_calculation:
       label: Rafraîchir la complétude du projet
 job_execution:
   summary:
