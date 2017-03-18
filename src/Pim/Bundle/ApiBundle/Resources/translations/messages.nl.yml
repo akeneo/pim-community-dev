@@ -3,24 +3,20 @@ pim_api:
     rights: Web API machtigingen
     attribute:
       edit: Attributen aanmaken en bijwerken
-      list: Attributen oplijsten
+      list: Attributen weergeven
     attribute_option:
       edit: Attribuutopties aanmaken en bijwerken
       list: Attribuutopties oplijsten
     category:
       edit: Categorieën aanmaken en bijwerken
-      list: Categorieën oplijsten
+      list: Categorieën weergeven
     family:
       edit: Families aanmaken en bijwerken
-      list: Families oplijsten
-    channel.list: Kanelen via Web API oplijsten
-    locale.list: Landinstellingen via Web API oplijsten
+      list: Families weergeven
   acl_group:
     overall_access: Algemene Web API-toegang
     attribute: Attributen
     attribute_option: Attribuutopties
     category: Categorieën
     family: Families
-    channel: Kanaal API toegang
-    locale: Landinstelling API toegang
 rights.api: Web API machtigingen
