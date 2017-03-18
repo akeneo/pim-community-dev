@@ -906,8 +906,8 @@ pim_enrich_attribute_form:
   code: Code
   type: Type d'attribut
   reference_data_name: Nom de la référence
-  scopable: Portée
-  localizable: Localisable
+  scopable: Valeur par canal
+  localizable: Valeur par locale
   unique: Valeur unique
   availableLocales: Locales disponibles
   locale_specific: Spécifique à une locale
