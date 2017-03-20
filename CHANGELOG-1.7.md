@@ -10,6 +10,7 @@
 - GITHUB-3435: Sort order products datagrid `Manage filter` options
 - PIM-6250: Fix attribute export.
 - GITHUB-5538: User without permissions access to import/export jobs through `Process tracker`
+- PIM-6258: Fix permission issue
 - PIM-6253: Add missing permissions on entities of the API
 
 # 1.7.0 (2017-03-14)
