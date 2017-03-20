@@ -24,7 +24,7 @@ Feature: Display available field options
     name;;;Nom;Name;;;;;;;info;0;1;;;;0;;;;;0;2;pim_catalog_text;0;1;;;
     manufacturer;;;;Manufacturer;;;;;;;info;0;0;;;;0;;;;;0;3;pim_catalog_simpleselect;0;1;;;
     weather_conditions;;;;"Weather conditions";;;;;;;info;0;0;;;;0;;;;;0;4;pim_catalog_multiselect;0;1;;;
-    description;;;Description;Description;;;;;;;info;0;1;1000;;;0;;;;;1;5;pim_catalog_textarea;0;1;;;
+    description;;;Description;Description;;;;;;;info;0;1;1000;;;0;;;;;1;5;pim_catalog_textarea;0;1;;;1
     comment;;;;Comment;;;;;;;other;0;0;255;;;0;;;;;0;1;pim_catalog_text;0;1;;;
     price;;;;Price;;;;;1;;marketing;0;0;;;;0;;200.0000;1.0000;;0;1;pim_catalog_price_collection;0;1;;;
     rating;;;;Rating;;;;;;;marketing;0;0;;;;0;;;;;0;2;pim_catalog_simpleselect;0;1;;;
