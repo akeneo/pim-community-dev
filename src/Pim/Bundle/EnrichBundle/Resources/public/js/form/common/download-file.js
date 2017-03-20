@@ -15,7 +15,8 @@ define(
         'text!pim/template/form/download-file',
         'routing',
         'pim/user-context',
-        'pim/common/property'
+        'pim/common/property',
+        'pim/security-context'
     ],
     function (_,
               __,
@@ -23,7 +24,8 @@ define(
               template,
               Routing,
               UserContext,
-              propertyAccessor
+              propertyAccessor,
+              securityContext
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -53,11 +55,13 @@ define(
                 if (!this.isVisible()) {
                     return this;
                 }
-                this.$el.html(this.template({
-                    btnLabel: __(this.config.label),
-                    btnIcon: this.config.iconName,
-                    url: this.getUrl()
-                }));
+                if (securityContext.isConditionalGranted(this.config.aclConditional, this.getFormData())) {
+                    this.$el.html(this.template({
+                        btnLabel: __(this.config.label),
+                        btnIcon: this.config.iconName,
+                        url: this.getUrl()
+                    }));
+                }
 
                 return this;
             },

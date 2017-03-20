@@ -13,14 +13,16 @@ define(
         'pim/form',
         'text!pim/template/job-execution/download-archives-buttons',
         'routing',
-        'pim/common/property'
+        'pim/common/property',
+        'pim/security-context'
     ],
     function (_,
               __,
               BaseForm,
               template,
               Routing,
-              propertyAccessor
+              propertyAccessor,
+              securityContext
     ) {
         return BaseForm.extend({
             tagName: 'a',
@@ -50,12 +52,14 @@ define(
              */
             render: function () {
                 var formData = this.getFormData();
-                this.$el.html(this.template({
-                    __: __,
-                    archives: propertyAccessor.accessProperty(this.getFormData(), this.config.filesPath),
-                    executionId: formData.meta.id,
-                    generateRoute: this.getUrl.bind(this)
-                }));
+                if (securityContext.isConditionalGranted(this.config.aclConditional, formData)) {
+                    this.$el.html(this.template({
+                        __: __,
+                        archives: propertyAccessor.accessProperty(this.getFormData(), this.config.filesPath),
+                        executionId: formData.meta.id,
+                        generateRoute: this.getUrl.bind(this)
+                    }));
+                }
 
                 return this;
             },
