@@ -1,10 +1,6 @@
 {% extends 'PimUIBundle:actions:update.html.twig' %}
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
-
-{% set entityId = form.vars.value.id %}
-{% set title = entityId ? 'Update Group'|trans : 'New Group'|trans %}
-{% set gridName = 'pim-group-user-grid' %}
-{% set formAction = entityId ? path('oro_user_group_update', { 'id': entityId}) : path('oro_user_group_create') %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {% set breadcrumbs = {} %}
 {% if entityId %}
@@ -44,42 +40,17 @@
 
 {% block content_data %}
     {% set id = 'group-profile' %}
+        {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
 
-    {% set dataBlocks = [{
-            'title': 'General'|trans,
-            'subblocks': [
-                {
-                    'class': 'AknFormContainer AknFormContainer--withPadding',
-                    'title': '',
-                    'data': [
-                        form_widget(form.appendUsers, {'id': 'groupAppendUsers'}),
-                        form_widget(form.removeUsers, {'id': 'groupRemoveUsers'}),
-                        form_row(form.name)
-                    ]
-                }
-            ]
-        }]
-    %}
+        {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 
-    {% set dataBlocks = dataBlocks|merge(
-        [{
-            'title' : 'Users'|trans,
-            'subblocks':
-            [
-                {
-                    'title' : null,
-                    'data' : [dataGrid.renderGrid(gridName, {group_id: entityId}, { cssClass: 'inner-grid' })]
-                }
-            ]
-        }]
-    )
-    %}
+        <div class="row-fluid tab-content">
+            {{ elements.form_errors(form) }}
+            {{ view_elements(form.vars.id ~ '.form_tab') }}
+        </div>
 
-    {% set data =
-        {
-            'formErrors': form_errors(form)? form_errors(form) : null,
-            'dataBlocks': dataBlocks,
-        }
-    %}
-    {{ parent() }}
+    {{ form_end(form) }}
+    <script type="text/javascript">
+        require('pim/page-title').set({'group': '{{ form.vars.value.name }}'});
+    </script>
 {% endblock content_data %}
