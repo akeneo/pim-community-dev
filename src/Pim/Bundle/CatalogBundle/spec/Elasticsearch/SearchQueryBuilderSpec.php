@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class SearchQueryBuilderSpec extends ObjectBehavior
 {
@@ -13,12 +14,7 @@ class SearchQueryBuilderSpec extends ObjectBehavior
 
     function it_generates_an_empty_query()
     {
-        $this->getQuery()->shouldReturn(
-            [
-                '_source' => ['identifier'],
-                'query'   => [],
-            ]
-        );
+        $this->getQuery()->shouldBeAnEmptyQuery();
     }
 
     function it_adds_one_filter_clause()
@@ -265,5 +261,20 @@ class SearchQueryBuilderSpec extends ObjectBehavior
                 ],
             ]
         );
+    }
+
+    public function getMatchers()
+    {
+        return [
+            'beAnEmptyQuery' => function ($subject) {
+                return
+                    is_array($subject) &&
+                    isset($subject['_source']) &&
+                    ['identifier'] === $subject['_source'] &&
+                    isset($subject['query']) &&
+                    $subject['query'] instanceof \stdClass
+                ;
+            }
+        ];
     }
 }
