@@ -23,6 +23,7 @@ class DeleteProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $this->assertCount(3, $this->get('pim_catalog.repository.product')->findAll());
+        // TODO: TIP-613: This repository does not exist anymore. We need to find another way to count.
         $this->assertEquals(30, $this->get('pim_catalog.repository.product_value_counter')->count());
 
         $client->request('DELETE', 'api/rest/v1/products/foo');

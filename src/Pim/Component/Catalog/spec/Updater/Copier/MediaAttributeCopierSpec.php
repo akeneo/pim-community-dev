@@ -15,14 +15,12 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MediaAttributeCopierSpec extends ObjectBehavior
 {
     function let(
         ProductBuilderInterface $builder,
         AttributeValidatorHelper $attrValidatorHelper,
-        NormalizerInterface $normalizer,
         FileFetcherInterface $fileFetcher,
         FileStorerInterface $fileStorer,
         FilesystemProvider $filesystemProvider
@@ -30,7 +28,6 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $this->beConstructedWith(
             $builder,
             $attrValidatorHelper,
-            $normalizer,
             $fileFetcher,
             $fileStorer,
             $filesystemProvider,
@@ -72,7 +69,6 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $builder,
         $attrValidatorHelper,
         $filesystemProvider,
-        $normalizer,
         FileInfoInterface $fromMedia,
         FileInfoInterface $toMedia,
         \SplFileInfo $rawFile,
@@ -116,7 +112,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
 
         $fileInfo->setOriginalFilename('akeneo.jpg')->shouldBeCalled();
 
-        $normalizer->normalize($fileInfo, 'standard')->willReturn('key');
+        $fileInfo->getKey()->willReturn('key');
 
         $builder->addOrReplaceProductValue($product, $toAttribute, $toLocale, $toScope, 'key');
 
@@ -133,7 +129,6 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $builder,
         $attrValidatorHelper,
         $filesystemProvider,
-        $normalizer,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product,
@@ -164,7 +159,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
 
-        $normalizer->normalize(Argument::cetera())->shouldNotBeCalled();
+        $fileInfo->getKey()->shouldNotBeCalled();
 
         $builder->addOrReplaceProductValue($product, $toAttribute, $toLocale, $toScope, null);
 
@@ -181,7 +176,6 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $builder,
         $attrValidatorHelper,
         $filesystemProvider,
-        $normalizer,
         FileInfoInterface $fromMedia,
         FileInfoInterface $toMedia,
         \SplFileInfo $rawFile,
@@ -225,8 +219,6 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $product->getValue('toAttributeCode', $toLocale, $toScope)->willReturn(null);
 
         $toProductValue->getMedia()->willReturn($toMedia);
-
-        $normalizer->normalize($fileInfo, 'standard')->willReturn('key');
 
         $builder->addOrReplaceProductValue($product, $toAttribute, $toLocale, $toScope, $fileInfo);
 

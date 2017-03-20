@@ -7,7 +7,8 @@ namespace Akeneo\Test\Integration;
  *
  * In integration tests, when uploading a media, we cannot guess the final path.
  * We can just check if the data match with the constant MEDIA_ATTRIBUTE_DATA_PATTERN.
- * If the pattern is checked, we return the constant MEDIA_ATTRIBUTE_DATA_COMPARISON to be able to have an identical comparison element
+ * If the pattern is checked, we return the constant MEDIA_ATTRIBUTE_DATA_COMPARISON
+ * to be able to have an identical comparison element
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

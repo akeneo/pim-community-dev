@@ -6,6 +6,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Statement;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 
 /**
  * Integration tests to verify a product is well saved in database.
@@ -15,16 +16,19 @@ class ProductSaverIntegration extends TestCase
     public function testRawValuesForProductWithAllAttributes()
     {
         $product = $this->createProduct('just-a-product-with-all-possible-values', 'familyA');
-        $this->updateProduct($product, $this->getStandardValuesWithAllAttributes());
+        $standardValues = $this->getStandardValuesWithAllAttributes();
+        $this->updateProduct($product, $standardValues);
         $this->saveProduct($product);
 
         $stmt = $this->createStatement('SELECT raw_values FROM pim_catalog_product ORDER BY id DESC LIMIT 1');
         $jsonRawValues = $stmt->fetchColumn();
+        $rawValues = json_decode($jsonRawValues, true);
+        NormalizedProductCleaner::cleanOnlyValues($rawValues);
 
-        $this->assertEquals(
-            json_encode($this->getStorageValuesWithAllAttributes()),
-            $jsonRawValues
-        );
+        $storageValues = $this->getStorageValuesWithAllAttributes();
+        NormalizedProductCleaner::cleanOnlyValues($storageValues);
+
+        $this->assertEquals($storageValues, $rawValues);
     }
 
     /**
@@ -76,6 +80,9 @@ class ProductSaverIntegration extends TestCase
         return $this->get('doctrine.orm.entity_manager')->getConnection()->query($sql);
     }
 
+    /**
+     * @return array
+     */
     private function getStandardValuesWithAllAttributes()
     {
         return [
@@ -237,6 +244,9 @@ class ProductSaverIntegration extends TestCase
         ];
     }
 
+    /**
+     * @return array
+     */
     private function getStorageValuesWithAllAttributes()
     {
         return [
@@ -263,7 +273,7 @@ class ProductSaverIntegration extends TestCase
                         // TODO: here maybe we should have a "987654321987123.4", but the measure converter
                         // TODO: returns a double that is too big, and we didn't change that
                         // TODO: see TIP-695
-                        'base_data' => 9.8765432198712e+14,
+                        'base_data' => 987654321987123.4,
                         'base_unit' => 'WATT',
                         'family'    => 'Power',
                     ]

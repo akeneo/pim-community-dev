@@ -328,7 +328,6 @@ services:
         class: '%pim_catalog.updater.copier.media_value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
-            - '@pim_serializer'
             - '@akeneo_file_storage.file_storage.file.file_fetcher'
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
@@ -341,7 +340,6 @@ services:
         class: '%pim_catalog.updater.copier.media_value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
-            - '@pim_serializer'
             - '@akeneo_file_storage.file_storage.file.file_fetcher'
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@akeneo_file_storage.file_storage.filesystem_provider'

@@ -59,7 +59,7 @@ class ViolationNormalizer implements NormalizerInterface
             ];
 
             if ($violation->getRoot() instanceof ProductInterface &&
-                1 === preg_match('|^values\[(?P<attribute>[a-z0-9-_]+)|i', $violation->getPropertyPath(), $matches)) {
+                1 === preg_match('|^values\[(?P<attribute>[a-z0-9-_\<\>]+)|i', $violation->getPropertyPath(), $matches)) {
                 $error = $this->getProductValuesErrors($violation, $matches['attribute']);
             }
 
@@ -91,7 +91,9 @@ class ViolationNormalizer implements NormalizerInterface
 
     /**
      * Constraints for product values are not displayed correctly.
-     * For instance, an error for attribute "a_text" will be displayed like that: "values[a_text-fr_FR-ecommerce].varchar"
+     * For instance, an error for attribute "a_text" will be displayed like that:
+     *      "values[a_text-fr_FR-ecommerce].varchar"
+     *
      * In the API, the same error will be:
      * [
      *    "field": "values",
@@ -101,20 +103,21 @@ class ViolationNormalizer implements NormalizerInterface
      *    "message": "..."
      * ]
      *
-     * Exception for identifier attribute (which is displayed like "values[sku].varchar"), we will return information like that:
+     * Exception for identifier attribute (which is displayed like "values[sku].varchar"),
+     * we will return information like that:
      * [
      *    "field": "identifier",
      *    "message": "..."
      * ]
      *
      * @param ConstraintViolationInterface $violation
-     * @param string                       $attributeCode
+     * @param string                       $productValueKey
      *
      * @return array
      */
-    protected function getProductValuesErrors(ConstraintViolationInterface $violation, $attributeCode)
+    protected function getProductValuesErrors(ConstraintViolationInterface $violation, $productValueKey)
     {
-        $productValue = $violation->getRoot()->getValues()[$attributeCode];
+        $productValue = $violation->getRoot()->getValues()->getByKey($productValueKey);
         $attributeType = $productValue->getAttribute()->getType();
 
         if (AttributeTypes::IDENTIFIER === $attributeType) {
