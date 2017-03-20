@@ -11,11 +11,13 @@ define(
     [
         'jquery',
         'underscore',
+        'pim/fetcher-registry',
         'pim/common/add-attribute'
     ],
     function (
         $,
         _,
+        FetcherRegistry,
         AddAttribute
     ) {
         return AddAttribute.extend({
