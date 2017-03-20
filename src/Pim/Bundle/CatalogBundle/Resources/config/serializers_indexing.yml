@@ -2,6 +2,7 @@ parameters:
     pim_catalog.normalizer.indexing.product.class: Pim\Component\Catalog\Normalizer\Indexing\ProductNormalizer
     pim_catalog.normalizer.indexing.product.properties.class: Pim\Component\Catalog\Normalizer\Indexing\Product\PropertiesNormalizer
     pim_catalog.normalizer.indexing.datetime.class: Pim\Component\Catalog\Normalizer\Indexing\DateTimeNormalizer
+    pim_catalog.normalizer.indexing.product.product_values.class: Pim\Component\Catalog\Normalizer\Indexing\Product\ProductValueCollectionNormalizer
 
 services:
     pim_catalog.normalizer.indexing.product:
@@ -20,5 +21,10 @@ services:
         class: '%pim_catalog.normalizer.indexing.datetime.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.datetime'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing.product.product_values:
+        class: '%pim_catalog.normalizer.indexing.product.product_values.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
