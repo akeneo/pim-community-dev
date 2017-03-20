@@ -1,0 +1,25 @@
+<div class="AknFieldContainer">
+    <div class="AknFieldContainer-header">
+        <label class="control-label <% if(isRequired) { %><%- 'required' %><% } %>" for="<%- fieldPrefix + '_' + name %>">
+            <%- label %> <% if(isRequired) { %><em><%- requiredLabel %></em><% } %>
+        </label>
+    </div>
+    <div class="AknFieldContainer-inputContainer">
+        <input id="<% fieldPrefix + '_' + name %>" class="AknTextField" type="text"
+            <%- isDisabled ? 'readonly disabled' : '' %>
+            <%- isRequired ? 'required' : '' %>
+            value="<%- value %>"
+        >
+    </div>
+    <div class="AknFieldContainer-footer">
+        <% if (null !== error) { %>
+        <span class="validation-container">
+            <span class="validation-errors">
+                <span>
+                    <i class="icon-warning-sign"></i> <span class="error-message"><%- error %></span>
+                </span>
+            </span>
+        </span>
+        <% } %>
+    </div>
+</div>

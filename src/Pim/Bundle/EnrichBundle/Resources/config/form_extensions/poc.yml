@@ -1,0 +1,50 @@
+extensions:
+    pim-poc-edit-form:
+        module: pim/form/common/edit-form
+
+    pim-poc-edit-form-form-tabs:
+        module: pim/form/common/form-tabs
+        parent: pim-poc-edit-form
+        targetZone: content
+        position: 90
+
+    pim-poc-edit-form-state:
+        module: pim/form/common/state
+        parent: pim-poc-edit-form
+        targetZone: state
+        position: 900
+        config:
+            entity: pim_enrich.entity.poc.title
+
+    pim-poc-edit-form-form-properties:
+        module: pim/common/tab/properties
+        parent: pim-poc-edit-form-form-tabs
+        targetZone: container
+        position: 100
+        config:
+            label: 'pim_enrich.form.poc.tab.properties.title'
+
+    pim-poc-edit-form-properties-form:
+        module: pim/poc/form/form
+        parent: pim-poc-edit-form-form-properties
+        targetZone: accordion
+        position: 100
+        config:
+            fieldPrefix: pim_enrich_poc_form
+            fields:
+                -
+                    name: code
+                    type: input
+                    config:
+                        label: pim_enrich.form.poc.code
+                        isRequired: true
+                        isDisabled: true
+                -
+                    name: new_name
+                    type: input
+                    config:
+                        label: pim_enrich.form.poc.new_name
+                        isRequired: false
+                        isDisabled: false
+
+
