@@ -1,12 +1,13 @@
 parameters:
-    pim_catalog.query.product_query_builder_factory.class:      Pim\Component\Catalog\Query\ProductQueryBuilderFactory
-    pim_catalog.query.product_query_builder.class:              Pim\Component\Catalog\Query\ProductQueryBuilder
-    pim_catalog.query.filter.registry.class:                    Pim\Component\Catalog\Query\Filter\FilterRegistry
-    pim_catalog.query.sorter.registry.class:                    Pim\Component\Catalog\Query\Sorter\SorterRegistry
-    pim_catalog.query.filter.field_dumper.class:                Pim\Bundle\CatalogBundle\Command\ProductQueryHelp\FieldFilterDumper
-    pim_catalog.query.filter.attribute_dumper.class:            Pim\Bundle\CatalogBundle\Command\ProductQueryHelp\AttributeFilterDumper
-    pim_catalog.doctrine.query.filter.object_id_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver
+    pim_catalog.query.product_query_builder_factory.class:        Pim\Component\Catalog\Query\ProductQueryBuilderFactory
+    pim_catalog.query.product_query_builder.class:                Pim\Component\Catalog\Query\ProductQueryBuilder
+    pim_catalog.query.filter.registry.class:                      Pim\Component\Catalog\Query\Filter\FilterRegistry
+    pim_catalog.query.sorter.registry.class:                      Pim\Component\Catalog\Query\Sorter\SorterRegistry
+    pim_catalog.query.filter.field_dumper.class:                  Pim\Bundle\CatalogBundle\Command\ProductQueryHelp\FieldFilterDumper
+    pim_catalog.query.filter.attribute_dumper.class:              Pim\Bundle\CatalogBundle\Command\ProductQueryHelp\AttributeFilterDumper
+    pim_catalog.doctrine.query.filter.object_id_resolver.class:   Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver
     pim_catalog.doctrine.query.filter.object_code_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver
+    pim_catalog.query.elasticsearch.filter.family.class:          Pim\Bundle\CatalogBundle\Elasticsearch\Filter\FamilyFilter
 
 services:
     pim_catalog.query.product_query_builder_factory:
@@ -59,3 +60,12 @@ services:
             - [ addFieldMapping, ['option', '%pim_catalog.entity.attribute_option.class%']]
             - [ addFieldMapping, ['category', '%pim_catalog.entity.category.class%']]
             - [ addFieldMapping, ['group', '%pim_catalog.entity.group.class%']]
+
+    # Fields filters
+    pim_catalog.query.elasticsearch.filter.family:
+        class: '%pim_catalog.query.elasticsearch.filter.family.class%'
+        arguments:
+            - ['family']
+            - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }

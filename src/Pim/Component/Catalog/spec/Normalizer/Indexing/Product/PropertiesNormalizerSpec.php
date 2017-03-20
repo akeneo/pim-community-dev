@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\PropertiesNormalizer;
@@ -36,22 +37,28 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getIdentifier()->willReturn('sku-001');
 
         $product->getValues()->willReturn($productValueCollection);
+        $product->getFamily()->willReturn(null);
         $productValueCollection->isEmpty()->willReturn(true);
 
         $this->normalize($product, 'indexing')->shouldReturn(
             [
                 'identifier' => 'sku-001',
+                'family'     => null,
                 'values'     => [],
             ]
         );
     }
 
-    function it_normalizes_product_values(
+    function it_normalizes_product_fields_and_values(
         $serializer,
         ProductInterface $product,
-        ProductValueCollectionInterface $productValueCollection
+        ProductValueCollectionInterface $productValueCollection,
+        FamilyInterface $family
     ) {
         $product->getIdentifier()->willReturn('sku-001');
+
+        $product->getFamily()->willReturn($family);
+        $family->getCode()->willReturn('a_family');
 
         $product->getValues()
             ->shouldBeCalledTimes(2)
@@ -72,6 +79,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $this->normalize($product, 'indexing')->shouldReturn(
             [
                 'identifier' => 'sku-001',
+                'family'     => 'a_family',
                 'values'     => [
                     'a_size-decimal' => [
                         '<all_locales>' => [

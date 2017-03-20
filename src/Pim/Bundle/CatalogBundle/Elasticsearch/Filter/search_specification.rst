@@ -899,16 +899,13 @@ Same as ``IN``, but with the ``must_not`` occured type
 
 Family
 ******
-:Apply: "family" field
+:Apply: apply on the 'family' field
 
 Data model
 ~~~~~~~~~~
 .. code-block:: yaml
 
-    family:
-        id: 5
-        label-en_US: "My family"
-        label-fr_FR: "Ma famille"
+    family: 'familyA'
 
 Filtering
 ~~~~~~~~~
@@ -918,10 +915,37 @@ IN
 ~~
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    terms:
-        family.id: [5, 6 7]
+    'terms' => [
+        'family' => ['familyA', 'familyB', 'familyC']
+    ]
+
+NOT IN
+~~~~~~
+:Type: must_not
+
+.. code-block:: php
+
+    'terms' => [
+        'family' => ['familyA', 'familyB', 'familyC']
+    ]
+
+IS EMPTY
+~~~~~~~~
+:Type: must_not
+
+.. code-block:: php
+
+    ['exists' => ['field' => 'family']]
+
+IS NOT EMPTY
+~~~~~~~~~~~~
+:Type: filter
+
+.. code-block:: php
+
+    ['exists' => ['field' => 'family']]
 
 Sorting
 ~~~~~~~
