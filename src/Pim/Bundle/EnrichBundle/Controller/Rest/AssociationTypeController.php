@@ -50,6 +50,11 @@ class AssociationTypeController
     /**
      * @param AssociationTypeRepositoryInterface $associationTypeRepo
      * @param NormalizerInterface                $normalizer
+     * @param RemoverInterface                   $remover
+     * @param ObjectUpdaterInterface             $updater
+     * @param SaverInterface                     $saver
+     * @param ValidatorInterface                 $validator
+     * @param UserContext                        $userContext
      */
     public function __construct(
         AssociationTypeRepositoryInterface $associationTypeRepo,
@@ -71,8 +76,6 @@ class AssociationTypeController
 
     /**
      * @return JsonResponse
-     *
-     * @AclAncestor("pim_enrich_associationtype_index")
      */
     public function indexAction()
     {
