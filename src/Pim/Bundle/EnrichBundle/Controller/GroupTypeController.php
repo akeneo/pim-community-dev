@@ -98,7 +98,7 @@ class GroupTypeController
 
             $url = $this->router->generate(
                 'pim_enrich_grouptype_edit',
-                ['id' => $groupType->getId()]
+                ['code' => $groupType->getCode()]
             );
             $response = ['status' => 1, 'url' => $url];
 
@@ -120,36 +120,10 @@ class GroupTypeController
      *
      * @return array
      */
-    public function editAction(GroupType $groupType)
+    public function editAction($code)
     {
-        if ($this->groupTypeHandler->process($groupType)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.group type.updated'));
-        }
-
         return [
-            'form' => $this->groupTypeForm->createView(),
+            'code' => $code
         ];
-    }
-
-    /**
-     * Remove a group type
-     *
-     * @param GroupType $groupType
-     *
-     * @AclAncestor("pim_enrich_grouptype_remove")
-     *
-     * @return Response
-     */
-    public function removeAction(GroupType $groupType)
-    {
-        if ($groupType->isVariant()) {
-            throw new DeleteException($this->translator->trans('flash.group type.cant remove variant'));
-        } elseif (count($groupType->getGroups()) > 0) {
-            throw new DeleteException($this->translator->trans('flash.group type.cant remove used'));
-        } else {
-            $this->groupTypeRemover->remove($groupType);
-        }
-
-        return new Response('', 204);
     }
 }

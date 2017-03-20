@@ -37,6 +37,8 @@ config:
 
         pim/remover/association-type:
             url: pim_enrich_associationtype_rest_remove
+        pim/remover/group-type:
+            url: pim_enrich_grouptype_rest_remove
         pim/remover/channel:
             url: pim_enrich_channel_rest_remove
         pim/remover/family:
@@ -51,8 +53,6 @@ config:
             url: pim_enrich_job_instance_rest_import_delete
         pim/remover/job-instance-export:
             url: pim_enrich_job_instance_rest_export_delete
-        pim/saver/association-type:
-            url: pim_enrich_associationtype_rest_post
         pim/saver/channel:
             postUrl: pim_enrich_channel_rest_post
             putUrl: pim_enrich_channel_rest_put
@@ -77,6 +77,12 @@ config:
                         urls:
                             list: pim_enrich_associationtype_rest_index
                             get: pim_enrich_associationtype_rest_get
+                group-type:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: pim_enrich_grouptype_rest_index
+                            get: pim_enrich_grouptype_rest_get
                 attribute-group:
                     module: pim/attribute-group-fetcher
                     options:
@@ -425,6 +431,7 @@ config:
         # Remover
         pim/remover/base:                pimenrich/js/remover/base-remover
         pim/remover/association-type:    pimenrich/js/remover/association-type-remover
+        pim/remover/group-type:          pimenrich/js/remover/group-type-remover
         pim/remover/channel:             pimenrich/js/remover/channel
         pim/remover/family:              pimenrich/js/remover/family
         pim/remover/product:             pimenrich/js/remover/product-remover
@@ -435,7 +442,7 @@ config:
 
         # Saver
         pim/saver/base:                pimenrich/js/saver/base-saver
-        pim/saver/association-type:    pimenrich/js/saver/association-type-saver
+        pim/saver/entity-saver:        pimenrich/js/saver/entity-saver
         pim/saver/channel:             pimenrich/js/saver/channel
         pim/saver/family:              pimenrich/js/saver/family
         pim/saver/product:             pimenrich/js/saver/product-saver
@@ -457,8 +464,9 @@ config:
 
         # Association type
         pim/association-type-edit-form/delete:                 pimenrich/js/association-type/form/delete
-        pim/association-type-edit-form/save:                   pimenrich/js/association-type/form/save
-        pim/association-type-edit-form/properties/general:     pimenrich/js/association-type/form/properties/general
+
+        # Group type
+        pim/group-type-edit-form/delete:                 pimenrich/js/group-type/form/delete
 
         # Channel
         pim/channel-edit-form/delete:                           pimenrich/js/channel/form/delete
@@ -603,6 +611,7 @@ config:
         pim/common/tab/history:                pimenrich/js/form/common/tab/history
         pim/common/tab/properties:             pimenrich/js/form/common/tab/properties
         pim/common/properties/translation:     pimenrich/js/form/common/properties/translation
+        pim/common/properties/general:         pimenrich/js/form/common/properties/general
         pim/common/add-attribute:              pimenrich/js/form/common/attributes/add-attribute
         pim/common/add-attribute-line:         pimenrich/js/form/common/attributes/add-attribute-line
         pim/common/add-attribute-footer:       pimenrich/js/form/common/attributes/add-attribute-footer
@@ -619,6 +628,7 @@ config:
         pim/form/common/delete:                              pimenrich/js/form/common/delete
         pim/form/common/back-to-grid:                        pimenrich/js/form/common/back-to-grid
         pim/form/common/form-tabs:                           pimenrich/js/form/common/form-tabs
+        pim/form/common/save-form:                           pimenrich/js/form/common/save-form
         pim/form/common/save-buttons:                        pimenrich/js/form/common/save-buttons
         pim/form/common/state:                               pimenrich/js/form/common/state
         pim/form/common/meta/created:                        pimenrich/js/form/common/meta/created
@@ -667,6 +677,7 @@ config:
         pim/template/form/attribute-group/add/line:               pimenrich/templates/form/attribute-group/add/line.html
         pim/template/form/attribute-group/add/footer:             pimenrich/templates/form/attribute-group/add/footer.html
         pim/template/form/properties/translation:                 pimenrich/templates/form/properties/translation.html
+        pim/template/form/properties/general:                     pimenrich/templates/form/properties/general.html
         pim/template/form/properties/input:                       pimenrich/templates/form/properties/input.html
         pim/template/form/back-to-grid:                           pimenrich/templates/form/back-to-grid.html
         pim/template/form/form-tabs:                              pimenrich/templates/form/form-tabs.html
