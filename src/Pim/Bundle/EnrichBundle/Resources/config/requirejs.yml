@@ -202,13 +202,13 @@ config:
                     aclResourceId: pim_enrich_attributegroup_edit
                 pim_enrich_categorytree_create:
                     module: pim/controller/form
-                    aclResourceId: pim_enrich_categorytree_create
+                    aclResourceId:  pim_enrich_product_category_create
                 pim_enrich_categorytree_edit:
                     module: pim/controller/form
-                    aclResourceId: pim_enrich_categorytree_edit
+                    aclResourceId:  pim_enrich_product_category_edit
                 pim_enrich_categorytree_index:
                     module: pim/controller/form
-                    aclResourceId: pim_enrich_categorytree_index
+                    aclResourceId: pim_enrich_product_category_list
                 pim_enrich_channel_edit:
                     module: pim/controller/channel
                     aclResourceId: pim_enrich_channel_edit
