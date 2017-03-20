@@ -41,7 +41,6 @@ class FamilyNormalizer implements NormalizerInterface
     /**
      * @param NormalizerInterface          $familyNormalizer
      * @param NormalizerInterface          $translationNormalizer
-     * @param CollectionFilterInterface    $collectionFilter
      * @param AttributeRepositoryInterface $attributeRepository
      * @param VersionManager               $versionManager
      * @param NormalizerInterface          $versionNormalizer
@@ -49,14 +48,12 @@ class FamilyNormalizer implements NormalizerInterface
     public function __construct(
         NormalizerInterface $familyNormalizer,
         NormalizerInterface $translationNormalizer,
-        CollectionFilterInterface $collectionFilter,
         AttributeRepositoryInterface $attributeRepository,
         VersionManager $versionManager,
         NormalizerInterface $versionNormalizer
     ) {
         $this->familyNormalizer = $familyNormalizer;
         $this->translationNormalizer = $translationNormalizer;
-        $this->collectionFilter = $collectionFilter;
         $this->attributeRepository = $attributeRepository;
         $this->versionManager = $versionManager;
         $this->versionNormalizer = $versionNormalizer;
@@ -117,10 +114,7 @@ class FamilyNormalizer implements NormalizerInterface
      */
     protected function normalizeAttributes($codes)
     {
-        $attributes = $this->collectionFilter->filterCollection(
-            $this->attributeRepository->findBy(['code' => $codes]),
-            'pim.internal_api.attribute.view'
-        );
+        $attributes = $this->attributeRepository->findBy(['code' => $codes]);
 
         $normalizedAttributes = [];
         foreach ($attributes as $attribute) {
@@ -150,14 +144,11 @@ class FamilyNormalizer implements NormalizerInterface
         $result = [];
 
         foreach ($requirements as $channel => $attributeCodes) {
-            $filteredAttributes = $this->collectionFilter->filterCollection(
-                $this->attributeRepository->findBy(['code' => $attributeCodes]),
-                'pim.internal_api.attribute.view'
-            );
+            $attributes = $this->attributeRepository->findBy(['code' => $attributeCodes]);
 
             $result[$channel] = array_map(function ($attribute) {
                 return $attribute->getCode();
-            }, $filteredAttributes);
+            }, $attributes);
         }
 
         return $result;
