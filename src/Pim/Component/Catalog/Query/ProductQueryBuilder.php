@@ -2,9 +2,12 @@
 
 namespace Pim\Component\Catalog\Query;
 
+use Akeneo\Bundle\ElasticsearchBundle\Client as ElasticSearchClient;
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Exception\UnsupportedFilterException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
@@ -45,6 +48,12 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /** @var array */
     protected $rawFilters = [];
 
+    /** @var ElasticSearchClient */
+    protected $searchEngine;
+
+    /** @var EntityManagerInterface */
+    protected $entityManager;
+
     /**
      * Constructor
      *
@@ -52,6 +61,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * @param FilterRegistryInterface      $filterRegistry
      * @param SorterRegistryInterface      $sorterRegistry
      * @param CursorFactoryInterface       $cursorFactory
+     * @param ElasticSearchClient          $searchEngine
+     * @param EntityManagerInterface       $entityManager
      * @param array                        $defaultContext
      */
     public function __construct(
@@ -59,12 +70,16 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
+        ElasticSearchClient $searchEngine,
+        EntityManagerInterface $entityManager,
         array $defaultContext
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->filterRegistry = $filterRegistry;
         $this->sorterRegistry = $sorterRegistry;
         $this->cursorFactory = $cursorFactory;
+        $this->searchEngine = $searchEngine;
+        $this->entityManager = $entityManager;
 
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
@@ -76,7 +91,27 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function execute()
     {
-        return $this->cursorFactory->createCursor($this->getQueryBuilder());
+        // TODO TIP-701: revert this commit and properly implement the expected behavior
+        // TODO TIP-701: this commit has couples the ProductQueryBuilder to ElasticSearch and
+        // TODO TIP-701: to an Akeneo bundle
+        // TODO TIP-701: it has been done like that just to be able to launch
+        // TODO TIP-701: the PQB integration tests one by one, and make them green one by one
+
+        $response = $this->searchEngine->search(
+            'pim_catalog_product',
+            $this->getQueryBuilder()->getQuery()
+        );
+
+        $identifiers = [];
+        foreach ($response['hits']['hits'] as $hit) {
+            $identifiers[] = $hit['_source']['identifier'];
+        }
+
+        $qb = $this->getInternalQueryBuilder();
+        $qb->where('p.identifier IN (:identifiers)');
+        $qb->setParameter('identifiers', $identifiers);
+
+        return $this->cursorFactory->createCursor($qb);
     }
 
     /**
@@ -293,5 +328,15 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
                 'scope'
             ]
         );
+    }
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    private function getInternalQueryBuilder()
+    {
+        return $this->entityManager->createQueryBuilder()
+            ->select('p')
+            ->from(Product::class, 'p');
     }
 }

@@ -2,8 +2,9 @@
 
 namespace Pim\Component\Catalog\Query;
 
+use Akeneo\Bundle\ElasticsearchBundle\Client as ElasticSearchClient;
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
 use Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface;
@@ -22,7 +23,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
     /** @var string */
     protected $pqbClass;
 
-    /** @var ObjectManager */
+    /** @var EntityManagerInterface */
     protected $om;
 
     /** @var string */
@@ -40,23 +41,28 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
     /** CursorFactoryInterface */
     protected $cursorFactory;
 
+    /** @var ElasticSearchClient */
+    protected $searchEngine;
+
     /**
      * @param string                       $pqbClass
-     * @param ObjectManager                $om
+     * @param EntityManagerInterface       $om
      * @param string                       $productClass
      * @param AttributeRepositoryInterface $attributeRepository
      * @param FilterRegistryInterface      $filterRegistry
      * @param SorterRegistryInterface      $sorterRegistry
      * @param CursorFactoryInterface       $cursorFactory
+     * @param ElasticSearchClient          $searchEngine
      */
     public function __construct(
         $pqbClass,
-        ObjectManager $om,
+        EntityManagerInterface $om,
         $productClass,
         AttributeRepositoryInterface $attributeRepository,
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
-        CursorFactoryInterface $cursorFactory
+        CursorFactoryInterface $cursorFactory,
+        ElasticSearchClient $searchEngine
     ) {
         $this->pqbClass = $pqbClass;
         $this->om = $om;
@@ -65,6 +71,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
         $this->filterRegistry = $filterRegistry;
         $this->sorterRegistry = $sorterRegistry;
         $this->cursorFactory = $cursorFactory;
+        $this->searchEngine = $searchEngine;
     }
 
     /**
@@ -100,6 +107,8 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
             $this->filterRegistry,
             $this->sorterRegistry,
             $this->cursorFactory,
+            $this->searchEngine,
+            $this->om,
             $options
         );
 
