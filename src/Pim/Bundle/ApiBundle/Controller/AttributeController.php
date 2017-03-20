@@ -201,6 +201,8 @@ class AttributeController
      * @throws HttpException
      *
      * @return Response
+     *
+     * @AclAncestor("pim_api_attribute_edit")
      */
     public function partialUpdateListAction(Request $request)
     {
@@ -215,6 +217,8 @@ class AttributeController
      * @param string  $code
      *
      * @return Response
+     *
+     * @AclAncestor("pim_api_attribute_edit")
      */
     public function partialUpdateAction(Request $request, $code)
     {

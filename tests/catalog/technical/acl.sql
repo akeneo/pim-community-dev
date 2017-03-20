@@ -29,7 +29,8 @@ INSERT INTO `acl_classes` VALUES
     (7,'pim_api_category_edit'),
     (8,'pim_api_channel_list'),
     (9,'pim_api_family_list'),
-    (10,'pim_api_family_edit')
+    (10,'pim_api_family_edit'),
+    (11,'pim_api_locale_list')
 ;
 /*!40000 ALTER TABLE `acl_classes` ENABLE KEYS */;
 
@@ -48,7 +49,8 @@ INSERT INTO `acl_entries` VALUES
     (7,8,NULL,2,NULL,0,0,1,'all',0,0),
     (8,9,NULL,2,NULL,0,0,1,'all',0,0),
     (9,10,NULL,2,NULL,0,0,1,'all',0,0),
-    (10,1,NULL,3,NULL,0,0,1,'all',0,0)
+    (10,11,NULL,2,NULL,0,0,1,'all',0,0),
+    (11,1,NULL,3,NULL,0,0,1,'all',0,0)
 ;
 /*!40000 ALTER TABLE `acl_entries` ENABLE KEYS */;
 
@@ -67,7 +69,8 @@ INSERT INTO `acl_object_identities` VALUES
     (7,NULL,7,'action',1),
     (8,NULL,8,'action',1),
     (9,NULL,9,'action',1),
-    (10,NULL,10,'action',1)
+    (10,NULL,10,'action',1),
+    (11,NULL,11,'action',1)
 ;
 /*!40000 ALTER TABLE `acl_object_identities` ENABLE KEYS */;
 
@@ -86,7 +89,8 @@ INSERT INTO `acl_object_identity_ancestors` VALUES
     (7,7),
     (8,8),
     (9,9),
-    (10,10)
+    (10,10),
+    (11,11)
 ;
 /*!40000 ALTER TABLE `acl_object_identity_ancestors` ENABLE KEYS */;
 

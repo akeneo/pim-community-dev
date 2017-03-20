@@ -203,6 +203,8 @@ class CategoryController
      * @throws HttpException
      *
      * @return Response
+     *
+     * @AclAncestor("pim_api_category_edit")
      */
     public function partialUpdateListAction(Request $request)
     {
