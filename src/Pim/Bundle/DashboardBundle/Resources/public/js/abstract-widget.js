@@ -40,9 +40,10 @@ define(
             initialize: function (options) {
                 this.options = _.extend({}, this.defaults, this.options, options);
 
-                mediator.on('hash_navigation_request:complete', function () {
-                    if (this.isDashboardPage()) {
-                        this.delayedLoad();
+                mediator.on('route_complete', function (loadedRoute) {
+                    if (loadedRoute === 'pim_dashboard_index') {
+                      this.needsData = true;
+                      this.delayedLoad();
                     }
                 }, this);
             },
