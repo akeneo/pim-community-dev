@@ -213,7 +213,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         $this->currentPage = sprintf('%s %s', $page, $action);
         $this->getCurrentPage()->open(['id' => $entity->getId()]);
 
-        return new Step\Then('I should see "403 Forbidden"');
+        return new Step\Then('I should see "Forbidden"');
     }
 
     /**
