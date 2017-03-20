@@ -110,5 +110,5 @@ Feature: Edit a product
     And I revoke rights to group Families
     And I revoke rights to group Locales
     And I save the role
-    Then I edit the "rangers" product
-    And I should see the text "Rangers"
+    And I edit the "rangers" product
+    Then I should see the text "Rangers"
