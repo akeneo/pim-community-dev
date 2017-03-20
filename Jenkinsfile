@@ -107,6 +107,10 @@ def runGruntTest() {
                 sh "grunt"
             }
         } finally {
+            sh "docker stop \$(docker ps -a -q) || true"
+            sh "docker rm \$(docker ps -a -q) || true"
+            sh "docker volume rm \$(docker volume ls -q) || true"
+
             deleteDir()
         }
     }
@@ -125,6 +129,10 @@ def runPhpSpecTest(phpVersion) {
                 sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
             }
         } finally {
+            sh "docker stop \$(docker ps -a -q) || true"
+            sh "docker rm \$(docker ps -a -q) || true"
+            sh "docker volume rm \$(docker volume ls -q) || true"
+
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
@@ -136,9 +144,9 @@ def runIntegrationTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("elasticsearch:5.2").withRun("--name ${env.BRANCH_NAME}-elasticsearch") {
-                docker.image("mysql:5.7").withRun("--name ${env.BRANCH_NAME}-mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim") {
-                    docker.image("carcel/php:${phpVersion}").inside("--link ${env.BRANCH_NAME}-mysql:mysql --link ${env.BRANCH_NAME}-elasticsearch:elasticsearch -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("elasticsearch:5.2").withRun("--name elasticsearch -e ES_JAVA_OPTS=\"-Xms256m -Xmx256m\"") {
+                docker.image("mysql:5.7").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim", "--sql_mode=ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION") {
+                    docker.image("carcel/php:${phpVersion}").inside("--link mysql:mysql --link elasticsearch:elasticsearch -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                         unstash "project_files"
 
                         sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -154,6 +162,10 @@ def runIntegrationTest(phpVersion) {
                 }
             }
         } finally {
+            sh "docker stop \$(docker ps -a -q) || true"
+            sh "docker rm \$(docker ps -a -q) || true"
+            sh "docker volume rm \$(docker volume ls -q) || true"
+
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
@@ -174,6 +186,10 @@ def runPhpCsFixerTest() {
                 sh "./bin/php-cs-fixer fix --diff --dry-run --format=junit --config=.php_cs.php > app/build/logs/phpcs.xml"
             }
         } finally {
+            sh "docker stop \$(docker ps -a -q) || true"
+            sh "docker rm \$(docker ps -a -q) || true"
+            sh "docker volume rm \$(docker volume ls -q) || true"
+
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-cs-fixer] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
