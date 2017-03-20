@@ -1,27 +1,27 @@
-type;code;label-en_US;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;required;sort_order;label-fr_FR;max_characters;number_min;number_max;decimals_allowed;negative_allowed;max_file_size
-pim_catalog_identifier;sku;SKU;info;1;1;;;;;0;0;1;1;;;;;;;
-pim_catalog_text;name;Name;info;0;1;;;;;1;0;0;2;;;;;;;
-pim_catalog_simpleselect;manufacturer;Manufacturer;info;0;1;;;;;0;0;0;3;;;;;;;
-pim_catalog_multiselect;weather_conditions;Weather conditions;info;0;1;;;;;0;0;0;4;;;;;;;
-pim_catalog_textarea;description;Description;info;0;1;;;;;1;1;0;5;;1000;;;;;
-pim_catalog_text;comment;Comment;other;0;1;;;;;0;0;0;7;;255;;;;;
-pim_catalog_price_collection;price;Price;marketing;0;1;;;;;0;0;0;1;;;1;200;1;;
-pim_catalog_simpleselect;rating;Rating;marketing;0;1;;;;;0;0;0;2;;;;;;;
-pim_catalog_image;side_view;Side view;media;0;0;gif,png,jpeg,jpg;;;;0;0;0;1;;;;;;;1
-pim_catalog_image;top_view;Top view;media;0;0;gif,png,jpeg,jpg;;;;0;0;0;2;;;;;;;1
-pim_catalog_simpleselect;size;Size;sizes;0;1;;;;;0;0;0;1;;;;;;;
-pim_catalog_simpleselect;color;Color;colors;0;1;;;;;0;0;0;1;;;;;;;
-pim_catalog_simpleselect;lace_color;Lace color;colors;0;1;;;;;0;0;0;2;;;;;;;
-pim_catalog_metric;length;Length;info;0;0;;Length;CENTIMETER;;0;0;0;10;Longueur;;;;0;0;
-pim_catalog_metric;volume;Volume;info;0;0;;Volume;CUBIC_MILLIMETER;;0;0;0;20;Volume;;;;0;0;
-pim_catalog_number;number_in_stock;Number in stock;other;0;0;;;;;0;0;0;8;;;;;0;0;
-pim_catalog_date;destocking_date;Destocking date;other;0;1;;;;;0;0;0;25;Date de déstockage;;;;;;
-pim_catalog_boolean;handmade;Handmade;other;0;1;;;;;0;0;0;30;;;;;;;
-pim_reference_data_simpleselect;heel_color;Heel color;other;0;1;;;;color;0;0;0;30;;;;;;;
-pim_reference_data_simpleselect;sole_color;Sole color;other;0;1;;;;color;0;0;0;35;;;;;;;
-pim_reference_data_simpleselect;cap_color;Cap color;other;0;1;;;;color;1;1;0;35;;;;;;;
-pim_reference_data_multiselect;sole_fabric;Sole fabric;other;0;1;;;;fabrics;0;0;0;40;;;;;;;
-pim_reference_data_multiselect;lace_fabric;Lace fabric;other;0;1;;;;fabrics;1;1;0;45;;;;;;;
-pim_catalog_number;rate_sale;Rate of sale;marketing;0;1;;;;;0;0;0;1;Taux de vente;;;;1;0;
-pim_catalog_metric;weight;Weight;info;0;1;;Weight;GRAM;;0;0;0;30;Poids;;;;1;0;
-pim_catalog_text;123;Attribute 123;other;0;1;;;;;0;0;0;1;;255;;;;;
+type;code;label-en_US;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;required;sort_order;label-fr_FR;max_characters;number_min;number_max;decimals_allowed;negative_allowed;max_file_size;wysiwyg_enabled
+pim_catalog_identifier;sku;SKU;info;1;1;;;;;0;0;1;1;;;;;;;;
+pim_catalog_text;name;Name;info;0;1;;;;;1;0;0;2;;;;;;;;
+pim_catalog_simpleselect;manufacturer;Manufacturer;info;0;1;;;;;0;0;0;3;;;;;;;;
+pim_catalog_multiselect;weather_conditions;Weather conditions;info;0;1;;;;;0;0;0;4;;;;;;;;
+pim_catalog_textarea;description;Description;info;0;1;;;;;1;1;0;5;;1000;;;;;;1
+pim_catalog_text;comment;Comment;other;0;1;;;;;0;0;0;7;;255;;;;;;
+pim_catalog_price_collection;price;Price;marketing;0;1;;;;;0;0;0;1;;;1;200;1;;;
+pim_catalog_simpleselect;rating;Rating;marketing;0;1;;;;;0;0;0;2;;;;;;;;
+pim_catalog_image;side_view;Side view;media;0;0;gif,png,jpeg,jpg;;;;0;0;0;1;;;;;;;1;
+pim_catalog_image;top_view;Top view;media;0;0;gif,png,jpeg,jpg;;;;0;0;0;2;;;;;;;1;
+pim_catalog_simpleselect;size;Size;sizes;0;1;;;;;0;0;0;1;;;;;;;;
+pim_catalog_simpleselect;color;Color;colors;0;1;;;;;0;0;0;1;;;;;;;;
+pim_catalog_simpleselect;lace_color;Lace color;colors;0;1;;;;;0;0;0;2;;;;;;;;
+pim_catalog_metric;length;Length;info;0;0;;Length;CENTIMETER;;0;0;0;10;Longueur;;;;0;0;;
+pim_catalog_metric;volume;Volume;info;0;0;;Volume;CUBIC_MILLIMETER;;0;0;0;20;Volume;;;;0;0;;
+pim_catalog_number;number_in_stock;Number in stock;other;0;0;;;;;0;0;0;8;;;;;0;0;;
+pim_catalog_date;destocking_date;Destocking date;other;0;1;;;;;0;0;0;25;Date de déstockage;;;;;;;
+pim_catalog_boolean;handmade;Handmade;other;0;1;;;;;0;0;0;30;;;;;;;;
+pim_reference_data_simpleselect;heel_color;Heel color;other;0;1;;;;color;0;0;0;30;;;;;;;;
+pim_reference_data_simpleselect;sole_color;Sole color;other;0;1;;;;color;0;0;0;35;;;;;;;;
+pim_reference_data_simpleselect;cap_color;Cap color;other;0;1;;;;color;1;1;0;35;;;;;;;;
+pim_reference_data_multiselect;sole_fabric;Sole fabric;other;0;1;;;;fabrics;0;0;0;40;;;;;;;;
+pim_reference_data_multiselect;lace_fabric;Lace fabric;other;0;1;;;;fabrics;1;1;0;45;;;;;;;;
+pim_catalog_number;rate_sale;Rate of sale;marketing;0;1;;;;;0;0;0;1;Taux de vente;;;;1;0;;
+pim_catalog_metric;weight;Weight;info;0;1;;Weight;GRAM;;0;0;0;30;Poids;;;;1;0;;
+pim_catalog_text;123;Attribute 123;other;0;1;;;;;0;0;0;1;;255;;;;;;

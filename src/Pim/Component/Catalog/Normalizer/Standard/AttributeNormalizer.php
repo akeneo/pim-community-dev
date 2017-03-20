@@ -48,7 +48,7 @@ class AttributeNormalizer implements NormalizerInterface
             'default_metric_unit'    => '' === $attribute->getDefaultMetricUnit() ?
                 null : $attribute->getDefaultMetricUnit(),
             'reference_data_name'    => $attribute->getReferenceDataName(),
-            'available_locales'      => $attribute->getLocaleSpecificCodes(),
+            'available_locales'      => $attribute->getAvailableLocaleCodes(),
             'max_characters'         => null === $attribute->getMaxCharacters() ?
                 null : (int) $attribute->getMaxCharacters(),
             'validation_rule'        => '' === $attribute->getValidationRule() ? null : $attribute->getValidationRule(),

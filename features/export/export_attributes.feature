@@ -20,7 +20,7 @@ Feature: Export attributes
     pim_catalog_text;name;Name;info;;0;1;;;;;;0;;;;;;;;;;;0;1;0;0;0
     pim_catalog_simpleselect;manufacturer;Manufacturer;info;;0;1;;;;;;0;;;;;;;;;;;0;0;0;0;0
     pim_catalog_multiselect;weather_conditions;"Weather conditions";info;;0;1;;;;;;0;;;;;;;;;;;0;0;0;0;0
-    pim_catalog_textarea;description;Description;info;;0;1;;;;;;1000;;;;;;;;;;;0;1;1;0;0
+    pim_catalog_textarea;description;Description;info;;0;1;;;;;;1000;;;1;;;;;;;;0;1;1;0;0
     pim_catalog_text;comment;Comment;other;;0;1;;;;;;255;;;;;;;;;;;0;0;0;0;0
     pim_catalog_price_collection;price;Price;marketing;;0;1;;;;;;0;;;;1.0000;200.0000;1;;;;;0;0;0;0;0
     pim_catalog_simpleselect;rating;Rating;marketing;;0;1;;;;;;0;;;;;;;;;;;0;0;0;0;0
@@ -43,4 +43,3 @@ Feature: Export attributes
     pim_catalog_metric;weight;Weight;info;;0;1;;Weight;GRAM;;;0;;;;;;1;;;;;0;0;0;0;0
     pim_catalog_text;123;"Attribute 123";other;;0;1;;;;;;255;;;;;;;;;;;0;0;0;0;0
     """
-

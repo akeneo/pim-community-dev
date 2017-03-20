@@ -53,7 +53,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getReferenceDataName()->willReturn(null);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
-        $attribute->getLocaleSpecificCodes()->willReturn([]);
+        $attribute->getAvailableLocaleCodes()->willReturn([]);
         $attribute->getMaxCharacters()->willReturn(null);
         $attribute->getValidationRule()->willReturn(null);
         $attribute->getValidationRegexp()->willReturn(null);
@@ -124,7 +124,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getReferenceDataName()->willReturn('color');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
-        $attribute->getLocaleSpecificCodes()->willReturn(['en_US', 'fr_FR']);
+        $attribute->getAvailableLocaleCodes()->willReturn(['en_US', 'fr_FR']);
         $attribute->getMaxCharacters()->willReturn(255);
         $attribute->getValidationRule()->willReturn('email');
         $attribute->getValidationRegexp()->willReturn('[0-9]*');
