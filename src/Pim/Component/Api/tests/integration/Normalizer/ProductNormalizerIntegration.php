@@ -382,21 +382,6 @@ class ProductNormalizerIntegration extends TestCase
     }
 
     /**
-     * Replaces dates fields (created/updated) in the $data array by self::DATE_FIELD_COMPARISON.
-     *
-     * @param array $data
-     *
-     * @return array
-     */
-    private function sanitizeDateFields(array $data)
-    {
-        $data['created'] = DateSanitizer::sanitize($data['created']);
-        $data['updated'] = DateSanitizer::sanitize($data['updated']);
-
-        return $data;
-    }
-
-    /**
      * Replaces media attributes data in the $data array by self::MEDIA_ATTRIBUTE_DATA_COMPARISON.
      *
      * @param array $data

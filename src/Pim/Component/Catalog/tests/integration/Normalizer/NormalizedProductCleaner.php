@@ -30,9 +30,81 @@ class NormalizedProductCleaner
      *
      * @param array $values
      */
-    public static function sortValues(array &$values)
+    public static function cleanOnlyValues(array &$values)
     {
-        self::ksortRecursive($values);
+        self::sortValues($values);
+    }
+
+    /**
+     * Sorts values by attribute code, then by channel, then by locale.
+     *
+     * We have different types of product value here.
+     * Either standard values:
+     *  "auto_exposure" => array:1 [
+     *      0 => array:3 [
+     *          "locale" => null
+     *          "scope" => null
+     *          "data" => true
+     *      ]
+     *  ]
+     *
+     * Either values normalized for the "storage" and "indexing" format:
+     *  "auto_exposure-boolean" => array:1 [
+     *      0 => array:1 [
+     *          "<all_channels>" => array:1 [
+     *              "<all_locales>" => true
+     *          ]
+     *      ]
+     *  ]
+     *
+     * We need to sort both of these formats.
+     *
+     * @param array $values
+     */
+    private static function sortValues(array &$values)
+    {
+        if (empty($values)) {
+            return;
+        }
+
+        $firstValue = current($values);
+        $keys = array_keys($firstValue);
+        $isStandardFormat = is_integer(current($keys));
+
+        if ($isStandardFormat) {
+            $values = self::sortStandardValues($values);
+        } else {
+            // easy for the indexing and storage format as channels and locales are directly accessible as keys
+            self::ksortRecursive($values);
+        }
+    }
+
+    /**
+     * Here we index each values of an attribute by channel and by code
+     * so that they can be easily sorted.
+     *
+     * @param array $allValues
+     *
+     * @return array
+     */
+    private static function sortStandardValues(array $allValues)
+    {
+        // first sort values by attribute code
+        ksort($allValues);
+        $sortedValues = [];
+
+        foreach ($allValues as $attributeCode => $attributeValues) {
+            $attributeIndexedValues = [];
+            foreach ($attributeValues as $value) {
+                $channel = null === $value['scope'] ? 'channel' : $value['scope'];
+                $locale = null === $value['locale'] ? 'locale' : $value['locale'];
+                $attributeIndexedValues[$channel . '-' . $locale] = $value;
+            }
+            ksort($attributeIndexedValues);
+            $sortedValues[$attributeCode] = array_values($attributeIndexedValues);
+        }
+
+        return $sortedValues;
     }
 
     /**

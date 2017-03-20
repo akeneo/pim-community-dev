@@ -53,7 +53,7 @@ class ProductValuesStorageIntegration extends TestCase
                         // TODO: here maybe we should have a "987654321987123.4", but the measure converter
                         // TODO: returns a double that is too big, and we didn't change that
                         // TODO: see TIP-695
-                        'base_data' => 9.8765432198712e+14,
+                        'base_data' => 987654321987123.4,
                         'base_unit' => 'WATT',
                         'family'    => 'Power',
                     ]
@@ -213,8 +213,8 @@ class ProductValuesStorageIntegration extends TestCase
         $product = $repository->findOneByIdentifier($identifier);
         $result = $serializer->normalize($product->getValues(), 'storage');
 
-        NormalizedProductCleaner::sortValues($expected);
-        NormalizedProductCleaner::sortValues($result);
+        NormalizedProductCleaner::cleanOnlyValues($expected);
+        NormalizedProductCleaner::cleanOnlyValues($result);
 
         $this->assertSame($expected, $result);
     }
