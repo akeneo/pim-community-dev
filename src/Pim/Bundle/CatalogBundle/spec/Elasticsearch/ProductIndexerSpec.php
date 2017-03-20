@@ -66,8 +66,10 @@ class ProductIndexerSpec extends ObjectBehavior
         $normalizer->normalize($product1, 'indexing')->willReturn(['a key' => 'a value']);
         $normalizer->normalize($product2, 'indexing')->willReturn(['a key' => 'another value']);
 
-        $indexer->index('an_index_type_for_test_purpose', 'identifier1', ['a key' => 'a value'])->shouldBeCalled();
-        $indexer->index('an_index_type_for_test_purpose', 'identifier2', ['a key' => 'another value'])->shouldBeCalled();
+        $indexer->bulkIndexes('an_index_type_for_test_purpose', [
+            'identifier1' => ['a key' => 'a value'],
+            'identifier2' => ['a key' => 'another value']
+        ], 'identifier')->shouldBeCalled();
 
         $this->indexAll([$product1, $product2]);
     }

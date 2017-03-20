@@ -21,15 +21,10 @@ abstract class AbstractPimCatalogIntegration extends TestCase
     const DOCUMENT_TYPE = 'pim_catalog_product';
 
     /** @var Client */
-    private $esClient;
+    protected $esClient;
 
     /** @var Loader */
     private $esConfigurationLoader;
-
-    public function __construct($name = null, array $data = [], $dataName = '')
-    {
-        parent::__construct($name, $data, $dataName);
-    }
 
     /**
      * {@inheritdoc}

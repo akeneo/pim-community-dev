@@ -61,10 +61,7 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface
             $normalizedProducts[$product->getIdentifier()] = $this->normalizer->normalize($product, 'indexing');
         }
 
-        // TODO TIP-709: bulk index instead => will be done in another PR
-        foreach ($normalizedProducts as $identifier => $indexedFormat) {
-            $this->indexer->index($this->indexType, $identifier, $indexedFormat);
-        }
+        $this->indexer->bulkIndexes($this->indexType, $normalizedProducts, 'identifier');
     }
 
     /**

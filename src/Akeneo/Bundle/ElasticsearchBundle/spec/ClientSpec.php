@@ -3,6 +3,7 @@
 namespace spec\Akeneo\Bundle\ElasticsearchBundle;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
 use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
 use Elasticsearch\Namespaces\IndicesNamespace;
@@ -111,5 +112,47 @@ class ClientSpec extends ObjectBehavior
         $indices->refresh(['index' => 'an_index_name'])->shouldBeCalled();
 
         $this->refreshIndex();
+    }
+
+    function it_indexes_with_bulk_several_documents($client)
+    {
+        $client->bulk(
+            [
+                'body' => [
+                    ['index' => [
+                        '_index' => 'an_index_name',
+                        '_type' => 'an_index_type',
+                        '_id' => 'foo'
+                    ]],
+                    ['identifier' => 'foo', 'name' => 'a name'],
+                    ['index' => [
+                        '_index' => 'an_index_name',
+                        '_type' => 'an_index_type',
+                        '_id' => 'bar'
+                    ]],
+                    ['identifier' => 'bar', 'name' => 'a name']
+                ]
+            ]
+        )->shouldBeCalled();
+
+        $documents = [
+            ['identifier' => 'foo', 'name' => 'a name'],
+            ['identifier' => 'bar', 'name' => 'a name']
+        ];
+
+        $this->bulkIndexes('an_index_type', $documents, 'identifier');
+    }
+
+    function it_throws_an_exception_if_identifier_key_is_missing($client)
+    {
+        $client->bulk(Argument::any())->shouldNotBeCalled();
+
+        $documents = [
+            ['name' => 'a name'],
+            ['identifier' => 'bar', 'name' => 'a name']
+        ];
+
+        $this->shouldThrow(new MissingIdentifierException('Missing "identifier" key in document'))
+            ->during('bulkIndexes', ['an_index_type', $documents, 'identifier']);
     }
 }
