@@ -10,20 +10,9 @@ Practically, it means the Akeneo PIM bundles are present in the src/ directory.
 If you want to contribute to the Akeneo PIM (and we will be pleased if you do!), you can fork
 this repository and submit a pull request.
 
-| [Master][Master] | [1.5][1.5] | [1.4][1.4] | [1.3][1.3] |
-|:----------------:|:----------:|:----------:|:----------:|
-| [![Build status][Master image]][Master] | [![Build status][1.5 image]][1.5] | [![Build status][1.4 image]][1.4] | [![Build status][1.3 image]][1.3] |
-
-  [Master image]: https://travis-ci.org/akeneo/pim-community-dev.svg
-  [Master]: https://travis-ci.org/akeneo/pim-community-dev/tree/master
-  [1.5 image]: https://travis-ci.org/akeneo/pim-community-dev.svg?branch=1.5
-  [1.5]: https://github.com/akeneo/pim-community-dev/tree/1.5
-  [1.4 image]: https://travis-ci.org/akeneo/pim-community-dev.svg?branch=1.4
-  [1.4]: https://github.com/akeneo/pim-community-dev/tree/1.4
-  [1.3 image]: https://travis-ci.org/akeneo/pim-community-dev.svg?branch=1.3
-  [1.3]: https://github.com/akeneo/pim-community-dev/tree/1.3
-
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/badges/quality-score.png?s=05ef3d5d2bbfae2f9a659060b21711d275f0c1ff)](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/)
+1.5 | Scrutinizer | Crowdin
+--- | ----------- | -------
+[![1.5 status](https://core-ci.akeneo.com/buildStatus/icon?job=akeneo/pim-community-dev/1.5)](https://core-ci.akeneo.com/blue/organizations/jenkins/akeneo%2Fpim-community-dev/branches) | [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/badges/quality-score.png?s=05ef3d5d2bbfae2f9a659060b21711d275f0c1ff)](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/) | [![Crowdin](https://d322cqt584bo4o.cloudfront.net/akeneo/localized.svg)](https://crowdin.com/project/akeneo)
 
 Application Technical Information
 ---------------------------------
