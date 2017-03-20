@@ -156,7 +156,7 @@ class Base extends Page
      */
     public function getUrl(array $options = [])
     {
-        $url = $this->getPath();
+        $url = preg_split('/#/', $this->getPath())[1];
 
         foreach ($options as $parameter => $value) {
             $url = str_replace(sprintf('{%s}', $parameter), $value, $url);

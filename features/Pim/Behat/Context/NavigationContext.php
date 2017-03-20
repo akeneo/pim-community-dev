@@ -436,14 +436,12 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      */
     public function assertAddress($expected)
     {
-        $this->spin(function () use ($expected) {
-            $actualFullUrl = $this->getSession()->getCurrentUrl();
-            $actualUrl     = $this->sanitizeUrl($actualFullUrl);
-            $result        = parse_url($expected, PHP_URL_PATH) === $actualUrl;
-            assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actualUrl));
+        $actualFullUrl = $this->getSession()->getCurrentUrl();
+        $actualUrl     = $this->sanitizeUrl($actualFullUrl);
+        $result        = parse_url($expected, PHP_URL_PATH) === $actualUrl;
+        assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actualUrl));
 
-            return true;
-        }, 'Spining to assert address');
+        return true;
     }
 
     /**
@@ -458,7 +456,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         $parsedUrl = parse_url($fullUrl);
 
         if (isset($parsedUrl['fragment'])) {
-            $filteredUrl = preg_split('/url=/', $parsedUrl['fragment'])[1];
+            $filteredUrl = $parsedUrl['fragment'];
         } else {
             $filteredUrl = $parsedUrl['path'];
         }
