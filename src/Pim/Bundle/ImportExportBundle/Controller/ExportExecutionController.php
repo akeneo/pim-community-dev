@@ -27,16 +27,6 @@ class ExportExecutionController extends JobExecutionController
     /**
      * {@inheritdoc}
      *
-     * @AclAncestor("pim_importexport_export_execution_show")
-     */
-    public function showAction($id)
-    {
-        return parent::showAction($id);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
      * @AclAncestor("pim_importexport_export_execution_download_log")
      */
     public function downloadLogFileAction($id)

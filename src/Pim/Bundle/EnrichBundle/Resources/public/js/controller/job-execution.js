@@ -28,6 +28,10 @@ define(
                             .then(function (form) {
                                 form.setData(jobExecution);
                                 form.getRoot().trigger('pim-job-execution-form:start-auto-update', jobExecution);
+
+                                this.on('pim-controller:job-execution:remove', function () {
+                                    form.getRoot().trigger('pim-job-execution-form:stop-auto-update');
+                                }.bind(this));
                                 form.setElement(this.$el).render();
                             }.bind(this));
                     }.bind(this))
@@ -35,6 +39,12 @@ define(
                     var errorView = new Error(response.responseJSON.message, response.status);
                     errorView.setElement(this.$el).render();
                 });
+            },
+
+            remove: function () {
+                this.trigger('pim-controller:job-execution:remove');
+
+                BaseController.prototype.remove.apply(this, arguments);
             }
         });
     }

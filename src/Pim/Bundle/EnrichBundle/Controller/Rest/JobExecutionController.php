@@ -68,7 +68,7 @@ class JobExecutionController
         $archives = [];
         foreach ($this->archivist->getArchives($jobExecution) as $archiveName => $files) {
             $label = $this->translator->transChoice(
-                sprintf('pim_mass_edit.download_archive.%s', $archiveName),
+                sprintf('job_tracker.download_archive.%s', $archiveName),
                 count($files)
             );
             $archives[$archiveName] = [

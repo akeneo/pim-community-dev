@@ -815,7 +815,7 @@ batch_jobs:
         perform:
             label: Add to variant group
 
-pim_mass_edit:
+job_tracker:
     download_archive:
         archive: Download generated archive
         output:  Download generated files
