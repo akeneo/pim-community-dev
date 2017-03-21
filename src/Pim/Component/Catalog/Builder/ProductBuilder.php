@@ -251,7 +251,7 @@ class ProductBuilder implements ProductBuilderInterface
             if (AttributeTypes::PRICE_COLLECTION === $attribute->getType()) {
                 $prices = [];
 
-                foreach ($value->getPrices() as $price) {
+                foreach ($value->getData() as $price) {
                     if (in_array($price->getCurrency(), $activeCurrencyCodes)) {
                         $prices[] = ['amount' => $price->getData(), 'currency' => $price->getCurrency()];
                     }
