@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-6207: correctly dismiss "Unsaved changes" message on system configuration
+- PIM-6252: Fix Summernote (WYSIWYG) style
 
 # 1.7.0 (2017-03-14)
 
