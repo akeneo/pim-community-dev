@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\ElasticsearchBundle;
 
+use Akeneo\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
 use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
 
@@ -62,6 +63,38 @@ class Client
         ];
 
         return $this->client->index($params);
+    }
+
+    /**
+     * @param string $indexType
+     * @param array  $documents
+     * @param string $keyAsId
+     *
+     * @throws MissingIdentifierException
+     *
+     * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_indexing_documents.html#_bulk_indexing}
+     */
+    public function bulkIndexes($indexType, $documents, $keyAsId)
+    {
+        $params = [];
+
+        foreach ($documents as $document) {
+            if (!isset($document[$keyAsId])) {
+                throw new MissingIdentifierException(sprintf('Missing "%s" key in document', $keyAsId));
+            }
+
+            $params['body'][] = [
+                'index' => [
+                    '_index' => $this->indexName,
+                    '_type'  => $indexType,
+                    '_id'    => $document[$keyAsId]
+                ]
+            ];
+
+            $params['body'][] = $document;
+        }
+
+        return $this->client->bulk($params);
     }
 
     /**

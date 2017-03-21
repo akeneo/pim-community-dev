@@ -26,11 +26,6 @@ abstract class AbstractPimCatalogIntegration extends TestCase
     /** @var Loader */
     private $esConfigurationLoader;
 
-    public function __construct($name = null, array $data = [], $dataName = '')
-    {
-        parent::__construct($name, $data, $dataName);
-    }
-
     /**
      * {@inheritdoc}
      */
