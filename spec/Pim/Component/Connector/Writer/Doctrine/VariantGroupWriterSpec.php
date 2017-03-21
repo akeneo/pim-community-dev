@@ -58,7 +58,8 @@ class VariantGroupWriterSpec extends ObjectBehavior
         ProductInterface $productOne,
         ProductInterface $productTwo,
         $productTplApplier,
-        $stepExecution
+        $stepExecution,
+        $detacher
     ) {
         $variantGroup->getId()->willReturn(42);
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
@@ -75,6 +76,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('update_products', 2)->shouldBeCalled();
+        $detacher->detachAll(Argument::any())->shouldBeCalled();
 
         $this->write([$variantGroup]);
     }
@@ -86,7 +88,8 @@ class VariantGroupWriterSpec extends ObjectBehavior
         ProductInterface $validProduct,
         ProductInterface $invalidProduct,
         $productTplApplier,
-        $stepExecution
+        $stepExecution,
+        $detacher
     ) {
         $variantGroup->getId()->willReturn(42);
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
@@ -105,6 +108,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('update_products', 1)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip_products', 1)->shouldBeCalled();
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
+        $detacher->detachAll(Argument::any())->shouldBeCalled();
 
         $this->write([$variantGroup]);
     }
