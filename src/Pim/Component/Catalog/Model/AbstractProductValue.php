@@ -111,13 +111,6 @@ abstract class AbstractProductValue implements ProductValueInterface
     protected $media;
 
     /**
-     * Store metric value
-     *
-     * @var MetricInterface
-     */
-    protected $metric;
-
-    /**
      * Store prices value
      *
      * @var PriceCollectionInterface
@@ -304,14 +297,6 @@ abstract class AbstractProductValue implements ProductValueInterface
     public function getMedia()
     {
         return $this->media;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMetric()
-    {
-        return $this->metric;
     }
 
     /**
@@ -550,20 +535,6 @@ abstract class AbstractProductValue implements ProductValueInterface
     protected function setMedia(FileInfoInterface $media = null)
     {
         $this->media = $media;
-
-        return $this;
-    }
-
-    /**
-     * Set metric
-     *
-     * @param MetricInterface $metric
-     *
-     * @return ProductValueInterface
-     */
-    protected function setMetric(MetricInterface $metric)
-    {
-        $this->metric = $metric;
 
         return $this;
     }

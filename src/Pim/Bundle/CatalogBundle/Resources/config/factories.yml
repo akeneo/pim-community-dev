@@ -171,7 +171,7 @@ services:
         public: false
         arguments:
             - '@pim_catalog.factory.metric'
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.metric.class%'
             - 'pim_catalog_metric'
         tags:
             - { name: pim_catalog.factory.product_value }

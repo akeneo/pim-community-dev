@@ -50,13 +50,6 @@ interface ProductValueInterface
     public function getBoolean();
 
     /**
-     * Get metric
-     *
-     * @return MetricInterface
-     */
-    public function getMetric();
-
-    /**
      * Get date data
      *
      * @return \Datetime
