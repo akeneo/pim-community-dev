@@ -1,0 +1,47 @@
+@import '../base/variables';
+
+.note-editor {
+  width: 100%;
+  border-color: @AknBorderColor;
+  border-radius: 2px;
+}
+
+.note-editor .note-toolbar {
+  padding: 5px;
+  background: lighten(@AknGrey, 30%);
+  border-color: @AknBorderColor;
+}
+
+.note-toolbar > .btn-group {
+  margin-top: 0;
+
+  & + & {
+    margin-top: 5px;
+  }
+
+  button {
+    background: white;
+    border: 1px solid @AknBorderColor;
+    border-radius: 2px;
+    height: @AknLittleButtonSize;
+    width: @AknLittleButtonSize;
+    cursor: pointer;
+    color: @AknDefaultFontColor;
+
+    &:hover {
+      background: @AknDefaultHoverBackground;
+    }
+
+    & + button {
+      border-left: none;
+    }
+  }
+}
+
+.note-editor .note-toolbar {
+  display: flex;
+}
+
+.note-popover .popover .popover-content, .note-toolbar {
+  padding: 0;
+}
