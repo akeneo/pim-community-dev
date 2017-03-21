@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter;
 
-use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -20,12 +19,18 @@ class GroupsFilterIntegration extends AbstractFilterTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
+            $this->resetIndex();
+
             $group = $this->get('pim_catalog.factory.group')->create();
             $this->get('pim_catalog.updater.group')->update($group, [
                 'code' => 'groupC',
                 'type' => 'RELATED'
             ]);
             $this->get('pim_catalog.saver.group')->save($group);
+
+            $this->createProduct('foo', ['groups' => ['groupA', 'groupB']]);
+            $this->createProduct('bar', []);
+            $this->createProduct('baz', []);
         }
     }
 
@@ -81,16 +86,5 @@ class GroupsFilterIntegration extends AbstractFilterTestCase
     public function testErrorOperatorNotSupported()
     {
         $this->execute([['groups', Operators::BETWEEN, 'groupB']]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return new Configuration(
-            [Configuration::getTechnicalSqlCatalogPath()],
-            false
-        );
     }
 }

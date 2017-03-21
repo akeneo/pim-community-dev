@@ -977,7 +977,7 @@ Sorting is done on the localized label:
 
 Groups
 ******
-:Apply: apply on the 'groups' field
+:Apply: apply 'keyword' datatype on 'groups' field
 
 Data model
 ~~~~~~~~~~
