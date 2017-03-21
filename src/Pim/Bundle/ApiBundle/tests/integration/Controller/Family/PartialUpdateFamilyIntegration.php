@@ -310,6 +310,18 @@ JSON;
 
     public function testPartialUpdateWithEmptyLabels()
     {
+        $initLabels = [
+            'labels' => [
+                'en_US' => 'Family A2 US',
+                'fr_FR' => 'Family A2 FR',
+                'de_DE' => 'Family A2 DE',
+            ],
+        ];
+
+        $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('familyA2');
+        $this->get('pim_catalog.updater.family')->update($family, $initLabels);
+        $this->get('pim_catalog.saver.family')->save($family);
+
         $client = $this->createAuthenticatedClient();
 
         $data =
@@ -334,7 +346,9 @@ JSON;
                 'ecommerce_china' => ['sku'],
                 'tablet'          => ['a_number_float', 'sku'],
             ],
-            'labels'                 => [],
+            'labels'                 => [
+                'de_DE' => 'Family A2 DE',
+            ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.family');
 
