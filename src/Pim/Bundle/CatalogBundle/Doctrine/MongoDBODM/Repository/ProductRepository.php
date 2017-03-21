@@ -11,7 +11,6 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface as M
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -368,38 +367,6 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllWithAttribute(AttributeInterface $attribute)
-    {
-        return $this->createQueryBuilder('p')
-            ->field('values.attribute')->equals((int) $attribute->getId())
-            ->getQuery()
-            ->execute()
-            ->toArray();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findAllWithAttributeOption(AttributeOptionInterface $option)
-    {
-        $id = (int) $option->getId();
-        $qb = $this->createQueryBuilder('p');
-
-        if ('options' === $option->getAttribute()->getBackendType()) {
-            $qb->field('values.optionIds')->in([$id]);
-        } else {
-            $qb->field('values.option')->equals($id);
-        }
-
-        return $qb
-            ->getQuery()
-            ->execute()
-            ->toArray();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getFullProduct($id)
     {
         return $this->find($id);
@@ -670,24 +637,24 @@ class ProductRepository extends DocumentRepository implements
 
         $collection = $this->dm->getDocumentCollection($this->documentName);
 
+        $findQuery = [
+            'associations.products' => [
+                '$elemMatch' => $mongoRef
+            ]
+        ];
+
+        $updateQuery = [
+            '$pull' => [
+                'associations.$.products' => $mongoRef
+            ]
+        ];
+
+        $updateOptions = [ 'multiple' => 1 ];
+
         // we iterate over the number of association types because the query removes only the product that
         // belongs to the first association (instead of removing it in existing associations)
         for ($i = 0; $i < $assocTypeCount; $i++) {
-            $collection->update(
-                [
-                    'associations' => [
-                        '$elemMatch' => [
-                            'products' => $mongoRef
-                        ]
-                    ]
-                ],
-                [
-                    '$pull' => [
-                        'associations.$.products' => $mongoRef
-                    ]
-                ],
-                [ 'multiple' => 1 ]
-            );
+            $collection->update($findQuery, $updateQuery, $updateOptions);
         }
     }
 
@@ -706,7 +673,7 @@ class ProductRepository extends DocumentRepository implements
      */
     protected function getIdentifierAttribute()
     {
-        return $this->attributeRepository->findOneBy(['attributeType' => AttributeTypes::IDENTIFIER]);
+        return $this->attributeRepository->findOneBy(['type' => AttributeTypes::IDENTIFIER]);
     }
 
     /**

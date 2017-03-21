@@ -130,7 +130,7 @@ define(
              * Set data in the root model
              *
              * @param {Object} data
-             * @param {Object} options If silent is setted to true, don't fire events
+             * @param {Object} options If silent is set to true, don't fire events
              *                         pim_enrich:form:entity:pre_update and pim_enrich:form:entity:post_update
              */
             setData: function (data, options) {

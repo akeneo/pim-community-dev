@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Resolver;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 
 /**
  * FQCN Resolver

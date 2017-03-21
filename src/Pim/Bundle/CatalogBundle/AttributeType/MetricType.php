@@ -2,13 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Factory\MetricFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Metric attribute type

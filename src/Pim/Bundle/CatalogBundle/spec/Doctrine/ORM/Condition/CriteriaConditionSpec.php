@@ -5,6 +5,8 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Exception\InvalidOperatorException;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Prophecy\Argument;
 
 class CriteriaConditionSpec extends ObjectBehavior
@@ -24,24 +26,61 @@ class CriteriaConditionSpec extends ObjectBehavior
         $operators = ['=', '<', '<=', '>', '>=', 'LIKE', 'NOT LIKE'];
         foreach ($operators as $operator) {
             $this
-                ->shouldThrow('\InvalidArgumentException')
+                ->shouldThrow(
+                    InvalidOperatorException::scalarExpected(
+                        [
+                            Operators::EQUALS                => 'eq',
+                            Operators::NOT_EQUAL             => 'neq',
+                            Operators::LOWER_THAN            => 'lt',
+                            Operators::LOWER_OR_EQUAL_THAN   => 'lte',
+                            Operators::GREATER_THAN          => 'gt',
+                            Operators::GREATER_OR_EQUAL_THAN => 'gte',
+                            Operators::IS_LIKE               => 'like',
+                            Operators::IS_NOT_LIKE           => 'notLike'
+                        ],
+                        'Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition',
+                        ['my_value1', 'my_value2']
+                    )
+                )
                 ->duringPrepareCriteriaCondition('my_field', $operator, ['my_value1', 'my_value2'])
             ;
         }
 
-        $operators = ['BETWEEN', 'IN', 'NOT IN'];
+        $operators = ['IN', 'NOT IN'];
         foreach ($operators as $operator) {
             $this
-                ->shouldThrow('\InvalidArgumentException')
+                ->shouldThrow(
+                    InvalidOperatorException::arrayExpected(
+                        [Operators::IN_LIST => 'in', Operators::NOT_IN_LIST => 'notIn'],
+                        'Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition',
+                        'my_value'
+                    )
+                )
                 ->duringPrepareCriteriaCondition('my_field', $operator, 'my_value')
             ;
         }
+
+        $this
+            ->shouldThrow(
+                InvalidOperatorException::arrayExpected(
+                    ['BETWEEN'],
+                    'Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition',
+                    'my_value'
+                )
+            )
+            ->duringPrepareCriteriaCondition('my_field', 'BETWEEN', 'my_value')
+        ;
     }
 
     function it_throws_an_exception_when_the_operator_is_not_supported()
     {
         $this
-            ->shouldThrow('\Pim\Component\Catalog\Exception\ProductQueryException')
+            ->shouldThrow(
+                InvalidOperatorException::notSupported(
+                    'NOT SUPPORTED',
+                    'Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition'
+                )
+            )
             ->duringPrepareCriteriaCondition('my_field', 'NOT SUPPORTED', Argument::any())
         ;
     }

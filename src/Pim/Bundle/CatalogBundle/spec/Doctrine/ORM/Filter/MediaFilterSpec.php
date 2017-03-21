@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -56,9 +56,9 @@ class MediaFilterSpec extends ObjectBehavior
         AttributeInterface $imageAttribute,
         AttributeInterface $textAttribute
     ) {
-        $fileAttribute->getAttributeType()->willReturn('pim_catalog_file');
-        $imageAttribute->getAttributeType()->willReturn('pim_catalog_image');
-        $textAttribute->getAttributeType()->willReturn('pim_catalog_text');
+        $fileAttribute->getType()->willReturn('pim_catalog_file');
+        $imageAttribute->getType()->willReturn('pim_catalog_image');
+        $textAttribute->getType()->willReturn('pim_catalog_text');
 
         $this->supportsAttribute($fileAttribute)->shouldReturn(true);
         $this->supportsAttribute($imageAttribute)->shouldReturn(true);
@@ -239,7 +239,11 @@ class MediaFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('media_code');
         $value = ['amount' => 132, 'unit' => 'foo'];
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected('media_code', 'filter', 'media', gettype($value))
+            InvalidPropertyTypeException::stringExpected(
+                'media_code',
+                'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MediaFilter',
+                $value
+            )
         )->during('addAttributeFilter', [$attribute, '=', $value]);
     }
 }

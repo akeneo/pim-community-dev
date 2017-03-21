@@ -9,56 +9,26 @@
     processIsolation="false"
     stopOnFailure="false"
     syntaxCheck="false"
-    bootstrap="bootstrap.php.cache" >
+    bootstrap="./autoload.php">
 
     <php>
         <ini name="intl.default_locale" value="en"/>
         <ini name="intl.error_level" value="0"/>
         <ini name="memory_limit" value="-1"/>
-        <ini name="zend.enable_gc" value="0"/>
+        <ini name="zend.enable_gc" value="1"/>
     </php>
 
     <testsuites>
-
-        <!-- Project (PIM+Oro) test suites -->
-        <testsuite name="Project_Test">
-            <directory suffix="Test.php">../src/*/Bundle/*Bundle/Tests/Unit</directory>
-            <directory suffix="Test.php">../src/*/Bundle/*Bundle/Tests/Functional</directory>
-        </testsuite>
 
         <!-- PIM test suites -->
         <testsuite name="PIM_Unit_Test">
             <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Unit</directory>
         </testsuite>
-        <testsuite name="PIM_Functional_Test">
-            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Functional</directory>
-        </testsuite>
-        <testsuite name="PIM_Performance_Test">
-            <directory suffix="Perf.php">../src/Pim/Bundle/*Bundle/Tests/Performance</directory>
-        </testsuite>
 
-        <!-- Jenkins test suite -->
-        <testsuite name="Jenkins_PIM_Test">
-            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Unit</directory>
-            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Functional</directory>
+        <testsuite name="PIM_Integration_Test">
+            <directory suffix="Integration.php">../src/Pim/Component/*/tests/integration</directory>
+            <directory suffix="Integration.php">../src/Pim/Bundle/*Bundle/tests/integration</directory>
         </testsuite>
 
     </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>../src/Pim</directory>
-            <exclude>
-                <!-- exclude demo used load sample data -->
-                <directory>../src/Pim/Bundle/DemoBundle</directory>
-                <directory>../src/*/*Bundle/Resources</directory>
-                <directory>../src/*/*Bundle/Tests</directory>
-                <directory>../src/*/Bundle/*Bundle/Resources</directory>
-                <directory>../src/*/Bundle/*Bundle/Tests</directory>
-                <directory>../src/*/Bundle/*Bundle/vendor</directory>
-                <directory>../src/*/Bundle/*Bundle/cov</directory>
-                <directory>../src/*/Bundle/*Bundle/DataFixtures/ORM/Load*Data.php</directory>
-            </exclude>
-        </whitelist>
-    </filter>
 </phpunit>

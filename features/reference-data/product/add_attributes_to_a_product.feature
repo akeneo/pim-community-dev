@@ -7,8 +7,8 @@ Feature: Add reference data attributes to a product
   Background:
     Given a "footwear" catalog configuration
     And the following products:
-    | sku     | family  |
-    | boots   | boots   |
+    | sku   | family |
+    | boots | boots  |
     And I am logged in as "Julia"
 
   Scenario: Display available reference data attributes to a product

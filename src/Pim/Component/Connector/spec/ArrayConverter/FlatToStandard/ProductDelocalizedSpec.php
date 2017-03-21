@@ -5,7 +5,6 @@ namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class ProductDelocalizedSpec extends ObjectBehavior

@@ -19,7 +19,7 @@ class BaseEmptyValueProvider implements EmptyValueProviderInterface
      */
     public function getEmptyValue($attribute)
     {
-        switch ($attribute->getAttributeType()) {
+        switch ($attribute->getType()) {
             case AttributeTypes::METRIC:
                 $emptyValue = [
                     'amount' => null,

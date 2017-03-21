@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Prophecy\Argument;
 
 class FamilyRepositorySpec extends ObjectBehavior
 {
@@ -43,7 +42,7 @@ class FamilyRepositorySpec extends ObjectBehavior
         $queryBuilder->select('f')->willReturn($queryBuilder);
         $queryBuilder->select('f.id')->willReturn($queryBuilder);
         $queryBuilder->addSelect('COALESCE(NULLIF(ft.label, \'\'), CONCAT(\'[\', f.code, \']\')) as label')->willReturn($queryBuilder);
-        $queryBuilder->from('family', 'f')->willReturn($queryBuilder);
+        $queryBuilder->from('family', 'f', null)->willReturn($queryBuilder);
         $queryBuilder->leftJoin('f.translations', 'ft', 'WITH', 'ft.locale = :locale_code')->willReturn($queryBuilder);
         $queryBuilder->orderBy('label')->willReturn($queryBuilder);
         $queryBuilder->setParameter('locale_code', 'en_US')->willReturn($queryBuilder);

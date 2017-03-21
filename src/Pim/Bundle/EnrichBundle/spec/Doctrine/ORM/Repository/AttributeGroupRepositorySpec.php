@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Prophecy\Argument;
 
 class AttributeGroupRepositorySpec extends ObjectBehavior
 {
@@ -43,7 +42,7 @@ class AttributeGroupRepositorySpec extends ObjectBehavior
         $queryBuilder->select('g')->willReturn($queryBuilder);
         $queryBuilder->select('g.code')->willReturn($queryBuilder);
         $queryBuilder->addSelect('COALESCE(NULLIF(t.label, \'\'), CONCAT(\'[\', g.code, \']\')) as label')->willReturn($queryBuilder);
-        $queryBuilder->from('attribute_group', 'g')->willReturn($queryBuilder);
+        $queryBuilder->from('attribute_group', 'g', null)->willReturn($queryBuilder);
         $queryBuilder->leftJoin('g.translations', 't', 'WITH', 't.locale = :locale')->willReturn($queryBuilder);
         $queryBuilder->setParameter('locale', 'en_US')->willReturn($queryBuilder);
         $queryBuilder->orderBy('t.label')->willReturn($queryBuilder);

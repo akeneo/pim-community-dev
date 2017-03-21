@@ -4,6 +4,7 @@ namespace Oro\Bundle\FilterBundle\Filter;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
+use Pim\Component\Catalog\Query\Filter\Operators;
 
 class NumberFilter extends AbstractFilter
 {
@@ -64,11 +65,11 @@ class NumberFilter extends AbstractFilter
     public function getOperator($type)
     {
         $operatorTypes = [
-            NumberFilterType::TYPE_EQUAL         => '=',
-            NumberFilterType::TYPE_GREATER_EQUAL => '>=',
-            NumberFilterType::TYPE_GREATER_THAN  => '>',
-            NumberFilterType::TYPE_LESS_EQUAL    => '<=',
-            NumberFilterType::TYPE_LESS_THAN     => '<',
+            NumberFilterType::TYPE_EQUAL         => Operators::EQUALS,
+            NumberFilterType::TYPE_GREATER_EQUAL => Operators::GREATER_OR_EQUAL_THAN,
+            NumberFilterType::TYPE_GREATER_THAN  => Operators::GREATER_THAN,
+            NumberFilterType::TYPE_LESS_EQUAL    => Operators::LOWER_OR_EQUAL_THAN,
+            NumberFilterType::TYPE_LESS_THAN     => Operators::LOWER_THAN,
         ];
 
         return isset($operatorTypes[$type]) ? $operatorTypes[$type] : '=';

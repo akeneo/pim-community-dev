@@ -4,7 +4,6 @@ namespace spec\Akeneo\Component\Localization\Presenter;
 
 use Akeneo\Component\Localization\Factory\DateFactory;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class DatePresenterSpec extends ObjectBehavior

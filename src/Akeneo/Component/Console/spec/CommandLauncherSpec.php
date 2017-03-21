@@ -3,7 +3,6 @@
 namespace spec\Akeneo\Component\Console;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class CommandLauncherSpec extends ObjectBehavior
 {

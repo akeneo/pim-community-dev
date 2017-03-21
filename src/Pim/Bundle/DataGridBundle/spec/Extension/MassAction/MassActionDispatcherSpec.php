@@ -60,9 +60,9 @@ class MassActionDispatcherSpec extends ObjectBehavior
             'actionName' => 'mass_edit_action',
         ]);
 
-        $parametersParser->parse($request)->willReturn(['inset' => 'inset', 'values' => 1]);
+        $parametersParser->parse($request)->willReturn(['inset' => 'inset', 'values' => [1]]);
         $datasource->getMassActionRepository()->willReturn($massActionRepository);
-        $massActionRepository->applyMassActionParameters($queryBuilder, 'inset', 1)->willReturn(null);
+        $massActionRepository->applyMassActionParameters($queryBuilder, 'inset', [1])->willReturn(null);
         $massActionExtension->getMassAction('mass_edit_action', $grid)->willReturn($massActionInterface);
         $acceptor->getExtensions()->willReturn([$massActionExtension]);
 
@@ -147,7 +147,7 @@ class MassActionDispatcherSpec extends ObjectBehavior
             'actionName' => $massActionName,
         ]);
 
-        $parametersParser->parse($request)->willReturn(['inset' => 'inset', 'values' => 1]);
+        $parametersParser->parse($request)->willReturn(['inset' => 'inset', 'values' => [1]]);
         $datasource->getMassActionRepository()->willReturn($massActionRepository);
         $massActionExtension->getMassAction($massActionName, $grid)->willReturn($massActionInterface);
         $acceptor->getExtensions()->willReturn([$massActionExtension]);

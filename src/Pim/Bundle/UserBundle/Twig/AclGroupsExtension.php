@@ -38,16 +38,39 @@ class AclGroupsExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('acl_groups', [$this, 'getAclGroups'])
+            new \Twig_SimpleFunction('acl_groups', [$this, 'getAclGroups']),
+            new \Twig_SimpleFunction('acl_group_names', [$this, 'getAclGroupNames']),
         ];
     }
 
     /**
-     * Get acl groups
+     * Get ACL groups.
      *
      * @return string[]
      */
     public function getAclGroups()
+    {
+        $config = $this->getConfig();
+
+        return $this->getSortedGroups($config);
+    }
+
+    /**
+     * Get ACL group names.
+     *
+     * @return string[]
+     */
+    public function getAclGroupNames()
+    {
+        $config = $this->getConfig();
+
+        return array_keys($config);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getConfig()
     {
         $config = [];
         foreach ($this->bundles as $class) {
@@ -58,28 +81,23 @@ class AclGroupsExtension extends \Twig_Extension
             }
         }
 
-        return $this->getSortedGroupNames($config);
+        return $config;
     }
 
     /**
-     * Sort the groups by their order and return the names.
+     * Sort the groups by their order.
      * If no order is defined for a group, it will be added after the others
      *
      * @param array $config
      *
-     * @return string[]
+     * @return array
      */
-    protected function getSortedGroupNames($config)
+    protected function getSortedGroups($config)
     {
         $groups = $this->getGroups($config);
         $groups = $this->sortGroups($groups);
 
-        $groupNames = [];
-        foreach ($groups as $group) {
-            $groupNames[] = $group['name'];
-        }
-
-        return $groupNames;
+        return $groups;
     }
 
     /**
@@ -91,7 +109,9 @@ class AclGroupsExtension extends \Twig_Extension
     {
         $groups = [];
         foreach ($config as $groupName => $groupConfig) {
-            $groups[] = [
+            $permissionGroup = isset($groupConfig['permission_group']) ? $groupConfig['permission_group'] : 'action';
+
+            $groups[$permissionGroup][] = [
                 'name'  => $groupName,
                 'order' => isset($groupConfig['order']) ? $groupConfig['order'] : -1
             ];
@@ -107,20 +127,22 @@ class AclGroupsExtension extends \Twig_Extension
      */
     protected function sortGroups(array $groups)
     {
-        usort(
-            $groups,
-            function ($first, $second) {
-                if ($first['order'] === $second['order']) {
-                    return 0;
-                }
+        foreach ($groups as $permissionGroup => $group) {
+            usort(
+                $groups[$permissionGroup],
+                function ($first, $second) {
+                    if ($first['order'] === $second['order']) {
+                        return 0;
+                    }
 
-                if ($first['order'] === -1 || $second['order'] === -1) {
-                    return ($first['order'] < $second['order']) ? 1 : -1;
-                }
+                    if ($first['order'] === -1 || $second['order'] === -1) {
+                        return ($first['order'] < $second['order']) ? 1 : -1;
+                    }
 
-                return ($first['order'] < $second['order']) ? -1 : 1;
-            }
-        );
+                    return ($first['order'] < $second['order']) ? -1 : 1;
+                }
+            );
+        }
 
         return $groups;
     }

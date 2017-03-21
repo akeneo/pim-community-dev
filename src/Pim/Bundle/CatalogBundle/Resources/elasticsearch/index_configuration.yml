@@ -1,0 +1,46 @@
+mappings:
+    pim_catalog_product:
+        dynamic_templates:
+            -
+                text:
+                    match: '*-text'
+                    match_mapping_type: 'string'
+                    mapping:
+                        fields:
+                            raw:
+                                type: 'keyword'
+                                normalizer: 'text_normalizer'
+                        type: 'text'
+                        analyzer: 'text_analyzer'
+            -
+                varchar:
+                    match: '*-varchar'
+                    match_mapping_type: 'string'
+                    mapping:
+                        type: 'keyword'
+                        normalizer: 'varchar_normalizer'
+
+settings:
+    analysis:
+        normalizer:
+            text_normalizer:
+                # Value is htmlstripped and newline pattern processed prior to indexing (in the PIM)
+                # ES Normalizers is an experimental feature and they do not support
+                # html_strip and newlinepattern filters yet.
+                # see https://www.elastic.co/guide/en/elasticsearch/reference/5.2/analysis-normalizers.html#analysis-normalizers
+                filter: ['lowercase']
+                char_filter: []
+                type: 'custom'
+            varchar_normalizer:
+                filter: ['lowercase']
+        char_filter:
+            newline_pattern:
+                pattern: '\\n'
+                type: 'pattern_replace'
+                replacement: ''
+        analyzer:
+            text_analyzer:
+                filter: ['lowercase']
+                char_filter: ['html_strip', 'newline_pattern']
+                type: 'custom'
+                tokenizer: 'standard'

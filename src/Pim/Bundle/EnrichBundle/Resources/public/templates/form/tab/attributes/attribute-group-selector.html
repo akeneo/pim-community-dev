@@ -4,6 +4,9 @@
         <a class="AknVerticalNavtab-link <%- current === element.code ? 'AknVerticalNavtab-link--active' : '' %>">
             <span class="group-label"><%- i18n.getLabel(element.labels, locale, element.code) %></span>
             <span class="badge-elements-container">
+                <span
+                    class="AknBadge AknBadge--round AknBadge--highlight <%- !_.contains(toFillAttributeGroups, element.code) ? 'AknBadge--hidden' : '' %>"
+                ></span>
                 <% _.each(badges[element.code], function(badge, type) { %>
                     <span class="AknBadge AknBadge--<%- type %> <%- type %>-badge label"><%- badge %></span>
                 <% }) %>

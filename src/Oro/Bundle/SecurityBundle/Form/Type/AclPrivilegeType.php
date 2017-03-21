@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\SecurityBundle\Form\Type;
 
-use Oro\Bundle\SecurityBundle\Form\Type\AclPermissionType;
-use Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeIdentityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;

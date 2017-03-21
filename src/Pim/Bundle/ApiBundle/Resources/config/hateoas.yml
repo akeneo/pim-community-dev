@@ -1,0 +1,20 @@
+parameters:
+    pim_api.pagination.parameter_validator.class: Pim\Component\Api\Pagination\ParameterValidator
+    pim_api.pagination.offset_hal_paginator.class: Pim\Component\Api\Pagination\OffsetHalPaginator
+    pim_api.pagination.search_after_hal_paginator.class: Pim\Component\Api\Pagination\SearchAfterHalPaginator
+
+services:
+    pim_api.pagination.parameter_validator:
+        class: '%pim_api.pagination.parameter_validator.class%'
+        arguments:
+            - '%pim_api.configuration%'
+
+    pim_api.pagination.offset_hal_paginator:
+        class: '%pim_api.pagination.offset_hal_paginator.class%'
+        arguments:
+            - '@router'
+
+    pim_api.pagination.search_after_hal_paginator:
+        class: '%pim_api.pagination.search_after_hal_paginator.class%'
+        arguments:
+            - '@router'

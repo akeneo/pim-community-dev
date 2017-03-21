@@ -8,7 +8,6 @@ use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
 use Pim\Bundle\EnrichBundle\Flash\Message;
@@ -180,7 +179,7 @@ class CategoryTreeController extends Controller
      *
      * @Template
      *
-     * @return array
+     * @return Response
      */
     public function childrenAction(Request $request)
     {
@@ -188,7 +187,11 @@ class CategoryTreeController extends Controller
             throw new AccessDeniedException();
         }
 
-        $parent = $this->findCategory($request->get('id'));
+        try {
+            $parent = $this->findCategory($request->get('id'));
+        } catch (\Exception $e) {
+            $parent = $this->userContext->getUserProductCategoryTree();
+        }
 
         $selectNodeId = $request->get('select_node_id', -1);
 
@@ -202,7 +205,7 @@ class CategoryTreeController extends Controller
             $selectNode = null;
         }
 
-        $categories = $this->getChildrenCategories($request, $selectNode);
+        $categories = $this->getChildrenCategories($request, $selectNode, $parent);
 
         if (null === $selectNode) {
             $view = 'PimEnrichBundle:CategoryTree:children.json.twig';
@@ -408,10 +411,8 @@ class CategoryTreeController extends Controller
      *
      * @return array|ArrayCollection
      */
-    protected function getChildrenCategories(Request $request, $selectNode)
+    protected function getChildrenCategories(Request $request, $selectNode, $parent)
     {
-        $parent = $this->findCategory($request->get('id'));
-
         if (null !== $selectNode) {
             $categories = $this->categoryRepository->getChildrenTreeByParentId($parent->getId(), $selectNode->getId());
         } else {

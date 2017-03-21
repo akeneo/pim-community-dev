@@ -24,7 +24,7 @@ class Select2ChoiceDecorator extends ElementDecorator
         $field = $this->decorate($field, ['Pim\Behat\Decorator\Field\Select2Decorator']);
         $field->close();
 
-        if ('is empty' !== $operator) {
+        if (!in_array($operator, ['is empty', 'is not empty'])) {
             $field->setValue($value);
         }
 

@@ -7,14 +7,14 @@ Feature: Validate localized metric attributes of a product
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | code   | label-fr_FR | type   | scopable | localizable | metric_family | default_metric_unit | negative_allowed | decimals_allowed | number_min | number_max |
-      | area   | Zone        | metric | no       | yes         | Area          | HECTARE             | no               | no               |            |            |
-      | length | Taille      | metric | yes      | yes         | Length        | METER               | no               | no               |            |            |
-      | power  | Puissance   | metric | no       | yes         | Power         | WATT                | yes              | yes              | -200       | -100       |
-      | speed  | Vitesse     | metric | yes      | yes         | Speed         | YARD_PER_HOUR       | yes              | yes              | 5.50       | 100        |
+      | code   | label-fr_FR | type               | scopable | localizable | metric_family | default_metric_unit | negative_allowed | decimals_allowed | number_min | number_max | group |
+      | area   | Zone        | pim_catalog_metric | 0        | 1           | Area          | HECTARE             | 0                | 0                |            |            | other |
+      | length | Taille      | pim_catalog_metric | 1        | 1           | Length        | METER               | 0                | 0                |            |            | other |
+      | power  | Puissance   | pim_catalog_metric | 0        | 1           | Power         | WATT                | 1                | 1                | -200       | -100       | other |
+      | speed  | Vitesse     | pim_catalog_metric | 1        | 1           | Speed         | YARD_PER_HOUR       | 1                | 1                | 5.50       | 100        | other |
     And the following family:
-      | code | label-en_US | attributes                      |
-      | baz  | Baz         | sku, area, length, power, speed |
+      | code | label-en_US | attributes                  |
+      | baz  | Baz         | sku,area,length,power,speed |
     And the following product:
       | sku | family |
       | foo | baz    |

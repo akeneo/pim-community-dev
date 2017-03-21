@@ -3,7 +3,6 @@
 namespace Pim\Component\Catalog\Normalizer\Standard;
 
 use Pim\Component\Catalog\Model\GroupInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -13,28 +12,23 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class VariantGroupNormalizer implements NormalizerInterface
 {
+    /** @var string[] */
+    protected $supportedFormats = ['standard'];
+
     /** @var NormalizerInterface */
     protected $translationNormalizer;
 
     /** @var NormalizerInterface */
     protected $valuesNormalizer;
 
-    /** @var DenormalizerInterface */
-    protected $valuesDenormalizer;
-
     /**
-     * @param NormalizerInterface   $translationNormalizer
-     * @param NormalizerInterface   $valuesNormalizer
-     * @param DenormalizerInterface $valuesDenormalizer
+     * @param NormalizerInterface $translationNormalizer
+     * @param NormalizerInterface $valuesNormalizer
      */
-    public function __construct(
-        NormalizerInterface $translationNormalizer,
-        NormalizerInterface $valuesNormalizer,
-        DenormalizerInterface $valuesDenormalizer
-    ) {
+    public function __construct(NormalizerInterface $translationNormalizer, NormalizerInterface $valuesNormalizer)
+    {
         $this->translationNormalizer = $translationNormalizer;
         $this->valuesNormalizer = $valuesNormalizer;
-        $this->valuesDenormalizer = $valuesDenormalizer;
     }
 
     /**
@@ -56,7 +50,7 @@ class VariantGroupNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof GroupInterface && $data->getType()->isVariant() && 'standard' === $format;
+        return $data instanceof GroupInterface && $data->getType()->isVariant() && in_array($format, $this->supportedFormats);
     }
 
     /**
@@ -90,15 +84,8 @@ class VariantGroupNormalizer implements NormalizerInterface
             return [];
         }
 
-        // As variant group > product template > values data are not type hinted we cannot normalize them directly
-        // so we first denormalize them into product values using the common format then normalize them
-        // this allow to transform localization based values for example
         return $this->valuesNormalizer->normalize(
-            $this->valuesDenormalizer->denormalize(
-                $variantGroup->getProductTemplate()->getValuesData(),
-                'standard',
-                []
-            ),
+            $template->getValues(),
             'standard',
             []
         );

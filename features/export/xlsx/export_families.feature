@@ -10,8 +10,8 @@ Feature: Export families in XLSX
   @javascript
   Scenario: Successfully export families
     Given the following family:
-      | code      | label-en_US |requirements-tablet | requirements-mobile |
-      | tractors  |             |sku                 | sku                 |
+      | code     | label-en_US | requirements-tablet | requirements-mobile |
+      | tractors |             | sku                 | sku                 |
     And the following job "xlsx_footwear_family_export" configuration:
       | filePath | %tmp%/family_export/family.xlsx |
     And I am on the "xlsx_footwear_family_export" export job page

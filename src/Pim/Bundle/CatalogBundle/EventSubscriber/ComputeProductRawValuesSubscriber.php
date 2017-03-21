@@ -4,9 +4,10 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\normalizer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Allows to compute raw values of the product (that are in JSON in the database)
@@ -24,12 +25,17 @@ class ComputeProductRawValuesSubscriber implements EventSubscriberInterface
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
     /**
-     * @param NormalizerInterface $normalizer
+     * @param NormalizerInterface          $normalizer
+     * @param AttributeRepositoryInterface $attributeRepository
      */
-    public function __construct(NormalizerInterface $normalizer)
+    public function __construct(NormalizerInterface $normalizer, AttributeRepositoryInterface $attributeRepository)
     {
         $this->normalizer = $normalizer;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -41,20 +47,28 @@ class ComputeProductRawValuesSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Normalizes product values into "storage" format,
-     * and sets the result as raw values.
+     * Normalizes product values into "storage" format, and sets the result as raw values.
+     *
+     * We also remove the identifier value that was loaded by
+     * \Pim\Bundle\CatalogBundle\EventSubscriber\LoadProductValuesSubscriber
+     * as we don't need in the raw values. We already have this information in the identifier column.
      *
      * @param GenericEvent $event
      */
     public function computeRawValues(GenericEvent $event)
     {
         $product = $event->getSubject();
-
         if (!$product instanceof ProductInterface) {
             return;
         }
 
-        $values = $this->normalizer->normalize($product->getValues(), 'storage');
-        $product->setRawValues($values);
+        $identifierCode = $this->attributeRepository->getIdentifierCode();
+
+        $rawValues = $this->normalizer->normalize($product->getValues(), 'storage');
+        if (array_key_exists($identifierCode, $rawValues)) {
+            unset($rawValues[$identifierCode]);
+        }
+
+        $product->setRawValues($rawValues);
     }
 }

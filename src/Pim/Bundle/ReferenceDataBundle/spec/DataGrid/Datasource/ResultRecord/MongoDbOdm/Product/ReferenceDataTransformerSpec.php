@@ -15,7 +15,7 @@ class ReferenceDataTransformerSpec extends ObjectBehavior
     {
         $attribute = [
             'code'              => 'my-code',
-            'attributeType'     => 'pim_reference_data_simpleselect',
+            'type'              => 'pim_reference_data_simpleselect',
             'localizable'       => null,
             'scopable'          => null,
             'backendType'       => 'reference_data_option',
@@ -43,7 +43,7 @@ class ReferenceDataTransformerSpec extends ObjectBehavior
     {
         $attribute = [
             'code'              => 'my-code',
-            'attributeType'     => 'pim_reference_data_multiselect',
+            'type'              => 'pim_reference_data_multiselect',
             'localizable'       => null,
             'scopable'          => null,
             'backendType'       => 'reference_data_options',

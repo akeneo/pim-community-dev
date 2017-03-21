@@ -7,9 +7,9 @@ Feature: Filter products per option
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | label | type         | localizable | scopable | useable_as_grid_filter |
-      | color | multiselect  | no          | no       | yes                    |
-      | size  | simpleselect | no          | no       | yes                    |
+      | label-en_US | type                     | localizable | scopable | useable_as_grid_filter | group | code  |
+      | color       | pim_catalog_multiselect  | 0           | 0        | 1                      | other | color |
+      | size        | pim_catalog_simpleselect | 0           | 0        | 1                      | other | size  |
     And the following "color" attribute options: Black, White and Red
     And the following "size" attribute options: S, M and L
     And the following products:
@@ -24,17 +24,19 @@ Feature: Filter products per option
     Given I am on the products page
     And the grid should contain 3 elements
     Then I should be able to use the following filters:
-      | filter | operator | value | result          |
-      | size   | in list  | M     | Sweat           |
-      | size   | is empty |       | Shirt and Shoes |
+      | filter | operator     | value | result          |
+      | size   | in list      | M     | Sweat           |
+      | size   | is empty     |       | Shirt and Shoes |
+      | size   | is not empty |       | Sweat           |
 
   Scenario: Successfully filter products by a multi option
     Given I am on the products page
     And the grid should contain 3 elements
     Then I should be able to use the following filters:
-      | filter | operator | value    | result          |
-      | color  | in list  | Black    | Shoes           |
-      | color  | is empty |          | Shirt and Sweat |
+      | filter | operator     | value | result          |
+      | color  | in list      | Black | Shoes           |
+      | color  | is empty     |       | Shirt and Sweat |
+      | color  | is not empty |       | Shoes           |
 
   @jira https://akeneo.atlassian.net/browse/PIM-5802
   Scenario: Successfully keep data previously filled on a simple option
@@ -53,3 +55,12 @@ Feature: Filter products per option
     And I filter by "color" with operator "in list" and value "Black, White"
     And I should see entities Shoes
     Then I should see options "[Black], [White]" in filter "color"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6150
+  Scenario: Successfully keep the option filter on page reload
+    Given I am on the products page
+    And the grid should contain 3 elements
+    When I show the filter "color"
+    And I filter by "color" with operator "in list" and value "Black, White"
+    And I reload the page
+    Then I should see the text "Color: \"[Black], [White]\""

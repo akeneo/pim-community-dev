@@ -45,13 +45,6 @@ interface LocaleRepositoryInterface extends IdentifiableObjectRepositoryInterfac
     public function getLocalesQB();
 
     /**
-     * TODO: should be extracted in an enrich bundle repository
-     *
-     * @return mixed
-     */
-    public function createDatagridQueryBuilder();
-
-    /**
      * Get the deleted locales of a channel (the channel is updated but not flushed yet).
      *
      * @param ChannelInterface $channel

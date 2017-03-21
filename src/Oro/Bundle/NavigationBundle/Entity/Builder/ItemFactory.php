@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\NavigationBundle\Entity\Builder;
 
-use Oro\Bundle\NavigationBundle\Entity\Builder\AbstractBuilder;
-
 class ItemFactory
 {
     /**

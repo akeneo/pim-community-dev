@@ -207,7 +207,6 @@ function($, _, __, AbstractFilter) {
                     canDisable: this.canDisable
                 })
             );
-
             this._renderCriteria(this.$(this.criteriaSelector));
             this._clickOutsideCriteriaCallback = _.bind(function(e) {
                 if (this.popupCriteriaShowed) {

@@ -53,8 +53,8 @@ define(
                 var adamsFamily = {
                     code: 'Adams',
                     attributes: [
-                        'undead',
-                        'funny'
+                        {code: 'undead'},
+                        {code: 'funny'}
                     ]
                 };
                 var product = {family: adamsFamily};

@@ -35,4 +35,14 @@ class StructureVersionProviderSpec extends ObjectBehavior
 
         $this->getStructureVersion()->shouldReturn(12);
     }
+
+    function it_provides_null_when_no_history_is_available($versionRepository)
+    {
+        $this->addResource('Locale');
+
+        $versionRepository->getNewestLogEntryForRessources(['Locale'])
+            ->willReturn(null);
+
+        $this->getStructureVersion()->shouldReturn(null);
+    }
 }

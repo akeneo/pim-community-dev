@@ -7,12 +7,12 @@ Feature: Export products with localized numbers
   Background:
     Given an "apparel" catalog configuration
     And the following attributes:
-      | code   | label             | type   | decimals_allowed | negative_allowed | default_metric_unit | metric_family | group |
-      | cotton | Percentage cotton | number | true             | false            |                     |               | other |
-      | metric | New metric        | metric | true             | true             | GRAM                | Weight        | other |
+      | code   | label-en_US       | type               | decimals_allowed | negative_allowed | default_metric_unit | metric_family | group |
+      | cotton | Percentage cotton | pim_catalog_number | 1                | 0                |                     |               | other |
+      | metric | New metric        | pim_catalog_metric | 1                | 1                | GRAM                | Weight        | other |
     And the following family:
-      | code   | attributes     |
-      | sandal | cotton, metric |
+      | code   | attributes    |
+      | sandal | cotton,metric |
     And the following products:
       | sku           | family  | categories                   | price                    |
       | sandal-white  | sandals | men_2013, men_2014, men_2015 | 10.90 EUR, 15 USD, 9 GBP |
@@ -44,11 +44,11 @@ Feature: Export products with localized numbers
       | filePath         | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
       | decimalSeparator | ,                                                           |
     And the following product values:
-      | product       | attribute   | value |
-      | sandal-white  | cotton      | 75.55 |
-      | sandal-black  | cotton      | 75    |
-      | sandal-yellow | cotton      |       |
-      | sandal-blue   | cotton      | 75.00 |
+      | product       | attribute | value |
+      | sandal-white  | cotton    | 75.55 |
+      | sandal-black  | cotton    | 75    |
+      | sandal-yellow | cotton    |       |
+      | sandal-blue   | cotton    | 75.00 |
     And I launched the completeness calculator
     When I am on the "ecommerce_product_export" export job page
     And I launch the export job

@@ -1,13 +1,21 @@
 fos_rest:
+    zone:
+        - { path: ^/api }
+        - { path: ^/(?!_profiler|_wdt) }
     view:
         failed_validation: HTTP_BAD_REQUEST
         default_engine: php
         formats:
             json: true
+        mime_types:
+            form_data: ['multipart/form-data']
+            akeneo_multi_json: ['application/vnd.akeneo.collection+json']
     format_listener:
         rules:
-            - { path: '', priorities: ['html', 'json'], fallback_format: html, prefer_extension: true }
+            - { path: '^/api/rest/v\d+/media-files', methods: ['POST'], priorities: ['form_data'], fallback_format: json, prefer_extension: true }
+            - { path: '^/api/rest/v\d+/(products|families|categories|attributes)$', methods: ['PATCH'], priorities: ['akeneo_multi_json'], fallback_format: akeneo_multi_json, prefer_extension: true }
             - { path: '^/api', priorities: ['json'], fallback_format: json, prefer_extension: true }
+            - { path: '', stop: true }
     body_listener:
         decoders:
             json: fos_rest.decoder.json
@@ -19,3 +27,4 @@ fos_rest:
         messages:
             Pim\Bundle\EnrichBundle\Exception\DeleteException: true
             Symfony\Component\HttpKernel\Exception\ConflictHttpException: true
+            Symfony\Component\HttpKernel\Exception\HttpException: true

@@ -11,20 +11,22 @@ Feature: Filter products
       | furniture |
       | library   |
     And the following attribute:
-      | code  | label | type         |
-      | color | Color | simpleselect |
+      | code  | label-en_US | type                     | group |
+      | color | Color       | pim_catalog_simpleselect | other |
     And the following "color" attribute options: Black and White
-    And the following products:
-      | sku    | family    | color |
-      | BOOK   | library   |       |
-      | MUG-1  | furniture | white |
-      | MUG-2  | furniture | black |
-      | POSTIT | furniture |       |
+    And the following variant groups:
+      | code | label-en_US | axis  | type    |
+      | MUG  | Mug         | color | VARIANT |
     And the following product groups:
-      | code   | label  | axis  | type    | products     |
-      | MUG    | Mug    | color | VARIANT | MUG-1, MUG-2 |
-      | POSTIT | Postit |       | X_SELL  | POSTIT       |
-      | EMPTY  | Empty  |       | X_SELL  |              |
+      | code   | label-en_US | type   |
+      | POSTIT | Postit      | X_SELL |
+      | EMPTY  | Empty       | X_SELL |
+    And the following products:
+      | sku    | family    | color | groups   |
+      | BOOK   | library   |       |          |
+      | MUG-1  | furniture | white | MUG      |
+      | MUG-2  | furniture | black | MUG      |
+      | POSTIT | furniture |       | POSTIT   |
     And I am logged in as "Mary"
 
   Scenario: Successfully display datagrid with group
@@ -45,3 +47,10 @@ Feature: Filter products
     When I filter by "groups" with operator "" and value "Empty"
     Then the grid should contain 0 element
     And I should not see products BOOK, MUG-1, MUG-2 and POSTIT
+
+  Scenario: Successfully keep the group filter on page reload
+    Given I am on the products page
+    When I filter by "groups" with operator "in list" and value "Mug"
+    And I reload the page
+    Then I should see the text "Groups: \"Mug\""
+    And the grid should contain 2 elements

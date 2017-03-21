@@ -23,7 +23,7 @@ define(
     ) {
         return Backbone.View.extend({
             template: _.template(template),
-            buttonTitle: '[add]',
+            buttonTitle: null,
 
             events: {
                 'click button': 'onAdd'

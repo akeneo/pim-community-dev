@@ -102,7 +102,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
         $this->axisColumns = [];
 
         foreach ($attributes as $attributeCode => $attribute) {
-            $attributeType = $attribute['attributeType'];
+            $attributeType = $attribute['type'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
             if ($attributeTypeConf && $attributeTypeConf['column']) {

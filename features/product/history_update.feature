@@ -75,8 +75,8 @@ Feature: Update the product history
     When I open the history
     Then there should be 3 updates
     And I should see history:
-      | version | property | value   |
-      | 3       | Length   | 35      |
+      | version | property | value |
+      | 3       | Length   | 35    |
     When I close the "history" panel
     When I visit the "Attributes" tab
     And I remove the "Length" attribute

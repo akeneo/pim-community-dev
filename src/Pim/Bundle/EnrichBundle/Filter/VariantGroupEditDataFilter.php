@@ -4,7 +4,6 @@ namespace Pim\Bundle\EnrichBundle\Filter;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Variant group edit data filter

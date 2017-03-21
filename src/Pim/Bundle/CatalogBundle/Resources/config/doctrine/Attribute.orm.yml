@@ -115,7 +115,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             type: string
             length: 255
             column: entity_type
-        attributeType:
+        type:
             type: string
             length: 255
             column: attribute_type

@@ -15,9 +15,15 @@ class AjaxEntityTransformerTest extends \PHPUnit_Framework_TestCase
 {
     protected $repository;
 
+    /**
+     * @{@inheritdoc}
+     */
     protected function setUp()
     {
-        $this->repository = $this->createMock('Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface');
+        $this->repository = $this->createMock(
+            'Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository'
+        );
+
         $this->repository->expects($this->any())
             ->method('getOption')
             ->will(

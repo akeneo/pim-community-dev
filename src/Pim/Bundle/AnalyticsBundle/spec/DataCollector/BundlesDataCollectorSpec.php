@@ -3,8 +3,6 @@
 namespace spec\Pim\Bundle\AnalyticsBundle\DataCollector;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\VersionProviderInterface;
-use Prophecy\Argument;
 
 class BundlesDataCollectorSpec extends ObjectBehavior
 {

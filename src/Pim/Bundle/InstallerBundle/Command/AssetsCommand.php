@@ -3,9 +3,11 @@
 namespace Pim\Bundle\InstallerBundle\Command;
 
 use Pim\Bundle\InstallerBundle\CommandExecutor;
-use Symfony\Component\Console\Command\Command;
+use Pim\Bundle\InstallerBundle\Event\InstallerEvents;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Assets dump command
@@ -14,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssetsCommand extends Command
+class AssetsCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -45,6 +47,8 @@ class AssetsCommand extends Command
     {
         $output->writeln('<info>Akeneo PIM assets</info>');
 
+        $this->getEventDispatcher()->dispatch(InstallerEvents::PRE_ASSETS_DUMP);
+
         $this->commandExecutor
             ->runCommand('oro:navigation:init')
             ->runCommand('fos:js-routing:dump', ['--target' => 'web/js/routes.js'])
@@ -54,6 +58,16 @@ class AssetsCommand extends Command
         $defaultLocales = ['en', 'fr', 'nl', 'de', 'ru', 'ja', 'pt', 'it'];
         $this->commandExecutor->runCommand('oro:translation:dump', ['locale' => $defaultLocales]);
 
+        $this->getEventDispatcher()->dispatch(InstallerEvents::POST_ASSETS_DUMP);
+
         return $this;
+    }
+
+    /**
+     * @return EventDispatcherInterface
+     */
+    protected function getEventDispatcher()
+    {
+        return $this->getContainer()->get('event_dispatcher');
     }
 }

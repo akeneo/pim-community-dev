@@ -37,11 +37,12 @@ pim_reference_data:
 
 pim_api:
     resource: "@PimApiBundle/Resources/config/routing.yml"
+    prefix: /api
 
 # Oro platform
 
 oro_default:
-    pattern:  /
+    path:  /
     defaults:
         template:    PimDashboardBundle:Dashboard:index.html.twig
         _controller: FrameworkBundle:Template:template

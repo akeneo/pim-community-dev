@@ -54,7 +54,7 @@ class AttributeSpec extends ObjectBehavior
                 'fr_FR' => 'La description',
                 'en_US' => 'The description',
             ],
-            'attribute_type'         => 'pim_catalog_text',
+            'type'                   => 'pim_catalog_text',
             'number_min'             => 23.5,
             'number_max'             => 29.9,
             'max_file_size'          => 3500,

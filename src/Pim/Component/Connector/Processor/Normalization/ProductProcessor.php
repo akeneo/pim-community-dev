@@ -130,7 +130,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
      */
     protected function fetchMedia(ProductInterface $product, $directory)
     {
-        $identifier = $product->getIdentifier()->getData();
+        $identifier = $product->getIdentifier();
         $this->mediaFetcher->fetchAll($product->getValues(), $directory, $identifier);
 
         foreach ($this->mediaFetcher->getErrors() as $error) {
@@ -149,8 +149,9 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     protected function filterValues(array $values, array $attributesToFilter)
     {
         $valuesToExport = [];
+        $attributesToFilter = array_flip($attributesToFilter);
         foreach ($values as $code => $value) {
-            if (in_array($code, $attributesToFilter)) {
+            if (isset($attributesToFilter[$code])) {
                 $valuesToExport[$code] = $value;
             }
         }

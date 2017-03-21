@@ -29,7 +29,7 @@ services:
         class: '%pim_enrich.mass_edit_action.operation_job_launcher.class%'
         arguments:
             - '@akeneo_batch.launcher.simple_job_launcher'
-            - '@pim_import_export.repository.job_instance'
+            - '@akeneo_batch.job.job_instance_repository'
             - '@security.token_storage'
 
     # Product Grid Mass edit actions

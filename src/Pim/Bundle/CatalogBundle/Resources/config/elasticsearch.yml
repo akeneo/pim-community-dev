@@ -1,0 +1,10 @@
+parameters:
+    pim_catalog.elasticsearch.product_indexer.class: 'Pim\Bundle\CatalogBundle\Elasticsearch\ProductIndexer'
+
+services:
+    pim_catalog.elasticsearch.product_indexer:
+        class: '%pim_catalog.elasticsearch.product_indexer.class%'
+        arguments:
+            - '@pim_serializer'
+            - '@akeneo_elasticsearch.client'
+            - 'pim_catalog_product'

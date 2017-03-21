@@ -41,10 +41,11 @@ class PriceDecorator extends ElementDecorator
         }
 
         // Set the value:
-        $this->find('css', 'input[name="value"]')->setValue($data);
+        if ('' !== $data) {
+            $this->find('css', 'input[name="value"]')->setValue($data);
+        }
 
         $currencyDropdown->click();
-
         $currencyChoice = $currencyDropdown->getParent()->find(
             'css', sprintf('.dropdown-menu .choice_value[data-value="%s"]', $currency)
         );

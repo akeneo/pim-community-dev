@@ -117,6 +117,7 @@ extensions:
                 - STARTS WITH
                 - ENDS WITH
                 - EMPTY
+                - NOT EMPTY
 
     akeneo-attribute-date-filter:
         module: pim/filter/attribute/date

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -36,6 +36,9 @@ class SequentialEditController
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var SaverInterface */
+    protected $saver;
+
     /** @var array */
     protected $objects;
 
@@ -47,19 +50,22 @@ class SequentialEditController
      * @param SequentialEditManager $seqEditManager
      * @param UserContext           $userContext
      * @param NormalizerInterface   $normalizer
+     * @param SaverInterface        $saver
      */
     public function __construct(
         RouterInterface $router,
         MassActionDispatcher $massActionDispatcher,
         SequentialEditManager $seqEditManager,
         UserContext $userContext,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        SaverInterface $saver
     ) {
         $this->router = $router;
         $this->massActionDispatcher = $massActionDispatcher;
         $this->seqEditManager = $seqEditManager;
         $this->userContext = $userContext;
         $this->normalizer = $normalizer;
+        $this->saver = $saver;
     }
 
     /**
@@ -85,7 +91,7 @@ class SequentialEditController
             $this->userContext->getUser()
         );
 
-        $this->seqEditManager->save($sequentialEdit);
+        $this->saver->save($sequentialEdit);
 
         return new RedirectResponse(
             $this->router->generate(

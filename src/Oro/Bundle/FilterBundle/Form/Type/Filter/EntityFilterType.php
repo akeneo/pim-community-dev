@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\FilterBundle\Form\Type\Filter;
 
-use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

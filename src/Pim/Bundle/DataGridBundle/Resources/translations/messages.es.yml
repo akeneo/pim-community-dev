@@ -14,25 +14,16 @@ oro.grid.mass_action.delete.confirm_content: '¿Está seguro que desea eliminar 
 oro.grid.datagrid.page_size.all: Todos
 oro.grid.mass_action.delete.success_message: "{0} Ninguna entidad fue  eliminada|{1} Una entidad eliminada|]1, Inf [%count% entidades fueron eliminadas"
 datagrid_view:
-  views: Vistas
-  default: Vista por defecto
-  create: Crear vista
-  placeholder: Nombre de la nueva vista
-  remove: Eliminar esta vista
-  save_changes: Guardar esta vista
-  choose_label: Elija una etiqueta para la vista
   columns:
     min_message: Debe seleccionar al menos una columna de datagrid para mostrar
   label:
     unique_message: La etiqueta debe ser única
     not_blank_message: La etiqueta no debe estar en blanco
-confirmation.remove.datagrid view: '¿Está seguro que desea eliminar este punto de vista del datagrid?'
-flash.datagrid view:
+grid.view_selector.flash:
   created: Vista de grilla de datos creada correctamente
-  updated: Vista de grilla de datos actualizada correctamente
   removed: Vista de grilla de datos eliminada correctamente
-  not removable: No tienes los derechos para eliminar este punto de vista
+  not_removable: No tienes los derechos para eliminar este punto de vista
 quick_export: Exportación rápida
-import: Importación
-export: Exportación
+import: Importar
+export: Exportar
 mass_edit: Edición en masa

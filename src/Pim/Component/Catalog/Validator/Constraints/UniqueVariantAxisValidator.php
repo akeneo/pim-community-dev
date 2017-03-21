@@ -219,7 +219,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
                 '%variant group%' => $variantLabel,
                 '%values%'        => $values
             ]
-        )->addViolation();
+        )->atPath($constraint->propertyPath)->addViolation();
     }
 
     /**
@@ -237,6 +237,6 @@ class UniqueVariantAxisValidator extends ConstraintValidator
                 '%product%' => $productIdentifier,
                 '%axis%'    => $axisCode
             ]
-        )->addViolation();
+        )->atPath($constraint->propertyPath)->addViolation();
     }
 }

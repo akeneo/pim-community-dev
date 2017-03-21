@@ -136,18 +136,18 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
             '_id'            => new \MongoId('550ae6b98ead0ee8778b46bb'),
             'normalizedData' => [],
             'sku'            => [
-                'attribute' => ['code' => 'sku', 'attributeType' => 'text', 'backendType' => 'text'],
+                'attribute' => ['code' => 'sku', 'type' => 'text', 'backendType' => 'text'],
                 'locale'    => null,
                 'scope'     => null,
                 'value'     => 'mysku',
             ],
             'name'           => [
-                'attribute' => ['code' => 'name', 'attributeType' => 'text', 'backendType' => 'text'],
+                'attribute' => ['code' => 'name', 'type' => 'text', 'backendType' => 'text'],
                 'locale'    => 'fr_FR',
                 'scope'     => null
             ],
             'desc'           => [
-                'attribute' => ['code' => 'desc', 'attributeType' => 'text', 'backendType' => 'text'],
+                'attribute' => ['code' => 'desc', 'type' => 'text', 'backendType' => 'text'],
                 'locale'    => 'fr_FR',
                 'scope'     => 'print'
             ],

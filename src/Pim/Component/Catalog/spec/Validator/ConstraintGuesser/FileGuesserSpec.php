@@ -18,7 +18,7 @@ class FileGuesserSpec extends ObjectBehavior
         foreach ($this->dataProviderForSupportedAttributes() as $attributeTypeTest) {
             $attributeType = $attributeTypeTest[0];
             $expectedResult = $attributeTypeTest[1];
-            $attribute->getAttributeType()
+            $attribute->getType()
                 ->willReturn($attributeType);
             $this->supportAttribute($attribute)
                 ->shouldReturn($expectedResult);

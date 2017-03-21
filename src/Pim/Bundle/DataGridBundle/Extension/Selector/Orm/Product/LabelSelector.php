@@ -20,18 +20,12 @@ class LabelSelector implements SelectorInterface
      */
     public function apply(DatasourceInterface $datasource, DatagridConfiguration $configuration)
     {
-        $rootAlias = $datasource->getQueryBuilder()->getRootAlias();
+        $qb = $datasource->getQueryBuilder();
+        $rootAlias = $qb->getRootAlias();
 
-        $datasource->getQueryBuilder()
+        $qb
             ->leftJoin($rootAlias.'.family', 'plFamily')
-            ->leftJoin(
-                $rootAlias.'.values',
-                'plValues',
-                'WITH',
-                'plValues.attribute = plFamily.attributeAsLabel '
-                .'AND (plValues.locale = :dataLocale OR plValues.locale IS NULL) '
-                .'AND (plValues.scope = :scopeCode OR plValues.scope IS NULL)'
-            )
-            ->addSelect('plValues.varchar AS productLabel');
+            ->leftJoin('plFamily.attributeAsLabel', 'attributeAsLabel')
+            ->addSelect('attributeAsLabel.code AS attributeCodeAsLabel');
     }
 }

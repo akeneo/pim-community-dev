@@ -44,12 +44,12 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($product, 'json')->shouldReturn(false);
     }
 
-    function it_normalizes_a_new_product_into_mongodb_document(
+    function it_normalizes_a_product_into_mongodb_document(
         $mongoFactory,
         $serializer,
         ProductInterface $product,
         \MongoId $mongoId,
-        \MongoDate $mongoDate,
+        \DateTime $date,
         Association $assoc1,
         Association $assoc2,
         CategoryInterface $category1,
@@ -60,8 +60,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ProductValueInterface $value2,
         FamilyInterface $family
     ) {
-        $mongoFactory->createMongoId()->willReturn($mongoId);
-        $mongoFactory->createMongoDate()->willReturn($mongoDate);
+        $mongoFactory->createMongoId('product1')->willReturn($mongoId);
 
         $family->getId()->willReturn(36);
 
@@ -71,8 +70,9 @@ class ProductNormalizerSpec extends ObjectBehavior
         $group1->getId()->willReturn(56);
         $group2->getId()->willReturn(78);
 
-        $product->getId()->willReturn(null);
-        $product->getCreated()->willReturn(null);
+        $product->getId()->willReturn('product1');
+        $product->getCreated()->willReturn($date);
+        $product->getUpdated()->willReturn($date);
         $product->getFamily()->willReturn($family);
         $product->isEnabled()->willReturn(true);
         $product->getGroups()->willReturn([$group1, $group2]);
@@ -89,11 +89,12 @@ class ProductNormalizerSpec extends ObjectBehavior
         $serializer->normalize($value2, 'mongodb_document', $context)->willReturn('my_value_2');
         $serializer->normalize($assoc1, 'mongodb_document', $context)->willReturn('my_assoc_1');
         $serializer->normalize($assoc2, 'mongodb_document', $context)->willReturn('my_assoc_2');
+        $serializer->normalize($date, 'mongodb_document', $context)->willReturn($date);
 
         $this->normalize($product, 'mongodb_document')->shouldReturn([
             '_id'            => $mongoId,
-            'created'        => $mongoDate,
-            'updated'        => $mongoDate,
+            'created'        => $date,
+            'updated'        => $date,
             'family'         => 36,
             'enabled'        => true,
             'groupIds'       => [56, 78],
@@ -101,16 +102,16 @@ class ProductNormalizerSpec extends ObjectBehavior
             'associations'   => ['my_assoc_1', 'my_assoc_2'],
             'values'         => ['my_value_1', 'my_value_2'],
             'normalizedData' => ['data' => 'data'],
-            'completenesses' => []
+            'completenesses' => [],
         ]);
     }
 
-    function it_normalizes_a_new_product_without_family_into_mongodb_document(
-        $mongoFactory,
+    function it_normalizes_a_product_without_family_into_mongodb_document(
         $serializer,
+        $mongoFactory,
         ProductInterface $product,
         \MongoId $mongoId,
-        \MongoDate $mongoDate,
+        \DateTime $date,
         Association $assoc1,
         Association $assoc2,
         CategoryInterface $category1,
@@ -120,8 +121,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ProductValueInterface $value1,
         ProductValueInterface $value2
     ) {
-        $mongoFactory->createMongoId()->willReturn($mongoId);
-        $mongoFactory->createMongoDate()->willReturn($mongoDate);
+        $mongoFactory->createMongoId('product1')->willReturn($mongoId);
 
         $category1->getId()->willReturn(12);
         $category2->getId()->willReturn(34);
@@ -129,8 +129,9 @@ class ProductNormalizerSpec extends ObjectBehavior
         $group1->getId()->willReturn(56);
         $group2->getId()->willReturn(78);
 
-        $product->getId()->willReturn(null);
-        $product->getCreated()->willReturn(null);
+        $product->getId()->willReturn('product1');
+        $product->getCreated()->willReturn($date);
+        $product->getUpdated()->willReturn($date);
         $product->getFamily()->willReturn(null);
         $product->isEnabled()->willReturn(true);
         $product->getGroups()->willReturn([$group1, $group2]);
@@ -147,136 +148,19 @@ class ProductNormalizerSpec extends ObjectBehavior
         $serializer->normalize($value2, 'mongodb_document', $context)->willReturn('my_value_2');
         $serializer->normalize($assoc1, 'mongodb_document', $context)->willReturn('my_assoc_1');
         $serializer->normalize($assoc2, 'mongodb_document', $context)->willReturn('my_assoc_2');
+        $serializer->normalize($date, 'mongodb_document', $context)->willReturn($date);
 
         $this->normalize($product, 'mongodb_document')->shouldReturn([
             '_id'            => $mongoId,
-            'created'        => $mongoDate,
-            'updated'        => $mongoDate,
+            'created'        => $date,
+            'updated'        => $date,
             'enabled'        => true,
             'groupIds'       => [56, 78],
             'categoryIds'    => [12, 34],
             'associations'   => ['my_assoc_1', 'my_assoc_2'],
             'values'         => ['my_value_1', 'my_value_2'],
             'normalizedData' => ['data' => 'data'],
-            'completenesses' => []
-        ]);
-    }
-
-    function it_normalizes_an_existing_product_into_mongodb_document(
-        $mongoFactory,
-        $serializer,
-        ProductInterface $product,
-        \MongoId $mongoId,
-        \MongoDate $mongoDate,
-        Association $assoc1,
-        Association $assoc2,
-        CategoryInterface $category1,
-        CategoryInterface $category2,
-        GroupInterface $group1,
-        GroupInterface $group2,
-        ProductValueInterface $value1,
-        ProductValueInterface $value2,
-        FamilyInterface $family
-    ) {
-        $mongoFactory->createMongoId('product1')->willReturn($mongoId);
-        $mongoFactory->createMongoDate()->willReturn($mongoDate);
-
-        $family->getId()->willReturn(36);
-
-        $category1->getId()->willReturn(12);
-        $category2->getId()->willReturn(34);
-
-        $group1->getId()->willReturn(56);
-        $group2->getId()->willReturn(78);
-
-        $product->getId()->willReturn('product1');
-        $product->getCreated()->willReturn(null);
-        $product->getFamily()->willReturn($family);
-        $product->isEnabled()->willReturn(true);
-        $product->getGroups()->willReturn([$group1, $group2]);
-        $product->getCategories()->willReturn([$category1, $category2]);
-        $product->getAssociations()->willReturn([$assoc1, $assoc2]);
-        $product->getValues()->willReturn([$value1, $value2]);
-
-        $context = ['_id' => $mongoId];
-
-        $serializer
-            ->normalize($product, 'mongodb_json')
-            ->willReturn(['data' => 'data', 'completenesses' => 'completenesses']);
-        $serializer->normalize($value1, 'mongodb_document', $context)->willReturn('my_value_1');
-        $serializer->normalize($value2, 'mongodb_document', $context)->willReturn('my_value_2');
-        $serializer->normalize($assoc1, 'mongodb_document', $context)->willReturn('my_assoc_1');
-        $serializer->normalize($assoc2, 'mongodb_document', $context)->willReturn('my_assoc_2');
-
-        $this->normalize($product, 'mongodb_document')->shouldReturn([
-            '_id'            => $mongoId,
-            'created'        => $mongoDate,
-            'updated'        => $mongoDate,
-            'family'         => 36,
-            'enabled'        => true,
-            'groupIds'       => [56, 78],
-            'categoryIds'    => [12, 34],
-            'associations'   => ['my_assoc_1', 'my_assoc_2'],
-            'values'         => ['my_value_1', 'my_value_2'],
-            'normalizedData' => ['data' => 'data'],
-            'completenesses' => []
-        ]);
-    }
-
-    function it_normalizes_an_existing_product_without_family_into_mongodb_document(
-        $mongoFactory,
-        $serializer,
-        ProductInterface $product,
-        \MongoId $mongoId,
-        \MongoDate $mongoDate,
-        Association $assoc1,
-        Association $assoc2,
-        CategoryInterface $category1,
-        CategoryInterface $category2,
-        GroupInterface $group1,
-        GroupInterface $group2,
-        ProductValueInterface $value1,
-        ProductValueInterface $value2
-    ) {
-        $mongoFactory->createMongoId('product1')->willReturn($mongoId);
-        $mongoFactory->createMongoDate()->willReturn($mongoDate);
-
-        $category1->getId()->willReturn(12);
-        $category2->getId()->willReturn(34);
-
-        $group1->getId()->willReturn(56);
-        $group2->getId()->willReturn(78);
-
-        $product->getId()->willReturn('product1');
-        $product->getCreated()->willReturn(null);
-        $product->getFamily()->willReturn(null);
-        $product->isEnabled()->willReturn(true);
-        $product->getGroups()->willReturn([$group1, $group2]);
-        $product->getCategories()->willReturn([$category1, $category2]);
-        $product->getAssociations()->willReturn([$assoc1, $assoc2]);
-        $product->getValues()->willReturn([$value1, $value2]);
-
-        $context = ['_id' => $mongoId];
-
-        $serializer
-            ->normalize($product, 'mongodb_json')
-            ->willReturn(['data' => 'data', 'completenesses' => 'completenesses']);
-        $serializer->normalize($value1, 'mongodb_document', $context)->willReturn('my_value_1');
-        $serializer->normalize($value2, 'mongodb_document', $context)->willReturn('my_value_2');
-        $serializer->normalize($assoc1, 'mongodb_document', $context)->willReturn('my_assoc_1');
-        $serializer->normalize($assoc2, 'mongodb_document', $context)->willReturn('my_assoc_2');
-
-        $this->normalize($product, 'mongodb_document')->shouldReturn([
-            '_id'            => $mongoId,
-            'created'        => $mongoDate,
-            'updated'        => $mongoDate,
-            'enabled'        => true,
-            'groupIds'       => [56, 78],
-            'categoryIds'    => [12, 34],
-            'associations'   => ['my_assoc_1', 'my_assoc_2'],
-            'values'         => ['my_value_1', 'my_value_2'],
-            'normalizedData' => ['data' => 'data'],
-            'completenesses' => []
+            'completenesses' => [],
         ]);
     }
 }

@@ -3,7 +3,6 @@
 namespace spec\Akeneo\Component\Batch\Job;
 
 use Akeneo\Component\Batch\Job\JobInterface;
-use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderRegistry;
 use PhpSpec\ObjectBehavior;

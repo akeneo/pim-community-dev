@@ -7,7 +7,6 @@ use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class FileFetcherSpec extends ObjectBehavior
 {

@@ -21,7 +21,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(ProductValueNormalizer::class);
     }
 
-    function it_support_prices(ProductValueInterface $value)
+    function it_support_values(ProductValueInterface $value)
     {
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'storage')->shouldReturn(false);

@@ -4,7 +4,6 @@ namespace spec\Pim\Component\Catalog\Localization\Localizer;
 
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class LocalizerRegistrySpec extends ObjectBehavior
 {

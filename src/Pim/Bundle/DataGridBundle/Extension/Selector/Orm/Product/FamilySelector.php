@@ -20,11 +20,15 @@ class FamilySelector implements SelectorInterface
      */
     public function apply(DatasourceInterface $datasource, DatagridConfiguration $configuration)
     {
-        $rootAlias = $datasource->getQueryBuilder()->getRootAlias();
+        $qb = $datasource->getQueryBuilder();
 
-        $datasource->getQueryBuilder()
+        $locale = $configuration->offsetGetByPath('[source][locale_code]');
+        $rootAlias = $qb->getRootAlias();
+
+        $qb
             ->leftJoin($rootAlias.'.family', 'family')
             ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
-            ->addSelect('COALESCE(NULLIF(ft.label, \'\'), CONCAT(\'[\', family.code, \']\')) as familyLabel');
+            ->addSelect('COALESCE(NULLIF(ft.label, \'\'), CONCAT(\'[\', family.code, \']\')) as familyLabel')
+            ->setParameter('dataLocale', $locale);
     }
 }

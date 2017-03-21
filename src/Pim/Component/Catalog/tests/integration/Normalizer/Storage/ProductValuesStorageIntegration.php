@@ -2,44 +2,25 @@
 
 namespace tests\integration\Pim\Component\Catalog\Normalizer\Storage;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Test\Integration\TestCase;
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
 
 /**
  * Integration tests to verify data from database are well formatted in the storage format
  */
 class ProductValuesStorageIntegration extends TestCase
 {
-    const MEDIA_ATTRIBUTE_DATA_COMPARISON = 'this is a media identifier';
-    const MEDIA_ATTRIBUTE_DATA_PATTERN = '#[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]{40}_\w+\.[a-zA-Z]+$#';
-
-    protected $purgeDatabaseForEachTest = false;
-
-    public function setUp()
+    protected function getConfiguration()
     {
-        parent::setUp();
-
-        $em = $this->get('doctrine.orm.entity_manager');
-        //TODO: change the path
-
-        $em->getConnection()->executeQuery(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . '../Standard/common.sql'));
-
-        if (1 === self::$count) {
-            //TODO: change the path
-            $em->getConnection()
-                ->executeQuery(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . '../Standard/products_orm.sql'));
-        }
+        return new Configuration(
+            [Configuration::getTechnicalSqlCatalogPath()],
+            false
+        );
     }
 
     public function testProductWithAllAttributes()
     {
         $expected = [
-            'sku' => [
-                '<all_channels>' => [
-                    '<all_locales>' => 'foo'
-                ],
-            ],
             'a_file' => [
                 '<all_channels>' => [
                     '<all_locales>' => '8/b/5/c/8b5cf9bfd2e7e4725fd581e03251133ada1b2c99_fileA.txt'
@@ -60,8 +41,10 @@ class ProductValuesStorageIntegration extends TestCase
                     '<all_locales>' => [
                         'amount' => '987654321987.1234',
                         'unit'   => 'KILOWATT',
-                        // TODO: wrong but makes the test pass
-                        'base_data' => '999999999999.999999999999',
+                        // TODO: here maybe we should have a "987654321987123.4", but the measure converter
+                        // TODO: returns a double that is too big, and we didn't change that
+                        // TODO: see TIP-695
+                        'base_data' => 9.8765432198712e+14,
                         'base_unit' => 'WATT',
                         'family'    => 'Power',
                     ]
@@ -70,10 +53,9 @@ class ProductValuesStorageIntegration extends TestCase
             'a_metric_without_decimal' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
-                        'amount' => 98,
-                        'unit'   => 'CENTIMETER',
-                        // TODO: wrong but makes the test pass
-                        'base_data' => '98.000000000000',
+                        'amount'    => 98,
+                        'unit'      => 'CENTIMETER',
+                        'base_data' => 0.98,
                         'base_unit' => 'METER',
                         'family'    => 'Length',
                     ],
@@ -82,11 +64,10 @@ class ProductValuesStorageIntegration extends TestCase
             'a_metric_without_decimal_negative' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
-                        'amount' => -20,
-                        'unit'   => 'CELSIUS',
-                        // TODO: wrong but makes the test pass
-                        'base_data' => '20.000000000000',
-                        'base_unit' => 'CELSIUS',
+                        'amount'    => -20,
+                        'unit'      => 'CELSIUS',
+                        'base_data' => 253.15,
+                        'base_unit' => 'KELVIN',
                         'family'    => 'Temperature',
                     ],
                 ],
@@ -96,9 +77,11 @@ class ProductValuesStorageIntegration extends TestCase
                     '<all_locales>' => [
                         'amount' => '-20.5000',
                         'unit'   => 'CELSIUS',
-                        // TODO: wrong but makes the test pass
-                        'base_data' => '20.500000000000',
-                        'base_unit' => 'CELSIUS',
+                        // TODO: here maybe we should have a string, but the measure converter returns a double,
+                        // TODO: and we didn't change that
+                        // TODO: see TIP-695
+                        'base_data' => 252.65,
+                        'base_unit' => 'KELVIN',
                         'family'    => 'Temperature',
                     ],
                 ],
@@ -206,14 +189,14 @@ class ProductValuesStorageIntegration extends TestCase
             ],
         ];
 
-        $this->assertStandardFormatForProductValues('foo', $expected);
+        $this->assertStorageFormatForProductValues('foo', $expected);
     }
 
     /**
      * @param string $identifier
      * @param array  $expected
      */
-    private function assertStandardFormatForProductValues($identifier, array $expected)
+    private function assertStorageFormatForProductValues($identifier, array $expected)
     {
         $repository = $this->get('pim_catalog.repository.product');
         $serializer = $this->get('pim_serializer');

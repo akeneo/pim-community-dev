@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

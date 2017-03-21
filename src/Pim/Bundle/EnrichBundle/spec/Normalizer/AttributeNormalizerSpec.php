@@ -31,9 +31,9 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $normalizer->normalize($price, 'standard', [])->willReturn(['code' => 'price']);
         $price->getId()->willReturn(12);
         $price->isWysiwygEnabled()->willReturn(false);
-        $price->getAttributeType()->willReturn('pim_catalog_text');
+        $price->getType()->willReturn('pim_catalog_text');
         $price->isLocaleSpecific()->willReturn(false);
-        $price->getLocaleSpecificCodes()->willReturn([]);
+        $price->getAvailableLocaleCodes()->willReturn([]);
 
         $price->getDateMin()->willReturn(null);
         $price->getDateMax()->willReturn(null);
@@ -56,29 +56,29 @@ class AttributeNormalizerSpec extends ObjectBehavior
 
         $this->normalize($price, 'internal_api', [])->shouldReturn(
             [
-                'code'                  => 'price',
-                'id'                    => 12,
-                'wysiwyg_enabled'       => false,
-                'empty_value'           => [],
-                'field_type'            => 'akeneo-text-field',
-                'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
-                'is_locale_specific'    => 0,
-                'locale_specific_codes' => [],
-                'max_characters'        => '',
-                'validation_rule'       => '',
-                'validation_regexp'     => '',
-                'number_min'            => '',
-                'number_max'            => '',
-                'decimals_allowed'      => true,
-                'negative_allowed'      => false,
-                'date_min'              => '',
-                'date_max'              => '',
-                'metric_family'         => '',
-                'default_metric_unit'   => '',
-                'max_file_size'         => '',
-                'sort_order'            => 2,
-                'group_code'            => null,
-                'group'                 => null,
+                'code'                => 'price',
+                'id'                  => 12,
+                'wysiwyg_enabled'     => false,
+                'empty_value'         => [],
+                'field_type'          => 'akeneo-text-field',
+                'filter_types'        => ['product-export-builder' => 'akeneo-attribute-string-filter'],
+                'is_locale_specific'  => 0,
+                'available_locales'   => [],
+                'max_characters'      => '',
+                'validation_rule'     => '',
+                'validation_regexp'   => '',
+                'number_min'          => '',
+                'number_max'          => '',
+                'decimals_allowed'    => true,
+                'negative_allowed'    => false,
+                'date_min'            => '',
+                'date_max'            => '',
+                'metric_family'       => '',
+                'default_metric_unit' => '',
+                'max_file_size'       => '',
+                'sort_order'          => 2,
+                'group_code'          => null,
+                'group'               => null,
             ]
         );
     }
@@ -94,9 +94,9 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $normalizer->normalize($attribute, 'standard', [])->willReturn(['code' => 'text']);
         $attribute->getId()->willReturn(12);
         $attribute->isWysiwygEnabled()->willReturn(true);
-        $attribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $attribute->getType()->willReturn('pim_catalog_textarea');
         $attribute->isLocaleSpecific()->willReturn(false);
-        $attribute->getLocaleSpecificCodes()->willReturn([]);
+        $attribute->getAvailableLocaleCodes()->willReturn([]);
 
         $attribute->getDateMin()->willReturn(null);
         $attribute->getDateMax()->willReturn(null);
@@ -119,162 +119,162 @@ class AttributeNormalizerSpec extends ObjectBehavior
 
         $this->normalize($attribute, 'internal_api', [])->shouldReturn(
             [
-                'code'                  => 'text',
-                'id'                    => 12,
-                'wysiwyg_enabled'       => true,
-                'empty_value'           => [],
-                'field_type'            => 'akeneo-text-field',
-                'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
-                'is_locale_specific'    => 0,
-                'locale_specific_codes' => [],
-                'max_characters'        => '2048',
-                'validation_rule'       => '',
-                'validation_regexp'     => '',
-                'number_min'            => '',
-                'number_max'            => '',
-                'decimals_allowed'      => '',
-                'negative_allowed'      => '',
-                'date_min'              => '',
-                'date_max'              => '',
-                'metric_family'         => '',
-                'default_metric_unit'   => '',
-                'max_file_size'         => '',
-                'sort_order'            => 2,
-                'group_code'            => null,
-                'group'                 => null,
+                'code'                => 'text',
+                'id'                  => 12,
+                'wysiwyg_enabled'     => true,
+                'empty_value'         => [],
+                'field_type'          => 'akeneo-text-field',
+                'filter_types'        => ['product-export-builder' => 'akeneo-attribute-string-filter'],
+                'is_locale_specific'  => 0,
+                'available_locales'   => [],
+                'max_characters'      => '2048',
+                'validation_rule'     => '',
+                'validation_regexp'   => '',
+                'number_min'          => '',
+                'number_max'          => '',
+                'decimals_allowed'    => '',
+                'negative_allowed'    => '',
+                'date_min'            => '',
+                'date_max'            => '',
+                'metric_family'       => '',
+                'default_metric_unit' => '',
+                'max_file_size'       => '',
+                'sort_order'          => 2,
+                'group_code'          => null,
+                'group'               => null,
             ]
         );
 
         $normalizer->normalize($attribute, 'standard', [])->willReturn(['code' => 'boolean']);
         $attribute->getId()->willReturn(12);
         $attribute->isWysiwygEnabled()->willReturn(true);
-        $attribute->getAttributeType()->willReturn('pim_catalog_boolean');
+        $attribute->getType()->willReturn('pim_catalog_boolean');
 
         $this->normalize($attribute, 'internal_api', [])->shouldReturn(
             [
-                'code'                  => 'boolean',
-                'id'                    => 12,
-                'wysiwyg_enabled'       => true,
-                'empty_value'           => [],
-                'field_type'            => 'akeneo-text-field',
-                'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
-                'is_locale_specific'    => 0,
-                'locale_specific_codes' => [],
-                'max_characters'        => '2048',
-                'validation_rule'       => '',
-                'validation_regexp'     => '',
-                'number_min'            => '',
-                'number_max'            => '',
-                'decimals_allowed'      => '',
-                'negative_allowed'      => '',
-                'date_min'              => '',
-                'date_max'              => '',
-                'metric_family'         => '',
-                'default_metric_unit'   => '',
-                'max_file_size'         => '',
-                'sort_order'            => 2,
-                'group_code'            => null,
-                'group'                 => null,
+                'code'                => 'boolean',
+                'id'                  => 12,
+                'wysiwyg_enabled'     => true,
+                'empty_value'         => [],
+                'field_type'          => 'akeneo-text-field',
+                'filter_types'        => ['product-export-builder' => 'akeneo-attribute-string-filter'],
+                'is_locale_specific'  => 0,
+                'available_locales'   => [],
+                'max_characters'      => '2048',
+                'validation_rule'     => '',
+                'validation_regexp'   => '',
+                'number_min'          => '',
+                'number_max'          => '',
+                'decimals_allowed'    => '',
+                'negative_allowed'    => '',
+                'date_min'            => '',
+                'date_max'            => '',
+                'metric_family'       => '',
+                'default_metric_unit' => '',
+                'max_file_size'       => '',
+                'sort_order'          => 2,
+                'group_code'          => null,
+                'group'               => null,
             ]
         );
 
         $normalizer->normalize($attribute, 'standard', [])->willReturn(['code' => 'collection']);
         $attribute->getId()->willReturn(12);
         $attribute->isWysiwygEnabled()->willReturn(false);
-        $attribute->getAttributeType()->willReturn('pim_catalog_attribute_collection');
+        $attribute->getType()->willReturn('pim_catalog_attribute_collection');
 
         $this->normalize($attribute, 'internal_api', [])->shouldReturn(
             [
-                'code'                  => 'collection',
-                'id'                    => 12,
-                'wysiwyg_enabled'       => false,
-                'empty_value'           => [],
-                'field_type'            => 'akeneo-text-field',
-                'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
-                'is_locale_specific'    => 0,
-                'locale_specific_codes' => [],
-                'max_characters'        => '2048',
-                'validation_rule'       => '',
-                'validation_regexp'     => '',
-                'number_min'            => '',
-                'number_max'            => '',
-                'decimals_allowed'      => '',
-                'negative_allowed'      => '',
-                'date_min'              => '',
-                'date_max'              => '',
-                'metric_family'         => '',
-                'default_metric_unit'   => '',
-                'max_file_size'         => '',
-                'sort_order'            => 2,
-                'group_code'            => null,
-                'group'                 => null,
+                'code'                => 'collection',
+                'id'                  => 12,
+                'wysiwyg_enabled'     => false,
+                'empty_value'         => [],
+                'field_type'          => 'akeneo-text-field',
+                'filter_types'        => ['product-export-builder' => 'akeneo-attribute-string-filter'],
+                'is_locale_specific'  => 0,
+                'available_locales'   => [],
+                'max_characters'      => '2048',
+                'validation_rule'     => '',
+                'validation_regexp'   => '',
+                'number_min'          => '',
+                'number_max'          => '',
+                'decimals_allowed'    => '',
+                'negative_allowed'    => '',
+                'date_min'            => '',
+                'date_max'            => '',
+                'metric_family'       => '',
+                'default_metric_unit' => '',
+                'max_file_size'       => '',
+                'sort_order'          => 2,
+                'group_code'          => null,
+                'group'               => null,
             ]
         );
 
         $normalizer->normalize($attribute, 'standard', [])->willReturn(['code' => 'collection']);
         $attribute->getId()->willReturn(12);
         $attribute->isWysiwygEnabled()->willReturn(false);
-        $attribute->getAttributeType()->willReturn('pim_catalog_multiselect');
+        $attribute->getType()->willReturn('pim_catalog_multiselect');
 
         $this->normalize($attribute, 'internal_api', [])->shouldReturn(
             [
-                'code'                  => 'collection',
-                'id'                    => 12,
-                'wysiwyg_enabled'       => false,
-                'empty_value'           => [],
-                'field_type'            => 'akeneo-text-field',
-                'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
-                'is_locale_specific'    => 0,
-                'locale_specific_codes' => [],
-                'max_characters'        => '2048',
-                'validation_rule'       => '',
-                'validation_regexp'     => '',
-                'number_min'            => '',
-                'number_max'            => '',
-                'decimals_allowed'      => '',
-                'negative_allowed'      => '',
-                'date_min'              => '',
-                'date_max'              => '',
-                'metric_family'         => '',
-                'default_metric_unit'   => '',
-                'max_file_size'         => '',
-                'sort_order'            => 2,
-                'group_code'            => null,
-                'group'                 => null,
+                'code'                => 'collection',
+                'id'                  => 12,
+                'wysiwyg_enabled'     => false,
+                'empty_value'         => [],
+                'field_type'          => 'akeneo-text-field',
+                'filter_types'        => ['product-export-builder' => 'akeneo-attribute-string-filter'],
+                'is_locale_specific'  => 0,
+                'available_locales'   => [],
+                'max_characters'      => '2048',
+                'validation_rule'     => '',
+                'validation_regexp'   => '',
+                'number_min'          => '',
+                'number_max'          => '',
+                'decimals_allowed'    => '',
+                'negative_allowed'    => '',
+                'date_min'            => '',
+                'date_max'            => '',
+                'metric_family'       => '',
+                'default_metric_unit' => '',
+                'max_file_size'       => '',
+                'sort_order'          => 2,
+                'group_code'          => null,
+                'group'               => null,
             ]
         );
 
         $normalizer->normalize($attribute, 'standard', [])->willReturn(['code' => 'metric']);
         $attribute->getId()->willReturn(12);
         $attribute->isWysiwygEnabled()->willReturn(false);
-        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $attribute->getType()->willReturn('pim_catalog_metric');
         $attribute->getDefaultMetricUnit()->willReturn('kg');
 
         $this->normalize($attribute, 'internal_api', [])->shouldReturn(
             [
-                'code'                  => 'metric',
-                'id'                    => 12,
-                'wysiwyg_enabled'       => false,
-                'empty_value'           => [],
-                'field_type'            => 'akeneo-text-field',
-                'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
-                'is_locale_specific'    => 0,
-                'locale_specific_codes' => [],
-                'max_characters'        => '2048',
-                'validation_rule'       => '',
-                'validation_regexp'     => '',
-                'number_min'            => '',
-                'number_max'            => '',
-                'decimals_allowed'      => '',
-                'negative_allowed'      => '',
-                'date_min'              => '',
-                'date_max'              => '',
-                'metric_family'         => '',
-                'default_metric_unit'   => 'kg',
-                'max_file_size'         => '',
-                'sort_order'            => 2,
-                'group_code'            => null,
-                'group'                 => null,
+                'code'                => 'metric',
+                'id'                  => 12,
+                'wysiwyg_enabled'     => false,
+                'empty_value'         => [],
+                'field_type'          => 'akeneo-text-field',
+                'filter_types'        => ['product-export-builder' => 'akeneo-attribute-string-filter'],
+                'is_locale_specific'  => 0,
+                'available_locales'   => [],
+                'max_characters'      => '2048',
+                'validation_rule'     => '',
+                'validation_regexp'   => '',
+                'number_min'          => '',
+                'number_max'          => '',
+                'decimals_allowed'    => '',
+                'negative_allowed'    => '',
+                'date_min'            => '',
+                'date_max'            => '',
+                'metric_family'       => '',
+                'default_metric_unit' => 'kg',
+                'max_file_size'       => '',
+                'sort_order'          => 2,
+                'group_code'          => null,
+                'group'               => null,
             ]
         );
 
@@ -283,7 +283,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
             ->willReturn(['code' => 'default']);
         $attribute->getId()->willReturn(12);
         $attribute->isWysiwygEnabled()->willReturn(false);
-        $attribute->getAttributeType()->willReturn('unknown');
+        $attribute->getType()->willReturn('unknown');
         $attribute->getGroup()->willReturn($group);
         $normalizer
             ->normalize($group, 'standard', ['include_group' => true])
@@ -292,29 +292,29 @@ class AttributeNormalizerSpec extends ObjectBehavior
 
         $this->normalize($attribute, 'internal_api', ['include_group' => true])->shouldReturn(
             [
-                'code'                  => 'default',
-                'id'                    => 12,
-                'wysiwyg_enabled'       => false,
-                'empty_value'           => [],
-                'field_type'            => 'akeneo-text-field',
-                'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
-                'is_locale_specific'    => 0,
-                'locale_specific_codes' => [],
-                'max_characters'        => '2048',
-                'validation_rule'       => '',
-                'validation_regexp'     => '',
-                'number_min'            => '',
-                'number_max'            => '',
-                'decimals_allowed'      => '',
-                'negative_allowed'      => '',
-                'date_min'              => '',
-                'date_max'              => '',
-                'metric_family'         => '',
-                'default_metric_unit'   => 'kg',
-                'max_file_size'         => '',
-                'sort_order'            => 2,
-                'group_code'            => 'the_group_code',
-                'group'                 => ['code' => 'the_group_is_normalized'],
+                'code'                => 'default',
+                'id'                  => 12,
+                'wysiwyg_enabled'     => false,
+                'empty_value'         => [],
+                'field_type'          => 'akeneo-text-field',
+                'filter_types'        => ['product-export-builder' => 'akeneo-attribute-string-filter'],
+                'is_locale_specific'  => 0,
+                'available_locales'   => [],
+                'max_characters'      => '2048',
+                'validation_rule'     => '',
+                'validation_regexp'   => '',
+                'number_min'          => '',
+                'number_max'          => '',
+                'decimals_allowed'    => '',
+                'negative_allowed'    => '',
+                'date_min'            => '',
+                'date_max'            => '',
+                'metric_family'       => '',
+                'default_metric_unit' => 'kg',
+                'max_file_size'       => '',
+                'sort_order'          => 2,
+                'group_code'          => 'the_group_code',
+                'group'               => ['code' => 'the_group_is_normalized'],
             ]
         );
     }

@@ -34,7 +34,6 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
 
         $datagrid->getDatasource()->willReturn($datasource);
         $datasource->setHydrator($hydrator)->shouldBeCalled();
-        $datasource->getRepository()->willReturn($repository);
         $datasource->getMassActionRepository()->willReturn($massActionRepo);
 
         // prepare mass action response

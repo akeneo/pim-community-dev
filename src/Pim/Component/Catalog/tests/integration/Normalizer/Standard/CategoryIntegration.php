@@ -2,17 +2,15 @@
 
 namespace tests\integration\Pim\Component\Catalog\Normalizer\Standard;
 
-use Test\Integration\TestCase;
+use Pim\Component\Catalog\tests\integration\Normalizer\Standard\AbstractStandardNormalizerTestCase;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryIntegration extends TestCase
+class CategoryIntegration extends AbstractStandardNormalizerTestCase
 {
-    protected $purgeDatabaseForEachTest = false;
-
     public function testCategoryRoot()
     {
         $expected = [
@@ -29,7 +27,10 @@ class CategoryIntegration extends TestCase
         $expected = [
             'code'   => 'categoryA',
             'parent' => 'master',
-            'labels' => []
+            'labels' => [
+                'en_US' => 'Category A',
+                'fr_FR' => 'Catégorie A'
+            ]
         ];
 
         $this->assert('categoryA', $expected);

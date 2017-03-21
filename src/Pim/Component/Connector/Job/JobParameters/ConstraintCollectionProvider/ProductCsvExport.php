@@ -4,7 +4,7 @@ namespace Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider
 
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
-use Pim\Component\Connector\Validator\Constraints\Channel;
+use Pim\Component\Catalog\Validator\Constraints\Channel;
 use Pim\Component\Connector\Validator\Constraints\FilterData;
 use Pim\Component\Connector\Validator\Constraints\FilterStructureAttribute;
 use Pim\Component\Connector\Validator\Constraints\FilterStructureLocale;

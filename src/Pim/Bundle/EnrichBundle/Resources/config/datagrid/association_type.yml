@@ -4,10 +4,8 @@ datagrid:
             entityHint: association type
             locale_parameter: localeCode
         source:
-            type: pim_datasource_default
+            type: pim_datasource_association_type
             acl_resource: pim_enrich_associationtype_index
-            entity: '%pim_catalog.entity.association_type.class%'
-            repository_method: createDatagridQueryBuilder
         columns:
             code:
                 label: Code

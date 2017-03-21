@@ -10,10 +10,10 @@ Feature: Browse products by locale and scope
       | code      |
       | furniture |
     And the following attributes:
-      | label       | localizable | scopable |
-      | name        | yes         | no       |
-      | image       | no          | yes      |
-      | description | yes         | yes      |
+      | label-en_US | localizable | scopable | group | type             | code        |
+      | name        | 1           | 0        | other | pim_catalog_text | name        |
+      | image       | 0           | 1        | other | pim_catalog_text | image       |
+      | description | 1           | 1        | other | pim_catalog_text | description |
     And the following product:
       | sku    | family    | name-en_US | name-fr_FR | description-en_US-ecommerce | description-fr_FR-ecommerce | description-fr_FR-mobile | image-ecommerce | image-mobile |
       | postit | furniture | Post it    | Etiquette  | My ecommerce description    | Ma description ecommerce    | Ma description mobile    | large.jpeg      | small.jpeg   |
@@ -67,3 +67,11 @@ Feature: Browse products by locale and scope
     And I am on the dashboard page
     When I am on the products page
     Then I should see the text "Products fr"
+
+  Scenario: Keep working scope context through navigation
+    Given I filter by "scope" with operator "equals" and value "Mobile"
+    And I am on the dashboard page
+    When I am on the products page
+    Then I should see the text "Mobile"
+    When I refresh current page
+    Then I should see the text "Mobile"

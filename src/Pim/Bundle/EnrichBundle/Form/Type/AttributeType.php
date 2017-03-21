@@ -116,7 +116,7 @@ class AttributeType extends AbstractType
     protected function addFieldAttributeType(FormBuilderInterface $builder)
     {
         $builder->add(
-            'attributeType',
+            'type',
             'choice',
             [
                 'choices'   => $this->registry->getSortedAliases(),

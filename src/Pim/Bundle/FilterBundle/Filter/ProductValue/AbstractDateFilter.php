@@ -7,6 +7,7 @@ use Oro\Bundle\FilterBundle\Filter\AbstractDateFilter as OroAbstractDateFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
  * Date filter
@@ -48,7 +49,7 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
     protected function isValidData($data)
     {
         // Empty operator does not need any value
-        if (is_array($data) && isset($data['type']) && FilterType::TYPE_EMPTY === $data['type']) {
+        if (is_array($data) && isset($data['type']) && in_array($data['type'], [FilterType::TYPE_EMPTY, FilterType::TYPE_NOT_EMPTY])) {
             return true;
         }
 
@@ -74,7 +75,15 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
                 $this->util->applyFilter(
                     $ds,
                     $this->get(ProductFilterUtility::DATA_NAME_KEY),
-                    'EMPTY',
+                    Operators::IS_EMPTY,
+                    null
+                );
+                break;
+            case FilterType::TYPE_NOT_EMPTY:
+                $this->util->applyFilter(
+                    $ds,
+                    $this->get(ProductFilterUtility::DATA_NAME_KEY),
+                    Operators::IS_NOT_EMPTY,
                     null
                 );
                 break;
@@ -132,7 +141,7 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
             return false;
         }
 
-        if ($data['type'] === FilterType::TYPE_EMPTY) {
+        if (in_array($data['type'], [FilterType::TYPE_EMPTY, FilterType::TYPE_NOT_EMPTY])) {
             return [
                 'date_start' => null,
                 'date_end'   => null,

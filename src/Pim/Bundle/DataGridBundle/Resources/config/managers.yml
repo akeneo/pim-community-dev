@@ -7,5 +7,3 @@ services:
         arguments:
             - '@pim_datagrid.repository.datagrid_view'
             - '@oro_datagrid.datagrid.manager'
-            - '@pim_datagrid.saver.datagrid_view'
-            - '@pim_datagrid.remover.datagrid_view'

@@ -1,0 +1,4 @@
+pim_api_root_endpoint:
+    path: v1
+    defaults: { _controller: pim_api.controller.root_endpoint:getAction, _format: json }
+    methods: [GET]

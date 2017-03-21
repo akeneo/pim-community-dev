@@ -14,25 +14,16 @@ oro.grid.mass_action.delete.confirm_content: Weet u zeker dat u de geselecteerde
 oro.grid.datagrid.page_size.all: Alle
 oro.grid.mass_action.delete.success_message: "{0} Geen entiteiten werden verwijderd|{1} Eén entiteit was verwijderd|{1}, Inf [%count% entiteiten werden verwijderd"
 datagrid_view:
-  views: Weergaves
-  default: Standaardweergave
-  create: Weergave maken
-  placeholder: Naam van nieuwe weergave
-  remove: Deze weergave verwijderen
-  save_changes: Deze weergave opslaan
-  choose_label: Kies een label voor de weergave
   columns:
     min_message: U moet ten minste één dataraster kolom selecteren om weer te geven
   label:
     unique_message: Het label moet uniek zijn
     not_blank_message: Het label mag niet leeg zijn
-confirmation.remove.datagrid view: Weet u zeker dat u deze datarasterweergave wilt verwijderen?
-flash.datagrid view:
+grid.view_selector.flash:
   created: Datarasterweergave succesvol aangemaakt
-  updated: Datarasterweergave succesvol bijgewerkt
   removed: Datarasterweergave succesvol verwijderd
-  not removable: U hoeft niet de rechten deze weergave te verwijderen
-quick_export: Snelle export
-import: Importeer
-export: Exporteer
+  not_removable: U hoeft niet de rechten deze weergave te verwijderen
+quick_export: Snelle Export
+import: Import
+export: Export
 mass_edit: Massa bewerken

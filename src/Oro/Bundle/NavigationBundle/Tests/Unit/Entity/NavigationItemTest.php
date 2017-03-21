@@ -4,7 +4,6 @@ namespace Oro\Bundle\NavigationBundle\Tests\Entity;
 
 use Oro\Bundle\NavigationBundle\Entity\NavigationItem;
 use Pim\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 class NavigationItemTest extends \PHPUnit_Framework_TestCase
 {

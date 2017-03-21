@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Validator\Constraints;
 
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactory;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
@@ -50,7 +50,7 @@ class FilterDataValidator extends ConstraintValidator
             try {
                 $context = isset($data['context']) ? $data['context'] : [];
                 $pqb->addFilter($data['field'], $data['operator'], $data['value'], $context);
-            } catch (InvalidArgumentException $exception) {
+            } catch (PropertyException $exception) {
                 $this->context->buildViolation(
                         $this->translator->trans(
                             sprintf('pim_catalog.constraint.%s', $exception->getCode())

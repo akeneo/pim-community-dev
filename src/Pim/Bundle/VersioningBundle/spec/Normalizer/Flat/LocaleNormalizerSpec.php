@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Normalizer\Standard\LocaleNormalizer as LocaleNormalizerStandard;
-use Prophecy\Argument;
 
 class LocaleNormalizerSpec extends ObjectBehavior
 {

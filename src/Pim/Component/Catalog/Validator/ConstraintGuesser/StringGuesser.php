@@ -22,7 +22,7 @@ class StringGuesser implements ConstraintGuesserInterface
     public function supportAttribute(AttributeInterface $attribute)
     {
         return in_array(
-            $attribute->getAttributeType(),
+            $attribute->getType(),
             [
                 AttributeTypes::TEXT,
                 AttributeTypes::TEXTAREA,

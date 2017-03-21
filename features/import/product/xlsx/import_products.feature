@@ -7,8 +7,8 @@ Feature: Import XLSX products
   Background:
     Given the "footwear" catalog configuration
     And the following product groups:
-      | code  | label     | type    |
-      | CROSS | Bag Cross | RELATED |
+      | code  | label-en_US | type    |
+      | CROSS | Bag Cross   | RELATED |
     And I am logged in as "Julia"
 
   Scenario: Successfully import an XLSX file of products

@@ -33,7 +33,7 @@ interface AttributeRepositoryInterface extends
     /**
      * Find all attributes that belongs to the default group
      *
-     * @deprecated avoid the hydration of attributes as objects (perf), use from controller, will be removed in 1.7
+     * @deprecated avoid the hydration of attributes as objects (perf), use from controller, will be removed in 1.8
      *
      * @return AttributeInterface[]
      */
@@ -84,13 +84,6 @@ interface AttributeRepositoryInterface extends
      * @return array
      */
     public function getAttributeIdsUseableInGrid($codes = null, $groupIds = null);
-
-    /**
-     * TODO: should be extracted in an enrich bundle repository
-     *
-     * @return mixed a query builder
-     */
-    public function createDatagridQueryBuilder();
 
     /**
      * Get the identifier attribute

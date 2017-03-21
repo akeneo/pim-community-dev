@@ -56,7 +56,7 @@ class AttributeTypeSpec extends ObjectBehavior
         $this->buildForm($builder, []);
         $builder
             ->add(
-                'attributeType',
+                'type',
                 'choice',
                 [
                     'choices'   => ['text' => 'text', 'number' => 'number', 'email' => 'email'],

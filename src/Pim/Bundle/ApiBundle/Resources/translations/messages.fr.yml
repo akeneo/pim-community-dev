@@ -1,0 +1,26 @@
+pim_api:
+  acl:
+    rights: Autorisations de l'API Web
+    attribute:
+      edit: Créer et mettre à jour les attributs
+      list: Liste des attributs
+    attribute_option:
+      edit: Créer et mettre à jour les options d'attributs
+      list: Lister les options d'attributs
+    category:
+      edit: Créer et mettre à jour les catégories
+      list: Liste des catégories
+    family:
+      edit: Créer et mettre à jour les familles
+      list: Liste des familles
+    channel.list: Liste des canaux via l'API web
+    locale.list: Liste des locales via l'API web
+  acl_group:
+    overall_access: Accès API Web général
+    attribute: Attributs
+    attribute_option: Options d'attribut
+    category: Catégories
+    family: Familles
+    channel: Accès aux canaux via l'API
+    locale: Accès aux locales via l'API
+rights.api: Autorisations de l'API Web

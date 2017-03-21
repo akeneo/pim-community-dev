@@ -1,0 +1,55 @@
+@import '../../base/variables';
+
+.AknAssetCollectionField {
+  @itemWidth: (@AknMaxFormWidth - 4 * 10px) / 3 - 1;
+  @itemHeight: 110px;
+
+  width: 100%;
+  border: 1px solid @AknBorderColor;
+
+  &-header {
+    background: lighten(@AknGrey, 30%);
+    border-bottom: 1px solid @AknBorderColor;
+    padding: 10px;
+  }
+
+  &-list {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    margin-right: -10px;
+    margin-bottom: -10px;
+    min-height: @itemHeight;
+  }
+
+  &-listItem {
+    width: @itemWidth;
+    border: 1px solid @AknBorderColor;
+    padding: 10px;
+    text-align: center;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+
+  &-assetThumbnail {
+    width: @itemWidth - 2*10px;
+    height: @itemHeight;
+    background-size: 100% auto;
+    background-position: center center;
+  }
+
+  &-icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+
+  &--withoutBorder {
+    border: none;
+  }
+
+  &--withoutBorder &-list {
+    padding: 0;
+  }
+}

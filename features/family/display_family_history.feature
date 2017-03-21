@@ -7,11 +7,11 @@ Feature: Display the family history
     Given the "default" catalog configuration
     And I am logged in as "Peter"
     And the following attribute group:
-      | code    | label-en_US |
-      | general | General     |
+      | code    | label-en_US | group | type             |
+      | general | General     | other | pim_catalog_text |
     And the following attributes:
-      | label       | group   |
-      | Description | General |
+      | label-en_US | group   | type             | code        |
+      | Description | General | pim_catalog_text | description |
 
   @javascript
   Scenario: Successfully create a family and see the history
@@ -22,7 +22,7 @@ Feature: Display the family history
     And I save the family
     And I should see the flash message "Family successfully created"
     And I should not see the text "There are unsaved changes."
-    And I edit the "Flyer" family
+    And I am on the "Flyer" family page
     When I visit the "History" tab
     Then there should be 1 update
     And I should see history:

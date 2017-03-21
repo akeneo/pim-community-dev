@@ -47,16 +47,16 @@ define(
                 var operationType = $(event.currentTarget).data('operation-type');
 
                 switch (operationType) {
-                    case 'mass_edit':
-                    case 'quick_export':
+                    case 'import':
+                    case 'export':
                         route = Routing.generate(
-                            'pim_enrich_job_tracker_show',
+                            'pim_importexport_' + operationType + '_execution_show',
                             { id: $(event.currentTarget).data('id') }
                         );
                         break;
                     default:
                         route = Routing.generate(
-                            'pim_importexport_' + operationType + '_execution_show',
+                            'pim_enrich_job_tracker_show',
                             { id: $(event.currentTarget).data('id') }
                         );
                         break;

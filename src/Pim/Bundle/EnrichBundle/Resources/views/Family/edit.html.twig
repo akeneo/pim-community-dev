@@ -1,88 +1,77 @@
 {% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
-{% oro_title_set({ params: { "%family.label%": form.vars.value.label } }) %}
-
-{% block content %}
-
-    {% if resource_granted('pim_enrich_family_edit_attributes') %}
-        {% include 'PimEnrichBundle:Attribute:_available-attributes-form.html.twig' with {
-            'form': attributesForm,
-            'action': path('pim_enrich_family_addattributes', {'id': form.vars.value.id})
-        } %}
-    {% endif %}
-
-    {{ JSFV(form) }}
-    {{ form_start(form, {
-        'action': path('pim_enrich_family_edit', { id: form.vars.value.id }),
-        'attr': {
-            'data-updated-title': 'confirmation.leave'|trans,
-            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'family.title'|trans })
-        }
-    }) }}
-
-        {% set title = 'family.edit'|trans ~ ' - ' ~ form.vars.value.label %}
-
-        {% set titleButtons %}
-            {{ elements.backLink(path('pim_enrich_family_index')) }}
-        {% endset %}
-
-        {% set buttons %}
-            {% if form.vars.value.id %}
-                {{ elements.deleteLink(
-                    path('pim_enrich_family_remove', { 'id': form.vars.value.id }),
-                    'pim_enrich_family_remove',
-                    path('pim_enrich_family_index'),
-                    'confirmation.remove.family'|trans({ '%name%': form.vars.value.label }),
-                    'flash.family.removed'|trans,
-                    '',
-                    'AknButtonList-item'
-                ) }}
-            {% endif %}
-            {{ elements.submitBtn('', 'ok', 'AknButtonList-item') }}
-        {% endset %}
-
-        {{ elements.page_header(title, buttons, null, null, null, titleButtons, elements.updated(form.vars.id)) }}
-
-        <div class="AknTabContainer">
-            {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
-            <div class="AknTabContainer-content tabsections tab-content">
-                {{ elements.form_errors(form) }}
-                {{ view_elements(form.vars.id ~ '.form_tab') }}
+{% block main %}
+    <div id="main">
+        {% block before_content %}
+            <div class="AknBreadcrumbContainer">
+                <div id="breadcrumb">
+                    {% block breadcrumb %}
+                        {% placeholder breadcrumb %}
+                    {% endblock breadcrumb %}
+                </div>
+                {{ elements.flashMessagesContainer() }}
+                {% placeholder pin_button %}
             </div>
+        {% endblock before_content %}
+        <div class="hash-loading-mask"></div>
+        <div id="container" class="scrollable-container">
+            {% block page_container %}
+                {% block content %}
+                    {% placeholder content_before %}
+                    <div id="family-edit-form">
+
+                    </div>
+                    <script>
+                        require(
+                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error', 'oro/navigation', 'oro/translator', 'pim/i18n'],
+                            function($, FetcherRegistry, FormBuilder, UserContext, Dialog, mediator, Error, Navigation, __, i18n) {
+                                $(function() {
+                                    var code = '{{ code is defined ? code : '' }}';
+                                    FetcherRegistry.initialize().done(function () {
+                                        FetcherRegistry.getFetcher('family').fetch(code, {
+                                            cached: false,
+                                            generateMissing: true
+                                        }).then(function (family) {
+                                            var label = _.escape(
+                                                i18n.getLabel(
+                                                    family.labels,
+                                                    UserContext.get('catalogLocale'),
+                                                    family.code
+                                                )
+                                            );
+                                            createForm(family, label, family.meta.form);
+                                        }).fail(function (response, textStatus, errorThrown) {
+                                            var errorView = new Error(response.responseJSON.message, response.status);
+                                            errorView.setElement('#family-edit-form').render();
+                                        });
+                                    });
+
+                                    function createForm(family, label, formExtension) {
+                                        var newTitle = document.title.replace('%family.label%', label);
+
+                                        document.title  = newTitle;
+
+                                        var navigation  = Navigation.getInstance();
+                                        var navTitle    = navigation.getPinButtonsData('title');
+
+                                        navTitle.params = {'%family.label%': label};
+                                        navigation.setPinButtonsData('title', navTitle);
+                                        navigation.setPinButtonsData('title-rendered-short', newTitle);
+
+                                        FormBuilder.build(formExtension)
+                                            .then(function (form) {
+                                                form.setData(family);
+                                                mediator.trigger('pim_enrich:form:entity:post_fetch', family);
+                                                form.setElement('#family-edit-form').render();
+                                            });
+                                    }
+                                });
+                            });
+                    </script>
+                    {% placeholder content_after %}
+                {% endblock content %}
+            {% endblock page_container %}
         </div>
-
-    {{ form_end(form) }}
-{% endblock %}
-
-{% block head_script_component %}
-    {{ parent() }}
-
-    <script type="text/javascript">
-        require(
-            ['jquery', 'bootstrap'],
-            function ($) {
-                'use strict';
-
-                $(function() {
-                    $('.group').click(function() {
-                        $(this).parent().find('tr:not(.group)').toggle();
-                        $(this).find('i').toggleClass('icon-expand-alt icon-collapse-alt');
-                    });
-
-                    {% if resource_granted('pim_enrich_family_edit_attributes') %}
-                    $('.attribute-requirement:not(.identifier) i').on('click', function() {
-                        $(this).toggleClass('icon-ok required')
-                                .toggleClass('icon-circle non-required')
-                                .toggleClass('AknAcl-icon--granted');
-
-                        var $input = $(this).siblings('input[type="checkbox"]').eq(0);
-                        var checked = $input.is(':checked');
-                        $(this).attr('data-original-title', $(this).parent().data((checked ? 'not-' : '') + 'required-title')).tooltip('show');
-                        $input.prop('checked', !checked).trigger('change');
-                    });
-                    {% endif %}
-                });
-            }
-        );
-    </script>
-{% endblock %}
+    </div>
+{% endblock main %}

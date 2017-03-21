@@ -23,8 +23,8 @@ Feature: Export variant groups
   Scenario: Successfully export variant groups with attributes
     Given a "footwear" catalog configuration
     And the following attribute:
-      | code       | type | allowed_extensions |
-      | attachment | file | txt                |
+      | code       | type             | allowed_extensions | group |
+      | attachment | pim_catalog_file | txt                | other |
     And the following variant group values:
       | group             | attribute          | value                 | locale | scope  |
       | caterpillar_boots | manufacturer       | Caterpillar           |        |        |

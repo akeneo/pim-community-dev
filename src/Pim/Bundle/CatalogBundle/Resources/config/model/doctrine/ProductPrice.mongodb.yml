@@ -1,9 +1,0 @@
-Pim\Component\Catalog\Model\ProductPrice:
-    type: embeddedDocument
-    fields:
-        id:
-            id: true
-        data:
-            type: float
-        currency:
-            type: string

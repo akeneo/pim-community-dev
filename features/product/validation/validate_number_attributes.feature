@@ -7,20 +7,20 @@ Feature: Validate number attributes of a product
   Background:
     Given the "default" catalog configuration
     And the following attribute groups:
-      | code    | label-en_US |
-      | general | General     |
+      | code    | label-en_US | group | type             |
+      | general | General     | other | pim_catalog_text |
     And the following attributes:
-      | code       | label-en_US | type   | scopable | unique | negative_allowed | decimals_allowed | number_min | number_max | group   |
-      | ref        | Reference   | number | no       | yes    | no               | no               |            |            | other   |
-      | sold       | Sold        | number | no       | no     | no               | no               |            |            | other   |
-      | available  | Available   | number | yes      | no     | no               | no               |            |            | other   |
-      | rating     | Rating      | number | no       | no     | no               | no               | 1          | 5          | other   |
-      | quality    | Quality     | number | no       | no     | no               | yes              | 1          | 10         | other   |
-      | popularity | Popularity  | number | yes      | no     | no               | no               | 1          | 10         | other   |
-      | random     | Random      | number | yes      | no     | no               | no               |            |            | general |
+      | code       | label-en_US | type               | scopable | unique | negative_allowed | decimals_allowed | number_min | number_max | group   |
+      | ref        | Reference   | pim_catalog_number | 0        | 1      | 0                | 0                |            |            | other   |
+      | sold       | Sold        | pim_catalog_number | 0        | 0      | 0                | 0                |            |            | other   |
+      | available  | Available   | pim_catalog_number | 1        | 0      | 0                | 0                |            |            | other   |
+      | rating     | Rating      | pim_catalog_number | 0        | 0      | 0                | 0                | 1          | 5          | other   |
+      | quality    | Quality     | pim_catalog_number | 0        | 0      | 0                | 1                | 1          | 10         | other   |
+      | popularity | Popularity  | pim_catalog_number | 1        | 0      | 0                | 0                | 1          | 10         | other   |
+      | random     | Random      | pim_catalog_number | 1        | 0      | 0                | 0                |            |            | general |
     And the following family:
-      | code | label-en_US | attributes                                                     | requirements-ecommerce | requirements-mobile |
-      | baz  | Baz         | sku, ref, sold, available, rating, popularity, quality, random | sku                    | sku                 |
+      | code | label-en_US | attributes                                              | requirements-ecommerce | requirements-mobile |
+      | baz  | Baz         | sku,ref,sold,available,rating,popularity,quality,random | sku                    | sku                 |
     And the following products:
       | sku | family | popularity-mobile | popularity-ecommerce | rating |
       | foo | baz    | 4                 | 4                    | 1      |

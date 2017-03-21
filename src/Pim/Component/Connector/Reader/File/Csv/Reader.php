@@ -13,7 +13,6 @@ use Pim\Component\Connector\Exception\DataArrayConversionException;
 use Pim\Component\Connector\Exception\InvalidItemFromViolationsException;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Csv reader
@@ -59,10 +58,9 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
      */
     public function read()
     {
-        $filePath = null;
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $filePath = $jobParameters->get('filePath');
         if (null === $this->fileIterator) {
-            $jobParameters = $this->stepExecution->getJobParameters();
-            $filePath = $jobParameters->get('filePath');
             $delimiter = $jobParameters->get('delimiter');
             $enclosure = $jobParameters->get('enclosure');
             $defaultOptions = [

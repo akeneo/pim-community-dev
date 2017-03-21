@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
@@ -71,7 +72,7 @@ abstract class AbstractFilter implements FilterInterface
      * @param string|array $operator the operator used to filter
      * @param string|array $value    the value(s) to filter
      *
-     * @throws ProductQueryException
+     * @throws PropertyException
      *
      * @return string
      */

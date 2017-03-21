@@ -11,11 +11,11 @@ Feature: Filter products
       | furniture |
       | library   |
     And the following attributes:
-      | label       | localizable | scopable | useable_as_grid_filter |
-      | Name        | yes         | no       | yes                    |
-      | Image       | no          | yes      | yes                    |
-      | Info        | yes         | yes      | yes                    |
-      | Description | no          | no       | no                     |
+      | label-en_US | localizable | scopable | useable_as_grid_filter | group | type             | code        |
+      | Name        | 1           | 0        | 1                      | other | pim_catalog_text | name        |
+      | Image       | 0           | 1        | 1                      | other | pim_catalog_text | image       |
+      | Info        | 1           | 1        | 1                      | other | pim_catalog_text | info        |
+      | Description | 0           | 0        | 0                      | other | pim_catalog_text | description |
     And the following products:
       | sku    | family    | enabled | name-en_US  | name-fr_FR   | info-en_US-ecommerce    | info-fr_FR-ecommerce     | info-fr_FR-mobile     | image-ecommerce  | image-mobile     |
       | postit | furniture | yes     | Post it     | Etiquette    | My ecommerce info       | Ma info ecommerce        | Ma info mobile        | large.jpeg       | small.jpeg       |
@@ -31,20 +31,21 @@ Feature: Filter products
     Then the grid should contain 6 elements
     And I should see products postit, book, book2, ebook, chair and 01234
     And I should be able to use the following filters:
-      | filter  | operator         | value         | result                                   |
-      | sku     | contains         | book          | book, ebook and book2                    |
-      | name    | contains         | post          | postit                                   |
-      | info    | contains         | book          | book, ebook and book2                    |
-      | enabled |                  | Enabled       | postit, ebook, book2 and chair and 01234 |
-      | enabled |                  | Disabled      | book                                     |
-      | sku     | does not contain | book          | postit and chair and 01234               |
-      | sku     | starts with      | boo           | book and book2                           |
-      | sku     | starts with      | 0             | 01234                                    |
-      | sku     | is equal to      | book          | book                                     |
-      | sku     | ends with        | book          | book and ebook                           |
-      | sku     | in list          | book          | book                                     |
-      | sku     | in list          | postit, book2 | postit and book2                         |
-      | name    | is empty         |               |                                          |
+      | filter  | operator         | value         | result                                      |
+      | sku     | contains         | book          | book, ebook and book2                       |
+      | name    | contains         | post          | postit                                      |
+      | info    | contains         | book          | book, ebook and book2                       |
+      | enabled |                  | Enabled       | postit, ebook, book2, chair and 01234       |
+      | enabled |                  | Disabled      | book                                        |
+      | sku     | does not contain | book          | postit and chair and 01234                  |
+      | sku     | starts with      | boo           | book and book2                              |
+      | sku     | starts with      | 0             | 01234                                       |
+      | sku     | is equal to      | book          | book                                        |
+      | sku     | ends with        | book          | book and ebook                              |
+      | sku     | in list          | book          | book                                        |
+      | sku     | in list          | postit, book2 | postit and book2                            |
+      | name    | is empty         |               |                                             |
+      | name    | is not empty     |               | postit, book, ebook, book2, chair and 01234 |
 
   Scenario: Successfully hide/show filters
     Given I am on the products page

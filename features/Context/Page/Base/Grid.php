@@ -183,7 +183,13 @@ class Grid extends Index
                     return $modal->find('css', $this->elements['Grid']['css']);
                 }
 
-                return $container->find('css', $this->elements['Grid']['css']);
+                $grids = $container->findAll('css', $this->elements['Grid']['css']);
+
+                foreach ($grids as $grid) {
+                    if ($grid->isVisible()) {
+                        return $grid;
+                    }
+                }
             },
             'No visible grid found'
         );
@@ -725,7 +731,11 @@ class Grid extends Index
     public function selectRow($value, $check = true)
     {
         $this->spin(function () use ($value, $check) {
-            $row      = $this->getRow($value);
+            $row = $this->getRow($value);
+            if (null === $row) {
+                return false;
+            }
+
             $checkbox = $row->find('css', 'input[type="checkbox"]');
 
             if (null === $checkbox || !$checkbox->isVisible()) {
@@ -745,8 +755,8 @@ class Grid extends Index
     }
 
     /**
-     * @param NodeElement $row
-     * @param int         $position
+     * @param NodeElement|null $row
+     * @param int              $position
      *
      * @throws \InvalidArgumentException
      *
@@ -754,6 +764,10 @@ class Grid extends Index
      */
     protected function getRowCell($row, $position)
     {
+        if (null === $row) {
+            throw new \InvalidArgumentException('Row should not be null');
+        }
+
         // $row->findAll('css', 'td') will not work in the case of nested table (like proposals changes)
         // because we only need to find the direct children cells
         $cells = $row->findAll('xpath', './td');

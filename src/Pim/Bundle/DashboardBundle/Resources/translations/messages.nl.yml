@@ -17,8 +17,8 @@ pim_dashboard:
       empty: Geen bewerkingen beschikbaar
       status: Status
       date: Datum
-      type: Soort
-      profile name: Profielnaam
+      type: Type
+      "profile name": Profielnaam
       details: Details
       job_type:
         import: Import

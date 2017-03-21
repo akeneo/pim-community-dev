@@ -4,7 +4,6 @@ namespace Akeneo\Component\Batch\Job;
 
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
-use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepInterface;

@@ -34,7 +34,7 @@ class MetricNormalizer implements NormalizerInterface
 
         $rawMetric['base_data'] = $metric->getBaseData();
         $rawMetric['base_unit'] = $metric->getBaseUnit();
-        $rawMetric['family'] = $metric->getValue()->getAttribute()->getMetricFamily();
+        $rawMetric['family'] = $metric->getFamily();
 
         return $rawMetric;
     }

@@ -5,17 +5,8 @@ pim_import_export:
   connector: Connector
   status:
     - A punt
-  batch_status:
-    1: COMPLET
-    2: COMENÇANT
-    3: COMENÇAT
-    4: ATURANT
-    5: ATURAT
-    6: HA FALLAT
-    7: ABANDONAT
-    8: DESCONEGUT
   download_archive:
-    archive: descarregar l' arxiu generat | descarregar arxius generats
+    archive: descarregar l'arxiu generat | descarregar els arxius generats
     output: descarregar fitxer generat|descarregar fitxers generats
     input: descarregar fitxer llegit|descarregar fitxers llegits
     invalid_xlsx: descarregar dades no vàlides
@@ -92,7 +83,7 @@ pim_importexport:
       dl_log: Descarregar informe de registres d'importació
       dl_files: Descarregar arxius importats
   acl_group:
-    export: Exportar perfils
+    export: Perfils d'exportació
     import: Perfils d'importació
 btn:
   create:
@@ -156,12 +147,4 @@ Summary: Sumari
 Start: Començar
 End: Fi
 set_attribute_requirements: Establir els requeriments d'atribut
-COMPLETED: COMPLET
-STARTING: COMENÇANT
-STARTED: COMENÇAT
-STOPPING: ATURANT
-STOPPED: ATURAT
-FAILED: HA FALLAT
-ABANDONED: ABANDONAT
-UNKNOWN: DESCONEGUT
 warning.label: Avís

@@ -64,28 +64,6 @@ extensions:
             label: pim_enrich.form.job_instance.tab.properties.label.title
             readOnly: false
 
-    pim-job-instance-csv-product-export-edit-properties-decimal-separator:
-        module: pim/job/common/edit/field/decimal-separator
-        parent: pim-job-instance-csv-product-export-edit-properties
-        position: 100
-        targetZone: global-settings
-        config:
-            fieldCode: configuration.decimalSeparator
-            readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.decimal_separator.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.decimal_separator.help
-
-    pim-job-instance-csv-product-export-edit-properties-date-format:
-        module: pim/job/product/edit/field/date-format
-        parent: pim-job-instance-csv-product-export-edit-properties
-        position: 110
-        targetZone: global-settings
-        config:
-            fieldCode: configuration.dateFormat
-            readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.date_format.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.date_format.help
-
     pim-job-instance-csv-product-export-edit-properties-file-path:
         module: pim/job/common/edit/field/text
         parent: pim-job-instance-csv-product-export-edit-properties
@@ -95,51 +73,73 @@ extensions:
             fieldCode: configuration.filePath
             readOnly: false
             label: pim_enrich.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.file_path.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
+
+    pim-job-instance-csv-product-export-edit-properties-decimal-separator:
+        module: pim/job/common/edit/field/decimal-separator
+        parent: pim-job-instance-csv-product-export-edit-properties
+        position: 130
+        targetZone: global-settings
+        config:
+            fieldCode: configuration.decimalSeparator
+            readOnly: false
+            label: pim_enrich.form.job_instance.tab.properties.decimal_separator.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.decimal_separator.help
+
+    pim-job-instance-csv-product-export-edit-properties-date-format:
+        module: pim/job/product/edit/field/date-format
+        parent: pim-job-instance-csv-product-export-edit-properties
+        position: 140
+        targetZone: global-settings
+        config:
+            fieldCode: configuration.dateFormat
+            readOnly: false
+            label: pim_enrich.form.job_instance.tab.properties.date_format.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.date_format.help
 
     pim-job-instance-csv-product-export-edit-properties-delimiter:
         module: pim/job/common/edit/field/text
         parent: pim-job-instance-csv-product-export-edit-properties
-        position: 130
+        position: 150
         targetZone: global-settings
         config:
             fieldCode: configuration.delimiter
             readOnly: false
             label: pim_enrich.form.job_instance.tab.properties.delimiter.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.delimiter.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.delimiter.help
 
     pim-job-instance-csv-product-export-edit-properties-enclosure:
         module: pim/job/common/edit/field/text
         parent: pim-job-instance-csv-product-export-edit-properties
-        position: 140
+        position: 160
         targetZone: global-settings
         config:
             fieldCode: configuration.enclosure
             readOnly: false
             label: pim_enrich.form.job_instance.tab.properties.enclosure.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.enclosure.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.enclosure.help
 
     pim-job-instance-csv-product-export-edit-properties-with-header:
         module: pim/job/common/edit/field/switch
         parent: pim-job-instance-csv-product-export-edit-properties
-        position: 150
+        position: 170
         targetZone: global-settings
         config:
             fieldCode: configuration.withHeader
             readOnly: false
             label: pim_enrich.form.job_instance.tab.properties.with_header.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.with_header.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.with_header.help
 
     pim-job-instance-csv-product-export-edit-properties-with-media:
         module: pim/job/common/edit/field/switch
         parent: pim-job-instance-csv-product-export-edit-properties
-        position: 160
+        position: 180
         targetZone: global-settings
         config:
             fieldCode: configuration.with_media
             readOnly: false
             label: pim_enrich.form.job_instance.tab.properties.with_media.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.help.with_media.help
+            tooltip: pim_enrich.form.job_instance.tab.properties.with_media.help
 
     pim-job-instance-csv-product-export-edit-content-structure:
         module: pim/job/product/edit/content/structure

@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -56,5 +57,18 @@ class ProductPropertyAdderSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->addData($product, 'category', 'tshirt', []);
+    }
+
+    function it_throws_an_exception_when_trying_to_add_anything_else_than_a_product()
+    {
+        $this->shouldThrow(
+            InvalidObjectException::objectExpected(
+                'stdClass',
+                'Pim\Component\Catalog\Model\ProductInterface'
+            )
+        )->during(
+            'addData',
+            [new \stdClass(), 'category', []]
+        );
     }
 }

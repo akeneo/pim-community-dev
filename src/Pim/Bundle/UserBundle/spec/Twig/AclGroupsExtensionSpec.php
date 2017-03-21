@@ -25,8 +25,9 @@ class AclGroupsExtensionSpec extends ObjectBehavior
     {
         $functions = $this->getFunctions();
 
-        $functions->shouldHaveCount(1);
+        $functions->shouldHaveCount(2);
         $functions[0]->shouldBeAnInstanceOf('\Twig_SimpleFunction');
+        $functions[1]->shouldBeAnInstanceOf('\Twig_SimpleFunction');
     }
 
     function it_provides_a_sorted_list_of_defined_acl_groups()

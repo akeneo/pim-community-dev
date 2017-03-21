@@ -84,3 +84,22 @@ Feature: Edit attributes of a variant group
     When I am on the "sweaters" variant group page
     And I visit the "Attributes" tab
     Then I should see the text "This variant group has no attributes yet"
+
+  Scenario: Successfully save localized image attributes on variant group
+    Given the following variant group values:
+      | group    | attribute         | value                  | locale | scope |
+      | sweaters | localizable_image | %fixtures%/akeneo.jpg  | en_US  |       |
+      | sweaters | localizable_image | %fixtures%/akeneo2.jpg | en_GB  |       |
+    And I am on the "sweaters" variant group page
+    And I visit the "Attributes" tab
+    When I switch the locale to "en_US"
+    Then I should see the text "akeneo.jpg"
+    When I switch the locale to "en_GB"
+    Then I should see the text "akeneo2.jpg"
+    And I save the variant group
+    And I reload the page
+    And I visit the "Attributes" tab
+    When I switch the locale to "en_US"
+    Then I should see the text "akeneo.jpg"
+    When I switch the locale to "en_GB"
+    Then I should see the text "akeneo2.jpg"

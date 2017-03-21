@@ -5,9 +5,7 @@ datagrid:
             locale_parameter: localeCode
         source:
             acl_resource: pim_enrich_channel_index
-            type: pim_datasource_default
-            entity: '%pim_catalog.entity.channel.class%'
-            repository_method: createDatagridQueryBuilder
+            type: pim_datasource_channel
         columns:
             code:
                 label: Code
@@ -22,12 +20,12 @@ datagrid:
                 type: url
                 route: pim_enrich_channel_edit
                 params:
-                    - id
+                    - code
             delete_link:
                 type: url
-                route: pim_enrich_channel_remove
+                route: pim_enrich_channel_rest_remove
                 params:
-                    - id
+                    - code
         actions:
             edit:
                 type:      navigate

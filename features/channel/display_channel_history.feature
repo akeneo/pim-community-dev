@@ -15,7 +15,7 @@ Feature: Display the channel history
       | Currencies              | EUR             |
       | Locales                 | French (France) |
     And I press the "Save" button
-    When I am on the "foo" channel page
+    Then I should be redirected to the "foo" channel page
     And I visit the "History" tab
     Then there should be 1 update
     And I should see history:

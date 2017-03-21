@@ -47,5 +47,11 @@ Pim\Component\Catalog\Model\Completeness:
             joinColumns:
                 product_id:
                     referencedColumnName: id
-                    onDelete: CASCADE
+
                     nullable: false
+    oneToMany:
+        attributeCompletenesses:
+            targetEntity: Pim\Component\Catalog\Model\AttributeCompleteness
+            mappedBy: completeness
+            cascade:
+                - persist

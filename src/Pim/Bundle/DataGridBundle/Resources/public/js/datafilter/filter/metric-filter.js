@@ -76,7 +76,7 @@ define(
              */
             _getCriteriaHint: function () {
                 var value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
-                if (value.type === 'empty') {
+                if (_.contains(['empty', 'not empty'], value.type)) {
                     return this._getChoiceOption(value.type).label;
                 }
                 if (!value.value) {
@@ -147,7 +147,7 @@ define(
                         item.closest('.btn-group').find('button').html(item.html() + '<span class="caret"></span>');
                     }
                 });
-                if (newValue.type === 'empty') {
+                if (_.contains(['empty', 'not empty'], newValue.type)) {
                     this.$(this.criteriaValueSelectors.value).hide().siblings('.btn-group:eq(1)').hide();
                 } else {
                     this.$(this.criteriaValueSelectors.value).show().siblings('.btn-group:eq(1)').show();
@@ -178,7 +178,7 @@ define(
             _onClickChoiceValue: function(e) {
                 NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
                 var parentDiv = $(e.currentTarget).closest('.metricfilter');
-                if ($(e.currentTarget).attr('data-value') === 'empty') {
+                if (_.contains(['empty', 'not empty'], $(e.currentTarget).attr('data-value'))) {
                     parentDiv.find('input[name="value"], .btn-group:eq(1)').hide();
                 } else {
                     parentDiv.find('input[name="value"], .btn-group:eq(1)').show();

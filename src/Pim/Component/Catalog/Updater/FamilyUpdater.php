@@ -2,18 +2,23 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -72,15 +77,14 @@ class FamilyUpdater implements ObjectUpdaterInterface
     public function update($family, array $data, array $options = [])
     {
         if (!$family instanceof FamilyInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\FamilyInterface", "%s" provided.',
-                    ClassUtils::getClass($family)
-                )
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($family),
+                FamilyInterface::class
             );
         }
 
         foreach ($data as $field => $value) {
+            $this->validateDataType($field, $value);
             $this->setData($family, $field, $value);
         }
 
@@ -88,9 +92,93 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
+     * Validate the data type of a field.
+     *
+     * @param string $field
+     * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
+     * @throws UnknownPropertyException
+     */
+    protected function validateDataType($field, $data)
+    {
+        if (in_array($field, ['code', 'attribute_as_label'])) {
+            if (null !== $data && !is_scalar($data)) {
+                throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
+            }
+        } elseif (in_array($field, ['attributes', 'labels'])) {
+            $this->validateScalarArray($field, $data);
+        } elseif ('attribute_requirements' === $field) {
+            $this->validateAttributeRequirements($data);
+        } else {
+            throw UnknownPropertyException::unknownProperty($field);
+        }
+    }
+
+    /**
+     * Validate that it is an array with scalar values.
+     *
+     * @param string $field
+     * @param mixed $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function validateScalarArray($field, $data)
+    {
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
+        }
+
+        foreach ($data as $value) {
+            if (null !== $value && !is_scalar($value)) {
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
+                    $field,
+                    sprintf('one of the %s is not a scalar', $field),
+                    static::class,
+                    $data
+                );
+            }
+        }
+    }
+    /**
+     * @param mixed $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function validateAttributeRequirements($data)
+    {
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected('attribute_requirements', 'update', 'family', $data);
+        }
+        foreach ($data as $channel => $attributes) {
+            if (!is_array($attributes)) {
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
+                    'attribute_requirements',
+                    sprintf('the channel "%s" is not an array', $channel),
+                    static::class,
+                    $data
+                );
+            }
+            foreach ($attributes as $attribute) {
+                if (null !== $attribute && !is_scalar($attribute)) {
+                    throw InvalidPropertyTypeException::validArrayStructureExpected(
+                        'attribute_requirements',
+                        sprintf('one of the attributes in the channel "%s" is not a scalar', $channel),
+                        static::class,
+                        $data
+                    );
+                }
+            }
+        }
+    }
+
+    /**
      * @param FamilyInterface $family
      * @param string          $field
      * @param mixed           $data
+     *
+     * @throws UnknownPropertyException
+     * @throws InvalidPropertyException
      */
     protected function setData(FamilyInterface $family, $field, $data)
     {
@@ -108,7 +196,23 @@ class FamilyUpdater implements ObjectUpdaterInterface
                 $this->setAttributeAsLabel($family, $data);
                 break;
             default:
-                $this->accessor->setValue($family, $field, $data);
+                $this->setValue($family, $field, $data);
+        }
+    }
+
+    /**
+     * @param $attribute
+     * @param $field
+     * @param $data
+     *
+     * @throws UnknownPropertyException
+     */
+    protected function setValue($attribute, $field, $data)
+    {
+        try {
+            $this->accessor->setValue($attribute, $field, $data);
+        } catch (NoSuchPropertyException $e) {
+            throw UnknownPropertyException::unknownProperty($field, $e);
         }
     }
 
@@ -126,52 +230,45 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param FamilyInterface $family
-     * @param array           $data
-     */
-    protected function setAttributeRequirements(FamilyInterface $family, array $data)
-    {
-        $oldRequirements = $family->getAttributeRequirements();
-
-        $requirements = $this->getExistingIdentifierRequirements($family);
-        foreach ($data as $channelCode => $attributeCodes) {
-            $requirements = array_merge(
-                $requirements,
-                $this->createAttributeRequirementsByChannel($family, $attributeCodes, $channelCode)
-            );
-        }
-
-        $requirements = $this->addMissingIdentifierRequirements($family, $requirements);
-
-        $this->removeRequirements($family, $requirements, $oldRequirements);
-
-        $family->setAttributeRequirements($requirements);
-    }
-
-    /**
-     * @param FamilyInterface $family
+     * Set the new attribute requirements.
+     * If a channel is not present in the requirement list, this method does not update the requirements of this
+     * channel.
      *
-     * @return AttributeRequirementInterface[]
+     * @param FamilyInterface $family
+     * @param array           $newRequirements The requirements for each channel. For example:
+     *                                         ['mobile' => ['attr1', 'attr2'], 'tabled' => ['attr3']]
+     *
+     * @throws InvalidPropertyException
      */
-    protected function getExistingIdentifierRequirements(FamilyInterface $family)
+    protected function setAttributeRequirements(FamilyInterface $family, array $newRequirements)
     {
-        $identifierReqs = [];
-        $existingRequirements = $family->getAttributeRequirements();
-        foreach ($existingRequirements as $requirement) {
-            if (AttributeTypes::IDENTIFIER === $requirement->getAttribute()->getAttributeType()) {
-                $identifierReqs[] = $requirement;
+        foreach ($family->getAttributeRequirements() as $requirement) {
+            $channelCode = $requirement->getChannelCode();
+            if (array_key_exists($channelCode, $newRequirements)) {
+                $attribute = $requirement->getAttribute();
+                $key = array_search($attribute->getCode(), $newRequirements[$channelCode], true);
+                if (false === $key && AttributeTypes::IDENTIFIER !== $attribute->getType()) {
+                    $family->removeAttributeRequirement($requirement);
+                } elseif (false !== $key) {
+                    unset($newRequirements[$channelCode][$key]);
+                }
             }
         }
 
-        return $identifierReqs;
+        foreach ($newRequirements as $channelCode => $requirements) {
+            $createdRequirements = $this->createAttributeRequirementsByChannel($family, $requirements, $channelCode);
+            foreach ($createdRequirements as $createdRequirement) {
+                $family->addAttributeRequirement($createdRequirement);
+            }
+        }
     }
 
     /**
-     * Creates attribute requirements for the given channel but skip identifiers
-     *
      * @param FamilyInterface $family
      * @param array           $attributeCodes
      * @param string          $channelCode
+     *
+     * @throws InvalidPropertyException
      *
      * @return array
      */
@@ -181,40 +278,32 @@ class FamilyUpdater implements ObjectUpdaterInterface
         $channelCode
     ) {
         $requirements = [];
+
+        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
+        if (null === $channel) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'attribute_requirements',
+                'code',
+                'The channel does not exist',
+                static::class,
+                $channelCode
+            );
+        }
+
         foreach ($attributeCodes as $attributeCode) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
             if (null === $attribute) {
-                throw new \InvalidArgumentException(
-                    sprintf('Attribute with "%s" code does not exist', $attributeCode)
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'attribute_requirements',
+                    'code',
+                    'The attribute does not exist',
+                    static::class,
+                    $attributeCode
                 );
             }
-            if (AttributeTypes::IDENTIFIER !== $attribute->getAttributeType()) {
-                $requirements[] = $this->createAttributeRequirement($family, $attribute, $channelCode);
+            if (AttributeTypes::IDENTIFIER !== $attribute->getType()) {
+                $requirements[] = $this->createAttributeRequirement($family, $attribute, $channel);
             }
-        }
-
-        return $requirements;
-    }
-
-    /**
-     * @param FamilyInterface                 $family
-     * @param AttributeRequirementInterface[] $requirements
-     *
-     * @return AttributeRequirementInterface[]
-     */
-    protected function addMissingIdentifierRequirements(FamilyInterface $family, array $requirements)
-    {
-        $channelCodes = $this->channelRepository->getChannelCodes();
-        $existingChannelCode = [];
-        foreach ($requirements as $requirement) {
-            if (AttributeTypes::IDENTIFIER === $requirement->getAttribute()->getAttributeType()) {
-                $existingChannelCode[] = $requirement->getChannelCode();
-            }
-        }
-        $missingChannelCodes = array_diff($channelCodes, $existingChannelCode);
-        $identifier = $this->attributeRepository->getIdentifier();
-        foreach ($missingChannelCodes as $channelCode) {
-            $requirements[] = $this->createAttributeRequirement($family, $identifier, $channelCode);
         }
 
         return $requirements;
@@ -223,19 +312,17 @@ class FamilyUpdater implements ObjectUpdaterInterface
     /**
      * @param FamilyInterface    $family
      * @param AttributeInterface $attribute
-     * @param string             $channelCode
+     * @param ChannelInterface   $channel
+     *
+     * @throws InvalidPropertyException
      *
      * @return AttributeRequirementInterface
      */
-    protected function createAttributeRequirement(FamilyInterface $family, AttributeInterface $attribute, $channelCode)
-    {
-        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
-        if (null === $channel) {
-            throw new \InvalidArgumentException(
-                sprintf('Channel with "%s" code does not exist', $channelCode)
-            );
-        }
-
+    protected function createAttributeRequirement(
+        FamilyInterface $family,
+        AttributeInterface $attribute,
+        ChannelInterface $channel
+    ) {
         $requirement = $this->requirementRepo->findOneBy(
             ['attribute' => $attribute->getId(), 'channel' => $channel->getId(), 'family' => $family->getId()]
         );
@@ -244,8 +331,6 @@ class FamilyUpdater implements ObjectUpdaterInterface
             $requirement = $this->attrRequiFactory->createAttributeRequirement($attribute, $channel, true);
         }
 
-        $requirement->setRequired(true);
-
         return $requirement;
     }
 
@@ -253,12 +338,12 @@ class FamilyUpdater implements ObjectUpdaterInterface
      * @param FamilyInterface $family
      * @param array           $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function addAttributes(FamilyInterface $family, array $data)
     {
         foreach ($family->getAttributes() as $attribute) {
-            if (AttributeTypes::IDENTIFIER !== $attribute->getAttributeType()) {
+            if (AttributeTypes::IDENTIFIER !== $attribute->getType()) {
                 $family->removeAttribute($attribute);
             }
         }
@@ -266,8 +351,12 @@ class FamilyUpdater implements ObjectUpdaterInterface
             if (null !== $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode)) {
                 $family->addAttribute($attribute);
             } else {
-                throw new \InvalidArgumentException(
-                    sprintf('Attribute with "%s" code does not exist', $attributeCode)
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'attributes',
+                    'code',
+                    'The attribute does not exist',
+                    static::class,
+                    $attributeCode
                 );
             }
         }
@@ -277,34 +366,20 @@ class FamilyUpdater implements ObjectUpdaterInterface
      * @param FamilyInterface $family
      * @param string          $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidPropertyException
      */
     protected function setAttributeAsLabel(FamilyInterface $family, $data)
     {
         if (null !== $attribute = $this->attributeRepository->findOneByIdentifier($data)) {
             $family->setAttributeAsLabel($attribute);
         } else {
-            throw new \InvalidArgumentException(
-                sprintf('Attribute with "%s" code does not exist', $data)
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'attribute_as_label',
+                'code',
+                'The attribute does not exist',
+                static::class,
+                $data
             );
-        }
-    }
-
-    /**
-     * @param FamilyInterface $family
-     * @param array           $requirements
-     * @param array           $oldRequirements
-     */
-    protected function removeRequirements(
-        FamilyInterface $family,
-        array $requirements,
-        array $oldRequirements
-    ) {
-        $checkRequirements = new ArrayCollection($requirements);
-        foreach ($oldRequirements as $requirement) {
-            if (!$checkRequirements->contains($requirement)) {
-                $family->removeAttributeRequirement($requirement);
-            }
         }
     }
 }

@@ -109,6 +109,26 @@ class PermissionDecorator extends ElementDecorator
     }
 
     /**
+     * @param string $resource
+     *
+     * @return bool
+     */
+    public function isGrantedResource($resource)
+    {
+        return $this->findResource($resource)->hasClass('granted');
+    }
+
+    /**
+     * @param string $resource
+     *
+     * @return bool
+     */
+    public function isRevokedResource($resource)
+    {
+        return $this->findResource($resource)->hasClass('non-granted');
+    }
+
+    /**
      * @param NodeElement $resource
      */
     public function toggleResource(NodeElement $resource)

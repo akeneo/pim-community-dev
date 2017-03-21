@@ -19,15 +19,6 @@ interface FamilyRepositoryInterface extends
     ObjectRepository
 {
     /**
-     * @param object $qb
-     * @param bool   $inset
-     * @param mixed  $values
-     *
-     * @deprecated will be removed in 1.7
-     */
-    public function applyMassActionParameters($qb, $inset, $values);
-
-    /**
      * Returns a querybuilder to get full requirements
      *
      * @param FamilyInterface $family
@@ -47,11 +38,6 @@ interface FamilyRepositoryInterface extends
      * @return array
      */
     public function getFullFamilies(FamilyInterface $family = null, ChannelInterface $channel = null);
-
-    /**
-     * @return mixed
-     */
-    public function createDatagridQueryBuilder();
 
     /**
      * Find attribute ids from family ids

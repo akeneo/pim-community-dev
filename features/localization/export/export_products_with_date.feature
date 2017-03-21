@@ -14,15 +14,15 @@ Feature: Export products with localized dates
       | sandal-white  | sandals | men_2013, men_2014, men_2015 | 10.90 EUR, 15 USD, 9 GBP | 1999-10-28             |
       | sandal-yellow | sandals | men_2013, men_2014, men_2015 | 10.90 EUR, 15 USD, 9 GBP |                        |
     And the following product values:
-      | product       | attribute    | value                        | locale | scope     |
-      | sandal-white  | name         | Sandale blanche              | fr_FR  |           |
-      | sandal-white  | name         | Weißes Sandal                | de_DE  |           |
-      | sandal-white  | description  | Une Sandale blanche élégante | fr_FR  | ecommerce |
-      | sandal-white  | description  | Ein elegantes weißes Sandal  | de_DE  | ecommerce |
-      | sandal-yellow | name         | Sandale jaune                | fr_FR  |           |
-      | sandal-yellow | name         | Gelb Sandal                  | de_DE  |           |
-      | sandal-yellow | description  | Une Sandale jaune élégante   | fr_FR  | ecommerce |
-      | sandal-yellow | description  | Ein elegantes gelb Sandal    | de_DE  | ecommerce |
+      | product       | attribute   | value                        | locale | scope     |
+      | sandal-white  | name        | Sandale blanche              | fr_FR  |           |
+      | sandal-white  | name        | Weißes Sandal                | de_DE  |           |
+      | sandal-white  | description | Une Sandale blanche élégante | fr_FR  | ecommerce |
+      | sandal-white  | description | Ein elegantes weißes Sandal  | de_DE  | ecommerce |
+      | sandal-yellow | name        | Sandale jaune                | fr_FR  |           |
+      | sandal-yellow | name        | Gelb Sandal                  | de_DE  |           |
+      | sandal-yellow | description | Une Sandale jaune élégante   | fr_FR  | ecommerce |
+      | sandal-yellow | description | Ein elegantes gelb Sandal    | de_DE  | ecommerce |
     And I am logged in as "Julia"
 
   Scenario: Export dates attributes in a specified format

@@ -8,7 +8,6 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use Pim\Component\Connector\Reader\File\Csv\Reader;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Archive files read by job execution to provide them through a download button

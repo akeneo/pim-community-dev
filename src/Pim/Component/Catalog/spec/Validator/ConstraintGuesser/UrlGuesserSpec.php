@@ -9,9 +9,9 @@ class UrlGuesserSpec extends ObjectBehavior
 {
     function let(AttributeInterface $text, AttributeInterface $identifier, AttributeInterface $textarea)
     {
-        $text->getAttributeType()->willReturn('pim_catalog_text');
-        $identifier->getAttributeType()->willReturn('pim_catalog_identifier');
-        $textarea->getAttributeType()->willReturn('pim_catalog_textarea');
+        $text->getType()->willReturn('pim_catalog_text');
+        $identifier->getType()->willReturn('pim_catalog_identifier');
+        $textarea->getType()->willReturn('pim_catalog_textarea');
     }
 
     function it_is_initializable()
@@ -34,7 +34,7 @@ class UrlGuesserSpec extends ObjectBehavior
         $this->supportAttribute($identifier)->shouldReturn(false);
         $this->supportAttribute($textarea)->shouldReturn(false);
 
-        $image->getAttributeType()->willReturn('pim_catalog_image');
+        $image->getType()->willReturn('pim_catalog_image');
         $this->supportAttribute($image)->shouldReturn(false);
     }
 

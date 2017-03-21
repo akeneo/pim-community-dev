@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\NavigationBundle\Entity\Builder;
 
-use Oro\Bundle\NavigationBundle\Entity\Builder\AbstractBuilder;
 use Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem;
 
 class HistoryItemBuilder extends AbstractBuilder

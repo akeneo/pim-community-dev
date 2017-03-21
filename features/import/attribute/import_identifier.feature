@@ -10,8 +10,8 @@ Feature: Import identifier attributes
     And I am logged in as "Julia"
     And the following CSV file to import:
       """
-      type;code;label-en_US;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;required;sort_order;label-fr_FR;max_characters;number_min;number_max;decimals_allowed;negative_allowed;max_file_size
-      pim_catalog_identifier;sku;SKU;info;1;0;;;;;0;0;1;1;;;;;;;
+      type;code;label-en_US;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;sort_order;label-fr_FR;max_characters;number_min;number_max;decimals_allowed;negative_allowed;max_file_size
+      pim_catalog_identifier;sku;SKU;info;1;0;;;;;0;0;1;;;;;;;
       """
     And the following job "csv_footwear_attribute_import" configuration:
       | filePath | %file to import% |

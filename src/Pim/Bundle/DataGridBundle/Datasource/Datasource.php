@@ -8,7 +8,7 @@ use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
-use Pim\Component\Catalog\Repository\MassActionRepositoryInterface;
+use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
 
 /**
  * Pim agnostic datasource
@@ -16,6 +16,8 @@ use Pim\Component\Catalog\Repository\MassActionRepositoryInterface;
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated you should use RepositoryDatasource
  */
 class Datasource implements DatasourceInterface, ParameterizableInterface
 {
@@ -96,24 +98,6 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
     /**
      * {@inheritdoc}
      */
-    public function setQueryBuilder($qb)
-    {
-        $this->qb = $qb;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getObjectManager()
-    {
-        return $this->om;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getRepository()
     {
         if (null === $this->repository) {
@@ -162,6 +146,10 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
 
         if ($this->qb instanceof QueryBuilder) {
             $this->qb->setParameters($this->parameters);
+        }
+        // TODO - TIP-664: make the datagrid work with ES
+        elseif ($this->qb instanceof \Pim\Bundle\ElasticSearchBundle\Query\QueryBuilder) {
+            $qb = $datasource->getQueryBuilder()->setParameters($this->parameters);
         }
 
         return $this;

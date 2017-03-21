@@ -18,7 +18,28 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('pim_api');
+        $rootNode = $treeBuilder
+            ->root('pim_api')
+            ->children()
+                ->arrayNode('pagination')
+                    ->children()
+                        ->scalarNode('limit_max')->end()
+                        ->scalarNode('limit_by_default')->end()
+                    ->end()
+                    ->validate()
+                        ->ifTrue(function ($v) {
+                            return $v['limit_max'] < $v['limit_by_default'];
+                        })
+                        ->thenInvalid('API configuration: "limit_by_default" cannot be greater than "limit_max.')
+                    ->end()
+                ->end()
+                ->arrayNode('input')
+                    ->children()
+                        ->scalarNode('buffer_size')->end()
+                        ->scalarNode('max_resources_number')->end()
+                    ->end()
+                ->end()
+            ->end();
 
         return $treeBuilder;
     }

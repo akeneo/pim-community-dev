@@ -10,7 +10,7 @@ pim_connector:
           title: Kategoriavalinta
           cancel: Peruuta
           confirm: Vahvista
-        label: '{0} Kaikki tuotteet|{1} Yksi kategoria valittu|]1,Inf[ {{ count }} kategoriaa valittu'
+        label: "{0} Kaikki tuotteet|{1} Yksi kategoria valittu|]1,Inf[ {{ count }} kategoriaa valittu"
         edit: Muokkaa
         title: Valitse kategoriat
     locales:

@@ -66,7 +66,7 @@ class AddVariantGroupAxesSubscriber implements EventSubscriberInterface
 
         $form = $event->getForm();
         $form->add(
-            'attributes',
+            'axisAttributes',
             'entity',
             array_merge($options, $extraOptions)
         );

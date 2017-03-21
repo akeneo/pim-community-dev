@@ -17,43 +17,6 @@ use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 class FamilyRepository extends EntityRepository implements FamilyRepositoryInterface
 {
     /**
-     * {@inheritdoc}
-     */
-    public function applyMassActionParameters($qb, $inset, $values)
-    {
-        if ($values) {
-            $rootAlias = $qb->getRootAlias();
-            $valueWhereCondition =
-                $inset
-                ? $qb->expr()->in($rootAlias, $values)
-                : $qb->expr()->notIn($rootAlias, $values);
-            $qb->andWhere($valueWhereCondition);
-        }
-
-        if (null !== $qb->getDQLPart('where')) {
-            $whereParts = $qb->getDQLPart('where')->getParts();
-            $qb->resetDQLPart('where');
-
-            foreach ($whereParts as $part) {
-                if (!is_string($part) || !strpos($part, 'entityIds')) {
-                    $qb->andWhere($part);
-                }
-            }
-        }
-
-        $qb->setParameters(
-            $qb->getParameters()->filter(
-                function ($parameter) {
-                    return $parameter->getName() !== 'entityIds';
-                }
-            )
-        );
-
-        // remove limit of the query
-        $qb->setMaxResults(null);
-    }
-
-    /**
      * @param int $id
      *
      * @return \Doctrine\ORM\QueryBuilder
@@ -119,31 +82,6 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
         }
 
         return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createDatagridQueryBuilder()
-    {
-        $qb = $this->createQueryBuilder('f');
-        $rootAlias = $qb->getRootAlias();
-
-        $labelExpr = sprintf(
-            '(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)',
-            $rootAlias
-        );
-
-        $qb
-            ->addSelect($rootAlias)
-            ->addSelect(sprintf('%s AS familyLabel', $labelExpr))
-            ->addSelect('translation.label');
-
-        $qb
-            ->leftJoin($rootAlias . '.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
-            ->leftJoin('f.attributeAsLabel', 'a');
-
-        return $qb;
     }
 
     /**

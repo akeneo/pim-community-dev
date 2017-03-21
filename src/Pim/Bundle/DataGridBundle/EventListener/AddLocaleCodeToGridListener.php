@@ -5,6 +5,8 @@ namespace Pim\Bundle\DataGridBundle\EventListener;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Pim\Bundle\DataGridBundle\Datasource\Datasource;
+use Pim\Bundle\DataGridBundle\Datasource\FamilyDatasource;
+use Pim\Bundle\DatagridBundle\Datasource\RepositoryDatasource;
 
 /**
  * A listener to inject locale code into translatable entity grids
@@ -42,7 +44,13 @@ class AddLocaleCodeToGridListener
 
         $localeParameter = $config->offsetGetByPath(self::LOCALE_PARAMETER);
 
-        if ($localeParameter && $datasource instanceof Datasource) {
+        if ($localeParameter
+            && (
+                $datasource instanceof Datasource ||
+                $datasource instanceof RepositoryDatasource ||
+                $datasource instanceof FamilyDatasource
+            )
+        ) {
             $queryBuilder = $datasource->getQueryBuilder();
             $queryBuilder->setParameter($localeParameter, $this->requestParams->get($localeParameter, null));
         }

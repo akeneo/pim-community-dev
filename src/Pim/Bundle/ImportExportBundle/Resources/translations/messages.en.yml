@@ -11,14 +11,14 @@ pim_import_export:
         0: Ready
 
     batch_status:
-        1: COMPLETED
-        2: STARTING
-        3: STARTED
-        4: STOPPING
-        5: STOPPED
-        6: FAILED
-        7: ABANDONED
-        8: UNKNOWN
+        1: Completed
+        2: Starting
+        3: Started
+        4: Stopping
+        5: Stopped
+        6: Failed
+        7: Abandoned
+        8: Unknown
 
     download_archive:
         archive: download generated archive|download generated archives
@@ -182,21 +182,22 @@ job_execution.summary:
         title: File encoding:
         skipped: skipped, extension in white list
 
-Step:    Step
-Status:  Status
-Summary: Summary
-Start:   Start
-End:     End
+Step:     Step
+Status:   Status
+Warnings: Warnings
+Summary:  Summary
+Start:    Start
+End:      End
 
 # Process tracker
 set_attribute_requirements: Set attribute requirements
-COMPLETED: COMPLETED
-STARTING: STARTING
-STARTED: STARTED
-STOPPING: STOPPING
-STOPPED: STOPPED
-FAILED:  FAILED
-ABANDONED: ABANDONED
-UNKNOWN: UNKNOWN
+COMPLETED: Completed
+STARTING: Starting
+STARTED: Started
+STOPPING: Stopping
+STOPPED: Stopped
+FAILED:  Failed
+ABANDONED: Abandoned
+UNKNOWN: Unknown
 
 warning.label: Warning

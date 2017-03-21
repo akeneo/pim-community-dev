@@ -21,18 +21,19 @@ Feature: Edit a family
   @javascript
   Scenario: Successfully edit a family
     And the following attributes:
-      | label  | type | useable_as_grid_filter |
-      | String | text | yes                    |
+      | label-en_US | type             | useable_as_grid_filter | group | code   |
+      | String      | pim_catalog_text | 1                      | other | string |
     Given the following family:
-      | code   | attributes        |
-      | guitar | sku, name, string |
+      | code   | attributes      |
+      | guitar | sku,name,string |
     And the following products:
-      | sku      | family   | name-en_US | string |
-      | les-paul | guitar   | Les Paul   | Elixir |
+      | sku      | family | name-en_US | string |
+      | les-paul | guitar | Les Paul   | Elixir |
     And I am on the "guitar" family page
     When I fill in the following information:
       | Attribute used as label | String |
     And I save the family
+    And I should not see the text "There are unsaved changes."
     When I am on the products page
     And I should see "Elixir"
 
@@ -41,6 +42,7 @@ Feature: Edit a family
     When I fill in the following information:
       | English (United States) | NewBoots |
     And I save the family
+    Then I should not see the text "There are unsaved changes."
     Then I should see "NewBoots"
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
@@ -70,7 +72,7 @@ Feature: Edit a family
     And the field Attribute used as label should be disabled
     And the field English (United States) should be disabled
 
-  Scenario: Disable attribute fields when the user can't edit a family
+  Scenario: Fail switching attribute requirements when the user can't edit a family attributes
     Given I am on the "Administrator" role page
     And I visit the "Permissions" tab
     And I visit the "Families" group
@@ -80,5 +82,30 @@ Feature: Edit a family
     When I am on the "sneakers" family page
     And I visit the "Attributes" tab
     Then attribute "name" should be required in channels mobile and tablet
-    When I switch the attribute "Name" requirement in channel "Tablet"
+    When I switch the attribute "name" requirement in channel "tablet"
     Then attribute "name" should be required in channels mobile and tablet
+
+  Scenario: Fail removing attributes when the user can't edit family attributes
+    Given I am on the "Administrator" role page
+    And I visit the "Permissions" tab
+    And I visit the "Families" group
+    And I revoke rights to resource Edit attributes of a family
+    And I save the role
+    Then I should not see the text "There are unsaved changes."
+    When I am on the "sneakers" family page
+    And I visit the "Attributes" tab
+    Then I should see attributes "SKU, Name, Manufacturer, Weather conditions, Description" in group "Product information"
+    And I remove the "manufacturer" attribute
+    Then I should see attributes "SKU, Name, Manufacturer, Weather conditions, Description" in group "Product information"
+
+  Scenario: Fail adding attributes when the user can't edit family attributes
+    Given I am on the "Administrator" role page
+    And I visit the "Permissions" tab
+    And I visit the "Families" group
+    And I revoke rights to resource Edit attributes of a family
+    And I save the role
+    Then I should not see the text "There are unsaved changes."
+    When I am on the "sneakers" family page
+    And I visit the "Attributes" tab
+    Then I should not see an "Available attributes" element
+    And I should not see an "Available groups" element

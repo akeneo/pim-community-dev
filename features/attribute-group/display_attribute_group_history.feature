@@ -7,8 +7,8 @@ Feature: Display the attribute group history
     Given the "default" catalog configuration
     And I am logged in as "Julia"
     And the following attributes:
-      | label       |
-      | Description |
+      | label-en_US | group | type             | code        |
+      | Description | other | pim_catalog_text | description |
 
   @javascript
   Scenario: Successfully edit a group and see the history

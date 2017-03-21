@@ -604,11 +604,20 @@ class Edit extends ProductEditForm
 
         $changeLink->click();
 
-        $selectContainer = $this->spin(function () {
-            return $this->getElement('Modal')->find('css', '.select2-container');
-        }, 'Cannot find ".select2-container" in family modal');
+        if ('' !== $family) {
+            $selectContainer = $this->spin(function () {
+                return $this->getElement('Modal')->find('css', '.select2-container');
+            }, 'Cannot find ".select2-container" in family modal');
 
-        $this->fillSelectField($selectContainer, $family);
+            $this->fillSelectField($selectContainer, $family);
+        } else {
+            $resetButton = $this->spin(function () {
+                return $this->getElement('Modal')
+                    ->find('css', '.select2-search-choice-close');
+            }, 'Can not find family reset button');
+
+            $resetButton->click();
+        }
 
         $validationButton = $this->spin(function () {
             return $this->find('css', '.modal .ok');
@@ -617,7 +626,9 @@ class Edit extends ProductEditForm
         $validationButton->click();
 
         return $this->spin(function () use ($family) {
-            return $this->getElement('Meta zone')->find('css', '.AknTitleContainer-metaItem .product-family');
+            return $this
+                ->getElement('Meta zone')
+                ->find('css', '.AknTitleContainer-metaItem .product-family');
         }, 'Cannot find Product Family element')->getHTML();
     }
 

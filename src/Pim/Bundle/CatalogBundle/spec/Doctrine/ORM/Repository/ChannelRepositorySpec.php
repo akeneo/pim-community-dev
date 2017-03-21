@@ -6,7 +6,6 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Query\Expr;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\ORM\AbstractQuery;
@@ -36,7 +35,7 @@ class ChannelRepositorySpec extends ObjectBehavior
     {
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('c')->willReturn($queryBuilder);
-        $queryBuilder->from('channel', 'c')->willReturn($queryBuilder);
+        $queryBuilder->from('channel', 'c', null)->willReturn($queryBuilder);
         $queryBuilder->select('count(c.id)')->willReturn($queryBuilder);
 
         $queryBuilder->getQuery()->willReturn($query);

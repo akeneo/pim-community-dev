@@ -142,14 +142,14 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
 
     /**
      * @param string $path
-     * @param string $referer
+     * @param string $referrer
      *
      * @Given /^I am on the relative path ([^"]+) from ([^"]+)$/
      */
-    public function iAmOnTheRelativePath($path, $referer)
+    public function iAmOnTheRelativePath($path, $referrer)
     {
         $basePath = parse_url($this->baseUrl)['path'];
-        $uri = sprintf('%s%s/#url=%s%s', $this->baseUrl, $referer, $basePath, $path);
+        $uri = sprintf('%s%s/#url=%s%s', $this->baseUrl, $referrer, $basePath, $path);
 
         $this->getSession()->visit($uri);
     }
@@ -221,7 +221,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      * @param string $page
      *
      * @Given /^I edit the "([^"]*)" (\w+)$/
-     * @Given /^I am on the "([^"]*)" (\w+) page$/
+     * @Given /^I am on the "([^"]*)" ((?!channel)(?!family)\w+) page$/
      */
     public function iAmOnTheEntityEditPage($identifier, $page)
     {
@@ -229,6 +229,20 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $page
+     *
+     * @Given /^I am on the "([^"]*)" (channel|family) page$/
+     */
+    public function iAmOnTheRedoEntityEditPage($identifier, $page)
+    {
+        $this->openPage(
+            sprintf('%s edit', ucfirst($page)),
+            ['code' => $identifier]
+        );
     }
 
     /**
@@ -355,6 +369,22 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^I should not see a nice loading message$/
+     */
+    public function iShouldNotSeeANiceLoadingMessage()
+    {
+        $messageNode = $this->spin(function () {
+            return $this->getSession()
+                ->getPage()
+                ->find('css', $this->elements['Loading message']['css']);
+        }, 'Unable to find any loading message');
+
+        $message = trim($messageNode->getHtml());
+
+        assertEquals('Loading ...', $message, 'The loading message should equals the default value');
+    }
+
+    /**
      * @param string  $pageName
      * @param array   $options
      * @param boolean $wait     should the script wait for the page to load
@@ -453,7 +483,9 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     }
 
     /**
-     * TODO: should be deleted
+     * @deprecated This method is deprecated and should be removed avoid its use
+     * @see For more information regarding to deprecation see TIP-442
+     * @todo Delete method
      *
      * @param string $condition
      */

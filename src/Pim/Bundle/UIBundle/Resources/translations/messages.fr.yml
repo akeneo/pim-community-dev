@@ -38,3 +38,11 @@ Most Viewed: Les plus vus
 "Yes": "Oui"
 "No": "Non"
 required: (obligatoire)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Activer les messages au chargement
+    loading_message_enabled.tooltip: Affiche des messages personnalisés pendant le chargement d'une page
+    loading_messages.label: Messages de chargement disponibles
+    loading_messages.tooltip: Tous les messages de chargement disponibles, séparés par des sauts de ligne
+  group:
+    loading_message.title: Messages de chargement

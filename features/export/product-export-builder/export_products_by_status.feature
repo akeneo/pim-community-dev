@@ -7,8 +7,8 @@ Feature: Export products according to their statuses
   Background:
     Given an "footwear" catalog configuration
     And the following family:
-      | code    | requirements-mobile |
-      | rangers | sku, name           |
+      | code    | requirements-mobile | attributes |
+      | rangers | sku,name            | sku,name   |
     And the following products:
       | sku      | enabled | family  | categories        | name-en_US    |
       | SNKRS-1B | 1       | rangers | summer_collection | Black rangers |
@@ -17,7 +17,7 @@ Feature: Export products according to their statuses
 
   Scenario: Export only enabled products
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | filePath | %tmp%/product_export/product_export.csv                                                                            |
       | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "enabled", "operator": "=", "value": true}]} |
 
     When I am on the "csv_footwear_product_export" export job page
@@ -31,7 +31,7 @@ Feature: Export products according to their statuses
 
   Scenario: Export only disabled products
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | filePath | %tmp%/product_export/product_export.csv                                                                             |
       | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "enabled", "operator": "=", "value": false}]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
@@ -44,7 +44,7 @@ Feature: Export products according to their statuses
 
   Scenario: Export products no matter their statuses
     Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv |
+      | filePath | %tmp%/product_export/product_export.csv                        |
       | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[]} |
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job

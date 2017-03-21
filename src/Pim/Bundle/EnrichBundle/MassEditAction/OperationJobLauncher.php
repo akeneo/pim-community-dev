@@ -3,9 +3,9 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
 use Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
@@ -22,20 +22,20 @@ class OperationJobLauncher
     /** @var SimpleJobLauncher */
     protected $jobLauncher;
 
-    /** @var JobInstanceRepository */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $jobInstanceRepo;
 
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
     /**
-     * @param SimpleJobLauncher     $jobLauncher
-     * @param JobInstanceRepository $jobInstanceRepo
-     * @param TokenStorageInterface $tokenStorage
+     * @param SimpleJobLauncher                     $jobLauncher
+     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepo
+     * @param TokenStorageInterface                 $tokenStorage
      */
     public function __construct(
         SimpleJobLauncher $jobLauncher,
-        JobInstanceRepository $jobInstanceRepo,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepo,
         TokenStorageInterface $tokenStorage
     ) {
         $this->jobLauncher = $jobLauncher;
@@ -53,7 +53,7 @@ class OperationJobLauncher
     public function launch(BatchableOperationInterface $operation)
     {
         $jobInstanceCode = $operation->getJobInstanceCode();
-        $jobInstance = $this->jobInstanceRepo->findOneBy(['code' => $jobInstanceCode]);
+        $jobInstance = $this->jobInstanceRepo->findOneByIdentifier($jobInstanceCode);
 
         if (null === $jobInstance) {
             throw new NotFoundResourceException(sprintf('No JobInstance found with code "%s"', $jobInstanceCode));

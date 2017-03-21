@@ -1,6 +1,6 @@
 No products to remove: 没有产品可删除
 "dot (.)": 点 （.）
-"comma (,)": 逗号（，）
+"comma (,)": 逗号（,）
 pim_catalog:
   constraint:
     product_identifier: 这些标识符"%s"并不存在。

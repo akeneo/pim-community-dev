@@ -1,6 +1,7 @@
 parameters:
     pim_catalog.remover.base.class:                  Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover
     pim_catalog.remover.base_options_resolver.class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemovingOptionsResolver
+    pim_catalog.remover.channel.class:               Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\ChannelRemover
 
 services:
     pim_catalog.remover.group_type:
@@ -11,10 +12,12 @@ services:
             - '%pim_catalog.entity.group_type.class%'
 
     pim_catalog.remover.channel:
-        class: '%pim_catalog.remover.base.class%'
+        class: '%pim_catalog.remover.channel.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
+            - '@pim_catalog.repository.channel'
+            - '@translator'
             - '%pim_catalog.entity.channel.class%'
 
     pim_catalog.remover.product:

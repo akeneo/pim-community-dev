@@ -6,15 +6,18 @@ Feature: Edit common attributes of many products at once
 
   Background:
     Given a "footwear" catalog configuration
-    And the following family:
-      | code       | attributes                                                       |
-      | high_heels | sku, name, description, price, rating, size, color, manufacturer |
     And the following attributes:
-      | code        | label       | type   | metric family | default metric unit | families                 |
-      | weight      | Weight      | metric | Weight        | GRAM                | boots, sneakers, sandals |
-      | heel_height | Heel Height | metric | Length        | CENTIMETER          | high_heels, sandals      |
-    And the following product groups:
-      | code          | label         | axis  | type    |
+      | code        | label-en_US | type               | metric_family | default_metric_unit | group | decimals_allowed | negative_allowed |
+      | weight      | Weight      | pim_catalog_metric | Weight        | GRAM                | other | 0                | 0                |
+      | heel_height | Heel Height | pim_catalog_metric | Length        | CENTIMETER          | other | 0                | 0                |
+    And the following family:
+      | code       | attributes                                                                                                        |
+      | high_heels | sku,name,description,price,rating,size,color,manufacturer,heel_height                                             |
+      | boots      | sku,name,manufacturer,description,weather_conditions,price,rating,side_view,top_view,size,color,lace_color,weight |
+      | sneakers   | sku,name,manufacturer,description,weather_conditions,price,rating,side_view,top_view,size,color,lace_color,weight |
+      | sandals    | sku,name,manufacturer,description,price,rating,side_view,size,color,weight,heel_height                            |
+    And the following variant groups:
+      | code          | label-en_US   | axis  | type    |
       | variant_heels | Variant Heels | color | VARIANT |
     And the following variant group values:
       | group         | attribute   | value         |
@@ -209,12 +212,18 @@ Feature: Edit common attributes of many products at once
     Given I am on the "boots" family page
     And I visit the "Attributes" tab
     And I add available attributes Comment
+    And I save the family
+    And I should not see the text "There are unsaved changes."
     And I am on the "sneakers" family page
     And I visit the "Attributes" tab
     And I add available attributes Comment
+    And I save the family
+    And I should not see the text "There are unsaved changes."
     And I am on the "sandals" family page
     And I visit the "Attributes" tab
     And I add available attributes Comment
+    And I save the family
+    And I should not see the text "There are unsaved changes."
     And I am on the products page
     When I select rows boots, sandals and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button

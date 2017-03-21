@@ -1,7 +1,7 @@
 job_execution:
   summary:
     display_item: Mostrar elemento
-    hide_item: Ocultar elemento
+    hide_item: Ocultar item
 pim_connector:
   export:
     categories:
@@ -10,7 +10,7 @@ pim_connector:
           title: Selección de categorías
           cancel: Cancelar
           confirm: Confirmar
-        label: '{0} Todos los productos|{1} Una categoría seleccionada|]1,Inf[{{ count }} categorías seleccionadas'
+        label: "{0} Todos los productos|{1} Una categoría seleccionada|]1,Inf[{{ count }} categorías seleccionadas"
         edit: Editar
         title: Seleccionar Categorías
     locales:

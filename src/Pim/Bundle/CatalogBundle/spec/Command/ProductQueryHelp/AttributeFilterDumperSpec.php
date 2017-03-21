@@ -43,7 +43,7 @@ class AttributeFilterDumperSpec extends ObjectBehavior
         $mediaFilter->getOperators()->willReturn($operators);
 
         $pictureAttribute->getCode()->willReturn('picture');
-        $pictureAttribute->getAttributeType()->willReturn(AttributeTypes::IMAGE);
+        $pictureAttribute->getType()->willReturn(AttributeTypes::IMAGE);
         $pictureAttribute->isScopable()->willReturn(false);
         $pictureAttribute->isLocalizable()->willReturn(false);
 
@@ -82,7 +82,7 @@ class AttributeFilterDumperSpec extends ObjectBehavior
         $refDataFilter->supportsAttribute($refDataAttribute)->willReturn(true);
 
         $refDataAttribute->getCode()->willReturn('ref_data');
-        $refDataAttribute->getAttributeType()->willReturn(AttributeTypes::REFERENCE_DATA_MULTI_SELECT);
+        $refDataAttribute->getType()->willReturn(AttributeTypes::REFERENCE_DATA_MULTI_SELECT);
         $refDataAttribute->isScopable()->willReturn(false);
         $refDataAttribute->isLocalizable()->willReturn(false);
         $refDataAttribute->isBackendTypeReferenceData()->willReturn(true);

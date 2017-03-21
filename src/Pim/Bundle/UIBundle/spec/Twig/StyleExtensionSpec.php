@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\UIBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class StyleExtensionSpec extends ObjectBehavior
 {

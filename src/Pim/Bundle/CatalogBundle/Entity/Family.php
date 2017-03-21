@@ -177,7 +177,7 @@ class Family implements FamilyInterface
      */
     public function removeAttribute(AttributeInterface $attribute)
     {
-        if (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
+        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
             throw new \InvalidArgumentException('Identifier cannot be removed from a family.');
         }
 
@@ -262,7 +262,7 @@ class Family implements FamilyInterface
         return $this->attributes->filter(
             function ($attribute) {
                 return in_array(
-                    $attribute->getAttributeType(),
+                    $attribute->getType(),
                     [AttributeTypes::TEXT, AttributeTypes::IDENTIFIER]
                 );
             }
@@ -293,7 +293,7 @@ class Family implements FamilyInterface
     public function getTranslation($locale = null)
     {
         $locale = ($locale) ? $locale : $this->locale;
-        if (!$locale) {
+        if (null === $locale) {
             return null;
         }
         foreach ($this->getTranslations() as $translation) {

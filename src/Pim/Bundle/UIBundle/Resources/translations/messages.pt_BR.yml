@@ -37,3 +37,7 @@ Most Viewed: Mais vistos
 "Loading ...": "Carregando ..."
 "Yes": "Sim"
 "No": "Não"
+required: (Obrigatório)
+pim_ui.system_config:
+  group:
+    loading_message.title: Carregando mensagens

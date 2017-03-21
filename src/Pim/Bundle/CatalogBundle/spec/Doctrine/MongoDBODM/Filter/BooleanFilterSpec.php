@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -103,8 +103,11 @@ class BooleanFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_a_boolean()
     {
-        $this->shouldThrow(InvalidArgumentException::booleanExpected('enabled', 'filter', 'boolean', gettype('not a boolean')))
-            ->during('addFieldFilter', ['enabled', '=', 'not a boolean']);
+        $this->shouldThrow(InvalidPropertyTypeException::booleanExpected(
+            'enabled',
+            'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\BooleanFilter',
+            'not a boolean'
+        ))->during('addFieldFilter', ['enabled', '=', 'not a boolean']);
     }
 
     function it_returns_supported_fields()

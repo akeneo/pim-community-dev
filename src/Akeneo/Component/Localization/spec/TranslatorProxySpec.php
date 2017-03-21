@@ -3,7 +3,6 @@
 namespace spec\Akeneo\Component\Localization;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class TranslatorProxySpec extends ObjectBehavior

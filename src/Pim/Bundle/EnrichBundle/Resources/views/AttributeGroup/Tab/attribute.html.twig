@@ -37,7 +37,7 @@
                                     </td>
                                 {% endif %}
                                 <td class="AknGrid-bodyCell">{{ attribute.label }}</td>
-                                <td class="AknGrid-bodyCell">{{ attribute.attributeType|trans }}</td>
+                                <td class="AknGrid-bodyCell">{{ attribute.type|trans }}</td>
                                 <td class="AknGrid-bodyCell">{{ attribute.scopable ? 'Channel'|trans : 'Global'|trans }}</td>
                                 <td class="AknGrid-bodyCell">
                                     <input type="checkbox" disabled="disabled"{% if attribute.localizable %} checked="checked"{% endif %}>

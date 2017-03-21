@@ -35,9 +35,4 @@ interface CurrencyRepositoryInterface extends IdentifiableObjectRepositoryInterf
      * @return mixed
      */
     public function getActivatedCurrenciesQB();
-
-    /**
-     * @return mixed
-     */
-    public function createDatagridQueryBuilder();
 }

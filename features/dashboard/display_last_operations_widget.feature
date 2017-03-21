@@ -35,7 +35,7 @@ Feature: Display last operations widget
     When I am on the job tracker page
     Then I should see the "Refresh" button
     And I should see the "Reset" button
-    And I should see the columns Type, Job, User, Status and Started at
+    And I should see the columns Type, Job, User, Started at, Status and Warnings
 
   Scenario: Show job tracker
     Given a "footwear" catalog configuration

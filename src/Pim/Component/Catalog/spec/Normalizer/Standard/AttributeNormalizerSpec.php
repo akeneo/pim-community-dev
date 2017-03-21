@@ -41,7 +41,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
     ) {
         $transNormalizer->normalize(Argument::cetera())->willReturn([]);
 
-        $attribute->getAttributeType()->willReturn('Yes/No');
+        $attribute->getType()->willReturn('Yes/No');
         $attribute->getCode()->willReturn('attribute_size');
         $attribute->getGroup()->willReturn($attributeGroup);
         $attributeGroup->getCode()->willReturn('size');
@@ -112,7 +112,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $dateMin = new \DateTime('2015-05-23 15:55:50');
         $dateMax = new \DateTime('2015-06-23 15:55:50');
 
-        $attribute->getAttributeType()->willReturn('Yes/No');
+        $attribute->getType()->willReturn('Yes/No');
         $attribute->getCode()->willReturn('attribute_size');
         $attribute->getGroup()->willReturn($attributeGroup);
         $attributeGroup->getCode()->willReturn('size');

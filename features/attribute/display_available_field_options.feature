@@ -28,6 +28,9 @@ Feature: Display available field options
 
   Scenario Outline: Successfully display available values fields for attribute types
     Given I create a "<type>" attribute
+    And I fill in the following information:
+      | Code            | new_attribute |
+      | Attribute group | Other         |
     And I visit the "Values" tab
     And I save the attribute
     Then I should see the <fields> fields

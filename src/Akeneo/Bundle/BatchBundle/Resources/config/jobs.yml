@@ -1,6 +1,7 @@
 parameters:
     akeneo_batch.job_parameters_factory.class:              Akeneo\Component\Batch\Job\JobParametersFactory
     akeneo_batch.job_repository.class:                      Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository
+    akeneo_batch.job.job_instance_repository.class:         Akeneo\Bundle\BatchBundle\Job\JobInstanceRepository
     akeneo_batch.job.job_registry.class:                                           Akeneo\Component\Batch\Job\JobRegistry
     akeneo_batch.job.job_parameters.default_values_provider_registry.class:        Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderRegistry
     akeneo_batch.job.job_parameters.constraint_collection_provider_registry.class: Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderRegistry
@@ -15,7 +16,15 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%akeneo_batch.entity.job_execution.class%'
             - '%akeneo_batch.entity.job_instance.class%'
-            - '%pim_import_export.repository.job_instance.class%'
+            - '%akeneo_batch.job.job_instance_repository.class%'
+
+    akeneo_batch.job.job_instance_repository:
+        class: '%akeneo_batch.job.job_instance_repository.class%'
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: ['%akeneo_batch.entity.job_instance.class%']
+        tags:
+            - { name: 'pim_repository' }
 
     akeneo_batch.job_parameters_factory:
         class: '%akeneo_batch.job_parameters_factory.class%'

@@ -4,9 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Factory;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Doctrine\ORM\EntityRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository;
 use Symfony\Component\Form\DataTransformerInterface;
 
 class IdentifiableModelTransformerFactorySpec extends ObjectBehavior

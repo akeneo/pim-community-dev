@@ -218,4 +218,17 @@ class CommandContext extends PimContext
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }
+
+    /**
+     * Runs app/console $command in the test environment
+     *
+     * @When /^I run '([^\']*)'$/
+     *
+     * @param string $command
+     */
+    public function iRun($command)
+    {
+        $commandLauncher = $this->getService('pim_catalog.command_launcher');
+        $commandLauncher->executeForeground($this->replacePlaceholders($command));
+    }
 }

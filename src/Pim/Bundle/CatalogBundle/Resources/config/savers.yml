@@ -17,8 +17,8 @@ services:
     pim_catalog.saver.product:
         class: '%pim_catalog.saver.product.class%'
         arguments:
-            - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.manager.completeness'
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.completeness.calculator'
             - '@event_dispatcher'
 
     pim_catalog.saver.group:
@@ -96,8 +96,6 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
             - '%pim_catalog.model.locale.interface%'
-
-    # deprecated, will be removed in 1.6 (use akeneo_storage_utils.saver.base_options_resolver instead)
 
     pim_catalog.saver.group_options_resolver:
         class: '%pim_catalog.saver.group_options_resolver.class%'

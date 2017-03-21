@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Manager;
 
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
@@ -17,7 +15,7 @@ use Pim\Bundle\DataGridBundle\Entity\DatagridView;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DatagridViewManager implements SaverInterface, RemoverInterface
+class DatagridViewManager
 {
     /** @var EntityRepository */
     protected $repository;
@@ -25,50 +23,18 @@ class DatagridViewManager implements SaverInterface, RemoverInterface
     /** @var DatagridManager */
     protected $datagridManager;
 
-    /** @var SaverInterface */
-    protected $saver;
-
-    /** @var RemoverInterface */
-    protected $remover;
-
     /**
      * Constructor
      *
      * @param EntityRepository $repository
      * @param DatagridManager  $datagridManager
-     * @param SaverInterface   $saver
-     * @param RemoverInterface $remover
      */
     public function __construct(
         EntityRepository $repository,
-        DatagridManager $datagridManager,
-        SaverInterface $saver,
-        RemoverInterface $remover
+        DatagridManager $datagridManager
     ) {
         $this->repository = $repository;
         $this->datagridManager = $datagridManager;
-        $this->saver = $saver;
-        $this->remover = $remover;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.7 please use SaverInterface::save
-     */
-    public function save($object, array $options = [])
-    {
-        $this->saver->save($object, $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.7 please use RemoverInterface::remove
-     */
-    public function remove($object, array $options = [])
-    {
-        $this->remover->remove($object, $options);
     }
 
     /**

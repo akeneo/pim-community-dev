@@ -37,7 +37,7 @@ Action: Ação
 Unit: Unidade
 Currency: Moeda
 jstree:
-  all: Todos os Produtos
+  all: Todos os produtos
   unclassified: Produtos não classificados
   product:
     all: Todos os produtos
@@ -110,3 +110,5 @@ oro_config:
         notification:
           title: Notificações
           system_notification: Notificação de nova versão
+        loading_message:
+          title: Carregando mensagens

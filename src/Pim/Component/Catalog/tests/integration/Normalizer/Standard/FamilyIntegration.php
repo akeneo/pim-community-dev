@@ -2,14 +2,14 @@
 
 namespace tests\integration\Pim\Component\Catalog\Normalizer\Standard;
 
-use Test\Integration\TestCase;
+use Pim\Component\Catalog\tests\integration\Normalizer\Standard\AbstractStandardNormalizerTestCase;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyIntegration extends TestCase
+class FamilyIntegration extends AbstractStandardNormalizerTestCase
 {
     public function testFamily()
     {
@@ -57,6 +57,9 @@ class FamilyIntegration extends TestCase
                     'a_text_area',
                     'a_yes_no',
                     'an_image',
+                    'sku'
+                ],
+                'ecommerce_china' => [
                     'sku'
                 ],
                 'tablet' => [

@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Update many products at a time from the product template values
@@ -17,12 +18,17 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
     /** @var PropertySetterInterface */
     protected $propertySetter;
 
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
     /**
      * @param PropertySetterInterface $propertySetter
+     * @param NormalizerInterface     $normalizer
      */
-    public function __construct(PropertySetterInterface $propertySetter)
+    public function __construct(PropertySetterInterface $propertySetter, NormalizerInterface $normalizer)
     {
         $this->propertySetter = $propertySetter;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -30,7 +36,7 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
      */
     public function update(ProductTemplateInterface $template, array $products)
     {
-        $updates = $template->getValuesData();
+        $updates = $this->normalizer->normalize($template->getValues(), 'standard');
         foreach ($updates as $attributeCode => $values) {
             foreach ($values as $data) {
                 $this->updateProducts($products, $attributeCode, $data);

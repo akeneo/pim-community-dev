@@ -10,6 +10,7 @@ use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Copy a media value attribute in other media value attribute
@@ -20,6 +21,9 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 class MediaAttributeCopier extends AbstractAttributeCopier
 {
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
     /** @var FileFetcherInterface */
     protected $fileFetcher;
 
@@ -32,6 +36,7 @@ class MediaAttributeCopier extends AbstractAttributeCopier
     /**
      * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param NormalizerInterface      $normalizer
      * @param FileFetcherInterface     $fileFetcher
      * @param FileStorerInterface      $fileStorer
      * @param FilesystemProvider       $filesystemProvider
@@ -41,6 +46,7 @@ class MediaAttributeCopier extends AbstractAttributeCopier
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
+        NormalizerInterface $normalizer,
         FileFetcherInterface $fileFetcher,
         FileStorerInterface $fileStorer,
         FilesystemProvider $filesystemProvider,
@@ -49,6 +55,7 @@ class MediaAttributeCopier extends AbstractAttributeCopier
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
 
+        $this->normalizer = $normalizer;
         $this->fileFetcher = $fileFetcher;
         $this->fileStorer = $fileStorer;
         $this->filesystemProvider = $filesystemProvider;
@@ -72,8 +79,8 @@ class MediaAttributeCopier extends AbstractAttributeCopier
         $fromScope = $options['from_scope'];
         $toScope = $options['to_scope'];
 
-        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'media');
-        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'media');
+        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope);
+        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope);
 
         $this->copySingleValue(
             $fromProduct,
@@ -88,6 +95,8 @@ class MediaAttributeCopier extends AbstractAttributeCopier
     }
 
     /**
+     * Copies a single media value and handle the file associated to it.
+     *
      * @param ProductInterface   $fromProduct
      * @param ProductInterface   $toProduct
      * @param AttributeInterface $fromAttribute
@@ -109,11 +118,6 @@ class MediaAttributeCopier extends AbstractAttributeCopier
     ) {
         $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
-            $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
-            if (null === $toValue) {
-                $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
-            }
-
             $file = null;
             if (null !== $fromValue->getMedia()) {
                 $filesystem = $this->filesystemProvider->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
@@ -123,7 +127,13 @@ class MediaAttributeCopier extends AbstractAttributeCopier
                 $file->setOriginalFilename($fromValue->getMedia()->getOriginalFilename());
             }
 
-            $toValue->setMedia($file);
+            $this->productBuilder->addOrReplaceProductValue(
+                $toProduct,
+                $toAttribute,
+                $toLocale,
+                $toScope,
+                null !== $file ? $this->normalizer->normalize($file, 'standard') : null
+            );
         }
     }
 }

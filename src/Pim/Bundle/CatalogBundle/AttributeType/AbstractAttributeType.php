@@ -134,7 +134,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
             ],
             'scopable' => [
                 'name'      => 'scopable',
-                'fieldType' => 'pim_enrich_scopable',
+                'fieldType' => 'switch',
                 'options'   => [
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()

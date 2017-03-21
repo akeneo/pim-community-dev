@@ -1,0 +1,12 @@
+pim_api:
+  acl:
+    attribute:
+      list: Llistar atributs
+    category:
+      list: Llistar categories
+    family:
+      list: Llistar famílies
+  acl_group:
+    attribute: Atributs
+    category: Categories
+    family: Famílies

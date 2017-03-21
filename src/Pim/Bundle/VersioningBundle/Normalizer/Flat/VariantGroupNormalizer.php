@@ -47,8 +47,7 @@ class VariantGroupNormalizer extends BaseNormalizer
             return [];
         }
 
-        $valuesData = $variantGroup->getProductTemplate()->getValuesData();
-        $values = $this->valuesDenormalizer->denormalize($valuesData, 'ProductValue[]', 'standard');
+        $values = $variantGroup->getProductTemplate()->getValues();
 
         $normalizedValues = [];
         foreach ($values as $value) {
@@ -61,29 +60,6 @@ class VariantGroupNormalizer extends BaseNormalizer
         ksort($normalizedValues);
 
         return $normalizedValues;
-    }
-
-    /**
-     * Generate an array representing the list of variant group values in flat array
-     *
-     * @param array $variantGroupValues
-     * @param array $context
-     *
-     * @return array
-     */
-    protected function normalizeValues(array $variantGroupValues, array $context = [])
-    {
-        $flatValues = [];
-
-        foreach ($variantGroupValues as $attributeCode => $variantGroupValue) {
-            $flatValues += $this->valuesNormalizer->normalize(
-                [$attributeCode => $variantGroupValue],
-                'flat',
-                $context
-            );
-        }
-
-        return $flatValues;
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover;
 
-use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

@@ -9,25 +9,25 @@ pim_user:
       email_synchronization.title: Postavke sinkronizacije e-pošte
       interfaces.title: Sučelja
 oro.user.controller:
-  group.message.saved: Grupa je spremljena
-  role.message.saved: Rola je spremljena
-  user.message.saved: Korisnik je spremljen
-  status.message.saved: Status je spremljen
+  group.message.saved: "Grupa je spremljena"
+  role.message.saved: "Rola je spremljena"
+  user.message.saved: "Korisnik je spremljen"
+  status.message.saved: "Status je spremljen"
 oro.user.grid.users:
   columns:
-    username: Korisničko ime
-    email: Email
-    firstName: Ime
-    lastName: Prezime
-    createdAt: Kreirano u
-    updatedAt: Ažurirano u
-    enabled: Status
+    username: "Korisničko ime"
+    email: "Email"
+    firstName: "Ime"
+    lastName: "Prezime"
+    createdAt: "Kreirano u"
+    updatedAt: "Ažurirano u"
+    enabled: "Status"
 oro.user.grid.roles:
   columns:
-    label: Oznaka
+    label: "Oznaka"
 oro.user.grid.groups:
   columns:
-    name: Ime
+    name: "Ime"
 pim_title:
   user.index: Korisnici
   user_role.index: Role

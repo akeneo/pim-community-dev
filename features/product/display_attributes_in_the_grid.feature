@@ -7,9 +7,9 @@ Feature: Display product attributes in the grid
   Scenario: Successfully display values for simple and multi select attributes
     Given the "default" catalog configuration
     And the following attributes:
-      | code               | type         | label-en_US        | group | useable_as_grid_filter |
-      | manufacturer       | simpleselect | Manufacturer       | other | yes                    |
-      | weather_conditions | multiselect  | Weather conditions | other | yes                    |
+      | code               | type                     | label-en_US        | group | useable_as_grid_filter |
+      | manufacturer       | pim_catalog_simpleselect | Manufacturer       | other | 1                      |
+      | weather_conditions | pim_catalog_multiselect  | Weather conditions | other | 1                      |
     And the following "manufacturer" attribute options: Converse, adidas and lacoste
     And the following "weather_conditions" attribute options: dry, hot, cloudy and stormy
     And the following products:
@@ -36,9 +36,9 @@ Feature: Display product attributes in the grid
   Scenario: Successfully display image attributes
     Given the "default" catalog configuration
     And the following attributes:
-      | code      | type  | label-en_US | allowed_extensions | useable_as_grid_filter |
-      | side_view | image | Side view   | gif,png,jpeg,jpg   | yes                    |
-      | top_view  | image | Top view    | gif,png,jpeg,jpg   | yes                    |
+      | code      | type              | label-en_US | allowed_extensions | useable_as_grid_filter | group |
+      | side_view | pim_catalog_image | Side view   | gif,png,jpeg,jpg   | 1                      | other |
+      | top_view  | pim_catalog_image | Top view    | gif,png,jpeg,jpg   | 1                      | other |
     And the following products:
       | sku      | side_view             | top_view               |
       | sneakers | %fixtures%/akeneo.jpg |                        |

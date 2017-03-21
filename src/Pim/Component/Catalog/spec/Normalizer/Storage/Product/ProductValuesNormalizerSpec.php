@@ -4,8 +4,11 @@ namespace spec\Pim\Component\Catalog\Normalizer\Storage\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValue;
+use Pim\Component\Catalog\Model\ProductValueCollection;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Normalizer\Storage\Product\ProductValuesNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -31,14 +34,19 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
 
     function it_supports_storage_format_and_collection_values()
     {
-        $valuesCollection = new ArrayCollection([new ProductValue()]);
-        $valuesArray = [new ProductValue()];
-        $emptyValuesCollection = new ArrayCollection();
+        $attribute = new Attribute();
+        $attribute->setCode('attribute');
+        $attribute->setBackendType('text');
+        $realValue = new ProductValue($attribute, null, null, null);
+
+        $valuesCollection = new ProductValueCollection([$realValue]);
+        $valuesArray = [$realValue];
+        $emptyValuesCollection = new ProductValueCollection();
         $randomCollection = new ArrayCollection([new \stdClass()]);
         $randomArray = [new \stdClass()];
 
         $this->supportsNormalization($valuesCollection, 'storage')->shouldReturn(true);
-        $this->supportsNormalization($valuesArray, 'storage')->shouldReturn(true);
+        $this->supportsNormalization($valuesArray, 'storage')->shouldReturn(false);
         $this->supportsNormalization($emptyValuesCollection, 'storage')->shouldReturn(true);
         $this->supportsNormalization($randomCollection, 'storage')->shouldReturn(false);
         $this->supportsNormalization($randomArray, 'storage')->shouldReturn(false);
@@ -54,8 +62,21 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         ProductValueInterface $descriptionEcommerceFrValue,
         ProductValueInterface $descriptionEcommerceEnValue,
         ProductValueInterface $descriptionPrintFrValue,
-        AttributeInterface $descriptionAttribute
+        AttributeInterface $descriptionAttribute,
+        ProductValueCollectionInterface $values,
+        \ArrayIterator $valuesIterator
     ) {
+        $values->getIterator()->willReturn($valuesIterator);
+        $valuesIterator->rewind()->shouldBeCalled();
+        $valuesIterator->valid()->willReturn(true, true, true, true, false);
+        $valuesIterator->current()->willReturn(
+            $textValue,
+            $descriptionEcommerceFrValue,
+            $descriptionEcommerceEnValue,
+            $descriptionPrintFrValue
+        );
+        $valuesIterator->next()->shouldBeCalled();
+
         $textValue->getAttribute()->willReturn($textAttribute);
         $descriptionEcommerceFrValue->getAttribute()->willReturn($descriptionAttribute);
 
@@ -95,10 +116,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
             ->willReturn($rawDescriptionPrintFr);
 
         $this
-            ->normalize(
-                [$textValue, $descriptionEcommerceFrValue, $descriptionEcommerceEnValue, $descriptionPrintFrValue],
-                'storage'
-            )
+            ->normalize($values, 'storage')
             ->shouldReturn(
                 [
                     'text'   => [

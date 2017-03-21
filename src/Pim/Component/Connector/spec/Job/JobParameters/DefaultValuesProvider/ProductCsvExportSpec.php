@@ -5,12 +5,10 @@ namespace spec\Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider;
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use Prophecy\Argument;
 
 class ProductCsvExportSpec extends ObjectBehavior
 {

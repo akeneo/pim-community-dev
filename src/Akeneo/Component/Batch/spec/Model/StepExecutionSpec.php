@@ -7,7 +7,6 @@ use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Model\JobExecution;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class StepExecutionSpec extends ObjectBehavior
 {

@@ -48,9 +48,11 @@ define([
                 var options = $.extend({}, this.datetimepickerOptions, {format: fromFormat});
                 var fakeDatepicker = Datepicker.init($('<input>'), options).data('datetimepicker');
 
-                fakeDatepicker.setValue(date);
-                fakeDatepicker.format = toFormat;
-                fakeDatepicker._compileFormat();
+                if (null !== fakeDatepicker.parseDate(date)) {
+                    fakeDatepicker.setValue(date);
+                    fakeDatepicker.format = toFormat;
+                    fakeDatepicker._compileFormat();
+                }
 
                 return fakeDatepicker.formatDate(fakeDatepicker.getDate());
             }

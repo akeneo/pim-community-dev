@@ -49,11 +49,11 @@
   }
 
   &--warning {
-    background: lighten(@AknOrange, 30%);
-    color: darken(@AknOrange, 20%);
+    background: lighten(@AknOrange, 20%);
+    color: darken(@AknOrange, 30%);
 
     &:hover {
-      background: lighten(@AknOrange, 20%);
+      background: lighten(@AknOrange, 10%);
     }
   }
 
@@ -70,7 +70,37 @@
     }
   }
 
+  &--info {
+    background: @AknBlue;
+    color: white;
+
+    &:hover {
+      background: darken(@AknBlue, 10%);
+    }
+  }
+
+  &--highlight {
+    background: @AknOrange;
+  }
+
+  &--light {
+    opacity: 0.2;
+  }
+
+  &--round {
+    border-radius: 10px;
+
+    &:not(:empty) {
+      padding-left: 7px;
+      padding-right: 7px;
+    }
+  }
+
   &--grey &-icon {
     color: white;
+  }
+
+  &--hidden {
+    display: none;
   }
 }

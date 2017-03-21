@@ -30,7 +30,7 @@ Feature: Product group creation
 
   Scenario: Fail to create a group with an already used code
     Given the following product group:
-      | code   | label          | type   |
+      | code   | label-en_US    | type   |
       | TSHIRT | T-Shirt Akeneo | X_SELL |
     When I fill in the following information in the popin:
       | Code | TSHIRT |

@@ -7,7 +7,7 @@ use Pim\Component\Catalog\AttributeTypeRegistry;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
- * Attribute factory
+ * Creates and configures an attribute instance.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -61,7 +61,7 @@ class AttributeFactory implements SimpleFactoryInterface
         if (null !== $type && '' !== $type) {
             $attributeType = $this->registry->get($type);
             $attribute->setBackendType($attributeType->getBackendType());
-            $attribute->setAttributeType($attributeType->getName());
+            $attribute->setType($attributeType->getName());
             $attribute->setUnique($attributeType->isUnique());
         }
 

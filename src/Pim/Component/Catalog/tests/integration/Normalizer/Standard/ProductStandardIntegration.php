@@ -2,40 +2,23 @@
 
 namespace tests\integration\Pim\Component\Catalog\Normalizer\Standard;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\DateSanitizer;
+use Akeneo\Test\Integration\MediaSanitizer;
+use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Test\Integration\TestCase;
 
 /**
  * Integration tests to verify data from database are well formatted in the standard format
  */
 class ProductStandardIntegration extends TestCase
 {
-    const DATE_FIELD_COMPARISON = 'this is a date formatted to ISO-8601';
-    const MEDIA_ATTRIBUTE_DATA_COMPARISON = 'this is a media identifier';
-
-    const DATE_FIELD_PATTERN = '#[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\+[0-9]{2}:[0-9]{2}$#';
-    const MEDIA_ATTRIBUTE_DATA_PATTERN = '#[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]/[0-9a-z]{40}_\w+\.[a-zA-Z]+$#';
-
-    protected $purgeDatabaseForEachTest = false;
-
-    public function setUp()
+    protected function getConfiguration()
     {
-        parent::setUp();
-
-        $em = $this->get('doctrine.orm.entity_manager');
-        $em->getConnection()->executeQuery(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'common.sql'));
-
-        if (1 === self::$count) {
-            $storage = $this->container->getParameter('pim_catalog_product_storage_driver');
-            if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $storage) {
-                $client = $this->get('doctrine.odm.mongodb.document_manager')->getConnection()->akeneo_pim;
-                $client->execute(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'products_mongodb.json'));
-            } else {
-                $em->getConnection()
-                    ->executeQuery(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'products_orm.sql'));
-            }
-        }
+        return new Configuration(
+            [Configuration::getTechnicalSqlCatalogPath()],
+            false
+        );
     }
 
     public function testEmptyDisabledProduct()
@@ -289,6 +272,9 @@ class ProductStandardIntegration extends TestCase
         //TODO: why do we need that?
         $expected = $this->sanitizeMediaAttributeData($expected);
 
+        ksort($expected['values']);
+        ksort($result['values']);
+
         $this->assertSame($expected, $result);
     }
 
@@ -313,12 +299,8 @@ class ProductStandardIntegration extends TestCase
      */
     private function sanitizeDateFields(array $data)
     {
-        if ($this->assertDateFieldPattern($data['created']) &&
-            $this->assertDateFieldPattern($data['updated'])
-        ) {
-            $data['created'] = self::DATE_FIELD_COMPARISON;
-            $data['updated'] = self::DATE_FIELD_COMPARISON;
-        }
+        $data['created'] = DateSanitizer::sanitize($data['created']);
+        $data['updated'] = DateSanitizer::sanitize($data['updated']);
 
         return $data;
     }
@@ -335,33 +317,11 @@ class ProductStandardIntegration extends TestCase
         foreach ($data['values'] as $attributeCode => $values) {
             if (1 === preg_match('/.*(file|image).*/', $attributeCode)) {
                 foreach ($values as $index => $value) {
-                    if ($this->assertMediaAttributeDataPattern($value['data'])) {
-                        $data['values'][$attributeCode][$index]['data'] = self::MEDIA_ATTRIBUTE_DATA_COMPARISON;
-                    }
+                    $data['values'][$attributeCode][$index]['data'] = MediaSanitizer::sanitize($value['data']);
                 }
             }
         }
 
         return $data;
-    }
-
-    /**
-     * @param string $field
-     *
-     * @return bool
-     */
-    private function assertDateFieldPattern($field)
-    {
-        return 1 === preg_match(self::DATE_FIELD_PATTERN, $field);
-    }
-
-    /**
-     * @param string $data
-     *
-     * @return bool
-     */
-    private function assertMediaAttributeDataPattern($data)
-    {
-        return 1 === preg_match(self::MEDIA_ATTRIBUTE_DATA_PATTERN, $data);
     }
 }

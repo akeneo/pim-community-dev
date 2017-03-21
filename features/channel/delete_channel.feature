@@ -18,7 +18,7 @@ Feature: Delete a channel
     And I should not see channel tablet
 
   Scenario: Successfully delete a channel
-    Given I edit the "mobile" channel
+    Given I am on the "mobile" channel page
     When I press the "Delete" button
     And I confirm the deletion
     Then I should see the flash message "Channel successfully removed"

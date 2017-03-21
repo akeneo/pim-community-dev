@@ -2,32 +2,32 @@ pim_user:
   user:
     tab:
       general.title: Allgemein
-      additional.title: Weiteres
+      additional.title: Ergänzend
       group_and_role.title: Gruppen und Rollen
       password.title: Kennwort
       business_unit.title: Geschäftsbereich
       email_synchronization.title: Einstellungen für E-Mail Synchronisierung
       interfaces.title: Interfaces
 oro.user.controller:
-  group.message.saved: Gruppe gespeichert
-  role.message.saved: Rolle gespeichert
-  user.message.saved: Benutzer gespeichert
-  status.message.saved: Status gespeichert
+  group.message.saved: "Gruppe gespeichert"
+  role.message.saved: "Rolle gespeichert"
+  user.message.saved: "Benutzer gespeichert"
+  status.message.saved: "Status gespeichert"
 oro.user.grid.users:
   columns:
-    username: Benutzername
-    email: E-Mail
-    firstName: Vorname
-    lastName: Nachname
-    createdAt: Angelegt am
-    updatedAt: Aktualisiert am
-    enabled: Status
+    username: "Benutzername"
+    email: "E-Mail"
+    firstName: "Vorname"
+    lastName: "Nachname"
+    createdAt: "Erstellt am"
+    updatedAt: "Aktualisiert am"
+    enabled: "Status"
 oro.user.grid.roles:
   columns:
-    label: Bezeichnung
+    label: "Bezeichnung"
 oro.user.grid.groups:
   columns:
-    name: Name
+    name: "Name"
 pim_title:
   user.index: Benutzer
   user_role.index: Rollen
@@ -60,6 +60,7 @@ Business Units: Geschäftsbereich
 Email synchronization settings: Einstellungen für E-Mail Synchronisierung
 Host: Host
 Port: Port
+Ssl: SSL
 Last logged in: Zuletzt eingeloggt
 Login count: Anzahl der Anmeldungen
 Additional Information: Zusätzliche Informationen

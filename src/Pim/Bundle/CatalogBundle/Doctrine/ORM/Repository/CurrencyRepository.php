@@ -57,19 +57,6 @@ class CurrencyRepository extends EntityRepository implements CurrencyRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function createDatagridQueryBuilder()
-    {
-        $qb = $this->createQueryBuilder('c');
-        $rootAlias = $qb->getRootAlias();
-
-        $qb->addSelect($rootAlias);
-
-        return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findOneByIdentifier($code)
     {
         return $this->findOneBy(['code' => $code]);

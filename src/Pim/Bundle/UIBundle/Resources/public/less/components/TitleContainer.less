@@ -56,6 +56,8 @@
   &-rightButtons {
     order: 10;
     display: flex;
+    justify-content: flex-end;
+    flex-grow: 1;
   }
 
   &-rightButton {
@@ -71,7 +73,7 @@
 
   &-meta {
     font-size: @AknFontSizeSmall;
-    color: lighten(@AknDefaultFontColor, 15%);
+    color: @AknLightFontColor;
     flex-wrap: wrap;
     line-height: 23px;
     flex-grow: 1;
@@ -79,6 +81,14 @@
 
   &-metaItem:not(:first-child):not(:empty):before {
     content: ' | ';
+  }
+
+  &-metaLink {
+    cursor: pointer;
+
+    &:hover {
+      color: darken(@AknLightFontColor, 10%);
+    }
   }
 
   &-state {
@@ -93,7 +103,7 @@
     width: @AknDefaultButtonSize;
     line-height: @AknDefaultButtonSize;
     background: darken(@AknLightGray, 5%);
-    height: 100%;
+    height: ~"calc(100% - 4px)";
     text-align: center;
     margin-right: 10px;
     border-radius: 2px;

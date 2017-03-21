@@ -3,13 +3,13 @@
 namespace Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
-use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -85,7 +85,7 @@ class JobInstanceProcessor extends AbstractProcessor implements ItemProcessorInt
 
         try {
             $this->updater->update($entity, $item);
-        } catch (\InvalidArgumentException $exception) {
+        } catch (PropertyException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 

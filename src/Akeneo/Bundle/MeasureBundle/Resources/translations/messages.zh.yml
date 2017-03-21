@@ -9,7 +9,7 @@ SQUARE_DECIMETER: 平方分米
 SQUARE_DEKAMETER: 平方分米
 SQUARE_FOOT: 平方英尺
 SQUARE_FURLONG: 平方厘米
-SQUARE_HECTOMETER: 平方分米
+SQUARE_HECTOMETER: 平方百米
 SQUARE_INCH: 平方英寸
 SQUARE_KILOMETER: 平方千米
 SQUARE_METER: 平方米
@@ -48,10 +48,10 @@ MILE: 英里
 MILLIMETER: 毫米
 YARD: 码
 Power: 功率
-GIGAWATT: 吉瓦
+GIGAWATT: 千兆瓦
 KILOWATT: 千瓦
 MEGAWATT: 兆瓦
-TERAWATT: 兆兆瓦
+TERAWATT: 太瓦
 WATT: 瓦特
 Resistance: 电阻
 MILLIOHM: 毫欧
@@ -95,7 +95,7 @@ SECOND: 秒
 MINUTE: 分钟
 HOUR: 小时
 DAY: 天
-Speed: 速度：
+Speed: 速度
 FOOT_PER_SECOND: 英尺/秒
 FOOT_PER_HOUR: 英尺/小时
 KILOMETER_PER_HOUR: 千米/小时
@@ -105,7 +105,7 @@ METER_PER_SECOND: 米/秒
 MILE_PER_HOUR: 英里/小时
 YARD_PER_HOUR: 码/小时
 Temperature: 温度
-CELSIUS: 摄氏
+CELSIUS: 摄氏度
 FAHRENHEIT: 华氏度
 KELVIN: 开尔文
 RANKINE: 兰金温度
@@ -126,7 +126,7 @@ LITER: 升
 MILLILITER: 毫升
 OUNCE: 盎司
 PINT: 品脱
-Weight: 重量：
+Weight: 重量
 DENIER: 纤度
 GRAIN: 格令
 GRAM: 克

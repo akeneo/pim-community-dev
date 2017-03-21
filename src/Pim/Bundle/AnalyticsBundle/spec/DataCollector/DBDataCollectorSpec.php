@@ -3,13 +3,12 @@
 namespace spec\Pim\Bundle\AnalyticsBundle\DataCollector;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
+use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Prophecy\Argument;
 
 class DBDataCollectorSpec extends ObjectBehavior
 {

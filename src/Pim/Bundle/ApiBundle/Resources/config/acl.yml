@@ -1,0 +1,51 @@
+# API
+pim_api_overall_access:
+    type: action
+    label: pim_api.acl.rights
+    group_name: pim_api.acl_group.overall_access
+
+pim_api_attribute_list:
+    type: action
+    label: pim_api.acl.attribute.list
+    group_name: pim_api.acl_group.attribute
+pim_api_attribute_edit:
+    type: action
+    label: pim_api.acl.attribute.edit
+    group_name: pim_api.acl_group.attribute
+
+pim_api_attribute_option_list:
+    type: action
+    label: pim_api.acl.attribute_option.list
+    group_name: pim_api.acl_group.attribute_option
+pim_api_attribute_option_edit:
+    type: action
+    label: pim_api.acl.attribute_option.edit
+    group_name: pim_api.acl_group.attribute_option
+
+pim_api_category_list:
+    type: action
+    label: pim_api.acl.category.list
+    group_name: pim_api.acl_group.category
+pim_api_category_edit:
+    type: action
+    label: pim_api.acl.category.edit
+    group_name: pim_api.acl_group.category
+
+pim_api_channel_list:
+    type: action
+    label: pim_api.acl.channel.list
+    group_name: pim_api.acl_group.channel
+
+pim_api_locale_list:
+    type: action
+    label: pim_api.acl.locale.list
+    group_name: pim_api.acl_group.locale
+
+pim_api_family_list:
+    type: action
+    label: pim_api.acl.family.list
+    group_name: pim_api.acl_group.family
+pim_api_family_edit:
+    type: action
+    label: pim_api.acl.family.edit
+    group_name: pim_api.acl_group.family

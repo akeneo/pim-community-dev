@@ -5,11 +5,9 @@ namespace Akeneo\Bundle\BatchBundle\Command;
 use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Job\Job;
-use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Job\JobRegistry;
-use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\ORM\EntityManager;
@@ -73,6 +71,7 @@ class BatchCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $noLog = $input->getOption('no-log');
+
         if (!$noLog) {
             $logger = $this->getContainer()->get('monolog.logger.batch');
             // Fixme: Use ConsoleHandler available on next Symfony version (2.4 ?)
@@ -162,11 +161,17 @@ class BatchCommand extends ContainerAwareCommand
 
         $job->getJobRepository()->updateJobExecution($jobExecution);
 
+        $verbose = $input->getOption('verbose');
         if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
             $nbWarnings = 0;
             /** @var StepExecution $stepExecution */
             foreach ($jobExecution->getStepExecutions() as $stepExecution) {
                 $nbWarnings += count($stepExecution->getWarnings());
+                if ($verbose) {
+                    foreach ($stepExecution->getWarnings() as $warning) {
+                        $output->writeln(sprintf('<comment>%s</comment>', $warning->getReason()));
+                    }
+                }
             }
 
             if (0 === $nbWarnings) {
@@ -198,7 +203,6 @@ class BatchCommand extends ContainerAwareCommand
                     $jobInstance->getType()
                 )
             );
-            $verbose = $input->getOption('verbose');
             $this->writeExceptions($output, $jobExecution->getFailureExceptions(), $verbose);
             foreach ($jobExecution->getStepExecutions() as $stepExecution) {
                 $this->writeExceptions($output, $stepExecution->getFailureExceptions(), $verbose);

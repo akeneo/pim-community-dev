@@ -22,10 +22,10 @@ class AttributeValidatorHelper
     protected $scopeRepository;
 
     /** @var array */
-    protected static $localeCodes;
+    protected $localeCodes;
 
     /** @var array */
-    protected static $scopeCodes;
+    protected $scopeCodes;
 
     /**
      * @param LocaleRepositoryInterface  $localeRepository
@@ -72,11 +72,11 @@ class AttributeValidatorHelper
             );
         }
 
-        if (null === static::$localeCodes) {
-            static::$localeCodes = $this->getActivatedLocaleCodes();
+        if (null === $this->localeCodes) {
+            $this->localeCodes = $this->getActivatedLocaleCodes();
         }
 
-        if (!in_array($locale, static::$localeCodes)) {
+        if (!in_array($locale, $this->localeCodes)) {
             throw new \LogicException(
                 sprintf(
                     'Attribute "%s" expects an existing and activated locale, "%s" given.',
@@ -86,12 +86,12 @@ class AttributeValidatorHelper
             );
         }
 
-        if ($attribute->isLocaleSpecific() && !in_array($locale, $attribute->getLocaleSpecificCodes())) {
+        if ($attribute->isLocaleSpecific() && !in_array($locale, $attribute->getAvailableLocaleCodes())) {
             throw new \LogicException(
                 sprintf(
                     'Attribute "%s" is locale specific and expects one of these locales: %s, "%s" given.',
                     $attribute->getCode(),
-                    implode($attribute->getLocaleSpecificCodes(), ', '),
+                    implode($attribute->getAvailableLocaleCodes(), ', '),
                     $locale
                 )
             );
@@ -152,11 +152,11 @@ class AttributeValidatorHelper
             );
         }
 
-        if (null === static::$scopeCodes) {
-            static::$scopeCodes = $this->getScopeCodes();
+        if (null === $this->scopeCodes) {
+            $this->scopeCodes = $this->getScopeCodes();
         }
 
-        if (!in_array($scope, static::$scopeCodes)) {
+        if (!in_array($scope, $this->scopeCodes)) {
             throw new \LogicException(
                 sprintf(
                     'Attribute "%s" expects an existing scope, "%s" given.',

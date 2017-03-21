@@ -27,7 +27,7 @@ define(
             template: _.template(template),
             datagridView: null,
             datagridViewType: null,
-            isCurrentView: false,
+            currentViewId: null,
 
             /**
              * {@inheritdoc}
@@ -35,7 +35,7 @@ define(
             render: function () {
                 this.$el.html(this.template({
                     view: this.datagridView,
-                    isCurrent: this.isCurrentView
+                    isCurrent: (this.currentViewId === this.datagridView.id)
                 }));
 
                 this.renderExtensions();
@@ -48,12 +48,12 @@ define(
              *
              * @param {Object}  view
              * @param {String}  viewType
-             * @param {boolean} isCurrent
+             * @param {int}     currentViewId
              */
-            setView: function (view, viewType, isCurrent) {
+            setView: function (view, viewType, currentViewId) {
                 this.datagridView = view;
                 this.datagridViewType = viewType;
-                this.isCurrentView = isCurrent;
+                this.currentViewId = currentViewId;
             }
         });
     }

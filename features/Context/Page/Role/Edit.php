@@ -31,6 +31,12 @@ class Edit extends Form
                         'Pim\Behat\Decorator\Permission\PermissionDecorator'
                     ]
                 ],
+                'API permission' => [
+                    'css'        => '#rights-api',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\Permission\PermissionDecorator'
+                    ]
+                ],
             ],
             $this->elements
         );

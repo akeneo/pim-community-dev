@@ -23,28 +23,28 @@ Feature: Execute an import with invalid data
 
   Background:
     Given the "footwear" catalog configuration
+    And the following variant groups:
+      | code    | label-en_US | axis       | type    |
+      | SANDAL  | Sandal      | size,color | VARIANT |
+      | SANDAL2 | SandalTwo   | size,color | VARIANT |
     And the following products:
-      | sku              | family  | categories        | size | color |
-      | sandal-white-37  | sandals | winter_collection | 37   | white |
-      | sandal-white-38  | sandals | winter_collection | 38   | white |
-      | sandal-white-39  | sandals | winter_collection | 39   | white |
-      | sandal-red-37    | sandals | winter_collection | 37   | red   |
-      | sandal-red-38    | sandals | winter_collection | 38   | red   |
-      | sandal-red-39    | sandals | winter_collection | 39   | red   |
-      | sandal2-white-37 | sandals | winter_collection | 37   | white |
-      | sandal2-white-38 | sandals | winter_collection | 38   | white |
-      | sandal2-red-37   | sandals | winter_collection | 37   | red   |
-      | sandal2-red-38   | sandals | winter_collection | 38   | red   |
-    And the following product groups:
-      | code    | label     | axis        | type    | products                                                                                       |
-      | SANDAL  | Sandal    | size, color | VARIANT | sandal-white-37, sandal-white-38, sandal-white-39, sandal-red-37, sandal-red-38, sandal-red-39 |
-      | SANDAL2 | SandalTwo | size, color | VARIANT | sandal2-white-37, sandal2-white-38, sandal2-red-37, sandal2-red-38                             |
+      | sku              | family  | categories        | size | color | groups  |
+      | sandal-white-37  | sandals | winter_collection | 37   | white | SANDAL  |
+      | sandal-white-38  | sandals | winter_collection | 38   | white | SANDAL  |
+      | sandal-white-39  | sandals | winter_collection | 39   | white | SANDAL  |
+      | sandal-red-37    | sandals | winter_collection | 37   | red   | SANDAL  |
+      | sandal-red-38    | sandals | winter_collection | 38   | red   | SANDAL  |
+      | sandal-red-39    | sandals | winter_collection | 39   | red   | SANDAL  |
+      | sandal2-white-37 | sandals | winter_collection | 37   | white | SANDAL2 |
+      | sandal2-white-38 | sandals | winter_collection | 38   | white | SANDAL2 |
+      | sandal2-red-37   | sandals | winter_collection | 37   | red   | SANDAL2 |
+      | sandal2-red-38   | sandals | winter_collection | 38   | red   | SANDAL2 |
     And the following attributes:
-      | code        | label-en_US | type | scopable | max_characters | validation_rule | validation_regexp |
-      | custom_desc | Desc        | text | no       |                |                 |                   |
-      | title       | Title       | text | no       | 22             |                 |                   |
-      | barcode     | Barcode     | text | no       |                | regexp          | /^0\d*$/          |
-      | link        | Link        | text | no       |                | url             |                   |
+      | code        | label-en_US | type             | scopable | max_characters | validation_rule | validation_regexp | group |
+      | custom_desc | Desc        | pim_catalog_text | 0        |                |                 |                   | other |
+      | title       | Title       | pim_catalog_text | 0        | 22             |                 |                   | other |
+      | barcode     | Barcode     | pim_catalog_text | 0        |                | regexp          | /^0\d*$/          | other |
+      | link        | Link        | pim_catalog_text | 0        |                | url             |                   | other |
     And I am logged in as "Julia"
 
   Scenario: Skip variant group when a text value is too long (default max_characters to 255)
@@ -105,9 +105,9 @@ Feature: Execute an import with invalid data
 
   Scenario: Fail to add unique attributes to variant group during import
     Given the following attributes:
-      | code               | unique |
-      | unique_description | yes    |
-      | unique_label       | yes    |
+      | code               | unique | group | type             |
+      | unique_description | 1      | other | pim_catalog_text |
+      | unique_label       | 1      | other | pim_catalog_text |
     And the following CSV file to import:
       """
       code;type;unique_description;unique_label

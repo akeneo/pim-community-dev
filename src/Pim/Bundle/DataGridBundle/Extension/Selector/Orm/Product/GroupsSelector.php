@@ -20,12 +20,15 @@ class GroupsSelector implements SelectorInterface
      */
     public function apply(DatasourceInterface $datasource, DatagridConfiguration $configuration)
     {
-        $rootAlias = $datasource->getQueryBuilder()->getRootAlias();
+        $qb = $datasource->getQueryBuilder();
+        $locale = $configuration->offsetGetByPath('[source][locale_code]');
+        $rootAlias = $qb->getRootAlias();
 
-        $datasource->getQueryBuilder()
+        $qb
             ->leftJoin($rootAlias.'.groups', 'pGroups')
             ->leftJoin('pGroups.translations', 'pGroupsTrans', 'WITH', 'pGroupsTrans.locale = :dataLocale')
             ->addSelect('pGroups')
-            ->addSelect('pGroupsTrans');
+            ->addSelect('pGroupsTrans')
+            ->setParameter('dataLocale', $locale);
     }
 }

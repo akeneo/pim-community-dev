@@ -46,7 +46,7 @@ class ReferenceDataSorter implements AttributeSorterInterface
     {
         if (null === $locale) {
             throw new \InvalidArgumentException(
-                sprintf('Cannot prepare condition on type "%s" without locale', $attribute->getAttributeType())
+                sprintf('Cannot prepare condition on type "%s" without locale', $attribute->getType())
             );
         }
 

@@ -5,9 +5,10 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Manager\CompletenessManager;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManagerInterface;
+use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -21,27 +22,27 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class ProductSaver implements SaverInterface, BulkSaverInterface
 {
-    /** @var ObjectManager */
-    protected $objectManager;
+    /** @var EntityManagerInterface */
+    protected $entityManager;
 
-    /** @var CompletenessManager */
-    protected $completenessManager;
+    /** @var CompletenessCalculatorInterface */
+    protected $completenessCalculator;
 
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
     /**
-     * @param ObjectManager            $om
-     * @param CompletenessManager      $completenessManager
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param EntityManagerInterface          $entityManager
+     * @param CompletenessCalculatorInterface $completenessCalculator
+     * @param EventDispatcherInterface        $eventDispatcher
      */
     public function __construct(
-        ObjectManager $om,
-        CompletenessManager $completenessManager,
+        EntityManagerInterface $entityManager,
+        CompletenessCalculatorInterface $completenessCalculator,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->objectManager = $om;
-        $this->completenessManager = $completenessManager;
+        $this->entityManager = $entityManager;
+        $this->completenessCalculator = $completenessCalculator;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -56,12 +57,11 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
 
-        $this->completenessManager->schedule($product);
+        $this->dropCompletenesses([$product]);
+        $this->calculateProductCompletenesses($product);
 
-        $this->objectManager->persist($product);
-        $this->objectManager->flush();
-
-        $this->completenessManager->generateMissingForProduct($product);
+        $this->entityManager->persist($product);
+        $this->entityManager->flush();
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
     }
@@ -75,25 +75,27 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
+        foreach ($products as $product) {
+            $this->validateProduct($product);
+        }
+
         $options['unitary'] = false;
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
 
-        foreach ($products as $product) {
-            $this->validateProduct($product);
+        $this->dropCompletenesses($products);
 
+        foreach ($products as $product) {
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
 
-            $this->completenessManager->schedule($product);
+            $this->calculateProductCompletenesses($product);
 
-            $this->objectManager->persist($product);
+            $this->entityManager->persist($product);
         }
 
-        $this->objectManager->flush();
+        $this->entityManager->flush();
 
         foreach ($products as $product) {
-            $this->completenessManager->generateMissingForProduct($product);
-
             $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
         }
 
@@ -112,6 +114,52 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
                     ClassUtils::getClass($product)
                 )
             );
+        }
+    }
+
+    /**
+     * Drops the current completenesses from the database for a list of products.
+     *
+     * @param ProductInterface[] $products
+     */
+    protected function dropCompletenesses(array $products)
+    {
+        $completenessIDs = [];
+        foreach ($products as $product) {
+            // TODO: TIP-694: Don't get the completenesses but join on product table.
+            $completenesses = $product->getCompletenesses();
+            foreach ($completenesses as $completeness) {
+                $completenessIDs[] = $completeness->getId();
+            }
+        }
+
+        $statement = $this->entityManager->getConnection()->executeQuery(
+            'DELETE c FROM pim_catalog_completeness c WHERE c.id IN (?)',
+            [$completenessIDs],
+            [Connection::PARAM_INT_ARRAY]
+        );
+        $statement->execute();
+    }
+
+    /**
+     * Calculates current product completenesses.
+     *
+     * The current completenesses collection is first cleared, then newly calculated ones are set to the product.
+     *
+     * @param ProductInterface $product
+     */
+    protected function calculateProductCompletenesses(ProductInterface $product)
+    {
+        $completenessesCollection = $product->getCompletenesses();
+
+        if (!$completenessesCollection->isEmpty()) {
+            $completenessesCollection->clear();
+        }
+
+        $newCompletenesses = $this->completenessCalculator->calculate($product);
+
+        foreach ($newCompletenesses as $completeness) {
+            $completenessesCollection->add($completeness);
         }
     }
 }

@@ -15,36 +15,31 @@ pim_enrich:
       history.title: Historia
   attribute_group:
     tab:
-      property.title: Ustawienia
+      property.title: Właściwości
       attribute.title: Atrybuty
       history.title: Historia
   family:
     tab:
-      property.title: Ustawienia
+      property.title: Właściwości
       attribute.title: Atrybuty
       history.title: Historia
   association_type:
     tab:
-      property.title: Ustawienia
+      property.title: Właściwości
       history.title: Historia
   group_type:
     tab:
-      property.title: Ustawienia
-  channel:
-    pick_conversion_unit: Wybierz jednostkę konwersji dla każdej metryki używanej podczas eksportu produktów
-    tab:
-      property.title: Ustawienia
-      history.title: Historia
+      property.title: Właściwości
   category:
     tab:
-      property.title: Ustawienia
+      property.title: Właściwości
       history.title: Historia
   locale:
     tab:
-      property.title: Ustawienia
+      property.title: Właściwości
       permission.title: Uprawnienia
   group:
-    axis.help: Oś wskazuje atrybuty, które powinny odróżniać produkty w grupie. Osie są atrybutami z ustawieniami, bez tłumaczenie i zasięgu. Nie mogą one zostać zmienione po utworzeniu grypy wariantów.
+    axis.help: 'Oś wskazuje atrybuty, które powinny odróżniać produkty w grupie. Osie są atrybutami z ustawieniami, bez tłumaczenie i zasięgu. Nie mogą one zostać zmienione po utworzeniu grypy wariantów.'
     type:
       VARIANT: Wariant
       X_SELL: Cross-selling
@@ -52,7 +47,7 @@ pim_enrich:
       RELATED: Powiązane
     tab:
       product.title: Produkty
-      property.title: Ustawienia
+      property.title: Właściwości
       history.title: Historia
   variant_group:
     type:
@@ -62,7 +57,7 @@ pim_enrich:
       RELATED: Powiązane
     tab:
       product.title: Produkty
-      property.title: Ustawienia
+      property.title: Właściwości
       history.title: Historia
       attribute.title: Atrybuty
     info:
@@ -80,8 +75,8 @@ pim_enrich:
       page_title: Produkty
       page_subtitle: Masowa edycja (1 produkt) | Masowa edycja (%count% produktów)
       title: Wybierz działanie
-      subtitle: Wybierz operację, którą chcesz wykonać na wybranym produkcie | Wybierz operację, którą chcesz wykonać na %count% wybranych produktach
-      confirm: Proszę o potwierdzenie aktualizacji produktu według poniższych danych. | Proszę o potwierdzenie aktualizacji %count% produktów według poniższych danych.
+      subtitle: Wybierz operację, którą chcesz wykonać na wybranych produktach | Wybierz operację, którą chcesz wykonać na %count% wybranych produktach
+      confirm: Zamierzasz zaktualizować produkt o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% produkty(ów) o następujące informacje, proszę potwierdź.
       steps:
         first: Wybierz produkty
         second: Wybierz działanie
@@ -94,7 +89,7 @@ pim_enrich:
       subtitle: Wybierz operację, którą chcesz wykonać dla wybranej rodziny | Wybierz operację, którą chcesz wykonać dla %count% zaznaczonych rodzin
       confirm: Zamierzasz zaktualizować rodzinę o następujące informacje, proszę potwierdź. | Zamierzasz zaktualizować %count% rodzin o następujące informacje, proszę potwierdź.
       steps:
-        first: Wybierz rodziny produktów
+        first: Wybierz rodziny
         second: Wybierz działanie
         third: Konfiguruj
         fourth: Potwierdź
@@ -106,7 +101,7 @@ pim_enrich:
     edit-common-attributes:
       label: Edytuj atrybuty
       description: Atrybuty wybranych produktów zostaną zaktualizowane o następujące wartości, przy wybranym ustawieniu regionalnym.
-      empty: Proszę wybrać atrybut(y), do edycji
+      empty: Proszę wybrać atrybut(y), które chcesz edytować
       success_flash: Zadanie aktualizacji statusu produktów jest aktualnie wykonywane
       launched_flash: Zadanie masowej "edycji wspólnych atrybutów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
       message:
@@ -118,7 +113,7 @@ pim_enrich:
       description: Produkty zostanie umieszczony w następujących kategoriach, istniejące rozmieszczenie nie zostanie zmienione.
       success_flash: Produkt(y) został(y) zaklasyfikowane do wybranych kategorii
     change-family:
-      label: Zmiana rodziny produktów
+      label: Zmień rodzinę produktów
       description: Rodzina wybranych produktów zostanie zamieniona na wybraną rodzinę
       success_flash: Rodzina wybranego produktu(ów) została zmieniona pomyślnie
       launched_flash: Zadanie masowej "zmiany rodziny" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
@@ -137,7 +132,7 @@ pim_enrich:
         The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: Masowe zadanie "dodaj do grupy wariantów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
     set-attribute-requirements:
-      label: Określone wymagania atrybutów
+      label: Określ wymagania atrybutów
       description: Poniższe wymagania atrybutów zostaną zastosowane do wybranych rodzin
       success_flash: Wymagania atrybutów zostały zastosowane do wybranych rodzin
       launched_flash: Masowe zadanie "określone wymagania atrybutów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
@@ -333,15 +328,15 @@ btn:
   create:
     attribute: utwórz atrybut
     attribute group: utwórz grupę atrybutów
-    category: Utwórz kategorię
-    tree: Utwórz drzewo
-    channel: Utwórz kanał
-    currency: Utwórz walutę
+    category: utwórz kategorię
+    tree: utwórz drzewo
+    channel: utwórz kanał
+    currency: utwórz walutę
     family: utwórz rodzinę
-    locale: Utwórz język
-    product: Utwórz produkt
-    group: Utwórz grupę
-    variant group: Utwórz grupę wariantów
+    locale: utwórz ustawienie regionalne
+    product: utwórz produkt
+    group: utwórz grupę
+    variant group: utwórz grupę wariantów
     association type: utwórz typ powiązania
     group type: utwórz typ grupy
     drag_or_upload: Przeciągnij i upuść aby przesłać, lub kliknij tutaj
@@ -373,10 +368,8 @@ confirmation:
     category: Czy na pewno chcesz usunąć kategorię %name%?
     family: Czy na pewno chcesz usunąć rodzinę %name%?
     product: Czy na pewno chcesz usunąć produkt %name%?
-    channel: Czy na pewno chcesz usunąć kanał %name%?
     group: Czy na pewno chcesz usunąć grupę %name%?
     variant group: Czy na pewno chcesz usunąć grupę wariantów %name%?
-    association type: Czy na pewno chcesz usunąć typ powiązania %name%?
     group type: Czy na pewno chcesz usunąć typ grupy %name%?
     user: Czy na pewno chcesz usunąć użytkownika %name%?
   attribute group:
@@ -414,10 +407,6 @@ flash:
     updated: Drzewo pomyślnie zaktualizowane
     removed: Drzewo zostało usunięte pomyślnie
     not removable: Nie można usunąć drzew podłączonych do kanałów.
-  channel:
-    saved: Kanał został pomyślnie zapisany
-    removed: Kanał został pomyślnie usunięty
-    not removable: Ostatni kanał nie może zostać usunięty
   currency:
     updated: Waluta została pomyślnie zaktualizowana
     error.linked_to_channel: Nie można wyłączyć waluty, która jest powiązana z kanałem.
@@ -594,56 +583,56 @@ E-mail: E-mail
 URL: URL
 Regular expression: Wyrażenie regularne
 Minimum input length: Minimalna długość danych wejściowych
-Default: Domyślnie
+Default: Domyślny
 Attributes: Atrybuty
 Title: Tytuł
 pim_title.attribute_group:
-  index: Grupy Atrybutów
-  create: Grupy atrybutów | Utwórz
-  edit: Grupy atrybutów %group.label% | Edycja
+  index: "Grupy Atrybutów"
+  create: "Grupy atrybutów | Utwórz"
+  edit: "Grupy atrybutów %group.label% | Edycja"
 pim_title.category:
-  index: Drzewo kategorii
-  create: Drzewa kategorii | Utwórz
-  edit: Drzewa kategorii %category.label% | Edycja
+  index: "Drzewo kategorii"
+  create: "Drzewa kategorii | Utwórz"
+  edit: "Drzewa kategorii %category.label% | Edycja"
 pim_title.attribute:
-  index: Atrybuty
-  create: Atrybuty | Utwórz
-  edit: Atrybuty %attribute.label% | Edycja
+  index: "Atrybuty"
+  create: "Atrybuty | Utwórz"
+  edit: "Atrybuty %attribute.label% | Edycja"
 pim_title.product:
-  index: Produkty
-  edit: Produkty %product.sku% | Edycja
+  index: "Produkty"
+  edit: "Produkty %product.sku% | Edycja"
 pim_title.family:
-  index: Rodziny
-  edit: Rodziny %family.label% | Edycja
+  index: "Rodziny"
+  edit: "Rodziny %family.label% | Edycja"
 pim_title.channel:
-  index: Kanały
-  create: Kanały | Utwórz
-  edit: Kanały %channel.label% | Edycja
+  index: "Kanały"
+  create: "Kanały | Utwórz"
+  edit: "Kanały %channel.label% | Edycja"
 pim_title.currency:
-  index: Waluty
+  index: "Waluty"
 pim_title.locale:
-  index: Ustawienia regionalne
+  index: "Ustawienia regionalne"
 pim_title.group:
-  index: Grupy
-  edit: Grupy %group.label% | Edycja
+  index: "Grupy"
+  edit: "Grupy %group.label% | Edycja"
 pim_title.variant_group:
-  index: Grupy wariantów
-  edit: Grupy wariantów %group.label% | Edycja
+  index: "Grupy wariantów"
+  edit: "Grupy wariantów %group.label% | Edycja"
 pim_title.association_type:
-  index: Typy powiązań
-  edit: Typy powiązań %association type.label% | Edycja
+  index: "Typy powiązań"
+  edit: "Typy powiązań %association type.label% | Edycja"
 pim_title.group_type:
-  index: Typy grup
-  edit: Typy grupy %group type.label% | Edycja
+  index: "Typy grup"
+  edit: "Typy grupy %group type.label% | Edycja"
 pim_title.mass_edit_product_action:
-  choose: Edycja Masowa | Wybierz
-  configure: Edycja Masowa | Konfiguruj
+  choose: "Edycja Masowa | Wybierz"
+  configure: "Edycja Masowa | Konfiguruj"
 pim_title.mass_edit_family_action:
-  choose: Edycja Masowa | Wybierz
-  configure: Edycja Masowa | Konfiguruj
+  choose: "Edycja Masowa | Wybierz"
+  configure: "Edycja Masowa | Konfiguruj"
 pim_title.job_tracker:
   index: Śledzenie procesu
-  show: Śledzenie procesu | Pokaż zadanie
+  show: "Śledzenie procesu | Pokaż zadanie"
 pim_title.dashboard: "Kokpit"
 pim_catalog_identifier: Identyfikator
 pim_catalog_text: Tekst
@@ -750,7 +739,7 @@ Properties: Właściwości
 History: Historia
 pane.accordion:
   node_values: Wartości węzła
-  general_properties: Ogólne właściwości
+  general_properties: Ustawienia ogólne
   locale_values: Wartości ustawienia regionalnego
   general_parameters: Parametry ogólne
   label_translations: Tłumaczenia etykiety
@@ -776,7 +765,7 @@ Status: Status
 Change History: Historia zmian
 Data Audit: Inspekcja danych
 Data Audit - System: 'Inspekcja danych - system'
-Action: Działanie
+Action: Akcja
 Version: Wersja
 Entity type: Typ encji
 Entity name: Nazwa encji
@@ -799,21 +788,21 @@ Currency: Waluta
 oro.locale:
   address_format:
     region_name_type:
-      parish: parafia
-      state: Stan
-      island: wyspa
-      county: hrabstwo
-      area: obszar
-      prefecture: prefektura
-      department: departament
-      district: dzielnica
-      province: prowincja
+      parish: "parafia"
+      state: "Stan"
+      island: "wyspa"
+      county: "hrabstwo"
+      area: "obszar"
+      prefecture: "prefektura"
+      department: "departament"
+      district: "dzielnica"
+      province: "prowincja"
   form:
     tooltip:
-      locale: Wybierz ustawienie regionalne używane do formatowania liczb, adresów, nazw oraz dat
-      language: Wybierz język, którego chcesz użyć w aplikacji
-      timezone: Wybierz strefę czasową do wyświetlania daty i godziny
-      currency: Wybierz domyślną walutę
+      locale: "Wybierz ustawienie regionalne używane do formatowania liczb, adresów, nazw oraz dat"
+      language: "Wybierz język, którego chcesz użyć w aplikacji"
+      timezone: "Wybierz strefę czasową do wyświetlania daty i godziny"
+      currency: "Wybierz domyślną walutę"
 Selected products successfully deleted: Wybrane produkty zostały pomyślnie usunięte
 pim_mass_edit:
   notification:
@@ -835,9 +824,9 @@ edit_common_attributes.steps.edit_common_attributes_processor.title: Edytuj wsp�
 update_product_value.steps.update_product_value_processor.title: Aktualizacja wartości produktu
 add_to_variant_group_clean.steps.excluded.title: Wykluczone produkty
 add_to_variant_group_clean.steps.duplicated.title: Duplikowane Osie
-add_to_variant_group.steps.excluded.title: Wykluczony produkt
+add_to_variant_group.steps.excluded.title: Wykluczone produkty
 add_to_variant_group.steps.duplicated.title: Duplikowane Osie
-edit_common_attributes: Edytuj atrybuty wspólne
+edit_common_attributes: Edytuj wspólne atrybuty
 perform.steps.duplicated.title: Duplikowane Osie
 perform.steps.excluded.title: Wykluczone produkty
 batch_jobs:

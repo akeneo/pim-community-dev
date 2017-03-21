@@ -21,3 +21,5 @@ pim_catalog:
     205: Ocorreu um erro interno
     300: Este campo espera um código de entidade válida.
     301: Este campo espera um código de entidade válida.
+    302: Este campo espera um escopo válido.
+    303: Este campo espera um formato válido de associação.

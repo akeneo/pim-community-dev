@@ -1,0 +1,144 @@
+parameters:
+    pim_api.controller.category.class: Pim\Bundle\ApiBundle\Controller\CategoryController
+    pim_api.controller.family.class: Pim\Bundle\ApiBundle\Controller\FamilyController
+    pim_api.controller.attribute.class: Pim\Bundle\ApiBundle\Controller\AttributeController
+    pim_api.controller.attribute_option.class: Pim\Bundle\ApiBundle\Controller\AttributeOptionController
+    pim_api.controller.channel.class: Pim\Bundle\ApiBundle\Controller\ChannelController
+    pim_api.controller.locale.class: Pim\Bundle\ApiBundle\Controller\LocaleController
+    pim_api.controller.token.class: Pim\Bundle\ApiBundle\Controller\TokenController
+    pim_api.controller.product.class: Pim\Bundle\ApiBundle\Controller\ProductController
+    pim_api.controller.root_endpoint.class: Pim\Bundle\ApiBundle\Controller\RootEndpointController
+    pim_api.controller.media_file.class: Pim\Bundle\ApiBundle\Controller\MediaFileController
+
+services:
+    pim_api.controller.category:
+        class: '%pim_api.controller.category.class%'
+        arguments:
+            - '@pim_api.repository.category'
+            - '@pim_serializer'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.updater.category'
+            - '@validator'
+            - '@pim_catalog.saver.category'
+            - '@router'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.stream.category_partial_update_stream'
+            - '%pim_api.configuration%'
+
+    pim_api.controller.family:
+        class: '%pim_api.controller.family.class%'
+        arguments:
+            - '@pim_api.repository.family'
+            - '@pim_serializer'
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@validator'
+            - '@pim_catalog.saver.family'
+            - '@router'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.stream.family_partial_update_stream'
+            - '%pim_api.configuration%'
+
+    pim_api.controller.attribute:
+        class: '%pim_api.controller.attribute.class%'
+        arguments:
+            - '@pim_api.repository.attribute'
+            - '@pim_serializer'
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@validator'
+            - '@pim_catalog.saver.attribute'
+            - '@router'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.stream.attribute_partial_update_stream'
+            - '%pim_api.configuration%'
+
+    pim_api.controller.attribute_option:
+        class: '%pim_api.controller.attribute_option.class%'
+        arguments:
+            - '@pim_api.repository.attribute'
+            - '@pim_api.repository.attribute_option'
+            - '@pim_serializer'
+            - '@pim_catalog.factory.attribute_option'
+            - '@pim_catalog.updater.attribute_option'
+            - '@validator'
+            - '@pim_catalog.saver.attribute_option'
+            - '@router'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '%pim_api.configuration%'
+            - ['pim_catalog_simpleselect', 'pim_catalog_multiselect']
+
+    pim_api.controller.channel:
+        class: '%pim_api.controller.channel.class%'
+        arguments:
+            - '@pim_api.repository.channel'
+            - '@pim_serializer'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '%pim_api.configuration%'
+
+    pim_api.controller.locale:
+        class: '%pim_api.controller.locale.class%'
+        arguments:
+            - '@pim_api.repository.locale'
+            - '@pim_serializer'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '%pim_api.configuration%'
+
+    pim_api.controller.token:
+        scope: request
+        class: '%pim_api.controller.token.class%'
+        arguments:
+            - '@fos_oauth_server.server'
+
+    pim_api.controller.product:
+        class: '%pim_api.controller.product.class%'
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_serializer'
+            - '@pim_api.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@pim_api.repository.attribute'
+            - '@pim_api.repository.product'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.search_after_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.remover.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+            - '@router'
+            - '@pim_catalog.comparator.filter.product'
+            - '@pim_api.stream.product_partial_update_stream'
+            - '@pim_api.security.primary_key_encrypter'
+            - '%pim_api.configuration%'
+
+    pim_api.controller.root_endpoint:
+        class: '%pim_api.controller.root_endpoint.class%'
+        arguments:
+            - '@router'
+
+    pim_api.controller.media_file:
+        class: '%pim_api.controller.media_file.class%'
+        arguments:
+            - '@pim_api.repository.media_file'
+            - '@pim_serializer'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
+            - '@pim_api.repository.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.validator.product'
+            - '@akeneo_file_storage.saver.file'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@akeneo_file_storage.remover.file'
+            - '@router'
+            - '%pim_api.configuration%'

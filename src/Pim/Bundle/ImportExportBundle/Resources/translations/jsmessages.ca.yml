@@ -10,7 +10,7 @@ pim_connector:
           title: Selecció de les categories
           cancel: Cancelar
           confirm: Confirmar
-        label: '{0} Tots els productes |{1} Una categoria seleccionada |] 1, Inf [{{ count }} categories seleccionades'
+        label: "{0} Tots els productes |{1} Una categoria seleccionada |] 1, Inf [{{ count }} categories seleccionades"
         edit: Editar
         title: Selecciona categories
     locales:

@@ -72,60 +72,60 @@ Feature: Remove a category
   @jira https://akeneo.atlassian.net/browse/PIM-4227
   Scenario: Remove a category with linked products limit exceeded
     Given the following products:
-      | sku             | categories        |
-      | caterpillar_1   | winter_collection |
-      | caterpillar_2   | winter_collection |
-      | caterpillar_3   | winter_collection |
-      | caterpillar_4   | winter_collection |
-      | caterpillar_5   | winter_collection |
-      | caterpillar_6   | winter_collection |
-      | caterpillar_7   | winter_collection |
-      | caterpillar_8   | winter_collection |
-      | caterpillar_9   | winter_collection |
-      | caterpillar_10  | winter_collection |
-      | caterpillar_11  | winter_collection |
-      | caterpillar_12  | winter_collection |
-      | caterpillar_13  | winter_collection |
-      | caterpillar_14  | winter_collection |
-      | caterpillar_15  | winter_collection |
-      | caterpillar_16  | winter_collection |
-      | caterpillar_17  | winter_collection |
-      | caterpillar_18  | winter_collection |
-      | caterpillar_19  | winter_collection |
-      | caterpillar_20  | winter_collection |
-      | caterpillar_21  | winter_collection |
+      | sku            | categories        |
+      | caterpillar_1  | winter_collection |
+      | caterpillar_2  | winter_collection |
+      | caterpillar_3  | winter_collection |
+      | caterpillar_4  | winter_collection |
+      | caterpillar_5  | winter_collection |
+      | caterpillar_6  | winter_collection |
+      | caterpillar_7  | winter_collection |
+      | caterpillar_8  | winter_collection |
+      | caterpillar_9  | winter_collection |
+      | caterpillar_10 | winter_collection |
+      | caterpillar_11 | winter_collection |
+      | caterpillar_12 | winter_collection |
+      | caterpillar_13 | winter_collection |
+      | caterpillar_14 | winter_collection |
+      | caterpillar_15 | winter_collection |
+      | caterpillar_16 | winter_collection |
+      | caterpillar_17 | winter_collection |
+      | caterpillar_18 | winter_collection |
+      | caterpillar_19 | winter_collection |
+      | caterpillar_20 | winter_collection |
+      | caterpillar_21 | winter_collection |
     And I am on the "winter_collection" category page
     When I press the "Delete" button
     Then I should see a confirm dialog with the following content:
-      | title   | Delete confirmation                                                                         |
-      | content | This category contains more products than allowed for this operation (20 products maximum)  |
+      | title   | Delete confirmation                                                                        |
+      | content | This category contains more products than allowed for this operation (20 products maximum) |
 
   Scenario: Remove a category with linked products limit exceeded including sub-categories
     Given the following products:
-      | sku             | categories    |
-      | caterpillar_1   | winter_boots  |
-      | caterpillar_2   | winter_boots  |
-      | caterpillar_3   | winter_boots  |
-      | caterpillar_4   | winter_boots  |
-      | caterpillar_5   | winter_boots  |
-      | caterpillar_6   | winter_boots  |
-      | caterpillar_7   | winter_boots  |
-      | caterpillar_8   | winter_boots  |
-      | caterpillar_9   | winter_boots  |
-      | caterpillar_10  | winter_boots  |
-      | caterpillar_11  | winter_boots  |
-      | caterpillar_12  | winter_boots  |
-      | caterpillar_13  | winter_boots  |
-      | caterpillar_14  | winter_boots  |
-      | caterpillar_15  | winter_boots  |
-      | caterpillar_16  | winter_boots  |
-      | caterpillar_17  | winter_boots  |
-      | caterpillar_18  | winter_boots  |
-      | caterpillar_19  | winter_boots  |
-      | caterpillar_20  | winter_boots  |
-      | caterpillar_21  | winter_boots  |
+      | sku            | categories   |
+      | caterpillar_1  | winter_boots |
+      | caterpillar_2  | winter_boots |
+      | caterpillar_3  | winter_boots |
+      | caterpillar_4  | winter_boots |
+      | caterpillar_5  | winter_boots |
+      | caterpillar_6  | winter_boots |
+      | caterpillar_7  | winter_boots |
+      | caterpillar_8  | winter_boots |
+      | caterpillar_9  | winter_boots |
+      | caterpillar_10 | winter_boots |
+      | caterpillar_11 | winter_boots |
+      | caterpillar_12 | winter_boots |
+      | caterpillar_13 | winter_boots |
+      | caterpillar_14 | winter_boots |
+      | caterpillar_15 | winter_boots |
+      | caterpillar_16 | winter_boots |
+      | caterpillar_17 | winter_boots |
+      | caterpillar_18 | winter_boots |
+      | caterpillar_19 | winter_boots |
+      | caterpillar_20 | winter_boots |
+      | caterpillar_21 | winter_boots |
     And I am on the "winter_collection" category page
     When I press the "Delete" button
     Then I should see a confirm dialog with the following content:
-      | title   | Delete confirmation                                                                         |
-      | content | This category contains more products than allowed for this operation (20 products maximum)  |
+      | title   | Delete confirmation                                                                        |
+      | content | This category contains more products than allowed for this operation (20 products maximum) |

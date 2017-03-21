@@ -9,13 +9,13 @@ Feature: Add products with reference data to a variant group
     And the following "sole_color" attribute reference data: Red, Yellow, Cyan, Magenta
     And the following "heel_color" attribute reference data: Green, Light green, Blue, Black, White
     And the following products:
-      | sku             | family  | categories        | size | sole_color |
-      | sandal-red-37   | sandals | winter_collection | 37   | Red        |
-      | sandal-red-38   | sandals | winter_collection | 38   | Red        |
-      | sandal-red-39   | sandals | winter_collection | 39   | Red        |
-    And the following product groups:
-      | code   | label  | axis             | type    |
-      | SANDAL | Sandal | size, sole_color | VARIANT |
+      | sku           | family  | categories        | size | sole_color |
+      | sandal-red-37 | sandals | winter_collection | 37   | Red        |
+      | sandal-red-38 | sandals | winter_collection | 38   | Red        |
+      | sandal-red-39 | sandals | winter_collection | 39   | Red        |
+    And the following variant groups:
+      | code   | label-en_US | axis            | type    |
+      | SANDAL | Sandal      | size,sole_color | VARIANT |
     And I am logged in as "Julia"
 
   Scenario: Successfully add products in variant groups, products are updated with variant group values
@@ -29,11 +29,11 @@ Feature: Add products with reference data to a variant group
 
   Scenario: Do not see a product already present in another variant group
     Given the following family:
-      | code       | attributes                  |
-      | high_heels | sku, sole_color, heel_color |
-    And the following product groups:
-      | code       | label      | axis                         | type    |
-      | HIGH_HEELS | High heels | size, sole_color, heel_color | VARIANT |
+      | code       | attributes                |
+      | high_heels | sku,sole_color,heel_color |
+    And the following variant groups:
+      | code       | label-en_US | axis                       | type    |
+      | HIGH_HEELS | High heels  | size,sole_color,heel_color | VARIANT |
     And the following products:
       | sku            | family     | categories        | size | sole_color | heel_color |
       | heel-yellow-37 | high_heels | winter_collection | 37   | Yellow     | Black      |

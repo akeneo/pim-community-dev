@@ -99,7 +99,7 @@ define(
              * @param {Object} event
              */
             updateState: function (event) {
-                this.setLocales($(event.target).val());
+                this.setLocales(event.val);
             },
 
             /**

@@ -3,8 +3,6 @@ namespace Oro\Bundle\NavigationBundle\Tests\Unit\Menu;
 
 use Knp\Menu\MenuItem;
 use Oro\Bundle\NavigationBundle\Menu\BreadcrumbManager;
-use Oro\Bundle\NavigationBundle\Menu\ConfigurationBuilder;
-use Oro\Bundle\NavigationBundle\Provider\BuilderChainProvider;
 
 class BreadcrumbManagerTest extends \PHPUnit_Framework_TestCase
 {

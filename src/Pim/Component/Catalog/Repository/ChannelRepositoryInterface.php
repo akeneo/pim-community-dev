@@ -24,24 +24,6 @@ interface ChannelRepositoryInterface extends IdentifiableObjectRepositoryInterfa
     public function countAll();
 
     /**
-     * TODO: should be extracted in an enrich bundle repository
-     *
-     * @return mixed a query builder
-     */
-    public function createDatagridQueryBuilder();
-
-    /**
-     * Get the deleted locales of a channel (the channel is updated but not flushed yet).
-     *
-     * @param ChannelInterface $channel
-     *
-     * @deprecated will be removed in 1.7, has been used by the removed method CompletenessManager::scheduleForChannel
-     *
-     * @return array the list of deleted locales
-     */
-    public function getDeletedLocaleIdsForChannel(ChannelInterface $channel);
-
-    /**
      * Return an array of channel codes
      *
      * @return array

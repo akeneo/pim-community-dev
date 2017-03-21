@@ -9,39 +9,10 @@ pim_enrich_family_create:
     defaults: { _controller: pim_enrich.controller.family:createAction }
 
 pim_enrich_family_edit:
-    path: /{id}/edit
+    path: /{code}/edit
     defaults: { _controller: pim_enrich.controller.family:editAction }
     requirements:
-        id: \d+
-
-pim_enrich_family_remove:
-    path: /{id}/remove
-    defaults: { _controller: pim_enrich.controller.family:removeAction }
-    requirements:
-        id: \d+
-    methods: [DELETE]
-
-pim_enrich_family_addattributes:
-    path: /{id}/attributes
-    defaults: { _controller: pim_enrich.controller.family:addAttributesAction }
-    requirements:
-        id: \d+
-    methods: [POST]
-
-pim_enrich_family_removeattribute:
-    path: /{familyId}/attribute/{attributeId}/remove
-    defaults: { _controller: pim_enrich.controller.family:removeAttributeAction }
-    requirements:
-        familyId: \d+
-        attributeId: \d+
-    methods: [DELETE]
-
-pim_enrich_family_history:
-    path: /{id}/history.{_format}
-    defaults: { _controller: pim_enrich.controller.family:historyAction, _format: html }
-    requirements:
-        id: \d+
-        _format: html|json
+        code: '[a-zA-Z0-9_]+'
 
 pim_enrich_family_rest_index:
     path: /rest
@@ -54,3 +25,17 @@ pim_enrich_family_rest_get:
     requirements:
         identifier: '[a-zA-Z0-9_]+'
     methods: [GET]
+
+pim_enrich_family_rest_put:
+    path: /rest/{code}
+    defaults: { _controller: pim_enrich.controller.rest.family:putAction, _format: json }
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+    methods: [PUT]
+
+pim_enrich_family_rest_remove:
+    path: /rest/{code}
+    defaults: { _controller: pim_enrich.controller.rest.family:removeAction, _format: json }
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+    methods: [DELETE]

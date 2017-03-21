@@ -7,9 +7,9 @@ Feature: Edit common attributes of many products at once
   Background:
     Given a "apparel" catalog configuration
     And the following products:
-      | sku          | family  | name-en_US     | name-de_DE          | customer_rating-ecommerce | customer_rating-print|
-      | black_jacket | jackets | A black jacket | Eine schwarze Jacke | 1                         | 2                    |
-      | white_jacket | jackets | A white jacket | Ein weißer Jacke    | 3                         | 4                    |
+      | sku          | family  | name-en_US     | name-de_DE          | customer_rating-ecommerce | customer_rating-print |
+      | black_jacket | jackets | A black jacket | Eine schwarze Jacke | 1                         | 2                     |
+      | white_jacket | jackets | A white jacket | Ein weißer Jacke    | 3                         | 4                     |
     And I am logged in as "Julia"
     And I am on the products page
 

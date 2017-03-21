@@ -7,8 +7,8 @@ Feature: Add products to a group
   Background:
     Given the "footwear" catalog configuration
     And the following product groups:
-      | code       | label      | type  |
-      | CROSS_SELL | Cross Sell | XSELL |
+      | code       | label-en_US | type  |
+      | CROSS_SELL | Cross Sell  | XSELL |
     And the following products:
       | sku             | family  | categories        | size | color |
       | sandal-white-37 | sandals | winter_collection | 37   | white |

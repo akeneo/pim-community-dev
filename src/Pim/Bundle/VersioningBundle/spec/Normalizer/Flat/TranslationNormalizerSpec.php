@@ -3,8 +3,6 @@
 namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
-use Akeneo\Component\Localization\Model\TranslatableInterface;
 
 class TranslationNormalizerSpec extends ObjectBehavior
 {

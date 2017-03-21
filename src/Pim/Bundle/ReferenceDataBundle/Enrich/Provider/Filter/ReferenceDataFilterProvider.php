@@ -29,7 +29,7 @@ class ReferenceDataFilterProvider implements FilterProviderInterface
      */
     public function getFilters($attribute)
     {
-        return $this->filters[$attribute->getAttributeType()];
+        return $this->filters[$attribute->getType()];
     }
 
     /**
@@ -38,6 +38,6 @@ class ReferenceDataFilterProvider implements FilterProviderInterface
     public function supports($element)
     {
         return $element instanceof AttributeInterface &&
-            in_array($element->getAttributeType(), array_keys($this->filters));
+            in_array($element->getType(), array_keys($this->filters));
     }
 }

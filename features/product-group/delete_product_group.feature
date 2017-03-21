@@ -7,8 +7,8 @@ Feature: Delete a product group
   Background:
     Given the "default" catalog configuration
     And the following product groups:
-      | code | label      | type   |
-      | MUG  | MUG Akeneo | X_SELL |
+      | code | label-en_US | type   |
+      | MUG  | MUG Akeneo  | X_SELL |
     And I am logged in as "Julia"
 
   Scenario: Successfully delete a product group from the grid

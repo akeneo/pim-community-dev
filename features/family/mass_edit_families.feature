@@ -88,8 +88,8 @@ Feature: Mass Edit Families
     Given the "default" catalog configuration
     And 110 generated families
     And the following attributes:
-      | code | label | type |
-      | name | Name  | text |
+      | code | label-en_US | type             | group |
+      | name | Name        | pim_catalog_text | other |
     And I am logged in as "Julia"
     And I am on the families page
     When I select all entities

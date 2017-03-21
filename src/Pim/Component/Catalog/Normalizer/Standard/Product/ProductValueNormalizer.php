@@ -63,7 +63,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     protected function getCollectionValue(ProductValueInterface $productValue, $format = null, array $context = [])
     {
-        $attributeType = $productValue->getAttribute()->getAttributeType();
+        $attributeType = $productValue->getAttribute()->getType();
         $context['is_decimals_allowed'] = $productValue->getAttribute()->isDecimalsAllowed();
 
         $data = [];
@@ -94,7 +94,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             return null;
         }
 
-        $attributeType = $productValue->getAttribute()->getAttributeType();
+        $attributeType = $productValue->getAttribute()->getType();
         $context['is_decimals_allowed'] = $productValue->getAttribute()->isDecimalsAllowed();
 
         // if decimals_allowed is false, we return an integer
@@ -110,6 +110,10 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT
         ])) {
             return $productValue->getData()->getCode();
+        }
+
+        if (in_array($attributeType, [AttributeTypes::FILE, AttributeTypes::IMAGE])) {
+            return $productValue->getData()->getKey();
         }
 
         return $this->serializer->normalize($productValue->getData(), $format, $context);

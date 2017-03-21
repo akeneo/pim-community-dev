@@ -7,7 +7,7 @@ imports:
 framework:
     #esi:             ~
     translator:      { fallback: en }
-    secret:          %secret%
+    secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: "%kernel.debug%"
@@ -18,8 +18,8 @@ framework:
         enabled: true
         api: 2.5
     templating:      { engines: ['twig', 'php'] } #assets_version: SomeVersionScheme
-    default_locale:           "%locale%"
-    trusted_proxies:          ~
+    default_locale:  "%locale%"
+    trusted_proxies: ~
     session:
         name:                 BAPID
         handler_id:           session.handler.pdo
@@ -45,6 +45,17 @@ assetic:
     filters:
         cssrewrite: ~
 
+# Doctrine Cache Configuration
+doctrine_cache:
+    providers:
+        pim_apcu:
+            apcu: ~
+        pim_array:
+            array: ~
+        pim:
+            chain:
+                providers: [doctrine_cache.providers.pim_apcu, doctrine_cache.providers.pim_array]
+
 # Doctrine Configuration
 doctrine:
     dbal:
@@ -59,6 +70,9 @@ doctrine:
                 user:         "%database_user%"
                 password:     "%database_password%"
                 charset:      UTF8
+                server_version: 5.7
+                mapping_types:
+                    json: string
             session:
                 driver:       "%database_driver%"
                 host:         "%database_host%"
@@ -70,6 +84,9 @@ doctrine:
                 charset:      UTF8
         types:
             datetime: Akeneo\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\UTCDateTimeType
+            native_json:
+                class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\JsonType
+                commented: true
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
@@ -82,6 +99,16 @@ swiftmailer:
     password:                 "%mailer_password%"
     spool:                    { type: memory }
 
+# FOSOAuthServer Configuration
+fos_oauth_server:
+    db_driver:                orm
+    client_class:             Pim\Bundle\ApiBundle\Entity\Client
+    access_token_class:       Pim\Bundle\ApiBundle\Entity\AccessToken
+    refresh_token_class:      Pim\Bundle\ApiBundle\Entity\RefreshToken
+    auth_code_class:          Pim\Bundle\ApiBundle\Entity\AuthCode
+    service:
+        user_provider:        pim_user.provider.user
+
 pim_reference_data:
     fabrics:
         class: Acme\Bundle\AppBundle\Entity\Fabric
@@ -91,7 +118,9 @@ pim_reference_data:
         type: simple
 
 akeneo_storage_utils:
-    mapping_overrides:
-        -
-            original: Pim\Component\Catalog\Model\ProductValue
-            override: Acme\Bundle\AppBundle\Model\ProductValue
+    mapping_overrides: ~
+
+akeneo_elasticsearch:
+    index_name: "%index_name%"
+    hosts: "%index_hosts%"
+    configuration_files: "%elasticsearch_index_configuration_files%"

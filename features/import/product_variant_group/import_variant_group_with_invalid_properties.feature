@@ -6,10 +6,12 @@ Feature: Execute an import with invalid properties
 
   Background:
     Given the "footwear" catalog configuration
+    And the following variant groups:
+      | code   | label-en_US | axis       | type    |
+      | SANDAL | Sandal      | size,color | VARIANT |
     And the following product groups:
-      | code   | label  | axis        | type    |
-      | SANDAL | Sandal | size, color | VARIANT |
-      | NOT_VG | Not VG |             | RELATED |
+      | code   | label-en_US | type    |
+      | NOT_VG | Not VG      | RELATED |
     And I am logged in as "Julia"
 
   Scenario: Stop the import if variant group code column is not provided
@@ -40,7 +42,7 @@ Feature: Execute an import with invalid properties
     When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_variant_group_import" job to finish
-    Then I should see "Attributes: This property cannot be changed."
+    Then I should see "Property \"axes\" cannot be modified, \"manufacturer,size\" given."
     And I should see "read lines 1"
     And I should see "Skipped 1"
     And there should be the following groups:
@@ -59,7 +61,7 @@ Feature: Execute an import with invalid properties
     When I am on the "csv_footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_variant_group_import" job to finish
-    Then I should see "Attributes: This property cannot be changed."
+    Then I should see "Property \"axes\" cannot be modified, \"color\" given."
     And I should see "read lines 1"
     And I should see "Skipped 1"
     And there should be the following groups:

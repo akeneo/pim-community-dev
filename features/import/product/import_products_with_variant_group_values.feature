@@ -7,17 +7,17 @@ Feature: Execute a product import
   Background:
     Given the "footwear" catalog configuration
     And I add the "french" locale to the "tablet" channel
+    And the following variant groups:
+      | code   | label-en_US | axis       | type    |
+      | SANDAL | Sandal      | size,color | VARIANT |
     And the following products:
-      | sku             | family  | categories        | size | color |
-      | sandal-white-37 | sandals | winter_collection | 37   | white |
-      | sandal-white-38 | sandals | winter_collection | 38   | white |
-      | sandal-white-39 | sandals | winter_collection | 39   | white |
-      | sandal-red-37   | sandals | winter_collection | 37   | red   |
-      | sandal-red-38   | sandals | winter_collection | 38   | red   |
-      | sandal-red-39   | sandals | winter_collection | 39   | red   |
-    And the following product groups:
-      | code   | label  | axis        | type    | products                                                                                       |
-      | SANDAL | Sandal | size, color | VARIANT | sandal-white-37, sandal-white-38, sandal-white-39, sandal-red-37, sandal-red-38, sandal-red-39 |
+      | sku             | family  | categories        | size | color | groups |
+      | sandal-white-37 | sandals | winter_collection | 37   | white | SANDAL |
+      | sandal-white-38 | sandals | winter_collection | 38   | white | SANDAL |
+      | sandal-white-39 | sandals | winter_collection | 39   | white | SANDAL |
+      | sandal-red-37   | sandals | winter_collection | 37   | red   | SANDAL |
+      | sandal-red-38   | sandals | winter_collection | 38   | red   | SANDAL |
+      | sandal-red-39   | sandals | winter_collection | 39   | red   | SANDAL |
     And the following variant group values:
       | group  | attribute   | value                | locale | scope  |
       | SANDAL | name        | My VG US name        | en_US  |        |

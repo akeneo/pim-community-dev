@@ -2,6 +2,10 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
+
 /**
  * Abstract product completeness entity
  *
@@ -13,6 +17,9 @@ abstract class AbstractCompleteness implements CompletenessInterface
 {
     /** @var int|string */
     protected $id;
+
+    /** @var ProductInterface */
+    protected $product;
 
     /** @var LocaleInterface */
     protected $locale;
@@ -29,8 +36,32 @@ abstract class AbstractCompleteness implements CompletenessInterface
     /** @var int */
     protected $requiredCount = 0;
 
-    /** @var ProductInterface */
-    protected $product;
+    /** @var Collection */
+    protected $attributeCompletenesses;
+
+    /**
+     * @param ProductInterface $product
+     * @param ChannelInterface $channel
+     * @param LocaleInterface  $locale
+     */
+    public function __construct(
+        ProductInterface $product,
+        ChannelInterface $channel,
+        LocaleInterface $locale
+    ) {
+        $this->product = $product;
+        $this->channel = $channel;
+        $this->locale = $locale;
+        $this->attributeCompletenesses = new ArrayCollection();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * {@inheritdoc}
@@ -38,16 +69,6 @@ abstract class AbstractCompleteness implements CompletenessInterface
     public function getLocale()
     {
         return $this->locale;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLocale(LocaleInterface $locale)
-    {
-        $this->locale = $locale;
-
-        return $this;
     }
 
     /**
@@ -61,29 +82,9 @@ abstract class AbstractCompleteness implements CompletenessInterface
     /**
      * {@inheritdoc}
      */
-    public function setChannel(ChannelInterface $channel)
-    {
-        $this->channel = $channel;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getRatio()
     {
-        return $this->ratio;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setRatio($ratio)
-    {
-        $this->ratio = $ratio;
-
-        return $this;
+        return (int) round(100 * ($this->requiredCount - $this->missingCount) / $this->requiredCount);
     }
 
     /**
@@ -91,17 +92,13 @@ abstract class AbstractCompleteness implements CompletenessInterface
      */
     public function getMissingCount()
     {
-        return $this->missingCount;
-    }
+        $missingAttribute = $this->attributeCompletenesses->filter(
+            function (AttributeCompleteness $attributeCompleteness) {
+                return !$attributeCompleteness->isComplete();
+            }
+        );
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setMissingCount($missingCount)
-    {
-        $this->missingCount = $missingCount;
-
-        return $this;
+        return $missingAttribute->count();
     }
 
     /**
@@ -109,17 +106,7 @@ abstract class AbstractCompleteness implements CompletenessInterface
      */
     public function getRequiredCount()
     {
-        return $this->requiredCount;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setRequiredCount($requiredCount)
-    {
-        $this->requiredCount = $requiredCount;
-
-        return $this;
+        return $this->attributeCompletenesses->count();
     }
 
     /**
@@ -133,10 +120,13 @@ abstract class AbstractCompleteness implements CompletenessInterface
     /**
      * {@inheritdoc}
      */
-    public function setProduct(ProductInterface $product)
+    public function getAttributeCompletenesses()
     {
-        $this->product = $product;
+        return $this->attributeCompletenesses;
+    }
 
-        return $this;
+    public function addRequiredAttribute(AttributeInterface $attribute, $isComplete)
+    {
+        $this->attributeCompletenesses->add(new AttributeCompleteness($this, $attribute, $isComplete));
     }
 }

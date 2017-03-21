@@ -3,7 +3,6 @@
 namespace spec\Pim\Component\Connector\Encoder;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class CsvEncoderSpec extends ObjectBehavior
 {

@@ -25,9 +25,9 @@ Feature: Filter on multi select attributes
   Scenario: Successfully filter on multi select attributes that have the same option codes
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code            | label           | type        |
-      | main_color      | Main color      | multiselect |
-      | secondary_color | Secondary color | multiselect |
+      | code            | label-en_US     | type                    | group |
+      | main_color      | Main color      | pim_catalog_multiselect | other |
+      | secondary_color | Secondary color | pim_catalog_multiselect | other |
     And the following "main_color" attribute options: purple and red
     And the following "secondary_color" attribute options: purple and red
     And the following products:

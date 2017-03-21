@@ -10,7 +10,7 @@
     <ul>
         {% for stepExecution in jobExecution.stepExecutions %}
         <li>
-            {{ stepExecution.stepName|trans }} [{{ stepExecution.status }}]
+            {{ stepExecution.stepName|trans }} [{{ stepExecution.status }}] {{ 0 < stepExecution.warnings|length ? 'With ' ~ stepExecution.warnings|length ~ ' warning(s)' : '' }}
         </li>
         {% endfor %}
     </ul>

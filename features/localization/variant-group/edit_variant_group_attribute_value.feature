@@ -23,7 +23,7 @@ Feature: Editing localized attribute values of a variant group also updates prod
 
   Scenario: Successfully change a pim_catalog_metric attribute of a variant group
     When I fill in the following information:
-      | Poids  | 5,45 |
+      | Poids | 5,45 |
     And I save the variant group
     Then the product "boot" should have the following values:
       | weight | 5.4500 GRAM |

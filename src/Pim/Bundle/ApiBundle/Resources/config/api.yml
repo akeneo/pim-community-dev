@@ -1,0 +1,7 @@
+pim_api:
+    pagination:
+        limit_max: '%api_pagination_limit_max%'
+        limit_by_default: '%api_pagination_limit_by_default%'
+    input:
+        buffer_size: '%api_input_buffer_size%'
+        max_resources_number: '%api_input_max_resources_number%'

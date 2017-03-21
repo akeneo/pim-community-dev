@@ -42,10 +42,13 @@ class AssertionContext extends RawMinkContext
     /**
      * Checks, that page does not contain specified text.
      *
-     * @Then /^(?:|I )should not see the text "(?P<text>(?:[^"]|\\")*)"$/
+     * @Then /^I should not see the text "(?P<text>(?:[^"]|\\")*)"$/
      */
     public function assertPageNotContainsText($text)
     {
+        //Remove unecessary escaped antislashes
+        $text = str_replace('\\"', '"', $text);
+        $text = strip_tags($text);
         $this->spin(function () use ($text) {
             $this->assertSession()->pageTextNotContains($text);
 
@@ -62,12 +65,13 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeTheTitle($expectedTitle)
     {
-        $actualTitle = $this->getCurrentPage()->getHeadTitle();
-        if (trim($actualTitle) !== trim($expectedTitle)) {
-            throw $this->createExpectationException(
-                sprintf('Incorrect title. Expected "%s", found "%s"', $expectedTitle, $actualTitle)
-            );
-        }
+        $this->spin(function () use ($expectedTitle) {
+            return trim($this->getCurrentPage()->getHeadTitle()) === trim($expectedTitle);
+        }, sprintf(
+            'Incorrect title. Expected "%s", found "%s"',
+            $expectedTitle,
+            $this->getCurrentPage()->getHeadTitle())
+        );
     }
 
     /**
@@ -91,6 +95,20 @@ class AssertionContext extends RawMinkContext
             $errors = $this->getCurrentPage()->getValidationErrors();
             assertTrue(in_array($error, $errors), sprintf('Expecting to see validation error "%s", not found', $error));
         }
+    }
+
+    /**
+     * @param string $message
+     *
+     * @Then /^I should see the tooltip "([^"]*)"$/
+     */
+    public function iShouldSeeTheTooltip($message)
+    {
+        $this->spin(function () use ($message) {
+            $tooltipMessages = $this->getCurrentPage()->getTooltipMessages();
+
+            return in_array($message, $tooltipMessages);
+        }, sprintf('Expecting to see tooltip "%s", not found', $message));
     }
 
     /**
@@ -540,25 +558,6 @@ class AssertionContext extends RawMinkContext
             $steps[] = new Then(sprintf('I change the Code to "%s"', $item['code']));
             $steps[] = new Then(sprintf('I save the %s', $entity));
             $steps[] = new Then('I should see validation error "This code is not available"');
-        }
-
-        return $steps;
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @return Then[]
-     *
-     * @Then /^the following pages should have the following titles:$/
-     */
-    public function theFollowingPagesShouldHaveTheFollowingTitles($table)
-    {
-        $steps = [];
-
-        foreach ($table->getHash() as $item) {
-            $steps[] = new Then(sprintf('I am on the %s page', $item['page']));
-            $steps[] = new Then(sprintf('I should see the title "%s"', $item['title']));
         }
 
         return $steps;

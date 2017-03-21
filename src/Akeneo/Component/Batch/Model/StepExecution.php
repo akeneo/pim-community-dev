@@ -519,7 +519,7 @@ class StepExecution
      */
     public function getSummaryInfo($key)
     {
-        return $this->summary[$key];
+        return isset($this->summary[$key]) ? $this->summary[$key] : '';
     }
 
     /**

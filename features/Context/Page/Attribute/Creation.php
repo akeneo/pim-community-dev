@@ -90,7 +90,9 @@ class Creation extends Form
         $row->find('css', '.attribute_option_code')->setValue($name);
 
         foreach ($labels as $locale => $label) {
-            $row->find('css', sprintf('.attribute-option-value[data-locale="%s"]', $locale))->setValue($label);
+            $this->spin(function () use ($row, $label, $locale) {
+                return $row->find('css', sprintf('.attribute-option-value[data-locale="%s"]', $locale));
+            }, sprintf('Unable fo find attribute option with locale "%s"', $locale))->setValue($label);
         }
     }
 
@@ -110,21 +112,6 @@ class Creation extends Form
     }
 
     /**
-     * Edit an attribute option
-     *
-     * @param string $name
-     * @param string $newValue
-     */
-    public function editOption($name, $newValue)
-    {
-        $row = $this->getOptionElement($name);
-
-        $row->find('css', '.edit-row')->click();
-        $row->find('css', '.attribute_option_code')->setValue($newValue);
-        $row->find('css', '.update-row')->click();
-    }
-
-    /**
      * Edit and cancel edition on an attribute option
      *
      * @param string $name
@@ -135,7 +122,7 @@ class Creation extends Form
         $row = $this->getOptionElement($name);
 
         $row->find('css', '.edit-row')->click();
-        $row->find('css', '.attribute_option_code')->setValue($newValue);
+        $row->find('css', '.attribute-option-value:first-child')->setValue($newValue);
         $row->find('css', '.show-row')->click();
     }
 

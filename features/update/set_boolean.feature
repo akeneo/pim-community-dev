@@ -6,17 +6,17 @@ Feature: Update boolean fields
   Scenario: Successfully update a boolean field
     Given a "default" catalog configuration
     And the following attributes:
-      | code    | type    | localizable | scopable |
-      | active  | boolean | yes         | no       |
-      | awesome | boolean | no          | yes      |
-      | pure    | boolean | yes         | yes      |
-      | organic | boolean | no          | no       |
+      | code    | type                | localizable | scopable | group |
+      | active  | pim_catalog_boolean | 1           | 0        | other |
+      | awesome | pim_catalog_boolean | 0           | 1        | other |
+      | pure    | pim_catalog_boolean | 1           | 1        | other |
+      | organic | pim_catalog_boolean | 0           | 0        | other |
     And the following products:
-      | sku      |
-      | active   |
-      | awesome  |
-      | pure     |
-      | orgnanic |
+      | sku               |
+      | active            |
+      | awesome           |
+      | pure              |
+      | orgnanic          |
       | orgnanic_and_pure |
     Then I should get the following products after apply the following updater to it:
       | product           | actions                                                                                                                                                                            | result                                                                                                                                   |

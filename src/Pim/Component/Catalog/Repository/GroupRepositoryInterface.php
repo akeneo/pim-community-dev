@@ -46,11 +46,6 @@ interface GroupRepositoryInterface extends IdentifiableObjectRepositoryInterface
     /**
      * @return mixed
      */
-    public function createDatagridQueryBuilder();
-
-    /**
-     * @return mixed
-     */
     public function createAssociationDatagridQueryBuilder();
 
     /**

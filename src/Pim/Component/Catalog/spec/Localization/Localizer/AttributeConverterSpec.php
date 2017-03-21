@@ -6,7 +6,6 @@ use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 
@@ -28,7 +27,11 @@ class AttributeConverterSpec extends ObjectBehavior
         $attributeRepository->getAttributeTypeByCodes(['number'])->willReturn(['number' => 'pim_number']);
         $localizerRegistry->getLocalizer('pim_number')->willReturn($localizer);
         $localizer->supports('pim_number')->willReturn(true);
-        $localizer->validate('10,45', 'values[number]', $options)->willReturn(null);
+        $localizer->validate(
+            '10,45',
+            'values[{"code":"number","locale":null,"scope":null}]',
+            $options
+        )->willReturn(null);
         $localizer->delocalize('10,45', $options)->willReturn('10.45');
 
         $this->convertToDefaultFormats(['number' => [['data' => '10,45']]], $options)
@@ -61,7 +64,11 @@ class AttributeConverterSpec extends ObjectBehavior
         $constraint = new ConstraintViolation('Error with attribute', '', [], '', 'values[number]', '10,45');
         $constraints = new ConstraintViolationList([$constraint]);
         $localizer->supports('pim_number')->willReturn(true);
-        $localizer->validate('10,45', 'values[number]', $options)->willReturn($constraints);
+        $localizer->validate(
+            '10,45',
+            'values[{"code":"number","locale":null,"scope":null}]',
+            $options
+        )->willReturn($constraints);
         $localizer->delocalize('10,45', $options)->willReturn('10.45');
 
         $this->convertToDefaultFormats(['number' => [['data' => '10,45']]], $options)
