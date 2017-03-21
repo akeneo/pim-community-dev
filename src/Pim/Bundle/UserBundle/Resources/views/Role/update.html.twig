@@ -7,10 +7,11 @@
 {% block head_script %}
     <script type="text/javascript">
         require(
-            ['jquery'],
-            function ($) {
+            ['jquery', 'pim/security-context'],
+            function ($, securityContext) {
                 'use strict';
 
+                securityContext.fetch();
                 $(function() {
                     var decorateTabs = function() {
                         $('.AknVerticalNavtab').find('.AknVerticalNavtab-link').each(function() {

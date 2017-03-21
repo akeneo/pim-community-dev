@@ -10,12 +10,13 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'pim/form',
         'text!pim/template/form/back-to-grid',
         'pim/router',
         'pim/user-context'
     ],
-    function (_, BaseForm, template, router, UserContext) {
+    function (_, __, BaseForm, template, Routing, UserContext) {
         return BaseForm.extend({
             tagName: 'a',
             events: {
@@ -25,7 +26,7 @@ define(
             template: _.template(template),
             config: {},
             attributes: {
-                title: _.__('pim_enrich.navigation.link.back_to_grid')
+                title: __('pim_enrich.navigation.link.back_to_grid')
             },
 
             /**
