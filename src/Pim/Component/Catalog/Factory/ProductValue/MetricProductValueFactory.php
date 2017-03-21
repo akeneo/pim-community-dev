@@ -48,7 +48,7 @@ class MetricProductValueFactory implements ProductValueFactoryInterface
         if (null === $data) {
             $data = [
                 'amount' => null,
-                'unit'   => null,
+                'unit'   => $attribute->getDefaultMetricUnit(),
             ];
         }
 
