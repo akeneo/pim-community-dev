@@ -22,13 +22,6 @@ interface ProductValueInterface
     public function getData();
 
     /**
-     * Get related option, used for simple select to set single option
-     *
-     * @return AttributeOptionInterface
-     */
-    public function getOption();
-
-    /**
      * Get media
      *
      * @return FileInfoInterface

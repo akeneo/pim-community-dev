@@ -97,13 +97,6 @@ abstract class AbstractProductValue implements ProductValueInterface
     protected $optionIds;
 
     /**
-     * Store simple option value
-     *
-     * @var AttributeOptionInterface
-     */
-    protected $option;
-
-    /**
      * Store upload values
      *
      * @var FileInfoInterface
@@ -227,14 +220,6 @@ abstract class AbstractProductValue implements ProductValueInterface
     public function getDatetime()
     {
         return $this->datetime;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOption()
-    {
-        return $this->option;
     }
 
     /**
@@ -463,20 +448,6 @@ abstract class AbstractProductValue implements ProductValueInterface
         if ($this->datetime != $datetime) {
             $this->datetime = $datetime;
         }
-
-        return $this;
-    }
-
-    /**
-     * Set option, used for simple select to set single option
-     *
-     * @param AttributeOptionInterface $option
-     *
-     * @return ProductValueInterface
-     */
-    protected function setOption(AttributeOptionInterface $option = null)
-    {
-        $this->option = $option;
 
         return $this;
     }
