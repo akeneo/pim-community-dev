@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Catalog\Builder;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Model\Association;
@@ -78,6 +79,7 @@ class ProductBuilderSpec extends ObjectBehavior
 
         $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
         $identifierAttribute->getCode()->willReturn('sku');
+        $identifierAttribute->getType()->willReturn(AttributeTypes::IDENTIFIER);
 
         $productValueFactory->create($identifierAttribute, null, null, 'mysku')->willReturn($identifierValue);
         $identifierValue->getAttribute()->willReturn($identifierAttribute);
@@ -218,11 +220,12 @@ class ProductBuilderSpec extends ObjectBehavior
         ProductValueInterface $colorValue
     ) {
         $size->getCode()->willReturn('size');
-        $color->getCode()->willReturn('color');
-
+        $size->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $size->isLocalizable()->willReturn(false);
         $size->isScopable()->willReturn(false);
 
+        $color->getCode()->willReturn('color');
+        $color->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $color->isLocalizable()->willReturn(true);
         $color->isScopable()->willReturn(true);
 
@@ -251,11 +254,12 @@ class ProductBuilderSpec extends ObjectBehavior
         ProductValueInterface $colorValue
     ) {
         $size->getCode()->willReturn('size');
-        $color->getCode()->willReturn('color');
-
+        $size->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $size->isLocalizable()->willReturn(false);
         $size->isScopable()->willReturn(false);
 
+        $color->getCode()->willReturn('color');
+        $color->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $color->isLocalizable()->willReturn(true);
         $color->isScopable()->willReturn(true);
 
@@ -282,7 +286,7 @@ class ProductBuilderSpec extends ObjectBehavior
         ProductValueInterface $value
     ) {
         $label->getCode()->willReturn('label');
-
+        $label->getType()->willReturn(AttributeTypes::TEXT);
         $label->isLocalizable()->willReturn(false);
         $label->isScopable()->willReturn(false);
 
