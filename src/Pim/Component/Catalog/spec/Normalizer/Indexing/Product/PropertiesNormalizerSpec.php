@@ -39,12 +39,14 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getValues()->willReturn($productValueCollection);
         $product->getFamily()->willReturn(null);
         $product->getGroupCodes()->willReturn([]);
+        $product->getCategoryCodes()->willReturn([]);
         $productValueCollection->isEmpty()->willReturn(true);
 
         $this->normalize($product, 'indexing')->shouldReturn(
             [
                 'identifier' => 'sku-001',
                 'family'     => null,
+                'categories' => [],
                 'groups'     => [],
                 'values'     => [],
             ]
@@ -52,6 +54,8 @@ class PropertiesNormalizerSpec extends ObjectBehavior
     }
 
     /*
+     * // TODO: TIP-706- To re-enable once productValueCollectionNormalizer is working with a
+     * // TODO: TIP-706- product value normalizer
     function it_normalizes_product_fields_and_values(
         $serializer,
         ProductInterface $product,
@@ -69,6 +73,13 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             ->willReturn($productValueCollection);
         $productValueCollection->isEmpty()->willReturn(false);
 
+        $product->getCategoryCodes()->willReturn(
+            [
+                'first_category',
+                'second_category',
+            ]
+        );
+
         $serializer->normalize($productValueCollection, 'indexing', [])
             ->willReturn(
                 [
@@ -84,6 +95,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             [
                 'identifier' => 'sku-001',
                 'family'     => 'a_family',
+                'categories' => ['first_category', 'second_category'],
                 'groups'     => ['first_group', 'second_group'],
                 'values'     => [
                     'a_size-decimal' => [
@@ -92,7 +104,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                         ],
                     ],
                 ],
-
             ]
         );
     }

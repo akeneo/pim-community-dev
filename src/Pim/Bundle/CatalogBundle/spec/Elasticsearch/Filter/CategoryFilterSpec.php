@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
@@ -26,6 +27,12 @@ class CategoryFilterSpec extends ObjectBehavior
     {
         $this->shouldImplement('Pim\Component\Catalog\Query\Filter\FieldFilterInterface');
         $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Elasticsearch\Filter\AbstractFieldFilter');
+    }
+
+    function it_supports_categories_field()
+    {
+        $this->supportsField('categories')->shouldReturn(true);
+        $this->supportsField('a_not_supported_field')->shouldReturn(false);
     }
 
     function it_supports_operators()
@@ -141,6 +148,106 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->setQueryBuilder($sqb);
         $this->addFieldFilter('categories', Operators::IN_LIST_OR_UNCLASSIFIED, ['t-shirt'], 'en_US', 'ecommerce', []);
     }
+
+    function it_throws_an_exception_when_the_search_query_builder_is_not_initialized()
+    {
+        $this->shouldThrow(
+            new \LogicException('The search query builder is not initialized in the filter.')
+        )->during('addFieldFilter', ['categories', Operators::IN_LIST_OR_UNCLASSIFIED, ['t-shirt'], 'en_US', 'ecommerce', []]);
+
+    }
+
+    function it_throws_an_exception_when_the_given_value_is_not_an_array_with_in_list(SearchQueryBuilder $sqb)
+    {
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::arrayExpected(
+                'categories',
+                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter',
+                'NOT_AN_ARRAY'
+            )
+        )->during('addFieldFilter', ['categories', Operators::IN_LIST, 'NOT_AN_ARRAY', null, null, []]);
+    }
+
+    function it_throws_an_exception_when_the_given_value_is_not_an_array_with_not_in_list(SearchQueryBuilder $sqb)
+    {
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::arrayExpected(
+                'categories',
+                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter',
+                'NOT_AN_ARRAY'
+            )
+        )->during('addFieldFilter', ['categories', Operators::NOT_IN_LIST, 'NOT_AN_ARRAY', null, null, []]);
+    }
+
+    function it_throws_an_exception_when_the_given_value_is_not_an_array_with_not_in_children_list(SearchQueryBuilder $sqb)
+    {
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::arrayExpected(
+                'categories',
+                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter',
+                'NOT_AN_ARRAY'
+            )
+        )->during('addFieldFilter', ['categories', Operators::NOT_IN_CHILDREN_LIST, 'NOT_AN_ARRAY', null, null, []]);
+    }
+
+    function it_throws_an_exception_when_the_given_value_is_not_an_array_with_in_children_list(SearchQueryBuilder $sqb)
+    {
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::arrayExpected(
+                'categories',
+                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter',
+                'NOT_AN_ARRAY'
+            )
+        )->during('addFieldFilter', ['categories', Operators::IN_CHILDREN_LIST, 'NOT_AN_ARRAY', null, null, []]);
+    }
+
+    function it_throws_an_exception_when_the_given_value_is_not_an_array_with_in_list_or_unclassified(SearchQueryBuilder $sqb)
+    {
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::arrayExpected(
+                'categories',
+                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter',
+                'NOT_AN_ARRAY'
+            )
+        )->during('addFieldFilter', ['categories', Operators::IN_LIST_OR_UNCLASSIFIED, 'NOT_AN_ARRAY', null, null, []]);
+    }
+
+    function it_does_not_throws_an_exception_when_the_given_value_is_not_an_array_with_unclassified(SearchQueryBuilder $sqb)
+    {
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldNotThrow(
+            InvalidPropertyTypeException::arrayExpected(
+                'categories',
+                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter',
+                'NOT_AN_ARRAY'
+            )
+        )->during('addFieldFilter', ['categories', Operators::UNCLASSIFIED, 'NOT_AN_ARRAY', null, null, []]);
+    }
+
+    function it_throws_an_exception_when_the_given_value_is_not_an_identifier(SearchQueryBuilder $sqb)
+    {
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::stringExpected(
+                'categories',
+                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter',
+                false
+            )
+        )->during('addFieldFilter', ['categories', Operators::IN_LIST, [false], null, null, []]);
+    }
+
 
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(SearchQueryBuilder $sqb)
     {

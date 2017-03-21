@@ -756,7 +756,8 @@ Example with the ``>`` operator:
 
 Category
 ********
-:Apply: apply on 'categories' field
+:Apply: apply 'keyword' datatype on 'categories' field
+:Analyser: none
 
 Data model
 ~~~~~~~~~~

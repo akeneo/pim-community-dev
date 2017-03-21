@@ -32,6 +32,8 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
         $data[StandardPropertiesNormalizer::FIELD_FAMILY] = null !== $product->getFamily()
             ? $product->getFamily()->getCode() : null;
 
+        $data[StandardPropertiesNormalizer::FIELD_CATEGORIES] = $product->getCategoryCodes();
+
         $data[StandardPropertiesNormalizer::FIELD_GROUPS] = $product->getGroupCodes();
 
         // TODO TIP-706: normalize product values

@@ -40,6 +40,10 @@ class CategoryFilter extends AbstractFieldFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $channel = null, $options = [])
     {
+        if (null === $this->searchQueryBuilder) {
+            throw new \LogicException('The search query builder is not initialized in the filter.');
+        }
+
         if ($operator !== Operators::UNCLASSIFIED) {
             $this->checkValue($field, $value);
         }

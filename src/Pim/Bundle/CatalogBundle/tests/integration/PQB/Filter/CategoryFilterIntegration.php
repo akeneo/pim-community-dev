@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter;
 
-use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -12,6 +11,22 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  */
 class CategoryFilterIntegration extends AbstractFilterTestCase
 {
+    /**
+     * @{@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
+            $this->resetIndex();
+
+            $this->createProduct('foo', ['categories' => ['categoryA1', 'categoryB']]);
+            $this->createProduct('bar', []);
+            $this->createProduct('baz', []);
+        }
+    }
+
     public function testOperatorIn()
     {
         $result = $this->execute([['categories', Operators::IN_LIST, ['master']]]);
@@ -67,16 +82,5 @@ class CategoryFilterIntegration extends AbstractFilterTestCase
     public function testErrorOperatorNotSupported()
     {
         $this->execute([['categories', Operators::GREATER_OR_EQUAL_THAN, ['categoryA1']]]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return new Configuration(
-            [Configuration::getTechnicalSqlCatalogPath()],
-            false
-        );
     }
 }
