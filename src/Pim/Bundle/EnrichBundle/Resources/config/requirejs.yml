@@ -367,6 +367,14 @@ config:
                 pim_enrich_job_tracker_index:
                     module: pim/controller/template
                     aclResourceId: pim_enrich_job_tracker_index
+                pim_importexport_import_execution_show:
+                    module: pim/controller/job-execution
+                    aclResourceId: pim_importexport_import_execution_show
+                pim_importexport_export_execution_show:
+                    module: pim/controller/job-execution
+                    aclResourceId: pim_importexport_export_execution_show
+                pim_enrich_job_tracker_show:
+                    module: pim/controller/job-execution
 
     paths:
         pim/app:                            pimenrich/js/app
@@ -387,6 +395,7 @@ config:
         pim/controller/job-instance:        pimenrich/js/controller/job-instance
         pim/controller/variant-group:       pimenrich/js/controller/variant-group
         pim/controller/role:                pimenrich/js/controller/role
+        pim/controller/job-execution:       pimenrich/js/controller/job-execution
 
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector
