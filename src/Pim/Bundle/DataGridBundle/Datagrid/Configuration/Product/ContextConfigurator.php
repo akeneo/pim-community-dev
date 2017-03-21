@@ -285,12 +285,7 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getProductStorage()
     {
-        $om = $this->objectManager;
-        if ($om instanceof \Doctrine\ORM\EntityManagerInterface) {
-            return AkeneoStorageUtilsExtension::DOCTRINE_ORM;
-        }
-
-        return AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM;
+        return AkeneoStorageUtilsExtension::DOCTRINE_ORM;
     }
 
     /**

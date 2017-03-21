@@ -19,9 +19,6 @@ class AkeneoStorageUtilsExtension extends Extension
     /** @staticvar string */
     const DOCTRINE_ORM = 'doctrine/orm';
 
-    /** @staticvar string */
-    const DOCTRINE_MONGODB_ODM = 'doctrine/mongodb-odm';
-
     /** @var string */
     protected static $storageDriver;
 
@@ -56,7 +53,7 @@ class AkeneoStorageUtilsExtension extends Extension
      */
     public static function getSupportedStorageDrivers()
     {
-        return [self::DOCTRINE_ORM, self::DOCTRINE_MONGODB_ODM];
+        return [self::DOCTRINE_ORM];
     }
 
     /**

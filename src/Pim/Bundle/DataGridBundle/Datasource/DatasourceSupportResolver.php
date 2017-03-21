@@ -43,14 +43,6 @@ class DatasourceSupportResolver
      */
     public function getSupport($datasourceType)
     {
-        if (AkeneoStorageUtilsExtension::DOCTRINE_ORM === $this->storageDriver) {
-            return self::DATASOURCE_SUPPORT_ORM;
-        }
-
-        if (in_array($datasourceType, $this->smartDatasources)) {
-            return self::DATASOURCE_SUPPORT_MONGODB;
-        }
-
         return self::DATASOURCE_SUPPORT_ORM;
     }
 
