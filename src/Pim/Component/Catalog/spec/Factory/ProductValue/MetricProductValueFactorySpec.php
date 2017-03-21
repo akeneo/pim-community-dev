@@ -42,9 +42,10 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
         $attribute->getMetricFamily()->willReturn('Length');
-        $metricFactory->createMetric('Length', null, null)->willReturn($metric);
+        $attribute->getDefaultMetricUnit()->willReturn('METER');
+        $metricFactory->createMetric('Length', 'METER', null)->willReturn($metric);
         $metric->getData()->willReturn(null);
-        $metric->getUnit()->willReturn(null);
+        $metric->getUnit()->willReturn('METER');
         $metric->getFamily()->willReturn('Length');
 
         $productValue = $this->create(
@@ -58,7 +59,7 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldHaveAttribute('metric_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
-        $productValue->shouldBeEmpty();
+        $productValue->shouldBeEmpty('METER');
     }
 
     function it_creates_a_localizable_and_scopable_empty_metric_product_value(
@@ -74,9 +75,10 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
         $attribute->getMetricFamily()->willReturn('Length');
-        $metricFactory->createMetric('Length', null, null)->willReturn($metric);
+        $attribute->getDefaultMetricUnit()->willReturn('METER');
+        $metricFactory->createMetric('Length', 'METER', null)->willReturn($metric);
         $metric->getData()->willReturn(null);
-        $metric->getUnit()->willReturn(null);
+        $metric->getUnit()->willReturn('METER');
         $metric->getFamily()->willReturn('Length');
 
         $productValue = $this->create(
@@ -92,7 +94,7 @@ class MetricProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldHaveLocale('en_US');
         $productValue->shouldBeScopable();
         $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldBeEmpty();
+        $productValue->shouldBeEmpty('METER');
     }
 
     function it_creates_a_metric_product_value(
@@ -250,10 +252,10 @@ class MetricProductValueFactorySpec extends ObjectBehavior
             'haveChannel'   => function ($subject, $channelCode) {
                 return $channelCode === $subject->getScope();
             },
-            'beEmpty'       => function ($subject) {
+            'beEmpty'       => function ($subject, $expectedUnit) {
                 $metric = $subject->getData();
 
-                return null === $metric->getData() && null === $metric->getUnit();
+                return null === $metric->getData() && $expectedUnit === $metric->getUnit();
             },
             'haveMetric'    => function ($subject, $expectedMetric) {
                 $metric = $subject->getData();
