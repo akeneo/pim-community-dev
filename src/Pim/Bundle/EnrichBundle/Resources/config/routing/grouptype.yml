@@ -9,14 +9,34 @@ pim_enrich_grouptype_create:
     defaults: { _controller: pim_enrich.controller.group_type:createAction }
 
 pim_enrich_grouptype_edit:
-    path: /{id}/edit
+    path: /{code}/edit
     defaults: { _controller: pim_enrich.controller.group_type:editAction }
     requirements:
-        id: \d+
+        code: '[a-zA-Z0-9_]+'
 
-pim_enrich_grouptype_remove:
-    path: /{id}/remove
-    defaults: { _controller: pim_enrich.controller.group_type:removeAction }
+pim_enrich_grouptype_rest_index:
+    path: /rest
+    defaults: { _controller: pim_enrich.controller.rest.group_type:indexAction, _format: json }
+    methods: [GET]
+
+pim_enrich_grouptype_rest_get:
+    path: /rest/{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.group_type:getAction, _format: json }
+    methods: [GET]
     requirements:
-        id: \d+
+        _format: json
+        identifier: '[a-zA-Z0-9_]+'
+
+pim_enrich_grouptype_rest_post:
+    path: /rest/{code}
+    defaults: { _controller: pim_enrich.controller.rest.group_type:postAction }
+    methods: [POST]
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+pim_enrich_grouptype_rest_remove:
+    path: /rest/{code}
+    defaults: { _controller: pim_enrich.controller.rest.group_type:removeAction }
     methods: [DELETE]
+    requirements:
+        code: '[a-zA-Z0-9_]+'

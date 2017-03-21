@@ -18,7 +18,7 @@ class LocaleHelperSpec extends ObjectBehavior
         $this->beConstructedWith($userContext, $localeRepository);
     }
 
-    function it_provides_current_locale($en)
+    function it_provides_current_locale()
     {
         $this->getCurrentLocaleCode()->shouldReturn('en_US');
     }
