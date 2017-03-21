@@ -8,6 +8,7 @@ parameters:
     pim_catalog.doctrine.query.filter.object_id_resolver.class:   Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver
     pim_catalog.doctrine.query.filter.object_code_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver
     pim_catalog.query.elasticsearch.filter.family.class:          Pim\Bundle\CatalogBundle\Elasticsearch\Filter\FamilyFilter
+    pim_catalog.query.elasticsearch.filter.group.class:           Pim\Bundle\CatalogBundle\Elasticsearch\Filter\GroupFilter
 
 services:
     pim_catalog.query.product_query_builder_factory:
@@ -66,6 +67,14 @@ services:
         class: '%pim_catalog.query.elasticsearch.filter.family.class%'
         arguments:
             - ['family']
+            - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
+            
+    pim_catalog.query.elasticsearch.filter.group:
+        class: '%pim_catalog.query.elasticsearch.filter.group.class%'
+        arguments:
+            - ['groups']
             - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }

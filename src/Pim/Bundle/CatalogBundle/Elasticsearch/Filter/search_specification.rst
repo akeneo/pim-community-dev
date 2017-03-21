@@ -958,13 +958,13 @@ Sorting is done on the localized label:
 
 Groups
 ******
-:Apply: "groups" field
+:Apply: apply on the 'groups' field
 
 Data model
 ~~~~~~~~~~
 .. code-block:: yaml
 
-    groups: [1, 5, 8]
+    groups: ['groupA', 'groupB', 'groupC']
 
 Filtering
 ~~~~~~~~~
@@ -974,10 +974,38 @@ IN
 ~~
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    terms:
-        groups.id: [5, 6 7]
+    'terms' => [
+        'groups' => ['groupA', 'groupB', 'groupC']
+    ]
+
+NOT IN
+~~~~~~
+:Type: must_not
+
+.. code-block:: php
+
+    'terms' => [
+        'groups' => ['groupA', 'groupB', 'groupC']
+    ]
+
+IS EMPTY
+~~~~~~~~
+:Type: must_not
+
+.. code-block:: php
+
+    ['exists' => ['field' => 'groups']]
+
+IS NOT EMPTY
+~~~~~~~~~~~~
+:Type: filter
+
+.. code-block:: php
+
+    ['exists' => ['field' => 'groups']]
+
 
 Sorting
 ~~~~~~~

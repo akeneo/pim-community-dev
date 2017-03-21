@@ -38,12 +38,14 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $product->getValues()->willReturn($productValueCollection);
         $product->getFamily()->willReturn(null);
+        $product->getGroupCodes()->willReturn([]);
         $productValueCollection->isEmpty()->willReturn(true);
 
         $this->normalize($product, 'indexing')->shouldReturn(
             [
                 'identifier' => 'sku-001',
                 'family'     => null,
+                'groups'     => [],
                 'values'     => [],
             ]
         );
@@ -59,6 +61,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $product->getFamily()->willReturn($family);
         $family->getCode()->willReturn('a_family');
+        $product->getGroupCodes()->willReturn(['first_group', 'second_group']);
 
         $product->getValues()
             ->shouldBeCalledTimes(2)
@@ -80,6 +83,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             [
                 'identifier' => 'sku-001',
                 'family'     => 'a_family',
+                'groups'     => ['first_group', 'second_group'],
                 'values'     => [
                     'a_size-decimal' => [
                         '<all_locales>' => [
