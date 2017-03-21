@@ -2,8 +2,6 @@
 
 namespace Pim\Component\Catalog\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 /**
  * Product value interface
  *
@@ -26,14 +24,6 @@ interface ProductValueInterface
      * @return AttributeInterface
      */
     public function getAttribute();
-
-    /**
-    /**
-     * Get options, used for multi select to retrieve many options
-     *
-     * @return ArrayCollection
-     */
-    public function getOptions();
 
     /**
      * Get used locale

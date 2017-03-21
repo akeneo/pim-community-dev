@@ -17,32 +17,11 @@ abstract class AbstractProductValue implements ProductValueInterface
     /** @var mixed */
     protected $data;
 
-    /**
-     * Locale code
-     *
-     * @var string
-     */
+    /** @var string Locale code */
     protected $locale;
 
-    /**
-     * Scope code
-     *
-     * @var string
-     */
+    /** @var string Scope code */
     protected $scope;
-
-    /**
-    /**
-     * Store many options values
-     *
-     * This field must by overrided in concret value class
-     *
-     * @var Collection
-     */
-    protected $options;
-
-    /** @var array */
-    protected $optionIds;
 
     /**
      * @param AttributeInterface $attribute
@@ -52,13 +31,16 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function __construct(AttributeInterface $attribute, $channel, $locale, $data)
     {
-        $this->options = new ArrayCollection();
-
         $this->setAttribute($attribute);
         $this->setScope($channel);
         $this->setLocale($locale);
         $this->setData($data);
     }
+
+    /**
+     * @param mixed $data
+     */
+    abstract protected function setData($data = null);
 
     /**
      * {@inheritdoc}
@@ -95,61 +77,11 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * {@inheritdoc}
      */
-    public function getData()
-    {
-        $getter = $this->attribute->getBackendType();
-        if ($this->attribute->isBackendTypeReferenceData()) {
-            $getter = $this->attribute->getReferenceDataName();
-        }
-
-        $getter = 'get'.ucfirst($getter);
-
-        return $this->$getter();
-    }
-    /**
-     * {@inheritdoc}
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isEqual(ProductValueInterface $productValue)
     {
         return $this->getData() === $productValue->getData() &&
             $this->scope === $productValue->getScope() &&
             $this->locale === $productValue->getLocale();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __toString()
-    {
-        $data = $this->getData();
-
-        if ($data instanceof \DateTimeInterface) {
-            $data = $data->format(\DateTime::ISO8601);
-        }
-
-        if ($data instanceof Collection || is_array($data)) {
-            $items = [];
-            foreach ($data as $item) {
-                $value = (string) $item;
-                if (!empty($value)) {
-                    $items[] = $value;
-                }
-            }
-
-            return implode(', ', $items);
-        } elseif (is_object($data)) {
-            return (string) $data;
-        }
-
-        return (string) $data;
     }
 
     /**
@@ -180,7 +112,7 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     protected function setScope($scope)
     {
-        if ($scope && $this->getAttribute() && $this->getAttribute()->isScopable() === false) {
+        if ($scope && $this->getAttribute() && !$this->getAttribute()->isScopable()) {
             $attributeCode = $this->getAttribute()->getCode();
             throw new \LogicException(
                 "The product value cannot be scoped, see attribute '".$attributeCode."' configuration"
@@ -197,7 +129,7 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     protected function setLocale($locale)
     {
-        if ($locale && $this->getAttribute() && $this->getAttribute()->isLocalizable() === false) {
+        if ($locale && $this->getAttribute() && !$this->getAttribute()->isLocalizable()) {
             $attributeCode = $this->getAttribute()->getCode();
             throw new \LogicException(
                 "The product value cannot be localized, see attribute '".$attributeCode."' configuration"
@@ -205,37 +137,5 @@ abstract class AbstractProductValue implements ProductValueInterface
         }
 
         $this->locale = $locale;
-    }
-
-    /**
-     * Set data
-     *
-     * @param mixed $data
-     *
-     * @return ProductValueInterface
-     */
-    protected function setData($data)
-    {
-        $setter = $this->attribute->getBackendType();
-        if ($this->attribute->isBackendTypeReferenceData()) {
-            $setter = $this->attribute->getReferenceDataName();
-        }
-
-        $setter = 'set'.ucfirst($setter);
-
-        return $this->$setter($data);
-    }
-    /**
-     * Set options, used for multi select to set many options
-     *
-     * @param Collection $options An array collection of AttributeOptionInterface
-     *
-     * @return ProductValueInterface
-     */
-    protected function setOptions(Collection $options)
-    {
-        $this->options = $options;
-
-        return $this;
     }
 }
