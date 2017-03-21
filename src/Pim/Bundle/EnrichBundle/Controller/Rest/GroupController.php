@@ -93,7 +93,7 @@ class GroupController
     {
         $groups = $this->groupRepository->getAllGroupsExceptVariant();
 
-        return new JsonResponse($this->normalizer->normalize($groups, 'internal_api'));
+        return new JsonResponse($this->normalizer->normalize($groups, 'internal_api', $this->userContext->toArray()));
     }
 
     /**
@@ -105,7 +105,7 @@ class GroupController
     {
         $group = $this->groupRepository->findOneBy(['code' => $identifier]);
 
-        return new JsonResponse($this->normalizer->normalize($group, 'internal_api'));
+        return new JsonResponse($this->normalizer->normalize($group, 'internal_api', $this->userContext->toArray()));
     }
 
     /**

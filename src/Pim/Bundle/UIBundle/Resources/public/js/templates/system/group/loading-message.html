@@ -5,7 +5,7 @@
         </div>
         <div class="AknFieldContainer-inputContainer system-loading-message-enabled-field">
             <div class="switch switch-small" data-on-label="<%- _.__('pim_enrich.form.entity.switch.yes') %>" data-off-label="<%- _.__('pim_enrich.form.entity.switch.no') %>">
-                <input type="checkbox" name="loading_message_enabled" <%- loading_message_enabled === '1' ? 'checked' : '' %> />
+                <input type="checkbox" id="loading_message_enabled" <%- loading_message_enabled === '1' ? 'checked' : '' %> />
             </div>
         </div>
     </div>
@@ -15,7 +15,7 @@
             <label class="AknFieldContainer-label" for="loading_messages"><%- _.__('oro_config.form.config.group.loading_messages.label') %></label>
         </div>
         <div class="AknFieldContainer-inputContainer system-loading-messages-field">
-            <textarea class="AknTextareaField" name="loading_messages"><%- loading_messages %></textarea>
+            <textarea class="AknTextareaField" id="loading_messages"><%- loading_messages %></textarea>
         </div>
     </div>
 </div>

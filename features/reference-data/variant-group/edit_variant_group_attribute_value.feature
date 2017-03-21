@@ -56,6 +56,7 @@ Feature: Editing attribute values of a variant group also updates products with 
     And I visit the "Other" group
     And I change the "Sole fabric" to "Gold, smooth"
     And I save the variant group
+    Then I should not see the text "There are unsaved changes."
     And I am on the "boot" product page
     And I visit the "Other" group
     Then the product Sole fabric should be "gold, smooth"
