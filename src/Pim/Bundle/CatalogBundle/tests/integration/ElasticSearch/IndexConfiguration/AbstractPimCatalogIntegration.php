@@ -21,7 +21,7 @@ abstract class AbstractPimCatalogIntegration extends TestCase
     const DOCUMENT_TYPE = 'pim_catalog_product';
 
     /** @var Client */
-    protected $esClient;
+    private $esClient;
 
     /** @var Loader */
     private $esConfigurationLoader;
