@@ -17,6 +17,8 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
  */
 class PropertiesNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
 {
+    const FIELD_COMPLETENESS = 'completeness';
+
     /**
      * {@inheritdoc}
      */
@@ -35,6 +37,9 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
         $data[StandardPropertiesNormalizer::FIELD_ENABLED] = (bool) $product->isEnabled();
         $data[StandardPropertiesNormalizer::FIELD_CATEGORIES] = $product->getCategoryCodes();
         $data[StandardPropertiesNormalizer::FIELD_GROUPS] = $product->getGroupCodes();
+
+        $data[self::FIELD_COMPLETENESS] = !$product->getCompletenesses()->isEmpty()
+            ? $this->serializer->normalize($product->getCompletenesses(), 'indexing', $context) : [];
 
         // TODO TIP-706: normalize product values
 //        $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$product->getValues()->isEmpty()
