@@ -129,9 +129,12 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
 
         if ('labels' === $field) {
             foreach ($data as $localeCode => $label) {
-                if (null !== $label && '' !== $label) {
-                    $attributeOption->setLocale($localeCode);
-                    $translation = $attributeOption->getTranslation();
+                $attributeOption->setLocale($localeCode);
+                $translation = $attributeOption->getTranslation();
+
+                if (null === $label || '' === $label) {
+                    $attributeOption->removeOptionValue($translation);
+                } else {
                     $translation->setLabel($label);
                 }
             }

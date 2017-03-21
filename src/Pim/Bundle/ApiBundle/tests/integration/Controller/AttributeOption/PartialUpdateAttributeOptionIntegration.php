@@ -306,7 +306,10 @@ JSON;
         $data =
 <<<JSON
     {
-        "labels":{"en_US": null}
+        "labels": {
+            "en_US": null,
+            "fr_FR": ""
+        }
     }
 JSON;
 
@@ -319,9 +322,7 @@ JSON;
             'code'       => 'optionA',
             'attribute'  => 'a_multi_select',
             'sort_order' => 10,
-            'labels'     => [
-                'en_US' => 'Option A',
-            ],
+            'labels'     => [],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute_option');
 

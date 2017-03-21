@@ -72,33 +72,39 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
         );
     }
 
-    function it_does_not_update_empty_labels(
-        $attributeRepository,
+    function it_removes_the_translation_when_the_new_label_is_empty(
         AttributeOptionInterface $attributeOption,
-        AttributeInterface $attribute,
         AttributeOptionValueInterface $attributeOptionValue
     ) {
-        $attributeOption->getId()->willReturn(null);
-        $attributeOption->getAttribute()->willReturn(null);
-
-        $attributeOption->setCode('mycode')->shouldBeCalled();
-        $attributeRepository->findOneByIdentifier('myattribute')->willReturn($attribute);
-        $attributeOption->setAttribute($attribute)->shouldBeCalled();
-
-        $attributeOption->setLocale('de_DE')->shouldNotBeCalled();
-        $attributeOption->setLocale('fr_FR')->shouldNotBeCalled();
-        $attributeOption->getTranslation()->shouldNotBeCalled();
-        $attributeOptionValue->setLabel(null)->shouldNotBeCalled();
+        $attributeOption->setLocale('fr_FR')->shouldBeCalled();
+        $attributeOption->getTranslation()->willReturn($attributeOptionValue);
         $attributeOptionValue->setLabel('')->shouldNotBeCalled();
+        $attributeOption->removeOptionValue($attributeOptionValue)->shouldBeCalled();
 
         $this->update(
             $attributeOption,
             [
-                'code' => 'mycode',
-                'attribute' => 'myattribute',
                 'labels' => [
-                    'de_DE' => null,
                     'fr_FR' => '',
+                ]
+            ]
+        );
+    }
+
+    function it_removes_the_translation_when_the_new_label_is_null(
+        AttributeOptionInterface $attributeOption,
+        AttributeOptionValueInterface $attributeOptionValue
+    ) {
+        $attributeOption->setLocale('fr_FR')->shouldBeCalled();
+        $attributeOption->getTranslation()->willReturn($attributeOptionValue);
+        $attributeOptionValue->setLabel(null)->shouldNotBeCalled();
+        $attributeOption->removeOptionValue($attributeOptionValue)->shouldBeCalled();
+
+        $this->update(
+            $attributeOption,
+            [
+                'labels' => [
+                    'fr_FR' => null,
                 ]
             ]
         );
