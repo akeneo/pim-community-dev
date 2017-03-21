@@ -34,8 +34,11 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
 
         $data[StandardPropertiesNormalizer::FIELD_GROUPS] = $product->getGroupCodes();
 
-        $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$product->getValues()->isEmpty()
-            ? $this->serializer->normalize($product->getValues(), 'indexing', $context) : [];
+        // TODO TIP-706: normalize product values
+//        $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$product->getValues()->isEmpty()
+//            ? $this->serializer->normalize($product->getValues(), 'indexing', $context) : [];
+
+        $data[StandardPropertiesNormalizer::FIELD_VALUES] = [];
 
         return $data;
     }

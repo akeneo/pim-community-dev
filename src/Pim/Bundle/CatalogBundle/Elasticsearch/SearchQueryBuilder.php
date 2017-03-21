@@ -116,6 +116,10 @@ class SearchQueryBuilder
             $searchQuery['query']['bool']['should'] = $this->shouldClauses;
         }
 
+        if (empty($searchQuery['query'])) {
+            $searchQuery['query'] = new \stdClass();
+        }
+
         return $searchQuery;
     }
 }

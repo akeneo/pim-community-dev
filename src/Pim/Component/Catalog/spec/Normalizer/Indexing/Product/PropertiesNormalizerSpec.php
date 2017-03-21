@@ -51,6 +51,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         );
     }
 
+    /*
     function it_normalizes_product_fields_and_values(
         $serializer,
         ProductInterface $product,
@@ -95,4 +96,5 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             ]
         );
     }
+    */
 }

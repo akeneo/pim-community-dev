@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter;
 
-use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -20,9 +19,15 @@ class FamilyFilterIntegration extends AbstractFilterTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
+            $this->resetIndex();
+
             $family = $this->get('pim_catalog.factory.family')->create();
             $this->get('pim_catalog.updater.family')->update($family, ['code' => 'familyB']);
             $this->get('pim_catalog.saver.family')->save($family);
+
+            $this->createProduct('foo', ['family' => 'familyA']);
+            $this->createProduct('bar', []);
+            $this->createProduct('baz', []);
         }
     }
 
@@ -75,16 +80,5 @@ class FamilyFilterIntegration extends AbstractFilterTestCase
     public function testErrorOperatorNotSupported()
     {
         $this->execute([['family', Operators::BETWEEN, 'familyA']]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return new Configuration(
-            [Configuration::getTechnicalSqlCatalogPath()],
-            false
-        );
     }
 }

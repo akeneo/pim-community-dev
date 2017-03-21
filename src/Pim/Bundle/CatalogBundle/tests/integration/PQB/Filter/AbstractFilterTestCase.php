@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter;
 
+use Akeneo\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -13,6 +15,12 @@ use Akeneo\Test\Integration\TestCase;
  */
 abstract class AbstractFilterTestCase extends TestCase
 {
+    /** @var Client */
+    private $esClient;
+
+    /** @var Loader */
+    private $esConfigurationLoader;
+
     /**
      * {@inheritdoc}
      */
@@ -25,14 +33,29 @@ abstract class AbstractFilterTestCase extends TestCase
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->esClient = $this->get('akeneo_elasticsearch.client');
+        $this->esConfigurationLoader = $this->get('akeneo_elasticsearch.index_configuration.loader');
+    }
+
+    /**
      * @param string $identifier
      * @param array  $data
      */
     protected function createProduct($identifier, array $data)
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
+        $family = isset($data['family']) ? $data['family'] : null;
+
+        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $family);
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
+
+        $this->esClient->refreshIndex();
     }
 
     /**
@@ -87,5 +110,19 @@ abstract class AbstractFilterTestCase extends TestCase
         sort($expected);
 
         $this->assertSame($products, $expected);
+    }
+
+    /**
+     * Resets the index used for the integration tests
+     */
+    protected function resetIndex()
+    {
+        $conf = $this->esConfigurationLoader->load();
+
+        if ($this->esClient->hasIndex()) {
+            $this->esClient->deleteIndex();
+        }
+
+        $this->esClient->createIndex($conf->buildAggregated());
     }
 }
