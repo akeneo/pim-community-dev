@@ -23,8 +23,7 @@ class DeleteProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $this->assertCount(3, $this->get('pim_catalog.repository.product')->findAll());
-        // TODO: TIP-613: This repository does not exist anymore. We need to find another way to count.
-        $this->assertEquals(30, $this->get('pim_catalog.repository.product_value_counter')->count());
+        $this->assertProductRawValuesEquals(27);
 
         $client->request('DELETE', 'api/rest/v1/products/foo');
 
@@ -32,7 +31,7 @@ class DeleteProductIntegration extends AbstractProductTestCase
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
 
         $this->assertCount(2, $this->get('pim_catalog.repository.product')->findAll());
-        $this->assertEquals(2, $this->get('pim_catalog.repository.product_value_counter')->count());
+        $this->assertProductRawValuesEquals(0);
         $this->assertNull($this->get('pim_catalog.repository.product')->findOneByIdentifier('foo'));
     }
 
@@ -48,5 +47,31 @@ class DeleteProductIntegration extends AbstractProductTestCase
         $this->assertCount(2, $content, 'response contains 2 items');
         $this->assertSame(Response::HTTP_NOT_FOUND, $content['code']);
         $this->assertSame('Product "not_found" does not exist.', $content['message']);
+    }
+
+    /**
+     * @param int $number
+     */
+    private function assertProductRawValuesEquals($number)
+    {
+        $rawValues = $this
+            ->get('pim_catalog.repository.product')
+            ->createQueryBuilder('p')
+            ->select('p.rawValues')
+            ->getQuery()
+            ->getArrayResult();
+
+        $values = [];
+        foreach ($rawValues as $rawValuesByProduct) {
+            foreach ($rawValuesByProduct['rawValues'] as $rawValuesByProductAndAttribute) {
+                foreach ($rawValuesByProductAndAttribute as $rawValuesByChannel) {
+                    foreach ($rawValuesByChannel as $rawValueByChannelAndLocale) {
+                        $values[] = $rawValueByChannelAndLocale;
+                    }
+                }
+            }
+        }
+
+        $this->assertEquals($number, count($values));
     }
 }
