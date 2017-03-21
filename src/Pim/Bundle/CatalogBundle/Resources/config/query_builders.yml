@@ -10,6 +10,7 @@ parameters:
     pim_catalog.query.elasticsearch.filter.family.class:          Pim\Bundle\CatalogBundle\Elasticsearch\Filter\FamilyFilter
     pim_catalog.query.elasticsearch.filter.category.class:        Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter
     pim_catalog.query.elasticsearch.filter.group.class:           Pim\Bundle\CatalogBundle\Elasticsearch\Filter\GroupFilter
+    pim_catalog.query.elasticsearch.filter.status.class:          Pim\Bundle\CatalogBundle\Elasticsearch\Filter\StatusFilter
 
 services:
     pim_catalog.query.product_query_builder_factory:
@@ -87,5 +88,13 @@ services:
             - '@pim_catalog.repository.category'
             - ['categories']
             - ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.status:
+        class: '%pim_catalog.query.elasticsearch.filter.status.class%'
+        arguments:
+            - ['enabled']
+            - ['=', '!=']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }

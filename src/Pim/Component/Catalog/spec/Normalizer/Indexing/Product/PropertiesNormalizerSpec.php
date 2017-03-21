@@ -35,7 +35,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         ProductValueCollectionInterface $productValueCollection
     ) {
         $product->getIdentifier()->willReturn('sku-001');
-
+        $product->isEnabled()->willReturn(false);
         $product->getValues()->willReturn($productValueCollection);
         $product->getFamily()->willReturn(null);
         $product->getGroupCodes()->willReturn([]);
@@ -46,6 +46,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             [
                 'identifier' => 'sku-001',
                 'family'     => null,
+                'enabled'    => false,
                 'categories' => [],
                 'groups'     => [],
                 'values'     => [],

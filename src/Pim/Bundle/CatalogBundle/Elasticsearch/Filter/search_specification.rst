@@ -258,6 +258,53 @@ EMPTY
         ]
     ]
 
+Enabled
+*******
+:Apply: apply datatype 'boolean' on the 'enabled' field
+
+Data model
+~~~~~~~~~~
+.. code-block:: yaml
+
+    enabled: true
+
+Filtering
+~~~~~~~~~
+Operators
+.........
+Equals (=)
+~~~~~~~~~~
+
+.. code-block:: php
+
+    'filter' => [
+        'term' => [
+            'enabled' => true
+        ]
+    ]
+
+Not Equal (!=)
+~~~~~~~~~~~~~~
+
+.. code-block:: php
+
+    [
+        'query' => [
+            'bool' => [
+                'must_not' => [
+                    'term' => [
+                        'enabled' => false
+                    ]
+                ],
+                'filter' => [
+                    'exists' => [
+                        'field' => 'enabled'
+                    ]
+                ]
+            ]
+        ]
+    ]
+
 Text
 ****
 

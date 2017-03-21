@@ -5,6 +5,8 @@ mappings:
                 type: 'keyword'
             family:
                 type: 'keyword'
+            enabled:
+                type: 'boolean'
             groups:
                 type: 'keyword'
         dynamic_templates:
