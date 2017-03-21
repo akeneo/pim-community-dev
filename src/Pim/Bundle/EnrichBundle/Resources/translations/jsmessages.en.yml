@@ -728,6 +728,7 @@ page_title:
     pim_enrich_categorytree_index:         Category trees
     pim_enrich_categorytree_create:        Category trees | Create
     pim_enrich_categorytree_edit:          Category trees {{ category.label }} | Edit
+    pim_enrich_categorytree_create_tree:   Category trees | Create
     pim_enrich_attribute_index:            Attributes
     pim_enrich_attribute_create:           Attributes | Create
     pim_enrich_attribute_edit:             Attributes {{ attribute.label }} | Edit
