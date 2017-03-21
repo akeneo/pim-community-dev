@@ -367,6 +367,7 @@ config:
         pim/job/execution/auto-refresh:                              pimenrich/js/job/execution/auto-refresh
         pim/job/execution/show-profile:                              pimenrich/js/job/execution/show-profile
         pim/job/execution/download-archives-buttons:                 pimenrich/js/job/execution/download-archives-buttons
+        pim/job/execution/download-log:                              pimenrich/js/job/execution/download-log
 
         # Filters
         pim/filter/filter:                     pimenrich/js/filter/filter

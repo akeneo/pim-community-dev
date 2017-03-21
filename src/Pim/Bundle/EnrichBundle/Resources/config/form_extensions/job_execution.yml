@@ -19,13 +19,11 @@ extensions:
             iconName: download-alt
             url: pim_enrich_job_tracker_download_file
             filesPath: meta.archives
-            filesPath: meta.archives
-            aclConditional:
-              - { propertyPath: jobInstance.type,  value: export, id: pim_importexport_export_execution_download_files }
-              - { propertyPath: jobInstance.type,  value: import, id: pim_importexport_import_execution_download_files }
+            aclIdImport: pim_importexport_import_execution_download_files
+            aclIdExport: pim_importexport_export_execution_download_files
 
     pim-job-execution-form-download-log:
-        module: pim/form/common/download-file
+        module: pim/job/execution/download-log
         parent: pim-job-execution-form
         targetZone: buttons
         position: 90
@@ -35,9 +33,8 @@ extensions:
             isVisiblePath: meta.logExists
             url: pim_importexport_export_execution_download_log
             urlParams: [{ property: id, path: meta.id }]
-            aclConditional:
-              - { propertyPath: jobInstance.type,  value: export, id: pim_importexport_export_execution_download_log }
-              - { propertyPath: jobInstance.type,  value: import, id: pim_importexport_import_execution_download_log }
+            aclIdImport: pim_importexport_import_execution_download_log
+            aclIdExport: pim_importexport_export_execution_download_log
 
     pim-job-execution-form-show-profile:
         module: pim/job/execution/show-profile

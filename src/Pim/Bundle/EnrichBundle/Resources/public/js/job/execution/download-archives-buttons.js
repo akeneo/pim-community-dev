@@ -51,21 +51,23 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                var formData = this.getFormData();
-                if (securityContext.isConditionalGranted(this.config.aclConditional, formData)) {
-                    this.$el.html(this.template({
-                        __: __,
-                        archives: propertyAccessor.accessProperty(this.getFormData(), this.config.filesPath),
-                        executionId: formData.meta.id,
-                        generateRoute: this.getUrl.bind(this)
-                    }));
+                if (!this.isVisible()) {
+                    return this;
                 }
+                var formData = this.getFormData();
+                this.$el.html(this.template({
+                    __: __,
+                    archives: propertyAccessor.accessProperty(this.getFormData(), this.config.filesPath),
+                    executionId: formData.meta.id,
+                    generateRoute: this.getUrl.bind(this)
+                }));
 
                 return this;
             },
 
             /**
              * Get the url from parameters
+             *
              * @returns {string}
              */
             getUrl: function (parameters) {
@@ -73,6 +75,22 @@ define(
                     this.config.url,
                     parameters
                 );
+            },
+
+            /**
+             * Returns true if the extension should be visible
+             *
+             * @returns {boolean}
+             */
+            isVisible: function () {
+                var formData = this.getFormData();
+                if (formData.jobInstance.type === 'export') {
+                    return securityContext.isGranted(this.config.aclIdExport);
+                } else if (formData.jobInstance.type === 'import') {
+                    return securityContext.isGranted(this.config.aclIdImport);
+                } else {
+                    return true;
+                }
             }
         });
     }

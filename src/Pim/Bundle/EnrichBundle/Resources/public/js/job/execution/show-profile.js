@@ -27,6 +27,7 @@ define(
 
             /**
              * Get the route to redirect to
+             *
              * @return {string}
              */
             getUrl: function () {
@@ -41,6 +42,7 @@ define(
 
             /**
              * Only visible when the type of jobInstance is import or export
+             *
              * @returns {*|{then, fail, end}}
              */
             isVisible: function () {
