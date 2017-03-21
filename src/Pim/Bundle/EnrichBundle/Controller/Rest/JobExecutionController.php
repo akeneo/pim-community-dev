@@ -72,7 +72,7 @@ class JobExecutionController
                 count($files)
             );
             $archives[$archiveName] = [
-                'label' => ucfirst($label),
+                'label' => $label,
                 'files' => $files,
             ];
         }
