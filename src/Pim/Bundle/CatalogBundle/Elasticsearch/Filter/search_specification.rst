@@ -34,6 +34,9 @@ The suffixes are simply equivalent to the attribute's backend type.
 For example:
  - description-text: the ``-text`` suffix is applied, meaning that we must apply a specific analyzer for a text area attribute.
 
+List of fields and their mapping to Akeneo
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 List of attributes and their mapping to Akeneo
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -899,53 +902,68 @@ Same as ``IN``, but with the ``must_not`` occured type
 
 Family
 ******
-:Apply: apply on the 'family' field
+:Apply: apply datatype 'keyword' on the 'family' field
+
+Data model
+~~~~~~~~~~
+.. code-block:: yaml
+
+  family: 'camcorders'
+
+Filtering
+~~~~~~~~~
+Operators
+.........
+IN LIST
+"""""""
+
+.. code-block:: php
+
+    'filter' => [
+        'terms' => [
+            'family' => ['camcorders', 'mug'],
+        ]
+    ]
+
+NOT IN LIST
+"""""""""""
+
+.. code-block:: php
+
+    'must_not' => [
+        'terms' => [
+            'family' => ['camcorders'],
+        ]
+    ]
+
+IS EMPTY
+""""""""
+
+.. code-block:: php
+
+    'must_not' => [
+        'exists' => [
+            'field' => 'family',
+        ]
+    ]
+
+IS NOT EMPTY
+""""""""""""
+
+.. code-block:: php
+
+    'filter' => [
+        'exists' => [
+            'field' => 'family',
+        ]
+    ]
+
 
 Data model
 ~~~~~~~~~~
 .. code-block:: yaml
 
     family: 'familyA'
-
-Filtering
-~~~~~~~~~
-Operators
-.........
-IN
-~~
-:Type: filter
-
-.. code-block:: php
-
-    'terms' => [
-        'family' => ['familyA', 'familyB', 'familyC']
-    ]
-
-NOT IN
-~~~~~~
-:Type: must_not
-
-.. code-block:: php
-
-    'terms' => [
-        'family' => ['familyA', 'familyB', 'familyC']
-    ]
-
-IS EMPTY
-~~~~~~~~
-:Type: must_not
-
-.. code-block:: php
-
-    ['exists' => ['field' => 'family']]
-
-IS NOT EMPTY
-~~~~~~~~~~~~
-:Type: filter
-
-.. code-block:: php
-
-    ['exists' => ['field' => 'family']]
 
 Sorting
 ~~~~~~~
