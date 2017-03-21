@@ -111,13 +111,6 @@ abstract class AbstractProductValue implements ProductValueInterface
     protected $media;
 
     /**
-     * Store prices value
-     *
-     * @var PriceCollectionInterface
-     */
-    protected $prices;
-
-    /**
      * @param AttributeInterface $attribute
      * @param string             $channel
      * @param string             $locale
@@ -126,7 +119,6 @@ abstract class AbstractProductValue implements ProductValueInterface
     public function __construct(AttributeInterface $attribute, $channel, $locale, $data)
     {
         $this->options = new ArrayCollection();
-        $this->prices = new PriceCollection();
 
         $this->setAttribute($attribute);
         $this->setScope($channel);
@@ -297,28 +289,6 @@ abstract class AbstractProductValue implements ProductValueInterface
     public function getMedia()
     {
         return $this->media;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrices()
-    {
-        return $this->prices;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrice($currency)
-    {
-        foreach ($this->prices as $price) {
-            if ($price->getCurrency() === $currency) {
-                return $price;
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -535,20 +505,6 @@ abstract class AbstractProductValue implements ProductValueInterface
     protected function setMedia(FileInfoInterface $media = null)
     {
         $this->media = $media;
-
-        return $this;
-    }
-
-    /**
-     * Set prices, used for multi select to set many prices
-     *
-     * @param PriceCollectionInterface $prices
-     *
-     * @return ProductValueInterface
-     */
-    protected function setPrices(PriceCollectionInterface $prices)
-    {
-        $this->prices = $prices;
 
         return $this;
     }

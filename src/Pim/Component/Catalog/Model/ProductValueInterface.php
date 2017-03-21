@@ -64,12 +64,6 @@ interface ProductValueInterface
     public function getAttribute();
 
     /**
-     * Get prices
-     *
-     * @return PriceCollectionInterface
-     */
-    public function getPrices();
-
     /**
      * Get options, used for multi select to retrieve many options
      *
@@ -104,15 +98,6 @@ interface ProductValueInterface
      * @return string
      */
     public function getText();
-
-    /**
-     * Get the price matching the given currency
-     *
-     * @param string $currency
-     *
-     * @return null|ProductPriceInterface
-     */
-    public function getPrice($currency);
 
     /**
      * Get used scope

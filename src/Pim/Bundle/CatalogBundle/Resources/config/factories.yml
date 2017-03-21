@@ -181,7 +181,7 @@ services:
         public: false
         arguments:
             - '@pim_catalog.factory.price'
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.price_collection.class%'
             - 'pim_catalog_price_collection'
         tags:
             - { name: pim_catalog.factory.product_value }

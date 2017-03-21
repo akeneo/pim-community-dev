@@ -29,3 +29,4 @@ parameters:
     pim_catalog.entity.product_template.class:             Pim\Bundle\CatalogBundle\Entity\ProductTemplate
 
     pim_catalog.entity.product_value.metric.class: Pim\Component\Catalog\Model\ProductValue\MetricProductValue
+    pim_catalog.entity.product_value.price_collection.class: Pim\Component\Catalog\Model\ProductValue\PriceCollectionProductValue
