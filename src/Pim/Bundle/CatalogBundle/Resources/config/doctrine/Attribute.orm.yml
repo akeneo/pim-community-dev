@@ -146,6 +146,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             cascade:
                 - persist
                 - detach
+            orphanRemoval: true
     manyToOne:
         group:
             targetEntity: Pim\Component\Catalog\Model\AttributeGroupInterface
