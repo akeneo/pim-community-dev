@@ -1,6 +1,5 @@
 parameters:
     pim_catalog.entity.product.class:                      Pim\Component\Catalog\Model\Product
-    pim_catalog.entity.product_value.class:                Pim\Component\Catalog\Model\ProductValue
     pim_catalog.entity.association.class:                  Pim\Component\Catalog\Model\Association
     pim_catalog.entity.completeness.class:                 Pim\Component\Catalog\Model\Completeness
     pim_catalog.entity.association_type.class:             Pim\Bundle\CatalogBundle\Entity\AssociationType
@@ -28,6 +27,8 @@ parameters:
     pim_catalog.entity.product_price.class:                Pim\Component\Catalog\Model\ProductPrice
     pim_catalog.entity.product_template.class:             Pim\Bundle\CatalogBundle\Entity\ProductTemplate
 
+    # move that ?
+    pim_catalog.entity.product_value.class: Pim\Component\Catalog\Model\ProductValue\ProductValue
     pim_catalog.entity.product_value.metric.class: Pim\Component\Catalog\Model\ProductValue\MetricProductValue
     pim_catalog.entity.product_value.option.class: Pim\Component\Catalog\Model\ProductValue\OptionProductValue
     pim_catalog.entity.product_value.price_collection.class: Pim\Component\Catalog\Model\ProductValue\PriceCollectionProductValue

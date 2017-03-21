@@ -22,34 +22,6 @@ interface ProductValueInterface
     public function getData();
 
     /**
-     * Get media
-     *
-     * @return FileInfoInterface
-     */
-    public function getMedia();
-
-    /**
-     * Get decimal data
-     *
-     * @return float
-     */
-    public function getDecimal();
-
-    /**
-     * Get boolean data
-     *
-     * @return bool
-     */
-    public function getBoolean();
-
-    /**
-     * Get date data
-     *
-     * @return \Datetime
-     */
-    public function getDate();
-
-    /**
      * Get attribute
      *
      * @return AttributeInterface
@@ -72,13 +44,6 @@ interface ProductValueInterface
     public function getLocale();
 
     /**
-     * Get varchar data
-     *
-     * @return string
-     */
-    public function getVarchar();
-
-    /**
      * Check if the value contains data
      *
      * @return bool
@@ -86,32 +51,11 @@ interface ProductValueInterface
     public function hasData();
 
     /**
-     * Get text data
-     *
-     * @return string
-     */
-    public function getText();
-
-    /**
      * Get used scope
      *
      * @return string $scope
      */
     public function getScope();
-
-    /**
-     * Get datetime data
-     *
-     * @return \Datetime
-     */
-    public function getDatetime();
-
-    /**
-     * Get integer data
-     *
-     * @return int
-     */
-    public function getInteger();
 
     /**
      * Checks that the product value is equal to another.
