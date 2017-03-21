@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Catalog\Model;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**

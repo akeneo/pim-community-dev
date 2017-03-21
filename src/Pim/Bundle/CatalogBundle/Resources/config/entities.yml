@@ -29,6 +29,7 @@ parameters:
 
     # move that ?
     pim_catalog.entity.product_value.class: Pim\Component\Catalog\Model\ProductValue\ProductValue
+    pim_catalog.entity.product_value.media.class: Pim\Component\Catalog\Model\ProductValue\MediaProductValue
     pim_catalog.entity.product_value.metric.class: Pim\Component\Catalog\Model\ProductValue\MetricProductValue
     pim_catalog.entity.product_value.option.class: Pim\Component\Catalog\Model\ProductValue\OptionProductValue
     pim_catalog.entity.product_value.price_collection.class: Pim\Component\Catalog\Model\ProductValue\PriceCollectionProductValue

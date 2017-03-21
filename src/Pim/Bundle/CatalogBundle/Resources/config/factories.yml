@@ -211,7 +211,7 @@ services:
         public: false
         arguments:
             - '@akeneo_file_storage.repository.file_info'
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.media.class%'
             - 'pim_catalog_file'
         tags:
             - { name: pim_catalog.factory.product_value }
@@ -221,7 +221,7 @@ services:
         public: false
         arguments:
             - '@akeneo_file_storage.repository.file_info'
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.media.class%'
             - 'pim_catalog_image'
         tags:
             - { name: pim_catalog.factory.product_value }

@@ -2,10 +2,6 @@
 
 namespace Pim\Component\Catalog\Model;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-
 /**
  * Abstract product value
  *
@@ -47,13 +43,6 @@ abstract class AbstractProductValue implements ProductValueInterface
 
     /** @var array */
     protected $optionIds;
-
-    /**
-     * Store upload values
-     *
-     * @var FileInfoInterface
-     */
-    protected $media;
 
     /**
      * @param AttributeInterface $attribute
@@ -164,14 +153,6 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getMedia()
-    {
-        return $this->media;
-    }
-
-    /**
      * Set attribute
      *
      * @param AttributeInterface $attribute
@@ -254,20 +235,6 @@ abstract class AbstractProductValue implements ProductValueInterface
     protected function setOptions(Collection $options)
     {
         $this->options = $options;
-
-        return $this;
-    }
-
-    /**
-     * Set media
-     *
-     * @param FileInfoInterface $media
-     *
-     * @return ProductValueInterface
-     */
-    protected function setMedia(FileInfoInterface $media = null)
-    {
-        $this->media = $media;
 
         return $this;
     }
