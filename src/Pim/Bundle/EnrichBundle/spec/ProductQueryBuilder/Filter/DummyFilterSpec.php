@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
+namespace spec\Pim\Bundle\EnrichBundle\ProductQueryBuilder\Filter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
