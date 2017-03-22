@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug fixes
+
+- PIM-6248: Fix notification message on project creation
+
 # 1.7.1 (2017-03-23)
 
 **Caution:** Due to a wrong doctrine migration in the previous version, you also need to re-run them `php app/console doctrine:migrations:migrate` for this patch.
