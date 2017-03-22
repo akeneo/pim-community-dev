@@ -99,7 +99,9 @@ class Select2Decorator extends ElementDecorator
      */
     public function close()
     {
-        if (false !== strstr($this->getAttribute('class'), 'select2-dropdown-open')) {
+        $selectElementExists = $this->find('css', '.select2-dropdown-open') !== null;
+
+        if ($selectElementExists && false !== strstr($this->getAttribute('class'), 'select2-dropdown-open')) {
             $dropMask = $this->getBody()->find('css', '#select2-drop-mask');
 
             if (null !== $dropMask) {
