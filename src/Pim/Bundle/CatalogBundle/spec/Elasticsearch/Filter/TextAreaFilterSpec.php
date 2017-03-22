@@ -5,9 +5,11 @@ namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\TextAreaFilter;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
@@ -24,27 +26,28 @@ class TextAreaFilterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Elasticsearch\Filter\TextAreaFilter');
+        $this->shouldHaveType(TextAreaFilter::class);
     }
 
     function it_is_a_filter()
     {
-        $this->shouldImplement('\Pim\Component\Catalog\Query\Filter\AttributeFilterInterface');
-        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Elasticsearch\Filter\AbstractAttributeFilter');
+        $this->shouldImplement(AttributeFilterInterface::class);
     }
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn([
-            'STARTS WITH',
-            'CONTAINS',
-            'DOES NOT CONTAIN',
-            '=',
-            'IN',
-            'EMPTY',
-            'NOT EMPTY',
-            '!=',
-        ]);
+        $this->getOperators()->shouldReturn(
+            [
+                'STARTS WITH',
+                'CONTAINS',
+                'DOES NOT CONTAIN',
+                '=',
+                'IN',
+                'EMPTY',
+                'NOT EMPTY',
+                '!=',
+            ]
+        );
         $this->supportsOperator('STARTS WITH')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
@@ -60,7 +63,8 @@ class TextAreaFilterSpec extends ObjectBehavior
         $attributeValidatorHelper->validateLocale($name, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($name, 'ecommerce')->shouldBeCalled();
 
-        $sqb->addFilter([
+        $sqb->addFilter(
+            [
                 'term' => [
                     'values.name-varchar.en_US.ecommerce.raw' => 'Sony',
                 ],
@@ -82,16 +86,19 @@ class TextAreaFilterSpec extends ObjectBehavior
         $attributeValidatorHelper->validateLocale($name, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($name, 'ecommerce')->shouldBeCalled();
 
-        $sqb->addMustNot([
+        $sqb->addMustNot(
+            [
                 'term' => [
                     'values.name-varchar.en_US.ecommerce.raw' => 'Sony',
                 ],
             ]
         )->shouldBeCalled();
 
-        $sqb->addFilter([
-            'exists' => ['field' => 'values.name-varchar.en_US.ecommerce.raw'],
-        ])->shouldBeCalled();
+        $sqb->addFilter(
+            [
+                'exists' => ['field' => 'values.name-varchar.en_US.ecommerce.raw'],
+            ]
+        )->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($name, Operators::NOT_EQUAL, 'Sony', 'en_US', 'ecommerce', []);
@@ -108,7 +115,8 @@ class TextAreaFilterSpec extends ObjectBehavior
         $attributeValidatorHelper->validateLocale($name, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($name, 'ecommerce')->shouldBeCalled();
 
-        $sqb->addMustNot([
+        $sqb->addMustNot(
+            [
                 'exists' => [
                     'field' => 'values.name-varchar.en_US.ecommerce',
                 ],
@@ -130,7 +138,8 @@ class TextAreaFilterSpec extends ObjectBehavior
         $attributeValidatorHelper->validateLocale($name, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($name, 'ecommerce')->shouldBeCalled();
 
-        $sqb->addFilter([
+        $sqb->addFilter(
+            [
                 'exists' => [
                     'field' => 'values.name-varchar.en_US.ecommerce',
                 ],
@@ -152,7 +161,8 @@ class TextAreaFilterSpec extends ObjectBehavior
         $attributeValidatorHelper->validateLocale($name, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($name, 'ecommerce')->shouldBeCalled();
 
-        $sqb->addFilter([
+        $sqb->addFilter(
+            [
                 'query_string' => [
                     'default_field' => 'values.name-varchar.en_US.ecommerce.raw',
                     'query'         => '*sony*',
@@ -175,7 +185,8 @@ class TextAreaFilterSpec extends ObjectBehavior
         $attributeValidatorHelper->validateLocale($name, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($name, 'ecommerce')->shouldBeCalled();
 
-        $sqb->addMustNot([
+        $sqb->addMustNot(
+            [
                 'query_string' => [
                     'default_field' => 'values.name-varchar.en_US.ecommerce.raw',
                     'query'         => '*sony*',
@@ -183,7 +194,8 @@ class TextAreaFilterSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $sqb->addFilter([
+        $sqb->addFilter(
+            [
                 'exists' => [
                     'field' => 'values.name-varchar.en_US.ecommerce.raw',
                 ],
@@ -205,7 +217,8 @@ class TextAreaFilterSpec extends ObjectBehavior
         $attributeValidatorHelper->validateLocale($name, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($name, 'ecommerce')->shouldBeCalled();
 
-        $sqb->addFilter([
+        $sqb->addFilter(
+            [
                 'query_string' => [
                     'default_field' => 'values.name-varchar.en_US.ecommerce.raw',
                     'query'         => 'sony*',
