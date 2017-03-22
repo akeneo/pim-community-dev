@@ -1,10 +1,13 @@
 # 1.7.*
 
+**Caution:** Due to a wrong doctrine migration in the previous version, you also need to re-run them `php app/console doctrine:migrations:migrate` for this patch.
+             
 ## Bug fixes
 
 - PIM-6213: Remove ticks on published form.
 - PIM-6251: Fix completeness not calculated during bulk action edit attributes.
 - PIM-6245: Correctly switch to project channel when selecting a Teamwork Assistant project.
+- PIM-6266: Fix doctrine migration to add Teamwork Assistant job rights. 
 
 # 1.7.0 (2017-03-14)
 
