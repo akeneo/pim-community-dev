@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug Fixes
+
+- PIM-6265: Fix user menu navigation
+
 # 1.7.1 (2017-03-23)
 
 ## Bug Fixes
