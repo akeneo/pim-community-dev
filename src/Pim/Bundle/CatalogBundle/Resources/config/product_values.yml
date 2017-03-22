@@ -1,0 +1,7 @@
+parameters:
+    pim_catalog.entity.product_value.class: Pim\Component\Catalog\ProductValue\ProductValue
+    pim_catalog.entity.product_value.media.class: Pim\Component\Catalog\ProductValue\MediaProductValue
+    pim_catalog.entity.product_value.metric.class: Pim\Component\Catalog\ProductValue\MetricProductValue
+    pim_catalog.entity.product_value.option.class: Pim\Component\Catalog\ProductValue\OptionProductValue
+    pim_catalog.entity.product_value.options.class: Pim\Component\Catalog\ProductValue\OptionsProductValue
+    pim_catalog.entity.product_value.price_collection.class: Pim\Component\Catalog\ProductValue\PriceCollectionProductValue

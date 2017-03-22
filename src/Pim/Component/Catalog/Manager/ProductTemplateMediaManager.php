@@ -6,7 +6,7 @@ use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\Model\ProductValue\MediaProductValue;
+use Pim\Component\Catalog\ProductValue\MediaProductValue;
 
 /**
  * Product template media manager

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Model\ProductValue;
+namespace Pim\Component\Catalog\ProductValue;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Util\ClassUtils;

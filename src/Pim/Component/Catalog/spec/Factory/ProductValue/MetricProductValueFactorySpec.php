@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Factory\MetricFactory;
 use Pim\Component\Catalog\Factory\ProductValue\MetricProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
-use Pim\Component\Catalog\Model\ProductValue;
+use Pim\Component\Catalog\ProductValue\ProductValue;
 use Prophecy\Argument;
 
 class MetricProductValueFactorySpec extends ObjectBehavior
