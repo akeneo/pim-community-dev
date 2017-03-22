@@ -1,3 +1,9 @@
+# 1.6.x
+
+## Bug fixes
+
+PIM-6268: Fix an issue where one cannot scroll locales on asset page when too many locales are activated
+
 # 1.6.12 (2017-02-28)
 
 # 1.6.11 (2017-02-14)
@@ -92,7 +98,7 @@
 
 - PIM-5665: As Peter, I would like to remove products from categories using rules (mass edit, add "remove" action in rule engine)
 - PIM-5742: Improve the products save for mass operations, I would like to have the completeness and rules calculated directly
-- PIM-5577: As Julia, when I save several products, I would like to have the completeness and rules calculated directly	
+- PIM-5577: As Julia, when I save several products, I would like to have the completeness and rules calculated directly
 - PIM-5757: As Peter, I would like to make bulk actions on the rules (dd delete bulk action on the rules datagrid)
 - PIM-5813: As Peter, I would like to launch manually 1 or all rules from the UI (add the possibility to launch the rules from the UI)
 - PIM-5860: As Peter, I would like to launch manually a selection of rules (add the execute mass action on rules)
@@ -104,7 +110,7 @@
 - PIM-5455: As Peter, when I define a rule, I would like to know the number of products impacted by the rule
 - PIM-5892: Change warning message when executing all rules from the UI
 
-### Improve Asset Manager 
+### Improve Asset Manager
 
 - PIM-5488: As Pamela, I would like to move the assets in the trees (add a bulk action on the product assets grid, to move them in categories)
 - PIM-5489: As Pamela, I would like to mass add tags for a selection of assets (add a bulk action on the product assets grid, to add tags on assets)
