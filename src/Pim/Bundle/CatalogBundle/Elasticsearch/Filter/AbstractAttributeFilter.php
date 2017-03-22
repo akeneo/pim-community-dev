@@ -114,7 +114,7 @@ abstract class AbstractAttributeFilter implements AttributeFilterInterface
         $locale = (null === $locale) ? '<all_locales>' : $locale;
         $channel = (null === $channel) ? '<all_channels>' : $channel;
 
-        return 'values.' . $attribute->getCode() . '-' . $attribute->getBackendType() . '.' . $locale . '.' . $channel;
+        return $attribute->getCode() . '-' . $attribute->getBackendType() . '#' . $locale . '#' . $channel;
     }
 
     /**
