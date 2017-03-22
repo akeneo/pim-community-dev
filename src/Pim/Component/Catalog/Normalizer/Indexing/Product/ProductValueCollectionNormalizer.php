@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
@@ -24,8 +25,10 @@ class ProductValueCollectionNormalizer extends SerializerAwareNormalizer impleme
     {
         $result = [];
         foreach ($values as $value) {
-            $normalizedValue = $this->serializer->normalize($value, $format, $context);
-            $result = array_merge_recursive($result, $normalizedValue);
+            if (AttributeTypes::IDENTIFIER !== $value->getAttribute()->getType()) {
+                $normalizedValue = $this->serializer->normalize($value, $format, $context);
+                $result = array_merge($result, $normalizedValue);
+            }
         }
 
         return $result;

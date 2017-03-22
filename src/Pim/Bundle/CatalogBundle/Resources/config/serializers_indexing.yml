@@ -4,6 +4,7 @@ parameters:
     pim_catalog.normalizer.indexing.datetime.class: Pim\Component\Catalog\Normalizer\Indexing\DateTimeNormalizer
     pim_catalog.normalizer.indexing.product.product_value_collection.class: Pim\Component\Catalog\Normalizer\Indexing\Product\ProductValueCollectionNormalizer
     pim_catalog.normalizer.indexing.product.completeness_collection.class: Pim\Component\Catalog\Normalizer\Indexing\Product\CompletenessCollectionNormalizer
+    pim_catalog.normalizer.indexing.product.number.class: Pim\Component\Catalog\Normalizer\Indexing\Product\NumberNormalizer
 
 services:
     pim_catalog.normalizer.indexing.product:
@@ -32,5 +33,10 @@ services:
 
     pim_catalog.normalizer.indexing.product.completeness_collection:
         class: '%pim_catalog.normalizer.indexing.product.completeness_collection.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing.number:
+        class: '%pim_catalog.normalizer.indexing.product.number.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
