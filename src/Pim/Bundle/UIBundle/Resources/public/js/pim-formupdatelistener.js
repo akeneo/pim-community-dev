@@ -8,7 +8,7 @@ define(
             this.updated = false;
             var message = $form.attr('data-updated-message');
             if (!message) {
-                console.error('FormUpdateListener: message not provided.');
+                console.warn('FormUpdateListener: message not provided.');
                 return;
             }
             var title = $form.attr('data-updated-title');

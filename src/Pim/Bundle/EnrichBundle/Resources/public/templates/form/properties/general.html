@@ -5,12 +5,12 @@
     <div class="AknFormContainer AknFormContainer--withPadding">
         <div class="AknFieldContainer">
             <div class="AknFieldContainer-header">
-                <label class="control-label required" for="pim_enrich_association_type_form_code">
-                    <%- codeLabel %> <em><%- __('pim_enrich.form.required') %></em>
+                <label class="control-label required" for="<%- inputField %>">
+                    <%- codeLabel %> <em><%- formRequired %></em>
                 </label>
             </div>
             <div class="AknFieldContainer-inputContainer">
-                <input id="pim_enrich_association_type_form_code" class="AknTextField" type="text" readonly disabled required value="<%- model.code %>">
+                <input id="<%- inputField %>" class="AknTextField" type="text" readonly disabled required value="<%- model.code %>">
             </div>
         </div>
     </div>

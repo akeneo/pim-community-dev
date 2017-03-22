@@ -117,49 +117,12 @@ class JobExecutionController
      *
      * @return \Symfony\Component\HttpFoundation\Response|JsonResponse
      */
-    public function showAction(Request $request, $id)
+    public function showAction($id)
     {
-        $jobExecution = $this->jobExecutionRepo->find($id);
-
-        if (null === $jobExecution) {
-            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
-        }
-
-        $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_SHOW, new GenericEvent($jobExecution));
-
-        if ('json' === $request->getRequestFormat()) {
-            $archives = [];
-            foreach ($this->archivist->getArchives($jobExecution) as $archiveName => $files) {
-                $label = $this->translator->transChoice(
-                    sprintf('pim_mass_edit.download_archive.%s', $archiveName),
-                    count($files)
-                );
-                $archives[$archiveName] = [
-                    'label' => ucfirst($label),
-                    'files' => $files,
-                ];
-            }
-
-            if (!$this->jobExecutionManager->checkRunningStatus($jobExecution)) {
-                $this->jobExecutionManager->markAsFailed($jobExecution);
-            }
-
-            // limit the number of step execution returned to avoid memory overflow
-            $context = ['limit_warnings' => 100];
-
-            return new JsonResponse(
-                [
-                    'jobExecution' => $this->serializer->normalize($jobExecution, 'standard', $context),
-                    'hasLog'       => file_exists($jobExecution->getLogFile()),
-                    'archives'     => $archives,
-                ]
-            );
-        }
-
         return $this->templating->renderResponse(
-            sprintf('PimEnrichBundle:MassEditExecution:show.html.twig', ucfirst($this->getJobType())),
+            'PimEnrichBundle:JobExecution:show.html.twig',
             [
-                'execution' => $jobExecution,
+                'id' => $id
             ]
         );
     }
