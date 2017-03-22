@@ -703,7 +703,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iFilterBy($filterName, $operator, $value)
     {
         $this->datagrid->filterBy($filterName, $operator, $value);
-        $this->wait();
     }
 
     /**
@@ -899,11 +898,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iClickBackToGrid()
     {
-        $this->spin(function () {
-            $this->getSession()->getPage()->clickLink('Back to grid');
-
-            return true;
+        $backButton = $this->spin(function () {
+            return $this->getSession()->getPage()->find('css', '.back-link');
         }, 'Cannot find the button "Back to grid"');
+
+        $backButton->click();
     }
 
     /**

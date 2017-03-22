@@ -16,9 +16,9 @@ define(
         'pim/router',
         'pim/user-context'
     ],
-    function (_, __, BaseForm, template, Routing, UserContext) {
+    function (_, __, BaseForm, template, router, UserContext) {
         return BaseForm.extend({
-            tagName: 'a',
+            tagName: 'span',
             events: {
                 'click': 'backToGrid'
             },
