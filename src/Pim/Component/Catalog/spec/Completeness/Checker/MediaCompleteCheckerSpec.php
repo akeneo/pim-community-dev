@@ -37,7 +37,7 @@ class MediaCompleteCheckerSpec extends ObjectBehavior
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $value->getMedia()->willReturn($media);
+        $value->getData()->willReturn($media);
         $media->getKey()->willReturn('just-a-media');
         $this->isComplete($value, $channel, $locale)->shouldReturn(true);
     }
@@ -47,7 +47,7 @@ class MediaCompleteCheckerSpec extends ObjectBehavior
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $value->getMedia()->willReturn(null);
+        $value->getData()->willReturn(null);
         $this->isComplete($value, $channel, $locale)->shouldReturn(false);
     }
 
@@ -57,7 +57,7 @@ class MediaCompleteCheckerSpec extends ObjectBehavior
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $value->getMedia()->willReturn($media);
+        $value->getData()->willReturn($media);
 
         $media->getKey()->willReturn(null);
         $this->isComplete($value, $channel, $locale)->shouldReturn(false);

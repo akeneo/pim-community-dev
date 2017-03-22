@@ -6,6 +6,7 @@ use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Component\FileStorage\FilesystemProvider;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Pim\Component\Catalog\ProductValue\MediaProductValueInterface;
 use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 
 /**
@@ -27,27 +28,21 @@ class BulkMediaFetcher
     protected $filesystemProvider;
 
     /** @var array */
-    protected $mediaAttributeTypes;
-
-    /** @var array */
     protected $errors;
 
     /**
      * @param FileFetcherInterface               $mediaFetcher
      * @param FilesystemProvider                 $filesystemProvider
      * @param FileExporterPathGeneratorInterface $fileExporterPath
-     * @param array                              $mediaAttributeTypes
      */
     public function __construct(
         FileFetcherInterface $mediaFetcher,
         FilesystemProvider $filesystemProvider,
-        FileExporterPathGeneratorInterface $fileExporterPath,
-        array $mediaAttributeTypes
+        FileExporterPathGeneratorInterface $fileExporterPath
     ) {
         $this->errors = [];
         $this->mediaFetcher = $mediaFetcher;
         $this->fileExporterPath = $fileExporterPath;
-        $this->mediaAttributeTypes = $mediaAttributeTypes;
         $this->filesystemProvider = $filesystemProvider;
     }
 
@@ -63,8 +58,7 @@ class BulkMediaFetcher
         $target = DIRECTORY_SEPARATOR !== substr($target, -1) ? $target . DIRECTORY_SEPARATOR : $target;
 
         foreach ($values as $value) {
-            if (in_array($value->getAttribute()->getType(), $this->mediaAttributeTypes)
-                && null !== $media = $value->getMedia()) {
+            if ($value instanceof MediaProductValueInterface && null !== $media = $value->getData()) {
                 $exportPath = $this->fileExporterPath->generate(
                     [
                         'locale' => $value->getLocale(),

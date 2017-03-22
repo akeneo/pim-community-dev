@@ -11,6 +11,7 @@ use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\FileStorage;
+use Pim\Component\Catalog\ProductValue\MediaProductValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -32,10 +33,10 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
         $fileStorer,
         $productValueFactory,
         ProductTemplateInterface $template,
-        ProductValueInterface $imageValue,
-        ProductValueInterface $fileValue,
-        ProductValueInterface $newImageValue,
-        ProductValueInterface $newFileValue,
+        MediaProductValueInterface $imageValue,
+        MediaProductValueInterface $fileValue,
+        MediaProductValueInterface $newImageValue,
+        MediaProductValueInterface $newFileValue,
         FileInfoInterface $imageMedia,
         FileInfoInterface $fileInfoMedia,
         FileInfoInterface $fileInfoMediaUploaded,
@@ -55,14 +56,14 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
         $valuesIterator->current()->willReturn($imageValue, $fileValue);
         $valuesIterator->next()->shouldBeCalled();
 
-        $imageValue->getMedia()->willReturn($imageMedia);
+        $imageValue->getData()->willReturn($imageMedia);
         $imageMedia->isRemoved()->willReturn(true);
 
         $imageValue->getAttribute()->willReturn($imageAttribute);
         $imageValue->getScope()->willReturn(null);
         $imageValue->getLocale()->willReturn(null);
 
-        $fileValue->getMedia()->willReturn($fileInfoMedia);
+        $fileValue->getData()->willReturn($fileInfoMedia);
         $fileInfoMedia->isRemoved()->willReturn(false);
         $fileInfoMedia->getUploadedFile()->willReturn($uploadedFile);
         $fileStorer->store($uploadedFile, FileStorage::CATALOG_STORAGE_ALIAS, true)->willReturn($fileInfoMediaUploaded);
@@ -90,11 +91,11 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
         $productValueFactory,
         ProductTemplateInterface $imageTemplate,
         ProductTemplateInterface $textTemplate,
-        ProductValueInterface $imageValue,
+        MediaProductValueInterface $imageValue,
         ProductValueInterface $textValue,
         FileInfoInterface $imageMedia,
         AttributeInterface $attribute,
-        ProductValueInterface $newImageValue,
+        MediaProductValueInterface $newImageValue,
         ProductValueCollectionInterface $imageValues,
         ProductValueCollectionInterface $textValues,
         \ArrayIterator $imageValuesIterator,
@@ -108,7 +109,7 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
         $imageValuesIterator->current()->willReturn($imageValue);
         $imageValuesIterator->next()->shouldBeCalled();
 
-        $imageValue->getMedia()->willReturn($imageMedia);
+        $imageValue->getData()->willReturn($imageMedia);
         $imageMedia->isRemoved()->willReturn(true);
 
         $imageValue->getAttribute()->willReturn($attribute);

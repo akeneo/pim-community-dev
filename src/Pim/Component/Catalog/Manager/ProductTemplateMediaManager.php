@@ -6,7 +6,7 @@ use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\ProductValue\MediaProductValue;
+use Pim\Component\Catalog\ProductValue\MediaProductValueInterface;
 
 /**
  * Product template media manager
@@ -46,8 +46,8 @@ class ProductTemplateMediaManager
         $values = $template->getValues();
 
         foreach ($values as $value) {
-            if ($value instanceof MediaProductValue) {
-                if (null !== $value->getMedia() && true === $value->getMedia()->isRemoved()) {
+            if ($value instanceof MediaProductValueInterface) {
+                if (null !== $value->getData() && true === $value->getData()->isRemoved()) {
                     $mediaHandled = true;
 
                     $values->remove($value);
@@ -59,11 +59,11 @@ class ProductTemplateMediaManager
                             null
                         )
                     );
-                } elseif (null !== $value->getMedia() && null !== $value->getMedia()->getUploadedFile()) {
+                } elseif (null !== $value->getData() && null !== $value->getData()->getUploadedFile()) {
                     $mediaHandled = true;
 
                     $file = $this->fileStorer->store(
-                        $value->getMedia()->getUploadedFile(),
+                        $value->getData()->getUploadedFile(),
                         FileStorage::CATALOG_STORAGE_ALIAS,
                         true
                     );

@@ -9,6 +9,7 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\ProductValue\MediaProductValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
@@ -112,12 +113,12 @@ class MediaAttributeCopier extends AbstractAttributeCopier
         $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
             $file = null;
-            if (null !== $fromValue->getMedia()) {
+            if (null !== $fromValue->getData()) {
                 $filesystem = $this->filesystemProvider->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
-                $rawFile = $this->fileFetcher->fetch($filesystem, $fromValue->getMedia()->getKey());
+                $rawFile = $this->fileFetcher->fetch($filesystem, $fromValue->getData()->getKey());
                 $file = $this->fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false);
 
-                $file->setOriginalFilename($fromValue->getMedia()->getOriginalFilename());
+                $file->setOriginalFilename($fromValue->getData()->getOriginalFilename());
             }
 
             $this->productBuilder->addOrReplaceProductValue(

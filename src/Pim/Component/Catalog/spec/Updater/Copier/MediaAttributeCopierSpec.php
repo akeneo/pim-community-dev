@@ -93,8 +93,8 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $fromProductValue->getMedia()->willReturn($fromMedia);
-        $toProductValue->getMedia()->willReturn($toMedia);
+        $fromProductValue->getData()->willReturn($fromMedia);
+        $toProductValue->getData()->willReturn($toMedia);
 
         $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $fromMedia->getOriginalFilename()->willReturn('akeneo.jpg');
@@ -149,7 +149,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $fromProductValue->getMedia()->willReturn(null);
+        $fromProductValue->getData()->willReturn(null);
 
         $filesystemProvider->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->shouldNotBeCalled();
         $fileFetcher->fetch(Argument::cetera())->shouldNotBeCalled();
@@ -200,7 +200,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $fromProductValue->getMedia()->willReturn($fromMedia);
+        $fromProductValue->getData()->willReturn($fromMedia);
 
         $fromMedia->getOriginalFilename()->willReturn('akeneo.jpg');
         $fromMedia->getKey()->willReturn('key');
@@ -218,7 +218,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product->getValue('toAttributeCode', $toLocale, $toScope)->willReturn(null);
 
-        $toProductValue->getMedia()->willReturn($toMedia);
+        $toProductValue->getData()->willReturn($toMedia);
 
         $builder->addOrReplaceProductValue($product, $toAttribute, $toLocale, $toScope, $fileInfo);
 
