@@ -93,6 +93,22 @@ class ProductEditForm extends Form
     }
 
     /**
+     * Returns if the "add available attributes" button is enabled
+     *
+     * @return bool
+     *
+     * @throws TimeoutException
+     */
+    public function isAvailableAttributeEnabled()
+    {
+        $button = $this->spin(function () {
+            return $this->find('css', $this->elements['Available attributes button']['css']);
+        }, 'Cannot find available attribute button');
+
+        return !$this->getClosest($button, 'select2-container')->hasClass('select2-container-disabled');
+    }
+
+    /**
      * {@inheritdoc}
      *
      * TODO: Used with the new 'add-attributes' module. The method should be in the Form parent

@@ -896,7 +896,21 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $group
+     * @param string $status 'enabled'|'disabled'
+     *
+     * @Then /^The available attributes button should be (enabled|disabled)$/
+     */
+    public function theAvailableAttributeButtonShouldBeEnabled($status)
+    {
+        $expectedStatus = ('enabled' === $status);
+
+        $this->spin(function () use ($expectedStatus) {
+            return $expectedStatus === $this->getCurrentPage()->isAvailableAttributeEnabled();
+        }, sprintf('The available attribute button should be %s', $status));
+    }
+
+    /**
+     * @param string $groups
      *
      * @Then /^I should see available attribute group "([^"]*)"$/
      *
@@ -2080,18 +2094,28 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * TODO This step should be renamed to "I confirm the mass edit"
+     *
      * @Given /^I move on to the next step$/
      */
     public function iMoveOnToTheNextStep()
+    {
+        $this->iMoveOnToTheNextStep();
+        $this->scrollContainerTo(900);
+        $this->getCurrentPage()->confirm();
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I move to the confirm page$/
+     */
+    public function iMoveToTheConfirmPage()
     {
         $this->scrollContainerTo(900);
         $this->spin(function () {
             return $this->getCurrentPage()->find('css', '.next');
         }, 'Could not find next button');
         $this->getCurrentPage()->next();
-        $this->scrollContainerTo(900);
-        $this->getCurrentPage()->confirm();
-        $this->wait();
     }
 
     /**
