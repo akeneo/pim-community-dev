@@ -2,20 +2,18 @@
 
 namespace Pim\Component\Catalog\ProductValue;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
-use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\AbstractProductValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\PriceCollectionInterface;
 
 /**
- * Product value for pim_catalog_price_collection
+ * Product value for "pim_catalog_price_collection" attribute type
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PriceCollectionProductValue extends AbstractProductValue
+class PriceCollectionProductValue extends AbstractProductValue implements PriceCollectionProductValueInterface
 {
     /** @var PriceCollectionInterface */
     protected $data;

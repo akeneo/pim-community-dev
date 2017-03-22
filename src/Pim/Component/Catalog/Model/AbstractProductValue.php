@@ -14,33 +14,11 @@ abstract class AbstractProductValue implements ProductValueInterface
     /** @var AttributeInterface */
     protected $attribute;
 
-    /** @var mixed */
-    protected $data;
-
     /** @var string Locale code */
     protected $locale;
 
     /** @var string Scope code */
     protected $scope;
-
-    /**
-     * @param AttributeInterface $attribute
-     * @param string             $channel
-     * @param string             $locale
-     * @param mixed              $data
-     */
-    public function __construct(AttributeInterface $attribute, $channel, $locale, $data)
-    {
-        $this->setAttribute($attribute);
-        $this->setScope($channel);
-        $this->setLocale($locale);
-        $this->setData($data);
-    }
-
-    /**
-     * @param mixed $data
-     */
-    abstract protected function setData($data = null);
 
     /**
      * {@inheritdoc}

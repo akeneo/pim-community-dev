@@ -5,7 +5,6 @@ namespace Acme\Bundle\AppBundle\Model;
 use Acme\Bundle\AppBundle\Entity\Fabric;
 use Pim\Component\Catalog\Model\AbstractProductValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValue as PimProductValue;
 
 /**
  * Fabrics product value for "data" attribute type. It's a new many to many relationship

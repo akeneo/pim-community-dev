@@ -7,13 +7,13 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 
 /**
- * Product value for pim_catalog_options
+ * Product value for "pim_catalog_options" attribute type
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OptionsProductValue extends AbstractProductValue
+class OptionsProductValue extends AbstractProductValue implements OptionsProductValueInterface
 {
     /** @var AttributeOptionInterface[] */
     protected $data;
@@ -42,9 +42,7 @@ class OptionsProductValue extends AbstractProductValue
     }
 
     /**
-     * @param string $code
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasCode($code)
     {
@@ -58,7 +56,7 @@ class OptionsProductValue extends AbstractProductValue
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getOptionCodes()
     {

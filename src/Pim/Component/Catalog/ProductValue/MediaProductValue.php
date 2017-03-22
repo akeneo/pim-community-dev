@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Model\AbstractProductValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
- * Product value for:
+ * Product value for attribute types:
  *   - pim_catalog_image
  *   - pim_catalog_file
  *
@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MediaProductValue extends AbstractProductValue
+class MediaProductValue extends AbstractProductValue implements MediaProductValueInterface
 {
     /** @var FileInfoInterface */
     protected $data;

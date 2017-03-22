@@ -2,8 +2,6 @@
 
 namespace Pim\Component\Catalog\ProductValue;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
-use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\AbstractProductValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
@@ -15,7 +13,7 @@ use Pim\Component\Catalog\Model\MetricInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MetricProductValue extends AbstractProductValue
+class MetricProductValue extends AbstractProductValue implements MetricProductValueInterface
 {
     /** @var MetricInterface */
     protected $data;
@@ -56,7 +54,7 @@ class MetricProductValue extends AbstractProductValue
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getUnit()
     {

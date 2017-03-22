@@ -7,13 +7,13 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 
 /**
- * Product value for pim_catalog_option
+ * Product value for "pim_catalog_option" attribute type
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OptionProductValue extends AbstractProductValue
+class OptionProductValue extends AbstractProductValue implements OptionProductValueInterface
 {
     /** @var AttributeOptionInterface[] */
     protected $data;
