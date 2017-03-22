@@ -360,9 +360,6 @@ class Form extends Base
         }, sprintf('Cannot find "%s" file field', $locator));
 
         $field->attachFile($path);
-        $this
-            ->getSession()
-            ->executeScript('$(\'.edit .field-input input[type="file"], .AknMediaField-fileUploaderInput\').trigger(\'change\');');
     }
 
     /**
