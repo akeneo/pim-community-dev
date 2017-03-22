@@ -12,58 +12,19 @@ define(
         'jquery',
         'underscore',
         'pim/fetcher-registry',
-        'pim/common/add-attribute',
+        'pim/family-edit-form/attributes/toolbar/add-attribute',
         'oro/mediator'
     ],
     function (
         $,
         _,
         FetcherRegistry,
-        AddAttribute,
-        mediator
+        AddAttribute
     ) {
         return AddAttribute.extend({
             resultsPerPage: 10,
             class: 'AknButtonList-item add-attribute',
-            lock: false,
 
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                mediator.on(
-                    'mass-edit:form:lock',
-                    this.onLock.bind(this)
-                );
-
-                mediator.on(
-                    'mass-edit:form:unlock',
-                    this.onUnlock.bind(this)
-                );
-
-                return AddAttribute.prototype.configure.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                this.$el.html(this.template());
-
-                this.$('input[type="hidden"]').prop('readonly', this.lock);
-
-                this.initializeSelectWidget();
-                this.delegateEvents();
-
-                return this;
-            },
-
-            /**
-             * {@inheritdoc}
-             */
-            addAttributes: function () {
-                this.getRoot().trigger('add-attribute:add', { codes: this.selection });
-            },
             /**
              * {@inheritdoc}
              */
@@ -81,22 +42,6 @@ define(
 
                         return existingAttributes;
                     }.bind(this));
-            },
-
-            /**
-             * Lock event callback
-             */
-            onLock: function () {
-                this.lock = true;
-                this.render();
-            },
-
-            /**
-             * Unlock event callback
-             */
-            onUnlock: function () {
-                this.lock = false;
-                this.render();
             }
         });
     }

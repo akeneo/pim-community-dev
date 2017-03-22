@@ -10,7 +10,7 @@ extensions:
         position: 160
 
     pim-family-mass-edit-form-attributes-toolbar-add-attribute-by-group:
-        module: pim/family-mass-edit/toolbar/add-attribute-group
+        module: pim/family-edit-form/attributes/toolbar/add-attribute-group
         parent: pim-family-mass-edit-form-attributes-toolbar
         targetZone: attributes-toolbar
         position: 170
@@ -21,6 +21,9 @@ extensions:
                 title:       pim_enrich.form.mass_edit.family.attributes.toolbox.add
                 emptyText:   pim_enrich.form.mass_edit.family.attributes.toolbox.no_attribute_groups_available
                 countTitle:  pim_enrich.form.mass_edit.family.attributes.toolbox.attributes_groups_selected
+            events:
+                disable: 'mass-edit:form:lock'
+                enable: 'mass-edit:form:unlock'
 
     pim-family-mass-edit-form-attributes-toolbar-add-attribute:
         module: pim/family-mass-edit/toolbar/add-attribute
@@ -33,6 +36,9 @@ extensions:
                 buttonTitle: pim_enrich.form.mass_edit.family.attributes.toolbox.add
                 title:       pim_enrich.form.mass_edit.family.attributes.toolbox.add
                 emptyText:   pim_enrich.form.mass_edit.family.attributes.toolbox.no_attributes_available
+            events:
+                disable: 'mass-edit:form:lock'
+                enable: 'mass-edit:form:unlock'
 
     pim-family-mass-edit-form-attributes:
         module: pim/family-mass-edit/attributes

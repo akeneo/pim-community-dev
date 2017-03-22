@@ -380,13 +380,11 @@ config:
         # Mass product edit form
         pim/mass-product-edit-form/hidden-field-updater: pimenrich/js/product/form/mass-edit/hidden-field-updater
         pim/mass-product-edit-form/attributes:           pimenrich/js/product/form/mass-edit/attributes
-        pim/mass-product-edit-form/add-attribute:        pimenrich/js/product/form/mass-edit/add-attribute
 
         # Mass family edit
         pim/family-mass-edit/attributes:                  pimenrich/js/family/mass-edit/attributes
         pim/family-mass-edit/hidden-field-updater:        pimenrich/js/family/mass-edit/hidden-field-updater
         pim/family-mass-edit/toolbar/add-attribute:       pimenrich/js/family/mass-edit/toolbar/add-attribute
-        pim/family-mass-edit/toolbar/add-attribute-group: pimenrich/js/family/mass-edit/toolbar/add-attribute-group
 
         # Attribute option form
         pim/attribute-option-form:          pimenrich/js/attribute-option/form

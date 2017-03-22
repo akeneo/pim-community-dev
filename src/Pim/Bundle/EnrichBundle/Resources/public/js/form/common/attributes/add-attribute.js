@@ -48,6 +48,9 @@ define(
             attributeViews: [],
             footerView: null,
             queryTimer: null,
+            disabled: false,
+            disableEvent: null,
+            enableEvent: null,
 
             /**
              * {@inheritdoc}
@@ -65,13 +68,39 @@ define(
                         closeOnSelect: false
                     },
                     resultsPerPage: this.resultsPerPage,
-                    searchParameters: {}
+                    searchParameters: {},
+                    events: {
+                        disable: null,
+                        enable: null
+                    }
                 }, meta.config);
 
                 this.config.select2.placeholder = __(this.config.select2.placeholder);
                 this.config.select2.title       = __(this.config.select2.title);
                 this.config.select2.buttonTitle = __(this.config.select2.buttonTitle);
                 this.config.select2.emptyText   = __(this.config.select2.emptyText);
+
+                this.disableEvent = this.config.events.disable;
+                this.enableEvent  = this.config.events.enable;
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                if (!_.isNull(this.enableEvent) && !_.isNull(this.disableEvent)) {
+                    mediator.on(
+                        this.disableEvent,
+                        this.onDisable.bind(this)
+                    );
+
+                    mediator.on(
+                        this.enableEvent,
+                        this.onEnable.bind(this)
+                    );
+                }
+
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**
@@ -81,6 +110,8 @@ define(
              */
             render: function () {
                 this.$el.html(this.template());
+
+                this.$('input[type="hidden"]').prop('readonly', this.disabled);
 
                 this.initializeSelectWidget();
                 this.delegateEvents();
@@ -251,6 +282,22 @@ define(
              */
             getExcludedAttributes: function () {
                 return AttributeManager.getAttributes(this.getFormData());
+            },
+
+            /**
+             * Disable callback
+             */
+            onDisable: function () {
+                this.disabled = true;
+                this.render();
+            },
+
+            /**
+             * Enable callback
+             */
+            onEnable: function () {
+                this.disabled = false;
+                this.render();
             }
         });
     }
