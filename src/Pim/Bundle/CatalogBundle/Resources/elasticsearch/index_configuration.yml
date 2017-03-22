@@ -12,6 +12,10 @@ mappings:
             identifier:
                 type: 'keyword'
                 normalizer: 'varchar_normalizer'
+            # TODO TIP-706: we'll do this mapping with the numbers' mapping, as we don't know yet
+            # TODO TIP-706: how we should configure the index for such cases
+#            completenesses:
+#                type: ?
         dynamic_templates:
             -
                 text:
