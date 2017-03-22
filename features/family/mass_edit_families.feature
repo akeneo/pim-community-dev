@@ -120,3 +120,16 @@ Feature: Mass Edit Families
     And attributes "price, rate_sale and rating" should be optional in family "boots" for channel "Mobile"
     And attributes "price, rate_sale and rating" should be optional in family "sneakers" for channel "Mobile"
     And attributes "price, rate_sale and rating" should be optional in family "sandals" for channel "Mobile"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6199
+  Scenario: Successfully disable form when we are in validation step on mass edit families
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And I am on the families page
+    When I select rows boots, sneakers and sandals
+    And I press the "Change product information" button
+    And I choose the "Set attribute requirements" operation
+    And I display the Name attribute
+    And I switch the attribute "name" requirement in channel "mobile"
+    And I move to the confirm page
+    Then The available attributes button should be disabled

@@ -20,7 +20,7 @@ class SetAttributeRequirements extends Wizard
     use SpinCapableTrait;
 
     protected $elements = [
-        'Available attributes button'     => ['css' => 'button:contains("Select attributes")'],
+        'Available attributes button'     => ['css' => '.add-attribute a.select2-choice'],
         'Available attributes add button' => ['css' => '.pimmultiselect a:contains("Select")'],
         'Available attributes form'       => ['css' => '#pim_catalog_mass_edit_family_add_attribute'],
         'Attributes'                      => ['css' => 'table.groups'],
