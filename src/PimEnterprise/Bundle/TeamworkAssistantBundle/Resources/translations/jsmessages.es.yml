@@ -1,7 +1,6 @@
 teamwork_assistant:
   common:
     required: Requerido
-    warning: No se preocupe, el cálculo del proyecto puede tomar un tiempo. Puede que no sea visible de inmediato.
   grid:
     view_selector:
       create: Crear proyecto
@@ -34,7 +33,6 @@ teamwork_assistant:
     cancel: Cancelar
   widget:
     no_project: No tiene ningún proyecto
-    no_project_create: Crear un nuevo proyecto
     description: Descripción
     due_date: Vencimiento
     todo: PENDIENTES
@@ -46,15 +44,8 @@ teamwork_assistant:
       contributor_selector: Buscar colaborador
       project_selector: Buscar proyecto
     completeness:
-      to_start: PRODUCTOS A COMENZAR
       in_progress: PRODUCTOS EN CURSO
       done: PRODUCTOS TERMINADOS
 pim_datagrid:
   view_selector:
     project: Proyectos
-pim_dashboard:
-  widget:
-    last_operations:
-      job_type:
-        attribute_group_completeness_calculation: Teamwork Assistant
-        project_calculation: Teamwork Assistant
