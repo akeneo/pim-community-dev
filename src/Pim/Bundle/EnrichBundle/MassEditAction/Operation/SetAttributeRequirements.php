@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
@@ -22,6 +23,12 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     /** @var string */
     protected $values;
 
+    /** @var string[] */
+    protected $attributes;
+
+    /** @var array */
+    protected $requirements;
+
     /**
      * @param ChannelRepositoryInterface   $channelRepository
      * @param string                       $jobInstanceCode
@@ -41,29 +48,6 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     public function getFormType()
     {
         return 'pim_enrich_mass_set_attribute_requirements';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getActions()
-    {
-        $attributeRequirements = [];
-        $channelCodes = array_map(function ($channel) {
-            return $channel->getCode();
-        }, $this->channelRepository->findAll());
-
-        foreach ($this->getAttributes() as $attributeCode) {
-            foreach ($channelCodes as $channelCode) {
-                $attributeRequirements[] = [
-                    'attribute_code' => $attributeCode,
-                    'channel_code'   => $channelCode,
-                    'is_required'    => $this->isAttributeRequired($attributeCode, $channelCode)
-                ];
-            }
-        }
-
-        return $attributeRequirements;
     }
 
     /**
@@ -93,7 +77,27 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     }
 
     /**
-     * Sets values and converts to attribute and requirements arrays
+     * Gets attributes
+     *
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * Gets requirements
+     *
+     * @return array
+     */
+    public function getRequirements()
+    {
+        return $this->requirements;
+    }
+
+    /**
+     * Sets values and converts to attribute, requirements and actions array
      *
      * @param string $values
      *
@@ -102,16 +106,17 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     public function setValues($values)
     {
         $this->values = $values;
+        $this->attributes = $this->getAttributesFromValues();
+        $this->requirements = $this->getRequirementsFromValues();
+        $this->actions = $this->getActionsFromValues();
 
         return $this;
     }
 
     /**
-     * Gets attributes
-     *
-     * @return array
+     * @return string[]
      */
-    public function getAttributes()
+    protected function getAttributesFromValues()
     {
         $data = (array) json_decode($this->values, true);
 
@@ -123,11 +128,9 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     }
 
     /**
-     * Gets families requirements
-     *
      * @return array
      */
-    public function getRequirements()
+    protected function getRequirementsFromValues()
     {
         $data = (array) json_decode($this->values, true);
 
@@ -139,16 +142,26 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     }
 
     /**
-     * Checks if attribute is required for channel
-     *
-     * @param string $attributeCode
-     * @param string $channelCode
-     *
-     * @return bool
+     * @return array
      */
-    protected function isAttributeRequired($attributeCode, $channelCode)
+    protected function getActionsFromValues()
     {
-        return array_key_exists($channelCode, $this->getRequirements()) &&
-            in_array($attributeCode, $this->getRequirements()[$channelCode]);
+        $attributeRequirements = [];
+        $channelCodes = array_map(function (ChannelInterface $channel) {
+            return $channel->getCode();
+        }, $this->channelRepository->findAll());
+
+        foreach ($this->getAttributes() as $attributeCode) {
+            foreach ($channelCodes as $channelCode) {
+                $attributeRequirements[] = [
+                    'attribute_code' => $attributeCode,
+                    'channel_code'   => $channelCode,
+                    'is_required'    => array_key_exists($channelCode, $this->getRequirements()) &&
+                        in_array($attributeCode, $this->getRequirements()[$channelCode])
+                ];
+            }
+        }
+
+        return $attributeRequirements;
     }
 }
