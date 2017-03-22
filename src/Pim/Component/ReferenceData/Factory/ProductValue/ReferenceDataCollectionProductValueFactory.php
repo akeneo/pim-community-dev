@@ -115,7 +115,7 @@ class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryI
      * @param AttributeInterface $attribute
      * @param array              $referenceDataCodes
      *
-     * @return ArrayCollection
+     * @return array
      */
     protected function getReferenceDataCollection(AttributeInterface $attribute, array $referenceDataCodes)
     {
@@ -127,7 +127,7 @@ class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryI
             $collection->add($this->getReferenceData($attribute, $repository, $referenceDataCode));
         }
 
-        return $collection;
+        return $collection->toArray();
     }
 
     /**
