@@ -264,13 +264,10 @@ def runBehatTest(edition, features, phpVersion) {
                 tags = "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce"
             }
 
-            // Create mysql hostname (MySQL docker container name)
-            mysqlHostName = "mysql_${env.JOB_NAME}_${env.BUILD_NUMBER}_behat-${edition}".replaceAll( '/', '_' )
-
             // Configure the PIM
             sh "cp behat.ci.yml behat.yml"
             sh "cp app/config/parameters.yml.dist app/config/parameters_test.yml"
-            sh "sed -i \"s#database_host: .*#database_host: ${mysqlHostName}#g\" app/config/parameters_test.yml"
+            sh "sed -i \"s#database_host: .*#database_host: mysql#g\" app/config/parameters_test.yml"
             sh "sed -i \"s#pim_es_host: .*#pim_es_host: elasticsearch#g\" app/config/parameters_test.yml"
             if ('ce' == edition) {
                sh "printf \"    installer_data: 'PimInstallerBundle:minimal'\n\" >> app/config/parameters_test.yml"

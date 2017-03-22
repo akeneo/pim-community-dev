@@ -10,20 +10,21 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'pim/form',
         'text!pim/template/form/back-to-grid',
         'routing',
         'pim/user-context',
         'oro/navigation'
     ],
-    function (_, BaseForm, template, Routing, UserContext, Navigation) {
+    function (_, __, BaseForm, template, Routing, UserContext, Navigation) {
         return BaseForm.extend({
             tagName: 'a',
             className: 'AknTitleContainer-backLink back-link',
             template: _.template(template),
             config: {},
             attributes: {
-                title: _.__('pim_enrich.navigation.link.back_to_grid')
+                title: __('pim_enrich.navigation.link.back_to_grid')
             },
 
             /**

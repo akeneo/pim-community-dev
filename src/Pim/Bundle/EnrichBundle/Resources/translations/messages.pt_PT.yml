@@ -892,8 +892,6 @@ pim_enrich_attribute_form:
   code: Código
   type: Tipo de atributo
   reference_data_name: Nome de referência de dados
-  scopable: Âmbito
-  localizable: Multilingue
   unique: Valor único
   availableLocales: Linguagens disponíveis
   locale_specific: Específicas de uma linguagem

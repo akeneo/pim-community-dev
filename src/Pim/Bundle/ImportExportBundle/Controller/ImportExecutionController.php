@@ -29,9 +29,9 @@ class ImportExecutionController extends JobExecutionController
      *
      * @AclAncestor("pim_importexport_import_execution_show")
      */
-    public function showAction(Request $request, $id)
+    public function showAction($id)
     {
-        return parent::showAction($request, $id);
+        return parent::showAction($id);
     }
 
     /**

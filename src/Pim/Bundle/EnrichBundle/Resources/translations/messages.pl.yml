@@ -851,8 +851,6 @@ job_tracker:
     started_at: Rozpoczęto o
 pim_enrich_attribute_form:
   code: Kod
-  scopable: Zasięg
-  localizable: Określaj ustawienia regionalne
   unique: Unikatowa wartość
   availableLocales: Dostępne ustawienia regionalne
   group: Grupa atrybutów
