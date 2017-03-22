@@ -73,7 +73,11 @@ define(
                     this.setLocale(event.localeCode);
                 }.bind(this));
 
-                return BaseForm.prototype.configure.apply(this, arguments);
+                return this.getScopeLabel(this.scope).then(function (scopeLabel) {
+                    this.scopeLabel = scopeLabel;
+                }.bind(this)).then(function () {
+                    return BaseForm.prototype.configure.apply(this, arguments)
+                });
             },
 
             /**
