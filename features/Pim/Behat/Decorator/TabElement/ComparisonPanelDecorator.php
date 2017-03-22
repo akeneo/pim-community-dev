@@ -41,8 +41,14 @@ class ComparisonPanelDecorator extends ElementDecorator
     public function copySelectedElements()
     {
         $this->spin(function () {
-            return $this->find('css', $this->selectors['Copy selected button']);
-        }, 'Cannot find the "copy" button')->click();
+            if (0 === $this->selectedItemsCount()) {
+                return false;
+            }
+
+            $this->find('css', $this->selectors['Copy selected button'])->click();
+
+            return 0 === $this->selectedItemsCount();
+        }, 'Cannot find the "copy" button');
     }
 
     /**
@@ -63,5 +69,22 @@ class ComparisonPanelDecorator extends ElementDecorator
             return $dropdown->find('css', sprintf('.AknDropdown-menuLink[data-source="%s"]', $source));
         }, sprintf('Could not find source "%s" in switcher', $source));
         $option->click();
+    }
+
+    /**
+     * Get le count of selected items in the panel
+     *
+     * @return integer
+     */
+    protected function selectedItemsCount() {
+        $checkboxes = $this->getBody()->findAll('css', '.copy-field-selector');
+        $checkedCount = 0;
+        foreach ($checkboxes as $checkbox) {
+            if ($checkbox->isChecked()) {
+                $checkedCount++;
+            }
+        }
+
+        return $checkedCount;
     }
 }

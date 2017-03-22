@@ -722,8 +722,6 @@ config:
         pim/template/form/redirect:                               pimenrich/templates/form/redirect.html
         pim/template/form/download-file:                          pimenrich/templates/form/download-file.html
 
-        pim/template/association-type/tab/properties/general:     pimenrich/templates/association-type/tab/properties/general.html
-
         pim/template/channel/tab/properties/general:                pimenrich/templates/channel/tab/properties/general.html
         pim/template/channel/tab/properties/general/currencies:     pimenrich/templates/channel/tab/properties/general/currencies.html
         pim/template/channel/tab/properties/general/locales:        pimenrich/templates/channel/tab/properties/general/locales.html
