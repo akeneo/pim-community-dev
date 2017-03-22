@@ -87,10 +87,10 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
         $this->doTestOperatorInferior(Operators::LOWER_THAN);
     }
 
-//    public function testOperatorLowerThanOnAtLeastOneLocale()
-//    {
-//        $this->doTestOperatorInferior(Operators::LOWER_THAN_ON_AT_LEAST_ONE_LOCALE);
-//    }
+    public function testOperatorLowerThanOnAtLeastOneLocale()
+    {
+        $this->doTestOperatorInferior(Operators::LOWER_THAN_ON_AT_LEAST_ONE_LOCALE);
+    }
 
     private function doTestOperatorInferior($operator)
     {
@@ -115,10 +115,10 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
         $this->doTestOperatorInferiorOrEqual(Operators::LOWER_OR_EQUAL_THAN);
     }
 
-//    public function testOperatorLowerOrEqualThanOnAtLeastOneLocale()
-//    {
-//        $this->doTestOperatorInferiorOrEqual(Operators::LOWER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE);
-//    }
+    public function testOperatorLowerOrEqualThanOnAtLeastOneLocale()
+    {
+        $this->doTestOperatorInferiorOrEqual(Operators::LOWER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE);
+    }
 
     private function doTestOperatorInferiorOrEqual($operator)
     {
@@ -137,10 +137,10 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
         $this->doTestOperatorSame(Operators::EQUALS);
     }
 
-//    public function testOperatorEqualsOnAtLeastOneLocale()
-//    {
-//        $this->doTestOperatorSame(Operators::EQUALS_ON_AT_LEAST_ONE_LOCALE);
-//    }
+    public function testOperatorEqualsOnAtLeastOneLocale()
+    {
+        $this->doTestOperatorSame(Operators::EQUALS_ON_AT_LEAST_ONE_LOCALE);
+    }
 
     private function doTestOperatorSame($operator)
     {
@@ -174,10 +174,10 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
         $this->doTestOperatorSuperior(Operators::GREATER_THAN);
     }
 
-//    public function testOperatorGreaterThanOnAtLeastOneLocale()
-//    {
-//        $this->doTestOperatorSuperior(Operators::GREATER_THAN_ON_AT_LEAST_ONE_LOCALE);
-//    }
+    public function testOperatorGreaterThanOnAtLeastOneLocale()
+    {
+        $this->doTestOperatorSuperior(Operators::GREATER_THAN_ON_AT_LEAST_ONE_LOCALE);
+    }
 
     private function doTestOperatorSuperior($operator)
     {
@@ -199,10 +199,10 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
         $this->doTestOperatorSuperiorOrEqual(Operators::GREATER_OR_EQUAL_THAN);
     }
 
-//    public function testOperatorGreaterOrEqualThanOnAtLeastOneLocale()
-//    {
-//        $this->doTestOperatorSuperiorOrEqual(Operators::GREATER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE);
-//    }
+    public function testOperatorGreaterOrEqualThanOnAtLeastOneLocale()
+    {
+        $this->doTestOperatorSuperiorOrEqual(Operators::GREATER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE);
+    }
 
     private function doTestOperatorSuperiorOrEqual($operator)
     {
@@ -224,10 +224,10 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
         $this->doTestOperatorDifferent(Operators::NOT_EQUAL);
     }
 
-//    public function testOperatorNotEqualOnAtLeastOneLocale()
-//    {
-//        $this->doTestOperatorDifferent(Operators::NOT_EQUALS_ON_AT_LEAST_ONE_LOCALE);
-//    }
+    public function testOperatorNotEqualOnAtLeastOneLocale()
+    {
+        $this->doTestOperatorDifferent(Operators::NOT_EQUALS_ON_AT_LEAST_ONE_LOCALE);
+    }
 
     private function doTestOperatorDifferent($operator)
     {

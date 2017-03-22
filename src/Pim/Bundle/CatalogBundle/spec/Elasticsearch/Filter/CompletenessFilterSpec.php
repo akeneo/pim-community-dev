@@ -239,7 +239,7 @@ class CompletenessFilterSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_a_filter_on_EQUALS_operator($sqb)
+    function it_adds_a_filter_on_EQUALS_ON_AT_LEAST_ONE_LOCALE_operator($sqb)
     {
         $sqb->addShould(
             [
@@ -249,10 +249,11 @@ class CompletenessFilterSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
+        $this->addFieldFilter('completeness', Operators::EQUALS_ON_AT_LEAST_ONE_LOCALE, 56, 'en_US', 'ecommerce', []);
         $this->addFieldFilter('completeness', Operators::EQUALS, 56, 'en_US', 'ecommerce', []);
     }
 
-    function it_adds_a_filter_on_NOT_EQUAL_operator_on_one_locale($sqb)
+    function it_adds_a_filter_on_NOT_EQUALS_ON_AT_LEAST_ONE_LOCALE_operator_on_one_locale($sqb)
     {
         $sqb->addFilter(
             [
@@ -272,10 +273,18 @@ class CompletenessFilterSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
+        $this->addFieldFilter(
+            'completeness',
+            Operators::NOT_EQUALS_ON_AT_LEAST_ONE_LOCALE,
+            56,
+            'en_US',
+            'ecommerce',
+            []
+        );
         $this->addFieldFilter('completeness', Operators::NOT_EQUAL, 56, 'en_US', 'ecommerce', []);
     }
 
-    function it_adds_a_filter_on_NOT_EQUAL_operator_on_several_locales(
+    function it_adds_a_filter_on_NOT_EQUALS_ON_AT_LEAST_ONE_LOCALE_operator_on_several_locales(
         $sqb,
         $channelRepository,
         ChannelInterface $ecommerce
@@ -310,10 +319,11 @@ class CompletenessFilterSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
+        $this->addFieldFilter('completeness', Operators::NOT_EQUALS_ON_AT_LEAST_ONE_LOCALE, 56, null, 'ecommerce', []);
         $this->addFieldFilter('completeness', Operators::NOT_EQUAL, 56, null, 'ecommerce', []);
     }
 
-    function it_adds_a_filter_on_LOWER_THAN_operator($sqb)
+    function it_adds_a_filter_on_LOWER_THAN_ON_AT_LEAST_ONE_LOCALE_operator($sqb)
     {
         $sqb->addShould(
             [
@@ -323,6 +333,14 @@ class CompletenessFilterSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
+        $this->addFieldFilter(
+            'completeness',
+            Operators::LOWER_THAN_ON_AT_LEAST_ONE_LOCALE,
+            56,
+            'en_US',
+            'ecommerce',
+            []
+        );
         $this->addFieldFilter('completeness', Operators::LOWER_THAN, 56, 'en_US', 'ecommerce', []);
     }
 
@@ -346,7 +364,7 @@ class CompletenessFilterSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_a_filter_on_GREATER_THAN_operator($sqb)
+    function it_adds_a_filter_on_GREATER_THAN_ON_AT_LEAST_ONE_LOCALE_operator($sqb)
     {
         $sqb->addShould(
             [
@@ -356,6 +374,14 @@ class CompletenessFilterSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
+        $this->addFieldFilter(
+            'completeness',
+            Operators::GREATER_THAN_ON_AT_LEAST_ONE_LOCALE,
+            56,
+            'en_US',
+            'ecommerce',
+            []
+        );
         $this->addFieldFilter('completeness', Operators::GREATER_THAN, 56, 'en_US', 'ecommerce', []);
     }
 
@@ -379,7 +405,7 @@ class CompletenessFilterSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_a_filter_on_LOWER_OR_EQUAL_THAN_operator($sqb)
+    function it_adds_a_filter_on_LOWER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE_operator($sqb)
     {
         $sqb->addShould(
             [
@@ -389,7 +415,14 @@ class CompletenessFilterSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->addFieldFilter('completeness', Operators::LOWER_OR_EQUAL_THAN, 56, 'en_US', 'ecommerce', []);
+        $this->addFieldFilter(
+            'completeness',
+            Operators::LOWER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE,
+            56,
+            'en_US',
+            'ecommerce',
+            []
+        );
     }
 
     function it_adds_a_filter_on_LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES_operator($sqb)
@@ -412,7 +445,7 @@ class CompletenessFilterSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_a_filter_on_GREATER_OR_EQUAL_THAN_operator($sqb)
+    function it_adds_a_filter_on_GREATER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE_operator($sqb)
     {
         $sqb->addShould(
             [
@@ -422,7 +455,14 @@ class CompletenessFilterSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->addFieldFilter('completeness', Operators::GREATER_OR_EQUAL_THAN, 56, 'en_US', 'ecommerce', []);
+        $this->addFieldFilter(
+            'completeness',
+            Operators::GREATER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE,
+            56,
+            'en_US',
+            'ecommerce',
+            []
+        );
     }
 
     function it_adds_a_filter_on_GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES_operator($sqb)

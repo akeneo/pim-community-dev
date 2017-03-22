@@ -13,6 +13,14 @@ use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
  * Product completeness filter.
+ * The operators "=", "!=", "<", "<=", ">" and ">=" are now deprecated in favor of more meaningful operators.
+ * They are replaced respectively by:
+ *      - "EQUALS ON AT LEAST ONE LOCALE"
+ *      - "NOT EQUALS ON AT LEAST ONE LOCALE"
+ *      - "LOWER THAN ON AT LEAST ONE LOCALE"
+ *      - "LOWER OR EQUALS THAN ON AT LEAST ONE LOCALE"
+ *      - "GREATER THAN ON AT LEAST ONE LOCALE"
+ *      - "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE"
  *
  * @author    Julien Janvier <j.janvier@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -80,7 +88,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
          *      EXISTS "completeness.tablet.fr_FR" AND
          *      EXISTS "completeness.tablet.it_IT"
          */
-        if (in_array($operator, [Operators::NOT_EQUAL])) {
+        if (in_array($operator, [Operators::NOT_EQUAL, Operators::NOT_EQUALS_ON_AT_LEAST_ONE_LOCALE])) {
             $filterClauses = [];
             foreach ($localeCodes as $localeCode) {
                 $field = sprintf('completeness.%s.%s', $channel, $localeCode);
@@ -109,11 +117,11 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
         }
 
         foreach ($localeCodes as $localeCode) {
-
             $field = sprintf('completeness.%s.%s', $channel, $localeCode);
 
             switch ($operator) {
                 case Operators::EQUALS:
+                case Operators::EQUALS_ON_AT_LEAST_ONE_LOCALE:
                     $clause = [
                         'term' => [
                             $field => $value
@@ -122,6 +130,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                     $this->searchQueryBuilder->addShould($clause);
                     break;
                 case Operators::LOWER_THAN:
+                case Operators::LOWER_THAN_ON_AT_LEAST_ONE_LOCALE:
                     $clause = [
                         'range' => [
                             $field => [
@@ -142,6 +151,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                     $this->searchQueryBuilder->addFilter($clause);
                     break;
                 case Operators::GREATER_THAN:
+                case Operators::GREATER_THAN_ON_AT_LEAST_ONE_LOCALE:
                     $clause = [
                         'range' => [
                             $field => [
@@ -162,6 +172,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                     $this->searchQueryBuilder->addFilter($clause);
                     break;
                 case Operators::LOWER_OR_EQUAL_THAN:
+                case Operators::LOWER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE:
                     $clause = [
                         'range' => [
                             $field => [
@@ -182,6 +193,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                     $this->searchQueryBuilder->addFilter($clause);
                     break;
                 case Operators::GREATER_OR_EQUAL_THAN:
+                case Operators::GREATER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE:
                     $clause = [
                         'range' => [
                             $field => [
