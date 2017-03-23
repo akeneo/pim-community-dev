@@ -33,9 +33,7 @@
 
 ## Migrate your standard project
 
-1. Download and extract the latest standard archive,
-
-* Download it from the website [PIM community standard](http://www.akeneo.com/download/) and extract:
+1. Download it from the website [PIM community standard](http://www.akeneo.com/download/) and extract:
 
 ```bash
 wget http://download.akeneo.com/pim-community-standard-v1.7-latest.tar.gz
@@ -180,7 +178,7 @@ In this case, go to the chapter "Migrate your custom code" before running the da
 9. Then you can migrate your database using:
 
 ```bash
-php app/console cache:clear --env=prod
+rm -rf app/cache
 php app/console doctrine:migration:migrate --env=prod
 ```
 
