@@ -81,7 +81,7 @@ class NumberFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'range' => [
-                    'size-decimal#en_US#ecommerce' => ['lt' => 10],
+                    'values.size-decimal.en_US.ecommerce' => ['lt' => 10],
                 ],
             ]
         )->shouldBeCalled();
@@ -104,7 +104,7 @@ class NumberFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'range' => [
-                    'size-decimal#en_US#ecommerce' => ['lte' => 10],
+                    'values.size-decimal.en_US.ecommerce' => ['lte' => 10],
                 ],
             ]
         )->shouldBeCalled();
@@ -127,7 +127,7 @@ class NumberFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'term' => [
-                    'size-decimal#en_US#ecommerce' => 10,
+                    'values.size-decimal.en_US.ecommerce' => 10,
                 ],
             ]
         )->shouldBeCalled();
@@ -150,7 +150,7 @@ class NumberFilterSpec extends ObjectBehavior
         $sqb->addMustNot(
             [
                 'term' => [
-                    'size-decimal#en_US#ecommerce' => 10,
+                    'values.size-decimal.en_US.ecommerce' => 10,
                 ],
             ]
         )->shouldBeCalled();
@@ -158,7 +158,7 @@ class NumberFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'exists' => [
-                    'field' => 'size-decimal#en_US#ecommerce',
+                    'field' => 'values.size-decimal.en_US.ecommerce',
                 ],
             ]
         )->shouldBeCalled();
@@ -181,7 +181,7 @@ class NumberFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'range' => [
-                    'size-decimal#en_US#ecommerce' => ['gte' => 10],
+                    'values.size-decimal.en_US.ecommerce' => ['gte' => 10],
                 ],
             ]
         )->shouldBeCalled();
@@ -204,7 +204,7 @@ class NumberFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'range' => [
-                    'size-decimal#en_US#ecommerce' => ['gt' => 10],
+                    'values.size-decimal.en_US.ecommerce' => ['gt' => 10],
                 ],
             ]
         )->shouldBeCalled();
@@ -227,7 +227,7 @@ class NumberFilterSpec extends ObjectBehavior
         $sqb->addMustNot(
             [
                 'exists' => [
-                    'field' => 'size-decimal#en_US#ecommerce',
+                    'field' => 'values.size-decimal.en_US.ecommerce',
                 ],
             ]
         )->shouldBeCalled();
@@ -250,7 +250,7 @@ class NumberFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'exists' => [
-                    'field' => 'size-decimal#en_US#ecommerce',
+                    'field' => 'values.size-decimal.en_US.ecommerce',
                 ],
             ]
         )->shouldBeCalled();

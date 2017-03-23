@@ -2,8 +2,10 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\PropertiesNormalizer;
@@ -126,9 +128,25 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $serializer,
         ProductInterface $product,
         ProductValueCollectionInterface $productValueCollection,
-        FamilyInterface $family
+        FamilyInterface $family,
+        ArrayCollection $completenessCollection
     ) {
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+
         $product->getIdentifier()->willReturn('sku-001');
+
+        $product->getCreated()->willReturn($now);
+        $serializer->normalize(
+            $product->getWrappedObject()->getCreated(),
+            'indexing'
+        )->willReturn($now->format('c'));
+
+        $product->getUpdated()->willReturn($now);
+        $serializer->normalize(
+            $product->getWrappedObject()->getUpdated(),
+            'indexing'
+        )->willReturn($now->format('c'));
+
         $product->getFamily()->willReturn($family);
         $family->getCode()->willReturn('a_family');
         $product->isEnabled()->willReturn(true);
@@ -137,6 +155,18 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             [
                 'first_category',
                 'second_category',
+            ]
+        );
+
+        $completenessCollection->isEmpty()->willReturn(false);
+        $product->getCompletenesses()->willReturn($completenessCollection);
+        $serializer->normalize($completenessCollection, 'indexing', [])->willReturn(
+            [
+                'ecommerce' => [
+                    'en_US' => [
+                        66
+                    ]
+                ]
             ]
         );
 
@@ -159,10 +189,19 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $this->normalize($product, 'indexing')->shouldReturn(
             [
                 'identifier' => 'sku-001',
+                'created'    => $now->format('c'),
+                'updated'    => $now->format('c'),
                 'family'     => 'a_family',
                 'enabled'    => true,
                 'categories' => ['first_category', 'second_category'],
-                'groups'     => ['first_group', 'second_group'],
+                'groups'         => ['first_group', 'second_group'],
+                'completeness' => [
+                    'ecommerce' => [
+                        'en_US' => [
+                            66,
+                        ],
+                    ],
+                ],
                 'values'     => [
                     'a_size-decimal' => [
                         '<all_locales>' => [
