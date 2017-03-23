@@ -1723,59 +1723,16 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheJobToFinish($code)
     {
-        $condition = '$("#status").length && '.
-            '/(completed|stopped|failed|terminé|arrêté|en échec)$/.test($("#status").text().trim().toLowerCase())';
+        $jobExecution = $this->spin(function () use ($code) {
+            $jobInstance = $this->getFixturesContext()->getJobInstance($code);
+            // Force to retrieve its job executions
+            $jobInstance->getJobExecutions()->setInitialized(false);
 
-        try {
-            $this->wait($condition);
-        } catch (BehaviorException $e) {
-            $jobInstance  = $this->getFixturesContext()->getJobInstance($code);
-            $jobExecution = $jobInstance->getJobExecutions()->first();
-            if (false === $jobExecution) {
-                throw new \Exception('No job execution found');
-            }
+            $jobExecution = $jobInstance->getJobExecutions()->last();
+            $this->getFixturesContext()->refresh($jobExecution);
 
-            $log = $jobExecution->getLogFile();
-            if (is_file($log)) {
-                $dir = getenv('WORKSPACE');
-                $id  = getenv('BUILD_ID');
-
-                if (false !== $dir && false !== $id) {
-                    $target = sprintf('%s/../builds/%s/batch_log/%s', $dir, $id, pathinfo($log, PATHINFO_BASENAME));
-
-                    $fs = new \Symfony\Component\Filesystem\Filesystem();
-                    $fs->copy($log, $target);
-
-                    $log = sprintf(
-                        'http://ci.akeneo.com/screenshots/%s/%s/batch_log/%s',
-                        getenv('JOB_NAME'),
-                        $id,
-                        pathinfo($log, PATHINFO_BASENAME)
-                    );
-                }
-
-                $message = sprintf('Job "%s" failed, log available at %s', $code, $log);
-                $this->getMainContext()->addErrorMessage($message);
-            } else {
-                $this->getMainContext()->addErrorMessage(sprintf('Job "%s" failed, no log available', $code));
-            }
-
-            // Get and print the normalized jobexecution to ease debugging
-            $this->getSession()->executeScript(
-                sprintf(
-                    '$.get("/%s/%s_execution/%d.json", function (resp) { window.executionLog = resp; });',
-                    $jobInstance->getType() === 'import' ? 'collect' : 'spread',
-                    $jobInstance->getType(),
-                    $jobExecution->getId()
-                )
-            );
-            $this->wait();
-            $executionLog = $this->getSession()->evaluateScript("return window.executionLog;");
-            $this->getMainContext()->addErrorMessage(sprintf('Job execution: %s', print_r($executionLog, true)));
-
-            // Call the wait method again to trigger timeout failure
-            $this->wait($condition);
-        }
+            return !$jobExecution->isRunning();
+        }, sprintf('The job execution of "%s" was too long', $code));
     }
 
     /**
@@ -2420,13 +2377,13 @@ class WebUser extends RawMinkContext
      */
     protected function waitForMassEditJobToFinish($code)
     {
-        $jobInstance = $this->getFixturesContext()->getJobInstance($code);
-        // Force to retrieve its job executions
-        $jobInstance->getJobExecutions()->setInitialized(false);
-        $jobExecution = $jobInstance->getJobExecutions()->last();
-        if (false === $jobExecution) {
-            throw new \InvalidArgumentException(sprintf('No job execution found for job with code "%s"', $code));
-        }
+        $jobExecution = $this->spin(function () use ($code) {
+            $jobInstance = $this->getFixturesContext()->getJobInstance($code);
+            // Force to retrieve its job executions
+            $jobInstance->getJobExecutions()->setInitialized(false);
+
+            return $jobInstance->getJobExecutions()->last();
+        }, sprintf('No job execution found for job with code "%s"', $code));
 
         $this->openPage('massEditJob show', ['id' => $jobExecution->getId()]);
 
