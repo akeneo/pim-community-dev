@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
 use Pim\Component\Catalog\AttributeTypeRegistry;
 use Symfony\Component\Form\AbstractType;
@@ -157,11 +158,15 @@ class AttributeType extends AbstractType
             'group',
             'entity',
             [
-                'class'       => $this->attributeGroupClass,
-                'required'    => true,
-                'multiple'    => false,
-                'empty_value' => 'Choose the attribute group',
-                'select2'     => true
+                'class'         => $this->attributeGroupClass,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('g')
+                        ->orderBy('g.sortOrder', 'ASC');
+                },
+                'required'      => true,
+                'multiple'      => false,
+                'empty_value'   => 'Choose the attribute group',
+                'select2'       => true
             ]
         );
     }
