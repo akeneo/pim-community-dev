@@ -3,6 +3,7 @@ extensions:
         module: pim/grid/view-selector/selector
         config:
             viewTypes: ['view', 'project']
+            maxProjectFetching: 3
             fetchers:
                 view: 'datagrid-view'
                 project: 'project'
