@@ -14,13 +14,13 @@
 - API-31: As Julia, I would like to list attribute options
 - API-126: Change attribute form "scope" input to a yes/no switch
 
-## Bug Fixes
+## Bug Fixes
 
 - PIM-6210: fix unused fields on import profiles
 - PIM-6203: Fix various design bugs
 - PIM-6200: Only the owner of a view can save and remove it.
 
-## BC breaks
+## BC breaks
 
 ### Methods
 
@@ -62,7 +62,7 @@
 
 # 1.7.0-ALPHA1 (2017-02-23)
 
-## Bug Fixes
+## Bug Fixes
 
 - PIM-6161: Fix Tooltips and errors rendering on Import/Export Builder
 - GITHUB-5038: Fixed job name visibility checker to also check additional config
