@@ -1,4 +1,4 @@
-# 1.7.*
+# 1.7.1 (2017-03-23)
 
 **Caution:** Due to a wrong doctrine migration in the previous version, you also need to re-run them `php app/console doctrine:migrations:migrate` for this patch.
              
