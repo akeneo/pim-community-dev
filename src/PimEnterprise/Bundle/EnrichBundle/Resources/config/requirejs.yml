@@ -26,6 +26,11 @@ config:
                     options:
                         urls:
                             get: pimee_enrich_channel_asset_transformation
+        pim/controller-registry:
+            controllers:
+                pimee_enrich_locale_edit:
+                    module: pim/controller/form
+                    aclResourceId: pimee_enrich_locale_edit_permissions
 
     map:
         '*':

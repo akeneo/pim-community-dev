@@ -104,6 +104,12 @@ services:
             - '@pim_enrich.provider.default_image'
             - ['catalogStorage', 'assetStorage']
 
+    pim_enrich.controller.locale:
+        scope: request
+        class: '%pim_enrich.controller.locale.class%'
+        arguments:
+            - '@form.factory'
+
     pimee_enrich.controller.rest.channel:
         class: '%pimee_enrich.controller.channel.class%'
         arguments:
