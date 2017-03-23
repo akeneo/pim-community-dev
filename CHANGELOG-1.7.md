@@ -2,6 +2,7 @@
 
 ## Bug Fixes
 
+- PIM-6265: Fix user menu navigation
 - GITHUB-5307: Fix sort order in field "Attribute group"
 
 # 1.7.1 (2017-03-23)
