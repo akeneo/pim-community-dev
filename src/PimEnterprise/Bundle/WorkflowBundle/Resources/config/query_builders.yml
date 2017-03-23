@@ -11,12 +11,4 @@ services:
             - '@pim_catalog.query.filter.registry'
             - '@pim_catalog.query.sorter.registry'
             - '@pim_catalog.factory.product_cursor'
-
-    # PQB common filter definitions (implement either in ORM or MongoDB ODM)
-    pimee_workflow.doctrine.query.filter.original_product_id:
-        class: '%pim_catalog.doctrine.query.filter.product_id.class%'
-        arguments:
-            - ['originalProduct']
-            - ['=', 'IN']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+            - '@akeneo_elasticsearch.client'
