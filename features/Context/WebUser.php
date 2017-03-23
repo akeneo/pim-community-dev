@@ -1731,7 +1731,7 @@ class WebUser extends RawMinkContext
             $jobExecution = $jobInstance->getJobExecutions()->last();
             $this->getFixturesContext()->refresh($jobExecution);
 
-            return !$jobExecution->isRunning();
+            return $jobExecution && !$jobExecution->isRunning();
         }, sprintf('The job execution of "%s" was too long', $code));
     }
 
