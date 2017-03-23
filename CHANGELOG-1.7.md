@@ -13,6 +13,7 @@
 - PIM-6258: Fix permissions issue for listing locales, associations, families to display correctly the pef
 - PIM-6253: Add missing permissions on entities of the API
 - PIM-6252: Fix Summernote (WYSIWYG) style
+- PIM-6249: Correctly load more results from select2 when needed in the View Selector
 
 # 1.7.0 (2017-03-14)
 
