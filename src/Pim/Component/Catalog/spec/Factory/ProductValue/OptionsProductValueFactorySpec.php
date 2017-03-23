@@ -245,11 +245,11 @@ class OptionsProductValueFactorySpec extends ObjectBehavior
                 return $channelCode === $subject->getScope();
             },
             'beEmpty'        => function ($subject) {
-                return $subject->getData() instanceof ArrayCollection && [] === $subject->getData()->toArray();
+                return is_array($subject->getData()) && empty($subject->getData());
             },
             'haveTheOptions' => function ($subject, $expectedOptions) {
                 $result = false;
-                $data = $subject->getData()->toArray();
+                $data = $subject->getData();
                 foreach ($data as $option) {
                     $result = in_array($option, $expectedOptions);
                 }
