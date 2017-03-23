@@ -150,16 +150,16 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
      */
     protected function calculateProductCompletenesses(ProductInterface $product)
     {
-        $completenessesCollection = $product->getCompletenesses();
+        $completenessCollection = $product->getCompletenesses();
 
-        if (!$completenessesCollection->isEmpty()) {
-            $completenessesCollection->clear();
+        if (!$completenessCollection->isEmpty()) {
+            $completenessCollection->clear();
         }
 
         $newCompletenesses = $this->completenessCalculator->calculate($product);
 
         foreach ($newCompletenesses as $completeness) {
-            $completenessesCollection->add($completeness);
+            $completenessCollection->add($completeness);
         }
     }
 }

@@ -3,7 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -18,9 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CompletenessController
 {
-    /** @var CompletenessManager */
-    protected $completenessManager;
-
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
@@ -34,20 +30,17 @@ class CompletenessController
     protected $templating;
 
     /**
-     * @param CompletenessManager        $completenessManager
      * @param ProductRepositoryInterface $productRepository
      * @param ChannelRepositoryInterface $channelRepository
      * @param UserContext                $userContext
      * @param EngineInterface            $templating
      */
     public function __construct(
-        CompletenessManager $completenessManager,
         ProductRepositoryInterface $productRepository,
         ChannelRepositoryInterface $channelRepository,
         UserContext $userContext,
         EngineInterface $templating
     ) {
-        $this->completenessManager = $completenessManager;
         $this->productRepository = $productRepository;
         $this->channelRepository = $channelRepository;
         $this->userContext = $userContext;
@@ -67,20 +60,13 @@ class CompletenessController
         $channels = $this->channelRepository->getFullChannels();
         $locales = $this->userContext->getUserLocales();
 
-        $completenesses = $this->completenessManager->getProductCompleteness(
-            $product,
-            $channels,
-            $locales,
-            $this->userContext->getCurrentLocale()->getCode()
-        );
-
         return $this->templating->renderResponse(
             'PimEnrichBundle:Completeness:_completeness.html.twig',
             [
                 'product'        => $product,
                 'channels'       => $channels,
                 'locales'        => $locales,
-                'completenesses' => $completenesses
+                'completenesses' => $product->getCompletenesses()
             ]
         );
     }
