@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 
+use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\PropertiesNormalizer;
@@ -32,7 +32,8 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_product_properties_with_empty_fields_and_values(
         ProductInterface $product,
-        ProductValueCollectionInterface $productValueCollection
+        ProductValueCollectionInterface $productValueCollection,
+        Collection $completenesses
     ) {
         $product->getIdentifier()->willReturn('sku-001');
         $product->isEnabled()->willReturn(false);
@@ -42,6 +43,9 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn([]);
         $productValueCollection->isEmpty()->willReturn(true);
 
+        $product->getCompletenesses()->willReturn($completenesses);
+        $completenesses->isEmpty()->willReturn(true);
+
         $this->normalize($product, 'indexing')->shouldReturn(
             [
                 'identifier' => 'sku-001',
@@ -49,6 +53,39 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'enabled'    => false,
                 'categories' => [],
                 'groups'     => [],
+                'completeness' => [],
+                'values'     => [],
+            ]
+        );
+    }
+
+    function it_normalizes_product_with_completenesses(
+        $serializer,
+        ProductInterface $product,
+        ProductValueCollectionInterface $productValueCollection,
+        Collection $completenesses
+    ) {
+        $product->getIdentifier()->willReturn('sku-001');
+        $product->isEnabled()->willReturn(false);
+        $product->getValues()->willReturn($productValueCollection);
+        $product->getFamily()->willReturn(null);
+        $product->getGroupCodes()->willReturn([]);
+        $product->getCategoryCodes()->willReturn([]);
+        $productValueCollection->isEmpty()->willReturn(true);
+
+        $product->getCompletenesses()->willReturn($completenesses);
+        $completenesses->isEmpty()->willReturn(false);
+
+        $serializer->normalize($completenesses, 'indexing', [])->willReturn(['the completenesses']);
+
+        $this->normalize($product, 'indexing')->shouldReturn(
+            [
+                'identifier' => 'sku-001',
+                'family'     => null,
+                'enabled'    => false,
+                'categories' => [],
+                'groups'     => [],
+                'completeness' => ['the completenesses'],
                 'values'     => [],
             ]
         );

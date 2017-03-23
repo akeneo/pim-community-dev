@@ -22,8 +22,13 @@ class ProductIndexingIntegration extends TestCase
     public function testEmptyDisabledProduct()
     {
         $expected = [
-            'identifier' => 'bar',
-            'values'     => [],
+            'identifier'   => 'bar',
+            'family'       => null,
+            'enabled'      => false,
+            'categories'   => [],
+            'groups'       => [],
+            'completeness' => [],
+            'values'       => [],
         ];
 
         $this->assertIndexingFormat('bar', $expected);
@@ -32,8 +37,13 @@ class ProductIndexingIntegration extends TestCase
     public function testEmptyEnabledProduct()
     {
         $expected = [
-            'identifier' => 'baz',
-            'values'     => [],
+            'identifier'   => 'baz',
+            'family'       => null,
+            'enabled'      => true,
+            'categories'   => [],
+            'groups'       => [],
+            'completeness' => [],
+            'values'       => [],
         ];
 
         $this->assertIndexingFormat('baz', $expected);
@@ -42,8 +52,16 @@ class ProductIndexingIntegration extends TestCase
     public function testProductWithAllAttributes()
     {
         $expected = [
-            'identifier' => 'foo',
-            'values'     => [],
+            'identifier'   => 'foo',
+            'family'       => 'familyA',
+            'enabled'      => true,
+            'categories'   => ['categoryA1', 'categoryB'],
+            'groups'       => ['groupA', 'groupB', 'variantA'],
+            'completeness' => [
+                'ecommerce' => ['en_US' => 100],
+                'tablet'    => ['de_DE' => 89, 'en_US' => 100, 'fr_FR' => 100]
+            ],
+            'values'       => []
         ];
 
         $this->assertIndexingFormat('foo', $expected);

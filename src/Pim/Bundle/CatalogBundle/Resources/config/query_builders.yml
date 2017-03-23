@@ -12,6 +12,7 @@ parameters:
     pim_catalog.query.elasticsearch.filter.group.class:           Pim\Bundle\CatalogBundle\Elasticsearch\Filter\GroupFilter
     pim_catalog.query.elasticsearch.filter.status.class:          Pim\Bundle\CatalogBundle\Elasticsearch\Filter\StatusFilter
     pim_catalog.query.elasticsearch.filter.identifier.class:      Pim\Bundle\CatalogBundle\Elasticsearch\Filter\IdentifierFilter
+    pim_catalog.query.elasticsearch.filter.completeness.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CompletenessFilter
 
 services:
     pim_catalog.query.product_query_builder_factory:
@@ -106,5 +107,30 @@ services:
         arguments:
             - ['enabled']
             - ['=', '!=']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.completeness:
+        class: '%pim_catalog.query.elasticsearch.filter.completeness.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_channel'
+            - ['completeness']
+            -
+                - 'NOT EQUALS ON AT LEAST ONE LOCALE'
+                - 'EQUALS ON AT LEAST ONE LOCALE'
+                - 'GREATER THAN ON AT LEAST ONE LOCALE'
+                - 'GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE'
+                - 'LOWER OR EQUALS THAN ON AT LEAST ONE LOCALE'
+                - 'LOWER THAN ON AT LEAST ONE LOCALE'
+                - 'GREATER THAN ON ALL LOCALES'
+                - 'GREATER OR EQUALS THAN ON ALL LOCALES'
+                - 'LOWER OR EQUALS THAN ON ALL LOCALES'
+                - 'LOWER THAN ON ALL LOCALES'
+                - '!='
+                - '='
+                - '>'
+                - '>='
+                - '<='
+                - '<'
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
