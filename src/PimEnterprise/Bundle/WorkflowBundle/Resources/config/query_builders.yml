@@ -11,3 +11,4 @@ services:
             - '@pim_catalog.query.filter.registry'
             - '@pim_catalog.query.sorter.registry'
             - '@pim_catalog.factory.product_cursor'
+            - '@akeneo_elasticsearch.client'
