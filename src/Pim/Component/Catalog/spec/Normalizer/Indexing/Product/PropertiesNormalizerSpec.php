@@ -7,13 +7,14 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\PropertiesNormalizer;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class PropertiesNormalizerSpec extends ObjectBehavior
 {
     function let(SerializerInterface $serializer)
     {
-        $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $serializer->implement(NormalizerInterface::class);
         $this->setSerializer($serializer);
     }
 
@@ -121,9 +122,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         );
     }
 
-    /*
-     * // TODO: TIP-706- To re-enable once productValueCollectionNormalizer is working with a
-     * // TODO: TIP-706- product value normalizer
     function it_normalizes_product_fields_and_values(
         $serializer,
         ProductInterface $product,
@@ -131,22 +129,21 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         FamilyInterface $family
     ) {
         $product->getIdentifier()->willReturn('sku-001');
-
         $product->getFamily()->willReturn($family);
         $family->getCode()->willReturn('a_family');
+        $product->isEnabled()->willReturn(true);
         $product->getGroupCodes()->willReturn(['first_group', 'second_group']);
-
-        $product->getValues()
-            ->shouldBeCalledTimes(2)
-            ->willReturn($productValueCollection);
-        $productValueCollection->isEmpty()->willReturn(false);
-
         $product->getCategoryCodes()->willReturn(
             [
                 'first_category',
                 'second_category',
             ]
         );
+
+        $product->getValues()
+            ->shouldBeCalledTimes(2)
+            ->willReturn($productValueCollection);
+        $productValueCollection->isEmpty()->willReturn(false);
 
         $serializer->normalize($productValueCollection, 'indexing', [])
             ->willReturn(
@@ -163,6 +160,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             [
                 'identifier' => 'sku-001',
                 'family'     => 'a_family',
+                'enabled'    => true,
                 'categories' => ['first_category', 'second_category'],
                 'groups'     => ['first_group', 'second_group'],
                 'values'     => [
@@ -175,5 +173,4 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             ]
         );
     }
-    */
 }

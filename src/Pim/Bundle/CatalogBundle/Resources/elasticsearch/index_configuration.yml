@@ -40,7 +40,7 @@ mappings:
                          type: 'integer'
             -
                 decimal:
-                    match: '*-decimal#*'
+                    path_match: '*-decimal.*'
                     match_mapping_type: 'string'
                     mapping:
                         type: 'double'

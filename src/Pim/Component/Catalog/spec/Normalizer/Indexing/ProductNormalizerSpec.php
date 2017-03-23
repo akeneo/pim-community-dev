@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing;
 
-use Pim\Component\Catalog\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
@@ -16,12 +16,12 @@ class ProductNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Normalizer\Indexing\ProductNormalizer');
+        $this->shouldHaveType(ProductNormalizer::class);
     }
 
     function it_is_a_normalizer()
     {
-        $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $this->shouldImplement(NormalizerInterface::class);
     }
 
     function it_supports_indexing_normalization_only(ProductInterface $product)
@@ -40,8 +40,10 @@ class ProductNormalizerSpec extends ObjectBehavior
             ['properties' => 'properties are normalized here']
         );
 
-        $this->normalize($product, 'indexing')->shouldReturn([
-            'properties' => 'properties are normalized here',
-        ]);
+        $this->normalize($product, 'indexing')->shouldReturn(
+            [
+                'properties' => 'properties are normalized here',
+            ]
+        );
     }
 }

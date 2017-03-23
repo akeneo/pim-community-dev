@@ -27,7 +27,7 @@ class ProductValueCollectionNormalizer extends SerializerAwareNormalizer impleme
         foreach ($values as $value) {
             if (AttributeTypes::IDENTIFIER !== $value->getAttribute()->getType()) {
                 $normalizedValue = $this->serializer->normalize($value, $format, $context);
-                $result = array_merge($result, $normalizedValue);
+                $result = array_merge_recursive($result, $normalizedValue);
             }
         }
 

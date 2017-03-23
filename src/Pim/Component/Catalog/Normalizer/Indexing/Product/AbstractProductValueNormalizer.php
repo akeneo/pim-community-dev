@@ -26,9 +26,10 @@ abstract class AbstractProductValueNormalizer extends SerializerAwareNormalizer 
         $channel = (null === $productValue->getScope()) ? '<all_channels>' : $productValue->getScope();
 
         $key = $productValue->getAttribute()->getCode() . '-' . $productValue->getAttribute()->getBackendType();
-        $esPath = sprintf('%s#%s#%s', $key, $locale, $channel);
+        $structure = [];
+        $structure[$key][$locale][$channel] = $this->getNormalizedData($productValue);
 
-        return [$esPath => $this->getNormalizedData($productValue)];
+        return $structure;
     }
 
     /**
