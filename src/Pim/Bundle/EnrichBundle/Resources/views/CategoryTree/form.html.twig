@@ -12,7 +12,7 @@
 {% endif %}
 {% endspaceless %}
 
-{{ JSFV(form) }}
+
 {{ form_start(form, {
     'action': form.vars.value.id ?
         path(route ~ '_categorytree_edit', { id: form.vars.value.id }) :
