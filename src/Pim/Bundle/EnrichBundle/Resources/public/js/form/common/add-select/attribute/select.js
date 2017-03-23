@@ -69,7 +69,7 @@ define(
              */
             addItems: function () {
                 this.trigger(this.addEvent, { codes: this.selection });
-            },
+            }
         });
     }
 );
