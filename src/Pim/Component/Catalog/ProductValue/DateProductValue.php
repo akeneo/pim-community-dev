@@ -4,32 +4,26 @@ namespace Pim\Component\Catalog\ProductValue;
 
 use Pim\Component\Catalog\Model\AbstractProductValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
- * Product value for attribute types:
- *   - pim_catalog_identifier
- *   - pim_catalog_text
- *   - pim_catalog_textarea
- *   - pim_catalog_boolean
- *   - pim_catalog_number
+ * Product value for "pim_catalog_date" attribute types
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValue extends AbstractProductValue implements ProductValueInterface
+class DateProductValue extends AbstractProductValue implements DateProductValueInterface
 {
-    /** @var string */
+    /** @var \DateTime */
     protected $data;
 
     /**
      * @param AttributeInterface $attribute
      * @param string             $channel
      * @param string             $locale
-     * @param mixed              $data
+     * @param \DateTime|null     $data
      */
-    public function __construct(AttributeInterface $attribute, $channel, $locale, $data)
+    public function __construct(AttributeInterface $attribute, $channel, $locale, \DateTime $data = null)
     {
         $this->setAttribute($attribute);
         $this->setScope($channel);
@@ -39,7 +33,7 @@ class ProductValue extends AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getData()
     {
@@ -51,6 +45,6 @@ class ProductValue extends AbstractProductValue implements ProductValueInterface
      */
     public function __toString()
     {
-        return (string) $this->data;
+        return null !== $this->data ? $this->data->format(\DateTime::ISO8601) : '';
     }
 }

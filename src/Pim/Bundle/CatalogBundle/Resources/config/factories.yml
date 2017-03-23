@@ -230,7 +230,7 @@ services:
         class: '%pim_catalog.factory.product_value.date.class%'
         public: false
         arguments:
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.date.class%'
             - 'pim_catalog_date'
         tags:
             - { name: pim_catalog.factory.product_value }
