@@ -11,6 +11,7 @@ parameters:
     pim_catalog.query.elasticsearch.filter.category.class:        Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter
     pim_catalog.query.elasticsearch.filter.group.class:           Pim\Bundle\CatalogBundle\Elasticsearch\Filter\GroupFilter
     pim_catalog.query.elasticsearch.filter.status.class:          Pim\Bundle\CatalogBundle\Elasticsearch\Filter\StatusFilter
+    pim_catalog.query.elasticsearch.filter.identifier.class:      Pim\Bundle\CatalogBundle\Elasticsearch\Filter\IdentifierFilter
 
 services:
     pim_catalog.query.product_query_builder_factory:
@@ -66,6 +67,15 @@ services:
             - [ addFieldMapping, ['group', '%pim_catalog.entity.group.class%']]
 
     # Fields filters
+    pim_catalog.query.elasticsearch.filter.identifier:
+        class: '%pim_catalog.query.elasticsearch.filter.identifier.class%'
+        arguments:
+            - ['identifier']
+            - ['pim_catalog_identifier']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'IN', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
+
     pim_catalog.query.elasticsearch.filter.family:
         class: '%pim_catalog.query.elasticsearch.filter.family.class%'
         arguments:

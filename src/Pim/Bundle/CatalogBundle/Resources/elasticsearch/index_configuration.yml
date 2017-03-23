@@ -9,6 +9,9 @@ mappings:
                 type: 'boolean'
             groups:
                 type: 'keyword'
+            identifier:
+                type: 'keyword'
+                normalizer: 'varchar_normalizer'
         dynamic_templates:
             -
                 text:

@@ -74,6 +74,22 @@ class FieldFilterHelper
     }
 
     /**
+     * Check if value is a string
+     *
+     * @param string $field
+     * @param mixed  $value
+     * @param string $className
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    public static function checkString($field, $value, $className)
+    {
+        if (!is_string($value) && null !== $value) {
+            throw InvalidPropertyTypeException::stringExpected($field, $className, $value);
+        }
+    }
+
+    /**
      * Check if value is a valid identifier
      *
      * @param string $field

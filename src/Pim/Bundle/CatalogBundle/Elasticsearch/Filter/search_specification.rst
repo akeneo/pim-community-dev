@@ -257,7 +257,6 @@ EMPTY
             'field' => 'description-text'
         ]
     ]
-
 Enabled
 *******
 :Apply: apply datatype 'boolean' on the 'enabled' field
@@ -360,21 +359,113 @@ Same syntax than the contains but must be include in a ``must_not`` boolean occu
 
 Identifier
 **********
-:Apply: pim_catalog_identifier attribute
-:Analyzer: same as text
+:Apply: apply datatype 'keyword' on the 'identifier' field
+:Normalizer: Lowercase normalizer
 
 Data model
 ~~~~~~~~~~
 .. code-block:: yaml
 
-  sku-ident: "PRCT-1256"
+  identifier: "PRCT-1256"
 
 Filtering
 ~~~~~~~~~
-
 Operators
 .........
-All operators are the same as the Text field type.
+All operators are the same as the Text field type except for the 'EMPTY' and 'NOT EMPTY' operators.
+
+STARTS WITH
+"""""""""""
+
+.. code-block:: php
+
+    'filter' => [
+        'query_string' => [
+            'default_field' => 'identifier',
+            'query' => "sku-*"
+        ]
+    ]
+
+CONTAINS
+""""""""
+
+.. code-block:: php
+
+    'filter' => [
+        'query_string' => [
+            'default_field' => 'identifier',
+            'query' => '*00*'
+        ]
+    ]
+
+DOES NOT CONTAIN
+""""""""""""""""
+Same syntax than the ``contains`` but must be included in a ``must_not`` boolean occured type instead of ``filter``.
+
+.. code-block:: php
+
+    'bool' => [
+        'must_not' => [
+            'query_string' => [
+                'default_field' => 'identifier',
+                'query' => '*00*'
+            ]
+        ],
+        'filter' => [
+            'exists' => ['field' => 'identifier']
+        ]
+    ]
+
+Equals (=)
+""""""""""
+
+.. code-block:: php
+
+    'filter' => [
+        'term' => [
+            'identifier' => 'sku-0011'
+        ]
+    ]
+
+Not Equal (!=)
+""""""""""""""
+
+.. code-block:: php
+
+    'bool' => [
+        'must_not' => [
+            'term' => [
+                'identifier' => 'sku-0011'
+            ]
+        ],
+        'filter' => [
+            'exists' => [
+                'field' => 'identifier'
+            ]
+        ]
+    ]
+
+In list
+"""""""
+
+.. code-block:: php
+
+    'filter' => [
+        'terms' => [
+            'identifier' => ['sku-001', 'sku-0011']
+        ]
+    ]
+
+Not In list
+"""""""""""
+
+.. code-block:: php
+
+    'must_not' => [
+        'terms' => [
+            'identifier' => ['sku-001', 'sku-0011']
+        ]
+    ]
 
 Media
 *****
