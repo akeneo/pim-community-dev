@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog.entity.product_value.class: Pim\Component\Catalog\ProductValue\ProductValue
+    pim_catalog.entity.product_value.scalar.class: Pim\Component\Catalog\ProductValue\ScalarProductValue
     pim_catalog.entity.product_value.media.class: Pim\Component\Catalog\ProductValue\MediaProductValue
     pim_catalog.entity.product_value.metric.class: Pim\Component\Catalog\ProductValue\MetricProductValue
     pim_catalog.entity.product_value.option.class: Pim\Component\Catalog\ProductValue\OptionProductValue

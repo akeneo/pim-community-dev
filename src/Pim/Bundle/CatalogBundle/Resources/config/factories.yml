@@ -125,7 +125,7 @@ services:
         class: '%pim_catalog.factory.product_value.scalar.class%'
         public: false
         arguments:
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.scalar.class%'
             - 'pim_catalog_text'
         tags:
             - { name: pim_catalog.factory.product_value }
@@ -134,7 +134,7 @@ services:
         class: '%pim_catalog.factory.product_value.scalar.class%'
         public: false
         arguments:
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.scalar.class%'
             - 'pim_catalog_textarea'
         tags:
             - { name: pim_catalog.factory.product_value }
@@ -143,7 +143,7 @@ services:
         class: '%pim_catalog.factory.product_value.scalar.class%'
         public: false
         arguments:
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.scalar.class%'
             - 'pim_catalog_number'
         tags:
             - { name: pim_catalog.factory.product_value }
@@ -152,7 +152,7 @@ services:
         class: '%pim_catalog.factory.product_value.scalar.class%'
         public: false
         arguments:
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.scalar.class%'
             - 'pim_catalog_boolean'
         tags:
             - { name: pim_catalog.factory.product_value }
@@ -161,7 +161,7 @@ services:
         class: '%pim_catalog.factory.product_value.scalar.class%'
         public: false
         arguments:
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.scalar.class%'
             - 'pim_catalog_identifier'
         tags:
             - { name: pim_catalog.factory.product_value }
