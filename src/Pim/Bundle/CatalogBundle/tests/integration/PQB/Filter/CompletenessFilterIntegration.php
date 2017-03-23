@@ -17,8 +17,8 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
      * |               | fr_FR | en_US | fr_FR | en_US | de_DE | en_US | zh_CN   |
      * +---------------+-------+-------+-------+---------------------------------+
      * | empty_product |   -   |  33%  |  25%  | 25%   |  25%  | 100%  | 100%    |
-     * | product_one   |   -   |  67%  |  50%  | 50%   |  50%  | 100%  | 100%    |
-     * | product_two   |   -   |  67%  |  75%  | 100%  |  75%  | 100%  | 100%    |
+     * | product_one   |   -   |  66%  |  50%  | 50%   |  50%  | 100%  | 100%    |
+     * | product_two   |   -   |  66%  |  75%  | 100%  |  75%  | 100%  | 100%    |
      * | no_family     |   -   |  -    |   -   |   -   |   -   |   -   |   -     |
      * +-------------------------------------------------------------------------+
      *
@@ -165,7 +165,7 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
         $result = $this->execute([['completeness', $operator, 25, ['scope' => 'tablet', 'locale' => 'fr_FR']]]);
         $this->assert($result, ['empty_product']);
 
-        $result = $this->execute([['completeness', $operator, 67, ['scope' => 'ecommerce']]]);
+        $result = $this->execute([['completeness', $operator, 66, ['scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
@@ -312,13 +312,13 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorLowerThanAllLocales()
     {
-        $result = $this->execute([['completeness', Operators::LOWER_THAN_ON_ALL_LOCALES, 67, [
+        $result = $this->execute([['completeness', Operators::LOWER_THAN_ON_ALL_LOCALES, 66, [
             'scope'   => 'ecommerce',
             'locales' => ['en_US']
         ]]]);
         $this->assert($result, ['empty_product']);
 
-        $result = $this->execute([['completeness', Operators::LOWER_THAN_ON_ALL_LOCALES, 67, [
+        $result = $this->execute([['completeness', Operators::LOWER_THAN_ON_ALL_LOCALES, 66, [
             'scope'   => 'ecommerce',
             'locales' => ['fr_FR', 'en_US']
         ]]]);
@@ -339,13 +339,13 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorLowerOrEqualThanAllLocales()
     {
-        $result = $this->execute([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 67, [
+        $result = $this->execute([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 66, [
             'scope'   => 'ecommerce',
             'locales' => ['en_US']
         ]]]);
         $this->assert($result, ['product_one', 'product_two', 'empty_product']);
 
-        $result = $this->execute([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 67, [
+        $result = $this->execute([['completeness', Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES, 66, [
             'scope'   => 'ecommerce',
             'locales' => ['fr_FR', 'en_US']
         ]]]);

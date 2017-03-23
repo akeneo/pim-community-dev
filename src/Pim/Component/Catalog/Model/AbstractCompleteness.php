@@ -62,7 +62,7 @@ abstract class AbstractCompleteness implements CompletenessInterface
         $this->missingCount = $missingCount;
         $this->requiredCount = $requiredCount;
 
-        $this->ratio = (int) round(100 * ($this->requiredCount - $this->missingCount) / $this->requiredCount);
+        $this->ratio = (int) floor(100 * ($this->requiredCount - $this->missingCount) / $this->requiredCount);
     }
 
     /**

@@ -104,7 +104,7 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         $this->assertEquals('en_US', $completeness->getLocale()->getCode());
         $this->assertNotNull($completeness->getChannel());
         $this->assertEquals('tablet', $completeness->getChannel()->getCode());
-        $this->assertEquals(89, $completeness->getRatio());
+        $this->assertEquals(88, $completeness->getRatio());
         $this->assertEquals(9, $completeness->getRequiredCount());
         $this->assertEquals(1, $completeness->getMissingCount());
         $this->assertMissingAttributeCodes($completeness, ['side_view']);
@@ -124,7 +124,7 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
         $this->assertEquals('fr_FR', $completeness->getLocale()->getCode());
         $this->assertNotNull($completeness->getChannel());
         $this->assertEquals('tablet', $completeness->getChannel()->getCode());
-        $this->assertEquals(78, $completeness->getRatio());
+        $this->assertEquals(77, $completeness->getRatio());
         $this->assertEquals(9, $completeness->getRequiredCount());
         $this->assertEquals(2, $completeness->getMissingCount());
         $this->assertMissingAttributeCodes($completeness, ['description', 'side_view']);
