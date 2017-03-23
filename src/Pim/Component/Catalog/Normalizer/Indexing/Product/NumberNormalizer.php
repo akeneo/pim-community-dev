@@ -2,11 +2,12 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Normalizer for a decimal product value
+ * Normalizer for a decimal or an integer product value
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @author    Anaël Chardan <anael.chardan@akeneo.com>
@@ -23,7 +24,7 @@ class NumberNormalizer extends AbstractProductValueNormalizer implements Normali
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductValueInterface && 'decimal' === $data->getAttribute()->getBackendType()
+        return $data instanceof ProductValueInterface && AttributeTypes::BACKEND_TYPE_DECIMAL === $data->getAttribute()->getBackendType()
             && 'indexing' === $format;
     }
 
@@ -32,8 +33,6 @@ class NumberNormalizer extends AbstractProductValueNormalizer implements Normali
      */
     protected function getNormalizedData(ProductValueInterface $productValue)
     {
-        return $productValue->getAttribute()->isDecimalsAllowed()
-            ? number_format($productValue->getData(), static::DECIMAL_PRECISION, '.', '')
-            : number_format($productValue->getData(), 0, '.', '');
+        return (string) $productValue->getData();
     }
 }

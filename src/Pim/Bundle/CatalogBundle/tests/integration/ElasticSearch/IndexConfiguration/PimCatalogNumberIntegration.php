@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
 
 /**
- * This integration tests checks that given an index configuration and some products indexed
- * the text area research is consistent.
+ * This integration tests checks that given an index configuration with number (float and integer) values
+ * the number research is consistent.
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @author    Anaël Chardan <anael.chardan@akeneo.com>
@@ -14,7 +14,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfigur
  */
 class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
 {
-    public function testLowerThanOperator()
+    public function testLowerThanOperatorWithNumberValue()
     {
         $query = [
             'query' => [
@@ -33,7 +33,26 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
         $this->assertProducts($productsFound, ['product_2', 'product_5', 'product_6']);
     }
 
-    public function testLowerThanOrEqualsOperator()
+    public function testLowerThanOperatorWithStringValue()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        'range' => [
+                            'values.box_quantity-decimal.<all_locales>.<all_channels>' => ['lt' => '10'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertProducts($productsFound, ['product_2', 'product_5', 'product_6']);
+    }
+
+    public function testLowerThanOrEqualsOperatorWithNumberValue()
     {
         $query = [
             'query' => [
@@ -52,7 +71,26 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
         $this->assertProducts($productsFound, ['product_1', 'product_2', 'product_5', 'product_6']);
     }
 
-    public function testEqualsOperator()
+    public function testLowerThanOrEqualsOperatorWithStringValue()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        'range' => [
+                            'values.box_quantity-decimal.<all_locales>.<all_channels>' => ['lte' => '10'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertProducts($productsFound, ['product_1', 'product_2', 'product_5', 'product_6']);
+    }
+
+    public function testEqualsOperatorWithNumberValue()
     {
         $query = [
             'query' => [
@@ -71,7 +109,26 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
         $this->assertProducts($productsFound, ['product_3']);
     }
 
-    public function testNotEqualsOperator()
+    public function testEqualsOperatorWithStringValue()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        'term' => [
+                            'values.box_quantity-decimal.<all_locales>.<all_channels>' => '100.666',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertProducts($productsFound, ['product_3']);
+    }
+
+    public function testNotEqualsOperatorWithNumberValue()
     {
         $query = [
             'query' => [
@@ -98,7 +155,34 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
         );
     }
 
-    public function testGreaterThanOrEqualsOperator()
+    public function testNotEqualsOperatorWithStringValue()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'must_not' => [
+                        'term' => [
+                            'values.box_quantity-decimal.<all_locales>.<all_channels>' => '100.666',
+                        ],
+                    ],
+                    'filter'   => [
+                        'exists' => [
+                            'field' => 'values.box_quantity-decimal.<all_locales>.<all_channels>',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertProducts(
+            $productsFound,
+            ['product_1', 'product_2', 'product_4', 'product_5', 'product_6']
+        );
+    }
+
+    public function testGreaterThanOrEqualsOperatorWithNumberValue()
     {
         $query = [
             'query' => [
@@ -117,7 +201,26 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
         $this->assertProducts($productsFound, ['product_1', 'product_3', 'product_4']);
     }
 
-    public function testGreaterThanOperator()
+    public function testGreaterThanOrEqualsOperatorWithStringValue()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        'range' => [
+                            'values.box_quantity-decimal.<all_locales>.<all_channels>' => ['gte' => '10'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertProducts($productsFound, ['product_1', 'product_3', 'product_4']);
+    }
+
+    public function testGreaterThanOperatorWithNumberValue()
     {
         $query = [
             'query' => [
@@ -125,6 +228,25 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                     'filter' => [
                         'range' => [
                             'values.box_quantity-decimal.<all_locales>.<all_channels>' => ['gt' => 10],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertProducts($productsFound, ['product_3', 'product_4']);
+    }
+
+    public function testGreaterThanOperatorWithStringValue()
+    {
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        'range' => [
+                            'values.box_quantity-decimal.<all_locales>.<all_channels>' => ['gt' => '10'],
                         ],
                     ],
                 ],
@@ -227,6 +349,19 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
 
     /**
      * This method indexes dummy products in elastic search.
+     *
+     * A few information regarding the mapping of numbers and the data indexed in ES below.
+     * We indexed data of different types:
+     *  - integer as a php integer
+     *  - integer as a php string
+     *  - float as a php float
+     *  - float as a php string
+     *
+     * What we want to test is that our ES queries are still correctly working despite those variations (eg, the
+     * resilience of the ES indexing).
+     *
+     * In this precise case, some data might not be catched by our dynamic mapping, but ES is capable of casting them
+     * and the queries are still working.
      */
     protected function addProducts()
     {
@@ -236,7 +371,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'values'     => [
                     'box_quantity-decimal' => [
                         '<all_locales>' => [
-                            '<all_channels>' => '10.0',
+                            '<all_channels>' => 10.0,
                         ],
                     ],
                 ],
@@ -246,7 +381,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'values'     => [
                     'box_quantity-decimal' => [
                         '<all_locales>' => [
-                            '<all_channels>' => 1,
+                            '<all_channels>' => -1,
                         ],
                     ],
                 ],
@@ -276,7 +411,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'values'     => [
                     'box_quantity-decimal' => [
                         '<all_locales>' => [
-                            '<all_channels>' => '3.9000',
+                            '<all_channels>' => '-3.9000',
                         ],
                     ],
                 ],

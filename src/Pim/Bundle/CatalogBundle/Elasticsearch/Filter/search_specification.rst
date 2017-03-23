@@ -577,7 +577,7 @@ Data model
 ~~~~~~~~~~
 .. code-block:: yaml
 
-  packet_count-number.<all_locales>.<all_channels>: 5
+  values.packet_count-decimal.<all_locales>.<all_channels>: 5
 
 Filtering
 ~~~~~~~~~
@@ -591,7 +591,7 @@ Less than (<)
 
     'filter' => [
         'range' => [
-            'packet_count-decimal.<all_locales>.<all_channels>' => ['lt' => 10]
+            'values.packet_count-decimal.<all_locales>.<all_channels>' => ['lt' => 10]
         ]
     ]
 
@@ -603,7 +603,7 @@ Less than or equals to (<=)
 
     'filter' => [
         'range' => [
-            'packet_count-decimal.<all_locales>.<all_channels>' => ['lte' => 10]
+            'values.packet_count-decimal.<all_locales>.<all_channels>' => ['lte' => 10]
         ]
     ]
 
@@ -615,7 +615,7 @@ Equals (=)
 
     'filter' => [
         'term' => [
-            'packet_count-decimal.<all_locales>.<all_channels>' => 5
+            'values.packet_count-decimal.<all_locales>.<all_channels>' => 5
         ]
     ]
 
@@ -630,12 +630,12 @@ Not Equal (!=)
             'bool' => [
                 'must_not' => [
                     'term' => [
-                        'packet_count-decimal.<all_locales>.<all_channels>' => 5
+                        'values.packet_count-decimal.<all_locales>.<all_channels>' => 5
                     ]
                 ],
                 'filter' => [
                     'exists' => [
-                        'field' => 'packet_count-decimal.<all_locales>.<all_channels>'
+                        'field' => 'values.packet_count-decimal.<all_locales>.<all_channels>'
                     ]
                 ]
             ]
@@ -651,7 +651,7 @@ Greater than or equal to (>=)
 
     'filter' => [
         'range' => [
-            'packet_count-decimal.<all_locales>.<all_channels>' => ['gte' => 10]
+            'values.packet_count-decimal.<all_locales>.<all_channels>' => ['gte' => 10]
         ]
     ]
 
@@ -663,7 +663,7 @@ Greater than (>)
 
     'filter' => [
         'range' => [
-            'packet_count-decimal.<all_locales>.<all_channels>' => ['gt' => 10]
+            'values.packet_count-decimal.<all_locales>.<all_channels>' => ['gt' => 10]
         ]
     ]
 
@@ -675,7 +675,7 @@ EMPTY
 
     'must_not' => [
         'exists' => [
-            'field' => 'packet_count-decimal.<all_locales>.<all_channels>'
+            'field' => 'values.packet_count-decimal.<all_locales>.<all_channels>'
         ]
     ]
 
@@ -687,7 +687,7 @@ NOT EMPTY
 
     'filter' => [
         'exists' => [
-            'field' => 'packet_count-decimal.<all_locales>.<all_channels>'
+            'field' => 'values.packet_count-decimal.<all_locales>.<all_channels>'
         ]
     ]
 
