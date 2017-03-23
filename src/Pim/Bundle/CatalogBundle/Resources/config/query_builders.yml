@@ -11,6 +11,7 @@ parameters:
     pim_catalog.query.elasticsearch.filter.category.class:        Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter
     pim_catalog.query.elasticsearch.filter.group.class:           Pim\Bundle\CatalogBundle\Elasticsearch\Filter\GroupFilter
     pim_catalog.query.elasticsearch.filter.status.class:          Pim\Bundle\CatalogBundle\Elasticsearch\Filter\StatusFilter
+    pim_catalog.query.elasticsearch.filter.datetime.class:        Pim\Bundle\CatalogBundle\Elasticsearch\Filter\DateTimeFilter
     pim_catalog.query.elasticsearch.filter.identifier.class:      Pim\Bundle\CatalogBundle\Elasticsearch\Filter\IdentifierFilter
     pim_catalog.query.elasticsearch.filter.completeness.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CompletenessFilter
 
@@ -107,6 +108,26 @@ services:
         arguments:
             - ['enabled']
             - ['=', '!=']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.elasticsearch.filter.datetime:
+        class: '%pim_catalog.query.elasticsearch.filter.datetime.class%'
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch.job_repository'
+            - ['created', 'updated']
+            -
+                - '='
+                - '<'
+                - '>'
+                - 'BETWEEN'
+                - 'NOT BETWEEN'
+                - 'EMPTY'
+                - 'NOT EMPTY'
+                - '!='
+                - 'SINCE LAST N DAYS'
+                - 'SINCE LAST JOB'
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
 

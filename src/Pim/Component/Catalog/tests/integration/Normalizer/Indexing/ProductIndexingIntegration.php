@@ -21,8 +21,16 @@ class ProductIndexingIntegration extends TestCase
 
     public function testEmptyDisabledProduct()
     {
+        $date = \DateTime::createFromFormat(
+            'Y-m-d H:i:s',
+            '2016-06-14 11:12:50',
+            new \DateTimeZone('UTC')
+        );
+
         $expected = [
             'identifier'   => 'bar',
+            'created'      => $date->format('c'),
+            'updated'      => $date->format('c'),
             'family'       => null,
             'enabled'      => false,
             'categories'   => [],
@@ -36,8 +44,16 @@ class ProductIndexingIntegration extends TestCase
 
     public function testEmptyEnabledProduct()
     {
+        $date = \DateTime::createFromFormat(
+            'Y-m-d H:i:s',
+            '2016-06-14 11:12:50',
+            new \DateTimeZone('UTC')
+        );
+
         $expected = [
             'identifier'   => 'baz',
+            'created'      => $date->format('c'),
+            'updated'      => $date->format('c'),
             'family'       => null,
             'enabled'      => true,
             'categories'   => [],
@@ -51,8 +67,16 @@ class ProductIndexingIntegration extends TestCase
 
     public function testProductWithAllAttributes()
     {
+        $date = \DateTime::createFromFormat(
+            'Y-m-d H:i:s',
+            '2016-06-14 11:12:50',
+            new \DateTimeZone('UTC')
+        );
+
         $expected = [
             'identifier'   => 'foo',
+            'created'      => $date->format('c'),
+            'updated'      => $date->format('c'),
             'family'       => 'familyA',
             'enabled'      => true,
             'categories'   => ['categoryA1', 'categoryB'],

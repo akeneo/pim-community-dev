@@ -1098,6 +1098,135 @@ IS NOT EMPTY
         ]
     ]
 
+DateTime (updated and created)
+******************************
+:Apply: datetime fields (updated and created)
+
+Data model
+~~~~~~~~~~
+.. code-block:: yaml
+
+  updated: '2017-03-22T22:42:10+01:00'
+
+Filtering
+~~~~~~~~~
+Operators
+.........
+EQUALS
+""""""
+
+.. code-block:: php
+
+    'filter' => [
+        'term' => [
+            'updated' => '2017-03-22T22:42:10+01:00',
+        ]
+    ]
+
+LOWER THAN
+""""""""""
+
+.. code-block:: php
+
+    'filter' => [
+        'range' => [
+            'updated' => ['lt' => '2017-03-22T22:42:10+01:00'],
+        ]
+    ]
+
+GREATER THAN
+""""""""""""
+
+.. code-block:: php
+
+    'filter' => [
+        'range' => [
+            'updated' => ['gt' => '2017-03-22T22:42:10+01:00'],
+        ]
+    ]
+
+BETWEEN
+"""""""
+
+.. code-block:: php
+
+    'filter' => [
+        'range' => [
+            'updated' => [
+                'gte' => '2017-03-22T22:42:10+01:00',
+                'lte' => '2017-03-23T22:42:10+01:00'
+            ],
+        ]
+    ]
+
+NOT BETWEEN
+"""""""""""
+
+.. code-block:: php
+
+    'query' => [
+        'bool' => [
+            'must_not' => [
+                'range' => [
+                    'updated' => [
+                        'gte' => '2017-03-22T22:42:10+01:00',
+                        'lte' => '2017-03-23T22:42:10+01:00'
+                    ],
+                ]
+            ],
+            'filter' => ['exists' => 'updated']
+        ]
+    ]
+
+IS EMPTY
+""""""""
+
+.. code-block:: php
+
+    'must_not' => [
+        'exists' => [
+            'field' => 'updated',
+        ]
+    ]
+
+IS NOT EMPTY
+""""""""""""
+
+.. code-block:: php
+
+    'filter' => [
+        'exists' => [
+            'field' => 'updated',
+        ]
+    ]
+
+NOT EQUAL
+"""""""""
+
+.. code-block:: php
+
+    'query' => [
+        'bool' => [
+            'must_not' => [
+                'term' => [
+                    'updated' => '2017-03-22T22:42:10+01:00'
+                ]
+            ],
+            'filter' => [
+                'exists' => [
+                    'field' => 'updated'
+                ]
+            ]
+        ]
+    ]
+
+SINCE LAST JOB
+""""""""""""""
+:Apply: Apply the GREATER THAN Operator with the date of the last execution of the job
+
+SINCE LAST N DAYS
+"""""""""""""""""
+:Apply: Apply the GREATER THAN Operator with the date corresponding to the Nth previous day
 
 Data model
 ~~~~~~~~~~

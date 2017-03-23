@@ -31,11 +31,22 @@ class PropertiesNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_product_properties_with_empty_fields_and_values(
+        $serializer,
         ProductInterface $product,
         ProductValueCollectionInterface $productValueCollection,
         Collection $completenesses
     ) {
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+
         $product->getIdentifier()->willReturn('sku-001');
+        $product->getCreated()->willReturn($now);
+        $serializer
+            ->normalize($product->getWrappedObject()->getCreated(), 'indexing')
+            ->willReturn($now->format('c'));
+        $product->getUpdated()->willReturn($now);
+        $serializer
+            ->normalize($product->getWrappedObject()->getUpdated(), 'indexing')
+            ->willReturn($now->format('c'));
         $product->isEnabled()->willReturn(false);
         $product->getValues()->willReturn($productValueCollection);
         $product->getFamily()->willReturn(null);
@@ -49,6 +60,8 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $this->normalize($product, 'indexing')->shouldReturn(
             [
                 'identifier' => 'sku-001',
+                'created'    => $now->format('c'),
+                'updated'    => $now->format('c'),
                 'family'     => null,
                 'enabled'    => false,
                 'categories' => [],
@@ -65,7 +78,22 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         ProductValueCollectionInterface $productValueCollection,
         Collection $completenesses
     ) {
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+
         $product->getIdentifier()->willReturn('sku-001');
+
+        $product->getCreated()->willReturn($now);
+        $serializer->normalize(
+            $product->getWrappedObject()->getCreated(),
+            'indexing'
+        )->willReturn($now->format('c'));
+
+        $product->getUpdated()->willReturn($now);
+        $serializer->normalize(
+            $product->getWrappedObject()->getUpdated(),
+            'indexing'
+        )->willReturn($now->format('c'));
+
         $product->isEnabled()->willReturn(false);
         $product->getValues()->willReturn($productValueCollection);
         $product->getFamily()->willReturn(null);
@@ -81,6 +109,8 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $this->normalize($product, 'indexing')->shouldReturn(
             [
                 'identifier' => 'sku-001',
+                'created'    => $now->format('c'),
+                'updated'    => $now->format('c'),
                 'family'     => null,
                 'enabled'    => false,
                 'categories' => [],
