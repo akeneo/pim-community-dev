@@ -76,3 +76,17 @@
 - Make protected the method `setValues` in `Pim\Component\Catalog\Updater\VariantGroupUpdater`
 - Change the constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver` to replace `Pim\Component\Catalog\Manager\CompletenessManager` by `Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface`
 - Add method `getId` and remove `setMissingCount`, `setChannel`, `setLocale`, `setProduct`, `setRequiredCount` from `Pim\Component\Catalog\Model\CompletenessInterface` and `Pim\Component\Catalog\Model\AbstractCompleteness`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\CompletenessController` to remove `Pim\Component\Catalog\Manager\CompletenessManager`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\CompletenessController` to remove
+    `Pim\Component\Catalog\Manager\CompletenessManager`,
+    `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`,
+    `Pim\Bundle\UserBundle\Context\UserContext`,
+    `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`,
+    `Doctrine\Common\Persistence\ObjectManager` and
+    `$storageDriver`, and add `Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController` to remove
+    `Pim\Component\Catalog\Manager\CompletenessManager`,
+    `Doctrine\Common\Persistence\ObjectManager`,
+    `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`,
+    `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface` and
+    `$storageDriver`, and add `Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface`
