@@ -48,6 +48,6 @@ class MediaProductValue extends AbstractProductValue implements MediaProductValu
      */
     public function __toString()
     {
-        return $this->data->getKey();
+        return null !== $this->data ? $this->data->getKey() : '';
     }
 }

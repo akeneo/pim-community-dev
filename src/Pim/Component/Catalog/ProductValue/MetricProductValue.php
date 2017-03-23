@@ -70,6 +70,6 @@ class MetricProductValue extends AbstractProductValue implements MetricProductVa
      */
     public function __toString()
     {
-        return sprintf('%.4F %s', $this->data->getData(), $this->data->getUnit());
+        return null !== $this->data ? sprintf('%.4F %s', $this->data->getData(), $this->data->getUnit()) : '';
     }
 }
