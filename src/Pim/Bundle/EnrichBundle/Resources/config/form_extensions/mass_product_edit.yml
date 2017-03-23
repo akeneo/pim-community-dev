@@ -23,9 +23,10 @@ extensions:
         config:
             select2:
                 placeholder:      'pim_enrich.form.product.mass_edit.select_attributes'
-                title:            'pim_enrich.form.product.mass_edit.select'
-                buttonTitle:      'pim_enrich.form.product.mass_edit.select'
-                emptyText:        'pim_enrich.form.product.mass_edit.select'
+                title:            'pim_enrich.form.common.tab.attributes.info.search_attributes'
+                buttonTitle:      'pim_enrich.form.common.tab.attributes.btn.add'
+                countTitle:       'pim_enrich.form.product.tab.attributes.info.attributes_selected'
+                emptyText:        'pim_enrich.form.common.tab.attributes.info.no_available_attributes'
                 classes:          'pim-add-attributes-multiselect'
                 dropdownCssClass: 'add-attribute'
             searchParameters:

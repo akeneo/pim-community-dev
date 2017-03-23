@@ -13,6 +13,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/common/add-select/base/select',
+        'pim/common/add-select/attribute/line',
         'pim/fetcher-registry',
         'pim/attribute-manager',
         'pim/formatter/choices/base'
@@ -22,12 +23,14 @@ define(
         _,
         __,
         BaseAddSelect,
+        LineView,
         FetcherRegistry,
         AttributeManager,
         ChoicesFormatter
     ) {
         return BaseAddSelect.extend({
-            class: 'AknButtonList-item add-attribute',
+            className: 'add-attribute',
+            lineView: LineView,
 
             /**
              * {@inheritdoc}

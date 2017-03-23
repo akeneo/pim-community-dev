@@ -36,7 +36,6 @@ define(
              */
             initialize: function () {
                 this.buttonTitle   = this.options.buttonTitle;
-                this.onAddCallback = this.options.onAddCallback;
                 this.countTitle    = this.options.countTitle;
                 this.addEvent      = this.options.addEvent;
             },
@@ -69,7 +68,6 @@ define(
              * Method called when the 'add' button is clicked
              */
             onAdd: function () {
-                console.log(this.addEvent);
                 this.trigger(this.addEvent);
             }
         });

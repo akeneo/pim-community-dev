@@ -4,15 +4,8 @@ namespace Pim\Behat\Decorator\Common;
 
 use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
-use Pim\Behat\Decorator\ElementDecorator;
 
-/**
- * Decorate add attribute by group element
- *
- * @todo Introduce abstract select decorator based on current structure
- * and reuse as base class refactoring all select implementations (@a2xchip)
- */
-class SelectGroupDecorator extends ElementDecorator
+abstract class AbstractAddSelectDecorator extends ElementDecorator
 {
     use SpinCapableTrait;
 
@@ -44,22 +37,6 @@ class SelectGroupDecorator extends ElementDecorator
         }
         $this->addSelectedItems()
             ->closeDropList();
-    }
-
-    /**
-     * @param string $item
-     *
-     * @return mixed
-     */
-    public function findItem($item)
-    {
-        $result = $this->openDropList()
-            ->evaluateSearch($item)
-            ->getResultForSearch($item);
-
-        $this->closeDropList();
-
-        return $result;
     }
 
     protected function openDropList()
@@ -105,9 +82,9 @@ class SelectGroupDecorator extends ElementDecorator
         $list = $this->getResultListElement();
         $searchResult = $this->spin(function () use ($query, $list) {
             return $list->findAll(
-                    'css',
-                    sprintf($this->elements['resultItemSelector'], $query)
-                );
+                'css',
+                sprintf($this->elements['resultItemSelector'], $query)
+            );
         }, 'Cannot find element in the attribute groups list');
 
         if (0 === count($searchResult)) {

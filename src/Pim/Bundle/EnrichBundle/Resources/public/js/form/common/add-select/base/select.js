@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Base add select extension view
  *
@@ -338,6 +340,4 @@ define(
         });
     }
 );
-
-'use strict';
 

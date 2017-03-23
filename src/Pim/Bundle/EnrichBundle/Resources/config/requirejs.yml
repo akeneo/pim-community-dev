@@ -415,6 +415,7 @@ config:
         pim/common/add-select/base/line:            pimenrich/js/form/common/add-select/base/line
         pim/common/add-select/base/footer:          pimenrich/js/form/common/add-select/base/footer
         pim/common/add-select/attribute/select:     pimenrich/js/form/common/add-select/attribute/select
+        pim/common/add-select/attribute/line:       pimenrich/js/form/common/add-select/attribute/line
         pim/common/add-attribute:                   pimenrich/js/form/common/attributes/add-attribute
         pim/common/add-attribute-line:              pimenrich/js/form/common/attributes/add-attribute-line
         pim/common/add-attribute-footer:            pimenrich/js/form/common/attributes/add-attribute-footer
@@ -477,6 +478,7 @@ config:
         pim/template/form/add-select/base/select:                 pimenrich/templates/form/add-select/base/select.html
         pim/template/form/add-select/base/line:                   pimenrich/templates/form/add-select/base/line.html
         pim/template/form/add-select/base/footer:                 pimenrich/templates/form/add-select/base/footer.html
+        pim/template/form/add-select/attribute/line:              pimenrich/templates/form/add-select/attribute/line.html
         pim/template/form/attribute/add-attribute:                pimenrich/templates/form/attribute/add-attribute.html
         pim/template/form/attribute/add-attribute-line:           pimenrich/templates/form/attribute/add-attribute-line.html
         pim/template/form/attribute/add-attribute-footer:         pimenrich/templates/form/attribute/add-attribute-footer.html
