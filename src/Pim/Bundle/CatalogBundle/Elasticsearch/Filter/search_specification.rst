@@ -863,13 +863,15 @@ Equals (=)
 
 Completeness
 ************
-:Apply: 'completenesses' field
+:Apply: 'completeness' field
 
 Data model
 ~~~~~~~~~~
+As completenesses are indexed by channel and locale, the "completeness" dynamic template is applied to this field. Completenesses' ratios are indexed as integers.
+
 .. code-block:: yaml
 
-    completenesses:
+    completeness:
         print:
             en_US: 100
             fr_FR: 89
@@ -888,7 +890,7 @@ Example with the ``>`` operator:
 .. code-block:: yaml
 
     range:
-        completenesses.print.en_US:
+        completeness.print.en_US:
             gt: 4
 
 Category
