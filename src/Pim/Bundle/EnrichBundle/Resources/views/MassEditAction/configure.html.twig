@@ -41,7 +41,7 @@
                 <div class="AknButtonList AknButtonList--right configuration">
                     {{ elements.link(
                         'btn.back',
-                        path(backButtonRoute, queryParams),
+                        '#' ~ path(backButtonRoute, queryParams),
                         {'class': 'btn-cancel AknButtonList-item', 'icon': 'chevron-left'}
                     ) }}
                     {{ elements.link(
