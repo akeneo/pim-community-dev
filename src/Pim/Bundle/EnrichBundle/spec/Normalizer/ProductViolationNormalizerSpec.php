@@ -34,7 +34,7 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('description');
 
-        $violation->getPropertyPath()->willReturn('values[{"code":"description","locale":"en_US","scope":"mobile"}].text');
+        $violation->getPropertyPath()->willReturn('values[description-mobile-en_US].text');
         $violation->getMessage()->willReturn('The text is too long.');
 
         $this->normalize($violation, 'internal_api', ['product' => $product])->shouldReturn([
@@ -59,11 +59,11 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
 
         $violation
             ->getPropertyPath()
-            ->willReturn('values[{"code":"movie-title","locale":"fr_FR","scope":null}].text');
+            ->willReturn('values[movie_title-<all_channels>-fr_FR].text');
         $violation->getMessage()->willReturn('This movie title is very bad.');
 
         $this->normalize($violation, 'internal_api', ['product' => $product])->shouldReturn([
-            'attribute' => 'movie-title',
+            'attribute' => 'movie_title',
             'locale'    => 'fr_FR',
             'scope'     => null,
             'message'   => 'This movie title is very bad.'
@@ -83,7 +83,7 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
 
         $violation
             ->getPropertyPath()
-            ->willReturn('values[{"code":"name","locale":null,"scope":"ecommerce"}].varchar');
+            ->willReturn('values[name-ecommerce-<all_locales>].varchar');
         $violation->getMessage()->willReturn('The text is too short.');
 
         $this->normalize($violation, 'internal_api', ['product' => $product])->shouldReturn([
@@ -107,7 +107,7 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
 
         $violation
             ->getPropertyPath()
-            ->willReturn('values[{"code":"price","locale":null,"scope":null}].float');
+            ->willReturn('values[price-<all_channels>-<all_locales>].float');
         $violation->getMessage()->willReturn('The price should be above 10.');
 
         $this->normalize($violation, 'internal_api', ['product' => $product])->shouldReturn([

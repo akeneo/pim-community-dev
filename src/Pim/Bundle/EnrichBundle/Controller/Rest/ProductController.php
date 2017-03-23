@@ -392,7 +392,6 @@ class ProductController
             $data['values'] = [];
         }
 
-
         $this->productUpdater->update($product, $data);
     }
 

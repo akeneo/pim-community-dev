@@ -59,7 +59,12 @@ class ViolationNormalizer implements NormalizerInterface
             ];
 
             if ($violation->getRoot() instanceof ProductInterface &&
-                1 === preg_match('|^values\[(?P<attribute>[a-z0-9-_\<\>]+)|i', $violation->getPropertyPath(), $matches)) {
+                1 === preg_match(
+                    '|^values\[(?P<attribute>[a-z0-9-_\<\>]+)|i',
+                    $violation->getPropertyPath(),
+                    $matches
+                )
+            ) {
                 $error = $this->getProductValuesErrors($violation, $matches['attribute']);
             }
 
