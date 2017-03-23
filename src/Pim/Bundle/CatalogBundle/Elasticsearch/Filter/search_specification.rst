@@ -871,11 +871,10 @@ Data model
 
     completenesses:
         print:
-          en_US-number: 100
-          fr_FR-number: 89
-      ecommerce:
-          fr_FR-number: 79
-          en_US-number: 85
+            en_US: 100
+            fr_FR: 89
+        ecommerce:
+            en_US: 85
 
 Filtering
 ~~~~~~~~~
@@ -889,7 +888,7 @@ Example with the ``>`` operator:
 .. code-block:: yaml
 
     range:
-        completenesses.print.en_US-number:
+        completenesses.print.en_US:
             gt: 4
 
 Category
