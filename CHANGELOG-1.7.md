@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug Fixes
+
+- PIM-6270: Fix sequential edit style
+
 # 1.7.1 (2017-03-23)
 
 ## Bug Fixes
