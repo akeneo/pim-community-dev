@@ -38,7 +38,7 @@ define(
             tagName: 'div',
             targetElement: 'input[type="hidden"]',
             className: null,
-            fetcherId: null,
+            mainFetcher: null,
             template: _.template(template),
             lineView: LineView,
             footerView: FooterView,
@@ -66,7 +66,7 @@ define(
                 },
                 resultsPerPage: 10,
                 searchParameters: {},
-                mainFetcher: '',
+                mainFetcher: null,
                 events: {
                     disable: null,
                     enable: null,
@@ -79,6 +79,10 @@ define(
              */
             initialize: function (meta) {
                 this.config = _.extend({}, this.defaultConfig, meta.config);
+
+                if (_.isNull(this.config.mainFetcher)) {
+                    throw new Error('Fetcher code MUST be provided in config');
+                }
 
                 this.config.select2.placeholder = __(this.config.select2.placeholder);
                 this.config.select2.title       = __(this.config.select2.title);
@@ -263,7 +267,7 @@ define(
                             searchParameters.options.excluded_identifiers = identifiersToExclude;
 
                             return FetcherRegistry.getFetcher(this.mainFetcher).search(searchParameters);
-                        })
+                        }.bind(this))
                         .then(function (items) {
                             var choices = this.prepareChoices(items);
 

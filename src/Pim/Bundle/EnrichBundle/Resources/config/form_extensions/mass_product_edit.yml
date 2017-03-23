@@ -22,18 +22,18 @@ extensions:
         position: 90
         config:
             select2:
-                placeholder:      pim_enrich.form.product.mass_edit.select_attributes
-                title:            pim_enrich.form.product.mass_edit.select
-                buttonTitle:      pim_enrich.form.product.mass_edit.select
-                emptyText:        pim_enrich.form.product.mass_edit.select
-                classes:          pim-add-attributes-multiselect
-                dropdownCssClass: add-attribute
+                placeholder:      'pim_enrich.form.product.mass_edit.select_attributes'
+                title:            'pim_enrich.form.product.mass_edit.select'
+                buttonTitle:      'pim_enrich.form.product.mass_edit.select'
+                emptyText:        'pim_enrich.form.product.mass_edit.select'
+                classes:          'pim-add-attributes-multiselect'
+                dropdownCssClass: 'add-attribute'
             searchParameters:
                 options:
                     exclude_unique: true
             resultsPerPage: 10
-            mainFetcher: attribute
-            className: add-attribute
+            mainFetcher: 'attribute'
+            className: 'add-attribute'
             events:
                 disable: 'mass-edit:form:lock'
                 enable: 'mass-edit:form:unlock'

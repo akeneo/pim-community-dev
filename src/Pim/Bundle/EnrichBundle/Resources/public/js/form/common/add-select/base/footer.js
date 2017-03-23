@@ -69,6 +69,7 @@ define(
              * Method called when the 'add' button is clicked
              */
             onAdd: function () {
+                console.log(this.addEvent);
                 this.trigger(this.addEvent);
             }
         });
