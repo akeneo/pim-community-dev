@@ -68,7 +68,7 @@ Feature: Enforce no permissions for a locale
     And I should not see the text "French (France)"
 
   @javascript @jira https://akeneo.atlassian.net/browse/PIM-6035
-  Scenario: Display product view or edit page when user have no access to the first activated local
+  Scenario: Display product view or edit page when user have no access to the first activated locale
     Given the following locale accesses:
       | locale | user group | access |
       | en_US  | All        | edit   |
