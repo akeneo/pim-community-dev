@@ -215,25 +215,29 @@
   }
 }
 
-.asset-variations-pane .locale-switcher {
-  margin-left: 10px;
+.asset-variations-pane {
+  overflow-y: auto;
 
-  span.dropdown-toggle {
-    background-color: transparent;
-    font-size: 18px;
-    height: 42px;
-    line-height: 42px;
+  .locale-switcher {
+    margin-left: 10px;
 
-    .icon-caret-down {
-      top: 8px;
-      right: 5px;
-      width: 24px;
-      height: 24px;
-      line-height: 24px;
-      border-radius: 2px;
-      border: @akeneoGrey solid 1px;
-      color: @akeneoGrey;
+    span.dropdown-toggle {
       background-color: transparent;
+      font-size: 18px;
+      height: 42px;
+      line-height: 42px;
+
+      .icon-caret-down {
+        top: 8px;
+        right: 5px;
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        border-radius: 2px;
+        border: @akeneoGrey solid 1px;
+        color: @akeneoGrey;
+        background-color: transparent;
+      }
     }
   }
 }
