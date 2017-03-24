@@ -1,7 +1,7 @@
 #!groovy
 
 def editions = ["ce"]
-def phpVersion = "5.6"
+def phpVersion = "7.0"
 def features = "features"
 def launchUnitTests = "yes"
 def launchIntegrationTests = "yes"
@@ -16,7 +16,7 @@ stage("Checkout") {
             choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehatTests'),
             string(defaultValue: 'ee,ce', description: 'PIM edition the behat tests should run on (comma separated values)', name: 'editions'),
             string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
-            choice(choices: '5.6\n7.0\n7.1', description: 'PHP version to run behat with', name: 'phpVersion'),
+            choice(choices: '7.0\n7.1\n5.6', description: 'PHP version to run behat with', name: 'phpVersion'),
         ])
 
         editions = userInput['editions'].tokenize(',')
@@ -47,7 +47,7 @@ stage("Checkout") {
     checkouts['community'] = {
         node('docker') {
             deleteDir()
-            docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "pim_community_dev"
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -63,7 +63,7 @@ stage("Checkout") {
         checkouts['enterprise'] = {
             node('docker') {
                 deleteDir()
-                docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                     unstash "pim_enterprise_dev"
 
                     sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -104,9 +104,23 @@ if (launchIntegrationTests.equals("yes")) {
     stage("Integration tests") {
         def tasks = [:]
 
-        tasks["phpunit-5.6"] = {runIntegrationTest("5.6")}
-        tasks["phpunit-7.0"] = {runIntegrationTest("7.0")}
-        tasks["phpunit-7.1"] = {runIntegrationTest("7.1")}
+        tasks["phpunit-7.0-akeneo"] = {runIntegrationTest("7.0", "Akeneo_Integration_Test")}
+        tasks["phpunit-7.0-api-base"] = {runIntegrationTest("7.0", "PIM_Api_Base_Integration_Test")}
+        tasks["phpunit-7.0-api-controllers"] = {runIntegrationTest("7.0", "PIM_Api_Bundle_Controllers_Integration_Test")}
+        tasks["phpunit-7.0-api-controllers-catalog"] = {runIntegrationTest("7.0", "PIM_Api_Bundle_Controllers_Catalog_Integration_Test")}
+        tasks["phpunit-7.0-api-controller-product"] = {runIntegrationTest("7.0", "PIM_Api_Bundle_Controller_Product_Integration_Test")}
+        tasks["phpunit-7.0-catalog"] = {runIntegrationTest("7.0", "PIM_Catalog_Integration_Test")}
+        tasks["phpunit-7.0-completeness"] = {runIntegrationTest("7.0", "PIM_Catalog_Completeness_Integration_Test")}
+        tasks["phpunit-7.0-pqb"] = {runIntegrationTest("7.0", "PIM_Catalog_PQB_Integration_Test")}
+
+        tasks["phpunit-7.1-akeneo"] = {runIntegrationTest("7.1", "Akeneo_Integration_Test")}
+        tasks["phpunit-7.1-api-base"] = {runIntegrationTest("7.1", "PIM_Api_Base_Integration_Test")}
+        tasks["phpunit-7.1-api-controllers"] = {runIntegrationTest("7.1", "PIM_Api_Bundle_Controllers_Integration_Test")}
+        tasks["phpunit-7.1-api-controllers-catalog"] = {runIntegrationTest("7.1", "PIM_Api_Bundle_Controllers_Catalog_Integration_Test")}
+        tasks["phpunit-7.1-api-controller-product"] = {runIntegrationTest("7.1", "PIM_Api_Bundle_Controller_Product_Integration_Test")}
+        tasks["phpunit-7.1-catalog"] = {runIntegrationTest("7.1", "PIM_Catalog_Integration_Test")}
+        tasks["phpunit-7.1-completeness"] = {runIntegrationTest("7.1", "PIM_Catalog_Completeness_Integration_Test")}
+        tasks["phpunit-7.1-pqb"] = {runIntegrationTest("7.1", "PIM_Catalog_PQB_Integration_Test")}
 
         parallel tasks
     }
@@ -167,7 +181,7 @@ def runPhpUnitTest(phpVersion) {
     }
 }
 
-def runIntegrationTest(phpVersion) {
+def runIntegrationTest(phpVersion, testSuiteName) {
     node('docker') {
         deleteDir()
         try {
@@ -184,7 +198,7 @@ def runIntegrationTest(phpVersion) {
                         sh "./app/console --env=test pim:install --force"
 
                         sh "mkdir -p app/build/logs/"
-                        sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
+                        sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite ${testSuiteName} --log-junit app/build/logs/phpunit_integration.xml"
                     }
                 }
             }
@@ -193,7 +207,7 @@ def runIntegrationTest(phpVersion) {
             sh "docker rm \$(docker ps -a -q) || true"
             sh "docker volume rm \$(docker volume ls -q) || true"
 
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}-${testSuiteName}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
         }
