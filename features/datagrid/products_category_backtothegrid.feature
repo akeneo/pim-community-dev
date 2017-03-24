@@ -49,12 +49,6 @@ Feature: Product category back to the grid
     Given I filter by "sku" with operator "is equal to" and value "novalues"
     Then I should see "No results found. Try to change your search criteria."
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4538
-  Scenario: Successfully sidebarize tree from indirect url
-    Given I am on the relative path enrich/product/ from spread/export
-    And I wait 30 seconds
-    Then I should see an ".sidebarized" element
-
   @jira https://akeneo.atlassian.net/browse/PIM-5638
   Scenario: Successfully apply category's filter on product grid without affecting other grids
     Given I filter by "category" with operator "" and value "winter_collection"

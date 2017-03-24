@@ -150,7 +150,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     {
         $basePath = parse_url($this->baseUrl)['path'];
         $uri = sprintf('%s%s/#%s%s', $this->baseUrl, $referrer, $basePath, $path);
-
+        var_dump($uri);
         $this->getSession()->visit($uri);
     }
 
