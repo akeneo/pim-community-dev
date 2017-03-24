@@ -65,8 +65,6 @@ class JobTrackerController extends Controller
     protected $jobSecurityMapping;
 
     /**
-     * TODO To be refactored into Master to change the constructor 'null' parameters
-     *
      * @param EngineInterface          $templating
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
@@ -75,7 +73,7 @@ class JobTrackerController extends Controller
      * @param SerializerInterface      $serializer
      * @param JobExecutionManager      $jobExecutionManager
      * @param SecurityFacade           $securityFacade
-     * @param string                   $jobSecurityMapping
+     * @param array                    $jobSecurityMapping
      */
     public function __construct(
         EngineInterface $templating,
@@ -85,8 +83,8 @@ class JobTrackerController extends Controller
         JobExecutionArchivist $archivist,
         SerializerInterface $serializer,
         JobExecutionManager $jobExecutionManager,
-        SecurityFacade $securityFacade = null,
-        $jobSecurityMapping = null
+        SecurityFacade $securityFacade,
+        $jobSecurityMapping
     ) {
         $this->templating = $templating;
         $this->translator = $translator;
@@ -247,10 +245,6 @@ class JobTrackerController extends Controller
      */
     protected function isGranted($jobExecution)
     {
-        if ((null === $this->securityFacade) || (null === $this->jobSecurityMapping)) {
-            return true;
-        }
-
         $jobExecutionType = $jobExecution->getJobInstance()->getType();
         if (!array_key_exists($jobExecutionType, $this->jobSecurityMapping)) {
             return true;
