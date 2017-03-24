@@ -148,6 +148,9 @@ edit_common_attributes_with_permission_and_rules:
     steps.edit_common_attributes_processor.title: Edit common attributes
 
 batch_jobs:
+    yml_asset_channel_configuration_import:
+        import:
+            label: Asset channel configuration import
     add_product_value_with_permission_and_rules:
         label: Add product value with permission check & rules application
         perform.label: Add product value

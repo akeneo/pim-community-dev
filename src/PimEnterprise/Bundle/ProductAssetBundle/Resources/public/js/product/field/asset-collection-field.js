@@ -7,10 +7,12 @@
  */
 define(
     [
+        'underscore',
         'pim/field',
         'pimee/picker/asset-collection'
     ],
     function (
+        _,
         Field,
         AssetCollectionPicker
     ) {
@@ -40,16 +42,10 @@ define(
             /**
              * {@inheritdoc}
              */
-            setContext: function () {
-                Field.prototype.setContext.apply(this, arguments);
+            renderInput: function (templateContext) {
+                var context = _.extend({}, this.context, {editMode: templateContext.editMode});
+                this.assetCollectionPicker.setContext(context);
 
-                this.assetCollectionPicker.setContext(this.context);
-            },
-
-            /**
-             * {@inheritdoc}
-             */
-            renderInput: function () {
                 return this.assetCollectionPicker.render().$el;
             }
         });
