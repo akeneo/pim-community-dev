@@ -12,7 +12,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\ProductValue\ProductValue;
+use Pim\Component\Catalog\ProductValue\ScalarProductValue;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
@@ -101,7 +101,7 @@ class ProductBuilderSpec extends ObjectBehavior
         AttributeInterface $desc,
         ProductValueInterface $skuValue
     ) {
-        $valueClass = ProductValue::class;
+        $valueClass = ScalarProductValue::class;
         $attributeClass = Attribute::class;
 
         $sku->getCode()->willReturn('sku');

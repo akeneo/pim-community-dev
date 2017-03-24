@@ -2,15 +2,13 @@
 
 namespace spec\Pim\Component\ReferenceData\Updater\Copier;
 
-use Acme\Bundle\AppBundle\Model\ColorProductValue;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Model\AbstractProductValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValueInterface;
 use Prophecy\Argument;
 
 class ReferenceDataAttributeCopierSpec extends ObjectBehavior
@@ -55,8 +53,8 @@ class ReferenceDataAttributeCopierSpec extends ObjectBehavior
         AttributeInterface $toAttribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ColorProductValue $fromProductValue,
-        ColorProductValue $toProductValue,
+        ReferenceDataProductValueInterface $fromProductValue,
+        ReferenceDataProductValueInterface $toProductValue,
         ReferenceDataInterface $referenceData
     ) {
         $fromLocale = 'fr_FR';

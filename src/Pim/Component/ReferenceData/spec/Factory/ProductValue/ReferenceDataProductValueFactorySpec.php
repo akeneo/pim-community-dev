@@ -3,12 +3,12 @@
 namespace spec\Pim\Component\ReferenceData\Factory\ProductValue;
 
 use Acme\Bundle\AppBundle\Entity\Color;
-use Acme\Bundle\AppBundle\Model\ColorProductValue;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataProductValueFactory;
+use Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValue;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 use Prophecy\Argument;
@@ -22,7 +22,7 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
 {
     function let(ReferenceDataRepositoryResolverInterface $repositoryResolver)
     {
-        $this->beConstructedWith($repositoryResolver, ColorProductValue::class, 'pim_reference_data_catalog_simpleselect');
+        $this->beConstructedWith($repositoryResolver, ReferenceDataProductValue::class, 'pim_reference_data_catalog_simpleselect');
     }
 
     function it_is_initializable()
@@ -58,7 +58,7 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ColorProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataProductValue::class);
         $productValue->shouldHaveAttribute('reference_data_simple_select_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -86,7 +86,7 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ColorProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataProductValue::class);
         $productValue->shouldHaveAttribute('reference_data_simple_select_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -119,7 +119,7 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
             'blue'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ColorProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataProductValue::class);
         $productValue->shouldHaveAttribute('reference_data_simple_select_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -150,7 +150,7 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
             'blue'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ColorProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataProductValue::class);
         $productValue->shouldHaveAttribute('reference_data_simple_select_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');

@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\ProductValue\ProductValue;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;

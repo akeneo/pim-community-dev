@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Denormalizer\Standard;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\ProductValue\ProductValue;
+use Pim\Component\Catalog\ProductValue\ScalarProductValue;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;

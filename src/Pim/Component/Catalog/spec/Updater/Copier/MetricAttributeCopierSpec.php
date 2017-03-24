@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\ProductValue\ProductValue;
+use Pim\Component\Catalog\ProductValue\ScalarProductValue;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -59,8 +59,8 @@ class MetricAttributeCopierSpec extends ObjectBehavior
         AttributeInterface $toAttribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductValue $fromProductValue,
-        ProductValue $toProductValue
+        ScalarProductValue $fromProductValue,
+        ScalarProductValue $toProductValue
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';

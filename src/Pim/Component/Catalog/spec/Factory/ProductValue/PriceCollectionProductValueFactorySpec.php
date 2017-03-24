@@ -9,14 +9,14 @@ use Pim\Component\Catalog\Factory\ProductValue\PriceCollectionProductValueFactor
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\PriceCollection;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
-use Pim\Component\Catalog\ProductValue\ProductValue;
+use Pim\Component\Catalog\ProductValue\ScalarProductValue;
 use Prophecy\Argument;
 
 class PriceCollectionProductValueFactorySpec extends ObjectBehavior
 {
     function let(PriceFactory $priceFactory)
     {
-        $this->beConstructedWith($priceFactory, ProductValue::class, 'pim_catalog_price_collection', $priceFactory);
+        $this->beConstructedWith($priceFactory, ScalarProductValue::class, 'pim_catalog_price_collection', $priceFactory);
     }
 
     function it_is_initializable()
@@ -50,7 +50,7 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
             []
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('price_collection_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -77,7 +77,7 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
             []
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('price_collection_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -109,7 +109,7 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
             [['amount' => 42, 'currency' => 'EUR'], ['amount' => 63, 'currency' => 'USD']]
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('price_collection_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -139,7 +139,7 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
             [['amount' => 42, 'currency' => 'EUR'], ['amount' => 63, 'currency' => 'USD']]
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('price_collection_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');

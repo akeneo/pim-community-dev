@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\ProductValue\ProductValue;
+use Pim\Component\Catalog\ProductValue\ScalarProductValue;
 use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -36,7 +36,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $attribute = new Attribute();
         $attribute->setCode('attribute');
         $attribute->setBackendType('text');
-        $realValue = new ProductValue($attribute, null, null, null);
+        $realValue = new ScalarProductValue($attribute, null, null, null);
 
         $valuesCollection = new ProductValueCollection([$realValue]);
         $valuesArray = [$realValue];
