@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Workflow\Model;
 
-use PimEnterprise\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
  * Published product value interface

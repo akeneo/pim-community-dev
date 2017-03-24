@@ -11,13 +11,13 @@
 
 namespace PimEnterprise\Component\Workflow\Model;
 
-use PimEnterprise\Component\Catalog\Model\ProductValue;
+use Pim\Component\Catalog\ProductValue\ScalarProductValue;
 
 /**
  * Published product value
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class PublishedProductValue extends ProductValue implements PublishedProductValueInterface
+class PublishedProductValue extends ScalarProductValue implements PublishedProductValueInterface
 {
 }

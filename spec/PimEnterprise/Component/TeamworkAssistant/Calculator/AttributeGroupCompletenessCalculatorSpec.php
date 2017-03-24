@@ -9,12 +9,12 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Component\TeamworkAssistant\Calculator\AttributeGroupCompletenessCalculator;
 use PimEnterprise\Component\TeamworkAssistant\Calculator\ProjectItemCalculatorInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\TeamworkAssistant\Model\AttributeGroupCompleteness;
 use PimEnterprise\Component\TeamworkAssistant\Repository\FamilyRequirementRepositoryInterface;
-use PimEnterprise\Component\Catalog\Model\ProductValueInterface;
 
 class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
 {
