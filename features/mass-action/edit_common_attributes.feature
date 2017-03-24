@@ -248,3 +248,19 @@ Feature: Edit common attributes of many products at once
     And attribute Comment of "sandals" should be "$(echo "shell_injection" > shell_injection.txt)"
     And attribute Comment of "sneakers" should be "$(echo "shell_injection" > shell_injection.txt)"
     And file "%web%shell_injection.txt" should not exist
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6240
+  Scenario: Allow editing all attributes on configuration screen
+    Given I am on the "tablet" channel page
+    Then I should see the Code field
+    And the field Code should be disabled
+    When I fill in the following information:
+      | English (United States) | |
+    And I press the "Save" button
+    Then I should not see the text "My tablet"
+    And I am on the products page
+    And I select rows boots, sandals and sneakers
+    And I press "Change product information" on the "Bulk Actions" dropdown button
+    When I choose the "Edit common attributes" operation
+    Then I should see the text "[tablet]"
+    And I should not see the text "undefined"
