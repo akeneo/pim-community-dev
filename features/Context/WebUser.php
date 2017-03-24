@@ -1508,11 +1508,14 @@ class WebUser extends RawMinkContext
      */
     public function iSaveAndBackToTheGrid()
     {
-        $this
-            ->getCurrentPage()
-            ->getSaveAndBackButton()
-            ->click();
-        $this->wait();
+        $this->spin(function () {
+            $this
+                ->getCurrentPage()
+                ->getSaveAndBackButton()
+                ->click();
+
+            return true;
+        }, 'Cannot click on the back to the grid button');
     }
 
     /**
