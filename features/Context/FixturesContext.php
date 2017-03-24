@@ -32,6 +32,7 @@ use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\ProductValue\OptionProductValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
@@ -941,7 +942,8 @@ class FixturesContext extends BaseFixturesContext
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $value      = $this->getProductValue($identifier, strtolower($attribute));
-            $actualCode = $value->getOption() ? $value->getOption()->getCode() : null;
+            $actualCode = $value instanceof OptionProductValueInterface && $value->getData()
+                ? $value->getData()->getCode() : null;
             assertEquals($optionCode, $actualCode);
         }
     }

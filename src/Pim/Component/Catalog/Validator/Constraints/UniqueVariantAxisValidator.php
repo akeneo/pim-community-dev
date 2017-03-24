@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\ProductValue\OptionProductValueInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -19,12 +20,10 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class UniqueVariantAxisValidator extends ConstraintValidator
 {
-    /** @var ProductRepositoryInterface $repository */
+    /** @var ProductRepositoryInterface */
     protected $repository;
 
     /**
-     * Constructor
-     *
      * @param ProductRepositoryInterface $repository
      */
     public function __construct(ProductRepositoryInterface $repository)
@@ -66,7 +65,8 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             $values = [];
             foreach ($variantGroup->getAxisAttributes() as $attribute) {
                 $code = $attribute->getCode();
-                $option = $product->getValue($code) ? (string) $product->getValue($code)->getOption() : null;
+                $value = $product->getValue($code);
+                $option = $value instanceof OptionProductValueInterface && null !== $value->getData() ? $value->getData()->getCode() : null;
 
                 if (null === $option && !$attribute->isBackendTypeReferenceData()) {
                     $this->addEmptyAxisViolation(
@@ -126,11 +126,13 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         ProductInterface $product,
         Constraint $constraint
     ) {
-        $criteria = [];
-        foreach ($variantGroup->getAxisAttributes() as $attribute) {
+            $criteria = [];
+            foreach ($variantGroup->getAxisAttributes() as $attribute) {
             $value = $product->getValue($attribute->getCode());
+            $isOption = $value instanceof OptionProductValueInterface;
+
             // we don't add criteria when option is null, as this check is performed by HasVariantAxesValidator
-            if (null === $value || (null === $value->getOption() && !$attribute->isBackendTypeReferenceData())) {
+            if (null === $value || (null === $value->getData() && $isOption && !$attribute->isBackendTypeReferenceData())) {
                 $this->addEmptyAxisViolation(
                     $constraint,
                     $variantGroup->getLabel(),
@@ -143,8 +145,8 @@ class UniqueVariantAxisValidator extends ConstraintValidator
 
             $current = ['attribute' => $attribute];
 
-            if (null !== $value->getOption()) {
-                $current['option'] = $value->getOption();
+            if ($isOption && null !== $value->getData()) {
+                $current['option'] = $value->getData();
             } elseif ($attribute->isBackendTypeReferenceData()) {
                 $current['referenceData'] = [
                     'name' => $attribute->getReferenceDataName(),
