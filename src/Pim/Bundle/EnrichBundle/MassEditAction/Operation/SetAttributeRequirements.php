@@ -78,7 +78,7 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     {
         $attributeRequirements = [];
 
-        $requirements = $this->getAttributesFromValues($values);
+        $requirements = $this->getRequirementsFromValues($values);
         $attributes = $this->getAttributesFromValues($values);
 
         $channelCodes = array_map(function (ChannelInterface $channel) {
