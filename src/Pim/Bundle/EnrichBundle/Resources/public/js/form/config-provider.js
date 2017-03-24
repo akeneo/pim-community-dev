@@ -34,6 +34,13 @@ define(
                 return loadConfig().then(function (config) {
                     return config.attribute_fields;
                 });
+            },
+
+            /**
+             * Clear cache of form registry
+             */
+            clear: function () {
+                promise = null;
             }
         };
     }

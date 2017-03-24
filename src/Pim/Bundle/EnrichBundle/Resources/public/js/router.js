@@ -81,9 +81,7 @@ define(
                     if (currentController) {
                         currentController.remove();
                     }
-                    console.log(controller.aclResourceId);
-                    console.log(controller.module);
-                    console.log(securityContext.isGranted(controller.aclResourceId));
+
                     $('#container').empty();
                     var $view = $('<div>', {'class': 'view'}).appendTo($('#container'));
 
