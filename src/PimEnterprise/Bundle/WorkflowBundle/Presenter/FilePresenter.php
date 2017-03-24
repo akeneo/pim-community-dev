@@ -56,7 +56,7 @@ class FilePresenter implements PresenterInterface
     {
         $result = ['before' => '', 'after' => ''];
 
-        $originalMedia = $data->getMedia();
+        $originalMedia = $data->getData();
         $changedMedia  = isset($change['data']) ? $this->fileInfoRepository->findOneByIdentifier($change['data']) : null;
 
         if (!$this->hasChanged($changedMedia, $originalMedia)) {

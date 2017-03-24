@@ -47,7 +47,7 @@ class AssetCollectionCompleteChecker implements ProductValueCompleteCheckerInter
             );
             throw new \InvalidArgumentException($message);
         }
-        $assets = $productValue->getAssets();
+        $assets = $productValue->getData();
 
         if (null === $assets) {
             return false;

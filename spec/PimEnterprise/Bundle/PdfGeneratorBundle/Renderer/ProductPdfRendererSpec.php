@@ -98,7 +98,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $blenderValues->toArray()->willReturn([$productValue]);
 
         $productValue->getAttribute()->willReturn($mainImage);
-        $productValue->getMedia()->willReturn($fileInfo);
+        $productValue->getData()->willReturn($fileInfo);
 
         $mainImage->getGroup()->willReturn($media);
         $mainImage->getCode()->willReturn('main_image');
