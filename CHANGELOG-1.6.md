@@ -2,7 +2,8 @@
 
 ## Bug fixes
 
-PIM-6268: Fix an issue where one cannot scroll locales on asset page when too many locales are activated
+- PIM-6268: Fix an issue where one cannot scroll locales on asset page when too many locales are activated
+- PIM-6267: Fix an error when you add assets to a variant group, products were unticked
 
 # 1.6.12 (2017-02-28)
 
