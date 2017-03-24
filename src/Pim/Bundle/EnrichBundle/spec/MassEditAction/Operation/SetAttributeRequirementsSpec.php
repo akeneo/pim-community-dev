@@ -24,24 +24,6 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface');
     }
 
-    function it_converts_given_values_to_attributes_and_requirements() {
-        $data = $this->getData();
-
-        $this->setValues($data)->getAttributes()->shouldReturn(
-            [
-                'foo_attribute',
-                'bar_attribute',
-            ]
-        );
-
-        $this->setValues($data)->getRequirements()->shouldReturn(
-            [
-                'channel_a' => ['foo_attribute'],
-                'channel_b' => ['bar_attribute'],
-            ]
-        );
-    }
-
     function it_uses_the_set_attribute_requirements_form_type()
     {
         $this->getFormType()->shouldReturn('pim_enrich_mass_set_attribute_requirements');
