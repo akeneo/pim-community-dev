@@ -34,7 +34,6 @@
 
 {% block content %}
 
-    {{ JSFV(form) }}
     {{ form_start(form, {
         'action': path('pimee_enrich_locale_edit', { id: form.vars.value.id }),
         'attr': {
