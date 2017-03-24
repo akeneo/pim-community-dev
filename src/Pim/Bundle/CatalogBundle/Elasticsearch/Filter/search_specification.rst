@@ -50,7 +50,7 @@ Akeneo attribute type             Elasticsearch field suffix
  pim_catalog_metric                -metric
  pim_catalog_boolean               -bool
  pim_catalog_simpleselect          -option
- pim_catalog_number                -number
+ pim_catalog_number                -decimal
  pim_catalog_multiselect           -options
  pim_catalog_date                  -date
  pim_catalog_price_collection      -prices
@@ -565,19 +565,19 @@ EMPTY
         field: "updated_date"
 
 
-Number
-******
+Decimal
+*******
 :Apply:
  pim_catalog_number attributes
 
-Please note that number attributes must be sent as string to be captured by the dynamic mapping. This way, the PIM doesn't need to be manage float or integer questions.
+Please note that number attributes must be indexed as a string to be captured by the dynamic mapping. This way, the PIM doesn't need to manage float or integer questions.
 
 
 Data model
 ~~~~~~~~~~
 .. code-block:: yaml
 
-  packet_count-number: 5
+  values.packet_count-decimal.<all_locales>.<all_channels>: 5
 
 Filtering
 ~~~~~~~~~
@@ -587,59 +587,110 @@ Less than (<)
 """""""""""""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    range:
-        packet_count-number:
-            lt: 10
+    'filter' => [
+        'range' => [
+            'values.packet_count-decimal.<all_locales>.<all_channels>' => ['lt' => 10]
+        ]
+    ]
 
 Less than or equals to (<=)
 """""""""""""""""""""""""""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    range:
-        packet_count-number:
-            lte: 11
+    'filter' => [
+        'range' => [
+            'values.packet_count-decimal.<all_locales>.<all_channels>' => ['lte' => 10]
+        ]
+    ]
 
 Equals (=)
 """"""""""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    term:
-        packet_count-number: 5
+    'filter' => [
+        'term' => [
+            'values.packet_count-decimal.<all_locales>.<all_channels>' => 5
+        ]
+    ]
+
+Not Equal (!=)
+""""""""""""""
+:Type: filter and must_not
+
+.. code-block:: php
+
+    [
+        'query' => [
+            'bool' => [
+                'must_not' => [
+                    'term' => [
+                        'values.packet_count-decimal.<all_locales>.<all_channels>' => 5
+                    ]
+                ],
+                'filter' => [
+                    'exists' => [
+                        'field' => 'values.packet_count-decimal.<all_locales>.<all_channels>'
+                    ]
+                ]
+            ]
+        ]
+    ]
+
 
 Greater than or equal to (>=)
 """""""""""""""""""""""""""""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    range:
-        packet_count-number:
-            gte: 3
+    'filter' => [
+        'range' => [
+            'values.packet_count-decimal.<all_locales>.<all_channels>' => ['gte' => 10]
+        ]
+    ]
 
 Greater than (>)
 """"""""""""""""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    range:
-        packet_count-number:
-            gt: 4
+    'filter' => [
+        'range' => [
+            'values.packet_count-decimal.<all_locales>.<all_channels>' => ['gt' => 10]
+        ]
+    ]
 
 EMPTY
 """""
+:Type: must_not
+
+.. code-block:: php
+
+    'must_not' => [
+        'exists' => [
+            'field' => 'values.packet_count-decimal.<all_locales>.<all_channels>'
+        ]
+    ]
+
+NOT EMPTY
+"""""""""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    missing:
-       field: "packet_count"
+    'filter' => [
+        'exists' => [
+            'field' => 'values.packet_count-decimal.<all_locales>.<all_channels>'
+        ]
+    ]
+
 
 Option
 ******

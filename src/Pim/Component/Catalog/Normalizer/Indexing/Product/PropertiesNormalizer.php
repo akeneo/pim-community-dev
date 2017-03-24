@@ -44,11 +44,8 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
         $data[self::FIELD_COMPLETENESS] = !$product->getCompletenesses()->isEmpty()
             ? $this->serializer->normalize($product->getCompletenesses(), 'indexing', $context) : [];
 
-        // TODO TIP-706: normalize product values
-//        $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$product->getValues()->isEmpty()
-//            ? $this->serializer->normalize($product->getValues(), 'indexing', $context) : [];
-
-        $data[StandardPropertiesNormalizer::FIELD_VALUES] = [];
+        $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$product->getValues()->isEmpty()
+            ? $this->serializer->normalize($product->getValues(), 'indexing', $context) : [];
 
         return $data;
     }

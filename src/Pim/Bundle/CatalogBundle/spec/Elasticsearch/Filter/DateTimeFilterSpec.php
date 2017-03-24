@@ -24,10 +24,15 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  */
 class DateTimeFilterSpec extends ObjectBehavior
 {
+    protected $timezone;
+
     function let(
         IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         JobRepositoryInterface $jobRepository
     ) {
+        $this->timezone = ini_get('date.timezone');
+        ini_set('date.timezone', 'UTC');
+
         $this->beConstructedWith(
             $jobInstanceRepository,
             $jobRepository,
@@ -443,5 +448,10 @@ class DateTimeFilterSpec extends ObjectBehavior
                 $value
             )
         )->during('addFieldFilter', ['created', $operator, $value]);
+    }
+
+    function letGo()
+    {
+        ini_set('date.timezone', $this->timezone);
     }
 }
