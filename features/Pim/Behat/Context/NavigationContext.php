@@ -225,10 +225,22 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      */
     public function iAmOnTheEntityEditPage($identifier, $page)
     {
-        $page   = ucfirst($page);
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+        $this->spin(function () use ($identifier, $page) {
+            $page   = ucfirst($page);
+            $getter = sprintf('get%s', $page);
+            $entity = $this->getFixturesContext()->$getter($identifier);
+            $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+
+            $expected = $this->getPage(sprintf('%s edit', $page))->getUrl(['id' => $entity->getId()]);
+
+            $actualFullUrl = $this->getSession()->getCurrentUrl();
+            $actualUrl     = $this->sanitizeUrl($actualFullUrl);
+            $result        = parse_url($expected, PHP_URL_PATH) === $actualUrl;
+
+            assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actualUrl));
+
+            return true;
+        }, sprintf('Cannot got to the * edit page', $page));
     }
 
     /**
@@ -450,6 +462,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
           $actualFullUrl = $this->getSession()->getCurrentUrl();
           $actualUrl     = $this->sanitizeUrl($actualFullUrl);
           $result        = parse_url($expected, PHP_URL_PATH) === $actualUrl;
+
           assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actualUrl));
 
           return true;
