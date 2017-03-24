@@ -6,9 +6,9 @@ Feature: Display jobs execution in job tracker
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "Julia"
 
   Scenario: Display an export in the job tracker
+    Given I am logged in as "Julia"
     And the following job "csv_footwear_category_export" configuration:
       | filePath | %tmp%/category_export/category_export.csv |
     When I am on the "csv_footwear_category_export" export job page
@@ -22,6 +22,7 @@ Feature: Display jobs execution in job tracker
     And I should see entity CSV footwear category export
 
   Scenario: Display a mass edit in the job tracker
+    Given I am logged in as "Julia"
     And the following products:
       | sku      | family   |
       | boots    | boots    |
@@ -44,6 +45,7 @@ Feature: Display jobs execution in job tracker
     And I should see entity Mass edit common product attributes
 
   Scenario: Display an import in the job tracker
+    Given I am logged in as "Julia"
     And the following CSV file to import:
     """
     code;parent;label-en_US
@@ -67,7 +69,8 @@ Feature: Display jobs execution in job tracker
 
   @jira https://akeneo.atlassian.net/browse/PIM-6140
   Scenario: Successfully filter job executions with "equals to" filter
-    Given I am on the exports page
+    Given I am logged in as "Julia"
+    And I am on the exports page
     And I am on the "csv_footwear_product_export" export job page
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
@@ -83,3 +86,20 @@ Feature: Display jobs execution in job tracker
       | user   | is equal to | Julia                       | CSV footwear product export                               |
       | type   | is equal to | import                      |                                                           |
       | type   | is equal to | export                      | CSV footwear product export, CSV footwear category export |
+
+  Scenario: Successfully deny to view progress when the user do not have export show access
+    Given I am logged in as "admin"
+    And I am on the "csv_footwear_product_export" export job page
+    And I launch the export job
+    And I wait for the "csv_footwear_product_export" job to finish
+    And I am on the "Catalog manager" role page
+    And I visit the "Permissions" tab
+    And I visit the "Export profiles" group
+    And I revoke rights to resource Show an export profile
+    And I save the role
+    And I should not see the text "There are unsaved changes"
+    And I logout
+    And I am logged in as "Julia"
+    And I am on the job tracker page
+    When I click on the "CSV footwear product export" row
+    Then I should not see the text "Execution details - CSV footwear product export [csv_footwear_product_export]"

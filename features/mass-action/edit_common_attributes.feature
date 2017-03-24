@@ -194,6 +194,9 @@ Feature: Edit common attributes of many products at once
     And I change the "Size" to "37"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
+    Then I am on the products page
+    And I should see the text "44"
+    And I should see the text "50"
     Then I am on the "sneakers" product page
     When I open the "Completeness" panel
     And I should see the completeness:

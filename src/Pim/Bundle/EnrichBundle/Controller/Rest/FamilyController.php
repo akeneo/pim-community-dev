@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
-use Akeneo\Component\StorageUtils\Exception\ObjectUpdaterException;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -98,8 +97,6 @@ class FamilyController
     /**
      * Get the family collection
      *
-     * @AclAncestor("pim_enrich_family_index")
-     *
      * @param Request $request
      *
      * @return JsonResponse
@@ -127,8 +124,6 @@ class FamilyController
 
     /**
      * Get a single family
-     *
-     * @AclAncestor("pim_enrich_family_index")
      *
      * @param int $identifier
      *
@@ -187,7 +182,7 @@ class FamilyController
     /**
      * Gets family
      *
-     * @param $code
+     * @param string $code
      *
      * @throws HttpExceptionInterface
      *
@@ -211,8 +206,6 @@ class FamilyController
      *
      * @param Request         $request
      * @param FamilyInterface $family
-     *
-     * @throws ObjectUpdaterException
      *
      * @return JsonResponse
      */

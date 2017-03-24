@@ -57,7 +57,7 @@
 
                                 $('#mass-edit-common-attribute-description').html(_.__(
                                     'pim_enrich.mass_edit_action.edit_common_attributes.description',
-                                    {'locale': locale.label, 'channel': channel.labels[UserContext.get('uiLocale')]}
+                                    {'locale': locale.label, 'channel': channel.labels[UserContext.get('catalogLocale')]}
                                 ));
                             });
                         });

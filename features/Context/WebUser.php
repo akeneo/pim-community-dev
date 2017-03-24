@@ -18,6 +18,7 @@ use Box\Spout\Reader\ReaderFactory;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\SpinException;
 use Context\Spin\TimeoutException;
+use Context\Traits\ClosestTrait;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 use Pim\Component\Catalog\Model\Product;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -32,7 +33,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 class WebUser extends RawMinkContext
 {
     use SpinCapableTrait;
-
+    use ClosestTrait;
     /* -------------------- Page-related methods -------------------- */
 
 
@@ -829,6 +830,40 @@ class WebUser extends RawMinkContext
 
             return true;
         }, sprintf('Cannot fill the field "%s"', $field));
+    }
+
+    /**
+     * @Then /^I should see select choices of the "(.*)" in the following order:$/
+     *
+     * @param string $field
+     * @param array  $items
+     */
+    public function iShouldSeeSelectChoicesOrdered($fieldName, PyStringNode $items)
+    {
+        $searched = array_values(explode(',', implode(',', $items->getLines())));
+
+        $label = $this->getCurrentPage()->find('css', sprintf('label:contains("%s")', $fieldName));
+
+        $valuesRoot = $this->getClosest($label, 'select2');
+
+        $foundChoices = $valuesRoot
+            ->findAll('css', '.field-input select option');
+
+        $fieldsArray = [];
+        foreach ($foundChoices as $choice) {
+            $fieldsArray[] = trim($choice->getHtml());
+        }
+
+        $fieldsArray = array_values(array_filter($fieldsArray));
+
+        if ($searched !== $fieldsArray) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Order of choices for field "%s" is not as expected, got: %s',
+                    $fieldName, implode(', ', $fieldsArray)
+                )
+            );
+        }
     }
 
     /**
