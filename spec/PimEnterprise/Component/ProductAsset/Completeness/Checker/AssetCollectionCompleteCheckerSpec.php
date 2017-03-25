@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use PimEnterprise\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 class AssetCollectionCompleteCheckerSpec extends ObjectBehavior
@@ -35,11 +35,11 @@ class AssetCollectionCompleteCheckerSpec extends ObjectBehavior
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $value->getAssets()->willReturn(null);
+        $value->getData()->willReturn(null);
         $this->isComplete($value, $channel, $locale)->shouldReturn(false);
 
         // empty collection
-        $value->getAssets()->willReturn([]);
+        $value->getData()->willReturn([]);
         $this->isComplete($value, $channel, $locale)->shouldReturn(false);
     }
 
@@ -50,7 +50,7 @@ class AssetCollectionCompleteCheckerSpec extends ObjectBehavior
         AssetInterface $asset1
     ) {
         $asset1->getVariations()->willReturn([]);
-        $productValue->getAssets()->willReturn([$asset1]);
+        $productValue->getData()->willReturn([$asset1]);
         $this->isComplete($productValue, $channel, $locale)->shouldReturn(false);
     }
 }

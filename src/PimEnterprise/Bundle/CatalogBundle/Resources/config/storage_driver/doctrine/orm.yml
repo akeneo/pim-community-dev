@@ -16,6 +16,6 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@pimee_product_asset.repository.asset'
             - '%pim_catalog.entity.product.class%'
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.scalar.class%'
             - '%pim_catalog.entity.attribute.class%'
             - '%pimee_product_asset.model.asset.class%'
