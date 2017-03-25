@@ -6,7 +6,11 @@ pim_api:
       list: Listaa kategoriat
     family:
       list: Listaa tuoteperheet
+    channel.list: Listaa kanavat
+    locale.list: Lista lokaatioista
   acl_group:
     attribute: Attribuutit
     category: Kategoriat
     family: Perheet
+    channel: Kanavat
+    locale: Alueet

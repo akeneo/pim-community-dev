@@ -6,7 +6,11 @@ pim_api:
       list: Listar categorias
     family:
       list: Listar famílias
+    channel.list: Listar canais
+    locale.list: Listar linguagens
   acl_group:
     attribute: Atributos
     category: Categorias
     family: Famílias
+    channel: Canais
+    locale: Linguagens

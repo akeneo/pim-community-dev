@@ -6,7 +6,11 @@ pim_api:
       list: Llistar categories
     family:
       list: Llistar famílies
+    channel.list: Llistar canals
+    locale.list: Llistar configuracions regionals
   acl_group:
     attribute: Atributs
     category: Categories
     family: Famílies
+    channel: Canals
+    locale: Configuracions regionals

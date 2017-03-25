@@ -6,7 +6,11 @@ pim_api:
       list: Список категорий
     family:
       list: Просмотр семейств
+    channel.list: Список каналов
+    locale.list: Просмотр локалей
   acl_group:
     attribute: Атрибуты
     category: Категории
     family: Семейства
+    channel: Каналы
+    locale: Локали
