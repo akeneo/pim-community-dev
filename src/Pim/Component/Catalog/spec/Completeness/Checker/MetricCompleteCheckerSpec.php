@@ -37,7 +37,7 @@ class MetricCompleteCheckerSpec extends ObjectBehavior
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $value->getMetric()->willReturn($metric);
+        $value->getData()->willReturn($metric);
 
         $metric->getData()->willReturn(200);
         $metric->getBaseData()->willReturn(2);
@@ -57,7 +57,7 @@ class MetricCompleteCheckerSpec extends ObjectBehavior
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $value->getMetric()->willReturn(null);
+        $value->getData()->willReturn(null);
         $this->isComplete($value, $channel, $locale)->shouldReturn(false);
     }
 
@@ -67,7 +67,7 @@ class MetricCompleteCheckerSpec extends ObjectBehavior
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $value->getMetric()->willReturn($metric);
+        $value->getData()->willReturn($metric);
 
         $metric->getData()->willReturn(null);
         $metric->getBaseData()->willReturn(2);

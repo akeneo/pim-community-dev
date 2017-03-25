@@ -4,7 +4,6 @@ namespace Pim\Component\Catalog\Factory\ProductValue;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
@@ -108,20 +107,20 @@ class OptionsProductValueFactory implements ProductValueFactoryInterface
     }
 
     /**
-     * Returns an ArrayCollection of attribute options.
+     * Returns an array of attribute options.
      *
      * @param AttributeInterface $attribute
      * @param string[]           $data
      *
-     * @return ArrayCollection
+     * @return array
      */
     protected function getOptions(AttributeInterface $attribute, array $data)
     {
-        $options = new ArrayCollection();
+        $options = [];
 
         foreach ($data as $optionCode) {
             if (null !== $option = $this->getOption($attribute, $optionCode)) {
-                $options->add($option);
+                $options[] = $option;
             }
         }
 

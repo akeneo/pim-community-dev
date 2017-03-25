@@ -3,13 +3,12 @@
 namespace spec\Pim\Component\ReferenceData\Factory\ProductValue;
 
 use Acme\Bundle\AppBundle\Entity\Fabric;
-use Acme\Bundle\AppBundle\Model\ProductValue;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Factory\ProductValue\ReferenceDataCollectionProductValueFactory;
+use Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionProductValue;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 use Prophecy\Argument;
@@ -23,7 +22,7 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
 {
     function let(ReferenceDataRepositoryResolverInterface $repositoryResolver)
     {
-        $this->beConstructedWith($repositoryResolver, ProductValue::class, 'pim_reference_data_catalog_multiselect');
+        $this->beConstructedWith($repositoryResolver, ReferenceDataCollectionProductValue::class, 'pim_reference_data_catalog_multiselect');
     }
 
     function it_is_initializable()
@@ -61,7 +60,7 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataCollectionProductValue::class);
         $productValue->shouldHaveAttribute('reference_data_multi_select_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -91,7 +90,7 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataCollectionProductValue::class);
         $productValue->shouldHaveAttribute('reference_data_multi_select_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -126,7 +125,7 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
             ['silk', 'cotton']
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataCollectionProductValue::class);
         $productValue->shouldHaveAttribute('reference_data_multi_select_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -159,7 +158,7 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
             ['silk', 'cotton']
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataCollectionProductValue::class);
         $productValue->shouldHaveAttribute('reference_data_multi_select_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -253,10 +252,10 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
                 return $channelCode === $subject->getScope();
             },
             'beEmpty'           => function ($subject) {
-                return $subject->getData() instanceof ArrayCollection && [] === $subject->getData()->toArray();
+                return is_array($subject->getData()) && 0 === count($subject->getData());
             },
             'haveReferenceData' => function ($subject, $expected) {
-                $fabrics = $subject->getData()->toArray();
+                $fabrics = $subject->getData();
 
                 $hasFabrics = false;
                 foreach ($fabrics as $fabric) {

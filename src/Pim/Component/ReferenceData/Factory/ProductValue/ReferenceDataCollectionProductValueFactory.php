@@ -4,7 +4,6 @@ namespace Pim\Component\ReferenceData\Factory\ProductValue;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
@@ -115,16 +114,16 @@ class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryI
      * @param AttributeInterface $attribute
      * @param array              $referenceDataCodes
      *
-     * @return ArrayCollection
+     * @return array
      */
     protected function getReferenceDataCollection(AttributeInterface $attribute, array $referenceDataCodes)
     {
-        $collection = new ArrayCollection();
+        $collection = [];
 
         $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
 
         foreach ($referenceDataCodes as $referenceDataCode) {
-            $collection->add($this->getReferenceData($attribute, $repository, $referenceDataCode));
+            $collection[] = $this->getReferenceData($attribute, $repository, $referenceDataCode);
         }
 
         return $collection;

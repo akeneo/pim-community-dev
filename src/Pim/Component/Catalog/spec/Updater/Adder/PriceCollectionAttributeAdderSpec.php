@@ -73,7 +73,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
         $product1->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
 
-        $productValue->getPrices()->shouldBeCalledTimes(1)->willReturn($prices);
+        $productValue->getData()->shouldBeCalledTimes(1)->willReturn($prices);
         $prices->getIterator()->willReturn($pricesIterator);
         $pricesIterator->rewind()->shouldBeCalled();
         $pricesIterator->valid()->willReturn(true, true, false);

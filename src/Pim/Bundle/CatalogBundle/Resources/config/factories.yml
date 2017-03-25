@@ -125,7 +125,7 @@ services:
         class: '%pim_catalog.factory.product_value.scalar.class%'
         public: false
         arguments:
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.scalar.class%'
             - 'pim_catalog_text'
         tags:
             - { name: pim_catalog.factory.product_value }
@@ -134,7 +134,7 @@ services:
         class: '%pim_catalog.factory.product_value.scalar.class%'
         public: false
         arguments:
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.scalar.class%'
             - 'pim_catalog_textarea'
         tags:
             - { name: pim_catalog.factory.product_value }
@@ -143,7 +143,7 @@ services:
         class: '%pim_catalog.factory.product_value.scalar.class%'
         public: false
         arguments:
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.scalar.class%'
             - 'pim_catalog_number'
         tags:
             - { name: pim_catalog.factory.product_value }
@@ -152,7 +152,7 @@ services:
         class: '%pim_catalog.factory.product_value.scalar.class%'
         public: false
         arguments:
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.scalar.class%'
             - 'pim_catalog_boolean'
         tags:
             - { name: pim_catalog.factory.product_value }
@@ -161,7 +161,7 @@ services:
         class: '%pim_catalog.factory.product_value.scalar.class%'
         public: false
         arguments:
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.scalar.class%'
             - 'pim_catalog_identifier'
         tags:
             - { name: pim_catalog.factory.product_value }
@@ -171,7 +171,7 @@ services:
         public: false
         arguments:
             - '@pim_catalog.factory.metric'
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.metric.class%'
             - 'pim_catalog_metric'
         tags:
             - { name: pim_catalog.factory.product_value }
@@ -181,7 +181,7 @@ services:
         public: false
         arguments:
             - '@pim_catalog.factory.price'
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.price_collection.class%'
             - 'pim_catalog_price_collection'
         tags:
             - { name: pim_catalog.factory.product_value }
@@ -191,7 +191,7 @@ services:
         public: false
         arguments:
             - '@pim_catalog.repository.attribute_option'
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.option.class%'
             - 'pim_catalog_simpleselect'
         tags:
             - { name: pim_catalog.factory.product_value }
@@ -201,7 +201,7 @@ services:
         public: false
         arguments:
             - '@pim_catalog.repository.attribute_option'
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.options.class%'
             - 'pim_catalog_multiselect'
         tags:
             - { name: pim_catalog.factory.product_value }
@@ -211,7 +211,7 @@ services:
         public: false
         arguments:
             - '@akeneo_file_storage.repository.file_info'
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.media.class%'
             - 'pim_catalog_file'
         tags:
             - { name: pim_catalog.factory.product_value }
@@ -221,7 +221,7 @@ services:
         public: false
         arguments:
             - '@akeneo_file_storage.repository.file_info'
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.media.class%'
             - 'pim_catalog_image'
         tags:
             - { name: pim_catalog.factory.product_value }
@@ -230,7 +230,7 @@ services:
         class: '%pim_catalog.factory.product_value.date.class%'
         public: false
         arguments:
-            - '%pim_catalog.entity.product_value.class%'
+            - '%pim_catalog.entity.product_value.date.class%'
             - 'pim_catalog_date'
         tags:
             - { name: pim_catalog.factory.product_value }

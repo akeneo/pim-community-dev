@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Catalog\Updater\Adder;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -85,7 +84,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
     {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
         if (null !== $value) {
-            $data = $this->addNewPrices($value->getPrices(), $data);
+            $data = $this->addNewPrices($value->getData(), $data);
         }
 
         $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope, $data);

@@ -5,10 +5,8 @@ namespace Pim\Component\ReferenceData\Updater\Copier;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Updater\Copier\AbstractAttributeCopier;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
-use Pim\Component\ReferenceData\MethodNameGuesser;
 
 /**
  * Copy a reference data value attribute in other reference data value attribute
@@ -102,35 +100,14 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         $toScope
     ) {
         $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
-        if (null !== $fromValue) {
-            $fromDataGetter = $this->getValueGetterName($fromValue, $fromAttribute);
-
+        if (null !== $fromValue && null !== $fromValue->getData()) {
             $this->productBuilder->addOrReplaceProductValue(
                 $toProduct,
                 $toAttribute,
                 $toLocale,
                 $toScope,
-                $fromValue->$fromDataGetter()->getCode()
+                $fromValue->getData()->getCode()
             );
         }
-    }
-
-    /**
-     * @param ProductValueInterface $value
-     * @param AttributeInterface    $attribute
-     *
-     * @return string
-     */
-    private function getValueGetterName(ProductValueInterface $value, AttributeInterface $attribute)
-    {
-        $method = MethodNameGuesser::guess('get', $attribute->getReferenceDataName(), true);
-
-        if (!method_exists($value, $method)) {
-            throw new \LogicException(
-                sprintf('ProductValue method "%s" is not implemented', $method)
-            );
-        }
-
-        return $method;
     }
 }

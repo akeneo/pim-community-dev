@@ -230,7 +230,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $prices->add($productPrice);
 
-        $price->getPrices()->willReturn($prices);
+        $price->getData()->willReturn($prices);
 
         $product->getIdentifier()->willReturn($price);
         $product->getFamily()->willReturn($family);

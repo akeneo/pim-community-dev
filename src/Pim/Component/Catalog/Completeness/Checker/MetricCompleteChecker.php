@@ -28,7 +28,7 @@ class MetricCompleteChecker implements ProductValueCompleteCheckerInterface
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $metric = $productValue->getMetric();
+        $metric = $productValue->getData();
 
         if (null === $metric) {
             return false;

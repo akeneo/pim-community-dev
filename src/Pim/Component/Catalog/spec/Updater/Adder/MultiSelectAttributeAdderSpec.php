@@ -3,13 +3,11 @@
 namespace spec\Pim\Component\Catalog\Updater\Adder;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\ProductValue\OptionsProductValueInterface;
 
 class MultiSelectAttributeAdderSpec extends ObjectBehavior
 {
@@ -56,10 +54,7 @@ class MultiSelectAttributeAdderSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductValueInterface $productValue,
-        ArrayCollection $optionsValue,
-        AttributeOptionInterface $option,
-        \ArrayIterator $valuesIterator
+        OptionsProductValueInterface $productValue
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
@@ -69,14 +64,7 @@ class MultiSelectAttributeAdderSpec extends ObjectBehavior
         $product1->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
 
-        $productValue->getOptions()->shouldBeCalledTimes(1)->willReturn($optionsValue);
-        $optionsValue->getIterator()->willReturn($valuesIterator);
-        $valuesIterator->rewind()->shouldBeCalled();
-        $valuesIterator->valid()->willReturn(true, true, false);
-        $valuesIterator->current()->willReturn($option);
-        $valuesIterator->next()->shouldBeCalled();
-
-        $option->getCode()->willReturn('previousOptionCode');
+        $productValue->getOptionCodes()->willReturn(['optionCode', 'previousOptionCode']);
 
         $builder
             ->addOrReplaceProductValue($product1, $attribute, $locale, $scope, ['optionCode', 'previousOptionCode'])

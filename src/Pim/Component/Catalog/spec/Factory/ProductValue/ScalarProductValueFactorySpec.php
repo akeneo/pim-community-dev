@@ -6,14 +6,14 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\ProductValue\ScalarProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValue;
+use Pim\Component\Catalog\ProductValue\ScalarProductValue;
 use Prophecy\Argument;
 
 class ScalarProductValueFactorySpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(ProductValue::class, Argument::any());
+        $this->beConstructedWith(ScalarProductValue::class, Argument::any());
     }
 
     function it_is_initializable()
@@ -23,7 +23,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_an_empty_text_product_value(AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_text');
+        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_text');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_text')->shouldReturn(true);
         $this->supports('pim_catalog_number')->shouldReturn(false);
@@ -45,7 +45,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('text_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -54,7 +54,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_a_localizable_and_scopable_empty_text_product_value(AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_text');
+        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_text');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_text')->shouldReturn(true);
         $this->supports('pim_catalog_number')->shouldReturn(false);
@@ -76,7 +76,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('text_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -87,7 +87,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_a_text_product_value(AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_text');
+        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_text');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_text')->shouldReturn(true);
         $this->supports('pim_catalog_number')->shouldReturn(false);
@@ -109,7 +109,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
             'foobar'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('text_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -118,7 +118,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_a_localizable_and_scopable_text_product_value(AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_text');
+        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_text');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_text')->shouldReturn(true);
         $this->supports('pim_catalog_number')->shouldReturn(false);
@@ -140,7 +140,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
             'foobar'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('text_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -151,7 +151,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_an_empty_textarea_product_value(AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_textarea');
+        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_textarea');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_text')->shouldReturn(false);
         $this->supports('pim_catalog_number')->shouldReturn(false);
@@ -173,7 +173,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('textarea_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -182,7 +182,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_a_localizable_and_scopable_empty_textarea_product_value(AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_textarea');
+        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_textarea');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_text')->shouldReturn(false);
         $this->supports('pim_catalog_number')->shouldReturn(false);
@@ -204,7 +204,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('textarea_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -215,7 +215,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_an_textarea_product_value(AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_textarea');
+        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_textarea');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_text')->shouldReturn(false);
         $this->supports('pim_catalog_number')->shouldReturn(false);
@@ -237,7 +237,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
             'foobar'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('textarea_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -246,7 +246,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_a_localizable_and_scopable_textarea_product_value(AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_textarea');
+        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_textarea');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_text')->shouldReturn(false);
         $this->supports('pim_catalog_number')->shouldReturn(false);
@@ -268,7 +268,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
             'foobar'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('textarea_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -279,7 +279,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_an_empty_integer_product_value(AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_number');
+        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_number');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_text')->shouldReturn(false);
         $this->supports('pim_catalog_number')->shouldReturn(true);
@@ -301,7 +301,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('integer_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -310,7 +310,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_a_localizable_and_scopable_empty_integer_product_value(AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_number');
+        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_number');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_text')->shouldReturn(false);
         $this->supports('pim_catalog_number')->shouldReturn(true);
@@ -332,7 +332,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('integer_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -343,7 +343,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_an_numeric_product_value(AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_number');
+        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_number');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_text')->shouldReturn(false);
         $this->supports('pim_catalog_number')->shouldReturn(true);
@@ -365,7 +365,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
             42
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('integer_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -374,7 +374,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_a_localizable_and_scopable_numeric_product_value(AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_number');
+        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_number');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_text')->shouldReturn(false);
         $this->supports('pim_catalog_number')->shouldReturn(true);
@@ -396,7 +396,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
             42
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('integer_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -407,7 +407,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_an_empty_boolean_product_value(AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_boolean');
+        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_boolean');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_text')->shouldReturn(false);
         $this->supports('pim_catalog_number')->shouldReturn(false);
@@ -429,7 +429,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('boolean_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -438,7 +438,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_a_localizable_and_scopable_empty_boolean_product_value(AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_boolean');
+        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_boolean');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_text')->shouldReturn(false);
         $this->supports('pim_catalog_number')->shouldReturn(false);
@@ -461,7 +461,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('boolean_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -472,7 +472,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_a_boolean_product_value(AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_boolean');
+        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_boolean');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_text')->shouldReturn(false);
         $this->supports('pim_catalog_number')->shouldReturn(false);
@@ -494,7 +494,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
             true
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('boolean_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -503,7 +503,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_a_localizable_and_scopable_boolean_product_value(AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_boolean');
+        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_boolean');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_text')->shouldReturn(false);
         $this->supports('pim_catalog_number')->shouldReturn(false);
@@ -526,7 +526,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
             true
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('boolean_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -537,7 +537,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_an_empty_identifier_product_value(AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_identifier');
+        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_identifier');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_text')->shouldReturn(false);
         $this->supports('pim_catalog_number')->shouldReturn(false);
@@ -559,7 +559,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('identifier_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -568,7 +568,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_creates_an_identifier_product_value(AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_identifier');
+        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_identifier');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_text')->shouldReturn(false);
         $this->supports('pim_catalog_number')->shouldReturn(false);
@@ -590,7 +590,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
             'foobar'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('identifier_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -599,7 +599,7 @@ class ScalarProductValueFactorySpec extends ObjectBehavior
 
     function it_throws_an_exception_when_provided_data_is_not_a_scalar(AttributeInterface $attribute)
     {
-        $this->beConstructedWith(ProductValue::class, 'pim_catalog_text');
+        $this->beConstructedWith(ScalarProductValue::class, 'pim_catalog_text');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_text')->shouldReturn(true);
         $this->supports('pim_catalog_number')->shouldReturn(false);

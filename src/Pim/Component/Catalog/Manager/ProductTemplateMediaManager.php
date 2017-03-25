@@ -6,6 +6,7 @@ use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\ProductValue\MediaProductValueInterface;
 
 /**
  * Product template media manager
@@ -45,36 +46,38 @@ class ProductTemplateMediaManager
         $values = $template->getValues();
 
         foreach ($values as $value) {
-            if (null !== $value->getMedia() && true === $value->getMedia()->isRemoved()) {
-                $mediaHandled = true;
+            if ($value instanceof MediaProductValueInterface) {
+                if (null !== $value->getData() && true === $value->getData()->isRemoved()) {
+                    $mediaHandled = true;
 
-                $values->remove($value);
-                $values->add(
-                    $this->productValueFactory->create(
-                        $value->getAttribute(),
-                        $value->getScope(),
-                        $value->getLocale(),
-                        null
-                    )
-                );
-            } elseif (null !== $value->getMedia() && null !== $value->getMedia()->getUploadedFile()) {
-                $mediaHandled = true;
+                    $values->remove($value);
+                    $values->add(
+                        $this->productValueFactory->create(
+                            $value->getAttribute(),
+                            $value->getScope(),
+                            $value->getLocale(),
+                            null
+                        )
+                    );
+                } elseif (null !== $value->getData() && null !== $value->getData()->getUploadedFile()) {
+                    $mediaHandled = true;
 
-                $file = $this->fileStorer->store(
-                    $value->getMedia()->getUploadedFile(),
-                    FileStorage::CATALOG_STORAGE_ALIAS,
-                    true
-                );
+                    $file = $this->fileStorer->store(
+                        $value->getData()->getUploadedFile(),
+                        FileStorage::CATALOG_STORAGE_ALIAS,
+                        true
+                    );
 
-                $values->remove($value);
-                $values->add(
-                    $this->productValueFactory->create(
-                        $value->getAttribute(),
-                        $value->getScope(),
-                        $value->getLocale(),
-                        $file->getKey()
-                    )
-                );
+                    $values->remove($value);
+                    $values->add(
+                        $this->productValueFactory->create(
+                            $value->getAttribute(),
+                            $value->getScope(),
+                            $value->getLocale(),
+                            $file->getKey()
+                        )
+                    );
+                }
             }
         }
 

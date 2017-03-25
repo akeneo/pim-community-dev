@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\ProductValue\OptionProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\ProductValue;
+use Pim\Component\Catalog\ProductValue\ScalarProductValue;
 use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 use Prophecy\Argument;
 
@@ -16,7 +16,7 @@ class OptionProductValueFactorySpec extends ObjectBehavior
 {
     function let(AttributeOptionRepositoryInterface $attrOptionRepository)
     {
-        $this->beConstructedWith($attrOptionRepository, ProductValue::class, 'pim_catalog_simpleselect');
+        $this->beConstructedWith($attrOptionRepository, ScalarProductValue::class, 'pim_catalog_simpleselect');
     }
 
     function it_is_initializable()
@@ -50,7 +50,7 @@ class OptionProductValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('simple_select_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -77,7 +77,7 @@ class OptionProductValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('simple_select_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -107,7 +107,7 @@ class OptionProductValueFactorySpec extends ObjectBehavior
             'foobar'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('simple_select_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -135,7 +135,7 @@ class OptionProductValueFactorySpec extends ObjectBehavior
             'foobar'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ProductValue::class);
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
         $productValue->shouldHaveAttribute('simple_select_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');

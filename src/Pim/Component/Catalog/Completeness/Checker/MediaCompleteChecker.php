@@ -28,7 +28,7 @@ class MediaCompleteChecker implements ProductValueCompleteCheckerInterface
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $media = $productValue->getMedia();
+        $media = $productValue->getData();
 
         if (null === $media) {
             return false;

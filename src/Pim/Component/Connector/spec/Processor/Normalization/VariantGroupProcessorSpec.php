@@ -188,8 +188,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $variantGroup->getCode()->willReturn('my_variant_group');
 
         $productValueCollection->toArray()->willReturn([$productValue1, $productValue2]);
-        $productValue1->getMedia()->willReturn($media1);
-        $productValue2->getMedia()->willReturn($media2);
+        $productValue1->getData()->willReturn($media1);
+        $productValue2->getData()->willReturn($media2);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
@@ -264,8 +264,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $variantGroup->getCode()->willReturn('my_variant_group');
 
         $productValueCollection->toArray()->willReturn([$productValue1, $productValue2]);
-        $productValue1->getMedia()->willReturn($media1);
-        $productValue2->getMedia()->willReturn($media2);
+        $productValue1->getData()->willReturn($media1);
+        $productValue2->getData()->willReturn($media2);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);

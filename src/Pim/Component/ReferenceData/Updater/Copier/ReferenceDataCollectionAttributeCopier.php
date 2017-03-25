@@ -109,7 +109,7 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
                 $toAttribute,
                 $toLocale,
                 $toScope,
-                $this->getReferenceDataCodes($fromValue, $fromAttribute)
+                $this->getReferenceDataCodes($fromValue)
             );
         }
     }
@@ -118,40 +118,16 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
      * Gets the list of reference data codes contained in a product value collection.
      *
      * @param ProductValueInterface $fromValue
-     * @param AttributeInterface    $fromAttribute
      *
      * @return string[]
      */
-    protected function getReferenceDataCodes(ProductValueInterface $fromValue, AttributeInterface $fromAttribute)
+    protected function getReferenceDataCodes(ProductValueInterface $fromValue)
     {
-        $fromDataGetter = $this->getValueGetterName($fromValue, $fromAttribute);
-
         $referenceDataCodes = [];
-        foreach ($fromValue->$fromDataGetter() as $referenceData) {
+        foreach ($fromValue->getData() as $referenceData) {
             $referenceDataCodes[] = $referenceData->getCode();
         }
 
         return $referenceDataCodes;
-    }
-
-    /**
-     * @param ProductValueInterface $value
-     * @param AttributeInterface    $attribute
-     *
-     * @return string
-     */
-    private function getValueGetterName(
-        ProductValueInterface $value,
-        AttributeInterface $attribute
-    ) {
-        $method = MethodNameGuesser::guess('get', $attribute->getReferenceDataName());
-
-        if (!method_exists($value, $method)) {
-            throw new \LogicException(
-                sprintf('ProductValue method "%s" is not implemented', $method)
-            );
-        }
-
-        return $method;
     }
 }
