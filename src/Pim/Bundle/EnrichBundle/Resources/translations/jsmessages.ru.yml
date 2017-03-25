@@ -8,7 +8,7 @@ confirmation:
     channel: Вы действительно хотите удалить этот канал?
     group: Вы действительно хотите удалить эту группу?
     variant group: Вы действительно хотите удалить эту группу вариантов?
-    group type: Вы действительно хотите удалить эту группу типов?
+    group_type: Вы действительно хотите удалить эту группу типов?
     import profile: Вы действительно хотите удалить этот профиль импорта?
     export profile: Вы действительно хотите удалить этот профиль экспорта?
     user: Вы действительно хотите удалить этого пользователя?
@@ -46,7 +46,7 @@ flash:
     removed: Группа успешно удалена
   variant group:
     removed: Вариативная группа успешно удалена
-  group type:
+  group_type:
     removed: Тип группы успешно удален
   import profile:
     removed: Профиль импорта успешно удален
@@ -216,6 +216,20 @@ pim_enrich:
         updated_by: Обновлена
       btn:
         save: Сохранить
+      title: тип ассоциации
+    group_type:
+      info:
+        field_not_ready:
+          The group type cannot be saved right now. The following fields are not ready:
+            - поля
+      meta:
+        created: Создано
+        created_by: Создана
+        updated: Обновлено
+        updated_by: Обновлена
+      btn:
+        save: Сохранить
+      title: тип группы
     channel:
       title: канал
       info:
@@ -356,6 +370,15 @@ pim_enrich:
           label_translations: Переводы меток
         history:
           title: Журнал
+    group_type:
+      tab:
+        properties:
+          title: Свойства
+          general: Общие свойства
+          code: Код
+          label_translations: Переводы меток
+        history:
+          title: Журнал
     channel:
       tab:
         history:
@@ -437,6 +460,22 @@ pim_enrich:
           info:
             search_attributes: Поиск...
             no_available_attributes: Нет больше атрибутов для добавления
+    job_execution:
+      loading: Загрузка...
+      refreshBtn.title: Обновить
+      meta:
+        status.title: Статус
+      button:
+        show_profile.title: Показать профиль
+        download_log.title: Журнал загрузки
+      summary:
+        fetching: Сбор данных о выполнении задания...
+        warning: Предупреждение
+        header.step: Этап
+        header.status: Статус
+        header.summary: Сводка
+        header.start: Начало
+        header.end: Конец
     job_instance:
       button:
         edit.title: Редактировать
@@ -647,3 +686,26 @@ pim_enrich:
       description: Атрибуты выбранного продукта будут редактироваться со следующими данными для локали <span class="highlight">{{ locale }}</span> и канала <span class="highlight">{{ channel }}</span>, выбранных в таблице продуктов.
 pim_enrich.error:
   exception.title: Ах, нет! Произошла ошибка {{ status_code }}...
+batch_jobs:
+  add_product_value:
+    label: Добавить значение продукта
+    perform:
+      label: Добавить значение продукта
+  update_product_value:
+    label: Обновить значение продукта
+    perform:
+      label: Обновить значение продукта
+  edit_common_attributes:
+    label: Изменить общие атрибуты
+    perform:
+      label: Изменить общие атрибуты
+    cleaner:
+      label: Редактировать файлы общих атрибутов
+  set_attribute_requirements:
+    label: Установить требования к атрибутам
+    perform:
+      label: Установить требования к атрибутам
+  add_to_variant_group:
+    label: Добавить в группу вариантов
+    perform:
+      label: Добавить в группу вариантов
