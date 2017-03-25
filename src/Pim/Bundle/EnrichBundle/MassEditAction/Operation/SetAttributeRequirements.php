@@ -72,6 +72,17 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     }
 
     /**
+     * Always return empty values. Used by form type
+     *
+     * @return array
+     */
+    public function getValues()
+    {
+        return [];
+    }
+
+
+    /**
      * @return array
      */
     protected function getActionsFromValues($values)
