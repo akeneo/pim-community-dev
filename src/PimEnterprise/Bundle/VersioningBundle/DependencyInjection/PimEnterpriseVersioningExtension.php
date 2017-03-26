@@ -35,11 +35,5 @@ class PimEnterpriseVersioningExtension extends Extension
         $loader->load('purgers.yml');
         $loader->load('reverters.yml');
         $loader->load('serializers.yml');
-
-        $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
-        $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
-        if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
-            $loader->load($storageConfig);
-        }
     }
 }

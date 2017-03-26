@@ -1,2 +1,12 @@
 parameters:
     pim_catalog.repository.attribute.class: PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository
+    pim_catalog.repository.product_mass_action.class: PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository
+
+services:
+    pim_catalog.repository.product_mass_action:
+        class: '%pim_catalog.repository.product_mass_action.class%'
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '%pim_catalog.entity.product.class%'
+            - '@pimee_workflow.repository.published_product'
+

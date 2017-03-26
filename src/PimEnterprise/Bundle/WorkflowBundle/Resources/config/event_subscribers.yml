@@ -8,6 +8,7 @@ parameters:
     pimee_workflow.event_subscriber.product_draft.refuse_notification.class:            PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\RefuseNotificationSubscriber
     pimee_workflow.event_subscriber.product_draft.remove_notification.class:            PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\RemoveNotificationSubscriber
     pimee_workflow.event_subscriber.product_draft.ensure_global_status.class:           PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\EnsureProductDraftGlobalStatusSubscriber
+    pimee_workflow.subscriber.product_draft.exclude_deleted_attribute.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\ORM\ExcludeDeletedAttributeSubscriber
 
 services:
     ##
@@ -103,3 +104,10 @@ services:
         class: '%pimee_workflow.event_subscriber.product_draft.ensure_global_status.class%'
         tags:
             - { name: kernel.event_subscriber }
+
+    pimee_workflow.subscriber.product_draft.exclude_deleted_attribute:
+        class: %pimee_workflow.subscriber.product_draft.exclude_deleted_attribute.class%
+        arguments:
+            - '%pim_catalog.entity.attribute.class%'
+        tags:
+            - { name: doctrine.event_subscriber }

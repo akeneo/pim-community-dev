@@ -1,3 +1,7 @@
+parameters:
+    pimee_datagrid.datasource.result_record.hydrator.product_history.class: PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\ORM\ProductHistoryHydrator
+    pimee_datagrid.datasource.result_record.hydrator.product_draft.class:   PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\ORM\ProductDraftHydrator
+
 services:
     pimee_datagrid.datasource.result_record.hydrator.product_history:
         class: '%pimee_datagrid.datasource.result_record.hydrator.product_history.class%'
