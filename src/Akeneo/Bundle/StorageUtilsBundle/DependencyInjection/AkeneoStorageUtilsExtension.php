@@ -42,8 +42,6 @@ class AkeneoStorageUtilsExtension extends Extension
         $loader->load('removers.yml');
         $loader->load('repositories.yml');
         $loader->load('savers.yml');
-
-        $this->loadStorageDriver($container, __DIR__);
     }
 
     /**
@@ -54,28 +52,5 @@ class AkeneoStorageUtilsExtension extends Extension
     public static function getSupportedStorageDrivers()
     {
         return [self::DOCTRINE_ORM];
-    }
-
-    /**
-     * Load the mapping for application storage
-     *
-     * TODO: rename this method
-     *
-     * @param ContainerBuilder $container
-     * @param string           $path
-     */
-    protected function loadStorageDriver(ContainerBuilder $container, $path)
-    {
-        if (!in_array(self::$storageDriver, $this->getSupportedStorageDrivers())) {
-            throw new \RuntimeException(
-                sprintf(
-                    'The storage driver "%s" is not supported.',
-                    self::$storageDriver
-                )
-            );
-        }
-
-        $loader = new YamlFileLoader($container, new FileLocator($path . '/../Resources/config'));
-        $loader->load(sprintf('storage_driver/%s.yml', self::$storageDriver));
     }
 }

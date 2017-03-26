@@ -2,6 +2,12 @@ parameters:
     pim_catalog.factory.product_cursor.page_size: 50
 
 services:
+    pim_catalog.object_manager.product:
+        alias: doctrine.orm.entity_manager
+
+    pim_catalog.object_manager.association:
+        alias: doctrine.orm.entity_manager
+
     pim_catalog.factory.product_cursor:
         class: '%akeneo_elasticsearch.cursor.cursor_factory.class%'
         arguments:
