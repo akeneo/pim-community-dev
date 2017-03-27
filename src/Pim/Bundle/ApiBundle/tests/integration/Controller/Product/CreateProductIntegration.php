@@ -881,7 +881,7 @@ JSON;
             'errors'  => [
                 [
                     'property' => 'identifier',
-                    'message'  => 'The value simple is already set on another product for the unique attribute sku',
+                    'message'  => 'The same identifier is already set on another product',
                 ],
             ],
         ];
