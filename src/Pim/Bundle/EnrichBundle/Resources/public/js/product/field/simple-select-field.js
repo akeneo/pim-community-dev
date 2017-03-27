@@ -35,10 +35,9 @@ define(
              */
             getTemplateContext: function () {
                 return Field.prototype.getTemplateContext.apply(this, arguments).then(function (templateContext) {
-                    templateContext.userCanAddOption = SecurityContext.isGranted('pim_enrich_attribute_edit');
-
+                    templateContext.userCanAddOption = this.editable;
                     return templateContext;
-                });
+                }.bind(this));
             },
 
             /**
