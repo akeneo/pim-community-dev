@@ -4,25 +4,27 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'pim/form',
         'text!pimee/template/product/publish',
-        'oro/navigation',
         'oro/loading-mask',
         'pim/fetcher-registry',
         'pimee/published-product-manager',
-        'routing',
+        'pim/router',
+        'oro/messenger',
         'pim/dialog'
     ],
     function (
         $,
         _,
+        __,
         BaseForm,
         template,
-        Navigation,
         LoadingMask,
         FetcherRegistry,
         PublishedProductManager,
-        Routing,
+        router,
+        messenger,
         Dialog
     ) {
         return BaseForm.extend({
@@ -50,15 +52,15 @@ define(
             },
             publish: function () {
                 Dialog.confirm(
-                    _.__('pimee_enrich.entity.product.confirmation.publish.content'),
-                    _.__('pimee_enrich.entity.product.confirmation.publish.title'),
+                    __('pimee_enrich.entity.product.confirmation.publish.content'),
+                    __('pimee_enrich.entity.product.confirmation.publish.title'),
                     this.doPublish.bind(this)
                 );
             },
             unpublish: function () {
                 Dialog.confirm(
-                    _.__('pimee_enrich.entity.product.confirmation.unpublish.content'),
-                    _.__('pimee_enrich.entity.product.confirmation.unpublish.title'),
+                    __('pimee_enrich.entity.product.confirmation.unpublish.content'),
+                    __('pimee_enrich.entity.product.confirmation.unpublish.title'),
                     this.doUnpublish.bind(this)
                 );
             },
@@ -72,7 +74,6 @@ define(
                 var productId   = this.getProductId();
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
-                var navigation = Navigation.getInstance();
 
                 var method = publish ? PublishedProductManager.publish : PublishedProductManager.unpublish;
 
@@ -81,15 +82,14 @@ define(
                     .done(function () {
                         FetcherRegistry.getFetcher('product')
                             .fetch(this.getFormData().meta.id).done(function (product) {
-                                navigation.addFlashMessage(
+                                loadingMask.hide().$el.remove();
+                                messenger.notificationFlashMessage(
                                     'success',
-                                    _.__(
+                                    __(
                                         'pimee_enrich.entity.product.flash.product_' +
                                         (publish ? 'published' : 'unpublished')
                                     )
                                 );
-                                navigation.afterRequest();
-                                loadingMask.hide().$el.remove();
 
                                 this.setData(product);
 
@@ -98,14 +98,13 @@ define(
                             }.bind(this));
                     }.bind(this))
                     .fail(function () {
-                        navigation.addFlashMessage(
+                        messenger.notificationFlashMessage(
                             'error',
-                            _.__(
+                            __(
                                 'pimee_enrich.entity.product.flash.product_not_' +
                                 (publish ? 'published' : 'unpublished')
                             )
                         );
-                        navigation.afterRequest();
                     })
                     .always(function () {
                         loadingMask.hide().$el.remove();

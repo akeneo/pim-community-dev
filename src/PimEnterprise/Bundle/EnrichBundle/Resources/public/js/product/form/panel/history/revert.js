@@ -4,25 +4,25 @@ define(
     [
         'jquery',
         'underscore',
-        'backbone',
+        'oro/translator',
         'pim/form',
         'pim/fetcher-registry',
         'text!pimee/template/product/panel/history/revert',
-        'oro/navigation',
+        'pim/router',
+        'oro/messenger',
         'oro/loading-mask',
-        'routing',
         'pim/dialog'
     ],
     function (
         $,
         _,
-        Backbone,
+        __,
         BaseForm,
         FetcherRegistry,
         revertTemplate,
-        Navigation,
+        router,
+        messenger,
         LoadingMask,
-        Routing,
         Dialog
     ) {
         return BaseForm.extend({
@@ -39,32 +39,26 @@ define(
                 event.stopPropagation();
 
                 Dialog.confirm(
-                    _.__('pimee_enrich.entity.product.confirmation.revert.content'),
-                    _.__('pimee_enrich.entity.product.confirmation.revert.title'),
+                    __('pimee_enrich.entity.product.confirmation.revert.content'),
+                    __('pimee_enrich.entity.product.confirmation.revert.title'),
                     function () {
-                        var navigation = Navigation.getInstance();
                         var loadingMask = new LoadingMask();
                         loadingMask.render().$el.appendTo(this.getRoot().$el).show();
 
-                        $.ajax(
-                            Routing.generate('pimee_versioning_revert_product', {
-                                id: $(event.currentTarget).parents('.product-version').data('version-id')
-                            }),
-                            {
-                                method: 'GET'
-                            }
+                        $.get(
+                          router.generate('pimee_versioning_revert_product'),
+                          { id: $(event.currentTarget).parents('.product-version').data('version-id') }
                         ).done(
                             function () {
                                 // TODO: We shouldn't force product fetching,
                                 // we should use request response (cf. send for approval)
                                 FetcherRegistry.getFetcher('product').fetch(this.getFormData().meta.id)
                                     .done(function (product) {
-                                        navigation.addFlashMessage(
-                                            'success',
-                                            _.__('pimee_enrich.entity.product.flash.product_reverted')
-                                        );
-                                        navigation.afterRequest();
                                         loadingMask.hide().$el.remove();
+                                        messenger.notificationFlashMessage(
+                                            'success',
+                                            __('pimee_enrich.entity.product.flash.product_reverted')
+                                        );
 
                                         this.setData(product);
 
@@ -75,8 +69,7 @@ define(
                         ).fail(
                             function (response) {
                                 loadingMask.hide().$el.remove();
-                                navigation.addFlashMessage('error', response.responseJSON.error);
-                                navigation.afterRequest();
+                                messenger.notificationFlashMessage('error', response.responseJSON.error);
                             }
                         );
                     }.bind(this)
