@@ -1,3 +1,9 @@
+# 1.6.*
+
+## Bug fixes
+
+- PIM-6071: add control on attribute having same code as association type
+
 # 1.6.12 (2017-02-28)
 
 ## Bug fixes

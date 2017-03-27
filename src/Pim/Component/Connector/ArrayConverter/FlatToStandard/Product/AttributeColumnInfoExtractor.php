@@ -6,6 +6,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
 
 /**
  * Extracts attribute field information
@@ -29,6 +30,9 @@ class AttributeColumnInfoExtractor
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
+    /** @var AssociationColumnsResolver */
+    protected $assoColumnResolver;
+
     /** @var array */
     protected $fieldNameInfoCache;
 
@@ -39,17 +43,20 @@ class AttributeColumnInfoExtractor
      * @param AttributeRepositoryInterface $attributeRepository
      * @param ChannelRepositoryInterface   $channelRepository
      * @param LocaleRepositoryInterface    $localeRepository
+     * @param AssociationColumnsResolver   $assoColumnResolver
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        AssociationColumnsResolver $assoColumnResolver = null
     ) {
         $this->attributeRepository = $attributeRepository;
-        $this->channelRepository = $channelRepository;
-        $this->localeRepository = $localeRepository;
-        $this->fieldNameInfoCache = [];
-        $this->excludedFieldNames = [];
+        $this->channelRepository   = $channelRepository;
+        $this->localeRepository    = $localeRepository;
+        $this->assoColumnResolver  = $assoColumnResolver;
+        $this->fieldNameInfoCache  = [];
+        $this->excludedFieldNames  = [];
     }
 
     /**
@@ -72,6 +79,12 @@ class AttributeColumnInfoExtractor
      */
     public function extractColumnInfo($fieldName)
     {
+        if ($this->assoColumnResolver &&
+            in_array($fieldName, $this->assoColumnResolver->resolveAssociationColumns())
+        ) {
+            $this->excludedFieldNames[] = $fieldName;
+        }
+
         if (!isset($this->fieldNameInfoCache[$fieldName]) && !in_array($fieldName, $this->excludedFieldNames)) {
             $explodedFieldName = explode(self::FIELD_SEPARATOR, $fieldName);
             $attributeCode = $explodedFieldName[0];
