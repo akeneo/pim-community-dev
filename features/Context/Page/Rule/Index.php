@@ -12,7 +12,7 @@ use Context\Page\Base\Grid;
 class Index extends Grid
 {
     /** @var string */
-    protected $path = '/configuration/rules';
+    protected $path = '#/configuration/rules';
 
     /**
      * {@inheritdoc}

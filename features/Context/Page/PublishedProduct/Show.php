@@ -15,5 +15,5 @@ class Show extends Edit
     /**
      * @var string
      */
-    protected $path = '/workflow/published-product/{id}';
+    protected $path = '#/workflow/published-product/{id}';
 }

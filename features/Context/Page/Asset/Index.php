@@ -17,7 +17,7 @@ use Context\Page\Base\Grid;
 class Index extends Grid
 {
     /** @var string */
-    protected $path = '/enrich/asset/';
+    protected $path = '#/enrich/asset/';
 
     /**
      * {@inheritdoc}

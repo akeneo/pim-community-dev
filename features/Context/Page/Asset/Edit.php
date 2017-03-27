@@ -20,7 +20,7 @@ class Edit extends Form
     use ClosestTrait;
 
     /** @var string */
-    protected $path = '/enrich/asset/{id}/edit';
+    protected $path = '#/enrich/asset/{id}/edit';
 
     /**
      * {@inheritdoc}

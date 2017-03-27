@@ -13,5 +13,5 @@ use Context\Page\Category\CategoryView;
 class Creation extends CategoryView
 {
     /** @var string */
-    protected $path = '/enrich/asset-category-tree/create';
+    protected $path = '#/enrich/asset-category-tree/create';
 }
