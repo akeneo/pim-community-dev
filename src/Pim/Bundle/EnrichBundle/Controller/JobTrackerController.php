@@ -162,8 +162,8 @@ class JobTrackerController extends Controller
         }
 
         return $this->render(
-            'PimEnrichBundle:JobTracker:show.html.twig',
-            ['execution' => $jobExecution]
+            'PimEnrichBundle:JobExecution:show.html.twig',
+            ['id' => $id]
         );
     }
 
@@ -239,17 +239,18 @@ class JobTrackerController extends Controller
     /**
      * Returns if a user has read permission on an import or export
      *
-     * @param JobExecution $jobExecution
+     * @param JobExecution  $jobExecution
+     * @param mixed $object The object
      *
      * @return bool
      */
-    protected function isGranted($jobExecution)
+    protected function isGranted($jobExecution, $object = null)
     {
         $jobExecutionType = $jobExecution->getJobInstance()->getType();
         if (!array_key_exists($jobExecutionType, $this->jobSecurityMapping)) {
             return true;
         }
 
-        return $this->securityFacade->isGranted($this->jobSecurityMapping[$jobExecutionType]);
+        return $this->securityFacade->isGranted($this->jobSecurityMapping[$jobExecutionType], $object);
     }
 }
