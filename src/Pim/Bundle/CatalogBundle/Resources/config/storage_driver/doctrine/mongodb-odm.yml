@@ -403,7 +403,7 @@ services:
         class: '%pim_catalog.mongodb_odm_query_generator.family_label_deleted.class%'
         parent: pim_catalog.mongodb_odm_query_generator.abstract_normalized_data
         arguments:
-            - 'Pim\Bundle\CatalogBundle\Entity\FamilyTranslation'
+            - '%pim_catalog.entity.family_translation.class%'
         tags:
             - { name: pim_catalog.mongodb_odm_query_generator }
 

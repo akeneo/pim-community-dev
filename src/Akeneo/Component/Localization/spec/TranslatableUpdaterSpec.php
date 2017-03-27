@@ -4,6 +4,7 @@ namespace spec\Akeneo\Component\Localization;
 
 use Akeneo\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Component\Localization\Model\TranslationInterface;
+use Akeneo\Component\Localization\TranslatableUpdater;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -11,7 +12,7 @@ class TranslatableUpdaterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Component\Localization\TranslatableUpdater');
+        $this->shouldHaveType(TranslatableUpdater::class);
     }
 
     function it_removes_the_translation_when_the_new_label_is_null(
