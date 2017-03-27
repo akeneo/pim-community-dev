@@ -83,9 +83,9 @@ class ProductIndexingIntegration extends TestCase
             'groups'       => ['groupA', 'groupB', 'variantA'],
             'completeness' => [
                 'ecommerce' => ['en_US' => 100],
-                'tablet'    => ['de_DE' => 89, 'en_US' => 100, 'fr_FR' => 100]
+                'tablet'    => ['de_DE' => 89, 'en_US' => 100, 'fr_FR' => 100],
             ],
-            'values' => [
+            'values'       => [
                 'a_date-date'                                    => [
                     '<all_locales>' => [
                         '<all_channels>' => null,
@@ -191,7 +191,7 @@ class ProductIndexingIntegration extends TestCase
                 ],
                 'a_text-varchar'                                 => [
                     '<all_locales>' => [
-                        '<all_channels>' => null,
+                        '<all_channels>' => 'this is a text',
                     ],
                 ],
                 'a_text_area-text'                               => [

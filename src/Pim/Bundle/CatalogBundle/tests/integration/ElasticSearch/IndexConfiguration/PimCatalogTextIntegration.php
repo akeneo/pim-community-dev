@@ -21,7 +21,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'query_string' => [
-                            'default_field' => 'name-varchar',
+                            'default_field' => 'values.name-varchar.<all_locales>.<all_channels>',
                             'query'         => 'an*',
                         ],
                     ],
@@ -41,9 +41,9 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'query_string' => [
-                            'default_field' => 'name-varchar',
-                            'query'         => 'My\ product*',
-                            'split_on_whitespace' => true
+                            'default_field'       => 'values.name-varchar.<all_locales>.<all_channels>',
+                            'query'               => 'My\ product*',
+                            'split_on_whitespace' => true,
                         ],
                     ],
                 ],
@@ -62,7 +62,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'query_string' => [
-                            'default_field' => 'name-varchar',
+                            'default_field' => 'values.name-varchar.<all_locales>.<all_channels>',
                             'query'         => '*Love*',
                         ],
                     ],
@@ -82,7 +82,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'query_string' => [
-                            'default_field' => 'name-varchar',
+                            'default_field' => 'values.name-varchar.<all_locales>.<all_channels>',
                             'query'         => '*Love\\ this*',
                         ],
                     ],
@@ -102,12 +102,9 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'must_not' => [
                         'query_string' => [
-                            'default_field' => 'name-varchar',
+                            'default_field' => 'values.name-varchar.<all_locales>.<all_channels>',
                             'query'         => '*Love*',
                         ],
-                    ],
-                    'filter'   => [
-                        'exists' => ['field' => 'name-varchar'],
                     ],
                 ],
             ],
@@ -115,24 +112,22 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_1', 'product_2', 'product_5']);
+        $this->assertProducts($productsFound, ['product_1', 'product_2', 'product_4', 'product_5']);
     }
 
     public function testEqualsOperator()
     {
-        $query =
-            [
-                'query' => [
-                    'bool' => [
-                        'filter' => [
-                            'term' => [
-                                'name-varchar' => 'I-love.dots',
-                            ],
+        $query = [
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        'term' => [
+                            'values.name-varchar.<all_locales>.<all_channels>' => 'I-love.dots',
                         ],
                     ],
                 ],
-            ]
-        ;
+            ],
+        ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -141,22 +136,20 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
 
     public function testNotEqualsOperator()
     {
-        $query =
-            [
-                'query' => [
-                    'bool' => [
-                        'must_not' => [
-                            'term' => [
-                                'name-varchar' => 'I-love.dots',
-                            ],
-                        ],
-                        'filter' => [
-                            'exists' => ['field' => 'name-varchar'],
+        $query = [
+            'query' => [
+                'bool' => [
+                    'must_not' => [
+                        'term' => [
+                            'values.name-varchar.<all_locales>.<all_channels>' => 'I-love.dots',
                         ],
                     ],
+                    'filter'   => [
+                        'exists' => ['field' => 'values.name-varchar.<all_locales>.<all_channels>'],
+                    ],
                 ],
-            ]
-        ;
+            ],
+        ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -168,17 +161,15 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
 
     public function testEmptyOperator()
     {
-        $query =
-            [
+        $query = [
                 'query' => [
                     'bool' => [
                         'must_not' => [
-                            'exists' => ['field' => 'name-varchar'],
+                            'exists' => ['field' => 'values.name-varchar.<all_locales>.<all_channels>'],
                         ],
                     ],
                 ],
-            ]
-        ;
+            ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -187,17 +178,15 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
 
     public function testNotEmptyOperator()
     {
-        $query =
-            [
+        $query = [
                 'query' => [
                     'bool' => [
                         'filter' => [
-                            'exists' => ['field' => 'name-varchar'],
+                            'exists' => ['field' => 'values.name-varchar.<all_locales>.<all_channels>'],
                         ],
                     ],
                 ],
-            ]
-        ;
+            ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -215,7 +204,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
             ],
             'sort'  => [
                 [
-                    'name-varchar' => [
+                    'values.name-varchar.<all_locales>.<all_channels>' => [
                         'order'   => 'asc',
                         'missing' => '_first',
                     ],
@@ -239,7 +228,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
             ],
             'sort'  => [
                 [
-                    'name-varchar' => [
+                    'values.name-varchar.<all_locales>.<all_channels>' => [
                         'order'   => 'desc',
                         'missing' => '_last',
                     ],
@@ -262,35 +251,77 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
     {
         $products = [
             [
-                'identifier'   => 'product_1',
-                'name-varchar' => 'My product',
+                'identifier' => 'product_1',
+                'values'     => [
+                    'name-varchar' => [
+                        '<all_locales>' => [
+                            '<all_channels>' => 'My product',
+                        ],
+                    ],
+                ],
             ],
             [
-                'identifier'   => 'product_2',
-                'name-varchar' => 'Another product',
+                'identifier' => 'product_2',
+                'values'     => [
+                    'name-varchar' => [
+                        '<all_locales>' => [
+                            '<all_channels>' => 'Another product',
+                        ],
+                    ],
+                ],
             ],
             [
-                'identifier'   => 'product_3',
-                'name-varchar' => 'Yeah, love this name',
+                'identifier' => 'product_3',
+                'values'     => [
+                    'name-varchar' => [
+                        '<all_locales>' => [
+                            '<all_channels>' => 'Yeah, love this name',
+                        ],
+                    ],
+                ],
             ],
             [
-                'identifier'  => 'product_4',
+                'identifier' => 'product_4',
             ],
             [
-                'identifier'   => 'product_5',
-                'name-varchar' => 'And an uppercase NAME',
+                'identifier' => 'product_5',
+                'values'     => [
+                    'name-varchar' => [
+                        '<all_locales>' => [
+                            '<all_channels>' => 'And an uppercase NAME',
+                        ],
+                    ],
+                ],
             ],
             [
-                'identifier'   => 'product_6',
-                'name-varchar' => 'Love this product',
+                'identifier' => 'product_6',
+                'values'     => [
+                    'name-varchar' => [
+                        '<all_locales>' => [
+                            '<all_channels>' => 'Love this product',
+                        ],
+                    ],
+                ],
             ],
             [
-                'identifier'   => 'product_7',
-                'name-varchar' => 'I.love.dots',
+                'identifier' => 'product_7',
+                'values'     => [
+                    'name-varchar' => [
+                        '<all_locales>' => [
+                            '<all_channels>' => 'I.love.dots',
+                        ],
+                    ],
+                ],
             ],
             [
-                'identifier'   => 'product_8',
-                'name-varchar' => 'I-love.dots',
+                'identifier' => 'product_8',
+                'values'     => [
+                    'name-varchar' => [
+                        '<all_locales>' => [
+                            '<all_channels>' => 'I-love.dots',
+                        ],
+                    ],
+                ],
             ],
         ];
 

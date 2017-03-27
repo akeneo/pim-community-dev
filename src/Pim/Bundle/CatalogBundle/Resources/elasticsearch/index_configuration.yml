@@ -15,7 +15,7 @@ mappings:
                 normalizer: 'varchar_normalizer'
         dynamic_templates:
             -
-                text:
+                text_area:
                     match: '*-text'
                     match_mapping_type: 'string'
                     mapping:
@@ -26,8 +26,8 @@ mappings:
                         type: 'text'
                         analyzer: 'text_analyzer'
             -
-                varchar:
-                    match: '*-varchar'
+                text:
+                    path_match: 'values.*-varchar.*'
                     match_mapping_type: 'string'
                     mapping:
                         type: 'keyword'

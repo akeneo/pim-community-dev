@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValue;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductValueCollectionNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -33,10 +33,10 @@ class ProductValueCollectionNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($productValueCollection, 'indexing')->shouldReturn(true);
     }
 
-    function it_normalize_product_value_collection(
+    function it_normalizes_product_value_collection(
         $productValueCollection,
-        ProductValue $productValue1,
-        ProductValue $productValue2,
+        ProductValueInterface $productValue1,
+        ProductValueInterface $productValue2,
         AttributeInterface $attribute1,
         AttributeInterface $attribute2,
         \ArrayIterator $productValueCollectionIterator,

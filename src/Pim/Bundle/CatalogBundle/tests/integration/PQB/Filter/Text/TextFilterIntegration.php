@@ -20,28 +20,30 @@ class TextFilterIntegration extends AbstractFilterTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
+            $this->resetIndex();
+
             $this->createProduct('cat', [
                 'values' => [
-                    'a_text' => [['data' => 'cat', 'locale' => null, 'scope' => null]]
-                ]
+                    'a_text' => [['data' => 'cat', 'locale' => null, 'scope' => null]],
+                ],
             ]);
 
             $this->createProduct('cattle', [
                 'values' => [
-                    'a_text' => [['data' => 'cattle', 'locale' => null, 'scope' => null]]
-                ]
+                    'a_text' => [['data' => 'cattle', 'locale' => null, 'scope' => null]],
+                ],
             ]);
 
             $this->createProduct('dog', [
                 'values' => [
-                    'a_text' => [['data' => 'dog', 'locale' => null, 'scope' => null]]
-                ]
+                    'a_text' => [['data' => 'dog', 'locale' => null, 'scope' => null]],
+                ],
             ]);
 
             $this->createProduct('best_dog', [
                 'values' => [
-                    'a_text' => [['data' => 'my dog is the most beautiful', 'locale' => null, 'scope' => null]]
-                ]
+                    'a_text' => [['data' => 'my dog is the most beautiful', 'locale' => null, 'scope' => null]],
+                ],
             ]);
 
             // There is no html tags in TEXT attributes usually set in the PIM.
@@ -50,12 +52,12 @@ class TextFilterIntegration extends AbstractFilterTestCase
                 'values' => [
                     'a_text' => [
                         [
-                            'data' => 'my <bold>cat</bold> is the most <i>beautiful</i><br/>',
+                            'data'   => 'my <bold>cat</bold> is the most <i>beautiful</i><br/>',
                             'locale' => null,
-                            'scope' => null,
+                            'scope'  => null,
                         ],
                     ],
-                ]
+                ],
             ]);
 
             $this->createProduct('empty_product', []);
@@ -101,7 +103,7 @@ class TextFilterIntegration extends AbstractFilterTestCase
     public function testOperatorDoesNotContain()
     {
         $result = $this->execute([['a_text', Operators::DOES_NOT_CONTAIN, 'at']]);
-        $this->assert($result, ['dog', 'best_dog','empty_product']);
+        $this->assert($result, ['dog', 'best_dog', 'empty_product']);
 
         $result = $this->execute([['a_text', Operators::DOES_NOT_CONTAIN, 'other']]);
         $this->assert($result, ['cat', 'cattle', 'dog', 'best_dog', 'best_cat', 'empty_product']);
@@ -110,7 +112,9 @@ class TextFilterIntegration extends AbstractFilterTestCase
         $this->assert($result, ['cat', 'cattle', 'dog', 'best_dog', 'empty_product']);
 
         $result = $this->execute([['a_text', Operators::DOES_NOT_CONTAIN, 'most beautiful']]);
-        $this->assert($result, ['cat', 'cattle', 'dog', 'empty_product']);
+
+        // best_cat does not contain "most beautiful" because it is wrapped in HTML tags
+        $this->assert($result, ['cat', 'best_cat', 'cattle', 'dog', 'empty_product']);
     }
 
     public function testOperatorEquals()
@@ -149,7 +153,7 @@ class TextFilterIntegration extends AbstractFilterTestCase
     public function testOperatorDifferent()
     {
         $result = $this->execute([['a_text', Operators::NOT_EQUAL, 'dog']]);
-        $this->assert($result, ['cat', 'cattle', 'best_cat']);
+        $this->assert($result, ['cat', 'cattle', 'best_cat', 'best_dog']);
 
         $result = $this->execute([['a_text', Operators::NOT_EQUAL, 'cat']]);
         $this->assert($result, ['cattle', 'dog', 'best_dog', 'best_cat']);

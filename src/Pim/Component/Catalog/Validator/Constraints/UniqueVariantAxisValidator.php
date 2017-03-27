@@ -106,7 +106,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             $values = [];
             foreach ($criteria as $item) {
                 $data = $item['attribute']->isBackendTypeReferenceData() ? $item['referenceData']['data'] : $item['option'];
-                $values[] = sprintf('%s: %s', $item['attribute']->getCode(), (string) $data);
+                $values[] = sprintf('%s: %s', $item['attribute']->getCode(), (string)$data);
             }
             $this->addExistingCombinationViolation($constraint, $group->getLabel(), implode(', ', $values));
         }
@@ -126,8 +126,8 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         ProductInterface $product,
         Constraint $constraint
     ) {
-            $criteria = [];
-            foreach ($variantGroup->getAxisAttributes() as $attribute) {
+        $criteria = [];
+        foreach ($variantGroup->getAxisAttributes() as $attribute) {
             $value = $product->getValue($attribute->getCode());
             $isOption = $value instanceof OptionProductValueInterface;
 
@@ -219,7 +219,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             $constraint->message,
             [
                 '%variant group%' => $variantLabel,
-                '%values%'        => $values
+                '%values%'        => $values,
             ]
         )->atPath($constraint->propertyPath)->addViolation();
     }
@@ -237,7 +237,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             [
                 '%group%'   => $variantLabel,
                 '%product%' => $productIdentifier,
-                '%axis%'    => $axisCode
+                '%axis%'    => $axisCode,
             ]
         )->atPath($constraint->propertyPath)->addViolation();
     }

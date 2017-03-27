@@ -15,6 +15,7 @@ parameters:
     pim_catalog.query.elasticsearch.filter.identifier.class:      Pim\Bundle\CatalogBundle\Elasticsearch\Filter\IdentifierFilter
     pim_catalog.query.elasticsearch.filter.completeness.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CompletenessFilter
     pim_catalog.query.elasticsearch.filter.number.class:          Pim\Bundle\CatalogBundle\Elasticsearch\Filter\NumberFilter
+    pim_catalog.query.elasticsearch.filter.text.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\TextFilter
 
 services:
     pim_catalog.query.product_query_builder_factory:
@@ -167,3 +168,11 @@ services:
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
 
+    pim_catalog.query.elasticsearch.filter.text:
+        class: '%pim_catalog.query.elasticsearch.filter.text.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_text']
+            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
