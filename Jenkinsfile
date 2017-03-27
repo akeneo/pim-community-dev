@@ -268,7 +268,7 @@ def runBehatTest(edition, features, phpVersion) {
             sh "cp behat.ci.yml behat.yml"
             sh "cp app/config/parameters.yml.dist app/config/parameters_test.yml"
             sh "sed -i \"s#database_host: .*#database_host: mysql#g\" app/config/parameters_test.yml"
-            sh "sed -i \"s#pim_es_host: .*#pim_es_host: elasticsearch#g\" app/config/parameters_test.yml"
+            sh "sed -i \"s#index_hosts: .*#index_hosts: 'elasticsearch: 9200'#g\" app/config/parameters_test.yml"
             if ('ce' == edition) {
                sh "printf \"    installer_data: 'PimInstallerBundle:minimal'\n\" >> app/config/parameters_test.yml"
             } else {
