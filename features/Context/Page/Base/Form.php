@@ -326,7 +326,6 @@ class Form extends Base
      */
     public function findAvailableAttributeInGroup($attribute, $group)
     {
-        var_dump('HERE HERE HERE HERE HERE HERE ');
         return $this->getElement('Available attributes form')->find(
             'css',
             sprintf(

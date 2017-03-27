@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Base add select extension view
+ * Product add attribute select extension view
  *
  * @author    Alexandr Jeliuc <alex@jeliuc.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -12,8 +12,8 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
-        'pim/common/add-select/base/select',
-        'pim/common/add-select/attribute/line',
+        'pim/common/add-select',
+        'pim/product/add-select/attribute/line',
         'pim/fetcher-registry',
         'pim/attribute-manager',
         'pim/formatter/choices/base'
@@ -31,24 +31,33 @@ define(
         return BaseAddSelect.extend({
             className: 'add-attribute',
             lineView: LineView,
+            defaultConfig: {
+                select2: {
+                    placeholder: 'pim_enrich.form.common.tab.attributes.btn.add_attributes',
+                    title: 'pim_enrich.form.common.tab.attributes.info.search_attributes',
+                    buttonTitle: 'pim_enrich.form.common.tab.attributes.btn.add',
+                    countTitle: 'pim_enrich.form.product.tab.attributes.info.attributes_selected',
+                    emptyText: 'pim_enrich.form.common.tab.attributes.info.no_available_attributes',
+                    classes: 'pim-add-attributes-multiselect',
+                    minimumInputLength: 0,
+                    dropdownCssClass: 'add-attribute',
+                    closeOnSelect: false
+                },
+                resultsPerPage: 10,
+                searchParameters: {options: {exclude_unique: true}},
+                mainFetcher: 'attribute',
+                events: {
+                    disable: null,
+                    enable: null,
+                    add: 'add-attribute:add'
+                }
+            },
 
             /**
              * {@inheritdoc}
              */
             getItemsToExclude: function () {
-                return FetcherRegistry.getFetcher(this.mainFetcher).getIdentifierAttribute()
-                    .then(function (identifier) {
-                        var existingAttributes = _.pluck(
-                            this.getFormData().attributes,
-                            'code'
-                        );
-
-                        if (!_.contains(existingAttributes, identifier.code)) {
-                            existingAttributes.push(identifier.code);
-                        }
-
-                        return existingAttributes;
-                    }.bind(this));
+                return AttributeManager.getAttributes(this.getFormData());
             },
 
             /**

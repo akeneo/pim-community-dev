@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Select2 line view
+ * Common add select line view
  *
  * @author    Alexandr Jeliuc <alex@jeliuc.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -12,7 +12,7 @@ define(
         'jquery',
         'underscore',
         'backbone',
-        'text!pim/template/form/attribute-group/add/line'
+        'text!pim/template/form/add-select/line'
     ],
     function (
         $,
@@ -21,6 +21,7 @@ define(
         template
     ) {
         return Backbone.View.extend({
+            className: '.select2-results',
             template: _.template(template),
             checked: false,
             item: null,

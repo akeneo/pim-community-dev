@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Base add select line view
+ * Prodct add attribute select line view
  *
  * @author    Alexandr Jeliuc <alex@jeliuc.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -11,8 +11,8 @@ define(
     [
         'jquery',
         'underscore',
-        'pim/common/add-select/base/line',
-        'text!pim/template/form/add-select/attribute/line'
+        'pim/common/add-select/line',
+        'text!pim/template/product/add-select/attribute/line'
     ],
     function (
         $,

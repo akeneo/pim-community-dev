@@ -5,8 +5,8 @@ namespace Context\Page\Batch;
 use Behat\Mink\Element\NodeElement;
 use Context\Page\Base\Wizard;
 use Context\Spin\SpinCapableTrait;
-use Pim\Behat\Decorator\Common\AddAttributeDecorator;
-use Pim\Behat\Decorator\Common\SelectGroupDecorator;
+use Pim\Behat\Decorator\Common\AttributeAddSelectDecorator;
+use Pim\Behat\Decorator\Common\AttributeGroupAddSelectDecorator;
 
 /**
  * Edit common attributes page
@@ -26,11 +26,11 @@ class SetAttributeRequirements extends Wizard
         'Attributes'                      => ['css' => 'table.groups'],
         'Available attributes'            => [
             'css'        => '.add-attribute',
-            'decorators' => [AddAttributeDecorator::class]
+            'decorators' => [AttributeAddSelectDecorator::class]
         ],
         'Available groups'                  => [
             'css'        => '.add-attribute-group',
-            'decorators' => [SelectGroupDecorator::class],
+            'decorators' => [AttributeGroupAddSelectDecorator::class],
         ],
     ];
 
@@ -78,11 +78,11 @@ class SetAttributeRequirements extends Wizard
      */
     public function addAvailableAttributes(array $attributes = [])
     {
-        $addAttributeDecorator = $this->spin(function () {
+        $addAttributeElement = $this->spin(function () {
             return $this->getElement('Available attributes');
         }, 'Cannot find the add attribute element');
 
-        $addAttributeDecorator->addAttributes($attributes);
+        $addAttributeElement->addAttributes($attributes);
     }
 
     /**

@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Attribute group's select2 footer view
+ * Common add select footer view
  *
  * @author    Alexandr Jeliuc <alex@jeliuc.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -12,7 +12,7 @@ define(
         'jquery',
         'underscore',
         'backbone',
-        'text!pim/template/form/attribute-group/add/footer'
+        'text!pim/template/form/add-select/footer'
     ],
     function (
         $,
@@ -36,7 +36,6 @@ define(
              */
             initialize: function () {
                 this.buttonTitle   = this.options.buttonTitle;
-                this.onAddCallback = this.options.onAddCallback;
                 this.countTitle    = this.options.countTitle;
                 this.addEvent      = this.options.addEvent;
             },

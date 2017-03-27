@@ -16,29 +16,14 @@ extensions:
         position: 100
 
     pim-mass-product-edit-form-add-attribute:
-        module: pim/common/add-select/attribute/select
+        module: pim/product/add-select/attribute
         parent: pim-mass-product-edit-form-attributes
         targetZone: other-actions
         position: 90
         config:
-            select2:
-                placeholder:      'pim_enrich.form.product.mass_edit.select_attributes'
-                title:            'pim_enrich.form.common.tab.attributes.info.search_attributes'
-                buttonTitle:      'pim_enrich.form.common.tab.attributes.btn.add'
-                countTitle:       'pim_enrich.form.product.tab.attributes.info.attributes_selected'
-                emptyText:        'pim_enrich.form.common.tab.attributes.info.no_available_attributes'
-                classes:          'pim-add-attributes-multiselect'
-                dropdownCssClass: 'add-attribute'
-            searchParameters:
-                options:
-                    exclude_unique: true
-            resultsPerPage: 10
-            mainFetcher: 'attribute'
-            className: 'add-attribute'
             events:
                 disable: 'mass-edit:form:lock'
                 enable: 'mass-edit:form:unlock'
-                add: 'add-attribute:add'
 
     pim-mass-product-edit-form-validation:
         module: pim/product-edit-form/attributes/validation

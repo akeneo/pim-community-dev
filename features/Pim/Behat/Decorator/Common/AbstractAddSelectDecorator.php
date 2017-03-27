@@ -4,19 +4,20 @@ namespace Pim\Behat\Decorator\Common;
 
 use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
+use Pim\Behat\Decorator\ElementDecorator;
 
+/**
+ * Abstract class for add select implementations
+ *
+ * @author    Alexandr Jeliuc <alex@jeliuc.com>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
 abstract class AbstractAddSelectDecorator extends ElementDecorator
 {
     use SpinCapableTrait;
 
     const NOT_FOUND_MESSAGE = 'No matches found';
-
-    protected $elements = [
-        'searchSelector'     => '.add-attribute-group .select2-search input[type="text"]',
-        'dropListBtn'        => '.add-attribute-group a.select2-choice',
-        'resultList'         => '.add-attribute-group .select2-results',
-        'resultItemSelector' => '.select2-result-label span:contains("%s"), li.select2-no-results',
-    ];
 
     /**
      * Check and add list of given items
@@ -39,10 +40,51 @@ abstract class AbstractAddSelectDecorator extends ElementDecorator
             ->closeDropList();
     }
 
+    /**
+     * @param string $item
+     *
+     * @return mixed
+     */
+    public function findItem($item)
+    {
+        $result = $this->openDropList()
+            ->evaluateSearch($item)
+            ->getResultForSearch($item);
+
+        $this->closeDropList();
+
+        return $result;
+    }
+
+    /**
+     * @var string baseClass
+     */
+    protected $baseClass = '';
+
+    /**
+     * Gets array of view elements
+     *
+     * @return array
+     */
+    protected function getElements()
+    {
+        return [
+            'searchSelector'     => $this->baseClass . ' .select2-search input[type="text"]',
+            'dropListBtn'        => $this->baseClass . ' a.select2-choice',
+            'resultList'         => $this->baseClass . ' .select2-results',
+            'resultItemSelector' => '.select2-result-label span:contains("%s"), li.select2-no-results',
+        ];
+    }
+
+    /**
+     * Opens drop list
+     *
+     * @return $this
+     */
     protected function openDropList()
     {
         $selector = $this->spin(function () {
-            return $this->find('css', $this->elements['dropListBtn']);
+            return $this->find('css', $this->getElements()['dropListBtn']);
         }, 'Cannot find drop list button');
 
         $selector->click();
@@ -59,13 +101,11 @@ abstract class AbstractAddSelectDecorator extends ElementDecorator
      */
     protected function evaluateSearch($query)
     {
-        $this->getSession()->evaluateScript(
-            "jQuery('" .
-            $this->elements['searchSelector'] .
-            "').val('" .
-            preg_replace('/[\[\]]/u', '', $query) .
-            "').trigger('input');"
-        );
+        $script = "jQuery('" . $this->getElements()['searchSelector'] .
+            "').val('" . preg_replace('/[\[\]]/u', '', $query) .
+            "').trigger('input');";
+
+        $this->getSession()->evaluateScript($script);
 
         return $this;
     }
@@ -83,9 +123,9 @@ abstract class AbstractAddSelectDecorator extends ElementDecorator
         $searchResult = $this->spin(function () use ($query, $list) {
             return $list->findAll(
                 'css',
-                sprintf($this->elements['resultItemSelector'], $query)
+                sprintf($this->getElements()['resultItemSelector'], $query)
             );
-        }, 'Cannot find element in the attribute groups list');
+        }, 'Cannot find element in the list');
 
         if (0 === count($searchResult)) {
             return null;
@@ -110,7 +150,7 @@ abstract class AbstractAddSelectDecorator extends ElementDecorator
     protected function getResultListElement()
     {
         return $this->spin(function () {
-            return $this->find('css', $this->elements['resultList']);
+            return $this->find('css', $this->getElements()['resultList']);
         }, 'Cannot find the result list element');
     }
 

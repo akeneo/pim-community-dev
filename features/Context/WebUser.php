@@ -889,9 +889,8 @@ class WebUser extends RawMinkContext
     public function iShouldSeeAvailableAttributesInGroup($attributes, $group)
     {
         foreach ($this->listToArray($attributes) as $attribute) {
-            $this->spin(function () use ($attribute, $group) {
-                return $this->getCurrentPage()->findAvailableAttributeInGroup($attribute, $group);
-            }, sprintf('Expecting to see attribute "%s" under group "%s"', $attribute, $group));
+            return $this->getCurrentPage()
+                ->hasAvailableAttributeInGroup($attribute, $group);
         }
     }
 

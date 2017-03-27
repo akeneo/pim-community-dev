@@ -140,29 +140,37 @@ extensions:
         position: 160
 
     pim-family-edit-form-attributes-toolbar-add-attribute-by-group:
-        module: pim/family-edit-form/attributes/toolbar/add-attribute-group
+        module: pim/family-edit-form/attributes/toolbar/add-select/attribute-group
         parent: pim-family-edit-form-attributes-toolbar
         targetZone: attributes-toolbar
         position: 170
         config:
             select2:
-                placeholder: pim_enrich.form.family.tab.attributes.toolbox.select_attributes_by_groups
-                buttonTitle: pim_enrich.form.family.tab.attributes.toolbox.add
-                title:       pim_enrich.form.family.tab.attributes.toolbox.add
-                emptyText:   pim_enrich.form.family.tab.attributes.toolbox.no_attribute_groups_available
-                countTitle:  pim_enrich.form.family.tab.attributes.toolbox.attributes_groups_selected
+                placeholder:      'pim_enrich.form.family.tab.attributes.toolbox.select_attributes_by_groups'
+                title:            'pim_enrich.form.family.tab.attributes.toolbox.add'
+                buttonTitle:      'pim_enrich.form.family.tab.attributes.toolbox.add'
+                countTitle:       'pim_enrich.form.family.tab.attributes.toolbox.attributes_groups_selected'
+                emptyText:        'pim_enrich.form.family.tab.attributes.toolbox.no_attribute_groups_available'
+                classes:          'pim-add-attributes-multiselect'
+                dropdownCssClass: 'add-attribute-group'
+            resultsPerPage: 10
+            mainFetcher: 'attribute-group'
+            className: 'AknButtonList-item add-attribute-group'
+            events:
+                add: 'add-attribute-group:add'
 
     pim-family-edit-form-attributes-toolbar-add-attribute:
-        module: pim/family-edit-form/attributes/toolbar/add-attribute
+        module: pim/family-edit-form/attributes/toolbar/add-select/attribute
         parent: pim-family-edit-form-attributes-toolbar
         targetZone: attributes-toolbar
         position: 180
         config:
             select2:
-                placeholder: pim_enrich.form.family.tab.attributes.toolbox.select_attributes
-                buttonTitle: pim_enrich.form.family.tab.attributes.toolbox.add
-                title:       pim_enrich.form.family.tab.attributes.toolbox.add
-                emptyText:   pim_enrich.form.family.tab.attributes.toolbox.no_attributes_available
+                placeholder:      'pim_enrich.form.family.tab.attributes.toolbox.select_attributes'
+                title:            'pim_enrich.form.family.tab.attributes.toolbox.add'
+                buttonTitle:      'pim_enrich.form.family.tab.attributes.toolbox.add'
+                emptyText:        'pim_enrich.form.family.tab.attributes.toolbox.no_attributes_available'
+            className: 'AknButtonList-item add-attribute'
 
     pim-family-edit-form-attributes-attributes:
         module: pim/family-edit-form/attributes/attributes

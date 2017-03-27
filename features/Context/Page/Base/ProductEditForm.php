@@ -6,7 +6,7 @@ use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
-use Context\Spin\TimeoutException;
+use Pim\Behat\Decorator\Common\AttributeAddSelectDecorator;
 
 /**
  * Product Edit Form
@@ -34,7 +34,7 @@ class ProductEditForm extends Form
                 'Available attributes button'     => ['css' => '.add-attribute a.select2-choice'],
                 'Available attributes'            => [
                     'css'        => '.add-attribute',
-                    'decorators' => ['Pim\Behat\Decorator\Common\AddAttributeDecorator']
+                    'decorators' => [AttributeAddSelectDecorator::class]
                 ],
                 'Available attributes list'       => ['css' => '.add-attribute .select2-results'],
                 'Available attributes search'     => ['css' => '.add-attribute .select2-search input[type="text"]'],
@@ -103,7 +103,7 @@ class ProductEditForm extends Form
         $availableAttribute = $this->spin(function () {
             return $this->getElement('Available attributes');
         }, 'Cannot find the add attribute element');
-        $availableAttribute->addAttributes($attributes);
+        $availableAttribute->addItems($attributes);
     }
 
     /**
