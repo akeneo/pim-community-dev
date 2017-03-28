@@ -1150,6 +1150,25 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $field
+     *
+     * @Then /^I should not see the add option link for the "([^"]*)" attribute$/
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldNotSeeTheAddOptionLinkFor($field)
+    {
+        if (null !== $this->getCurrentPage()->getAddOptionLinkFor($field)) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Add option link should not be displayed for attribute "%s".',
+                    $field
+                )
+            );
+        }
+    }
+
+    /**
      * @Then /^I should see reorder handles$/
      */
     public function iShouldSeeReorderHandles()
