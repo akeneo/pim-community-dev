@@ -416,3 +416,8 @@
 {% block select_family_type_row %}
     {{ block('form_row_field') }}
 {% endblock %}
+
+{%- block form_widget_simple -%}
+    {%- set type = type|default('text') -%}
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value == '\\' or value is not empty %}value="{{ value }}" {% endif %}/>
+{%- endblock form_widget_simple -%}
