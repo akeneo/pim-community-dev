@@ -11,13 +11,14 @@ define([
     ) {
         return FormController.extend({
             /**
-             * Called after a successful submit (after a submitForm)
-             *
-             * @param {Object} xhr
+             * {@inheritdoc}
              */
             afterSubmit: function (xhr) {
-                securityContext.fetch();
-                configProvider.clear();
+                // TODO: drop this when the main menu will be handled as a view
+                window.location.reload();
+
+                //securityContext.fetch();
+                //configProvider.clear();
 
                 FormController.prototype.afterSubmit.apply(this, arguments);
             }
