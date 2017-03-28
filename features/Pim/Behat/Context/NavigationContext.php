@@ -141,19 +141,6 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $path
-     * @param string $referrer
-     *
-     * @Given /^I am on the relative path ([^"]+) from ([^"]+)$/
-     */
-    public function iAmOnTheRelativePath($path, $referrer)
-    {
-        $basePath = parse_url($this->baseUrl)['path'];
-        $uri = sprintf('%s%s/#%s%s', $this->baseUrl, $referrer, $basePath, $path);
-        $this->getSession()->visit($uri);
-    }
-
-    /**
      * @param string $not
      * @param string $page
      *
