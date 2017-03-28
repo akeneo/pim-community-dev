@@ -2,12 +2,9 @@
 
 namespace Pim\Component\Catalog\Query;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client as ElasticSearchClient;
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Exception\UnsupportedFilterException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
@@ -48,21 +45,11 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /** @var array */
     protected $rawFilters = [];
 
-    /** @var ElasticSearchClient */
-    protected $searchEngine;
-
-    /** @var EntityManagerInterface */
-    protected $entityManager;
-
     /**
-     * Constructor
-     *
      * @param AttributeRepositoryInterface $attributeRepository
      * @param FilterRegistryInterface      $filterRegistry
      * @param SorterRegistryInterface      $sorterRegistry
      * @param CursorFactoryInterface       $cursorFactory
-     * @param ElasticSearchClient          $searchEngine
-     * @param EntityManagerInterface       $entityManager
      * @param array                        $defaultContext
      */
     public function __construct(
@@ -70,16 +57,12 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
-        ElasticSearchClient $searchEngine,
-        EntityManagerInterface $entityManager,
         array $defaultContext
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->filterRegistry = $filterRegistry;
         $this->sorterRegistry = $sorterRegistry;
         $this->cursorFactory = $cursorFactory;
-        $this->searchEngine = $searchEngine;
-        $this->entityManager = $entityManager;
 
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
@@ -308,15 +291,5 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
                 'scope'
             ]
         );
-    }
-
-    /**
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    private function getInternalQueryBuilder()
-    {
-        return $this->entityManager->createQueryBuilder()
-            ->select('p')
-            ->from(Product::class, 'p');
     }
 }
