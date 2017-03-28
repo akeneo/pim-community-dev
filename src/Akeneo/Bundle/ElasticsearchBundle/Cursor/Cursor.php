@@ -9,6 +9,7 @@ use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 /**
  * Cursor to iterate on items
  *
+ * @author    Julien Janvier <jjanvier@akeneo.com>
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
