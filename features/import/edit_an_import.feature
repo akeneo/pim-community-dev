@@ -48,6 +48,7 @@ Feature: Edit an import
     And I should see "Decimal separator dot (.)"
     And I should see "Date format yyyy-mm-dd"
 
+  @javascript
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "csv_footwear_product_import" import job edit page
     When I fill in the following information:
