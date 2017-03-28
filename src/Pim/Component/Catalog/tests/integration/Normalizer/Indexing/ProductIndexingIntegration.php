@@ -186,7 +186,7 @@ class ProductIndexingIntegration extends TestCase
                 ],
                 'a_simple_select-option'                         => [
                     '<all_locales>' => [
-                        '<all_channels>' => null,
+                        '<all_channels>' => 'optionB',
                     ],
                 ],
                 'a_text-varchar'                                 => [

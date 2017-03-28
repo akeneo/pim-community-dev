@@ -20,6 +20,8 @@ class OptionFilterIntegration extends AbstractFilterTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
+            $this->resetIndex();
+
             $this->createAttributeOption([
                'attribute' => 'a_simple_select',
                'code'      => 'orange'
@@ -74,10 +76,10 @@ class OptionFilterIntegration extends AbstractFilterTestCase
     public function testOperatorNotIn()
     {
         $result = $this->execute([['a_simple_select', Operators::NOT_IN_LIST, ['black']]]);
-        $this->assert($result, ['product_one']);
+        $this->assert($result, ['product_one', 'empty_product']);
 
         $result = $this->execute([['a_simple_select', Operators::NOT_IN_LIST, ['orange']]]);
-        $this->assert($result, ['product_two']);
+        $this->assert($result, ['product_two', 'empty_product']);
     }
 
     /**
