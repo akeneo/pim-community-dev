@@ -803,12 +803,16 @@ Option
 
 Data model
 ~~~~~~~~~~
-.. code-block:: yaml
+.. code-block:: php
 
-  color-option
-    id:5
-    label-en_US:"Red"
-    label-fr_FR:"Rouge"
+    'values' => [
+        'color-option' => [
+            '<all_locales>' => [
+                '<all_channels>' => 'red'
+            ]
+        ]
+    ]
+
 
 Filtering
 ~~~~~~~~~
@@ -818,29 +822,70 @@ IN
 ""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    terms:
-        color-option.id: [5, 6, 7]
+    'filter' => [
+        'terms' => [
+            'values.color-option.<all_locales>.<all_channels>' => ['red']
+        ]
+    ]
 
 EMPTY
 """""
+:Type: must_not
+
+.. code-block:: php
+
+    'must_not' => [
+        'exists' => [
+            'field' => 'values.color-option.<all_locales>.<all_channels>'
+        ]
+    ]
+
+NOT EMPTY
+"""""""""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    missing:
-       field: "color-option"
+    'filter' => [
+        'exists' => [
+            'field' => 'values.color-option.<all_locales>.<all_channels>'
+        ]
+    ]
 
+NOT IN
+""""""
+:Type: must_not
+
+.. code-block:: php
+
+    'query' => [
+        'bool' => [
+            'must_not' => [
+                'terms' => [
+                    'values.color-option.<all_locales>.<all_channels>' => ['red']
+                ]
+            ],
+            'filter' => [
+                'exists' => [
+                    'field' => 'values.color-option.<all_locales>.<all_channels>'
+                ]
+            ]
+        ]
+    ]
 
 Sorting
 ~~~~~~~
-Sorting will be done on the localized label:
 
-.. code-block:: yaml
+.. code-block:: php
 
-    sort:
-        color-option.label-en_US: asc
+    'sort' => [
+        'values.color-option.<all_locales>.<all_channels>' => [
+            'order'   => 'asc',
+            'missing' => '_first'
+        ]
+    ]
 
 Simple select reference data
 ****************************
