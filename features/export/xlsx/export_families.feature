@@ -16,7 +16,7 @@ Feature: Export families in XLSX
       | filePath | %tmp%/family_export/family.xlsx |
     And I am on the "xlsx_footwear_family_export" export job page
     When I launch the export job
-    And I wait for the "xlsx_footwear_family_exportt" job to finish
+    And I wait for the "xlsx_footwear_family_export" job to finish
     Then I should see "Read 6"
     And I should see "Written 6"
     And exported xlsx file of "xlsx_footwear_family_export" should contain:
