@@ -1,12 +1,12 @@
-<div class="AknAssetCollectionField-header AknButtonList AknButtonList--right">
+<div class="AknAssetCollectionField-header AknButtonList AknButtonList--right <%- ('view' === editMode) ? 'AknAssetCollectionField-header--disabled' : '' %>">
     <span class="AknButtonList-item AknButton AknButton--apply AknButton--withIcon add-asset">
         <i class="AknButton-icon icon-ok"></i>
         <%- _.__('pimee_product_asset.form.product.asset.manage') %>
     </span>
 </div>
-<ul class="AknAssetCollectionField-list">
+<ul class="AknAssetCollectionField-list <%- ('view' === editMode) ? 'AknAssetCollectionField-list--disabled' : '' %>">
     <% _.each(assets, function (asset) { %>
-        <li class="AknAssetCollectionField-listItem" data-asset="<%- asset.code %>">
+        <li class="AknAssetCollectionField-listItem  <%- ('view' === editMode) ? 'AknAssetCollectionField-listItem--disabled' : '' %>" data-asset="<%- asset.code %>">
             <div class="AknAssetCollectionField-assetThumbnail" style="background-image: url('<%- Routing.generate('pimee_product_asset_thumbnail', {
                     code: asset.code,
                     filter: thumbnailFilter,

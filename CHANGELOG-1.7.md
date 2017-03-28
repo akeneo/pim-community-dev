@@ -1,3 +1,22 @@
+# 1.7.x
+
+## Bug fixes
+
+- PIM-6248: Fix notification message on project creation
+
+# 1.7.1 (2017-03-23)
+
+**Caution:** Due to a wrong doctrine migration in the previous version, you also need to re-run them `php app/console doctrine:migrations:migrate` for this patch.
+**Do not run this command if you have already fixed the migration issue in the 1.7.0**
+
+## Bug fixes
+
+- PIM-6213: Remove ticks on published form.
+- PIM-6251: Fix completeness not calculated during bulk action edit attributes.
+- PIM-6245: Correctly switch to project channel when selecting a Teamwork Assistant project.
+- PIM-6266: Fix doctrine migration to add Teamwork Assistant job rights.
+- PIM-6205: Fix asset collection field rendering on view mode
+
 # 1.7.0 (2017-03-14)
 
 ## Bug fixes

@@ -120,6 +120,9 @@ def runGruntTest() {
                 sh "grunt"
             }
         } finally {
+            sh "docker stop \$(docker ps -a -q) || true"
+            sh "docker rm \$(docker ps -a -q) || true"
+            sh "docker volume rm \$(docker volume ls -q) || true"
             deleteDir()
         }
     }
@@ -141,6 +144,9 @@ def runPhpSpecTest(phpVersion) {
                 sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
             }
         } finally {
+            sh "docker stop \$(docker ps -a -q) || true"
+            sh "docker rm \$(docker ps -a -q) || true"
+            sh "docker volume rm \$(docker volume ls -q) || true"
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
@@ -152,9 +158,9 @@ def runIntegrationTest(phpVersion, storage) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("mongo:2.4").withRun("--name ${env.BRANCH_NAME}-mongodb", "--smallfiles") {
-                docker.image("mysql:5.5").withRun("--name ${env.BRANCH_NAME}-mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim") {
-                    docker.image("carcel/php:${phpVersion}").inside("--link ${env.BRANCH_NAME}-mysql:mysql --link ${env.BRANCH_NAME}-mongodb:mongodb -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("mongo:2.4").withRun("--name mongodb", "--smallfiles") {
+                docker.image("mysql:5.5").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim") {
+                    docker.image("carcel/php:${phpVersion}").inside("--link mysql:mysql --link mongodb:mongodb -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                         unstash "project_files"
 
                         if (phpVersion != "5.6") {
@@ -181,6 +187,9 @@ def runIntegrationTest(phpVersion, storage) {
                 }
             }
         } finally {
+            sh "docker stop \$(docker ps -a -q) || true"
+            sh "docker rm \$(docker ps -a -q) || true"
+            sh "docker volume rm \$(docker volume ls -q) || true"
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}-${storage}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
@@ -202,6 +211,9 @@ def runPhpCsFixerTest() {
                 sh "./bin/php-cs-fixer fix --diff --dry-run --format=junit --config=.php_cs.php > app/build/logs/phpcs.xml"
             }
         } finally {
+            sh "docker stop \$(docker ps -a -q) || true"
+            sh "docker rm \$(docker ps -a -q) || true"
+            sh "docker volume rm \$(docker volume ls -q) || true"
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-cs-fixer] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()

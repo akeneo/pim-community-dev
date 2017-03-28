@@ -1,15 +1,18 @@
 project_calculation: Cálculo del proyecto
+project_created: Un nuevo proyecto para usted
 project_finished: Proyecto finalizado
 teamwork_assistant:
   project:
     required: Este valor no debe estar vacío.
     label_maxlength: Este valor es demasiado largo. Debe tener {{ max }} caracteres o menos.
     project_identifier: El proyecto {{ project }} no existe.
+    project_locale: El local {{ locale }} del proyecto debe estar habilitado.
     project_due_date: No puede seleccionar una fecha en el pasado.
   notification:
     project_calculation:
       error: Cálculo fallido del proyecto <strong>%project_label%</strong>
       warning: Cálculo del proyecto <strong>%project_label%</strong> finalizado con errores
+      success: El proyecto <strong>%project_label%</strong> está listo y los contribuidores han sido notificados. ¡Comencemos!
       start: Iniciar
     message: Tiene nuevos productos a enriquecer para "%project_label%". La fecha de vencimiento es "%due_date%".
     project_finished:
@@ -32,6 +35,8 @@ batch_jobs:
       label: Cálculo del proyecto
     prepare_project_calculation:
       label: Preparar el cálculo del proyecto
+    clean_contributor_group:
+      label: Revisar permisiones de usuarios en el local del proyecto
 job_execution:
   summary:
     processed_products: Productos procesados

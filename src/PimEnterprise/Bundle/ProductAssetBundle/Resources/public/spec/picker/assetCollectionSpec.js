@@ -49,7 +49,8 @@ define(
                 assetCollection.setData(['my_asset']);
                 assetCollection.setContext({
                     scope: 'ecommerce',
-                    locale: 'en_US'
+                    locale: 'en_US',
+                    editMode: true
                 });
                 assetCollection.render();
 
@@ -59,7 +60,8 @@ define(
                     assets: [{foo: 'bar'}],
                     locale: 'en_US',
                     scope: 'ecommerce',
-                    thumbnailFilter: 'thumbnail'
+                    thumbnailFilter: 'thumbnail',
+                    editMode: true
                 });
             });
 

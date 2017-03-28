@@ -158,8 +158,8 @@ ALTER TABLE `pimee_teamwork_assistant_project_status` ADD CONSTRAINT FK_2A911294
 ALTER TABLE `pimee_teamwork_assistant_project_status` ADD CONSTRAINT FK_2A911294166D1F9C FOREIGN KEY (project_id) REFERENCES `pimee_teamwork_assistant_project` (id) ON DELETE CASCADE;
 ALTER TABLE `pimee_security_attribute_group_access` ADD KEY `attr_grp_editable_permission_index` (`edit_attributes`, `attribute_group_id`);
 
-INSERT INTO akeneo_batch_job_instance (`code`, `label`, `alias`, `status`, `connector`, `rawConfiguration`, `type`) VALUES
-('project_calculation', 'Project calculation', 'project_calculation', 0, 'teamwork assistant', '', 'project_calculation')
+INSERT INTO akeneo_batch_job_instance (`code`, `label`, `job_name`, `status`, `connector`, `raw_parameters`, `type`) VALUES
+('project_calculation', 'Project calculation', 'project_calculation', 0, 'teamwork assistant', '', 'project_calculation'),
 ('refresh_project_completeness_calculation', 'Refresh project completeness', 'refresh_project_completeness_calculation', 0, 'teamwork assistant', '', 'refresh_project_completeness_calculation');
 SQL;
 
