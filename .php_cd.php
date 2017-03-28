@@ -42,8 +42,8 @@ $cAkeneoRules = [
         ]),
         RuleInterface::TYPE_ONLY
     ),
-    new Rule('Akeneo\Component\Console', $cDeps, RuleInterface::TYPE_ONLY, 'have no real existence, should be merged into Batch'),
-    new Rule(
+/*    new Rule('Akeneo\Component\Console', $cDeps, RuleInterface::TYPE_ONLY, 'have no real existence, should be merged into Batch'),
+      new Rule(
         'Akeneo\Component\FileStorage',
         array_merge($cDeps, [
             'League\Flysystem',  // used as base file storage system
@@ -51,11 +51,13 @@ $cAkeneoRules = [
         RuleInterface::TYPE_ONLY
     ),
     new Rule('Akeneo\Component\Localization', $cDeps, RuleInterface::TYPE_ONLY),
+*/
     new Rule('Akeneo\Component\StorageUtils', $cDeps, RuleInterface::TYPE_ONLY),
     new Rule('Akeneo\Component\Versioning', $cDeps, RuleInterface::TYPE_ONLY),
 ];
 
 $cPimRules = [
+/*
     new Rule(
         'Pim\Component\Catalog',
         array_merge($cDeps, [
@@ -80,6 +82,7 @@ $cPimRules = [
         ]),
         RuleInterface::TYPE_ONLY
     ),
+*/
     new Rule(
         'Pim\Component\Localization',
         array_merge($cDeps, [
@@ -95,7 +98,7 @@ $cPimRules = [
         ]),
         RuleInterface::TYPE_ONLY
     ),
-    new Rule('Pim\Component\User', $cDeps, RuleInterface::TYPE_ONLY),
+//    new Rule('Pim\Component\User', $cDeps, RuleInterface::TYPE_ONLY),
 ];
 
 $rules  = array_merge($cAkeneoRules, $cPimRules);
