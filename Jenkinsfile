@@ -324,6 +324,9 @@ def runPhpCouplingDetectorTest() {
                 sh "./bin/php-coupling-detector detect --config-file=.php_cd.php src"
             }
         } finally {
+            sh "docker stop \$(docker ps -a -q) || true"
+            sh "docker rm \$(docker ps -a -q) || true"
+            sh "docker volume rm \$(docker volume ls -q) || true"
             deleteDir()
         }
     }
