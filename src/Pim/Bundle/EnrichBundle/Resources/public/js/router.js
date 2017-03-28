@@ -27,8 +27,6 @@ define(
         Error,
         securityContext
     ) {
-        var currentController = null;
-
         var Router = Backbone.Router.extend({
             DEFAULT_ROUTE: 'oro_default',
             routes: {
@@ -36,6 +34,7 @@ define(
                 '*path': 'defaultRoute'
             },
             loadingMask: null,
+            currentController: null,
 
             /**
              * {@inheritdoc}
@@ -78,8 +77,8 @@ define(
 
                 this.triggerStart(route);
                 ControllerRegistry.get(route.name).done(function (controller) {
-                    if (currentController) {
-                        currentController.remove();
+                    if (this.currentController) {
+                        this.currentController.remove();
                     }
 
                     $('#container').empty();
@@ -89,9 +88,9 @@ define(
                         this.displayErrorPage(__('pim_enrich.error.http.403'), '403');
                     }
 
-                    currentController = new controller.class({ el: $view});
-                    currentController.setActive(true);
-                    currentController.renderRoute(route, path).done(_.bind(function () {
+                    this.currentController = new controller.class({ el: $view});
+                    this.currentController.setActive(true);
+                    this.currentController.renderRoute(route, path).done(_.bind(function () {
                         this.triggerComplete(route);
                     }, this)).fail(this.handleError.bind(this)).always(this.hideLoadingMask);
                 }.bind(this));
