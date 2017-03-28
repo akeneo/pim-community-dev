@@ -194,8 +194,7 @@ class TextAreaFilterSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $sqb->addFilter(
-            [
+        $sqb->addFilter([
                 'exists' => [
                     'field' => 'values.name-varchar.en_US.ecommerce.raw',
                 ],

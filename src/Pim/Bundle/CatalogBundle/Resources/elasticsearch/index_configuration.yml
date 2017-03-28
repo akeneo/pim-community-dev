@@ -16,7 +16,7 @@ mappings:
         dynamic_templates:
             -
                 text_area:
-                    match: '*-text'
+                    path_match: 'values.*-text.*'
                     match_mapping_type: 'string'
                     mapping:
                         fields:

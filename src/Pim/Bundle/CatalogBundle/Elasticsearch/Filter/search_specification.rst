@@ -158,9 +158,18 @@ Text area
 
 Data model
 ~~~~~~~~~~
-.. code-block:: yaml
+.. code-block:: php
 
-  my_description-text-fr_FR-mobile: 'My description'
+    [
+        'values' => [
+            'my_description-text' => [
+                'fr_FR' => [
+                    'mobile' => 'My description'
+                ]
+            ]
+        ]
+    ]
+
 
 
 Filtering
@@ -178,7 +187,7 @@ STARTS WITH
 
     'filter' => [
         'query_string' => [
-            'default_field' => 'description-text.raw',
+            'default_field' => 'values.description-text.<all_locales>.<all_channels>.raw',
             'query' => "My*"
         ]
     ]
@@ -192,7 +201,7 @@ Example:
 
     'filter' => [
         'query_string' => [
-            'default_field' => 'description-text.raw',
+            'default_field' => 'values.description-text.<all_locales>.<all_channels>.raw',
             'query' => 'My\\ description*'
         ]
     ]
@@ -206,8 +215,8 @@ CONTAINS
 
     'filter' => [
         'query_string' => [
-            'default_field' => 'description-text.raw',
-            'query' => 'cool\\ product'
+            'default_field' => 'values.description-text.<all_locales>.<all_channels>.raw',
+            'query' => '*cool\\ product*'
         ]
     ]
 
@@ -222,12 +231,12 @@ Same syntax than the ``contains`` but must be included in a ``must_not`` boolean
     'bool' => [
         'must_not' => [
             'query_string' => [
-                'default_field' => 'description-text.raw',
-                'query' => 'cool\\ product'
+                'default_field' => 'values.description-text.<all_locales>.<all_channels>.raw',
+                'query' => '*cool\\ product*'
             ]
         ],
         'filter' => [
-            'exists' => ['field' => 'description-text.raw'
+            'exists' => ['field' => 'values.description-text.<all_locales>.<all_channels>.raw'
         ]
     ]
 
@@ -242,21 +251,52 @@ Equals (=)
 
     'filter' => [
         'term' => [
-            'description-text.raw' => 'My full lookup text'
+            'values.description-text.<all_locales>.<all_channels>.raw' => 'My full lookup text'
+        ]
+    ]
+
+Not Equals (!=)
+"""""""""""""""
+:Type: Filter
+:Specific field: raw
+
+        Equality will not work with tokenized field, so we will use the untokenized sub-field:
+
+.. code-block:: php
+
+    'must_not' => [
+        'term' => [
+            'values.description-text.<all_locales>.<all_channels>.raw' => 'My full lookup text'
+        ]
+    ],
+    'filter' => [
+        'exists' => [
+            'field' => 'values.description-text.<all_locales>.<all_channels>.raw'
         ]
     ]
 
 EMPTY
 """""
-:Type: filter
 
 .. code-block:: php
 
     'must_not' => [
         'exists => [
-            'field' => 'description-text'
+            'field' => 'values.description-text.<all_locales>.<all_channels>'
         ]
     ]
+
+NOT EMPTY
+"""""""""
+
+.. code-block:: php
+
+    'filter' => [
+        'exists => [
+            'field' => 'values.description-text.<all_locales>.<all_channels>'
+        ]
+    ]
+
 Enabled
 *******
 :Apply: apply datatype 'boolean' on the 'enabled' field
@@ -314,7 +354,15 @@ Data model
 ~~~~~~~~~~
 .. code-block:: php
 
-  name-varchar: "My product name"
+    [
+        'values' => [
+            'name-varchar' => [
+                'fr_FR' => [
+                    'mobile' => 'My product name'
+                ]
+            ]
+        ]
+    ]
 
 Filtering
 ~~~~~~~~~

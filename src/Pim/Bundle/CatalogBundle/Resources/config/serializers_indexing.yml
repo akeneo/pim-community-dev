@@ -7,6 +7,7 @@ parameters:
     pim_catalog.normalizer.indexing.product.number.class: Pim\Component\Catalog\Normalizer\Indexing\Product\NumberNormalizer
     pim_catalog.normalizer.indexing.product.dummy.class: Pim\Component\Catalog\Normalizer\Indexing\Product\DummyNormalizer
     pim_catalog.normalizer.indexing.product.text.class: Pim\Component\Catalog\Normalizer\Indexing\Product\TextNormalizer
+    pim_catalog.normalizer.indexing.product.text_area.class: Pim\Component\Catalog\Normalizer\Indexing\Product\TextAreaNormalizer
 
 services:
     pim_catalog.normalizer.indexing.product:
@@ -50,5 +51,10 @@ services:
 
     pim_catalog.normalizer.indexing.text:
         class: '%pim_catalog.normalizer.indexing.product.text.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing.text_area:
+        class: '%pim_catalog.normalizer.indexing.product.text_area.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }

@@ -106,11 +106,11 @@ class ProductIndexingIntegration extends TestCase
                 ],
                 'a_localized_and_scopable_text_area-text'        => [
                     'en_US' => [
-                        'ecommerce' => null,
-                        'tablet'    => null,
+                        'ecommerce' => 'a text area for ecommerce in English',
+                        'tablet'    => 'a text area for tablets in English',
                     ],
                     'fr_FR' => [
-                        'tablet' => null,
+                        'tablet' => 'une zone de texte pour les tablettes en français',
                     ],
                 ],
                 'a_metric-metric'                                => [
@@ -196,7 +196,7 @@ class ProductIndexingIntegration extends TestCase
                 ],
                 'a_text_area-text'                               => [
                     '<all_locales>' => [
-                        '<all_channels>' => null,
+                        '<all_channels>' => 'this is a very very very very very long  text',
                     ],
                 ],
                 'a_yes_no-boolean'                               => [

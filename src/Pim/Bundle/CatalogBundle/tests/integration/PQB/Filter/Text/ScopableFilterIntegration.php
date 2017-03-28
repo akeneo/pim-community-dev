@@ -85,10 +85,10 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     public function testOperatorDoesNotContain()
     {
         $result = $this->execute([['a_scopable_text', Operators::DOES_NOT_CONTAIN, 'black', ['scope' => 'tablet']]]);
-        $this->assert($result, ['cat', 'cattle', 'dog', 'empty_product']);
+        $this->assert($result, ['cat', 'cattle', 'dog']);
 
         $result = $this->execute([['a_scopable_text', Operators::DOES_NOT_CONTAIN, 'black', ['scope' => 'ecommerce']]]);
-        $this->assert($result, ['cattle', 'dog', 'empty_product']);
+        $this->assert($result, ['cattle', 'dog']);
     }
 
     public function testOperatorEquals()

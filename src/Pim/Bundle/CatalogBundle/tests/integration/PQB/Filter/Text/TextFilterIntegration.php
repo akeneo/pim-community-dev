@@ -103,18 +103,18 @@ class TextFilterIntegration extends AbstractFilterTestCase
     public function testOperatorDoesNotContain()
     {
         $result = $this->execute([['a_text', Operators::DOES_NOT_CONTAIN, 'at']]);
-        $this->assert($result, ['dog', 'best_dog', 'empty_product']);
+        $this->assert($result, ['dog', 'best_dog']);
 
         $result = $this->execute([['a_text', Operators::DOES_NOT_CONTAIN, 'other']]);
-        $this->assert($result, ['cat', 'cattle', 'dog', 'best_dog', 'best_cat', 'empty_product']);
+        $this->assert($result, ['cat', 'cattle', 'dog', 'best_dog', 'best_cat']);
 
         $result = $this->execute([['a_text', Operators::DOES_NOT_CONTAIN, '<br/>']]);
-        $this->assert($result, ['cat', 'cattle', 'dog', 'best_dog', 'empty_product']);
+        $this->assert($result, ['cat', 'cattle', 'dog', 'best_dog']);
 
         $result = $this->execute([['a_text', Operators::DOES_NOT_CONTAIN, 'most beautiful']]);
 
         // best_cat does not contain "most beautiful" because it is wrapped in HTML tags
-        $this->assert($result, ['cat', 'best_cat', 'cattle', 'dog', 'empty_product']);
+        $this->assert($result, ['cat', 'best_cat', 'cattle', 'dog']);
     }
 
     public function testOperatorEquals()

@@ -85,8 +85,12 @@ class TextFilter extends AbstractAttributeFilter implements AttributeFilterInter
                         'query'         => '*' . $escapedValue . '*',
                     ],
                 ];
+                $filterClause = [
+                    'exists' => ['field' => $attributePath],
+                ];
 
                 $this->searchQueryBuilder->addMustNot($mustNotClause);
+                $this->searchQueryBuilder->addFilter($filterClause);
                 break;
 
             case Operators::EQUALS:

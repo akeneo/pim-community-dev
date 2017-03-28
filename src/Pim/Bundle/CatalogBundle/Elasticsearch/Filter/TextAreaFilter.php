@@ -52,7 +52,7 @@ class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterI
 
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($attribute, $value);
-            $value = $this->escapeValue($value);
+            $escapedValue = $this->escapeValue($value);
         }
 
         $attributePath = $this->getAttributePath($attribute, $locale, $channel);
@@ -63,7 +63,7 @@ class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterI
                 $clause = [
                     'query_string' => [
                         'default_field' => $attributePath,
-                        'query'         => $value . '*',
+                        'query'         => $escapedValue . '*',
                     ],
                 ];
                 $this->searchQueryBuilder->addFilter($clause);
@@ -74,7 +74,7 @@ class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterI
                 $clause = [
                     'query_string' => [
                         'default_field' => $attributePath,
-                        'query'         => '*' . $value . '*',
+                        'query'         => '*' . $escapedValue . '*',
                     ],
                 ];
                 $this->searchQueryBuilder->addFilter($clause);
@@ -85,7 +85,7 @@ class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterI
                 $mustNotClause = [
                     'query_string' => [
                         'default_field' => $attributePath,
-                        'query'         => '*' . $value . '*',
+                        'query'         => '*' . $escapedValue . '*',
                     ],
                 ];
 

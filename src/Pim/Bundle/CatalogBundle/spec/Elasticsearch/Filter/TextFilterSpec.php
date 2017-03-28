@@ -185,6 +185,14 @@ class TextFilterSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
+        $sqb->addFilter(
+            [
+                'exists' => [
+                    'field' => 'values.name-varchar.en_US.ecommerce',
+                ],
+            ]
+        )->shouldBeCalled();
+
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($name, Operators::DOES_NOT_CONTAIN, 'sony', 'en_US', 'ecommerce', []);
     }

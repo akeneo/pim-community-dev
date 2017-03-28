@@ -106,13 +106,18 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
                             'query'         => '*Love*',
                         ],
                     ],
+                    'filter' => [
+                        'exists' => [
+                            'field' => 'values.name-varchar.<all_locales>.<all_channels>',
+                        ]
+                    ]
                 ],
             ],
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_1', 'product_2', 'product_4', 'product_5']);
+        $this->assertProducts($productsFound, ['product_1', 'product_2', 'product_5']);
     }
 
     public function testEqualsOperator()

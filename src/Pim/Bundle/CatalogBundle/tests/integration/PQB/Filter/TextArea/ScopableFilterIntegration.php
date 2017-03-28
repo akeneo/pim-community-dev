@@ -21,6 +21,8 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
+            $this->resetIndex();
+
             $this->createAttribute([
                 'code'                => 'a_scopable_text_area',
                 'type'                => AttributeTypes::TEXTAREA,
@@ -83,10 +85,10 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     public function testOperatorDoesNotContain()
     {
         $result = $this->execute([['a_scopable_text_area', Operators::DOES_NOT_CONTAIN, 'black', ['scope' => 'tablet']]]);
-        $this->assert($result, ['cat', 'cattle', 'dog', 'empty_product']);
+        $this->assert($result, ['cat', 'cattle', 'dog']);
 
         $result = $this->execute([['a_scopable_text_area', Operators::DOES_NOT_CONTAIN, 'black', ['scope' => 'ecommerce']]]);
-        $this->assert($result, ['cattle', 'dog', 'empty_product']);
+        $this->assert($result, ['cattle', 'dog']);
     }
 
     public function testOperatorEquals()

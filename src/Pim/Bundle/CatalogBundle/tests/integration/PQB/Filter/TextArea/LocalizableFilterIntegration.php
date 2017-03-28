@@ -21,6 +21,8 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
+            $this->resetIndex();
+
             $this->createAttribute([
                 'code'                => 'a_localizable_text_area',
                 'type'                => AttributeTypes::TEXTAREA,
@@ -82,7 +84,7 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
         $result = $this->execute([['a_localizable_text_area', Operators::CONTAINS, 'nope', ['locale' => 'fr_FR']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_localizable_text_area', Operators::CONTAINS, 'just un', ['locale' => 'fr_FR']]]);
+        $result = $this->execute([['a_localizable_text_area', Operators::CONTAINS, 'juste un', ['locale' => 'fr_FR']]]);
         $this->assert($result, ['dog']);
 
         $result = $this->execute([['a_localizable_text_area', Operators::CONTAINS, 'cattle', ['locale' => 'fr_FR']]]);
@@ -92,10 +94,10 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
     public function testOperatorDoesNotContain()
     {
         $result = $this->execute([['a_localizable_text_area', Operators::DOES_NOT_CONTAIN, 'black', ['locale' => 'fr_FR']]]);
-        $this->assert($result, ['cat', 'cattle', 'dog', 'empty_product']);
+        $this->assert($result, ['cat', 'cattle', 'dog']);
 
         $result = $this->execute([['a_localizable_text_area', Operators::DOES_NOT_CONTAIN, 'black', ['locale' => 'en_US']]]);
-        $this->assert($result, ['cattle', 'dog', 'empty_product']);
+        $this->assert($result, ['cattle', 'dog']);
     }
 
     public function testOperatorEquals()

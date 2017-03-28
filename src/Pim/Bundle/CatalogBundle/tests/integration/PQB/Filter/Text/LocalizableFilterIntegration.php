@@ -85,10 +85,10 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
     public function testOperatorDoesNotContain()
     {
         $result = $this->execute([['a_localizable_text', Operators::DOES_NOT_CONTAIN, 'black', ['locale' => 'fr_FR']]]);
-        $this->assert($result, ['cat', 'cattle', 'dog', 'empty_product']);
+        $this->assert($result, ['cat', 'cattle', 'dog']);
 
         $result = $this->execute([['a_localizable_text', Operators::DOES_NOT_CONTAIN, 'black', ['locale' => 'en_US']]]);
-        $this->assert($result, ['cattle', 'dog', 'empty_product']);
+        $this->assert($result, ['cattle', 'dog']);
     }
 
     public function testOperatorEquals()

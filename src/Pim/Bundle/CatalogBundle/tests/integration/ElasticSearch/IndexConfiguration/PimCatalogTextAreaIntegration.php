@@ -21,7 +21,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'query_string' => [
-                            'default_field' => 'description-text.raw',
+                            'default_field' => 'values.description-text.<all_locales>.<all_channels>',
                             'query'         => 'an*',
                         ],
                     ],
@@ -41,7 +41,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'query_string' => [
-                            'default_field' => 'description-text.raw',
+                            'default_field' => 'values.description-text.<all_locales>.<all_channels>.raw',
                             'query'         => '*My*',
                         ],
                     ],
@@ -61,12 +61,12 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'must_not' => [
                         'query_string' => [
-                            'default_field' => 'description-text.raw',
-                            'query' => '*cool\ product*',
+                            'default_field' => 'values.description-text.<all_locales>.<all_channels>.raw',
+                            'query'         => '*cool\\ product*',
                         ],
                     ],
                     'filter'   => [
-                        'exists' => ['field' => 'description-text'],
+                        'exists' => ['field' => 'values.description-text.<all_locales>.<all_channels>'],
                     ],
                 ],
             ],
@@ -79,19 +79,17 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
 
     public function testEqualsOperator()
     {
-        $query =
-            [
+        $query = [
                 'query' => [
                     'bool' => [
                         'filter' => [
                             'term' => [
-                                'description-text.raw' => 'yeah, love description',
+                                'values.description-text.<all_locales>.<all_channels>.raw' => 'yeah, love description',
                             ],
                         ],
                     ],
                 ],
-            ]
-        ;
+            ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -100,22 +98,20 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
 
     public function testNotEqualsOperator()
     {
-        $query =
-            [
+        $query = [
                 'query' => [
                     'bool' => [
                         'must_not' => [
                             'term' => [
-                                'description-text.raw' => 'yeah, love description',
+                                'values.description-text.<all_locales>.<all_channels>.raw' => 'yeah, love description',
                             ],
                         ],
-                        'filter' => [
-                            'exists' => ['field' => 'description-text.raw']
-                        ]
+                        'filter'   => [
+                            'exists' => ['field' => 'values.description-text.<all_locales>.<all_channels>.raw'],
+                        ],
                     ],
                 ],
-            ]
-        ;
+            ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -124,17 +120,15 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
 
     public function testEmptyOperator()
     {
-        $query =
-            [
+        $query = [
                 'query' => [
                     'bool' => [
                         'must_not' => [
-                            'exists' => ['field' => 'description-text'],
+                            'exists' => ['field' => 'values.description-text.<all_locales>.<all_channels>'],
                         ],
                     ],
                 ],
-            ]
-        ;
+            ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -143,17 +137,15 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
 
     public function testNotEmptyOperator()
     {
-        $query =
-            [
+        $query = [
                 'query' => [
                     'bool' => [
                         'filter' => [
-                            'exists' => ['field' => 'description-text'],
+                            'exists' => ['field' => 'values.description-text.<all_locales>.<all_channels>'],
                         ],
                     ],
                 ],
-            ]
-        ;
+            ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -168,7 +160,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
             ],
             'sort'  => [
                 [
-                    'description-text.raw' => [
+                    'values.description-text.<all_locales>.<all_channels>.raw' => [
                         'order'   => 'asc',
                         'missing' => '_first',
                     ],
@@ -192,7 +184,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
             ],
             'sort'  => [
                 [
-                    'description-text.raw' => [
+                    'values.description-text.<all_locales>.<all_channels>.raw' => [
                         'order'   => 'desc',
                         'missing' => '_last',
                     ],
@@ -215,27 +207,57 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogIntegration
     {
         $products = [
             [
-                'identifier'       => 'product_1',
-                'description-text' => 'My product description',
+                'identifier' => 'product_1',
+                'values'     => [
+                    'description-text' => [
+                        '<all_locales>' => [
+                            '<all_channels>' => 'My product description',
+                        ],
+                    ],
+                ],
             ],
             [
-                'identifier'       => 'product_2',
-                'description-text' => 'Another cool product, great !',
+                'identifier' => 'product_2',
+                'values'     => [
+                    'description-text' => [
+                        '<all_locales>' => [
+                            '<all_channels>' => 'Another cool product, great !',
+                        ],
+                    ],
+                ],
             ],
             [
-                'identifier'       => 'product_3',
-                'description-text' => 'Yeah, love description',
+                'identifier' => 'product_3',
+                'values'     => [
+                    'description-text' => [
+                        '<all_locales>' => [
+                            '<all_channels>' => 'Yeah, love description',
+                        ],
+                    ],
+                ],
             ],
             [
-                'identifier'       => 'product_4',
-                'description-text' => 'A better <h1>description</h1>',
+                'identifier' => 'product_4',
+                'values'     => [
+                    'description-text' => [
+                        '<all_locales>' => [
+                            '<all_channels>' => 'A better <h1>description</h1>',
+                        ],
+                    ],
+                ],
             ],
             [
-                'identifier'       => 'product_5',
-                'description-text' => 'And an uppercase DESCRIPTION',
+                'identifier' => 'product_5',
+                'values'     => [
+                    'description-text' => [
+                        '<all_locales>' => [
+                            '<all_channels>' => 'And an uppercase DESCRIPTION',
+                        ],
+                    ],
+                ],
             ],
             [
-                'identifier'       => 'product_6',
+                'identifier' => 'product_6',
             ],
         ];
 

@@ -91,13 +91,13 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
     public function testOperatorDoesNotContain()
     {
         $result = $this->execute([['a_localizable_scopable_text', Operators::DOES_NOT_CONTAIN, 'black', ['scope' => 'tablet', 'locale' => 'en_US']]]);
-        $this->assert($result, ['cat', 'cattle', 'dog', 'empty_product']);
+        $this->assert($result, ['cat', 'cattle', 'dog']);
 
         $result = $this->execute([['a_localizable_scopable_text', Operators::DOES_NOT_CONTAIN, 'black', ['scope' => 'ecommerce', 'locale' => 'fr_FR']]]);
-        $this->assert($result, ['cat', 'cattle', 'dog', 'empty_product']);
+        $this->assert($result, ['cat', 'cattle', 'dog']);
 
         $result = $this->execute([['a_localizable_scopable_text', Operators::DOES_NOT_CONTAIN, 'black', ['scope' => 'ecommerce', 'locale' => 'en_US']]]);
-        $this->assert($result, ['cattle', 'dog', 'empty_product']);
+        $this->assert($result, ['cattle', 'dog']);
     }
 
     public function testOperatorEquals()
