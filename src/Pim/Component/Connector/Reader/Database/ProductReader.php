@@ -7,9 +7,9 @@ use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface;
 use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
-use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
@@ -29,8 +29,8 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var CompletenessManager */
-    protected $completenessManager;
+    /** @var CompletenessGeneratorInterface */
+    protected $completenessGenerator;
 
     /** @var MetricConverter */
     protected $metricConverter;
@@ -47,20 +47,20 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ChannelRepositoryInterface          $channelRepository
-     * @param CompletenessManager                 $completenessManager
+     * @param CompletenessGeneratorInterface      $completenessGenerator
      * @param MetricConverter                     $metricConverter
      * @param bool                                $generateCompleteness
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
-        CompletenessManager $completenessManager,
+        CompletenessGeneratorInterface $completenessGenerator,
         MetricConverter $metricConverter,
         $generateCompleteness
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->channelRepository = $channelRepository;
-        $this->completenessManager = $completenessManager;
+        $this->completenessGenerator = $completenessGenerator;
         $this->metricConverter = $metricConverter;
         $this->generateCompleteness = (bool) $generateCompleteness;
     }
@@ -72,7 +72,7 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     {
         $channel = $this->getConfiguredChannel();
         if (null !== $channel && $this->generateCompleteness) {
-            $this->completenessManager->generateMissingForChannel($channel);
+            $this->completenessGenerator->generateMissingForChannel($channel);
         }
 
         $filters = $this->getConfiguredFilters();

@@ -8,8 +8,7 @@ use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
- * Completeness generator interface. Will be implemented differently
- * depending of the Product storage
+ * Completeness generator interface.
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
