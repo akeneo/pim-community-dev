@@ -34,6 +34,7 @@ class PimCatalogExtension extends Extension
         $loader->load('completeness_checkers.yml');
         $loader->load('console.yml');
         $loader->load('context.yml');
+        $loader->load('cursors.yml');
         $loader->load('elasticsearch.yml');
         $loader->load('entities.yml');
         $loader->load('event_subscribers.yml');

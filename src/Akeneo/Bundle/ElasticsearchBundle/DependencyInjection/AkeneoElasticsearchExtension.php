@@ -29,6 +29,7 @@ class AkeneoElasticsearchExtension extends Extension
         $container->setParameter('akeneo_elasticsearch.hosts', $config['hosts']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('cursors.yml');
         $loader->load('services.yml');
     }
 }

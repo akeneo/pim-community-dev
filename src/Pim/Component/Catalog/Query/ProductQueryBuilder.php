@@ -91,27 +91,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function execute()
     {
-        // TODO TIP-701: revert this commit and properly implement the expected behavior
-        // TODO TIP-701: this commit has couples the ProductQueryBuilder to ElasticSearch and
-        // TODO TIP-701: to an Akeneo bundle
-        // TODO TIP-701: it has been done like that just to be able to launch
-        // TODO TIP-701: the PQB integration tests one by one, and make them green one by one
-
-        $response = $this->searchEngine->search(
-            'pim_catalog_product',
-            $this->getQueryBuilder()->getQuery()
-        );
-
-        $identifiers = [];
-        foreach ($response['hits']['hits'] as $hit) {
-            $identifiers[] = $hit['_source']['identifier'];
-        }
-
-        $qb = $this->getInternalQueryBuilder();
-        $qb->where('p.identifier IN (:identifiers)');
-        $qb->setParameter('identifiers', $identifiers);
-
-        return $this->cursorFactory->createCursor($qb);
+        return $this->cursorFactory->createCursor($this->getQueryBuilder()->getQuery());
     }
 
     /**

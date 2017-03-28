@@ -2,15 +2,11 @@
 
 namespace spec\Pim\Component\Catalog\Query;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client as ElasticSearchClient;
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
@@ -27,17 +23,13 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
-        ElasticSearchClient $searchEngine,
-        SearchQueryBuilder $searchQb,
-        EntityManagerInterface $entityManager
+        SearchQueryBuilder $searchQb
     ) {
         $this->beConstructedWith(
             $repository,
             $filterRegistry,
             $sorterRegistry,
             $cursorFactory,
-            $searchEngine,
-            $entityManager,
             ['locale' => 'en_US', 'scope' => 'print']
         );
         $this->setQueryBuilder($searchQb);
@@ -146,31 +138,10 @@ class ProductQueryBuilderSpec extends ObjectBehavior
 
     function it_executes_the_query(
         $searchQb,
-        $searchEngine,
-        $entityManager,
         CursorFactoryInterface $cursorFactory,
-        CursorInterface $cursor,
-        QueryBuilder $queryBuilder
+        CursorInterface $cursor
     ) {
-        $searchQb->getQuery()->willReturn(['a native ES query']);
-
-        $searchEngineResults = [
-            'hits' => [
-                'hits' => [
-                    ['_source' => ['identifier' => 'result1']],
-                    ['_source' => ['identifier' => 'result2']],
-                    ['_source' => ['identifier' => 'result3']],
-                ]
-            ]
-        ];
-        $searchEngine->search('pim_catalog_product', ['a native ES query'])->willReturn($searchEngineResults);
-
-        $entityManager->createQueryBuilder()->willReturn($queryBuilder);
-        $queryBuilder->select('p')->willReturn($queryBuilder);
-        $queryBuilder->from(Product::class, 'p')->willReturn($queryBuilder);
-        $queryBuilder->where('p.identifier IN (:identifiers)')->willReturn($queryBuilder);
-        $queryBuilder->setParameter('identifiers', ['result1', 'result2', 'result3'])->willReturn($queryBuilder);
-
+        $searchQb->getQuery()->willReturn([]);
         $cursorFactory->createCursor(Argument::any())->shouldBeCalled()->willReturn($cursor);
 
         $this->execute()->shouldReturn($cursor);

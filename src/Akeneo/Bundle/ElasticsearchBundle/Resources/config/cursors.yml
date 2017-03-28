@@ -1,0 +1,3 @@
+parameters:
+    akeneo_elasticsearch.cursor.cursor.class: Akeneo\Bundle\ElasticsearchBundle\Cursor\Cursor
+    akeneo_elasticsearch.cursor.cursor_factory.class: Akeneo\Bundle\ElasticsearchBundle\Cursor\CursorFactory
