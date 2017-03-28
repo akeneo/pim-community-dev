@@ -8,6 +8,8 @@ use Akeneo\CouplingDetector\Domain\RuleInterface;
 $finder = new DefaultFinder();
 $finder->notPath('Oro');
 $finder->notPath('Acme');
+$finder->notPath('spec');
+$finder->notPath('tests');
 
 $cBusinessDeps = [
     'Symfony\Component\Serializer',
