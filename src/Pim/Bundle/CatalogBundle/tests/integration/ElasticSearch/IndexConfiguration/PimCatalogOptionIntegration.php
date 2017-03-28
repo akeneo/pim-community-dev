@@ -79,13 +79,18 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogIntegration
                             'values.color-option.<all_locales>.<all_channels>' => ['black', 'blue'],
                         ],
                     ],
+                    'filter' => [
+                        'exists' => [
+                            'field' => 'values.color-option.<all_locales>.<all_channels>',
+                        ],
+                    ]
                 ],
             ],
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_2', 'product_6', 'product_7']);
+        $this->assertProducts($productsFound, ['product_2', 'product_6']);
     }
 
     public function testSortAscending()
