@@ -82,6 +82,12 @@ class CompletenessFilterIntegration extends AbstractFilterTestCase
         }
     }
 
+    public function testOperatorIsEmpty()
+    {
+        $result = $this->execute([['completeness', Operators::IS_EMPTY, null]]);
+        $this->assert($result, ['no_family']);
+    }
+
     public function testOperatorLowerThan()
     {
         $this->doTestOperatorInferior(Operators::LOWER_THAN);
