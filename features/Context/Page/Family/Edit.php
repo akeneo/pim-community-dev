@@ -4,8 +4,7 @@ namespace Context\Page\Family;
 
 use Context\Page\Base\Form;
 use Context\Spin\SpinCapableTrait;
-use Pim\Behat\Decorator\Common\AttributeAddSelectDecorator;
-use Pim\Behat\Decorator\Common\AttributeGroupAddSelectDecorator;
+use Pim\Behat\Decorator\Common\AddSelect\AttributeGroupAddSelectDecorator;
 
 /**
  * Family edit page
@@ -37,10 +36,6 @@ class Edit extends Form
                 'Attribute as label choices'        => ['css' => '#pim_enrich_family_form_label_attribute_as_label'],
                 'Available attributes button'       => ['css' => '.add-attribute a.select2-choice'],
                 'Available attribute groups button' => ['css' => '.add-attribute-group a.select2-choice'],
-                'Available attributes'              => [
-                    'css'        => '.add-attribute',
-                    'decorators' => [AttributeAddSelectDecorator::class]
-                ],
                 'Available attributes list'         => ['css' => '.add-attribute .select2-results'],
                 'Available attribute groups list'   => ['css' => '.add-attribute-group .select2-results'],
                 'Available attributes search'       => ['css' => '.add-attribute .select2-search input[type="text"]'],
@@ -191,49 +186,19 @@ class Edit extends Form
     }
 
     /**
-     * @param string $attribute
-     * @param string $group
-     *
-     * @return NodeElement|null
-     */
-    public function hasAvailableAttributeInGroup($attribute, $group)
-    {
-        $addSelectElement = $this->spin(function () {
-            return $this->getElement('Available attributes');
-        }, 'Cannot find the add attribute element');
-
-        return $addSelectElement->hasAvailableAttributeInGroup($attribute, $group);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * TODO: Used with the new 'add-attributes' module. The method should be in the Form parent
-     * when legacy stuff is removed.
-     */
-    public function addAvailableAttributes(array $attributes = [])
-    {
-        $addAttributeElement = $this->spin(function () {
-            return $this->getElement('Available attributes');
-        }, 'Cannot find the add attribute element');
-
-        $addAttributeElement->addItems($attributes);
-    }
-
-    /**
      * Finds available attribute group
      *
      * @param string $group
      *
-     * @return mixed
+     * @return boolean
      */
     public function findAvailableAttributeGroup($group)
     {
-        $addGroupElement = $this->spin(function () {
+        $addAttributeGroupElement = $this->spin(function () {
             return $this->getElement('Available groups');
-        }, 'Can not find add by group select');
+        }, 'Can not find add by group option');
 
-        return $addGroupElement->findItem($group);
+        return $addAttributeGroupElement->hasOption($group);
     }
 
     /**
@@ -247,6 +212,6 @@ class Edit extends Form
             return $this->getElement('Available groups');
         }, 'Can not find add by group select');
 
-        $addGroupElement->addItems($groups);
+        $addGroupElement->addOptions($groups);
     }
 }

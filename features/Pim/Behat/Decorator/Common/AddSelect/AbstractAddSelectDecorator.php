@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Behat\Decorator\Common;
+namespace Pim\Behat\Decorator\Common\AddSelect;
 
 use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
@@ -13,39 +13,39 @@ use Pim\Behat\Decorator\ElementDecorator;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-abstract class AbstractAddSelectDecorator extends ElementDecorator
+abstract class AbstractAddSelectDecorator extends ElementDecorator implements AddSelectInterface
 {
     use SpinCapableTrait;
 
     const NOT_FOUND_MESSAGE = 'No matches found';
 
     /**
-     * Check and add list of given items
-     *
-     * @param array $items
+     * @var string baseClass
      */
-    public function addItems(array $items)
+    protected $baseClass = '';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addOptions(array $options)
     {
         $this->openDropList();
-
-        foreach ($items as $item) {
-            $el = $this->evaluateSearch($item)
-                ->getResultForSearch($item);
+        foreach ($options as $option) {
+            $el = $this->evaluateSearch($option)
+                ->getResultForSearch($option);
 
             if (null !== $el) {
                 $el->getParent()->click();
             }
         }
-        $this->addSelectedItems()
-            ->closeDropList();
+
+        $this->addSelectedItems();
     }
 
     /**
-     * @param string $item
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
-    public function findItem($item)
+    public function hasOption($item)
     {
         $result = $this->openDropList()
             ->evaluateSearch($item)
@@ -53,13 +53,8 @@ abstract class AbstractAddSelectDecorator extends ElementDecorator
 
         $this->closeDropList();
 
-        return $result;
+        return (bool) $result;
     }
-
-    /**
-     * @var string baseClass
-     */
-    protected $baseClass = '';
 
     /**
      * Gets array of view elements
@@ -119,39 +114,20 @@ abstract class AbstractAddSelectDecorator extends ElementDecorator
      */
     protected function getResultForSearch($query)
     {
-        $list = $this->getResultListElement();
-        $searchResult = $this->spin(function () use ($query, $list) {
-            return $list->findAll(
+        $searchResults = $this->spin(function () use ($query) {
+            return $this->findAll(
                 'css',
                 sprintf($this->getElements()['resultItemSelector'], $query)
             );
         }, 'Cannot find element in the list');
 
-        if (0 === count($searchResult)) {
+        if (0 === count($searchResults) ||
+            self::NOT_FOUND_MESSAGE === $searchResults[0]->getText()
+        ) {
             return null;
         }
 
-        if (self::NOT_FOUND_MESSAGE == $searchResult[0]->getText()) {
-            return null;
-        }
-
-        if (1 < count($searchResult)) {
-            return $this->chooseSearched($searchResult, $query);
-        }
-
-        return $searchResult[0];
-    }
-
-    /**
-     * Gets container holding search results
-     *
-     * @return mixed
-     */
-    protected function getResultListElement()
-    {
-        return $this->spin(function () {
-            return $this->find('css', $this->getElements()['resultList']);
-        }, 'Cannot find the result list element');
+        return $this->chooseSearched($searchResults, $query);
     }
 
     /**
@@ -186,15 +162,26 @@ abstract class AbstractAddSelectDecorator extends ElementDecorator
      */
     protected function chooseSearched($searchResults, $query)
     {
-        $searched = null;
-
         foreach ($searchResults as $result) {
-            if ($query === $result->getText()) {
-                $searched = $result;
-                break;
+            if ($this->matchesSearch($result, $query)) {
+                return $result;
             }
         }
 
-        return $searched;
+        return null;
+    }
+
+    /**
+     * Checks if the query match the search
+     *
+     * @param NodeElement $el
+     * @param string      $query
+     *
+     * @return bool
+     */
+    protected function matchesSearch($el, $query)
+    {
+        return $query === $el->getText() ||
+            sprintf("[%s]", $query) === $el->getText();
     }
 }

@@ -43,7 +43,7 @@ Feature: Add attributes to a product
   @jira https://akeneo.atlassian.net/browse/PIM-5801
   Scenario: Successfully add an attribute with fully numeric identifier
     Given I am on the "boots" product page
-    And I add available attribute 123
+    And I add available attribute Attribute 123
     And I change the "Attribute 123" to "foobar"
     When I save the product
     Then I should not see the text "There are unsaved changes."

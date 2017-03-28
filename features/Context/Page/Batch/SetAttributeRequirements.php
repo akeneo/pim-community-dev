@@ -5,8 +5,7 @@ namespace Context\Page\Batch;
 use Behat\Mink\Element\NodeElement;
 use Context\Page\Base\Wizard;
 use Context\Spin\SpinCapableTrait;
-use Pim\Behat\Decorator\Common\AttributeAddSelectDecorator;
-use Pim\Behat\Decorator\Common\AttributeGroupAddSelectDecorator;
+use Pim\Behat\Decorator\Common\AddSelect\AttributeGroupAddSelectDecorator;
 
 /**
  * Edit common attributes page
@@ -19,20 +18,27 @@ class SetAttributeRequirements extends Wizard
 {
     use SpinCapableTrait;
 
-    protected $elements = [
-        'Available attributes button'     => ['css' => '.add-attribute a.select2-choice'],
-        'Available attributes add button' => ['css' => '.pimmultiselect a:contains("Select")'],
-        'Available attributes form'       => ['css' => '#pim_catalog_mass_edit_family_add_attribute'],
-        'Attributes'                      => ['css' => 'table.groups'],
-        'Available attributes'            => [
-            'css'        => '.add-attribute',
-            'decorators' => [AttributeAddSelectDecorator::class]
-        ],
-        'Available groups'                  => [
-            'css'        => '.add-attribute-group',
-            'decorators' => [AttributeGroupAddSelectDecorator::class],
-        ],
-    ];
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($session, $pageFactory, $parameters = [])
+    {
+        parent::__construct($session, $pageFactory, $parameters);
+
+        $this->elements = array_merge(
+            $this->elements,
+            [
+                'Available attributes button'     => ['css' => '.add-attribute a.select2-choice'],
+                'Available attributes add button' => ['css' => '.pimmultiselect a:contains("Select")'],
+                'Available attributes form'       => ['css' => '#pim_catalog_mass_edit_family_add_attribute'],
+                'Attributes'                      => ['css' => 'table.groups'],
+                'Available groups'                  => [
+                    'css'        => '.add-attribute-group',
+                    'decorators' => [AttributeGroupAddSelectDecorator::class],
+                ],
+            ]
+        );
+    }
 
     /**
      * Switches attribute requirement
@@ -71,21 +77,6 @@ class SetAttributeRequirements extends Wizard
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * TODO: Used with the new 'add-attributes' module. The method should be in the Form parent
-     * when legacy stuff is removed.
-     */
-    public function addAvailableAttributes(array $attributes = [])
-    {
-        $addAttributeElement = $this->spin(function () {
-            return $this->getElement('Available attributes');
-        }, 'Cannot find the add attribute element');
-
-        $addAttributeElement->addAttributes($attributes);
-    }
-
-    /**
      * Adds attributes related to attribute groups selected
      *
      * @param string $groups
@@ -96,7 +87,7 @@ class SetAttributeRequirements extends Wizard
             return $this->getElement('Available groups');
         }, 'Can not find add by group select');
 
-        $addGroupElement->addItems($groups);
+        $addGroupElement->addOptions($groups);
     }
 
     /**

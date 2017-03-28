@@ -21,6 +21,8 @@ extensions:
         targetZone: other-actions
         position: 90
         config:
+            select2:
+                placeholder: 'pim_enrich.form.product.mass_edit.select_attributes'
             events:
                 disable: 'mass-edit:form:lock'
                 enable: 'mass-edit:form:unlock'

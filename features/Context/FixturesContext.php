@@ -1483,7 +1483,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $family
      * @param string $channel
      *
-     * @Given /^attribute "([^"]*)" should be optional in family "([^"]*)" for channel "([^"]*)"$/
+     * @Then /^attribute "([^"]*)" should be optional in family "([^"]*)" for channel "([^"]*)"$/
      */
     public function attributeShouldBeOptionalInFamilyForChannel($attribute, $family, $channel)
     {
@@ -1498,7 +1498,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $family
      * @param string $channel
      *
-     * @Given /^attributes "([^"]*)" should be optional in family "([^"]*)" for channel "([^"]*)"$/
+     * @Then /^attributes "([^"]*)" should be optional in family "([^"]*)" for channel "([^"]*)"$/
      */
     public function attributesShouldBeOptionalInFamilyForChannel($attributes, $family, $channel)
     {
@@ -1513,7 +1513,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $identifier
      *
-     * @Given /^the history of the product "([^"]*)" has been built$/
+     * @Then /^the history of the product "([^"]*)" has been built$/
      */
     public function theHistoryOfTheProductHasBeenBuilt($identifier)
     {

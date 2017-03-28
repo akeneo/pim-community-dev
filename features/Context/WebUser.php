@@ -879,18 +879,33 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $not
      * @param string $attributes
      * @param string $group
      *
-     * @Then /^I should see available attributes? (.*) in group "([^"]*)"$/
+     * @Then /^I should (not )?see available attributes? (.*) in group "([^"]*)"$/
      *
      * @throws ExpectationException
      */
-    public function iShouldSeeAvailableAttributesInGroup($attributes, $group)
+    public function iShouldSeeAvailableAttributesInGroup($not, $attributes, $group)
     {
+        $expecting = !$not;
+
         foreach ($this->listToArray($attributes) as $attribute) {
-            return $this->getCurrentPage()
-                ->hasAvailableAttributeInGroup($attribute, $group);
+            $result = $this->getCurrentPage()
+                ->getAttributeAddSelect()
+                ->hasAvailableOptionGroupPair($attribute, $group);
+
+            if ($expecting !== $result) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Expecting to %ssee attribute "%s" under group "%s"',
+                        true === (bool) $not ? $not : '',
+                        $attribute,
+                        $group
+                    )
+                );
+            }
         }
     }
 
@@ -918,10 +933,10 @@ class WebUser extends RawMinkContext
     public function iShouldSeeAvailableAttributeGroup($groups)
     {
         foreach ($this->listToArray($groups) as $group) {
-            $element = $this->getCurrentPage()->findAvailableAttributeGroup($group);
+            $exists = $this->getCurrentPage()->findAvailableAttributeGroup($group);
 
-            if (null === $element) {
-                throw new ExpectationException(
+            if (true !== $exists) {
+                throw $this->createExpectationException(
                     sprintf('Expecting to see attribute group "%s"', $group)
                 );
             }
@@ -958,28 +973,7 @@ class WebUser extends RawMinkContext
             }
         }
     }
-
-    /**
-     * @param string $attributes
-     * @param string $group
-     *
-     * @Then /^I should not see available attributes? (.*) in group "([^"]*)"$/
-     *
-     * @throws ExpectationException
-     */
-    public function iShouldNotSeeAvailableAttributesInGroup($attributes, $group)
-    {
-        foreach ($this->listToArray($attributes) as $attribute) {
-            $element = $this->getCurrentPage()->findAvailableAttributeInGroup($attribute, $group);
-
-            if (null !== $element) {
-                throw $this->createExpectationException(
-                    sprintf('Expecting not to see attribute "%s" under group "%s"', $attribute, $group)
-                );
-            }
-        }
-    }
-
+    
     /**
      * @param string $attributes
      *

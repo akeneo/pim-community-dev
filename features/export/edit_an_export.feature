@@ -84,6 +84,5 @@ Feature: Edit an export
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     Then I should see the ordered filters family, enabled, completeness, updated, categories and sku
-    When I add available attributes Name
-    And I add available attributes Weight
+    When I add available attributes Name and Weight
     Then I should see the ordered filters family, enabled, completeness, updated, categories, name, weight and sku

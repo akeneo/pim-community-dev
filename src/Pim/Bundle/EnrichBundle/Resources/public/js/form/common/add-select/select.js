@@ -81,7 +81,7 @@ define(
              */
             initialize: function (meta) {
                 this.config = $.extend(true, {}, this.defaultConfig, meta.config);
-                console.log(this.className, this.config);
+
                 if (_.isNull(this.config.mainFetcher)) {
                     throw new Error('Fetcher code MUST be provided in config');
                 }

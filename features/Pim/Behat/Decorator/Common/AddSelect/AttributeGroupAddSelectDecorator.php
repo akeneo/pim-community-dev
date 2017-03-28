@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Behat\Decorator\Common;
+namespace Pim\Behat\Decorator\Common\AddSelect;
 
 /**
  * Decorate attribute group add select element

@@ -9,7 +9,10 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
+use Pim\Behat\Decorator\Common\AddSelect\AttributeAddSelectDecorator;
+use Pim\Behat\Decorator\Common\AddSelect\AttributeGroupAddSelectDecorator;
 use Pim\Behat\Decorator\Field\Select2Decorator;
+use Pim\Behat\Decorator\Page\PanelableDecorator;
 
 /**
  * Basic form page
@@ -41,13 +44,23 @@ class Form extends Base
                 'Available attributes list'       => ['css' => '.pimmultiselect .ui-multiselect-checkboxes'],
                 'Available attributes search'     => ['css' => '.pimmultiselect input[type="search"]'],
                 'Available attributes add button' => ['css' => '.pimmultiselect a.btn:contains("Add")'],
-                'Updates grid'                    => ['css' => '.tab-pane.tab-history table.grid, .tab-container .history'],
+                'Updates grid'                    => [
+                    'css' => '.tab-pane.tab-history table.grid, .tab-container .history'
+                ],
                 'Save'                            => ['css' => '.AknButton--apply'],
                 'Panel sidebar'                   => [
                     'css'        => '.edit-form > .content',
-                    'decorators' => ['Pim\Behat\Decorator\Page\PanelableDecorator'],
+                    'decorators' => [PanelableDecorator::class],
                 ],
-                'Tooltips'                         => ['css' => '.icon-info-sign'],
+                'Available attributes'            => [
+                    'css'        => '.add-attribute',
+                    'decorators' => [AttributeAddSelectDecorator::class]
+                ],
+                'Available groups'                  => [
+                    'css'        => '.add-attribute-group',
+                    'decorators' => [AttributeGroupAddSelectDecorator::class],
+                ],
+                'Tooltips'                        => ['css' => '.icon-info-sign'],
             ],
             $this->elements
         );
@@ -293,47 +306,10 @@ class Form extends Base
      */
     public function addAvailableAttributes(array $attributes = [])
     {
-        $this->spin(function () {
-            return $this->find('css', $this->elements['Available attributes button']['css']);
-        }, sprintf('Cannot find element "%s"', $this->elements['Available attributes button']['css']));
-
-        $list = $this->getElement('Available attributes list');
-        if (!$list->isVisible()) {
-            $this->openAvailableAttributesMenu();
-        }
-
-        $search = $this->getElement('Available attributes search');
-        foreach ($attributes as $attributeLabel) {
-            $search->setValue($attributeLabel);
-            $label = $this->spin(
-                function () use ($list, $attributeLabel) {
-                    return $list->find('css', sprintf('li label:contains("%s")', $attributeLabel));
-                },
-                sprintf('Could not find available attribute "%s".', $attributeLabel)
-            );
-
-            $label->click();
-        }
-
-        $this->getElement('Available attributes add button')->press();
-    }
-
-    /**
-     * @param string $attribute
-     * @param string $group
-     *
-     * @return NodeElement
-     */
-    public function findAvailableAttributeInGroup($attribute, $group)
-    {
-        return $this->getElement('Available attributes form')->find(
-            'css',
-            sprintf(
-                'optgroup[label="%s"] option:contains("%s")',
-                $group,
-                $attribute
-            )
-        );
+        $attributeAddSelectElement = $this->spin(function () {
+            return $this->getElement('Available attributes');
+        }, 'Cannot find the add attribute element');
+        $attributeAddSelectElement->addOptions($attributes);
     }
 
     /**
@@ -550,6 +526,20 @@ class Form extends Base
                 }
             }
         }
+    }
+
+    public function getAttributeAddSelect()
+    {
+        return $this->spin(function () {
+            return $this->getElement('Available attributes');
+        }, 'Cannot find the add attribute element');
+    }
+
+    public function getAttributeGroupAddSelect()
+    {
+        return $this->spin(function () {
+            return $this->getElement('Available attribute groups');
+        }, 'Cannot find the add attribute element');
     }
 
     /**
