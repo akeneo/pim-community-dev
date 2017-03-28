@@ -321,7 +321,7 @@ def runPhpCouplingDetectorTest() {
 
                 sh "composer remove --dev --no-update doctrine/mongodb-odm-bundle;"
                 sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                sh "./bin/php-coupling-detector detect --config-file=.php_cd src"
+                sh "./bin/php-coupling-detector detect --config-file=.php_cd.php src"
             }
         } finally {
             deleteDir()
