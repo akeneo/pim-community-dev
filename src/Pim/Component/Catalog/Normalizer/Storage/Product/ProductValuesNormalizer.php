@@ -23,7 +23,13 @@ class ProductValuesNormalizer extends SerializerAwareNormalizer implements Norma
         $result = [];
         foreach ($values as $value) {
             $normalizedValue = $this->serializer->normalize($value, $format, $context);
-            $result = array_merge_recursive($result, $normalizedValue);
+            $attributeCode = $value->getAttribute()->getCode();
+
+            if (!isset($result[$attributeCode])) {
+                $result[$attributeCode] = [];
+            }
+
+            $result[$attributeCode] = array_merge_recursive($result[$attributeCode], $normalizedValue[$attributeCode]);
         }
 
         return $result;

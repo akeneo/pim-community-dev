@@ -59,12 +59,16 @@ class LoadProductValuesSubscriberSpec extends ObjectBehavior
         $product->getIdentifier()->willReturn('foo');
 
         $valueFactory->create($sku, null, null, 'foo')->willReturn($skuValue);
-        $serializer->normalize($skuValue, 'storage')->willReturn(['raw_identifier_value']);
+        $serializer->normalize($skuValue, 'storage')->willReturn(['sku' => 'raw_identifier_value']);
 
-        $product->getRawValues()->willReturn(['raw_values']);
-        $rawValues = array_merge(['raw_identifier_value'], ['raw_values']);
+        $skuValue->getAttribute()->willReturn($sku);
+        $sku->getCode()->willReturn('sku');
+        $product->getRawValues()->willReturn(['other_values' => 'raw_values']);
 
-        $valueCollectionFactory->createFromStorageFormat($rawValues)->willReturn($values);
+        $valueCollectionFactory
+            ->createFromStorageFormat(['other_values' => 'raw_values', 'sku' => 'raw_identifier_value'])
+            ->willReturn($values);
+
         $product->setValues($values)->shouldBeCalled();
 
         $this->postLoad($event);
