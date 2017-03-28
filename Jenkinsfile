@@ -77,6 +77,8 @@ if (launchUnitTests.equals("yes")) {
 
         tasks["php-cs-fixer"] = {runPhpCsFixerTest()}
 
+        tasks["php-coupling-detector"] = {runPhpCouplingDetectorTest()}
+
         tasks["grunt"] = {runGruntTest()}
 
         parallel tasks
@@ -239,6 +241,23 @@ def runBehatTest(storage, features, phpVersion, mysqlVersion, esVersion) {
                 archiveArtifacts allowEmptyArchive: true, artifacts: 'app/build/screenshots/*.png'
                 deleteDir()
             }
+        }
+    }
+}
+
+def runPhpCouplingDetectorTest() {
+    node('docker') {
+        deleteDir()
+        try {
+            docker.image("carcel/php:7.1").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+                unstash "project_files"
+
+                sh "composer remove --dev --no-update doctrine/mongodb-odm-bundle;"
+                sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                sh "./bin/php-coupling-detector detect --config-file=.php_cd.php src"
+            }
+        } finally {
+            deleteDir()
         }
     }
 }
