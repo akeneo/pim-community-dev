@@ -20,6 +20,8 @@ class DateFilterIntegration extends AbstractFilterTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
+            $this->resetIndex();
+
             $this->createProduct('product_one', [
                 'values' => [
                     'a_date' => [
@@ -136,7 +138,7 @@ class DateFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorDataIsMalformedWithISODate()
     {
-        $this->execute([['a_date', Operators::BETWEEN, '2016-12-12T00:00:00']]);
+        $this->execute([['a_date', Operators::EQUALS, '2016-12-12T00:00:00']]);
     }
 
     /**

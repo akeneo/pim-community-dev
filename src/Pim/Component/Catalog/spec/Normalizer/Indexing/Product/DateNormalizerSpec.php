@@ -3,10 +3,10 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Normalizer\Indexing\DateTimeNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\Product\DateNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class DateTimeNormalizerSpec extends ObjectBehavior
+class DateNormalizerSpec extends ObjectBehavior
 {
     function let(NormalizerInterface $standardNormalizer)
     {
@@ -15,7 +15,7 @@ class DateTimeNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(DateTimeNormalizer::class);
+        $this->shouldHaveType(DateNormalizer::class);
     }
 
     function it_support_dates(\Datetime $date)

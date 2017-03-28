@@ -88,7 +88,7 @@ class ProductIndexingIntegration extends TestCase
             'values'       => [
                 'a_date-date'                                    => [
                     '<all_locales>' => [
-                        '<all_channels>' => null,
+                        '<all_channels>' => '2016-06-13',
                     ],
                 ],
                 'a_file-media'                                   => [

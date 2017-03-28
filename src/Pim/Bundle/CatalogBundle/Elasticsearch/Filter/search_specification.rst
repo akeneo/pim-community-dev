@@ -549,9 +549,16 @@ Date
 
 Data model
 ~~~~~~~~~~
-::
 
-  "updated-date":"2015-02-24"
+.. code-block:: yaml
+
+  'values' => [
+      'publishedOn-date' => [
+          '<all_locales>' => [
+              '<all_channels>' => '2015-02-24'
+          ]
+      ]
+  ]
 
 Filtering
 ~~~~~~~~~
@@ -561,57 +568,107 @@ Less than (<)
 """""""""""""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    range:
-        updated-date:
-            lt : "2015-02-26"
+    'range' => [
+        'values.publishedOn-date.<all_locales>.<all_channels>' => [
+            'lt' => '2015-02-26'
+        ]
+    ]
+
 
 Equals (=)
 """"""""""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    term:
-        updated-date:"2015-02-26"
+    'term' => [
+        'values.publishedOn-date.<all_locales>.<all_channels>' => '2015-02-26'
+    ]
+
+NOT EQUAL (!=)
+""""""""""""""
+:Type: filter
+
+.. code-block:: php
+
+    [
+        'query' => [
+            'bool' => [
+                'must_not' => [
+                    'term' => [
+                        'values.publishedOn-date.<all_locales>.<all_channels>' => '2015-02-26'
+                    ]
+                ],
+                'filter' => [
+                    'exists' => [
+                        'field' => 'values.publishedOn-date.<all_locales>.<all_channels>'
+                    ]
+                ]
+            ]
+        ]
+    ]
 
 BETWEEN
 """""""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    range:
-        updated-date:
-            lte: "2015-02-26"
-            gte: "2015-02-21"
+    'filter' => [
+        'range' => [
+            'values.publishedOn-date.<all_locales>.<all_channels>' => [
+                'gte' => '2017-03-22',
+                'lte' => '2017-03-23'
+            ],
+        ]
+    ]
+
 
 NOT BETWEEN
 """""""""""
 :Type: filter
 
-Same as the BETWEEN filter but in a ``must_not`` occured type
+.. code-block:: php
+
+    'query' => [
+        'bool' => [
+            'must_not' => [
+                'range' => [
+                    'values.publishedOn-date.<all_locales>.<all_channels>' => [
+                        'gte' => '2017-03-22',
+                        'lte' => '2017-03-23'
+                    ],
+                ]
+            ],
+            'filter' => ['exists' => 'values.publishedOn-date.<all_locales>.<all_channels>']
+        ]
+    ]
 
 Greater than (>)
 """"""""""""""""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    range:
-        updated-date:
-            gt : "2015-02-21"
+    'range' => [
+        'values.publishedOn-date.<all_locales>.<all_channels>' => [
+            'gt' => '2015-02-26'
+        ]
+    ]
 
 EMPTY
 """""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    missing:
-        field: "updated_date"
-
+    'must_not' => [
+        'exists' => [
+            'field' => 'values.publishedOn-date.<all_locales>.<all_channels>',
+        ]
+    ]
 
 Decimal
 *******
