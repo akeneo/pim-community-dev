@@ -4,6 +4,7 @@
 
 - PIM-6268: Fix an issue where one cannot scroll locales on asset page when too many locales are activated
 - PIM-6267: Fix an error when you add assets to a variant group, products were unticked
+- PIM-6269: Fix the display of rules containing array of dates in their conditions (IN, BETWEEN...)
 
 # 1.6.12 (2017-02-28)
 
