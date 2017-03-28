@@ -20,7 +20,7 @@ class LocaleController
      * @Template
      * @AclAncestor("pim_enrich_locale_index")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return array
      */
     public function indexAction()
     {

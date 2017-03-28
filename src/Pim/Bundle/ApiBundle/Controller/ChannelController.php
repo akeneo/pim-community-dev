@@ -63,6 +63,8 @@ class ChannelController
      * @throws NotFoundHttpException
      *
      * @return JsonResponse
+     *
+     * @AclAncestor("pim_api_channel_list")
      */
     public function getAction(Request $request, $code)
     {

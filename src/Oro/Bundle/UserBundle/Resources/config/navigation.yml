@@ -56,7 +56,7 @@ oro_menu_config:
             label: 'My User'
             route: 'oro_user_profile_view'
             linkAttributes:
-                class: 'AknDropdown-menuLink'
+                class: 'AknDropdown-menuLink no-hash'
             extras:
                 position: 10
 

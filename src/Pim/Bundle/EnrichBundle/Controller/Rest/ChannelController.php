@@ -79,8 +79,6 @@ class ChannelController
     /**
      * Lists all channels
      *
-     * @AclAncestor("pim_enrich_channel_index")
-     *
      * @return JsonResponse
      */
     public function indexAction()
@@ -94,8 +92,6 @@ class ChannelController
 
     /**
      * Gets channel by code value
-     *
-     * @AclAncestor("pim_enrich_channel_index")
      *
      * @param string $identifier
      *

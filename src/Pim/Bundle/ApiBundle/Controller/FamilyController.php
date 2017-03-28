@@ -201,6 +201,8 @@ class FamilyController
      * @throws HttpException
      *
      * @return Response
+     *
+     * @AclAncestor("pim_api_family_edit")
      */
     public function partialUpdateListAction(Request $request)
     {
