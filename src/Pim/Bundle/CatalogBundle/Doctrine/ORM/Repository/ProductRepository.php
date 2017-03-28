@@ -2,12 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\UnexpectedResultException;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -19,7 +17,6 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 
 /**
  * Product repository
@@ -161,14 +158,11 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByIds(array $productIds)
+    public function getItemsFromIdentifiers(array $identifiers)
     {
-        $qb = $this->createQueryBuilder('Product');
-        $rootAlias = current($qb->getRootAliases());
-        $qb->andWhere(
-            $qb->expr()->in($rootAlias.'.id', ':product_ids')
-        );
-        $qb->setParameter(':product_ids', $productIds);
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.identifier IN (:identifiers)')
+            ->setParameter('identifiers', $identifiers);
 
         return $qb->getQuery()->execute();
     }
