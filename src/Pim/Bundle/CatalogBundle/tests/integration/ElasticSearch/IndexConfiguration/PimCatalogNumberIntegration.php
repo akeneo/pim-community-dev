@@ -21,7 +21,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'range' => [
-                            'values.box_quantity-decimal.<all_locales>.<all_channels>' => ['lt' => 10],
+                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => ['lt' => 10],
                         ],
                     ],
                 ],
@@ -40,7 +40,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'range' => [
-                            'values.box_quantity-decimal.<all_locales>.<all_channels>' => ['lt' => '10'],
+                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => ['lt' => '10'],
                         ],
                     ],
                 ],
@@ -59,7 +59,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'range' => [
-                            'values.box_quantity-decimal.<all_locales>.<all_channels>' => ['lte' => 10],
+                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => ['lte' => 10],
                         ],
                     ],
                 ],
@@ -78,7 +78,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'range' => [
-                            'values.box_quantity-decimal.<all_locales>.<all_channels>' => ['lte' => '10'],
+                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => ['lte' => '10'],
                         ],
                     ],
                 ],
@@ -97,7 +97,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'term' => [
-                            'values.box_quantity-decimal.<all_locales>.<all_channels>' => 100.666,
+                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => 100.666,
                         ],
                     ],
                 ],
@@ -116,7 +116,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'term' => [
-                            'values.box_quantity-decimal.<all_locales>.<all_channels>' => '100.666',
+                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => '100.666',
                         ],
                     ],
                 ],
@@ -135,12 +135,12 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'must_not' => [
                         'term' => [
-                            'values.box_quantity-decimal.<all_locales>.<all_channels>' => 100.666,
+                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => 100.666,
                         ],
                     ],
                     'filter'   => [
                         'exists' => [
-                            'field' => 'values.box_quantity-decimal.<all_locales>.<all_channels>',
+                            'field' => 'values.box_quantity-decimal.<all_channels>.<all_locales>',
                         ],
                     ],
                 ],
@@ -162,12 +162,12 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'must_not' => [
                         'term' => [
-                            'values.box_quantity-decimal.<all_locales>.<all_channels>' => '100.666',
+                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => '100.666',
                         ],
                     ],
                     'filter'   => [
                         'exists' => [
-                            'field' => 'values.box_quantity-decimal.<all_locales>.<all_channels>',
+                            'field' => 'values.box_quantity-decimal.<all_channels>.<all_locales>',
                         ],
                     ],
                 ],
@@ -189,7 +189,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'range' => [
-                            'values.box_quantity-decimal.<all_locales>.<all_channels>' => ['gte' => 10],
+                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => ['gte' => 10],
                         ],
                     ],
                 ],
@@ -208,7 +208,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'range' => [
-                            'values.box_quantity-decimal.<all_locales>.<all_channels>' => ['gte' => '10'],
+                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => ['gte' => '10'],
                         ],
                     ],
                 ],
@@ -227,7 +227,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'range' => [
-                            'values.box_quantity-decimal.<all_locales>.<all_channels>' => ['gt' => 10],
+                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => ['gt' => 10],
                         ],
                     ],
                 ],
@@ -246,7 +246,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'range' => [
-                            'values.box_quantity-decimal.<all_locales>.<all_channels>' => ['gt' => '10'],
+                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => ['gt' => '10'],
                         ],
                     ],
                 ],
@@ -265,7 +265,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'must_not' => [
                         'exists' => [
-                            'field' => 'values.box_quantity-decimal.<all_locales>.<all_channels>',
+                            'field' => 'values.box_quantity-decimal.<all_channels>.<all_locales>',
                         ],
                     ],
                 ],
@@ -284,7 +284,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'exists' => [
-                            'field' => 'values.box_quantity-decimal.<all_locales>.<all_channels>',
+                            'field' => 'values.box_quantity-decimal.<all_channels>.<all_locales>',
                         ],
                     ],
                 ],
@@ -307,7 +307,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
             ],
             'sort'  => [
                 [
-                    'values.box_quantity-decimal.<all_locales>.<all_channels>' => [
+                    'values.box_quantity-decimal.<all_channels>.<all_locales>' => [
                         'order'   => 'asc',
                         'missing' => '_first',
                     ],
@@ -331,7 +331,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
             ],
             'sort'  => [
                 [
-                    'values.box_quantity-decimal.<all_locales>.<all_channels>' => [
+                    'values.box_quantity-decimal.<all_channels>.<all_locales>' => [
                         'order'   => 'desc',
                         'missing' => '_last',
                     ],
@@ -370,8 +370,8 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'identifier' => 'product_1',
                 'values'     => [
                     'box_quantity-decimal' => [
-                        '<all_locales>' => [
-                            '<all_channels>' => 10.0,
+                        '<all_channels>' => [
+                            '<all_locales>' => 10.0,
                         ],
                     ],
                 ],
@@ -380,8 +380,8 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'identifier' => 'product_2',
                 'values'     => [
                     'box_quantity-decimal' => [
-                        '<all_locales>' => [
-                            '<all_channels>' => -1,
+                        '<all_channels>' => [
+                            '<all_locales>' => -1,
                         ],
                     ],
                 ],
@@ -390,8 +390,8 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'identifier' => 'product_3',
                 'values'     => [
                     'box_quantity-decimal' => [
-                        '<all_locales>' => [
-                            '<all_channels>' => '100.666',
+                        '<all_channels>' => [
+                            '<all_locales>' => '100.666',
                         ],
                     ],
                 ],
@@ -400,8 +400,8 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'identifier' => 'product_4',
                 'values'     => [
                     'box_quantity-decimal' => [
-                        '<all_locales>' => [
-                            '<all_channels>' => 25.89,
+                        '<all_channels>' => [
+                            '<all_locales>' => 25.89,
                         ],
                     ],
                 ],
@@ -410,8 +410,8 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'identifier' => 'product_5',
                 'values'     => [
                     'box_quantity-decimal' => [
-                        '<all_locales>' => [
-                            '<all_channels>' => '-3.9000',
+                        '<all_channels>' => [
+                            '<all_locales>' => '-3.9000',
                         ],
                     ],
                 ],
@@ -420,8 +420,8 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'identifier' => 'product_6',
                 'values'     => [
                     'box_quantity-decimal' => [
-                        '<all_locales>' => [
-                            '<all_channels>' => 7,
+                        '<all_channels>' => [
+                            '<all_locales>' => 7,
                         ],
                     ],
                 ],

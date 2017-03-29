@@ -87,126 +87,126 @@ class ProductIndexingIntegration extends TestCase
             ],
             'values'       => [
                 'a_date-date'                                    => [
-                    '<all_locales>' => [
-                        '<all_channels>' => '2016-06-13',
+                    '<all_channels>' => [
+                        '<all_locales>' => '2016-06-13',
                     ],
                 ],
                 'a_file-media'                                   => [
-                    '<all_locales>' => [
-                        '<all_channels>' => null,
+                    '<all_channels>' => [
+                        '<all_locales>' => null,
                     ],
                 ],
                 'a_localizable_image-media'                      => [
-                    'en_US' => [
-                        '<all_channels>' => null,
-                    ],
-                    'fr_FR' => [
-                        '<all_channels>' => null,
-                    ],
+                    '<all_channels>' => [
+                        'en_US' => null,
+                        'fr_FR' => null,
+                    ]
                 ],
                 'a_localized_and_scopable_text_area-text'        => [
-                    'en_US' => [
-                        'ecommerce' => 'a text area for ecommerce in English',
-                        'tablet'    => 'a text area for tablets in English',
+                    'ecommerce' => [
+                        'en_US' => 'a text area for ecommerce in English',
                     ],
-                    'fr_FR' => [
-                        'tablet' => 'une zone de texte pour les tablettes en français',
-                    ],
+                    'tablet' => [
+                        'en_US' => 'a text area for tablets in English',
+                        'fr_FR' => 'une zone de texte pour les tablettes en français',
+                    ]
                 ],
                 'a_metric-metric'                                => [
-                    '<all_locales>' => [
-                        '<all_channels>' => null,
+                    '<all_channels>' => [
+                        '<all_locales>' => null,
                     ],
                 ],
                 'a_metric_negative-metric'                       => [
-                    '<all_locales>' => [
-                        '<all_channels>' => null,
+                    '<all_channels>' => [
+                        '<all_locales>' => null,
                     ],
                 ],
                 'a_metric_without_decimal-metric'                => [
-                    '<all_locales>' => [
-                        '<all_channels>' => null,
+                    '<all_channels>' => [
+                        '<all_locales>' => null,
                     ],
                 ],
                 'a_metric_without_decimal_negative-metric'       => [
-                    '<all_locales>' => [
-                        '<all_channels>' => null,
+                    '<all_channels>' => [
+                        '<all_locales>' => null,
                     ],
                 ],
                 'a_multi_select-options'                         => [
-                    '<all_locales>' => [
-                        '<all_channels>' => null,
+                    '<all_channels>' => [
+                        '<all_locales>' => null,
                     ],
                 ],
                 'a_number_float-decimal'                         => [
-                    '<all_locales>' => [
-                        '<all_channels>' => '12.5678',
+                    '<all_channels>' => [
+                        '<all_locales>' => '12.5678',
                     ],
                 ],
                 'a_number_float_negative-decimal'                => [
-                    '<all_locales>' => [
-                        '<all_channels>' => '-99.8732',
+                    '<all_channels>' => [
+                        '<all_locales>' => '-99.8732',
                     ],
                 ],
                 'a_number_integer-decimal'                       => [
-                    '<all_locales>' => [
-                        '<all_channels>' => '42',
+                    '<all_channels>' => [
+                        '<all_locales>' => '42',
                     ],
                 ],
                 'a_number_integer_negative-decimal'              => [
-                    '<all_locales>' => [
-                        '<all_channels>' => '-42',
+                    '<all_channels>' => [
+                        '<all_locales>' => '-42',
                     ],
                 ],
                 'a_price-prices'                                 => [
-                    '<all_locales>' => [
-                        '<all_channels>' => null,
+                    '<all_channels>' => [
+                        '<all_locales>' => null,
                     ],
                 ],
                 'a_price_without_decimal-prices'                 => [
-                    '<all_locales>' => [
-                        '<all_channels>' => null,
+                    '<all_channels>' => [
+                        '<all_locales>' => null,
                     ],
                 ],
                 'a_ref_data_multi_select-reference_data_options' => [
-                    '<all_locales>' => [
-                        '<all_channels>' => null,
+                    '<all_channels>' => [
+                        '<all_locales>' => null,
                     ],
                 ],
                 'a_ref_data_simple_select-reference_data_option' => [
-                    '<all_locales>' => [
-                        '<all_channels>' => null,
+                    '<all_channels>' => [
+                        '<all_locales>' => null,
                     ],
                 ],
                 'a_scopable_price-prices'                        => [
-                    '<all_locales>' => [
-                        'ecommerce' => null,
-                        'tablet'    => null,
+                    'ecommerce' => [
+                        '<all_locales>' => null,
                     ],
+                    'tablet' => [
+                        '<all_locales>' => null,
+                    ]
                 ],
                 'a_simple_select-option'                         => [
-                    '<all_locales>' => [
-                        '<all_channels>' => 'optionB',
+                    '<all_channels>' => [
+                        '<all_locales>' => 'optionB',
                     ],
                 ],
                 'a_text-varchar'                                 => [
-                    '<all_locales>' => [
-                        '<all_channels>' => 'this is a text',
+                    '<all_channels>' => [
+                        '<all_locales>' => 'this is a text',
                     ],
                 ],
                 'a_text_area-text'                               => [
-                    '<all_locales>' => [
-                        '<all_channels>' => 'this is a very very very very very long  text',
+                    '<all_channels>' => [
+                        '<all_locales>' => 'this is a very very very very very long  text',
                     ],
                 ],
                 'a_yes_no-boolean'                               => [
-                    '<all_locales>' => [
-                        '<all_channels>' => null,
+                    '<all_channels>' => [
+                        '<all_locales>' => null,
                     ],
                 ],
                 'an_image-media'                                 => [
-                    '<all_locales>' => [
-                        '<all_channels>' => null,
+                    '<all_channels>' => [
+                        '<all_locales>' => null,
                     ],
                 ],
             ],

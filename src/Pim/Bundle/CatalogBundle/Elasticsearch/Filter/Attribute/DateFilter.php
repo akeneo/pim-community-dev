@@ -1,68 +1,70 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter;
+namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute;
 
-use Akeneo\Component\Batch\Job\BatchStatus;
-use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
-use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
- * DateTime filter for an Elasticsearch query
+ * Date filter for an Elasticsearch query
  *
  * @author    Anaël Chardan <anael.chardan@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
+class DateFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    const DATETIME_FORMAT = 'Y-m-d H:i:s';
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $jobInstanceRepository;
-
-    /** @var JobRepositoryInterface */
-    protected $jobRepository;
+    const DATETIME_FORMAT = 'Y-m-d';
+    const HUMAN_DATETIME_FORMAT = "yyyy-mm-dd";
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
-     * @param JobRepositoryInterface $jobRepository
-     * @param array $supportedFields
+     * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param array $supportedAttributeTypes
      * @param array $supportedOperators
      */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
-        JobRepositoryInterface $jobRepository,
-        array $supportedFields = [],
+        AttributeValidatorHelper $attrValidatorHelper,
+        array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
-        $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->jobRepository = $jobRepository;
-        $this->supportedFields = $supportedFields;
+        $this->attrValidatorHelper = $attrValidatorHelper;
+        $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators = $supportedOperators;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
-    {
+    public function addAttributeFilter(
+        AttributeInterface $attribute,
+        $operator,
+        $value,
+        $locale = null,
+        $channel = null,
+        $options = []
+    ) {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-        $this->checkValue($operator, $field, $value);
+        $attributeCode = $attribute->getCode();
+
+        $this->checkLocaleAndChannel($attribute, $locale, $channel);
+        $this->checkValue($operator, $attributeCode, $value);
+
+        $attributePath = $this->getAttributePath($attribute, $locale, $channel);
 
         switch ($operator) {
             case Operators::EQUALS:
                 $clause = [
                     'term' => [
-                        $field => $this->getFormattedDate($field, $value)
+                        $attributePath => $this->getFormattedDate($attributeCode, $value)
                     ]
                 ];
 
@@ -72,7 +74,9 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
             case Operators::LOWER_THAN:
                 $clause = [
                     'range' => [
-                        $field => ['lt' => $this->getFormattedDate($field, $value)]
+                        $attributePath => [
+                            'lt' => $this->getFormattedDate($attributeCode, $value),
+                        ]
                     ]
                 ];
 
@@ -82,7 +86,9 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
             case Operators::GREATER_THAN:
                 $clause = [
                     'range' => [
-                        $field => ['gt' => $this->getFormattedDate($field, $value)]
+                        $attributePath => [
+                            'gt' => $this->getFormattedDate($attributeCode, $value),
+                        ]
                     ]
                 ];
 
@@ -93,9 +99,9 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
                 $values = array_values($value);
                 $clause = [
                     'range' => [
-                        $field => [
-                            'gte' => $this->getFormattedDate($field, $values[0]),
-                            'lte' => $this->getFormattedDate($field, $values[1])
+                        $attributePath => [
+                            'gte' => $this->getFormattedDate($attributeCode, $values[0]),
+                            'lte' => $this->getFormattedDate($attributeCode, $values[1]),
                         ]
                     ]
                 ];
@@ -107,88 +113,57 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
                 $values = array_values($value);
                 $betweenClause = [
                     'range' => [
-                        $field => [
-                            'gte' => $this->getFormattedDate($field, $values[0]),
-                            'lte' => $this->getFormattedDate($field, $values[1])
+                        $attributePath => [
+                            'gte' => $this->getFormattedDate($attributeCode, $values[0]),
+                            'lte' => $this->getFormattedDate($attributeCode, $values[1]),
                         ]
                     ]
                 ];
 
+                $existsClause = [
+                    'exists' => ['field' => $attributePath]
+                ];
+
                 $this->searchQueryBuilder->addMustNot($betweenClause);
-                $this->searchQueryBuilder->addFilter($this->getExistsClause($field));
+                $this->searchQueryBuilder->addFilter($existsClause);
 
                 break;
             case Operators::IS_EMPTY:
-                $this->searchQueryBuilder->addMustNot($this->getExistsClause($field));
+                $existsClause = [
+                    'exists' => ['field' => $attributePath]
+                ];
+
+                $this->searchQueryBuilder->addMustNot($existsClause);
 
                 break;
             case Operators::IS_NOT_EMPTY:
-                $this->searchQueryBuilder->addFilter($this->getExistsClause($field));
+                $existsClause = [
+                    'exists' => ['field' => $attributePath]
+                ];
+
+                $this->searchQueryBuilder->addFilter($existsClause);
 
                 break;
             case Operators::NOT_EQUAL:
                 $mustNotClause = [
                     'term' => [
-                        $field => $this->getFormattedDate($field, $value)
+                        $attributePath => $this->getFormattedDate($attributeCode, $value)
                     ]
                 ];
 
+                $existsClause = [
+                    'exists' => ['field' => $attributePath]
+                ];
+
                 $this->searchQueryBuilder->addMustNot($mustNotClause);
-                $this->searchQueryBuilder->addFilter($this->getExistsClause($field));
+                $this->searchQueryBuilder->addFilter($existsClause);
 
                 break;
-            case Operators::SINCE_LAST_N_DAYS:
-                return $this->addFieldFilter(
-                    $field,
-                    Operators::GREATER_THAN,
-                    new \DateTime(sprintf('%s days ago', $value), new \DateTimeZone('UTC')),
-                    $locale,
-                    $scope,
-                    $options
-                );
-            case Operators::SINCE_LAST_JOB:
-                $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($value);
-
-                if (null === $jobInstance) {
-                    throw InvalidPropertyException::validEntityCodeExpected(
-                        'job_instance',
-                        'code',
-                        'The job instance does not exist',
-                        static::class,
-                        $value
-                    );
-                }
-
-                $lastCompletedJobExecution = $this->jobRepository->getLastJobExecution($jobInstance, BatchStatus::COMPLETED);
-                if (null === $lastCompletedJobExecution) {
-                    return $this;
-                }
-
-                return $this->addFieldFilter(
-                    $field,
-                    Operators::GREATER_THAN,
-                    $lastCompletedJobExecution->getStartTime()->setTimezone(new \DateTimeZone('UTC')),
-                    $locale,
-                    $scope,
-                    $options
-                );
             default:
                 throw InvalidOperatorException::notSupported($operator, static::class);
         }
 
         return $this;
-    }
-
-    /**
-     * @param string $field
-     *
-     * @return array
-     */
-    protected function getExistsClause($field)
-    {
-        return [
-            'exists' => ['field' => $field]
-        ];
     }
 
     /**
@@ -207,7 +182,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
                     $field,
                     $value,
                     static::DATETIME_FORMAT,
-                    'yyyy-mm-dd H:i:s',
+                    static::HUMAN_DATETIME_FORMAT,
                     static::class
                 );
 
@@ -221,7 +196,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
                 if (2 !== count($value)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $field,
-                        sprintf('should contain 2 strings with the format "%s"', "yyyy-mm-dd H:i:s"),
+                        sprintf('should contain 2 strings with the format "%s"', static::HUMAN_DATETIME_FORMAT),
                         static::class,
                         $value
                     );
@@ -232,21 +207,9 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
                         $field,
                         $singleValue,
                         static::DATETIME_FORMAT,
-                        'yyyy-mm-dd H:i:s',
+                        static::HUMAN_DATETIME_FORMAT,
                         static::class
                     );
-                }
-
-                break;
-            case Operators::SINCE_LAST_JOB:
-                if (!is_string($value)) {
-                    throw InvalidPropertyTypeException::stringExpected($field, static::class, $value);
-                }
-
-                break;
-            case Operators::SINCE_LAST_N_DAYS:
-                if (!is_numeric($value)) {
-                    throw InvalidPropertyTypeException::numericExpected($field, static::class, $value);
                 }
 
                 break;
@@ -274,15 +237,13 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
             if (false === $dateTime || 0 < $dateTime->getLastErrors()['warning_count']) {
                 throw InvalidPropertyException::dateExpected(
                     $field,
-                    static::DATETIME_FORMAT,
+                    static::HUMAN_DATETIME_FORMAT,
                     static::class,
                     $value
                 );
             }
         }
 
-        $dateTime->setTimezone(new \DateTimeZone('UTC'));
-
-        return $dateTime->format('c');
+        return $dateTime->format(static::DATETIME_FORMAT);
     }
 }

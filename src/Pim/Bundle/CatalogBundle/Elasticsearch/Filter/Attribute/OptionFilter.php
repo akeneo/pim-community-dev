@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter;
+namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository;
 use Pim\Component\Catalog\AttributeTypes;

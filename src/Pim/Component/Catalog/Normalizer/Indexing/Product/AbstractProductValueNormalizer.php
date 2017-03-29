@@ -27,7 +27,7 @@ abstract class AbstractProductValueNormalizer extends SerializerAwareNormalizer 
 
         $key = $productValue->getAttribute()->getCode() . '-' . $productValue->getAttribute()->getBackendType();
         $structure = [];
-        $structure[$key][$locale][$channel] = $this->getNormalizedData($productValue);
+        $structure[$key][$channel][$locale] = $this->getNormalizedData($productValue);
 
         return $structure;
     }

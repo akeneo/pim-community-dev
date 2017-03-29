@@ -55,8 +55,8 @@ class TextNormalizerSpec extends ObjectBehavior
 
         $this->normalize($textValue, 'indexing')->shouldReturn([
             'name-varchar' => [
-                '<all_locales>' => [
-                    '<all_channels>' => 'a product name'
+                '<all_channels>' => [
+                    '<all_locales>' => 'a product name'
                 ]
             ]
         ]);
@@ -76,8 +76,8 @@ class TextNormalizerSpec extends ObjectBehavior
 
         $this->normalize($textValue, 'indexing')->shouldReturn([
             'name-varchar' => [
-                '<all_locales>' => [
-                    '<all_channels>' => '<h1>My <strong>ProDucT</strong> is awesome</h1>'
+                '<all_channels>' => [
+                    '<all_locales>' => '<h1>My <strong>ProDucT</strong> is awesome</h1>'
                 ]
             ]
         ]);
@@ -97,8 +97,8 @@ class TextNormalizerSpec extends ObjectBehavior
 
         $this->normalize($textValue, 'indexing')->shouldReturn([
             'name-varchar' => [
-                'fr_FR' => [
-                    '<all_channels>' => 'a product name'
+                '<all_channels>' => [
+                    'fr_FR' => 'a product name'
                 ]
             ]
         ]);
@@ -118,8 +118,8 @@ class TextNormalizerSpec extends ObjectBehavior
 
         $this->normalize($textValue, 'indexing')->shouldReturn([
             'name-varchar' => [
-                '<all_locales>' => [
-                    'ecommerce' => 'a product name'
+                'ecommerce' => [
+                    '<all_locales>' => 'a product name'
                 ]
             ]
         ]);
@@ -139,8 +139,8 @@ class TextNormalizerSpec extends ObjectBehavior
 
         $this->normalize($textValue, 'indexing')->shouldReturn([
             'name-varchar' => [
-                'fr_FR' => [
-                    'ecommerce' => 'a product name'
+                'ecommerce' => [
+                    'fr_FR' => 'a product name'
                 ]
             ]
         ]);

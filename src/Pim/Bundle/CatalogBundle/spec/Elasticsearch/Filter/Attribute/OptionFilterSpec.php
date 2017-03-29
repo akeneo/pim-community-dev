@@ -1,17 +1,13 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter;
+namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Doctrine\Common\Collections\Collection;
-use Documents\Ecommerce\Option;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository;
-use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\AbstractAttributeFilter;
-use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\OptionFilter;
+use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\OptionFilter;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
@@ -84,7 +80,7 @@ class OptionFilterSpec extends ObjectBehavior
         $sqb->addMustNot(
             [
                 'exists' => [
-                    'field' => "values.color-option.en_US.ecommerce",
+                    'field' => "values.color-option.ecommerce.en_US",
                 ],
             ]
         )->shouldBeCalled();
@@ -113,7 +109,7 @@ class OptionFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'terms' => [
-                    'values.color-option.en_US.ecommerce' => ['black'],
+                    'values.color-option.ecommerce.en_US' => ['black'],
                 ],
             ]
         )->shouldBeCalled();
@@ -136,7 +132,7 @@ class OptionFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'exists' => [
-                    'field' => "values.color-option.en_US.ecommerce",
+                    'field' => "values.color-option.ecommerce.en_US",
                 ],
             ]
         )->shouldBeCalled();
@@ -165,7 +161,7 @@ class OptionFilterSpec extends ObjectBehavior
         $sqb->addMustNot(
             [
                 'terms' => [
-                    'values.color-option.en_US.ecommerce' => ['black'],
+                    'values.color-option.ecommerce.en_US' => ['black'],
                 ],
             ]
         )->shouldBeCalled();
@@ -173,7 +169,7 @@ class OptionFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'exists' => [
-                    'field' => 'values.color-option.en_US.ecommerce',
+                    'field' => 'values.color-option.ecommerce.en_US',
                 ],
             ]
         )->shouldBeCalled();

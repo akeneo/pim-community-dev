@@ -179,8 +179,8 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             ->willReturn(
                 [
                     'a_size-decimal' => [
-                        '<all_locales>' => [
-                            '<all_channels>' => '10.51',
+                        '<all_channels>' => [
+                            '<all_locales>' => '10.51',
                         ],
                     ],
                 ]
@@ -204,8 +204,8 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 ],
                 'values'     => [
                     'a_size-decimal' => [
-                        '<all_locales>' => [
-                            '<all_channels>' => '10.51',
+                        '<all_channels>' => [
+                            '<all_locales>' => '10.51',
                         ],
                     ],
                 ],

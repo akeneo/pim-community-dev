@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter;
+namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\DateFilter;
+use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\DateFilter;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -93,7 +93,7 @@ class DateFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'term' => [
-                    'values.publishedOn-date.en_US.ecommerce' => '2014-03-15'
+                    'values.publishedOn-date.ecommerce.en_US' => '2014-03-15'
                 ]
             ]
         )->shouldBeCalled();
@@ -131,7 +131,7 @@ class DateFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'range' => [
-                    'values.publishedOn-date.en_US.ecommerce' => ['lt' => '2014-03-15']
+                    'values.publishedOn-date.ecommerce.en_US' => ['lt' => '2014-03-15']
                 ]
             ]
         )->shouldBeCalled();
@@ -169,7 +169,7 @@ class DateFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'range' => [
-                    'values.publishedOn-date.en_US.ecommerce' => ['gt' => '2014-03-15']
+                    'values.publishedOn-date.ecommerce.en_US' => ['gt' => '2014-03-15']
                 ]
             ]
         )->shouldBeCalled();
@@ -207,7 +207,7 @@ class DateFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'range' => [
-                    'values.publishedOn-date.en_US.ecommerce' => [
+                    'values.publishedOn-date.ecommerce.en_US' => [
                         'gte' => '2014-03-15',
                         'lte' => '2014-03-16'
                     ]
@@ -248,7 +248,7 @@ class DateFilterSpec extends ObjectBehavior
         $sqb->addMustNot(
             [
                 'range' => [
-                    'values.publishedOn-date.en_US.ecommerce' => [
+                    'values.publishedOn-date.ecommerce.en_US' => [
                         'gte' => '2014-03-15',
                         'lte' => '2014-03-16'
                     ]
@@ -256,7 +256,7 @@ class DateFilterSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $sqb->addFilter(['exists' => ['field' => 'values.publishedOn-date.en_US.ecommerce']])->shouldBeCalled();
+        $sqb->addFilter(['exists' => ['field' => 'values.publishedOn-date.ecommerce.en_US']])->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter(
@@ -288,7 +288,7 @@ class DateFilterSpec extends ObjectBehavior
         $attributeValidatorHelper->validateLocale($publishedOn, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($publishedOn, 'ecommerce')->shouldBeCalled();
 
-        $sqb->addMustNot(['exists' => ['field' => 'values.publishedOn-date.en_US.ecommerce']])->shouldBeCalled();
+        $sqb->addMustNot(['exists' => ['field' => 'values.publishedOn-date.ecommerce.en_US']])->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter(
@@ -312,7 +312,7 @@ class DateFilterSpec extends ObjectBehavior
         $attributeValidatorHelper->validateLocale($publishedOn, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($publishedOn, 'ecommerce')->shouldBeCalled();
 
-        $sqb->addFilter(['exists' => ['field' => 'values.publishedOn-date.en_US.ecommerce']])->shouldBeCalled();
+        $sqb->addFilter(['exists' => ['field' => 'values.publishedOn-date.ecommerce.en_US']])->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter(
@@ -339,12 +339,12 @@ class DateFilterSpec extends ObjectBehavior
         $sqb->addMustNot(
             [
                 'term' => [
-                    'values.publishedOn-date.en_US.ecommerce' => '2014-03-15'
+                    'values.publishedOn-date.ecommerce.en_US' => '2014-03-15'
                 ]
             ]
         )->shouldBeCalled();
 
-        $sqb->addFilter(['exists' => ['field' => 'values.publishedOn-date.en_US.ecommerce']])->shouldBeCalled();
+        $sqb->addFilter(['exists' => ['field' => 'values.publishedOn-date.ecommerce.en_US']])->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter(

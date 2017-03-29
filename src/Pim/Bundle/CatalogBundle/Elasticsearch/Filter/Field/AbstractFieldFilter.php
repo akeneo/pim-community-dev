@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter;
+namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;

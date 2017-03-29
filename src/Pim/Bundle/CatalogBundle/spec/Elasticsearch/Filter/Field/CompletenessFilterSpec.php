@@ -1,20 +1,17 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter;
+namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CompletenessFilter;
+use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CompletenessFilter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Prophecy\Argument;
 
 class CompletenessFilterSpec extends ObjectBehavior
 {
