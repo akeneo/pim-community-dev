@@ -18,24 +18,24 @@ class DateNormalizer extends AbstractProductValueNormalizer implements Normalize
     /**
      * {@inheritdoc}
      */
-    protected function getNormalizedData(ProductValueInterface $productValue)
-    {
-        $date = $productValue->getData();
-
-        if (null !== $date && $date instanceof \DateTimeInterface) {
-            return $date->format('Y-m-d');
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ProductValueInterface &&
             AttributeTypes::BACKEND_TYPE_DATE === $data->getAttribute()->getBackendType() &&
             'indexing' === $format;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getNormalizedData(ProductValueInterface $productValue)
+    {
+        $date = $productValue->getData();
+
+        if ($date instanceof \DateTimeInterface) {
+            return $date->format('Y-m-d');
+        }
+
+        return null;
     }
 }
