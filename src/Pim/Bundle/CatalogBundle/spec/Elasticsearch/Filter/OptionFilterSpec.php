@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Collections\Collection;
 use Documents\Ecommerce\Option;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\AbstractAttributeFilter;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\OptionFilter;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
@@ -20,10 +21,18 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 class OptionFilterSpec extends ObjectBehavior
 {
-    function let(AttributeValidatorHelper $attributeValidatorHelper)
+    function let(
+        AttributeValidatorHelper $attributeValidatorHelper,
+        AttributeOptionRepository $attributeOptionRepository
+    )
     {
         $operators = ['IN', 'EMPTY', 'NOT_EMPTY', 'NOT IN'];
-        $this->beConstructedWith($attributeValidatorHelper, ['pim_catalog_simpleselect'], $operators);
+        $this->beConstructedWith(
+            $attributeValidatorHelper,
+            $attributeOptionRepository,
+            ['pim_catalog_simpleselect'],
+            $operators
+        );
     }
 
     function it_is_initializable()
@@ -86,24 +95,17 @@ class OptionFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_in_list(
         $attributeValidatorHelper,
-        Collection $colors,
-        \ArrayIterator $colorsIterator,
+        $attributeOptionRepository,
         AttributeInterface $color,
         AttributeOptionInterface $blackColor,
         SearchQueryBuilder $sqb
     ) {
-        $color->getOptions()->willReturn($colors);
-        $colors->getIterator()->willReturn($colorsIterator);
-
-        $colorsIterator->rewind()->shouldBeCalled();
-        $colorsIterator->valid()->willReturn(true, false);
-        $colorsIterator->current()->willReturn($blackColor);
-        $colorsIterator->next()->shouldBeCalled();
-
         $blackColor->getCode()->willReturn('black');
 
         $color->getCode()->willReturn('color');
         $color->getBackendType()->willReturn('option');
+
+        $attributeOptionRepository->findByIdentifiers('color', ['black'])->willReturn([['code' => 'black']]);
 
         $attributeValidatorHelper->validateLocale($color, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($color, 'ecommerce')->shouldBeCalled();
@@ -145,24 +147,17 @@ class OptionFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_not_in_list(
         $attributeValidatorHelper,
-        Collection $colors,
-        \ArrayIterator $colorsIterator,
+        $attributeOptionRepository,
         AttributeInterface $color,
         AttributeOptionInterface $blackColor,
         SearchQueryBuilder $sqb
     ) {
-        $color->getOptions()->willReturn($colors);
-        $colors->getIterator()->willReturn($colorsIterator);
-
-        $colorsIterator->rewind()->shouldBeCalled();
-        $colorsIterator->valid()->willReturn(true, false);
-        $colorsIterator->current()->willReturn($blackColor);
-        $colorsIterator->next()->shouldBeCalled();
-
         $blackColor->getCode()->willReturn('black');
 
         $color->getCode()->willReturn('color');
         $color->getBackendType()->willReturn('option');
+
+        $attributeOptionRepository->findByIdentifiers('color', ['black'])->willReturn([['code' => 'black']]);
 
         $attributeValidatorHelper->validateLocale($color, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($color, 'ecommerce')->shouldBeCalled();
@@ -241,24 +236,17 @@ class OptionFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
         $attributeValidatorHelper,
-        Collection $colors,
-        \ArrayIterator $colorsIterator,
+        $attributeOptionRepository,
         AttributeInterface $color,
         AttributeOptionInterface $blackColor,
         SearchQueryBuilder $sqb
     ) {
-        $color->getOptions()->willReturn($colors);
-        $colors->getIterator()->willReturn($colorsIterator);
-
-        $colorsIterator->rewind()->shouldBeCalled();
-        $colorsIterator->valid()->willReturn(true, false);
-        $colorsIterator->current()->willReturn($blackColor);
-        $colorsIterator->next()->shouldBeCalled();
-
         $blackColor->getCode()->willReturn('black');
 
         $color->getCode()->willReturn('color');
         $color->getBackendType()->willReturn('option');
+
+        $attributeOptionRepository->findByIdentifiers('color', ['black'])->willReturn([['code' => 'black']]);
 
         $attributeValidatorHelper->validateLocale($color, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($color, 'ecommerce')->shouldBeCalled();

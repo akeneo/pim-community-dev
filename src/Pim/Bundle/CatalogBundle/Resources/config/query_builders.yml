@@ -199,6 +199,7 @@ services:
         class: '%pim_catalog.query.elasticsearch.filter.option.class%'
         arguments:
             - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.repository.attribute_option'
             - ['pim_catalog_simpleselect']
             - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
         tags:
