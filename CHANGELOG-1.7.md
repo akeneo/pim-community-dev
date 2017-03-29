@@ -7,6 +7,7 @@
 - GITHUB-5307: Fix sort order in field "Attribute group"
 - PIM-6240: Display the code instead of undefined if channel's locale is not filled for the given locale
 - PIM-6071: Hide add option icon for non-editable fields
+- PIM-6275: Fix variations not visible on Variant Group properties tab
 
 # 1.7.1 (2017-03-23)
 
