@@ -44,6 +44,34 @@ class CompletenessContext extends PimContext
     }
 
     /**
+     * @param string $code
+     * @param string $label
+     *
+     * @Then /^The label for the "([^"]*)" channel for "([^"]*)" locale should be "([^"]*)"$/
+     */
+    public function theCurrentLocaleChannelLabelShouldBe($code, $locale, $label)
+    {
+        $this->spin(function () use ($code, $locale, $label) {
+            $completeness = $this->getCurrentPage()->getElement('Completeness');
+
+            $localeSection = $completeness->find(
+                'css',
+                sprintf(
+                    '.AknCompletenessBlock-headerLocale[data-locale="%s"]',
+                    $locale
+                )
+            )->getParent()->getParent();
+
+            $channelLabel = $localeSection->find(
+                'css',
+                sprintf('.channel[data-channel="%s"]', $code)
+            )->getText();
+
+            return $channelLabel === $label;
+        }, sprintf('"%s" does not have the label "%s".', $code, $label));
+    }
+
+    /**
      * @param string $localeCode en_US, fr_FR, etc.
      * @param int    $position
      *
