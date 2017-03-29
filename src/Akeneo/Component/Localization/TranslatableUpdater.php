@@ -22,9 +22,11 @@ class TranslatableUpdater
     public function update(TranslatableInterface $object, array $data)
     {
         foreach ($data as $localeCode => $label) {
-            $object->setLocale($localeCode);
-            $translation = $object->getTranslation();
-            $translation->setLabel($label);
+            if (null !== $label && '' !== $label) {
+                $object->setLocale($localeCode);
+                $translation = $object->getTranslation();
+                $translation->setLabel($label);
+            }
         }
     }
 }

@@ -308,6 +308,41 @@ JSON;
         $this->assertSame($familyStandard, $normalizer->normalize($family));
     }
 
+    public function testPartialUpdateWithEmptyLabels()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "labels": {
+            "en_US": null,
+            "fr_FR": ""
+        }
+    }
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/families/familyA2', [], [], [], $data);
+
+        $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('familyA2');
+        $familyStandard = [
+            'code'                   => 'familyA2',
+            'attributes'             => ['a_metric', 'a_number_float', 'sku'],
+            'attribute_as_label'     => 'sku',
+            'attribute_requirements' => [
+                'ecommerce'       => ['a_metric', 'sku'],
+                'ecommerce_china' => ['sku'],
+                'tablet'          => ['a_number_float', 'sku'],
+            ],
+            'labels'                 => [],
+        ];
+        $normalizer = $this->get('pim_catalog.normalizer.standard.family');
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertSame($familyStandard, $normalizer->normalize($family));
+    }
+
     public function testResponseWhenContentIsEmpty()
     {
         $client = $this->createAuthenticatedClient();
@@ -437,7 +472,7 @@ JSON;
     {
         return new Configuration(
             [Configuration::getTechnicalCatalogPath()],
-            false
+            true
         );
     }
 }

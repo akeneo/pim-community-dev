@@ -248,6 +248,37 @@ JSON;
         $this->assertSame($categoryStandard, $normalizer->normalize($category));
     }
 
+    public function testPartialUpdateWithEmptyLabels()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "labels": {
+            "en_US": null,
+            "fr_FR":"" 
+        }
+    }
+JSON;
+        $client->request('PATCH', 'api/rest/v1/categories/categoryA', [], [], [], $data);
+
+        $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryA');
+        $categoryStandard = [
+            'code'   => 'categoryA',
+            'parent' => 'master',
+            'labels' => [
+                'en_US' => 'Category A',
+                'fr_FR' => 'Catégorie A',
+            ],
+        ];
+        $normalizer = $this->get('pim_catalog.normalizer.standard.category');
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertSame($categoryStandard, $normalizer->normalize($category));
+    }
+
     public function testResponseWhenContentIsEmpty()
     {
         $client = $this->createAuthenticatedClient();
@@ -411,7 +442,7 @@ JSON;
     {
         return new Configuration(
             [Configuration::getTechnicalCatalogPath()],
-            false
+            true
         );
     }
 }
