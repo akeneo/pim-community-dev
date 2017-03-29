@@ -45,6 +45,10 @@ function ($, _, flash_message_template) {
             close: _.bind($el.alert, $el, 'close')
         };
         if (delay) {
+            setInterval(function () {
+                var currentTimer = $el.find('.flash-timer');
+                currentTimer.html(parseInt(currentTimer.text()) - 1);
+            }, 1000);
             _.delay(actions.close, delay);
         }
         return actions;
