@@ -20,7 +20,7 @@ class CursorSpec extends ObjectBehavior
         $data = [$productFoo, $productBar, $productBaz];
         $repository->getItemsFromIdentifiers(['foo', 'bar', 'baz'])->willReturn($data);
 
-        $esClient->search('pim_catalog_product', ['size' => 3, 'sort' => ['_uid' => 'asc']])
+        $esClient->search('pim_catalog_product', ['size' => 3, 'sort' => ['updated' => 'desc', '_uid' => 'asc']])
             ->willReturn([
                 'hits' => [
                     'total' => 4,
@@ -32,7 +32,7 @@ class CursorSpec extends ObjectBehavior
                 ]
             ]);
 
-        $this->beConstructedWith($esClient, $repository, [], 'pim_catalog_product', 3);
+        $this->beConstructedWith($esClient, $repository, ['sort' => ['updated' => 'desc']], 'pim_catalog_product', 3);
     }
 
     function it_is_initializable()
@@ -49,7 +49,7 @@ class CursorSpec extends ObjectBehavior
 
     function it_is_iterable($repository, $esClient, $productFoo, $productBar, $productBaz, ProductInterface $productFum)
     {
-        $esClient->search('pim_catalog_product', ['size' => 3, 'sort' => ['_uid' => 'asc'], 'search_after' => ['pim_catalog_product#baz']])
+        $esClient->search('pim_catalog_product', ['size' => 3, 'sort' => ['updated' => 'desc', '_uid' => 'asc'], 'search_after' => ['pim_catalog_product#baz']])
             ->willReturn([
                 'hits' => [
                     'total' => 4,
@@ -58,7 +58,7 @@ class CursorSpec extends ObjectBehavior
                     ]
                 ]
             ]);
-        $esClient->search('pim_catalog_product', ['size' => 3, 'sort' => ['_uid' => 'asc'], 'search_after' => ['pim_catalog_product#fum']])
+        $esClient->search('pim_catalog_product', ['size' => 3, 'sort' => ['updated' => 'desc', '_uid' => 'asc'], 'search_after' => ['pim_catalog_product#fum']])
             ->willReturn([
                 'hits' => [
                     'total' => 4,

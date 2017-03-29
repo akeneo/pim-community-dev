@@ -138,9 +138,13 @@ class Cursor implements CursorInterface
     {
         $esQuery['size'] = $this->pageSize;
 
-        if (!isset($esQuery['sort'])) {
-            $esQuery['sort'] = ['_uid' => 'asc'];
+        $sort = ['_uid' => 'asc'];
+
+        if (isset($esQuery['sort'])) {
+            $sort = array_merge($esQuery['sort'], $sort);
         }
+
+        $esQuery['sort'] = $sort;
 
         if (null !== $searchAfter) {
             $esQuery['search_after'] = [$this->indexType . '#' . $searchAfter];
