@@ -31,6 +31,9 @@ config:
                 pimee_enrich_locale_edit:
                     module: pim/controller/form
                     aclResourceId: pimee_enrich_locale_edit_permissions
+                pimee_product_asset_edit:
+                    module: pim/controller/form
+                    aclResourceId: pimee_product_asset_index
 
     map:
         '*':
