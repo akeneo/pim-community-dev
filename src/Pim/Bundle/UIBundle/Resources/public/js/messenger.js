@@ -1,12 +1,16 @@
 /* global define */
-define(['jquery', 'underscore'],
-function ($, _) {
+define([
+    'jquery',
+    'underscore',
+    'text!pim/template/system/flash_message'
+],
+function ($, _, flash_message_template) {
     'use strict';
 
     var defaults = {
-        container: '',
+        container: '#flash-messages .flash-messages-holder',
         delay: false,
-        template: $.noop
+        template: _.template(flash_message_template)
     };
     var queue = [];
     var storageKey = 'flash';
