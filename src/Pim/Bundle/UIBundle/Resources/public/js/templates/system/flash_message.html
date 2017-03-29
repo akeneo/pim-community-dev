@@ -1,4 +1,20 @@
 <div class="AknFlash alert <% if (type) {  %><%= 'alert-' + type + ' AknFlash--' + type %><% } %> fade in top-messages">
-    <button type="button" class="AknFlash-closeButton close" data-dismiss="alert">&times;</button>
-    <div class="message"><%= message %></div>
+    <div class="AknFlash-iconContainer">
+        ICON
+    </div>
+    <div class="AknFlash-message">
+        <% if (messageTitle) { %>
+            <div class="AknFlash-messageTitle">
+                 <%= messageTitle %>
+            </div>
+        <% } %>
+        <div class="AknFlash-messageContent">
+            <%= message %>
+        </div>
+    </div>
+    <div class="AknFlash-closeContainer">
+        <button type="button" class="AknFlash-closeButton close" data-dismiss="alert">
+            CLOSE
+        </button>
+    </div>
 </div>
