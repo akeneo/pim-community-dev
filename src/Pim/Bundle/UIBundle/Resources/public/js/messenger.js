@@ -20,12 +20,13 @@ function ($, _, flash_message_template) {
      */
     var showMessage = function (type, message, options) {
         var opt = _.extend({}, defaults, options || {});
+        var delay = opt.delay || (opt.flash && 5000);
         var $el = $(opt.template({
             type: type,
             message: message,
-            messageTitle: ''
+            messageTitle: '',
+            delay: delay
         })).appendTo(opt.container);
-        var delay = opt.delay || (opt.flash && 5000);
         var actions = {close: _.bind($el.alert, $el, 'close')};
         if (delay) {
             _.delay(actions.close, delay);

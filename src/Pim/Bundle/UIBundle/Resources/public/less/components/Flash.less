@@ -1,6 +1,8 @@
 @import '../base/variables';
 
 .AknFlash {
+  @iconSize: 24px;
+
   border: 1px solid darken(@AknOrange, 10%);
   background: lighten(@AknOrange, 30%);
   color: darken(@AknOrange, 15%);
@@ -9,15 +11,15 @@
   display: flex;
   margin-top: 10px;
   font-size: @AknFontSizeBig;
+  line-height: 11px;
+  align-items: center;
 
-  &-iconContainer {
-    width: 24px;
-    margin-right: 16px;
-  }
-
-  &-closeContainer {
-    width: 24px;
-    margin-left: 16px;
+  &-icon {
+    background: darken(@AknOrange, 15%);
+    border-radius: 1000px;
+    padding: 2px;
+    height: @iconSize;
+    width: @iconSize;
   }
 
   &-messageTitle {
@@ -26,27 +28,46 @@
 
   &-message {
     flex-grow: 1;
+    line-height: @AknFontSizeBig * 1.15;
+    margin: 0 16px;
   }
 
   &-closeButton {
-    font-size: @AknFontSizeBig;
-    flex-basis: @AknFontSizeBig;
-    color: darken(@AknOrange, 20%);
-    margin: 0 -16px 0 10px;
-    background: none;
-    border: none;
-    order: 10;
     cursor: pointer;
+    padding: 4px;
+    width: @iconSize;
+    height: @iconSize;
+  }
+
+  &-timer {
+    width: @iconSize;
+    text-align: center;
+  }
+
+  &--withTimer &-closeButton {
+    display: none;
+  }
+
+  &--withTimer:hover &-closeButton {
+    display: block;
+  }
+
+  &--withTimer:hover &-timer {
+    display: none;
   }
 
   &--success {
-    border: 1px solid darken(@AknGreen, 10%);
+    border: 1px solid darken(@AknGreen, 5%);
     background: lighten(@AknGreen, 30%);
-    color: darken(@AknGreen, 20%);
+    color: darken(@AknGreen, 5%);
   }
 
   &--success &-closeButton {
-    color: darken(@AknGreen, 20%);
+    color: darken(@AknGreen, 5%);
+  }
+
+  &--success &-icon {
+    background: darken(@AknGreen, 5%);
   }
 
   &--danger,
