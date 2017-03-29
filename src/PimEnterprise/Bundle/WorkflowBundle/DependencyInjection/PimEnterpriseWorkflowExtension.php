@@ -38,6 +38,7 @@ class PimEnterpriseWorkflowExtension extends Extension
         $loader->load('connector/readers.yml');
         $loader->load('connector/writers.yml');
         $loader->load('controllers.yml');
+        $loader->load('cursors.yml');
         $loader->load('datagrid_listeners.yml');
         $loader->load('entities.yml');
         $loader->load('event_subscribers.yml');
