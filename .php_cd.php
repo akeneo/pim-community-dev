@@ -49,9 +49,14 @@ $cAkeneoRules = [
             'League\Flysystem',  // used as base file storage system
         ]),
         RuleInterface::TYPE_ONLY
+    ),*/
+    new Rule(
+        'Akeneo\Component\Localization',
+            array_merge($cDeps, [
+                'Symfony\Component\Translation', // to translate units of the metric attribute types
+            ]),
+            RuleInterface::TYPE_ONLY
     ),
-    new Rule('Akeneo\Component\Localization', $cDeps, RuleInterface::TYPE_ONLY),
-*/
     new Rule('Akeneo\Component\StorageUtils', $cDeps, RuleInterface::TYPE_ONLY),
     new Rule('Akeneo\Component\Versioning', $cDeps, RuleInterface::TYPE_ONLY),
 ];
@@ -83,14 +88,7 @@ $cPimRules = [
         RuleInterface::TYPE_ONLY
     ),
 */
-    new Rule(
-        'Pim\Component\Localization',
-        array_merge($cDeps, [
-            'Pim\Component\Catalog',         // because ;)
-            'Symfony\Component\Translation', // to translate units of the metric attribute types
-        ]),
-        RuleInterface::TYPE_ONLY
-    ),
+
     new Rule(
         'Pim\Component\ReferenceData',
         array_merge($cDeps, [
