@@ -125,7 +125,7 @@ class JobTrackerController extends Controller
             throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
         }
 
-        if (!$this->isGranted($jobExecution)) {
+        if (!$this->isJobGranted($jobExecution)) {
             throw new AccessDeniedException();
         }
 
@@ -184,7 +184,7 @@ class JobTrackerController extends Controller
             throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
         }
 
-        if (!$this->isGranted($jobExecution)) {
+        if (!$this->isJobGranted($jobExecution)) {
             throw new AccessDeniedException();
         }
 
@@ -213,7 +213,7 @@ class JobTrackerController extends Controller
             throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
         }
 
-        if (!$this->isGranted($jobExecution)) {
+        if (!$this->isJobGranted($jobExecution)) {
             throw new AccessDeniedException();
         }
 
@@ -245,7 +245,7 @@ class JobTrackerController extends Controller
      *
      * @return bool
      */
-    protected function isGranted($jobExecution)
+    protected function isJobGranted($jobExecution)
     {
         if ((null === $this->securityFacade) || (null === $this->jobSecurityMapping)) {
             return true;

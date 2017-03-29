@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Clean product templates after attribute/locale/scope/currency deletion
  *
  * @author    Julien Sanchez <julien@akeneo.com>
- * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  */
 class CleanProductTemplateCommand extends ContainerAwareCommand
 {
@@ -31,7 +31,7 @@ class CleanProductTemplateCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $productTemplateRepository = $this->getContainer()->get('pim_catalog.repository.product_template');
-        $attributeRepository = $this->getContainer()->get('pim_catalog.repository.attribute');
+        $attributeRepository = $this->getContainer()->get('pim_catalog.repository.cached_attribute');
         $objectManager = $this->getContainer()->get('doctrine.orm.entity_manager');
         $serializer = $this->getContainer()->get('pim_serializer');
         $localeCodes = $this->getContainer()->get('pim_catalog.repository.locale')->getActivatedLocaleCodes();
@@ -47,8 +47,6 @@ class CleanProductTemplateCommand extends ContainerAwareCommand
         foreach ($channels as $channel) {
             $channelLocales[$channel->getCode()] = $channel->getLocaleCodes();
         }
-
-        var_dump($channelLocales);
 
         $processedTemplates = [];
         foreach ($productTemplates as $productTemplate) {
@@ -99,6 +97,6 @@ class CleanProductTemplateCommand extends ContainerAwareCommand
         }
 
         $objectManager->flush();
-        $output->writeln('<info>Locale specific data well cleaned<info>');
+        $output->writeln('<info>Product templates well cleaned<info>');
     }
 }
