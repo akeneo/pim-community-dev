@@ -46,13 +46,13 @@ Feature: Edit common attributes of many products at once
 
   Scenario: Successfully remove product attribute fields
     Given I select rows boots, sandals and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    When I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Name attribute
     Then I should see a remove link next to the "Name" field
     When I remove the "Name" attribute
     Then I should not see the "Name" field
-    Then I should not see a remove link next to the "Name" field
+    And I should not see a remove link next to the "Name" field
     And I move on to the next step
 
   Scenario: Successfully update many text values at once
