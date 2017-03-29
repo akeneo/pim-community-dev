@@ -24,13 +24,10 @@ class ProductQueryBuilderFactorySpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(
             'Pim\Component\Catalog\Query\ProductQueryBuilder',
-            $om,
-            'Pim\Component\Catalog\Model\Product',
             $attRepository,
             $filterRegistry,
             $sorterRegistry,
-            $cursorFactory,
-            $searchEngine
+            $cursorFactory
         );
     }
 

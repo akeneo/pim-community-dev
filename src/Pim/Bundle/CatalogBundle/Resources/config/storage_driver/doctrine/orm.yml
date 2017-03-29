@@ -9,7 +9,6 @@ parameters:
 
     pim_catalog.doctrine.query.cursor.class:               Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor
     pim_catalog.doctrine.cursor_factory.product.class:     Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\CursorFactory
-    pim_catalog.factory.product_cursor.page_size:          1
 
 services:
     pim_catalog.object_manager.product:
@@ -73,10 +72,3 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.product.class%'
-
-    pim_catalog.factory.product_cursor:
-        class: '%pim_catalog.doctrine.cursor_factory.product.class%'
-        arguments:
-            - '%pim_catalog.doctrine.query.cursor.class%'
-            - '@pim_catalog.object_manager.product'
-            - '%pim_catalog.factory.product_cursor.page_size%'

@@ -24,13 +24,10 @@ services:
         class: '%pim_catalog.query.product_query_builder_factory.class%'
         arguments:
             - '%pim_catalog.query.product_query_builder.class%'
-            - '@pim_catalog.object_manager.product'
-            - '%pim_catalog.entity.product.class%'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.query.filter.registry'
             - '@pim_catalog.query.sorter.registry'
             - '@pim_catalog.factory.product_cursor'
-            - '@akeneo_elasticsearch.client'
 
     pim_catalog.query.filter.registry:
         class: '%pim_catalog.query.filter.registry.class%'
