@@ -1,5 +1,5 @@
 <div class="AknFlash alert <% if (type) {  %><%= 'alert-' + type + ' AknFlash--' + type %><% } %> <% if (false !== delay) { %>AknFlash--withTimer<% } %> fade in top-messages">
-    <img class="AknFlash-icon" src="/bundles/pimui/images/icon-check.svg"/>
+    <img class="AknFlash-icon" src="/bundles/pimui/images/<%= icon %>"/>
     <div class="AknFlash-message">
         <% if (messageTitle) { %>
             <div class="AknFlash-messageTitle">
@@ -10,7 +10,7 @@
             <%= message %>
         </div>
     </div>
-    <img class="AknFlash-closeButton close" src="/bundles/pimui/images/icon-delete.svg" data-dismiss="alert"/>
+    <img class="AknFlash-closeButton close" src="/bundles/pimui/images/<%= closeIcon %>" data-dismiss="alert"/>
     <% if (false !== delay) { %>
         <div class="AknFlash-timer">
             <%= delay / 1000 %>s

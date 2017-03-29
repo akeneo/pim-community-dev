@@ -14,6 +14,18 @@ function ($, _, flash_message_template) {
     };
     var queue = [];
     var storageKey = 'flash';
+    var icons = {
+        '': 'icon-warning-orangelight.svg',
+        'success': 'icon-check.svg',
+        'danger': 'icon-warning-redlight.svg',
+        'error': 'icon-warning-redlight.svg'
+    };
+    var closeIcons = {
+        '': 'icon-delete-orangedark.svg',
+        'success': 'icon-delete-greendark.svg',
+        'danger': 'icon-delete-reddark.svg',
+        'error': 'icon-delete-reddark.svg'
+    };
 
     /**
      * Same arguments as for Oro.NotificationMessage
@@ -25,12 +37,16 @@ function ($, _, flash_message_template) {
             type: type,
             message: message,
             messageTitle: '',
-            delay: delay
+            delay: delay,
+            icon: icons[type || ''],
+            closeIcon: closeIcons[type || '']
         })).appendTo(opt.container);
-        var actions = {close: _.bind($el.alert, $el, 'close')};
-        if (delay) {
-            _.delay(actions.close, delay);
-        }
+        var actions = {
+            close: _.bind($el.alert, $el, 'close')
+        };
+        // if (delay) {
+        //     _.delay(actions.close, delay);
+        // }
         return actions;
     };
 
