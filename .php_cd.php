@@ -42,16 +42,29 @@ $cAkeneoRules = [
         ]),
         RuleInterface::TYPE_ONLY
     ),
-/*    new Rule('Akeneo\Component\Console', $cDeps, RuleInterface::TYPE_ONLY, 'have no real existence, should be merged into Batch'),
-      new Rule(
+    new Rule(
+        'Akeneo\Component\Console',
+        array_merge($cDeps, [
+            'Symfony\Component\Process' // used in CommandLauncher
+        ]),
+        RuleInterface::TYPE_ONLY,
+        'this component have no real existence, it should be merged into Batch'
+    ),
+    new Rule(
         'Akeneo\Component\FileStorage',
         array_merge($cDeps, [
             'League\Flysystem',  // used as base file storage system
+            'Symfony\Component\HttpFoundation', // used to handle uploaded files & stream response
         ]),
         RuleInterface::TYPE_ONLY
     ),
-    new Rule('Akeneo\Component\Localization', $cDeps, RuleInterface::TYPE_ONLY),
-*/
+    new Rule(
+        'Akeneo\Component\Localization',
+            array_merge($cDeps, [
+                'Symfony\Component\Translation', // to translate units of the metric attribute types
+            ]),
+            RuleInterface::TYPE_ONLY
+    ),
     new Rule('Akeneo\Component\StorageUtils', $cDeps, RuleInterface::TYPE_ONLY),
     new Rule('Akeneo\Component\Versioning', $cDeps, RuleInterface::TYPE_ONLY),
 ];
@@ -83,14 +96,7 @@ $cPimRules = [
         RuleInterface::TYPE_ONLY
     ),
 */
-    new Rule(
-        'Pim\Component\Localization',
-        array_merge($cDeps, [
-            'Pim\Component\Catalog',         // because ;)
-            'Symfony\Component\Translation', // to translate units of the metric attribute types
-        ]),
-        RuleInterface::TYPE_ONLY
-    ),
+
     new Rule(
         'Pim\Component\ReferenceData',
         array_merge($cDeps, [
