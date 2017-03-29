@@ -14,10 +14,7 @@ extensions:
         aclResourceId: pim_enrich_product_edit_attributes
         position: 90
         config:
-            removeAttributeRoute: pim_enrich_product_remove_attribute_rest
             removeAttributeACL: pim_enrich_product_remove_attribute
-            tabTitle: pim_enrich.form.product.tab.attributes.title
-            deletionFailed: pim_enrich.form.product.flash.attribute_deletion_error
 
     pim-mass-product-edit-form-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector
