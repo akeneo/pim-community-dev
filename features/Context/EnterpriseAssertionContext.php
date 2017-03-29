@@ -141,6 +141,40 @@ class EnterpriseAssertionContext extends BaseAssertionContext
     }
 
     /**
+     * @Then /^I should see a project validation error "([^"]*)"$/
+     *
+     * @param string $expectedErrorMessage
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldSeeAProjectValidationError($expectedErrorMessage)
+    {
+        $projectModal = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.modal-project-form');
+        }, 'Impossible to find the modal project form');
+
+        $errors = $this->spin(function () use ($projectModal) {
+            $errors = $projectModal->findAll('css', '.AknFieldContainer-validationError');
+
+            return count($errors) > 0 ? $errors : false;
+        }, 'Impossible to find validation errors');
+
+        $errorMessages = [];
+        foreach ($errors as $error) {
+            $errorMessages[] = $error->getText();
+        }
+
+        if (!in_array($expectedErrorMessage, $errorMessages)) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expecting to see the validation error "%s", but not found.',
+                    $expectedErrorMessage
+                )
+            );
+        }
+    }
+
+    /**
      * @param string $code
      *
      * @throws \Exception
