@@ -6,9 +6,6 @@
   @internalPadding: 16px;
   @padding: 12px;
 
-  border: 1px solid @AknOrange;
-  background: lighten(@AknOrange, 30%);
-  color: darken(@AknOrange, 15%);
   border-radius: 2px;
   padding: @padding;
   display: flex;
@@ -18,12 +15,17 @@
   align-items: center;
   width: @flashWidth;
 
+  // Default flash is info
+  border: 1px solid @AknBlue;
+  background: lighten(@AknBlue, 35%);
+  color: @AknBlue;
+
   &-icon {
-    background: @AknOrange;
     border-radius: 1000px;
     padding: 2px;
     height: @iconSize;
     width: @iconSize;
+    background: @AknBlue;
   }
 
   &-messageTitle {
@@ -72,15 +74,23 @@
     background: darken(@AknGreen, 5%);
   }
 
-  &--danger,
   &--error {
     border: 1px solid darken(@AknRed, 5%);
     background: lighten(@AknRed, 30%);
     color: darken(@AknRed, 5%);
   }
 
-  &--danger &-icon,
   &--error &-icon {
     background: darken(@AknRed, 5%);
+  }
+
+  &--warning {
+    border: 1px solid @AknOrange;
+    background: lighten(@AknOrange, 30%);
+    color: darken(@AknOrange, 15%);
+  }
+
+  &--warning &-icon {
+    background: @AknOrange;
   }
 }

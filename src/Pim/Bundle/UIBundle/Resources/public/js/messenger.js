@@ -15,16 +15,16 @@ function ($, _, flash_message_template) {
     var queue = [];
     var storageKey = 'flash';
     var icons = {
-        '': 'icon-warning-orangelight.svg',
+        '': 'icon-infos.svg',
         'success': 'icon-check.svg',
-        'danger': 'icon-warning-redlight.svg',
-        'error': 'icon-warning-redlight.svg'
+        'error': 'icon-warning-redlight.svg',
+        'warning': 'icon-warning-orangelight.svg'
     };
     var closeIcons = {
-        '': 'icon-delete-orangedark.svg',
+        '': 'icon-delete-bluedark.svg',
         'success': 'icon-delete-greendark.svg',
-        'danger': 'icon-delete-reddark.svg',
-        'error': 'icon-delete-reddark.svg'
+        'error': 'icon-delete-reddark.svg',
+        'warning': 'icon-delete-orangedark.svg'
     };
 
     /**
@@ -44,9 +44,9 @@ function ($, _, flash_message_template) {
         var actions = {
             close: _.bind($el.alert, $el, 'close')
         };
-        // if (delay) {
-        //     _.delay(actions.close, delay);
-        // }
+        if (delay) {
+            _.delay(actions.close, delay);
+        }
         return actions;
     };
 
