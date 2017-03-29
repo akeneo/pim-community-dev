@@ -14,6 +14,7 @@ use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -22,9 +23,10 @@ class AttributeUpdaterSpec extends ObjectBehavior
     function let(
         AttributeGroupRepositoryInterface $attrGroupRepo,
         LocaleRepositoryInterface $localeRepository,
-        AttributeTypeRegistry $registry
+        AttributeTypeRegistry $registry,
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($attrGroupRepo, $localeRepository, $registry);
+        $this->beConstructedWith($attrGroupRepo, $localeRepository, $registry, $eventDispatcher);
     }
 
     function it_is_initializable()

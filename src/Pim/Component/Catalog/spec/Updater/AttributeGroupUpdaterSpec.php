@@ -9,16 +9,19 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AttributeGroupUpdaterSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        AttributeGroupRepositoryInterface $attributeGroupRepository
+        AttributeGroupRepositoryInterface $attributeGroupRepository,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->beConstructedWith(
             $attributeRepository,
-            $attributeGroupRepository
+            $attributeGroupRepository,
+            $eventDispatcher
         );
     }
 

@@ -22,6 +22,16 @@ final class ProductEvents
     const CREATE = 'pim_catalog.create_product';
 
     /**
+     * This event is dispatched each time a product has been updated
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const POST_UPDATE = 'pim_catalog.post_update.product';
+
+    /**
      * This event is thrown before several products get removed
      *
      * The event listener receives an

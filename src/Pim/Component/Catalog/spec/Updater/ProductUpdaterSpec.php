@@ -8,18 +8,24 @@ use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
 use Pim\Component\Catalog\Updater\ProductUpdater;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class ProductUpdaterSpec extends ObjectBehavior
 {
     function let(
         PropertySetterInterface $propertySetter,
-        ProductTemplateUpdaterInterface $templateUpdater
+        ProductTemplateUpdaterInterface $templateUpdater,
+        EventDispatcher $eventDispatcher
     ) {
         $this->beConstructedWith(
             $propertySetter,
             $templateUpdater,
+            $eventDispatcher,
             ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations'],
             ['identifier', 'created', 'updated']
         );
@@ -226,5 +232,12 @@ class ProductUpdaterSpec extends ObjectBehavior
                 )
             )
             ->during('update', [$product, $updates, []]);
+    }
+
+    function it_dispatches_post_update_event_after_updating_product($eventDispatcher, ProductInterface $product)
+    {
+        $eventDispatcher->dispatch(ProductEvents::POST_UPDATE, Argument::type(GenericEvent::class))->shouldBeCalled();
+
+        $this->update($product, [], []);
     }
 }

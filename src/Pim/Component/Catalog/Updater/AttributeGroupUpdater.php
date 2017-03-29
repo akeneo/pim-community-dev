@@ -7,10 +7,13 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Event\AttributeGroupEvents;
 use Pim\Component\Catalog\Manager\AttributeGroupManager;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Updates an attribute group
@@ -27,16 +30,22 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
     /** @var AttributeGroupManager */
     protected $attributeGroupRepository;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
      * @param AttributeGroupRepositoryInterface     $attributeGroupRepository
+     * @param EventDispatcherInterface              $eventDispatcher
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        AttributeGroupRepositoryInterface $attributeGroupRepository
+        AttributeGroupRepositoryInterface $attributeGroupRepository,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->attributeGroupRepository = $attributeGroupRepository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -65,6 +74,8 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
         foreach ($data as $field => $value) {
             $this->setData($attributeGroup, $field, $value);
         }
+
+        $this->eventDispatcher->dispatch(AttributeGroupEvents::POST_UPDATE, new GenericEvent($attributeGroup));
 
         return $this;
     }

@@ -19,6 +19,7 @@ use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 class FamilyUpdaterSpec extends ObjectBehavior
@@ -28,14 +29,16 @@ class FamilyUpdaterSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $attrRequiFactory,
-        AttributeRequirementRepositoryInterface $attributeRequirementRepo
+        AttributeRequirementRepositoryInterface $attributeRequirementRepo,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->beConstructedWith(
             $familyRepository,
             $attributeRepository,
             $channelRepository,
             $attrRequiFactory,
-            $attributeRequirementRepo
+            $attributeRequirementRepo,
+            $eventDispatcher
         );
     }
 

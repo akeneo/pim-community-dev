@@ -8,7 +8,10 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Event\ChannelEvents;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Updates a channel
@@ -34,25 +37,31 @@ class ChannelUpdater implements ObjectUpdaterInterface
     /** @var MeasureManager */
     protected $measureManager;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $categoryRepository
      * @param IdentifiableObjectRepositoryInterface $localeRepository
      * @param IdentifiableObjectRepositoryInterface $currencyRepository
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
      * @param MeasureManager                        $measureManager
+     * @param EventDispatcherInterface              $eventDispatcher
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $categoryRepository,
         IdentifiableObjectRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $currencyRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        MeasureManager $measureManager
+        MeasureManager $measureManager,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->localeRepository = $localeRepository;
         $this->currencyRepository = $currencyRepository;
         $this->attributeRepository = $attributeRepository;
         $this->measureManager = $measureManager;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -83,6 +92,8 @@ class ChannelUpdater implements ObjectUpdaterInterface
         foreach ($data as $field => $value) {
             $this->setData($channel, $field, $value);
         }
+
+        $this->eventDispatcher->dispatch(ChannelEvents::POST_UPDATE, new GenericEvent($channel));
 
         return $this;
     }

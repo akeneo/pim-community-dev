@@ -10,6 +10,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Event\FamilyEvents;
 use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
@@ -18,6 +19,8 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -49,19 +52,24 @@ class FamilyUpdater implements ObjectUpdaterInterface
     /** @var AttributeRequirementRepositoryInterface */
     protected $requirementRepo;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /**
      * @param IdentifiableObjectRepositoryInterface   $familyRepository
      * @param AttributeRepositoryInterface            $attributeRepository
      * @param ChannelRepositoryInterface              $channelRepository
      * @param AttributeRequirementFactory             $attrRequiFactory
      * @param AttributeRequirementRepositoryInterface $requirementRepo
+     * @param EventDispatcherInterface                $eventDispatcher
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $attrRequiFactory,
-        AttributeRequirementRepositoryInterface $requirementRepo
+        AttributeRequirementRepositoryInterface $requirementRepo,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->accessor = PropertyAccess::createPropertyAccessor();
         $this->familyRepository = $familyRepository;
@@ -69,6 +77,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
         $this->channelRepository = $channelRepository;
         $this->attrRequiFactory = $attrRequiFactory;
         $this->requirementRepo = $requirementRepo;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -87,6 +96,8 @@ class FamilyUpdater implements ObjectUpdaterInterface
             $this->validateDataType($field, $value);
             $this->setData($family, $field, $value);
         }
+
+        $this->eventDispatcher->dispatch(FamilyEvents::POST_UPDATE, new GenericEvent($family));
 
         return $this;
     }

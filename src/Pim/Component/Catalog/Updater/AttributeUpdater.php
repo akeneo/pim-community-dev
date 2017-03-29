@@ -9,10 +9,13 @@ use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\AttributeTypeRegistry;
+use Pim\Component\Catalog\Event\AttributeEvents;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -38,19 +41,25 @@ class AttributeUpdater implements ObjectUpdaterInterface
     /** @var PropertyAccessor */
     protected $accessor;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /**
      * @param AttributeGroupRepositoryInterface $attrGroupRepo
      * @param LocaleRepositoryInterface         $localeRepository
      * @param AttributeTypeRegistry             $registry
+     * @param EventDispatcherInterface          $eventDispatcher
      */
     public function __construct(
         AttributeGroupRepositoryInterface $attrGroupRepo,
         LocaleRepositoryInterface $localeRepository,
-        AttributeTypeRegistry $registry
+        AttributeTypeRegistry $registry,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->attrGroupRepo = $attrGroupRepo;
         $this->localeRepository = $localeRepository;
         $this->registry = $registry;
+        $this->eventDispatcher = $eventDispatcher;
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
@@ -70,6 +79,8 @@ class AttributeUpdater implements ObjectUpdaterInterface
             $this->validateDataType($field, $value);
             $this->setData($attribute, $field, $value);
         }
+
+        $this->eventDispatcher->dispatch(AttributeEvents::POST_UPDATE, new GenericEvent($attribute));
 
         return $this;
     }
