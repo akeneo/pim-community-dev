@@ -50,11 +50,23 @@ Feature: Edit common attributes of many products at once
     And I choose the "Edit common attributes" operation
     And I display the Name attribute
     And I change the "Name" to "boots"
+    Then I should see a remove link next to the "Name" field
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the english name of "boots" should be "boots"
     And the english name of "sandals" should be "boots"
     And the english name of "sneakers" should be "boots"
+
+  Scenario: Successfully remove product attribute fields
+    Given I select rows boots, sandals and sneakers
+    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I choose the "Edit common attributes" operation
+    And I display the Name attribute
+    Then I should see a remove link next to the "Name" field
+    When I remove the "Name" attribute
+    Then I should not see the "Name" field
+    Then I should not see a remove link next to the "Name" field
+    And I move on to the next step
 
   Scenario: Successfully update many multi-valued values at once
     Given I select rows boots and sneakers
