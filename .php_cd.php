@@ -42,8 +42,15 @@ $cAkeneoRules = [
         ]),
         RuleInterface::TYPE_ONLY
     ),
-/*    new Rule('Akeneo\Component\Console', $cDeps, RuleInterface::TYPE_ONLY, 'have no real existence, should be merged into Batch'),
-      new Rule(
+    new Rule(
+        'Akeneo\Component\Console',
+        array_merge($cDeps, [
+            'Symfony\Component\Process' // used in CommandLauncher
+        ]),
+        RuleInterface::TYPE_ONLY,
+        'this component have no real existence, it should be merged into Batch'
+    ),
+/*      new Rule(
         'Akeneo\Component\FileStorage',
         array_merge($cDeps, [
             'League\Flysystem',  // used as base file storage system
