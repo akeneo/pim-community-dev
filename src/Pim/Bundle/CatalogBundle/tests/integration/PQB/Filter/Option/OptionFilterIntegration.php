@@ -20,6 +20,8 @@ class OptionFilterIntegration extends AbstractFilterTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
+            $this->resetIndex();
+
             $this->createAttributeOption([
                'attribute' => 'a_simple_select',
                'code'      => 'orange'

@@ -44,6 +44,12 @@ mappings:
                     match_mapping_type: 'string'
                     mapping:
                         type: 'double'
+            -
+                option:
+                    path_match: 'values.*-option.*'
+                    match_mapping_type: 'string'
+                    mapping:
+                        type: 'keyword'
 
 settings:
     analysis:

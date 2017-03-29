@@ -18,6 +18,7 @@ parameters:
     pim_catalog.query.elasticsearch.filter.number.class:          Pim\Bundle\CatalogBundle\Elasticsearch\Filter\NumberFilter
     pim_catalog.query.elasticsearch.filter.text.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\TextFilter
     pim_catalog.query.elasticsearch.filter.text_area.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\TextAreaFilter
+    pim_catalog.query.elasticsearch.filter.option.class:          Pim\Bundle\CatalogBundle\Elasticsearch\Filter\OptionFilter
 
 services:
     pim_catalog.query.product_query_builder_factory:
@@ -191,5 +192,15 @@ services:
             - '@pim_catalog.validator.helper.attribute'
             - ['pim_catalog_textarea']
             - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.option:
+        class: '%pim_catalog.query.elasticsearch.filter.option.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.repository.attribute_option'
+            - ['pim_catalog_simpleselect']
+            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }

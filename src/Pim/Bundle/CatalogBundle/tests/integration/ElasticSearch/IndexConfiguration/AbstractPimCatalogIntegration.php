@@ -103,14 +103,14 @@ abstract class AbstractPimCatalogIntegration extends TestCase
     /**
      * Checks that the products found are effectively expected
      *
-     * @param array $productsFound
-     * @param array $expectedProducts
+     * @param array $actualProductIdentifiers
+     * @param array $expectedProductIdentifiers
      */
-    protected function assertProducts(array $productsFound, array $expectedProducts)
+    protected function assertProducts(array $actualProductIdentifiers, array $expectedProductIdentifiers)
     {
-        $this->assertCount(count($expectedProducts), $productsFound);
-        foreach ($expectedProducts as $productExpected) {
-            $this->assertContains($productExpected, $productsFound);
-        }
+        sort($actualProductIdentifiers);
+        sort($expectedProductIdentifiers);
+
+        $this->assertSame($actualProductIdentifiers, $expectedProductIdentifiers);
     }
 }
