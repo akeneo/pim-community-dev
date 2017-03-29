@@ -6,7 +6,9 @@
 - PIM-6265: Fix user menu navigation
 - GITHUB-5307: Fix sort order in field "Attribute group"
 - PIM-6240: Display the code instead of undefined if channel's locale is not filled for the given locale
+- PIM-6071: Hide add option icon for non-editable fields
 - PIM-6273: Enable removing attributes in mass edit products form
+- PIM-6277: Display channel labels in completeness tab
 
 # 1.7.1 (2017-03-23)
 
