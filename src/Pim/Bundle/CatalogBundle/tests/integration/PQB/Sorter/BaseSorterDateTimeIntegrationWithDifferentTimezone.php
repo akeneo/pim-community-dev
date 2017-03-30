@@ -12,7 +12,7 @@ use Pim\Component\Catalog\Query\Sorter\Directions;
  */
 class BaseSorterDateTimeIntegration extends AbstractProductQueryBuilderTestCase
 {
-    static $timezone;
+    public static $timezone;
 
     /**
      * {@inheritdoc}

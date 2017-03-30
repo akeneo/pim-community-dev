@@ -65,7 +65,7 @@ class NumberFilterIntegration extends AbstractProductQueryBuilderTestCase
         $result = $this->executeFilter([['a_number_float_negative', Operators::LOWER_OR_EQUAL_THAN, 19]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([['a_number_float_negative', Operators::LOWER_OR_EQUAL_THAN, '19']]);
+        $result = $this->executeFilter([['a_number_float_negative', Operators::LOWER_OR_EQUAL_THAN, '19']]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
@@ -77,7 +77,7 @@ class NumberFilterIntegration extends AbstractProductQueryBuilderTestCase
         $result = $this->executeFilter([['a_number_float_negative', Operators::EQUALS, -15.5]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_number_float_negative', Operators::EQUALS, '-15.5']]);
+        $result = $this->executeFilter([['a_number_float_negative', Operators::EQUALS, '-15.5']]);
         $this->assert($result, ['product_one']);
     }
 
@@ -98,13 +98,13 @@ class NumberFilterIntegration extends AbstractProductQueryBuilderTestCase
         $result = $this->executeFilter([['a_number_float_negative', Operators::GREATER_OR_EQUAL_THAN, -15.5]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([['a_number_float_negative', Operators::GREATER_OR_EQUAL_THAN, 19]]);
+        $result = $this->executeFilter([['a_number_float_negative', Operators::GREATER_OR_EQUAL_THAN, 19]]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([['a_number_float_negative', Operators::GREATER_OR_EQUAL_THAN, 19.0001]]);
+        $result = $this->executeFilter([['a_number_float_negative', Operators::GREATER_OR_EQUAL_THAN, 19.0001]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_number_float_negative', Operators::GREATER_OR_EQUAL_THAN, '19']]);
+        $result = $this->executeFilter([['a_number_float_negative', Operators::GREATER_OR_EQUAL_THAN, '19']]);
         $this->assert($result, ['product_two']);
     }
 
@@ -128,10 +128,10 @@ class NumberFilterIntegration extends AbstractProductQueryBuilderTestCase
         $result = $this->executeFilter([['a_number_float_negative', Operators::NOT_EQUAL, '-15.5']]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([['a_number_float_negative', Operators::NOT_EQUAL, 15.5]]);
+        $result = $this->executeFilter([['a_number_float_negative', Operators::NOT_EQUAL, 15.5]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([['a_number_float_negative', Operators::NOT_EQUAL, -15.5]]);
+        $result = $this->executeFilter([['a_number_float_negative', Operators::NOT_EQUAL, -15.5]]);
         $this->assert($result, ['product_two']);
     }
 
