@@ -55,9 +55,7 @@ class Category implements ArrayConverterInterface
 
         $convertedItem = ['labels' => []];
         foreach ($item as $field => $data) {
-            if ('' !== $data) {
-                $convertedItem = $this->convertField($convertedItem, $field, $data);
-            }
+            $convertedItem = $this->convertField($convertedItem, $field, $data);
         }
 
         return $convertedItem;
@@ -76,10 +74,10 @@ class Category implements ArrayConverterInterface
             $labelTokens = explode('-', $field);
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
-        } elseif ('code' === $field) {
+        } elseif ('code' === $field && '' !== $data) {
             $convertedItem[$field] = (string) $data;
-        } elseif ('parent' === $field) {
-            $convertedItem[$field] = '' === $data ? null : $data;
+        } elseif ('parent' === $field && '' !== $data) {
+            $convertedItem[$field] = $data;
         }
 
         return $convertedItem;

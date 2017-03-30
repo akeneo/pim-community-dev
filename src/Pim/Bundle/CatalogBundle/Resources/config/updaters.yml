@@ -115,6 +115,7 @@ services:
             - '@pim_catalog.repository.attribute_group'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.registry.attribute_type'
+            - '@pim_localization.updater.translatable'
 
     pim_catalog.updater.category:
         class: '%akeneo_classification.updater.category.class%'
@@ -137,6 +138,7 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.factory.attribute_requirement'
             - '@pim_catalog.repository.attribute_requirement'
+            - '@pim_localization.updater.translatable'
 
     pim_catalog.updater.channel:
         class: '%pim_catalog.updater.channel.class%'
