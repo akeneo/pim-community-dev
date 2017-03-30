@@ -79,6 +79,8 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param options
          */
         initialize: function(models, options) {
+            this.state = {};
+
             options = options || {};
             if (options.state) {
                 if (options.state.sorters) {
