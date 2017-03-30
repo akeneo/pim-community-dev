@@ -137,7 +137,18 @@ abstract class AbstractAddSelectDecorator extends ElementDecorator implements Ad
      */
     protected function addSelectedItems()
     {
-        $this->find('css', '.ui-multiselect-footer button')->press();
+        $this->spin(function () {
+            $multiselectButtons = $this->findAll('css', '.ui-multiselect-footer button');
+
+            foreach ($multiselectButtons as $button) {
+                if ($button->isVisible()) {
+                    return $button;
+                }
+            }
+
+            return null;
+        }, 'Can not find any multiselect apply button')->press();
+
 
         return $this;
     }
