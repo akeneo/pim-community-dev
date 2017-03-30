@@ -67,7 +67,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $attrRequiFactory,
         AttributeRequirementRepositoryInterface $requirementRepo,
-        TranslatableUpdater $translatableUpdater = null
+        TranslatableUpdater $translatableUpdater
     ) {
         $this->accessor = PropertyAccess::createPropertyAccessor();
         $this->familyRepository = $familyRepository;
