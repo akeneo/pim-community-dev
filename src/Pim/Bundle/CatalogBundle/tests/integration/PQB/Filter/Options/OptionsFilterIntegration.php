@@ -20,6 +20,8 @@ class OptionsFilterIntegration extends AbstractFilterTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
+            $this->resetIndex();
+
             $this->createAttributeOption([
                'attribute' => 'a_multi_select',
                'code'      => 'orange'
@@ -99,7 +101,7 @@ class OptionsFilterIntegration extends AbstractFilterTestCase
 
     /**
      * @expectedException \Pim\Component\Catalog\Exception\ObjectNotFoundException
-     * @expectedExceptionMessage Object "option" with code "NOT_FOUND" does not exist
+     * @expectedExceptionMessage Object "options" with code "NOT_FOUND" does not exist
      */
     public function testErrorOptionNotFound()
     {

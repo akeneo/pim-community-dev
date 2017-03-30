@@ -21,6 +21,8 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
+            $this->resetIndex();
+
             $this->createAttribute([
                 'code'                => 'a_localizable_multi_select',
                 'type'                => AttributeTypes::OPTION_MULTI_SELECT,

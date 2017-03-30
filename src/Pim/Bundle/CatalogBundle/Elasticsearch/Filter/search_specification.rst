@@ -933,21 +933,18 @@ Sorting will be done on the localized label:
 
 Options
 *******
-:Apply: pim_catalog_multiselect attributes
+:Apply: apply on the 'pim_catalog_multiselect' attributes
 
 Data model
 ~~~~~~~~~~
-.. code-block:: yaml
+.. code-block:: php
 
-  compatibility-options:
-    -
-          id:2
-          label-en_US:"Windows OS"
-          label-fr_FR:"Système Windows"
-    -
-          id:4
-          label-en_US:"MacOSX OS"
-          label-fr_FR:"Système MacOSX"
+  values => [
+      'my-tags-options' => [
+          'mobile' => [
+              'fr_FR' => ['summer', 'winter']
+          ]
+  ]
 
 Filtering
 ~~~~~~~~~
@@ -958,19 +955,52 @@ IN
 ""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    terms:
-        compatibility-options.id : [5, 6, 7]
+    'terms' => [
+        'values.my-tags-options.mobile.fr_FR' => ['summer']
+    ]
 
-EMPTY
-"""""
+NOT IN
+""""""
+:Type: must_not
+
+.. code-block:: php
+
+    'query' => [
+        'bool' => [
+            'filter' => [
+                'exists' => [
+                    'field' => 'values.my-tags-options.mobile.fr_FR'
+                ]
+            ],
+            'must_not' => [
+                'terms' => [
+                    'values.my-tags-options.mobile.fr_FR' => ['summer']
+                ]
+            ]
+        ]
+    ]
+
+IS EMPTY
+""""""""
+:Type: must_not
+
+.. code-block:: php
+
+    'exists' => [
+        'field' => 'values.my-tags-options.mobile.fr_FR'
+    ]
+
+IS NOT EMPTY
+""""""""""""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    missing:
-        field: "compatibility-options"
+    'exists' => [
+        'field' => 'values.my-tags-options.mobile.fr_FR'
+    ]
 
 Sorting
 ~~~~~~~

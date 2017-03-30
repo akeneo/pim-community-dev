@@ -133,7 +133,7 @@ class ProductIndexingIntegration extends TestCase
                 ],
                 'a_multi_select-options'                         => [
                     '<all_channels>' => [
-                        '<all_locales>' => null,
+                        '<all_locales>' => ['optionA', 'optionB'],
                     ],
                 ],
                 'a_number_float-decimal'                         => [

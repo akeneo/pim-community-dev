@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 
 /**
- * Product value for "pim_catalog_options" attribute type
+ * Product value for "pim_catalog_multiselect" attribute type
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

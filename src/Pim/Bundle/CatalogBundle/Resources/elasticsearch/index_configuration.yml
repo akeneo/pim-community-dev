@@ -50,6 +50,12 @@ mappings:
                     match_mapping_type: 'string'
                     mapping:
                         type: 'keyword'
+            -
+                options:
+                    path_match: 'values.*-options.*'
+                    match_mapping_type: 'string'
+                    mapping:
+                        type: 'keyword'
 
 settings:
     analysis:
