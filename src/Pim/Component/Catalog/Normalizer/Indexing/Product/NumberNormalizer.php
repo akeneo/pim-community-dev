@@ -24,8 +24,9 @@ class NumberNormalizer extends AbstractProductValueNormalizer implements Normali
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductValueInterface && AttributeTypes::BACKEND_TYPE_DECIMAL === $data->getAttribute()->getBackendType()
-            && 'indexing' === $format;
+        return $data instanceof ProductValueInterface &&
+            AttributeTypes::BACKEND_TYPE_DECIMAL === $data->getAttribute()->getBackendType() &&
+            'indexing' === $format;
     }
 
     /**

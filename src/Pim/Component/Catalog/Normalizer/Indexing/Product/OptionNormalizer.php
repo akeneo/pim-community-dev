@@ -3,8 +3,8 @@
 namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\ProductValue\OptionProductValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -31,6 +31,11 @@ class OptionNormalizer extends AbstractProductValueNormalizer implements Normali
      */
     protected function getNormalizedData(ProductValueInterface $productValue)
     {
-        return $productValue->getData()->getCode();
+        $data = $productValue->getData();
+        if ($data instanceof AttributeOptionInterface) {
+            return $data->getCode();
+        }
+
+        return null;
     }
 }

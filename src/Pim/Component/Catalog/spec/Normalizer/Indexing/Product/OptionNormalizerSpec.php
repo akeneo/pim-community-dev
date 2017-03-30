@@ -42,10 +42,9 @@ class OptionNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($optionValue, 'indexing')->shouldReturn(true);
     }
 
-    function it_normalize_an_option_product_value_with_no_locale_and_no_channel(
+    function it_normalize_an_empty_option_product_value(
         ProductValueInterface $optionValue,
-        AttributeInterface $optionAttribute,
-        AttributeOptionInterface $colorValue
+        AttributeInterface $optionAttribute
     ) {
         $optionValue->getAttribute()->willReturn($optionAttribute);
         $optionAttribute->getBackendType()->willReturn('option');
@@ -55,8 +54,34 @@ class OptionNormalizerSpec extends ObjectBehavior
 
         $optionAttribute->getCode()->willReturn('color');
 
-        $optionValue->getData()->willReturn($colorValue);
-        $colorValue->getCode()->willReturn('red');
+        $optionValue->getData()->willReturn(null);
+
+        $this->normalize($optionValue, 'indexing')->shouldReturn(
+            [
+                'color-option' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => null,
+                    ],
+                ],
+            ]
+        );
+    }
+
+    function it_normalize_an_option_product_value_with_no_locale_and_no_channel(
+        ProductValueInterface $optionValue,
+        AttributeInterface $optionAttribute,
+        AttributeOptionInterface $color
+    ) {
+        $optionValue->getAttribute()->willReturn($optionAttribute);
+        $optionAttribute->getBackendType()->willReturn('option');
+
+        $optionValue->getLocale()->willReturn(null);
+        $optionValue->getScope()->willReturn(null);
+
+        $optionAttribute->getCode()->willReturn('color');
+
+        $optionValue->getData()->willReturn($color);
+        $color->getCode()->willReturn('red');
 
         $this->normalize($optionValue, 'indexing')->shouldReturn(
             [
@@ -72,7 +97,7 @@ class OptionNormalizerSpec extends ObjectBehavior
     function it_normalizes_an_option_product_value_with_locale(
         ProductValueInterface $optionValue,
         AttributeInterface $optionAttribute,
-        AttributeOptionInterface $colorValue
+        AttributeOptionInterface $color
     ) {
         $optionValue->getAttribute()->willReturn($optionAttribute);
         $optionAttribute->getBackendType()->willReturn('option');
@@ -82,8 +107,8 @@ class OptionNormalizerSpec extends ObjectBehavior
 
         $optionAttribute->getCode()->willReturn('color');
 
-        $optionValue->getData()->willReturn($colorValue);
-        $colorValue->getCode()->willReturn('red');
+        $optionValue->getData()->willReturn($color);
+        $color->getCode()->willReturn('red');
 
         $this->normalize($optionValue, 'indexing')->shouldReturn(
             [
@@ -99,7 +124,7 @@ class OptionNormalizerSpec extends ObjectBehavior
     function it_normalizes_an_option_product_value_with_channel(
         ProductValueInterface $optionValue,
         AttributeInterface $optionAttribute,
-        AttributeOptionInterface $colorValue
+        AttributeOptionInterface $color
     ) {
         $optionValue->getAttribute()->willReturn($optionAttribute);
         $optionAttribute->getBackendType()->willReturn('option');
@@ -109,8 +134,8 @@ class OptionNormalizerSpec extends ObjectBehavior
 
         $optionAttribute->getCode()->willReturn('color');
 
-        $optionValue->getData()->willReturn($colorValue);
-        $colorValue->getCode()->willReturn('red');
+        $optionValue->getData()->willReturn($color);
+        $color->getCode()->willReturn('red');
 
         $this->normalize($optionValue, 'indexing')->shouldReturn(
             [
@@ -126,7 +151,7 @@ class OptionNormalizerSpec extends ObjectBehavior
     function it_normalizes_an_option_product_value_with_locale_and_channel(
         ProductValueInterface $optionValue,
         AttributeInterface $optionAttribute,
-        AttributeOptionInterface $colorValue
+        AttributeOptionInterface $color
     ) {
         $optionValue->getAttribute()->willReturn($optionAttribute);
         $optionAttribute->getBackendType()->willReturn('option');
@@ -136,8 +161,8 @@ class OptionNormalizerSpec extends ObjectBehavior
 
         $optionAttribute->getCode()->willReturn('color');
 
-        $optionValue->getData()->willReturn($colorValue);
-        $colorValue->getCode()->willReturn('red');
+        $optionValue->getData()->willReturn($color);
+        $color->getCode()->willReturn('red');
 
         $this->normalize($optionValue, 'indexing')->shouldReturn(
             [
