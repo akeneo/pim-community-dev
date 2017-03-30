@@ -187,6 +187,13 @@ class ProductStandardIntegration extends TestCase
                             'data'   => 'this is a text',
                         ],
                     ],
+                    '123'                                => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => 'a text for an attribute with numerical code',
+                        ],
+                    ],
                     'a_text_area'                        => [
                         [
                             'locale' => null,

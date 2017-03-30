@@ -194,6 +194,11 @@ class ProductIndexingIntegration extends TestCase
                         '<all_locales>' => 'this is a text',
                     ],
                 ],
+                '123-varchar'                                    => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'a text for an attribute with numerical code',
+                    ],
+                ],
                 'a_text_area-text'                               => [
                     '<all_channels>' => [
                         '<all_locales>' => 'this is a very very very very very long  text',

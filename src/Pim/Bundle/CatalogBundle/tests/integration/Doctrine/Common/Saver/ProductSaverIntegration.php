@@ -183,6 +183,13 @@ class ProductSaverIntegration extends TestCase
                         'data'   => 'this is a text',
                     ],
                 ],
+                '123'                                => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'a text for an attribute with numerical code',
+                    ],
+                ],
                 'a_text_area' => [
                     [
                         'locale' => null,
@@ -374,6 +381,11 @@ class ProductSaverIntegration extends TestCase
             'a_text' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'this is a text',
+                ],
+            ],
+            '123'    => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'a text for an attribute with numerical code',
                 ],
             ],
             'a_text_area' => [

@@ -79,6 +79,8 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
 
         $textValue->getAttribute()->willReturn($textAttribute);
         $descriptionEcommerceFrValue->getAttribute()->willReturn($descriptionAttribute);
+        $descriptionEcommerceEnValue->getAttribute()->willReturn($descriptionAttribute);
+        $descriptionPrintFrValue->getAttribute()->willReturn($descriptionAttribute);
 
         $textAttribute->getCode()->willReturn('text');
         $descriptionAttribute->getCode()->willReturn('description');

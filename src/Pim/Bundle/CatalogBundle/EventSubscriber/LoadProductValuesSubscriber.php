@@ -88,7 +88,10 @@ class LoadProductValuesSubscriber implements EventSubscriber
         );
         $identifierRawValue = $this->getSerializer()->normalize($identifierValue, 'storage');
 
-        $rawValues = array_merge($identifierRawValue, $product->getRawValues());
+        $rawValues = $product->getRawValues();
+        $identifierCode = $identifierValue->getAttribute()->getCode();
+        $rawValues[$identifierCode] = $identifierRawValue[$identifierCode];
+
         $values = $this->getProductValueCollectionFactory()->createFromStorageFormat($rawValues);
         $product->setValues($values);
     }

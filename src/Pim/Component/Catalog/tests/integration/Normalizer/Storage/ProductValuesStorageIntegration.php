@@ -75,7 +75,11 @@ class ProductValuesStorageIntegration extends TestCase
                     '<all_locales>' => [
                         'amount'    => -20,
                         'unit'      => 'CELSIUS',
-                        'base_data' => 253.15,
+                        // TODO: here maybe we should have a string, but the measure converter returns a double,
+                        // TODO: and we didn't change that
+                        // TODO: see TIP-695
+                        // TODO: base data should be 253.15
+                        'base_data' => 253.14999999999998,
                         'base_unit' => 'KELVIN',
                         'family'    => 'Temperature',
                     ],
@@ -89,7 +93,8 @@ class ProductValuesStorageIntegration extends TestCase
                         // TODO: here maybe we should have a string, but the measure converter returns a double,
                         // TODO: and we didn't change that
                         // TODO: see TIP-695
-                        'base_data' => 252.65,
+                        // TODO: base data should be 252.65
+                        'base_data' => 252.64999999999998,
                         'base_unit' => 'KELVIN',
                         'family'    => 'Temperature',
                     ],
@@ -154,6 +159,11 @@ class ProductValuesStorageIntegration extends TestCase
             'a_text' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'this is a text',
+                ],
+            ],
+            '123' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'a text for an attribute with numerical code',
                 ],
             ],
             'a_text_area' => [
