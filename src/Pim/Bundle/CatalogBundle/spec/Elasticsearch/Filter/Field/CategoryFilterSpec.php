@@ -1,13 +1,16 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter;
+namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
+use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CategoryFilter;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
+use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 class CategoryFilterSpec extends ObjectBehavior
@@ -20,13 +23,13 @@ class CategoryFilterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter');
+        $this->shouldHaveType(CategoryFilter::class);
     }
 
     function it_is_a_fieldFilter()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Query\Filter\FieldFilterInterface');
-        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Elasticsearch\Filter\AbstractFieldFilter');
+        $this->shouldImplement(FieldFilterInterface::class);
+        $this->shouldBeAnInstanceOf(AbstractFieldFilter::class);
     }
 
     function it_supports_categories_field()
@@ -164,7 +167,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::arrayExpected(
                 'categories',
-                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter',
+                CategoryFilter::class,
                 'NOT_AN_ARRAY'
             )
         )->during('addFieldFilter', ['categories', Operators::IN_LIST, 'NOT_AN_ARRAY', null, null, []]);
@@ -177,7 +180,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::arrayExpected(
                 'categories',
-                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter',
+                CategoryFilter::class,
                 'NOT_AN_ARRAY'
             )
         )->during('addFieldFilter', ['categories', Operators::NOT_IN_LIST, 'NOT_AN_ARRAY', null, null, []]);
@@ -190,7 +193,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::arrayExpected(
                 'categories',
-                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter',
+                CategoryFilter::class,
                 'NOT_AN_ARRAY'
             )
         )->during('addFieldFilter', ['categories', Operators::NOT_IN_CHILDREN_LIST, 'NOT_AN_ARRAY', null, null, []]);
@@ -203,7 +206,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::arrayExpected(
                 'categories',
-                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter',
+                CategoryFilter::class,
                 'NOT_AN_ARRAY'
             )
         )->during('addFieldFilter', ['categories', Operators::IN_CHILDREN_LIST, 'NOT_AN_ARRAY', null, null, []]);
@@ -216,7 +219,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::arrayExpected(
                 'categories',
-                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter',
+                CategoryFilter::class,
                 'NOT_AN_ARRAY'
             )
         )->during('addFieldFilter', ['categories', Operators::IN_LIST_OR_UNCLASSIFIED, 'NOT_AN_ARRAY', null, null, []]);
@@ -229,7 +232,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->shouldNotThrow(
             InvalidPropertyTypeException::arrayExpected(
                 'categories',
-                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter',
+                CategoryFilter::class,
                 'NOT_AN_ARRAY'
             )
         )->during('addFieldFilter', ['categories', Operators::UNCLASSIFIED, 'NOT_AN_ARRAY', null, null, []]);
@@ -242,7 +245,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::stringExpected(
                 'categories',
-                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter',
+                CategoryFilter::class,
                 false
             )
         )->during('addFieldFilter', ['categories', Operators::IN_LIST, [false], null, null, []]);
@@ -255,7 +258,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidOperatorException::notSupported(
                 'CONTAINS',
-                'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\CategoryFilter'
+                CategoryFilter::class
             )
         )->during('addFieldFilter', ['categories', Operators::CONTAINS, ['t-shirt']]);
     }

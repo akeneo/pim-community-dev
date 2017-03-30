@@ -55,8 +55,8 @@ class TextAreaNormalizerSpec extends ObjectBehavior
 
         $this->normalize($textAreaValue, 'indexing')->shouldReturn([
             'name-text' => [
-                '<all_locales>' => [
-                    '<all_channels>' => 'a product name'
+                '<all_channels>' => [
+                    '<all_locales>' => 'a product name'
                 ]
             ]
         ]);
@@ -77,8 +77,8 @@ name\r\n");
 
         $this->normalize($textAreaValue, 'indexing')->shouldReturn([
             'name-text' => [
-                '<all_locales>' => [
-                    '<all_channels>' => 'a product name'
+                '<all_channels>' => [
+                    '<all_locales>' => 'a product name'
                 ]
             ]
         ]);
@@ -98,8 +98,8 @@ name\r\n");
 
         $this->normalize($textAreaValue, 'indexing')->shouldReturn([
             'name-text' => [
-                '<all_locales>' => [
-                    '<all_channels>' => 'a product name'
+                '<all_channels>' => [
+                    '<all_locales>' => 'a product name'
                 ]
             ]
         ]);
@@ -120,8 +120,8 @@ name\r\n");
 
         $this->normalize($textAreaValue, 'indexing')->shouldReturn([
             'name-text' => [
-                '<all_locales>' => [
-                    '<all_channels>' => 'a product name'
+                '<all_channels>' => [
+                    '<all_locales>' => 'a product name'
                 ]
             ]
         ]);
@@ -141,8 +141,8 @@ name\r\n");
 
         $this->normalize($textAreaValue, 'indexing')->shouldReturn([
             'name-text' => [
-                'fr_FR' => [
-                    '<all_channels>' => 'a product name'
+                '<all_channels>' => [
+                    'fr_FR' => 'a product name'
                 ]
             ]
         ]);
@@ -162,8 +162,8 @@ name\r\n");
 
         $this->normalize($textAreaValue, 'indexing')->shouldReturn([
             'name-text' => [
-                '<all_locales>' => [
-                    'ecommerce' => 'a product name'
+                'ecommerce' => [
+                    '<all_locales>' => 'a product name'
                 ]
             ]
         ]);
@@ -183,8 +183,8 @@ name\r\n");
 
         $this->normalize($textAreaValue, 'indexing')->shouldReturn([
             'name-text' => [
-                'fr_FR' => [
-                    'ecommerce' => 'a product name'
+                'ecommerce' => [
+                    'fr_FR' => 'a product name'
                 ]
             ]
         ]);

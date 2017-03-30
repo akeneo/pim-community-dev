@@ -163,8 +163,8 @@ Data model
     [
         'values' => [
             'my_description-text' => [
-                'fr_FR' => [
-                    'mobile' => 'My description'
+                'mobile' => [
+                    'fr_FR' => 'My description'
                 ]
             ]
         ]
@@ -187,7 +187,7 @@ STARTS WITH
 
     'filter' => [
         'query_string' => [
-            'default_field' => 'values.description-text.<all_locales>.<all_channels>.raw',
+            'default_field' => 'values.description-text.<all_channels>.<all_locales>.raw',
             'query' => "My*"
         ]
     ]
@@ -201,7 +201,7 @@ Example:
 
     'filter' => [
         'query_string' => [
-            'default_field' => 'values.description-text.<all_locales>.<all_channels>.raw',
+            'default_field' => 'values.description-text.<all_channels>.<all_locales>.raw',
             'query' => 'My\\ description*'
         ]
     ]
@@ -215,7 +215,7 @@ CONTAINS
 
     'filter' => [
         'query_string' => [
-            'default_field' => 'values.description-text.<all_locales>.<all_channels>.raw',
+            'default_field' => 'values.description-text.<all_channels>.<all_locales>.raw',
             'query' => '*cool\\ product*'
         ]
     ]
@@ -231,12 +231,12 @@ Same syntax than the ``contains`` but must be included in a ``must_not`` boolean
     'bool' => [
         'must_not' => [
             'query_string' => [
-                'default_field' => 'values.description-text.<all_locales>.<all_channels>.raw',
+                'default_field' => 'values.description-text.<all_channels>.<all_locales>.raw',
                 'query' => '*cool\\ product*'
             ]
         ],
         'filter' => [
-            'exists' => ['field' => 'values.description-text.<all_locales>.<all_channels>.raw'
+            'exists' => ['field' => 'values.description-text.<all_channels>.<all_locales>.raw'
         ]
     ]
 
@@ -251,7 +251,7 @@ Equals (=)
 
     'filter' => [
         'term' => [
-            'values.description-text.<all_locales>.<all_channels>.raw' => 'My full lookup text'
+            'values.description-text.<all_channels>.<all_locales>.raw' => 'My full lookup text'
         ]
     ]
 
@@ -266,12 +266,12 @@ Not Equals (!=)
 
     'must_not' => [
         'term' => [
-            'values.description-text.<all_locales>.<all_channels>.raw' => 'My full lookup text'
+            'values.description-text.<all_channels>.<all_locales>.raw' => 'My full lookup text'
         ]
     ],
     'filter' => [
         'exists' => [
-            'field' => 'values.description-text.<all_locales>.<all_channels>.raw'
+            'field' => 'values.description-text.<all_channels>.<all_locales>.raw'
         ]
     ]
 
@@ -282,7 +282,7 @@ EMPTY
 
     'must_not' => [
         'exists => [
-            'field' => 'values.description-text.<all_locales>.<all_channels>'
+            'field' => 'values.description-text.<all_channels>.<all_locales>'
         ]
     ]
 
@@ -293,7 +293,7 @@ NOT EMPTY
 
     'filter' => [
         'exists => [
-            'field' => 'values.description-text.<all_locales>.<all_channels>'
+            'field' => 'values.description-text.<all_channels>.<all_locales>'
         ]
     ]
 
@@ -554,8 +554,8 @@ Data model
 
   'values' => [
       'publishedOn-date' => [
-          '<all_locales>' => [
-              '<all_channels>' => '2015-02-24'
+          '<all_channels>' => [
+              '<all_locales>' => '2015-02-24'
           ]
       ]
   ]
@@ -571,7 +571,7 @@ Less than (<)
 .. code-block:: php
 
     'range' => [
-        'values.publishedOn-date.<all_locales>.<all_channels>' => [
+        'values.publishedOn-date.<all_channels>.<all_locales>' => [
             'lt' => '2015-02-26'
         ]
     ]
@@ -584,7 +584,7 @@ Equals (=)
 .. code-block:: php
 
     'term' => [
-        'values.publishedOn-date.<all_locales>.<all_channels>' => '2015-02-26'
+        'values.publishedOn-date.<all_channels>.<all_locales>' => '2015-02-26'
     ]
 
 NOT EQUAL (!=)
@@ -598,12 +598,12 @@ NOT EQUAL (!=)
             'bool' => [
                 'must_not' => [
                     'term' => [
-                        'values.publishedOn-date.<all_locales>.<all_channels>' => '2015-02-26'
+                        'values.publishedOn-date.<all_channels>.<all_locales>' => '2015-02-26'
                     ]
                 ],
                 'filter' => [
                     'exists' => [
-                        'field' => 'values.publishedOn-date.<all_locales>.<all_channels>'
+                        'field' => 'values.publishedOn-date.<all_channels>.<all_locales>'
                     ]
                 ]
             ]
@@ -618,7 +618,7 @@ BETWEEN
 
     'filter' => [
         'range' => [
-            'values.publishedOn-date.<all_locales>.<all_channels>' => [
+            'values.publishedOn-date.<all_channels>.<all_locales>' => [
                 'gte' => '2017-03-22',
                 'lte' => '2017-03-23'
             ],
@@ -636,13 +636,13 @@ NOT BETWEEN
         'bool' => [
             'must_not' => [
                 'range' => [
-                    'values.publishedOn-date.<all_locales>.<all_channels>' => [
+                    'values.publishedOn-date.<all_channels>.<all_locales>' => [
                         'gte' => '2017-03-22',
                         'lte' => '2017-03-23'
                     ],
                 ]
             ],
-            'filter' => ['exists' => 'values.publishedOn-date.<all_locales>.<all_channels>']
+            'filter' => ['exists' => 'values.publishedOn-date.<all_channels>.<all_locales>']
         ]
     ]
 
@@ -653,7 +653,7 @@ Greater than (>)
 .. code-block:: php
 
     'range' => [
-        'values.publishedOn-date.<all_locales>.<all_channels>' => [
+        'values.publishedOn-date.<all_channels>.<all_locales>' => [
             'gt' => '2015-02-26'
         ]
     ]
@@ -666,7 +666,7 @@ EMPTY
 
     'must_not' => [
         'exists' => [
-            'field' => 'values.publishedOn-date.<all_locales>.<all_channels>',
+            'field' => 'values.publishedOn-date.<all_channels>.<all_locales>',
         ]
     ]
 
@@ -682,7 +682,7 @@ Data model
 ~~~~~~~~~~
 .. code-block:: yaml
 
-  values.packet_count-decimal.<all_locales>.<all_channels>: 5
+  values.packet_count-decimal.<all_channels>.<all_locales>: 5
 
 Filtering
 ~~~~~~~~~
@@ -696,7 +696,7 @@ Less than (<)
 
     'filter' => [
         'range' => [
-            'values.packet_count-decimal.<all_locales>.<all_channels>' => ['lt' => 10]
+            'values.packet_count-decimal.<all_channels>.<all_locales>' => ['lt' => 10]
         ]
     ]
 
@@ -708,7 +708,7 @@ Less than or equals to (<=)
 
     'filter' => [
         'range' => [
-            'values.packet_count-decimal.<all_locales>.<all_channels>' => ['lte' => 10]
+            'values.packet_count-decimal.<all_channels>.<all_locales>' => ['lte' => 10]
         ]
     ]
 
@@ -720,7 +720,7 @@ Equals (=)
 
     'filter' => [
         'term' => [
-            'values.packet_count-decimal.<all_locales>.<all_channels>' => 5
+            'values.packet_count-decimal.<all_channels>.<all_locales>' => 5
         ]
     ]
 
@@ -735,12 +735,12 @@ Not Equal (!=)
             'bool' => [
                 'must_not' => [
                     'term' => [
-                        'values.packet_count-decimal.<all_locales>.<all_channels>' => 5
+                        'values.packet_count-decimal.<all_channels>.<all_locales>' => 5
                     ]
                 ],
                 'filter' => [
                     'exists' => [
-                        'field' => 'values.packet_count-decimal.<all_locales>.<all_channels>'
+                        'field' => 'values.packet_count-decimal.<all_channels>.<all_locales>'
                     ]
                 ]
             ]
@@ -756,7 +756,7 @@ Greater than or equal to (>=)
 
     'filter' => [
         'range' => [
-            'values.packet_count-decimal.<all_locales>.<all_channels>' => ['gte' => 10]
+            'values.packet_count-decimal.<all_channels>.<all_locales>' => ['gte' => 10]
         ]
     ]
 
@@ -768,7 +768,7 @@ Greater than (>)
 
     'filter' => [
         'range' => [
-            'values.packet_count-decimal.<all_locales>.<all_channels>' => ['gt' => 10]
+            'values.packet_count-decimal.<all_channels>.<all_locales>' => ['gt' => 10]
         ]
     ]
 
@@ -780,7 +780,7 @@ EMPTY
 
     'must_not' => [
         'exists' => [
-            'field' => 'values.packet_count-decimal.<all_locales>.<all_channels>'
+            'field' => 'values.packet_count-decimal.<all_channels>.<all_locales>'
         ]
     ]
 
@@ -792,7 +792,7 @@ NOT EMPTY
 
     'filter' => [
         'exists' => [
-            'field' => 'values.packet_count-decimal.<all_locales>.<all_channels>'
+            'field' => 'values.packet_count-decimal.<all_channels>.<all_locales>'
         ]
     ]
 
@@ -807,8 +807,8 @@ Data model
 
     'values' => [
         'color-option' => [
-            '<all_locales>' => [
-                '<all_channels>' => 'red'
+            '<all_channels>' => [
+                '<all_locales>' => 'red'
             ]
         ]
     ]
@@ -826,7 +826,7 @@ IN
 
     'filter' => [
         'terms' => [
-            'values.color-option.<all_locales>.<all_channels>' => ['red']
+            'values.color-option.<all_channels>.<all_locales>' => ['red']
         ]
     ]
 
@@ -838,7 +838,7 @@ EMPTY
 
     'must_not' => [
         'exists' => [
-            'field' => 'values.color-option.<all_locales>.<all_channels>'
+            'field' => 'values.color-option.<all_channels>.<all_locales>'
         ]
     ]
 
@@ -850,7 +850,7 @@ NOT EMPTY
 
     'filter' => [
         'exists' => [
-            'field' => 'values.color-option.<all_locales>.<all_channels>'
+            'field' => 'values.color-option.<all_channels>.<all_locales>'
         ]
     ]
 
@@ -864,12 +864,12 @@ NOT IN
         'bool' => [
             'must_not' => [
                 'terms' => [
-                    'values.color-option.<all_locales>.<all_channels>' => ['red']
+                    'values.color-option.<all_channels>.<all_locales>' => ['red']
                 ]
             ],
             'filter' => [
                 'exists' => [
-                    'field' => 'values.color-option.<all_locales>.<all_channels>'
+                    'field' => 'values.color-option.<all_channels>.<all_locales>'
                 ]
             ]
         ]
@@ -881,7 +881,7 @@ Sorting
 .. code-block:: php
 
     'sort' => [
-        'values.color-option.<all_locales>.<all_channels>' => [
+        'values.color-option.<all_channels>.<all_locales>' => [
             'order'   => 'asc',
             'missing' => '_first'
         ]

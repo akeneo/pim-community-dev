@@ -21,8 +21,9 @@ class OptionNormalizer extends AbstractProductValueNormalizer implements Normali
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductValueInterface && AttributeTypes::BACKEND_TYPE_OPTION === $data->getAttribute()->getBackendType()
-            && 'indexing' === $format;
+        return $data instanceof ProductValueInterface &&
+            AttributeTypes::BACKEND_TYPE_OPTION === $data->getAttribute()->getBackendType() &&
+            'indexing' === $format;
     }
 
     /**

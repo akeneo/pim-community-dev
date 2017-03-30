@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter;
+namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
@@ -114,7 +114,7 @@ abstract class AbstractAttributeFilter implements AttributeFilterInterface
         $locale = (null === $locale) ? '<all_locales>' : $locale;
         $channel = (null === $channel) ? '<all_channels>' : $channel;
 
-        return 'values.' . $attribute->getCode() . '-' . $attribute->getBackendType() . '.' . $locale . '.' . $channel;
+        return 'values.' . $attribute->getCode() . '-' . $attribute->getBackendType() . '.' . $channel . '.' . $locale;
     }
 
     /**

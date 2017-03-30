@@ -58,8 +58,8 @@ class ProductValueCollectionNormalizerSpec extends ObjectBehavior
         $serializer->normalize($productValue1, 'indexing', [])->willReturn(
             [
                 'box_quantity-decimal' => [
-                    '<all_locales>' => [
-                        '<all_channels>' => '7',
+                    '<all_channels>' => [
+                        '<all_locales>' => '7',
                     ],
                 ],
             ]
@@ -68,8 +68,8 @@ class ProductValueCollectionNormalizerSpec extends ObjectBehavior
         $serializer->normalize($productValue2, 'indexing', [])->willReturn(
             [
                 'description-text' => [
-                    '<all_locales>' => [
-                        '<all_channels>' => 'Nice description for phpspec',
+                    '<all_channels>' => [
+                        '<all_locales>' => 'Nice description for phpspec',
                     ],
                 ],
             ]
@@ -78,13 +78,13 @@ class ProductValueCollectionNormalizerSpec extends ObjectBehavior
         $this->normalize($productValueCollection, 'indexing',[])->shouldReturn(
             [
                 'box_quantity-decimal' => [
-                    '<all_locales>' => [
-                        '<all_channels>' => '7',
+                    '<all_channels>' => [
+                        '<all_locales>' => '7',
                     ],
                 ],
                 'description-text'     => [
-                    '<all_locales>' => [
-                        '<all_channels>' => 'Nice description for phpspec',
+                    '<all_channels>' => [
+                        '<all_locales>' => 'Nice description for phpspec',
                     ],
                 ],
             ]

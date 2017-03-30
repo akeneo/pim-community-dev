@@ -61,8 +61,8 @@ class OptionNormalizerSpec extends ObjectBehavior
         $this->normalize($optionValue, 'indexing')->shouldReturn(
             [
                 'color-option' => [
-                    '<all_locales>' => [
-                        '<all_channels>' => 'red',
+                    '<all_channels>' => [
+                        '<all_locales>' => 'red',
                     ],
                 ],
             ]
@@ -88,8 +88,8 @@ class OptionNormalizerSpec extends ObjectBehavior
         $this->normalize($optionValue, 'indexing')->shouldReturn(
             [
                 'color-option' => [
-                    'en_US' => [
-                        '<all_channels>' => 'red',
+                    '<all_channels>' => [
+                        'en_US' => 'red',
                     ],
                 ],
             ]
@@ -115,8 +115,8 @@ class OptionNormalizerSpec extends ObjectBehavior
         $this->normalize($optionValue, 'indexing')->shouldReturn(
             [
                 'color-option' => [
-                    '<all_locales>' => [
-                        'ecommerce' => 'red',
+                    'ecommerce' => [
+                        '<all_locales>' => 'red',
                     ],
                 ],
             ]
@@ -142,8 +142,8 @@ class OptionNormalizerSpec extends ObjectBehavior
         $this->normalize($optionValue, 'indexing')->shouldReturn(
             [
                 'color-option' => [
-                    'en_US' => [
-                        'ecommerce' => 'red',
+                    'ecommerce' => [
+                        'en_US' => 'red',
                     ],
                 ],
             ]

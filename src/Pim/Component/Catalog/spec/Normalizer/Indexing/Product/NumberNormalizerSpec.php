@@ -55,8 +55,8 @@ class NumberNormalizerSpec extends ObjectBehavior
 
         $this->normalize($integerValue, 'indexing')->shouldReturn([
             'box_quantity-decimal' => [
-                '<all_locales>' => [
-                    '<all_channels>' => '12'
+                '<all_channels>' => [
+                    '<all_locales>' => '12'
                 ]
             ]
         ]);
@@ -77,8 +77,8 @@ class NumberNormalizerSpec extends ObjectBehavior
 
         $this->normalize($decimalValue, 'indexing')->shouldReturn([
             'size-decimal' => [
-                '<all_locales>' => [
-                    '<all_channels>' => '12.4999'
+                '<all_channels>' => [
+                    '<all_locales>' => '12.4999'
                 ]
             ]
         ]);
@@ -99,8 +99,8 @@ class NumberNormalizerSpec extends ObjectBehavior
 
         $this->normalize($decimalValue, 'indexing')->shouldReturn([
             'size-decimal' => [
-                'en_US' => [
-                    '<all_channels>' => '12.4999'
+                '<all_channels>' => [
+                    'en_US' => '12.4999'
                 ]
             ]
         ]);
@@ -121,8 +121,8 @@ class NumberNormalizerSpec extends ObjectBehavior
 
         $this->normalize($decimalValue, 'indexing')->shouldReturn([
             'size-decimal' => [
-                '<all_locales>' => [
-                    'ecommerce' => '12'
+                'ecommerce' => [
+                    '<all_locales>' => '12'
                 ]
             ]
         ]);
@@ -143,8 +143,8 @@ class NumberNormalizerSpec extends ObjectBehavior
 
         $this->normalize($decimalValue, 'indexing')->shouldReturn([
             'size-decimal' => [
-                'fr_FR' => [
-                    'ecommerce' => '12'
+                'ecommerce' => [
+                    'fr_FR' => '12'
                 ]
             ]
         ]);

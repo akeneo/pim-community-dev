@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter;
+namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
@@ -8,15 +8,15 @@ use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
- * Family filter for an Elasticsearch query
+ * Group filter for an Elasticsearch query
  *
  * @author    Anaël Chardan <anael.chardan@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyFilter extends AbstractFieldFilter implements FieldFilterInterface
+class GroupFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
-    const FAMILY_KEY = 'family';
+    const GROUPS_KEY = 'groups';
 
     /**
      * @param array $supportedFields
@@ -53,7 +53,7 @@ class FamilyFilter extends AbstractFieldFilter implements FieldFilterInterface
             case Operators::IN_LIST:
                 $clause = [
                     'terms' => [
-                        self::FAMILY_KEY => $value
+                        self::GROUPS_KEY => $value
                     ]
                 ];
 
@@ -62,7 +62,7 @@ class FamilyFilter extends AbstractFieldFilter implements FieldFilterInterface
             case Operators::NOT_IN_LIST:
                 $clause = [
                     'terms' => [
-                        self::FAMILY_KEY => $value
+                        self::GROUPS_KEY => $value
                     ]
                 ];
 
@@ -70,14 +70,14 @@ class FamilyFilter extends AbstractFieldFilter implements FieldFilterInterface
                 break;
             case Operators::IS_EMPTY:
                 $clause = [
-                    'exists' => ['field' => self::FAMILY_KEY]
+                    'exists' => ['field' => self::GROUPS_KEY]
                 ];
 
                 $this->searchQueryBuilder->addMustNot($clause);
                 break;
             case Operators::IS_NOT_EMPTY:
                 $clause = [
-                    'exists' => ['field' => self::FAMILY_KEY]
+                    'exists' => ['field' => self::GROUPS_KEY]
                 ];
 
                 $this->searchQueryBuilder->addFilter($clause);
