@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\TextArea;
 
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ScopableFilterIntegration extends AbstractFilterTestCase
+class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
     /**
      * @{@inheritdoc}
@@ -63,61 +63,61 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorStartsWith()
     {
-        $result = $this->execute([['a_scopable_text_area', Operators::STARTS_WITH, 'black', ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_scopable_text_area', Operators::STARTS_WITH, 'black', ['scope' => 'tablet']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_scopable_text_area', Operators::STARTS_WITH, 'black', ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_scopable_text_area', Operators::STARTS_WITH, 'black', ['scope' => 'ecommerce']]]);
         $this->assert($result, ['cat']);
 
-        $result = $this->execute([['a_scopable_text_area', Operators::STARTS_WITH, 'cat', ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_scopable_text_area', Operators::STARTS_WITH, 'cat', ['scope' => 'ecommerce']]]);
         $this->assert($result, ['cattle']);
     }
 
     public function testOperatorContains()
     {
-        $result = $this->execute([['a_scopable_text_area', Operators::CONTAINS, 'cat', ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_scopable_text_area', Operators::CONTAINS, 'cat', ['scope' => 'ecommerce']]]);
         $this->assert($result, ['cat', 'cattle']);
 
-        $result = $this->execute([['a_scopable_text_area', Operators::CONTAINS, 'nope', ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_scopable_text_area', Operators::CONTAINS, 'nope', ['scope' => 'tablet']]]);
         $this->assert($result, []);
     }
 
     public function testOperatorDoesNotContain()
     {
-        $result = $this->execute([['a_scopable_text_area', Operators::DOES_NOT_CONTAIN, 'black', ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_scopable_text_area', Operators::DOES_NOT_CONTAIN, 'black', ['scope' => 'tablet']]]);
         $this->assert($result, ['cat', 'cattle', 'dog']);
 
-        $result = $this->execute([['a_scopable_text_area', Operators::DOES_NOT_CONTAIN, 'black', ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_scopable_text_area', Operators::DOES_NOT_CONTAIN, 'black', ['scope' => 'ecommerce']]]);
         $this->assert($result, ['cattle', 'dog']);
     }
 
     public function testOperatorEquals()
     {
-        $result = $this->execute([['a_scopable_text_area', Operators::EQUALS, 'cat', ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_scopable_text_area', Operators::EQUALS, 'cat', ['scope' => 'ecommerce']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_scopable_text_area', Operators::EQUALS, 'cat', ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_scopable_text_area', Operators::EQUALS, 'cat', ['scope' => 'tablet']]]);
         $this->assert($result, ['cat']);
     }
 
     public function testOperatorEmpty()
     {
-        $result = $this->execute([['a_scopable_text_area', Operators::IS_EMPTY, null, ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_scopable_text_area', Operators::IS_EMPTY, null, ['scope' => 'ecommerce']]]);
         $this->assert($result, ['empty_product']);
     }
 
     public function testOperatorNotEmpty()
     {
-        $result = $this->execute([['a_scopable_text_area', Operators::IS_NOT_EMPTY, null, ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_scopable_text_area', Operators::IS_NOT_EMPTY, null, ['scope' => 'ecommerce']]]);
         $this->assert($result, ['cat', 'cattle', 'dog']);
     }
 
     public function testOperatorDifferent()
     {
-        $result = $this->execute([['a_scopable_text_area', Operators::NOT_EQUAL, 'dog', ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_scopable_text_area', Operators::NOT_EQUAL, 'dog', ['scope' => 'ecommerce']]]);
         $this->assert($result, ['cat', 'cattle', 'dog']);
 
-        $result = $this->execute([['a_scopable_text_area', Operators::NOT_EQUAL, 'dog', ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_scopable_text_area', Operators::NOT_EQUAL, 'dog', ['scope' => 'tablet']]]);
         $this->assert($result, ['cat', 'cattle']);
     }
 
@@ -127,7 +127,7 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorScopable()
     {
-        $this->execute([['a_scopable_text_area', Operators::NOT_EQUAL, 'data']]);
+        $this->executeFilter([['a_scopable_text_area', Operators::NOT_EQUAL, 'data']]);
     }
 
     /**
@@ -136,6 +136,6 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testScopeNotFound()
     {
-        $this->execute([['a_scopable_text_area', Operators::NOT_EQUAL, 'text', ['scope' => 'NOT_FOUND']]]);
+        $this->executeFilter([['a_scopable_text_area', Operators::NOT_EQUAL, 'text', ['scope' => 'NOT_FOUND']]]);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Option;
 
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OptionFilterIntegration extends AbstractFilterTestCase
+class OptionFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
     /**
      * @{@inheritdoc}
@@ -54,31 +54,31 @@ class OptionFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorIn()
     {
-        $result = $this->execute([['a_simple_select', Operators::IN_LIST, ['orange']]]);
+        $result = $this->executeFilter([['a_simple_select', Operators::IN_LIST, ['orange']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_simple_select', Operators::IN_LIST, ['orange', 'black']]]);
+        $result = $this->executeFilter([['a_simple_select', Operators::IN_LIST, ['orange', 'black']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorEmpty()
     {
-        $result = $this->execute([['a_simple_select', Operators::IS_EMPTY, []]]);
+        $result = $this->executeFilter([['a_simple_select', Operators::IS_EMPTY, []]]);
         $this->assert($result, ['empty_product']);
     }
 
     public function testOperatorNotEmpty()
     {
-        $result = $this->execute([['a_simple_select', Operators::IS_NOT_EMPTY, []]]);
+        $result = $this->executeFilter([['a_simple_select', Operators::IS_NOT_EMPTY, []]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorNotIn()
     {
-        $result = $this->execute([['a_simple_select', Operators::NOT_IN_LIST, ['black']]]);
+        $result = $this->executeFilter([['a_simple_select', Operators::NOT_IN_LIST, ['black']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_simple_select', Operators::NOT_IN_LIST, ['orange']]]);
+        $result = $this->executeFilter([['a_simple_select', Operators::NOT_IN_LIST, ['orange']]]);
         $this->assert($result, ['product_two']);
     }
 
@@ -88,7 +88,7 @@ class OptionFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorDataIsMalformed()
     {
-        $this->execute([['a_simple_select', Operators::IN_LIST, 'string']]);
+        $this->executeFilter([['a_simple_select', Operators::IN_LIST, 'string']]);
     }
 
     /**
@@ -97,7 +97,7 @@ class OptionFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorOptionNotFound()
     {
-        $this->execute([['a_simple_select', Operators::IN_LIST, ['NOT_FOUND']]]);
+        $this->executeFilter([['a_simple_select', Operators::IN_LIST, ['NOT_FOUND']]]);
     }
 
     /**
@@ -106,6 +106,6 @@ class OptionFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorOperatorNotSupported()
     {
-        $this->execute([['a_simple_select', Operators::BETWEEN, ['NOT_FOUND']]]);
+        $this->executeFilter([['a_simple_select', Operators::BETWEEN, ['NOT_FOUND']]]);
     }
 }

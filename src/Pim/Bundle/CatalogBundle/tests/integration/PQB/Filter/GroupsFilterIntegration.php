@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter;
 
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -9,7 +10,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupsFilterIntegration extends AbstractFilterTestCase
+class GroupsFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
     /**
      * @{@inheritdoc}
@@ -36,37 +37,37 @@ class GroupsFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorIn()
     {
-        $result = $this->execute([['groups', Operators::IN_LIST, ['groupC']]]);
+        $result = $this->executeFilter([['groups', Operators::IN_LIST, ['groupC']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['groups', Operators::IN_LIST, ['groupB', 'groupA']]]);
+        $result = $this->executeFilter([['groups', Operators::IN_LIST, ['groupB', 'groupA']]]);
         $this->assert($result, ['foo']);
 
-        $result = $this->execute([['groups', Operators::IN_LIST, ['groupA']]]);
+        $result = $this->executeFilter([['groups', Operators::IN_LIST, ['groupA']]]);
         $this->assert($result, ['foo']);
     }
 
     public function testOperatorNotIn()
     {
-        $result = $this->execute([['groups', Operators::NOT_IN_LIST, ['groupA']]]);
+        $result = $this->executeFilter([['groups', Operators::NOT_IN_LIST, ['groupA']]]);
         $this->assert($result, ['bar', 'baz']);
 
-        $result = $this->execute([['groups', Operators::NOT_IN_LIST, ['groupB']]]);
+        $result = $this->executeFilter([['groups', Operators::NOT_IN_LIST, ['groupB']]]);
         $this->assert($result, ['bar', 'baz']);
 
-        $result = $this->execute([['groups', Operators::NOT_IN_LIST, ['groupC']]]);
+        $result = $this->executeFilter([['groups', Operators::NOT_IN_LIST, ['groupC']]]);
         $this->assert($result, ['bar', 'baz', 'foo']);
     }
 
     public function testOperatorEmpty()
     {
-        $result = $this->execute([['groups', Operators::IS_EMPTY, '']]);
+        $result = $this->executeFilter([['groups', Operators::IS_EMPTY, '']]);
         $this->assert($result, ['bar', 'baz']);
     }
 
     public function testOperatorNotEmpty()
     {
-        $result = $this->execute([['groups', Operators::IS_NOT_EMPTY, '']]);
+        $result = $this->executeFilter([['groups', Operators::IS_NOT_EMPTY, '']]);
         $this->assert($result, ['foo']);
     }
 
@@ -76,7 +77,7 @@ class GroupsFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorDataIsMalformed()
     {
-        $this->execute([['groups', Operators::IN_LIST, 'string']]);
+        $this->executeFilter([['groups', Operators::IN_LIST, 'string']]);
     }
 
     /**
@@ -85,6 +86,6 @@ class GroupsFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorOperatorNotSupported()
     {
-        $this->execute([['groups', Operators::BETWEEN, 'groupB']]);
+        $this->executeFilter([['groups', Operators::BETWEEN, 'groupB']]);
     }
 }

@@ -5,6 +5,7 @@ namespace Akeneo\Bundle\ElasticsearchBundle\Cursor;
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Cursor to iterate on items
@@ -30,6 +31,9 @@ class Cursor implements CursorInterface
 
     /** @var array */
     protected $items = [];
+
+    /** @var array */
+    protected $searchAfter = null;
 
     /** @var int */
     protected $pageSize;
@@ -73,11 +77,8 @@ class Cursor implements CursorInterface
      */
     public function next()
     {
-        $currentItem = $this->current();
-
         if (false === next($this->items)) {
-            $searchAfterIdentifier = $currentItem->getIdentifier();
-            $this->items = $this->getNextItems($this->esQuery, $searchAfterIdentifier);
+            $this->items = $this->getNextItems($this->esQuery);
             $this->rewind();
         }
     }
@@ -110,31 +111,42 @@ class Cursor implements CursorInterface
      * Get the next items (hydrated from doctrine repository)
      *
      * @param array       $esQuery
-     * @param string|null $searchAfter
      *
      * @return array
      */
-    private function getNextItems(array $esQuery, $searchAfter = null)
+    private function getNextItems(array $esQuery)
     {
-        $identifiers = $this->getNextIdentifiers($esQuery, $searchAfter);
+        $identifiers = $this->getNextIdentifiers($esQuery);
         if (empty($identifiers)) {
             return [];
         }
 
-        return $this->repository->getItemsFromIdentifiers($identifiers);
+        $hydratedItems = $this->repository->getItemsFromIdentifiers($identifiers);
+
+        $orderedItems = [];
+
+        foreach ($identifiers as $identifier) {
+            foreach ($hydratedItems as $hydratedItem) {
+                if ($identifier === $hydratedItem->getIdentifier()) {
+                    $orderedItems[] = $hydratedItem;
+                    break;
+                }
+            }
+        }
+
+        return $orderedItems;
     }
 
     /**
      * Get the next identifiers from elasticsearch query
      *
-     * @param array       $esQuery
-     * @param string|null $searchAfter
+     * @param array $esQuery
      *
      * @return array
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-search-after.html
      */
-    private function getNextIdentifiers(array $esQuery, $searchAfter = null)
+    private function getNextIdentifiers(array $esQuery)
     {
         $esQuery['size'] = $this->pageSize;
 
@@ -146,8 +158,8 @@ class Cursor implements CursorInterface
 
         $esQuery['sort'] = $sort;
 
-        if (null !== $searchAfter) {
-            $esQuery['search_after'] = [$this->indexType . '#' . $searchAfter];
+        if (null !== $this->searchAfter) {
+            $esQuery['search_after'] = $this->searchAfter;
         }
 
         $response = $this->esClient->search($this->indexType, $esQuery);
@@ -156,6 +168,12 @@ class Cursor implements CursorInterface
         $identifiers = [];
         foreach ($response['hits']['hits'] as $hit) {
             $identifiers[] = $hit['_source']['identifier'];
+        }
+
+        $lastResult = end($response['hits']['hits']);
+
+        if (false !== $lastResult) {
+            $this->searchAfter = $lastResult['sort'];
         }
 
         return $identifiers;

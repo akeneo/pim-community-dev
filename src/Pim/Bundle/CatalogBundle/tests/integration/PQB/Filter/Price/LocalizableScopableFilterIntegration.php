@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Price;
 
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
+class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
     /**
      * @{@inheritdoc}
@@ -56,7 +56,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorInferior()
     {
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_price',
             Operators::LOWER_THAN,
             ['amount' => 10, 'currency' => 'USD'],
@@ -64,7 +64,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
         ]]);
         $this->assert($result, []);
 
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_price',
             Operators::LOWER_THAN,
             ['amount' => 10.0001, 'currency' => 'USD'],
@@ -72,7 +72,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
         ]]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_price',
             Operators::LOWER_THAN,
             ['amount' => 80, 'currency' => 'USD'],
@@ -83,7 +83,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorInferiorOrEquals()
     {
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_price',
             Operators::LOWER_OR_EQUAL_THAN,
             ['amount' => 10, 'currency' => 'USD'],
@@ -91,7 +91,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
         ]]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_price',
             Operators::LOWER_OR_EQUAL_THAN,
             ['amount' => 100, 'currency' => 'USD'],
@@ -102,7 +102,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorEquals()
     {
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_price',
             Operators::EQUALS,
             ['amount' => -5, 'currency' => 'USD'],
@@ -110,7 +110,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
         ]]);
         $this->assert($result, []);
 
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_price',
             Operators::EQUALS,
             ['amount' => -5, 'currency' => 'USD'],
@@ -121,7 +121,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorSuperior()
     {
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_price',
             Operators::GREATER_THAN,
             ['amount' => -5, 'currency' => 'USD'],
@@ -129,7 +129,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
         ]]);
         $this->assert($result, []);
 
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_price',
             Operators::GREATER_THAN,
             ['amount' => -5.0001, 'currency' => 'USD'],
@@ -140,7 +140,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorSuperiorOrEquals()
     {
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_price',
             Operators::GREATER_OR_EQUAL_THAN,
             ['amount' => -5, 'currency' => 'USD'],
@@ -148,7 +148,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
         ]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_price',
             Operators::GREATER_OR_EQUAL_THAN,
             ['amount' => 80, 'currency' => 'USD'],
@@ -159,7 +159,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorEmpty()
     {
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_price',
             Operators::IS_EMPTY,
             ['amount' => '', 'currency' => ''],
@@ -167,7 +167,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
         ]]);
         $this->assert($result, ['empty_product']);
 
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_price',
             Operators::IS_EMPTY,
             [],
@@ -178,7 +178,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorNotEmpty()
     {
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_price',
             Operators::IS_NOT_EMPTY,
             ['amount' => '', 'currency' => ''],
@@ -186,7 +186,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
         ]]);
         $this->assert($result, []);
 
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_price',
             Operators::IS_NOT_EMPTY,
             [],
@@ -194,7 +194,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
         ]]);
         $this->assert($result, []);
 
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_price',
             Operators::IS_NOT_EMPTY,
             ['amount' => '', 'currency' => 'USD'],
@@ -202,7 +202,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
         ]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_price',
             Operators::IS_NOT_EMPTY,
             ['amount' => '', 'currency' => 'EUR'],
@@ -213,7 +213,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorDifferent()
     {
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_price',
             Operators::NOT_EQUAL,
             ['amount' => 10, 'currency' => 'USD'],
@@ -221,7 +221,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
         ]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([[
+        $result = $this->executeFilter([[
             'a_scopable_localizable_price',
             Operators::NOT_EQUAL,
             ['amount' => 10, 'currency' => 'USD'],
@@ -236,7 +236,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorPriceLocalizableAndScopable()
     {
-        $this->execute([['a_scopable_localizable_price', Operators::NOT_EQUAL, ['amount' => 250, 'currency' => 'USD']]]);
+        $this->executeFilter([['a_scopable_localizable_price', Operators::NOT_EQUAL, ['amount' => 250, 'currency' => 'USD']]]);
     }
 
     /**
@@ -245,7 +245,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorPriceLocalizable()
     {
-        $this->execute([['a_scopable_localizable_price', Operators::NOT_EQUAL, ['amount' => 250, 'currency' => 'USD'], ['locale' => 'fr_FR']]]);
+        $this->executeFilter([['a_scopable_localizable_price', Operators::NOT_EQUAL, ['amount' => 250, 'currency' => 'USD'], ['locale' => 'fr_FR']]]);
     }
 
     /**
@@ -254,7 +254,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testLocaleNotFound()
     {
-        $this->execute([['a_scopable_localizable_price', Operators::NOT_EQUAL, ['amount' => 10, 'currency' => 'USD'], ['locale' => 'NOT_FOUND']]]);
+        $this->executeFilter([['a_scopable_localizable_price', Operators::NOT_EQUAL, ['amount' => 10, 'currency' => 'USD'], ['locale' => 'NOT_FOUND']]]);
     }
 
     /**
@@ -263,6 +263,6 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testScopeNotFound()
     {
-        $this->execute([['a_scopable_localizable_price', Operators::NOT_EQUAL, ['amount' => 10, 'currency' => 'USD'], ['locale' => 'en_US', 'scope' => 'NOT_FOUND']]]);
+        $this->executeFilter([['a_scopable_localizable_price', Operators::NOT_EQUAL, ['amount' => 10, 'currency' => 'USD'], ['locale' => 'en_US', 'scope' => 'NOT_FOUND']]]);
     }
 }

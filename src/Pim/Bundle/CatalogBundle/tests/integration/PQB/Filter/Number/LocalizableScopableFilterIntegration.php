@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Number;
 
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
+class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
     /**
      * @{@inheritdoc}
@@ -56,70 +56,70 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorInferior()
     {
-        $result = $this->execute([['a_localizable_scopable_number', Operators::LOWER_THAN, -14, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_number', Operators::LOWER_THAN, -14, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_localizable_scopable_number', Operators::LOWER_THAN, -14, ['locale' => 'fr_FR', 'scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_number', Operators::LOWER_THAN, -14, ['locale' => 'fr_FR', 'scope' => 'tablet']]]);
         $this->assert($result, []);
     }
 
     public function testOperatorInferiorOrEqual()
     {
-        $result = $this->execute([['a_localizable_scopable_number', Operators::LOWER_OR_EQUAL_THAN, -15, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_number', Operators::LOWER_OR_EQUAL_THAN, -15, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_localizable_scopable_number', Operators::LOWER_OR_EQUAL_THAN, -14, ['locale' => 'fr_FR', 'scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_number', Operators::LOWER_OR_EQUAL_THAN, -14, ['locale' => 'fr_FR', 'scope' => 'tablet']]]);
         $this->assert($result, ['product_one']);
     }
 
     public function testOperatorEquals()
     {
-        $result = $this->execute([['a_localizable_scopable_number', Operators::EQUALS, 15, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_number', Operators::EQUALS, 15, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_localizable_scopable_number', Operators::EQUALS, -15, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_number', Operators::EQUALS, -15, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one']);
     }
 
     public function testOperatorSuperior()
     {
-        $result = $this->execute([['a_localizable_scopable_number', Operators::GREATER_THAN, -15, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_number', Operators::GREATER_THAN, -15, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
         $this->assert($result, ['product_two']);
 
-        $result = $this->execute([['a_localizable_scopable_number', Operators::GREATER_THAN, -14.5001, ['locale' => 'fr_FR', 'scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_number', Operators::GREATER_THAN, -14.5001, ['locale' => 'fr_FR', 'scope' => 'ecommerce']]]);
         $this->assert($result, ['product_two']);
     }
 
     public function testOperatorSuperiorOrEqual()
     {
-        $result = $this->execute([['a_localizable_scopable_number', Operators::GREATER_OR_EQUAL_THAN, -15, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_number', Operators::GREATER_OR_EQUAL_THAN, -15, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([['a_localizable_scopable_number', Operators::GREATER_OR_EQUAL_THAN, -14.5001, ['locale' => 'fr_FR', 'scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_number', Operators::GREATER_OR_EQUAL_THAN, -14.5001, ['locale' => 'fr_FR', 'scope' => 'ecommerce']]]);
         $this->assert($result, ['product_two']);
     }
 
     public function testOperatorEmpty()
     {
-        $result = $this->execute([['a_localizable_scopable_number', Operators::IS_EMPTY, 0, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_number', Operators::IS_EMPTY, 0, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
         $this->assert($result, ['empty_product']);
 
-        $result = $this->execute([['a_localizable_scopable_number', Operators::IS_EMPTY, 0, ['locale' => 'fr_FR', 'scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_number', Operators::IS_EMPTY, 0, ['locale' => 'fr_FR', 'scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one', 'empty_product']);
     }
 
     public function testOperatorNotEmpty()
     {
-        $result = $this->execute([['a_localizable_scopable_number', Operators::IS_NOT_EMPTY, 0, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_number', Operators::IS_NOT_EMPTY, 0, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorDifferent()
     {
-        $result = $this->execute([['a_localizable_scopable_number', Operators::NOT_EQUAL, 15, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_number', Operators::NOT_EQUAL, 15, ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one', 'product_two']);
 
-        $result = $this->execute([['a_localizable_scopable_number', Operators::NOT_EQUAL, -15, ['locale' => 'fr_FR', 'scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_localizable_scopable_number', Operators::NOT_EQUAL, -15, ['locale' => 'fr_FR', 'scope' => 'ecommerce']]]);
         $this->assert($result, ['product_two']);
     }
 
@@ -129,7 +129,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorLocalizable()
     {
-        $this->execute([['a_localizable_scopable_number', Operators::NOT_EQUAL, 12]]);
+        $this->executeFilter([['a_localizable_scopable_number', Operators::NOT_EQUAL, 12]]);
     }
 
     /**
@@ -138,7 +138,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorScopable()
     {
-        $this->execute([['a_localizable_scopable_number', Operators::NOT_EQUAL, 12, ['locale' => 'fr_FR']]]);
+        $this->executeFilter([['a_localizable_scopable_number', Operators::NOT_EQUAL, 12, ['locale' => 'fr_FR']]]);
     }
 
     /**
@@ -147,7 +147,7 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testLocaleNotFound()
     {
-        $this->execute([['a_localizable_scopable_number', Operators::NOT_EQUAL, 12, ['locale' => 'NOT_FOUND']]]);
+        $this->executeFilter([['a_localizable_scopable_number', Operators::NOT_EQUAL, 12, ['locale' => 'NOT_FOUND']]]);
     }
 
     /**
@@ -156,6 +156,6 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testScopeNotFound()
     {
-        $this->execute([['a_localizable_scopable_number', Operators::NOT_EQUAL, 12, ['locale' => 'fr_FR', 'scope' => 'NOT_FOUND']]]);
+        $this->executeFilter([['a_localizable_scopable_number', Operators::NOT_EQUAL, 12, ['locale' => 'fr_FR', 'scope' => 'NOT_FOUND']]]);
     }
 }

@@ -3,10 +3,11 @@
 namespace spec\Akeneo\Bundle\ElasticsearchBundle\Cursor;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Bundle\ElasticsearchBundle\Cursor\Cursor;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Prophecy\Argument;
 
 class CursorSpec extends ObjectBehavior
 {
@@ -17,6 +18,9 @@ class CursorSpec extends ObjectBehavior
         ProductInterface $productBar,
         ProductInterface $productBaz
     ) {
+        $productFoo->getIdentifier()->willReturn('foo');
+        $productBaz->getIdentifier()->willReturn('baz');
+        $productBar->getIdentifier()->willReturn('bar');
         $data = [$productFoo, $productBar, $productBaz];
         $repository->getItemsFromIdentifiers(['foo', 'bar', 'baz'])->willReturn($data);
 
@@ -25,9 +29,18 @@ class CursorSpec extends ObjectBehavior
                 'hits' => [
                     'total' => 4,
                     'hits' => [
-                        ['_source' => ['identifier' => 'foo']],
-                        ['_source' => ['identifier' => 'bar']],
-                        ['_source' => ['identifier' => 'baz']]
+                        [
+                            '_source' => ['identifier' => 'foo'],
+                            'sort' => [1490810553000, 'pim_catalog_product#foo']
+                        ],
+                        [
+                            '_source' => ['identifier' => 'bar'],
+                            'sort' => [1490810554000, 'pim_catalog_product#bar']
+                        ],
+                        [
+                            '_source' => ['identifier' => 'baz'],
+                            'sort' => [1490810555000, 'pim_catalog_product#baz']
+                        ]
                     ]
                 ]
             ]);
@@ -37,29 +50,49 @@ class CursorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Bundle\ElasticsearchBundle\Cursor\Cursor');
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Cursor\CursorInterface');
+        $this->shouldHaveType(Cursor::class);
+        $this->shouldImplement(CursorInterface::class);
     }
 
     function it_is_countable()
     {
-        $this->shouldImplement('\Countable');
+        $this->shouldImplement(\Countable::class);
         $this->shouldHaveCount(4);
     }
 
-    function it_is_iterable($repository, $esClient, $productFoo, $productBar, $productBaz, ProductInterface $productFum)
-    {
-        $esClient->search('pim_catalog_product', ['size' => 3, 'sort' => ['updated' => 'desc', '_uid' => 'asc'], 'search_after' => ['pim_catalog_product#baz']])
+    function it_is_iterable(
+        $repository,
+        $esClient,
+        $productFoo,
+        $productBar,
+        $productBaz,
+        ProductInterface $productFum
+    ) {
+        $esClient->search(
+            'pim_catalog_product',
+            [
+                'size' => 3,
+                'sort' => ['updated' => 'desc', '_uid' => 'asc'],
+                'search_after' => [1490810555000, 'pim_catalog_product#baz']
+            ])
             ->willReturn([
                 'hits' => [
                     'total' => 4,
                     'hits' => [
-                        ['_source' => ['identifier' => 'fum']]
+                        [
+                            '_source' => ['identifier' => 'fum'],
+                            'sort' => [1490810565000, 'pim_catalog_product#fum']
+                        ]
                     ]
                 ]
             ]);
-        $esClient->search('pim_catalog_product', ['size' => 3, 'sort' => ['updated' => 'desc', '_uid' => 'asc'], 'search_after' => ['pim_catalog_product#fum']])
-            ->willReturn([
+        $esClient->search(
+            'pim_catalog_product',
+            [
+                'size' => 3,
+                'sort' => ['updated' => 'desc', '_uid' => 'asc'],
+                'search_after' => [1490810565000, 'pim_catalog_product#fum']
+            ])->willReturn([
                 'hits' => [
                     'total' => 4,
                     'hits' => []
@@ -70,7 +103,7 @@ class CursorSpec extends ObjectBehavior
         $page2 = [$productFum];
         $data = array_merge($page1, $page2);
 
-        $this->shouldImplement('\Iterator');
+        $this->shouldImplement(\Iterator::class);
 
         $repository->getItemsFromIdentifiers(['fum'])->willReturn($page2);
         $productBaz->getIdentifier()->willReturn('baz');

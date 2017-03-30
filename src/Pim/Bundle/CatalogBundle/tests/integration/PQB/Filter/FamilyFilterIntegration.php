@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter;
 
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -9,7 +10,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyFilterIntegration extends AbstractFilterTestCase
+class FamilyFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
     /**
      * @{@inheritdoc}
@@ -33,34 +34,34 @@ class FamilyFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorIn()
     {
-        $result = $this->execute([['family', Operators::IN_LIST, ['familyB']]]);
+        $result = $this->executeFilter([['family', Operators::IN_LIST, ['familyB']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['family', Operators::IN_LIST, ['familyB', 'familyA']]]);
+        $result = $this->executeFilter([['family', Operators::IN_LIST, ['familyB', 'familyA']]]);
         $this->assert($result, ['foo']);
 
-        $result = $this->execute([['family', Operators::IN_LIST, ['familyA']]]);
+        $result = $this->executeFilter([['family', Operators::IN_LIST, ['familyA']]]);
         $this->assert($result, ['foo']);
     }
 
     public function testOperatorNotIn()
     {
-        $result = $this->execute([['family', Operators::NOT_IN_LIST, ['familyA']]]);
+        $result = $this->executeFilter([['family', Operators::NOT_IN_LIST, ['familyA']]]);
         $this->assert($result, ['bar', 'baz']);
 
-        $result = $this->execute([['family', Operators::NOT_IN_LIST, ['familyB']]]);
+        $result = $this->executeFilter([['family', Operators::NOT_IN_LIST, ['familyB']]]);
         $this->assert($result, ['bar', 'baz', 'foo']);
     }
 
     public function testOperatorEmpty()
     {
-        $result = $this->execute([['family', Operators::IS_EMPTY, '']]);
+        $result = $this->executeFilter([['family', Operators::IS_EMPTY, '']]);
         $this->assert($result, ['bar', 'baz']);
     }
 
     public function testOperatorNotEmpty()
     {
-        $result = $this->execute([['family', Operators::IS_NOT_EMPTY, '']]);
+        $result = $this->executeFilter([['family', Operators::IS_NOT_EMPTY, '']]);
         $this->assert($result, ['foo']);
     }
 
@@ -70,7 +71,7 @@ class FamilyFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorDataIsMalformed()
     {
-        $this->execute([['family', Operators::IN_LIST, 'string']]);
+        $this->executeFilter([['family', Operators::IN_LIST, 'string']]);
     }
 
     /**
@@ -79,6 +80,6 @@ class FamilyFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorOperatorNotSupported()
     {
-        $this->execute([['family', Operators::BETWEEN, 'familyA']]);
+        $this->executeFilter([['family', Operators::BETWEEN, 'familyA']]);
     }
 }

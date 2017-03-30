@@ -44,6 +44,9 @@ class SearchQueryBuilder
     /** @var array */
     private $shouldClauses = [];
 
+    /** @var array */
+    private $sortClauses = [];
+
     /**
      * Adds a filter clause to the query
      *
@@ -87,6 +90,20 @@ class SearchQueryBuilder
     }
 
     /**
+     * Adds a sort clause to the query
+     *
+     * @param array $sort
+     *
+     * @return $this
+     */
+    public function addSort(array $sort)
+    {
+        $this->sortClauses = array_merge($this->sortClauses, $sort);
+
+        return $this;
+    }
+
+    /**
      * Returns an Elastic search Query
      *
      * @param array $source
@@ -114,6 +131,10 @@ class SearchQueryBuilder
 
         if (!empty($this->shouldClauses)) {
             $searchQuery['query']['bool']['should'] = $this->shouldClauses;
+        }
+
+        if (!empty($this->sortClauses)) {
+            $searchQuery['sort'] = $this->sortClauses;
         }
 
         if (empty($searchQuery['query'])) {

@@ -20,6 +20,7 @@ parameters:
     pim_catalog.query.elasticsearch.filter.text_area.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\TextAreaFilter
     pim_catalog.query.elasticsearch.filter.option.class:          Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\OptionFilter
     pim_catalog.query.elasticsearch.filter.options.class:         Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\OptionsFilter
+    pim_catalog.query.elasticsearch.sorter.base.class:            Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\BaseSorter
 
 services:
     pim_catalog.query.product_query_builder_factory:
@@ -215,3 +216,11 @@ services:
             - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
+
+    # Fields sorters
+    pim_catalog.query.elasticsearch.sorter.base:
+        class: '%pim_catalog.query.elasticsearch.sorter.base.class%'
+        arguments:
+            - ['updated', 'created']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }

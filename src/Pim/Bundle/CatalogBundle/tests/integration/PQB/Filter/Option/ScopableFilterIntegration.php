@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Option;
 
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ScopableFilterIntegration extends AbstractFilterTestCase
+class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
     /**
      * @{@inheritdoc}
@@ -63,31 +63,31 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorIn()
     {
-        $result = $this->execute([['a_select_scopable_simple_select', Operators::IN_LIST, ['orange'], ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_select_scopable_simple_select', Operators::IN_LIST, ['orange'], ['scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one']);
 
-        $result = $this->execute([['a_select_scopable_simple_select', Operators::IN_LIST, ['orange', 'black'], ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_select_scopable_simple_select', Operators::IN_LIST, ['orange', 'black'], ['scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorEmpty()
     {
-        $result = $this->execute([['a_select_scopable_simple_select', Operators::IS_EMPTY, [], ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_select_scopable_simple_select', Operators::IS_EMPTY, [], ['scope' => 'ecommerce']]]);
         $this->assert($result, ['empty_product']);
 
-        $result = $this->execute([['a_select_scopable_simple_select', Operators::IS_EMPTY, [], ['scope' => 'tablet']]]);
+        $result = $this->executeFilter([['a_select_scopable_simple_select', Operators::IS_EMPTY, [], ['scope' => 'tablet']]]);
         $this->assert($result, ['product_one', 'empty_product']);
     }
 
     public function testOperatorNotEmpty()
     {
-        $result = $this->execute([['a_select_scopable_simple_select', Operators::IS_NOT_EMPTY, [], ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_select_scopable_simple_select', Operators::IS_NOT_EMPTY, [], ['scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one', 'product_two']);
     }
 
     public function testOperatorNotIn()
     {
-        $result = $this->execute([['a_select_scopable_simple_select', Operators::NOT_IN_LIST, ['black'], ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([['a_select_scopable_simple_select', Operators::NOT_IN_LIST, ['black'], ['scope' => 'ecommerce']]]);
         $this->assert($result, ['product_one']);
     }
 
@@ -97,7 +97,7 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorOptionScopable()
     {
-        $this->execute([['a_select_scopable_simple_select', Operators::IN_LIST, ['orange']]]);
+        $this->executeFilter([['a_select_scopable_simple_select', Operators::IN_LIST, ['orange']]]);
     }
 
     /**
@@ -106,6 +106,6 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
      */
     public function testScopeNotFound()
     {
-        $this->execute([['a_select_scopable_simple_select', Operators::IN_LIST, ['orange'], ['scope' => 'NOT_FOUND']]]);
+        $this->executeFilter([['a_select_scopable_simple_select', Operators::IN_LIST, ['orange'], ['scope' => 'NOT_FOUND']]]);
     }
 }

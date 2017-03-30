@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter;
 
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -9,7 +10,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class IdentifierFilterIntegration extends AbstractFilterTestCase
+class IdentifierFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
     /**
      * @{@inheritdoc}
@@ -31,115 +32,115 @@ class IdentifierFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorStartsWith()
     {
-        $result = $this->execute([['identifier', Operators::STARTS_WITH, 'ba']]);
+        $result = $this->executeFilter([['identifier', Operators::STARTS_WITH, 'ba']]);
         $this->assert($result, ['bar', 'baz', 'BARISTA', 'BAZAR']);
 
-        $result = $this->execute([['identifier', Operators::STARTS_WITH, 'bA']]);
+        $result = $this->executeFilter([['identifier', Operators::STARTS_WITH, 'bA']]);
         $this->assert($result, ['bar', 'baz', 'BARISTA', 'BAZAR']);
 
-        $result = $this->execute([['sku', Operators::STARTS_WITH, 'ba']]);
+        $result = $this->executeFilter([['sku', Operators::STARTS_WITH, 'ba']]);
         $this->assert($result, ['bar', 'baz', 'BARISTA', 'BAZAR']);
 
-        $result = $this->execute([['sku', Operators::STARTS_WITH, 'bA']]);
+        $result = $this->executeFilter([['sku', Operators::STARTS_WITH, 'bA']]);
         $this->assert($result, ['bar', 'baz', 'BARISTA', 'BAZAR']);
     }
 
     public function testOperatorContains()
     {
-        $result = $this->execute([['identifier', Operators::CONTAINS, 'a']]);
+        $result = $this->executeFilter([['identifier', Operators::CONTAINS, 'a']]);
         $this->assert($result, ['bar', 'baz', 'BARISTA', 'BAZAR']);
 
-        $result = $this->execute([['identifier', Operators::CONTAINS, 'A']]);
+        $result = $this->executeFilter([['identifier', Operators::CONTAINS, 'A']]);
         $this->assert($result, ['bar', 'baz', 'BARISTA', 'BAZAR']);
 
-        $result = $this->execute([['sku', Operators::CONTAINS, 'a']]);
+        $result = $this->executeFilter([['sku', Operators::CONTAINS, 'a']]);
         $this->assert($result, ['bar', 'baz', 'BARISTA', 'BAZAR']);
 
-        $result = $this->execute([['sku', Operators::CONTAINS, 'A']]);
+        $result = $this->executeFilter([['sku', Operators::CONTAINS, 'A']]);
         $this->assert($result, ['bar', 'baz', 'BARISTA', 'BAZAR']);
     }
 
     public function testOperatorNotContains()
     {
-        $result = $this->execute([['identifier', Operators::DOES_NOT_CONTAIN, 'a']]);
+        $result = $this->executeFilter([['identifier', Operators::DOES_NOT_CONTAIN, 'a']]);
         $this->assert($result, ['foo']);
 
-        $result = $this->execute([['identifier', Operators::DOES_NOT_CONTAIN, 'A']]);
+        $result = $this->executeFilter([['identifier', Operators::DOES_NOT_CONTAIN, 'A']]);
         $this->assert($result, ['foo']);
 
-        $result = $this->execute([['sku', Operators::DOES_NOT_CONTAIN, 'a']]);
+        $result = $this->executeFilter([['sku', Operators::DOES_NOT_CONTAIN, 'a']]);
         $this->assert($result, ['foo']);
 
-        $result = $this->execute([['sku', Operators::DOES_NOT_CONTAIN, 'A']]);
+        $result = $this->executeFilter([['sku', Operators::DOES_NOT_CONTAIN, 'A']]);
         $this->assert($result, ['foo']);
     }
 
     public function testOperatorEquals()
     {
-        $result = $this->execute([['identifier', Operators::EQUALS, 'baz']]);
+        $result = $this->executeFilter([['identifier', Operators::EQUALS, 'baz']]);
         $this->assert($result, ['baz']);
 
-        $result = $this->execute([['identifier', Operators::EQUALS, 'bAz']]);
+        $result = $this->executeFilter([['identifier', Operators::EQUALS, 'bAz']]);
         $this->assert($result, ['baz']);
 
-        $result = $this->execute([['identifier', Operators::EQUALS, 'bazz']]);
+        $result = $this->executeFilter([['identifier', Operators::EQUALS, 'bazz']]);
         $this->assert($result, []);
 
-        $result = $this->execute([['sku', Operators::EQUALS, 'bazz']]);
+        $result = $this->executeFilter([['sku', Operators::EQUALS, 'bazz']]);
         $this->assert($result, []);
 
-        $result = $this->execute([['sku', Operators::EQUALS, 'bAz']]);
+        $result = $this->executeFilter([['sku', Operators::EQUALS, 'bAz']]);
         $this->assert($result, ['baz']);
     }
 
     public function testOperatorNotEquals()
     {
-        $result = $this->execute([['identifier', Operators::NOT_EQUAL, 'bazz']]);
+        $result = $this->executeFilter([['identifier', Operators::NOT_EQUAL, 'bazz']]);
         $this->assert($result, ['foo', 'bar', 'baz', 'BARISTA', 'BAZAR']);
 
-        $result = $this->execute([['identifier', Operators::NOT_EQUAL, 'baz']]);
+        $result = $this->executeFilter([['identifier', Operators::NOT_EQUAL, 'baz']]);
         $this->assert($result, ['foo', 'bar', 'BARISTA', 'BAZAR']);
 
-        $result = $this->execute([['identifier', Operators::NOT_EQUAL, 'bAz']]);
+        $result = $this->executeFilter([['identifier', Operators::NOT_EQUAL, 'bAz']]);
         $this->assert($result, ['foo', 'bar', 'BARISTA', 'BAZAR']);
 
-        $result = $this->execute([['sku', Operators::NOT_EQUAL, 'bazz']]);
+        $result = $this->executeFilter([['sku', Operators::NOT_EQUAL, 'bazz']]);
         $this->assert($result, ['foo', 'bar', 'baz', 'BARISTA', 'BAZAR']);
 
-        $result = $this->execute([['sku', Operators::NOT_EQUAL, 'baz']]);
+        $result = $this->executeFilter([['sku', Operators::NOT_EQUAL, 'baz']]);
         $this->assert($result, ['foo', 'bar', 'BARISTA', 'BAZAR']);
 
-        $result = $this->execute([['sku', Operators::NOT_EQUAL, 'bAz']]);
+        $result = $this->executeFilter([['sku', Operators::NOT_EQUAL, 'bAz']]);
         $this->assert($result, ['foo', 'bar', 'BARISTA', 'BAZAR']);
     }
 
     public function testOperatorInList()
     {
-        $result = $this->execute([['identifier', Operators::IN_LIST, ['baz', 'FOO']]]);
+        $result = $this->executeFilter([['identifier', Operators::IN_LIST, ['baz', 'FOO']]]);
         $this->assert($result, ['foo', 'baz']);
 
-        $result = $this->execute([['identifier', Operators::IN_LIST, ['bazz', 'FOOO']]]);
+        $result = $this->executeFilter([['identifier', Operators::IN_LIST, ['bazz', 'FOOO']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['sku', Operators::IN_LIST, ['baz', 'FOO']]]);
+        $result = $this->executeFilter([['sku', Operators::IN_LIST, ['baz', 'FOO']]]);
         $this->assert($result, ['foo', 'baz']);
 
-        $result = $this->execute([['sku', Operators::IN_LIST, ['BAZZ', 'FOOO']]]);
+        $result = $this->executeFilter([['sku', Operators::IN_LIST, ['BAZZ', 'FOOO']]]);
         $this->assert($result, []);
     }
 
     public function testOperatorNotInList()
     {
-        $result = $this->execute([['identifier', Operators::NOT_IN_LIST, ['baz', 'FOO']]]);
+        $result = $this->executeFilter([['identifier', Operators::NOT_IN_LIST, ['baz', 'FOO']]]);
         $this->assert($result, ['bar', 'BARISTA', 'BAZAR']);
 
-        $result = $this->execute([['identifier', Operators::NOT_IN_LIST, ['bazz', 'FOOO']]]);
+        $result = $this->executeFilter([['identifier', Operators::NOT_IN_LIST, ['bazz', 'FOOO']]]);
         $this->assert($result, ['foo', 'bar', 'baz', 'BARISTA', 'BAZAR']);
 
-        $result = $this->execute([['sku', Operators::NOT_IN_LIST, ['baz', 'FOO']]]);
+        $result = $this->executeFilter([['sku', Operators::NOT_IN_LIST, ['baz', 'FOO']]]);
         $this->assert($result, ['bar', 'BARISTA', 'BAZAR']);
 
-        $result = $this->execute([['sku', Operators::NOT_IN_LIST, ['BAZZ', 'FOOO']]]);
+        $result = $this->executeFilter([['sku', Operators::NOT_IN_LIST, ['BAZZ', 'FOOO']]]);
         $this->assert($result, ['foo', 'bar', 'baz', 'BARISTA', 'BAZAR']);
     }
 
@@ -149,7 +150,7 @@ class IdentifierFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorDataIsMalformed()
     {
-        $this->execute([['identifier', Operators::STARTS_WITH, ['string']]]);
+        $this->executeFilter([['identifier', Operators::STARTS_WITH, ['string']]]);
     }
 
     /**
@@ -158,7 +159,7 @@ class IdentifierFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorOperatorNotSupported()
     {
-        $this->execute([['identifier', Operators::BETWEEN, 'foo']]);
+        $this->executeFilter([['identifier', Operators::BETWEEN, 'foo']]);
     }
 
     /**
@@ -167,7 +168,7 @@ class IdentifierFilterIntegration extends AbstractFilterTestCase
      */
     public function testDataIsMalformedForOperatorInList()
     {
-        $this->execute([['identifier', Operators::IN_LIST, 'foo']]);
+        $this->executeFilter([['identifier', Operators::IN_LIST, 'foo']]);
     }
 
     /**
@@ -176,7 +177,7 @@ class IdentifierFilterIntegration extends AbstractFilterTestCase
      */
     public function testDataIsMalformedForOperatorNotInList()
     {
-        $this->execute([['identifier', Operators::NOT_IN_LIST, 'foo']]);
+        $this->executeFilter([['identifier', Operators::NOT_IN_LIST, 'foo']]);
     }
 
     /**
@@ -185,6 +186,6 @@ class IdentifierFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorDataIsMalformedWithAttributeIdentifierCode()
     {
-        $this->execute([['identifier', Operators::STARTS_WITH, ['string']]]);
+        $this->executeFilter([['identifier', Operators::STARTS_WITH, ['string']]]);
     }
 }

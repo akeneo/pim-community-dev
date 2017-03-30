@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter;
 
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -9,7 +10,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DateTimeFilterIntegration extends AbstractFilterTestCase
+class DateTimeFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
     /**
      * @var array
@@ -44,16 +45,16 @@ class DateTimeFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorInferior()
     {
-        $result = $this->execute([['updated', Operators::LOWER_THAN, static::$createdDates['before_first']]]);
+        $result = $this->executeFilter([['updated', Operators::LOWER_THAN, static::$createdDates['before_first']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['updated', Operators::LOWER_THAN, static::$createdDates['before_second']]]);
+        $result = $this->executeFilter([['updated', Operators::LOWER_THAN, static::$createdDates['before_second']]]);
         $this->assert($result, ['foo']);
 
-        $result = $this->execute([['updated', Operators::LOWER_THAN, static::$createdDates['before_third']]]);
+        $result = $this->executeFilter([['updated', Operators::LOWER_THAN, static::$createdDates['before_third']]]);
         $this->assert($result, ['foo', 'bar']);
 
-        $result = $this->execute([['updated', Operators::LOWER_THAN, static::$createdDates['after_all']]]);
+        $result = $this->executeFilter([['updated', Operators::LOWER_THAN, static::$createdDates['after_all']]]);
         $this->assert($result, ['foo', 'bar', 'baz']);
     }
 
@@ -63,31 +64,31 @@ class DateTimeFilterIntegration extends AbstractFilterTestCase
 
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
-        $result = $this->execute([['updated', Operators::EQUALS, $now->format('Y-m-d H:i:s')]]);
+        $result = $this->executeFilter([['updated', Operators::EQUALS, $now->format('Y-m-d H:i:s')]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['updated', Operators::EQUALS, $barProduct->getUpdated()]]);
+        $result = $this->executeFilter([['updated', Operators::EQUALS, $barProduct->getUpdated()]]);
         $this->assert($result, ['bar']);
     }
 
     public function testOperatorSuperior()
     {
-        $result = $this->execute([['updated', Operators::GREATER_THAN, static::$createdDates['before_second']]]);
+        $result = $this->executeFilter([['updated', Operators::GREATER_THAN, static::$createdDates['before_second']]]);
         $this->assert($result, ['bar', 'baz']);
 
-        $result = $this->execute([['updated', Operators::GREATER_THAN, static::$createdDates['before_first']]]);
+        $result = $this->executeFilter([['updated', Operators::GREATER_THAN, static::$createdDates['before_first']]]);
         $this->assert($result, ['bar', 'baz', 'foo']);
     }
 
     public function testOperatorEmpty()
     {
-        $result = $this->execute([['updated', Operators::IS_EMPTY, null]]);
+        $result = $this->executeFilter([['updated', Operators::IS_EMPTY, null]]);
         $this->assert($result, []);
     }
 
     public function testOperatorNotEmpty()
     {
-        $result = $this->execute([['updated', Operators::IS_NOT_EMPTY, null]]);
+        $result = $this->executeFilter([['updated', Operators::IS_NOT_EMPTY, null]]);
         $this->assert($result, ['bar', 'baz', 'foo']);
     }
 
@@ -97,37 +98,37 @@ class DateTimeFilterIntegration extends AbstractFilterTestCase
         $updatedAt = $barProduct->getUpdated();
         $updatedAt->setTimezone(new \DateTimeZone('UTC'));
 
-        $result = $this->execute([['updated', Operators::NOT_EQUAL, $updatedAt]]);
+        $result = $this->executeFilter([['updated', Operators::NOT_EQUAL, $updatedAt]]);
         $this->assert($result, ['foo', 'baz']);
 
         $currentDate = new \DateTime('now', new \DateTimeZone('UTC'));
-        $result = $this->execute([['updated', Operators::NOT_EQUAL, $currentDate->format('Y-m-d H:i:s')]]);
+        $result = $this->executeFilter([['updated', Operators::NOT_EQUAL, $currentDate->format('Y-m-d H:i:s')]]);
         $this->assert($result, ['bar', 'baz', 'foo']);
     }
 
     public function testOperatorBetween()
     {
-        $result = $this->execute([['updated', Operators::BETWEEN, [static::$createdDates['before_second'], static::$createdDates['after_all']]]]);
+        $result = $this->executeFilter([['updated', Operators::BETWEEN, [static::$createdDates['before_second'], static::$createdDates['after_all']]]]);
         $this->assert($result, ['bar', 'baz']);
 
-        $result = $this->execute([['updated', Operators::BETWEEN, [static::$createdDates['before_second'], static::$createdDates['before_third']]]]);
+        $result = $this->executeFilter([['updated', Operators::BETWEEN, [static::$createdDates['before_second'], static::$createdDates['before_third']]]]);
         $this->assert($result, ['bar']);
 
         $currentDate = new \DateTime('now', new \DateTimeZone('UTC'));
-        $result = $this->execute([['updated', Operators::BETWEEN, [static::$createdDates['after_all'], $currentDate]]]);
+        $result = $this->executeFilter([['updated', Operators::BETWEEN, [static::$createdDates['after_all'], $currentDate]]]);
         $this->assert($result, []);
     }
 
     public function testOperatorNotBetween()
     {
-        $result = $this->execute([['updated', Operators::NOT_BETWEEN, [static::$createdDates['before_second'], static::$createdDates['after_all']]]]);
+        $result = $this->executeFilter([['updated', Operators::NOT_BETWEEN, [static::$createdDates['before_second'], static::$createdDates['after_all']]]]);
         $this->assert($result, ['foo']);
 
-        $result = $this->execute([['updated', Operators::NOT_BETWEEN, [static::$createdDates['before_second'], static::$createdDates['before_third']]]]);
+        $result = $this->executeFilter([['updated', Operators::NOT_BETWEEN, [static::$createdDates['before_second'], static::$createdDates['before_third']]]]);
         $this->assert($result, ['baz', 'foo']);
 
         $currentDate = new \DateTime('now', new \DateTimeZone('UTC'));
-        $result = $this->execute([['updated', Operators::NOT_BETWEEN, [static::$createdDates['after_all'], $currentDate]]]);
+        $result = $this->executeFilter([['updated', Operators::NOT_BETWEEN, [static::$createdDates['after_all'], $currentDate]]]);
         $this->assert($result, ['bar', 'baz', 'foo']);
     }
 
@@ -137,7 +138,7 @@ class DateTimeFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorDataIsMalformedWithEmptyArray()
     {
-        $this->execute([['updated', Operators::BETWEEN, []]]);
+        $this->executeFilter([['updated', Operators::BETWEEN, []]]);
     }
 
     /**
@@ -146,7 +147,7 @@ class DateTimeFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorDataIsMalformedWithISODate()
     {
-        $this->execute([['updated', Operators::EQUALS, '2016-12-12T00:00:00']]);
+        $this->executeFilter([['updated', Operators::EQUALS, '2016-12-12T00:00:00']]);
     }
 
     /**
@@ -155,6 +156,6 @@ class DateTimeFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorOperatorNotSupported()
     {
-        $this->execute([['updated', Operators::IN_CHILDREN_LIST, '2016-08-29 00:00:01']]);
+        $this->executeFilter([['updated', Operators::IN_CHILDREN_LIST, '2016-08-29 00:00:01']]);
     }
 }

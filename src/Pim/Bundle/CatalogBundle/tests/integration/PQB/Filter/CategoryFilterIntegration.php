@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter;
 
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -9,7 +10,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryFilterIntegration extends AbstractFilterTestCase
+class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
     /**
      * @{@inheritdoc}
@@ -29,49 +30,49 @@ class CategoryFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorIn()
     {
-        $result = $this->execute([['categories', Operators::IN_LIST, ['master']]]);
+        $result = $this->executeFilter([['categories', Operators::IN_LIST, ['master']]]);
         $this->assert($result, []);
 
-        $result = $this->execute([['categories', Operators::IN_LIST, ['categoryA1', 'categoryA2']]]);
+        $result = $this->executeFilter([['categories', Operators::IN_LIST, ['categoryA1', 'categoryA2']]]);
         $this->assert($result, ['foo']);
     }
 
     public function testOperatorNotIn()
     {
-        $result = $this->execute([['categories', Operators::NOT_IN_LIST, ['master']]]);
+        $result = $this->executeFilter([['categories', Operators::NOT_IN_LIST, ['master']]]);
         $this->assert($result, ['bar', 'baz', 'foo']);
 
-        $result = $this->execute([['categories', Operators::NOT_IN_LIST, ['categoryA1', 'categoryA2']]]);
+        $result = $this->executeFilter([['categories', Operators::NOT_IN_LIST, ['categoryA1', 'categoryA2']]]);
         $this->assert($result, ['bar', 'baz']);
     }
 
     public function testOperatorUnclassified()
     {
-        $result = $this->execute([['categories', Operators::UNCLASSIFIED, []]]);
+        $result = $this->executeFilter([['categories', Operators::UNCLASSIFIED, []]]);
         $this->assert($result, ['bar', 'baz']);
     }
 
     public function testOperatorInOrUnclassified()
     {
-        $result = $this->execute([['categories', Operators::IN_LIST_OR_UNCLASSIFIED, ['categoryB']]]);
+        $result = $this->executeFilter([['categories', Operators::IN_LIST_OR_UNCLASSIFIED, ['categoryB']]]);
         $this->assert($result, ['bar', 'baz', 'foo']);
 
-        $result = $this->execute([['categories', Operators::IN_LIST_OR_UNCLASSIFIED, ['master']]]);
+        $result = $this->executeFilter([['categories', Operators::IN_LIST_OR_UNCLASSIFIED, ['master']]]);
         $this->assert($result, ['bar', 'baz']);
     }
 
     public function testOperatorInChildren()
     {
-        $result = $this->execute([['categories', Operators::IN_CHILDREN_LIST, ['master']]]);
+        $result = $this->executeFilter([['categories', Operators::IN_CHILDREN_LIST, ['master']]]);
         $this->assert($result, ['foo']);
 
-        $result = $this->execute([['categories', Operators::IN_CHILDREN_LIST, ['categoryA1']]]);
+        $result = $this->executeFilter([['categories', Operators::IN_CHILDREN_LIST, ['categoryA1']]]);
         $this->assert($result, ['foo']);
     }
 
     public function testOperatorNotInChildren()
     {
-        $result = $this->execute([['categories', Operators::NOT_IN_CHILDREN_LIST, ['master']]]);
+        $result = $this->executeFilter([['categories', Operators::NOT_IN_CHILDREN_LIST, ['master']]]);
         $this->assert($result, ['bar', 'baz']);
     }
 
@@ -81,6 +82,6 @@ class CategoryFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorOperatorNotSupported()
     {
-        $this->execute([['categories', Operators::GREATER_OR_EQUAL_THAN, ['categoryA1']]]);
+        $this->executeFilter([['categories', Operators::GREATER_OR_EQUAL_THAN, ['categoryA1']]]);
     }
 }

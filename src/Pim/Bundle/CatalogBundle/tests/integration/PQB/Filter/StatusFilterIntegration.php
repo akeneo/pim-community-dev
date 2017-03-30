@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter;
 
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class StatusFilterIntegration extends AbstractFilterTestCase
+class StatusFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
     /**
      * @{@inheritdoc}
@@ -29,19 +29,19 @@ class StatusFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorEquals()
     {
-        $result = $this->execute([['enabled', Operators::EQUALS, true]]);
+        $result = $this->executeFilter([['enabled', Operators::EQUALS, true]]);
         $this->assert($result, ['foo']);
 
-        $result = $this->execute([['enabled', Operators::EQUALS, false]]);
+        $result = $this->executeFilter([['enabled', Operators::EQUALS, false]]);
         $this->assert($result, ['bar']);
     }
 
     public function testOperatorNotEqual()
     {
-        $result = $this->execute([['enabled', Operators::NOT_EQUAL, true]]);
+        $result = $this->executeFilter([['enabled', Operators::NOT_EQUAL, true]]);
         $this->assert($result, ['bar']);
 
-        $result = $this->execute([['enabled', Operators::NOT_EQUAL, false]]);
+        $result = $this->executeFilter([['enabled', Operators::NOT_EQUAL, false]]);
         $this->assert($result, ['foo']);
     }
 
@@ -51,7 +51,7 @@ class StatusFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorDataIsMalformed()
     {
-        $this->execute([['enabled', Operators::EQUALS, 'string']]);
+        $this->executeFilter([['enabled', Operators::EQUALS, 'string']]);
     }
 
     /**
@@ -60,6 +60,6 @@ class StatusFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorOperatorNotSupported()
     {
-        $this->execute([['enabled', Operators::BETWEEN, false]]);
+        $this->executeFilter([['enabled', Operators::BETWEEN, false]]);
     }
 }

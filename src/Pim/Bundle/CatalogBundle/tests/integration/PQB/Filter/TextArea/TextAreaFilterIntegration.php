@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\TextArea;
 
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\AbstractFilterTestCase;
+use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TextAreaFilterIntegration extends AbstractFilterTestCase
+class TextAreaFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
     /** @var string Test newlines in TextArea data */
     private $rabbitNewLineData = "Why my rabbit
@@ -80,79 +80,79 @@ class TextAreaFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorStartsWith()
     {
-        $result = $this->execute([['a_text_area', Operators::STARTS_WITH, 'at']]);
+        $result = $this->executeFilter([['a_text_area', Operators::STARTS_WITH, 'at']]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_text_area', Operators::STARTS_WITH, 'cat']]);
+        $result = $this->executeFilter([['a_text_area', Operators::STARTS_WITH, 'cat']]);
         $this->assert($result, ['cat', 'cattle']);
 
-        $result = $this->execute([['a_text_area', Operators::STARTS_WITH, 'cats']]);
+        $result = $this->executeFilter([['a_text_area', Operators::STARTS_WITH, 'cats']]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_text_area', Operators::STARTS_WITH, 'my dog']]);
+        $result = $this->executeFilter([['a_text_area', Operators::STARTS_WITH, 'my dog']]);
         $this->assert($result, ['best_dog']);
 
-        $result = $this->execute([['a_text_area', Operators::STARTS_WITH, 'my cat']]);
+        $result = $this->executeFilter([['a_text_area', Operators::STARTS_WITH, 'my cat']]);
         $this->assert($result, ['best_cat']);
 
-        $result = $this->execute([['a_text_area', Operators::STARTS_WITH, 'why my rabbit is']]);
+        $result = $this->executeFilter([['a_text_area', Operators::STARTS_WITH, 'why my rabbit is']]);
         $this->assert($result, ['best_rabbit']);
     }
 
     public function testOperatorContains()
     {
-        $result = $this->execute([['a_text_area', Operators::CONTAINS, 'at']]);
+        $result = $this->executeFilter([['a_text_area', Operators::CONTAINS, 'at']]);
         $this->assert($result, ['cat', 'cattle', 'best_cat']);
 
-        $result = $this->execute([['a_text_area', Operators::CONTAINS, 'cat']]);
+        $result = $this->executeFilter([['a_text_area', Operators::CONTAINS, 'cat']]);
         $this->assert($result, ['cat', 'cattle', 'best_cat']);
 
-        $result = $this->execute([['a_text_area', Operators::CONTAINS, 'most beautiful']]);
+        $result = $this->executeFilter([['a_text_area', Operators::CONTAINS, 'most beautiful']]);
         $this->assert($result, ['best_dog', 'best_cat']);
 
-        $result = $this->execute([['a_text_area', Operators::CONTAINS, 'the']]);
+        $result = $this->executeFilter([['a_text_area', Operators::CONTAINS, 'the']]);
         $this->assert($result, ['best_dog', 'best_cat', 'best_rabbit']);
 
-        $result = $this->execute([['a_text_area', Operators::CONTAINS, 'bold>']]);
+        $result = $this->executeFilter([['a_text_area', Operators::CONTAINS, 'bold>']]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_text_area', Operators::CONTAINS, 'cat is the most']]);
+        $result = $this->executeFilter([['a_text_area', Operators::CONTAINS, 'cat is the most']]);
         $this->assert($result, ['best_cat']);
 
-        $result = $this->execute([['a_text_area', Operators::CONTAINS, 'my rabbit is']]);
+        $result = $this->executeFilter([['a_text_area', Operators::CONTAINS, 'my rabbit is']]);
         $this->assert($result, ['best_rabbit']);
     }
 
     public function testOperatorDoesNotContain()
     {
-        $result = $this->execute([['a_text_area', Operators::DOES_NOT_CONTAIN, 'at']]);
+        $result = $this->executeFilter([['a_text_area', Operators::DOES_NOT_CONTAIN, 'at']]);
         $this->assert($result, ['dog', 'best_dog', 'best_rabbit']);
 
-        $result = $this->execute([['a_text_area', Operators::DOES_NOT_CONTAIN, 'other']]);
+        $result = $this->executeFilter([['a_text_area', Operators::DOES_NOT_CONTAIN, 'other']]);
         $this->assert($result, ['cat', 'cattle', 'dog', 'best_dog', 'best_cat', 'best_rabbit']);
 
-        $result = $this->execute([['a_text_area', Operators::DOES_NOT_CONTAIN, '<br/>']]);
+        $result = $this->executeFilter([['a_text_area', Operators::DOES_NOT_CONTAIN, '<br/>']]);
         $this->assert($result, ['cat', 'cattle', 'dog', 'best_dog', 'best_cat', 'best_rabbit']);
 
-        $result = $this->execute([['a_text_area', Operators::DOES_NOT_CONTAIN, 'most beautiful']]);
+        $result = $this->executeFilter([['a_text_area', Operators::DOES_NOT_CONTAIN, 'most beautiful']]);
         $this->assert($result, ['cat', 'cattle', 'dog', 'best_rabbit']);
 
-        $result = $this->execute([['a_text_area', Operators::DOES_NOT_CONTAIN, 'is the']]);
+        $result = $this->executeFilter([['a_text_area', Operators::DOES_NOT_CONTAIN, 'is the']]);
         $this->assert($result, ['cat', 'cattle', 'dog']);
     }
 
     public function testOperatorEquals()
     {
-        $result = $this->execute([['a_text_area', Operators::EQUALS, 'cats']]);
+        $result = $this->executeFilter([['a_text_area', Operators::EQUALS, 'cats']]);
         $this->assert($result, []);
 
-        $result = $this->execute([['a_text_area', Operators::EQUALS, 'cat']]);
+        $result = $this->executeFilter([['a_text_area', Operators::EQUALS, 'cat']]);
         $this->assert($result, ['cat']);
 
-        $result = $this->execute([['a_text_area', Operators::EQUALS, 'my dog is the most beautiful']]);
+        $result = $this->executeFilter([['a_text_area', Operators::EQUALS, 'my dog is the most beautiful']]);
         $this->assert($result, ['best_dog']);
 
-        $result = $this->execute([
+        $result = $this->executeFilter([
             [
                 'a_text_area',
                 Operators::EQUALS,
@@ -161,7 +161,7 @@ class TextAreaFilterIntegration extends AbstractFilterTestCase
         ]);
         $this->assert($result, []);
 
-        $result = $this->execute([
+        $result = $this->executeFilter([
             [
                 'a_text_area',
                 Operators::EQUALS,
@@ -170,7 +170,7 @@ class TextAreaFilterIntegration extends AbstractFilterTestCase
         ]);
         $this->assert($result, ['best_cat']);
 
-        $result = $this->execute([
+        $result = $this->executeFilter([
             [
                 'a_text_area',
                 Operators::EQUALS,
@@ -179,7 +179,7 @@ class TextAreaFilterIntegration extends AbstractFilterTestCase
         ]);
         $this->assert($result, []);
 
-        $result = $this->execute([
+        $result = $this->executeFilter([
             [
                 'a_text_area',
                 Operators::EQUALS,
@@ -191,28 +191,28 @@ class TextAreaFilterIntegration extends AbstractFilterTestCase
 
     public function testOperatorEmpty()
     {
-        $result = $this->execute([['a_text_area', Operators::IS_EMPTY, null]]);
+        $result = $this->executeFilter([['a_text_area', Operators::IS_EMPTY, null]]);
         $this->assert($result, ['empty_product']);
     }
 
     public function testOperatorNotEmpty()
     {
-        $result = $this->execute([['a_text_area', Operators::IS_NOT_EMPTY, null]]);
+        $result = $this->executeFilter([['a_text_area', Operators::IS_NOT_EMPTY, null]]);
         $this->assert($result, ['cat', 'cattle', 'dog', 'best_dog', 'best_cat', 'best_rabbit']);
     }
 
     public function testOperatorDifferent()
     {
-        $result = $this->execute([['a_text_area', Operators::NOT_EQUAL, 'dog']]);
+        $result = $this->executeFilter([['a_text_area', Operators::NOT_EQUAL, 'dog']]);
         $this->assert($result, ['cat', 'cattle', 'best_cat', 'best_rabbit', 'best_dog']);
 
-        $result = $this->execute([['a_text_area', Operators::NOT_EQUAL, 'cat']]);
+        $result = $this->executeFilter([['a_text_area', Operators::NOT_EQUAL, 'cat']]);
         $this->assert($result, ['cattle', 'dog', 'best_dog', 'best_cat', 'best_rabbit']);
 
-        $result = $this->execute([['a_text_area', Operators::NOT_EQUAL, 'my dog is the most beautiful']]);
+        $result = $this->executeFilter([['a_text_area', Operators::NOT_EQUAL, 'my dog is the most beautiful']]);
         $this->assert($result, ['cat', 'cattle', 'dog', 'best_cat', 'best_rabbit']);
 
-        $result = $this->execute([
+        $result = $this->executeFilter([
             [
                 'a_text_area',
                 Operators::NOT_EQUAL,
@@ -221,7 +221,7 @@ class TextAreaFilterIntegration extends AbstractFilterTestCase
         ]);
         $this->assert($result, ['cat', 'cattle', 'dog', 'best_dog', 'best_rabbit']);
 
-        $result = $this->execute([
+        $result = $this->executeFilter([
             [
                 'a_text_area',
                 Operators::NOT_EQUAL,
@@ -230,10 +230,10 @@ class TextAreaFilterIntegration extends AbstractFilterTestCase
         ]);
         $this->assert($result, ['cat', 'cattle', 'dog', 'best_cat', 'best_dog', 'best_rabbit']);
 
-        $result = $this->execute([['a_text_area', Operators::NOT_EQUAL, $this->rabbitNewLineData]]);
+        $result = $this->executeFilter([['a_text_area', Operators::NOT_EQUAL, $this->rabbitNewLineData]]);
         $this->assert($result, ['cat', 'cattle', 'dog', 'best_cat', 'best_dog', 'best_rabbit']);
 
-        $result = $this->execute([['a_text_area', Operators::NOT_EQUAL, 'why my rabbit is the best?']]);
+        $result = $this->executeFilter([['a_text_area', Operators::NOT_EQUAL, 'why my rabbit is the best?']]);
         $this->assert($result, ['cat', 'cattle', 'dog', 'best_cat', 'best_dog']);
     }
 
@@ -243,7 +243,7 @@ class TextAreaFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorDataIsMalformed()
     {
-        $this->execute([['a_text_area', Operators::NOT_EQUAL, [[]]]]);
+        $this->executeFilter([['a_text_area', Operators::NOT_EQUAL, [[]]]]);
     }
 
     /**
@@ -252,6 +252,6 @@ class TextAreaFilterIntegration extends AbstractFilterTestCase
      */
     public function testErrorOperatorNotSupported()
     {
-        $this->execute([['a_text_area', Operators::GREATER_OR_EQUAL_THAN, 'dog']]);
+        $this->executeFilter([['a_text_area', Operators::GREATER_OR_EQUAL_THAN, 'dog']]);
     }
 }
