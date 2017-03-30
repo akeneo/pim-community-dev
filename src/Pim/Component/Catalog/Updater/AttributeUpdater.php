@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\Localization\TranslatableUpdater;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -38,20 +39,26 @@ class AttributeUpdater implements ObjectUpdaterInterface
     /** @var PropertyAccessor */
     protected $accessor;
 
+    /** @var TranslatableUpdater */
+    protected $translatableUpdater;
+
     /**
      * @param AttributeGroupRepositoryInterface $attrGroupRepo
      * @param LocaleRepositoryInterface         $localeRepository
      * @param AttributeTypeRegistry             $registry
+     * @param TranslatableUpdater               $translatableUpdater
      */
     public function __construct(
         AttributeGroupRepositoryInterface $attrGroupRepo,
         LocaleRepositoryInterface $localeRepository,
-        AttributeTypeRegistry $registry
+        AttributeTypeRegistry $registry,
+        TranslatableUpdater $translatableUpdater
     ) {
         $this->attrGroupRepo = $attrGroupRepo;
         $this->localeRepository = $localeRepository;
         $this->registry = $registry;
         $this->accessor = PropertyAccess::createPropertyAccessor();
+        $this->translatableUpdater = $translatableUpdater;
     }
 
     /**
@@ -152,7 +159,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 $this->setType($attribute, $data);
                 break;
             case 'labels':
-                $this->setLabels($attribute, $data);
+                $this->translatableUpdater->update($attribute, $data);
                 break;
             case 'group':
                 $this->setGroup($attribute, $data);
@@ -203,21 +210,6 @@ class AttributeUpdater implements ObjectUpdaterInterface
             $this->accessor->setValue($attribute, $field, $data);
         } catch (NoSuchPropertyException $e) {
             throw UnknownPropertyException::unknownProperty($field, $e);
-        }
-    }
-
-    /**
-     * @param AttributeInterface $attribute
-     * @param array              $data
-     */
-    protected function setLabels(AttributeInterface $attribute, array $data)
-    {
-        foreach ($data as $localeCode => $label) {
-            if (null !== $label && '' !== $label) {
-                $attribute->setLocale($localeCode);
-                $translation = $attribute->getTranslation();
-                $translation->setLabel($label);
-            }
         }
     }
 
