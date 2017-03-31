@@ -165,7 +165,8 @@ define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/me
                         messenger.notificationMessage(
                             'error',
                             el.data('error-message') ||
-                                __('Unexpected error occured. Please contact system administrator.')
+                                __('Unexpected error occurred. Please contact system administrator.'),
+                            { flash: false }
                         );
                     }
                 });

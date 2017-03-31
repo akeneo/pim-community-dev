@@ -97,9 +97,9 @@ define(
                     data: JSON.stringify({ 'body': this.$('.comment-create textarea').val() })
                 }).done(function () {
                     this.render();
-                    messenger.notificationFlashMessage('success', _.__('flash.comment.create.success'));
+                    messenger.notify('success', _.__('flash.comment.create.success'));
                 }.bind(this)).fail(function () {
-                    messenger.notificationFlashMessage('error', _.__('flash.comment.create.error'));
+                    messenger.notify('error', _.__('flash.comment.create.error'));
                 });
             },
             removeComment: function (event) {
@@ -117,9 +117,9 @@ define(
                     data: { _method: 'DELETE' }
                 }).done(function () {
                     this.render();
-                    messenger.notificationFlashMessage('success', _.__('flash.comment.delete.success'));
+                    messenger.notify('success', _.__('flash.comment.delete.success'));
                 }.bind(this)).fail(function () {
-                    messenger.notificationFlashMessage('error', _.__('flash.comment.delete.error'));
+                    messenger.notify('error', _.__('flash.comment.delete.error'));
                 });
             },
             saveReply: function (event) {
@@ -139,9 +139,9 @@ define(
                 }).done(function () {
                     $thread.find('textarea').val('');
                     this.render();
-                    messenger.notificationFlashMessage('success', _.__('flash.comment.reply.success'));
+                    messenger.notify('success', _.__('flash.comment.reply.success'));
                 }.bind(this)).fail(function () {
-                    messenger.notificationFlashMessage('error', _.__('flash.comment.reply.error'));
+                    messenger.notify('error', _.__('flash.comment.reply.error'));
                 });
             }
         });

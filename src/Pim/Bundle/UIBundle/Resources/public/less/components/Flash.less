@@ -14,6 +14,17 @@
   line-height: 11px;
   align-items: center;
   width: @flashWidth;
+  min-height: @iconSize + 2 * @padding + 2px;
+
+  position: relative;
+  left: @flashWidth + @AknFlashMessagesPadding;
+  opacity: 0;
+  transition: left 0.5s ease-in-out, opacity 0.5s ease-in-out;
+
+  &--visible {
+    left: 0;
+    opacity: 1;
+  }
 
   // Default flash is info
   border: 1px solid @AknBlue;

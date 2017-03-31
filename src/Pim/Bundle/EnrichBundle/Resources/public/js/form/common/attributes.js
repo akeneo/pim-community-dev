@@ -286,7 +286,7 @@ define(
 
                                 this.render();
                             }.bind(this)).fail(function () {
-                                messenger.notificationFlashMessage(
+                                messenger.notify(
                                     'error',
                                     _.__(this.config.deletionFailed)
                                 );

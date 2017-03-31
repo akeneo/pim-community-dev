@@ -53,7 +53,7 @@ define(
                         );
                     });
 
-                    messenger.notificationFlashMessage(
+                    messenger.notify(
                         'error',
                         __('pim_enrich.entity.group.info.field_not_ready', {'fields': fieldLabels.join(', ')})
                     );
