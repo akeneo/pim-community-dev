@@ -19,7 +19,7 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'terms' => [
-                            'values.colors-options.<all_locales>.<all_channels>' => ['black', 'yellow'],
+                            'values.colors-options.<all_channels>.<all_locales>' => ['black', 'yellow'],
                         ],
                     ],
                 ],
@@ -48,7 +48,7 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'must_not' => [
                         'exists' => [
-                            'field' => 'values.colors-options.<all_locales>.<all_channels>',
+                            'field' => 'values.colors-options.<all_channels>.<all_locales>',
                         ],
                     ],
                 ],
@@ -67,7 +67,7 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'exists' => [
-                            'field' => 'values.colors-options.<all_locales>.<all_channels>',
+                            'field' => 'values.colors-options.<all_channels>.<all_locales>',
                         ],
                     ],
                 ],
@@ -86,12 +86,12 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'must_not' => [
                         'terms' => [
-                            'values.colors-options.<all_locales>.<all_channels>' => ['black', 'blue'],
+                            'values.colors-options.<all_channels>.<all_locales>' => ['black', 'blue'],
                         ],
                     ],
                     'filter' => [
                         'exists' => [
-                            'field' => 'values.colors-options.<all_locales>.<all_channels>',
+                            'field' => 'values.colors-options.<all_channels>.<all_locales>',
                         ],
                     ]
                 ],
@@ -111,7 +111,7 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
             ],
             'sort'  => [
                 [
-                    'values.colors-options.<all_locales>.<all_channels>' => [
+                    'values.colors-options.<all_channels>.<all_locales>' => [
                         'order'   => 'asc',
                         'missing' => '_first',
                     ],
@@ -135,7 +135,7 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
             ],
             'sort'  => [
                 [
-                    'values.colors-options.<all_locales>.<all_channels>' => [
+                    'values.colors-options.<all_channels>.<all_locales>' => [
                         'order'   => 'desc',
                         'missing' => '_last',
                     ],

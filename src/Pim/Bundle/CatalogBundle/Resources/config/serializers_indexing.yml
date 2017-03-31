@@ -11,6 +11,7 @@ parameters:
     pim_catalog.normalizer.indexing.date.class: Pim\Component\Catalog\Normalizer\Indexing\Product\DateNormalizer
     pim_catalog.normalizer.indexing.product.text.class: Pim\Component\Catalog\Normalizer\Indexing\Product\TextNormalizer
     pim_catalog.normalizer.indexing.product.text_area.class: Pim\Component\Catalog\Normalizer\Indexing\Product\TextAreaNormalizer
+    pim_catalog.normalizer.indexing.product.price_collection.class: Pim\Component\Catalog\Normalizer\Indexing\Product\PriceCollectionNormalizer
 
 services:
     pim_catalog.normalizer.indexing.product:
@@ -74,5 +75,12 @@ services:
 
     pim_catalog.normalizer.indexing.option:
         class: '%pim_catalog.normalizer.indexing.product.option.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing.price_collection:
+        class: '%pim_catalog.normalizer.indexing.product.price_collection.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.product_value'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }

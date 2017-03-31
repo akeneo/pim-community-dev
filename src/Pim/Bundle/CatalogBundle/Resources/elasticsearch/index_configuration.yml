@@ -57,6 +57,12 @@ mappings:
                     mapping:
                         type: 'keyword'
 
+            -
+                prices:
+                    match_mapping_type: 'string'
+                    mapping:
+                        type: 'double'
+                    path_match: 'values.*-prices.*'
 settings:
     analysis:
         normalizer:

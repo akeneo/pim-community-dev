@@ -100,16 +100,16 @@ class ProductIndexingIntegration extends TestCase
                     '<all_channels>' => [
                         'en_US' => null,
                         'fr_FR' => null,
-                    ]
+                    ],
                 ],
                 'a_localized_and_scopable_text_area-text'        => [
                     'ecommerce' => [
                         'en_US' => 'a text area for ecommerce in English',
                     ],
-                    'tablet' => [
+                    'tablet'    => [
                         'en_US' => 'a text area for tablets in English',
                         'fr_FR' => 'une zone de texte pour les tablettes en français',
-                    ]
+                    ],
                 ],
                 'a_metric-metric'                                => [
                     '<all_channels>' => [
@@ -158,12 +158,18 @@ class ProductIndexingIntegration extends TestCase
                 ],
                 'a_price-prices'                                 => [
                     '<all_channels>' => [
-                        '<all_locales>' => null,
+                        '<all_locales>' => [
+                            'EUR' => '56.53',
+                            'USD' => '45.00',
+                        ],
                     ],
                 ],
                 'a_price_without_decimal-prices'                 => [
                     '<all_channels>' => [
-                        '<all_locales>' => null,
+                        '<all_locales>' => [
+                            'EUR' => '56',
+                            'USD' => '-45',
+                        ],
                     ],
                 ],
                 'a_ref_data_multi_select-reference_data_options' => [
@@ -178,11 +184,17 @@ class ProductIndexingIntegration extends TestCase
                 ],
                 'a_scopable_price-prices'                        => [
                     'ecommerce' => [
-                        '<all_locales>' => null,
+                        '<all_locales>' => [
+                            'EUR' => '15.00',
+                            'USD' => '20.00',
+                        ],
                     ],
-                    'tablet' => [
-                        '<all_locales>' => null,
-                    ]
+                    'tablet'    => [
+                        '<all_locales>' => [
+                            'EUR' => '17.00',
+                            'USD' => '24.00',
+                        ],
+                    ],
                 ],
                 'a_simple_select-option'                         => [
                     '<all_channels>' => [

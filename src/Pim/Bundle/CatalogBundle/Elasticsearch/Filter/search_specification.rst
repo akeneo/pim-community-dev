@@ -86,10 +86,10 @@ Akeneo product builder supported only AND relation between conditions):
             'bool' => [
                 'filter' => [
                     'term' => [
-                        'name-text' => 'Tshirt',
+                        'name-text.<all_channels>.<all_locales>' => 'Tshirt',
                     ],
                     'prefix' => [
-                        'name-text' => 'Tshirt'
+                        'name-text.<all_channels>.<all_locales>' => 'Tshirt'
                     ]
                 ]
             ]
@@ -106,17 +106,16 @@ and filter with a ``bool`` query with ``must`` typed occurence of the following 
             'bool' => [
                 'filter' => [
                     'match_phrase' => [
-                        'description-text-en_US-mobile' => '30 pages'
-
+                        'description-text.mobile.en_US' => '30 pages'
                     ],
                     'match_phrase' => [
-                            'name-text' => "canon"
+                            'name-text.<all_channels>.<all_locales>' => "canon"
                     ],
                     'prefix' => [
-                        'name-text' => 'Tshirt'
+                        'name-text.<all_channels>.<all_locales>' => 'Tshirt'
                     ],
                     'term' => [
-                        'price-prices' => 30
+                        'price-prices.<all_channels>.<all_locales>.USD' => 30
                     ]
                 ]
             ]
@@ -130,7 +129,7 @@ Sorting
 .. code-block:: php
 
     'sort' => [
-        'name-varchar' => "asc"
+        'name-varchar.<all_channels>.<all_locales>' => "asc"
     ]
 
 Sorting and tokenization
@@ -144,7 +143,7 @@ In this case, the sort becomes:
 .. code-block:: php
 
     'sort' => [
-        'name-text.raw' => 'asc'
+        'name-text.<all_channels>.<all_locales>.raw' => 'asc'
     ]
 
 Text area
@@ -1212,26 +1211,40 @@ Price
 *****
 :Apply: pim_catalog_price_collection
 
+Please note that just like number attributes, prices value must be indexed as a string to be captured by the dynamic mapping.
+
 Data model
 ~~~~~~~~~~
-.. code-block:: yaml
+.. code-block:: php
 
-    price-prices:
-        USD-number: 125
-        EUR-number: 110
+    [
+        'values' => [
+            'a_price-prices' => [
+                'ecommerce' => [
+                    'fr_FR' => [
+                        'USD' => '125.53'
+                        'EUR' => '110'
+                    ]
+                ]
+            ]
+        ]
+    ]
 
 Filtering
 ~~~~~~~~~
 Same operators than ``number`` apply, but by using the full path to the price with its currency.
 
 Example for the ``>`` operator:
-::
 
-.. code-block:: yaml
+.. code-block:: php
 
-range:
-        price-prices.USD-number:
-            gt: 100
+    [
+        'filter' => [
+            'range' => [
+                'price-prices.<all_channels>.<all_locales>.USD' => [ 'gt' => 100 ]
+            ]
+        ]
+    ]
 
 Product id
 **********
