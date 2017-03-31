@@ -8,6 +8,7 @@
 - PIM-6240: Display the code instead of undefined if channel's locale is not filled for the given locale
 - PIM-6071: Hide add option icon for non-editable fields
 - PIM-6275: Fix variations not visible on Variant Group properties tab
+- PIM-6283: Fix a bug where SKUs of products in the Variant Group edit page were not displayed
 
 # 1.7.1 (2017-03-23)
 
