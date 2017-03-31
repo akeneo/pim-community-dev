@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Query;
+namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client as ElasticSearchClient;
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;

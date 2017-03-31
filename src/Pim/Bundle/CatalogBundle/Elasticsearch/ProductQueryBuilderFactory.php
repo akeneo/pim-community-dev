@@ -1,10 +1,12 @@
 <?php
 
-namespace Pim\Component\Catalog\Query;
+namespace Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

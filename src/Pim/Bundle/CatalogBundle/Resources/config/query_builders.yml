@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog.query.product_query_builder_factory.class:        Pim\Component\Catalog\Query\ProductQueryBuilderFactory
+    pim_catalog.query.elasticsearch.product_query_builder_factory.class:        Pim\Bundle\CatalogBundle\Elasticsearch\ProductQueryBuilderFactory
     pim_catalog.query.product_query_builder.class:                Pim\Component\Catalog\Query\ProductQueryBuilder
     pim_catalog.query.filter.registry.class:                      Pim\Component\Catalog\Query\Filter\FilterRegistry
     pim_catalog.query.sorter.registry.class:                      Pim\Component\Catalog\Query\Sorter\SorterRegistry
@@ -28,7 +28,7 @@ parameters:
 
 services:
     pim_catalog.query.product_query_builder_factory:
-        class: '%pim_catalog.query.product_query_builder_factory.class%'
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
         arguments:
             - '%pim_catalog.query.product_query_builder.class%'
             - '@pim_catalog.repository.attribute'
