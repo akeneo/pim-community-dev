@@ -86,6 +86,14 @@
       .jstree-icon("../../images/jstree/icon-folder.svg")
     }
 
+    li.jstree-leaf.jstree-checked > input ~ a:not(.jstree-loading):not(.jstree-clicked),
+    li.jstree-leaf.jstree-checked > input ~ a:not(.jstree-loading).jstree-clicked,
+    li.jstree-leaf.jstree-checked > a:not(.jstree-loading).jstree-clicked,
+    li.jstree-leaf:not(.jstree-checked) > a:not(.jstree-loading).jstree-clicked {
+      font-weight: bold;
+      color: @AknBlue !important;
+    }
+
     li.jstree-leaf.jstree-checked > input ~ a:not(.jstree-loading):not(.jstree-clicked) .jstree-icon,
     li.jstree-leaf.jstree-checked > input ~ a:not(.jstree-loading).jstree-clicked .jstree-icon,
     li.jstree-leaf.jstree-checked > a:not(.jstree-loading).jstree-clicked .jstree-icon,
@@ -103,6 +111,14 @@
     li:not(.jstree-leaf).jstree-checked > input ~ a:not(.jstree-loading).jstree-clicked .jstree-icon,
     li:not(.jstree-leaf):not(.jstree-checked) > a:not(.jstree-loading).jstree-clicked .jstree-icon {
       .jstree-icon("../../images/jstree/icon-foldersfull.svg")
+    }
+
+    li:not(.jstree-leaf).jstree-checked > input ~ a:not(.jstree-clicked),
+    li:not(.jstree-leaf).jstree-checked > a.jstree-clicked,
+    li:not(.jstree-leaf).jstree-checked > input ~ a.jstree-clicked,
+    li:not(.jstree-leaf):not(.jstree-checked) > a.jstree-clicked {
+      font-weight: bold;
+      color: @AknBlue !important;
     }
   }
 
