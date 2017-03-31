@@ -29,6 +29,15 @@ define(
             /**
              * {@inheritdoc}
              */
+            initialize: function () {
+                this.initialFamily = null;
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.trigger('panel:register', {
                     code: this.code,
@@ -52,16 +61,20 @@ define(
 
                 if (this.getFormData().meta) {
                     $.when(
-                        this.fetchCompleteness(),
                         FetcherRegistry.getFetcher('locale').fetchActivated()
-                    ).then(function (completeness, locales) {
+                    ).then(function (locales) {
+                        if (null === this.initialFamily) {
+                            this.initialFamily = this.getFormData().family;
+                        }
+
                         this.$el.html(
                             this.template({
                                 hasFamily: this.getFormData().family !== null,
-                                completenesses: this.sortCompleteness(completeness.completenesses),
+                                completenesses: this.sortCompleteness(this.getFormData().meta.completenesses),
                                 i18n: i18n,
                                 locales: locales,
-                                catalogLocale: UserContext.get('catalogLocale')
+                                catalogLocale: UserContext.get('catalogLocale'),
+                                hasFamilyChanged: this.getFormData().family !== this.initialFamily
                             })
                         );
                         this.delegateEvents();
@@ -69,16 +82,6 @@ define(
                 }
 
                 return this;
-            },
-
-            /**
-             * @returns {Promise}
-             */
-            fetchCompleteness: function () {
-                return FetcherRegistry.getFetcher('product-completeness').fetchForProduct(
-                    this.getFormData().meta.id,
-                    this.getFormData().family
-                );
             },
 
             /**
