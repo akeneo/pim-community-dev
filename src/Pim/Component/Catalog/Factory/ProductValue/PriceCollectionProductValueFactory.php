@@ -125,10 +125,67 @@ class PriceCollectionProductValueFactory implements ProductValueFactoryInterface
     {
         $prices = new PriceCollection();
 
-        foreach ($data as $price) {
+        $sortedData = $this->sortByCurrency($data);
+        foreach ($sortedData as $price) {
             $prices->add($this->priceFactory->createPrice($price['amount'], $price['currency']));
         }
 
         return $prices;
+    }
+
+    /**
+     * Sorts the array of prices data by their currency.
+     *
+     * For example:
+     *
+     * [
+     *     [
+     *         'amount'   => 20,
+     *         'currency' => 'USD',
+     *     ],
+     *     [
+     *         'amount'   => 100,
+     *         'currency' => 'EUR',
+     *     ],
+     * ]
+     *
+     * will become:
+     *
+     * [
+     *     [
+     *         'amount'   => 100,
+     *         'currency' => 'EUR',
+     *     ],
+     *     [
+     *         'amount'   => 20,
+     *         'currency' => 'USD',
+     *     ],
+     * ]
+     *
+     * @param array $arrayPrices
+     *
+     * @return array
+     */
+    protected function sortByCurrency(array $arrayPrices)
+    {
+        $amouts = [];
+        $currencies = [];
+
+        foreach ($arrayPrices as $price) {
+            $amouts[] = $price['amount'];
+            $currencies[] = $price['currency'];
+        }
+
+        $sort = array_multisort($currencies, SORT_ASC, $amouts, SORT_ASC, $arrayPrices);
+
+        if (false === $sort) {
+            throw new \LogicException(
+                sprintf('Impossible to permorm multisort on the following array: %s', json_encode($arrayPrices)),
+                0,
+                static::class
+            );
+        }
+
+        return $arrayPrices;
     }
 }

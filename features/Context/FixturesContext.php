@@ -1134,7 +1134,7 @@ class FixturesContext extends BaseFixturesContext
                     if ('**empty**' === $value) {
                         assertEmpty((string) $productValue);
                     } else {
-                        assertTrue(false !== strpos((string) $productValue, $value));
+                        assertTrue(false !== strpos($productValue->getData()->getOriginalFilename(), $value));
                     }
                 } elseif ('prices' === $attribute->getBackendType() && null !== $priceCurrency) {
                     // $priceCurrency can be null if we want to test all the currencies at the same time
