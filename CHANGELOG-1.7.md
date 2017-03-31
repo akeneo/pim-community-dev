@@ -16,6 +16,7 @@
 - PIM-6275: Fix variations not visible on Variant Group properties tab
 - PIM-6283: Fix a bug where SKUs of products in the Variant Group edit page were not displayed
 - PIM-6274: Successfully validate products with a custom validation on identifier
+- PIM-6286: Fix User repository
 - PIM-6199: Fix product mass edit attribute add select clickable on confirmation page
 - PIM-6282: Fix attribute menu Firefox bug
 
