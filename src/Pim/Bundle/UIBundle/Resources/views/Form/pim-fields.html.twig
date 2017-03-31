@@ -419,5 +419,6 @@
 
 {%- block form_widget_simple -%}
     {%- set type = type|default('text') -%}
+    {# This override is needed until this twig PR is not merged: https://github.com/twigphp/Twig/pull/2433 #}
     <input type="{{ type }}" {{ block('widget_attributes') }} {% if value == '\\' or value is not empty %}value="{{ value }}" {% endif %}/>
 {%- endblock form_widget_simple -%}
