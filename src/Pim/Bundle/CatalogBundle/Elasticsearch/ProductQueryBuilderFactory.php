@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
-use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
@@ -131,6 +130,8 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
             'default_locale',
             'default_scope',
             'filters',
+            'search_after',
+            'limit'
         ]);
         $resolver->setDefaults([
             'repository_method'     => 'createQueryBuilder',
@@ -140,6 +141,8 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
             'filters'               => [],
         ]);
         $resolver->setAllowedTypes('filters', 'array');
+        $resolver->setAllowedTypes('search_after', 'string');
+        $resolver->setAllowedTypes('limit', 'integer');
     }
 
     /**
