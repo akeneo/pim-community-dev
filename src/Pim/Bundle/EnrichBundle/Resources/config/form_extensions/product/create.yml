@@ -1,0 +1,12 @@
+extensions:
+    pim-product-create-modal:
+        module: pim/form/common/create-modal
+        config:
+            labels:
+                title: pim_enrich.entity.product.create_popin.title
+            innerForm: pim-product-create-form
+            editRoute: pim_enrich_product_edit
+
+
+    pim-product-create-form:
+        module: pim/product-create-form
