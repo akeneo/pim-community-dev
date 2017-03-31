@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Cursor implements CursorInterface
+class CursorWithLimitAndStart implements CursorInterface
 {
     /** @var Client */
     protected $esClient;
@@ -32,14 +32,23 @@ class Cursor implements CursorInterface
     /** @var array */
     protected $items = [];
 
+    /** @var string */
+    protected $searchAfterIdentifier;
+
     /** @var array */
     protected $searchAfter = null;
 
     /** @var int */
+    protected $fetchedItemsCount = 0;
+    
+    /** @var int */
     protected $pageSize;
 
     /** @var int */
-    protected $count;
+    protected $totalCount;
+
+    /** @var int */
+    protected $limit;
 
     /**
      * @param Client                        $esClient
@@ -47,21 +56,27 @@ class Cursor implements CursorInterface
      * @param array                         $esQuery
      * @param string                        $indexType
      * @param int                           $pageSize
+     * @param string                        $searchAfterIdentifier
+     * @param int                           $limit
      */
     public function __construct(
         Client $esClient,
         CursorableRepositoryInterface $repository,
         array $esQuery,
         $indexType,
-        $pageSize
+        $pageSize,
+        $searchAfterIdentifier,
+        $limit = null
     ) {
         $this->repository = $repository;
         $this->esClient = $esClient;
         $this->esQuery = $esQuery;
         $this->indexType = $indexType;
         $this->pageSize = $pageSize;
-
+        $this->limit = $limit;
+        
         $this->items = $this->getNextItems($esQuery);
+        $this->searchAfterIdentifier = $searchAfterIdentifier;
     }
 
     /**
@@ -146,9 +161,17 @@ class Cursor implements CursorInterface
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-search-after.html
      */
-    protected function getNextIdentifiers(array $esQuery)
+    private function getNextIdentifiers(array $esQuery)
     {
-        $esQuery['size'] = $this->getItemsCountToFetch();
+        $itemsCountToFetch = $this->pageSize;
+        if (null !== $this->limit) {
+            if (($this->fetchedItemsCount + $itemsCountToFetch) > $this->limit) {
+                $itemsCountToFetch = $this->fetchedItemsCount - $this->limit;
+            }
+            $this->fetchedItemsCount += $itemsCountToFetch;
+        }
+
+        $esQuery['size'] = $itemsCountToFetch;
 
         $sort = ['_uid' => 'asc'];
 
@@ -163,7 +186,7 @@ class Cursor implements CursorInterface
         }
 
         $response = $this->esClient->search($this->indexType, $esQuery);
-        $this->count = $response['hits']['total'];
+        $this->totalCount = $response['hits']['total'];
 
         $identifiers = [];
         foreach ($response['hits']['hits'] as $hit) {
@@ -184,6 +207,9 @@ class Cursor implements CursorInterface
      */
     public function count()
     {
-        return $this->count;
+        return $this->totalCount;
     }
+
+
+    protected function get
 }
