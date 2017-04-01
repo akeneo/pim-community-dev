@@ -1,6 +1,7 @@
 # 1.7.x
 
-## Bug Fixes
+Bug Fixes
+---------
 
 - PIM-6270: Fix sequential edit style
 - PIM-6265: Fix user menu navigation
