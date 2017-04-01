@@ -2,8 +2,11 @@
 
 namespace Context\Page\Batch;
 
+use Behat\Mink\Element\NodeElement;
 use Context\Page\Base\Wizard;
 use Context\Spin\SpinCapableTrait;
+use Pim\Behat\Decorator\Common\AddAttributeDecorator;
+use Pim\Behat\Decorator\Common\SelectGroupDecorator;
 
 /**
  * Edit common attributes page
@@ -20,7 +23,15 @@ class SetAttributeRequirements extends Wizard
         'Available attributes button'     => ['css' => 'button:contains("Select attributes")'],
         'Available attributes add button' => ['css' => '.pimmultiselect a:contains("Select")'],
         'Available attributes form'       => ['css' => '#pim_catalog_mass_edit_family_add_attribute'],
-        'Attributes'                      => ['css' => 'table.attributes'],
+        'Attributes'                      => ['css' => 'table.groups'],
+        'Available attributes'            => [
+            'css'        => '.add-attribute',
+            'decorators' => [AddAttributeDecorator::class]
+        ],
+        'Available groups'                  => [
+            'css'        => '.add-attribute-group',
+            'decorators' => [SelectGroupDecorator::class],
+        ],
     ];
 
     /**
@@ -33,7 +44,6 @@ class SetAttributeRequirements extends Wizard
         $requirement = $cell->find('css', 'i');
 
         $loadingMask = $this->find('css', '.hash-loading-mask .loading-mask');
-
         $this->spin(function () use ($loadingMask) {
             return (null === $loadingMask) || !$loadingMask->isVisible();
         }, '".loading-mask" is still visible');
@@ -51,26 +61,92 @@ class SetAttributeRequirements extends Wizard
      */
     protected function getAttributeRequirementCell($attribute, $channel)
     {
-        $attributesTable = $this->getElement('Attributes');
-        $columnIdx       = 0;
+        return $this->spin(function () use ($attribute, $channel) {
+            return $this->find('css', sprintf('.AknAcl-icon[data-attribute="%s"][data-channel="%s"]', $attribute, $channel));
+        }, sprintf('The cell for attribute "%s" and channel "%s" was not found', $attribute, $channel));
+    }
 
-        foreach ($attributesTable->findAll('css', 'thead th') as $index => $header) {
-            if ($header->getText() === strtoupper($channel)) {
-                $columnIdx = $index;
-                break;
+    /**
+     * {@inheritdoc}
+     *
+     * TODO: Used with the new 'add-attributes' module. The method should be in the Form parent
+     * when legacy stuff is removed.
+     */
+    public function addAvailableAttributes(array $attributes = [])
+    {
+        $addAttributeDecorator = $this->spin(function () {
+            return $this->getElement('Available attributes');
+        }, 'Cannot find the add attribute element');
+
+        $addAttributeDecorator->addAttributes($attributes);
+    }
+
+    /**
+     * Adds attributes related to attribute groups selected
+     *
+     * @param string $groups
+     */
+    public function addAttributesByGroup($groups)
+    {
+        $addGroupElement = $this->spin(function () {
+            return $this->getElement('Available groups');
+        }, 'Can not find add by group select');
+
+        $addGroupElement->addItems($groups);
+    }
+
+    /**
+     * @param string $attributeName
+     * @param string $groupName
+     *
+     * @return NodeElement|mixed|null
+     */
+    public function getAttribute($attributeName, $groupName = null)
+    {
+        if (null !== $groupName) {
+            return $this->getAttributeByGroupAndName($attributeName, $groupName);
+        }
+
+        return $this->getAttributeByName($attributeName);
+    }
+
+    /**
+     * @param $attribute
+     * @param $group
+     *
+     * @return NodeElement|mixed|null
+     */
+    protected function getAttributeByGroupAndName($attribute, $group)
+    {
+        $groupNode = $this->getElement('Attributes')->find('css', sprintf('tr.group:contains("%s")', $group));
+
+        if (!$groupNode) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Couldn\'t find the attribute group "%s" in the attributes table',
+                    $group
+                )
+            );
+        }
+
+        return $groupNode->getParent()->find('css', sprintf('td:contains("%s")', $attribute));
+    }
+
+    /**
+     * @param $attributeName
+     *
+     * @return NodeElement|mixed|null
+     */
+    protected function getAttributeByName($attributeName)
+    {
+        $attributeNodes = $this->getElement('Attributes')->findAll('css', 'table.groups tbody tr:not(.group)');
+        foreach ($attributeNodes as $attributeNode) {
+            $attribute = $attributeNode->find('css', sprintf('td:contains("%s")', $attributeName));
+            if (null !== $attribute) {
+                return $attribute;
             }
         }
 
-        if (0 === $columnIdx) {
-            throw new \Exception(sprintf('An error occured when trying to get the "%s" header', $channel));
-        }
-
-        $cells = $attributesTable->findAll('css', sprintf('tbody tr:contains("%s") td', $attribute));
-
-        if (count($cells) < $columnIdx) {
-            throw new \Exception(sprintf('An error occured when trying to get the attributes "%s" row', $attribute));
-        }
-
-        return $cells[$columnIdx];
+        return null;
     }
 }
