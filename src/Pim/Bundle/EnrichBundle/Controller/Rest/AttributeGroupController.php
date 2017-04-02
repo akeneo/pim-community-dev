@@ -57,6 +57,7 @@ class AttributeGroupController
     public function indexAction(Request $request)
     {
         $options = [];
+        $useCollectionFilter = true;
 
         if ($request->request->has('identifiers')) {
             $options['identifiers'] = explode(',', $request->request->get('identifiers'));
@@ -67,6 +68,10 @@ class AttributeGroupController
                 ',',
                 $request->request->get('attribute_groups')
             );
+        }
+
+        if ($request->request->has('no_filters')) {
+            $useCollectionFilter = !$request->request->get('no_filters');
         }
 
         if (empty($options)) {
@@ -85,14 +90,16 @@ class AttributeGroupController
                 $options
             );
 
-        $filteredAttributeGroups = $this->collectionFilter->filterCollection(
-            $attributeGroups,
-            'pim.internal_api.attribute_group.view'
-        );
+        if ($useCollectionFilter) {
+            $attributeGroups = $this->collectionFilter->filterCollection(
+                $attributeGroups,
+                'pim.internal_api.attribute_group.view'
+            );
+        }
 
         $normalizedAttributeGroups = [];
 
-        foreach ($filteredAttributeGroups as $attributeGroup) {
+        foreach ($attributeGroups as $attributeGroup) {
             $normalizedAttributeGroups[$attributeGroup->getCode()] = $this->normalizer
                 ->normalize($attributeGroup, 'standard');
         }

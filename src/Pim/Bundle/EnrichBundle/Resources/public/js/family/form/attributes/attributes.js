@@ -95,7 +95,7 @@ define([
 
                 $.when(
                     FetcherRegistry.getFetcher('channel').fetchAll(),
-                    FetcherRegistry.getFetcher('attribute-group').fetchAll()
+                    FetcherRegistry.getFetcher('attribute-group').fetchAll({no_filters: true})
                 ).then(function (channels, attributeGroups) {
                     this.channels = channels;
                     this.attributeGroups = attributeGroups;
@@ -297,7 +297,8 @@ define([
                             options: {
                                 identifiers: event.codes,
                                 limit: event.codes.length
-                            }
+                            },
+                            no_filters: true
                         }),
                     FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
                 ).then(function (attributeGroups, identifier) {

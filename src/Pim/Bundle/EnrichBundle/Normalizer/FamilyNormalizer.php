@@ -70,9 +70,7 @@ class FamilyNormalizer implements NormalizerInterface
             $context
         );
 
-        $normalizedFamily['attributes'] = $this->normalizeAttributes(
-            $normalizedFamily['attributes']
-        );
+        $normalizedFamily['attributes'] = $this->normalizeAttributes($family);
 
         $normalizedFamily['attribute_requirements'] = $this->normalizeRequirements(
             $normalizedFamily['attribute_requirements']
@@ -108,13 +106,13 @@ class FamilyNormalizer implements NormalizerInterface
     /**
      * Fetches attributes by code and normalizes them
      *
-     * @param array $codes
+     * @param FamilyInterface $family
      *
      * @return array
      */
-    protected function normalizeAttributes($codes)
+    protected function normalizeAttributes(FamilyInterface $family)
     {
-        $attributes = $this->attributeRepository->findBy(['code' => $codes]);
+        $attributes = $this->attributeRepository->findAttributesByFamily($family);
 
         $normalizedAttributes = [];
         foreach ($attributes as $attribute) {
