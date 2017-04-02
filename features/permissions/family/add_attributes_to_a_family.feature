@@ -18,5 +18,5 @@ Feature: Add attribute to a family
     And I should not see the text "There are unsaved changes."
     When I am on the "sandals" family page
     And I visit the "Attributes" tab
-    Then I should not see available attribute Lace color in group "Colors"
     And I should see attributes "Color" in group "Colors"
+    Then I should not see available attribute Lace color in group "Colors"
