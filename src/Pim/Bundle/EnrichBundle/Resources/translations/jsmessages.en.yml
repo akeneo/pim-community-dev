@@ -113,8 +113,8 @@ pim_enrich:
             delete.label: Delete
             delete.error: Error during item deletion
         delete:
-            confirm.content: "Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action"
-            confirm.title: "Delete this {{ itemName }}"
+            confirm.content: Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action
+            confirm.title: Delete this {{ itemName }}
 
     navigation:
         link:
@@ -169,7 +169,7 @@ pim_enrich:
                 groups:
                     title: Groups
                     modal:
-                        title: "Group {{ group }}"
+                        title: Group {{ group }}
                         view_group: View group
                         group_label: Label
                         more_products: '{{ count }} more products...'
@@ -198,7 +198,7 @@ pim_enrich:
             label: Label
     confirmation:
         leave:           Are you sure you want to leave this page?
-        discard_changes: "You will lose changes to the {{ entity }} if you leave the page."
+        discard_changes: You will lose changes to the {{ entity }} if you leave the page.
         delete_item:     Confirm deletion
         delete:
             product_attribute: Are you sure you want to delete this attribute from the product?
@@ -249,8 +249,8 @@ pim_enrich:
             sequential_edit:
                 info:
                     products: products
-                    previous: "Skip back to {{ product }} without saving."
-                    next: "Skip to {{ product }} without saving."
+                    previous: Skip back to {{ product }} without saving.
+                    next: Skip to {{ product }} without saving.
                 btn:
                     save_and_next: Save and next
                     save_and_finish: Save and finish
@@ -283,4 +283,4 @@ pim_enrich:
             description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.
 
 pim_enrich.error:
-    exception.title: "Oh snap! A {{ status_code }} error occured..."
+    exception.title: Oh snap! A {{ status_code }} error occured...
