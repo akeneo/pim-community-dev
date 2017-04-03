@@ -13,15 +13,15 @@ pim_api:
         family:
             edit: Create and update families
             list: List families
-        channel.list: List channels through Web API
-        locale.list: List locales through Web API
+        channel.list: List channels
+        locale.list: List locales
     acl_group:
         overall_access: Overall Web API access
         attribute: Attributes
         attribute_option: Attribute options
         category: Categories
         family: Families
-        channel: Channel API access
-        locale: Locale API access
+        channel: Channels
+        locale: Locales
 
 rights.api: Web API permissions

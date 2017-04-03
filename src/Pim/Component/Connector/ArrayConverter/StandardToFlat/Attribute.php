@@ -42,6 +42,11 @@ class Attribute extends AbstractSimpleArrayConverter implements ArrayConverterIn
                 $convertedItem[$property] = implode(',', $data);
                 break;
             case in_array($property, $this->booleanFields):
+                if (null === $data) {
+                    $convertedItem[$property] = '';
+                    break;
+                }
+
                 $convertedItem[$property] = (true === $data) ? '1' : '0';
                 break;
             default:

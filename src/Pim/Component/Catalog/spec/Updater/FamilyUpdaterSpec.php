@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\Localization\TranslatableUpdater;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -28,14 +29,16 @@ class FamilyUpdaterSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $attrRequiFactory,
-        AttributeRequirementRepositoryInterface $attributeRequirementRepo
+        AttributeRequirementRepositoryInterface $attributeRequirementRepo,
+        TranslatableUpdater $translatableUpdater
     ) {
         $this->beConstructedWith(
             $familyRepository,
             $attributeRepository,
             $channelRepository,
             $attrRequiFactory,
-            $attributeRequirementRepo
+            $attributeRequirementRepo,
+            $translatableUpdater
         );
     }
 
@@ -66,6 +69,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $attrRequiFactory,
         $channelRepository,
         $attributeRequirementRepo,
+        $translatableUpdater,
         FamilyTranslation $translation,
         FamilyInterface $family,
         AttributeRepositoryInterface $attributeRepository,
@@ -164,12 +168,8 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $family->addAttribute($skuAttribute)->shouldBeCalled();
         $family->addAttribute($skuAttribute)->shouldBeCalled();
 
-        $family->setLocale('en_US')->shouldBeCalled();
-        $family->setLocale('fr_FR')->shouldBeCalled();
-        $family->getTranslation()->willReturn($translation);
 
-        $translation->setLabel('label en us');
-        $translation->setLabel('label fr fr');
+        $translatableUpdater->update($family, ['fr_FR' => 'Moniteurs', 'en_US' => 'PC Monitors'])->shouldBeCalled();
 
         $family->addAttribute($skuAttribute)->shouldBeCalled();
         $family->addAttribute($nameAttribute)->shouldBeCalled();

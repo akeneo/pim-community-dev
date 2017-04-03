@@ -50,6 +50,8 @@ define(
             gridAlias: null,
             select2Instance: null,
             viewTypeSwitcher: null,
+            currentLoadingPage: null,
+            currentLoadingTerm: null,
 
             events: {
                 'click .view-type-item': 'switchViewType'
@@ -173,6 +175,13 @@ define(
                             var searchParameters = this.getSelectSearchParameters(options.term, page);
                             var fetcher = this.config.fetchers[this.currentViewType];
 
+                            if (this.currentLoadingPage === page && this.currentLoadingTerm === options.term) {
+                                return;
+                            }
+
+                            this.currentLoadingPage = page;
+                            this.currentLoadingTerm = options.term;
+
                             FetcherRegistry.getFetcher(fetcher).search(searchParameters).then(function (views) {
                                 var choices = this.toSelect2Format(views);
 
@@ -182,7 +191,7 @@ define(
 
                                 options.callback({
                                     results: choices,
-                                    more: choices.length >= this.resultsPerPage,
+                                    more: choices.length === this.getResultsPerPage(),
                                     context: {
                                         page: page + 1
                                     }
@@ -204,6 +213,11 @@ define(
                 this.select2Instance.on('select2-selecting', function (event) {
                     var view = event.object;
                     this.selectView(view);
+                }.bind(this));
+
+                this.select2Instance.on('select2-close', function () {
+                    this.currentLoadingPage = null;
+                    this.currentLoadingTerm = null;
                 }.bind(this));
 
                 var $search = this.$('.select2-search');
@@ -425,7 +439,7 @@ define(
                     search: term,
                     alias: this.gridAlias,
                     options: {
-                        limit: this.resultsPerPage,
+                        limit: this.getResultsPerPage(),
                         page: page
                     }
                 });
@@ -458,6 +472,10 @@ define(
                 var url = window.location.hash;
                 Backbone.history.fragment = new Date().getTime();
                 Backbone.history.navigate(url, true);
+            },
+
+            getResultsPerPage: function () {
+                return this.resultsPerPage;
             }
         });
     }

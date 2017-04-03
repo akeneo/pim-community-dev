@@ -103,6 +103,8 @@ if (launchUnitTests.equals("yes")) {
 
         tasks["php-cs-fixer"] = {runPhpCsFixerTest()}
 
+        tasks["php-coupling-detector"] = {runPhpCouplingDetectorTest()}
+
         tasks["grunt"] = {runGruntTest()}
 
         parallel tasks
@@ -113,11 +115,31 @@ if (launchIntegrationTests.equals("yes")) {
     stage("Integration tests") {
         def tasks = [:]
 
-        tasks["phpunit-5.6-orm"] = {runIntegrationTest("5.6", "orm")}
-        tasks["phpunit-7.0-orm"] = {runIntegrationTest("7.0", "orm")}
+        tasks["phpunit-5.6-orm-api-base"] = {runIntegrationTest("5.6", "orm", "PIM_Api_Base_Integration_Test")}
+        tasks["phpunit-5.6-orm-api-controllers"] = {runIntegrationTest("5.6", "orm", "PIM_Api_Bundle_Controllers_Integration_Test")}
+        tasks["phpunit-5.6-orm-api-controllers-catalog"] = {runIntegrationTest("5.6", "orm", "PIM_Api_Bundle_Controllers_Catalog_Integration_Test")}
+        tasks["phpunit-5.6-orm-api-controller-product"] = {runIntegrationTest("5.6", "orm", "PIM_Api_Bundle_Controller_Product_Integration_Test")}
+        tasks["phpunit-5.6-orm-catalog"] = {runIntegrationTest("5.6", "orm", "PIM_Catalog_Integration_Test")}
+        tasks["phpunit-5.6-orm-completeness"] = {runIntegrationTest("5.6", "orm", "PIM_Catalog_Completeness_Integration_Test")}
+        tasks["phpunit-5.6-orm-pqb"] = {runIntegrationTest("5.6", "orm", "PIM_Catalog_PQB_Integration_Test")}
 
-        // Temporarily deactivate integration tests with PHP 7.1 because of stability issues
-        // tasks["phpunit-7.1-orm"] = {runIntegrationTest("7.1", "orm")}
+        tasks["phpunit-7.0-orm-api-base"] = {runIntegrationTest("7.0", "orm", "PIM_Api_Base_Integration_Test")}
+        tasks["phpunit-7.0-orm-api-controllers"] = {runIntegrationTest("7.0", "orm", "PIM_Api_Bundle_Controllers_Integration_Test")}
+        tasks["phpunit-7.0-orm-api-controllers-catalog"] = {runIntegrationTest("7.0", "orm", "PIM_Api_Bundle_Controllers_Catalog_Integration_Test")}
+        tasks["phpunit-7.0-orm-api-controller-product"] = {runIntegrationTest("7.0", "orm", "PIM_Api_Bundle_Controller_Product_Integration_Test")}
+        tasks["phpunit-7.0-orm-catalog"] = {runIntegrationTest("7.0", "orm", "PIM_Catalog_Integration_Test")}
+        tasks["phpunit-7.0-orm-completeness"] = {runIntegrationTest("7.0", "orm", "PIM_Catalog_Completeness_Integration_Test")}
+        tasks["phpunit-7.0-orm-pqb"] = {runIntegrationTest("7.0", "orm", "PIM_Catalog_PQB_Integration_Test")}
+
+        tasks["phpunit-7.1-orm-api-base"] = {runIntegrationTest("7.1", "orm", "PIM_Api_Base_Integration_Test")}
+        tasks["phpunit-7.1-orm-api-controllers"] = {runIntegrationTest("7.1", "orm", "PIM_Api_Bundle_Controllers_Integration_Test")}
+        tasks["phpunit-7.1-orm-api-controllers-catalog"] = {runIntegrationTest("7.1", "orm", "PIM_Api_Bundle_Controllers_Catalog_Integration_Test")}
+        tasks["phpunit-7.1-orm-api-controller-product"] = {runIntegrationTest("7.1", "orm", "PIM_Api_Bundle_Controller_Product_Integration_Test")}
+        tasks["phpunit-7.1-orm-catalog"] = {runIntegrationTest("7.1", "orm", "PIM_Catalog_Integration_Test")}
+        // tasks["phpunit-7.1-orm-completeness"] = {runIntegrationTest("7.1", "orm", "PIM_Catalog_Completeness_Integration_Test")}
+        tasks["phpunit-7.1-orm-pqb"] = {runIntegrationTest("7.1", "orm", "PIM_Catalog_PQB_Integration_Test")}
+
+        // Temporarily deactivate integration tests with MongoDB because of stability issues
         // tasks["phpunit-5.6-odm"] = {runIntegrationTest("5.6", "odm")}
         // tasks["phpunit-7.0-odm"] = {runIntegrationTest("7.0", "odm")}
         // tasks["phpunit-7.1-odm"] = {runIntegrationTest("7.1", "odm")}
@@ -150,6 +172,9 @@ def runGruntTest() {
                 sh "grunt"
             }
         } finally {
+            sh "docker stop \$(docker ps -a -q) || true"
+            sh "docker rm \$(docker ps -a -q) || true"
+            sh "docker volume rm \$(docker volume ls -q) || true"
             deleteDir()
         }
     }
@@ -171,6 +196,9 @@ def runPhpUnitTest(phpVersion) {
                 sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit app/build/logs/phpunit.xml"
             }
         } finally {
+            sh "docker stop \$(docker ps -a -q) || true"
+            sh "docker rm \$(docker ps -a -q) || true"
+            sh "docker volume rm \$(docker volume ls -q) || true"
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
@@ -178,13 +206,13 @@ def runPhpUnitTest(phpVersion) {
     }
 }
 
-def runIntegrationTest(phpVersion, storage) {
+def runIntegrationTest(phpVersion, storage, testSuiteName) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("mongo:2.4").withRun("--name ${env.BRANCH_NAME}-mongodb", "--smallfiles") {
-                docker.image("mysql:5.5").withRun("--name ${env.BRANCH_NAME}-mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim", "--sql_mode=ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION") {
-                    docker.image("carcel/php:${phpVersion}").inside("--link ${env.BRANCH_NAME}-mysql:mysql --link ${env.BRANCH_NAME}-mongodb:mongodb -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("mongo:2.4").withRun("--name mongodb", "--smallfiles") {
+                docker.image("mysql:5.5").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim", "--sql_mode=ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION") {
+                    docker.image("carcel/php:${phpVersion}").inside("--link mysql:mysql --link mongodb:mongodb -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                         unstash "pim_community_dev"
 
                         if (phpVersion != "5.6") {
@@ -206,12 +234,16 @@ def runIntegrationTest(phpVersion, storage) {
                         sh "./app/console --env=test pim:install --force"
 
                         sh "mkdir -p app/build/logs/"
-                        sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
+                        sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite ${testSuiteName} --log-junit app/build/logs/phpunit_integration.xml"
                     }
                 }
             }
         } finally {
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}-${storage}] /\" app/build/logs/*.xml"
+            sh "docker stop \$(docker ps -a -q) || true"
+            sh "docker rm \$(docker ps -a -q) || true"
+            sh "docker volume rm \$(docker volume ls -q) || true"
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}-${storage}-${testSuiteName}] /\" app/build/logs/*.xml"
+
             junit "app/build/logs/*.xml"
             deleteDir()
         }
@@ -234,6 +266,9 @@ def runPhpSpecTest(phpVersion) {
                 sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
             }
         } finally {
+            sh "docker stop \$(docker ps -a -q) || true"
+            sh "docker rm \$(docker ps -a -q) || true"
+            sh "docker volume rm \$(docker volume ls -q) || true"
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
@@ -306,6 +341,26 @@ def runBehatTest(edition, storage, features, phpVersion, mysqlVersion, esVersion
                 archiveArtifacts allowEmptyArchive: true, artifacts: 'app/build/screenshots/*.png'
                 deleteDir()
             }
+        }
+    }
+}
+
+def runPhpCouplingDetectorTest() {
+    node('docker') {
+        deleteDir()
+        try {
+            docker.image("carcel/php:7.1").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+                unstash "pim_community_dev"
+
+                sh "composer remove --dev --no-update doctrine/mongodb-odm-bundle;"
+                sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                sh "./bin/php-coupling-detector detect --config-file=.php_cd.php src"
+            }
+        } finally {
+            sh "docker stop \$(docker ps -a -q) || true"
+            sh "docker rm \$(docker ps -a -q) || true"
+            sh "docker volume rm \$(docker volume ls -q) || true"
+            deleteDir()
         }
     }
 }

@@ -8,6 +8,7 @@ Feature: Mass edit jobs
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"
 
+  @ce
   Scenario: Go to the job execution page for a "mass edit" (by clicking on the notifications) and then check buttons status on the header
     Given a disabled "boat" product
     And a disabled "jet-ski" product

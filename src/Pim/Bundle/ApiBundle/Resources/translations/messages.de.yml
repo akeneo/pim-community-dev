@@ -13,14 +13,14 @@ pim_api:
     family:
       edit: Erstellen und Aktualisieren von Produktfamilien
       list: Produktfamilien auflisten
-    channel.list: Auflistung der Channel über Web-API
-    locale.list: Auflistung der Gebietsschema über Web-API
+    channel.list: Ausgabekanäle auflisten
+    locale.list: Gebietsschemata auflisten
   acl_group:
     overall_access: Gesamtzugriff Web-API
     attribute: Attribute
     attribute_option: Attributoptionen
     category: Kategorien
     family: Produktfamilien
-    channel: Zugriff auf Channel über Web-API
-    locale: Zugriff auf Gebietsschema über Web-API
+    channel: Ausgabekanäle
+    locale: Gebietsschemata
 rights.api: Web-API Berechtigungen
