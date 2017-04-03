@@ -60,6 +60,7 @@ Feature: Create product assets
     And I should not be able to generate Mobile from reference
     And I should not be able to generate Tablet from reference
 
+  @skip-nav
   Scenario: Successfully increment an existing asset code
     Given I am logged in as "Pamela"
     And I am on the assets page
@@ -73,7 +74,7 @@ Feature: Create product assets
     And I hover over the element ".validation-tooltip"
     Then I should see the text "Code must be unique. We generated a new one for you."
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6023
+  @skip-nav @jira https://akeneo.atlassian.net/browse/PIM-6023
   Scenario: Successfully create an asset with a non existent similar code
     Given I am logged in as "Pamela"
     And I am on the assets page
