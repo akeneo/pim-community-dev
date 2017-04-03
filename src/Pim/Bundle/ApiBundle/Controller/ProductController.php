@@ -177,7 +177,14 @@ class ProductController
     public function listAction(Request $request)
     {
         try {
-            $this->parameterValidator->validate($request->query->all(), ['support_search_after' => true]);
+            $pagination = $request->query->has('pagination_type') &&
+                PaginationTypes::OFFSET === $request->query->get('pagination_type') ?
+                PaginationTypes::SEARCH_AFTER : $request->query->get('pagination_type');
+
+            $this->parameterValidator->validate(
+                array_merge($request->query->all(), [$pagination]),
+                ['support_search_after' => true]
+            );
         } catch (PaginationParametersException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
@@ -215,9 +222,7 @@ class ProductController
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
 
-        $paginatedProducts = PaginationTypes::OFFSET === $queryParameters['pagination_type'] ?
-            $this->searchAfterOffset($pqb, $queryParameters, $normalizerOptions) :
-            $this->searchAfterIdentifier($pqb, $queryParameters, $normalizerOptions);
+        $paginatedProducts = $this->searchAfterIdentifier($pqb, $queryParameters, $normalizerOptions);
 
         return new JsonResponse($paginatedProducts);
     }
@@ -663,46 +668,6 @@ class ProductController
                 )
             );
         }
-    }
-
-    /**
-     * @param ProductQueryBuilderInterface $pqb
-     * @param array                        $queryParameters
-     * @param array                        $normalizerOptions
-     *
-     * @return array
-     */
-    protected function searchAfterOffset(
-        ProductQueryBuilderInterface $pqb,
-        array $queryParameters,
-        array $normalizerOptions
-    ) {
-        $defaultParameters = [
-            'page'       => 1,
-            'with_count' => 'false',
-        ];
-
-        $queryParameters = array_merge($defaultParameters, $queryParameters);
-
-        $offset = ($queryParameters['page'] - 1) * $queryParameters['limit'];
-        $products = $this->productRepository->searchAfterOffset($pqb, $queryParameters['limit'], $offset);
-
-        $count = 'true' === $queryParameters['with_count'] ? $this->productRepository->count($pqb) : null;
-
-        $parameters = [
-            'query_parameters'    => $queryParameters,
-            'list_route_name'     => 'pim_api_product_list',
-            'item_route_name'     => 'pim_api_product_get',
-            'item_identifier_key' => 'identifier',
-        ];
-
-        $paginatedProducts = $this->offsetPaginator->paginate(
-            $this->normalizer->normalize($products, 'external_api', $normalizerOptions),
-            $parameters,
-            $count
-        );
-
-        return $paginatedProducts;
     }
 
     /**
