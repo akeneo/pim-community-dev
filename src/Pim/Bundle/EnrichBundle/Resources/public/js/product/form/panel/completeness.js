@@ -62,7 +62,7 @@ define(
                                 i18n: i18n,
                                 locales: locales,
                                 uiLocale: UserContext.get('uiLocale'),
-                                catalogLocale: UserContext.get('catalogLocale'),
+                                catalogLocale: UserContext.get('catalogLocale')
                             })
                         );
                         this.delegateEvents();
