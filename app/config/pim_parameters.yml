@@ -61,5 +61,4 @@ parameters:
 
     # Files used as configuration for the Elasticsearch index
     elasticsearch_index_configuration_files:
-        - 'path/to/foo.yml'
-        - 'path/to/bar.yml'
+        - '%kernel.root_dir%/../vendor/akeneo/pim-community-dev/src/Pim/Bundle/CatalogBundle/Resources/elasticsearch/index_configuration.yml'
