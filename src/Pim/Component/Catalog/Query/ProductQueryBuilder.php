@@ -74,7 +74,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function execute()
     {
-        return $this->cursorFactory->createCursor($this->getQueryBuilder()->getQuery());
+        return $this->cursorFactory->createCursor($this->getQueryBuilder()->getQuery(), $this->defaultContext);
     }
 
     /**

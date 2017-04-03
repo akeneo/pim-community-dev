@@ -62,17 +62,15 @@ class CursorFactory implements CursorFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createCursor($query, $pageSize = null)
+    public function createCursor($queryBuilder, array $options = [])
     {
-        if (null === $pageSize) {
-            $pageSize = $this->pageSize;
-        }
-
         $repository = $this->om->getRepository($this->entityClassName);
         if (!$repository instanceof CursorableRepositoryInterface) {
             throw InvalidObjectException::objectExpected($this->entityClassName, CursorableRepositoryInterface::class);
         }
 
-        return new $this->cursorClassName($this->searchEngine, $repository, $query, $this->indexType, $pageSize);
+        $pageSize = !isset($options['page_size']) ? $this->pageSize : $options['page_size'];
+
+        return new $this->cursorClassName($this->searchEngine, $repository, $queryBuilder, $this->indexType, $pageSize);
     }
 }
