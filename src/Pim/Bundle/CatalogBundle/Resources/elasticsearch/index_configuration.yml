@@ -58,10 +58,10 @@ mappings:
                         type: 'keyword'
             -
                 prices:
+                    path_match: 'values.*-prices.*'
                     match_mapping_type: 'string'
                     mapping:
                         type: 'double'
-                    path_match: 'values.*-prices.*'
             -
                 metric_data:
                     match_mapping_type: 'string'
@@ -70,22 +70,64 @@ mappings:
                     path_match: 'values.*-metric.*.data'
             -
                 metric_base_data:
+                    path_match: 'values.*-metric.*.base_data'
                     match_mapping_type: 'string'
                     mapping:
                         type: 'double'
-                    path_match: 'values.*-metric.*.base_data'
             -
                 metric_unit:
+                    path_match: 'values.*-metric.*.unit'
                     match_mapping_type: 'string'
                     mapping:
                         index: 'no'
-                    path_match: 'values.*-metric.*.unit'
             -
                 metric_base_unit:
+                    path_match: 'values.*-metric.*.base_unit'
                     match_mapping_type: 'string'
                     mapping:
                         index: 'no'
-                    path_match: 'values.*-metric.*.base_unit'
+            -
+                media_extension:
+                    path_match: 'values.*-media.*.extension'
+                    match_mapping_type: 'string'
+                    mapping:
+                        index: 'no'
+            -
+                media_key:
+                    path_match: 'values.*-media.*.key'
+                    match_mapping_type: 'string'
+                    mapping:
+                        index: 'no'
+            -
+                media_hash:
+                    path_match: 'values.*-media.*.hash'
+                    match_mapping_type: 'string'
+                    mapping:
+                        index: 'no'
+            -
+                media_mime_type:
+                    path_match: 'values.*-media.*.mime_type'
+                    match_mapping_type: 'string'
+                    mapping:
+                        index: 'no'
+            -
+                media_original_filename:
+                    path_match: 'values.*-media.*.original_filename'
+                    match_mapping_type: 'string'
+                    mapping:
+                        type: 'keyword'
+            -
+                media_size:
+                    path_match: 'values.*-media.*.size'
+                    match_mapping_type: 'string'
+                    mapping:
+                        index: 'no'
+            -
+                media_storage:
+                    path_match: 'values.*-media.*.storage'
+                    match_mapping_type: 'string'
+                    mapping:
+                        index: 'no'
 settings:
     analysis:
         normalizer:

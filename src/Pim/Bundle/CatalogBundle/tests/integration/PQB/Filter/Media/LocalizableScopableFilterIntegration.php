@@ -20,6 +20,8 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
+            $this->resetIndex();
+
             $this->createProduct('product_one', [
                 'values' => [
                     'a_localizable_scopable_image' => [
@@ -51,18 +53,6 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
         $this->assert($result, ['product_one']);
 
         $result = $this->executeFilter([['a_localizable_scopable_image', Operators::STARTS_WITH, 'aken', ['locale' => 'fr_FR', 'scope' => 'ecommerce']]]);
-        $this->assert($result, []);
-    }
-
-    public function testOperatorEndWith()
-    {
-        $result = $this->executeFilter([['a_localizable_scopable_image', Operators::ENDS_WITH, 'ziggy.png', ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
-        $this->assert($result, ['product_two']);
-
-        $result = $this->executeFilter([['a_localizable_scopable_image', Operators::ENDS_WITH, 'ziggy.png', ['locale' => 'fr_FR', 'scope' => 'tablet']]]);
-        $this->assert($result, ['product_one']);
-
-        $result = $this->executeFilter([['a_localizable_scopable_image', Operators::ENDS_WITH, 'ziggy', ['locale' => 'fr_FR', 'scope' => 'ecommerce']]]);
         $this->assert($result, []);
     }
 

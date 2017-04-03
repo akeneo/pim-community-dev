@@ -7,22 +7,24 @@ parameters:
     pim_catalog.query.filter.attribute_dumper.class:              Pim\Bundle\CatalogBundle\Command\ProductQueryHelp\AttributeFilterDumper
     pim_catalog.doctrine.query.filter.object_id_resolver.class:   Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver
     pim_catalog.doctrine.query.filter.object_code_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver
-    pim_catalog.query.elasticsearch.filter.identifier.class:      Pim\Bundle\CatalogBundle\Elasticsearch\Filter\IdentifierFilter
-    pim_catalog.query.elasticsearch.filter.family.class:          Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\FamilyFilter
-    pim_catalog.query.elasticsearch.filter.category.class:        Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CategoryFilter
-    pim_catalog.query.elasticsearch.filter.group.class:           Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\GroupFilter
-    pim_catalog.query.elasticsearch.filter.status.class:          Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\StatusFilter
-    pim_catalog.query.elasticsearch.filter.datetime.class:        Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\DateTimeFilter
+
+    pim_catalog.query.elasticsearch.filter.identifier.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\IdentifierFilter
+    pim_catalog.query.elasticsearch.filter.family.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\FamilyFilter
+    pim_catalog.query.elasticsearch.filter.category.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CategoryFilter
+    pim_catalog.query.elasticsearch.filter.group.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\GroupFilter
+    pim_catalog.query.elasticsearch.filter.status.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\StatusFilter
+    pim_catalog.query.elasticsearch.filter.datetime.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\DateTimeFilter
     pim_catalog.query.elasticsearch.filter.completeness.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CompletenessFilter
-    pim_catalog.query.elasticsearch.filter.date.class:            Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\DateFilter
-    pim_catalog.query.elasticsearch.filter.number.class:          Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\NumberFilter
+    pim_catalog.query.elasticsearch.filter.date.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\DateFilter
+    pim_catalog.query.elasticsearch.filter.number.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\NumberFilter
     pim_catalog.query.elasticsearch.filter.text.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\TextFilter
     pim_catalog.query.elasticsearch.filter.text_area.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\TextAreaFilter
-    pim_catalog.query.elasticsearch.filter.option.class:          Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\OptionFilter
-    pim_catalog.query.elasticsearch.filter.options.class:         Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\OptionsFilter
+    pim_catalog.query.elasticsearch.filter.option.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\OptionFilter
+    pim_catalog.query.elasticsearch.filter.options.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\OptionsFilter
     pim_catalog.query.elasticsearch.filter.price.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\PriceFilter
     pim_catalog.query.elasticsearch.filter.metric.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\MetricFilter
-    pim_catalog.query.elasticsearch.sorter.base.class:            Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\BaseSorter
+    pim_catalog.query.elasticsearch.filter.media.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\MediaFilter
+    pim_catalog.query.elasticsearch.sorter.base.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\BaseSorter
 
 services:
     pim_catalog.query.product_query_builder_factory:
@@ -196,7 +198,7 @@ services:
         arguments:
             - '@pim_catalog.validator.helper.attribute'
             - ['pim_catalog_text']
-            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
 
@@ -205,7 +207,7 @@ services:
         arguments:
             - '@pim_catalog.validator.helper.attribute'
             - ['pim_catalog_textarea']
-            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
 
@@ -237,6 +239,15 @@ services:
             - '@akeneo_measure.measure_converter'
             - ['pim_catalog_metric']
             - ['<', '<=', '=', '!=', '>=', '>', 'EMPTY', 'EMPTY FOR CURRENCY', 'EMPTY ON ALL CURRENCIES', 'NOT EMPTY', 'NOT EMPTY ON AT LEAST ONE CURRENCY', 'NOT EMPTY FOR CURRENCY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.media:
+        class: '%pim_catalog.query.elasticsearch.filter.media.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_file', 'pim_catalog_image']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'EMPTY', 'NOT EMPTY']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
 

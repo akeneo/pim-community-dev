@@ -11,6 +11,9 @@ use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
  */
 class ProductIndexingIntegration extends TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function getConfiguration()
     {
         return new Configuration(
@@ -93,13 +96,38 @@ class ProductIndexingIntegration extends TestCase
                 ],
                 'a_file-media'                                   => [
                     '<all_channels>' => [
-                        '<all_locales>' => null,
+                        '<all_locales>' => [
+                            'extension'         => 'txt',
+                            'hash'              => '6545089471ba53d660d22d7b8dc8dd67904b1e28',
+                            'key'               => '8/b/5/c/8b5cf9bfd2e7e4725fd581e03251133ada1b2c99_fileA.txt',
+                            'mime_type'         => 'text/plain',
+                            'original_filename' => 'fileA.txt',
+                            'size'              => 1048576,
+                            'storage'           => 'catalogStorage',
+
+                        ],
                     ],
                 ],
                 'a_localizable_image-media'                      => [
                     '<all_channels>' => [
-                        'en_US' => null,
-                        'fr_FR' => null,
+                        'en_US' => [
+                            'extension'         => 'jpg',
+                            'hash'              => '16850b6741c6e0d7622edb29465488571a2e63df',
+                            'key'               => '7/1/3/3/713380965740f8838834cd58505aa329fcf448a5_imageB_en_US.jpg',
+                            'mime_type'         => 'image/jpeg',
+                            'original_filename' => 'imageB-en_US.jpg',
+                            'size'              => 1048576,
+                            'storage'           => 'catalogStorage',
+                        ],
+                        'fr_FR' => [
+                            'extension'         => 'jpg',
+                            'hash'              => '058c6f380b0888afadf7341f8baaf58b538e5774',
+                            'key'               => '0/5/1/9/05198fcf21b2b0d4596459f172e2e62b1a70bfd0_imageB_fr_FR.jpg',
+                            'mime_type'         => 'image/jpeg',
+                            'original_filename' => 'imageB-fr_FR.jpg',
+                            'size'              => 1048576,
+                            'storage'           => 'catalogStorage',
+                        ],
                     ],
                 ],
                 'a_localized_and_scopable_text_area-text'        => [
@@ -243,7 +271,16 @@ class ProductIndexingIntegration extends TestCase
                 ],
                 'an_image-media'                                 => [
                     '<all_channels>' => [
-                        '<all_locales>' => null,
+                        '<all_locales>' => [
+                            'extension'         => 'jpg',
+                            'hash'              => 'a9453e6ce89dbfd776ecae609e1c23e9cfad8277',
+                            'key'               => '3/b/5/5/3b5548f9764c0535db2ac92f047fa448cb7cea76_imageA.jpg',
+                            'mime_type'         => 'image/jpeg',
+                            'original_filename' => 'imageA.jpg',
+                            'size'              => 1048576,
+                            'storage'           => 'catalogStorage',
+
+                        ],
                     ],
                 ],
             ],

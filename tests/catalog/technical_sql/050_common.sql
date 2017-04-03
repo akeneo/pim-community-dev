@@ -37,7 +37,7 @@ INSERT INTO `acme_reference_data_fabric` VALUES (5,'fabricA',1,'fabricA',NULL),(
 --
 
 /*!40000 ALTER TABLE `akeneo_file_storage_file_info` DISABLE KEYS */;
-INSERT INTO `akeneo_file_storage_file_info` VALUES (35,'8/b/5/c/8b5cf9bfd2e7e4725fd581e03251133ada1b2c99_fileA.txt','fileA.txt','text/plain',1048576,'txt','6545089471ba53d660d22d7b8dc8dd67904b1e28','catalogStorage'),(36,'3/b/5/5/3b5548f9764c0535db2ac92f047fa448cb7cea76_imageA.jpg','imageA.jpg','text/plain',1048576,'jpg','a9453e6ce89dbfd776ecae609e1c23e9cfad8277','catalogStorage'),(37,'7/1/3/3/713380965740f8838834cd58505aa329fcf448a5_imageB_en_US.jpg','imageB-en_US.jpg','text/plain',1048576,'jpg','16850b6741c6e0d7622edb29465488571a2e63df','catalogStorage'),(38,'0/5/1/9/05198fcf21b2b0d4596459f172e2e62b1a70bfd0_imageB_fr_FR.jpg','imageB-fr_FR.jpg','text/plain',1048576,'jpg','058c6f380b0888afadf7341f8baaf58b538e5774','catalogStorage');
+INSERT INTO `akeneo_file_storage_file_info` VALUES (35,'8/b/5/c/8b5cf9bfd2e7e4725fd581e03251133ada1b2c99_fileA.txt','fileA.txt','text/plain',1048576,'txt','6545089471ba53d660d22d7b8dc8dd67904b1e28','catalogStorage'),(36,'3/b/5/5/3b5548f9764c0535db2ac92f047fa448cb7cea76_imageA.jpg','imageA.jpg','image/jpeg',1048576,'jpg','a9453e6ce89dbfd776ecae609e1c23e9cfad8277','catalogStorage'),(37,'7/1/3/3/713380965740f8838834cd58505aa329fcf448a5_imageB_en_US.jpg','imageB-en_US.jpg','image/jpeg',1048576,'jpg','16850b6741c6e0d7622edb29465488571a2e63df','catalogStorage'),(38,'0/5/1/9/05198fcf21b2b0d4596459f172e2e62b1a70bfd0_imageB_fr_FR.jpg','imageB-fr_FR.jpg','image/jpeg',1048576,'jpg','058c6f380b0888afadf7341f8baaf58b538e5774','catalogStorage');
 /*!40000 ALTER TABLE `akeneo_file_storage_file_info` ENABLE KEYS */;
 
 --
