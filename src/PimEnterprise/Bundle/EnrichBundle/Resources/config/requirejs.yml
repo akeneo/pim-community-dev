@@ -34,6 +34,15 @@ config:
                 pimee_product_asset_edit:
                     module: pim/controller/form
                     aclResourceId: pimee_product_asset_index
+                pimee_product_asset_mass_edit_asset_action_choose:
+                    module: pim/controller/form
+                    aclResourceId: pim_enrich_mass_edit
+                pimee_product_asset_mass_edit_asset_action_configure:
+                    module: pim/controller/form
+                    aclResourceId: pim_enrich_mass_edit
+                pimee_product_asset_mass_edit_asset_action_perform:
+                    module: pim/controller/form
+                    aclResourceId: pim_enrich_mass_edit
 
     map:
         '*':
