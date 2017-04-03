@@ -9,11 +9,13 @@
 define(
     [
         'pim/form',
-        'pim/common/grid'
+        'pim/common/grid',
+        'pim/user-context'
     ],
     function (
         BaseForm,
-        Grid
+        Grid,
+        UserContext
     ) {
         return BaseForm.extend({
             grid: null,
@@ -32,7 +34,9 @@ define(
              */
             render: function () {
                 if (!this.grid) {
-                    this.grid = new Grid(this.config.alias, {});
+                    this.grid = new Grid(this.config.alias, {
+                        localeCode: UserContext.get('catalogLocale')
+                    });
                 }
 
                 this.$el.empty().append(this.grid.render().$el);
