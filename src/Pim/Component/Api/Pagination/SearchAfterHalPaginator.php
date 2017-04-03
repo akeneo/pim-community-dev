@@ -38,7 +38,6 @@ class SearchAfterHalPaginator implements PaginatorInterface
 
         $this->resolver->setRequired([
             'query_parameters',
-            'search_after',
             'list_route_name',
             'item_route_name',
         ]);
@@ -46,7 +45,6 @@ class SearchAfterHalPaginator implements PaginatorInterface
         $this->resolver->setAllowedTypes('uri_parameters', 'array');
         $this->resolver->setAllowedTypes('item_identifier_key', 'string');
         $this->resolver->setAllowedTypes('query_parameters', 'array');
-        $this->resolver->setAllowedTypes('search_after', 'array');
         $this->resolver->setAllowedTypes('list_route_name', 'string');
         $this->resolver->setAllowedTypes('item_route_name', 'string');
 
@@ -78,8 +76,9 @@ class SearchAfterHalPaginator implements PaginatorInterface
 
         $uriParameters = array_merge($parameters['uri_parameters'], $parameters['query_parameters']);
 
+        $searchAfter = isset($parameters['query_parameters']['search_after']) ? $parameters['query_parameters']['search_after'] : null;
         $links = [
-            $this->createLink($parameters['list_route_name'], $uriParameters, $parameters['search_after']['self'], 'self'),
+            $this->createLink($parameters['list_route_name'], $uriParameters, $searchAfter, 'self'),
             $this->createLink($parameters['list_route_name'], $uriParameters, null, 'first'),
         ];
 
@@ -87,12 +86,17 @@ class SearchAfterHalPaginator implements PaginatorInterface
             $links[] = $this->createLink(
                 $parameters['list_route_name'],
                 $uriParameters,
-                $parameters['search_after']['next'],
+                end($items)[$parameters['item_identifier_key']],
                 'next'
             );
         }
 
-        $collection = new HalResource($links, ['items' => $embedded], []);
+        $data = ['current_page' => null];
+        if (null !== $count) {
+            $data['items_count'] = $count;
+        }
+
+        $collection = new HalResource($links, ['items' => $embedded], $data);
 
         return $collection->toArray();
     }

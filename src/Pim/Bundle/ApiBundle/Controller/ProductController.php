@@ -194,7 +194,15 @@ class ProductController
 
         $normalizerOptions = $this->getNormalizerOptions($request, $channel);
 
-        $pqb = $this->pqbFactory->create();
+        $defaultParameters = [
+            'limit' => $this->apiConfiguration['pagination']['limit_by_default']
+        ];
+
+        $queryParameters = array_merge($defaultParameters, $request->query->all());
+        $pqbOptions = ['limit' => $queryParameters['limit']];
+        $pqbOptions['search_after'] = isset($queryParameters['search_after']) ? $queryParameters['search_after'] : null;
+
+        $pqb = $this->pqbFactory->create($pqbOptions);
         try {
             $this->setPQBFilters($pqb, $request, $channel);
         } catch (PropertyException $e) {
@@ -206,13 +214,6 @@ class ProductController
         } catch (ObjectNotFoundException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
-
-        $defaultParameters = [
-            'pagination_type' => PaginationTypes::OFFSET,
-            'limit'           => $this->apiConfiguration['pagination']['limit_by_default'],
-        ];
-
-        $queryParameters = array_merge($defaultParameters, $request->query->all());
 
         $paginatedProducts = PaginationTypes::OFFSET === $queryParameters['pagination_type'] ?
             $this->searchAfterOffset($pqb, $queryParameters, $normalizerOptions) :
@@ -716,41 +717,22 @@ class ProductController
         array $queryParameters,
         array $normalizerOptions
     ) {
-        $encryptedId = isset($queryParameters['search_after']) ? $queryParameters['search_after'] : null;
-        $id = null !== $encryptedId ? $this->primaryKeyEncrypter->decrypt($encryptedId) : null;
-
-        $productCursor = $this->productRepository->searchAfterIdentifier($pqb, $queryParameters['limit'], $id);
-
-        // we have to iterate to get the last element.
-        // An element can be false because of a bug in the cursor
-        // TODO : remove with TIP-613
-        $products = [];
-        foreach ($productCursor as $product) {
-            if (false !== $product) {
-                $products[] = $product;
-            }
-        }
-
-        $lastProduct = end($products);
-        $nextEncryptedId = false !== $lastProduct ? $this->primaryKeyEncrypter->encrypt($lastProduct->getId()) : null;
-
-        reset($products);
+        $productCursor = $pqb->execute();
 
         $parameters = [
-            'query_parameters'         => $queryParameters,
-            'search_after' => [
-                'self' => $encryptedId,
-                'next' => $nextEncryptedId,
-            ],
-            'list_route_name'          => 'pim_api_product_list',
-            'item_route_name'          => 'pim_api_product_get',
-            'item_identifier_key'      => 'identifier'
+            'query_parameters'    => $queryParameters,
+            'list_route_name'     => 'pim_api_product_list',
+            'item_route_name'     => 'pim_api_product_get',
+            'item_identifier_key' => 'identifier'
         ];
 
+        $count = isset($queryParameters['with_count']) && 'true' === $queryParameters['with_count'] ?
+            $productCursor->count() : null;
+
         $paginatedProducts = $this->searchAfterPaginator->paginate(
-            $this->normalizer->normalize($products, 'external_api', $normalizerOptions),
+            $this->normalizer->normalize($productCursor, 'external_api', $normalizerOptions),
             $parameters,
-            null
+            $count
         );
 
         return $paginatedProducts;

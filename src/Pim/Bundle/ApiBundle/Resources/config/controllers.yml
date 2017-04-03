@@ -99,7 +99,7 @@ services:
     pim_api.controller.product:
         class: '%pim_api.controller.product.class%'
         arguments:
-            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.query.product_query_builder_bounded_factory'
             - '@pim_serializer'
             - '@pim_api.repository.channel'
             - '@pim_catalog.repository.locale'
