@@ -101,6 +101,9 @@
                         // Trigger jstree lock
                         mediator.trigger('jstree:lock');
 
+                        // Trigger mass edit form lock
+                        mediator.trigger('mass-edit:form:lock');
+
                         // Disable wysiwyg
                         $('textarea.wysiwyg[id]').each(function () {
                             wysiwyg.readonly($(this), true);
@@ -129,6 +132,9 @@
 
                         // Trigger jstree unlock
                         mediator.trigger('jstree:unlock');
+
+                        // Trigger mass edit form unlock
+                        mediator.trigger('mass-edit:form:unlock');
 
                         // Enable wysiwyg
                         $('textarea.wysiwyg[id]').each(function () {

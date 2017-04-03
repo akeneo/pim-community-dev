@@ -63,7 +63,7 @@ Feature: Apply a mass action on all entities
     And I press the "Change product information" button
     And I choose the "Set attribute requirements" operation
     And I display the Length attribute
-    And I switch the attribute "Length" requirement in channel "Mobile"
+    And I switch the attribute "length" requirement in channel "mobile"
     And I move on to the next step
     And I wait for the "set-attribute-requirements" mass-edit job to finish
     Then attribute "Length" should be required in family "4_blocks" for channel "Mobile"
