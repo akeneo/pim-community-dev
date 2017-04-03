@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 
 /**
- * Cursor to iterate on items where a start and a limit can be defined
+ * Bounded cursor to iterate on items where a start and a limit are defined
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @author    Marie Bochu <marie.bochu@akeneo.com>
