@@ -50,8 +50,7 @@ class PublishedProductConsistencyExceptionSubscriberSpec extends ObjectBehavior
 
         // Mock redirect response
         $router->generate('foo', [])->willReturn('foobar');
-        $response = new RedirectResponse('foobar');
-        $event->setResponse($response)->shouldBeCalled();
+        $event->setResponse(Argument::any())->shouldBeCalled();
 
         // Mock flash message is added
         $event->getRequest()->willReturn($request);

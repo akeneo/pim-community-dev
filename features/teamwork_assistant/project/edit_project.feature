@@ -36,7 +36,7 @@ Feature: Edit basic project informations
       | project-description | A rebellion built on hope       |
     And I press the "Save" button
     Then I should be on the products page
-    And I should see the text "Star Wars: Rogue One Collection"
+    And I should be on the view "Star Wars: Rogue One Collection"
     And the project "Star Wars: Rogue One Collection" for channel "tablet" and locale "en_US" has the following properties:
       | Label       | Star Wars: Rogue One Collection |
       | Description | A rebellion built on hope       |
@@ -60,38 +60,38 @@ Feature: Edit basic project informations
     And I am on the products page
     And I switch view selector type to "Projects"
     And I apply the "Star Wars Collection" project
-    And I should see the text "Star Wars Collection"
+    Then I should be on the view "Star Wars Collection"
     When I click on the edit project button
     And I fill in the following information in the popin:
       | project-label       |                           |
       | project-due-date    | 05/20/2051                |
       | project-description | A rebellion built on hope |
     And I press the "Save" button
-    Then I should see the text "This value should not be blank."
+    Then I should see a project validation error "This value should not be blank."
     When I fill in the following information in the popin:
       | project-label       | This is a very long label that has obviously more than one hundred characters which is irrelevant for a normal use |
       | project-due-date    | 05/20/2051                                                                                                         |
       | project-description | A rebellion built on hope                                                                                          |
-    Then I should see the text "This value is too long. It should have 100 characters or less."
+    Then I should see a project validation error "This value is too long. It should have 100 characters or less."
     When I fill in the following information in the popin:
       | project-label       | Star Wars: Rogue One Collection |
       | project-due-date    |                                 |
       | project-description | A rebellion built on hope       |
     And I press the "Save" button
-    Then I should see the text "This value should not be blank."
+    Then I should see a project validation error "This value should not be blank."
     When I fill in the following information in the popin:
       | project-label       | Existing project          |
       | project-due-date    | 05/20/2051                |
       | project-description | A rebellion built on hope |
     And I press the "Save" button
-    Then I should see the text "This value is already used."
+    Then I should see a project validation error "This value is already used."
     When I fill in the following information in the popin:
       | project-label       | Star Wars: Rogue One Collection |
       | project-due-date    | 12/30/1990                      |
       | project-description | A rebellion built on hope       |
     And I press the "Save" button
     Then I should be on the products page
-    And I should see the text "Star Wars: Rogue One Collection"
+    And I should be on the view "Star Wars: Rogue One Collection"
     And the project "Star Wars: Rogue One Collection" for channel "tablet" and locale "en_US" has the following properties:
       | Label       | Star Wars: Rogue One Collection |
       | Description | A rebellion built on hope       |
