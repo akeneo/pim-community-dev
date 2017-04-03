@@ -53,19 +53,8 @@ class CompletenessContext extends PimContext
     {
         $this->spin(function () use ($code, $locale, $label) {
             $completeness = $this->getCurrentPage()->getElement('Completeness');
-
-            $localeSection = $completeness->find(
-                'css',
-                sprintf(
-                    '.AknCompletenessBlock-headerLocale[data-locale="%s"]',
-                    $locale
-                )
-            )->getParent()->getParent();
-
-            $channelLabel = $localeSection->find(
-                'css',
-                sprintf('.channel[data-channel="%s"]', $code)
-            )->getText();
+            $data = $this->getCurrentPage()->getElement('Completeness')->getCompletenessData();
+            $channelLabel = $data[$locale]['data'][$code]['label'];
 
             return $channelLabel === $label;
         }, sprintf('"%s" does not have the label "%s".', $code, $label));
