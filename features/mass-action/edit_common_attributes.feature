@@ -277,3 +277,19 @@ Feature: Edit common attributes of many products at once
     When I choose the "Edit common attributes" operation
     Then I should see the text "[tablet]"
     And I should not see the text "undefined"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6274
+  Scenario: Successfully validate products with a custom validation on identifier
+    Given I am on the "SKU" attribute page
+    When I fill in the following information:
+      | Validation rule   | Regular expression |
+      | Validation regexp | /^\d+$/            |
+    And I press the "Save" button
+    And I should not see the text "There are unsaved changes."
+    And I am on the products page
+    Given I select rows boots, sandals and sneakers
+    When I press "Change product information" on the "Bulk Actions" dropdown button
+    And I choose the "Edit common attributes" operation
+    And I display the Name attribute
+    And I move on to the next step
+    Then I should not see the text "There are errors in the attributes form"

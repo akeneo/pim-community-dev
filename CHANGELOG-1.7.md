@@ -9,6 +9,9 @@
 - PIM-6071: Hide add option icon for non-editable fields
 - PIM-6273: Enable removing attributes in mass edit products form
 - PIM-6277: Display channel labels in completeness tab
+- PIM-6275: Fix variations not visible on Variant Group properties tab
+- PIM-6283: Fix a bug where SKUs of products in the Variant Group edit page were not displayed
+- PIM-6274: Successfully validate products with a custom validation on identifier
 
 # 1.7.1 (2017-03-23)
 

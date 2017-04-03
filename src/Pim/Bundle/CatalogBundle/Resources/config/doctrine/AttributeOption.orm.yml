@@ -38,3 +38,4 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
                 - remove
                 - detach
             mappedBy: option
+            orphanRemoval: true

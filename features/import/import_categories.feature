@@ -97,3 +97,21 @@ Feature: Import categories
       | laptops     | Laptops     | computers |
       | hard_drives | Hard drives | laptops   |
       | pc          | PC          | computers |
+
+    Scenario: Import categories with empty labels
+      Given the "footwear" catalog configuration
+      And I am logged in as "Julia"
+      And the following CSV file to import:
+      """
+      code;parent;label-en_US
+      spring_collection;2014_collection;
+      summer_collection;2014_collection;
+      """
+      And the following job "csv_footwear_category_import" configuration:
+        | filePath | %file to import% |
+      When I am on the "csv_footwear_category_import" import job page
+      And I launch the import job
+      And I wait for the "csv_footwear_category_import" job to finish
+      And I am on the categories page
+      Then I should see the text "[spring_collection]"
+      And I should see the text "[summer_collection]"

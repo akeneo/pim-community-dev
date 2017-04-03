@@ -87,6 +87,39 @@ JSON;
         $this->assertSame($categoryStandard, $normalizer->normalize($category));
     }
 
+    public function testCategoryCreationWithEmptyLabels()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "code": "empty_label_category",
+        "parent": "master",
+        "labels": {
+            "en_US": "US label",
+            "fr_FR": null,
+            "de_DE": "" 
+        }
+    }
+JSON;
+        $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
+
+        $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('empty_label_category');
+        $categoryStandard = [
+            'code'   => 'empty_label_category',
+            'parent' => 'master',
+            'labels' => [
+                'en_US' => 'US label'
+            ],
+        ];
+        $normalizer = $this->get('pim_catalog.normalizer.standard.category');
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSame($categoryStandard, $normalizer->normalize($category));
+    }
+
     public function testResponseWhenContentIsEmpty()
     {
         $client = $this->createAuthenticatedClient();

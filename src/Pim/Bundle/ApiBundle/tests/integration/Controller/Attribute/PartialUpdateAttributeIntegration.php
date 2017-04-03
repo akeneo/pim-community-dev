@@ -375,6 +375,73 @@ JSON;
         $this->assertSame($attributeStandard, $normalizer->normalize($attribute));
     }
 
+    public function testAttributePartialUpdateWithEmptyLabels()
+    {
+        $initLabels = [
+            'labels' => [
+                'en_US' => 'Family A2 US',
+                'fr_FR' => 'Family A2 FR',
+                'de_DE' => 'Family A2 DE',
+            ],
+        ];
+
+        $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('a_text');
+        $this->get('pim_catalog.updater.attribute')->update($attribute, $initLabels);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
+
+        $data =
+<<<JSON
+    {
+        "labels": {
+            "en_US": null,
+            "fr_FR": ""
+        }
+    }
+JSON;
+
+        $attributeStandard = [
+            'code'                   => 'a_text',
+            'type'                   => 'pim_catalog_text',
+            'group'                  => 'attributeGroupA',
+            'unique'                 => false,
+            'useable_as_grid_filter' => false,
+            'allowed_extensions'     => [],
+            'metric_family'          => null,
+            'default_metric_unit'    => null,
+            'reference_data_name'    => null,
+            'available_locales'      => [],
+            'max_characters'         => 200,
+            'validation_rule'        => null,
+            'validation_regexp'      => null,
+            'wysiwyg_enabled'        => null,
+            'number_min'             => null,
+            'number_max'             => null,
+            'decimals_allowed'       => null,
+            'negative_allowed'       => null,
+            'date_min'               => null,
+            'date_max'               => null,
+            'max_file_size'          => null,
+            'minimum_input_length'   => null,
+            'sort_order'             => 6,
+            'localizable'            => false,
+            'scopable'               => false,
+            'labels'                 => [
+                'de_DE' => 'Family A2 DE',
+            ],
+        ];
+
+        $client = $this->createAuthenticatedClient();
+        $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
+
+        $client->request('PATCH', 'api/rest/v1/attributes/a_text', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('a_text');
+
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertSame($attributeStandard, $normalizer->normalize($attribute));
+    }
+
     public function testResponseWhenContentIsEmpty()
     {
         $client = $this->createAuthenticatedClient();
