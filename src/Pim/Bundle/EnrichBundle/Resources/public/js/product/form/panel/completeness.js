@@ -61,7 +61,8 @@ define(
                                 completenesses: this.sortCompleteness(completeness.completenesses),
                                 i18n: i18n,
                                 locales: locales,
-                                catalogLocale: UserContext.get('catalogLocale')
+                                catalogLocale: UserContext.get('catalogLocale'),
+                                uiLocale: UserContext.get('uiLocale')
                             })
                         );
                         this.delegateEvents();
