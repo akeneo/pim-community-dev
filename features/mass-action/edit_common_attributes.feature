@@ -44,6 +44,7 @@ Feature: Edit common attributes of many products at once
     And I should see available attribute Color in group "Colors"
     And I should see available attribute Weight in group "Other"
 
+  @jira https://akeneo.atlassian.net/browse/PIM-6273
   Scenario: Successfully remove product attribute fields
     Given I select rows boots, sandals and sneakers
     When I press "Change product information" on the "Bulk Actions" dropdown button

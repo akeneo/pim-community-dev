@@ -175,6 +175,7 @@ Feature: Display the completeness of a product
     And I click on the missing "side_view" value for "en_US" locale and "tablet" channel
     Then I should be on the "Media" attribute group
 
+  @jira https://akeneo.atlassian.net/browse/PIM-6277
   Scenario: Display the channel code in the completeness panel
     Given I am on the "sneakers" product page
     When I open the "Completeness" panel
