@@ -55,12 +55,14 @@ class JobExecutionController
 
     /**
      * Get jobs
-     * @param $id
+     *
+     * @param $identifier
+     *
      * @return JsonResponse
      */
-    public function getAction($id)
+    public function getAction($identifier)
     {
-        $jobExecution = $this->jobExecutionRepo->find($id);
+        $jobExecution = $this->jobExecutionRepo->find($identifier);
         if (null === $jobExecution) {
             throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
         }
@@ -87,8 +89,9 @@ class JobExecutionController
         $jobResponse['meta'] = [
             'logExists'           => file_exists($jobExecution->getLogFile()),
             'archives'      => $archives,
-            'id'            => $id
+            'id'            => $identifier
         ];
+
         return new JsonResponse($jobResponse);
     }
 }
