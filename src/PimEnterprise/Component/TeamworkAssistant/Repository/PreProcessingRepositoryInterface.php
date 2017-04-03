@@ -47,14 +47,6 @@ interface PreProcessingRepositoryInterface
     public function addProduct(ProjectInterface $project, ProductInterface $product);
 
     /**
-     * Link a product to a category
-     *
-     * @param ProductInterface $product
-     * @param Collection       $categories
-     */
-    public function link(ProductInterface $product, Collection $categories);
-
-    /**
      * Reset all pre processed completeness data
      *
      * @param ProjectInterface $project
