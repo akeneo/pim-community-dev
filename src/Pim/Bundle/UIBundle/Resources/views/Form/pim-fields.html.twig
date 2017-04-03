@@ -310,28 +310,6 @@
 {% endspaceless %}
 {% endblock switch_widget %}
 
-{% block pim_enrich_attribute_requirement_widget %}
-    {% set requiredTitle = 'Required'|trans %}
-    {% set nonRequiredTitle = 'Not required'|trans %}
-    <div class="AknAcl AknAcl--centered attribute-requirement" data-required-title="{{ requiredTitle }}" data-not-required-title="{{ nonRequiredTitle }}">
-        {% if form.required.vars.keep_non_required %}
-            <input type="hidden" id="{{ form.required.vars.id }}" name="{{ form.required.vars.full_name }}" class="hide" value="{{ form.required.vars.value ? '1': '0' }}" />
-            {% set iconClass = 'AknAcl-icon AknAcl-icon--granted icon-ok required' %}
-            {% if not form.required.vars.value %}
-                {% set iconClass = 'AknAcl-icon icon-circle non-required' %}
-            {% endif %}
-            <i class="{{ iconClass }}" data-toggle="tooltip" data-placement="right" data-original-title="{{ form.required.vars.value ? requiredTitle : nonRequiredTitle }}"></i>
-        {% else %}
-            <input type="checkbox" id="{{ form.required.vars.id }}" name="{{ form.required.vars.full_name }}" class="hide" {% if form.required.vars.checked %}checked="checked"{% endif %} />
-            {% set iconClass = 'AknAcl-icon AknAcl-icon--granted icon-ok required' %}
-            {% if not form.required.vars.checked %}
-                {% set iconClass = 'AknAcl-icon icon-circle non-required' %}
-            {% endif %}
-            <i class="{{ iconClass }}" data-toggle="tooltip" data-placement="right" data-original-title="{{ form.required.vars.checked ? requiredTitle : nonRequiredTitle }}"></i>
-        {% endif %}
-    </div>
-{% endblock pim_enrich_attribute_requirement_widget %}
-
 {% block pim_ajax_entity_row %}
     {{ block('form_row_field') }}
 {% endblock %}

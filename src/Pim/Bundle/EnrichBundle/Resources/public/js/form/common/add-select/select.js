@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Add attributes by groups select2 view
+ * Common add select extension view
  *
  * @author    Alexandr Jeliuc <alex@jeliuc.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -12,11 +12,10 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
+        'text!pim/template/form/add-select/select',
         'pim/form',
-        'pim/attribute-manager',
-        'text!pim/template/form/attribute/add-attribute',
-        'pim/common/attribute-group/add/line',
-        'pim/common/attribute-group/add/footer',
+        'pim/common/add-select/line',
+        'pim/common/add-select/footer',
         'pim/user-context',
         'pim/fetcher-registry',
         'pim/formatter/choices/base',
@@ -27,9 +26,8 @@ define(
         $,
         _,
         __,
-        BaseForm,
-        AttributeManager,
         template,
+        BaseForm,
         LineView,
         FooterView,
         UserContext,
@@ -40,40 +38,85 @@ define(
     ) {
         return BaseForm.extend({
             tagName: 'div',
-            className: 'AknButtonList-item add-attribute-group',
+            targetElement: 'input[type="hidden"]',
+            className: null,
+            mainFetcher: null,
             template: _.template(template),
+            lineView: LineView,
+            footerView: FooterView,
             config: {},
-            resultsPerPage: 10,
+            resultsPerPage: null,
             selection: [],
             itemViews: [],
-            footerView: null,
+            footerViewInstance: null,
             queryTimer: null,
-            footerViewEvent: 'add-attributes-by-groups-btn-clicked',
+            addEvent: null,
+            disableEvent: null,
+            enableEvent: null,
+            disabled: false,
+            defaultConfig: {
+                select2: {
+                    placeholder: 'pim_enrich.form.common.base-add-select.btn.add',
+                    title: '',
+                    buttonTitle: '',
+                    emptyText: '',
+                    classes: '',
+                    minimumInputLength: 0,
+                    dropdownCssClass: '',
+                    closeOnSelect: false,
+                    countTitle: 'pim_enrich.form.common.base-add-select.label.select_count'
+                },
+                resultsPerPage: 10,
+                searchParameters: {},
+                mainFetcher: null,
+                events: {
+                    disable: null,
+                    enable: null,
+                    add: null
+                }
+            },
 
             /**
              * {@inheritdoc}
              */
             initialize: function (meta) {
-                this.config = _.extend({}, {
-                    select2: {
-                        placeholder: 'pim_enrich.form.common.tab.attributes.btn.add_attributes',
-                        title: 'pim_enrich.form.common.tab.attributes.info.search_attributes',
-                        buttonTitle: 'pim_enrich.form.common.tab.attributes.btn.add',
-                        emptyText: 'pim_enrich.form.common.tab.attributes.info.no_available_attributes',
-                        classes: 'pim-add-attributes-multiselect',
-                        minimumInputLength: 0,
-                        dropdownCssClass: 'add-attribute-group',
-                        closeOnSelect: false,
-                        countTitle: 'pim_enrich.form.common.tab.attributes.info.attributes_groups_selected'
-                    },
-                    resultsPerPage: this.resultsPerPage,
-                    searchParameters: {}
-                }, meta.config);
+                this.config = $.extend(true, {}, this.defaultConfig, meta.config);
+
+                if (_.isNull(this.config.mainFetcher)) {
+                    throw new Error('Fetcher code MUST be provided in config');
+                }
 
                 this.config.select2.placeholder = __(this.config.select2.placeholder);
                 this.config.select2.title       = __(this.config.select2.title);
                 this.config.select2.buttonTitle = __(this.config.select2.buttonTitle);
                 this.config.select2.emptyText   = __(this.config.select2.emptyText);
+
+                this.resultsPerPage = this.config.resultsPerPage;
+                this.mainFetcher    = this.config.mainFetcher;
+                this.className      = this.config.className;
+
+                this.disableEvent = this.config.events.disable;
+                this.enableEvent  = this.config.events.enable;
+                this.addEvent     = this.config.events.add;
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                if (!_.isNull(this.enableEvent) && !_.isNull(this.disableEvent)) {
+                    mediator.on(
+                        this.disableEvent,
+                        this.onDisable.bind(this)
+                    );
+
+                    mediator.on(
+                        this.enableEvent,
+                        this.onEnable.bind(this)
+                    );
+                }
+
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**
@@ -83,6 +126,8 @@ define(
              */
             render: function () {
                 this.$el.html(this.template());
+
+                this.$('input[type="hidden"]').prop('readonly', this.disabled);
 
                 this.initializeSelectWidget();
                 this.delegateEvents();
@@ -94,15 +139,16 @@ define(
              * Initialize select2 and format elements.
              */
             initializeSelectWidget: function () {
-                var $select = this.$('input[type="hidden"]');
+                var $select = this.$(this.targetElement);
 
                 var opts = {
-                    dropdownCssClass: 'select2--bigDrop select2--annotedLabels add-attribute-group',
+                    dropdownCssClass: 'select2--bigDrop select2--annotedLabels ' + this.config.select2.dropdownCssClass,
                     formatResult: this.onGetResult.bind(this),
                     query: this.onGetQuery.bind(this)
                 };
 
                 opts = $.extend(true, {}, this.config.select2, opts);
+
                 $select = initSelect2.init($select, opts);
 
                 mediator.once('hash_navigation_request:start', function () {
@@ -114,13 +160,13 @@ define(
 
                 $select.on('select2-open', this.onSelectOpen.bind(this));
 
-                this.footerView = new FooterView({
+                this.footerViewInstance = new this.footerView({
                     buttonTitle: this.config.select2.buttonTitle,
                     countTitle: this.config.select2.countTitle,
-                    addEvent: this.footerViewEvent
+                    addEvent: this.addEvent
                 });
 
-                this.footerView.on(this.footerViewEvent, function () {
+                this.footerViewInstance.on(this.addEvent, function () {
                     $select.select2('close');
                     if (0 < this.selection.length) {
                         this.addItems();
@@ -129,14 +175,14 @@ define(
 
                 var $menu = this.$('.select2-drop');
 
-                $menu.append(this.footerView.render().$el);
+                $menu.append(this.footerViewInstance.render().$el);
             },
 
             /**
-             * Trigger an event to expose selected items
+             * Triggers configured event with items codes selected
              */
             addItems: function () {
-                this.getRoot().trigger('add-attribute-group:add', { codes: this.selection });
+                this.getRoot().trigger(this.addEvent, { codes: this.selection });
             },
 
             /**
@@ -159,8 +205,7 @@ define(
             },
 
             /**
-             * Gets attribute groups to exclude
-             * @todo Implement it if we needed in the future
+             * Gets items to exclude
              *
              * @return {Promise}
              */
@@ -169,7 +214,20 @@ define(
             },
 
             /**
-             * Updates list of items
+             * @param {Object} items
+             *
+             * @return {Object}
+             */
+            prepareChoices: function (items) {
+                return _.chain(_.sortBy(items, function (item) {
+                    return item.sort_order;
+                })).map(function (item) {
+                    return ChoicesFormatter.formatOne(item);
+                }).value();
+            },
+
+            /**
+             * Formats and updates list of items
              *
              * @param {Object} item
              *
@@ -178,10 +236,10 @@ define(
             onGetResult: function (item) {
                 var line = _.findWhere(this.itemViews, {itemCode: item.id});
 
-                if (undefined === line || null === line) {
+                if (_.isUndefined(line) || _.isNull(line)) {
                     line = {
                         itemCode: item.id,
-                        itemView: new LineView({
+                        itemView: new this.lineView({
                             checked: _.contains(this.selection, item.id),
                             item: item
                         })
@@ -208,19 +266,13 @@ define(
                     var searchParameters = this.getSelectSearchParameters(options.term, page);
 
                     this.getItemsToExclude()
-                        .then(function (excludedAttribute) {
-                            searchParameters.options.excluded_identifiers = excludedAttribute;
+                        .then(function (identifiersToExclude) {
+                            searchParameters.options.excluded_identifiers = identifiersToExclude;
 
-                            return FetcherRegistry.getFetcher('attribute-group').search(searchParameters);
-                        })
+                            return FetcherRegistry.getFetcher(this.mainFetcher).search(searchParameters);
+                        }.bind(this))
                         .then(function (items) {
-                            var choices = _.chain(_.sortBy(items, function (item) {
-                                return item.sort_order;
-                            }))
-                                .map(function (item) {
-                                    return ChoicesFormatter.formatOne(item);
-                                })
-                                .value();
+                            var choices = this.prepareChoices(items);
 
                             options.callback({
                                 results: choices,
@@ -234,7 +286,7 @@ define(
             },
 
             /**
-             * Intercepts default select2 select action
+             * Intercepts default select2 selecting event and handles it
              *
              * @param {Object} event
              */
@@ -268,7 +320,23 @@ define(
              * Update counter of selected items
              */
             updateSelectedCounter: function () {
-                this.footerView.updateNumberOfItems(this.selection.length);
+                this.footerViewInstance.updateNumberOfItems(this.selection.length);
+            },
+
+            /**
+             * Disable callback
+             */
+            onDisable: function () {
+                this.disabled = true;
+                this.render();
+            },
+
+            /**
+             * Enable callback
+             */
+            onEnable: function () {
+                this.disabled = false;
+                this.render();
             }
         });
     }
