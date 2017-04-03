@@ -204,3 +204,25 @@ Feature: Products datagrid projects
     Then I should see the text "My posters"
     But I should not see the text "My TShirts Project"
     And the grid should contain 1 element
+
+  Scenario: The channel changes when I select a project
+    Given I am logged in as "Julia"
+    And I am on the products page
+    And I filter by "category" with operator "" and value "clothing"
+    Then the grid should contain 3 elements
+    When I click on the create project button
+    And I fill in the following information in the popin:
+      | project-label    | The clothing project |
+      | project-due-date | 01/25/2077           |
+    And I press the "Save" button
+    Then I should be on the products page
+    When I go on the last executed job resume of "project_calculation"
+    And I wait for the "project_calculation" job to finish
+    And I am on the products page
+    And I filter by "category" with operator "" and value "default"
+    And the grid should contain 6 elements
+    And I filter by "scope" with operator "" and value "Mobile"
+    And I switch view selector type to "Projects"
+    Then I should see the text "The clothing project"
+    And I should see the text "E-Commerce"
+    And the grid should contain 3 elements

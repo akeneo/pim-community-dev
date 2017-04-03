@@ -125,7 +125,9 @@ define(
              */
             selectView: function (view) {
                 if ('project' === this.currentViewType) {
-                    view = view.datagridView;
+                    var project = view;
+                    view = project.datagridView;
+                    DatagridState.set('product-grid', 'scope', project.channel.code);
                 }
 
                 ViewSelector.prototype.selectView.apply(this, [view]);
@@ -178,14 +180,12 @@ define(
              *
              * Override to set a limit of 3 to fetch projects
              */
-            getSelectSearchParameters: function () {
-                var parameters = ViewSelector.prototype.getSelectSearchParameters.apply(this, arguments);
+            getResultsPerPage: function () {
+                if ('project' === this.currentViewType) {
+                    return this.config.maxProjectFetching;
+                }
 
-                return $.extend(true, parameters, {
-                    options: {
-                        limit: ('project' === this.currentViewType) ? 3 : this.resultsPerPage
-                    }
-                });
+                return ViewSelector.prototype.getResultsPerPage.apply(this, arguments);
             }
         });
     }

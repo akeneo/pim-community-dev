@@ -44,7 +44,7 @@
         "phpunit/phpunit": "5.4.*",
         "sensiolabs/behat-page-object-extension": "1.0.1",
         "squizlabs/php_codesniffer": "2.*",
-        "akeneo/php-coupling-detector": "dev-master"
+        "akeneo/php-coupling-detector": "0.2.0"
     },
     "suggest": {
         "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo",
