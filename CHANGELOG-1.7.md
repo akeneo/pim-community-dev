@@ -10,6 +10,7 @@
 - PIM-6275: Fix variations not visible on Variant Group properties tab
 - PIM-6283: Fix a bug where SKUs of products in the Variant Group edit page were not displayed
 - PIM-6274: Successfully validate products with a custom validation on identifier
+- PIM-6282: Fix attribute menu Firefox bug
 
 # 1.7.1 (2017-03-23)
 
