@@ -1,5 +1,5 @@
 pim_enrich_attribute_index:
-    path: /
+    path: ''
     defaults: { _controller: pim_enrich.controller.attribute:indexAction }
 
 pim_enrich_attribute_create:

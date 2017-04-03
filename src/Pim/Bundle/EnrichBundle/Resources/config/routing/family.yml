@@ -1,5 +1,5 @@
 pim_enrich_family_index:
-    path: /
+    path: ''
     defaults: { _controller: pim_enrich.controller.family:indexAction }
 
 pim_enrich_family_create:

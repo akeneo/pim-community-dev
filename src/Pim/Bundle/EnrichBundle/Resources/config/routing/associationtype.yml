@@ -1,5 +1,5 @@
 pim_enrich_associationtype_index:
-    path: /
+    path: ''
     defaults: { _controller: pim_enrich.controller.association_type:indexAction }
 
 pim_enrich_associationtype_create:

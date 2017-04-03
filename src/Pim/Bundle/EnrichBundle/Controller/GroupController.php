@@ -134,25 +134,4 @@ class GroupController
             'code' => $code
         ];
     }
-
-    /**
-     * History of a group
-     *
-     * TODO : find a way to use param converter with interfaces
-     *
-     * @param Group $group
-     *
-     * @AclAncestor("pim_enrich_group_history")
-     *
-     * @return Response
-     */
-    public function historyAction(Group $group)
-    {
-        return $this->templating->renderResponse(
-            'PimEnrichBundle:Group:Tab/_history.html.twig',
-            [
-                'group' => $group
-            ]
-        );
-    }
 }

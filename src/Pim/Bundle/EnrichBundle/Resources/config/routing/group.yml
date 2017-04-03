@@ -1,5 +1,5 @@
 pim_enrich_group_index:
-    path: /
+    path: ''
     defaults: { _controller: pim_enrich.controller.group:indexAction }
 
 pim_enrich_group_create:
@@ -11,12 +11,6 @@ pim_enrich_group_edit:
     defaults: { _controller: pim_enrich.controller.group:editAction }
     requirements:
         code: '[a-zA-Z0-9_]+'
-
-pim_enrich_group_history:
-    path: /{id}/history.{_format}
-    defaults: { _controller: pim_enrich.controller.group:historyAction }
-    requirements:
-        id: \d+
 
 pim_enrich_group_rest_index:
     path: /rest

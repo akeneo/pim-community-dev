@@ -24,7 +24,7 @@ attribute:
 
 attribute_option:
     resource: '@PimEnrichBundle/Resources/config/routing/attributeoption.yml'
-    prefix: /configuration/attribute_option
+    prefix: /configuration/attribute-option
 
 category:
     resource: '@PimEnrichBundle/Resources/config/routing/category.yml'
@@ -64,7 +64,7 @@ grouptype:
 
 sequential_edit:
     resource: '@PimEnrichBundle/Resources/config/routing/sequential_edit.yml'
-    prefix: /enrich/sequential_edit
+    prefix: /enrich/sequential-edit
 
 job_tracker:
     resource: '@PimEnrichBundle/Resources/config/routing/job_tracker.yml'
@@ -76,7 +76,7 @@ measures:
 
 form_extensions:
     resource: '@PimEnrichBundle/Resources/config/routing/form_extensions.yml'
-    prefix: /form/
+    prefix: /form
 
 media_rest:
     resource: '@PimEnrichBundle/Resources/config/routing/media_rest.yml'
@@ -84,8 +84,8 @@ media_rest:
 
 job_instance_rest:
     resource: '@PimEnrichBundle/Resources/config/routing/job_instance.yml'
-    prefix: /job_instance
+    prefix: /job-instance
 
 job_execution_rest:
     resource: '@PimEnrichBundle/Resources/config/routing/job_execution.yml'
-    prefix: /job_execution
+    prefix: /job-execution
