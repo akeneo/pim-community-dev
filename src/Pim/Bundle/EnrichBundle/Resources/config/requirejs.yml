@@ -255,10 +255,13 @@ config:
                     aclResourceId: pim_enrich_mass_edit_action_sequential_edit
                 pim_enrich_mass_edit_product_action_choose:
                     module: pim/controller/form
+                    aclResourceId: pim_enrich_mass_edit
                 pim_enrich_mass_edit_product_action_configure:
                     module: pim/controller/form
+                    aclResourceId: pim_enrich_mass_edit
                 pim_enrich_mass_edit_product_action_perform:
                     module: pim/controller/form
+                    aclResourceId: pim_enrich_mass_edit
                 pim_enrich_mass_edit_family_action_choose:
                     module: pim/controller/form
                 pim_enrich_mass_edit_family_action_configure:
