@@ -61,7 +61,7 @@ class InstallCommand extends ContainerAwareCommand
             throw new \RuntimeException('Oro Application already installed.');
         } elseif ($forceInstall) {
             // if --force option we have to clear cache and set installed to false
-            $this->updateInstalledFlag($input, $output, false);
+            $this->updateInstalledFlag($output, false);
         }
 
         $output->writeln(sprintf('<info>Installing %s Application.</info>', static::APP_NAME));
@@ -73,9 +73,9 @@ class InstallCommand extends ContainerAwareCommand
             }
 
             $this
-                ->checkStep($input, $output)
-                ->databaseStep($input, $output)
-                ->assetsStep($input, $output);
+                ->checkStep()
+                ->databaseStep()
+                ->assetsStep();
         } catch (\Exception $e) {
             $output->writeln(sprintf('<error>Error during PIM installation. %s</error>', $e->getMessage()));
             $output->writeln('');
@@ -83,7 +83,7 @@ class InstallCommand extends ContainerAwareCommand
             return $e->getCode();
         }
 
-        $this->updateInstalledFlag($input, $output, date('c'));
+        $this->updateInstalledFlag($output, date('c'));
 
         $output->writeln('');
         $output->writeln(sprintf('<info>%s Application has been successfully installed.</info>', static::APP_NAME));
@@ -94,14 +94,11 @@ class InstallCommand extends ContainerAwareCommand
     /**
      * Step where configuration is checked
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
      * @throws \RuntimeException
      *
      * @return InstallCommand
      */
-    protected function checkStep(InputInterface $input, OutputInterface $output)
+    protected function checkStep()
     {
         $this->commandExecutor->runCommand('pim:installer:check-requirements');
 
@@ -111,12 +108,9 @@ class InstallCommand extends ContainerAwareCommand
     /**
      * Step where the database is built, the fixtures loaded and some command scripts launched
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
      * @return InstallCommand
      */
-    protected function databaseStep(InputInterface $input, OutputInterface $output)
+    protected function databaseStep()
     {
         $this->commandExecutor->runCommand('pim:installer:db');
 
@@ -126,12 +120,9 @@ class InstallCommand extends ContainerAwareCommand
     /**
      * Load only assets
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
      * @return InstallCommand
      */
-    protected function assetsStep(InputInterface $input, OutputInterface $output)
+    protected function assetsStep()
     {
         $this->commandExecutor->runCommand('pim:installer:assets');
 
@@ -141,13 +132,12 @@ class InstallCommand extends ContainerAwareCommand
     /**
      * Update installed flag
      *
-     * @param InputInterface  $input
      * @param OutputInterface $output
      * @param bool            $installed
      *
      * @return InstallCommand
      */
-    protected function updateInstalledFlag(InputInterface $input, OutputInterface $output, $installed)
+    protected function updateInstalledFlag(OutputInterface $output, $installed)
     {
         $output->writeln('<info>Updating installed flag.</info>');
 
@@ -155,6 +145,8 @@ class InstallCommand extends ContainerAwareCommand
         $params = $dumper->parse();
         $params['system']['installed'] = $installed;
         $dumper->dump($params);
+
+        return $this;
     }
 
     /**

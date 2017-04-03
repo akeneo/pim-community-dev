@@ -438,6 +438,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingFamilies(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $family = $this->getFamily($data['code']);
             unset($data['code']);
@@ -472,10 +473,11 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingCurrencies(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $currency = $this->getCurrency($data['code']);
 
-            assertEquals($data['activated'], (int)$currency->isActivated());
+            assertEquals($data['activated'], (int) $currency->isActivated());
         }
     }
 
@@ -486,6 +488,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingLocales(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $locale = $this->getLocale($data['code']);
 
@@ -500,6 +503,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingChannels(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $channel = $this->getChannel($data['code']);
             unset($data['code']);
@@ -538,6 +542,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingGroupTypes(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $groupType = $this->getGroupType($data['code']);
             unset($data['code']);
@@ -564,8 +569,8 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingAttributeGroups(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
-            /** @var AttributeGroup $group */
             $group = $this->getAttributeGroup($data['code']);
 
             assertEquals($data['label-en_US'], $group->getTranslation('en_US')->getLabel());
@@ -588,6 +593,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingOptions(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $attribute = $this->getEntityOrException('Attribute', ['code' => $data['attribute']]);
             $option    = $this->getEntityOrException(
@@ -610,6 +616,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingCategories(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $category = $this->getCategory($data['code']);
             assertEquals($data['label'], $category->getTranslation('en_US')->getLabel());
@@ -628,6 +635,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingAssociationTypes(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $associationType = $this->getAssociationType($data['code']);
             unset($data['code']);
@@ -655,7 +663,6 @@ class FixturesContext extends BaseFixturesContext
         $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $group = $this->getProductGroup($data['code']);
-            $this->refresh($group);
 
             assertEquals($data['label-en_US'], $group->getTranslation('en_US')->getLabel());
             assertEquals($data['label-fr_FR'], $group->getTranslation('fr_FR')->getLabel());

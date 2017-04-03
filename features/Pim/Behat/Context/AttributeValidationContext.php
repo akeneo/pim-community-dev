@@ -23,8 +23,8 @@ class AttributeValidationContext extends PimContext
      */
     public function thereShouldBeTheFollowingAttributes(TableNode $table)
     {
+        $this->getService('doctrine.orm.entity_manager')->clear();
         foreach ($table->getHash() as $data) {
-            /** @var AttributeInterface $attribute */
             $attribute = $this->getFixturesContext()->getAttribute($data['code']);
             $this->getFixturesContext()->refresh($attribute);
 

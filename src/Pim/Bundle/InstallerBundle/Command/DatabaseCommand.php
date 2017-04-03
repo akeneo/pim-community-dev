@@ -69,9 +69,7 @@ class DatabaseCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $driver = $this->getStorageDriver();
-
-        $output->writeln(sprintf('<info>Prepare database schema (driver: %s)</info>', $driver));
+        $output->writeln('<info>Prepare database schema</info>');
 
         // Needs to try if database already exists or not
         $connection = $this->getContainer()->get('doctrine')->getConnection();
@@ -86,12 +84,6 @@ class DatabaseCommand extends ContainerAwareCommand
 
         $this->commandExecutor->runCommand('doctrine:database:create');
 
-        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $driver) {
-            $this->commandExecutor
-                ->runCommand('doctrine:mongodb:schema:drop')
-                ->runCommand('doctrine:mongodb:schema:create');
-        }
-
         // Needs to close connection if always open
         if ($connection->isConnected()) {
             $connection->close();
@@ -103,6 +95,8 @@ class DatabaseCommand extends ContainerAwareCommand
                 'doctrine:schema:update',
                 ['--force' => true, '--no-interaction' => true]
             );
+
+        $this->resetElasticsearchIndex($output);
 
         $this->getEventDispatcher()->dispatch(InstallerEvents::POST_DB_CREATE);
 
@@ -117,6 +111,28 @@ class DatabaseCommand extends ContainerAwareCommand
         $this->launchCommands();
 
         return $this;
+    }
+
+    /**
+     * TODO: TIP-613: This should be done with a command.
+     * TODO: TIP-613: This command should be able to drop/create indexes, and/or re-index products.
+     *
+     * @param OutputInterface $output
+     */
+    protected function resetElasticsearchIndex(OutputInterface $output)
+    {
+        $output->writeln('<info>Reset elasticsearch index</info>');
+
+        $esConfigurationLoader = $this->getContainer()->get('akeneo_elasticsearch.index_configuration.loader');
+        $esClient = $this->getContainer()->get('akeneo_elasticsearch.client');
+
+        $conf = $esConfigurationLoader->load();
+
+        if ($esClient->hasIndex()) {
+            $esClient->deleteIndex();
+        }
+
+        $esClient->createIndex($conf->buildAggregated());
     }
 
     /**
