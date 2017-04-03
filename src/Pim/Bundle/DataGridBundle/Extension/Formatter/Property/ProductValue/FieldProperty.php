@@ -32,14 +32,6 @@ class FieldProperty extends OroFieldProperty
      */
     protected function getBackendData($value)
     {
-        $backend = $value['attribute']['backendType'];
-
-        if (isset($value[$backend])) {
-            $value = $value[$backend];
-        } else {
-            $value = null;
-        }
-
         return $value;
     }
 }
