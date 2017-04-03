@@ -32,13 +32,18 @@ define(
             /**
              * {@inheritdoc}
              */
-            render: function () {
-                if (!this.grid) {
-                    this.grid = new Grid(this.config.alias, {
-                        localeCode: UserContext.get('catalogLocale')
-                    });
-                }
+            configure: function () {
+                this.grid = new Grid(this.config.alias, {
+                    localeCode: UserContext.get('catalogLocale')
+                });
 
+                BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            render: function () {
                 this.$el.empty().append(this.grid.render().$el);
 
                 return this;
