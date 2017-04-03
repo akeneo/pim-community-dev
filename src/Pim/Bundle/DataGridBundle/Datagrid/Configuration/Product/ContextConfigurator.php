@@ -6,6 +6,7 @@ use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExten
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Oro\Bundle\DataGridBundle\Extension\Toolbar\ToolbarExtension;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -40,6 +41,8 @@ class ContextConfigurator implements ConfiguratorInterface
 
     /** @staticvar string */
     const USER_CONFIG_ALIAS_KEY = 'user_config_alias';
+
+    const PRODUCTS_PER_PAGE = '_per_page';
 
     /** @var DatagridConfiguration */
     protected $configuration;
@@ -105,6 +108,7 @@ class ContextConfigurator implements ConfiguratorInterface
         $this->addDisplayedColumnCodes();
         $this->addAttributesIds();
         $this->addAttributesConfig();
+        $this->addPaginationConfig();
     }
 
     /**
@@ -404,5 +408,18 @@ class ContextConfigurator implements ConfiguratorInterface
         }
 
         return null;
+    }
+
+    /**
+     * Inject requested _per_page parameters in the datagrid configuration
+     */
+    protected function addPaginationConfig()
+    {
+        $pager = $this->requestParams->get('_pager');
+
+        // TODO: remove static 25, will be done with TIP-664
+        $value = isset($pager[self::PRODUCTS_PER_PAGE]) ? $pager[self::PRODUCTS_PER_PAGE] : 25;
+
+        $this->configuration->offsetSetByPath($this->getSourcePath(self::PRODUCTS_PER_PAGE), $value);
     }
 }

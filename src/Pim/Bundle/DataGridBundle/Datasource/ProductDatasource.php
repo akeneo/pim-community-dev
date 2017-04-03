@@ -3,10 +3,13 @@
 namespace Pim\Bundle\DataGridBundle\Datasource;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Product datasource, allows to prepare query builder from repository
@@ -20,19 +23,28 @@ class ProductDatasource extends Datasource
     /** @var ProductQueryBuilderInterface */
     protected $pqb;
 
+    /** @var ProductQueryBuilderFactoryInterface */
+    protected $factory;
+
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
     /**
      * @param ObjectManager                       $om
      * @param HydratorInterface                   $hydrator
      * @param ProductQueryBuilderFactoryInterface $factory
+     * @param NormalizerInterface                 $normalizer
      */
     public function __construct(
         ObjectManager $om,
         HydratorInterface $hydrator,
-        ProductQueryBuilderFactoryInterface $factory
+        ProductQueryBuilderFactoryInterface $factory,
+        NormalizerInterface $normalizer
     ) {
-        $this->om = $om;
-        $this->hydrator = $hydrator;
+        parent::__construct($om, $hydrator);
+
         $this->factory = $factory;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -53,7 +65,17 @@ class ProductDatasource extends Datasource
             QueryBuilderUtility::removeExtraParameters($this->qb);
         }
 
-        $rows = $this->hydrator->hydrate($this->qb, $options);
+        $productCursor = $this->pqb->execute();
+        $context = ['locale' => $options['locale_code'], 'channel' => $options['scope_code']];
+        $rows = [];
+
+        foreach ($productCursor as $product) {
+            $normalizedProduct = array_merge(
+                $this->normalizer->normalize($product, 'internal_api', $context),
+                ['id' => $product->getId(), 'dataLocale' => $this->getConfiguration('locale_code')]
+            );
+            $rows[] = new ResultRecord($normalizedProduct);
+        }
 
         return $rows;
     }
@@ -78,6 +100,8 @@ class ProductDatasource extends Datasource
         $factoryConfig['repository_method'] = $method;
         $factoryConfig['default_locale'] = $this->getConfiguration('locale_code');
         $factoryConfig['default_scope'] = $this->getConfiguration('scope_code');
+        $factoryConfig['limit'] = $this->getConfiguration(ContextConfigurator::PRODUCTS_PER_PAGE);
+        $factoryConfig['search_after'] = null; // TODO with TIP-664
 
         $this->pqb = $this->factory->create($factoryConfig);
         $this->qb = $this->pqb->getQueryBuilder();
