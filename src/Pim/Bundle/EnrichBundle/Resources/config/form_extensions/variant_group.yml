@@ -107,15 +107,11 @@ extensions:
         position: 100
 
     pim-variant-group-edit-form-add-attribute:
-        module: pim/variant-group-edit-form/add-attribute
+        module: pim/variant-group-edit-form/add-select/attribute
         parent: pim-variant-group-edit-form-attributes
         targetZone: other-actions
         aclResourceId: pim_enrich_variant_group_add_attributes
         position: 90
-        config:
-            searchParameters:
-                options:
-                    exclude_unique: true
 
     pim-variant-group-edit-form-copy:
         module: pim/form/common/attributes/copy

@@ -234,4 +234,18 @@ class Select2Decorator extends ElementDecorator
             )
         );
     }
+
+    /**
+     * Get the current value for the Select2
+     *
+     * @return string
+     */
+    public function getCurrentValue()
+    {
+        $input = $this->spin(function () {
+            return $this->find('css', '.select2-selection-label-view');
+        }, 'Cannot find the Select2 current selection input');
+
+        return $input->getText();
+    }
 }

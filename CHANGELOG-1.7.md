@@ -1,5 +1,11 @@
 # 1.7.x
 
+## Functional improvements
+
+- PIM-6119: Family mass edit - add attributes by attribute group
+- PIM-6118: Improve attribute add select to avoid performance impact
+- GITHUB-5716: Redo family mass edit form using backbonejs architecture and internal REST API
+
 ## Bug Fixes
 
 - PIM-6270: Fix sequential edit style
@@ -7,6 +13,20 @@
 - GITHUB-5307: Fix sort order in field "Attribute group"
 - PIM-6240: Display the code instead of undefined if channel's locale is not filled for the given locale
 - PIM-6071: Hide add option icon for non-editable fields
+- PIM-6275: Fix variations not visible on Variant Group properties tab
+- PIM-6283: Fix a bug where SKUs of products in the Variant Group edit page were not displayed
+- PIM-6274: Successfully validate products with a custom validation on identifier
+- PIM-6199: Fix product mass edit attribute add select clickable on confirmation page
+
+## BC breaks
+
+### Classes
+
+- Remove class `Pim\Bundle\EnrichBundle\Form\Type\AttributeRequirementType` 
+
+### Constructors
+
+- Change the constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements` to remove `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` and remove `Pim\Component\Catalog\Factory\AttributeRequirementFactory`
 
 # 1.7.1 (2017-03-23)
 

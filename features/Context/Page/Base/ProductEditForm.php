@@ -6,7 +6,6 @@ use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
-use Context\Spin\TimeoutException;
 
 /**
  * Product Edit Form
@@ -32,78 +31,11 @@ class ProductEditForm extends Form
                 // Note: It erases parent add-attributes selector values because of the new JS module,
                 // once refactoring done everywhere, it should be set in parent like before
                 'Available attributes button'     => ['css' => '.add-attribute a.select2-choice'],
-                'Available attributes'            => [
-                    'css'        => '.add-attribute',
-                    'decorators' => ['Pim\Behat\Decorator\Common\AddAttributeDecorator']
-                ],
                 'Available attributes list'       => ['css' => '.add-attribute .select2-results'],
                 'Available attributes search'     => ['css' => '.add-attribute .select2-search input[type="text"]'],
                 'Select2 dropmask'                => ['css' => '.select2-drop-mask'],
             ]
         );
-    }
-
-    /**
-     * @param string $attribute
-     * @param string $group
-     *
-     * @return NodeElement|null
-     */
-    public function findAvailableAttributeInGroup($attribute, $group)
-    {
-        $searchSelector = $this->elements['Available attributes search']['css'];
-
-        $selector = $this->spin(function () {
-            return $this->find('css', $this->elements['Available attributes button']['css']);
-        }, sprintf('Cannot find element "%s"', $this->elements['Available attributes button']['css']));
-
-        // Open select2
-        $selector->click();
-
-        $list = $this->spin(function () {
-            return $this->getElement('Available attributes list');
-        }, 'Cannot find the attribute list element');
-
-        // We NEED to fill the search field with jQuery to avoid the TAB key press (because of mink),
-        // because select2 selects the first element on TAB key press.
-        $this->getSession()->evaluateScript(
-            "jQuery('" . $searchSelector . "').val('" . $attribute . "').trigger('input');"
-        );
-
-        $groupLabels = $this->spin(function () use ($list, $group) {
-            return $list->findAll('css', sprintf('li .group-label:contains("%s"), li.select2-no-results', $group));
-        }, 'Cannot find element in the attribute list');
-
-        // Maybe a "No matches found"
-        $firstResult = $groupLabels[0];
-        $text = $firstResult->getText();
-        $results = [];
-
-        if ('No matches found' !== $text) {
-            foreach ($groupLabels as $groupLabel) {
-                $li = $groupLabel->getParent();
-                $results[$li->find('css', '.attribute-label')->getText()] = $li;
-            }
-        }
-
-        // Close select2
-        $this->find('css', '#select2-drop-mask')->click();
-
-        return isset($results[$attribute]) ? $results[$attribute] : null;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * TODO: Used with the new 'add-attributes' module. The method should be in the Form parent
-     * when legacy stuff is removed.
-     */
-    public function addAvailableAttributes(array $attributes = [])
-    {
-        $availableAttribute = $this->spin(function () {
-            return $this->getElement('Available attributes');
-        }, 'Cannot find the add attribute element');
-        $availableAttribute->addAttributes($attributes);
     }
 
     /**
