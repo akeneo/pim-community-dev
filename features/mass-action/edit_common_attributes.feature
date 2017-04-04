@@ -31,10 +31,10 @@ Feature: Edit common attributes of many products at once
       | highheels      | high_heels | red   | variant_heels |
       | blue_highheels | high_heels | blue  | variant_heels |
     And I am logged in as "Julia"
-    And I am on the products page
 
   Scenario: Allow editing all attributes on configuration screen
-    Given I select rows boots, sandals and sneakers
+    Given I am on the products page
+    And I select rows boots, sandals and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     Then I should see available attributes Name, Manufacturer and Description in group "Product information"
@@ -57,7 +57,8 @@ Feature: Edit common attributes of many products at once
     And I move on to the next step
 
   Scenario: Successfully update many text values at once
-    Given I select rows boots, sandals and sneakers
+    Given I am on the products page
+    And I select rows boots, sandals and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Name attribute
@@ -70,7 +71,8 @@ Feature: Edit common attributes of many products at once
     And the english name of "sneakers" should be "boots"
 
   Scenario: Successfully update many multi-valued values at once
-    Given I select rows boots and sneakers
+    Given I am on the products page
+    And I select rows boots and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Weather conditions attribute
@@ -84,7 +86,8 @@ Feature: Edit common attributes of many products at once
 
   @info https://akeneo.atlassian.net/browse/PIM-2163
   Scenario: Successfully mass edit product values that does not belong yet to the product
-    Given I set product "pump" family to "sneakers"
+    Given I am on the products page
+    And I set product "pump" family to "sneakers"
     When I select rows pump and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
@@ -97,7 +100,8 @@ Feature: Edit common attributes of many products at once
 
   @info https://akeneo.atlassian.net/browse/PIM-3070
   Scenario: Successfully mass edit a price not added to the product
-    Given I create a new product
+    Given I am on the products page
+    And I create a new product
     And I fill in the following information in the popin:
       | SKU             | Shoes |
       | Choose a family | Heels |
@@ -122,7 +126,8 @@ Feature: Edit common attributes of many products at once
     Given the following product values:
       | product | attribute          | value   |
       | boots   | weather_conditions | dry,hot |
-    Given I select rows boots and sneakers
+    And I am on the products page
+    And I select rows boots and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Weather conditions attribute
@@ -136,7 +141,8 @@ Feature: Edit common attributes of many products at once
 
   @jira https://akeneo.atlassian.net/browse/PIM-4528
   Scenario: See previously selected fields on mass edit error
-    Given I select rows boots and sandals
+    Given I am on the products page
+    And I select rows boots and sandals
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Weight and Name attribute
@@ -158,7 +164,8 @@ Feature: Edit common attributes of many products at once
 
   @jira https://akeneo.atlassian.net/browse/PIM-4777
   Scenario: Doing a mass edit of an attribute from a variant group does not override group value
-    Given I select rows highheels, blue_highheels and sandals
+    Given I am on the products page
+    And I select rows highheels, blue_highheels and sandals
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Heel Height attribute
@@ -170,7 +177,8 @@ Feature: Edit common attributes of many products at once
 
   @jira https://akeneo.atlassian.net/browse/PIM-6008
   Scenario: Successfully mass edit scoped product values with special chars
-    Given I set product "pump" family to "boots"
+    Given I am on the products page
+    And I set product "pump" family to "boots"
     When I select rows boots and pump
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
@@ -178,7 +186,7 @@ Feature: Edit common attributes of many products at once
     And I change the Description to "&$@(B°ar'<"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
-    And the english tablet Description of "boots" should be "&$@(B°ar'<"
+    Then the english tablet Description of "boots" should be "&$@(B°ar'<"
     And the english tablet Description of "pump" should be "&$@(B°ar'<"
 
   Scenario: Successfully mass edit products and the completeness should be computed
@@ -293,3 +301,15 @@ Feature: Edit common attributes of many products at once
     And I display the Name attribute
     And I move on to the next step
     Then I should not see the text "There are errors in the attributes form"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6199
+  Scenario: Successfully disable form when we are in validation step on mass edit products
+    Given I am on the products page
+    And I select rows boots, sandals and sneakers
+    And I press "Change product information" on the "Bulk Actions" dropdown button
+    When I choose the "Edit common attributes" operation
+    Then The available attributes button should be enabled
+    And I display the Name attribute
+    And I change the "Name" to "boots"
+    And I move to the confirm page
+    Then The available attributes button should be disabled

@@ -18,7 +18,6 @@ parameters:
     pim_enrich.form.type.available_attributes.class:                Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType
     pim_enrich.form.type.attribute_property_available_locale.class: Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\AvailableLocalesType
     pim_enrich.form.type.attribute_property_options.class:          Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\OptionsType
-    pim_enrich.form.type.attribute_requirement.class:               Pim\Bundle\EnrichBundle\Form\Type\AttributeRequirementType
     pim_enrich.form.type.localized_collection.class:                Pim\Bundle\EnrichBundle\Form\Type\LocalizedCollectionType
 
     pim_enrich.form.type.light_entity.class: Pim\Bundle\EnrichBundle\Form\Type\LightEntityType
@@ -95,13 +94,6 @@ services:
             - '%pim_catalog.entity.family.class%'
         tags:
             - { name: form.type, alias: pim_enrich_family }
-
-    pim_enrich.form.type.attribute_requirement:
-        class: '%pim_enrich.form.type.attribute_requirement.class%'
-        arguments:
-            - '%pim_catalog.entity.attribute_requirement.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_attribute_requirement }
 
     pim_enrich.form.type.category:
         class: '%pim_enrich.form.type.category.class%'
