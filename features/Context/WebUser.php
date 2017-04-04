@@ -878,24 +878,52 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $not
      * @param string $attributes
      * @param string $group
      *
-     * @Then /^I should see available attributes? (.*) in group "([^"]*)"$/
+     * @Then /^I should (not )?see available attributes? (.*) in group "([^"]*)"$/
      *
      * @throws ExpectationException
      */
-    public function iShouldSeeAvailableAttributesInGroup($attributes, $group)
+    public function iShouldSeeAvailableAttributesInGroup($not, $attributes, $group)
     {
+        $expecting = !$not;
+
         foreach ($this->listToArray($attributes) as $attribute) {
-            $this->spin(function () use ($attribute, $group) {
-                return $this->getCurrentPage()->findAvailableAttributeInGroup($attribute, $group);
-            }, sprintf('Expecting to see attribute "%s" under group "%s"', $attribute, $group));
+            $result = $this->getCurrentPage()
+                ->getAttributeAddSelect()
+                ->hasAvailableOptionGroupPair($attribute, $group);
+
+            if ($expecting !== $result) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Expecting to %ssee attribute "%s" under group "%s"',
+                        true === (bool) $not ? $not : '',
+                        $attribute,
+                        $group
+                    )
+                );
+            }
         }
     }
 
     /**
-     * @param string $group
+     * @param string $status 'enabled'|'disabled'
+     *
+     * @Then /^The available attributes button should be (enabled|disabled)$/
+     */
+    public function theAvailableAttributeButtonShouldBeEnabled($status)
+    {
+        $expectedStatus = ('enabled' === $status);
+
+        $this->spin(function () use ($expectedStatus) {
+            return $expectedStatus === $this->getCurrentPage()->isAvailableAttributeEnabled();
+        }, sprintf('The available attribute button should be %s', $status));
+    }
+
+    /**
+     * @param string $groups
      *
      * @Then /^I should see available attribute group "([^"]*)"$/
      *
@@ -904,10 +932,10 @@ class WebUser extends RawMinkContext
     public function iShouldSeeAvailableAttributeGroup($groups)
     {
         foreach ($this->listToArray($groups) as $group) {
-            $element = $this->getCurrentPage()->findAvailableAttributeGroup($group);
+            $exists = $this->getCurrentPage()->findAvailableAttributeGroup($group);
 
-            if (null === $element) {
-                throw new ExpectationException(
+            if (true !== $exists) {
+                throw $this->createExpectationException(
                     sprintf('Expecting to see attribute group "%s"', $group)
                 );
             }
@@ -944,28 +972,7 @@ class WebUser extends RawMinkContext
             }
         }
     }
-
-    /**
-     * @param string $attributes
-     * @param string $group
-     *
-     * @Then /^I should not see available attributes? (.*) in group "([^"]*)"$/
-     *
-     * @throws ExpectationException
-     */
-    public function iShouldNotSeeAvailableAttributesInGroup($attributes, $group)
-    {
-        foreach ($this->listToArray($attributes) as $attribute) {
-            $element = $this->getCurrentPage()->findAvailableAttributeInGroup($attribute, $group);
-
-            if (null !== $element) {
-                throw $this->createExpectationException(
-                    sprintf('Expecting not to see attribute "%s" under group "%s"', $attribute, $group)
-                );
-            }
-        }
-    }
-
+    
     /**
      * @param string $attributes
      *
@@ -2039,18 +2046,28 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * TODO This step should be renamed to "I confirm the mass edit"
+     *
      * @Given /^I move on to the next step$/
      */
     public function iMoveOnToTheNextStep()
+    {
+        $this->iMoveToTheConfirmPage();
+        $this->scrollContainerTo(900);
+        $this->getCurrentPage()->confirm();
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I move to the confirm page$/
+     */
+    public function iMoveToTheConfirmPage()
     {
         $this->scrollContainerTo(900);
         $this->spin(function () {
             return $this->getCurrentPage()->find('css', '.next');
         }, 'Could not find next button');
         $this->getCurrentPage()->next();
-        $this->scrollContainerTo(900);
-        $this->getCurrentPage()->confirm();
-        $this->wait();
     }
 
     /**

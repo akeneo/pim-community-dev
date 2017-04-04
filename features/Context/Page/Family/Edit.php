@@ -4,8 +4,7 @@ namespace Context\Page\Family;
 
 use Context\Page\Base\Form;
 use Context\Spin\SpinCapableTrait;
-use Pim\Behat\Decorator\Common\AddAttributeDecorator;
-use Pim\Behat\Decorator\Common\SelectGroupDecorator;
+use Pim\Behat\Decorator\Common\AddSelect\AttributeGroupAddSelectDecorator;
 
 /**
  * Family edit page
@@ -37,17 +36,13 @@ class Edit extends Form
                 'Attribute as label choices'        => ['css' => '#pim_enrich_family_form_label_attribute_as_label'],
                 'Available attributes button'       => ['css' => '.add-attribute a.select2-choice'],
                 'Available attribute groups button' => ['css' => '.add-attribute-group a.select2-choice'],
-                'Available attributes'              => [
-                    'css'        => '.add-attribute',
-                    'decorators' => [AddAttributeDecorator::class]
-                ],
                 'Available attributes list'         => ['css' => '.add-attribute .select2-results'],
                 'Available attribute groups list'   => ['css' => '.add-attribute-group .select2-results'],
                 'Available attributes search'       => ['css' => '.add-attribute .select2-search input[type="text"]'],
                 'Available attribute groups search' => ['css' => '.add-attribute-group .select2-search input[type="text"]'],
                 'Available groups'                  => [
                     'css'        => '.add-attribute-group',
-                    'decorators' => [SelectGroupDecorator::class],
+                    'decorators' => [AttributeGroupAddSelectDecorator::class],
                 ],
                 'Select2 dropmask'                  => ['css' => '.select2-drop-mask'],
             ]
@@ -191,84 +186,32 @@ class Edit extends Form
     }
 
     /**
-     * @param string $attribute
+     * Finds available attribute group
+     *
      * @param string $group
      *
-     * @return NodeElement|null
+     * @return boolean
      */
-    public function findAvailableAttributeInGroup($attribute, $group)
-    {
-        $searchSelector = $this->elements['Available attributes search']['css'];
-
-        $selector = $this->spin(function () {
-            return $this->find('css', $this->elements['Available attributes button']['css']);
-        }, sprintf('Cannot find element "%s"', $this->elements['Available attributes button']['css']));
-
-        // Open select2
-        $selector->click();
-
-        $list = $this->spin(function () {
-            return $this->getElement('Available attributes list');
-        }, 'Cannot find the attribute list element');
-
-        // We NEED to fill the search field with jQuery to avoid the TAB key press (because of mink),
-        // because select2 selects the first element on TAB key press.
-        $this->getSession()->evaluateScript(
-            "jQuery('" . $searchSelector . "').val('" . preg_replace('/[\[\]]/u', '', $attribute) . "').trigger('input');"
-        );
-
-        $groupLabels = $this->spin(function () use ($list, $group) {
-            return $list->findAll('css', sprintf('li .group-label:contains("%s"), li.select2-no-results', $group));
-        }, 'Cannot find element in the attribute list');
-
-        // Maybe a "No matches found"
-        $firstResult = $groupLabels[0];
-        $text = $firstResult->getText();
-        $results = [];
-
-        if ('No matches found' !== $text) {
-            foreach ($groupLabels as $groupLabel) {
-                $li = $groupLabel->getParent();
-                $results[$li->find('css', '.attribute-label')->getText()] = $li;
-            }
-        }
-
-        // Close select2
-        $this->find('css', '#select2-drop-mask')->click();
-
-        return isset($results[$attribute]) ? $results[$attribute] : null;
-    }
-
     public function findAvailableAttributeGroup($group)
     {
-        $addGroupElement = $this->spin(function () {
+        $addAttributeGroupElement = $this->spin(function () {
             return $this->getElement('Available groups');
-        }, 'Can not find add by group select');
+        }, 'Can not find add by group option');
 
-        return $addGroupElement->findItem($group);
+        return $addAttributeGroupElement->hasOption($group);
     }
 
     /**
-     * {@inheritdoc}
+     * Adds attributes by group
      *
-     * TODO: Used with the new 'add-attributes' module. The method should be in the Form parent
-     * when legacy stuff is removed.
+     * @param array $groups
      */
-    public function addAvailableAttributes(array $attributes = [])
-    {
-        $addAttributeDecorator = $this->spin(function () {
-            return $this->getElement('Available attributes');
-        }, 'Cannot find the add attribute element');
-
-        $addAttributeDecorator->addAttributes($attributes);
-    }
-
     public function addAttributesByGroup($groups)
     {
         $addGroupElement = $this->spin(function () {
             return $this->getElement('Available groups');
         }, 'Can not find add by group select');
 
-        $addGroupElement->addItems($groups);
+        $addGroupElement->addOptions($groups);
     }
 }

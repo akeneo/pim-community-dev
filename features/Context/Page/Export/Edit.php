@@ -3,6 +3,9 @@
 namespace Context\Page\Export;
 
 use Context\Page\Base\Form;
+use Pim\Behat\Decorator\Common\AddSelect\AttributeAddSelectDecorator;
+use Pim\Behat\Decorator\Export\Structure\AttributesDecorator;
+use Pim\Behat\Decorator\Tree\JsTreeDecorator;
 
 /**
  * Export edit page
@@ -29,33 +32,14 @@ class Edit extends Form
             [
                 'Category tree' => [
                     'css'        => '.jstree',
-                    'decorators' => ['Pim\Behat\Decorator\Tree\JsTreeDecorator']
-                ],
-                'Available attributes' => [
-                    'css'        => '.add-attribute',
-                    'decorators' => ['Pim\Behat\Decorator\Common\AddAttributeDecorator']
+                    'decorators' => [JsTreeDecorator::class]
                 ],
                 'Attribute selector' => [
                     'css'        => '.AknFieldContainer.attributes',
-                    'decorators' => ['Pim\Behat\Decorator\Export\Structure\AttributesDecorator']
+                    'decorators' => [AttributesDecorator::class]
                 ]
             ],
             $this->elements
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * TODO: Used with the new 'add-attributes' module. The method should be in the Form parent
-     * when legacy stuff is removed.
-     */
-    public function addAvailableAttributes(array $attributes = [])
-    {
-        $availableAttribute = $this->spin(function () {
-            return $this->getElement('Available attributes');
-        }, 'Cannot find the add attribute element');
-
-        $availableAttribute->addAttributes($attributes);
     }
 }

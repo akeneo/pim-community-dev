@@ -9,8 +9,7 @@ Feature: Execute an import with template values
     And I am logged in as "Julia"
     And I am on the "tshirts" variant group page
     And I visit the "Attributes" tab
-    And I add available attribute Name
-    And I add available attribute Description
+    And I add available attributes Name and Description
     And I fill in the following information:
       | Name | The T-Shirt |
     And I save the variant group
