@@ -66,6 +66,7 @@ JSON;
             'code'                   => 'new_family_incompleted',
             'attributes'             => ['sku'],
             'attribute_as_label'     => 'sku',
+            'attribute_as_image'     => null,
             'attribute_requirements' => [
                 'ecommerce'       => ['sku'],
                 'ecommerce_china' => ['sku'],
@@ -93,6 +94,7 @@ JSON;
             'code'                   => 'new_category_empty_content',
             'attributes'             => ['sku'],
             'attribute_as_label'     => 'sku',
+            'attribute_as_image'     => null,
             'attribute_requirements' => [
                 'ecommerce'       => ['sku'],
                 'ecommerce_china' => ['sku'],
@@ -115,8 +117,9 @@ JSON;
 <<<JSON
     {
         "code": "complete_family_creation_code",
-        "attributes": ["an_image", "a_metric", "a_price"],
+        "attributes": ["an_image", "a_metric", "a_price", "a_localizable_image"],
         "attribute_as_label": "sku",
+        "attribute_as_image": "a_localizable_image",
         "attribute_requirements": {
             "ecommerce": ["sku", "a_metric"],
             "tablet": ["sku", "a_price"]
@@ -133,8 +136,9 @@ JSON;
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('complete_family_creation_code');
         $familyStandard = [
             'code'                   => 'complete_family_creation_code',
-            'attributes'             => ['a_metric', 'a_price', 'an_image', 'sku'],
+            'attributes'             => ['a_localizable_image', 'a_metric', 'a_price', 'an_image', 'sku'],
             'attribute_as_label'     => 'sku',
+            'attribute_as_image'     => 'a_localizable_image',
             'attribute_requirements' => [
                 'ecommerce'       => ['a_metric', 'sku'],
                 'ecommerce_china' => ['sku'],
@@ -159,8 +163,9 @@ JSON;
         $data =
 <<<JSON
     {
-        "attributes": ["an_image", "a_metric", "a_price"],
+        "attributes": ["an_image", "a_metric", "a_price", "a_localizable_image"],
         "attribute_as_label": "sku",
+        "attribute_as_image": "a_localizable_image",
         "attribute_requirements": {
             "ecommerce": ["sku", "a_metric"],
             "tablet": ["sku", "a_price"]
@@ -177,8 +182,9 @@ JSON;
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('complete_family_creation');
         $familyStandard = [
             'code'                   => 'complete_family_creation',
-            'attributes'             => ['a_metric', 'a_price', 'an_image', 'sku'],
+            'attributes'             => ['a_localizable_image', 'a_metric', 'a_price', 'an_image', 'sku'],
             'attribute_as_label'     => 'sku',
+            'attribute_as_image'     => 'a_localizable_image',
             'attribute_requirements' => [
                 'ecommerce'       => ['a_metric', 'sku'],
                 'ecommerce_china' => ['sku'],
@@ -209,6 +215,7 @@ JSON;
             'code'                   => 'familyA2',
             'attributes'             => ['a_metric', 'a_number_float', 'sku'],
             'attribute_as_label'     => 'sku',
+            'attribute_as_image'     => null,
             'attribute_requirements' => [
                 'ecommerce'       => ['a_metric', 'sku'],
                 'ecommerce_china' => ['sku'],
@@ -228,8 +235,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "code": "familyA1",
         "attributes": ["sku", "a_date", "a_file", "a_localizable_image", "an_image"],
         "attribute_as_label": "sku",
@@ -250,6 +257,7 @@ JSON;
             'code'                   => 'familyA1',
             'attributes'             => ['a_date', 'a_file', 'a_localizable_image', 'an_image', 'sku'],
             'attribute_as_label'     => 'sku',
+            'attribute_as_image'     => null,
             'attribute_requirements' => [
                 'ecommerce'       => ['an_image', 'sku'],
                 'ecommerce_china' => ['sku'],
@@ -292,6 +300,7 @@ JSON;
             'code'                   => 'familyA2',
             'attributes'             => ['a_metric', 'sku'],
             'attribute_as_label'     => 'sku',
+            'attribute_as_image'     => null,
             'attribute_requirements' => [
                 'ecommerce'       => ['a_metric', 'sku'],
                 'ecommerce_china' => ['sku'],
@@ -341,6 +350,7 @@ JSON;
             'code'                   => 'familyA2',
             'attributes'             => ['a_metric', 'a_number_float', 'sku'],
             'attribute_as_label'     => 'sku',
+            'attribute_as_image'     => null,
             'attribute_requirements' => [
                 'ecommerce'       => ['a_metric', 'sku'],
                 'ecommerce_china' => ['sku'],
@@ -349,6 +359,46 @@ JSON;
             'labels'                 => [
                 'de_DE' => 'Family A2 DE',
             ],
+        ];
+        $normalizer = $this->get('pim_catalog.normalizer.standard.family');
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertSame($familyStandard, $normalizer->normalize($family));
+    }
+
+    public function testPropertiesDeletionWithoutCodeProvided()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "attributes": [ ],
+        "attribute_as_label": "sku",
+        "attribute_as_image": null,
+        "attribute_requirements": {
+            "ecommerce": [ ],
+            "tablet": [ ]
+        },
+        "labels": { }
+    }
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/families/familyA', [], [], [], $data);
+
+        $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('familyA');
+        $familyStandard = [
+            'code'                   => 'familyA',
+            'attributes'             => [ 'sku' ],
+            'attribute_as_label'     => 'sku',
+            'attribute_as_image'     => null,
+            'attribute_requirements' => [
+                'ecommerce'          => [ 'sku' ],
+                'ecommerce_china'    => [ 'sku' ],
+                'tablet'             => [ 'sku' ],
+            ],
+            'labels'                 => [],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.family');
 
