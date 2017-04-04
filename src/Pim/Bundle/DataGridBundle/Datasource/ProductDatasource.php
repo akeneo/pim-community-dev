@@ -12,7 +12,7 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Product datasource, allows to prepare query builder from repository
+ * Product datasource, execute elasticsearch query
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -67,14 +67,14 @@ class ProductDatasource extends Datasource
 
         $productCursor = $this->pqb->execute();
         $context = ['locale' => $options['locale_code'], 'channel' => $options['scope_code']];
-        $rows = [];
+        $rows = ['totalRecords' => $productCursor->count()];
 
         foreach ($productCursor as $product) {
             $normalizedProduct = array_merge(
                 $this->normalizer->normalize($product, 'internal_api', $context),
                 ['id' => $product->getId(), 'dataLocale' => $this->getConfiguration('locale_code')]
             );
-            $rows[] = new ResultRecord($normalizedProduct);
+            $rows['data'][] = new ResultRecord($normalizedProduct);
         }
 
         return $rows;
