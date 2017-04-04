@@ -153,3 +153,38 @@ Feature: Import families
     Then there should be the following family:
       | code  | attribute_as_label | requirements-mobile | requirements-tablet                                                   |
       | heels | name               | sku,manufacturer    | sku,name,description,price,side_view,size,color,heel_color,sole_color |
+
+  Scenario: Successfully import new family in CSV with attribute_as_image
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And the following CSV file to import:
+      """
+      code;attributes;attribute_as_label;attribute_as_image
+      tractors;sku,name,side_view;name;side_view
+      """
+    And the following job "csv_footwear_family_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_family_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_family_import" job to finish
+    Then there should be the following family:
+      | code     | attributes         | attribute_as_image |
+      | tractors | sku,name,side_view | side_view          |
+
+  Scenario: Successfully fail when attribute_as_image is invalid
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And the following CSV file to import:
+      """
+      code;attributes;attribute_as_label;attribute_as_image
+      wrong_family1;sku,name;sku;name
+      wrong_family2;sku,name;sku;side_view
+      """
+    And the following job "csv_footwear_family_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_family_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_family_import" job to finish
+    Then I should see the text "Skipped 2"
+    And I should see the text "Property 'attribute_as_image' only supports 'pim_catalog_image' attribute type for the family: [wrong_family1]"
+    And I should see the text "Property 'attribute_as_image' must belong to the family: [wrong_family2]"

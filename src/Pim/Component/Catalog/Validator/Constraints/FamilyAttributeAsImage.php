@@ -18,7 +18,7 @@ class FamilyAttributeAsImage extends Constraint
 
     /** @var string */
     public $messageAttributeType = "Property 'attribute_as_image' only supports 'pim_catalog_image' ".
-        "attribute types for the family";
+        "attribute type for the family";
 
     /** @var string */
     public $propertyPath = 'attribute_as_image';

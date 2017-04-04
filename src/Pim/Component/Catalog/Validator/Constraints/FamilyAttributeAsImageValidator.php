@@ -29,14 +29,18 @@ class FamilyAttributeAsImageValidator extends ConstraintValidator
             return;
         }
 
-        if (!$this->doesAttributeAsLabelBelongToFamily($family)) {
+        if (null === $family->getAttributeAsImage()) {
+            return;
+        }
+
+        if (!$this->doesAttributeAsImageBelongToFamily($family)) {
             $this->context
                 ->buildViolation($constraint->messageAttribute)
                 ->atPath($constraint->propertyPath)
                 ->addViolation();
         }
 
-        if (!$this->isAttributeAsLabelTypeValid($family)) {
+        if (!$this->isAttributeAsImageTypeValid($family)) {
             $this->context
                 ->buildViolation($constraint->messageAttributeType)
                 ->atPath($constraint->propertyPath)
@@ -49,9 +53,9 @@ class FamilyAttributeAsImageValidator extends ConstraintValidator
      *
      * @return bool
      */
-    protected function doesAttributeAsLabelBelongToFamily(FamilyInterface $family)
+    protected function doesAttributeAsImageBelongToFamily(FamilyInterface $family)
     {
-        return in_array($family->getAttributeAsLabel()->getCode(), $family->getAttributeCodes());
+        return in_array($family->getAttributeAsImage()->getCode(), $family->getAttributeCodes());
     }
 
     /**
@@ -59,8 +63,8 @@ class FamilyAttributeAsImageValidator extends ConstraintValidator
      *
      * @return bool
      */
-    protected function isAttributeAsLabelTypeValid(FamilyInterface $family)
+    protected function isAttributeAsImageTypeValid(FamilyInterface $family)
     {
-        return AttributeTypes::IMAGE === $family->getAttributeAsLabel()->getType();
+        return AttributeTypes::IMAGE === $family->getAttributeAsImage()->getType();
     }
 }
