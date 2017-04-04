@@ -9,13 +9,13 @@ use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
- * Cursor factory to instantiate an elasticsearch cursor
+ * Cursor factory to instantiate an elasticsearch bounded cursor
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CursorFactory implements CursorFactoryInterface
+class BoundedCursorFactory implements CursorFactoryInterface
 {
     /** @var Client */
     protected $searchEngine;
@@ -71,6 +71,14 @@ class CursorFactory implements CursorFactoryInterface
 
         $pageSize = !isset($options['page_size']) ? $this->pageSize : $options['page_size'];
 
-        return new $this->cursorClassName($this->searchEngine, $repository, $queryBuilder, $this->indexType, $pageSize);
+        return new $this->cursorClassName(
+            $this->searchEngine,
+            $repository,
+            $queryBuilder,
+            $this->indexType,
+            $pageSize,
+            $options['limit'],
+            $options['search_after']
+        );
     }
 }

@@ -1,10 +1,12 @@
 <?php
 
-namespace Pim\Component\Catalog\Query;
+namespace Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
-use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderOptionsResolverInterface;
 use Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,25 +35,31 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
     /** CursorFactoryInterface */
     protected $cursorFactory;
 
+    /** @var ProductQueryBuilderOptionsResolverInterface */
+    protected $optionsResolver;
+
     /**
-     * @param string                       $pqbClass
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param FilterRegistryInterface      $filterRegistry
-     * @param SorterRegistryInterface      $sorterRegistry
-     * @param CursorFactoryInterface       $cursorFactory
+     * @param string                                      $pqbClass
+     * @param AttributeRepositoryInterface                $attributeRepository
+     * @param FilterRegistryInterface                     $filterRegistry
+     * @param SorterRegistryInterface                     $sorterRegistry
+     * @param CursorFactoryInterface                      $cursorFactory
+     * @param ProductQueryBuilderOptionsResolverInterface $optionsResolver
      */
     public function __construct(
         $pqbClass,
         AttributeRepositoryInterface $attributeRepository,
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
-        CursorFactoryInterface $cursorFactory
+        CursorFactoryInterface $cursorFactory,
+        ProductQueryBuilderOptionsResolverInterface $optionsResolver
     ) {
         $this->pqbClass = $pqbClass;
         $this->attributeRepository = $attributeRepository;
         $this->filterRegistry = $filterRegistry;
         $this->sorterRegistry = $sorterRegistry;
         $this->cursorFactory = $cursorFactory;
+        $this->optionsResolver = $optionsResolver;
     }
 
     /**
@@ -61,11 +69,20 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
     {
         $options = $this->resolveOptions($options);
 
-        $pqb = $this->createProductQueryBuilder([
+        $pqbOptions = [
             'locale' => $options['default_locale'],
-            'scope'  => $options['default_scope']
-        ]);
+            'scope'  => $options['default_scope'],
+        ];
 
+        if (isset($options['limit'])) {
+            $pqbOptions['limit'] = $options['limit'];
+        }
+
+        if (array_key_exists('search_after', $options)) {
+            $pqbOptions['search_after'] = $options['search_after'];
+        }
+
+        $pqb = $this->createProductQueryBuilder($pqbOptions);
         $pqb->setQueryBuilder(new SearchQueryBuilder());
 
         foreach ($options['filters'] as $filter) {
@@ -87,6 +104,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
             $this->filterRegistry,
             $this->sorterRegistry,
             $this->cursorFactory,
+            $this->optionsResolver,
             $options
         );
 
@@ -129,6 +147,8 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
             'default_locale',
             'default_scope',
             'filters',
+            'search_after',
+            'limit'
         ]);
         $resolver->setDefaults([
             'repository_method'     => 'createQueryBuilder',

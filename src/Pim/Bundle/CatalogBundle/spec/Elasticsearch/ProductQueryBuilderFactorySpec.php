@@ -1,13 +1,12 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Query;
+namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client as ElasticSearchClient;
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderOptionsResolverInterface;
 use Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
@@ -19,15 +18,15 @@ class ProductQueryBuilderFactorySpec extends ObjectBehavior
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
-        EntityManagerInterface $om,
-        ElasticSearchClient $searchEngine
+        ProductQueryBuilderOptionsResolverInterface $optionsResolver
     ) {
         $this->beConstructedWith(
             'Pim\Component\Catalog\Query\ProductQueryBuilder',
             $attRepository,
             $filterRegistry,
             $sorterRegistry,
-            $cursorFactory
+            $cursorFactory,
+            $optionsResolver
         );
     }
 

@@ -10,6 +10,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderOptionsResolverInterface;
 use Pim\Component\Catalog\Query\Sorter\AttributeSorterInterface;
 use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;
 use Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface;
@@ -23,15 +24,19 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
-        SearchQueryBuilder $searchQb
+        SearchQueryBuilder $searchQb,
+        ProductQueryBuilderOptionsResolverInterface $optionsResolver
     ) {
+        $defaultContext = ['locale' => 'en_US', 'scope' => 'print'];
         $this->beConstructedWith(
             $repository,
             $filterRegistry,
             $sorterRegistry,
             $cursorFactory,
-            ['locale' => 'en_US', 'scope' => 'print']
+            $optionsResolver,
+            $defaultContext
         );
+        $optionsResolver->resolve($defaultContext)->willReturn($defaultContext);
         $this->setQueryBuilder($searchQb);
     }
 
@@ -142,7 +147,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         CursorInterface $cursor
     ) {
         $searchQb->getQuery()->willReturn([]);
-        $cursorFactory->createCursor(Argument::any())->shouldBeCalled()->willReturn($cursor);
+        $cursorFactory->createCursor(Argument::any(), ['locale' => 'en_US', 'scope' => 'print'] )->shouldBeCalled()->willReturn($cursor);
 
         $this->execute()->shouldReturn($cursor);
     }

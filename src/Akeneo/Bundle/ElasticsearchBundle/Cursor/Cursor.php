@@ -5,7 +5,6 @@ namespace Akeneo\Bundle\ElasticsearchBundle\Cursor;
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Cursor to iterate on items
@@ -146,9 +145,13 @@ class Cursor implements CursorInterface
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-search-after.html
      */
-    private function getNextIdentifiers(array $esQuery)
+    protected function getNextIdentifiers(array $esQuery)
     {
-        $esQuery['size'] = $this->pageSize;
+        $esQuery['size'] = $this->getItemsCountToFetch();
+
+        if (0 === $esQuery['size']) {
+            return [];
+        }
 
         $sort = ['_uid' => 'asc'];
 
@@ -185,5 +188,13 @@ class Cursor implements CursorInterface
     public function count()
     {
         return $this->count;
+    }
+
+    /**
+     * @return int
+     */
+    protected function getItemsCountToFetch()
+    {
+        return $this->pageSize;
     }
 }
