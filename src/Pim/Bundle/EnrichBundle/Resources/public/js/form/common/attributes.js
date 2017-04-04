@@ -45,6 +45,7 @@ define(
         i18n
     ) {
         return BaseForm.extend({
+            enabled: true,
             template: _.template(formTemplate),
             className: 'tabbable tabs-left object-attributes',
             events: {
@@ -69,6 +70,9 @@ define(
                     code: this.code,
                     label: _.__(this.config.tabTitle)
                 });
+
+                mediator.on('mass-edit:form:lock', this.onLock.bind(this));
+                mediator.on('mass-edit:form:unlock', this.onLock.bind(this));
 
                 UserContext.off('change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
@@ -98,10 +102,20 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
+            onLock: function() {
+                this.enabled = false;
+            },
+
+            onUnlock: function() {
+                this.enabled = true;
+            },
+
             /**
              * {@inheritdoc}
              */
             render: function () {
+                var formisEnabled = this.enabled;
+
                 if (!this.configured || this.rendering) {
                     return this;
                 }
@@ -136,6 +150,8 @@ define(
                             FieldManager.clearVisibleFields();
                             _.each(fields, function (field) {
                                 if (field.canBeSeen()) {
+                                    field.setEditable(formisEnabled);
+                                    field.renderEnabled = formisEnabled;
                                     field.render();
                                     FieldManager.addVisibleField(field.attribute.code);
                                     $valuesPanel.append(field.$el);
@@ -170,6 +186,8 @@ define(
                     var scope = _.findWhere(channels, { code: UserContext.get('catalogScope') });
                     var uiLocale = UserContext.get('uiLocale');
 
+                    field.editable = false;
+
                     field.setContext({
                         locale: UserContext.get('catalogLocale'),
                         scope: scope.code,
@@ -178,6 +196,7 @@ define(
                         optional: isOptional,
                         removable: SecurityContext.isGranted(this.config.removeAttributeACL)
                     });
+
                     field.setValues(values);
 
                     return field;
