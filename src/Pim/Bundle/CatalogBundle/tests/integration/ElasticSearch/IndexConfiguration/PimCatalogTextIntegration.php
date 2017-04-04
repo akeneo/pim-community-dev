@@ -250,7 +250,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogIntegration
     }
 
     /**
-     * This method indexes dummy products in elastic search.
+     * {@inheritdoc}
      */
     protected function addProducts()
     {

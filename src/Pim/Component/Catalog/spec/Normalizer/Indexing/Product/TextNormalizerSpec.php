@@ -104,7 +104,7 @@ class TextNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_normalizes_a_text_product_value_with_no_scope_and_no_locale(
+    function it_normalizes_a_text_product_value_with_scope_and_no_locale(
         ProductValueInterface $textValue,
         AttributeInterface $textAttribute
     ) {

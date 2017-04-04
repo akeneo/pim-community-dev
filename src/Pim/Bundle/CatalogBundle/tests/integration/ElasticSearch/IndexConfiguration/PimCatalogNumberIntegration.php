@@ -348,7 +348,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
     }
 
     /**
-     * This method indexes dummy products in elastic search.
+     * {@inheritdoc}
      *
      * A few information regarding the mapping of numbers and the data indexed in ES below.
      * We indexed data of different types:

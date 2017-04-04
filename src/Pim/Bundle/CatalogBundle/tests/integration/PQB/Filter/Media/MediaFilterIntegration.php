@@ -20,6 +20,8 @@ class MediaFilterIntegration extends AbstractProductQueryBuilderTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
+            $this->resetIndex();
+
             $this->createProduct('akeneo', [
                 'values' => [
                     'an_image' => [
@@ -46,15 +48,6 @@ class MediaFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['akeneo']);
 
         $result = $this->executeFilter([['an_image', Operators::STARTS_WITH, 'keneo']]);
-        $this->assert($result, []);
-    }
-
-    public function testOperatorEndWith()
-    {
-        $result = $this->executeFilter([['an_image', Operators::ENDS_WITH, 'ziggy.png']]);
-        $this->assert($result, ['ziggy']);
-
-        $result = $this->executeFilter([['an_image', Operators::ENDS_WITH, 'akeneo']]);
         $this->assert($result, []);
     }
 

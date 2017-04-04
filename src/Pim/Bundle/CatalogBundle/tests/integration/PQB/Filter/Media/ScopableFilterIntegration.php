@@ -21,6 +21,8 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
+            $this->resetIndex();
+
             $this->createAttribute([
                 'code'                => 'a_localizable_media',
                 'type'                => AttributeTypes::IMAGE,
@@ -56,18 +58,6 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['product_one']);
 
         $result = $this->executeFilter([['a_scopable_image', Operators::STARTS_WITH, 'aken', ['scope' => 'tablet']]]);
-        $this->assert($result, []);
-    }
-
-    public function testOperatorEndWith()
-    {
-        $result = $this->executeFilter([['a_scopable_image', Operators::ENDS_WITH, 'ziggy.png', ['scope' => 'ecommerce']]]);
-        $this->assert($result, ['product_two']);
-
-        $result = $this->executeFilter([['a_scopable_image', Operators::ENDS_WITH, 'ziggy.png', ['scope' => 'tablet']]]);
-        $this->assert($result, ['product_one', 'product_two']);
-
-        $result = $this->executeFilter([['a_scopable_image', Operators::ENDS_WITH, 'ziggy', ['scope' => 'tablet']]]);
         $this->assert($result, []);
     }
 

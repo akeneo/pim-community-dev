@@ -21,6 +21,8 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
+            $this->resetIndex();
+
             $this->createAttribute([
                 'code'                => 'a_localizable_media',
                 'type'                => AttributeTypes::IMAGE,
@@ -56,18 +58,6 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['product_one']);
 
         $result = $this->executeFilter([['a_localizable_image', Operators::STARTS_WITH, 'aken', ['locale' => 'fr_FR']]]);
-        $this->assert($result, []);
-    }
-
-    public function testOperatorEndWith()
-    {
-        $result = $this->executeFilter([['a_localizable_image', Operators::ENDS_WITH, 'ziggy.png', ['locale' => 'en_US']]]);
-        $this->assert($result, ['product_two']);
-
-        $result = $this->executeFilter([['a_localizable_image', Operators::ENDS_WITH, 'ziggy.png', ['locale' => 'fr_FR']]]);
-        $this->assert($result, ['product_one', 'product_two']);
-
-        $result = $this->executeFilter([['a_localizable_image', Operators::ENDS_WITH, 'ziggy', ['locale' => 'fr_FR']]]);
         $this->assert($result, []);
     }
 

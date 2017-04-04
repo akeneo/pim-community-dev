@@ -516,30 +516,134 @@ Not In list
 
 Media
 *****
+
 :Apply:
-  pim_catalog_image and pim_catalog_file attributes
+    pim_catalog_image and pim_catalog_file attributes
 
 Data model
 ~~~~~~~~~~
-.. code-block:: yaml
+.. code-block:: php
 
-  my_image-media: "/images/test-image.jpg"
+    [
+        'values' => [
+            'an_image-media' => [
+                'fr_FR' => [
+                    'mobile' => [
+                        'extension'         => 'jpg',
+                        'hash'              => 'the_hash',
+                        'key'               => 'the/relative/path/to_akeneo.png',
+                        'mime_type'         => 'image/jpeg',
+                        'original_filename' => 'akeneo.jpg',
+                        'size'              => 42,
+                        'storage'           => 'catalogStorage',
+                    ]
+                ]
+            ]
+        ]
+    ]
 
 Filtering
 ~~~~~~~~~
 Operators
 .........
+STARTS WITH
+"""""""""""
+:Specific field: original_filename
 
-For STARTS WITH, ENDS WITH, CONTAINS, DOES NOT CONTAIN and =, same as identifier
+.. code-block:: php
+
+    'filter' => [
+        'query_string' => [
+            'default_field' => 'values.an_image-media.<all_channels>.<all_locales>.original_filename',
+            'query' => "ak*"
+        ]
+    ]
+
+CONTAINS
+""""""""
+:Specific field: original_filename
+
+.. code-block:: php
+
+    'filter' => [
+        'query_string' => [
+            'default_field' => 'values.an_image-media.<all_channels>.<all_locales>.original_filename',
+            'query' => '*neo*'
+        ]
+    ]
+
+DOES NOT CONTAIN
+""""""""""""""""
+:Specific field: original_filename
+
+Same syntax than the ``contains`` but must be included in a ``must_not`` boolean occured type instead of ``filter``.
+
+.. code-block:: php
+
+    'bool' => [
+        'must_not' => [
+            'query_string' => [
+                'default_field' => 'values.an_image-media.<all_channels>.<all_locales>.original_filename',
+                'query' => '*ziggy*'
+            ]
+        ],
+        'filter' => [
+            'exists' => ['field' => 'values.an_image-media.<all_channels>.<all_locales>'
+        ]
+    ]
+
+Equals (=)
+""""""""""
+:Type: Filter
+:Specific field: original_filename
+
+.. code-block:: php
+
+    'filter' => [
+        'term' => [
+            'values.an_image-media.<all_channels>.<all_locales>.original_filename' => 'akeneo.jpg'
+        ]
+    ]
+
+Not Equals (!=)
+"""""""""""""""
+:Type: Filter
+:Specific field: original_filename
+
+.. code-block:: php
+
+    'must_not' => [
+        'term' => [
+            'values.an_image-media.<all_channels>.<all_locales>.original_filename' => 'ziggy.png'
+        ]
+    ],
+    'filter' => [
+        'exists' => [
+            'field' => 'values.an_image-media.<all_channels>.<all_locales>'
+        ]
+    ]
 
 EMPTY
 """""
-:Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    missing:
-        field: "my_image-media"
+    'must_not' => [
+        'exists => [
+            'field' => 'values.an_image-media.<all_channels>.<all_locales>'
+        ]
+    ]
+
+NOT EMPTY
+"""""""""
+
+.. code-block:: php
+
+    'filter' => [
+        'exists => [
+            'field' => 'values.an_image-media.<all_channels>.<all_locales>'
+        ]
+    ]
 
 Date
 ****
