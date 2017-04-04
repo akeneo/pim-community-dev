@@ -287,7 +287,7 @@ class CategoryTreeController extends Controller
 
                 return new JsonResponse(
                     [
-                        'route'  => 'pim_enrich_categorytree_edit',
+                        'route'  => $this->buildRouteName('categorytree_edit'),
                         'params' => ['id' => $category->getId()]
                     ]
                 );
