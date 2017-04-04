@@ -20,6 +20,8 @@ class LabelSelector implements SelectorInterface
      */
     public function apply(DatasourceInterface $datasource, DatagridConfiguration $configuration)
     {
+        // TODO: to fix with TIP-664
+        return;
         $esQb = $datasource->getQueryBuilder();
         $qb = $esQb->getStorageQb();
         $rootAlias = $qb->getRootAlias();

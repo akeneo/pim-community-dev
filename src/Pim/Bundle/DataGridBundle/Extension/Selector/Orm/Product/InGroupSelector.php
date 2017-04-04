@@ -20,6 +20,8 @@ class InGroupSelector implements SelectorInterface
      */
     public function apply(DatasourceInterface $datasource, DatagridConfiguration $configuration)
     {
+        // TODO: to fix with TIP-664
+        return;
         $currentGroupId = $configuration->offsetGetByPath('[source][current_group_id]');
 
         $esQb = $datasource->getQueryBuilder();
