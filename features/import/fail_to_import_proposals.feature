@@ -25,11 +25,8 @@ Feature: Import proposals
     And I launch the import job
     And I wait for the "csv_clothing_product_proposal_import" job to finish
     Then there should be 1 proposal
-    And I should see:
-    """
-    Product "not-found-product" does not exist
-    """
-    And I should see "skipped 1"
+    And I should see the text "Product \"not-found-product\" does not exist"
+    And I should see the text "skipped 1"
 
   Scenario: Ignore field which is not an attribute
     Given I am logged in as "Mary"

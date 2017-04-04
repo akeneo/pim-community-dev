@@ -27,6 +27,8 @@ config:
                         urls:
                             get: pimee_enrich_channel_asset_transformation
         pim/controller-registry:
+            defaultController:
+                module: pim/controller/template
             controllers:
                 pimee_enrich_locale_edit:
                     module: pim/controller/form
@@ -43,6 +45,15 @@ config:
                 pimee_product_asset_mass_edit_asset_action_perform:
                     module: pim/controller/form
                     aclResourceId: pim_enrich_mass_edit
+                pimee_asset_categorytree_create:
+                    module: pim/controller/form
+                    aclResourceId: pimee_product_asset_category_create
+                pimee_asset_categorytree_edit:
+                    module: pim/controller/form
+                    aclResourceId: pimee_product_asset_category_edit
+                pimee_asset_categorytree_remove:
+                    module: pim/controller/template
+                    aclResourceId: pimee_asset_categorytree_remove
 
     map:
         '*':

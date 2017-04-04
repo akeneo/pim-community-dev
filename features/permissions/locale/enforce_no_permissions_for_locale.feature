@@ -1,3 +1,4 @@
+@javascript
 Feature: Enforce no permissions for a locale
   In order to be able to prevent some users from viewing product data in some locales
   As an administrator
@@ -19,7 +20,6 @@ Feature: Enforce no permissions for a locale
     Then I should be on the homepage
     And I should see "You don't have access to product data in any activated locale, please contact your administrator"
 
-  @javascript
   Scenario: Display only available locales in the locale switcher
     Given the following locale accesses:
       | locale | user group | access |
@@ -37,7 +37,6 @@ Feature: Enforce no permissions for a locale
       | English  | en_US  | flag-us |
       | German   | de_DE  | flag-de |
 
-  @javascript
   Scenario: Display product view or edit page depending on user's rights
     Given the following locale accesses:
       | locale | user group | access |
@@ -55,7 +54,6 @@ Feature: Enforce no permissions for a locale
     And I save the product
     Then the field Name should contain "My custom name"
 
-  @javascript
   Scenario: Display only available locales in the product export builder
     Given the following locale accesses:
       | locale | user group | access |
@@ -67,7 +65,7 @@ Feature: Enforce no permissions for a locale
     Then I should see the text "German (Germany) English (United States)"
     And I should not see the text "French (France)"
 
-  @javascript @jira https://akeneo.atlassian.net/browse/PIM-6035
+  @skip-nav @jira https://akeneo.atlassian.net/browse/PIM-6035
   Scenario: Display product view or edit page when user have no access to the first activated locale
     Given the following locale accesses:
       | locale | user group | access |

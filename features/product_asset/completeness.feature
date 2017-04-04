@@ -93,6 +93,7 @@ Feature: Display the completeness of a product with assets
       | tablet  | de_DE  | warning | Weather conditions, Rating | 80%   |
     And I delete the paint variation for channel mobile and locale ""
     When I am on the "jacket-white" product page
+    And I save the product
     When I open the "Completeness" panel
     Then I should see the completeness:
       | channel | locale | state   | missing_values             | ratio |
