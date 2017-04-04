@@ -8,6 +8,8 @@ extensions:
         targetZone: content
         aclResourceId: pim_enrich_product_edit_attributes
         position: 90
+        config:
+            removeAttributeACL: pim_enrich_product_remove_attribute
 
     pim-mass-product-edit-form-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector

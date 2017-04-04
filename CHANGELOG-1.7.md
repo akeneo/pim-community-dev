@@ -13,6 +13,8 @@
 - GITHUB-5307: Fix sort order in field "Attribute group"
 - PIM-6240: Display the code instead of undefined if channel's locale is not filled for the given locale
 - PIM-6071: Hide add option icon for non-editable fields
+- PIM-6273: Enable removing attributes in mass edit products form
+- PIM-6277: Display channel labels in completeness tab
 - PIM-6275: Fix variations not visible on Variant Group properties tab
 - PIM-6283: Fix a bug where SKUs of products in the Variant Group edit page were not displayed
 - PIM-6274: Successfully validate products with a custom validation on identifier
