@@ -2,9 +2,7 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
-use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\ProductValue\MetricProductValue;
 use Pim\Component\Catalog\ProductValue\MetricProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -32,15 +30,15 @@ class MetricNormalizer extends AbstractProductValueNormalizer implements Normali
     {
         $productMetric = $productValue->getData();
 
-        if (null === $productMetric) {
-            return [];
+        if (null !== $productMetric) {
+            return [
+                'data'      => (string)$productMetric->getData(),
+                'base_data' => (string)$productMetric->getBaseData(),
+                'unit'      => $productMetric->getUnit(),
+                'base_unit' => $productMetric->getBaseUnit(),
+            ];
         }
 
-        return [
-            'data'      => (string) $productMetric->getData(),
-            'base_data' => (string) $productMetric->getBaseData(),
-            'unit'      => $productMetric->getUnit(),
-            'base_unit' => $productMetric->getBaseUnit()
-        ];
+        return null;
     }
 }

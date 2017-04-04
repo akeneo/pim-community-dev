@@ -56,7 +56,7 @@ class MetricNormalizerSpec extends ObjectBehavior
         $this->normalize($metricValue, 'indexing')->shouldReturn([
             'weight-metric' => [
                 '<all_channels>' => [
-                    '<all_locales>' => [],
+                    '<all_locales>' => null,
                 ],
             ],
         ]);

@@ -62,6 +62,27 @@ class TextAreaNormalizerSpec extends ObjectBehavior
         ]);
     }
 
+    function it_normalizes_an_empty_simple_text_area(
+        ProductValueInterface $textAreaValue,
+        AttributeInterface $textAreaAttribute
+    ) {
+        $textAreaValue->getAttribute()->willReturn($textAreaAttribute);
+        $textAreaValue->getLocale()->willReturn(null);
+        $textAreaValue->getScope()->willReturn(null);
+        $textAreaValue->getData()->willReturn(null);
+
+        $textAreaAttribute->getCode()->willReturn('name');
+        $textAreaAttribute->getBackendType()->willReturn('text');
+
+        $this->normalize($textAreaValue, 'indexing')->shouldReturn([
+            'name-text' => [
+                '<all_channels>' => [
+                    '<all_locales>' => null
+                ]
+            ]
+        ]);
+    }
+
     function it_normalizes_a_text_area_with_new_lines(
         ProductValueInterface $textAreaValue,
         AttributeInterface $textAreaAttribute

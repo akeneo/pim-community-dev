@@ -2,11 +2,10 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\TextNormalizer;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class TextNormalizerSpec extends ObjectBehavior
@@ -56,9 +55,9 @@ class TextNormalizerSpec extends ObjectBehavior
         $this->normalize($textValue, 'indexing')->shouldReturn([
             'name-varchar' => [
                 '<all_channels>' => [
-                    '<all_locales>' => 'a product name'
-                ]
-            ]
+                    '<all_locales>' => 'a product name',
+                ],
+            ],
         ]);
     }
 
@@ -77,9 +76,30 @@ class TextNormalizerSpec extends ObjectBehavior
         $this->normalize($textValue, 'indexing')->shouldReturn([
             'name-varchar' => [
                 '<all_channels>' => [
-                    '<all_locales>' => '<h1>My <strong>ProDucT</strong> is awesome</h1>'
-                ]
-            ]
+                    '<all_locales>' => '<h1>My <strong>ProDucT</strong> is awesome</h1>',
+                ],
+            ],
+        ]);
+    }
+
+    function it_normalizes_an_empty_text_with_no_locale_and_channel(
+        ProductValueInterface $textValue,
+        AttributeInterface $textAttribute
+    ) {
+        $textValue->getAttribute()->willReturn($textAttribute);
+        $textValue->getLocale()->willReturn(null);
+        $textValue->getScope()->willReturn(null);
+        $textValue->getData()->willReturn(null);
+
+        $textAttribute->getCode()->willReturn('name');
+        $textAttribute->getBackendType()->willReturn('varchar');
+
+        $this->normalize($textValue, 'indexing')->shouldReturn([
+            'name-varchar' => [
+                '<all_channels>' => [
+                    '<all_locales>' => null,
+                ],
+            ],
         ]);
     }
 
@@ -98,9 +118,9 @@ class TextNormalizerSpec extends ObjectBehavior
         $this->normalize($textValue, 'indexing')->shouldReturn([
             'name-varchar' => [
                 '<all_channels>' => [
-                    'fr_FR' => 'a product name'
-                ]
-            ]
+                    'fr_FR' => 'a product name',
+                ],
+            ],
         ]);
     }
 
@@ -119,9 +139,9 @@ class TextNormalizerSpec extends ObjectBehavior
         $this->normalize($textValue, 'indexing')->shouldReturn([
             'name-varchar' => [
                 'ecommerce' => [
-                    '<all_locales>' => 'a product name'
-                ]
-            ]
+                    '<all_locales>' => 'a product name',
+                ],
+            ],
         ]);
     }
 
@@ -140,9 +160,9 @@ class TextNormalizerSpec extends ObjectBehavior
         $this->normalize($textValue, 'indexing')->shouldReturn([
             'name-varchar' => [
                 'ecommerce' => [
-                    'fr_FR' => 'a product name'
-                ]
-            ]
+                    'fr_FR' => 'a product name',
+                ],
+            ],
         ]);
     }
 }

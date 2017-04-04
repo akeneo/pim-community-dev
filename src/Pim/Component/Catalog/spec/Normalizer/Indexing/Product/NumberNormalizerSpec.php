@@ -40,6 +40,28 @@ class NumberNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($numberValue, 'indexing')->shouldReturn(true);
     }
 
+    function it_normamlizes_an_empty_number_product_value_with_no_locale_and_no_channel(
+        ProductValueInterface $integerValue,
+        AttributeInterface $integerAttribute
+    ) {
+        $integerValue->getAttribute()->willReturn($integerAttribute);
+        $integerValue->getLocale()->willReturn(null);
+        $integerValue->getScope()->willReturn(null);
+        $integerValue->getData()->willReturn(null);
+
+        $integerAttribute->isDecimalsAllowed()->willReturn(false);
+        $integerAttribute->getCode()->willReturn('box_quantity');
+        $integerAttribute->getBackendType()->willReturn('decimal');
+
+        $this->normalize($integerValue, 'indexing')->shouldReturn([
+            'box_quantity-decimal' => [
+                '<all_channels>' => [
+                    '<all_locales>' => null
+                ]
+            ]
+        ]);
+    }
+
     function it_normalize_an_integer_product_value_with_no_locale_and_no_channel(
         ProductValueInterface $integerValue,
         AttributeInterface $integerAttribute

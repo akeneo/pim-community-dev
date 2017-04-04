@@ -17,8 +17,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class NumberNormalizer extends AbstractProductValueNormalizer implements NormalizerInterface
 {
-    const DECIMAL_PRECISION = 4;
-
     /**
      * {@inheritdoc}
      */
@@ -34,6 +32,12 @@ class NumberNormalizer extends AbstractProductValueNormalizer implements Normali
      */
     protected function getNormalizedData(ProductValueInterface $productValue)
     {
-        return (string) $productValue->getData();
+        $number = $productValue->getData();
+
+        if (null !== $number) {
+            return (string) $number;
+        }
+
+        return null;
     }
 }
