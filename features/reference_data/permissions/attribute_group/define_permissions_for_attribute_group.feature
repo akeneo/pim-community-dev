@@ -22,8 +22,7 @@ Feature: Define permissions for an attribute group with reference data
     Given I am logged in as "Mary"
     And I edit the "foo" product
     And I visit the "Other" group
-    And I should not see available attributes cap_color in group "Other"
-    And I should not see available attributes cap_fabric in group "Other"
+    And I should see available attributes Cap color in group "Other"
 
   Scenario: Successfully forbidden editable fields for an attribute group which contains references data
     Given I am logged in as "Peter"
