@@ -29,9 +29,6 @@ define(['routing'], function (Routing) {
 
         /* jshint loopfunc:true */
         for (var name in routes) {
-            // if (name === 'pim_enrich_categorytree_create_tree') {
-            //     debugger;
-            // }
             route = routes[name];
             var pattern = '';
             var variables = [];
@@ -39,7 +36,8 @@ define(['routing'], function (Routing) {
 
             if (route.requirements._method &&
                 -1 === route.requirements._method.indexOf('GET') &&
-                -1 === route.requirements._method.indexOf('POST')) {
+                -1 === route.requirements._method.indexOf('POST')
+            ) {
                 continue;
             }
 
@@ -50,8 +48,16 @@ define(['routing'], function (Routing) {
                         matching = matching && url.indexOf(token[1]) !== -1;
                         break;
                     case 'variable':
-                        pattern = escape(token[1]) + '(' + token[2].replace('++', '+') + ')' + pattern;
-                        variables.push(token[3]);
+                        var separator = escape(token[1]);
+                        var varPattern = token[2].replace('++', '+');
+                        var varName = token[3];
+
+                        if (undefined === route.defaults[token[3]]) {
+                            pattern = separator + '(' + varPattern + ')' + pattern;
+                        } else {
+                            pattern = '(?:' + separator + '(' + varPattern + '))?' + pattern;
+                        }
+                        variables.push(varName);
                         break;
                     default:
                         break;
@@ -69,7 +75,12 @@ define(['routing'], function (Routing) {
                 variables.reverse();
 
                 variables.forEach(function (variable, index) {
-                    params[variable] = matches[index + 1];
+                    var matchedValue = matches[index + 1];
+                    if (undefined !== matchedValue) {
+                        params[variable] = matchedValue;
+                    } else {
+                        params[variable] = route.defaults[variable];
+                    }
                 });
 
                 return {
