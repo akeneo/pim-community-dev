@@ -13,22 +13,14 @@ namespace PimEnterprise\Behat\Context;
 
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
-use Pim\Behat\Context\PimContext;
+use Context\ViewSelectorContext as BaseViewSelectorContext;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class ViewSelectorContext extends PimContext
+class ViewSelectorContext extends BaseViewSelectorContext
 {
     use SpinCapableTrait;
-
-    /**
-     * @Given /^I open the view selector$/
-     */
-    public function iOpenTheViewSelector()
-    {
-        $this->getCurrentPage()->getViewSelector()->click();
-    }
 
     /**
      * @Given /^I click on the create project button$/
@@ -82,16 +74,6 @@ class ViewSelectorContext extends PimContext
                 sprintf('Project "%s" should be displayed.', $projectName)
             );
         }
-    }
-
-    /**
-     * @Given /^I filter view selector with name "([^"]*)"$/
-     *
-     * @param string $name
-     */
-    public function iFilterViewSelectorWithName($name)
-    {
-        $this->getCurrentPage()->getViewSelector()->search($name);
     }
 
     /**
