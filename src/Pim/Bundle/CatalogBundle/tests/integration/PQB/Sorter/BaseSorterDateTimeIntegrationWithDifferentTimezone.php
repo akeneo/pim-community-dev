@@ -22,8 +22,6 @@ class BaseSorterDateTimeIntegration extends AbstractProductQueryBuilderTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->resetIndex();
-
             static::$timezone = ini_get('date.timezone');
 
             ini_set('date.timezone', 'UTC');

@@ -20,8 +20,6 @@ class OptionsFilterIntegration extends AbstractProductQueryBuilderTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->resetIndex();
-
             $this->createAttributeOption([
                'attribute' => 'a_multi_select',
                'code'      => 'orange'

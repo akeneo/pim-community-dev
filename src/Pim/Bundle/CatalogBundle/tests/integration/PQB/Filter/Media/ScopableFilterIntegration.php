@@ -21,8 +21,6 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->resetIndex();
-
             $this->createAttribute([
                 'code'                => 'a_localizable_media',
                 'type'                => AttributeTypes::IMAGE,

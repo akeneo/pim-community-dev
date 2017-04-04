@@ -35,8 +35,6 @@ class CompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->resetIndex();
-
             $family = $this->get('pim_catalog.factory.family')->create();
             $this->get('pim_catalog.updater.family')->update($family, [
                 'code'                   => 'familyB',

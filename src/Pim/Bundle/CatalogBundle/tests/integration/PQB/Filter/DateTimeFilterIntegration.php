@@ -25,8 +25,6 @@ class DateTimeFilterIntegration extends AbstractProductQueryBuilderTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->resetIndex();
-
             static::$createdDates['before_first'] = new \DateTime('now', new \DateTimeZone('UTC'));
             sleep(2);
             $this->createProduct('foo', []);
