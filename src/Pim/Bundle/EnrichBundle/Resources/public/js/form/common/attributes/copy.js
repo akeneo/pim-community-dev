@@ -130,6 +130,7 @@ define(
 
                     copyField.setContext({
                         locale: this.locale,
+                        uiLocale:  UserContext.get('uiLocale'),
                         scope: this.scope,
                         scopeLabel: this.scopeLabel
                     });

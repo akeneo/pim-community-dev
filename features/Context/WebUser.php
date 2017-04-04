@@ -1000,6 +1000,7 @@ class WebUser extends RawMinkContext
         }
     }
 
+
     /**
      * @param string $attributes
      *

@@ -171,7 +171,7 @@ define(
                         locale: UserContext.get('catalogLocale'),
                         scope: scope.code,
                         scopeLabel: scope.labels,
-                        uiLocale: UserContext.get('catalogLocale'),
+                        uiLocale: UserContext.get('uiLocale'),
                         optional: isOptional,
                         removable: SecurityContext.isGranted(this.config.removeAttributeACL)
                     });
