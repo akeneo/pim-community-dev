@@ -63,7 +63,6 @@ class FamilyNormalizerSpec extends ObjectBehavior
             'code'                   => 'tshirts',
             'attributes'             => [
                 'name',
-                'price',
             ],
             'attribute_as_label'     => 'name',
             'attribute_requirements' => [
@@ -87,13 +86,10 @@ class FamilyNormalizerSpec extends ObjectBehavior
 
         $familyNormalizer->normalize($family, 'standard', [])->willReturn($normalizedFamily);
 
-        $normalizedFamily['attributes'] = ['name', 'price'];
-
         $familyNormalizer->normalize($family, 'standard', [])->shouldBeCalled();
 
-        $attributeRepository->findBy(['code' =>['name', 'price']])->willReturn([$name, $price]);
-
-        $attributeRepository->findBy(['code' =>['name', 'price']])->willReturn([$name, $price]);
+        $attributeRepository->findAttributesByFamily($family)->willReturn([$name, $price]);
+        $attributeRepository->findBy(['code' => ['name', 'price']])->willReturn([$name, $price]);
 
         $translationNormalizer->normalize(Argument::cetera())->willReturn([]);
         $family->getCode()->willReturn('tshirts');
