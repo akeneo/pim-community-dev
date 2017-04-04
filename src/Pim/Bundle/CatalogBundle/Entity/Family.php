@@ -18,19 +18,13 @@ use Pim\Component\Catalog\Model\FamilyInterface;
  */
 class Family implements FamilyInterface
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $id;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $code;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
+    /** @var ArrayCollection */
     protected $attributes;
 
     /**
@@ -41,29 +35,22 @@ class Family implements FamilyInterface
      */
     protected $locale;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
+    /** @var ArrayCollection */
     protected $translations;
 
-    /**
-     * @var AttributeInterface
-     */
+    /** @var AttributeInterface */
     protected $attributeAsLabel;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
+    /** @var AttributeInterface */
+    protected $attributeAsImage;
+
+    /** @var ArrayCollection */
     protected $requirements;
 
-    /**
-     * @var \DateTime
-     */
+    /** @var \DateTime */
     protected $created;
 
-    /**
-     * @var \DateTime
-     */
+    /** @var \DateTime */
     protected $updated;
 
     /**
@@ -252,6 +239,24 @@ class Family implements FamilyInterface
     public function getAttributeAsLabel()
     {
         return $this->attributeAsLabel;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAttributeAsImage(AttributeInterface $attributeAsImage)
+    {
+        $this->attributeAsImage = $attributeAsImage;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttributeAsImage()
+    {
+        return $this->attributeAsImage;
     }
 
     /**
