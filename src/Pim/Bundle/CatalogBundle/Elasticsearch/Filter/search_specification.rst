@@ -1053,20 +1053,32 @@ Metric
 ******
 :Apply: pim_catalog_metric attributes
 
-In case of metric, only the data converted to the default metric unit of the family
-must be indexed.
+In case of metric, only the data converted to the default metric unit of the family is indexed, however the unit and data properties are also saved in ES but not indexed.
 
 Data model
 ~~~~~~~~~~
-.. code-block:: yaml
+.. code-block:: php
 
-    weight_metric: 10.5
+    [
+        'values' => [
+            'weight-metric' => [
+                '<all_channels>' => [
+                    '<all_locales> => [
+                        'base_data' => '10.5559',
+                        'base_unit' => 'KILOGRAM',
+                        'data' => '10555.9',
+                        'unit'  => 'GRAM'
+                    ]
+                ]
+            ]
+        ]
+    ]
 
 Filtering
 ~~~~~~~~~
 Operators
 .........
-All operators are identical to the one used on numbers
+All operators are identical to the one used on numbers.
 
 Boolean
 *******

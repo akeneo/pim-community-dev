@@ -21,6 +21,7 @@ parameters:
     pim_catalog.query.elasticsearch.filter.option.class:          Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\OptionFilter
     pim_catalog.query.elasticsearch.filter.options.class:         Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\OptionsFilter
     pim_catalog.query.elasticsearch.filter.price.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\PriceFilter
+    pim_catalog.query.elasticsearch.filter.metric.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\MetricFilter
     pim_catalog.query.elasticsearch.sorter.base.class:            Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\BaseSorter
 
 services:
@@ -224,6 +225,17 @@ services:
             - '@pim_catalog.validator.helper.attribute'
             - '@pim_catalog.repository.currency'
             - ['pim_catalog_price_collection']
+            - ['<', '<=', '=', '!=', '>=', '>', 'EMPTY', 'EMPTY FOR CURRENCY', 'EMPTY ON ALL CURRENCIES', 'NOT EMPTY', 'NOT EMPTY ON AT LEAST ONE CURRENCY', 'NOT EMPTY FOR CURRENCY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.metric:
+        class: '%pim_catalog.query.elasticsearch.filter.metric.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - '@akeneo_measure.manager'
+            - '@akeneo_measure.measure_converter'
+            - ['pim_catalog_metric']
             - ['<', '<=', '=', '!=', '>=', '>', 'EMPTY', 'EMPTY FOR CURRENCY', 'EMPTY ON ALL CURRENCIES', 'NOT EMPTY', 'NOT EMPTY ON AT LEAST ONE CURRENCY', 'NOT EMPTY FOR CURRENCY']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }

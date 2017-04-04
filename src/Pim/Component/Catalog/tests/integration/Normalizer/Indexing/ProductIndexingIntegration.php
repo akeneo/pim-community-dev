@@ -113,22 +113,42 @@ class ProductIndexingIntegration extends TestCase
                 ],
                 'a_metric-metric'                                => [
                     '<all_channels>' => [
-                        '<all_locales>' => null,
+                        '<all_locales>' => [
+                            'base_data' => '9.8765432198712E+14',
+                            'base_unit' => 'WATT',
+                            'data'      => '987654321987.1234',
+                            'unit'      => 'KILOWATT',
+                        ],
                     ],
                 ],
                 'a_metric_negative-metric'                       => [
                     '<all_channels>' => [
-                        '<all_locales>' => null,
+                        '<all_locales>' => [
+                            'base_data' => '252.65',
+                            'base_unit' => 'KELVIN',
+                            'data'      => '-20.5000',
+                            'unit'      => 'CELSIUS',
+                        ],
                     ],
                 ],
                 'a_metric_without_decimal-metric'                => [
                     '<all_channels>' => [
-                        '<all_locales>' => null,
+                        '<all_locales>' => [
+                            'base_data' => '0.98',
+                            'data'    => '98',
+                            'base_unit' => 'METER',
+                            'unit'      => 'CENTIMETER',
+                        ],
                     ],
                 ],
                 'a_metric_without_decimal_negative-metric'       => [
                     '<all_channels>' => [
-                        '<all_locales>' => null,
+                        '<all_locales>' => [
+                            'base_data' => '253.15',
+                            'data'    => '-20',
+                            'base_unit' => 'KELVIN',
+                            'unit'      => 'CELSIUS',
+                        ],
                     ],
                 ],
                 'a_multi_select-options'                         => [

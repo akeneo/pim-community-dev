@@ -21,6 +21,8 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
+            $this->resetIndex();
+
             $this->createAttribute([
                 'code'                => 'a_scopable_localizable_metric',
                 'type'                => AttributeTypes::METRIC,
