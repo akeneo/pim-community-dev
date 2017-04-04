@@ -16,7 +16,8 @@ services:
         arguments:
             - '@pim_catalog.object_manager.product'
             - '@pim_datagrid.datasource.result_record.hydrator.product'
-            - '@pimee_workflow.doctrine.query.published_product_query_factory'
+            - '@pimee_workflow.doctrine.query.published_product_query_bounded_factory'
+            - '@pim_internal_api_serializer'
         calls:
             - [ setMassActionRepository, ['@pimee_workflow.repository.published_product_mass_action' ]]
         tags:
