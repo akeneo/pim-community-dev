@@ -6,7 +6,7 @@
             <span class="AknFieldContainer-fieldInfo field-info">
                 <% if (attribute.localizable || attribute.scopable) { %>
                     <span class="field-context">
-                        <% if (attribute.scopable) { %> <span><%- context.scopeLabel %></span> <% } %>
+                        <% if (attribute.scopable) { %> <span class="field-context-scope"><%- i18n.getLabel(context.scopeLabel, context.locale, context.scope) %></span> <% } %>
                         <% if (attribute.localizable) { %> <span><%= i18n.getFlag(context.locale) %></span> <% } %>
                     </span>
                 <% } %>

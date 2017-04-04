@@ -331,8 +331,7 @@ define(
             getScopeLabel: function (scopeCode) {
                 return FetcherRegistry.getFetcher('channel').fetchAll().then(function (channels) {
                     var scope = _.findWhere(channels, { code: scopeCode });
-
-                    return scope.label;
+                    return scope.labels;
                 });
             }
         });

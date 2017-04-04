@@ -170,7 +170,7 @@ define(
                     field.setContext({
                         locale: UserContext.get('catalogLocale'),
                         scope: scope.code,
-                        scopeLabel: scope.label,
+                        scopeLabel: scope.labels,
                         uiLocale: UserContext.get('catalogLocale'),
                         optional: isOptional,
                         removable: SecurityContext.isGranted(this.config.removeAttributeACL)
