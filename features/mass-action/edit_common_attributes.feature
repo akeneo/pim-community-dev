@@ -46,7 +46,8 @@ Feature: Edit common attributes of many products at once
 
   @jira https://akeneo.atlassian.net/browse/PIM-6273
   Scenario: Successfully remove product attribute fields
-    Given I select rows boots, sandals and sneakers
+    Given I am on the products page
+    And I select rows boots, sandals and sneakers
     When I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Name attribute
