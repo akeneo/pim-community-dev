@@ -477,6 +477,8 @@ pim_enrich:
                     general: General
                     code: Code
                     attribute_as_label: Attribute used as label
+                    attribute_as_image: Attribute used as image
+                    empty_attribute_as_image: No attribute set
                     label_translations: Label translations
                 attributes:
                     title: Attributes

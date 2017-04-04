@@ -109,7 +109,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
      */
     protected function validateDataType($field, $data)
     {
-        if (in_array($field, ['code', 'attribute_as_label'])) {
+        if (in_array($field, ['code', 'attribute_as_label', 'attribute_as_image'])) {
             if (null !== $data && !is_scalar($data)) {
                 throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
             }
@@ -201,6 +201,9 @@ class FamilyUpdater implements ObjectUpdaterInterface
                 break;
             case 'attribute_as_label':
                 $this->setAttributeAsLabel($family, $data);
+                break;
+            case 'attribute_as_image':
+                $this->setAttributeAsImage($family, $data);
                 break;
             default:
                 $this->setValue($family, $field, $data);
@@ -369,6 +372,29 @@ class FamilyUpdater implements ObjectUpdaterInterface
         } else {
             throw InvalidPropertyException::validEntityCodeExpected(
                 'attribute_as_label',
+                'code',
+                'The attribute does not exist',
+                static::class,
+                $data
+            );
+        }
+    }
+
+    /**
+     * @param FamilyInterface $family
+     * @param string          $data
+     *
+     * @throws InvalidPropertyException
+     */
+    protected function setAttributeAsImage(FamilyInterface $family, $data)
+    {
+        if (null === $data || '' === $data) {
+            $family->setAttributeAsImage(null);
+        } elseif (null !== $attribute = $this->attributeRepository->findOneByIdentifier($data)) {
+            $family->setAttributeAsImage($attribute);
+        } else {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'attribute_as_image',
                 'code',
                 'The attribute does not exist',
                 static::class,
