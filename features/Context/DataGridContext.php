@@ -627,7 +627,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         $this->spin(function () use ($loadingMask) {
             return (null === $loadingMask) || !$loadingMask->isVisible();
-        }, '".loading-mask" is still visible');
+        }, 'Loading mask is still visible');
     }
 
     /**
@@ -725,6 +725,14 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iFilterBy($filterName, $operator, $value)
     {
         $this->datagrid->filterBy($filterName, $operator, $value);
+
+        $loadingMask = $this->datagrid
+            ->getElement('Grid container')
+            ->find('css', '.loading-mask .loading-mask');
+
+        $this->spin(function () use ($loadingMask) {
+            return (null === $loadingMask) || !$loadingMask->isVisible();
+        }, 'Loading mask is still visible');
     }
 
     /**
