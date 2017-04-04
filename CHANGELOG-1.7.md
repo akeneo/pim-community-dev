@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-6248: Fix notification message on project creation
+- PIM-6308: Fix migration of teamwork assistant
 
 # 1.7.1 (2017-03-23)
 
