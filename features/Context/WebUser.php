@@ -746,6 +746,32 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $label
+     * @param string $scope
+     *
+     * @Then /^the field ([^"]*) should display the ([^"]*) scope label$/
+     *
+     * @throws \LogicException
+     * @throws ExpectationException
+     */
+    public function theFieldShouldDisplayTheScopeLabel($label, $scope)
+    {
+        $fieldContainer = $this->getCurrentPage()->findFieldContainer($label);
+        $scopeLabel = $fieldContainer->find('css', '.field-scope')->getText();
+
+        if ($scopeLabel !== $scope) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Scope label %s is not displayed for %s. %s is displayed instead.',
+                    $scope,
+                    $label,
+                    $scopeLabel
+                )
+            );
+        }
+    }
+
+    /**
      * @param string $field
      * @param string $scope
      * @param string $value
@@ -973,7 +999,7 @@ class WebUser extends RawMinkContext
             }
         }
     }
-    
+
     /**
      * @param string $attributes
      *
