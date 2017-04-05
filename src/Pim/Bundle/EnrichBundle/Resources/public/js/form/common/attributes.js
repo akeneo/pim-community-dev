@@ -70,7 +70,7 @@ define(
                 });
 
                 mediator.on('mass-edit:form:lock', this.onLock.bind(this));
-                mediator.on('mass-edit:form:unlock', this.onLock.bind(this));
+                mediator.on('mass-edit:form:unlock', this.onUnlock.bind(this));
 
                 UserContext.off('change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
