@@ -17,10 +17,12 @@ interface AttributeOptionRepositoryInterface extends
     ObjectRepository
 {
     /**
+     * Return an array of attribute option codes
+     *
      * @param string $code
      * @param array  $optionCodes
      *
      * @return array
      */
-    public function findByIdentifiers($code, array $optionCodes);
+    public function findCodesByIdentifiers($code, array $optionCodes);
 }
