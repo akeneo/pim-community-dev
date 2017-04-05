@@ -134,13 +134,7 @@ define(
                             $valuesPanel.empty();
 
                             FieldManager.clearVisibleFields();
-                            _.each(fields, function (field) {
-                                if (field.canBeSeen()) {
-                                    field.render();
-                                    FieldManager.addVisibleField(field.attribute.code);
-                                    $valuesPanel.append(field.$el);
-                                }
-                            }.bind(this));
+                            _.each(fields, this.appendField.bind(this, $valuesPanel));
                         }.bind(this));
                     this.delegateEvents();
 
@@ -148,6 +142,21 @@ define(
                 }.bind(this));
 
                 return this;
+            },
+
+            /**
+             * Append a field to the panel
+             *
+             * @param {jQueryElement} panel
+             * @param {Object} field
+             *
+             */
+            appendField: function (panel, field) {
+                if (field.canBeSeen()) {
+                    field.render();
+                    FieldManager.addVisibleField(field.attribute.code);
+                    panel.append(field.$el);
+                }
             },
 
             /**
@@ -178,6 +187,7 @@ define(
                         optional: isOptional,
                         removable: SecurityContext.isGranted(this.config.removeAttributeACL)
                     });
+
                     field.setValues(values);
 
                     return field;
