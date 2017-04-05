@@ -61,7 +61,7 @@ define([
              * @returns {Object}
              */
             render: function (editable) {
-                if (_.isUndefined(editable)) {
+                if (typeof editable === 'undefined') {
                     editable = true;
                 }
 

@@ -27,6 +27,31 @@ define(
             locked: false,
 
             /**
+             * Listen to mass edit form unlock and lock events
+             *
+             * {@inheritdoc}
+             */
+            configure: function() {
+                mediator.on('mass-edit:form:lock', this.onLock.bind(this));
+                mediator.on('mass-edit:form:unlock', this.onUnlock.bind(this));
+
+                return BaseAttributes.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * Override for field render to maintain form locked state
+             * @param  {jQueryElement} panel Attribute panel element
+             * @param  {Object} field Attribute field
+             */
+            appendField: function(panel, field) {
+                if (field.canBeSeen()) {
+                    field.render(!this.locked);
+                    FieldManager.addVisibleField(field.attribute.code);
+                    panel.append(field.$el);
+                }
+            },
+
+            /**
              * Set mass edit form as locked
              *
              * {@inheritdoc}
@@ -43,30 +68,6 @@ define(
             onUnlock: function () {
                 this.locked = false;
                 this.render();
-            },
-
-            /**
-             * Listen to mass edit form unlock and lock events
-             *
-             * {@inheritdoc}
-             */
-            configure: function() {
-                mediator.on('mass-edit:form:lock', this.onLock.bind(this));
-                mediator.on('mass-edit:form:unlock', this.onUnlock.bind(this));
-                return BaseAttributes.prototype.configure.apply(this, arguments);
-            },
-
-            /**
-             * Override for field render to maintain form locked state
-             * @param  {jQueryElement} panel Attribute panel element
-             * @param  {Object} field Attribute field
-             */
-            appendField: function(panel, field) {
-                if (field.canBeSeen()) {
-                    field.render(!this.locked);
-                    FieldManager.addVisibleField(field.attribute.code);
-                    panel.append(field.$el);
-                }
             },
 
             /**
