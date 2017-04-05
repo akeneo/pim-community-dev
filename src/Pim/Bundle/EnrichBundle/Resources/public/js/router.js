@@ -65,6 +65,11 @@ define(
                 if (path.indexOf('/') !== 0) {
                     path = '/' + path;
                 }
+
+                if (path.indexOf('|') !== -1) {
+                    path = path.substring(0, path.indexOf('|'));
+                }
+
                 var route = this.match(path);
                 if (false === route) {
                     return this.notFound();
@@ -90,9 +95,13 @@ define(
 
                     this.currentController = new controller.class({ el: $view});
                     this.currentController.setActive(true);
-                    this.currentController.renderRoute(route, path).done(_.bind(function () {
-                        this.triggerComplete(route);
-                    }, this)).fail(this.handleError.bind(this)).always(this.hideLoadingMask);
+                    this.currentController.renderRoute(route, path)
+                        .done(function () {
+                            this.triggerComplete(route);
+                        }.bind(this))
+                        .fail(this.handleError.bind(this))
+                        .always(this.hideLoadingMask)
+                    ;
                 }.bind(this));
             },
 
