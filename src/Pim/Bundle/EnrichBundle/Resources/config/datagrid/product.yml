@@ -12,12 +12,12 @@ datagrid:
         columns:
             label:
                 label:         Label
-#                data_name:     productLabel
-#                selector:      product_label
+                data_name:     '[meta][labels][product]'
+                type:          field
             family:
                 label:         Family
-#                data_name:     familyLabel
-#                selector:      product_family
+                data_name:     '[meta][labels][family]'
+                type:          field
             enabled:
                 label:         Status
                 type:          twig
@@ -34,11 +34,11 @@ datagrid:
                 frontend_type: date
             updated:
                 label:         Updated At
-                type:          product_value_date
-                frontend_type: date
-#            groups:
-#                label:         Groups
-#                type:          product_groups
+                type:          product_date
+            groups:
+                label:         Groups
+                data_name:     '[meta][labels][groups]'
+                type:          field
         properties:
             id: ~
             edit_link:

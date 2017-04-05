@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\DataGridBundle\Datasource;
 
+use Symfony\Component\PropertyAccess\PropertyAccess;
+
 class ResultRecord implements ResultRecordInterface
 {
     /** @var array */
@@ -47,6 +49,10 @@ class ResultRecord implements ResultRecordInterface
         foreach ($this->valueContainers as $data) {
             if (is_array($data) && array_key_exists($name, $data)) {
                 return $data[$name];
+            } elseif (0 !== strpos($name, '.')) {
+                $accessor = PropertyAccess::createPropertyAccessor();
+
+                return $accessor->getValue($data, $name);
             } elseif (is_object($data)) {
                 $fieldName = $name;
                 $camelizedFieldName = self::camelize($fieldName);
