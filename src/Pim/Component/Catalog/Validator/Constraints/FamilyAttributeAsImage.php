@@ -14,11 +14,11 @@ use Symfony\Component\Validator\Constraint;
 class FamilyAttributeAsImage extends Constraint
 {
     /** @var string */
-    public $messageAttribute = "Property 'attribute_as_image' must belong to the family";
+    public $messageAttribute = 'Property "attribute_as_image" must belong to the family';
 
     /** @var string */
-    public $messageAttributeType = "Property 'attribute_as_image' only supports 'pim_catalog_image' ".
-        "attribute type for the family";
+    public $messageAttributeType = 'Property "attribute_as_image" only supports "pim_catalog_image" '.
+        'attribute type for the family';
 
     /** @var string */
     public $propertyPath = 'attribute_as_image';

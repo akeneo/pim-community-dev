@@ -88,13 +88,7 @@ define([
             updateState: function (event) {
                 var data = this.getFormData();
                 var value = event.currentTarget.value;
-
-                if ('no_attribute_as_image' === value) {
-                    data.attribute_as_image = null;
-                } else {
-                    data.attribute_as_image = event.currentTarget.value;
-                }
-
+                data.attribute_as_image = ('no_attribute_as_image' === value) ? null : event.currentTarget.value;
                 this.setData(data);
             }
         });

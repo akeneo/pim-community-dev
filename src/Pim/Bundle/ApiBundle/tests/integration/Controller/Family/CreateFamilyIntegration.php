@@ -196,11 +196,11 @@ JSON;
         },
         {
             "property":"attribute_as_label",
-            "message":"Property 'attribute_as_label' must belong to the family"
+            "message":"Property \"attribute_as_label\" must belong to the family"
         },
         {
             "property":"attribute_as_label",
-            "message":"Property 'attribute_as_label' only supports 'pim_catalog_text' and 'pim_catalog_identifier' attribute types for the family"
+            "message":"Property \"attribute_as_label\" only supports \"pim_catalog_text\" and \"pim_catalog_identifier\" attribute types for the family"
         },
         {
             "property":"code",

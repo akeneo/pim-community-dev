@@ -1,8 +1,8 @@
 @javascript
 Feature: Set the attribute used as image
-  In order to let the user which attribute is the most accurate as the product image
+  In order to let the user which attribute is used as the main picture in the UI for each family
   As an administrator
-  I need to be able to set the attribute used as the image
+  I need to be able to set the attribute used as image
 
   Background:
     Given the "default" catalog configuration
@@ -41,7 +41,7 @@ Feature: Set the attribute used as image
     And I save the family
     And I should not see the text "There are unsaved changes."
     And I visit the "Attributes" tab
-    When I remove the "brand" attribute
+    When I remove the "image" attribute
     And I visit the "Properties" tab
     Then I should see the text "No attribute set"
     And I save the family

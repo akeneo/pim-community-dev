@@ -235,8 +235,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
-                {
+<<<JSON
+    {
         "code": "familyA1",
         "attributes": ["sku", "a_date", "a_file", "a_localizable_image", "an_image"],
         "attribute_as_label": "sku",

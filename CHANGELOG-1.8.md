@@ -278,6 +278,10 @@
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer` to add `Pim\Bundle\VersioningBundle\Manager\VersionManager`, `Symfony\Component\Serializer\Normalizer\NormalizerInterface`, `Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface`, `Akeneo\Component\Localization\Localizer\LocalizerInterface`
 
+### Methods
+
+- Change `Pim\Component\Catalog\Model\FamilyInterface` to add `setAttributeAsImage` and `getAttributeAsImage`
+
 ### Others
 
 - Remove useless method `applyFilterByIds` of `Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface`
