@@ -41,22 +41,24 @@ List of fields and their mapping to Akeneo
 List of attributes and their mapping to Akeneo
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-===============================   ==========================
-Akeneo attribute type             Elasticsearch field suffix
-===============================   ==========================
- pim_catalog_identifier            -varchar
- pim_catalog_text                  -varchar
- pim_catalog_textarea              -text
- pim_catalog_metric                -metric
- pim_catalog_boolean               -bool
- pim_catalog_simpleselect          -option
- pim_catalog_number                -decimal
- pim_catalog_multiselect           -options
- pim_catalog_date                  -date
- pim_catalog_price_collection      -prices
- pim_catalog_image                 -media
- pim_catalog_file                  -media
-===============================   ==========================
+=================================   ==========================
+Akeneo attribute type               Elasticsearch field suffix
+=================================   ==========================
+ pim_catalog_identifier              -varchar
+ pim_catalog_text                    -varchar
+ pim_catalog_textarea                -text
+ pim_catalog_metric                  -metric
+ pim_catalog_boolean                 -bool
+ pim_catalog_simpleselect            -option
+ pim_catalog_number                  -decimal
+ pim_catalog_multiselect             -options
+ pim_catalog_date                    -date
+ pim_catalog_price_collection        -prices
+ pim_catalog_image                   -media
+ pim_catalog_file                    -media
+ pim_reference_data_simpleselect     -reference_data_option
+ pim_reference_data_multiselect      -reference_data_options
+=================================   ==========================
 
 Common elements
 ***************
@@ -996,11 +998,15 @@ Simple select reference data
 
 Data model
 ~~~~~~~~~~
-.. code-block:: yaml
+.. code-block:: php
 
-  brand-rd_option
-    id:5
-    code: "acme"
+    'values' => [
+        'brand-reference_data_option' => [
+            '<all_channels>' => [
+                '<all_locales>' => 'acme'
+            ]
+        ]
+    ]
 
 Filtering
 ~~~~~~~~~
@@ -1010,29 +1016,71 @@ IN
 ""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    terms:
-        brand-rd_option.id: [5, 6, 7]
+    'filter' => [
+        'terms' => [
+            'values.brand-reference_data_option.<all_channels>.<all_locales>' => ['acme']
+        ]
+    ]
 
 EMPTY
 """""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    missing:
-       field: "brand-rd_option"
+    'must_not' => [
+        'exists' => [
+            'field' => 'values.brand-reference_data_option.<all_channels>.<all_locales>'
+        ]
+    ]
 
+NOT EMPTY
+"""""""""
+:Type: filter
+
+.. code-block:: php
+
+    'filter' => [
+        'exists' => [
+            'field' => 'values.brand-reference_data_option.<all_channels>.<all_locales>'
+        ]
+    ]
+
+NOT IN
+""""""
+:Type: must_not
+
+.. code-block:: php
+
+    'query' => [
+        'bool' => [
+            'must_not' => [
+                'terms' => [
+                    'values.brand-reference_data_option.<all_channels>.<all_locales>' => ['acme']
+                ]
+            ],
+            'filter' => [
+                'exists' => [
+                    'field' => 'values.brand-reference_data_option.<all_channels>.<all_locales>'
+                ]
+            ]
+        ]
+    ]
 
 Sorting
 ~~~~~~~
 Sorting will be done on the localized label:
 
-.. code-block:: yaml
+.. code-block:: php
 
-    sort:
-        brand-rd_option.code: asc
+    'sort' => [
+        'values.brand-reference_data_option.<all_channels>.<all_locales>' => [
+            'order'   => 'asc',
+            'missing' => '_last'
+        ]
+    ]
 
 Options
 *******
@@ -1047,6 +1095,7 @@ Data model
           'mobile' => [
               'fr_FR' => ['summer', 'winter']
           ]
+      ]
   ]
 
 Filtering
@@ -1116,15 +1165,15 @@ Reference data multi select
 
 Data model
 ~~~~~~~~~~
-.. code-block:: yaml
+.. code-block:: php
 
-  compatibility-rd_options:
-    -
-          id:2
-          code:"windows_os"
-    -
-          id:4
-          code: "linux"
+    'values' => [
+        'compatibility-reference_data_options' => [
+            '<all_channels>' => [
+                '<all_locales>' => ['windows_os', 'linux']
+            ]
+        ]
+    ]
 
 Filtering
 ~~~~~~~~~
@@ -1135,19 +1184,59 @@ IN
 ""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    terms:
-        compatibility-rd_options.id : [5, 6, 7]
+    'filter' => [
+        'terms' => [
+            'values.compatibility-reference_data_options.<all_channels>.<all_locales>' => ['windows_os', 'mac_os']
+        ]
+    ]
 
 EMPTY
 """""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    missing:
-        field: "compatibility-rd_options"
+    'filter' => [
+        'exists' => [
+            'field' => 'values.compatibility-reference_data_options.<all_channels>.<all_locales>'
+        ]
+    ]
+
+NOT EMPTY
+"""""""""
+:Type: filter
+
+.. code-block:: php
+
+    'filter' => [
+        'exists' => [
+            'field' => 'values.compatibility-reference_data_options.<all_channels>.<all_locales>'
+        ]
+    ]
+
+NOT IN
+""""""
+:Type: must_not
+
+.. code-block:: php
+
+    'query' => [
+        'bool' => [
+            'must_not' => [
+                'terms' => [
+                    'values.compatibility-reference_data_options.<all_channels>.<all_locales>' => ['windows_os', 'linux']
+                ]
+            ],
+            'filter' => [
+                'exists' => [
+                    'field' => 'values.compatibility-reference_data_options.<all_channels>.<all_locales>'
+                ]
+            ]
+        ]
+    ]
+
 
 Sorting
 ~~~~~~~

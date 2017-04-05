@@ -37,7 +37,9 @@ class PimReferenceDataExtension extends Extension
         $loader->load('models.yml');
         $loader->load('product_values.yml');
         $loader->load('providers.yml');
+        $loader->load('query_builders.yml');
         $loader->load('serializers.yml');
+        $loader->load('serializers_indexing.yml');
         $loader->load('services.yml');
         $loader->load('updaters.yml');
 

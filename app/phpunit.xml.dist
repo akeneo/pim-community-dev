@@ -76,5 +76,9 @@
             <directory suffix="Integration.php">../src/Pim/Bundle/CatalogBundle/tests/integration/PQB</directory>
         </testsuite>
 
+        <testsuite name="PIM_ReferenceData_Integration_Test">
+            <directory suffix="Integration.php">../src/Pim/Bundle/ReferenceDataBundle/tests/integration/PQB</directory>
+        </testsuite>
+
     </testsuites>
 </phpunit>

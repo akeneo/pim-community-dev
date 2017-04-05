@@ -57,6 +57,18 @@ mappings:
                     mapping:
                         type: 'keyword'
             -
+                reference_data_option:
+                    path_match: 'values.*-reference_data_option.*'
+                    match_mapping_type: 'string'
+                    mapping:
+                        type: 'keyword'
+            -
+                reference_data_options:
+                    path_match: 'values.*-reference_data_options.*'
+                    match_mapping_type: 'string'
+                    mapping:
+                        type: 'keyword'
+            -
                 prices:
                     path_match: 'values.*-prices.*'
                     match_mapping_type: 'string'

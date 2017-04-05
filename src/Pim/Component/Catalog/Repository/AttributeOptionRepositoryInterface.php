@@ -4,7 +4,6 @@ namespace Pim\Component\Catalog\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
 
 /**
  * Attribute option repository interface
@@ -21,7 +20,7 @@ interface AttributeOptionRepositoryInterface extends
      * @param string $code
      * @param array  $optionCodes
      *
-     * @return AttributeOptionInterface[]
+     * @return array
      */
     public function findByIdentifiers($code, array $optionCodes);
 }
