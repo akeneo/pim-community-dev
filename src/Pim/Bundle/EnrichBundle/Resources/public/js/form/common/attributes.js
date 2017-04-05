@@ -149,7 +149,7 @@ define(
              * @param {Object} field
              *
              */
-            appendField: function(panel, field) {
+            appendField: function (panel, field) {
                 if (field.canBeSeen()) {
                     field.render();
                     FieldManager.addVisibleField(field.attribute.code);

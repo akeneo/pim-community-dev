@@ -31,7 +31,7 @@ define(
              *
              * {@inheritdoc}
              */
-            configure: function() {
+            configure: function () {
                 mediator.on('mass-edit:form:lock', this.onLock.bind(this));
                 mediator.on('mass-edit:form:unlock', this.onUnlock.bind(this));
 
@@ -43,7 +43,7 @@ define(
              * @param  {jQueryElement} panel Attribute panel element
              * @param  {Object} field Attribute field
              */
-            appendField: function(panel, field) {
+            appendField: function (panel, field) {
                 if (field.canBeSeen()) {
                     field.render(!this.locked);
                     FieldManager.addVisibleField(field.attribute.code);
