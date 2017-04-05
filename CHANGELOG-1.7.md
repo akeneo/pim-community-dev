@@ -21,16 +21,6 @@
 - PIM-6199: Fix product mass edit attribute add select clickable on confirmation page
 - PIM-6282: Fix attribute menu Firefox bug
 
-## BC breaks
-
-### Classes
-
-- Remove class `Pim\Bundle\EnrichBundle\Form\Type\AttributeRequirementType`
-
-### Constructors
-
-- Change the constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements` to remove `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` and remove `Pim\Component\Catalog\Factory\AttributeRequirementFactory`
-
 # 1.7.1 (2017-03-23)
 
 ## Bug Fixes
