@@ -93,20 +93,23 @@ define([
                     return this;
                 }
 
+                var data = this.getFormData();
+                var attributeGroupsToFetch = _.unique(_.map(data.attributes, function (attribute) {
+                    return attribute.group_code;
+                }));
+
                 $.when(
                     FetcherRegistry.getFetcher('channel').fetchAll(),
-                    FetcherRegistry.getFetcher('attribute-group').fetchAll({no_filters: true})
+                    this.getAttributeGroups(attributeGroupsToFetch)
                 ).then(function (channels, attributeGroups) {
                     this.channels = channels;
-                    this.attributeGroups = attributeGroups;
 
-                    var data = this.getFormData();
                     var groupedAttributes = _.groupBy(data.attributes, function (attribute) {
                         return attribute.group_code;
                     });
 
                     _.sortBy(groupedAttributes, function (attributes, group) {
-                        return this.attributeGroups[group].sort_order;
+                        return attributeGroups[group].sort_order;
                     }.bind(this));
 
                     _.each(groupedAttributes, function (attributes, group) {
@@ -124,7 +127,7 @@ define([
                         groupedAttributes: groupedAttributes,
                         attributeRequirements: data.attribute_requirements,
                         channels: this.channels,
-                        attributeGroups: this.attributeGroups,
+                        attributeGroups: attributeGroups,
                         colspan: (this.channels.length + 2),
                         i18n: i18n,
                         identifierAttribute: this.identifierAttribute,
@@ -136,6 +139,28 @@ define([
                     this.delegateEvents();
                     this.renderExtensions();
                 }.bind(this));
+            },
+
+            /**
+             * @param {Array} attributeGroupsToFetch
+             *
+             * @return {Promise}
+             */
+            getAttributeGroups: function (attributeGroupsToFetch) {
+                if (null !== this.attributeGroups) {
+                    return this.attributeGroups;
+                }
+
+                this.attributeGroups = FetcherRegistry.getFetcher('attribute-group')
+                    .search({
+                        options: {
+                            identifiers: attributeGroupsToFetch,
+                            limit: attributeGroupsToFetch.length
+                        },
+                        no_filters: true
+                    });
+
+                return this.attributeGroups;
             },
 
             /**
