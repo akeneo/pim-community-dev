@@ -23,18 +23,18 @@ datagrid:
                 type:          twig
                 template:      PimDataGridBundle:Property:enabled.html.twig
                 frontend_type: html
-#            completeness:
-#                label:         Complete
-#                type:          twig
-#                template:      PimDataGridBundle:Property:completeness.html.twig
-#                frontend_type: html
+            completeness:
+                label:         Complete
+                type:          twig
+                template:      PimDataGridBundle:Property:completeness.html.twig
+                data_name:     '[meta][completeness]'
+                frontend_type: html
             created:
                 label:         Created At
                 type:          product_value_date
-                frontend_type: date
             updated:
                 label:         Updated At
-                type:          product_date
+                type:          product_value_date
             groups:
                 label:         Groups
                 data_name:     '[meta][labels][groups]'
