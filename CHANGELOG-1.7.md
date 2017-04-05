@@ -21,6 +21,7 @@
 - PIM-6199: Fix product mass edit attribute add select clickable on confirmation page
 - PIM-6282: Fix attribute menu Firefox bug
 - PIM-6284: Fix display of scopable information for fields
+- PIM-6271: Fix locking fields in mass edit product form
 
 ## BC breaks
 
