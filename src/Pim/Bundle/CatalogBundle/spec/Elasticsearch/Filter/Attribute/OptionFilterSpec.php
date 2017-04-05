@@ -9,8 +9,8 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\OptionFilter;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
+use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
@@ -20,13 +20,12 @@ class OptionFilterSpec extends ObjectBehavior
     function let(
         AttributeValidatorHelper $attributeValidatorHelper,
         AttributeOptionRepository $attributeOptionRepository
-    )
-    {
+    ) {
         $operators = ['IN', 'EMPTY', 'NOT_EMPTY', 'NOT IN'];
         $this->beConstructedWith(
             $attributeValidatorHelper,
             $attributeOptionRepository,
-            ['pim_catalog_simpleselect'],
+            ['pim_catalog_simpleselect', 'pim_catalog_multiselect'],
             $operators
         );
     }
@@ -57,13 +56,17 @@ class OptionFilterSpec extends ObjectBehavior
 
     function it_supports_attribute_option(
         AttributeInterface $color,
-        AttributeInterface $brands
+        AttributeInterface $brands,
+        AttributeInterface $description
     ) {
         $color->getType()->willReturn('pim_catalog_simpleselect');
         $brands->getType()->willReturn('pim_catalog_multiselect');
+        $description->getType()->willReturn('pim_catalog_text');
+
 
         $this->supportsAttribute($color)->shouldReturn(true);
-        $this->supportsAttribute($brands)->shouldReturn(false);
+        $this->supportsAttribute($brands)->shouldReturn(true);
+        $this->supportsAttribute($description)->shouldReturn(false);
     }
 
     function it_adds_a_filter_with_operator_empty(
@@ -93,15 +96,12 @@ class OptionFilterSpec extends ObjectBehavior
         $attributeValidatorHelper,
         $attributeOptionRepository,
         AttributeInterface $color,
-        AttributeOptionInterface $blackColor,
         SearchQueryBuilder $sqb
     ) {
-        $blackColor->getCode()->willReturn('black');
-
         $color->getCode()->willReturn('color');
         $color->getBackendType()->willReturn('option');
 
-        $attributeOptionRepository->findByIdentifiers('color', ['black'])->willReturn([['code' => 'black']]);
+        $attributeOptionRepository->findCodesByIdentifiers('color', ['black'])->willReturn([['code' => 'black']]);
 
         $attributeValidatorHelper->validateLocale($color, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($color, 'ecommerce')->shouldBeCalled();
@@ -145,15 +145,12 @@ class OptionFilterSpec extends ObjectBehavior
         $attributeValidatorHelper,
         $attributeOptionRepository,
         AttributeInterface $color,
-        AttributeOptionInterface $blackColor,
         SearchQueryBuilder $sqb
     ) {
-        $blackColor->getCode()->willReturn('black');
-
         $color->getCode()->willReturn('color');
         $color->getBackendType()->willReturn('option');
 
-        $attributeOptionRepository->findByIdentifiers('color', ['black'])->willReturn([['code' => 'black']]);
+        $attributeOptionRepository->findCodesByIdentifiers('color', ['black'])->willReturn([['code' => 'black']]);
 
         $attributeValidatorHelper->validateLocale($color, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($color, 'ecommerce')->shouldBeCalled();
@@ -230,19 +227,43 @@ class OptionFilterSpec extends ObjectBehavior
         )->during('addAttributeFilter', [$color, Operators::NOT_IN_LIST, [true], 'en_US', 'ecommerce', []]);
     }
 
+    function it_throws_an_exception_when_search_values_does_not_exists(
+        $attributeValidatorHelper,
+        $attributeOptionRepository,
+        AttributeInterface $color,
+        SearchQueryBuilder $sqb
+    ) {
+        $color->getCode()->willReturn('color');
+        $color->getBackendType()->willReturn('option');
+
+        $attributeOptionRepository->findCodesByIdentifiers('color', ['black'])->willReturn([]);
+
+        $attributeValidatorHelper->validateLocale($color, 'en_US')->shouldBeCalled();
+        $attributeValidatorHelper->validateScope($color, 'ecommerce')->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            new ObjectNotFoundException(
+                sprintf(
+                    'Object "%s" with code "%s" does not exist',
+                    $color->getWrappedObject()->getBackendType(),
+                    'black'
+                )
+            )
+        )->during('addAttributeFilter', [$color, Operators::IN_LIST, ['black'], 'en_US', 'ecommerce', []]);
+    }
+
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
         $attributeValidatorHelper,
         $attributeOptionRepository,
         AttributeInterface $color,
-        AttributeOptionInterface $blackColor,
         SearchQueryBuilder $sqb
     ) {
-        $blackColor->getCode()->willReturn('black');
-
         $color->getCode()->willReturn('color');
         $color->getBackendType()->willReturn('option');
 
-        $attributeOptionRepository->findByIdentifiers('color', ['black'])->willReturn([['code' => 'black']]);
+        $attributeOptionRepository->findCodesByIdentifiers('color', ['black'])->willReturn([['code' => 'black']]);
 
         $attributeValidatorHelper->validateLocale($color, 'en_US')->shouldBeCalled();
         $attributeValidatorHelper->validateScope($color, 'ecommerce')->shouldBeCalled();
@@ -251,7 +272,7 @@ class OptionFilterSpec extends ObjectBehavior
 
         $this->shouldThrow(
             InvalidOperatorException::notSupported(
-                'IN CHILDREN',
+                Operators::IN_CHILDREN_LIST,
                 OptionFilter::class
             )
         )->during('addAttributeFilter', [$color, Operators::IN_CHILDREN_LIST, ['black'], 'en_US', 'ecommerce', []]);

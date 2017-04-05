@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository;
-use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -131,7 +130,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
             FieldFilterHelper::checkIdentifier($attribute->getCode(), $value, static::class);
         }
 
-        $attributeOptions = $this->attributeOptionRepository->findByIdentifiers($attribute->getCode(), $values);
+        $attributeOptions = $this->attributeOptionRepository->findCodesByIdentifiers($attribute->getCode(), $values);
         $optionCodes = array_map(
             function ($attributeOptions) {
                 return $attributeOptions['code'];
@@ -144,7 +143,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
             throw new ObjectNotFoundException(
                 sprintf(
                     'Object "%s" with code "%s" does not exist',
-                    AttributeTypes::BACKEND_TYPE_OPTION,
+                    $attribute->getBackendType(),
                     reset($unexistingValues)
                 )
             );

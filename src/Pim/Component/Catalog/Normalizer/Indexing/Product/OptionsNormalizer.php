@@ -2,11 +2,8 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
-use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\ProductValue\OptionsProductValue;
+use Pim\Component\Catalog\ProductValue\OptionsProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -23,9 +20,7 @@ class OptionsNormalizer extends AbstractProductValueNormalizer implements Normal
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductValueInterface &&
-            AttributeTypes::BACKEND_TYPE_OPTIONS === $data->getAttribute()->getBackendType() &&
-            'indexing' === $format;
+        return $data instanceof OptionsProductValueInterface && 'indexing' === $format;
     }
 
     /**
@@ -33,13 +28,6 @@ class OptionsNormalizer extends AbstractProductValueNormalizer implements Normal
      */
     protected function getNormalizedData(ProductValueInterface $productValue)
     {
-        if ($productValue instanceof OptionsProductValue) {
-            return $productValue->getOptionCodes();
-        }
-
-        throw InvalidObjectException::objectExpected(
-            ClassUtils::getClass($productValue),
-            OptionsProductValue::class
-        );
+        return $productValue->getOptionCodes();
     }
 }

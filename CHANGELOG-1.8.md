@@ -86,5 +86,5 @@
     `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`,
     `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface` and
     `$storageDriver`, and add `Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface`
-- Add method `findByIdentifiers` in `Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface`
+- Add method `findCodesByIdentifiers` in `Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface`
 - Add method `findCodesByIdentifiers` in `Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface`

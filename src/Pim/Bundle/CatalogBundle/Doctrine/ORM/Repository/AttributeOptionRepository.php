@@ -140,7 +140,7 @@ class AttributeOptionRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByIdentifiers($code, array $optionCodes)
+    public function findCodesByIdentifiers($code, array $optionCodes)
     {
         return $this->createQueryBuilder('o')
             ->select('o.code')

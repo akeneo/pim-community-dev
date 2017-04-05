@@ -196,16 +196,6 @@ services:
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
 
-    pim_catalog.query.elasticsearch.filter.options:
-        class: '%pim_catalog.query.elasticsearch.filter.options.class%'
-        arguments:
-            - '@pim_catalog.validator.helper.attribute'
-            - '@pim_catalog.repository.attribute_option'
-            - ['pim_catalog_multiselect']
-            - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
-        tags:
-            - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
-
     pim_catalog.doctrine.query.filter.date:
         class: '%pim_catalog.query.elasticsearch.filter.date.class%'
         arguments:
@@ -238,7 +228,7 @@ services:
         arguments:
             - '@pim_catalog.validator.helper.attribute'
             - '@pim_catalog.repository.attribute_option'
-            - ['pim_catalog_simpleselect']
+            - ['pim_catalog_simpleselect', 'pim_catalog_multiselect']
             - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }

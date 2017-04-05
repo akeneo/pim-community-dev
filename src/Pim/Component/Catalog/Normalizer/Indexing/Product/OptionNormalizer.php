@@ -2,9 +2,8 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\ProductValue\OptionProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -21,9 +20,7 @@ class OptionNormalizer extends AbstractProductValueNormalizer implements Normali
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductValueInterface &&
-            AttributeTypes::BACKEND_TYPE_OPTION === $data->getAttribute()->getBackendType() &&
-            'indexing' === $format;
+        return $data instanceof OptionProductValueInterface && 'indexing' === $format;
     }
 
     /**
@@ -32,8 +29,7 @@ class OptionNormalizer extends AbstractProductValueNormalizer implements Normali
     protected function getNormalizedData(ProductValueInterface $productValue)
     {
         $data = $productValue->getData();
-
-        if ($data instanceof AttributeOptionInterface) {
+        if (null !== $data) {
             return $data->getCode();
         }
 

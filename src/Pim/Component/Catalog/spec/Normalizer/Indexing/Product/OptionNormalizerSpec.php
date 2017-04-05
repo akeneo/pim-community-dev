@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\OptionNormalizer;
-use Pim\Component\Catalog\ProductValue\OptionProductValue;
+use Pim\Component\Catalog\ProductValue\OptionProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class OptionNormalizerSpec extends ObjectBehavior
@@ -23,7 +23,7 @@ class OptionNormalizerSpec extends ObjectBehavior
     }
 
     function it_support_option_product_value(
-        OptionProductValue $optionValue,
+        OptionProductValueInterface $optionValue,
         ProductValueInterface $textValue,
         AttributeInterface $optionAttribute,
         AttributeInterface $textAttribute
