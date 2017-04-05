@@ -151,6 +151,9 @@ define([
                     return this.attributeGroups;
                 }
 
+                if (0 === attributeGroupsToFetch.length) {
+                    return FetcherRegistry.getFetcher('attribute-group').fetchAll();
+                }
                 this.attributeGroups = FetcherRegistry.getFetcher('attribute-group')
                     .search({
                         options: {
