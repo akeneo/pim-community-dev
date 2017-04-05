@@ -45,7 +45,6 @@ define(
         i18n
     ) {
         return BaseForm.extend({
-            locked: false,
             template: _.template(formTemplate),
             className: 'tabbable tabs-left object-attributes',
             events: {
@@ -70,9 +69,6 @@ define(
                     code: this.code,
                     label: _.__(this.config.tabTitle)
                 });
-
-                mediator.on('mass-edit:form:lock', this.onLock.bind(this));
-                mediator.on('mass-edit:form:unlock', this.onUnlock.bind(this));
 
                 UserContext.off('change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
@@ -100,14 +96,6 @@ define(
                 }.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
-            },
-
-            onLock: function () {
-                this.locked = true;
-            },
-
-            onUnlock: function () {
-                this.locked = false;
             },
 
             /**
@@ -146,13 +134,7 @@ define(
                             $valuesPanel.empty();
 
                             FieldManager.clearVisibleFields();
-                            _.each(fields, function (field) {
-                                if (field.canBeSeen()) {
-                                    field.render(!this.locked);
-                                    FieldManager.addVisibleField(field.attribute.code);
-                                    $valuesPanel.append(field.$el);
-                                }
-                            }.bind(this));
+                            _.each(fields, this.appendField.bind(this, $valuesPanel));
                         }.bind(this));
                     this.delegateEvents();
 
@@ -160,6 +142,21 @@ define(
                 }.bind(this));
 
                 return this;
+            },
+
+            /**
+             * Append a field to the panel
+             *
+             * @param {jQueryElement} panel
+             * @param {Object} field
+             *
+             */
+            appendField: function(panel, field) {
+                if (field.canBeSeen()) {
+                    field.render();
+                    FieldManager.addVisibleField(field.attribute.code);
+                    panel.append(field.$el);
+                }
             },
 
             /**
