@@ -23,7 +23,8 @@ define(
         'pim/security-context',
         'text!pim/template/form/tab/attributes',
         'pim/dialog',
-        'oro/messenger'
+        'oro/messenger',
+        'pim/i18n'
     ],
     function (
         $,
@@ -40,7 +41,8 @@ define(
         SecurityContext,
         formTemplate,
         Dialog,
-        messenger
+        messenger,
+        i18n
     ) {
         return BaseForm.extend({
             template: _.template(formTemplate),
@@ -166,11 +168,12 @@ define(
                     );
                 }).then(function (field, channels, isOptional) {
                     var scope = _.findWhere(channels, { code: UserContext.get('catalogScope') });
+                    var uiLocale = UserContext.get('uiLocale');
 
                     field.setContext({
                         locale: UserContext.get('catalogLocale'),
                         scope: scope.code,
-                        scopeLabel: scope.label,
+                        scopeLabel: i18n.getLabel(scope.labels, uiLocale, scope.code),
                         uiLocale: UserContext.get('catalogLocale'),
                         optional: isOptional,
                         removable: SecurityContext.isGranted(this.config.removeAttributeACL)

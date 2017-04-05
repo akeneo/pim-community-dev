@@ -20,6 +20,7 @@
 - PIM-6274: Successfully validate products with a custom validation on identifier
 - PIM-6199: Fix product mass edit attribute add select clickable on confirmation page
 - PIM-6282: Fix attribute menu Firefox bug
+- PIM-6284: Fix display of scopable information for fields
 
 ## BC breaks
 
