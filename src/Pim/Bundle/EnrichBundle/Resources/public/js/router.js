@@ -91,6 +91,8 @@ define(
 
                     if (controller.aclResourceId && !securityContext.isGranted(controller.aclResourceId)) {
                         this.displayErrorPage(__('pim_enrich.error.http.403'), '403');
+
+                        return;
                     }
 
                     this.currentController = new controller.class({ el: $view});
