@@ -269,7 +269,7 @@ class ProductIndexingIntegration extends TestCase
                 ],
                 'a_yes_no-boolean'                               => [
                     '<all_channels>' => [
-                        '<all_locales>' => null,
+                        '<all_locales>' => true,
                     ],
                 ],
                 'an_image-media'                                 => [

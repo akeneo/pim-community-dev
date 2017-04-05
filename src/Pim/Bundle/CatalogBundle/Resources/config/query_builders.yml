@@ -29,6 +29,7 @@ parameters:
     pim_catalog.query.elasticsearch.filter.price.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\PriceFilter
     pim_catalog.query.elasticsearch.filter.metric.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\MetricFilter
     pim_catalog.query.elasticsearch.filter.media.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\MediaFilter
+    pim_catalog.query.elasticsearch.filter.boolean.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\BooleanFilter
     pim_catalog.query.elasticsearch.sorter.base.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\BaseSorter
 
 services:
@@ -137,6 +138,15 @@ services:
         class: '%pim_catalog.query.elasticsearch.filter.status.class%'
         arguments:
             - ['enabled']
+            - ['=', '!=']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.boolean:
+        class: '%pim_catalog.query.elasticsearch.filter.boolean.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_boolean']
             - ['=', '!=']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }

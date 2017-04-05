@@ -14,6 +14,7 @@ parameters:
     pim_catalog.normalizer.indexing.product.price_collection.class: Pim\Component\Catalog\Normalizer\Indexing\Product\PriceCollectionNormalizer
     pim_catalog.normalizer.indexing.product.metric.class: Pim\Component\Catalog\Normalizer\Indexing\Product\MetricNormalizer
     pim_catalog.normalizer.indexing.product.media.class: Pim\Component\Catalog\Normalizer\Indexing\Product\MediaNormalizer
+    pim_catalog.normalizer.indexing.product.boolean.class: Pim\Component\Catalog\Normalizer\Indexing\Product\BooleanNormalizer
 
 services:
     pim_catalog.normalizer.indexing.product:
@@ -94,5 +95,10 @@ services:
 
     pim_catalog.normalizer.indexing.product.media:
         class: '%pim_catalog.normalizer.indexing.product.media.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing.product.boolean:
+        class: '%pim_catalog.normalizer.indexing.product.boolean.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }

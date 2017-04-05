@@ -56,7 +56,6 @@ abstract class TestCase extends KernelTestCase
 
             $fixturesLoader = $this->getFixturesLoader($configuration);
             $fixturesLoader->load();
-
         }
     }
 

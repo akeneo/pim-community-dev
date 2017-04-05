@@ -358,8 +358,8 @@ Data model
     [
         'values' => [
             'name-varchar' => [
-                'fr_FR' => [
-                    'mobile' => 'My product name'
+                'mobile' => [
+                    'fr_FR' => 'My product name'
                 ]
             ]
         ]
@@ -529,8 +529,8 @@ Data model
     [
         'values' => [
             'an_image-media' => [
-                'fr_FR' => [
-                    'mobile' => [
+                'mobile' => [
+                    'fr_FR' => [
                         'extension'         => 'jpg',
                         'hash'              => 'the_hash',
                         'key'               => 'the/relative/path/to_akeneo.png',
@@ -550,6 +550,7 @@ Operators
 .........
 STARTS WITH
 """""""""""
+:Type: filter
 :Specific field: original_filename
 
 .. code-block:: php
@@ -563,6 +564,7 @@ STARTS WITH
 
 CONTAINS
 """"""""
+:Type: filter
 :Specific field: original_filename
 
 .. code-block:: php
@@ -576,6 +578,7 @@ CONTAINS
 
 DOES NOT CONTAIN
 """"""""""""""""
+:Type: must_not
 :Specific field: original_filename
 
 Same syntax than the ``contains`` but must be included in a ``must_not`` boolean occured type instead of ``filter``.
@@ -596,7 +599,7 @@ Same syntax than the ``contains`` but must be included in a ``must_not`` boolean
 
 Equals (=)
 """"""""""
-:Type: Filter
+:Type: filter
 :Specific field: original_filename
 
 .. code-block:: php
@@ -609,7 +612,7 @@ Equals (=)
 
 Not Equals (!=)
 """""""""""""""
-:Type: Filter
+:Type: must_not
 :Specific field: original_filename
 
 .. code-block:: php
@@ -627,6 +630,7 @@ Not Equals (!=)
 
 EMPTY
 """""
+:Type: filter
 
 .. code-block:: php
 
@@ -638,6 +642,7 @@ EMPTY
 
 NOT EMPTY
 """""""""
+:Type: filter
 
 .. code-block:: php
 
@@ -1275,26 +1280,54 @@ All operators are identical to the one used on numbers.
 
 Boolean
 *******
-:Apply: pim_catalog_boolean attributes and 'enabled' field
+:Apply: pim_catalog_boolean attributes
 
 Data model
 ~~~~~~~~~~
-.. code-block:: yaml
+.. code-block:: php
 
-    enabled_bool: true
+    [
+        'values' => [
+            'a_yes_no-boolean' => [
+                'mobile' => [
+                    'fr_FR' => true
+                ]
+            ]
+        ]
+    ]
 
 Filtering
 ~~~~~~~~~
 Operators
 .........
 Equals (=)
-~~~~~~~~~~
+""""""""""
 :Type: filter
 
-.. code-block:: yaml
+.. code-block:: php
 
-    term:
-        enabled_bool: true
+    'filter' => [
+        'term' => [
+            'values.description-text.<all_channels>.<all_locales>' => true
+        ]
+    ]
+
+Not Equals (!=)
+"""""""""""""""
+:Type: must_not
+
+.. code-block:: php
+
+    'must_not' => [
+        'term' => [
+            'values.description-text.<all_channels>.<all_locales>' => true
+        ]
+    ],
+    'filter' => [
+        'exists' => [
+            'field' => 'values.description-text.<all_channels>.<all_locales>'
+        ]
+    ]
 
 Completeness
 ************
