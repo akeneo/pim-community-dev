@@ -314,3 +314,16 @@ Feature: Edit common attributes of many products at once
     And I change the "Name" to "boots"
     And I move to the confirm page
     Then The available attributes button should be disabled
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6271
+  Scenario: Successfully keep mass edit form fields disabled after switching groups
+    Given I am on the products page
+    And I select rows boots, sandals and sneakers
+    And I press "Change product information" on the "Bulk Actions" dropdown button
+    When I choose the "Edit common attributes" operation
+    And I display the Price attribute
+    And I display the Name attribute
+    And I move to the confirm page
+    Then the field Name should be disabled
+    When I visit the "Marketing" group
+    Then the field Price should be disabled
