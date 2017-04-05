@@ -32,7 +32,7 @@ define([
         i18n,
         FetcherRegistry,
         Dialog,
-        Messanger,
+        Messenger,
         LoadingMask
     ) {
         return BaseForm.extend({
@@ -234,6 +234,7 @@ define([
             onRemoveAttribute: function (event) {
                 event.preventDefault();
                 var attributeAsLabel = this.getFormData().attribute_as_label;
+                var attributeAsImage = this.getFormData().attribute_as_image;
 
                 if (!SecurityContext.isGranted('pim_enrich_family_edit_attributes')) {
                     return false;
@@ -242,9 +243,16 @@ define([
                 var attributeToRemove = event.currentTarget.dataset.attribute;
 
                 if (attributeAsLabel === attributeToRemove) {
-                    Messanger.notify(
+                    Messenger.notify(
                         'error',
                         __('pim_enrich.entity.family.info.cant_remove_attribute_as_label')
+                    );
+
+                    return false;
+                } else if (attributeAsImage === attributeToRemove) {
+                    Messenger.notificationFlashMessage(
+                        'error',
+                        __('pim_enrich.entity.family.info.cant_remove_attribute_as_image')
                     );
 
                     return false;
