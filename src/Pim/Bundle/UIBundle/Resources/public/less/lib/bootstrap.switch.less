@@ -11,6 +11,29 @@
   border: none;
   overflow: initial;
 
+  label,
+  label:active {
+    background: none;
+    width: 3 * @switchHeight;
+    border: none;
+    margin-left: -@switchHeight;
+
+    &:hover {
+      background: none;
+    }
+
+    &:after {
+      content: ' ';
+      background: white;
+      height: 30px;
+      width: 30px;
+      border-radius: 100px;
+      position: absolute;
+      top: 2px;
+      left: @switchHeight + 1px;
+    }
+  }
+
   &.switch-small {
     min-width: @switchHeight * 2;
   }
@@ -25,6 +48,7 @@
   & > div {
     transition: all 0.2s ease !important;
     border-radius: 100px;
+    display: flex;
   }
 
   .switch-off {
@@ -35,14 +59,6 @@
     background: @AknGreen;
     margin-left: 0;
     padding-left: 50%;
-  }
-
-  label {
-    border-radius: 100px;
-    background: white;
-    margin: @margin;
-    height: @switchHeight - 2 * @margin;
-    width: @switchHeight - 2 * @margin;
   }
 
   &.deactivate {
