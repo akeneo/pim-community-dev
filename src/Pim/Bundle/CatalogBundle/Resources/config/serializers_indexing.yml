@@ -45,17 +45,17 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pim_catalog.normalizer.indexing.number:
+    pim_catalog.normalizer.indexing.product.number:
         class: '%pim_catalog.normalizer.indexing.product.number.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pim_catalog.normalizer.indexing.options:
+    pim_catalog.normalizer.indexing.product.options:
         class: '%pim_catalog.normalizer.indexing.product.options.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pim_catalog.normalizer.indexing.dummy:
+    pim_catalog.normalizer.indexing.product.dummy:
         class: '%pim_catalog.normalizer.indexing.product.dummy.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 80 }
@@ -65,34 +65,34 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 100 }
 
-    pim_catalog.normalizer.indexing.text:
+    pim_catalog.normalizer.indexing.product.text:
         class: '%pim_catalog.normalizer.indexing.product.text.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pim_catalog.normalizer.indexing.text_area:
+    pim_catalog.normalizer.indexing.product.text_area:
         class: '%pim_catalog.normalizer.indexing.product.text_area.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pim_catalog.normalizer.indexing.option:
+    pim_catalog.normalizer.indexing.product.option:
         class: '%pim_catalog.normalizer.indexing.product.option.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pim_catalog.normalizer.indexing.price_collection:
+    pim_catalog.normalizer.indexing.product.price_collection:
         class: '%pim_catalog.normalizer.indexing.product.price_collection.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.product.product_value'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pim_catalog.normalizer.indexing.metric:
+    pim_catalog.normalizer.indexing.product.metric:
         class: '%pim_catalog.normalizer.indexing.product.metric.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pim_catalog.normalizer.indexing.media:
+    pim_catalog.normalizer.indexing.product.media:
         class: '%pim_catalog.normalizer.indexing.product.media.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }

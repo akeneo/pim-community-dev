@@ -30,12 +30,6 @@ class TextNormalizer extends AbstractProductValueNormalizer implements Normalize
      */
     protected function getNormalizedData(ProductValueInterface $productValue)
     {
-        $textValue = $productValue->getData();
-
-        if (null !== $textValue) {
-            return $textValue;
-        }
-
-        return null;
+        return $productValue->getData();
     }
 }
