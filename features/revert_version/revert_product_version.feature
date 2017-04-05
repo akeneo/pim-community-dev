@@ -39,6 +39,7 @@ Feature: Revert a product to a previous version
       | 1       | John Doe - admin@example.com    | SKU      | shirt |
       | 1       | John Doe - admin@example.com    | enabled  | 1     |
 
+  @skip-nav This one will need to create the product via the UI
   Scenario: Successfully revert the status of a product (disabled)
     Given an enabled "shirt" product
     And I am on the "shirt" product page
@@ -49,6 +50,7 @@ Feature: Revert a product to a previous version
     When I revert the product version number 1
     Then product "shirt" should be enabled
 
+  @skip-nav This one will need to create the product via the UI
   Scenario: Successfully revert the status of a product (enable)
     Given a disabled "shirt" product
     And I am on the "shirt" product page

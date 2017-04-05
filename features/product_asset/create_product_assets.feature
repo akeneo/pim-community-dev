@@ -17,6 +17,7 @@ Feature: Create product assets
     And I am on the asset index page
     Then I should not see the text "Create an asset"
 
+  @skip-nav
   Scenario: Create a localized asset
     Given I am logged in as "Pamela"
     And I am on the assets page
@@ -33,6 +34,7 @@ Feature: Create product assets
     And I should see the Tablette variation upload zone
     And the locale "fr_FR" should be selected
 
+  @skip-nav
   Scenario: Create a non localized asset
     Given I am logged in as "Pamela"
     And I am on the assets page
@@ -47,6 +49,7 @@ Feature: Create product assets
     And I should see the Mobile variation upload zone
     And I should see the Tablet variation upload zone
 
+  @skip-nav
   Scenario: Create a non localized asset with a picture
     Given I am logged in as "Pamela"
     And I am on the assets page
