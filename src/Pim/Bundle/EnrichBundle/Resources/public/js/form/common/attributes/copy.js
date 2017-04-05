@@ -19,7 +19,8 @@ define(
         'pim/field-manager',
         'pim/attribute-manager',
         'pim/user-context',
-        'pim/fetcher-registry'
+        'pim/fetcher-registry',
+        'pim/i18n'
     ],
     function (
         $,
@@ -31,7 +32,8 @@ define(
         FieldManager,
         AttributeManager,
         UserContext,
-        FetcherRegistry
+        FetcherRegistry,
+        i18n
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -127,12 +129,12 @@ define(
                 if (!_.has(this.copyFields, code)) {
                     var sourceData = this.getSourceData();
                     var copyField = new CopyField(field.attribute);
+                    var uiLocale = UserContext.get('uiLocale');
 
                     copyField.setContext({
                         locale: this.locale,
-                        uiLocale:  UserContext.get('uiLocale'),
                         scope: this.scope,
-                        scopeLabel: this.scopeLabel
+                        scopeLabel: i18n.getLabel(this.scopeLabel, uiLocale, this.scope)
                     });
                     copyField.setValues(sourceData[code]);
                     copyField.setField(field);
