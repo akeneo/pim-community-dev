@@ -46,8 +46,10 @@ define(
                         loadingMask.render().$el.appendTo(this.getRoot().$el).show();
 
                         $.get(
-                          router.generate('pimee_versioning_revert_product'),
-                          { id: $(event.currentTarget).parents('.product-version').data('version-id') }
+                          router.generate(
+                              'pimee_versioning_revert_product',
+                              { id: $(event.currentTarget).parents('.product-version').data('version-id') }
+                          )
                         ).done(
                             function () {
                                 // TODO: We shouldn't force product fetching,
