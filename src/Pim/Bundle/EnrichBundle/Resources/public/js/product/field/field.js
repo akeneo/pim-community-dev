@@ -38,6 +38,7 @@ define([
             editable: true,
             ready: true,
             valid: true,
+            locked: false,
 
             /**
              * Initialize this field
@@ -61,7 +62,7 @@ define([
              * @returns {Object}
              */
             render: function () {
-                this.setEditable(true);
+                this.setEditable(!this.locked);
                 this.setValid(true);
                 this.elements = {};
                 var promises  = [];
@@ -71,7 +72,6 @@ define([
                     .then(this.getTemplateContext.bind(this))
                     .then(function (templateContext) {
                         this.$el.html(this.template(templateContext));
-
                         this.$('.original-field .field-input').append(this.renderInput(templateContext));
 
                         this.renderElements();
@@ -249,6 +249,15 @@ define([
              */
             setEditable: function (editable) {
                 this.editable = editable;
+            },
+
+            /**
+             * Set this field as locked
+             *
+             * @param {boolean} locked
+             */
+            setLocked: function (locked) {
+                this.locked = locked;
             },
 
             /**
