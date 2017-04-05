@@ -45,7 +45,7 @@ define(
         i18n
     ) {
         return BaseForm.extend({
-            enabled: true,
+            locked: false,
             template: _.template(formTemplate),
             className: 'tabbable tabs-left object-attributes',
             events: {
@@ -102,20 +102,18 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
-            onLock: function() {
-                this.enabled = false;
+            onLock: function () {
+                this.locked = true;
             },
 
-            onUnlock: function() {
-                this.enabled = true;
+            onUnlock: function () {
+                this.locked = false;
             },
 
             /**
              * {@inheritdoc}
              */
             render: function () {
-                var formisEnabled = this.enabled;
-
                 if (!this.configured || this.rendering) {
                     return this;
                 }
@@ -150,9 +148,7 @@ define(
                             FieldManager.clearVisibleFields();
                             _.each(fields, function (field) {
                                 if (field.canBeSeen()) {
-                                    field.setEditable(formisEnabled);
-                                    field.renderEnabled = formisEnabled;
-                                    field.render();
+                                    field.render(!this.locked);
                                     FieldManager.addVisibleField(field.attribute.code);
                                     $valuesPanel.append(field.$el);
                                 }
@@ -185,8 +181,6 @@ define(
                 }).then(function (field, channels, isOptional) {
                     var scope = _.findWhere(channels, { code: UserContext.get('catalogScope') });
                     var uiLocale = UserContext.get('uiLocale');
-
-                    field.editable = false;
 
                     field.setContext({
                         locale: UserContext.get('catalogLocale'),
