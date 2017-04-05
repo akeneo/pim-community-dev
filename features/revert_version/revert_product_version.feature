@@ -122,7 +122,7 @@ Feature: Revert a product to a previous version
     When I revert the product version number 1
     Then I should see the flash message "Product can not be reverted because it belongs to a variant group"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5796
+  @skip-nav @jira https://akeneo.atlassian.net/browse/PIM-5796
   Scenario: Hide revert button if user cannot revert a product
     Given the following product:
       | sku     |
