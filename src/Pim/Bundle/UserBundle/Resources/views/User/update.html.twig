@@ -22,7 +22,7 @@
                     datepicker.init($(field).closest('div'), {
                         format: dateContext.get('date').format,
                         defaultFormat: dateContext.get('date').defaultFormat,
-                        language: dateContext.get('language'),
+                        language: dateContext.get('language')
                     });
                 });
 
@@ -55,7 +55,8 @@
         'action': formAction,
         'attr': {
             'data-updated-title': 'confirmation.leave'|trans,
-            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'user.title'|trans })
+            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'user.title'|trans }),
+            'novalidate': ''
         }
     }) }}
 

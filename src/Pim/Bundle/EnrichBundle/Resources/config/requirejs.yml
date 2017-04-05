@@ -303,7 +303,6 @@ config:
                     aclResourceId: pim_importexport_export_profile_remove
                 oro_user_profile_update:
                     module: pim/controller/form
-                    aclResourceId: oro_user_profile_update
                 pim_enrich_attributegroup_index:
                     module: pim/controller/template
                     aclResourceId: pim_enrich_attributegroup_index
