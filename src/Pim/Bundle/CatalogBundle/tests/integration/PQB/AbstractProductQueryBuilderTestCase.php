@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -15,12 +13,6 @@ use Akeneo\Test\Integration\TestCase;
  */
 abstract class AbstractProductQueryBuilderTestCase extends TestCase
 {
-    /** @var Client */
-    private $esClient;
-
-    /** @var Loader */
-    private $esConfigurationLoader;
-
     /**
      * {@inheritdoc}
      */
@@ -30,17 +22,6 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
             [Configuration::getTechnicalCatalogPath()],
             false
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->esClient = $this->get('akeneo_elasticsearch.client');
-        $this->esConfigurationLoader = $this->get('akeneo_elasticsearch.index_configuration.loader');
     }
 
     /**
@@ -141,19 +122,5 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
         }
 
         $this->assertSame($products, $expected);
-    }
-
-    /**
-     * Resets the index used for the integration tests
-     */
-    protected function resetIndex()
-    {
-        $conf = $this->esConfigurationLoader->load();
-
-        if ($this->esClient->hasIndex()) {
-            $this->esClient->deleteIndex();
-        }
-
-        $this->esClient->createIndex($conf->buildAggregated());
     }
 }

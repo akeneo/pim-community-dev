@@ -42,6 +42,28 @@ class PriceCollectionNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($priceCollectionValue, 'indexing')->shouldReturn(true);
     }
 
+    function it_normalize_an_empty_price_collection_product_value_with_no_locale_and_no_channel(
+        PriceCollectionProductValue $priceCollection,
+        AttributeInterface $priceCollectionAttribute
+    ) {
+
+        $priceCollection->getAttribute()->willReturn($priceCollectionAttribute);
+        $priceCollection->getLocale()->willReturn(null);
+        $priceCollection->getScope()->willReturn(null);
+        $priceCollection->getData()->willReturn(null);
+
+        $priceCollectionAttribute->getCode()->willReturn('a_price');
+        $priceCollectionAttribute->getBackendType()->willReturn('prices');
+
+        $this->normalize($priceCollection, 'indexing')->shouldReturn([
+            'a_price-prices' => [
+                '<all_channels>' => [
+                    '<all_locales>' => null
+                ],
+            ],
+        ]);
+    }
+
     function it_normalize_a_price_collection_product_value_with_no_locale_and_no_channel(
         PriceCollectionProductValue $priceCollection,
         ProductPrice $priceEUR,

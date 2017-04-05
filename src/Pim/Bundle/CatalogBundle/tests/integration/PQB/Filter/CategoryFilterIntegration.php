@@ -20,8 +20,6 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->resetIndex();
-
             $this->createProduct('foo', ['categories' => ['categoryA1', 'categoryB']]);
             $this->createProduct('bar', []);
             $this->createProduct('baz', []);

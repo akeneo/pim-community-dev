@@ -32,6 +32,7 @@ class OptionNormalizer extends AbstractProductValueNormalizer implements Normali
     protected function getNormalizedData(ProductValueInterface $productValue)
     {
         $data = $productValue->getData();
+
         if ($data instanceof AttributeOptionInterface) {
             return $data->getCode();
         }

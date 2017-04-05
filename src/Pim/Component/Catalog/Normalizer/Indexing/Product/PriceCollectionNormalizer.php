@@ -32,8 +32,13 @@ class PriceCollectionNormalizer extends AbstractProductValueNormalizer implement
     protected function getNormalizedData(ProductValueInterface $productValue)
     {
         $currencyIndexedPrices = [];
+        $prices = $productValue->getData();
 
-        foreach ($productValue->getData() as $price) {
+        if (null === $prices) {
+            return null;
+        }
+
+        foreach ($prices as $price) {
             $currency = $price->getCurrency();
             if (null !== $currency && '' !== $currency) {
                 $currencyIndexedPrices[$currency] = (string) $price->getData();

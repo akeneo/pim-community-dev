@@ -20,12 +20,6 @@ abstract class AbstractPimCatalogIntegration extends TestCase
 {
     const DOCUMENT_TYPE = 'pim_catalog_product';
 
-    /** @var Client */
-    private $esClient;
-
-    /** @var Loader */
-    private $esConfigurationLoader;
-
     /**
      * {@inheritdoc}
      */
@@ -44,22 +38,7 @@ abstract class AbstractPimCatalogIntegration extends TestCase
         $this->esClient = $this->get('akeneo_elasticsearch.client');
         $this->esConfigurationLoader = $this->get('akeneo_elasticsearch.index_configuration.loader');
 
-        $this->resetIndex();
         $this->addProducts();
-    }
-
-    /**
-     * Resets the index used for the integration tests query
-     */
-    private function resetIndex()
-    {
-        $conf = $this->esConfigurationLoader->load();
-
-        if ($this->esClient->hasIndex()) {
-            $this->esClient->deleteIndex();
-        }
-
-        $this->esClient->createIndex($conf->buildAggregated());
     }
 
     /**

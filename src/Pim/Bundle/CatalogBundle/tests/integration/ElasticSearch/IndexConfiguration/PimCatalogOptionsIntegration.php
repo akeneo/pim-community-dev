@@ -161,8 +161,8 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
                 'identifier' => 'product_1',
                 'values'     => [
                     'colors-options' => [
-                        '<all_locales>' => [
-                            '<all_channels>' => ['black'],
+                        '<all_channels>' => [
+                            '<all_locales>' => ['black']
                         ],
                     ],
                 ],
@@ -171,8 +171,8 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
                 'identifier' => 'product_2',
                 'values'     => [
                     'colors-options' => [
-                        '<all_locales>' => [
-                            '<all_channels>' => ['yellow', 'blue'],
+                        '<all_channels>' => [
+                            '<all_locales>' => ['yellow', 'blue'],
                         ],
                     ],
                 ],
@@ -181,8 +181,8 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
                 'identifier' => 'product_3',
                 'values'     => [
                     'colors-options' => [
-                        '<all_locales>' => [
-                            '<all_channels>' => ['black'],
+                        '<all_channels>' => [
+                            '<all_locales>' => ['black'],
                         ],
                     ],
                 ],
@@ -191,8 +191,8 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
                 'identifier' => 'product_4',
                 'values'     => [
                     'colors-options' => [
-                        '<all_locales>' => [
-                            '<all_channels>' => ['blue', 'yellow'],
+                        '<all_channels>' => [
+                            '<all_locales>' => ['blue', 'yellow'],
                         ],
                     ],
                 ],
@@ -201,8 +201,8 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
                 'identifier' => 'product_5',
                 'values'     => [
                     'colors-options' => [
-                        '<all_locales>' => [
-                            '<all_channels>' => ['blue', 'black'],
+                        '<all_channels>' => [
+                            '<all_locales>' => ['blue', 'black'],
                         ],
                     ],
                 ],
@@ -211,8 +211,8 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
                 'identifier' => 'product_6',
                 'values'     => [
                     'colors-options' => [
-                        '<all_locales>' => [
-                            '<all_channels>' => ['yellow'],
+                        '<all_channels>' => [
+                            '<all_locales>' => ['yellow'],
                         ],
                     ],
                 ],

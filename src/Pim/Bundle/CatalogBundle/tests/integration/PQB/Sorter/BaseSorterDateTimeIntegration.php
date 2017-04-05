@@ -20,8 +20,6 @@ class BaseSorterDateTimeIntegration extends AbstractProductQueryBuilderTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->resetIndex();
-
             $this->createProduct('foo', []);
             sleep(2);
             $this->createProduct('bar', []);

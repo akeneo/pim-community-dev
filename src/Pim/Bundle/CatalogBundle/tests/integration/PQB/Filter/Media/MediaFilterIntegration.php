@@ -20,8 +20,6 @@ class MediaFilterIntegration extends AbstractProductQueryBuilderTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->resetIndex();
-
             $this->createProduct('akeneo', [
                 'values' => [
                     'an_image' => [

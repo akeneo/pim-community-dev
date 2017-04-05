@@ -20,8 +20,6 @@ class GroupsFilterIntegration extends AbstractProductQueryBuilderTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->resetIndex();
-
             $group = $this->get('pim_catalog.factory.group')->create();
             $this->get('pim_catalog.updater.group')->update($group, [
                 'code' => 'groupC',

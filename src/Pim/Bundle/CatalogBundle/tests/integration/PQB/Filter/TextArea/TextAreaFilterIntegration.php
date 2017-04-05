@@ -24,8 +24,6 @@ class TextAreaFilterIntegration extends AbstractProductQueryBuilderTestCase
         parent::setUp();
 
         if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->resetIndex();
-
             $this->createProduct('cat', [
                 'values' => [
                     'a_text_area' => [['data' => 'cat', 'locale' => null, 'scope' => null]]
