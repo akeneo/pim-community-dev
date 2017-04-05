@@ -2,20 +2,17 @@
 
 namespace Akeneo\Bundle\ElasticsearchBundle\tests\integration;
 
-use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Elasticsearch\Client;
 
+/**
+ * @author    Marie Bochu <marie.bochu@akeneo.com>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class BulkIndexationIntegration extends TestCase
 {
     const DOCUMENT_TYPE = 'pim_catalog_product';
-
-    /** @var Client */
-    private $esClient;
-
-    /** @var Loader */
-    private $esConfigurationLoader;
 
     public function testIndexationOnABulk()
     {
@@ -30,7 +27,7 @@ class BulkIndexationIntegration extends TestCase
         $this->assertCount($count, $indexedProducts['items']);
 
         foreach ($indexedProducts['items'] as $index => $indexedProduct) {
-            $this->assertSame('product_' . $index+=1, $indexedProduct['index']['_id']);
+            $this->assertSame('product_' . ($index + 1), $indexedProduct['index']['_id']);
 
             $result = 'product_1' === $indexedProduct['index']['_id'] ? 'updated' : 'created';
             $version = 'product_1' === $indexedProduct['index']['_id'] ? 2 : 1;
@@ -54,11 +51,6 @@ class BulkIndexationIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->esClient = $this->get('akeneo_elasticsearch.client');
-        $this->esConfigurationLoader = $this->get('akeneo_elasticsearch.index_configuration.loader');
-
-        $this->resetIndex();
-
         $products = [
             [
                 'identifier'       => 'product_1',
@@ -81,19 +73,5 @@ class BulkIndexationIntegration extends TestCase
         }
 
         $this->esClient->refreshIndex();
-    }
-
-    /**
-     * Resets the index used for the integration tests query
-     */
-    private function resetIndex()
-    {
-        $conf = $this->esConfigurationLoader->load();
-
-        if ($this->esClient->hasIndex()) {
-            $this->esClient->deleteIndex();
-        }
-
-        $this->esClient->createIndex($conf->buildAggregated());
     }
 }
