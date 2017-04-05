@@ -46,6 +46,13 @@ class FamilyAttributeAsImageValidator extends ConstraintValidator
                 ->atPath($constraint->propertyPath)
                 ->addViolation();
         }
+
+        if (!$this->isAttributeAsImageGlobal($family)) {
+            $this->context
+                ->buildViolation($constraint->messageAttributeGlobal)
+                ->atPath($constraint->propertyPath)
+                ->addViolation();
+        }
     }
 
     /**
@@ -66,5 +73,15 @@ class FamilyAttributeAsImageValidator extends ConstraintValidator
     protected function isAttributeAsImageTypeValid(FamilyInterface $family)
     {
         return AttributeTypes::IMAGE === $family->getAttributeAsImage()->getType();
+    }
+
+    /**
+     * @param FamilyInterface $family
+     *
+     * @return bool
+     */
+    protected function isAttributeAsImageGlobal(FamilyInterface $family)
+    {
+        return !$family->getAttributeAsImage()->isScopable() && !$family->getAttributeAsImage()->isLocalizable();
     }
 }

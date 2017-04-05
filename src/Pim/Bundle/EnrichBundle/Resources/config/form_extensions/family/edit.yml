@@ -113,7 +113,7 @@ extensions:
         module: pim/family-edit-form/properties/general/attribute-as-image
         parent: pim-family-edit-form-properties-general
         targetZone: properties-general
-        position: 130
+        position: 135
         config:
             label: 'pim_enrich.form.family.tab.properties.attribute_as_image'
             emptyLabel: 'pim_enrich.form.family.tab.properties.empty_attribute_as_image'

@@ -179,6 +179,7 @@ Feature: Import families
       code;attributes;attribute_as_label;attribute_as_image
       wrong_family1;sku,name;sku;name
       wrong_family2;sku,name;sku;side_view
+      wrong_family3;sku,name,rear_view;sku;rear_view
       """
     And the following job "csv_footwear_family_import" configuration:
       | filePath | %file to import% |
@@ -186,5 +187,6 @@ Feature: Import families
     And I launch the import job
     And I wait for the "csv_footwear_family_import" job to finish
     Then I should see the text "Skipped 2"
-    And I should see the text "Property \"attribute_as_image\" only supports 'pim_catalog_image' attribute type for the family: [wrong_family1]"
+    And I should see the text "Property \"attribute_as_image\" only supports \"pim_catalog_image\" attribute type for the family: [wrong_family1]"
     And I should see the text "Property \"attribute_as_image\" must belong to the family: [wrong_family2]"
+    And I should see the text "Property \"attribute_as_image\" must neither be scopable nor localizable for this family: [wrong_family3]"
