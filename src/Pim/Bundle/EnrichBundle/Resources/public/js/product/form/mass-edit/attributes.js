@@ -45,7 +45,8 @@ define(
              */
             appendField: function (panel, field) {
                 if (field.canBeSeen()) {
-                    field.render(!this.locked);
+                    field.setLocked(this.locked);
+                    field.render();
                     FieldManager.addVisibleField(field.attribute.code);
                     panel.append(field.$el);
                 }
