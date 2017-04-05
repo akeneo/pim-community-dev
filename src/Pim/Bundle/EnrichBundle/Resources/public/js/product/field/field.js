@@ -38,6 +38,7 @@ define([
             editable: true,
             ready: true,
             valid: true,
+            locked: false,
 
             /**
              * Initialize this field
@@ -60,12 +61,8 @@ define([
              *
              * @returns {Object}
              */
-            render: function (editable) {
-                if (typeof editable === 'undefined') {
-                    editable = true;
-                }
-
-                this.setEditable(editable);
+            render: function () {
+                this.setEditable(!this.locked);
                 this.setValid(true);
                 this.elements = {};
                 var promises  = [];
@@ -252,6 +249,15 @@ define([
              */
             setEditable: function (editable) {
                 this.editable = editable;
+            },
+
+            /**
+             * Set this field as locked
+             *
+             * @param {boolean} locked
+             */
+            setLocked: function (locked) {
+                this.locked = locked;
             },
 
             /**
