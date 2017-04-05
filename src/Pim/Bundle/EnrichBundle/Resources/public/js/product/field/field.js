@@ -38,7 +38,6 @@ define([
             editable: true,
             ready: true,
             valid: true,
-            renderEnabled: true,
 
             /**
              * Initialize this field
@@ -61,12 +60,13 @@ define([
              *
              * @returns {Object}
              */
-            render: function () {
-                if (this.renderEnabled) {
-                    this.setEditable(true);
-                    this.setValid(true);
+            render: function (editable) {
+                if (_.isUndefined(editable)) {
+                    editable = true;
                 }
 
+                this.setEditable(editable);
+                this.setValid(true);
                 this.elements = {};
                 var promises  = [];
                 mediator.trigger('pim_enrich:form:field:extension:add', {'field': this, 'promises': promises});
