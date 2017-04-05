@@ -58,10 +58,10 @@ SQL;
             $sql .= <<<'SQL'
 CREATE TABLE `@pimee_teamwork_assistant.completeness_per_attribute_group@` (
     `locale_id` INT NOT NULL,
-    `channel_id` INT NOT NULL, 
-    `product_id` INT NOT NULL, 
-    `attribute_group_id` INT NOT NULL, 
-    `has_at_least_one_required_attribute_filled` TINYINT(1) NOT NULL, 
+    `channel_id` INT NOT NULL,
+    `product_id` INT NOT NULL,
+    `attribute_group_id` INT NOT NULL,
+    `has_at_least_one_required_attribute_filled` TINYINT(1) NOT NULL,
     `is_complete` TINYINT(1) NOT NULL,
     `calculated_at` DATETIME NOT NULL,
     PRIMARY KEY(`locale_id`, `channel_id`, `product_id`, `attribute_group_id`),
@@ -89,10 +89,10 @@ SQL;
             $sql .= <<<'SQL'
 CREATE TABLE `@pimee_teamwork_assistant.completeness_per_attribute_group@` (
     `locale_id` INT NOT NULL,
-    `channel_id` INT NOT NULL, 
-    `product_id` VARCHAR(36) NOT NULL, 
-    `attribute_group_id` INT NOT NULL, 
-    `has_at_least_one_required_attribute_filled` TINYINT(1) NOT NULL, 
+    `channel_id` INT NOT NULL,
+    `product_id` VARCHAR(36) NOT NULL,
+    `attribute_group_id` INT NOT NULL,
+    `has_at_least_one_required_attribute_filled` TINYINT(1) NOT NULL,
     `is_complete` TINYINT(1) NOT NULL,
     `calculated_at` DATETIME NOT NULL,
     PRIMARY KEY(`locale_id`, `channel_id`, `product_id`, `attribute_group_id`),
@@ -151,8 +151,8 @@ ALTER TABLE `pimee_teamwork_assistant_project_status` ADD CONSTRAINT FK_2A911294
 ALTER TABLE `pimee_security_attribute_group_access` ADD KEY `attr_grp_editable_permission_index` (`edit_attributes`, `attribute_group_id`);
 
 INSERT INTO akeneo_batch_job_instance (`code`, `label`, `job_name`, `status`, `connector`, `raw_parameters`, `type`) VALUES
-('project_calculation', 'Project calculation', 'project_calculation', 0, 'teamwork assistant', '', 'project_calculation'),
-('refresh_project_completeness_calculation', 'Refresh project completeness', 'refresh_project_completeness_calculation', 0, 'teamwork assistant', '', 'refresh_project_completeness_calculation');
+('project_calculation', 'Project calculation', 'project_calculation', 0, 'teamwork assistant', 'a:0:{}', 'project_calculation'),
+('refresh_project_completeness_calculation', 'Refresh project completeness', 'refresh_project_completeness_calculation', 0, 'teamwork assistant', 'a:0:{}', 'refresh_project_completeness_calculation');
 SQL;
 
         $sql = $this->container->get('pimee_teamwork_assistant.table_name_mapper')->createQuery($sql);
