@@ -230,6 +230,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         UserInterface $user
     ) {
         $ownedProduct->getId()->willReturn(42);
+        $completenessManager->generateMissingForProduct($ownedProduct)->shouldBeCalled();
         $authorizationChecker->isGranted(Attributes::OWN, $ownedProduct)
             ->willReturn(true);
         $user->getUsername()->willReturn('username');
@@ -249,6 +250,8 @@ class DelegatingProductSaverSpec extends ObjectBehavior
             ->shouldBeCalled();
         $objectManager->persist($productDraft)->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
 
         $objectManager->flush()->shouldBeCalledTimes(1);
 

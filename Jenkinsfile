@@ -3,7 +3,7 @@
 def features = "features,vendor/akeneo/pim-community-dev/features"
 def ceBranch = "dev-master"
 def ceOwner = "akeneo"
-def phpVersion = "5.6"
+def phpVersion = "7.0"
 def launchUnitTests = "yes"
 def launchIntegrationTests = "yes"
 def launchBehatTests = "yes"
@@ -18,7 +18,7 @@ stage("Checkout") {
             choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
             choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehatTests'),
             string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
-            choice(choices: '5.6\n7.0\n7.1', description: 'PHP version to run behat with', name: 'phpVersion'),
+            choice(choices: '7.0\n7.1\n5.6', description: 'PHP version to run behat with', name: 'phpVersion'),
         ])
 
         ceBranch = userInput['ce_branch']
@@ -59,7 +59,7 @@ stage("Checkout") {
 }
 
 if (launchUnitTests.equals("yes")) {
-    stage("Unit tests") {
+    stage("Unit tests and Code style") {
         def tasks = [:]
 
         tasks["phpspec-5.6"] = {runPhpSpecTest("5.6")}
@@ -67,6 +67,8 @@ if (launchUnitTests.equals("yes")) {
         tasks["phpspec-7.1"] = {runPhpSpecTest("7.1")}
 
         tasks["php-cs-fixer"] = {runPhpCsFixerTest()}
+
+        tasks["php-coupling-detector"] = {runPhpCouplingDetectorTest()}
 
         tasks["grunt"] = {runGruntTest()}
 
@@ -78,7 +80,6 @@ if (launchIntegrationTests.equals("yes")) {
     stage("Integration tests") {
         def tasks = [:]
 
-        tasks["phpunit-5.6"] = {runIntegrationTest("5.6")}
         tasks["phpunit-7.0"] = {runIntegrationTest("7.0")}
         tasks["phpunit-7.1"] = {runIntegrationTest("7.1")}
 
@@ -143,6 +144,11 @@ def runPhpSpecTest(phpVersion) {
 def runIntegrationTest(phpVersion) {
     node('docker') {
         deleteDir()
+
+        sh "docker stop \$(docker ps -a -q) || true"
+        sh "docker rm \$(docker ps -a -q) || true"
+        sh "docker volume rm \$(docker volume ls -q) || true"
+
         try {
             docker.image("elasticsearch:5.2").withRun("--name elasticsearch -e ES_JAVA_OPTS=\"-Xms256m -Xmx256m\"") {
                 docker.image("mysql:5.7").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim", "--sql_mode=ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION") {
@@ -152,7 +158,7 @@ def runIntegrationTest(phpVersion) {
                         sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                         sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
                         sh "sed -i \"s#database_host: .*#database_host: mysql#g\" app/config/parameters_test.yml"
-                        sh "sed -i \"s#pim_es_host: .*#pim_es_host: elasticsearch#g\" app/config/parameters_test.yml"
+                        sh "sed -i \"s#index_hosts: .*#index_hosts: 'elasticsearch:9200'#g\" app/config/parameters_test.yml"
 
                         sh "./app/console --env=test pim:install --force"
 
@@ -207,7 +213,7 @@ def runBehatTest(features, phpVersion) {
             // Configure the PIM
             sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
             sh "sed -i \"s#database_host: .*#database_host: mysql#g\" app/config/parameters_test.yml"
-            sh "sed -i \"s#pim_es_host: .*#pim_es_host: elasticsearch#g\" app/config/parameters_test.yml"
+            sh "sed -i \"s#index_hosts: .*#index_hosts: 'elasticsearch:9200'#g\" app/config/parameters_test.yml"
             sh "printf \"    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" >> app/config/parameters_test.yml"
 
             sh "mkdir -p app/build/logs/behat app/build/logs/consumer app/build/screenshots"
@@ -221,6 +227,26 @@ def runBehatTest(features, phpVersion) {
                 archiveArtifacts allowEmptyArchive: true, artifacts: 'app/build/screenshots/*.png'
                 deleteDir()
             }
+        }
+    }
+}
+
+def runPhpCouplingDetectorTest() {
+    node('docker') {
+        deleteDir()
+        try {
+            docker.image("carcel/php:7.1").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+                unstash "project_files"
+
+                sh "composer remove --dev --no-update doctrine/mongodb-odm-bundle;"
+                sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                sh "./bin/php-coupling-detector detect --config-file=.php_cd.php src"
+            }
+        } finally {
+            sh "docker stop \$(docker ps -a -q) || true"
+            sh "docker rm \$(docker ps -a -q) || true"
+            sh "docker volume rm \$(docker volume ls -q) || true"
+            deleteDir()
         }
     }
 }

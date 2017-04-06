@@ -49,6 +49,7 @@ define(
                 UserContext.off('change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:show_attribute', this.showAttribute);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:field:to-fill-filter', this.addFieldFilter);
 
                 FieldManager.clearFields();
 
@@ -213,6 +214,17 @@ define(
 
                         FieldManager.getFields()[event.attribute].setFocus();
                     }.bind(this));
+            },
+
+            /**
+             * Add filter on field to make it readonly.
+             *
+             * @param {object} event
+             */
+            addFieldFilter: function (event) {
+                event.filters.push($.Deferred().resolve(function () {
+                    return [];
+                }));
             }
         });
     }
