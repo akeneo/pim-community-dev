@@ -119,6 +119,19 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function findCodesByIdentifiers(array $referenceDataCodes)
+    {
+        return $this->createQueryBuilder($this->getAlias())
+            ->select($this->getAlias() . '.code')
+            ->andWhere($this->getAlias() . '.code IN (:reference_data_codes)')
+            ->setParameter('reference_data_codes', $referenceDataCodes)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Find entities with search and search options
      *
      * @param string|null  $search
