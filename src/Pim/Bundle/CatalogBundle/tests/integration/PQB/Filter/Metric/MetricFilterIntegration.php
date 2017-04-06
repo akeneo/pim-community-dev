@@ -130,6 +130,7 @@ class MetricFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['product_one', 'product_two']);
 
         $result = $this->executeFilter([['a_metric', Operators::GREATER_OR_EQUAL_THAN, ['amount' => 15000, 'unit' => 'WATT']]]);
+        $this->assert($result, ['product_two']);
     }
 
     public function testOperatorEmpty()
