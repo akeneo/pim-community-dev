@@ -63,9 +63,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class ProductAssetController extends Controller
 {
-    /** @staticvar string */
-    const BACK_TO_GRID = 'BackGrid';
-
     /** @var AssetRepositoryInterface */
     protected $assetRepository;
 
@@ -224,7 +221,7 @@ class ProductAssetController extends Controller
      *
      * @param Request $request
      *
-     * @return array|RedirectResponse
+     * @return array|JsonResponse
      */
     public function createAction(Request $request)
     {
@@ -248,13 +245,14 @@ class ProductAssetController extends Controller
                     $reference = $asset->getReference();
                     $file = $this->fileInfoFactory->createFromRawFile(
                         $uploadedFile,
-                        ['path' => '', 'file_name' => '', 'guid' => ''],
                         FileStorage::ASSET_STORAGE_ALIAS
                     );
                     $file->setUploadedFile($uploadedFile);
                     $reference->setFileInfo($file);
+
                     $this->assetFilesUpdater->updateAssetFiles($asset);
                     $this->assetSaver->save($asset);
+
                     $event = $this->eventDispatcher->dispatch(
                         AssetEvent::POST_UPLOAD_FILES,
                         new AssetEvent($asset)
@@ -279,7 +277,12 @@ class ProductAssetController extends Controller
                 $params['dataLocale'] = $this->getDataLocale()->getCode();
             }
 
-            return $this->redirect($this->generateUrl($route, $params));
+            return new JsonResponse(
+                [
+                    'route'  => $route,
+                    'params' => $params,
+                ]
+            );
         } elseif (!$form->isValid() && $form->isSubmitted()) {
             $uploadedFile = $form->get('reference_file')->get('uploadedFile');
             $errors = $uploadedFile->getErrors();
@@ -288,12 +291,13 @@ class ProductAssetController extends Controller
                 foreach ($errors as $error) {
                     $message .= $error->getMessage() . ' ';
                 }
+
                 $this->addFlashMessage('error', $message);
             } else {
                 $this->addFlashMessage('error', 'pimee_product_asset.enrich_asset.flash.create.error');
             }
 
-            return $this->redirect($this->generateUrl('pimee_product_asset_index'));
+            return new JsonResponse(['route' => 'pimee_product_asset_index']);
         }
 
         return [
@@ -331,12 +335,11 @@ class ProductAssetController extends Controller
     /**
      * Remove an asset
      *
-     * @param Request $request
-     * @param int     $id
+     * @param int $id
      *
-     * @return Response|RedirectResponse
+     * @return Response
      */
-    public function removeAction(Request $request, $id)
+    public function removeAction($id)
     {
         $productAsset = $this->findProductAssetOr404($id);
         if (!$this->isGranted(Attributes::EDIT, $productAsset)) {
@@ -345,11 +348,7 @@ class ProductAssetController extends Controller
 
         $this->assetRemover->remove($productAsset);
 
-        if ($request->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return $this->redirect($this->generateUrl('pimee_product_asset_index'));
-        }
+        return new Response('', 204);
     }
 
     /**
@@ -358,7 +357,7 @@ class ProductAssetController extends Controller
      * @param Request $request
      * @param int     $id
      *
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function deleteReferenceFileAction(Request $request, $id)
     {
@@ -392,7 +391,7 @@ class ProductAssetController extends Controller
      * @param Request $request
      * @param int     $id
      *
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function deleteVariationFileAction(Request $request, $id)
     {
@@ -427,7 +426,7 @@ class ProductAssetController extends Controller
      * @param Request $request
      * @param int     $id
      *
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function resetVariationFileAction(Request $request, $id)
     {
@@ -467,7 +466,7 @@ class ProductAssetController extends Controller
      * @param Request $request
      * @param int     $id
      *
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function resetVariationsFilesAction(Request $request, $id)
     {
@@ -508,7 +507,7 @@ class ProductAssetController extends Controller
      *
      * @throws AccessDeniedException
      *
-     * @return RedirectResponse
+     * @return Response
      */
     public function editAction(Request $request, $id)
     {
@@ -795,20 +794,16 @@ class ProductAssetController extends Controller
      */
     protected function redirectAfterEdit(Request $request, array $params)
     {
-        switch ($request->get('action')) {
-            case self::BACK_TO_GRID:
-                $route = 'pimee_product_asset_index';
-                $params = [];
-                break;
-            default:
-                if (null !== $request->get('dataLocale')) {
-                    $params['dataLocale'] = $request->get('dataLocale');
-                }
-                $route = 'pimee_product_asset_edit';
-                break;
+        if (null !== $request->get('dataLocale')) {
+            $params['dataLocale'] = $request->get('dataLocale');
         }
 
-        return $this->redirect($this->generateUrl($route, $params));
+        return new JsonResponse(
+            [
+                'route'  => 'pimee_product_asset_edit',
+                'params' => $params,
+            ]
+        );
     }
 
     /**

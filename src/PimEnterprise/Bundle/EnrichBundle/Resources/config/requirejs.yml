@@ -45,6 +45,14 @@ config:
                 pimee_product_asset_mass_edit_asset_action_perform:
                     module: pim/controller/form
                     aclResourceId: pim_enrich_mass_edit
+                pimee_product_asset_reference_delete:
+                    module: pim/controller/redirect
+                pimee_product_asset_variation_delete:
+                    module: pim/controller/redirect
+                pimee_product_asset_variation_reset:
+                    module: pim/controller/redirect
+                pimee_product_asset_variations_reset:
+                    module: pim/controller/redirect
                 pimee_asset_categorytree_create:
                     module: pim/controller/form
                     aclResourceId: pimee_product_asset_category_create
@@ -54,6 +62,10 @@ config:
                 pimee_asset_categorytree_remove:
                     module: pim/controller/template
                     aclResourceId: pimee_asset_categorytree_remove
+                pimee_workflow_product_draft_mass_approve:
+                    module: pim/controller/redirect
+                pimee_workflow_product_draft_mass_approve:
+                    module: pim/controller/redirect
 
     map:
         '*':

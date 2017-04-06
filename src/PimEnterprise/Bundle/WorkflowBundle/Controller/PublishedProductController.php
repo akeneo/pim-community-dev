@@ -13,7 +13,6 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
@@ -23,7 +22,6 @@ use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -118,7 +116,6 @@ class PublishedProductController
     /**
      * Unpublish a product
      *
-     * @param Request    $request
      * @param int|string $id
      *
      * @Template
@@ -126,9 +123,9 @@ class PublishedProductController
      *
      * @throws AccessDeniedException
      *
-     * @return JsonResponse|RedirectResponse
+     * @return JsonResponse
      */
-    public function unpublishAction(Request $request, $id)
+    public function unpublishAction($id)
     {
         $published = $this->findPublishedOr404($id);
 
@@ -139,21 +136,12 @@ class PublishedProductController
 
         $this->manager->unpublish($published);
 
-        if ($request->isXmlHttpRequest()) {
-            return new JsonResponse(
-                [
-                    'successful' => true,
-                    'message'    => $this->translator->trans('flash.product.unpublished')
-                ]
-            );
-        }
-
-        $this->request->getSession()->getFlashBag()->add('success', new Message('flash.product.unpublished'));
-
-        return new RedirectResponse($this->router->generate(
-            'pimee_workflow_published_product_index',
-            ['dataLocale' => $this->getDataLocale()]
-        ));
+        return new JsonResponse(
+            [
+                'successful' => true,
+                'message'    => $this->translator->trans('flash.product.unpublished')
+            ]
+        );
     }
 
     /**

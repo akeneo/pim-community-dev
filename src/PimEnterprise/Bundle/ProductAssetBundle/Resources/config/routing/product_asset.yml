@@ -1,5 +1,5 @@
 pimee_product_asset_index:
-    path: /
+    path: ''
     defaults: { _controller: pimee_product_asset.controller.product_asset:indexAction }
 
 pimee_product_asset_create:
@@ -18,12 +18,14 @@ pimee_product_asset_remove:
     requirements:
         id: '[0-9]+'
 
+# TODO: use DELETE method
 pimee_product_asset_reference_delete:
     path: /reference/{id}/update
     defaults: { _controller: pimee_product_asset.controller.product_asset:deleteReferenceFileAction }
     requirements:
         id: '[0-9]+'
 
+# TODO: use DELETE method
 pimee_product_asset_variation_delete:
     path: /variation/{id}/update
     defaults: { _controller: pimee_product_asset.controller.product_asset:deleteVariationFileAction }
