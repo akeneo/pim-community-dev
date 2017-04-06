@@ -102,10 +102,10 @@ class EnterpriseDataGridContext extends BaseDataGridContext
      */
     public function iShouldSeeTheFollowingProposals(TableNode $table)
     {
-        foreach ($table->getHash() as $hash) {
-            $datagrid = $this->datagrid->getGrid();
+        $datagrid = $this->datagrid->getGrid();
 
-            $change = $this->spin(function () use ($datagrid, $hash) {
+        foreach ($table->getHash() as $hash) {
+            $this->spin(function () use ($datagrid, $hash) {
                 $selector = 'table.proposal-changes[data-product="%s"][data-attribute="%s"][data-author="%s"]';
                 $params   = [
                     $hash['product'],
@@ -122,46 +122,48 @@ class EnterpriseDataGridContext extends BaseDataGridContext
                     $params[] = $hash['scope'];
                 }
 
-                return $datagrid->find('css', vsprintf($selector, $params));
-            }, sprintf('Unable to find the change on the proposal for attribute "%s"', $hash['attribute']));
+                $change = $datagrid->find('css', vsprintf($selector, $params));
 
-            $original = $change->find('css', '.original-value');
-            $new      = $change->find('css', '.new-value');
+                $original = $change->find('css', '.original-value');
+                $new      = $change->find('css', '.new-value');
 
-            $originalExpectedValues = explode(',', trim($hash['original']));
-            $newExpectedValues      = explode(',', trim($hash['new']));
-            $rawOriginalValues      = explode(', ', $this->getChangeContent($original));
-            $rawNewValues           = explode(', ', $this->getChangeContent($new));
+                $originalExpectedValues = explode(',', trim($hash['original']));
+                $newExpectedValues      = explode(',', trim($hash['new']));
+                $rawOriginalValues      = explode(', ', $this->getChangeContent($original));
+                $rawNewValues           = explode(', ', $this->getChangeContent($new));
 
-            sort($originalExpectedValues);
-            sort($newExpectedValues);
-            sort($rawOriginalValues);
-            sort($rawNewValues);
+                sort($originalExpectedValues);
+                sort($newExpectedValues);
+                sort($rawOriginalValues);
+                sort($rawNewValues);
 
-            $originalExpected = trim(implode(', ', $originalExpectedValues));
-            $newExpected      = trim(implode(', ', $newExpectedValues));
-            $originalValues   = trim(implode(', ', $rawOriginalValues));
-            $newValues        = trim(implode(', ', $rawNewValues));
+                $originalExpected = trim(implode(', ', $originalExpectedValues));
+                $newExpected      = trim(implode(', ', $newExpectedValues));
+                $originalValues   = trim(implode(', ', $rawOriginalValues));
+                $newValues        = trim(implode(', ', $rawNewValues));
 
-            if ($originalValues != $originalExpected) {
-                throw $this->createExpectationException(
-                    sprintf(
-                        'Expected original values to contain "%s", but got "%s".',
-                        $originalExpected,
-                        $originalValues
-                    )
-                );
-            }
+                if ($originalValues != $originalExpected) {
+                    throw $this->createExpectationException(
+                        sprintf(
+                            'Expected original values to contain "%s", but got "%s".',
+                            $originalExpected,
+                            $originalValues
+                        )
+                    );
+                }
 
-            if ($newValues != $newExpected) {
-                throw $this->createExpectationException(
-                    sprintf(
-                        'Expected new values to contain "%s", but got "%s".',
-                        $newExpected,
-                        $newValues
-                    )
-                );
-            }
+                if ($newValues != $newExpected) {
+                    throw $this->createExpectationException(
+                        sprintf(
+                            'Expected new values to contain "%s", but got "%s".',
+                            $newExpected,
+                            $newValues
+                        )
+                    );
+                }
+
+                return true;
+            }, 'Proposal data does not match');
         }
     }
 
