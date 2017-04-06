@@ -14,14 +14,63 @@ define(
     [
         'pim/field-manager',
         'pim/security-context',
-        'pim/form/common/attributes'
+        'pim/form/common/attributes',
+        'oro/mediator'
     ],
     function (
         FieldManager,
         SecurityContext,
-        BaseAttributes
+        BaseAttributes,
+        mediator
     ) {
         return BaseAttributes.extend({
+            locked: false,
+
+            /**
+             * Listen to mass edit form unlock and lock events
+             *
+             * {@inheritdoc}
+             */
+            configure: function () {
+                mediator.on('mass-edit:form:lock', this.onLock.bind(this));
+                mediator.on('mass-edit:form:unlock', this.onUnlock.bind(this));
+
+                return BaseAttributes.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * Override for field render to maintain form locked state
+             * @param  {jQueryElement} panel Attribute panel element
+             * @param  {Object} field Attribute field
+             */
+            appendField: function (panel, field) {
+                if (field.canBeSeen()) {
+                    field.setLocked(this.locked);
+                    field.render();
+                    FieldManager.addVisibleField(field.attribute.code);
+                    panel.append(field.$el);
+                }
+            },
+
+            /**
+             * Set mass edit form as locked
+             *
+             * {@inheritdoc}
+             */
+            onLock: function () {
+                this.locked = true;
+            },
+
+            /**
+             * Set mass edit form as unlocked
+             *
+             * {@inheritdoc}
+             */
+            onUnlock: function () {
+                this.locked = false;
+                this.render();
+            },
+
             /**
              * {@inheritdoc}
              */
