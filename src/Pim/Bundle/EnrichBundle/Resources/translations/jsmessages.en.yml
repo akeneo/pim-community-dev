@@ -357,7 +357,7 @@ pim_enrich:
                     info:
                         search_attributes: Search...
                         no_available_attributes: There are no more attributes to add
-                        attributes_selected: "{{ attributeCount }} attribute(s) selected"
+                        attributes_selected: "{{ itemsCount }} attribute(s) selected"
                         no_match: No matches found
                         load_more: Loading more results...
                 categories:
@@ -590,6 +590,16 @@ pim_enrich:
                         help: Means that the product history is automatically updated, can be switched off to improve performances
                 history:
                     title: History
+        mass_edit:
+            family:
+                attributes:
+                    label_label: Label
+                    toolbox:
+                        select_attributes_by_groups: Add by groups
+                        select_attributes: Add attributes
+                        add: Add
+                        attributes_groups_selected: '{{ itemsCount }} group(s) selected'
+
     job:
         upload: Drag and drop file or click here
     export:

@@ -20,7 +20,7 @@ class PermissionDecorator extends ElementDecorator
     protected $selectors = [
         'Group'           => '.AknVerticalNavtab .tab:contains("%s") a span',
         'Group toggle'    => '.AknVerticalNavtab .tab:contains("%s") a .acl-group-permission-toggle',
-        'Resource'        => '.acl-permission:contains("%s")',
+        'Resource'        => '.acl-permission',
         'Resource Toggle' => '.acl-permission-toggle.granted, .acl-permission-toggle.non-granted'
     ];
 
@@ -37,19 +37,27 @@ class PermissionDecorator extends ElementDecorator
     }
 
     /**
-     * @param string $resource
+     * @param string $resourceLabel
      *
      * @return NodeElement
      */
-    public function findResource($resource)
+    public function findResource($resourceLabel)
     {
-        $resourceElement = $this->spin(function () use ($resource) {
-            return $this->find('css', sprintf($this->selectors['Resource'], $resource));
-        }, sprintf('Resource with label "%s" not found.', $resource));
+        $resourceElement = $this->spin(function () use ($resourceLabel) {
+            $resources = $this->findAll('css', $this->selectors['Resource']);
+            
+            foreach ($resources as $resource) {
+                if ($resourceLabel === strip_tags($resource->getOuterHtml())) {
+                    return $resource;
+                }
+            }
+
+            return null;
+        }, sprintf('Resource with label "%s" not found.', $resourceLabel));
 
         return $this->spin(function () use ($resourceElement) {
             return $resourceElement->find('css', $this->selectors['Resource Toggle']);
-        }, sprintf('Resource with label "%s" found but the toggle was not found.', $resource));
+        }, sprintf('Resource with label "%s" found but the toggle was not found.', $resourceLabel));
     }
 
     /**

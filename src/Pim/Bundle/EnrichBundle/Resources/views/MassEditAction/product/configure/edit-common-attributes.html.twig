@@ -16,14 +16,16 @@
                     'pim/fetcher-registry',
                     'pim/form-builder',
                     'oro/mediator',
-                    'pim/user-context'
+                    'pim/user-context',
+                    'pim/i18n'
                 ],
                 function (
                         $,
                         FetcherRegistry,
                         FormBuilder,
                         mediator,
-                        UserContext
+                        UserContext,
+                        i18n
                 ) {
                     $(function () {
                         var userData = "{{ form.vars.data.getValues|escape('js') }}";
@@ -57,7 +59,11 @@
 
                                 $('#mass-edit-common-attribute-description').html(_.__(
                                     'pim_enrich.mass_edit_action.edit_common_attributes.description',
-                                    {'locale': locale.label, 'channel': channel.labels[UserContext.get('uiLocale')]}
+                                    {'locale': locale.label, 'channel': i18n.getLabel(
+                                        channel.labels,
+                                        UserContext.get('catalogLocale'),
+                                        channel.code
+                                    )}
                                 ));
                             });
                         });

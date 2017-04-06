@@ -36,7 +36,7 @@ Feature: Edit common attributes of many products at once
     And I select rows black_jacket and white_jacket
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
-    Then I should see the text "The selected product's attributes will be edited with the following data for the locale German (Germany) and the channel Ecommerce, chosen in the products grid."
+    Then I should see the text "The selected product's attributes will be edited with the following data for the locale Deutsch (Deutschland) and the channel Ecommerce, chosen in the products grid."
     When I display the Name attribute
     And I change the "Name" to "Une veste"
     And I move on to the next step

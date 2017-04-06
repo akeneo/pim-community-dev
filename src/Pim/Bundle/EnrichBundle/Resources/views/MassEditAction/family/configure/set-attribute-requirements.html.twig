@@ -1,176 +1,28 @@
 {% extends 'PimEnrichBundle:MassEditAction:family/configure.html.twig' %}
 
-{% block formTitle %}
-    {# Attributes selection #}
-    <div class="pull-right">
-        <select id="pim_catalog_mass_edit_family_add_attribute" class="input-large" multiple="multiple">
-            {% for groupLabel, attributes in form.operation.vars.value.attributes %}
-            <optgroup label="{{ groupLabel }}">
-                {% for attribute in attributes %}
-                <option value="{{ attribute.code }}">{{ attribute.label }}</option>
-                {% endfor %}
-            </optgroup>
-            {% endfor %}
-        </select>
-    </div>
-{% endblock %}
-
 {% block formContent %}
-    {# Requirements grid #}
-    <table class="AknGrid AknGrid--unclickable table groups attributes">
-        <thead>
-            <th class="AknGrid-headerCell">{{ 'Label'|trans|upper }}</th>
-            {% for channel in form.operation.vars.value.channels %}
-                <th class="AknGrid-headerCell AknGrid-headerCell--center channel">{{ channel.label|upper }}</th>
-            {% endfor %}
-            <th class="AknGrid-headerCell">&nbsp;</th>
-        </thead>
-        {% for groupLabel, attributes in form.operation.vars.value.attributes %}
-        <tbody>
-            <tr class="AknGrid-bodyRow hide group">
-                <td class="AknGrid-bodyCell" colspan="10"><i class="icon-collapse-alt"></i>{{ groupLabel }}</td>
-            </tr>
-            {% for attribute in attributes %}
-            <tr class="AknGrid-bodyRow hide attribute" data-code="{{ attribute.code }}">
-                <td class="AknGrid-bodyCell">{{ attribute.label }}</td>
-                {% for channel in form.operation.vars.value.channels %}
-                    <td class="AknGrid-bodyCell AknGrid-bodyCell--center">
-                        <div class="AknAcl AknAcl--centered">
-                            {{ form_widget(form.operation.attributeRequirements[(attribute.code ~ '_' ~ channel.code)]) }}
-                        </div>
-                    </td>
-                {% endfor %}
-                <td class="AknGrid-bodyCell AknGrid-bodyCell--right">
-                    <i class="AknIconButton AknIconButton--grey AknIconButton--small icon-trash remove-attribute" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-        {% endfor %}
-    </table>
-
-    {# Scripts #}
-    <script type="text/javascript">
-        require(
-            ['jquery', 'bootstrap', 'jquery.multiselect', 'jquery.multiselect.filter'],
-            function ($) {
-                'use strict';
-
+    <div id="family-edit-form"></div>
+    {{ form_widget(form.operation.values) }}
+    <script>
+        require(['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'oro/translator'],
+            function($, FetcherRegistry, FormBuilder, UserContext, Dialog, mediator, __) {
                 $(function() {
-                    // Group collapsing
-                    $('.group').click(function() {
-                        if ($(this).find('i').is('.icon-collapse-alt')) {
-                            $(this)
-                                .addClass('collapsed')
-                                .parent()
-                                .find('tr:not(.group):not(.hide)')
-                                .hide();
-                        } else {
-                            $(this)
-                                .removeClass('collapsed')
-                                .parent()
-                                .find('tr:not(.group):not(.hide)')
-                                .removeAttr("style");
-                        }
-                        $(this).find('i').toggleClass('icon-expand-alt icon-collapse-alt');
-                    });
-
-                    // Requirement tick
-                    $('table.attributes').on('click', '.attribute-requirement:not(.read-only) i', function() {
-                        $(this).toggleClass('icon-ok required')
-                                .toggleClass('icon-circle non-required')
-                                .toggleClass('AknAcl-icon--granted');
-
-                        var $input = $(this).siblings('input[type="hidden"]').eq(0);
-                        var checked = ($input.val() == 1);
-                        $(this).attr('data-original-title', $(this).parent().data((checked ? 'not-' : '') + 'required-title')).tooltip('show');
-                        $input.val(checked ? "0" : "1").trigger('change');
-                    });
-
-                    // Attribute addition
-                    var opts = {
-                        title: '{{ "Select attributes"|trans }}',
-                        placeholder: '{{ "Search"|trans }}',
-                        header: '',
-                        height: 175,
-                        minWidth: 50,
-                        classes: 'pimmultiselect ui-multiselect--select2',
-                        position: {
-                            my: 'right top',
-                            at: 'right bottom',
-                            collision: 'none'
-                        }
+                    var family = {
+                        attributes: [],
+                        attribute_requirements: {},
+                        meta: {}
                     };
-                    opts.selectedText = opts.title;
-                    opts.noneSelectedText = opts.title;
-                    var $el = $('#pim_catalog_mass_edit_family_add_attribute')
-                        .addClass('pimmultiselect')
-                        .multiselect(opts)
-                        .multiselectfilter({
-                            label: false,
-                            placeholder: opts.placeholder
-                        });
-                    var $menu = $('.ui-multiselect-menu.pimmultiselect').appendTo('#container');
-                    var saveButton = '{{ "Select"|trans }}';
 
-                    var footerContainer = $('<div>').addClass('ui-multiselect-footer').appendTo($menu);
-                    var $saveButton = $('<a>').addClass('btn btn-small').html(saveButton).on('click', function () {
-                        $el.multiselect('close');
-                        var checked = _.map($el.multiselect('getChecked'), function(el) {
-                            return el.value;
-                        });
-                        $('tr.attribute').each(function() {
-                            var $field = $(this);
-                            if (_.contains(checked, $field.data('code'))) {
-                                $field.removeClass('hide');
-                                // Hide it if the group is collapsed
-                                if ($(this).parent().find('tr.group').is('.collapsed')) {
-                                    $field.hide();
-                                }
-                            } else {
-                                $field.addClass('hide');
-                            }
-                        });
-                        $('tr.group').each(function() {
-                            if ($(this).parent('tbody').find('tr.attribute:not(.hide)').length) {
-                                $(this).removeClass('hide');
-                            } else {
-                                $(this).addClass('hide');
-                            }
-                        });
-                    }).appendTo(footerContainer);
+                    FetcherRegistry.initialize().done(function () {
+                        FormBuilder.build('pim-family-mass-edit-form')
+                            .then(function (form) {
+                                form.setData(family);
+                                form.setElement('#family-edit-form').render();
+                                form.$el.find('.AknTitleContainer').addClass('AknTitleContainer--hidden');
 
-                    var $openButton = $('button.pimmultiselect').addClass('btn btn-group');
-                    $openButton.append($('<span>', { 'class': 'caret' })).removeAttr('style');
-
-                    $menu.find('input[type="search"]').width(207);
-
-                    /**
-                     * Manage removal of attributes from the form
-                     */
-                    $('.remove-attribute').on('click', function () {
-                        $el.multiselect('widget').find('input[value="' + $(this).parents('tr').data('code') + '"]').click();
-                        $saveButton.click();
-                    });
-
-                    /**
-                     * Remove hidden attributes from the form before submitting
-                     */
-                    $('#{{ form.vars.id }}').submit(function(event){
-                        $('tr.attribute.hide').remove();
-
-                        return true;
+                            });
                     });
                 });
-            }
-        );
+            });
     </script>
-{% endblock %}
-
-{% block disableFormScript %}
-    $('.attribute-requirement').addClass('read-only');
-{% endblock %}
-
-{% block enableFormScript %}
-    $('.attribute-requirement').removeClass('read-only');
 {% endblock %}

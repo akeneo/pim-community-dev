@@ -260,6 +260,7 @@ extensions:
         parent: pim-job-instance-csv-product-export-edit
 
     pim-job-instance-csv-product-export-edit-content-data-add-filter:
-        module: pim/job/product/edit/content/data/add-filter
+        module: pim/job/product/edit/content/data/add-select/attribute
         parent: pim-job-instance-csv-product-export-edit-content-data
         targetZone: headings
+        position: 90

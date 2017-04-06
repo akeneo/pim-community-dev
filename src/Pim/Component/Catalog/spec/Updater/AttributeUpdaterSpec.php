@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\Localization\TranslatableUpdater;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -22,9 +23,10 @@ class AttributeUpdaterSpec extends ObjectBehavior
     function let(
         AttributeGroupRepositoryInterface $attrGroupRepo,
         LocaleRepositoryInterface $localeRepository,
-        AttributeTypeRegistry $registry
+        AttributeTypeRegistry $registry,
+        TranslatableUpdater $translatableUpdater
     ) {
-        $this->beConstructedWith($attrGroupRepo, $localeRepository, $registry);
+        $this->beConstructedWith($attrGroupRepo, $localeRepository, $registry, $translatableUpdater);
     }
 
     function it_is_initializable()
@@ -53,6 +55,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
     function it_updates_a_new_attribute(
         $attrGroupRepo,
         $registry,
+        $translatableUpdater,
         AttributeInterface $attribute,
         AttributeTranslation $translation,
         AttributeGroupInterface $attributeGroup,
@@ -69,12 +72,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
             'date_min' => '2016-12-12T00:00:00+01:00'
         ];
 
-        $attribute->setLocale('en_US')->shouldBeCalled();
-        $attribute->setLocale('fr_FR')->shouldBeCalled();
-        $attribute->getTranslation()->willReturn($translation);
-
-        $translation->setLabel('Test1')->shouldBeCalled();
-        $translation->setLabel('Test2')->shouldBeCalled();
+        $translatableUpdater->update($attribute, ['en_US' => 'Test1', 'fr_FR' => 'Test2']);
 
         $attrGroupRepo->findOneByIdentifier('marketing')->willReturn($attributeGroup);
         $attribute->setGroup($attributeGroup)->shouldBeCalled();
@@ -96,6 +94,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
     function it_throws_an_exception_if_no_groups_found(
         $attrGroupRepo,
         $registry,
+        $translatableUpdater,
         AttributeInterface $attribute,
         AttributeTranslation $translation,
         AttributeTypeInterface $attributeType
@@ -109,12 +108,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
             'type' => 'pim_catalog_text'
         ];
 
-        $attribute->setLocale('en_US')->shouldBeCalled();
-        $attribute->setLocale('fr_FR')->shouldBeCalled();
-        $attribute->getTranslation()->willReturn($translation);
-
-        $translation->setLabel('Test1')->shouldBeCalled();
-        $translation->setLabel('Test2')->shouldBeCalled();
+        $translatableUpdater->update($attribute, ['en_US' => 'Test1', 'fr_FR' => 'Test2']);
 
         $attrGroupRepo->findOneByIdentifier('marketing')->willReturn(null);
         $registry->get('pim_catalog_text')->willReturn($attributeType);

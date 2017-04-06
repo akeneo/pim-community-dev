@@ -6,6 +6,7 @@ use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\ProductEditForm;
+use Pim\Behat\Decorator\ContextSwitcherDecorator;
 
 /**
  * Variant group edit page
@@ -34,7 +35,7 @@ class Edit extends ProductEditForm
                 'Main context selector' => [
                     'css'        => '.tab-container .object-attributes .attribute-edit-actions .context-selectors',
                     'decorators' => [
-                        'Pim\Behat\Decorator\ContextSwitcherDecorator'
+                        ContextSwitcherDecorator::class
                     ]
                 ],
                 'Save' => ['css' => 'button.save'],

@@ -23,6 +23,20 @@ class ProductAssociationReader extends Reader implements
      */
     protected function getArrayConverterOptions()
     {
-        return ['with_associations' => true];
+        $jobParameters = $this->stepExecution->getJobParameters();
+
+        return [
+            // for the array converters
+            'mapping'           => [
+                $jobParameters->get('familyColumn')     => 'family',
+                $jobParameters->get('categoriesColumn') => 'categories',
+                $jobParameters->get('groupsColumn')     => 'groups'
+            ],
+            'with_associations' => true,
+
+            // for the delocalization
+            'decimal_separator' => $jobParameters->get('decimalSeparator'),
+            'date_format'       => $jobParameters->get('dateFormat')
+        ];
     }
 }

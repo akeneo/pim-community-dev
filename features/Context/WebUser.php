@@ -18,6 +18,7 @@ use Box\Spout\Reader\ReaderFactory;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\SpinException;
 use Context\Spin\TimeoutException;
+use Context\Traits\ClosestTrait;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 use Pim\Component\Catalog\Model\Product;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -32,7 +33,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 class WebUser extends RawMinkContext
 {
     use SpinCapableTrait;
-
+    use ClosestTrait;
     /* -------------------- Page-related methods -------------------- */
 
 
@@ -832,6 +833,40 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Then /^I should see select choices of the "(.*)" in the following order:$/
+     *
+     * @param string $field
+     * @param array  $items
+     */
+    public function iShouldSeeSelectChoicesOrdered($fieldName, PyStringNode $items)
+    {
+        $searched = array_values(explode(',', implode(',', $items->getLines())));
+
+        $label = $this->getCurrentPage()->find('css', sprintf('label:contains("%s")', $fieldName));
+
+        $valuesRoot = $this->getClosest($label, 'select2');
+
+        $foundChoices = $valuesRoot
+            ->findAll('css', '.field-input select option');
+
+        $fieldsArray = [];
+        foreach ($foundChoices as $choice) {
+            $fieldsArray[] = trim($choice->getHtml());
+        }
+
+        $fieldsArray = array_values(array_filter($fieldsArray));
+
+        if ($searched !== $fieldsArray) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Order of choices for field "%s" is not as expected, got: %s',
+                    $fieldName, implode(', ', $fieldsArray)
+                )
+            );
+        }
+    }
+
+    /**
      * @param $field
      *
      * @When /^I click on the field (?P<field>\w+)$/
@@ -844,24 +879,52 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $not
      * @param string $attributes
      * @param string $group
      *
-     * @Then /^I should see available attributes? (.*) in group "([^"]*)"$/
+     * @Then /^I should (not )?see available attributes? (.*) in group "([^"]*)"$/
      *
      * @throws ExpectationException
      */
-    public function iShouldSeeAvailableAttributesInGroup($attributes, $group)
+    public function iShouldSeeAvailableAttributesInGroup($not, $attributes, $group)
     {
+        $expecting = !$not;
+
         foreach ($this->listToArray($attributes) as $attribute) {
-            $this->spin(function () use ($attribute, $group) {
-                return $this->getCurrentPage()->findAvailableAttributeInGroup($attribute, $group);
-            }, sprintf('Expecting to see attribute "%s" under group "%s"', $attribute, $group));
+            $result = $this->getCurrentPage()
+                ->getAttributeAddSelect()
+                ->hasAvailableOptionGroupPair($attribute, $group);
+
+            if ($expecting !== $result) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Expecting to %ssee attribute "%s" under group "%s"',
+                        true === (bool) $not ? $not : '',
+                        $attribute,
+                        $group
+                    )
+                );
+            }
         }
     }
 
     /**
-     * @param string $group
+     * @param string $status 'enabled'|'disabled'
+     *
+     * @Then /^The available attributes button should be (enabled|disabled)$/
+     */
+    public function theAvailableAttributeButtonShouldBeEnabled($status)
+    {
+        $expectedStatus = ('enabled' === $status);
+
+        $this->spin(function () use ($expectedStatus) {
+            return $expectedStatus === $this->getCurrentPage()->isAvailableAttributeEnabled();
+        }, sprintf('The available attribute button should be %s', $status));
+    }
+
+    /**
+     * @param string $groups
      *
      * @Then /^I should see available attribute group "([^"]*)"$/
      *
@@ -870,10 +933,10 @@ class WebUser extends RawMinkContext
     public function iShouldSeeAvailableAttributeGroup($groups)
     {
         foreach ($this->listToArray($groups) as $group) {
-            $element = $this->getCurrentPage()->findAvailableAttributeGroup($group);
+            $exists = $this->getCurrentPage()->findAvailableAttributeGroup($group);
 
-            if (null === $element) {
-                throw new ExpectationException(
+            if (true !== $exists) {
+                throw $this->createExpectationException(
                     sprintf('Expecting to see attribute group "%s"', $group)
                 );
             }
@@ -910,28 +973,7 @@ class WebUser extends RawMinkContext
             }
         }
     }
-
-    /**
-     * @param string $attributes
-     * @param string $group
-     *
-     * @Then /^I should not see available attributes? (.*) in group "([^"]*)"$/
-     *
-     * @throws ExpectationException
-     */
-    public function iShouldNotSeeAvailableAttributesInGroup($attributes, $group)
-    {
-        foreach ($this->listToArray($attributes) as $attribute) {
-            $element = $this->getCurrentPage()->findAvailableAttributeInGroup($attribute, $group);
-
-            if (null !== $element) {
-                throw $this->createExpectationException(
-                    sprintf('Expecting not to see attribute "%s" under group "%s"', $attribute, $group)
-                );
-            }
-        }
-    }
-
+    
     /**
      * @param string $attributes
      *
@@ -1112,6 +1154,25 @@ class WebUser extends RawMinkContext
         $addButton->click();
 
         $this->wait();
+    }
+
+    /**
+     * @param string $field
+     *
+     * @Then /^I should not see the add option link for the "([^"]*)" attribute$/
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldNotSeeTheAddOptionLinkFor($field)
+    {
+        if (null !== $this->getCurrentPage()->getAddOptionLinkFor($field)) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Add option link should not be displayed for attribute "%s".',
+                    $field
+                )
+            );
+        }
     }
 
     /**
@@ -2026,18 +2087,28 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * TODO This step should be renamed to "I confirm the mass edit"
+     *
      * @Given /^I move on to the next step$/
      */
     public function iMoveOnToTheNextStep()
+    {
+        $this->iMoveToTheConfirmPage();
+        $this->scrollContainerTo(900);
+        $this->getCurrentPage()->confirm();
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I move to the confirm page$/
+     */
+    public function iMoveToTheConfirmPage()
     {
         $this->scrollContainerTo(900);
         $this->spin(function () {
             return $this->getCurrentPage()->find('css', '.next');
         }, 'Could not find next button');
         $this->getCurrentPage()->next();
-        $this->scrollContainerTo(900);
-        $this->getCurrentPage()->confirm();
-        $this->wait();
     }
 
     /**

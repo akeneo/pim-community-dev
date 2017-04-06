@@ -14,21 +14,6 @@ class Edit extends Creation
     protected $path = '/configuration/attribute-group/{id}/edit';
 
     /**
-     * {@inheritdoc}
-     */
-    public function __construct($session, $pageFactory, $parameters = [])
-    {
-        parent::__construct($session, $pageFactory, $parameters);
-
-        $this->elements = array_merge(
-            $this->elements,
-            [
-                'Attribute list' => ['css' => '#attributes-sortable'],
-            ]
-        );
-    }
-
-    /**
      * @param string $attribute
      * @param int    $position
      *

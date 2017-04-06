@@ -130,6 +130,43 @@ JSON;
         $this->assertSame($attributeOptionStandard, $normalizer->normalize($attributeOption));
     }
 
+    public function testAttributeOptionCreationWithEmptyLabels()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "code":"empty_labels",
+        "attribute":"a_multi_select",
+        "sort_order":30,
+        "labels":{
+            "en_US": null,
+            "fr_FR": ""
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
+
+        $attributeOption = $this->get('pim_catalog.repository.attribute_option')
+            ->findOneByIdentifier('a_multi_select.empty_labels');
+
+        $attributeOptionStandard = [
+            'code'       => 'empty_labels',
+            'attribute'  => 'a_multi_select',
+            'sort_order' => 30,
+            'labels'     => [],
+        ];
+        $normalizer = $this->get('pim_catalog.normalizer.standard.attribute_option');
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSame($attributeOptionStandard, $normalizer->normalize($attributeOption));
+    }
+
+
     public function testResponseWhenContentIsInvalid()
     {
         $client = $this->createAuthenticatedClient();

@@ -2,11 +2,6 @@ extensions:
     pim-mass-product-edit-form:
         module: pim/form/common/edit-form
 
-    pim-mass-product-edit-form-cache-invalidator:
-        module: pim/cache-invalidator
-        parent: pim-mass-product-edit-form
-        position: 1000
-
     pim-mass-product-edit-form-attributes:
         module: pim/mass-product-edit-form/attributes
         parent: pim-mass-product-edit-form
@@ -21,19 +16,16 @@ extensions:
         position: 100
 
     pim-mass-product-edit-form-add-attribute:
-        module: pim/common/add-attribute
+        module: pim/product/add-select/attribute
         parent: pim-mass-product-edit-form-attributes
         targetZone: other-actions
         position: 90
         config:
             select2:
-                placeholder: pim_enrich.form.product.mass_edit.select_attributes
-                buttonTitle: pim_enrich.form.product.mass_edit.select
-                title:       pim_enrich.form.product.mass_edit.select
-                emptyText:   pim_enrich.form.product.mass_edit.select
-            searchParameters:
-                options:
-                    exclude_unique: true
+                placeholder: 'pim_enrich.form.product.mass_edit.select_attributes'
+            events:
+                disable: 'mass-edit:form:lock'
+                enable: 'mass-edit:form:unlock'
 
     pim-mass-product-edit-form-validation:
         module: pim/product-edit-form/attributes/validation

@@ -25,6 +25,7 @@ css:
         - bundles/pimui/less/lib/tabs.less
         - bundles/pimui/less/lib/wizard.less
         - bundles/pimui/less/lib/select2.less
+        - bundles/pimui/less/lib/summernote.less
 
     bem:
         - bundles/pimui/less/base/general.less

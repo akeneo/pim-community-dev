@@ -12,6 +12,7 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -229,6 +230,9 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $product = $this->productBuilder->createProduct('FAKE_SKU_FOR_MASS_EDIT_VALIDATION_' . microtime());
         $this->productUpdater->update($product, ['values' => $data]);
         $violations = $this->productValidator->validate($product);
+
+        $violations = $this->removeIdentifierViolations($violations);
+
         $violations->addAll($this->localizedConverter->getViolations());
 
         $errors = ['values' => $this->internalNormalizer->normalize(
@@ -331,5 +335,24 @@ class EditCommonAttributes extends AbstractMassEditOperation
         }
 
         return $data;
+    }
+
+    /**
+     * Remove all violations related to identifier
+     *
+     * @param ConstraintViolationListInterface $violations
+     *
+     * @return ConstraintViolationListInterface
+     */
+    protected function removeIdentifierViolations(ConstraintViolationListInterface $violations)
+    {
+        $identifierPath = sprintf('values[%s]', $this->attributeRepository->getIdentifierCode());
+        foreach ($violations as $offset => $violation) {
+            if (0 === strpos($violation->getPropertyPath(), $identifierPath)) {
+                $violations->remove($offset);
+            }
+        }
+
+        return $violations;
     }
 }

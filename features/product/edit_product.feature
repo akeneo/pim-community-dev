@@ -100,3 +100,16 @@ Feature: Edit a product
     And I am on the "sandal" product page
     Then I switch the scope to "channel_code"
     And I should see the text "The channel label"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6258
+  Scenario: Successfully view a product even if permissions on locales channels and families are revoked
+    Given I am logged in as "Peter"
+    When I am on the "Catalog manager" role page
+    And I visit the "Permissions" tab
+    And I revoke rights to group Association types
+    And I revoke rights to group Channels
+    And I revoke rights to group Families
+    And I revoke rights to group Locales
+    And I save the role
+    And I edit the "sandal" product
+    Then I should see the text "Sandal"

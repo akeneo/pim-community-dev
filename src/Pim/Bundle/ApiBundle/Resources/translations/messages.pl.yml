@@ -6,7 +6,11 @@ pim_api:
       list: Przeglądanie kategorii
     family:
       list: Przeglądanie rodzin
+    channel.list: Przeglądanie kanałów
+    locale.list: Przeglądanie ustawień regionalnych
   acl_group:
     attribute: Atrybuty
     category: Kategorie
     family: Rodziny
+    channel: Kanały
+    locale: Ustawienia regionalne

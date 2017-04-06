@@ -6,7 +6,11 @@ pim_api:
       list: Popis kategorija
     family:
       list: Popis obitelji
+    channel.list: Popis kanala
+    locale.list: Popis lokalizacija
   acl_group:
     attribute: Atributi
     category: Kategorije
     family: Obitelji
+    channel: Kanali
+    locale: Lokalizacija
