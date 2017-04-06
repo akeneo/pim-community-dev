@@ -16,10 +16,6 @@ class BooleanProperty extends TwigProperty
      */
     protected function convertValue($value)
     {
-        $result = $this->getBackendData($value);
-
-        if (null !== $result) {
-            return $this->getTemplate()->render(['value' => $result]);
-        }
+        return $this->getTemplate()->render(['value' => $value['data']]);
     }
 }
