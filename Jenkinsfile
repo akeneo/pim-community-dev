@@ -68,6 +68,8 @@ if (launchUnitTests.equals("yes")) {
 
         tasks["php-cs-fixer"] = {runPhpCsFixerTest()}
 
+        tasks["php-coupling-detector"] = {runPhpCouplingDetectorTest()}
+
         tasks["grunt"] = {runGruntTest()}
 
         parallel tasks
@@ -143,6 +145,11 @@ def runPhpSpecTest(phpVersion) {
 def runIntegrationTest(phpVersion) {
     node('docker') {
         deleteDir()
+
+        sh "docker stop \$(docker ps -a -q) || true"
+        sh "docker rm \$(docker ps -a -q) || true"
+        sh "docker volume rm \$(docker volume ls -q) || true"sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
+
         try {
             docker.image("elasticsearch:5.2").withRun("--name elasticsearch -e ES_JAVA_OPTS=\"-Xms256m -Xmx256m\"") {
                 docker.image("mysql:5.7").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim", "--sql_mode=ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION") {
@@ -164,9 +171,7 @@ def runIntegrationTest(phpVersion) {
         } finally {
             sh "docker stop \$(docker ps -a -q) || true"
             sh "docker rm \$(docker ps -a -q) || true"
-            sh "docker volume rm \$(docker volume ls -q) || true"
-
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
+            sh "docker volume rm \$(docker volume ls -q) || true"sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
         }
@@ -221,6 +226,26 @@ def runBehatTest(features, phpVersion) {
                 archiveArtifacts allowEmptyArchive: true, artifacts: 'app/build/screenshots/*.png'
                 deleteDir()
             }
+        }
+    }
+}
+
+def runPhpCouplingDetectorTest() {
+    node('docker') {
+        deleteDir()
+        try {
+            docker.image("carcel/php:7.1").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+                unstash "project_files"
+
+                sh "composer remove --dev --no-update doctrine/mongodb-odm-bundle;"
+                sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                sh "./bin/php-coupling-detector detect --config-file=.php_cd.php src"
+            }
+        } finally {
+            sh "docker stop \$(docker ps -a -q) || true"
+            sh "docker rm \$(docker ps -a -q) || true"
+            sh "docker volume rm \$(docker volume ls -q) || true"
+            deleteDir()
         }
     }
 }

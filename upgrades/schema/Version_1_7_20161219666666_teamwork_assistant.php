@@ -29,7 +29,6 @@ class Version_1_7_20161219666666_teamwork_assistant extends AbstractMigration im
         $storage = $this->container->getParameter('pim_catalog_product_storage_driver');
 
         $sql = <<<'SQL'
-DROP TABLE IF EXISTS `pimee_teamwork_assistant_project`;
 CREATE TABLE `pimee_teamwork_assistant_project` (
   `id` INT AUTO_INCREMENT NOT NULL,
   `datagrid_view_id` INT NOT NULL,
@@ -57,7 +56,6 @@ SQL;
 
         if (AkeneoStorageUtilsExtension::DOCTRINE_ORM === $storage) {
             $sql .= <<<'SQL'
-DROP TABLE IF EXISTS `@pimee_teamwork_assistant.completeness_per_attribute_group@`;
 CREATE TABLE `@pimee_teamwork_assistant.completeness_per_attribute_group@` (
     `locale_id` INT NOT NULL,
     `channel_id` INT NOT NULL, 
@@ -77,7 +75,6 @@ CREATE TABLE `@pimee_teamwork_assistant.completeness_per_attribute_group@` (
     CONSTRAINT `attr_grp_completeness_attribute_group_foreign_key` FOREIGN KEY (`attribute_group_id`) REFERENCES `@pim_catalog.entity.attribute_group@` (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `@pimee_teamwork_assistant.project_product@`;
 CREATE TABLE `@pimee_teamwork_assistant.project_product@` (
   `project_id` INT NOT NULL,
   `product_id` INT NOT NULL,
@@ -90,7 +87,6 @@ CREATE TABLE `@pimee_teamwork_assistant.project_product@` (
 SQL;
         } else {
             $sql .= <<<'SQL'
-DROP TABLE IF EXISTS `@pimee_teamwork_assistant.completeness_per_attribute_group@`;
 CREATE TABLE `@pimee_teamwork_assistant.completeness_per_attribute_group@` (
     `locale_id` INT NOT NULL,
     `channel_id` INT NOT NULL, 
@@ -109,7 +105,6 @@ CREATE TABLE `@pimee_teamwork_assistant.completeness_per_attribute_group@` (
     CONSTRAINT `attr_grp_completeness_attribute_group_foreign_key` FOREIGN KEY (`attribute_group_id`) REFERENCES `@pim_catalog.entity.attribute_group@` (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `@pimee_teamwork_assistant.project_product@`;
 CREATE TABLE `@pimee_teamwork_assistant.project_product@` (
   `project_id` INT NOT NULL,
   `product_id` VARCHAR(36) NOT NULL,
@@ -119,7 +114,6 @@ CREATE TABLE `@pimee_teamwork_assistant.project_product@` (
   CONSTRAINT product_selection_project_foreign_key FOREIGN KEY (`project_id`) REFERENCES `@pimee_teamwork_assistant.model.project@` (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `@pim_catalog.entity.product#categories@`;
 CREATE TABLE `@pim_catalog.entity.product#categories@` (
   `product_id` VARCHAR(36) NOT NULL,
   `category_id` INT NOT NULL,
@@ -132,7 +126,6 @@ SQL;
         }
 
         $sql .= <<<'SQL'
-DROP TABLE IF EXISTS `pimee_teamwork_assistant_project_user_group`;
 CREATE TABLE `pimee_teamwork_assistant_project_user_group` (
   `project_id` INT NOT NULL,
   `user_group_id` SMALLINT NOT NULL,
@@ -143,7 +136,6 @@ CREATE TABLE `pimee_teamwork_assistant_project_user_group` (
 ALTER TABLE `pimee_teamwork_assistant_project_user_group` ADD CONSTRAINT FK_826785A5166D1F9C FOREIGN KEY (project_id) REFERENCES `pimee_teamwork_assistant_project` (id);
 ALTER TABLE `pimee_teamwork_assistant_project_user_group` ADD CONSTRAINT FK_826785A51ED93D47 FOREIGN KEY (user_group_id) REFERENCES `@pim_user.entity.group@` (id);
 
-DROP TABLE IF EXISTS `pimee_teamwork_assistant_project_status`;
 CREATE TABLE `pimee_teamwork_assistant_project_status` (
   `id` INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL,
   `project_id` INT NOT NULL,
@@ -158,9 +150,9 @@ ALTER TABLE `pimee_teamwork_assistant_project_status` ADD CONSTRAINT FK_2A911294
 ALTER TABLE `pimee_teamwork_assistant_project_status` ADD CONSTRAINT FK_2A911294166D1F9C FOREIGN KEY (project_id) REFERENCES `pimee_teamwork_assistant_project` (id) ON DELETE CASCADE;
 ALTER TABLE `pimee_security_attribute_group_access` ADD KEY `attr_grp_editable_permission_index` (`edit_attributes`, `attribute_group_id`);
 
-INSERT INTO akeneo_batch_job_instance (`code`, `label`, `alias`, `status`, `connector`, `rawConfiguration`, `type`) VALUES
-('project_calculation', 'Project calculation', 'project_calculation', 0, 'teamwork assistant', '', 'project_calculation')
-('refresh_project_completeness_calculation', 'Refresh project completeness', 'refresh_project_completeness_calculation', 0, 'teamwork assistant', '', 'refresh_project_completeness_calculation');
+INSERT INTO akeneo_batch_job_instance (`code`, `label`, `job_name`, `status`, `connector`, `raw_parameters`, `type`) VALUES
+('project_calculation', 'Project calculation', 'project_calculation', 0, 'teamwork assistant', 'a:0:{}', 'project_calculation'),
+('refresh_project_completeness_calculation', 'Refresh project completeness', 'refresh_project_completeness_calculation', 0, 'teamwork assistant', 'a:0:{}', 'refresh_project_completeness_calculation');
 SQL;
 
         $sql = $this->container->get('pimee_teamwork_assistant.table_name_mapper')->createQuery($sql);
