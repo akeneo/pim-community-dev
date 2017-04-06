@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty as OroFieldProperty;
 
 /**
@@ -33,5 +34,20 @@ class FieldProperty extends OroFieldProperty
     protected function getBackendData($value)
     {
         return $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getRawValue(ResultRecordInterface $record)
+    {
+        try {
+            $productValuePath = sprintf('[values][%s]', $this->get(self::NAME_KEY));
+            $value = $record->getValue($productValuePath);
+        } catch (\LogicException $e) {
+            return null;
+        }
+
+        return is_array($value) ? current($value) : $value;
     }
 }

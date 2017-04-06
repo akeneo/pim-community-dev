@@ -47,9 +47,11 @@ class ResultRecord implements ResultRecordInterface
     public function getValue($name)
     {
         foreach ($this->valueContainers as $data) {
-            if (is_array($data) && array_key_exists($name, $data)) {
-                return $data[$name];
-            } elseif (0 !== strpos($name, '.')) {
+            if (is_array($data)) {
+                if (array_key_exists($name, $data)) {
+                    return $data[$name];
+                }
+
                 $accessor = PropertyAccess::createPropertyAccessor();
 
                 return $accessor->getValue($data, $name);
