@@ -37,7 +37,7 @@ class FamilyIntegration extends AbstractStandardNormalizerTestCase
                 'sku'
             ],
             'attribute_as_label'     => 'sku',
-            'attribute_as_image'     => 'a_localizable_image',
+            'attribute_as_image'     => 'an_image',
             'attribute_requirements' => [
                 'ecommerce' => [
                     'a_date',

@@ -69,9 +69,9 @@ JSON;
 <<<JSON
     {
         "code": "complete_family_creation",
-        "attributes": ["an_image", "a_metric", "a_price", "a_localizable_image"],
+        "attributes": ["an_image", "a_metric", "a_price", "an_image"],
         "attribute_as_label": "sku",
-        "attribute_as_image": "a_localizable_image",
+        "attribute_as_image": "an_image",
         "attribute_requirements": {
             "ecommerce": ["sku", "a_metric"],
             "tablet": ["sku", "a_price"]
@@ -87,9 +87,9 @@ JSON;
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('complete_family_creation');
         $familyStandard = [
             'code'                   => 'complete_family_creation',
-            'attributes'             => ['a_localizable_image', 'a_metric', 'a_price', 'an_image', 'sku'],
+            'attributes'             => ['a_metric', 'a_price', 'an_image', 'sku'],
             'attribute_as_label'     => 'sku',
-            'attribute_as_image'     => 'a_localizable_image',
+            'attribute_as_image'     => 'an_image',
             'attribute_requirements' => [
                 'ecommerce'       => ['a_metric', 'sku'],
                 'ecommerce_china' => ['sku'],

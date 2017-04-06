@@ -37,7 +37,7 @@ class ListFamilyIntegration extends ApiTestCase
                     "a_text", "a_text_area", "a_yes_no", "an_image", "sku"
                 ],
                 "attribute_as_label": "sku",
-                "attribute_as_image": "a_localizable_image",
+                "attribute_as_image": "an_image",
                 "attribute_requirements": {
                     "ecommerce": [
                         "a_date", "a_file", "a_localizable_image", "a_localized_and_scopable_text_area", "a_metric",
