@@ -19,9 +19,7 @@ class FieldProperty extends OroFieldProperty
      */
     protected function convertValue($value)
     {
-        $result = $this->getBackendData($value);
-
-        return parent::convertValue($result);
+        return $value['data'];
     }
 
     /**

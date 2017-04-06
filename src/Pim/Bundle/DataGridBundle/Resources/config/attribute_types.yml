@@ -1,7 +1,7 @@
 parameters:
     pim_datagrid.product.attribute_type.pim_catalog_identifier:
         column:
-            type:        product_value_field
+            type:        field
         filter:
             type:        product_value_string
             ftype:       string
@@ -34,7 +34,7 @@ parameters:
         sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_simpleselect:
         column:
-            type:        product_value_option
+            type:        product_value_label
         filter:
             type:        product_value_choice
             ftype:       ajax_choice
@@ -46,7 +46,7 @@ parameters:
         sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_multiselect:
         column:
-            type:        product_value_options
+            type:        product_value_label
         filter:
             type:        product_value_choice
             ftype:       ajax_choice
