@@ -3,7 +3,7 @@
 def features = "features,vendor/akeneo/pim-community-dev/features"
 def ceBranch = "dev-master"
 def ceOwner = "akeneo"
-def phpVersion = "5.6"
+def phpVersion = "7.0"
 def launchUnitTests = "yes"
 def launchIntegrationTests = "yes"
 def launchBehatTests = "yes"
@@ -18,7 +18,7 @@ stage("Checkout") {
             choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
             choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehatTests'),
             string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
-            choice(choices: '5.6\n7.0\n7.1', description: 'PHP version to run behat with', name: 'phpVersion'),
+            choice(choices: '7.0\n7.1\n5.6', description: 'PHP version to run behat with', name: 'phpVersion'),
         ])
 
         ceBranch = userInput['ce_branch']
@@ -59,7 +59,7 @@ stage("Checkout") {
 }
 
 if (launchUnitTests.equals("yes")) {
-    stage("Unit tests") {
+    stage("Unit tests and Code style") {
         def tasks = [:]
 
         tasks["phpspec-5.6"] = {runPhpSpecTest("5.6")}
@@ -80,7 +80,6 @@ if (launchIntegrationTests.equals("yes")) {
     stage("Integration tests") {
         def tasks = [:]
 
-        tasks["phpunit-5.6"] = {runIntegrationTest("5.6")}
         tasks["phpunit-7.0"] = {runIntegrationTest("7.0")}
         tasks["phpunit-7.1"] = {runIntegrationTest("7.1")}
 
@@ -148,7 +147,7 @@ def runIntegrationTest(phpVersion) {
 
         sh "docker stop \$(docker ps -a -q) || true"
         sh "docker rm \$(docker ps -a -q) || true"
-        sh "docker volume rm \$(docker volume ls -q) || true"sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
+        sh "docker volume rm \$(docker volume ls -q) || true"
 
         try {
             docker.image("elasticsearch:5.2").withRun("--name elasticsearch -e ES_JAVA_OPTS=\"-Xms256m -Xmx256m\"") {
@@ -159,7 +158,7 @@ def runIntegrationTest(phpVersion) {
                         sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                         sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
                         sh "sed -i \"s#database_host: .*#database_host: mysql#g\" app/config/parameters_test.yml"
-                        sh "sed -i \"s#pim_es_host: .*#pim_es_host: elasticsearch#g\" app/config/parameters_test.yml"
+                        sh "sed -i \"s#index_hosts: .*#index_hosts: 'elasticsearch:9200'#g\" app/config/parameters_test.yml"
 
                         sh "./app/console --env=test pim:install --force"
 
@@ -171,7 +170,9 @@ def runIntegrationTest(phpVersion) {
         } finally {
             sh "docker stop \$(docker ps -a -q) || true"
             sh "docker rm \$(docker ps -a -q) || true"
-            sh "docker volume rm \$(docker volume ls -q) || true"sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
+            sh "docker volume rm \$(docker volume ls -q) || true"
+
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
             deleteDir()
         }
@@ -212,7 +213,7 @@ def runBehatTest(features, phpVersion) {
             // Configure the PIM
             sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
             sh "sed -i \"s#database_host: .*#database_host: mysql#g\" app/config/parameters_test.yml"
-            sh "sed -i \"s#pim_es_host: .*#pim_es_host: elasticsearch#g\" app/config/parameters_test.yml"
+            sh "sed -i \"s#index_hosts: .*#index_hosts: 'elasticsearch:9200'#g\" app/config/parameters_test.yml"
             sh "printf \"    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" >> app/config/parameters_test.yml"
 
             sh "mkdir -p app/build/logs/behat app/build/logs/consumer app/build/screenshots"
