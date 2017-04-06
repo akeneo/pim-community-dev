@@ -23,16 +23,6 @@
 - PIM-6284: Fix display of scopable information for fields
 - PIM-6271: Fix locking fields in mass edit product form
 
-## BC breaks
-
-### Classes
-
-- Remove class `Pim\Bundle\EnrichBundle\Form\Type\AttributeRequirementType`
-
-### Constructors
-
-- Change the constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements` to remove `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` and remove `Pim\Component\Catalog\Factory\AttributeRequirementFactory`
-
 # 1.7.1 (2017-03-23)
 
 ## Bug Fixes
