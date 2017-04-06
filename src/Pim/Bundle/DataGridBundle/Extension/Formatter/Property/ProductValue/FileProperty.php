@@ -16,8 +16,6 @@ class FileProperty extends FieldProperty
      */
     protected function convertValue($value)
     {
-        $data = $this->getBackendData($value);
-
-        return $data['originalFilename'];
+        return $value['data']['originalFilename'];
     }
 }
