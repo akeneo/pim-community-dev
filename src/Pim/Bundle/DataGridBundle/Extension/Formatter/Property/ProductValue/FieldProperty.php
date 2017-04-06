@@ -23,18 +23,6 @@ class FieldProperty extends OroFieldProperty
     }
 
     /**
-     * Retrieve the relevant backend data from attribute configuration
-     *
-     * @param array $value
-     *
-     * @return array
-     */
-    protected function getBackendData($value)
-    {
-        return $value;
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function getRawValue(ResultRecordInterface $record)

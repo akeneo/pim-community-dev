@@ -127,8 +127,6 @@ parameters:
     pim_datagrid.product.attribute_type.pim_catalog_metric:
         column:
             type:          product_value_metric
-            frontend_type: html
-            template:      PimDataGridBundle:Property:metric.html.twig
         filter:
             type:          product_value_metric
             ftype:         metric
