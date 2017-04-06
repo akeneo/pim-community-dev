@@ -66,12 +66,16 @@ class ProductDatasource extends Datasource
         }
 
         $productCursor = $this->pqb->execute();
-        $context = ['locales' => [$options['locale_code']], 'channels' => [$options['scope_code']]];
-        $rows = ['totalRecords' => $productCursor->count()];
+        $context = [
+            'locales'     => [$options['locale_code']],
+            'channels'    => [$options['scope_code']],
+            'data_locale' => $this->getParameters()['dataLocale']
+        ];
+        $rows = ['totalRecords' => $productCursor->count(), 'data' => []];
 
         foreach ($productCursor as $product) {
             $normalizedProduct = array_merge(
-                $this->normalizer->normalize($product, 'internal_api', $context),
+                $this->normalizer->normalize($product, 'datagrid', $context),
                 ['id' => $product->getId(), 'dataLocale' => $this->getConfiguration('locale_code')]
             );
             $rows['data'][] = new ResultRecord($normalizedProduct);

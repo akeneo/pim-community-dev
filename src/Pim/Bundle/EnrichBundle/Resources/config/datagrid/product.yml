@@ -12,11 +12,11 @@ datagrid:
         columns:
             label:
                 label:         Label
-                data_name:     '[meta][labels][product]'
+                data_name:     label
                 type:          field
             family:
                 label:         Family
-                data_name:     '[meta][labels][family]'
+                data_name:     family
                 type:          field
             enabled:
                 label:         Status
@@ -27,17 +27,17 @@ datagrid:
                 label:         Complete
                 type:          twig
                 template:      PimDataGridBundle:Property:completeness.html.twig
-                data_name:     '[meta][completeness]'
+                data_name:     completeness
                 frontend_type: html
             created:
                 label:         Created At
-                type:          product_value_date
+                type:          field
             updated:
                 label:         Updated At
-                type:          product_value_date
+                type:          field
             groups:
                 label:         Groups
-                data_name:     '[meta][labels][groups]'
+                data_name:     groups
                 type:          field
         properties:
             id: ~
