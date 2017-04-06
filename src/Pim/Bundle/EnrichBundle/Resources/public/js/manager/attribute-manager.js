@@ -179,17 +179,18 @@ define([
              * @return {Array}
              */
             generateMissingPrices: function (prices, currencies) {
-                prices = prices || [];
+                var generatedPrices = [];
                 _.each(currencies, function (currency) {
                     var price = _.findWhere(prices, { currency: currency.code });
 
                     if (!price) {
                         price = { amount: null, currency: currency.code };
-                        prices.push(price);
                     }
+
+                    generatedPrices.push(price);
                 });
 
-                return _.sortBy(prices, 'currency');
+                return _.sortBy(generatedPrices, 'currency');
             },
 
             /**

@@ -42,7 +42,7 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
         $qb = $this->entityManager->createQueryBuilder();
 
         $qb->select('o')
-            ->addSelect('v')
+            ->distinct()
             ->from($this->entityName, 'o')
             ->leftJoin('o.optionValues', 'v')
             ->leftJoin('o.attribute', 'a')

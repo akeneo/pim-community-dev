@@ -1492,7 +1492,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $family
      * @param string $channel
      *
-     * @Given /^attribute "([^"]*)" should be optional in family "([^"]*)" for channel "([^"]*)"$/
+     * @Then /^attribute "([^"]*)" should be optional in family "([^"]*)" for channel "([^"]*)"$/
      */
     public function attributeShouldBeOptionalInFamilyForChannel($attribute, $family, $channel)
     {
@@ -1503,9 +1503,26 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param string $attributes
+     * @param string $family
+     * @param string $channel
+     *
+     * @Then /^attributes "([^"]*)" should be optional in family "([^"]*)" for channel "([^"]*)"$/
+     */
+    public function attributesShouldBeOptionalInFamilyForChannel($attributes, $family, $channel)
+    {
+        foreach ($this->getMainContext()->listToArray($attributes) as $attribute) {
+            $requirement = $this->getAttributeRequirement($attribute, $family, $channel);
+
+            assertNotNull($requirement);
+            assertFalse($requirement->isRequired());
+        }
+    }
+
+    /**
      * @param string $identifier
      *
-     * @Given /^the history of the product "([^"]*)" has been built$/
+     * @Then /^the history of the product "([^"]*)" has been built$/
      */
     public function theHistoryOfTheProductHasBeenBuilt($identifier)
     {

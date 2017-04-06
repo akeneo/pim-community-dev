@@ -1,8 +1,49 @@
 # 1.7.x
 
-## Bug fixes
+## Functional improvements
 
-- PIM-6207: correctly dismiss "Unsaved changes" message on system configuration
+- PIM-6119: Family mass edit - add attributes by attribute group
+- PIM-6118: Improve attribute add select to avoid performance impact
+- GITHUB-5716: Redo family mass edit form using backbonejs architecture and internal REST API
+
+## Bug Fixes
+
+- PIM-6270: Fix sequential edit style
+- PIM-6265: Fix user menu navigation
+- GITHUB-5307: Fix sort order in field "Attribute group"
+- PIM-6240: Display the code instead of undefined if channel's locale is not filled for the given locale
+- PIM-6071: Hide add option icon for non-editable fields
+- PIM-6275: Fix variations not visible on Variant Group properties tab
+- PIM-6283: Fix a bug where SKUs of products in the Variant Group edit page were not displayed
+- PIM-6274: Successfully validate products with a custom validation on identifier
+- PIM-6199: Fix product mass edit attribute add select clickable on confirmation page
+
+## BC breaks
+
+### Classes
+
+- Remove class `Pim\Bundle\EnrichBundle\Form\Type\AttributeRequirementType` 
+
+### Constructors
+
+- Change the constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements` to remove `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` and remove `Pim\Component\Catalog\Factory\AttributeRequirementFactory`
+
+# 1.7.1 (2017-03-23)
+
+## Bug Fixes
+
+- PIM-6085: Association import step is not working with custom column name.
+- PIM-6207: Correctly dismiss "Unsaved changes" message on system configuration.
+- PIM-6213: Remove ticks on published form
+- PIM-6242: Fix UI glitch on TWA completeness filter search field
+- PIM-6239: Translate scope with catalog locale
+- GITHUB-3435: Sort order products datagrid `Manage filter` options
+- PIM-6250: Fix attribute export.
+- GITHUB-5538: User without permissions access to import/export jobs through `Process tracker`
+- PIM-6258: Fix permissions issue for listing locales, associations, families to display correctly the pef
+- PIM-6253: Add missing permissions on entities of the API
+- PIM-6252: Fix Summernote (WYSIWYG) style
+- PIM-6249: Correctly load more results from select2 when needed in the View Selector
 
 # 1.7.0 (2017-03-14)
 
@@ -14,13 +55,13 @@
 - API-31: As Julia, I would like to list attribute options
 - API-126: Change attribute form "scope" input to a yes/no switch
 
-## Bug Fixes
+## Bug Fixes
 
 - PIM-6210: fix unused fields on import profiles
 - PIM-6203: Fix various design bugs
 - PIM-6200: Only the owner of a view can save and remove it.
 
-## BC breaks
+## BC breaks
 
 ### Methods
 
@@ -62,7 +103,7 @@
 
 # 1.7.0-ALPHA1 (2017-02-23)
 
-## Bug Fixes
+## Bug Fixes
 
 - PIM-6161: Fix Tooltips and errors rendering on Import/Export Builder
 - GITHUB-5038: Fixed job name visibility checker to also check additional config

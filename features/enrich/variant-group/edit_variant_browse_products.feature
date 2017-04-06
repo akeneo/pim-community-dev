@@ -56,3 +56,20 @@ Feature: Edit a variant group adding/removing products
     And I should not see products MUG_A1, MUG_A3, MUG_A4, MUG_B1, MUG_B2, MUG_C1, MUG_C3, MUG_C4, MUG_D1 and MUG_D2
     And the rows "MUG_A2, MUG_C2 and POSTIT" should not be checked
     And I should see the columns In group, SKU, Color, Size, Label, Family, Status, Complete, Created at and Updated at
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6283
+  Scenario: Successfully display SKUs of products
+    And I am on the variant groups page
+    And I click on the "MUG" row
+    Then the row "MUG_B1" should contain:
+      | column | value  |
+      | SKU    | MUG_B1 |
+    And the row "MUG_B2" should contain:
+      | column | value  |
+      | SKU    | MUG_B2 |
+    And the row "MUG_D1" should contain:
+      | column | value  |
+      | SKU    | MUG_D1 |
+    And the row "MUG_D2" should contain:
+      | column | value  |
+      | SKU    | MUG_D2 |

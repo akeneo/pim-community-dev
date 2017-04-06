@@ -1,0 +1,95 @@
+<?php
+
+namespace Pim\Bundle\ApiBundle\tests\integration\Security;
+
+use Akeneo\Test\Integration\Configuration;
+use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Symfony\Component\HttpFoundation\Response;
+
+class ChannelAuthorizationIntegration extends ApiTestCase
+{
+    public function testOverallAccessDenied()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', '/api/rest/v1/channels');
+
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "You are not allowed to access the web API."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
+    public function testAccessGrantedForListingChannels()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', '/api/rest/v1/channels');
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    public function testAccessDeniedForListingChannels()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
+
+        $client->request('GET', '/api/rest/v1/channels');
+
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to list channels."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
+    public function testAccessGrantedForGettingAChannel()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', '/api/rest/v1/channels/ecommerce');
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    public function testAccessDeniedForGettingAChannel()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
+
+        $client->request('GET', '/api/rest/v1/channels/ecommerce');
+
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to list channels."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration()
+    {
+        return new Configuration(
+            [Configuration::getTechnicalCatalogPath()],
+            false
+        );
+    }
+}

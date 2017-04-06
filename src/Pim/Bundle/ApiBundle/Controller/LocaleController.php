@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ApiBundle\Controller;
 
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Pagination\PaginatorInterface;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
@@ -67,6 +68,8 @@ class LocaleController
      * @throws NotFoundHttpException
      *
      * @return JsonResponse
+     *
+     * @AclAncestor("pim_api_locale_list")
      */
     public function getAction(Request $request, $code)
     {
@@ -85,6 +88,8 @@ class LocaleController
      *
      * @throws UnprocessableEntityHttpException
      * @return JsonResponse
+     *
+     * @AclAncestor("pim_api_locale_list")
      */
     public function listAction(Request $request)
     {

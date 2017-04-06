@@ -24,10 +24,41 @@ class Creation extends Form
 
         $this->elements = array_merge(
             $this->elements,
-            array(
+            [
                 'Attributes' => array('css' => '.tab-pane.tab-attribute table'),
-            )
+                'Attribute list' => ['css' => '#attributes-sortable'],
+            ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addAvailableAttributes(array $attributes = [])
+    {
+        $this->spin(function () {
+            return $this->find('css', $this->elements['Available attributes button']['css']);
+        }, sprintf('Cannot find element "%s"', $this->elements['Available attributes button']['css']));
+
+        $list = $this->getElement('Available attributes list');
+        if (!$list->isVisible()) {
+            $this->openAvailableAttributesMenu();
+        }
+
+        $search = $this->getElement('Available attributes search');
+        foreach ($attributes as $attributeLabel) {
+            $search->setValue($attributeLabel);
+            $label = $this->spin(
+                function () use ($list, $attributeLabel) {
+                    return $list->find('css', sprintf('li label:contains("%s")', $attributeLabel));
+                },
+                sprintf('Could not find available attribute "%s".', $attributeLabel)
+            );
+
+            $label->click();
+        }
+
+        $this->getElement('Available attributes add button')->press();
     }
 
     /**

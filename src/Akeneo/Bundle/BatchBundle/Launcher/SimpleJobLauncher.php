@@ -32,6 +32,9 @@ class SimpleJobLauncher implements JobLauncherInterface
     /** @var string */
     protected $environment;
 
+    /** @var string */
+    protected $logDir;
+
     /**
      * Constructor
      *
@@ -40,19 +43,22 @@ class SimpleJobLauncher implements JobLauncherInterface
      * @param JobRegistry            $jobRegistry
      * @param string                 $rootDir
      * @param string                 $environment
+     * @param string                 $logDir
      */
     public function __construct(
         JobRepositoryInterface $jobRepository,
         JobParametersFactory $jobParametersFactory,
         JobRegistry $jobRegistry,
         $rootDir,
-        $environment
+        $environment,
+        $logDir
     ) {
         $this->jobRepository = $jobRepository;
         $this->jobParametersFactory = $jobParametersFactory;
         $this->jobRegistry = $jobRegistry;
         $this->rootDir = $rootDir;
         $this->environment = $environment;
+        $this->logDir = $logDir;
     }
 
     /**
@@ -72,7 +78,7 @@ class SimpleJobLauncher implements JobLauncherInterface
 
         $encodedConfiguration = json_encode($configuration, JSON_HEX_APOS);
         $cmd = sprintf(
-            '%s %s/console akeneo:batch:job --env=%s %s %s %s %s >> %s/logs/batch_execute.log 2>&1',
+            '%s %s/console akeneo:batch:job --env=%s %s %s %s %s >> %s/batch_execute.log 2>&1',
             $pathFinder->find(),
             $this->rootDir,
             $this->environment,
@@ -80,7 +86,7 @@ class SimpleJobLauncher implements JobLauncherInterface
             escapeshellarg($jobInstance->getCode()),
             $executionId,
             !empty($configuration) ? sprintf('--config=%s', escapeshellarg($encodedConfiguration)) : '',
-            $this->rootDir
+            $this->logDir
         );
 
         $this->launchInBackground($cmd);

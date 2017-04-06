@@ -131,7 +131,12 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
             foreach ($data as $localeCode => $label) {
                 $attributeOption->setLocale($localeCode);
                 $translation = $attributeOption->getTranslation();
-                $translation->setLabel($label);
+
+                if (null === $label || '' === $label) {
+                    $attributeOption->removeOptionValue($translation);
+                } else {
+                    $translation->setLabel($label);
+                }
             }
         }
 
