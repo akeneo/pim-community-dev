@@ -1,7 +1,5 @@
 parameters:
     pim_datagrid.extension.formatter.property.product_value.field_property.class:             Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\FieldProperty
-    pim_datagrid.extension.formatter.property.product_value.attribute_options_property.class: Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\AttributeOptionsProperty
-    pim_datagrid.extension.formatter.property.product_value.attribute_option_property.class:  Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\AttributeOptionProperty
     pim_datagrid.extension.formatter.property.product_value.price_property.class:             Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\PriceProperty
     pim_datagrid.extension.formatter.property.product_value.number_property.class:            Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\NumberProperty
     pim_datagrid.extension.formatter.property.product_value.image_property.class:             Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\ImageProperty
@@ -21,20 +19,6 @@ services:
             - '@translator'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_field }
-
-    pim_datagrid.extension.formatter.property.product_value.attribute_options_property:
-        class: '%pim_datagrid.extension.formatter.property.product_value.attribute_options_property.class%'
-        arguments:
-            - '@translator'
-        tags:
-            - { name: oro_datagrid.extension.formatter.property, type: product_value_options }
-
-    pim_datagrid.extension.formatter.property.product_value.attribute_option_property:
-        class: '%pim_datagrid.extension.formatter.property.product_value.attribute_option_property.class%'
-        arguments:
-            - '@translator'
-        tags:
-            - { name: oro_datagrid.extension.formatter.property, type: product_value_option }
 
     pim_datagrid.extension.formatter.property.product_value.price_property:
         class: '%pim_datagrid.extension.formatter.property.product_value.price_property.class%'
