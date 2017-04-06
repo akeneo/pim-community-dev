@@ -58,7 +58,7 @@ class BaseSorter implements FieldSorterInterface
                 $sortClause = [
                     $field => [
                         "order" => $direction,
-                        "missing" => "_first"
+                        "missing" => "_last"
                     ]
                 ];
                 $this->searchQueryBuilder->addSort($sortClause);

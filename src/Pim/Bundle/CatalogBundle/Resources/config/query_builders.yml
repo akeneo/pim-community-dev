@@ -274,9 +274,16 @@ services:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
 
     # Fields sorters
-    pim_catalog.query.elasticsearch.sorter.base:
+    pim_catalog.query.elasticsearch.sorter.datetime:
         class: '%pim_catalog.query.elasticsearch.sorter.base.class%'
         arguments:
             - ['updated', 'created']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.family:
+        class: '%pim_catalog.query.elasticsearch.sorter.base.class%'
+        arguments:
+            - ['family']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }

@@ -40,7 +40,7 @@ class BaseSorterSpec extends ObjectBehavior
             [
                 'updated' => [
                     "order" => 'ASC',
-                    "missing" => "_first"
+                    "missing" => "_last"
                 ]
             ]
         )->shouldBeCalled();
