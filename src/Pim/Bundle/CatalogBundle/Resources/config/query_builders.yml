@@ -30,7 +30,9 @@ parameters:
     pim_catalog.query.elasticsearch.filter.metric.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\MetricFilter
     pim_catalog.query.elasticsearch.filter.media.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\MediaFilter
     pim_catalog.query.elasticsearch.filter.boolean.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\BooleanFilter
-    pim_catalog.query.elasticsearch.sorter.base.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\BaseSorter
+    pim_catalog.query.elasticsearch.sorter.base_field.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\BaseFieldSorter
+    pim_catalog.query.elasticsearch.sorter.attribute.base.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attributes\BaseAttributeSorter
+    pim_catalog.query.elasticsearch.sorter.attribute.metric.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attributes\MetricSorter
 
 services:
     pim_catalog.query.product_query_builder_factory:
@@ -275,15 +277,22 @@ services:
 
     # Fields sorters
     pim_catalog.query.elasticsearch.sorter.datetime:
-        class: '%pim_catalog.query.elasticsearch.sorter.base.class%'
+        class: '%pim_catalog.query.elasticsearch.sorter.base_field.class%'
         arguments:
             - ['updated', 'created']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
 
     pim_catalog.query.elasticsearch.sorter.family:
-        class: '%pim_catalog.query.elasticsearch.sorter.base.class%'
+        class: '%pim_catalog.query.elasticsearch.sorter.base_field.class%'
         arguments:
             - ['family']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.metric:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.metric.class%'
+        arguments:
+            - ['pim_catalog_metric']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
