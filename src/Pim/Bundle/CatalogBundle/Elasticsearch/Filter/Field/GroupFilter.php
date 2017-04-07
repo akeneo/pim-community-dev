@@ -38,7 +38,7 @@ class GroupFilter extends AbstractFieldFilter implements FieldFilterInterface
         $operator,
         $value,
         $locale = null,
-        $scope = null,
+        $channel = null,
         $options = []
     ) {
         if (null === $this->searchQueryBuilder) {

@@ -34,13 +34,13 @@ abstract class AbstractAttributeSorter implements AttributeSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeSorter(AttributeInterface $attribute, $direction, $locale = null, $scope = null)
+    public function addAttributeSorter(AttributeInterface $attribute, $direction, $locale = null, $channel = null)
     {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the sorter.');
         }
 
-        $attributePath = $this->getAttributePath($attribute, $locale, $scope);
+        $attributePath = $this->getAttributePath($attribute, $locale, $channel);
 
         $suffix = $this->getAttributePathSuffix();
         if (null !== $suffix) {

@@ -62,7 +62,7 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
     /**
      * @param array $filters
      *
-     * @return mixed
+     * @return CursorInterface
      */
     protected function executeFilter(array $filters)
     {
@@ -78,12 +78,13 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
 
     /**
      * @param array $sorters
+     * @param array $options
      *
-     * @return mixed
+     * @return CursorInterface
      */
-    protected function executeSorter(array $sorters)
+    protected function executeSorter(array $sorters, $options = [])
     {
-        $pqb = $this->get('pim_catalog.query.product_query_builder_factory')->create();
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory')->create($options);
 
         foreach ($sorters as $sorter) {
             $context = isset($sorter[2]) ? $sorter[2] : [];

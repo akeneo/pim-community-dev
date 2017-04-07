@@ -13,6 +13,8 @@ use Pim\Component\Catalog\Query\Filter\Operators;
 class CompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
     /**
+     * {@inheritdoc}
+     *
      * +-------------------------------------------------------------------------+
      * |               |   Ecommerce   |     Tablet            | Ecommerce China |
      * |               | fr_FR | en_US | fr_FR | en_US | de_DE | en_US | zh_CN   |

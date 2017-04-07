@@ -50,7 +50,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
+    public function addFieldFilter($field, $operator, $value, $locale = null, $channel = null, $options = [])
     {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
@@ -143,7 +143,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
                     Operators::GREATER_THAN,
                     new \DateTime(sprintf('%s days ago', $value), new \DateTimeZone('UTC')),
                     $locale,
-                    $scope,
+                    $channel,
                     $options
                 );
             case Operators::SINCE_LAST_JOB:
@@ -169,7 +169,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
                     Operators::GREATER_THAN,
                     $lastCompletedJobExecution->getStartTime()->setTimezone(new \DateTimeZone('UTC')),
                     $locale,
-                    $scope,
+                    $channel,
                     $options
                 );
             default:
@@ -267,7 +267,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
     protected function getFormattedDate($field, $value)
     {
         $dateTime = $value;
-        
+
         if (!$dateTime instanceof \DateTime) {
             $dateTime = \DateTime::createFromFormat(static::DATETIME_FORMAT, $dateTime);
 

@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Sorter;
 
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
-use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\Sorter\Directions;
 
 /**
