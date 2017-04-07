@@ -1361,6 +1361,18 @@ Example with the ``>`` operator:
         completeness.print.en_US:
             gt: 4
 
+Sorting
+~~~~~~~
+
+.. code-block:: php
+
+    'sort' => [
+        'completeness.mobile.en_US' => [
+            'order'   => 'asc',
+            'missing' => '_last'
+        ]
+    ]
+
 Category
 ********
 :Apply: apply 'keyword' datatype on 'categories' field

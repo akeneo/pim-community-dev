@@ -25,14 +25,15 @@ parameters:
     pim_catalog.query.elasticsearch.filter.text.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\TextFilter
     pim_catalog.query.elasticsearch.filter.text_area.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\TextAreaFilter
     pim_catalog.query.elasticsearch.filter.option.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\OptionFilter
-    pim_catalog.query.elasticsearch.filter.options.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\OptionsFilter
     pim_catalog.query.elasticsearch.filter.price.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\PriceFilter
     pim_catalog.query.elasticsearch.filter.metric.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\MetricFilter
     pim_catalog.query.elasticsearch.filter.media.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\MediaFilter
     pim_catalog.query.elasticsearch.filter.boolean.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\BooleanFilter
+
     pim_catalog.query.elasticsearch.sorter.base_field.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\BaseFieldSorter
     pim_catalog.query.elasticsearch.sorter.attribute.base.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attributes\BaseAttributeSorter
     pim_catalog.query.elasticsearch.sorter.attribute.metric.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attributes\MetricSorter
+    pim_catalog.query.elasticsearch.sorter.completeness.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\CompletenessSorter
 
 services:
     pim_catalog.query.product_query_builder_factory:
@@ -294,5 +295,12 @@ services:
         class: '%pim_catalog.query.elasticsearch.sorter.attribute.metric.class%'
         arguments:
             - ['pim_catalog_metric']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.completeness:
+        class: '%pim_catalog.query.elasticsearch.sorter.completeness.class%'
+        arguments:
+            - ['completeness']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
