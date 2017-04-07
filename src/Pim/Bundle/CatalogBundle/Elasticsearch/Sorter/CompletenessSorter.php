@@ -14,30 +14,30 @@ class CompletenessSorter extends BaseFieldSorter
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction, $locale = null, $scope = null)
+    public function addFieldSorter($field, $direction, $locale = null, $channel = null)
     {
-        $this->checkLocaleAndScope($locale, $scope);
+        $this->checkLocaleAndChannel($locale, $channel);
 
-        $field .= sprintf('.%s.%s', $scope, $locale);
+        $field .= sprintf('.%s.%s', $channel, $locale);
 
-        parent::addFieldSorter($field, $direction, $locale, $scope);
+        parent::addFieldSorter($field, $direction, $locale, $channel);
     }
 
     /**
      * Check if channel and value are valid
      *
      * @param string $locale
-     * @param string $scope
+     * @param string $channel
      *
      * @throws InvalidPropertyException
      */
-    protected function checkLocaleAndScope($locale, $scope)
+    protected function checkLocaleAndChannel($locale, $channel)
     {
         if (null === $locale) {
             throw InvalidPropertyException::valueNotEmptyExpected('locale', static::class);
         }
 
-        if (null === $scope) {
+        if (null === $channel) {
             throw InvalidPropertyException::valueNotEmptyExpected('scope', static::class);
         }
     }

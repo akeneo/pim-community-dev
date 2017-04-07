@@ -165,9 +165,9 @@ class CompletenessSorterIntegration extends AbstractProductQueryBuilderTestCase
                 'values' => [
                     'a_metric' => [
                         [
-                            'data' => ['amount' => 15, 'unit' => 'WATT'],
+                            'data'   => ['amount' => 15, 'unit' => 'WATT'],
                             'locale' => null,
-                            'scope' => null,
+                            'scope'  => null,
                         ],
                     ],
                 ],
@@ -241,9 +241,9 @@ class CompletenessSorterIntegration extends AbstractProductQueryBuilderTestCase
                 'values' => [
                     'a_metric' => [
                         [
-                            'data' => ['amount' => 10, 'unit' => 'WATT'],
+                            'data'   => ['amount' => 10, 'unit' => 'WATT'],
                             'locale' => null,
-                            'scope' => null,
+                            'scope'  => null,
                         ],
                     ],
                 ],
