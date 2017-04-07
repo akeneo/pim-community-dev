@@ -182,7 +182,7 @@ Feature: Display the completeness of a product
     And I switch the locale to "fr_FR"
     Then I should see the "fr_FR" completeness in position 1
     And The completeness "en_US" should be closed
-    Then The label for the "tablet" channel for "fr_FR" locale should be "Tablet"
+    Then The label for the "tablet" channel for "fr_FR" locale should be "Tablette"
     When I am on the "tablet" channel page
     Then I fill in the following information:
       | French (France) |  |
@@ -191,4 +191,4 @@ Feature: Display the completeness of a product
     When I am on the "sneakers" product page
     And I open the "Completeness" panel
     And I switch the locale to "fr_FR"
-    Then The label for the "tablet" channel for "fr_FR" locale should be "Tablet"
+    Then The label for the "tablet" channel for "fr_FR" locale should be "[tablet]"
