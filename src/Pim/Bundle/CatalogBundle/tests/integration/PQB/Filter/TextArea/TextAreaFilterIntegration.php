@@ -17,7 +17,7 @@ class TextAreaFilterIntegration extends AbstractProductQueryBuilderTestCase
  is the best?";
 
     /**
-     * @{@inheritdoc}
+     * {@inheritdoc}
      */
     protected function setUp()
     {

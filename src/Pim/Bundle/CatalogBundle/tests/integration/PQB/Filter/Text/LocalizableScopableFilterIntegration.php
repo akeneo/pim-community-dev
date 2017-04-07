@@ -14,7 +14,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
 class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
     /**
-     * @{@inheritdoc}
+     * {@inheritdoc}
      */
     protected function setUp()
     {

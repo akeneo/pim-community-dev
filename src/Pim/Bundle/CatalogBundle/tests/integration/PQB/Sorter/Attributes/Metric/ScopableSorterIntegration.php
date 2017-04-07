@@ -16,7 +16,7 @@ use Pim\Component\Catalog\Query\Sorter\Directions;
 class ScopableSorterIntegration extends AbstractProductQueryBuilderTestCase
 {
     /**
-     * @{@inheritdoc}
+     * {@inheritdoc}
      */
     protected function setUp()
     {

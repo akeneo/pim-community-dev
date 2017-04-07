@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
 class PriceFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
     /**
-     * @{@inheritdoc}
+     * {@inheritdoc}
      */
     protected function setUp()
     {

@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Query\Sorter\Directions;
 class MetricSorterIntegration extends AbstractProductQueryBuilderTestCase
 {
     /**
-     * @{@inheritdoc}
+     * {@inheritdoc}
      */
     protected function setUp()
     {
