@@ -68,6 +68,10 @@ define(
             doUnpublish: function () {
                 this.togglePublished(false);
             },
+            isFetchingProduct() {
+                var promise = this.fetchPromise;
+                return promise && promise.state() === 'pending';
+            },
             togglePublished: function (publish) {
                 var productId   = this.getProductId();
                 var loadingMask = new LoadingMask();
@@ -79,7 +83,7 @@ define(
                 // TODO: We shouldn't force product fetching, we should use request response (cf. send for approval)
                 return method(productId)
                     .done(function () {
-                        FetcherRegistry.getFetcher('product')
+                        this.fetchPromise = FetcherRegistry.getFetcher('product')
                             .fetch(this.getFormData().meta.id).done(function (product) {
                                 navigation.addFlashMessage(
                                     'success',
@@ -108,8 +112,10 @@ define(
                         navigation.afterRequest();
                     })
                     .always(function () {
-                        loadingMask.hide().$el.remove();
-                    });
+                        if (!this.isFetchingProduct()) {
+                          loadingMask.hide().$el.remove();
+                        }
+                    }.bind(this));
             },
             getProductId: function () {
                 return this.getFormData().meta.id;
