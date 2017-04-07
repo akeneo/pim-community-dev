@@ -10,15 +10,20 @@ define(
         'pim/dialog',
         'pim/page-title',
         'pim/error',
-        'pim/i18n'
+        'pim/i18n',
+        'module'
     ],
-    function (_, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, Error, i18n) {
+    function (_, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, Error, i18n, module) {
         return BaseController.extend({
+            initialize: function () {
+                this.config = module.config();
+            },
+
             /**
              * {@inheritdoc}
              */
             renderRoute: function (route) {
-                return FetcherRegistry.getFetcher('group').fetch(route.params.code)
+                return FetcherRegistry.getFetcher(this.config.fetcher).fetch(route.params.code)
                     .then(function (group) {
                         if (!this.active) {
                             return;
