@@ -57,7 +57,7 @@ define(
                                 locale: _.isEmpty($this.data('locale')) ? null : $this.data('locale'),
                                 comment: _.isUndefined(myFormData.comment) ? null : myFormData.comment
                             })).then(function () {
-                                messenger.notificationFlashMessage(
+                                messenger.notify(
                                     'success',
                                     _.__('pimee_workflow.proposal.partial_' + action + '.modal.success')
                                 );
@@ -72,7 +72,7 @@ define(
                                     mediator.trigger('datagrid:doRefresh:' + gridName);
                                 }
                             }).fail(function () {
-                                messenger.notificationFlashMessage(
+                                messenger.notify(
                                     'error',
                                     _.__('pimee_workflow.proposal.partial_' + action + '.modal.error')
                                 );

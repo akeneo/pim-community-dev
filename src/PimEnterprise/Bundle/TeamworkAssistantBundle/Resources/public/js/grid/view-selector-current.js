@@ -45,7 +45,7 @@ define(
                 if (this.notified && !this.dirtyFilters) {
                     this.notified = false;
                 } else if (!this.notified && this.dirtyFilters) {
-                    messenger.notificationFlashMessage('warning', __('teamwork_assistant.project.leaving_scope'));
+                    messenger.notify('warning', __('teamwork_assistant.project.leaving_scope'));
                     this.notified = true;
                 }
             },
