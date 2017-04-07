@@ -1,4 +1,4 @@
-# 1.7.x
+# 1.7.2 (2017-04-07)
 
 ## Functional improvements
 
