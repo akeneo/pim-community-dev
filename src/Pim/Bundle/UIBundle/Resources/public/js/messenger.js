@@ -15,18 +15,6 @@ define(
                 template: _.template(flashMessageTemplate),
                 flash: true
             },
-            icons: {
-                '': 'icon-infos.svg',
-                'success': 'icon-check.svg',
-                'error': 'icon-warning-redlight.svg',
-                'warning': 'icon-warning-orangelight.svg'
-            },
-            closeIcons: {
-                '': 'icon-delete-bluedark.svg',
-                'success': 'icon-delete-greendark.svg',
-                'error': 'icon-delete-reddark.svg',
-                'warning': 'icon-delete-orangedark.svg'
-            },
 
             /**
              * Shows notification message
@@ -64,8 +52,8 @@ define(
                     message: message,
                     messageTitle: '',
                     delay: delay,
-                    icon: this.icons[type || ''],
-                    closeIcon: this.closeIcons[type || '']
+                    icon: this.getIcon(type),
+                    closeIcon: this.getCloseIcon(type)
                 })).appendTo(opt.container);
 
                 // Used to force the browser to visually render the element's styles to be able to use CSS transitions
@@ -75,19 +63,49 @@ define(
                 if (delay) {
                     var timeLeft = delay;
                     var interval = setInterval(function () {
-                        $el.find('.flash-timer:first').html(Math.max(parseInt(timeLeft / 1000), 0));
-                        timeLeft -= 1000;
+                        $el.find('.flash-timer:first').html(Math.max(Math.floor(timeLeft / 1000), 0));
+                        timeLeft -= 500;
 
                         if (timeLeft <= 0) {
                             $el.removeClass('AknFlash--visible');
                         }
 
-                        if (timeLeft <= -1000) {
+                        if (timeLeft <= -500) {
+                            $el.addClass('AknFlash--crushed');
+                        }
+
+                        if (timeLeft <= -1500) {
                             $el.remove();
                             clearInterval(interval);
                         }
-                    }, 1000);
+                    }, 500);
                 }
+            },
+
+            getIcon: function(type) {
+                return _.result(
+                    {
+                        'info': 'icon-infos.svg',
+                        'success': 'icon-check.svg',
+                        'error': 'icon-warning-redlight.svg',
+                        'warning': 'icon-warning-orangelight.svg'
+                    },
+                    type,
+                    'icon-infos.svg'
+                );
+            },
+
+            getCloseIcon: function(type) {
+                return _.result(
+                    {
+                        'info': 'icon-delete-bluedark.svg',
+                        'success': 'icon-delete-greendark.svg',
+                        'error': 'icon-delete-reddark.svg',
+                        'warning': 'icon-delete-orangedark.svg'
+                    },
+                    type,
+                    'icon-delete-bluedark.svg'
+                );
             }
         };
     }
