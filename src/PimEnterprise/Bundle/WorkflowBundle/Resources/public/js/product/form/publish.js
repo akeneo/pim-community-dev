@@ -81,6 +81,8 @@ define(
                     .done(function () {
                         FetcherRegistry.getFetcher('product')
                             .fetch(this.getFormData().meta.id).done(function (product) {
+                                loadingMask.render().$el.appendTo(this.getRoot().$el).show();
+
                                 navigation.addFlashMessage(
                                     'success',
                                     _.__(
@@ -106,8 +108,6 @@ define(
                             )
                         );
                         navigation.afterRequest();
-                    })
-                    .always(function () {
                         loadingMask.hide().$el.remove();
                     });
             },
