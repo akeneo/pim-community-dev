@@ -337,7 +337,6 @@ pim_enrich:
           info:
             search_attributes: Suche...
             no_available_attributes: Es können keine weiteren Attribute hinzugefügt werden
-            attributes_selected: "{{ attributeCount }} Attribute ausgewählt"
             no_match: Keine Treffer gefunden
             load_more: Weitere Ergebnisse werden geladen...
         categories:
@@ -540,6 +539,15 @@ pim_enrich:
             help: Bedeutet, dass sich die Änderungsverfolgung von Produkten automatisch aktualisiert. Um die Systemleistung zu verbessern, kann diese Funktion ausgeschaltet werden
         history:
           title: Historie
+    mass_edit:
+      family:
+        attributes:
+          label_label: Bezeichnung
+          toolbox:
+            select_attributes_by_groups: Nach Gruppen hinzufügen
+            select_attributes: Attribute hinzufügen
+            add: Hinzufügen
+            attributes_groups_selected: '{{ itemsCount }} Gruppe(n) ausgewählt'
   job:
     upload: Drag & Drop einer Datei oder hier klicken
   export:
@@ -569,7 +577,6 @@ pim_enrich:
             title: Attribut wählen
         attributes_selector:
           attribute_group: Attributgruppen
-          attributes: "Suche in {{ attributeCount }} Attributen"
           selected: "Ausgewählte Attribute"
           clear: Zurücksetzen
           all_group: Alle Gruppen

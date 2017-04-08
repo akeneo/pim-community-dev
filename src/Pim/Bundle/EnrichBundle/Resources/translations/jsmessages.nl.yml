@@ -329,7 +329,6 @@ pim_enrich:
           info:
             search_attributes: Zoeken...
             no_available_attributes: Er zijn geen attributen meer om toe te voegen
-            attributes_selected: "{{ attributeCount }} attribu(u) t(en) geselecteerd"
             no_match: Geen overeenkomsten gevonden
             load_more: Meer resultaten laden...
         categories:
@@ -527,6 +526,13 @@ pim_enrich:
             help: Betekent dat de productgeschiedenis automatisch wordt bijgewerkt. Dit kan worden uitgeschakeld om de prestaties te verbeteren
         history:
           title: Geschiedenis
+    mass_edit:
+      family:
+        attributes:
+          label_label: Label
+          toolbox:
+            select_attributes: Attributen toevoegen
+            add: Toevoegen
   job:
     upload: Klik en sleep om te uploaden of klik hier
   export:
@@ -555,7 +561,6 @@ pim_enrich:
             title: Attribuut selectie
         attributes_selector:
           attribute_group: Attribuutgroepen
-          attributes: "Zoek in {{ attributeCount }} attributen"
           selected: "Selecteer attributen"
           clear: Opruimen
           all_group: Alle groepen

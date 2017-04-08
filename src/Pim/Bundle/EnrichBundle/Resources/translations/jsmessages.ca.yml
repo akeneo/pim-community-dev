@@ -314,7 +314,6 @@ pim_enrich:
           info:
             search_attributes: Cercar...
             no_available_attributes: No hi ha més atributs a afegir
-            attributes_selected: "{{ attributeCount }} attribut(s) seleccionats"
             no_match: No s’han trobat coincidències
             load_more: Carregant més resultats...
         categories:
@@ -509,6 +508,13 @@ pim_enrich:
             help: Significa que l'historial del producte s'actualitza automàticament, que es pot desactivar per millorar-ne el rendiment
         history:
           title: Històric
+    mass_edit:
+      family:
+        attributes:
+          label_label: Etiqueta
+          toolbox:
+            select_attributes: Afegir atributs
+            add: Afegir
   export:
     product:
       data:
@@ -536,7 +542,6 @@ pim_enrich:
             title: Selecció de l'atribut
         attributes_selector:
           attribute_group: Grups d'atribut
-          attributes: "Cercar a {{ attributeCount }} atributs"
           selected: "Atributs seleccionats"
           clear: Restablir
           all_group: Tots els grups

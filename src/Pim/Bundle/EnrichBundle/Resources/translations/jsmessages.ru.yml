@@ -310,7 +310,6 @@ pim_enrich:
           info:
             search_attributes: Поиск...
             no_available_attributes: Нет больше атрибутов для добавления
-            attributes_selected: "Выбран(o) {{ attributeCount }} атрибут(ов)"
             no_match: Совпадений не найдено
             load_more: Загрузка дополнительных результатов...
         categories:
@@ -505,6 +504,13 @@ pim_enrich:
             help: Означает, что история изменений продукта автоматически обновляется, можно выключить для улучшения производительности
         history:
           title: Журнал
+    mass_edit:
+      family:
+        attributes:
+          label_label: Метка
+          toolbox:
+            select_attributes: Добавить атрибуты
+            add: Добавить
   export:
     product:
       data:
@@ -532,7 +538,6 @@ pim_enrich:
             title: Выбор атрибутов
         attributes_selector:
           attribute_group: Группы атрибутов
-          attributes: "Поиск в {{ attributeCount }} атрибутах"
           selected: "Выбранные атрибуты"
           clear: Очистить
           all_group: Все группы
