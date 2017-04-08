@@ -12,7 +12,7 @@ pim_api:
       list: Categorieën weergeven
     family:
       edit: Families aanmaken en bijwerken
-      list: Families oplijsten
+      list: Families weergeven
     channel.list: Kanalen weergeven
     locale.list: Lokalisaties weergeven
   acl_group:
