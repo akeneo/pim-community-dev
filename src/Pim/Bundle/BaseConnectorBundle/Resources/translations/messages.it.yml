@@ -49,8 +49,10 @@ pim_base_connector:
       invalid_item_columns_count: 'Invece delle colonne %totalColumnsCount%, si avranno %itemColumnsCount% in %csvPath%:%lineno%'
     csv_product_reader.title: Lettore prodotti in CSV
     csv_category_reader.title: Lettore categorie in CSV
+    csv_variant_group .title: Lettore CSV del gruppo di varianti
     dummy_processor.title: Processore di prova
     product_processor.title: Creazione prodotti
+    variant_group_processor.title: Creazione /aggiornamento di gruppo di varianti
     category_processor.title: Creazione categorie
     association_processor.title: Creazione associazioni
     product_association_processor.title: Creazione associazioni
