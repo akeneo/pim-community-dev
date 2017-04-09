@@ -375,6 +375,10 @@ function(_, Backbone, BackbonePageableCollection, app) {
             data = this.processQueryParams(data, state);
             data = this.processFiltersParams(data, state);
 
+            if ('undefined' !== typeof(options['search_after'])) {
+                data[this.inputName + '[search_after]'] = options['search_after'];
+            }
+
             var fullCollection = this.fullCollection, links = this.links;
 
             if (mode != "server") {
