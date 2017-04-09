@@ -37,7 +37,7 @@ class PimVersioningBundle extends Bundle
             DoctrineOrmMappingsPass::createYamlMappingDriver(
                 $versionMappings,
                 ['doctrine.orm.entity_manager'],
-                'akeneo_storage_utils.storage_driver.doctrine/orm'
+                false
             )
         );
     }

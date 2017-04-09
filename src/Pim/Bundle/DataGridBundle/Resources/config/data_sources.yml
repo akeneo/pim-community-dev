@@ -155,8 +155,6 @@ services:
 
     pim_datagrid.datasource.support_resolver:
         class: '%pim_datagrid.datasource.support_resolver.class%'
-        arguments:
-            - '%pim_catalog_product_storage_driver%'
         calls:
             - [addSmartDatasource, ['pim_datasource_product']]
             - [addSmartDatasource, ['pim_datasource_associated_product']]

@@ -30,9 +30,6 @@ parameters:
     uservoice_key:                 ~
     max_products_category_removal: 100
 
-    # Product storage driver can be doctrine/orm or doctrine/mongodb-odm
-    pim_catalog_product_storage_driver: doctrine/orm
-
     ## Uncomment to configure mongodb
     # mongodb_server: 'mongodb://localhost:27017'
     # mongodb_database: akeneo_pim

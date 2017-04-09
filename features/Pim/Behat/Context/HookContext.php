@@ -44,10 +44,6 @@ class HookContext extends PimContext
      */
     public function purgeDatabase()
     {
-        if ('doctrine/mongodb-odm' === $this->getParameter('pim_catalog_product_storage_driver')) {
-            $purgers[] = new MongoDBPurger($this->getService('doctrine_mongodb')->getManager());
-        }
-
         $purgers[] = new ORMPurger($this->getService('doctrine')->getManager());
 
         $purgers[] = new DBALPurger(

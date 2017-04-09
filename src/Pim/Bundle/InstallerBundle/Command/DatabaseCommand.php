@@ -228,16 +228,6 @@ class DatabaseCommand extends ContainerAwareCommand
     }
 
     /**
-     * Get the storage driver
-     *
-     * @return string
-     */
-    protected function getStorageDriver()
-    {
-        return $this->getContainer()->getParameter('pim_catalog_product_storage_driver');
-    }
-
-    /**
      * @return FixtureJobLoader
      */
     protected function getFixtureJobLoader()

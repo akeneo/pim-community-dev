@@ -19,22 +19,14 @@ class AkeneoStorageUtilsExtension extends Extension
     /** @staticvar string */
     const DOCTRINE_ORM = 'doctrine/orm';
 
-    /** @var string */
-    protected static $storageDriver;
-
     /**
      * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
-        self::$storageDriver = $config['storage_driver'];
 
         $container->setParameter($this->getAlias() . '.mapping_overrides', $config['mapping_overrides']);
-
-        $container->setParameter($this->getAlias() . '.storage_driver', self::$storageDriver);
-        // Parameter defining if the mapping driver must be enabled or not
-        $container->setParameter($this->getAlias() . '.storage_driver.' . self::$storageDriver, true);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('doctrine.yml');

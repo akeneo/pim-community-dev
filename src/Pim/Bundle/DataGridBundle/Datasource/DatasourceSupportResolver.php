@@ -20,19 +20,8 @@ class DatasourceSupportResolver
     /** @staticvar string */
     const DATASOURCE_SUPPORT_MONGODB = 'mongodb';
 
-    /** @var string */
-    protected $storageDriver;
-
     /** @var array */
     protected $smartDatasources = [];
-
-    /**
-     * @param string $storageDriver
-     */
-    public function __construct($storageDriver)
-    {
-        $this->storageDriver = $storageDriver;
-    }
 
     /**
      * @param string $datasourceType

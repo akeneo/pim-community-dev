@@ -39,7 +39,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         CollectionFilterInterface $collectionFilter,
         NormalizerInterface $completenessCollectionNormalizer,
-        $storageDriver,
         UserContext $userContext,
         CompletenessCalculatorInterface $completenessCalculator
     ) {
@@ -57,7 +56,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         $channelRepository,
         $collectionFilter,
         $completenessCollectionNormalizer,
-        $storageDriver,
         $userContext,
         $completenessCalculator
         );

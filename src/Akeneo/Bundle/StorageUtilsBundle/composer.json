@@ -23,7 +23,6 @@
     },
     "require-dev": {
         "phpspec/phpspec": "3.0.0",
-        "doctrine/mongodb-odm-bundle": "3.0.1"
     },
     "config": {
         "bin-dir": "bin"

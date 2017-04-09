@@ -61,7 +61,7 @@ class PimCatalogBundle extends Bundle
             DoctrineOrmMappingsPass::createYamlMappingDriver(
                 $productMappings,
                 ['doctrine.orm.entity_manager'],
-                'akeneo_storage_utils.storage_driver.doctrine/orm'
+                false
             )
         );
     }
