@@ -38,10 +38,6 @@ class HookContext extends BaseHookContext
             'pimee_teamwork_assistant_project_product',
         ];
 
-        if ('doctrine/mongodb-odm' === $this->getParameter('pim_catalog_product_storage_driver')) {
-            $sqlTables[] = 'pimee_teamwork_assistant_product_category';
-        }
-
         $purger = new DBALPurger($this->getService('database_connection'), $sqlTables);
 
         $purger->purge();
