@@ -177,9 +177,8 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function addProductStorage()
     {
-        $storage = $this->getProductStorage();
         $path = $this->getSourcePath(self::PRODUCT_STORAGE_KEY);
-        $this->configuration->offsetSetByPath($path, $storage);
+        $this->configuration->offsetSetByPath($path, 'doctrine/orm');
     }
 
     /**
@@ -276,16 +275,6 @@ class ContextConfigurator implements ConfiguratorInterface
         $attributes = $this->getAttributesConfig();
         $path = $this->getSourcePath(self::USEABLE_ATTRIBUTES_KEY);
         $this->configuration->offsetSetByPath($path, $attributes);
-    }
-
-    /**
-     * Get product storage (ORM/MongoDBODM)
-     *
-     * @return string
-     */
-    protected function getProductStorage()
-    {
-        return AkeneoStorageUtilsExtension::DOCTRINE_ORM;
     }
 
     /**

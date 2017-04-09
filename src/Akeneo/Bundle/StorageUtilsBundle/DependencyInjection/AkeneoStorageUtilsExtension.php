@@ -16,9 +16,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 class AkeneoStorageUtilsExtension extends Extension
 {
-    /** @staticvar string */
-    const DOCTRINE_ORM = 'doctrine/orm';
-
     /**
      * {@inheritdoc}
      */
@@ -34,15 +31,5 @@ class AkeneoStorageUtilsExtension extends Extension
         $loader->load('removers.yml');
         $loader->load('repositories.yml');
         $loader->load('savers.yml');
-    }
-
-    /**
-     * Provides the supported driver for application storage
-     *
-     * @return string[]
-     */
-    public static function getSupportedStorageDrivers()
-    {
-        return [self::DOCTRINE_ORM];
     }
 }
