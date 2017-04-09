@@ -80,22 +80,5 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('workflow/presenters.yml');
         $loader->load('jobs.yml');
         $loader->load('steps.yml');
-
-        $this->loadStorageDriver($container);
-    }
-
-    /**
-     * Load config for specific storage
-     *
-     * @param ContainerBuilder $container
-     */
-    protected function loadStorageDriver(ContainerBuilder $container)
-    {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
-        $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
-        if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
-            $loader->load($storageConfig);
-        }
     }
 }
