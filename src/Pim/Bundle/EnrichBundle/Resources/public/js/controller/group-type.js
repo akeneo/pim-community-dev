@@ -9,29 +9,35 @@ define(
         'pim/user-context',
         'pim/dialog',
         'pim/page-title',
-        'pim/error'
+        'pim/error',
+        'pim/i18n'
     ],
-    function (_, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, Error) {
+    function (_, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, Error, i18n) {
         return BaseController.extend({
             /**
              * {@inheritdoc}
              */
             renderRoute: function (route) {
-                var type = route.name.indexOf('pim_importexport_import') === -1 ? 'export' : 'import';
-                var mode = route.name.indexOf('_profile_show') === -1 ? 'edit' : 'show';
-
-                return FetcherRegistry.getFetcher('job-instance-' + type).fetch(route.params.code)
-                    .then(function (jobInstance) {
+                return FetcherRegistry.getFetcher('group-type').fetch(route.params.code)
+                    .then(function (groupType) {
                         if (!this.active) {
                             return;
                         }
 
-                        PageTitle.set({'job.label': _.escape(jobInstance.label) });
+                        var label = _.escape(
+                            i18n.getLabel(
+                                groupType.labels,
+                                UserContext.get('catalogLocale'),
+                                groupType.code
+                            )
+                        );
 
-                        FormBuilder.build(jobInstance.meta.form + '-' + mode)
+                        PageTitle.set({'group type.label': _.escape(label) });
+
+                        FormBuilder.build('pim-group-type-edit-form')
                             .then(function (form) {
-                                form.setData(jobInstance);
-                                form.trigger('pim_enrich:form:entity:post_fetch', jobInstance);
+                                form.setData(groupType);
+                                form.trigger('pim_enrich:form:entity:post_fetch', groupType);
                                 form.setElement(this.$el).render();
                             }.bind(this));
                     }.bind(this))

@@ -227,7 +227,7 @@ config:
                     module: pim/controller/family
                     aclResourceId: pim_enrich_family_index
                 pim_enrich_grouptype_edit:
-                    module: pim/controller/form
+                    module: pim/controller/group-type
                     aclResourceId: pim_enrich_grouptype_edit
                 pim_enrich_product_edit:
                     module: pim/controller/product
@@ -408,6 +408,7 @@ config:
         pim/controller/variant-group:       pimenrich/js/controller/variant-group
         pim/controller/role:                pimenrich/js/controller/role
         pim/controller/job-execution:       pimenrich/js/controller/job-execution
+        pim/controller/group-type:          pimenrich/js/controller/group-type
 
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector
