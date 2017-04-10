@@ -38,6 +38,7 @@ class ProductIndexingIntegration extends TestCase
             'enabled'       => false,
             'categories'    => [],
             'groups'        => [],
+            'variant_group' => null,
             'is_associated' => false,
             'completeness'  => [],
             'values'        => [],
@@ -62,6 +63,7 @@ class ProductIndexingIntegration extends TestCase
             'enabled'       => true,
             'categories'    => [],
             'groups'        => [],
+            'variant_group' => null,
             'is_associated' => false,
             'completeness'  => [],
             'values'        => [],
@@ -85,7 +87,8 @@ class ProductIndexingIntegration extends TestCase
             'family'        => 'familyA',
             'enabled'       => true,
             'categories'    => ['categoryA1', 'categoryB'],
-            'groups'        => ['groupA', 'groupB', 'variantA'],
+            'groups'        => ['groupA', 'groupB'],
+            'variant_group' => 'variantA',
             'is_associated' => true,
             'completeness'  => [
                 'ecommerce' => ['en_US' => 100],
@@ -166,7 +169,7 @@ class ProductIndexingIntegration extends TestCase
                     '<all_channels>' => [
                         '<all_locales>' => [
                             'base_data' => '0.98',
-                            'data'    => '98',
+                            'data'      => '98',
                             'base_unit' => 'METER',
                             'unit'      => 'CENTIMETER',
                         ],
@@ -176,7 +179,7 @@ class ProductIndexingIntegration extends TestCase
                     '<all_channels>' => [
                         '<all_locales>' => [
                             'base_data' => '253.15',
-                            'data'    => '-20',
+                            'data'      => '-20',
                             'base_unit' => 'KELVIN',
                             'unit'      => 'CELSIUS',
                         ],

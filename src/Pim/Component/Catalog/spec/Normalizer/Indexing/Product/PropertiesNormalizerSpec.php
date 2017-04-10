@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
@@ -54,6 +55,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getValues()->willReturn($productValueCollection);
         $product->getFamily()->willReturn(null);
         $product->getGroupCodes()->willReturn([]);
+        $product->getVariantGroup()->willReturn(null);
         $product->getCategoryCodes()->willReturn([]);
         $productValueCollection->isEmpty()->willReturn(true);
 
@@ -72,6 +74,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'enabled'       => false,
                 'categories'    => [],
                 'groups'        => [],
+                'variant_group' => null,
                 'is_associated' => false,
                 'completeness'  => [],
                 'values'        => [],
@@ -106,6 +109,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getValues()->willReturn($productValueCollection);
         $product->getFamily()->willReturn(null);
         $product->getGroupCodes()->willReturn([]);
+        $product->getVariantGroup()->willReturn(null);
         $product->getCategoryCodes()->willReturn([]);
         $productValueCollection->isEmpty()->willReturn(true);
 
@@ -126,6 +130,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'enabled'       => false,
                 'categories'    => [],
                 'groups'        => [],
+                'variant_group' => null,
                 'is_associated' => false,
                 'completeness'  => ['the completenesses'],
                 'values'        => [],
@@ -139,6 +144,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         ProductValueCollectionInterface $productValueCollection,
         FamilyInterface $family,
         Collection $completenessCollection,
+        Group $variantGroup,
         Collection $associations
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
@@ -160,7 +166,9 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getFamily()->willReturn($family);
         $family->getCode()->willReturn('a_family');
         $product->isEnabled()->willReturn(true);
-        $product->getGroupCodes()->willReturn(['first_group', 'second_group']);
+        $product->getGroupCodes()->willReturn(['first_group', 'second_group', 'a_variant_group']);
+        $product->getVariantGroup()->willReturn($variantGroup);
+        $variantGroup->getCode()->willReturn('a_variant_group');
         $product->getCategoryCodes()->willReturn(
             [
                 'first_category',
@@ -208,6 +216,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'enabled'       => true,
                 'categories'    => ['first_category', 'second_category'],
                 'groups'        => ['first_group', 'second_group'],
+                'variant_group' => 'a_variant_group',
                 'is_associated' => true,
                 'completeness'  => [
                     'ecommerce' => [
