@@ -136,7 +136,7 @@ parameters:
         sorter:            ~
     pim_datagrid.product.attribute_type.pim_reference_data_simpleselect:
         column:
-            type:        product_value_reference_data
+            type:        product_value_field
         filter:
             type:        product_value_reference_data
             ftype:       ajax_choice
@@ -148,7 +148,7 @@ parameters:
         sorter:          product_value_reference_data
     pim_datagrid.product.attribute_type.pim_reference_data_multiselect:
         column:
-            type:        product_value_reference_data
+            type:        product_value_field
         filter:
             type:        product_value_reference_data
             ftype:       ajax_choice
