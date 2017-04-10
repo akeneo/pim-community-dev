@@ -292,7 +292,6 @@ pim_enrich:
           info:
             search_attributes: Pesquisar...
             no_available_attributes: Não há mais atributos para serem adicionados
-            attributes_selected: "{{ attributeCount }} atributo(s) selecionado(s)"
             no_match: Nenhum resultado encontrado
             load_more: A carregar mais resultados...
         categories:
@@ -484,6 +483,13 @@ pim_enrich:
             help: Significa que o histórico do produto é atualizado automaticamente, pode ser desligado para melhorar a velocidade
         history:
           title: Histórico
+    mass_edit:
+      family:
+        attributes:
+          label_label: Rótulo
+          toolbox:
+            select_attributes: Adicionar atributos
+            add: Adicionar
   export:
     product:
       structure:

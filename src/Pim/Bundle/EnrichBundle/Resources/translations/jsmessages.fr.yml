@@ -337,7 +337,6 @@ pim_enrich:
           info:
             search_attributes: Rechercher...
             no_available_attributes: Il n'y a plus d'attributs disponibles
-            attributes_selected: "{{ attributeCount }} attribut(s) sélectionné(s)"
             no_match: Aucune correspondance trouvée
             load_more: Chargement de plus de résultats...
         categories:
@@ -540,6 +539,15 @@ pim_enrich:
             help: Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances
         history:
           title: Historique
+    mass_edit:
+      family:
+        attributes:
+          label_label: Libellé
+          toolbox:
+            select_attributes_by_groups: Ajouter par groupes
+            select_attributes: Ajouter des attributs
+            add: Ajouter
+            attributes_groups_selected: '{{ itemsCount }} groupe(s) sélectionné(s)'
   job:
     upload: Glissez et déposer un fichier ou cliquez ici
   export:
@@ -569,7 +577,6 @@ pim_enrich:
             title: Sélection d'attributs
         attributes_selector:
           attribute_group: Groupes d'attributs
-          attributes: "Rechercher dans les {{ attributeCount }} attributs"
           selected: "Attributs sélectionnés"
           clear: Réinitialiser
           all_group: Tous les groupes

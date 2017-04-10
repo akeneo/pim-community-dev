@@ -308,7 +308,6 @@ pim_enrich:
           info:
             search_attributes: 搜索...
             no_available_attributes: 没有需要添加的属性
-            attributes_selected: "{{ attributeCount }} 属性选择"
             no_match: 未找到匹配项
             load_more: 正在加载更多的结果...
         categories:
@@ -488,6 +487,13 @@ pim_enrich:
             help: 关闭产品历史自动更新以提高性能
         history:
           title: 历史
+    mass_edit:
+      family:
+        attributes:
+          label_label: 标签
+          toolbox:
+            select_attributes: 添加属性
+            add: 增加
   export:
     product:
       data:
@@ -515,7 +521,6 @@ pim_enrich:
             title: 属性选择
         attributes_selector:
           attribute_group: 属性组
-          attributes: "在 {{ attributeCount }} 属性中搜索"
           selected: "选定的属性"
           clear: 清除
           all_group: 所有群组

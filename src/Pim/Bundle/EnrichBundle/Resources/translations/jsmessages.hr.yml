@@ -314,7 +314,6 @@ pim_enrich:
           info:
             search_attributes: Pretraži...
             no_available_attributes: Nema više atributa koje se može dodati
-            attributes_selected: "{{ attributeCount }} atributa odabrano"
             no_match: Nisu pronađeni rezultati
             load_more: Učitavanje više rezultata...
         categories:
@@ -509,6 +508,13 @@ pim_enrich:
             help: Znači da će se povijest proizvoda automatski ažurirati, može se isključiti za poboljšanje performansi
         history:
           title: Povijest
+    mass_edit:
+      family:
+        attributes:
+          label_label: Oznaka
+          toolbox:
+            select_attributes: Dodaj atribute
+            add: Dodaj
   export:
     product:
       data:
@@ -536,7 +542,6 @@ pim_enrich:
             title: Odabir atributa
         attributes_selector:
           attribute_group: Grupe atributa
-          attributes: "Pretraži unutar {{ attributeCount }} atributa"
           selected: "Odabrani atributi"
           clear: Obriši
           all_group: Sve grupe

@@ -337,7 +337,6 @@ pim_enrich:
           info:
             search_attributes: Buscar...
             no_available_attributes: No hay más atributos para agregar
-            attributes_selected: "{{ attributeCount }} atributo(s) seleccionado(s)"
             no_match: No se encuentran coincidencias
             load_more: Cargando más resultados...
         categories:
@@ -540,6 +539,13 @@ pim_enrich:
             help: Significa que el historial del producto es actualizada automáticamente, puede ser desactivada para mejorar el desempeño
         history:
           title: Histórico
+    mass_edit:
+      family:
+        attributes:
+          label_label: Etiqueta
+          toolbox:
+            select_attributes: Agregar atributos
+            add: Agregar
   job:
     upload: Arrastrar y soltar un fichero o haga clic aquí
   export:
@@ -569,7 +575,6 @@ pim_enrich:
             title: Selección de atributo
         attributes_selector:
           attribute_group: Grupos de atributos
-          attributes: "Buscando en {{ attributeCount }} atributos"
           selected: "Atributos seleccionados"
           clear: Restablecer
           all_group: Todos los grupos

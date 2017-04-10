@@ -278,7 +278,6 @@ pim_enrich:
           info:
             search_attributes: Szukaj...
             no_available_attributes: Nie ma więcej atrybutów do dodania
-            attributes_selected: "{{ attributeCount }} atrybut(ów) wybrany(ch)"
             no_match: Nie znaleziono dopasowań
             load_more: Ładowanie więcej wyników...
         categories:
@@ -465,6 +464,13 @@ pim_enrich:
             help: Oznacza że historia dla produktu będzie aktualizowana automatycznie, wyłącz w celu poprawy wydajności
         history:
           title: Historia
+    mass_edit:
+      family:
+        attributes:
+          label_label: Etykieta
+          toolbox:
+            select_attributes: Dodaj atrybuty
+            add: Dodaj
   export:
     product:
       structure:

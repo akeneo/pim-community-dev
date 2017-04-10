@@ -310,7 +310,6 @@ pim_enrich:
           info:
             search_attributes: Hae...
             no_available_attributes: Ei ole enää attribuutteja lisättäväksi
-            attributes_selected: "{{ attributeCount }} attribuuttia valittu"
             no_match: Vastaavuuksia ei löydy
             load_more: Ladataan lisää tuloksia...
         categories:
@@ -505,6 +504,13 @@ pim_enrich:
             help: Tarkoittaa että tuotehistoria on automaattisesti päivitetty, voidaan laittaa pois päältä suorituskyvyn parantamiseksi
         history:
           title: Historia
+    mass_edit:
+      family:
+        attributes:
+          label_label: Nimike
+          toolbox:
+            select_attributes: Lisää attribuutteja
+            add: Lisää
   export:
     product:
       data:
@@ -532,7 +538,6 @@ pim_enrich:
             title: Attribuuttivalinta
         attributes_selector:
           attribute_group: Attribuuttiryhmät
-          attributes: "Etsi {{ attributeCount }} attribuutista"
           selected: "Valitut attribuutit"
           clear: Tyhjennä
           all_group: Kaikki ryhmät
