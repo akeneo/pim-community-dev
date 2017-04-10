@@ -368,7 +368,6 @@ variant group:
     edit:     edit variant group
 association type:
     title:    association type
-    overview: association type overview
     create:   create association type
     edit:     edit association type
 

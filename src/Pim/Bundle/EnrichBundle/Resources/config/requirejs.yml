@@ -467,6 +467,9 @@ config:
         pim/form/common/attributes/copy:                     pimenrich/js/form/common/attributes/copy
         pim/form/common/attributes/copy-field:               pimenrich/js/form/common/attributes/copy-field
         pim/form/common/download-file:                       pimenrich/js/form/common/download-file
+        pim/form/common/index/index:                         pimenrich/js/form/common/index/index
+        pim/form/common/index/grid:                          pimenrich/js/form/common/index/grid
+        pim/form/common/index/create-button:                 pimenrich/js/form/common/index/create-button
 
         # Fields
         pim/field:                  pimenrich/js/product/field/field
@@ -527,6 +530,8 @@ config:
         pim/template/form/tab/attribute/copy-field:               pimenrich/templates/form/tab/attributes/copy-field.html
         pim/template/form/redirect:                               pimenrich/templates/form/redirect.html
         pim/template/form/download-file:                          pimenrich/templates/form/download-file.html
+        pim/template/form/index/index:                            pimenrich/templates/form/index/index.html
+        pim/template/form/index/create-button:                    pimenrich/templates/form/index/create-button.html
 
         pim/template/association-type/tab/properties/general:     pimenrich/templates/association-type/tab/properties/general.html
 
