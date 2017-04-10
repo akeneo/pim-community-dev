@@ -16,8 +16,6 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  */
 class GroupFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
-    const GROUPS_KEY = 'groups';
-
     /**
      * @param array $supportedFields
      * @param array $supportedOperators
@@ -53,8 +51,8 @@ class GroupFilter extends AbstractFieldFilter implements FieldFilterInterface
             case Operators::IN_LIST:
                 $clause = [
                     'terms' => [
-                        self::GROUPS_KEY => $value
-                    ]
+                        $field => $value,
+                    ],
                 ];
 
                 $this->searchQueryBuilder->addFilter($clause);
@@ -62,22 +60,22 @@ class GroupFilter extends AbstractFieldFilter implements FieldFilterInterface
             case Operators::NOT_IN_LIST:
                 $clause = [
                     'terms' => [
-                        self::GROUPS_KEY => $value
-                    ]
+                        $field => $value,
+                    ],
                 ];
 
                 $this->searchQueryBuilder->addMustNot($clause);
                 break;
             case Operators::IS_EMPTY:
                 $clause = [
-                    'exists' => ['field' => self::GROUPS_KEY]
+                    'exists' => ['field' => $field],
                 ];
 
                 $this->searchQueryBuilder->addMustNot($clause);
                 break;
             case Operators::IS_NOT_EMPTY:
                 $clause = [
-                    'exists' => ['field' => self::GROUPS_KEY]
+                    'exists' => ['field' => $field],
                 ];
 
                 $this->searchQueryBuilder->addFilter($clause);

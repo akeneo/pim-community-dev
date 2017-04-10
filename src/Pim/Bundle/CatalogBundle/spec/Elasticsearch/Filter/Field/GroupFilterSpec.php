@@ -22,7 +22,7 @@ class GroupFilterSpec extends ObjectBehavior
     function let()
     {
         $this->beConstructedWith(
-            ['groups'],
+            ['groups', 'variant_group'],
             ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
         );
     }
@@ -54,6 +54,7 @@ class GroupFilterSpec extends ObjectBehavior
     function it_supports_groups_field()
     {
         $this->supportsField('groups')->shouldReturn(true);
+        $this->supportsField('variant_group')->shouldReturn(true);
         $this->supportsField('a_not_supported_field')->shouldReturn(false);
     }
 
