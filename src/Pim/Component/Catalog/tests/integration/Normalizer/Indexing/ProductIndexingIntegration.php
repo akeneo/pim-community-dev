@@ -31,15 +31,16 @@ class ProductIndexingIntegration extends TestCase
         );
 
         $expected = [
-            'identifier'   => 'bar',
-            'created'      => $date->format('c'),
-            'updated'      => $date->format('c'),
-            'family'       => null,
-            'enabled'      => false,
-            'categories'   => [],
-            'groups'       => [],
-            'completeness' => [],
-            'values'       => [],
+            'identifier'    => 'bar',
+            'created'       => $date->format('c'),
+            'updated'       => $date->format('c'),
+            'family'        => null,
+            'enabled'       => false,
+            'categories'    => [],
+            'groups'        => [],
+            'is_associated' => false,
+            'completeness'  => [],
+            'values'        => [],
         ];
 
         $this->assertIndexingFormat('bar', $expected);
@@ -54,15 +55,16 @@ class ProductIndexingIntegration extends TestCase
         );
 
         $expected = [
-            'identifier'   => 'baz',
-            'created'      => $date->format('c'),
-            'updated'      => $date->format('c'),
-            'family'       => null,
-            'enabled'      => true,
-            'categories'   => [],
-            'groups'       => [],
-            'completeness' => [],
-            'values'       => [],
+            'identifier'    => 'baz',
+            'created'       => $date->format('c'),
+            'updated'       => $date->format('c'),
+            'family'        => null,
+            'enabled'       => true,
+            'categories'    => [],
+            'groups'        => [],
+            'is_associated' => false,
+            'completeness'  => [],
+            'values'        => [],
         ];
 
         $this->assertIndexingFormat('baz', $expected);
@@ -77,18 +79,19 @@ class ProductIndexingIntegration extends TestCase
         );
 
         $expected = [
-            'identifier'   => 'foo',
-            'created'      => $date->format('c'),
-            'updated'      => $date->format('c'),
-            'family'       => 'familyA',
-            'enabled'      => true,
-            'categories'   => ['categoryA1', 'categoryB'],
-            'groups'       => ['groupA', 'groupB', 'variantA'],
-            'completeness' => [
+            'identifier'    => 'foo',
+            'created'       => $date->format('c'),
+            'updated'       => $date->format('c'),
+            'family'        => 'familyA',
+            'enabled'       => true,
+            'categories'    => ['categoryA1', 'categoryB'],
+            'groups'        => ['groupA', 'groupB', 'variantA'],
+            'is_associated' => true,
+            'completeness'  => [
                 'ecommerce' => ['en_US' => 100],
                 'tablet'    => ['de_DE' => 89, 'en_US' => 100, 'fr_FR' => 100],
             ],
-            'values'       => [
+            'values'        => [
                 'a_date-date'                                    => [
                     '<all_channels>' => [
                         '<all_locales>' => '2016-06-13',

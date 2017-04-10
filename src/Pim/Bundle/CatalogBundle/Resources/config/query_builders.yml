@@ -291,16 +291,24 @@ services:
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
 
-    pim_catalog.query.elasticsearch.sorter.metric:
-        class: '%pim_catalog.query.elasticsearch.sorter.attribute.metric.class%'
-        arguments:
-            - ['pim_catalog_metric']
-        tags:
-            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
-
     pim_catalog.query.elasticsearch.sorter.completeness:
         class: '%pim_catalog.query.elasticsearch.sorter.completeness.class%'
         arguments:
             - ['completeness']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.is_associated:
+        class: '%pim_catalog.query.elasticsearch.sorter.base_field.class%'
+        arguments:
+            - ['is_associated']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    # Attributes sorters
+    pim_catalog.query.elasticsearch.sorter.metric:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.metric.class%'
+        arguments:
+            - ['pim_catalog_metric']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }

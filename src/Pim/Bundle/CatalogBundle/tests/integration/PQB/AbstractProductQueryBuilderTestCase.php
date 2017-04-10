@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\PQB;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -27,12 +28,25 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
     /**
      * @param string $identifier
      * @param array  $data
+     *
+     * @return ProductInterface
      */
     protected function createProduct($identifier, array $data)
     {
         $family = isset($data['family']) ? $data['family'] : null;
 
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $family);
+        $this->updateProduct($product, $data);
+
+        return $product;
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param array            $data
+     */
+    protected function updateProduct(ProductInterface $product, array $data)
+    {
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
 

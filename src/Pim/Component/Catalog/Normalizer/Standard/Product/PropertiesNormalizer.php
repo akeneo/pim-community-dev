@@ -28,6 +28,7 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
     const FIELD_VALUES = 'values';
     const FIELD_CREATED = 'created';
     const FIELD_UPDATED = 'updated';
+    const FIELD_IS_ASSOCIATED = 'is_associated';
 
     /** @var CollectionFilterInterface */
     private $filter;

@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -37,7 +36,8 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $serializer,
         ProductInterface $product,
         ProductValueCollectionInterface $productValueCollection,
-        Collection $completenesses
+        Collection $completenesses,
+        Collection $associations
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
@@ -57,20 +57,24 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn([]);
         $productValueCollection->isEmpty()->willReturn(true);
 
+        $product->getAssociations()->willReturn($associations);
+        $associations->isEmpty()->willReturn(true);
+
         $product->getCompletenesses()->willReturn($completenesses);
         $completenesses->isEmpty()->willReturn(true);
 
         $this->normalize($product, 'indexing')->shouldReturn(
             [
-                'identifier' => 'sku-001',
-                'created'    => $now->format('c'),
-                'updated'    => $now->format('c'),
-                'family'     => null,
-                'enabled'    => false,
-                'categories' => [],
-                'groups'     => [],
-                'completeness' => [],
-                'values'     => [],
+                'identifier'    => 'sku-001',
+                'created'       => $now->format('c'),
+                'updated'       => $now->format('c'),
+                'family'        => null,
+                'enabled'       => false,
+                'categories'    => [],
+                'groups'        => [],
+                'is_associated' => false,
+                'completeness'  => [],
+                'values'        => [],
             ]
         );
     }
@@ -79,7 +83,8 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $serializer,
         ProductInterface $product,
         ProductValueCollectionInterface $productValueCollection,
-        Collection $completenesses
+        Collection $completenesses,
+        Collection $associations
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
@@ -104,6 +109,9 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn([]);
         $productValueCollection->isEmpty()->willReturn(true);
 
+        $product->getAssociations()->willReturn($associations);
+        $associations->isEmpty()->willReturn(true);
+
         $product->getCompletenesses()->willReturn($completenesses);
         $completenesses->isEmpty()->willReturn(false);
 
@@ -111,15 +119,16 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, 'indexing')->shouldReturn(
             [
-                'identifier' => 'sku-001',
-                'created'    => $now->format('c'),
-                'updated'    => $now->format('c'),
-                'family'     => null,
-                'enabled'    => false,
-                'categories' => [],
-                'groups'     => [],
-                'completeness' => ['the completenesses'],
-                'values'     => [],
+                'identifier'    => 'sku-001',
+                'created'       => $now->format('c'),
+                'updated'       => $now->format('c'),
+                'family'        => null,
+                'enabled'       => false,
+                'categories'    => [],
+                'groups'        => [],
+                'is_associated' => false,
+                'completeness'  => ['the completenesses'],
+                'values'        => [],
             ]
         );
     }
@@ -129,7 +138,8 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         ProductValueCollectionInterface $productValueCollection,
         FamilyInterface $family,
-        ArrayCollection $completenessCollection
+        Collection $completenessCollection,
+        Collection $associations
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
@@ -157,6 +167,9 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'second_category',
             ]
         );
+
+        $product->getAssociations()->willReturn($associations);
+        $associations->isEmpty()->willReturn(false);
 
         $completenessCollection->isEmpty()->willReturn(false);
         $product->getCompletenesses()->willReturn($completenessCollection);
@@ -188,21 +201,22 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, 'indexing')->shouldReturn(
             [
-                'identifier' => 'sku-001',
-                'created'    => $now->format('c'),
-                'updated'    => $now->format('c'),
-                'family'     => 'a_family',
-                'enabled'    => true,
-                'categories' => ['first_category', 'second_category'],
-                'groups'         => ['first_group', 'second_group'],
-                'completeness' => [
+                'identifier'    => 'sku-001',
+                'created'       => $now->format('c'),
+                'updated'       => $now->format('c'),
+                'family'        => 'a_family',
+                'enabled'       => true,
+                'categories'    => ['first_category', 'second_category'],
+                'groups'        => ['first_group', 'second_group'],
+                'is_associated' => true,
+                'completeness'  => [
                     'ecommerce' => [
                         'en_US' => [
                             66,
                         ],
                     ],
                 ],
-                'values'     => [
+                'values'        => [
                     'a_size-decimal' => [
                         '<all_channels>' => [
                             '<all_locales>' => '10.51',
