@@ -1308,7 +1308,7 @@ Equals (=)
 
     'filter' => [
         'term' => [
-            'values.description-text.<all_channels>.<all_locales>' => true
+            'values.a_yes_no-boolean.<all_channels>.<all_locales>' => true
         ]
     ]
 
@@ -1320,12 +1320,41 @@ Not Equals (!=)
 
     'must_not' => [
         'term' => [
-            'values.description-text.<all_channels>.<all_locales>' => true
+            'values.a_yes_no-boolean.<all_channels>.<all_locales>' => true
         ]
     ],
     'filter' => [
         'exists' => [
-            'field' => 'values.description-text.<all_channels>.<all_locales>'
+            'field' => 'values.a_yes_no-boolean.<all_channels>.<all_locales>'
+        ]
+    ]
+
+Sorting
+~~~~~~~
+Operators
+.........
+ASCENDANT
+"""""""""
+
+.. code-block:: php
+
+    'sort' => [
+        'values.a_yes_no-boolean.ecommerce.en_US' => [
+            'order'   => 'asc',
+            'missing' => '_last'
+        ]
+    ]
+
+
+DESCENDANT
+""""""""""
+
+.. code-block:: php
+
+    'sort' => [
+        'values.a_yes_no-boolean.ecommerce.en_US' => [
+            'order'   => 'desc',
+            'missing' => '_last'
         ]
     ]
 

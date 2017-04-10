@@ -304,3 +304,10 @@ services:
             - ['completeness']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.boolean:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
+        arguments:
+            - ['pim_catalog_boolean']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
