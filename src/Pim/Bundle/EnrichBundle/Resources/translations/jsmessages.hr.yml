@@ -8,7 +8,7 @@ confirmation:
     channel: Jeste li sigurni da želite izbrisati ovaj kanal?
     group: Jeste li sigurni da želite izbrisati ovu grupu?
     variant group: Jeste li sigurni da želite izbrisati ovu varijantu grupe?
-    group type: Jeste li sigurni da želite izbrisati ovaj tip grupe?
+    group_type: Jeste li sigurni da želite izbrisati ovaj tip grupe?
     import profile: Jeste li sigurni da želite izbrisati ovaj profil uvoza?
     export profile: Jeste li sigurni da želite izbrisati ovaj profil izvoza?
     user: Jeste li sigurni da želite izbrisati ovog korisnika?
@@ -46,7 +46,7 @@ flash:
     removed: Grupa je uspješno uklonjena
   variant group:
     removed: Varijanta grupe je uspješno uklonjena
-  group type:
+  group_type:
     removed: Tip grupe je uspješno uklonjen
   import profile:
     removed: Profil uvoza je uspješno uklonjen
@@ -216,6 +216,20 @@ pim_enrich:
         updated_by: Ažurirao korisnik
       btn:
         save: Spremi
+      title: tip pridruživanja
+    group_type:
+      info:
+        field_not_ready:
+          The group type cannot be saved right now. The following fields are not ready:
+            - polja
+      meta:
+        created: Kreirano
+        created_by: Kreirao korisnik
+        updated: Ažurirano
+        updated_by: Ažurirao korisnik
+      btn:
+        save: Spremi
+      title: tip grupe
     channel:
       title: kanal
       info:
@@ -314,7 +328,6 @@ pim_enrich:
           info:
             search_attributes: Pretraži...
             no_available_attributes: Nema više atributa koje se može dodati
-            attributes_selected: "{{ attributeCount }} atributa odabrano"
             no_match: Nisu pronađeni rezultati
             load_more: Učitavanje više rezultata...
         categories:
@@ -352,6 +365,15 @@ pim_enrich:
         select_attributes: Odaberi atribute
         select: Odaberi
     association_type:
+      tab:
+        properties:
+          title: Svojstva
+          general: Opća svojstva
+          code: Kod
+          label_translations: Prijevodi oznaka
+        history:
+          title: Povijest
+    group_type:
       tab:
         properties:
           title: Svojstva
@@ -441,6 +463,22 @@ pim_enrich:
           info:
             search_attributes: Pretraži...
             no_available_attributes: Nema više atributa koje se može dodati
+    job_execution:
+      loading: Učitavanje...
+      refreshBtn.title: Osvježi
+      meta:
+        status.title: Status
+      button:
+        show_profile.title: Prikaži profil
+        download_log.title: Preuzmi log
+      summary:
+        fetching: Prikupljanje podataka o izvršenju posla...
+        warning: Upozorenje
+        header.step: Korak
+        header.status: Status
+        header.summary: Sažetak
+        header.start: Početak
+        header.end: Kraj
     job_instance:
       button:
         edit.title: Uredi
@@ -509,6 +547,13 @@ pim_enrich:
             help: Znači da će se povijest proizvoda automatski ažurirati, može se isključiti za poboljšanje performansi
         history:
           title: Povijest
+    mass_edit:
+      family:
+        attributes:
+          label_label: Oznaka
+          toolbox:
+            select_attributes: Dodaj atribute
+            add: Dodaj
   export:
     product:
       data:
@@ -652,3 +697,26 @@ pim_enrich:
       description: Atributi odabranih proizvoda u tabličnom prikazu proizvoda će se promijeniti s podacima za lokalizaciju <span class="highlight">{{ locale }}</span> i kanala <span class="highlight">{{ channel }}</span>.
 pim_enrich.error:
   exception.title: Ups! Pojavila se pogreška u {{ status_code }}...
+batch_jobs:
+  add_product_value:
+    label: Dodaj vrijednosti proizvoda
+    perform:
+      label: Dodaj vrijednosti proizvoda
+  update_product_value:
+    label: Ažuriraj vrijednosti proizvoda
+    perform:
+      label: Ažuriraj vrijednosti proizvoda
+  edit_common_attributes:
+    label: Uredi uobičajene atribute
+    perform:
+      label: Uredi uobičajene atribute
+    cleaner:
+      label: Obriši datoteke za uobičajene atribute
+  set_attribute_requirements:
+    label: Postavi zahtjeve za atribute
+    perform:
+      label: Postavi zahtjeve za atribute
+  add_to_variant_group:
+    label: Dodaj u varijantu grupe
+    perform:
+      label: Dodaj u varijantu grupe

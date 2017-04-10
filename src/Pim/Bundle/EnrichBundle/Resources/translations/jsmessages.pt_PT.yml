@@ -8,7 +8,7 @@ confirmation:
     channel: Tem certeza que deseja eliminar este canal?
     group: Tem certeza que deseja eliminar este grupo?
     variant group: Tem certeza que deseja eliminar este grupo variante?
-    group type: Tem certeza que deseja eliminar este tipo de grupo?
+    group_type: Tem certeza que deseja eliminar este tipo de grupo?
     import profile: Tem certeza que deseja eliminar este perfil de importação?
     export profile: Tem certeza que deseja eliminar este perfil de exportação?
     user: Tem a certeza que deseja eliminar este utilizador?
@@ -44,7 +44,7 @@ flash:
     removed: Grupo removido com sucesso
   variant group:
     removed: Grupo variante removido com sucesso
-  group type:
+  group_type:
     removed: Tipo de grupo removido com sucesso
   import profile:
     removed: Perfil de importação removido com sucesso
@@ -203,6 +203,18 @@ pim_enrich:
         updated: Atualizado
       btn:
         save: Guardar
+      title: tipo de associação
+    group_type:
+      info:
+        field_not_ready:
+          The group type cannot be saved right now. The following fields are not ready:
+            - campos
+      meta:
+        created: Criado
+        updated: Atualizado
+      btn:
+        save: Guardar
+      title: tipo de grupo
     channel:
       title: canal
       info:
@@ -282,7 +294,6 @@ pim_enrich:
           info:
             search_attributes: Pesquisar...
             no_available_attributes: Não há mais atributos para adicionar
-            attributes_selected: "{{ attributeCount }} atributo(s) selecionado(s)"
             no_match: Nenhuma correspondência encontrada
             load_more: A carregar mais resultados...
         categories:
@@ -320,6 +331,15 @@ pim_enrich:
         select_attributes: Selecionar atributos
         select: Selecionar
     association_type:
+      tab:
+        properties:
+          title: Propriedades
+          general: Propriedades gerais
+          code: Código
+          label_translations: Traduções de rótulo
+        history:
+          title: Histórico
+    group_type:
       tab:
         properties:
           title: Propriedades
@@ -409,6 +429,22 @@ pim_enrich:
           info:
             search_attributes: Pesquisar...
             no_available_attributes: Não há mais atributos para adicionar
+    job_execution:
+      loading: A carregar...
+      refreshBtn.title: Atualizar
+      meta:
+        status.title: Estado
+      button:
+        show_profile.title: Ver perfil
+        download_log.title: Transferir log
+      summary:
+        fetching: A recolher dados sobre a execução da tarefa...
+        warning: Aviso
+        header.step: Passo
+        header.status: Estado
+        header.summary: Resumo
+        header.start: Início
+        header.end: Fim
     job_instance:
       button:
         edit.title: Editar
@@ -474,6 +510,13 @@ pim_enrich:
             help: Signifca que a história do produto é atualizada automaticmente, pode ser desligado para melhorar a performance
         history:
           title: Histórico
+    mass_edit:
+      family:
+        attributes:
+          label_label: Rótulo
+          toolbox:
+            select_attributes: Adicionar atributos
+            add: Adicionar
   export:
     product:
       structure:
@@ -548,3 +591,22 @@ pim_enrich:
       description: Os atributos dos produtos selecionados serão editados com os seguintes dados para a linguagem <span class="highlight">{{ locale }}</span> e o canal <span class="highlight">{{ channel }}</span>, escolhidos na grelha de produtos.
 pim_enrich.error:
   exception.title: Ora bolas! Ocorreu o erro {{ status_code }}...
+batch_jobs:
+  update_product_value:
+    label: Atualizar o valor do produto
+    perform:
+      label: Atualizar o valor do produto
+  edit_common_attributes:
+    label: Editar atributos comuns
+    perform:
+      label: Editar atributos comuns
+    cleaner:
+      label: Limpar ficheiros de atributos comuns
+  set_attribute_requirements:
+    label: Estabelecer requisitos do atributo
+    perform:
+      label: Estabelecer requisitos do atributo
+  add_to_variant_group:
+    label: Adicionar a grupo variante
+    perform:
+      label: Adicionar a grupo variante
