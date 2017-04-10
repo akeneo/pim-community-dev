@@ -31,7 +31,7 @@ class ComparisonPanelDecorator extends ElementDecorator
 
         $dropdown->click();
 
-        $selector = $dropdown->getParent()->find('css', sprintf('a:contains("%s")', ucfirst($mode)));
+        $selector = $dropdown->getParent()->find('css', sprintf('a.select-%s', $mode));
         $selector->click();
     }
 
@@ -41,14 +41,14 @@ class ComparisonPanelDecorator extends ElementDecorator
     public function copySelectedElements()
     {
         $this->spin(function () {
-            if (0 === $this->selectedItemsCount()) {
-                return false;
-            }
+            return 0 !== $this->selectedItemsCount();
+        }, 'No selection before copy');
 
-            $this->find('css', $this->selectors['Copy selected button'])->click();
+        $this->find('css', $this->selectors['Copy selected button'])->click();
 
+        $this->spin(function () {
             return 0 === $this->selectedItemsCount();
-        }, 'Cannot find the "copy" button');
+        }, 'Still a selection after copy');
     }
 
     /**
