@@ -7,7 +7,9 @@ pim_analytics:
     title: Informazioni sistema
     download: TXT
   info_type:
+    pim_edition: Edizione
     pim_version: Versione
+    pim_environment: Ambiente
   acl:
     system_info:
       index: Informazioni sistema
