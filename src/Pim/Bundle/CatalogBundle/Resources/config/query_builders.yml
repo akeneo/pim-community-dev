@@ -31,6 +31,7 @@ parameters:
     pim_catalog.query.elasticsearch.filter.boolean.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\BooleanFilter
 
     pim_catalog.query.elasticsearch.sorter.base_field.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\BaseFieldSorter
+    pim_catalog.query.elasticsearch.sorter.identifier.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\IdentifierSorter
     pim_catalog.query.elasticsearch.sorter.attribute.base.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attributes\BaseAttributeSorter
     pim_catalog.query.elasticsearch.sorter.attribute.metric.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attributes\MetricSorter
     pim_catalog.query.elasticsearch.sorter.completeness.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\CompletenessSorter
@@ -288,6 +289,14 @@ services:
         class: '%pim_catalog.query.elasticsearch.sorter.base_field.class%'
         arguments:
             - ['family']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.identifier:
+        class: '%pim_catalog.query.elasticsearch.sorter.identifier.class%'
+        arguments:
+            - ['identifier']
+            - ['pim_catalog_identifier']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
 
