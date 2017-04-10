@@ -67,9 +67,12 @@ class ProductDatasource extends Datasource
 
         $productCursor = $this->pqb->execute();
         $context = [
-            'locales'     => [$options['locale_code']],
-            'channels'    => [$options['scope_code']],
-            'data_locale' => $this->getParameters()['dataLocale']
+            'locales'             => [$options['locale_code']],
+            'channels'            => [$options['scope_code']],
+            'data_locale'         => $this->getParameters()['dataLocale'],
+            'current_product'     => $options['current_product'],
+            'association_type_id' => $options['association_type_id'],
+            'current_group_id'    => $options['current_group_id']
         ];
         $rows = ['totalRecords' => $productCursor->count(), 'data' => []];
 
