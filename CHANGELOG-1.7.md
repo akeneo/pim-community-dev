@@ -23,6 +23,7 @@
 - PIM-6284: Fix display of scopable information for fields
 - PIM-6309: Enlarge the attribute type selection panel
 - PIM-6271: Fix locking fields in mass edit product form
+- PIM-6277: Use catalogLocale for channel and scopable attribute labels
 
 # 1.7.1 (2017-03-23)
 

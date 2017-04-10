@@ -129,12 +129,11 @@ define(
                 if (!_.has(this.copyFields, code)) {
                     var sourceData = this.getSourceData();
                     var copyField = new CopyField(field.attribute);
-                    var uiLocale = UserContext.get('uiLocale');
 
                     copyField.setContext({
                         locale: this.locale,
                         scope: this.scope,
-                        scopeLabel: i18n.getLabel(this.scopeLabel, uiLocale, this.scope)
+                        scopeLabel: i18n.getLabel(this.scopeLabel, this.locale, this.scope)
                     });
                     copyField.setValues(sourceData[code]);
                     copyField.setField(field);

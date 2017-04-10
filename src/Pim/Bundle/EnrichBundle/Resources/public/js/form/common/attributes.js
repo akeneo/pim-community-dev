@@ -177,13 +177,13 @@ define(
                     );
                 }).then(function (field, channels, isOptional) {
                     var scope = _.findWhere(channels, { code: UserContext.get('catalogScope') });
-                    var uiLocale = UserContext.get('uiLocale');
+                    var catalogLocale = UserContext.get('catalogLocale');
 
                     field.setContext({
-                        locale: UserContext.get('catalogLocale'),
+                        locale: catalogLocale,
                         scope: scope.code,
-                        scopeLabel: i18n.getLabel(scope.labels, uiLocale, scope.code),
-                        uiLocale: UserContext.get('catalogLocale'),
+                        scopeLabel: i18n.getLabel(scope.labels, catalogLocale, scope.code),
+                        uiLocale: catalogLocale,
                         optional: isOptional,
                         removable: SecurityContext.isGranted(this.config.removeAttributeACL)
                     });
