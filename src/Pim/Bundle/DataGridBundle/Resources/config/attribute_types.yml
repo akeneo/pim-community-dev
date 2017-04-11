@@ -101,9 +101,8 @@ parameters:
         sorter:            ~
     pim_datagrid.product.attribute_type.pim_catalog_image:
         column:
-            type:          product_value_image
-            frontend_type: html
-            template:      PimDataGridBundle:Property:image.html.twig
+            type:          product_value_field
+            frontend_type: image
         filter:
             type:        product_value_string
             ftype:       string
