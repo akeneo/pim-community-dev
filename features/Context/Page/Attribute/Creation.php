@@ -169,7 +169,9 @@ class Creation extends Form
      */
     public function removeOption($optionName)
     {
-        $optionRow = $this->getOptionElement($optionName);
+        $optionRow = $this->spin(function () use ($optionName) {
+            return $this->getOptionElement($optionName);
+        }, 'Cannot find option row');
         $deleteBtn = $optionRow->find('css', '.delete-row');
 
         if ($deleteBtn === null) {
