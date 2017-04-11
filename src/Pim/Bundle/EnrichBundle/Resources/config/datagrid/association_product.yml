@@ -33,9 +33,7 @@ datagrid:
                 type:          field
             enabled:
                 label:         Status
-                type:          twig
-                template:      PimDataGridBundle:Property:enabled.html.twig
-                frontend_type: html
+                frontend_type: enabled
             completeness:
                 label:         Complete
                 frontend_type: completeness
