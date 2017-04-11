@@ -38,10 +38,7 @@ datagrid:
                 frontend_type: html
             completeness:
                 label:         Complete
-                type:          twig
-                template:      PimDataGridBundle:Property:completeness.html.twig
-                data_name:     completeness
-                frontend_type: html
+                frontend_type: completeness
             created:
                 label:         Created At
                 type:          field
