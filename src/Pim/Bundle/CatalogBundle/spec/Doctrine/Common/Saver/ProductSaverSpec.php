@@ -19,11 +19,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class ProductSaverSpec extends ObjectBehavior
 {
     function let(
-        EntityManagerInterface $entityManager,
-        CompletenessCalculatorInterface $completenessCalculator,
+        ObjectManager $objectManager,
+        CompletenessManager $completenessManager,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($entityManager, $completenessCalculator, $eventDispatcher);
+        $this->beConstructedWith($objectManager, $completenessManager, $eventDispatcher);
     }
 
     function it_is_a_saver()
@@ -37,41 +37,16 @@ class ProductSaverSpec extends ObjectBehavior
     }
 
     function it_saves_a_product_after_droping_its_previous_completenesses(
-        $entityManager,
-        $completenessCalculator,
+        $objectManager,
+        $completenessManager,
         $eventDispatcher,
-        ProductInterface $product,
-        Connection $connection,
-        Statement $statement,
-        ArrayCollection $completenessesCollection,
-        \ArrayIterator $completenessesIterator,
-        CompletenessInterface $oldCompleteness,
-        CompletenessInterface $newCompleteness
+        ProductInterface $product
     ) {
-        $completenessesCollection->getIterator()->willReturn($completenessesIterator);
-        $completenessesIterator->rewind()->shouldBeCalled();
-        $completenessesIterator->valid()->willReturn(true, false, false);
-        $completenessesIterator->current()->willReturn($oldCompleteness);
-        $completenessesIterator->next()->shouldBeCalled();
+        $completenessManager->schedule($product)->shouldBeCalled();
+        $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
 
-        $entityManager->getConnection()->willReturn($connection);
-        $oldCompleteness->getId()->willReturn(42);
-        $connection->executeQuery(
-            'DELETE c FROM pim_catalog_completeness c WHERE c.id IN (?)',
-            [[42]],
-            [Connection::PARAM_INT_ARRAY]
-        )->willReturn($statement);
-        $statement->execute()->shouldBeCalled();
-
-        $product->getCompletenesses()->willReturn($completenessesCollection);
-        $completenessesCollection->isEmpty()->willReturn(false);
-        $completenessesCollection->clear()->shouldBeCalled();
-
-        $completenessCalculator->calculate($product)->willReturn([$newCompleteness]);
-        $completenessesCollection->add($newCompleteness)->shouldBeCalled();
-
-        $entityManager->persist($product)->shouldBeCalled();
-        $entityManager->flush()->shouldBeCalled();
+        $objectManager->persist($product)->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
@@ -80,62 +55,21 @@ class ProductSaverSpec extends ObjectBehavior
     }
 
     function it_saves_multiple_products_after_droping_their_previous_completenesses(
-        $entityManager,
-        $completenessCalculator,
+        $objectManager,
+        $completenessManager,
         $eventDispatcher,
         ProductInterface $product1,
-        ProductInterface $product2,
-        Connection $connection,
-        Statement $statement,
-        ArrayCollection $completenessesCollection1,
-        ArrayCollection $completenessesCollection2,
-        \ArrayIterator $completenessesIterator1,
-        \ArrayIterator $completenessesIterator2,
-        CompletenessInterface $oldCompleteness1,
-        CompletenessInterface $oldCompleteness2,
-        CompletenessInterface $newCompleteness1,
-        CompletenessInterface $newCompleteness2
+        ProductInterface $product2
     ) {
-        $completenessesCollection1->getIterator()->willReturn($completenessesIterator1);
-        $completenessesIterator1->rewind()->shouldBeCalled();
-        $completenessesIterator1->valid()->willReturn(true, false);
-        $completenessesIterator1->current()->willReturn($oldCompleteness1);
-        $completenessesIterator1->next()->shouldBeCalled();
+        $completenessManager->schedule($product1)->shouldBeCalled();
+        $completenessManager->schedule($product2)->shouldBeCalled();
+        $completenessManager->generateMissingForProduct($product1)->shouldBeCalled();
+        $completenessManager->generateMissingForProduct($product2)->shouldBeCalled();
 
-        $completenessesCollection2->getIterator()->willReturn($completenessesIterator2);
-        $completenessesIterator2->rewind()->shouldBeCalled();
-        $completenessesIterator2->valid()->willReturn(true, false);
-        $completenessesIterator2->current()->willReturn($oldCompleteness2);
-        $completenessesIterator2->next()->shouldBeCalled();
+        $objectManager->persist($product1)->shouldBeCalled();
+        $objectManager->persist($product2)->shouldBeCalled();
 
-        $oldCompleteness1->getId()->willReturn(42);
-        $oldCompleteness2->getId()->willReturn(43);
-
-        $entityManager->getConnection()->willReturn($connection);
-        $connection->executeQuery(
-            'DELETE c FROM pim_catalog_completeness c WHERE c.id IN (?)',
-            [[42, 43]],
-            [Connection::PARAM_INT_ARRAY]
-        )->willReturn($statement);
-        $statement->execute()->shouldBeCalled();
-
-        $product1->getCompletenesses()->willReturn($completenessesCollection1);
-        $completenessesCollection1->isEmpty()->willReturn(true);
-        $completenessesCollection1->clear()->shouldNotBeCalled();
-
-        $product2->getCompletenesses()->willReturn($completenessesCollection2);
-        $completenessesCollection2->isEmpty()->willReturn(false);
-        $completenessesCollection2->clear()->shouldBeCalled();
-
-        $completenessCalculator->calculate($product1)->willReturn([$newCompleteness1]);
-        $completenessCalculator->calculate($product2)->willReturn([$newCompleteness2]);
-        $completenessesCollection1->add($newCompleteness1)->shouldBeCalled();
-        $completenessesCollection2->add($newCompleteness2)->shouldBeCalled();
-
-        $entityManager->persist($product1)->shouldBeCalled();
-        $entityManager->persist($product2)->shouldBeCalled();
-
-        $entityManager->flush()->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
@@ -147,10 +81,10 @@ class ProductSaverSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_try_to_save_something_else_than_a_product(
-        $entityManager
+        $objectManager
     ) {
         $otherObject = new \stdClass();
-        $entityManager->persist(Argument::any())->shouldNotBeCalled();
+        $objectManager->persist(Argument::any())->shouldNotBeCalled();
 
         $this
             ->shouldThrow(new \InvalidArgumentException('Expects a Pim\Component\Catalog\Model\ProductInterface, "stdClass" provided'))

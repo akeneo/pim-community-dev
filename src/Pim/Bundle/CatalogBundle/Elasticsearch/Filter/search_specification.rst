@@ -1572,6 +1572,260 @@ Example with the ``>`` operator:
         completeness.print.en_US:
             gt: 4
 
+The operators "EQUALS", "NOT EQUALS", "LOWER THAN", "LOWER OR EQUALS THAN", "GREATHER THAN" and "GREATER OR EQUALS THAN" are now deprecated in favor of more meaningful operators.
+They are replaced respectively by:
+    * "EQUALS ON AT LEAST ONE LOCALE"
+    * "NOT EQUALS ON AT LEAST ONE LOCALE"
+    * "LOWER THAN ON AT LEAST ONE LOCALE"
+    * "LOWER OR EQUALS THAN ON AT LEAST ONE LOCALE"
+    * "GREATER THAN ON AT LEAST ONE LOCALE"
+    * "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE"
+
+IS EMPTY
+~~~~~~~~
+
+:Type: filter
+
+.. code-block:: php
+
+    [
+        'query' => [
+            'bool' => [
+                'must_not' => [
+                    'exists' => [
+                        'field' => 'completeness'
+                    ]
+                ]
+            ]
+        ]
+    ]
+EQUALS ON AT LEAST ONE LOCALE
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Type: filter
+
+.. code-block:: php
+
+    [
+        'query' => [
+            'bool' => [
+                'should' => [
+                    'term' => [
+                        'completeness.print.en_US' => 30,
+                        'completeness.print.fr_FR' => 30,
+                    ]
+                ]
+            ]
+        ]
+    ]
+
+NOT EQUALS ON AT LEAST ONE LOCALE
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Example: product "SKU-001", for the channel "tablet", has the following complete ratios:
+ * 50% for "en_US"
+ * 50% for "fr_FR"
+ * 50% for "it_IT"
+
+If we look for the products where the completeness != 50 on the channel tablet, then, the product "SKU-001" should not be part of the results.
+To achieve that, we look for
+* MUST NOT (50% for "completeness.tablet.en_US" AND 50% for "completeness.tablet.fr_FR" AND 50% for "completeness.tablet.it_IT") AND
+* EXISTS "completeness.tablet.en_US" AND
+* EXISTS "completeness.tablet.fr_FR" AND
+* EXISTS "completeness.tablet.it_IT"
+
+
+:Type: filter
+
+.. code-block:: php
+
+    [
+        'query' => [
+            'bool' => [
+                'must_not' => [
+                    'bool' => [
+                        'filter' => [
+                            'term' => [
+                                'completeness.print.en_US' => 30,
+                                'completeness.print.fr_FR' => 30,
+                            ]
+                        ]
+                    ]
+                ],
+                'filter' => [
+                    'exists' => [
+                        'field' => 'completeness.print.en_US'
+                    ],
+                    'exists' => [
+                        'field' => 'completeness.print.fr_FR'
+                    ],
+                ]
+            ]
+        ]
+    ]
+
+LOWER THAN ON AT LEAST ONE LOCALE
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Type: filter
+
+.. code-block:: php
+
+    [
+        'query' => [
+            'bool' => [
+                'should' => [
+                    'range' => [
+                        'completeness.print.en_US' => ['lt' => 30],
+                        'completeness.print.fr_FR' => ['lt' => 30],
+                    ]
+                ]
+            ]
+        ]
+    ]
+
+LOWER OR EQUALS THAN ON AT LEAST ONE LOCALE
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Type: filter
+
+.. code-block:: php
+
+    [
+        'query' => [
+            'bool' => [
+                'should' => [
+                    'range' => [
+                        'completeness.print.en_US' => ['lte' => 30],
+                        'completeness.print.fr_FR' => ['lte' => 30],
+                    ]
+                ]
+            ]
+        ]
+    ]
+
+GREATER THAN ON AT LEAST ONE LOCALE
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Type: filter
+
+.. code-block:: php
+
+    [
+        'query' => [
+            'bool' => [
+                'should' => [
+                    'range' => [
+                        'completeness.print.en_US' => ['gt' => 30],
+                        'completeness.print.fr_FR' => ['gt' => 30],
+                    ]
+                ]
+            ]
+        ]
+    ]
+
+GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Type: filter
+
+.. code-block:: php
+
+    [
+        'query' => [
+            'bool' => [
+                'should' => [
+                    'range' => [
+                        'completeness.print.en_US' => ['gte' => 30],
+                        'completeness.print.fr_FR' => ['gte' => 30],
+                    ]
+                ]
+            ]
+        ]
+    ]
+
+
+LOWER THAN ON ON ALL LOCALES
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Type: filter
+
+.. code-block:: php
+
+    [
+        'query' => [
+            'bool' => [
+                'filter' => [
+                    'range' => [
+                        'completeness.print.en_US' => ['lt' => 30],
+                        'completeness.print.fr_FR' => ['lt' => 30],
+                    ]
+                ]
+            ]
+        ]
+    ]
+
+LOWER OR EQUALS THAN ON ON ALL LOCALES
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Type: filter
+
+.. code-block:: php
+
+    [
+        'query' => [
+            'bool' => [
+                'filter' => [
+                    'range' => [
+                        'completeness.print.en_US' => ['lte' => 30],
+                        'completeness.print.fr_FR' => ['lte' => 30],
+                    ]
+                ]
+            ]
+        ]
+    ]
+
+GREATER THAN ON ON ALL LOCALES
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Type: filter
+
+.. code-block:: php
+
+    [
+        'query' => [
+            'bool' => [
+                'filter' => [
+                    'range' => [
+                        'completeness.print.en_US' => ['gt' => 30],
+                        'completeness.print.fr_FR' => ['gt' => 30],
+                    ]
+                ]
+            ]
+        ]
+    ]
+
+GREATER OR EQUALS THAN ON ON ALL LOCALES
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Type: filter
+
+.. code-block:: php
+
+    [
+        'query' => [
+            'bool' => [
+                'filter' => [
+                    'range' => [
+                        'completeness.print.en_US' => ['gte' => 30],
+                        'completeness.print.fr_FR' => ['gte' => 30],
+                    ]
+                ]
+            ]
+        ]
+    ]
+
+
 Sorting
 ~~~~~~~
 
@@ -1583,6 +1837,7 @@ Sorting
             'missing' => '_last'
         ]
     ]
+
 
 Category
 ********

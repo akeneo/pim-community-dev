@@ -16,7 +16,7 @@ use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 /**
  * Calculates the completenesses for a provided product.
  *
- * This calculator creates an "fake" collection of required product values
+ * This calculator creates a "fake" collection of required product values
  * according to the product family requirements. Then, it compares this
  * collection of fake values with the real values of the product, and generates
  * a list of completenesses, one completeness for each channel/locale possible

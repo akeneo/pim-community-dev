@@ -18,6 +18,7 @@ class CompletenessFilterSpec extends ObjectBehavior
     function let(CachedObjectRepositoryInterface $channelRepository, SearchQueryBuilder $sqb)
     {
         $operators = [
+            'IS_EMPTY',
             'NOT EQUALS ON AT LEAST ONE LOCALE',
             'EQUALS ON AT LEAST ONE LOCALE',
             'GREATER THAN ON AT LEAST ONE LOCALE',
@@ -54,6 +55,7 @@ class CompletenessFilterSpec extends ObjectBehavior
     {
         $this->getOperators()->shouldReturn(
             [
+                'IS_EMPTY',
                 'NOT EQUALS ON AT LEAST ONE LOCALE',
                 'EQUALS ON AT LEAST ONE LOCALE',
                 'GREATER THAN ON AT LEAST ONE LOCALE',
@@ -480,5 +482,21 @@ class CompletenessFilterSpec extends ObjectBehavior
             'ecommerce',
             ['locales' => ['en_US']]
         );
+    }
+
+    function it_adds_a_filter_on_IS_EMPTY_operator($sqb)
+    {
+        $sqb->addMustNot(
+            [
+                'exists' => [
+                    'field' => 'completeness',
+                ],
+            ]
+        )->shouldBeCalled();
+
+        $this->addFieldFilter('completeness', Operators::IS_EMPTY, null, null, null, []);
+        $this->addFieldFilter('completeness', Operators::IS_EMPTY, 'IGNORED', null, null, []);
+        $this->addFieldFilter('completeness', Operators::IS_EMPTY, null, 'en_US', null, []);
+        $this->addFieldFilter('completeness', Operators::IS_EMPTY, null, null, 'ecommerce', []);
     }
 }

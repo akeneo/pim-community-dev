@@ -55,6 +55,15 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
+        if (Operators::IS_EMPTY === $operator) {
+            $clause = [
+                'exists' => ['field' => 'completeness']
+            ];
+            $this->searchQueryBuilder->addMustNot($clause);
+
+            return $this;
+        }
+
         $this->checkChannelAndValue($field, $channel, $value);
 
         if (in_array(
