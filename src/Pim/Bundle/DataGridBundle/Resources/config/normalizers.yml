@@ -33,6 +33,9 @@ services:
 
     pim_datagrid.normalizer.product.product_values:
         class: '%pim_datagrid.normalizer.product.product_values.class%'
+        arguments:
+            - '@pim_catalog.localization.presenter.registry'
+            - '@pim_user.context.user'
         tags:
             - { name: pim_serializer.normalizer }
 

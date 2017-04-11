@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\Normalizer\Product;
 
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
@@ -9,12 +11,28 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 /**
  * Normalizer for a collection of product values
  *
- * @author    Julien Janvier <jjanvier@akeneo.com>
- * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @author    Marie Bochu <marie.bochu@akeneo.com>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ProductValuesNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
 {
+    /** @var PresenterRegistryInterface */
+    protected $presenterRegistry;
+
+    /** @var UserContext */
+    protected $userContext;
+
+    /**
+     * @param PresenterRegistryInterface $presenterRegistry
+     * @param UserContext                $userContext
+     */
+    public function __construct(PresenterRegistryInterface $presenterRegistry, UserContext $userContext)
+    {
+        $this->presenterRegistry = $presenterRegistry;
+        $this->userContext = $userContext;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -24,7 +42,15 @@ class ProductValuesNormalizer extends SerializerAwareNormalizer implements Norma
 
         foreach ($data as $value) {
             $normalizedValue = $this->serializer->normalize($value, $format, $context);
-            $result[$value->getAttribute()->getCode()][] = $normalizedValue;
+
+            $attributeCode = $value->getAttribute()->getCode();
+            $presenter = $this->presenterRegistry->getPresenterByAttributeCode($attributeCode);
+            if (null !== $presenter) {
+                $normalizedValue['data'] = $presenter->present($normalizedValue['data'], [
+                    'locale' => $this->userContext->getUiLocaleCode()
+                ]);
+            }
+            $result[$attributeCode][] = $normalizedValue;
         }
 
         return $result;

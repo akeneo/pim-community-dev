@@ -58,7 +58,7 @@ parameters:
         sorter:          ~
     pim_datagrid.product.attribute_type.pim_catalog_number:
         column:
-            type:        product_value_number
+            type:        product_value_field
         filter:
             type:        product_value_number
             ftype: number
@@ -114,7 +114,7 @@ parameters:
         sorter:            ~
     pim_datagrid.product.attribute_type.pim_catalog_price_collection:
         column:
-            type:        product_value_price
+            type:        product_value_field
         filter:
             type:        product_value_price
             ftype:       price
@@ -125,7 +125,7 @@ parameters:
         sorter:          ~
     pim_datagrid.product.attribute_type.pim_catalog_metric:
         column:
-            type:          product_value_metric
+            type:          product_value_field
         filter:
             type:          product_value_metric
             ftype:         metric
