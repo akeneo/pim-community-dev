@@ -14,22 +14,15 @@ datagrid:
         columns:
             is_checked:
                 frontend_type: boolean
-                data_name:     is_checked
                 editable:      true
             is_associated:
                 label:         Is associated
-                data_name:     is_associated
-                type:          twig
-                template:      PimDataGridBundle:Property:boolean.html.twig
-                frontend_type: html
-                primary:       true
+                frontend_type: boolean-label
             label:
                 label:         Label
-                data_name:     label
                 type:          field
             family:
                 label:         Family
-                data_name:     family
                 type:          field
             enabled:
                 label:         Status

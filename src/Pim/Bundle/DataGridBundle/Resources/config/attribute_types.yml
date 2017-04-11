@@ -69,9 +69,8 @@ parameters:
         sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_boolean:
         column:
-            type:          product_value_boolean
-            frontend_type: html
-            template:      PimDataGridBundle:Property:boolean.html.twig
+            type:          product_value_field
+            frontend_type: boolean-label
         filter:
             type:        product_value_boolean
             ftype: boolean
