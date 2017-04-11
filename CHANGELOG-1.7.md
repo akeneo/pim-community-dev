@@ -1,10 +1,15 @@
+# 1.7.x
+
+## Bug fixes
+
+- PIM-6315: Fix publish button still clickable after a product is published
+
 # 1.7.2 (2017-04-07)
 
 ## Bug fixes
 
 - PIM-6248: Fix notification message on project creation
 - PIM-6308: Fix migration of teamwork assistant
-- PIM-6315: Fix publish button still clickable after a product is published
 
 # 1.7.1 (2017-03-23)
 
