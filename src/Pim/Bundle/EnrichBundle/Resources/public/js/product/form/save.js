@@ -78,7 +78,6 @@ define(
 
                         this.setData(data, options);
 
-                        FetcherRegistry.getFetcher('product-completeness').clear(this.getFormData().meta.id);
                         this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data);
                     }.bind(this))
                     .fail(this.fail.bind(this))
