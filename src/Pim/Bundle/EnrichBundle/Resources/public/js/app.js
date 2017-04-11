@@ -32,18 +32,18 @@ define([
                 initSignin();
                 this.debug = !!options.debug;
 
-                FetcherRegistry.initialize();
+                FetcherRegistry.initialize().then(function () {
+                    messenger.setup({
+                        container: '#flash-messages .flash-messages-holder',
+                        template: _.template($.trim($('#message-item-template').html()))
+                    });
 
-                messenger.setup({
-                    container: '#flash-messages .flash-messages-holder',
-                    template: _.template($.trim($('#message-item-template').html()))
+                    init();
+
+                    if (!Backbone.History.started) {
+                        Backbone.history.start();
+                    }
                 });
-
-                init();
-
-                if (!Backbone.History.started) {
-                    Backbone.history.start();
-                }
             }
         };
     })();

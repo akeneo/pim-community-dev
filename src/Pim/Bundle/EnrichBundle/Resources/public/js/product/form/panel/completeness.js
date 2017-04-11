@@ -52,13 +52,12 @@ define(
 
                 if (this.getFormData().meta) {
                     $.when(
-                        this.fetchCompleteness(),
                         FetcherRegistry.getFetcher('locale').fetchActivated()
-                    ).then(function (completeness, locales) {
+                    ).then(function (locales) {
                         this.$el.html(
                             this.template({
                                 hasFamily: this.getFormData().family !== null,
-                                completenesses: this.sortCompleteness(completeness.completenesses),
+                                completenesses: this.sortCompleteness(this.getFormData().meta.completenesses),
                                 i18n: i18n,
                                 locales: locales,
                                 catalogLocale: UserContext.get('catalogLocale')
@@ -69,16 +68,6 @@ define(
                 }
 
                 return this;
-            },
-
-            /**
-             * @returns {Promise}
-             */
-            fetchCompleteness: function () {
-                return FetcherRegistry.getFetcher('product-completeness').fetchForProduct(
-                    this.getFormData().meta.id,
-                    this.getFormData().family
-                );
             },
 
             /**
