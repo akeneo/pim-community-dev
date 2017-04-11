@@ -345,6 +345,18 @@ Not Equal (!=)
         ]
     ]
 
+Sorting
+~~~~~~~
+
+.. code-block:: php
+
+    'sort' => [
+        'enabled' => [
+            'order'   => 'asc',
+            'missing' => '_last'
+        ]
+    ]
+
 Text
 ****
 
@@ -993,7 +1005,7 @@ Sorting
     'sort' => [
         'values.color-option.<all_channels>.<all_locales>' => [
             'order'   => 'asc',
-            'missing' => '_first'
+            'missing' => '_last'
         ]
     ]
 
