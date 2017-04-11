@@ -88,7 +88,7 @@ class EnterpriseNavigationContext extends BaseNavigationContext
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('Asset Category edit', $page), ['id' => $entity->getId()]);
 
-        return new Step\Then('I should see the text "edit category - "');
+        return new Step\Then('I should see the text "edit "');
     }
 
     /**
