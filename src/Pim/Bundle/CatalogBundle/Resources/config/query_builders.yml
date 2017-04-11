@@ -30,10 +30,12 @@ parameters:
     pim_catalog.query.elasticsearch.filter.media.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\MediaFilter
     pim_catalog.query.elasticsearch.filter.boolean.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\BooleanFilter
 
-    pim_catalog.query.elasticsearch.sorter.base_field.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\BaseFieldSorter
-    pim_catalog.query.elasticsearch.sorter.attribute.base.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attributes\BaseAttributeSorter
-    pim_catalog.query.elasticsearch.sorter.attribute.metric.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attributes\MetricSorter
-    pim_catalog.query.elasticsearch.sorter.completeness.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\CompletenessSorter
+    pim_catalog.query.elasticsearch.sorter.base_field.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Field\BaseFieldSorter
+    pim_catalog.query.elasticsearch.sorter.identifier.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\IdentifierSorter
+    pim_catalog.query.elasticsearch.sorter.completeness.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Field\CompletenessSorter
+    pim_catalog.query.elasticsearch.sorter.attribute.base.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attribute\BaseAttributeSorter
+    pim_catalog.query.elasticsearch.sorter.attribute.metric.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attribute\MetricSorter
+    pim_catalog.query.elasticsearch.sorter.attribute.text_area.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attribute\TextAreaSorter
 
 services:
     pim_catalog.query.product_query_builder_factory:
@@ -291,10 +293,25 @@ services:
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
 
+    pim_catalog.query.elasticsearch.sorter.identifier:
+        class: '%pim_catalog.query.elasticsearch.sorter.identifier.class%'
+        arguments:
+            - ['identifier']
+            - ['pim_catalog_identifier']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
     pim_catalog.query.elasticsearch.sorter.completeness:
         class: '%pim_catalog.query.elasticsearch.sorter.completeness.class%'
         arguments:
             - ['completeness']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.text_area:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.text_area.class%'
+        arguments:
+            - ['pim_catalog_textarea']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
 
@@ -313,9 +330,65 @@ services:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
 
     # Attributes sorters
+    pim_catalog.query.elasticsearch.sorter.number:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
+        arguments:
+            - ['pim_catalog_number']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.option:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
+        arguments:
+            - ['pim_catalog_simpleselect']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.text:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
+        arguments:
+            - ['pim_catalog_text']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
     pim_catalog.query.elasticsearch.sorter.metric:
         class: '%pim_catalog.query.elasticsearch.sorter.attribute.metric.class%'
         arguments:
             - ['pim_catalog_metric']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.boolean:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
+        arguments:
+            - ['pim_catalog_boolean']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.text:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
+        arguments:
+            - ['pim_catalog_text']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.text_area:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.text_area.class%'
+        arguments:
+            - ['pim_catalog_textarea']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.number:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
+        arguments:
+            - ['pim_catalog_number']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.option:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
+        arguments:
+            - ['pim_catalog_simpleselect']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }

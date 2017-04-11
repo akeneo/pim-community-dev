@@ -66,7 +66,7 @@ class TextAreaFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'term' => [
-                    'values.name-varchar.ecommerce.en_US.raw' => 'Sony',
+                    'values.name-varchar.ecommerce.en_US.preprocessed' => 'Sony',
                 ],
             ]
         )->shouldBeCalled();
@@ -89,14 +89,14 @@ class TextAreaFilterSpec extends ObjectBehavior
         $sqb->addMustNot(
             [
                 'term' => [
-                    'values.name-varchar.ecommerce.en_US.raw' => 'Sony',
+                    'values.name-varchar.ecommerce.en_US.preprocessed' => 'Sony',
                 ],
             ]
         )->shouldBeCalled();
 
         $sqb->addFilter(
             [
-                'exists' => ['field' => 'values.name-varchar.ecommerce.en_US.raw'],
+                'exists' => ['field' => 'values.name-varchar.ecommerce.en_US.preprocessed'],
             ]
         )->shouldBeCalled();
 
@@ -164,7 +164,7 @@ class TextAreaFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'query_string' => [
-                    'default_field' => 'values.name-varchar.ecommerce.en_US.raw',
+                    'default_field' => 'values.name-varchar.ecommerce.en_US.preprocessed',
                     'query'         => '*sony*',
                 ],
             ]
@@ -188,7 +188,7 @@ class TextAreaFilterSpec extends ObjectBehavior
         $sqb->addMustNot(
             [
                 'query_string' => [
-                    'default_field' => 'values.name-varchar.ecommerce.en_US.raw',
+                    'default_field' => 'values.name-varchar.ecommerce.en_US.preprocessed',
                     'query'         => '*sony*',
                 ],
             ]
@@ -196,7 +196,7 @@ class TextAreaFilterSpec extends ObjectBehavior
 
         $sqb->addFilter([
                 'exists' => [
-                    'field' => 'values.name-varchar.ecommerce.en_US.raw',
+                    'field' => 'values.name-varchar.ecommerce.en_US.preprocessed',
                 ],
             ]
         )->shouldBeCalled();
@@ -219,7 +219,7 @@ class TextAreaFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'query_string' => [
-                    'default_field' => 'values.name-varchar.ecommerce.en_US.raw',
+                    'default_field' => 'values.name-varchar.ecommerce.en_US.preprocessed',
                     'query'         => 'sony*',
                 ],
             ]

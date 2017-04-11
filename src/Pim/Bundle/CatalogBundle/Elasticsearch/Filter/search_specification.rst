@@ -131,7 +131,8 @@ Sorting
 .. code-block:: php
 
     'sort' => [
-        'name-varchar.<all_channels>.<all_locales>' => "asc"
+        'name-varchar.<all_channels>.<all_locales>' => 'asc',
+        'missing' => '_last'
     ]
 
 Sorting and tokenization
@@ -145,7 +146,8 @@ In this case, the sort becomes:
 .. code-block:: php
 
     'sort' => [
-        'name-text.<all_channels>.<all_locales>.raw' => 'asc'
+        'name-text.<all_channels>.<all_locales>.preprocessed' => 'asc',
+        'missing' => '_last'
     ]
 
 Text area
@@ -188,7 +190,7 @@ STARTS WITH
 
     'filter' => [
         'query_string' => [
-            'default_field' => 'values.description-text.<all_channels>.<all_locales>.raw',
+            'default_field' => 'values.description-text.<all_channels>.<all_locales>.preprocessed',
             'query' => "My*"
         ]
     ]
@@ -202,7 +204,7 @@ Example:
 
     'filter' => [
         'query_string' => [
-            'default_field' => 'values.description-text.<all_channels>.<all_locales>.raw',
+            'default_field' => 'values.description-text.<all_channels>.<all_locales>.preprocessed',
             'query' => 'My\\ description*'
         ]
     ]
@@ -216,7 +218,7 @@ CONTAINS
 
     'filter' => [
         'query_string' => [
-            'default_field' => 'values.description-text.<all_channels>.<all_locales>.raw',
+            'default_field' => 'values.description-text.<all_channels>.<all_locales>.preprocessed',
             'query' => '*cool\\ product*'
         ]
     ]
@@ -232,12 +234,12 @@ Same syntax than the ``contains`` but must be included in a ``must_not`` boolean
     'bool' => [
         'must_not' => [
             'query_string' => [
-                'default_field' => 'values.description-text.<all_channels>.<all_locales>.raw',
+                'default_field' => 'values.description-text.<all_channels>.<all_locales>.preprocessed',
                 'query' => '*cool\\ product*'
             ]
         ],
         'filter' => [
-            'exists' => ['field' => 'values.description-text.<all_channels>.<all_locales>.raw'
+            'exists' => ['field' => 'values.description-text.<all_channels>.<all_locales>.preprocessed'
         ]
     ]
 
@@ -252,7 +254,7 @@ Equals (=)
 
     'filter' => [
         'term' => [
-            'values.description-text.<all_channels>.<all_locales>.raw' => 'My full lookup text'
+            'values.description-text.<all_channels>.<all_locales>.preprocessed' => 'My full lookup text'
         ]
     ]
 
@@ -267,12 +269,12 @@ Not Equals (!=)
 
     'must_not' => [
         'term' => [
-            'values.description-text.<all_channels>.<all_locales>.raw' => 'My full lookup text'
+            'values.description-text.<all_channels>.<all_locales>.preprocessed' => 'My full lookup text'
         ]
     ],
     'filter' => [
         'exists' => [
-            'field' => 'values.description-text.<all_channels>.<all_locales>.raw'
+            'field' => 'values.description-text.<all_channels>.<all_locales>.preprocessed'
         ]
     ]
 
@@ -295,6 +297,38 @@ NOT EMPTY
     'filter' => [
         'exists => [
             'field' => 'values.description-text.<all_channels>.<all_locales>'
+        ]
+    ]
+
+Sorting
+~~~~~~~
+
+The sorting operation is made on the preprocessed version of the text.
+
+Operators
+.........
+ASCENDANT
+"""""""""
+
+.. code-block:: php
+
+    'sort' => [
+        'values.description-text.<all_channels>.<all_locales>.preprocessed' => [
+            'order' => 'ASC',
+            'missing' => '_last'
+        ]
+    ]
+
+
+DESCENDANT
+""""""""""
+
+.. code-block:: php
+
+    'sort' => [
+        'values.description-text.<all_channels>.<all_locales>.preprocessed' => [
+            'order' => 'DESC',
+            'missing' => '_last'
         ]
     ]
 
@@ -381,7 +415,7 @@ Filtering
 ~~~~~~~~~
 Operators
 .........
-All operators except CONTAINS and DOES NOT CONTAINS are the same than with the text_area attributes but apply on the field directly instead of the ``.raw`` subfield.
+All operators except CONTAINS and DOES NOT CONTAINS are the same than with the text_area attributes but apply on the field directly instead of the ``.preprocessed`` subfield.
 
 CONTAINS
 """"""""
@@ -415,6 +449,35 @@ Same syntax than the contains but must be include in a ``must_not`` boolean occu
             'filter' => [
                 'exists' => ['field' => 'name-varchar']
             ]
+        ]
+    ]
+
+Sorting
+~~~~~~~
+
+Operators
+.........
+Ascendant
+"""""""""
+
+.. code-block:: php
+
+    'sort' => [
+        'values.name-varchar.<all_channels>.<all_locales>' => [
+            'order'   => 'ASC',
+            'missing' => '_last'
+        ]
+    ]
+
+Descendant
+""""""""""
+
+.. code-block:: php
+
+    'sort' => [
+        'values.name-varchar.<all_channels>.<all_locales>' => [
+            'order'   => 'DESC',
+            'missing' => '_last'
         ]
     ]
 
@@ -528,6 +591,33 @@ Not In list
         ]
     ]
 
+Sorting
+~~~~~~~
+Operators
+.........
+
+Whenever one wants to sort on the field 'identifier' or an attribute of type 'pim_catalog_identifier'. The sort query will be performed on the field 'identifier'.
+
+ASCENDANT
+"""""""""
+
+.. code-block:: php
+
+    'sort' => [
+        'identifier' => 'ASC',
+        'missing' => '_last'
+    ]
+
+DESCENDANT
+""""""""""
+
+.. code-block:: php
+
+    'sort' => [
+        'identifier' => 'DESC',
+        'missing' => '_last'
+    ]
+
 Media
 *****
 
@@ -536,6 +626,7 @@ Media
 
 Data model
 ~~~~~~~~~~
+
 .. code-block:: php
 
     [
@@ -919,6 +1010,35 @@ NOT EMPTY
     ]
 
 
+Sorting
+~~~~~~~
+
+Operators
+.........
+Ascendant
+"""""""""
+
+.. code-block:: php
+
+    'sort' => [
+        'values.packet_count-decimal.<all_channels>.<all_locales>' => [
+            'order'   => 'ASC',
+            'missing' => '_last'
+        ]
+    ]
+
+Descendant
+""""""""""
+
+.. code-block:: php
+
+    'sort' => [
+        'values.packet_count-decimal.<all_channels>.<all_locales>' => [
+            'order'   => 'DESC',
+            'missing' => '_last'
+        ]
+    ]
+
 Option
 ******
 :Apply: pim_catalog_simpleselect attributes
@@ -999,15 +1119,32 @@ NOT IN
 
 Sorting
 ~~~~~~~
+Operators
+.........
+Ascendant
+"""""""""
 
 .. code-block:: php
 
     'sort' => [
         'values.color-option.<all_channels>.<all_locales>' => [
-            'order'   => 'asc',
+            'order'   => 'ASC',
             'missing' => '_last'
         ]
     ]
+
+Descendant
+""""""""""
+
+.. code-block:: php
+
+    'sort' => [
+        'values.color-option.<all_channels>.<all_locales>' => [
+            'order'   => 'DESC',
+            'missing' => '_last'
+        ]
+    ]
+
 
 Simple select reference data
 ****************************
@@ -1090,11 +1227,29 @@ Sorting
 ~~~~~~~
 Sorting will be done on the localized label:
 
+Operators
+.........
+ASCENDANT
+"""""""""
+
+
 .. code-block:: php
 
     'sort' => [
         'values.brand-reference_data_option.<all_channels>.<all_locales>' => [
             'order'   => 'asc',
+            'missing' => '_last'
+        ]
+    ]
+
+DESCENDANT
+""""""""""
+
+.. code-block:: php
+
+    'sort' => [
+        'values.brand-reference_data_option.<all_channels>.<all_locales>' => [
+            'order'   => 'desc',
             'missing' => '_last'
         ]
     ]
@@ -1287,7 +1442,23 @@ Filtering
 ~~~~~~~~~
 Operators
 .........
-All operators are identical to the one used on numbers.
+
+All operators are identical to the one used on numbers except we filter on the `base_data` value. So the attribute path becomes:
+
+.. code-block:: php
+
+    'values.weight-metric.mobile.fr_FR.base_data'
+
+Sorting
+~~~~~~~
+Operators
+.........
+
+All operators are identical to the one used on numbers except we filter on the `base_data` value. So the attribute path becomes:
+
+.. code-block:: php
+
+    'values.weight-metric.mobile.fr_FR.base_data'
 
 Boolean
 *******
@@ -1319,7 +1490,7 @@ Equals (=)
 
     'filter' => [
         'term' => [
-            'values.description-text.<all_channels>.<all_locales>' => true
+            'values.a_yes_no-boolean.<all_channels>.<all_locales>' => true
         ]
     ]
 
@@ -1331,12 +1502,41 @@ Not Equals (!=)
 
     'must_not' => [
         'term' => [
-            'values.description-text.<all_channels>.<all_locales>' => true
+            'values.a_yes_no-boolean.<all_channels>.<all_locales>' => true
         ]
     ],
     'filter' => [
         'exists' => [
-            'field' => 'values.description-text.<all_channels>.<all_locales>'
+            'field' => 'values.a_yes_no-boolean.<all_channels>.<all_locales>'
+        ]
+    ]
+
+Sorting
+~~~~~~~
+Operators
+.........
+ASCENDANT
+"""""""""
+
+.. code-block:: php
+
+    'sort' => [
+        'values.a_yes_no-boolean.ecommerce.en_US' => [
+            'order'   => 'asc',
+            'missing' => '_last'
+        ]
+    ]
+
+
+DESCENDANT
+""""""""""
+
+.. code-block:: php
+
+    'sort' => [
+        'values.a_yes_no-boolean.ecommerce.en_US' => [
+            'order'   => 'desc',
+            'missing' => '_last'
         ]
     ]
 
@@ -1467,6 +1667,8 @@ NOT IN CHILDREN
 :Type: filter
 
 Same as above but with a ``must_not`` occured type
+
+
 
 Price
 *****

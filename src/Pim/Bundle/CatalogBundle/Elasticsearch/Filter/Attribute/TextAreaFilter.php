@@ -59,7 +59,7 @@ class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterI
 
         switch ($operator) {
             case Operators::STARTS_WITH:
-                $attributePath .= '.raw';
+                $attributePath .= '.preprocessed';
                 $clause = [
                     'query_string' => [
                         'default_field' => $attributePath,
@@ -70,7 +70,7 @@ class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterI
                 break;
 
             case Operators::CONTAINS:
-                $attributePath .= '.raw';
+                $attributePath .= '.preprocessed';
                 $clause = [
                     'query_string' => [
                         'default_field' => $attributePath,
@@ -81,7 +81,7 @@ class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterI
                 break;
 
             case Operators::DOES_NOT_CONTAIN:
-                $attributePath .= '.raw';
+                $attributePath .= '.preprocessed';
                 $mustNotClause = [
                     'query_string' => [
                         'default_field' => $attributePath,
@@ -98,7 +98,7 @@ class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterI
                 break;
 
             case Operators::EQUALS:
-                $attributePath .= '.raw';
+                $attributePath .= '.preprocessed';
                 $clause = [
                     'term' => [
                         $attributePath => $value,
@@ -108,7 +108,7 @@ class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterI
                 break;
 
             case Operators::NOT_EQUAL:
-                $attributePath .= '.raw';
+                $attributePath .= '.preprocessed';
                 $mustNotClause = [
                     'term' => [
                         $attributePath => $value,

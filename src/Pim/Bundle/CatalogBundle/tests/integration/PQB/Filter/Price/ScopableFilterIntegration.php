@@ -270,9 +270,6 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['product_one', 'product_two']);
     }
 
-    /**
-     * @group todo
-     */
     public function testOperatorNotEmptyForCurrency()
     {
         $result = $this->executeFilter([

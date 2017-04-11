@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Elasticsearch\Sorter;
+namespace Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Field;
 
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Exception\InvalidDirectionException;

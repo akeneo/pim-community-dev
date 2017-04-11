@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Sorter;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
-use Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\CompletenessSorter;
+use Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Field\CompletenessSorter;
 use Pim\Component\Catalog\Exception\InvalidDirectionException;
 use Pim\Component\Catalog\Query\Sorter\Directions;
 use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;

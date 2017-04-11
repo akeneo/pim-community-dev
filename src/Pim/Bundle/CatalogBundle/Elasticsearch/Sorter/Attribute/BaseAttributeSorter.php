@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attributes;
+namespace Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attribute;
 
 /**
  * Attribute base sorter for an Elasticsearch query

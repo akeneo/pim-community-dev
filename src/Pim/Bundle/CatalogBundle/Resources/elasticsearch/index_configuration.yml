@@ -24,7 +24,7 @@ mappings:
                     match_mapping_type: 'string'
                     mapping:
                         fields:
-                            raw:
+                            preprocessed:
                                 type: 'keyword'
                                 normalizer: 'text_normalizer'
                         type: 'text'

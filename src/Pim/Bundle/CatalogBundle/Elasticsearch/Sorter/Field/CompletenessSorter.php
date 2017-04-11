@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Elasticsearch\Sorter;
+namespace Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Field;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 
