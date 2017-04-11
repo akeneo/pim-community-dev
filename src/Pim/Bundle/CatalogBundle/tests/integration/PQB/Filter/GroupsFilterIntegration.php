@@ -82,7 +82,7 @@ class GroupsFilterIntegration extends AbstractProductQueryBuilderTestCase
      * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "groups" is not supported or does not support operator "BETWEEN"
      */
-    public function testErrorOperatorNotSupported()
+    public function testErrorOperatorNotSupportedForGroups()
     {
         $this->executeFilter([['groups', Operators::BETWEEN, 'groupB']]);
     }

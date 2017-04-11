@@ -1768,8 +1768,10 @@ IN
 
 .. code-block:: php
 
-    'terms' => [
-        'groups' => ['groupA', 'groupB', 'groupC']
+    'filter' => [
+        'terms' => [
+            'groups' => ['groupA', 'groupB', 'groupC']
+        ]
     ]
 
 NOT IN
@@ -1778,8 +1780,10 @@ NOT IN
 
 .. code-block:: php
 
-    'terms' => [
-        'groups' => ['groupA', 'groupB', 'groupC']
+    'must_not' => [
+        'terms' => [
+            'groups' => ['groupA', 'groupB', 'groupC']
+        ]
     ]
 
 IS EMPTY
@@ -1788,7 +1792,11 @@ IS EMPTY
 
 .. code-block:: php
 
-    ['exists' => ['field' => 'groups']]
+    'must_not' => [
+        'exists' => [
+            'field' => 'groups'
+        ]
+    ]
 
 IS NOT EMPTY
 ~~~~~~~~~~~~
@@ -1796,13 +1804,80 @@ IS NOT EMPTY
 
 .. code-block:: php
 
-    ['exists' => ['field' => 'groups']]
+    'filter' => [
+        'exists' => [
+            'field' => 'groups'
+        ]
+    ]
 
 
 Sorting
 ~~~~~~~
 For the group grid, we need to sort product in order to put them at the beginning of the list
 when they belong to this particular list:
+
+Variant group
+*************
+:Apply: apply 'keyword' datatype on 'variant_group' field
+
+Data model
+~~~~~~~~~~
+.. code-block:: yaml
+
+    variant_group: 'variantA'
+
+Filtering
+~~~~~~~~~
+Operators
+.........
+IN
+~~
+:Type: filter
+
+.. code-block:: php
+
+    'filter' => [
+        'terms' => [
+            'variant_group' => ['variantA', 'variantB', 'variantC']
+        ]
+    ]
+
+NOT IN
+~~~~~~
+:Type: must_not
+
+.. code-block:: php
+
+    'must_not' => [
+        'terms' => [
+            'variant_group' => ['variantA', 'variantB', 'variantC']
+        ]
+    ]
+
+IS EMPTY
+~~~~~~~~
+:Type: must_not
+
+.. code-block:: php
+
+    'must_not' => [
+        'exists' => [
+            'field' => 'variant_group'
+        ]
+    ]
+
+
+IS NOT EMPTY
+~~~~~~~~~~~~
+:Type: filter
+
+.. code-block:: php
+
+    'filter' => [
+        'exists' => [
+            'field' => 'variant_group'
+        ]
+    ]
 
 ::
 

@@ -46,7 +46,15 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
 
         $data[StandardPropertiesNormalizer::FIELD_ENABLED] = (bool) $product->isEnabled();
         $data[StandardPropertiesNormalizer::FIELD_CATEGORIES] = $product->getCategoryCodes();
-        $data[StandardPropertiesNormalizer::FIELD_GROUPS] = $product->getGroupCodes();
+
+        $groups = array_diff(
+            $product->getGroupCodes(),
+            null !== $product->getVariantGroup() ? [$product->getVariantGroup()->getCode()] : []
+        );
+
+        $data[StandardPropertiesNormalizer::FIELD_GROUPS] = $groups;
+        $data[StandardPropertiesNormalizer::FIELD_VARIANT_GROUP] = null !== $product->getVariantGroup()
+            ? $product->getVariantGroup()->getCode() : null;
 
         $data[self::FIELD_IS_ASSOCIATED] = !$product->getAssociations()->isEmpty();
 
