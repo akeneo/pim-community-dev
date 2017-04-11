@@ -10,6 +10,8 @@ mappings:
                 type: 'boolean'
             groups:
                 type: 'keyword'
+            is_associated:
+                type: 'boolean'
             identifier:
                 type: 'keyword'
                 normalizer: 'varchar_normalizer'

@@ -161,7 +161,7 @@ interface ProductInterface extends
     /**
      * Get types of associations
      *
-     * @return AssociationInterface[]|Collection
+     * @return Collection
      */
     public function getAssociations();
 

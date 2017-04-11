@@ -1242,7 +1242,6 @@ NOT IN
         ]
     ]
 
-
 Sorting
 ~~~~~~~
 Not supported on that attribute_type
@@ -1799,17 +1798,28 @@ when they belong to this particular list:
 
 Associations
 ************
+
+Data model
+~~~~~~~~~~
+.. code-block:: yaml
+
+    is_associated: true
+
 Filtering
 ~~~~~~~~~
 No filtering expected on associations (no filter on the grid).
 
 Sorting
 ~~~~~~~
+.. code-block:: php
 
-::
-
-  TODO see function score to put product belonging to the associations at first and sort by relevancy
+    sort => [
+        'is_associated' => [
+            'order'   => 'asc',
+            'missing' => '_last',
+        ]
+    ]
 
 Testing
 -------
-All queries above are (or should be) defined as Behat scenarios in the `queries_test` directory relative to this documentation.
+All queries above are (or should be) defined as integration tests under the namespace `Pim\Bundle\CatalogBundle\tests\integration\PQB`.

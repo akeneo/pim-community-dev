@@ -31,8 +31,14 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
         $data = [];
 
         $data[StandardPropertiesNormalizer::FIELD_IDENTIFIER] = $product->getIdentifier();
-        $data[StandardPropertiesNormalizer::FIELD_CREATED] = $this->serializer->normalize($product->getCreated(), $format);
-        $data[StandardPropertiesNormalizer::FIELD_UPDATED] = $this->serializer->normalize($product->getUpdated(), $format);
+        $data[StandardPropertiesNormalizer::FIELD_CREATED] = $this->serializer->normalize(
+            $product->getCreated(),
+            $format
+        );
+        $data[StandardPropertiesNormalizer::FIELD_UPDATED] = $this->serializer->normalize(
+            $product->getUpdated(),
+            $format
+        );
 
         $data[StandardPropertiesNormalizer::FIELD_FAMILY] = null !== $product->getFamily()
             ? $product->getFamily()->getCode() : null;
@@ -40,6 +46,9 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
         $data[StandardPropertiesNormalizer::FIELD_ENABLED] = (bool) $product->isEnabled();
         $data[StandardPropertiesNormalizer::FIELD_CATEGORIES] = $product->getCategoryCodes();
         $data[StandardPropertiesNormalizer::FIELD_GROUPS] = $product->getGroupCodes();
+
+        $data[StandardPropertiesNormalizer::FIELD_IS_ASSOCIATED] = !$product->getAssociations()->isEmpty()
+            ? true : false;
 
         $data[self::FIELD_COMPLETENESS] = !$product->getCompletenesses()->isEmpty()
             ? $this->serializer->normalize($product->getCompletenesses(), 'indexing', $context) : [];
