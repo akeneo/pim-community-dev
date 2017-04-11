@@ -1,3 +1,4 @@
+@javascript
 Feature: List attribute groups
   In order to see attribute groups in my catalog
   As a product manager
@@ -11,7 +12,6 @@ Feature: List attribute groups
     Then I should see "Marketing"
     And I should see "Please select an attribute group on the left or Create a new attribute group"
 
-  @javascript
   Scenario: Order attribute group choices on the attribute creation page
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"

@@ -119,7 +119,9 @@ class Creation extends Form
      */
     public function editOptionAndCancel($name, $newValue)
     {
-        $row = $this->getOptionElement($name);
+        $optionRow = $this->spin(function () use ($name) {
+            return $this->getOptionElement($name);
+        }, 'Cannot find option row');
 
         $row->find('css', '.edit-row')->click();
         $row->find('css', '.attribute-option-value:first-child')->setValue($newValue);
