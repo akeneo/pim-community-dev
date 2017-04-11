@@ -313,7 +313,6 @@ class NavigationContext extends BaseNavigationContext
     {
         $expectedAddress = $this->getPage('Product index')->getUrl();
         $this->assertAddress($expectedAddress);
-        $this->wait();
     }
 
     /**
