@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Sorter\Metric;
+namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Sorter\Boolean;
 
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\Query\Sorter\Directions;
