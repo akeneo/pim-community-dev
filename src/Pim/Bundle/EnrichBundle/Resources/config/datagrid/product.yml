@@ -12,33 +12,28 @@ datagrid:
         columns:
             label:
                 label:         Label
-#                data_name:     productLabel
-#                selector:      product_label
+                data_name:     label
+                type:          field
             family:
                 label:         Family
-#                data_name:     familyLabel
-#                selector:      product_family
+                data_name:     family
+                type:          field
             enabled:
                 label:         Status
-                type:          twig
-                template:      PimDataGridBundle:Property:enabled.html.twig
-                frontend_type: html
-#            completeness:
-#                label:         Complete
-#                type:          twig
-#                template:      PimDataGridBundle:Property:completeness.html.twig
-#                frontend_type: html
+                frontend_type: enabled
+            completeness:
+                label:         Complete
+                frontend_type: completeness
             created:
                 label:         Created At
-                type:          product_value_date
-                frontend_type: date
+                type:          field
             updated:
                 label:         Updated At
-                type:          product_value_date
-                frontend_type: date
-#            groups:
-#                label:         Groups
-#                type:          product_groups
+                type:          field
+            groups:
+                label:         Groups
+                data_name:     groups
+                type:          field
         properties:
             id: ~
             edit_link:

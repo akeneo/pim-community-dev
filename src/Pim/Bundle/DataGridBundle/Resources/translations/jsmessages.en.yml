@@ -27,6 +27,10 @@ Action performed.: Action performed.
 Action is not performed.: Action is not performed.
 Please, select item to perform action.: Please, select item to perform action.
 View per page: View per page
+Enabled: Activé
+Disabled: Désactivé
+Yes: Yes
+No: No
 oro.datagrid.entityHint: Entity
 oro.datagrid.noentities: No records found
 oro.datagrid.noresults: "No results found. Try to change your search criteria."

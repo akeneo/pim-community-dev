@@ -66,12 +66,19 @@ class ProductDatasource extends Datasource
         }
 
         $productCursor = $this->pqb->execute();
-        $context = ['locale' => $options['locale_code'], 'channel' => $options['scope_code']];
-        $rows = ['totalRecords' => $productCursor->count()];
+        $context = [
+            'locales'             => [$options['locale_code']],
+            'channels'            => [$options['scope_code']],
+            'data_locale'         => $this->getParameters()['dataLocale'],
+            'current_product'     => $options['current_product'],
+            'association_type_id' => $options['association_type_id'],
+            'current_group_id'    => $options['current_group_id']
+        ];
+        $rows = ['totalRecords' => $productCursor->count(), 'data' => []];
 
         foreach ($productCursor as $product) {
             $normalizedProduct = array_merge(
-                $this->normalizer->normalize($product, 'internal_api', $context),
+                $this->normalizer->normalize($product, 'datagrid', $context),
                 ['id' => $product->getId(), 'dataLocale' => $this->getConfiguration('locale_code')]
             );
             $rows['data'][] = new ResultRecord($normalizedProduct);
@@ -101,7 +108,7 @@ class ProductDatasource extends Datasource
         $factoryConfig['default_locale'] = $this->getConfiguration('locale_code');
         $factoryConfig['default_scope'] = $this->getConfiguration('scope_code');
         $factoryConfig['limit'] = $this->getConfiguration(ContextConfigurator::PRODUCTS_PER_PAGE);
-        $factoryConfig['search_after'] = null; // TODO with TIP-664
+        $factoryConfig['search_after'] =  $this->getConfiguration('search_after', false);
 
         $this->pqb = $this->factory->create($factoryConfig);
         $this->qb = $this->pqb->getQueryBuilder();

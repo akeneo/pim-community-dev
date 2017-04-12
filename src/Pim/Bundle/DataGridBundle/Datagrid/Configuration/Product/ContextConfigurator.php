@@ -6,7 +6,6 @@ use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExten
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Oro\Bundle\DataGridBundle\Extension\Toolbar\ToolbarExtension;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -109,6 +108,7 @@ class ContextConfigurator implements ConfiguratorInterface
         $this->addAttributesIds();
         $this->addAttributesConfig();
         $this->addPaginationConfig();
+        $this->addSearchAfter();
     }
 
     /**
@@ -421,5 +421,15 @@ class ContextConfigurator implements ConfiguratorInterface
         $value = isset($pager[self::PRODUCTS_PER_PAGE]) ? $pager[self::PRODUCTS_PER_PAGE] : 25;
 
         $this->configuration->offsetSetByPath($this->getSourcePath(self::PRODUCTS_PER_PAGE), $value);
+    }
+
+    /**
+     * Inject requested _per_page parameters in the datagrid configuration
+     */
+    protected function addSearchAfter()
+    {
+        $identifier = $this->requestParams->get('search_after', null);
+
+        $this->configuration->offsetSetByPath($this->getSourcePath('search_after'), $identifier);
     }
 }

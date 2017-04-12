@@ -211,18 +211,6 @@ class ProductRepository extends EntityRepository implements
     /**
      * @return QueryBuilder
      */
-    public function createDatagridQueryBuilder()
-    {
-        $qb = $this->getEntityManager()->createQueryBuilder()
-            ->select('p')
-            ->from($this->_entityName, 'p', 'p.id');
-
-        return $qb;
-    }
-
-    /**
-     * @return QueryBuilder
-     */
     public function createGroupDatagridQueryBuilder()
     {
         $qb = $this->getEntityManager()->createQueryBuilder()
@@ -247,38 +235,6 @@ class ProductRepository extends EntityRepository implements
     {
         $qb = $this->createGroupDatagridQueryBuilder();
         $qb->andWhere($qb->expr()->in('p.id', ':productIds'));
-
-        return $qb;
-    }
-
-    /**
-     * @return QueryBuilder
-     */
-    public function createAssociationDatagridQueryBuilder()
-    {
-        $qb = $this->getEntityManager()->createQueryBuilder()
-            ->select('p')
-            ->from($this->_entityName, 'p', 'p.id');
-
-        $qb
-            ->leftJoin(
-                'Pim\Component\Catalog\Model\Association',
-                'pa',
-                'WITH',
-                'pa.associationType = :associationType AND pa.owner = :product AND p MEMBER OF pa.products'
-            );
-
-        $qb->andWhere($qb->expr()->neq('p', ':product'));
-
-        $isCheckedExpr =
-            'CASE WHEN (pa.id IS NOT NULL OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in) ' .
-            'THEN true ELSE false END';
-
-        $isAssociatedExpr = 'CASE WHEN pa.id IS NOT NULL THEN true ELSE false END';
-
-        $qb
-            ->addSelect($isCheckedExpr.' AS is_checked')
-            ->addSelect($isAssociatedExpr.' AS is_associated');
 
         return $qb;
     }
