@@ -19,7 +19,7 @@ class OptionNormalizer implements NormalizerInterface
     {
         $locale = isset($context['data_locale']) ? $context['data_locale'] : null;
         $translation = $option->getData()->getTranslation($locale);
-        $label = null !== $translation->getValue() ? $translation->getValue() : sprintf('[%s]', $option->getCode());
+        $label = null !== $translation->getValue() ? $translation->getValue() : sprintf('[%s]', $option->getData()->getCode());
 
         return [
             'locale' => $option->getLocale(),

@@ -21,12 +21,10 @@ class OptionsNormalizer implements NormalizerInterface
 
         $labels = [];
         foreach ($options->getData() as $option) {
-            $codes[] = $option->getCode();
-
             $translation = $option->getTranslation($locale);
             $labels[] = null !== $translation->getValue() ? $translation->getValue() : sprintf('[%s]', $option->getCode());
         }
-        
+
         sort($labels);
 
         return [
