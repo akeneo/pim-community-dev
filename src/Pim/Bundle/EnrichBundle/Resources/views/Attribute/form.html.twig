@@ -59,30 +59,5 @@
 {% block head_script_component %}
     {{ parent() }}
 
-    <script type="text/javascript">
-        'use strict';
-
-        var form = $('#{{ form.vars.id }}');
-
-        var getInvalidField = function () {
-            var container = $('.field-input.validation-error', form).first();
-            return $('input', container);
-        };
-
-        var getParentTabLink = function (field) {
-            var paneId = $(field).parents('.tab-pane').attr('id');
-            return $('.AknHorizontalNavtab-link[href="#'+ paneId +'"]');
-        };
-
-        var focusInvalidField = function () {
-            var invalidField = getInvalidField();
-            var parentTab = getParentTabLink(invalidField);
-            parentTab.trigger('click');
-            invalidField.trigger('focus');
-        };
-
-        form.on('refresh', focusInvalidField);
-    </script>
-
     {% include 'PimEnrichBundle:Attribute:_js-handler.html.twig' with measures %}
 {% endblock %}
