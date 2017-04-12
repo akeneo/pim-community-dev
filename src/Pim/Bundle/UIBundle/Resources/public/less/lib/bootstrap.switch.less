@@ -2,21 +2,21 @@
 
 /* Overrides src/Pim/Bundle/UIBundle/Resources/public/lib/bootstrap-switch/bootstrap.switch.css */
 .has-switch {
-  @switchHeight: 32px;
-  @margin: 1px;
+  @switchSize: @AknDefaultButtonSize;
+  @borderWidth: 1px;
 
   border-radius: 100px;
-  height: @switchHeight;
-  width: @switchHeight * 2;
+  height: @switchSize;
+  width: @switchSize * 2;
   border: none;
   overflow: initial;
 
   label,
   label:active {
     background: none;
-    width: 3 * @switchHeight;
+    width: 3 * @switchSize;
     border: none;
-    margin-left: -@switchHeight;
+    margin-left: -@switchSize;
 
     &:hover {
       background: none;
@@ -25,23 +25,23 @@
     &:after {
       content: ' ';
       background: white;
-      height: 30px;
-      width: 30px;
+      height: @switchSize - 2 * @borderWidth;
+      width: @switchSize - 2 * @borderWidth;
       border-radius: 100px;
       position: absolute;
-      top: 2px;
-      left: @switchHeight + 1px;
+      top: @borderWidth + 1px;
+      left: @switchSize + @borderWidth;
     }
   }
 
   &.switch-small {
-    min-width: @switchHeight * 2;
+    min-width: @switchSize * 2;
   }
 
   .switch-off,
   .switch-on {
-    height: @switchHeight;
-    margin-left: @switchHeight;
+    height: @switchSize;
+    margin-left: @switchSize;
     width: 100%;
   }
 
@@ -109,9 +109,9 @@
 
   span.switch-small {
     position: absolute;
-    left: @switchHeight * 2 + 10px;
+    left: @switchSize * 2 + 10px;
     color: @AknDarkFontColor !important;
-    line-height: @switchHeight;
+    line-height: @switchSize;
     padding: 0;
   }
 
