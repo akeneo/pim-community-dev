@@ -4,7 +4,7 @@ def editions = ["ce"]
 def storages = ["orm", "odm"]
 def phpVersion = "5.6"
 def mysqlVersion = "5.5"
-def esVersion = "none"
+def esVersion = "5"
 def features = "features"
 def launchUnitTests = "yes"
 def launchIntegrationTests = "yes"
@@ -22,7 +22,7 @@ stage("Checkout") {
             string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
             choice(choices: '5.6\n7.0\n7.1', description: 'PHP version to run behat with', name: 'phpVersion'),
             choice(choices: '5.5\n5.7', description: 'Mysql version to run behat with', name: 'mysqlVersion'),
-            choice(choices: 'none\n1.7\n5', description: 'ElasticSearch version to run behat with', name: 'esVersion')
+            choice(choices: '5\n1.7', description: 'ElasticSearch version to run behat with', name: 'esVersion')
         ])
 
         storages = userInput['storages'].tokenize(',')
@@ -55,8 +55,9 @@ stage("Checkout") {
     checkouts = [:];
     checkouts['community'] = {
         node('docker') {
+            cleanUpEnvironment()
             deleteDir()
-            docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/docker/.composer") {
                 unstash "pim_community_dev"
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -65,14 +66,17 @@ stage("Checkout") {
 
                 stash "pim_community_dev_full"
             }
+            cleanUpEnvironment()
             deleteDir()
         }
     }
+
     if (editions.contains('ee') && 'yes' == launchBehatTests) {
         checkouts['enterprise'] = {
             node('docker') {
+                cleanUpEnvironment()
                 deleteDir()
-                docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+                docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/docker/.composer") {
                     unstash "pim_enterprise_dev"
 
                     sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -81,6 +85,7 @@ stage("Checkout") {
 
                     stash "pim_enterprise_dev_full"
                 }
+                cleanUpEnvironment()
                 deleteDir()
             }
         }
@@ -164,6 +169,7 @@ if (launchBehatTests.equals("yes")) {
 def runGruntTest() {
     node('docker') {
         deleteDir()
+
         try {
             docker.image('digitallyseamless/nodejs-bower-grunt').inside("") {
                 unstash "pim_community_dev_full"
@@ -172,9 +178,7 @@ def runGruntTest() {
                 sh "grunt"
             }
         } finally {
-            sh "docker stop \$(docker ps -a -q) || true"
-            sh "docker rm \$(docker ps -a -q) || true"
-            sh "docker volume rm \$(docker volume ls -q) || true"
+            cleanUpEnvironment()
             deleteDir()
         }
     }
@@ -183,8 +187,9 @@ def runGruntTest() {
 def runPhpUnitTest(phpVersion) {
     node('docker') {
         deleteDir()
+
         try {
-            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer") {
                 unstash "pim_community_dev"
 
                 if (phpVersion != "5.6") {
@@ -196,11 +201,10 @@ def runPhpUnitTest(phpVersion) {
                 sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit app/build/logs/phpunit.xml"
             }
         } finally {
-            sh "docker stop \$(docker ps -a -q) || true"
-            sh "docker rm \$(docker ps -a -q) || true"
-            sh "docker volume rm \$(docker volume ls -q) || true"
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
+
+            cleanUpEnvironment()
             deleteDir()
         }
     }
@@ -209,6 +213,7 @@ def runPhpUnitTest(phpVersion) {
 def runIntegrationTest(phpVersion, storage, testSuiteName) {
     node('docker') {
         deleteDir()
+
         try {
             docker.image("mongo:2.4").withRun("--name mongodb", "--smallfiles") {
                 docker.image("mysql:5.5").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim", "--sql_mode=ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION") {
@@ -239,12 +244,10 @@ def runIntegrationTest(phpVersion, storage, testSuiteName) {
                 }
             }
         } finally {
-            sh "docker stop \$(docker ps -a -q) || true"
-            sh "docker rm \$(docker ps -a -q) || true"
-            sh "docker volume rm \$(docker volume ls -q) || true"
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}-${storage}-${testSuiteName}] /\" app/build/logs/*.xml"
-
             junit "app/build/logs/*.xml"
+
+            cleanUpEnvironment()
             deleteDir()
         }
     }
@@ -253,6 +256,7 @@ def runIntegrationTest(phpVersion, storage, testSuiteName) {
 def runPhpSpecTest(phpVersion) {
     node('docker') {
         deleteDir()
+
         try {
             docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "pim_community_dev"
@@ -266,11 +270,9 @@ def runPhpSpecTest(phpVersion) {
                 sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
             }
         } finally {
-            sh "docker stop \$(docker ps -a -q) || true"
-            sh "docker rm \$(docker ps -a -q) || true"
-            sh "docker volume rm \$(docker volume ls -q) || true"
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
+            cleanUpEnvironment()
             deleteDir()
         }
     }
@@ -279,6 +281,7 @@ def runPhpSpecTest(phpVersion) {
 def runPhpCsFixerTest() {
     node('docker') {
         deleteDir()
+
         try {
             docker.image("carcel/php:7.1").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "pim_community_dev"
@@ -292,55 +295,8 @@ def runPhpCsFixerTest() {
         } finally {
             sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-cs-fixer] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
+            cleanUpEnvironment()
             deleteDir()
-        }
-    }
-}
-
-def runBehatTest(edition, storage, features, phpVersion, mysqlVersion, esVersion) {
-    node() {
-        dir("behat-${edition}-${storage}") {
-            deleteDir()
-            if ('ce' == edition) {
-               unstash "pim_community_dev_full"
-               tags = "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app"
-            } else {
-                unstash "pim_enterprise_dev_full"
-                dir('vendor/akeneo/pim-community-dev') {
-                    deleteDir()
-                    unstash "pim_community_dev"
-                }
-                tags = "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce"
-            }
-
-            // Configure the PIM
-            sh "cp behat.ci.yml behat.yml"
-            sh "cp app/config/parameters.yml.dist app/config/parameters_test.yml"
-            sh "sed -i \"s#database_host: .*#database_host: mysql#g\" app/config/parameters_test.yml"
-            if ('ce' == edition) {
-               sh "printf \"    installer_data: 'PimInstallerBundle:minimal'\n\" >> app/config/parameters_test.yml"
-            } else {
-               sh "printf \"    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" >> app/config/parameters_test.yml"
-            }
-
-            // Activate MongoDB if needed
-            if ('odm' == storage) {
-               sh "sed -i \"s@// new Doctrine@new Doctrine@g\" app/AppKernel.php"
-               sh "sed -i \"s@# mongodb_database: .*@mongodb_database: akeneo_pim@g\" app/config/pim_parameters.yml"
-               sh "sed -i \"s@# mongodb_server: .*@mongodb_server: 'mongodb://mongodb:27017'@g\" app/config/pim_parameters.yml"
-               sh "printf \"    pim_catalog_product_storage_driver: doctrine/mongodb-odm\n\" >> app/config/parameters_test.yml"
-            }
-
-            sh "mkdir -p app/build/logs/behat app/build/logs/consumer app/build/screenshots"
-            sh "cp behat.ci.yml behat.yml"
-            try {
-                sh "php /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE}/behat-${edition}-${storage} ${env.BUILD_NUMBER} ${storage} ${features} ${env.JOB_NAME} 5 ${phpVersion} ${mysqlVersion} \"${tags}\" \"behat-${edition}-${storage}\" -e ${esVersion} --exit_on_failure"
-            } finally {
-                sh "sed -i \"s/ name=\\\"/ name=\\\"[${edition}-${storage}] /\" app/build/logs/behat/*.xml"
-                junit 'app/build/logs/behat/*.xml'
-                archiveArtifacts allowEmptyArchive: true, artifacts: 'app/build/screenshots/*.png'
-                deleteDir()
-            }
         }
     }
 }
@@ -357,10 +313,79 @@ def runPhpCouplingDetectorTest() {
                 sh "./bin/php-coupling-detector detect --config-file=.php_cd.php src"
             }
         } finally {
-            sh "docker stop \$(docker ps -a -q) || true"
-            sh "docker rm \$(docker ps -a -q) || true"
-            sh "docker volume rm \$(docker volume ls -q) || true"
+            cleanUpEnvironment()
             deleteDir()
         }
     }
+}
+
+def runBehatTest(edition, storage, features, phpVersion, mysqlVersion, esVersion) {
+    node('docker') {
+        deleteDir()
+        cleanUpEnvironment()
+
+        def workspace = "/home/docker/symfony"
+        sh "docker network create akeneo"
+
+        sh "docker pull mongo:2.4"
+        sh "docker pull elasticsearch:${esVersion}"
+        sh "docker pull mysql:${mysqlVersion}"
+        sh "docker pull selenium/standalone-firefox:2.53.1-beryllium"
+        sh "docker pull carcel/akeneo-behat:php-${phpVersion}"
+
+        sh "docker run -d --network akeneo --name mongodb mongo:2.4 --smallfiles"
+        sh "docker run -d --network akeneo --name elasticsearch -e ES_JAVA_OPTS=\"-Xms256m -Xmx256m\" elasticsearch:${esVersion}"
+        sh "docker run -d --network akeneo --name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim mysql:${mysqlVersion} --sql-mode=ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
+        sh "docker run -d --network akeneo --name selenium selenium/standalone-firefox:2.53.1-beryllium"
+        sh "docker run -d --network akeneo --name akeneo-behat -e WORKSPACE=${workspace} -v /home/akeneo/.composer:/home/docker/.composer -v \$(pwd):${workspace} -w ${workspace} carcel/akeneo-behat:php-${phpVersion}"
+
+        try {
+            if ('ce' == edition) {
+                unstash "pim_community_dev_full"
+            } else {
+                unstash "pim_enterprise_dev_full"
+                dir('vendor/akeneo/pim-community-dev') {
+                    deleteDir()
+                    unstash "pim_community_dev"
+                }
+            }
+
+            // Configure the PIM
+            sh "cp app/config/parameters.yml.dist app/config/parameters_test.yml"
+            sh "sed -i \"s#database_host: .*#database_host: mysql#g\" app/config/parameters_test.yml"
+            if ('ce' == edition) {
+                sh "printf \"    installer_data: 'PimInstallerBundle:minimal'\n\" >> app/config/parameters_test.yml"
+            } else {
+                sh "printf \"    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" >> app/config/parameters_test.yml"
+            }
+
+            // Activate MongoDB if needed
+            if ('odm' == storage) {
+               sh "sed -i \"s@// new Doctrine@new Doctrine@g\" app/AppKernel.php"
+               sh "sed -i \"s@# mongodb_database: .*@mongodb_database: akeneo_pim@g\" app/config/pim_parameters.yml"
+               sh "sed -i \"s@# mongodb_server: .*@mongodb_server: 'mongodb://mongodb:27017'@g\" app/config/pim_parameters.yml"
+               sh "printf \"    pim_catalog_product_storage_driver: doctrine/mongodb-odm\n\" >> app/config/parameters_test.yml"
+            }
+
+            // Install PIM
+            sh "docker exec akeneo-behat php app/console --env=test pim:install --force"
+            sh "mkdir -p app/build/logs/behat"
+
+            if ('ce' == edition) {
+                sh "docker exec akeneo-behat bin/behat --config behat.ci.yml --strict -v ${features} --tags '~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app'"
+            } else {
+                sh "docker exec akeneo-behat bin/behat --config behat.ci.yml --strict -v ${features} --tags '~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce'"
+            }
+        } finally {
+            junit 'app/build/logs/behat/*.xml'
+            archiveArtifacts allowEmptyArchive: true, artifacts: 'app/build/screenshots/*.png'
+            cleanUpEnvironment()
+        }
+    }
+}
+
+def cleanUpEnvironment() {
+    sh "docker rm -f \$(docker ps -a -q) || true"
+    sh "docker volume rm \$(docker volume ls -q) || true"
+    sh "docker network rm akeneo || true"
 }
