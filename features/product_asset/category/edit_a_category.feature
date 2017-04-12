@@ -34,7 +34,7 @@ Feature: Edit an asset category
       | title   | Are you sure you want to leave this page?                    |
       | content | You will lose changes to the category if you leave the page. |
 
-  @javascript @skip
+  @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I edit the "images" asset category
     When I fill in the following information:

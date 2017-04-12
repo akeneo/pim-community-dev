@@ -1,3 +1,4 @@
+@javascript
 Feature: Enforce no permissions for an attribute group in variant group
   In order to be able to prevent some users from viewing some product data
   As a product manager
@@ -13,7 +14,6 @@ Feature: Enforce no permissions for an attribute group in variant group
       | SANDAL | name      | bar   | en_US  |
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully hide fields for an attribute group in the variant group form
     Given I am on the "info" attribute group page
     And I visit the "Permissions" tab
@@ -26,7 +26,6 @@ Feature: Enforce no permissions for an attribute group in variant group
     Then I should not see available attributes Name in group "info"
     And I should not see the Name field
 
-  @javascript
   Scenario: Successfully display read only fields for an attribute group in the variant group form
     Given I am on the "info" attribute group page
     And I visit the "Permissions" tab

@@ -1,9 +1,9 @@
+@javascript
 Feature: Follow project calculation job
   In order to see project calculation progress
   As a project creator
   I need to be able to see the project calculation job in the process tracker
 
-  @javascript
   Scenario: A project creator can see the project calculation on job in the process tracker
     Given the "teamwork_assistant" catalog configuration
     And I am logged in as "Julia"

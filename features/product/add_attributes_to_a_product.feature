@@ -1,3 +1,4 @@
+@javascript
 Feature: Add attributes to a product
   In order to provide more information about a product restricting accesses
   As a product manager
@@ -10,7 +11,6 @@ Feature: Add attributes to a product
       | jacket | jackets |
     And I am logged in as "Mary"
 
-  @javascript
   Scenario: Successfully display only attributes I have edit permissions access
     Given I am on the "jacket" product page
     Then I should see available attribute Width in group "Sizes"

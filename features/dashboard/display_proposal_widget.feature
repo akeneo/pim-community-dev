@@ -1,9 +1,9 @@
+@javascript
 Feature: Display proposal widget
   In order to easily see which products have pending proposals
   As a product manager
   I need to be able to see a widget with pending proposals on the dashboard
 
-  @javascript
   Scenario: Display proposal widget
     Given the "clothing" catalog configuration
     And I am logged in as "Julia"
@@ -11,7 +11,6 @@ Feature: Display proposal widget
     Then I should see the text "Proposals to review"
     And I should see the text "No proposals to review"
 
-  @javascript
   Scenario: Successfully display all proposals that I can review
     Given a "clothing" catalog configuration
     And the following product:
@@ -30,7 +29,6 @@ Feature: Display proposal widget
       | product   | author     |
       | my-jacket | Mary Smith |
 
-  @javascript
   Scenario: Successfully display new proposals that I can review
     Given a "clothing" catalog configuration
     And the following product:
@@ -55,7 +53,6 @@ Feature: Display proposal widget
       | product      | author     |
       | my-tee-shirt | Mary Smith |
 
-  @javascript
   Scenario: Successfully hide proposals belonging to the last category I was owner of that was removed
     Given a "clothing" catalog configuration
     And the following product:

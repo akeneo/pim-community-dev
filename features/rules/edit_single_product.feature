@@ -1,3 +1,4 @@
+@javascript
 Feature: Read a single product by applying rules
   In order ease the enrichment of the catalog
   As a regular user
@@ -8,7 +9,6 @@ Feature: Read a single product by applying rules
     And I add the "french" locale to the "mobile" channel
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully execute a rule with an "equals" condition
     Given the following products:
       | sku       | family  |
@@ -36,7 +36,6 @@ Feature: Read a single product by applying rules
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
 
-  @javascript
   Scenario: Successfully execute a rule with a "not equal" condition
     Given the following products:
       | sku         | family  |
@@ -72,7 +71,6 @@ Feature: Read a single product by applying rules
     When I am on the "my-cardigan" product page
     Then the product Name should be "Red cardigan"
 
-  @javascript
   Scenario: Successfully execute a rule with a "not empty" condition
     Given the following products:
       | sku       | family  |
@@ -106,7 +104,6 @@ Feature: Read a single product by applying rules
     When I am on the "my-boot" product page
     Then the product Name should be "New name"
 
-  @javascript
   Scenario: Successfully execute a rule with a "starts with" condition
     Given the following products:
       | sku       | family  | name-fr_FR |
@@ -134,7 +131,6 @@ Feature: Read a single product by applying rules
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
 
-  @javascript
   Scenario: Successfully execute a rule with an "ends with" condition
     Given the following products:
       | sku       | family  | name-fr_FR |
@@ -162,7 +158,6 @@ Feature: Read a single product by applying rules
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
 
-  @javascript
   Scenario: Successfully execute a rule with a "contains" condition
     Given the following products:
       | sku       | family  | name-fr_FR |
@@ -190,7 +185,6 @@ Feature: Read a single product by applying rules
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
 
-  @javascript
   Scenario: Successfully execute a rule with a "does not contain" condition
     Given the following products:
       | sku       | family  | name-fr_FR |
@@ -218,7 +212,6 @@ Feature: Read a single product by applying rules
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
 
-  @javascript
   Scenario: Successfully execute a rule with an "IN" condition
     Given the following products:
       | sku       | family  | name-fr_FR |
@@ -589,7 +582,6 @@ Feature: Read a single product by applying rules
       | weather_conditions | Dry, Wet, Hot, Cold |
     And the category of "my-jacket" should be "jackets, tshirts"
 
-  @javascript
   Scenario: Successfully execute a rule with an "equals" condition
     Given the following products:
       | sku       | family  |
