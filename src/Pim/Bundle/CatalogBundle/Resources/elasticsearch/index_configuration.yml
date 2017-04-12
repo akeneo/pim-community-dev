@@ -14,6 +14,10 @@ mappings:
                 type: 'keyword'
             is_associated:
                 type: 'boolean'
+            created:
+                type: 'date'
+            updated:
+                type: 'date'
             identifier:
                 type: 'keyword'
                 normalizer: 'varchar_normalizer'
@@ -150,6 +154,12 @@ mappings:
                     match_mapping_type: 'boolean'
                     mapping:
                         type: 'boolean'
+            -
+                date:
+                    path_match: 'values.*-date.*'
+                    match_mapping_type: 'date'
+                    mapping:
+                        type: 'date'
 
 settings:
     analysis:
