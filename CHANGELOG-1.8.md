@@ -14,6 +14,10 @@
 - TIP-734: Menu and index page is now using the new PEF architecture
 - GITHUB-6174: Show a loading mask during the file upload in the import jobs
 
+## UI/UX Refactoring
+
+- PIM-6288: Update flash messages design
+
 ## BC breaks
 
 ### Classes
