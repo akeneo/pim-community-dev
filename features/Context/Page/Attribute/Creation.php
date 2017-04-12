@@ -119,7 +119,7 @@ class Creation extends Form
      */
     public function editOptionAndCancel($name, $newValue)
     {
-        $optionRow = $this->spin(function () use ($name) {
+        $row = $this->spin(function () use ($name) {
             return $this->getOptionElement($name);
         }, 'Cannot find option row');
 

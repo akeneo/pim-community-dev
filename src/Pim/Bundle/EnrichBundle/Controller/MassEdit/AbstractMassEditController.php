@@ -80,12 +80,12 @@ abstract class AbstractMassEditController
      * @AclAncestor("pim_enrich_mass_edit")
      *
      * @param Request $request
-     * @param string  $operationGroup
      *
      * @return JsonResponse|Response
      */
-    public function chooseAction(Request $request, $operationGroup)
+    public function chooseAction(Request $request)
     {
+        $operationGroup = $request->query->get('operationGroup');
         $form = $this
             ->massEditFormResolver
             ->getAvailableOperationsForm($this->getGridName(), $operationGroup);
