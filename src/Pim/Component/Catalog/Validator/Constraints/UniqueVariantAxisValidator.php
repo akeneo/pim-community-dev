@@ -180,14 +180,14 @@ class UniqueVariantAxisValidator extends ConstraintValidator
 
         $matchingProducts = $this->repository->findProductIdsForVariantGroup($variantGroup, $criteria);
 
-        $matchingProducts = array_filter(
-            $matchingProducts,
-            function ($product) use ($entity) {
-                return $product['id'] !== $entity->getId();
+        $result = [];
+        foreach ($matchingProducts as $product) {
+            if ($product->getId() !== $entity->getId()) {
+                $result[] = $product;
             }
-        );
+        }
 
-        return $matchingProducts;
+        return $result;
     }
 
     /**
