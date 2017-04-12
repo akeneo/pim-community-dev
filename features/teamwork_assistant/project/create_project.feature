@@ -15,6 +15,7 @@ Feature: Create enrichment project
     And I filter by "category" with operator "" and value "summer_collection"
     And I display in the products grid the columns sku, name, description
     Then I should be on the products page
+    And I should see the text "blue_sandal"
     When I click on the create project button
     Then I should see the text "Locale"
     And the field project-locale should contain "English (United States)"

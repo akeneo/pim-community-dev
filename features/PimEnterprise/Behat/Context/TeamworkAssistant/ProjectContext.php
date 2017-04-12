@@ -14,10 +14,11 @@ namespace PimEnterprise\Behat\Context\TeamworkAssistant;
 use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\Gherkin\Node\TableNode;
-use Pim\Behat\Context\PimContext;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Context\Spin\SpinCapableTrait;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\DatagridViewTypes;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
+use Pim\Behat\Context\PimContext;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Process\PhpExecutableFinder;
@@ -28,12 +29,16 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  */
 class ProjectContext extends PimContext
 {
+    use SpinCapableTrait;
+
     /**
      * @Then /^the project "([^"]*)" for channel "([^"]*)" and locale "([^"]*)" has the following properties:$/
      */
     public function projectHasProperties($label, $channelCode, $localeCode, TableNode $properties)
     {
-        $project = $this->findProjectByLabelChannelLocale($label, $channelCode, $localeCode);
+        $project = $this->spin(function () use ($label, $channelCode, $localeCode) {
+            return $this->findProjectByLabelChannelLocale($label, $channelCode, $localeCode);
+        }, sprintf('Cannot find the project %s', $label));
 
         $accessor = PropertyAccess::createPropertyAccessor();
 
