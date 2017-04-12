@@ -52,7 +52,7 @@ define(
              */
             productReview: function (event) {
                 event.preventDefault();
-                Navigation.getInstance().setLocation($(event.currentTarget).data('product-review-url'));
+                router.redirect($(event.currentTarget).data('product-review-url'));
             },
 
             /**
