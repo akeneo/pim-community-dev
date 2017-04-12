@@ -11,11 +11,13 @@ require(
 
             function getFirstInvalidField() {
                 var container = $('.field-input.validation-error', formName).first();
+
                 return $('input', container);
             }
 
             function getParentTabLink(field) {
                 var paneId = $(field).parents('.tab-pane').attr('id');
+
                 return $('.AknHorizontalNavtab-link[href="#'+ paneId +'"]');
             }
 
