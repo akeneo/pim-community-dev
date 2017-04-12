@@ -36,7 +36,7 @@ define(
              * @inheritDoc
              */
             postRender: function () {
-                var editor = this.$('textarea').summernote({
+                this.$('textarea').summernote({
                     disableResizeEditor: true,
                     height: 200,
                     iconPrefix: 'icon-',
@@ -50,33 +50,28 @@ define(
                 })
                 .on('summernote.blur', this.updateModel.bind(this))
                 .on('summernote.keyup', this.cleanEmptyInput.bind(this));
-
             },
 
             cleanEmptyInput: function () {
                 var isEmpty = $.summernote.core.dom.isEmpty;
                 var editorElement = this.$('.note-editable').get(0)
-                var editorCode = $.parseHTML(this.getCode());
+                var editorCode = $.parseHTML(this.editorCode());
                 var textIsEmpty = $(editorCode).text().length === 0;
 
                 if (isEmpty(editorElement) || textIsEmpty) {
-                    this.setCode('');
+                    this.editorCode('');
                 }
             },
 
-            setCode: function (content) {
-                return this.$('.field-input:first textarea:first').code(content)
-            },
-
-            getCode: function () {
-                return this.$('.field-input:first textarea:first').code();
+            editorCode: function (content) {
+                return this.$('.field-input:first textarea:first').code(content);
             },
 
             /**
              * @inheritDoc
              */
             updateModel: function () {
-                var data = this.getCode();
+                var data = this.editorCode();
                 data = '' === data ? this.attribute.empty_value : data;
                 this.setCurrentValue(data);
             },
