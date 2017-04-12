@@ -66,6 +66,12 @@ config:
                     module: pim/controller/redirect
                 pimee_workflow_product_draft_mass_approve:
                     module: pim/controller/redirect
+                pimee_workflow_mass_edit_published_action_choose:
+                    module: pim/controller/form
+                pimee_workflow_mass_edit_published_action_configure:
+                    module: pim/controller/form
+                pimee_workflow_mass_edit_published_action_perform:
+                    module: pim/controller/form
 
     map:
         '*':
