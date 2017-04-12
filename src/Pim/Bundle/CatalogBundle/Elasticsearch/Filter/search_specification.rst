@@ -883,6 +883,17 @@ EMPTY
         ]
     ]
 
+Sorting
+~~~~~~~
+.. code-block:: php
+
+    sort => [
+        'values.publishedOn-date.<all_channels>.<all_locales>' => [
+            'order'   => 'asc',
+            'missing' => '_last',
+        ]
+    ]
+
 Decimal
 *******
 :Apply:

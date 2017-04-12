@@ -200,11 +200,6 @@ suites:
         psr4_prefix: Pim\Bundle\VersioningBundle
         spec_path: src/Pim/Bundle/VersioningBundle
         src_path: src/Pim/Bundle/VersioningBundle
-    WebServiceBundle:
-        namespace: Pim\Bundle\WebServiceBundle
-        psr4_prefix: Pim\Bundle\WebServiceBundle
-        spec_path: src/Pim/Bundle/WebServiceBundle
-        src_path: src/Pim/Bundle/WebServiceBundle
 
     ## Oro bundles
     OroFilterBundle:
