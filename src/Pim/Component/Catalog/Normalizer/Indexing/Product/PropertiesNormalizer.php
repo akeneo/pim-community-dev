@@ -19,6 +19,7 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
 {
     const FIELD_COMPLETENESS = 'completeness';
     const FIELD_IS_ASSOCIATED = 'is_associated';
+    const FIELD_IN_GROUP = 'in_group';
 
     /**
      * {@inheritdoc}
@@ -55,6 +56,10 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
         $data[StandardPropertiesNormalizer::FIELD_GROUPS] = $groups;
         $data[StandardPropertiesNormalizer::FIELD_VARIANT_GROUP] = null !== $product->getVariantGroup()
             ? $product->getVariantGroup()->getCode() : null;
+
+        foreach ($product->getGroupCodes() as $groupCode) {
+            $data[self::FIELD_IN_GROUP][$groupCode] = true;
+        }
 
         $data[self::FIELD_IS_ASSOCIATED] = !$product->getAssociations()->isEmpty();
 
