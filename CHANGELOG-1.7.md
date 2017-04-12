@@ -3,6 +3,7 @@
 ## Bug Fixes
 
 - PIM-6277: Use catalogLocale for channel and scopable attribute labels
+- PIM-6324: Fix invalid field focus after creating an attribute with missing data
 
 # 1.7.2 (2017-04-07)
 
