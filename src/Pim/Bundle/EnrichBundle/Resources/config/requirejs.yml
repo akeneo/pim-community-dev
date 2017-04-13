@@ -36,7 +36,7 @@ config:
                 get: pim_enrich_variant_group_rest_get
         pim/controller/group:
             fetcher: group
-        pim/controller/variant-group:
+        pim/controller/group:
             fetcher: variant-group
         pim/remover/association-type:
             url: pim_enrich_associationtype_rest_remove
@@ -231,7 +231,7 @@ config:
                     module: pim/controller/group
                     aclResourceId: pim_enrich_group_edit
                 pim_enrich_variant_group_edit:
-                    module: pim/controller/variant-group
+                    module: pim/controller/group
                     aclResourceId: pim_enrich_variant_group_edit
                 pim_importexport_export_profile_edit:
                     module: pim/controller/job-instance
@@ -400,7 +400,6 @@ config:
         pim/controller/redirect:            pimenrich/js/controller/redirect
         pim/controller/job-instance:        pimenrich/js/controller/job-instance
         pim/controller/group:               pimenrich/js/controller/variant-group
-        pim/controller/variant-group:       pimenrich/js/controller/variant-group
         pim/controller/role:                pimenrich/js/controller/role
         pim/controller/job-execution:       pimenrich/js/controller/job-execution
         pim/controller/group-type:          pimenrich/js/controller/group-type
@@ -645,11 +644,6 @@ config:
         pim/common/tab/properties:             pimenrich/js/form/common/tab/properties
         pim/common/properties/translation:     pimenrich/js/form/common/properties/translation
         pim/common/properties/general:         pimenrich/js/form/common/properties/general
-        pim/common/add-attribute:              pimenrich/js/form/common/attributes/add-attribute
-        pim/common/add-attribute-line:         pimenrich/js/form/common/attributes/add-attribute-line
-        pim/common/add-attribute-footer:       pimenrich/js/form/common/attributes/add-attribute-footer
-        pim/common/attribute-group/add/line:   pimenrich/js/form/common/attribute-group/add/line
-        pim/common/attribute-group/add/footer: pimenrich/js/form/common/attribute-group/add/footer
         pim/common/grid:                   pimenrich/js/form/common/grid
         pim/common/redirect:               pimenrich/js/form/common/redirect
         pim/common/column-list-view:       pimenrich/js/common/column-list-view

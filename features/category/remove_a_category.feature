@@ -58,6 +58,7 @@ Feature: Remove a category
       | code            | parent | label-en_US     |
       | 2013_collection |        | 2013 collection |
     And I am on the "2013_collection" category page
+    And I should see the text "Edit tree - 2013 collection"
     When I press the "Delete" button
     And I confirm the deletion
     Then I should be redirected on the category tree creation page
