@@ -1,3 +1,9 @@
+# 1.6.x
+
+## Bug fixes
+
+- PIM-6325: Fix thumbnails display for assets in product PDF
+
 # 1.6.13 (2017-03-29)
 
 ## Bug fixes
