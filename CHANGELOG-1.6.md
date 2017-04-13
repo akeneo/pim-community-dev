@@ -1,3 +1,9 @@
+# 1.6.x
+
+## Bug fixes
+
+- PIM-6375: Fix empty tags and content not being saved in wysiwyg
+
 # 1.6.13 (2017-03-29)
 
 ## Bug fixes
