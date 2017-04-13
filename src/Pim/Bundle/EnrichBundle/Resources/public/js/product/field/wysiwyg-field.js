@@ -50,28 +50,30 @@ define(
                 })
                 .on('summernote.blur', this.updateModel.bind(this))
                 .on('summernote.keyup', this.cleanEmptyInput.bind(this));
+
+                this.$('.note-codable').on('blur', function () {
+                    this.cleanEmptyInput();
+                    this.updateModel();
+                }.bind(this));
             },
 
             cleanEmptyInput: function () {
                 var isEmpty = $.summernote.core.dom.isEmpty;
-                var editorElement = this.$('.note-editable').get(0)
-                var editorCode = $.parseHTML(this.editorCode());
+                var textarea = this.$('.field-input:first textarea:first');
+                var editorElement = this.$('.note-editable').get(0);
+                var editorCode = $.parseHTML(textarea.code());
                 var textIsEmpty = $(editorCode).text().length === 0;
 
                 if (isEmpty(editorElement) || textIsEmpty) {
-                    this.editorCode('');
+                    textarea.code('');
                 }
-            },
-
-            editorCode: function (content) {
-                return this.$('.field-input:first textarea:first').code(content);
             },
 
             /**
              * @inheritDoc
              */
             updateModel: function () {
-                var data = this.editorCode();
+                var data = this.$('.field-input:first textarea:first').code();
                 data = '' === data ? this.attribute.empty_value : data;
                 this.setCurrentValue(data);
             },
