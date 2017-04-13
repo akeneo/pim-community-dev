@@ -316,7 +316,9 @@ class ProjectController
         if (null === $project ||
             !$this->authorizationChecker->isGranted([ProjectVoter::OWN, ProjectVoter::CONTRIBUTE], $project)
         ) {
-            return new RedirectResponse($this->router->generate('pim_enrich_product_index'));
+            return new JsonResponse([
+                'route' => 'pim_enrich_product_index'
+            ]);
         }
 
         $ownerStatuses = [
@@ -335,7 +337,9 @@ class ProjectController
 
         if (array_key_exists($status, $ownerStatuses)) {
             if (!$this->authorizationChecker->isGranted([ProjectVoter::OWN], $project)) {
-                return new RedirectResponse($this->router->generate('pim_enrich_product_index'));
+                return new JsonResponse([
+                    'route' => 'pim_enrich_product_index'
+                ]);
             }
 
             $statusCode = $ownerStatuses[$status];
