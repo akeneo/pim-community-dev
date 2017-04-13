@@ -59,8 +59,8 @@ define(
 
             cleanEmptyInput: function () {
                 var textarea = this.$('.field-input:first textarea:first');
-                var editorCode = $.parseHTML(textarea.code());
-                var textIsEmpty = $(editorCode).text().length === 0;
+                var editorHTML = $.parseHTML(textarea.code());
+                var textIsEmpty = $(editorHTML).text().length === 0;
 
                 if (textIsEmpty) {
                     textarea.code('');
@@ -73,6 +73,7 @@ define(
             updateModel: function () {
                 var data = this.$('.field-input:first textarea:first').code();
                 data = '' === data ? this.attribute.empty_value : data;
+
                 this.setCurrentValue(data);
             },
 
