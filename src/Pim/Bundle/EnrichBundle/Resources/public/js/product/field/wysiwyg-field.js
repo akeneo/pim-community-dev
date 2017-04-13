@@ -58,13 +58,11 @@ define(
             },
 
             cleanEmptyInput: function () {
-                var isEmpty = $.summernote.core.dom.isEmpty;
                 var textarea = this.$('.field-input:first textarea:first');
-                var editorElement = this.$('.note-editable').get(0);
                 var editorCode = $.parseHTML(textarea.code());
                 var textIsEmpty = $(editorCode).text().length === 0;
 
-                if (isEmpty(editorElement) || textIsEmpty) {
+                if (textIsEmpty) {
                     textarea.code('');
                 }
             },
