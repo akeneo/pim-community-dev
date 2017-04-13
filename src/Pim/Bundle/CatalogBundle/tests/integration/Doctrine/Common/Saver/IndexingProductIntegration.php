@@ -13,12 +13,6 @@ class IndexingProductIntegration extends TestCase
 {
     const DOCUMENT_TYPE = 'pim_catalog_product';
 
-    /** @var Client */
-    private $esClient;
-
-    /** @var Loader */
-    private $esConfigurationLoader;
-
     /** @var ProductBuilderInterface */
     private $productBuilder;
 
@@ -60,12 +54,8 @@ class IndexingProductIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->esClient = $this->get('akeneo_elasticsearch.client');
-        $this->esConfigurationLoader = $this->get('akeneo_elasticsearch.index_configuration.loader');
         $this->productBuilder = $this->get('pim_catalog.builder.product');
         $this->productUpdater = $this->get('pim_catalog.updater.product');
-
-        $this->resetIndex();
     }
 
     /**
@@ -74,19 +64,5 @@ class IndexingProductIntegration extends TestCase
     protected function getConfiguration()
     {
         return new Configuration([Configuration::getTechnicalCatalogPath()], false);
-    }
-
-    /**
-     * Resets the index used for the integration tests query
-     */
-    private function resetIndex()
-    {
-        $conf = $this->esConfigurationLoader->load();
-
-        if ($this->esClient->hasIndex()) {
-            $this->esClient->deleteIndex();
-        }
-
-        $this->esClient->createIndex($conf->buildAggregated());
     }
 }
