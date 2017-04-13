@@ -105,7 +105,6 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_api.repository.attribute'
             - '@pim_api.repository.product'
-            - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.search_after_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_catalog.validator.product'
