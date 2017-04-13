@@ -33,12 +33,8 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                var metaData = {
-                    localeCode: UserContext.get('catalogLocale')
-                };
-                for (var key in this.config.metadata) {
-                    metaData[key] = this.config.metadata[key];
-                }
+                var metaData = this.config.metadata || {};
+                metaData.localeCode = UserContext.get('catalogLocale');
 
                 this.grid = new Grid(this.config.alias, metaData);
 

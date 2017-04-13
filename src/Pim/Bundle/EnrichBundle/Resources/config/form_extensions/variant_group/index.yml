@@ -11,8 +11,6 @@ extensions:
         targetZone: content
         config:
             alias: variant-group-grid
-            metadata:
-                groupTypes: 1
 
     pim-variant-group-index-create-button:
         module: pim/form/common/index/create-button

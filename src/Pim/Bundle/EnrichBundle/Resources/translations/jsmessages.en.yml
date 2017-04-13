@@ -757,7 +757,7 @@ pim_enrich:
             create_btn: Create variant group
         group:
             title:      Group overview
-            create_btn: Create variant group
+            create_btn: Create group
         export_profiles:
             title:      Export profile overview
             create_btn: Create export profile
