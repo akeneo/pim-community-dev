@@ -72,6 +72,8 @@ config:
                     module: pim/controller/form
                 pimee_workflow_mass_edit_published_action_perform:
                     module: pim/controller/form
+                teamwork_assistant_project_show:
+                    module: pim/controller/template
 
     map:
         '*':
