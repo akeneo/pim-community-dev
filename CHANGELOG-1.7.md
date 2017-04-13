@@ -4,6 +4,7 @@
 
 - PIM-6277: Use catalogLocale for channel and scopable attribute labels
 - PIM-6324: Fix invalid field focus after creating an attribute with missing data
+- PIM-6286: Fix User repository
 
 # 1.7.2 (2017-04-07)
 
@@ -25,7 +26,6 @@
 - PIM-6275: Fix variations not visible on Variant Group properties tab
 - PIM-6283: Fix a bug where SKUs of products in the Variant Group edit page were not displayed
 - PIM-6274: Successfully validate products with a custom validation on identifier
-- PIM-6286: Fix User repository
 - PIM-6199: Fix product mass edit attribute add select clickable on confirmation page
 - PIM-6282: Fix attribute menu Firefox bug
 - PIM-6284: Fix display of scopable information for fields
