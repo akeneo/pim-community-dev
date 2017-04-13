@@ -9,12 +9,14 @@
  */
 define(
     [
+        'jquery',
         'pim/field',
         'underscore',
         'text!pim/template/product/field/textarea',
         'summernote'
     ],
     function (
+        $,
         Field,
         _,
         fieldTemplate
@@ -46,7 +48,7 @@ define(
                         ['insert', ['link']],
                         ['view', ['codeview']]
                     ],
-                    callbacks: {},
+                    callbacks: {}
                 })
                 .on('summernote.blur', this.updateModel.bind(this))
                 .on('summernote.keyup', this.removeEmptyTags.bind(this));
