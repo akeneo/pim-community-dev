@@ -14,7 +14,7 @@ pim_enrich_mass_edit_product_action_perform:
     methods: [POST]
 
 pim_enrich_mass_edit_family_action_choose:
-    path: /family/choose/{operationGroup}
+    path: /family/choose
     defaults: { _controller: pim_enrich.controller.family.mass_edit_action:chooseAction }
     methods: [GET, POST]
 
