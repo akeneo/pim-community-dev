@@ -49,15 +49,15 @@ define(
                     callbacks: {},
                 })
                 .on('summernote.blur', this.updateModel.bind(this))
-                .on('summernote.keyup', this.cleanEmptyInput.bind(this));
+                .on('summernote.keyup', this.removeEmptyTags.bind(this));
 
                 this.$('.note-codable').on('blur', function () {
-                    this.cleanEmptyInput();
+                    this.removeEmptyTags();
                     this.updateModel();
                 }.bind(this));
             },
 
-            cleanEmptyInput: function () {
+            removeEmptyTags: function () {
                 var textarea = this.$('.field-input:first textarea:first');
                 var editorHTML = $.parseHTML(textarea.code());
                 var textIsEmpty = $(editorHTML).text().length === 0;
