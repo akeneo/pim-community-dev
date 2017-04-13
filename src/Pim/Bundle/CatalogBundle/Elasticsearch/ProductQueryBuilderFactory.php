@@ -78,8 +78,12 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
             $pqbOptions['limit'] = $options['limit'];
         }
 
-        if (array_key_exists('search_after', $options)) {
+        if (isset($options['search_after'])) {
             $pqbOptions['search_after'] = $options['search_after'];
+        }
+
+        if (isset($options['search_after_unique_key'])) {
+            $pqbOptions['search_after_unique_key'] = $options['search_after_unique_key'];
         }
 
         $pqb = $this->createProductQueryBuilder($pqbOptions);
@@ -148,6 +152,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
             'default_scope',
             'filters',
             'search_after',
+            'search_after_unique_key',
             'limit'
         ]);
         $resolver->setDefaults([

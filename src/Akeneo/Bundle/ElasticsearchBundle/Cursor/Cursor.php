@@ -32,7 +32,7 @@ class Cursor implements CursorInterface
     protected $items = [];
 
     /** @var array */
-    protected $searchAfter = null;
+    protected $searchAfter = [];
 
     /** @var int */
     protected $pageSize;
@@ -161,7 +161,7 @@ class Cursor implements CursorInterface
 
         $esQuery['sort'] = $sort;
 
-        if (null !== $this->searchAfter) {
+        if (!empty($this->searchAfter)) {
             $esQuery['search_after'] = $this->searchAfter;
         }
 

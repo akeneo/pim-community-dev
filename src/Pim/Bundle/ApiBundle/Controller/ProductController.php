@@ -29,6 +29,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Pim\Component\Catalog\Query\Sorter\Directions;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -201,15 +202,20 @@ class ProductController
 
         $normalizerOptions = $this->getNormalizerOptions($request, $channel);
 
-        $defaultParameters = [
+        $queryParameters = array_merge([
             'limit' => $this->apiConfiguration['pagination']['limit_by_default']
-        ];
-
-        $queryParameters = array_merge($defaultParameters, $request->query->all());
+        ], $request->query->all());
         $pqbOptions = ['limit' => $queryParameters['limit']];
-        $pqbOptions['search_after'] = isset($queryParameters['search_after']) ? $queryParameters['search_after'] : null;
+
+        if (isset($queryParameters['search_before']) && '' !== $queryParameters['search_before']) {
+            $pqbOptions['search_after_unique_key'] = $queryParameters['search_before'];
+            $pqbOptions['search_after'] = [$queryParameters['search_before']];
+        } elseif (isset($queryParameters['search_after'])) {
+            $pqbOptions['search_after_unique_key'] = $queryParameters['search_after'];
+        }
 
         $pqb = $this->pqbFactory->create($pqbOptions);
+
         try {
             $this->setPQBFilters($pqb, $request, $channel);
         } catch (PropertyException $e) {
@@ -671,6 +677,19 @@ class ProductController
     }
 
     /**
+     * Explanation of how links are generated. Take this example with this list of identifiers:
+     * A - B - C - D - E - F - G - H
+     *
+     * With request "&search_after=E&limit=2":
+     *  - identifiers returned: F and G
+     *  - "next" link to generate: &search_after=G&limit=2 (so the last item returned)
+     *  - "previous" link to generate: &search_before=F&limit=2 (so the first item returned)
+     *
+     * To be able to find items with a "search_before" in request, we reverse the sort of the search:
+     * H - G - F - E - D - C - B - A
+     *
+     * So with a "search_after=F", identifiers returned will be: D and E
+     *
      * @param ProductQueryBuilderInterface $pqb
      * @param array                        $queryParameters
      * @param array                        $normalizerOptions
@@ -682,23 +701,28 @@ class ProductController
         array $queryParameters,
         array $normalizerOptions
     ) {
+        if (isset($queryParameters['search_before'])) {
+            $pqb->addSorter('identifier', Directions::DESCENDING);
+        }
+
         $productCursor = $pqb->execute();
 
         $parameters = [
             'query_parameters'    => $queryParameters,
             'list_route_name'     => 'pim_api_product_list',
             'item_route_name'     => 'pim_api_product_get',
-            'item_identifier_key' => 'identifier'
+            'item_identifier_key' => 'identifier',
         ];
 
         $count = isset($queryParameters['with_count']) && 'true' === $queryParameters['with_count'] ?
             $productCursor->count() : null;
+        $products = $this->normalizer->normalize($productCursor, 'external_api', $normalizerOptions);
 
-        $paginatedProducts = $this->searchAfterPaginator->paginate(
-            $this->normalizer->normalize($productCursor, 'external_api', $normalizerOptions),
-            $parameters,
-            $count
-        );
+        if (isset($queryParameters['search_before'])) {
+            $products = array_reverse($products);
+        }
+
+        $paginatedProducts = $this->searchAfterPaginator->paginate($products, $parameters, $count);
 
         return $paginatedProducts;
     }

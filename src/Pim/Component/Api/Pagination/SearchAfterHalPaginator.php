@@ -36,6 +36,8 @@ class SearchAfterHalPaginator implements PaginatorInterface
             'item_identifier_key' => 'code',
         ]);
 
+        $this->resolver->setDefined(['previous']);
+
         $this->resolver->setRequired([
             'query_parameters',
             'list_route_name',
@@ -68,7 +70,7 @@ class SearchAfterHalPaginator implements PaginatorInterface
             $itemUriParameters = array_merge($parameters['uri_parameters'], ['code' => $itemIdentifier]);
 
             $itemLinks = [
-                $this->createLink($parameters['item_route_name'], $itemUriParameters, null, 'self')
+                $this->createLink($parameters['item_route_name'], $itemUriParameters, null, null, 'self')
             ];
 
             $embedded[] = new HalResource($itemLinks, [], $item);
@@ -76,17 +78,24 @@ class SearchAfterHalPaginator implements PaginatorInterface
 
         $uriParameters = array_merge($parameters['uri_parameters'], $parameters['query_parameters']);
 
-        $searchAfter = isset($parameters['query_parameters']['search_after']) ? $parameters['query_parameters']['search_after'] : null;
+        $searchAfter = isset($uriParameters['search_after']) ? $uriParameters['search_after'] : null;
+        $searchBefore = isset($uriParameters['search_before']) ? $uriParameters['search_before'] : null;
         $links = [
-            $this->createLink($parameters['list_route_name'], $uriParameters, $searchAfter, 'self'),
-            $this->createLink($parameters['list_route_name'], $uriParameters, null, 'first'),
+            $this->createLink($parameters['list_route_name'], $uriParameters, $searchAfter, $searchBefore, 'self'),
+            $this->createLink($parameters['list_route_name'], $uriParameters, null, null, 'first')
         ];
+
+        if (isset($uriParameters['search_after']) || isset($uriParameters['search_before'])) {
+            $searchBefore = !empty($items) ? $items[0][$parameters['item_identifier_key']] : '';
+            $links[] = $this->createLink($parameters['list_route_name'], $uriParameters, null, $searchBefore, 'previous');
+        }
 
         if (count($items) === (int) $parameters['query_parameters']['limit']) {
             $links[] = $this->createLink(
                 $parameters['list_route_name'],
                 $uriParameters,
                 end($items)[$parameters['item_identifier_key']],
+                null,
                 'next'
             );
         }
@@ -106,14 +115,16 @@ class SearchAfterHalPaginator implements PaginatorInterface
      *
      * @param string $routeName
      * @param array  $parameters
-     * @param string $searchAfterIdentifier
+     * @param string $searchAfter
+     * @param string $searchBefore
      * @param string $linkName
      *
      * @return Link
      */
-    protected function createLink($routeName, array $parameters, $searchAfterIdentifier, $linkName)
+    protected function createLink($routeName, array $parameters, $searchAfter, $searchBefore, $linkName)
     {
-        $parameters['search_after'] = $searchAfterIdentifier;
+        $parameters['search_after'] = $searchAfter;
+        $parameters['search_before'] = $searchBefore;
 
         $url =  $this->router->generate($routeName, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
 

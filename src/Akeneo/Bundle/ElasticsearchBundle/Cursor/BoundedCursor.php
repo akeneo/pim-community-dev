@@ -16,8 +16,8 @@ use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
  */
 class BoundedCursor extends Cursor implements CursorInterface
 {
-    /** @var array */
-    protected $searchAfterIdentifier;
+    /** @var string|null */
+    protected $searchAfterUniqueKey;
 
     /** @var int */
     protected $limit;
@@ -29,24 +29,28 @@ class BoundedCursor extends Cursor implements CursorInterface
      * @param Client                        $esClient
      * @param CursorableRepositoryInterface $repository
      * @param array                         $esQuery
+     * @param array                         $searchAfter
      * @param string                        $indexType
      * @param int                           $pageSize
      * @param int                           $limit
-     * @param string|null                   $searchAfterIdentifier
+     * @param string|null                   $searchAfterUniqueKey
      */
     public function __construct(
         Client $esClient,
         CursorableRepositoryInterface $repository,
         array $esQuery,
+        array $searchAfter = [],
         $indexType,
         $pageSize,
         $limit,
-        $searchAfterIdentifier = null
+        $searchAfterUniqueKey = null
     ) {
         $this->limit = $limit;
+        $this->searchAfter = $searchAfter;
+        $this->searchAfterUniqueKey = $searchAfterUniqueKey;
 
-        if (null !== $searchAfterIdentifier) {
-            $this->searchAfter = [$indexType . '#' . $searchAfterIdentifier];
+        if (null !== $searchAfterUniqueKey) {
+            array_push($this->searchAfter, $indexType . '#' . $searchAfterUniqueKey);
         }
 
         parent::__construct($esClient, $repository, $esQuery, $indexType, $pageSize);
