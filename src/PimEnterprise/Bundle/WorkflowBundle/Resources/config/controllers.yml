@@ -75,7 +75,7 @@ services:
             - '@pim_catalog.filter.chained'
 
     pimee_workflow.controller.completeness_rest:
-        class: '%pimee_workflow.controller.completeness_rest.class%'
+        class: '%pim_enrich.controller.rest.completeness.class%'
         arguments:
             - '@pim_catalog.manager.completeness'
             - '@pimee_workflow.repository.published_product'

@@ -160,39 +160,6 @@ class PublishedProductController
     }
 
     /**
-     * Displays completeness for a published product
-     *
-     * @param int|string $id
-     *
-     * @deprecated To be removed in 1.8
-     *
-     * @return Response
-     */
-    public function completenessAction($id)
-    {
-        $published = $this->findPublishedOr404($id);
-        $channels = $this->channelRepository->getFullChannels();
-        $locales = $this->userContext->getUserLocales();
-
-        $completenesses = $this->completenessManager->getProductCompleteness(
-            $published,
-            $channels,
-            $locales,
-            $this->getDataLocale()
-        );
-
-        return $this->templating->renderResponse(
-            'PimEnrichBundle:Completeness:_completeness.html.twig',
-            [
-                'product'        => $published,
-                'channels'       => $channels,
-                'locales'        => $locales,
-                'completenesses' => $completenesses
-            ]
-        );
-    }
-
-    /**
      * Find a published product by its id or return a 404 response
      *
      * @param int|string $id
