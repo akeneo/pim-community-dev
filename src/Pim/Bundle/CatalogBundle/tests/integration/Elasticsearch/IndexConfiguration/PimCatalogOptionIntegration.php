@@ -1,16 +1,16 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\ElasticSearch\IndexConfiguration;
+namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
 
 /**
- * This integration tests checks that given an index configuration with multi options (string[]) values
- * the options research is consistent.
+ * This integration tests checks that given an index configuration with simple option (string) values
+ * the option research is consistent.
  *
- * @author    Anaël Chardan <anael.chardan@akeneo.com>
+ * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
+class PimCatalogOptionIntegration extends AbstractPimCatalogIntegration
 {
     public function testInListOperatorWithOptionValue()
     {
@@ -19,7 +19,7 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'terms' => [
-                            'values.colors-options.<all_channels>.<all_locales>' => ['black', 'yellow'],
+                            'values.color-option.<all_channels>.<all_locales>' => ['black', 'yellow'],
                         ],
                     ],
                 ],
@@ -28,17 +28,7 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
-            $productsFound,
-            [
-                'product_1',
-                'product_2',
-                'product_3',
-                'product_6',
-                'product_4',
-                'product_5'
-            ]
-        );
+        $this->assertProducts($productsFound, ['product_1', 'product_2', 'product_3', 'product_6']);
     }
 
     public function testIsEmptyOperatorWithOptionValue()
@@ -48,7 +38,7 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'must_not' => [
                         'exists' => [
-                            'field' => 'values.colors-options.<all_channels>.<all_locales>',
+                            'field' => 'values.color-option.<all_channels>.<all_locales>',
                         ],
                     ],
                 ],
@@ -67,7 +57,7 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'exists' => [
-                            'field' => 'values.colors-options.<all_channels>.<all_locales>',
+                            'field' => 'values.color-option.<all_channels>.<all_locales>',
                         ],
                     ],
                 ],
@@ -86,12 +76,12 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'must_not' => [
                         'terms' => [
-                            'values.colors-options.<all_channels>.<all_locales>' => ['black', 'blue'],
+                            'values.color-option.<all_channels>.<all_locales>' => ['black', 'blue'],
                         ],
                     ],
                     'filter' => [
                         'exists' => [
-                            'field' => 'values.colors-options.<all_channels>.<all_locales>',
+                            'field' => 'values.color-option.<all_channels>.<all_locales>',
                         ],
                     ]
                 ],
@@ -100,7 +90,7 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_6']);
+        $this->assertProducts($productsFound, ['product_2', 'product_6']);
     }
 
     public function testSortAscending()
@@ -111,9 +101,9 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
             ],
             'sort'  => [
                 [
-                    'values.colors-options.<all_channels>.<all_locales>' => [
+                    'values.color-option.<all_channels>.<all_locales>' => [
                         'order'   => 'asc',
-                        'missing' => '_first',
+                        'missing' => '_last',
                     ],
                 ],
             ],
@@ -123,7 +113,7 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
 
         $this->assertSame(
             $productsFound,
-            ['product_7', 'product_3', 'product_1', 'product_5', 'product_2', 'product_4', 'product_6']
+            ['product_3', 'product_1', 'product_4', 'product_5', 'product_2', 'product_6', 'product_7']
         );
     }
 
@@ -135,7 +125,7 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
             ],
             'sort'  => [
                 [
-                    'values.colors-options.<all_channels>.<all_locales>' => [
+                    'values.color-option.<all_channels>.<all_locales>' => [
                         'order'   => 'desc',
                         'missing' => '_last',
                     ],
@@ -147,7 +137,7 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
 
         $this->assertSame(
             $productsFound,
-            ['product_2', 'product_4', 'product_6', 'product_5', 'product_3', 'product_1', 'product_7']
+            ['product_2', 'product_6', 'product_4', 'product_5', 'product_3', 'product_1', 'product_7']
         );
     }
 
@@ -160,9 +150,9 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_1',
                 'values'     => [
-                    'colors-options' => [
+                    'color-option' => [
                         '<all_channels>' => [
-                            '<all_locales>' => ['black']
+                            '<all_locales>' => 'black',
                         ],
                     ],
                 ],
@@ -170,9 +160,9 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_2',
                 'values'     => [
-                    'colors-options' => [
+                    'color-option' => [
                         '<all_channels>' => [
-                            '<all_locales>' => ['yellow', 'blue'],
+                            '<all_locales>' => 'yellow',
                         ],
                     ],
                 ],
@@ -180,9 +170,9 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_3',
                 'values'     => [
-                    'colors-options' => [
+                    'color-option' => [
                         '<all_channels>' => [
-                            '<all_locales>' => ['black'],
+                            '<all_locales>' => 'black',
                         ],
                     ],
                 ],
@@ -190,9 +180,9 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_4',
                 'values'     => [
-                    'colors-options' => [
+                    'color-option' => [
                         '<all_channels>' => [
-                            '<all_locales>' => ['blue', 'yellow'],
+                            '<all_locales>' => 'blue',
                         ],
                     ],
                 ],
@@ -200,9 +190,9 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_5',
                 'values'     => [
-                    'colors-options' => [
+                    'color-option' => [
                         '<all_channels>' => [
-                            '<all_locales>' => ['blue', 'black'],
+                            '<all_locales>' => 'blue',
                         ],
                     ],
                 ],
@@ -210,9 +200,9 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_6',
                 'values'     => [
-                    'colors-options' => [
+                    'color-option' => [
                         '<all_channels>' => [
-                            '<all_locales>' => ['yellow'],
+                            '<all_locales>' => 'yellow',
                         ],
                     ],
                 ],

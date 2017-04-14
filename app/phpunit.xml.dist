@@ -75,6 +75,7 @@
 
         <testsuite name="PIM_Catalog_PQB_Integration_Test">
             <directory suffix="Integration.php">../src/Pim/Bundle/CatalogBundle/tests/integration/PQB</directory>
+            <directory suffix="Integration.php">../src/Pim/Bundle/CatalogBundle/tests/integration/Elasticsearch</directory>
             <directory suffix="Integration.php">../src/Pim/Bundle/ReferenceDataBundle/tests/integration/PQB</directory>
             <directory suffix="Integration.php">../src/Pim/Bundle/EnrichBundle/Tests/integration/PQB</directory>
         </testsuite>

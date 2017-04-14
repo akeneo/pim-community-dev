@@ -3,16 +3,14 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
 
 /**
- * This integration tests checks that given an index configuration with number (float and integer) values
- * the number research is consistent.
+ * This integration tests checks that given an index configuration with metric data (float and integer values)
+ * the metric research is consistent.
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
- * @author    Anaël Chardan <anael.chardan@akeneo.com>
- * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
+class PimCatalogMetricIntegration extends AbstractPimCatalogIntegration
 {
     public function testLowerThanOperatorWithNumberValue()
     {
@@ -21,7 +19,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'range' => [
-                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => ['lt' => 10],
+                            'values.a_metric-metric.<all_channels>.<all_locales>.base_data' => ['lt' => 10],
                         ],
                     ],
                 ],
@@ -40,7 +38,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'range' => [
-                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => ['lt' => '10'],
+                            'values.a_metric-metric.<all_channels>.<all_locales>.base_data' => ['lt' => '10'],
                         ],
                     ],
                 ],
@@ -59,7 +57,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'range' => [
-                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => ['lte' => 10],
+                            'values.a_metric-metric.<all_channels>.<all_locales>.base_data' => ['lte' => 10],
                         ],
                     ],
                 ],
@@ -78,7 +76,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'range' => [
-                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => ['lte' => '10'],
+                            'values.a_metric-metric.<all_channels>.<all_locales>.base_data' => ['lte' => '10'],
                         ],
                     ],
                 ],
@@ -97,7 +95,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'term' => [
-                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => 100.666,
+                            'values.a_metric-metric.<all_channels>.<all_locales>.base_data' => 100.666,
                         ],
                     ],
                 ],
@@ -116,7 +114,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'term' => [
-                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => '100.666',
+                            'values.a_metric-metric.<all_channels>.<all_locales>.base_data' => '100.666',
                         ],
                     ],
                 ],
@@ -135,12 +133,12 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'must_not' => [
                         'term' => [
-                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => 100.666,
+                            'values.a_metric-metric.<all_channels>.<all_locales>.base_data' => 100.666,
                         ],
                     ],
                     'filter'   => [
                         'exists' => [
-                            'field' => 'values.box_quantity-decimal.<all_channels>.<all_locales>',
+                            'field' => 'values.a_metric-metric.<all_channels>.<all_locales>.base_data',
                         ],
                     ],
                 ],
@@ -162,12 +160,12 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'must_not' => [
                         'term' => [
-                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => '100.666',
+                            'values.a_metric-metric.<all_channels>.<all_locales>.base_data' => '100.666',
                         ],
                     ],
                     'filter'   => [
                         'exists' => [
-                            'field' => 'values.box_quantity-decimal.<all_channels>.<all_locales>',
+                            'field' => 'values.a_metric-metric.<all_channels>.<all_locales>.base_data',
                         ],
                     ],
                 ],
@@ -189,7 +187,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'range' => [
-                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => ['gte' => 10],
+                            'values.a_metric-metric.<all_channels>.<all_locales>.base_data' => ['gte' => 10],
                         ],
                     ],
                 ],
@@ -208,7 +206,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'range' => [
-                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => ['gte' => '10'],
+                            'values.a_metric-metric.<all_channels>.<all_locales>.base_data' => ['gte' => '10'],
                         ],
                     ],
                 ],
@@ -227,7 +225,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'range' => [
-                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => ['gt' => 10],
+                            'values.a_metric-metric.<all_channels>.<all_locales>.base_data' => ['gt' => 10],
                         ],
                     ],
                 ],
@@ -246,7 +244,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'range' => [
-                            'values.box_quantity-decimal.<all_channels>.<all_locales>' => ['gt' => '10'],
+                            'values.a_metric-metric.<all_channels>.<all_locales>.base_data' => ['gt' => '10'],
                         ],
                     ],
                 ],
@@ -265,7 +263,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'must_not' => [
                         'exists' => [
-                            'field' => 'values.box_quantity-decimal.<all_channels>.<all_locales>',
+                            'field' => 'values.a_metric-metric.<all_channels>.<all_locales>.base_data',
                         ],
                     ],
                 ],
@@ -284,7 +282,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
                 'bool' => [
                     'filter' => [
                         'exists' => [
-                            'field' => 'values.box_quantity-decimal.<all_channels>.<all_locales>',
+                            'field' => 'values.a_metric-metric.<all_channels>.<all_locales>.base_data',
                         ],
                     ],
                 ],
@@ -307,9 +305,9 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
             ],
             'sort'  => [
                 [
-                    'values.box_quantity-decimal.<all_channels>.<all_locales>' => [
+                    'values.a_metric-metric.<all_channels>.<all_locales>.base_data' => [
                         'order'   => 'asc',
-                        'missing' => '_first',
+                        'missing' => '_last',
                     ],
                 ],
             ],
@@ -319,7 +317,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
 
         $this->assertProducts(
             $productsFound,
-            ['product_7', 'product_2', 'product_5', 'product_6', 'product_1', 'product_4', 'product_3']
+            ['product_2', 'product_5', 'product_6', 'product_1', 'product_4', 'product_3', 'product_7']
         );
     }
 
@@ -331,7 +329,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
             ],
             'sort'  => [
                 [
-                    'values.box_quantity-decimal.<all_channels>.<all_locales>' => [
+                    'values.a_metric-metric.<all_channels>.<all_locales>.base_data' => [
                         'order'   => 'desc',
                         'missing' => '_last',
                     ],
@@ -348,7 +346,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
     }
 
     /**
-     * {@inheritdoc}
+     * This method indexes dummy products in elastic search.
      *
      * A few information regarding the mapping of numbers and the data indexed in ES below.
      * We indexed data of different types:
@@ -369,9 +367,14 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_1',
                 'values'     => [
-                    'box_quantity-decimal' => [
+                    'a_metric-metric' => [
                         '<all_channels>' => [
-                            '<all_locales>' => 10.0,
+                            '<all_locales>' => [
+                                'base_data' => '10.0',
+                                'data' => '10000',
+                                'base_unit' => 'CELSIUS',
+                                'unit' => 'GRAM',
+                            ],
                         ],
                     ],
                 ],
@@ -379,9 +382,12 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_2',
                 'values'     => [
-                    'box_quantity-decimal' => [
+                    'a_metric-metric' => [
                         '<all_channels>' => [
-                            '<all_locales>' => -1,
+                            '<all_locales>' => [
+                                'base_data' => -1,
+                                'base_unit' => 'KILOGRAM'
+                            ]
                         ],
                     ],
                 ],
@@ -389,9 +395,13 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_3',
                 'values'     => [
-                    'box_quantity-decimal' => [
+                    'a_metric-metric' => [
                         '<all_channels>' => [
-                            '<all_locales>' => '100.666',
+                            '<all_locales>' => [
+                                'base_data' => '100.666',
+                                'data' => '152',
+                                'base_unit' => 'KILOGRAM'
+                            ]
                         ],
                     ],
                 ],
@@ -399,9 +409,12 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_4',
                 'values'     => [
-                    'box_quantity-decimal' => [
+                    'a_metric-metric' => [
                         '<all_channels>' => [
-                            '<all_locales>' => 25.89,
+                            '<all_locales>' => [
+                                'base_data' => '25.89',
+                                'base_unit' => 'KILOGRAM'
+                            ]
                         ],
                     ],
                 ],
@@ -409,9 +422,12 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_5',
                 'values'     => [
-                    'box_quantity-decimal' => [
+                    'a_metric-metric' => [
                         '<all_channels>' => [
-                            '<all_locales>' => '-3.9000',
+                            '<all_locales>' => [
+                                'base_data' => '-3900',
+                                'base_unit'  => 'KILOGRAM',
+                            ],
                         ],
                     ],
                 ],
@@ -419,9 +435,12 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogIntegration
             [
                 'identifier' => 'product_6',
                 'values'     => [
-                    'box_quantity-decimal' => [
+                    'a_metric-metric' => [
                         '<all_channels>' => [
-                            '<all_locales>' => 7,
+                            '<all_locales>' =>[
+                                'base_data' => '7',
+                                'base_unit'  => 'KILOGRAM',
+                            ],
                         ],
                     ],
                 ],

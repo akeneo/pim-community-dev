@@ -16,6 +16,7 @@ services:
     pim.reference_data.query.sorter.attribute.reference_data:
         class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
         arguments:
+            - '@pim_catalog.validator.helper.attribute'
             - ['pim_reference_data_simpleselect']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }

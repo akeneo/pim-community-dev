@@ -11,7 +11,6 @@ namespace Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attribute;
  */
 class BaseAttributeSorter extends AbstractAttributeSorter
 {
-
     /**
      * {@inheritdoc}
      */

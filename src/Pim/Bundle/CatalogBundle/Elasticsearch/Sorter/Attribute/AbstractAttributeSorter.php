@@ -2,11 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attribute;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Exception\InvalidDirectionException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Sorter\AttributeSorterInterface;
 use Pim\Component\Catalog\Query\Sorter\Directions;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
  * Abstract attribute sorter for an Elasticsearch query
@@ -20,14 +22,21 @@ abstract class AbstractAttributeSorter implements AttributeSorterInterface
     /** @var SearchQueryBuilder */
     protected $searchQueryBuilder;
 
+    /** @var AttributeValidatorHelper  */
+    protected $attrValidatorHelper;
+
     /** @var array */
     protected $supportedAttributeTypes;
 
     /**
-     * @param array $supportedAttributeTypeCodes
+     * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param array                    $supportedAttributeTypeCodes
      */
-    public function __construct(array $supportedAttributeTypeCodes = [])
-    {
+    public function __construct(
+        AttributeValidatorHelper $attrValidatorHelper,
+        array $supportedAttributeTypeCodes = []
+    ) {
+        $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributeTypes = $supportedAttributeTypeCodes;
     }
 
@@ -39,6 +48,8 @@ abstract class AbstractAttributeSorter implements AttributeSorterInterface
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the sorter.');
         }
+
+        $this->checkLocaleAndChannel($attribute, $locale, $channel);
 
         $attributePath = $this->getAttributePath($attribute, $locale, $channel);
 
@@ -111,6 +122,29 @@ abstract class AbstractAttributeSorter implements AttributeSorterInterface
         $channel = (null === $channel) ? '<all_channels>' : $channel;
 
         return 'values.' . $attribute->getCode() . '-' . $attribute->getBackendType() . '.' . $channel . '.' . $locale;
+    }
+
+    /**
+     * Check locale and scope are valid
+     *
+     * @param AttributeInterface $attribute
+     * @param string             $locale
+     * @param string             $channel
+     *
+     * @throws InvalidPropertyException
+     */
+    protected function checkLocaleAndChannel(AttributeInterface $attribute, $locale, $channel)
+    {
+        try {
+            $this->attrValidatorHelper->validateLocale($attribute, $locale);
+            $this->attrValidatorHelper->validateScope($attribute, $channel);
+        } catch (\LogicException $e) {
+            throw InvalidPropertyException::expectedFromPreviousException(
+                $attribute->getCode(),
+                static::class,
+                $e
+            );
+        }
     }
 
     /**

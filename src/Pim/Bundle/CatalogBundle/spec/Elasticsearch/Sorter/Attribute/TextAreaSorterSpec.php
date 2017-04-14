@@ -1,7 +1,8 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attributes;
+namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attribute;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attribute\TextAreaSorter;
 use PhpSpec\ObjectBehavior;
@@ -9,12 +10,13 @@ use Pim\Component\Catalog\Exception\InvalidDirectionException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Sorter\AttributeSorterInterface;
 use Pim\Component\Catalog\Query\Sorter\Directions;
+use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 class TextAreaSorterSpec extends ObjectBehavior
 {
-    function let()
+    function let(AttributeValidatorHelper $attributeValidatorHelper)
     {
-        $this->beConstructedWith(['pim_catalog_textarea']);
+        $this->beConstructedWith($attributeValidatorHelper, ['pim_catalog_textarea']);
     }
 
     function it_is_initializable()
@@ -113,4 +115,56 @@ class TextAreaSorterSpec extends ObjectBehavior
         )->during('addAttributeSorter', [$aTextArea, 'A_BAD_DIRECTION']);
     }
 
+    function it_throws_an_exception_when_an_exception_is_thrown_by_the_attribute_validator_on_locale_validation(
+        $attributeValidatorHelper,
+        AttributeInterface $textArea,
+        SearchQueryBuilder $sqb
+    ) {
+        $textArea->getCode()->willReturn('description');
+        $textArea->getBackendType()->willReturn('text');
+        $textArea->isLocaleSpecific()->willReturn(true);
+        $textArea->getAvailableLocaleCodes('fr_FR');
+
+        $e = new \LogicException('Attribute "description" expects a locale, none given.');
+        $attributeValidatorHelper->validateLocale($textArea, 'en_US')->willThrow($e);
+
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            InvalidPropertyException::expectedFromPreviousException(
+                'description',
+                TextAreaSorter::class,
+                $e
+            )
+        )->during(
+            'addAttributeSorter',
+            [$textArea, Directions::ASCENDING, 'en_US', 'ecommerce', []]
+        );
+    }
+
+    function it_throws_an_exception_when_an_exception_is_thrown_by_the_attribute_validator_on_scope_validation(
+        $attributeValidatorHelper,
+        AttributeInterface $textArea,
+        SearchQueryBuilder $sqb
+    ) {
+        $textArea->getCode()->willReturn('description');
+        $textArea->getBackendType()->willReturn('text');
+        $textArea->isScopable()->willReturn(false);
+
+        $e = new \LogicException('Attribute "description" does not expect a scope, "ecommerce" given.');
+        $attributeValidatorHelper->validateLocale($textArea, 'en_US')->willThrow($e);
+
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            InvalidPropertyException::expectedFromPreviousException(
+                'description',
+                TextAreaSorter::class,
+                $e
+            )
+        )->during(
+            'addAttributeSorter',
+            [$textArea, Directions::DESCENDING, 'en_US', 'ecommerce', []]
+        );
+    }
 }

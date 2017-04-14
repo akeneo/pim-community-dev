@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Sorter;
+namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Field;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
