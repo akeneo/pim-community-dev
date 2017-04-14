@@ -10,7 +10,7 @@ services:
         class: '%pim_catalog.saver.product.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.completeness.calculator'
+            - '@pim_catalog.manager.completeness'
             - '@event_dispatcher'
 
     # product draft saver
