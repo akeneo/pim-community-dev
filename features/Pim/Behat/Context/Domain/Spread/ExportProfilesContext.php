@@ -43,10 +43,13 @@ class ExportProfilesContext extends ImportExportContext
      */
     public function exportedFileOfShouldBeEmpty($code)
     {
-        $path = $this->getExportedFile($code);
-        $content = trim(file_get_contents($path));
+        $this->spin(function () use ($code) {
+            $path = $this->getExportedFile($code);
+            $content = trim(file_get_contents($path));
+            assertEmpty($content);
 
-        assertEmpty($content);
+            return true;
+        }, sprintf('Cannot validate that job %s is empty', $code));
     }
 
     /**
