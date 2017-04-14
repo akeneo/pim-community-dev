@@ -13,6 +13,7 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
@@ -452,56 +453,37 @@ class ProductRepository extends EntityRepository implements
      */
     public function findProductIdsForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
     {
-        $qb = $this->findAllForVariantGroupQB($variantGroup, $criteria);
-        $qb->select('Product.id');
+        $queryBuilder = $this->findAllForVariantGroupQB($variantGroup, $criteria);
 
-        return $qb->getQuery()->getResult();
+        return $queryBuilder->execute();
     }
 
     /**
      * @param GroupInterface $variantGroup
      * @param array          $criteria
      *
-     * @return QueryBuilder
+     * @return ProductQueryBuilderInterface
      */
     protected function findAllForVariantGroupQB(GroupInterface $variantGroup, array $criteria = [])
     {
-        $qb = $this->createQueryBuilder('Product');
+        $queryBuilder = $this->queryBuilderFactory->create();
 
-        //TODO - TIP-697: make the variant groups work again
-        $qb->where('Product.identifier = :no_identifier');
-        $qb->setParameter('no_identifier', 'THERE_IS_NO_SKU_LIKE_DAT');
-
-        return $qb;
-
-        $qb
-            ->where(':variantGroup MEMBER OF Product.groups')
-            ->setParameter('variantGroup', $variantGroup);
-
-        $index = 0;
         foreach ($criteria as $item) {
-            $code = $item['attribute']->getCode();
-            ++$index;
-            $qb
-                ->innerJoin(
-                    'Product.values',
-                    sprintf('Value_%s', $code),
-                    'WITH',
-                    sprintf('Value_%s.attribute = ?%d', $code, $index)
-                )
-                ->setParameter($index, $item['attribute']);
+            $value = null;
 
             if (isset($item['option'])) {
-                ++$index;
-                $qb->andWhere(sprintf('Value_%s.option = ?%d', $code, $index))
-                    ->setParameter($index, $item['option']);
-            } elseif (isset($item['referenceData'])) {
-                ++$index;
-                $qb->andWhere(sprintf('Value_%s.%s = ?%d', $code, $item['referenceData']['name'], $index))
-                    ->setParameter($index, $item['referenceData']['data']);
+                $value = $item['option'];
+                $queryBuilder->addFilter($item['attribute']->getCode(), Operators::IN_LIST, [$value->getCode()]);
+            }
+
+            if (isset($item['referenceData'])) {
+                $value = $item['referenceData']['data'];
+                $queryBuilder->addFilter($item['attribute']->getCode(), Operators::IN_LIST, [$value->getCode()]);
             }
         }
 
-        return $qb;
+        $queryBuilder->addFilter('variant_group', Operators::IN_LIST, [$variantGroup->getCode()]);
+
+        return $queryBuilder;
     }
 }
