@@ -1380,11 +1380,14 @@ class WebUser extends RawMinkContext
     public function iCreateTheFollowingAttributeOptions(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $code = $data['Code'];
-            unset($data['Code']);
+            $this->spin(function () use ($data) {
+                $code = $data['Code'];
+                unset($data['Code']);
 
-            $this->getCurrentPage()->addOption($code, $data);
-            $this->wait();
+                $this->getCurrentPage()->addOption($code, $data);
+
+                return true;
+            }, sprintf('Unable to create the attribute option %s', $data['Code']));
         }
     }
 

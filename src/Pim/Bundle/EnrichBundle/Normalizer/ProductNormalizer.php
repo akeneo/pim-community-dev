@@ -2,11 +2,17 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
+use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
+use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -47,6 +53,27 @@ class ProductNormalizer implements NormalizerInterface
     /** @var ConverterInterface */
     protected $productValueConverter;
 
+    /** @var ObjectManager */
+    protected $productManager;
+
+    /** @var CompletenessManager */
+    protected $completenessManager;
+
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
+
+    /** @var CollectionFilterInterface */
+    protected $collectionFilter;
+
+    /** @var NormalizerInterface */
+    protected $completenessCollectionNormalizer;
+
+    /** @var string */
+    protected $storageDriver;
+
+    /** @var UserContext */
+    protected $userContext;
+
     /**
      * @param NormalizerInterface               $productNormalizer
      * @param NormalizerInterface               $versionNormalizer
@@ -56,6 +83,13 @@ class ProductNormalizer implements NormalizerInterface
      * @param FormProviderInterface             $formProvider
      * @param AttributeConverterInterface       $localizedConverter
      * @param ConverterInterface                $productValueConverter
+     * @param ObjectManager                     $productManager
+     * @param CompletenessManager               $completenessManager
+     * @param ChannelRepositoryInterface        $channelRepository
+     * @param CollectionFilterInterface         $collectionFilter
+     * @param NormalizerInterface               $completenessCollectionNormalizer
+     * @param string                            $storageDriver
+     * @param UserContext                       $userContext
      */
     public function __construct(
         NormalizerInterface $productNormalizer,
@@ -65,16 +99,30 @@ class ProductNormalizer implements NormalizerInterface
         StructureVersionProviderInterface $structureVersionProvider,
         FormProviderInterface $formProvider,
         AttributeConverterInterface $localizedConverter,
-        ConverterInterface $productValueConverter
+        ConverterInterface $productValueConverter,
+        ObjectManager $productManager,
+        CompletenessManager $completenessManager,
+        ChannelRepositoryInterface $channelRepository,
+        CollectionFilterInterface $collectionFilter,
+        NormalizerInterface $completenessCollectionNormalizer,
+        $storageDriver,
+        UserContext $userContext
     ) {
-        $this->productNormalizer = $productNormalizer;
-        $this->versionNormalizer = $versionNormalizer;
-        $this->versionManager = $versionManager;
-        $this->localeRepository = $localeRepository;
-        $this->structureVersionProvider = $structureVersionProvider;
-        $this->formProvider = $formProvider;
-        $this->localizedConverter = $localizedConverter;
-        $this->productValueConverter = $productValueConverter;
+        $this->productNormalizer                = $productNormalizer;
+        $this->versionNormalizer                = $versionNormalizer;
+        $this->versionManager                   = $versionManager;
+        $this->localeRepository                 = $localeRepository;
+        $this->structureVersionProvider         = $structureVersionProvider;
+        $this->formProvider                     = $formProvider;
+        $this->localizedConverter               = $localizedConverter;
+        $this->productValueConverter            = $productValueConverter;
+        $this->productManager                   = $productManager;
+        $this->completenessManager              = $completenessManager;
+        $this->channelRepository                = $channelRepository;
+        $this->collectionFilter                 = $collectionFilter;
+        $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
+        $this->storageDriver                    = $storageDriver;
+        $this->userContext                      = $userContext;
     }
 
     /**
@@ -103,6 +151,7 @@ class ProductNormalizer implements NormalizerInterface
             'updated'           => $updated,
             'model_type'        => 'product',
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
+            'completenesses'    => $this->getNormalizedCompletenesses($product)
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
 
         return $normalizedProduct;
@@ -153,5 +202,30 @@ class ProductNormalizer implements NormalizerInterface
         }
 
         return ['associations' => $meta];
+    }
+
+    /**
+     * Get Product Completeness and normalize it
+     *
+     * @param ProductInterface $product
+     *
+     * @return array
+     */
+    protected function getNormalizedCompletenesses(ProductInterface $product)
+    {
+        $this->completenessManager->generateMissingForProduct($product);
+        // Product have to be refreshed to have the completeness values generated by generateMissingForProduct()
+        // (on ORM, completeness is not calculated the same way and product doesn't need to be refreshed)
+        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $this->storageDriver) {
+            $this->productManager->refresh($product);
+        }
+
+        $channels = $this->channelRepository->getFullChannels();
+        $locales = $this->userContext->getUserLocales();
+
+        $filteredLocales = $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view');
+        $completenesses = $this->completenessManager->getProductCompleteness($product, $channels, $filteredLocales);
+
+        return $this->completenessCollectionNormalizer->normalize($completenesses, 'internal_api');
     }
 }
