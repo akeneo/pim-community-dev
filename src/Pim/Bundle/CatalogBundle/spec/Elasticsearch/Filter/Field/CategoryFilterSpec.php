@@ -10,8 +10,10 @@ use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CategoryFilter;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
+use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\User\Model\GroupInterface;
 
 class CategoryFilterSpec extends ObjectBehavior
 {
@@ -52,7 +54,12 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_a_filter_with_operator_IN_LIST(SearchQueryBuilder $sqb) {
+    function it_adds_a_filter_with_operator_IN_LIST(
+        $categoryRepository,
+        CategoryInterface $category,
+        SearchQueryBuilder $sqb
+    ) {
+        $categoryRepository->findOneByIdentifier('t-shirt')->willReturn($category);
         $sqb->addFilter(
             [
                 'terms' => [
@@ -65,7 +72,12 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->addFieldFilter('categories', Operators::IN_LIST, ['t-shirt'], 'en_US', 'ecommerce', []);
     }
 
-    function it_adds_a_filter_with_operator_NOT_IN_LIST(SearchQueryBuilder $sqb) {
+    function it_adds_a_filter_with_operator_NOT_IN_LIST(
+        $categoryRepository,
+        CategoryInterface $category,
+        SearchQueryBuilder $sqb
+    ) {
+        $categoryRepository->findOneByIdentifier('t-shirt')->willReturn($category);
         $sqb->addMustNot(
             [
                 'terms' => [
@@ -83,6 +95,8 @@ class CategoryFilterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb,
         CategoryInterface $tShirtCategory
     ) {
+        $categoryRepository->findOneByIdentifier('t-shirt')->willReturn($tShirtCategory);
+
         $tShirtCategory->getCode()->willReturn('t-shirt');
         $categoryRepository->getAllChildrenCodes($tShirtCategory)->willReturn(['alaiz-breizh', 'BZH']);
         $categoryRepository->findOneBy(['code' => 't-shirt'])->willReturn($tShirtCategory);
@@ -103,6 +117,8 @@ class CategoryFilterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb,
         CategoryInterface $tShirtCategory
     ) {
+        $categoryRepository->findOneByIdentifier('t-shirt')->willReturn($tShirtCategory);
+
         $tShirtCategory->getCode()->willReturn('t-shirt');
         $categoryRepository->getAllChildrenCodes($tShirtCategory)->willReturn(['alaiz-breizh', 'BZH']);
         $categoryRepository->findOneBy(['code' => 't-shirt'])->willReturn($tShirtCategory);
@@ -118,10 +134,16 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->addFieldFilter('categories', Operators::NOT_IN_CHILDREN_LIST, ['t-shirt'], 'en_US', 'ecommerce', []);
     }
 
-    function it_adds_a_filter_with_operator_UNCLASSIFIED(SearchQueryBuilder $sqb) {
+    function it_adds_a_filter_with_operator_UNCLASSIFIED(
+        $categoryRepository,
+        CategoryInterface $category,
+        SearchQueryBuilder $sqb
+    ) {
+        $categoryRepository->findOneByIdentifier('t-shirt')->willReturn($category);
+
         $sqb->addMustNot(
             [
-                'exists' => ['field' => 'categories']
+                'exists' => ['field' => 'categories'],
             ]
         )->shouldBeCalled();
 
@@ -129,7 +151,13 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->addFieldFilter('categories', Operators::UNCLASSIFIED, [], 'en_US', 'ecommerce', []);
     }
 
-    function it_adds_a_filter_with_operator_IN_LIST_OR_UNCLASSIFIED(SearchQueryBuilder $sqb) {
+    function it_adds_a_filter_with_operator_IN_LIST_OR_UNCLASSIFIED(
+        $categoryRepository,
+        CategoryInterface $category,
+        SearchQueryBuilder $sqb
+    ) {
+        $categoryRepository->findOneByIdentifier('t-shirt')->willReturn($category);
+
         $sqb->addShould(
             [
                 'terms' => [
@@ -142,9 +170,9 @@ class CategoryFilterSpec extends ObjectBehavior
             [
                 'bool' => [
                     'must_not' => [
-                        'exists' => ['field' => 'categories']
-                    ]
-                ]
+                        'exists' => ['field' => 'categories'],
+                    ],
+                ],
             ]
         )->shouldBeCalled();
 
@@ -156,7 +184,8 @@ class CategoryFilterSpec extends ObjectBehavior
     {
         $this->shouldThrow(
             new \LogicException('The search query builder is not initialized in the filter.')
-        )->during('addFieldFilter', ['categories', Operators::IN_LIST_OR_UNCLASSIFIED, ['t-shirt'], 'en_US', 'ecommerce', []]);
+        )->during('addFieldFilter',
+            ['categories', Operators::IN_LIST_OR_UNCLASSIFIED, ['t-shirt'], 'en_US', 'ecommerce', []]);
 
     }
 
@@ -186,8 +215,9 @@ class CategoryFilterSpec extends ObjectBehavior
         )->during('addFieldFilter', ['categories', Operators::NOT_IN_LIST, 'NOT_AN_ARRAY', null, null, []]);
     }
 
-    function it_throws_an_exception_when_the_given_value_is_not_an_array_with_not_in_children_list(SearchQueryBuilder $sqb)
-    {
+    function it_throws_an_exception_when_the_given_value_is_not_an_array_with_not_in_children_list(
+        SearchQueryBuilder $sqb
+    ) {
         $this->setQueryBuilder($sqb);
 
         $this->shouldThrow(
@@ -212,8 +242,9 @@ class CategoryFilterSpec extends ObjectBehavior
         )->during('addFieldFilter', ['categories', Operators::IN_CHILDREN_LIST, 'NOT_AN_ARRAY', null, null, []]);
     }
 
-    function it_throws_an_exception_when_the_given_value_is_not_an_array_with_in_list_or_unclassified(SearchQueryBuilder $sqb)
-    {
+    function it_throws_an_exception_when_the_given_value_is_not_an_array_with_in_list_or_unclassified(
+        SearchQueryBuilder $sqb
+    ) {
         $this->setQueryBuilder($sqb);
 
         $this->shouldThrow(
@@ -225,8 +256,9 @@ class CategoryFilterSpec extends ObjectBehavior
         )->during('addFieldFilter', ['categories', Operators::IN_LIST_OR_UNCLASSIFIED, 'NOT_AN_ARRAY', null, null, []]);
     }
 
-    function it_does_not_throws_an_exception_when_the_given_value_is_not_an_array_with_unclassified(SearchQueryBuilder $sqb)
-    {
+    function it_does_not_throws_an_exception_when_the_given_value_is_not_an_array_with_unclassified(
+        SearchQueryBuilder $sqb
+    ) {
         $this->setQueryBuilder($sqb);
 
         $this->shouldNotThrow(
@@ -251,9 +283,26 @@ class CategoryFilterSpec extends ObjectBehavior
         )->during('addFieldFilter', ['categories', Operators::IN_LIST, [false], null, null, []]);
     }
 
+    function it_throws_an_exception_when_the_given_value_is_not_a_known_category(
+        $categoryRepository,
+        SearchQueryBuilder $sqb
+    ) {
+        $categoryRepository->findOneByIdentifier('UNKNOWN_CATEGORY')->willReturn(null);
 
-    function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(SearchQueryBuilder $sqb)
-    {
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            new ObjectNotFoundException('Object "category" with code "UNKNOWN_CATEGORY" does not exist')
+        )->during('addFieldFilter', ['categories', Operators::IN_LIST, ['UNKNOWN_CATEGORY'], null, null, []]);
+    }
+
+    function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
+        $categoryRepository,
+        GroupInterface $group,
+        SearchQueryBuilder $sqb
+    ) {
+        $categoryRepository->findOneByIdentifier('t-shirt')->willReturn($group);
+
         $this->setQueryBuilder($sqb);
         $this->shouldThrow(
             InvalidOperatorException::notSupported(

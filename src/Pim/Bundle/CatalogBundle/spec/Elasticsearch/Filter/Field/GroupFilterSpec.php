@@ -7,8 +7,11 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\GroupFilter;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
+use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
+use Pim\Component\User\Model\GroupInterface;
 
 /**
  * Group filter spec for an Elasticsearch query
@@ -19,9 +22,10 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  */
 class GroupFilterSpec extends ObjectBehavior
 {
-    function let()
+    function let(GroupRepositoryInterface $groupRepository)
     {
         $this->beConstructedWith(
+            $groupRepository,
             ['groups', 'variant_group'],
             ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
         );
@@ -58,8 +62,13 @@ class GroupFilterSpec extends ObjectBehavior
         $this->supportsField('a_not_supported_field')->shouldReturn(false);
     }
 
-    function it_adds_a_filter_with_operator_in_list(SearchQueryBuilder $sqb)
-    {
+    function it_adds_a_filter_with_operator_in_list(
+        $groupRepository,
+        GroupInterface $group,
+        SearchQueryBuilder $sqb
+    ) {
+        $groupRepository->findOneByIdentifier('groupsA')->willReturn($group);
+
         $sqb->addFilter(
             [
                 'terms' => [
@@ -72,8 +81,13 @@ class GroupFilterSpec extends ObjectBehavior
         $this->addFieldFilter('groups', Operators::IN_LIST, ['groupsA'], null, null, []);
     }
 
-    function it_adds_a_filter_with_operator_not_in_list(SearchQueryBuilder $sqb)
-    {
+    function it_adds_a_filter_with_operator_not_in_list(
+        $groupRepository,
+        GroupInterface $group,
+        SearchQueryBuilder $sqb
+    ) {
+        $groupRepository->findOneByIdentifier('groupsA')->willReturn($group);
+
         $sqb->addMustNot(
             [
                 'terms' => [
@@ -86,8 +100,11 @@ class GroupFilterSpec extends ObjectBehavior
         $this->addFieldFilter('groups', Operators::NOT_IN_LIST, ['groupsA'], null, null, []);
     }
 
-    function it_adds_a_filter_with_operator_is_empty(SearchQueryBuilder $sqb)
-    {
+    function it_adds_a_filter_with_operator_is_empty(
+        $groupRepository,
+        SearchQueryBuilder $sqb
+    ) {
+        $groupRepository->findOneByIdentifier()->shouldNotBeCalled();
         $sqb->addMustNot(
             [
                 'exists' => ['field' => 'groups'],
@@ -98,8 +115,11 @@ class GroupFilterSpec extends ObjectBehavior
         $this->addFieldFilter('groups', Operators::IS_EMPTY, ['groupsA'], null, null, []);
     }
 
-    function it_adds_a_filter_with_operator_is_not_empty(SearchQueryBuilder $sqb)
-    {
+    function it_adds_a_filter_with_operator_is_not_empty(
+        $groupRepository,
+        SearchQueryBuilder $sqb
+    ) {
+        $groupRepository->findOneByIdentifier()->shouldNotBeCalled();
         $sqb->addFilter(
             [
                 'exists' => ['field' => 'groups'],
@@ -184,8 +204,26 @@ class GroupFilterSpec extends ObjectBehavior
         )->during('addFieldFilter', ['groups', Operators::IN_LIST, [false], null, null, []]);
     }
 
-    function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(SearchQueryBuilder $sqb)
-    {
+    function it_throws_an_exception_when_the_given_value_is_not_a_known_group(
+        $groupRepository,
+        SearchQueryBuilder $sqb
+    ) {
+        $groupRepository->findOneByIdentifier('UNKNOWN_GROUP')->willReturn(null);
+
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            new ObjectNotFoundException('Object "groups" with code "UNKNOWN_GROUP" does not exist')
+        )->during('addFieldFilter', ['groups', Operators::IN_LIST, ['UNKNOWN_GROUP'], null, null, []]);
+    }
+
+    function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
+        $groupRepository,
+        GroupInterface $group,
+        SearchQueryBuilder $sqb
+    ) {
+        $groupRepository->findOneByIdentifier('groupsA')->willReturn($group);
+
         $this->setQueryBuilder($sqb);
 
         $this->shouldThrow(

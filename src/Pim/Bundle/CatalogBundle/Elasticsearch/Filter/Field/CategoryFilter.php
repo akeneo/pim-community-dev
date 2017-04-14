@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
+use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -127,6 +128,8 @@ class CategoryFilter extends AbstractFieldFilter implements FieldFilterInterface
      *
      * @param string $field
      * @param mixed  $values
+     *
+     * @throws ObjectNotFoundException
      */
     protected function checkValue($field, $values)
     {
@@ -134,6 +137,11 @@ class CategoryFilter extends AbstractFieldFilter implements FieldFilterInterface
 
         foreach ($values as $value) {
             FieldFilterHelper::checkIdentifier($field, $value, static::class);
+            if (null === $this->categoryRepository->findOneByIdentifier($value)) {
+                throw new ObjectNotFoundException(
+                    sprintf('Object "category" with code "%s" does not exist', $value)
+                );
+            }
         }
     }
 

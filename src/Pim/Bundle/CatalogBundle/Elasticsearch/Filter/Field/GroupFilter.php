@@ -3,9 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
+use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 
 /**
  * Group filter for an Elasticsearch query
@@ -16,14 +18,20 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  */
 class GroupFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
+    /** @var GroupRepositoryInterface */
+    protected $groupRepository;
+
     /**
-     * @param array $supportedFields
-     * @param array $supportedOperators
+     * @param GroupRepositoryInterface $groupRepository
+     * @param array                    $supportedFields
+     * @param array                    $supportedOperators
      */
     public function __construct(
+        GroupRepositoryInterface $groupRepository,
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
+        $this->groupRepository = $groupRepository;
         $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
@@ -92,6 +100,8 @@ class GroupFilter extends AbstractFieldFilter implements FieldFilterInterface
      *
      * @param string $field
      * @param mixed  $values
+     *
+     * @throws ObjectNotFoundException
      */
     protected function checkValue($field, $values)
     {
@@ -99,6 +109,11 @@ class GroupFilter extends AbstractFieldFilter implements FieldFilterInterface
 
         foreach ($values as $value) {
             FieldFilterHelper::checkIdentifier($field, $value, static::class);
+            if (null === $this->groupRepository->findOneByIdentifier($value)) {
+                throw new ObjectNotFoundException(
+                    sprintf('Object "groups" with code "%s" does not exist', $value)
+                );
+            }
         }
     }
 }
