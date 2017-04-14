@@ -1,4 +1,9 @@
-APP=docker-compose exec -T app
+ifeq ($(OS), Windows_NT)
+	APP=docker-compose exec -T app
+else
+	APP=docker-compose exec --user docker -T app
+endif
+
 CONSOLE=$(APP) /usr/bin/php app/console
 
 .PHONY: help install pim-install asset-install start stop composer db-create db-update clear-cache clear-all clean

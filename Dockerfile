@@ -45,4 +45,6 @@ RUN curl https://getcomposer.org/composer.phar > /usr/local/bin/composer && chmo
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker/akeneo.local.conf /etc/apache2/sites-available/000-default.conf
 
+USER docker
+
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
