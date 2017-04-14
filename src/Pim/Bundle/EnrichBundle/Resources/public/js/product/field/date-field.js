@@ -38,7 +38,7 @@ define(
             renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
-            click: function () {
+            click: function (event) {
                 var clickedElement = $(event.currentTarget).parent();
                 var picker = this.$('.datetimepicker');
 
