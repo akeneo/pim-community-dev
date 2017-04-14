@@ -25,13 +25,17 @@ class ExportProfilesContext extends ImportExportContext
      */
     public function exportedFileOfShouldContain($code, PyStringNode $csv)
     {
-        $path = $this->getExportedFile($code);
-        $config =  $this->getCsvJobConfiguration($code);
+        $this->spin(function () use ($code, $csv) {
+            $path = $this->getExportedFile($code);
+            $config =  $this->getCsvJobConfiguration($code);
 
-        $expectedLines = $this->getExpectedLines($csv, $config);
-        $actualLines = $this->getActualLines($path, 'csv', $config);
+            $expectedLines = $this->getExpectedLines($csv, $config);
+            $actualLines = $this->getActualLines($path, 'csv', $config);
 
-        $this->compareFile($expectedLines, $actualLines, $path);
+            $this->compareFile($expectedLines, $actualLines, $path);
+
+            return true;
+        }, sprintf('Cannot validate the file %s', $code));
     }
 
     /**
@@ -63,13 +67,17 @@ class ExportProfilesContext extends ImportExportContext
      */
     public function exportedFileOfShouldContainsTheFollowingHeaders($code, PyStringNode $csv)
     {
-        $path = $this->getExportedFile($code);
-        $config = $this->getCsvJobConfiguration($code);
+        $this->spin(function () use ($code, $csv) {
+            $path = $this->getExportedFile($code);
+            $config = $this->getCsvJobConfiguration($code);
 
-        $expectedLines = $this->getExpectedLines($csv, $config);
-        $actualLines = $this->getActualLines($path, 'csv', $config);
+            $expectedLines = $this->getExpectedLines($csv, $config);
+            $actualLines = $this->getActualLines($path, 'csv', $config);
 
-        $this->compareFileHeadersOrder(current($expectedLines), current($actualLines));
+            $this->compareFileHeadersOrder(current($expectedLines), current($actualLines));
+
+            return true;
+        }, sprintf('Cannot validate the header of %s', $code));
     }
 
     /**
@@ -82,27 +90,31 @@ class ExportProfilesContext extends ImportExportContext
      */
     public function exportedYamlFileOfShouldContain($code, PyStringNode $yaml)
     {
-        $path = $this->getExportedFile($code);
+        $this->spin(function () use ($code, $yaml) {
+            $path = $this->getExportedFile($code);
 
-        $actualLines = Yaml::parse(file_get_contents($path));
-        $expectedLines = Yaml::parse($yaml->getRaw());
+            $actualLines = Yaml::parse(file_get_contents($path));
+            $expectedLines = Yaml::parse($yaml->getRaw());
 
-        $isValidYamlFile = function ($expectedLines, $actualLines) use (&$isValidYamlFile) {
-            foreach ($expectedLines as $key => $line) {
-                $actualLine = $actualLines[$key];
-                if (is_array($line)) {
-                    $isValidYamlFile($line, $actualLine);
+            $isValidYamlFile = function ($expectedLines, $actualLines) use (&$isValidYamlFile) {
+                foreach ($expectedLines as $key => $line) {
+                    $actualLine = $actualLines[$key];
+                    if (is_array($line)) {
+                        $isValidYamlFile($line, $actualLine);
+                    }
+
+                    if ($line !== $actualLine) {
+                        throw new \Exception(
+                            sprintf('The exported file is not well formatted, expected %s, given %s', $line, $actualLine)
+                        );
+                    }
                 }
+            };
 
-                if ($line !== $actualLine) {
-                    throw new \Exception(
-                        sprintf('The exported file is not well formatted, expected %s, given %s', $line, $actualLine)
-                    );
-                }
-            }
-        };
+            $isValidYamlFile($expectedLines, $actualLines);
 
-        $isValidYamlFile($expectedLines, $actualLines);
+            return true;
+        }, sprintf('Cannot validate the yml file %s', $code));
     }
 
     /**
