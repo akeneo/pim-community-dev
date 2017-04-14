@@ -73,7 +73,7 @@ Naming
 
 Fitering
 ~~~~~~~~
-The following example are the content of the ``query`` node in Yaml representation of the Elasticsearch JSON DSL.
+The following examples are the content of the ``query`` node of the Elasticsearch JSON DSL.
 
 They can take two different forms in our case:
 
@@ -130,16 +130,18 @@ Sorting
 
 .. code-block:: php
 
-    'sort' => [
-        'name-varchar.<all_channels>.<all_locales>' => 'asc',
-        'missing' => '_last'
+    [
+        'sort' => [
+            'name-varchar.<all_channels>.<all_locales>' => 'asc',
+            'missing' => '_last'
+        ]
     ]
 
 Sorting and tokenization
 ........................
 Tokenized fields cannot be used for sorting as they will generate wrong results (see http://www.elasticsearch.org/guide/en/elasticsearch/guide/current/multi-fields.html).
 
-For those fields (mainly string fields), a multi-fields must be created with the untokenized value stored in a ``raw`` subfield.
+For those fields (mainly string fields), a multi-fields must be created with the untokenized value stored in a dynamic field (for textarea, its name is ``preprocessed``).
 
 In this case, the sort becomes:
 
@@ -154,10 +156,10 @@ Text area
 *********
 
 :Apply: pim_catalog_textarea attributes
-:Analyzer: HTML char filter + standard tokenizer + lowercase token filter
+:Analyzer: Text datatype + HTML char filter + standard tokenizer + lowercase token filter
 
     Other fields analyzer:
-     - raw: Keyword datatype + non-tokenized (Keyword Tokenizer) + lower case token filter
+     - preprocessed: Keyword datatype + non-tokenized (Keyword Tokenizer) + lower case token filter
 
 Data model
 ~~~~~~~~~~
@@ -173,15 +175,13 @@ Data model
         ]
     ]
 
-
-
 Filtering
 ~~~~~~~~~
 Operators
 .........
 STARTS WITH
 """""""""""
-:Specific field: raw
+:Specific field: preprocessed
 
     Must be applied on the non-analyzed version of the field or will try to
     match on all tokens.
@@ -212,7 +212,7 @@ Example:
 
 CONTAINS
 """"""""
-:Specific field: raw
+:Specific field: preprocessed
 
 .. code-block:: php
 
@@ -225,7 +225,7 @@ CONTAINS
 
 DOES NOT CONTAIN
 """"""""""""""""
-:Specific field: raw
+:Specific field: preprocessed
 
 Same syntax than the ``contains`` but must be included in a ``must_not`` boolean occured type instead of ``filter``.
 
@@ -246,7 +246,7 @@ Same syntax than the ``contains`` but must be included in a ``must_not`` boolean
 Equals (=)
 """"""""""
 :Type: Filter
-:Specific field: raw
+:Specific field: preprocessed
 
     Equality will not work with tokenized field, so we will use the untokenized sub-field:
 
@@ -261,7 +261,7 @@ Equals (=)
 Not Equals (!=)
 """""""""""""""
 :Type: Filter
-:Specific field: raw
+:Specific field: preprocessed
 
         Equality will not work with tokenized field, so we will use the untokenized sub-field:
 
@@ -338,9 +338,17 @@ Enabled
 
 Data model
 ~~~~~~~~~~
-.. code-block:: yaml
+.. code-block:: php
 
-    enabled: true
+    [
+        'values' => [
+            'enabled-boolean' => [
+                'mobile' => [
+                    'fr_FR' => true
+                ]
+            ]
+        ]
+    ]
 
 Filtering
 ~~~~~~~~~
@@ -382,11 +390,30 @@ Not Equal (!=)
 Sorting
 ~~~~~~~
 
+The sorting operation is made on the preprocessed version of the text.
+
+Operators
+.........
+ASCENDANT
+"""""""""
+
 .. code-block:: php
 
     'sort' => [
-        'enabled' => [
-            'order'   => 'asc',
+        'enabled-boolean' => [
+            'order'   => 'ASC',
+            'missing' => '_last'
+        ]
+    ]
+
+DESCENDANT
+""""""""""
+
+.. code-block:: php
+
+    'sort' => [
+        'enabled-boolean' => [
+            'order'   => 'DESC',
             'missing' => '_last'
         ]
     ]
@@ -395,7 +422,7 @@ Text
 ****
 
 :Apply: pim_catalog_text attributes
-:Analyzer: keyword tokenizer + lowercase token filter
+:Analyzer: Keyword datatype + lowercase token filter
 
 Data model
 ~~~~~~~~~~
@@ -415,6 +442,7 @@ Filtering
 ~~~~~~~~~
 Operators
 .........
+
 All operators except CONTAINS and DOES NOT CONTAINS are the same than with the text_area attributes but apply on the field directly instead of the ``.preprocessed`` subfield.
 
 CONTAINS
@@ -454,7 +482,6 @@ Same syntax than the contains but must be include in a ``must_not`` boolean occu
 
 Sorting
 ~~~~~~~
-
 Operators
 .........
 Ascendant
@@ -488,15 +515,17 @@ Identifier
 
 Data model
 ~~~~~~~~~~
-.. code-block:: yaml
+.. code-block:: php
 
-  identifier: "PRCT-1256"
+    [
+        'identifier': 'prct-eb-1256'
+    ]
 
 Filtering
 ~~~~~~~~~
 Operators
 .........
-All operators are the same as the Text field type except for the 'EMPTY' and 'NOT EMPTY' operators.
+All operators are the same as the Text field type except that the 'EMPTY' and 'NOT EMPTY' operators do not exists for this property.
 
 STARTS WITH
 """""""""""
@@ -528,16 +557,14 @@ Same syntax than the ``contains`` but must be included in a ``must_not`` boolean
 
 .. code-block:: php
 
-    'bool' => [
-        'must_not' => [
-            'query_string' => [
-                'default_field' => 'identifier',
-                'query' => '*00*'
-            ]
-        ],
-        'filter' => [
-            'exists' => ['field' => 'identifier']
+    'must_not' => [
+        'query_string' => [
+            'default_field' => 'identifier',
+            'query' => '*00*'
         ]
+    ],
+    'filter' => [
+        'exists' => ['field' => 'identifier']
     ]
 
 Equals (=)
@@ -556,16 +583,14 @@ Not Equal (!=)
 
 .. code-block:: php
 
-    'bool' => [
-        'must_not' => [
-            'term' => [
-                'identifier' => 'sku-0011'
-            ]
-        ],
-        'filter' => [
-            'exists' => [
-                'field' => 'identifier'
-            ]
+    'must_not' => [
+        'term' => [
+            'identifier' => 'sku-0011'
+        ]
+    ],
+    'filter' => [
+        'exists' => [
+            'field' => 'identifier'
         ]
     ]
 
@@ -653,7 +678,6 @@ Operators
 .........
 STARTS WITH
 """""""""""
-:Type: filter
 :Specific field: original_filename
 
 .. code-block:: php
@@ -667,7 +691,6 @@ STARTS WITH
 
 CONTAINS
 """"""""
-:Type: filter
 :Specific field: original_filename
 
 .. code-block:: php
@@ -681,28 +704,24 @@ CONTAINS
 
 DOES NOT CONTAIN
 """"""""""""""""
-:Type: must_not
 :Specific field: original_filename
 
-Same syntax than the ``contains`` but must be included in a ``must_not`` boolean occured type instead of ``filter``.
+Same syntax than the ``contains`` but must be included in a ``must_not`` type instead of ``filter``.
 
 .. code-block:: php
 
-    'bool' => [
-        'must_not' => [
-            'query_string' => [
-                'default_field' => 'values.an_image-media.<all_channels>.<all_locales>.original_filename',
-                'query' => '*ziggy*'
-            ]
-        ],
-        'filter' => [
-            'exists' => ['field' => 'values.an_image-media.<all_channels>.<all_locales>'
+    'must_not' => [
+        'query_string' => [
+            'default_field' => 'values.an_image-media.<all_channels>.<all_locales>.original_filename',
+            'query' => '*ziggy*'
         ]
+    ],
+    'filter' => [
+        'exists' => ['field' => 'values.an_image-media.<all_channels>.<all_locales>'
     ]
 
 Equals (=)
 """"""""""
-:Type: filter
 :Specific field: original_filename
 
 .. code-block:: php
@@ -715,7 +734,6 @@ Equals (=)
 
 Not Equals (!=)
 """""""""""""""
-:Type: must_not
 :Specific field: original_filename
 
 .. code-block:: php
@@ -733,7 +751,6 @@ Not Equals (!=)
 
 EMPTY
 """""
-:Type: filter
 
 .. code-block:: php
 
@@ -745,7 +762,6 @@ EMPTY
 
 NOT EMPTY
 """""""""
-:Type: filter
 
 .. code-block:: php
 
@@ -757,21 +773,22 @@ NOT EMPTY
 
 Date
 ****
-:Apply:
-  pim_catalog_date attributes
+:Apply: pim_catalog_date attributes
 
 Data model
 ~~~~~~~~~~
 
 .. code-block:: yaml
 
-  'values' => [
-      'publishedOn-date' => [
-          '<all_channels>' => [
-              '<all_locales>' => '2015-02-24'
-          ]
-      ]
-  ]
+    [
+        'values' => [
+            'publishedOn-date' => [
+                '<all_channels>' => [
+                    '<all_locales>' => '2015-02-24'
+                ]
+            ]
+        ]
+    ]
 
 Filtering
 ~~~~~~~~~
@@ -779,7 +796,6 @@ Operators
 .........
 Less than (<)
 """""""""""""
-:Type: filter
 
 .. code-block:: php
 
@@ -792,7 +808,6 @@ Less than (<)
 
 Equals (=)
 """"""""""
-:Type: filter
 
 .. code-block:: php
 
@@ -802,30 +817,22 @@ Equals (=)
 
 NOT EQUAL (!=)
 """"""""""""""
-:Type: filter
 
 .. code-block:: php
 
-    [
-        'query' => [
-            'bool' => [
-                'must_not' => [
-                    'term' => [
-                        'values.publishedOn-date.<all_channels>.<all_locales>' => '2015-02-26'
-                    ]
-                ],
-                'filter' => [
-                    'exists' => [
-                        'field' => 'values.publishedOn-date.<all_channels>.<all_locales>'
-                    ]
-                ]
-            ]
+    'must_not' => [
+        'term' => [
+            'values.publishedOn-date.<all_channels>.<all_locales>' => '2015-02-26'
+        ]
+    ],
+    'filter' => [
+        'exists' => [
+            'field' => 'values.publishedOn-date.<all_channels>.<all_locales>'
         ]
     ]
 
 BETWEEN
 """""""
-:Type: filter
 
 .. code-block:: php
 
@@ -841,27 +848,23 @@ BETWEEN
 
 NOT BETWEEN
 """""""""""
-:Type: filter
 
 .. code-block:: php
 
-    'query' => [
-        'bool' => [
-            'must_not' => [
-                'range' => [
-                    'values.publishedOn-date.<all_channels>.<all_locales>' => [
-                        'gte' => '2017-03-22',
-                        'lte' => '2017-03-23'
-                    ],
-                ]
+    'must_not' => [
+        'range' => [
+            'values.publishedOn-date.<all_channels>.<all_locales>' => [
+                'gte' => '2017-03-22',
+                'lte' => '2017-03-23'
             ],
-            'filter' => ['exists' => 'values.publishedOn-date.<all_channels>.<all_locales>']
         ]
+    ],
+    'filter' => [
+        'exists' => 'values.publishedOn-date.<all_channels>.<all_locales>'
     ]
 
 Greater than (>)
 """"""""""""""""
-:Type: filter
 
 .. code-block:: php
 
@@ -873,7 +876,6 @@ Greater than (>)
 
 EMPTY
 """""
-:Type: filter
 
 .. code-block:: php
 
@@ -885,28 +887,52 @@ EMPTY
 
 Sorting
 ~~~~~~~
+Operators
+.........
+ASCENDANT
+"""""""""
+
 .. code-block:: php
 
     sort => [
         'values.publishedOn-date.<all_channels>.<all_locales>' => [
-            'order'   => 'asc',
+            'order'   => 'ASC',
+            'missing' => '_last',
+        ]
+    ]
+
+DESCENDANT
+""""""""""
+
+.. code-block:: php
+
+    sort => [
+        'values.publishedOn-date.<all_channels>.<all_locales>' => [
+            'order'   => 'DESC',
             'missing' => '_last',
         ]
     ]
 
 Decimal
 *******
-:Apply:
- pim_catalog_number attributes
+:Apply: pim_catalog_number attributes
 
 Please note that number attributes must be indexed as a string to be captured by the dynamic mapping. This way, the PIM doesn't need to manage float or integer questions.
 
-
 Data model
 ~~~~~~~~~~
+
 .. code-block:: yaml
 
-  values.packet_count-decimal.<all_channels>.<all_locales>: 5
+    [
+        'values' => [
+            'packet_count-decimal' => [
+                '<all_channels>' => [
+                    '<all_locales>' => '5.01992812'
+                ]
+            ]
+        ]
+    ]
 
 Filtering
 ~~~~~~~~~
@@ -914,7 +940,6 @@ Operators
 .........
 Less than (<)
 """""""""""""
-:Type: filter
 
 .. code-block:: php
 
@@ -926,7 +951,6 @@ Less than (<)
 
 Less than or equals to (<=)
 """""""""""""""""""""""""""
-:Type: filter
 
 .. code-block:: php
 
@@ -938,7 +962,6 @@ Less than or equals to (<=)
 
 Equals (=)
 """"""""""
-:Type: filter
 
 .. code-block:: php
 
@@ -950,31 +973,23 @@ Equals (=)
 
 Not Equal (!=)
 """"""""""""""
-:Type: filter and must_not
 
 .. code-block:: php
 
-    [
-        'query' => [
-            'bool' => [
-                'must_not' => [
-                    'term' => [
-                        'values.packet_count-decimal.<all_channels>.<all_locales>' => 5
-                    ]
-                ],
-                'filter' => [
-                    'exists' => [
-                        'field' => 'values.packet_count-decimal.<all_channels>.<all_locales>'
-                    ]
-                ]
-            ]
+    'must_not' => [
+        'term' => [
+            'values.packet_count-decimal.<all_channels>.<all_locales>' => 5
+        ]
+    ],
+    'filter' => [
+        'exists' => [
+            'field' => 'values.packet_count-decimal.<all_channels>.<all_locales>'
         ]
     ]
 
 
 Greater than or equal to (>=)
 """""""""""""""""""""""""""""
-:Type: filter
 
 .. code-block:: php
 
@@ -986,7 +1001,6 @@ Greater than or equal to (>=)
 
 Greater than (>)
 """"""""""""""""
-:Type: filter
 
 .. code-block:: php
 
@@ -998,7 +1012,6 @@ Greater than (>)
 
 EMPTY
 """""
-:Type: must_not
 
 .. code-block:: php
 
@@ -1010,7 +1023,6 @@ EMPTY
 
 NOT EMPTY
 """""""""
-:Type: filter
 
 .. code-block:: php
 
@@ -1023,7 +1035,6 @@ NOT EMPTY
 
 Sorting
 ~~~~~~~
-
 Operators
 .........
 Ascendant
@@ -1056,6 +1067,7 @@ Option
 
 Data model
 ~~~~~~~~~~
+
 .. code-block:: php
 
     'values' => [
@@ -1073,7 +1085,6 @@ Operators
 .........
 IN
 ""
-:Type: filter
 
 .. code-block:: php
 
@@ -1085,7 +1096,6 @@ IN
 
 EMPTY
 """""
-:Type: must_not
 
 .. code-block:: php
 
@@ -1097,7 +1107,6 @@ EMPTY
 
 NOT EMPTY
 """""""""
-:Type: filter
 
 .. code-block:: php
 
@@ -1109,22 +1118,17 @@ NOT EMPTY
 
 NOT IN
 """"""
-:Type: must_not
 
 .. code-block:: php
 
-    'query' => [
-        'bool' => [
-            'must_not' => [
-                'terms' => [
-                    'values.color-option.<all_channels>.<all_locales>' => ['red']
-                ]
-            ],
-            'filter' => [
-                'exists' => [
-                    'field' => 'values.color-option.<all_channels>.<all_locales>'
-                ]
-            ]
+    'must_not' => [
+        'terms' => [
+            'values.color-option.<all_channels>.<all_locales>' => ['red']
+        ]
+    ],
+    'filter' => [
+        'exists' => [
+            'field' => 'values.color-option.<all_channels>.<all_locales>'
         ]
     ]
 
@@ -1179,7 +1183,6 @@ Operators
 .........
 IN
 ""
-:Type: filter
 
 .. code-block:: php
 
@@ -1191,7 +1194,6 @@ IN
 
 EMPTY
 """""
-:Type: filter
 
 .. code-block:: php
 
@@ -1203,7 +1205,6 @@ EMPTY
 
 NOT EMPTY
 """""""""
-:Type: filter
 
 .. code-block:: php
 
@@ -1215,7 +1216,6 @@ NOT EMPTY
 
 NOT IN
 """"""
-:Type: must_not
 
 .. code-block:: php
 
@@ -1236,7 +1236,7 @@ NOT IN
 
 Sorting
 ~~~~~~~
-Sorting will be done on the localized label:
+Sorting will be done on the localized label.
 
 Operators
 .........
@@ -1273,7 +1273,7 @@ Data model
 ~~~~~~~~~~
 .. code-block:: php
 
-  values => [
+  'values' => [
       'my-tags-options' => [
           'mobile' => [
               'fr_FR' => ['summer', 'winter']
@@ -1288,7 +1288,6 @@ Operators
 
 IN
 ""
-:Type: filter
 
 .. code-block:: php
 
@@ -1298,28 +1297,22 @@ IN
 
 NOT IN
 """"""
-:Type: must_not
 
 .. code-block:: php
 
-    'query' => [
-        'bool' => [
-            'filter' => [
-                'exists' => [
-                    'field' => 'values.my-tags-options.mobile.fr_FR'
-                ]
-            ],
-            'must_not' => [
-                'terms' => [
-                    'values.my-tags-options.mobile.fr_FR' => ['summer']
-                ]
-            ]
+    'filter' => [
+        'exists' => [
+            'field' => 'values.my-tags-options.mobile.fr_FR'
+        ]
+    ],
+    'must_not' => [
+        'terms' => [
+            'values.my-tags-options.mobile.fr_FR' => ['summer']
         ]
     ]
 
 IS EMPTY
 """"""""
-:Type: must_not
 
 .. code-block:: php
 
@@ -1329,7 +1322,6 @@ IS EMPTY
 
 IS NOT EMPTY
 """"""""""""
-:Type: filter
 
 .. code-block:: php
 
@@ -1339,7 +1331,7 @@ IS NOT EMPTY
 
 Sorting
 ~~~~~~~
-Not supported on that attribute_type
+Not supported on this attribute_type.
 
 Reference data multi select
 ***************************
@@ -1350,10 +1342,12 @@ Data model
 ~~~~~~~~~~
 .. code-block:: php
 
-    'values' => [
-        'compatibility-reference_data_options' => [
-            '<all_channels>' => [
-                '<all_locales>' => ['windows_os', 'linux']
+    [
+        'values' => [
+            'compatibility-reference_data_options' => [
+                '<all_channels>' => [
+                    '<all_locales>' => ['windows_os', 'linux']
+                ]
             ]
         ]
     ]
@@ -1362,10 +1356,8 @@ Filtering
 ~~~~~~~~~
 Operators
 .........
-
 IN
 ""
-:Type: filter
 
 .. code-block:: php
 
@@ -1377,7 +1369,6 @@ IN
 
 EMPTY
 """""
-:Type: filter
 
 .. code-block:: php
 
@@ -1389,7 +1380,6 @@ EMPTY
 
 NOT EMPTY
 """""""""
-:Type: filter
 
 .. code-block:: php
 
@@ -1401,28 +1391,23 @@ NOT EMPTY
 
 NOT IN
 """"""
-:Type: must_not
 
 .. code-block:: php
 
-    'query' => [
-        'bool' => [
-            'must_not' => [
-                'terms' => [
-                    'values.compatibility-reference_data_options.<all_channels>.<all_locales>' => ['windows_os', 'linux']
-                ]
-            ],
-            'filter' => [
-                'exists' => [
-                    'field' => 'values.compatibility-reference_data_options.<all_channels>.<all_locales>'
-                ]
-            ]
+    'must_not' => [
+        'terms' => [
+            'values.compatibility-reference_data_options.<all_channels>.<all_locales>' => ['windows_os', 'linux']
+        ]
+    ],
+    'filter' => [
+        'exists' => [
+            'field' => 'values.compatibility-reference_data_options.<all_channels>.<all_locales>'
         ]
     ]
 
 Sorting
 ~~~~~~~
-Not supported on that attribute_type
+Not supported on this attribute_type.
 
 Metric
 ******
@@ -1595,8 +1580,6 @@ They are replaced respectively by:
 IS EMPTY
 ~~~~~~~~
 
-:Type: filter
-
 .. code-block:: php
 
     [
@@ -1610,10 +1593,9 @@ IS EMPTY
             ]
         ]
     ]
+
 EQUALS ON AT LEAST ONE LOCALE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-:Type: filter
 
 .. code-block:: php
 
@@ -1867,7 +1849,6 @@ Operators
 .........
 IN
 ~~
-:Type: filter
 
 .. code-block:: php
 
@@ -1883,7 +1864,6 @@ Same as ``IN``, but with ``must_not`` occured type instead of ``filter``
 
 UNCLASSIFIED
 ~~~~~~~~~~~~
-:Type: filter
 
 .. code-block:: php
 
@@ -1895,7 +1875,6 @@ UNCLASSIFIED
 
 IN OR UNCLASSIFIED
 ~~~~~~~~~~~~~~~~~~
-:Type: filter
 
 We use the ``should`` occured type to join both conditions on a ``bool`` filter
 
@@ -1933,8 +1912,6 @@ NOT IN CHILDREN
 :Type: filter
 
 Same as above but with a ``must_not`` occured type
-
-
 
 Price
 *****
@@ -1992,7 +1969,6 @@ Operators
 .........
 Equals (=)
 ~~~~~~~~~~
-:Type: filter
 
 .. code-block:: yaml
 
@@ -2001,7 +1977,6 @@ Equals (=)
 
 IN
 ~~
-:Type: filter
 
     ::
         ids:
@@ -2009,7 +1984,6 @@ IN
 
 NOT IN
 ~~~~~~
-:Type: filter
 
 Same as ``IN``, but with the ``must_not`` occured type
 
@@ -2201,20 +2175,26 @@ SINCE LAST N DAYS
 """""""""""""""""
 :Apply: Apply the GREATER THAN Operator with the date corresponding to the Nth previous day
 
+Family
+******
 Data model
 ~~~~~~~~~~
-.. code-block:: yaml
+.. code-block:: php
 
-    family: 'familyA'
+    [
+        'family' => 'familyA'
+    ]
 
 Sorting
 ~~~~~~~
 Sorting is done on the localized label:
 
-.. code-block:: yaml
+.. code-block:: php
 
-    sort:
-        family.label-en_US: "asc"
+    'sort' => [
+        'family.label-en_US' => 'ASC',
+        'mising' => '_last'
+    ]
 
 Groups
 ******
@@ -2232,7 +2212,6 @@ Operators
 .........
 IN
 ~~
-:Type: filter
 
 .. code-block:: php
 
@@ -2300,7 +2279,6 @@ Operators
 .........
 IN
 ~~
-:Type: filter
 
 .. code-block:: php
 
@@ -2312,7 +2290,6 @@ IN
 
 NOT IN
 ~~~~~~
-:Type: must_not
 
 .. code-block:: php
 
@@ -2324,7 +2301,6 @@ NOT IN
 
 IS EMPTY
 ~~~~~~~~
-:Type: must_not
 
 .. code-block:: php
 
@@ -2337,7 +2313,6 @@ IS EMPTY
 
 IS NOT EMPTY
 ~~~~~~~~~~~~
-:Type: filter
 
 .. code-block:: php
 
@@ -2348,8 +2323,6 @@ IS NOT EMPTY
     ]
 
 ::
-
-  TODO see function score to put product belonging at first and sort by relevancy
 
 Associations
 ************
