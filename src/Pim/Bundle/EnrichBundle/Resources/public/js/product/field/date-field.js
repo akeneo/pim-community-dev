@@ -37,9 +37,13 @@ define(
                 return this.fieldTemplate(context);
             },
             click: function () {
-                Datepicker.init(this.$('.datetimepicker'), this.datetimepickerOptions).datetimepicker('show');
+                var clickedElement = $(event.currentTarget).parent();
+                var picker = this.$('.datetimepicker')
 
-                this.$('.datetimepicker').on('changeDate', function (e) {
+                Datepicker.init(picker, this.datetimepickerOptions);
+                clickedElement.datetimepicker('show');
+
+                picker.on('changeDate', function (e) {
                     this.setCurrentValue(this.$(e.target).find('input[type="text"]').val());
                 }.bind(this));
             },
