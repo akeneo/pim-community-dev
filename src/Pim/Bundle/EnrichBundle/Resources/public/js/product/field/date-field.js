@@ -9,6 +9,7 @@
  */
 define(
     [
+        'jquery',
         'pim/field',
         'underscore',
         'text!pim/template/product/field/date',
@@ -16,6 +17,7 @@ define(
         'pim/date-context'
     ],
     function (
+        $,
         Field,
         _,
         fieldTemplate,
@@ -38,7 +40,7 @@ define(
             },
             click: function () {
                 var clickedElement = $(event.currentTarget).parent();
-                var picker = this.$('.datetimepicker')
+                var picker = this.$('.datetimepicker');
 
                 Datepicker.init(picker, this.datetimepickerOptions);
                 clickedElement.datetimepicker('show');
