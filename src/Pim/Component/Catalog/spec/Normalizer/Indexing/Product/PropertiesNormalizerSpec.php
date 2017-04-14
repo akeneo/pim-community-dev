@@ -217,6 +217,11 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'categories'    => ['first_category', 'second_category'],
                 'groups'        => ['first_group', 'second_group'],
                 'variant_group' => 'a_variant_group',
+                'in_group' => [
+                    'first_group'     => true,
+                    'second_group'    => true,
+                    'a_variant_group' => true,
+                ],
                 'is_associated' => true,
                 'completeness'  => [
                     'ecommerce' => [

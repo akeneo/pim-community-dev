@@ -89,6 +89,11 @@ class ProductIndexingIntegration extends TestCase
             'categories'    => ['categoryA1', 'categoryB'],
             'groups'        => ['groupA', 'groupB'],
             'variant_group' => 'variantA',
+            'in_group'      => [
+                'groupA'   => true,
+                'groupB'   => true,
+                'variantA' => true,
+            ],
             'is_associated' => true,
             'completeness'  => [
                 'ecommerce' => ['en_US' => 100],

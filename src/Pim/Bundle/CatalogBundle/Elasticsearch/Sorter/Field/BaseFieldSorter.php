@@ -58,8 +58,8 @@ class BaseFieldSorter implements FieldSorterInterface
                 $sortClause = [
                     $field => [
                         'order'   => 'ASC',
-                        'missing' => '_last'
-                    ]
+                        'missing' => '_last',
+                    ],
                 ];
                 $this->searchQueryBuilder->addSort($sortClause);
 
@@ -68,10 +68,9 @@ class BaseFieldSorter implements FieldSorterInterface
                 $sortClause = [
                     $field => [
                         'order'   => 'DESC',
-                        'missing' => '_last'
-                    ]
+                        'missing' => '_last',
+                    ],
                 ];
-
                 $this->searchQueryBuilder->addSort($sortClause);
 
                 break;

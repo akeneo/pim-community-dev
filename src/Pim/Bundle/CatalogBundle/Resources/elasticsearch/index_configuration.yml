@@ -160,7 +160,12 @@ mappings:
                     match_mapping_type: 'date'
                     mapping:
                         type: 'date'
-
+            -
+                in_group:
+                    path_match: 'in_group.*'
+                    match_mapping_type: 'boolean'
+                    mapping:
+                        type: 'boolean'
 settings:
     analysis:
         normalizer:
