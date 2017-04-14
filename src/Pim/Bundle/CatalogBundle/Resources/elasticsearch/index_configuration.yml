@@ -4,8 +4,9 @@ mappings:
             # "completeness" property is handled by the "completeness" dynamic template
             categories:
                 type: 'keyword'
-            family:
-                type: 'keyword'
+            family.code:
+                    type: 'keyword'
+            # family labels are handled by the "family" dynamic template
             enabled:
                 type: 'boolean'
             groups:
@@ -20,8 +21,15 @@ mappings:
                 type: 'date'
             identifier:
                 type: 'keyword'
-                normalizer: 'varchar_normalizer'
+                normalizer: 'identifier_normalizer'
         dynamic_templates:
+            -
+                family:
+                    path_match: 'family.labels.*'
+                    match_mapping_type: 'string'
+                    mapping:
+                        type: 'keyword'
+                        normalizer: 'family_normalizer'
             -
                 text_area:
                     path_match: 'values.*-text.*'
@@ -178,6 +186,10 @@ settings:
                 char_filter: []
                 type: 'custom'
             varchar_normalizer:
+                filter: ['lowercase']
+            family_normalizer:
+                filter: ['lowercase']
+            identifier_normalizer:
                 filter: ['lowercase']
         char_filter:
             newline_pattern:

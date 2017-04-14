@@ -1,6 +1,7 @@
 parameters:
     pim_catalog.normalizer.indexing.product.class: Pim\Component\Catalog\Normalizer\Indexing\ProductNormalizer
     pim_catalog.normalizer.indexing.product.properties.class: Pim\Component\Catalog\Normalizer\Indexing\Product\PropertiesNormalizer
+    pim_catalog.normalizer.indexing.product.family.class: Pim\Component\Catalog\Normalizer\Indexing\Product\FamilyNormalizer
     pim_catalog.normalizer.indexing.datetime.class: Pim\Component\Catalog\Normalizer\Indexing\DateTimeNormalizer
     pim_catalog.normalizer.indexing.product.product_value_collection.class: Pim\Component\Catalog\Normalizer\Indexing\Product\ProductValueCollectionNormalizer
     pim_catalog.normalizer.indexing.product.completeness_collection.class: Pim\Component\Catalog\Normalizer\Indexing\Product\CompletenessCollectionNormalizer
@@ -33,6 +34,13 @@ services:
         class: '%pim_catalog.normalizer.indexing.datetime.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.datetime'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing.product.family:
+        class: '%pim_catalog.normalizer.indexing.product.family.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

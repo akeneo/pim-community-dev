@@ -73,6 +73,15 @@ class FamilyFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
+     * @expectedException \Pim\Component\Catalog\Exception\ObjectNotFoundException
+     * @expectedExceptionMessage Object "family" with code "UNKNOWN_FAMILY" does not exist
+     */
+    public function testErrorValueNotFound()
+    {
+        $this->executeFilter([['family', Operators::IN_LIST, ['UNKNOWN_FAMILY']]]);
+    }
+
+    /**
      * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "family" is not supported or does not support operator "BETWEEN"
      */

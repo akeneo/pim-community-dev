@@ -84,7 +84,13 @@ class ProductIndexingIntegration extends TestCase
             'identifier'    => 'foo',
             'created'       => $date->format('c'),
             'updated'       => $date->format('c'),
-            'family'        => 'familyA',
+            'family'        => [
+                'code'   => 'familyA',
+                'labels' => [
+                    'fr_FR' => 'Une famille A',
+                    'en_US' => 'A family A',
+                ],
+            ],
             'enabled'       => true,
             'categories'    => ['categoryA1', 'categoryB'],
             'groups'        => ['groupA', 'groupB'],

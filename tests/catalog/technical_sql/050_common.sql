@@ -182,6 +182,18 @@ INSERT INTO `pim_catalog_family` VALUES (466,2523,'familyA','2016-08-04 14:28:50
 
 
 --
+-- Dumping data for table `pim_catalog_family_translation`
+--
+
+/*!40000 ALTER TABLE `pim_catalog_family_translation` DISABLE KEYS */;
+DELETE FROM `pim_catalog_family_translation`;
+INSERT INTO `pim_catalog_family_translation` (`id`, `foreign_key`, `label`, `locale`)
+VALUES
+	(1,466,'Une famille A','fr_FR'),
+	(2,466,'A family A','en_US');
+/*!40000 ALTER TABLE `pim_catalog_family_translation` ENABLE KEYS */;
+
+--
 -- Dumping data for table `pim_catalog_family_attribute`
 --
 

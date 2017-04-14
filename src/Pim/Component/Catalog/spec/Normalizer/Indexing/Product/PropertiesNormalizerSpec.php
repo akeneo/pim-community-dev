@@ -40,10 +40,15 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         Collection $completenesses,
         Collection $associations
     ) {
+        $family = null;
+        $product->getFamily()->willReturn($family);
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $product->getIdentifier()->willReturn('sku-001');
         $product->getCreated()->willReturn($now);
+        $serializer
+            ->normalize($family, 'indexing')
+            ->willReturn(null);
         $serializer
             ->normalize($product->getWrappedObject()->getCreated(), 'indexing')
             ->willReturn($now->format('c'));
@@ -89,9 +94,13 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         Collection $completenesses,
         Collection $associations
     ) {
+        $family = null;
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $product->getIdentifier()->willReturn('sku-001');
+
+        $product->getFamily()->willReturn($family);
+        $serializer->normalize($family, 'indexing')->willReturn($family);
 
         $product->getCreated()->willReturn($now);
         $serializer->normalize(
@@ -164,6 +173,15 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         )->willReturn($now->format('c'));
 
         $product->getFamily()->willReturn($family);
+        $serializer
+            ->normalize($family, 'indexing')
+            ->willReturn([
+                'code'   => 'family',
+                'labels' => [
+                    'fr_FR' => 'Une famille',
+                    'en_US' => 'A family',
+                ],
+            ]);
         $family->getCode()->willReturn('a_family');
         $product->isEnabled()->willReturn(true);
         $product->getGroupCodes()->willReturn(['first_group', 'second_group', 'a_variant_group']);
@@ -212,7 +230,13 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'identifier'    => 'sku-001',
                 'created'       => $now->format('c'),
                 'updated'       => $now->format('c'),
-                'family'        => 'a_family',
+                'family' => [
+                    'code'   => 'family',
+                    'labels' => [
+                        'fr_FR' => 'Une famille',
+                        'en_US' => 'A family',
+                    ],
+                ],
                 'enabled'       => true,
                 'categories'    => ['first_category', 'second_category'],
                 'groups'        => ['first_group', 'second_group'],

@@ -42,8 +42,10 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
             $format
         );
 
-        $data[StandardPropertiesNormalizer::FIELD_FAMILY] = null !== $product->getFamily()
-            ? $product->getFamily()->getCode() : null;
+        $data[StandardPropertiesNormalizer::FIELD_FAMILY] = $this->serializer->normalize(
+            $product->getFamily(),
+            $format
+        );
 
         $data[StandardPropertiesNormalizer::FIELD_ENABLED] = (bool) $product->isEnabled();
         $data[StandardPropertiesNormalizer::FIELD_CATEGORIES] = $product->getCategoryCodes();
