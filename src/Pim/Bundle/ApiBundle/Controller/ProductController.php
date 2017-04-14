@@ -278,9 +278,9 @@ class ProductController
     {
         $data = $this->getDecodedContent($request->getContent());
 
-        $data['identifier'] = array_key_exists('identifier', $data) ? $data['identifier'] : null;
+        $data = $this->populateIdentifierProductValue($data);
 
-        $product = $this->productBuilder->createProduct($data['identifier']);
+        $product = $this->productBuilder->createProduct();
 
         $this->updateProduct($product, $data, 'post_products');
         $this->validateProduct($product);
