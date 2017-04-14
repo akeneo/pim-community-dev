@@ -182,7 +182,6 @@ def runIntegrationTest(phpVersion, storage) {
                         }
 
                         sh "./app/console --env=test pim:install --force"
-                        sh "app/console oro:requirejs:build"
 
                         sh "mkdir -p app/build/logs/"
                         sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
