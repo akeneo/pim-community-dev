@@ -16,7 +16,6 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
-use PimEnterprise\Component\ProductAsset\Finder\AssetFinderInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 /**
@@ -24,9 +23,6 @@ use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
  */
 class AssetCollectionCompleteChecker implements ProductValueCompleteCheckerInterface
 {
-    /** @var AssetFinderInterface */
-    protected $assetFinder;
-
     /**
      * @param ProductValueInterface $productValue
      * @param ChannelInterface|null $channel
@@ -36,17 +32,9 @@ class AssetCollectionCompleteChecker implements ProductValueCompleteCheckerInter
      */
     public function isComplete(
         ProductValueInterface $productValue,
-        ChannelInterface $channel = null,
-        LocaleInterface $locale = null
+        ChannelInterface $channel,
+        LocaleInterface $locale
     ) {
-        if (!$productValue instanceof ProductValueInterface) {
-            $message = sprintf(
-                'Product value must implement %s, %s provided',
-                ProductValueInterface::class,
-                get_class($productValue)
-            );
-            throw new \InvalidArgumentException($message);
-        }
         $assets = $productValue->getData();
 
         if (null === $assets) {
@@ -65,16 +53,16 @@ class AssetCollectionCompleteChecker implements ProductValueCompleteCheckerInter
     /**
      * Check if asset is complete for a tuple channel/locale
      *
-     * @param AssetInterface       $asset
-     * @param ChannelInterface     $channel
-     * @param LocaleInterface|null $locale
+     * @param AssetInterface   $asset
+     * @param ChannelInterface $channel
+     * @param LocaleInterface  $locale
      *
      * @return bool
      */
     protected function checkAssetByLocaleAndChannel(
         AssetInterface $asset,
         ChannelInterface $channel,
-        LocaleInterface $locale = null
+        LocaleInterface $locale
     ) {
         $variations = $asset->getVariations();
 
