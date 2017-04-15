@@ -15,19 +15,26 @@ confirmation:
     role: Sei sicuro di voler eliminare questo ruolo?
 pim_datagrid:
   mass_action_group:
+    bulk_actions:
+      label: Azioni Massive
     quick_export:
       label: Esportazione rapida
+  mass_action:
+    delete:
+      confirm_content: Sei sicuro di che voler eliminare i prodotti selezionati?
+      success: I prodotti selezionati sono stati eliminati con successo.
+      error: Si è verificato un errore cancellando i prodotti selezionati, per favore riprova.
 flash:
   item:
     removed: Articolo rimosso con successo
   association type:
     removed: Tipo di associazione rimossa con successo
   attribute:
-    removed: Attributo eliminato con successo
+    removed: Attributo rimosso con successo
   family:
     removed: Famiglia rimossa con successo
   product:
-    removed: Articolo rimosso con successo
+    removed: Prodotto rimosso con successo
   channel:
     removed: Canale rimosso con successo
   group:
@@ -59,24 +66,53 @@ error:
     export profile: Non è possibile eliminare questo profilo di esportazione
     user: Non è possibile eliminare questo utente
     role: Non è possibile eliminare questo ruolo
+    attribute_option: Errore durante la cancellazione dell'opzione attributo
+  saving:
+    attribute_option: Impossibile salvare l'opzione dell'attributo
+    export_profile: Non è possibile salvare il profilo di esportazione. Si prega di verificare che tutti i filtri siano correttamente valorizzati
+alert:
+  attribute_option:
+    error_occured_during_submission: Si è verificato un errore durante l'invio del modulo al server
+    save_before_edit_other: Si prega di registrare le modifiche sulle altre righe prima di modificare questa
+  session_storage:
+    not_available: Il tuo browser non sembra compatibile con il sessionStorage. Contattare l'amministratore
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: Attenzione, si perderanno i dati non salvati. Sei sicuro di voler annullare le modifiche su questa nuova opzione?
+    cancel_edition_on_new_option_title: Annulla la modifica
+label:
+  attribute_option:
+    add_option: Aggiungi un'opzione
 Code: Codice
 Edit: Modifica
-Delete: Eliminare
+Delete: Elimina
 Edit attributes of the product: Modificare gli attributi del prodotto
 Classify the product: Classificare il prodotto
 Delete the product: Eliminare il prodotto
 Change status: Modificare lo stato
 Toggle status: Stato di conversione
-pim.grid.mass_action.quick_export.csv_all: CSV (tutti gli attributi)
-pim.grid.mass_action.delete: Eliminare
-pim.grid.mass_action.mass_edit: Modifica di massa
-jstree.create: Crea
+pim:
+  grid:
+    mass_action:
+      quick_export:
+        csv_all: CSV (tutti gli attributi)
+        xlsx_all: Excel (Tutti gli attributi)
+        xlsx_grid_context: Excel (Contesto di griglia)
+      delete: Elimina i prodotti
+      mass_edit: Cambia le informazioni del prodotto
+      category_edit: Sposta i prodotti nelle categorie
+      sequential_edit: Modifica i prodotti in sequenza
+jstree.create: Creare
 switch_on: "Sì"
 switch_off: "No"
 pim_enrich:
   item:
     list:
       delete.label: Eliminare
+      delete.error: Errore durante l'eliminazione della voce
+    delete:
+      confirm.content: Sei sicuro di che voler eliminare la voce {{ itemName }}? Non è possibile annullare questa azione
+      confirm.title: Elimina la voce {{ itemName }}
   entity:
     save:
       label: Salva
@@ -95,6 +131,7 @@ pim_enrich:
         logged_at: Loggato il
         old_values: Vecchi valori
         new_values: Nuovi valori
+        actions: Azioni
       meta:
         created: Creato
         created_by: Di
@@ -117,15 +154,35 @@ pim_enrich:
         copy: Copia
       variant_group:
         switch:
-          "yes": Sì
-          "no": No
+          "yes": "Sì"
+          "no": "No"
       optional_attribute:
         remove: Rimuovere l'attributo
+      media:
+        upload: Trascina e rilascia qui un file per caricarlo o fai click qui
+      create_popin:
+        title: Crea un nuovo articolo
+        labels:
+          family: Scegli una famiglia
+          save: Salva
+          cancel: Cancella
     attribute_option:
       code: Codice
       label: Etichetta
+    variant_group:
+      info:
+        no_attributes: Questo gruppo di varianti non ha ancora attributi
+      btn:
+        save: Salva
+      meta:
+        product_count: Articoli
+        created: Creato
+        updated: Caricato
   confirmation:
     leave: Sei sicuro di voler lasciare questa pagina?
+    delete_item: Conferma cancellazione
+    delete:
+      attribute: Sei sicuro di voler rimuovere questo attributo dal prodotto?
   info:
     not_applicable: N/A
     entity:
@@ -155,8 +212,8 @@ pim_enrich:
         history:
           title: Cronologia
       switch:
-        "no": No
-        "yes": Sì
+        "no": "No"
+        "yes": "Sì"
       sequential_edit:
         info:
           products: Articoli
@@ -176,5 +233,86 @@ pim_enrich:
         cancel: Cancella
     entity:
       switch:
-        "no": No
-        "yes": Sì
+        "no": "No"
+        "yes": "Sì"
+    variant_group:
+      tab:
+        properties:
+          title: Proprietà
+          general: Proprietà generali
+          code: Codice
+          type: Tipo
+          axis: Asse
+          label_translations: Traduzioni etichetta
+        history:
+          title: Cronologia
+        products:
+          title: Articoli
+        attributes:
+          title: Attributi
+    common:
+      tab:
+        attributes:
+          btn:
+            add: Aggiungi
+            add_attributes: Aggiungi attributi
+          info:
+            no_available_attributes: Non ci sono altri attributi da aggiungere
+  export:
+    product:
+      structure:
+        attributes:
+          title: Attributi
+      filter:
+        channel:
+          title: Canale
+        locales:
+          title: Impostazioni locali
+        attributes:
+          title: Attributi
+          edit: Modifica
+          modal:
+            apply: Applica
+            cancel: Cancella
+        attributes_selector:
+          attribute_group: Gruppi di attributi
+          clear: Ripulisci
+          all_group: Tutti i gruppi
+        family:
+          title: Famiglia
+          operators:
+            IN: In elenco
+          empty_selection: Nessuna condizione sulle famiglie
+        enabled:
+          title: Stato
+          value:
+            all: Tutto
+            enabled: Attivato
+            disabled: Disabilitato
+        completeness:
+          title: Completamento
+        identifier:
+          title: Identificatore
+        metric:
+          operators:
+            EMPTY: È vuoto
+        string:
+          operators:
+            ALL: Tutto
+            EMPTY: È vuoto
+        price-collection:
+          operators:
+            EMPTY: È vuoto
+        multi_select:
+          operators:
+            IN: In elenco
+            EMPTY: È vuoto
+        media:
+          operators:
+            EMPTY: È vuoto
+        date:
+          operators:
+            EMPTY: È vuoto
+        number:
+          operators:
+            EMPTY: È vuoto

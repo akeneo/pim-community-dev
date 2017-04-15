@@ -17,6 +17,8 @@ flash:
       success: Risposta creata con successo.
       error: Si è verificato un errore durante la creazione della risposta.
 comment:
+  index:
+    empty: Non ci sono ancora commenti
   placeholder:
     new: Scrivi un nuovo commento...
     reply: Rispondi a questo commento...
