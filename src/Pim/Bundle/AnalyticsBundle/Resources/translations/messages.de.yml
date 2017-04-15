@@ -28,7 +28,6 @@ pim_analytics:
     php_version: PHP-Version
     mysql_version: MySQL-Version
     mariadb_version: MariaDB-Version
-    mongodb_version: MariaDB-Version
     server_version: Server-Version
     php_extensions: PHP-Erweiterungen
   acl:

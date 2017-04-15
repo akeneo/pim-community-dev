@@ -334,7 +334,6 @@ variant group:
   edit: uredi varijantu grupe
 association type:
   title: tip pridruživanja
-  overview: pregled tipa pridruživanja
   create: kreiraj tip pridruživanja
   edit: uredi tip pridruživanja
 products: proizvodi

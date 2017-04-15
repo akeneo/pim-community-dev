@@ -334,7 +334,6 @@ variant group:
   edit: Modifier un groupe de variantes
 association type:
   title: type d'association
-  overview: Liste des types d'association
   create: Créer un type d'association
   edit: Modifier le type d'association
 products: Produits

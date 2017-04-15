@@ -298,7 +298,6 @@ variant group:
   edit: variantgroep bewerken
 association type:
   title: koppelingstype
-  overview: associatietype overzicht
   create: associatietype aanmaken
   edit: associatietype wijzigen
 products: producten

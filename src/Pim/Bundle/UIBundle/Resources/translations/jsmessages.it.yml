@@ -26,6 +26,7 @@ Time: Ora
 Hour: Ora
 Minute: Minuti
 Second: Secondi
+Millisecond: Millisecondi
 Microsecond: Microsecondi
 "Time Zone": "Fuso orario"
 Localized value: Valori localizzati
@@ -36,9 +37,49 @@ Action: Azione
 Unit: Unità
 Currency: Valuta
 jstree:
+  all: Tutti i prodotti
+  unclassified: Prodotti non classificati
+  product:
+    all: Tutti i prodotti
+    unclassified: Prodotti non classificati
   no_tree: Nessuna struttura disponibile
   include_sub: Includere le sotto-categorie
   loading: Caricamento in corso ...
+datetimepicker:
+  days:
+    Sunday: Domenica
+    Monday: Lunedi
+    Tuesday: Martedi
+    Wednesday: Mercoledì
+    Thursday: Giovedì
+    Friday: Venerdì
+    Saturday: Sabato
+  daysShort:
+    Sun: Dom
+    Mon: Lun
+    Tue: Mar
+    Wed: Mer
+    Thu: Gio
+    Sat: Sab
+  daysMin:
+    Su: Do
+    Mo: Lu
+    We: Me
+    Th: Gi
+    Fr: Ve
+    Sa: Sa
+  months:
+    January: Gennaio
+    February: Febbraio
+    March: Marzo
+    July: Luglio
+    August: Agosto
+    September: Settembre
+    October: Ottobre
+  monthsShort:
+    Feb: Feb
+    Mar: Mar
+    Apr: Apr
 oro_config:
   form:
     config:
@@ -52,3 +93,9 @@ oro_config:
           system_locale: Lingua
         notification:
           title: Notifiche
+          system_notification: Notifiche di nuove versioni
+        loading_message:
+          title: Caricamento dei messaggi in corso
+          label: Abilita i messaggi di caricamento
+        loading_messages:
+          label: Messaggi di caricamento disponibili

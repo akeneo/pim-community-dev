@@ -334,7 +334,6 @@ variant group:
   edit: редактировать вариативную группу
 association type:
   title: тип ассоциации
-  overview: обзор типов ассоциации
   create: создать тип ассоциации
   edit: редактировать тип ассоциации
 products: продукты

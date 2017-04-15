@@ -8,7 +8,7 @@ confirmation:
     channel: Oletko varma, että haluat poistaa tämän kanavan?
     group: Oletko varma että haluat poistaa tämän ryhmän?
     variant group: Oletko varma, että haluat poistaa tämän muuttujaryhmän?
-    group type: Oletko varma, että haluat poistaa tämän ryhmätyypin?
+    group_type: Oletko varma, että haluat poistaa tämän ryhmätyypin?
     import profile: Oletko varma, että haluat poistaa tämän tuontiprofiilin?
     export profile: Oletko varma, että haluat poistaa tämän vientiprofiilin?
     user: Haluatko varmasti poistaa tämän käyttäjän?
@@ -46,7 +46,7 @@ flash:
     removed: Ryhmän poistaminen onnistui
   variant group:
     removed: Tuotevariaatioryhmä poistettiin onnistuneesti
-  group type:
+  group_type:
     removed: Ryhmätyyppi poistettu onnistuneesti
   import profile:
     removed: Tuontiprofiili poistettiin onnistuneesti
@@ -216,6 +216,20 @@ pim_enrich:
         updated_by: Päivittäjä
       btn:
         save: Tallenna
+      title: sidoksen tyyppi
+    group_type:
+      info:
+        field_not_ready:
+          The group type cannot be saved right now. The following fields are not ready:
+            - kentät
+      meta:
+        created: Luotu
+        created_by: Luoja
+        updated: Päivitetty
+        updated_by: Päivittäjä
+      btn:
+        save: Tallenna
+      title: ryhmän tyyppi
     channel:
       title: kanava
       info:
@@ -310,7 +324,6 @@ pim_enrich:
           info:
             search_attributes: Hae...
             no_available_attributes: Ei ole enää attribuutteja lisättäväksi
-            attributes_selected: "{{ attributeCount }} attribuuttia valittu"
             no_match: Vastaavuuksia ei löydy
             load_more: Ladataan lisää tuloksia...
         categories:
@@ -348,6 +361,15 @@ pim_enrich:
         select_attributes: Valitse attribuutit
         select: Valitse
     association_type:
+      tab:
+        properties:
+          title: Ominaisuudet
+          general: Yleiset ominaisuudet
+          code: Koodi
+          label_translations: Nimikkeiden käännökset
+        history:
+          title: Historia
+    group_type:
       tab:
         properties:
           title: Ominaisuudet
@@ -437,6 +459,22 @@ pim_enrich:
           info:
             search_attributes: Hae...
             no_available_attributes: Ei ole enää attribuutteja lisättäväksi
+    job_execution:
+      loading: Ladataan...
+      refreshBtn.title: Päivitä
+      meta:
+        status.title: Status
+      button:
+        show_profile.title: Näytä profiili
+        download_log.title: Latauslogi
+      summary:
+        fetching: Kerää tietoja työsuorituksesta...
+        warning: Varoitus
+        header.step: Vaihe
+        header.status: Status
+        header.summary: Yhteenveto
+        header.start: Aloitus
+        header.end: Loppu
     job_instance:
       button:
         edit.title: Muokkaa
@@ -505,6 +543,13 @@ pim_enrich:
             help: Tarkoittaa että tuotehistoria on automaattisesti päivitetty, voidaan laittaa pois päältä suorituskyvyn parantamiseksi
         history:
           title: Historia
+    mass_edit:
+      family:
+        attributes:
+          label_label: Nimike
+          toolbox:
+            select_attributes: Lisää attribuutteja
+            add: Lisää
   export:
     product:
       data:
@@ -647,3 +692,22 @@ pim_enrich:
       description: Tuoteruudukosta valitun tuotteen attribuutit muokataan seuraavilla tiedoilla lokaatiolle <span class="highlight">{{ locale }}</span> ja kanavalle <span class="highlight">{{ channel }}</span>.
 pim_enrich.error:
   exception.title: Voi ei! {{ status_code }} virhe tapahtui...
+batch_jobs:
+  update_product_value:
+    label: Päivitä tuotteen arvo
+    perform:
+      label: Päivitä tuotteen arvo
+  edit_common_attributes:
+    label: Muokkaa yleisiä attribuutteja
+    perform:
+      label: Muokkaa yleisiä attribuutteja
+    cleaner:
+      label: Puhdista tiedostot yleisille attribuuteille
+  set_attribute_requirements:
+    label: Aseta attribuuttivaatimukset
+    perform:
+      label: Aseta attribuuttivaatimukset
+  add_to_variant_group:
+    label: Lisää tuotevariaatioryhmään
+    perform:
+      label: Lisää tuotevariaatioryhmään

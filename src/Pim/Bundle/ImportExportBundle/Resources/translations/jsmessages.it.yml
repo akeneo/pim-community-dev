@@ -2,3 +2,17 @@ job_execution:
   summary:
     display_item: Visualizza articoli
     hide_item: Nascondi articoli
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Selezione categorie
+          cancel: Cancella
+          confirm: Conferma
+        label: "{0} Tutti i prodotti|{1} Una categoria selezionata |] 1, Inf[ {{ count }} categorie selezionate"
+        edit: Modifica
+        title: Seleziona categorie
+    locales:
+      validation:
+        not_blank: Una impostazione internazionale deve essere selezionata, si prega di scegliere una impostazione internazionale per l'esportazione.

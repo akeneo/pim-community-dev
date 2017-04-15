@@ -8,7 +8,7 @@ confirmation:
     channel: Esteu segur que voleu suprimir aquest canal?
     group: Esteu segur que voleu suprimir aquest grup?
     variant group: Esteu segur que voleu suprimir aquesta variant de grups?
-    group type: Esteu segur que voleu suprimir aquest tipus de grup?
+    group_type: Esteu segur que voleu suprimir aquest tipus de grup?
     import profile: Esteu segur que voleu suprimir aquest perfil d'importació?
     export profile: Esteu segur que voleu eliminar aquest perfil d'exportació?
     user: Esteu segur que voleu eliminar aquest usuari?
@@ -46,7 +46,7 @@ flash:
     removed: Grup suprimit correctament
   variant group:
     removed: Grup de variants suprimit correctament
-  group type:
+  group_type:
     removed: Tipus de grup suprimit correctament
   import profile:
     removed: Perfil d'importació eliminat correctament
@@ -216,6 +216,20 @@ pim_enrich:
         updated_by: Actualitzat per
       btn:
         save: Desar
+      title: tipus d'associació
+    group_type:
+      info:
+        field_not_ready:
+          The group type cannot be saved right now. The following fields are not ready:
+            - camps
+      meta:
+        created: Creat
+        created_by: Creat per
+        updated: Actualitzat
+        updated_by: Actualitzat per
+      btn:
+        save: Desar
+      title: tipus de grup
     channel:
       title: canal
       info:
@@ -314,7 +328,6 @@ pim_enrich:
           info:
             search_attributes: Cercar...
             no_available_attributes: No hi ha més atributs a afegir
-            attributes_selected: "{{ attributeCount }} attribut(s) seleccionats"
             no_match: No s’han trobat coincidències
             load_more: Carregant més resultats...
         categories:
@@ -352,6 +365,15 @@ pim_enrich:
         select_attributes: Seleccionar atributs
         select: Seleccionar
     association_type:
+      tab:
+        properties:
+          title: Propietats
+          general: Propietats generals
+          code: Codi
+          label_translations: Traduccions d'etiquetes
+        history:
+          title: Històric
+    group_type:
       tab:
         properties:
           title: Propietats
@@ -441,6 +463,22 @@ pim_enrich:
           info:
             search_attributes: Cercar...
             no_available_attributes: No hi ha més atributs a afegir
+    job_execution:
+      loading: Carregant...
+      refreshBtn.title: Actualitza
+      meta:
+        status.title: Estat
+      button:
+        show_profile.title: Mostrar perfil
+        download_log.title: Descarregar registre
+      summary:
+        fetching: Recollida de dades sobre l'execució del job...
+        warning: Avís
+        header.step: Pas
+        header.status: Estat
+        header.summary: Sumari
+        header.start: Començar
+        header.end: Fi
     job_instance:
       button:
         edit.title: Editar
@@ -509,6 +547,13 @@ pim_enrich:
             help: Significa que l'historial del producte s'actualitza automàticament, que es pot desactivar per millorar-ne el rendiment
         history:
           title: Històric
+    mass_edit:
+      family:
+        attributes:
+          label_label: Etiqueta
+          toolbox:
+            select_attributes: Afegir atributs
+            add: Afegir
   export:
     product:
       data:
@@ -652,3 +697,26 @@ pim_enrich:
       description: Els atributs del producte seleccionat s'editaran amb les següents dades per la configuració regional <span class="highlight">{{ locale }}</span> i el canal <span class="highlight">{{ channel }}</span>, seleccionats a la quadrícula de productes.
 pim_enrich.error:
   exception.title: Oh no! S'ha produït un error de {{ status_code }}...
+batch_jobs:
+  add_product_value:
+    label: Afegir valor de producte
+    perform:
+      label: Afegir valor de producte
+  update_product_value:
+    label: Actualitzar el valor del producte
+    perform:
+      label: Actualitzar el valor del producte
+  edit_common_attributes:
+    label: Editar atributs comuns
+    perform:
+      label: Editar atributs comuns
+    cleaner:
+      label: Netejar arxius per atributs comuns
+  set_attribute_requirements:
+    label: Establir els requeriments d'atribut
+    perform:
+      label: Establir els requeriments d'atribut
+  add_to_variant_group:
+    label: Afegir a un grup de variants
+    perform:
+      label: Afegir a un grup de variants
