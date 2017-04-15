@@ -24,6 +24,8 @@ KILOBYTE: Kilobajt
 MEGABYTE: Megabajt
 GIGABYTE: Gigabajt
 TERABYTE: Terabajt
+Decibel: Decybel
+DECIBEL: Decybel
 Frequency: Częstotliwość
 GIGAHERTZ: Gigaherc
 KILOHERTZ: Kiloherc
@@ -55,6 +57,10 @@ MILLISECOND: Milisekunda
 SECOND: Sekunda
 MINUTE: Minuta
 HOUR: Godzina
+DAY: Dzień
+WEEK: Tydzień
+MONTH: Miesiąc
+YEAR: Rok
 Speed: Prędkość
 FOOT_PER_SECOND: Stopa na sekundę
 FOOT_PER_HOUR: Stopa na godzinę
@@ -93,3 +99,5 @@ MILLIGRAM: Miligram
 ONCE: Raz
 POUND: Funt
 TON: Tona
+Energy: Energia
+KILOCALORIE: kilokaloria
