@@ -8,12 +8,6 @@ config:
                 product_edit: pim_enrich_product_edit
         pim/fetcher-registry:
             fetchers:
-                published-product-completeness:
-                    module: pim/completeness-fetcher
-                    options:
-                        warmup: false
-                        urls:
-                            get: pimee_workflow_completeness_rest_get
                 product_draft:
                     module: pimee/product-draft-fetcher
                     options:
