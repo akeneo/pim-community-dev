@@ -17,6 +17,16 @@ pim_import_export:
     output: scaricare il file generato |scaricare i files generati
     input: scaricare il file letto |scaricare i files letti
     invalid: Scarica dati non validi
+  notification:
+    export:
+      error: Esportazione <strong>%label%</strong> non riuscita
+      warning: Esportazione <strong>%label%</strong> completata con alcuni avvisi
+      success: Esportazione <strong>%label%</strong> completata
+    import:
+      error: Importazione <strong>%label%</strong> non riuscita
+      warning: Importazione <strong>%label%</strong> completata con alcuni avvisi
+      success: Importazione <strong>%label%</strong> completata
+  list: Seleziona un job
 pim_title.export_profile.index: Gestione profili di esportazione
 pim_title.export_profile.edit: Esportare profili %job.label% | Modifica
 pim_title.export_profile.show: Esportare profili %job.label% | Visualizza
@@ -50,6 +60,7 @@ pim_importexport:
       edit: Modifica un profilo di esportazione
       remove: Rimuovi un profilo di esportazione
       launch: Esegui un profilo di esportazione
+      history: Vedi lo storico del profilo di esportazione
     import_profile:
       index: Visualizza la lista dei profili di importazione
       create: Crea un profilo di importazione
@@ -57,6 +68,7 @@ pim_importexport:
       edit: Modifica un profilo di importazione
       remove: Rimuovi un profilo di importazione
       launch: Esegui un profilo di importazione
+      history: Vedi lo storico del profilo di importazione
     export_execution:
       index: Vedi la lista dei rapporti di esportazione
       show: Vedi il dettaglio del rapporto di esportazione
@@ -91,6 +103,7 @@ flash:
     created: L'importazione è stata creata con successo
     removed: L'importazione è stata rimossa
     updated: L'importazione è stato caricata con successo
+    running: L'importazione è in esecuzione
 pim_menu:
   item:
     export_history: Cronologia esportazioni

@@ -59,6 +59,9 @@ datetimepicker:
     Mon: Pon
     Tue: Wt
     Wed: Śr
+    Thu: Czw
+    Fri: Pt
+    Sat: Sob
   daysMin:
     Su: Nd
     Mo: Pn
@@ -76,7 +79,15 @@ datetimepicker:
     June: Czerwiec
     July: Lipiec
     August: Sierpień
+    September: Wrzesień
+    October: Pazdziernik
+    November: Listopad
+    December: Grudzień
   monthsShort:
+    Jan: Sty
+    Feb: Lut
+    Mar: Mar
+    Apr: Kwi
     May: Maj
     Jun: Czerwiec
     Jul: Lipiec

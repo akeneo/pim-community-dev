@@ -99,6 +99,8 @@ pim_connector:
     channel:
       label: Kanał
       help: Kanał, który chcesz wyeksportować
+    header:
+      label: Nagłówek
   import:
     enabled:
       label: Włącz produkt

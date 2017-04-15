@@ -17,6 +17,11 @@ pim_datagrid:
   mass_action_group:
     quick_export:
       label: Esportazione rapida
+  mass_action:
+    delete:
+      confirm_content: Sei sicuro di che voler eliminare i prodotti selezionati?
+      success: I prodotti selezionati sono stati eliminati con successo.
+      error: Si è verificato un errore cancellando i prodotti selezionati, per favore riprova.
 flash:
   item:
     removed: Articolo rimosso con successo
@@ -59,6 +64,22 @@ error:
     export profile: Non è possibile eliminare questo profilo di esportazione
     user: Non è possibile eliminare questo utente
     role: Non è possibile eliminare questo ruolo
+    attribute_option: Errore durante la cancellazione dell'opzione attributo
+  saving:
+    attribute_option: Impossibile salvare l'opzione dell'attributo
+alert:
+  attribute_option:
+    error_occured_during_submission: Si è verificato un errore durante l'invio del modulo al server
+    save_before_edit_other: Si prega di registrare le modifiche sulle altre righe prima di modificare questa
+  session_storage:
+    not_available: Il tuo browser non sembra compatibile con il sessionStorage. Contattare l'amministratore
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: Attenzione, si perderanno i dati non salvati. Sei sicuro di voler annullare le modifiche su questa nuova opzione?
+    cancel_edition_on_new_option_title: Annulla la modifica
+label:
+  attribute_option:
+    add_option: Aggiungi un'opzione
 Code: Codice
 Edit: Modifica
 Delete: Eliminare
@@ -70,6 +91,7 @@ Toggle status: Stato di conversione
 pim.grid.mass_action.quick_export.csv_all: CSV (tutti gli attributi)
 pim.grid.mass_action.delete: Eliminare
 pim.grid.mass_action.mass_edit: Modifica di massa
+pim.grid.mass_action.sequential_edit: Modifica sequenza
 jstree.create: Crea
 switch_on: "Sì"
 switch_off: "No"
@@ -77,9 +99,15 @@ pim_enrich:
   item:
     list:
       delete.label: Eliminare
+      delete.error: Errore durante l'eliminazione della voce
+    delete:
+      confirm.content: Sei sicuro di che voler eliminare la voce {{ itemName }}? Non è possibile annullare questa azione
+      confirm.title: Elimina la voce {{ itemName }}
   entity:
     save:
       label: Salva
+    info:
+      update_successful: Aggiornato correttamente
     product:
       title: Articoli
       btn:
@@ -87,6 +115,8 @@ pim_enrich:
         enabled: Attivato
         disable: Disabilita
         disabled: Disabilitato
+        download_pdf: PDF
+        compare_translate: Confronta / Traduci
         delete: Eliminare
         save: Salva
       history:
@@ -95,6 +125,7 @@ pim_enrich:
         logged_at: Loggato il
         old_values: Vecchi valori
         new_values: Nuovi valori
+        actions: Azioni
       meta:
         created: Creato
         created_by: Di
@@ -121,11 +152,16 @@ pim_enrich:
           "no": "No"
       optional_attribute:
         remove: Rimuovere l'attributo
+      media:
+        upload: Trascina e rilascia qui un file per caricarlo o fai click qui
     attribute_option:
       code: Codice
       label: Etichetta
   confirmation:
     leave: Sei sicuro di voler lasciare questa pagina?
+    delete_item: Conferma cancellazione
+    delete:
+      product_attribute: Sei sicuro di voler rimuovere questo attributo dal prodotto?
   info:
     not_applicable: N/A
     entity:
