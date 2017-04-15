@@ -1,9 +1,18 @@
 pim_dashboard:
   widget:
     last_operations:
+      empty: Operazioni non trovate
       status: Stato
       date: Data
       type: Tipo
+      profile name: Nome profilo
+      details: Dettagli
       job_type:
+        import: Importa
+        export: Esporta
         mass_edit: Modifica di massa
         quick_export: Esportazione rapida
+    completeness:
+      load_more: 'Carica ancora...'
+    header:
+      view_all: Mostra tutti
