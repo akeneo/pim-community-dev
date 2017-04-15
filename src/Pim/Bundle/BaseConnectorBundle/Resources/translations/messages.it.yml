@@ -21,25 +21,38 @@ pim_base_connector:
     csv_variant_group_export:
       title: Esportazione in CSV dei gruppi di varianti
       export.title: Esportazione gruppo varianti
+    csv_family_export:
+      title: Esportazione famiglie in CSV
+      export.title: Esportazione famiglie
     csv_product_import:
       title: Importazione prodotti in CSV
+      validation.title: Validazione file
       import.title: Importazione prodotti
       import_associations.title: Importazione associazioni
     csv_category_import:
       title: Importazione categorie in CSV
+      validation.title: Validazione file
       import.title: Importazione categorie
     csv_attribute_import:
       title: Importazione attributi in CSV
+      validation.title: Validazione file
       import.title: Importazione attributi
     csv_attribute_option_import:
       title: Importazione opzioni degli attributi in CSV
+      validation.title: Validazione file
       import.title: Opzioni importazione attributi
     csv_association_type_import:
       title: Importazione tipi associazione in CSV
+      validation.title: Validazione file
       import.title: Importazione tipi associazione
     csv_group_import:
       title: importazione gruppi in CSV
+      validation.title: Validazione file
       import.title: importazione gruppi
+    csv_variant_group_import:
+      title: Importazione in CSV dei gruppi di varianti
+      validation.title: Validazione file
+      import.title: Importazione gruppi di varianti
   steps:
     dummy_reader.title: Lettore di prova
     product_reader.title: Estrazione prodotti
@@ -66,6 +79,7 @@ pim_base_connector:
     file_writer.title: Output
     product_writer.title: Archivio prodotti
     category_writer.title: Archivio categorie
+    variant_group_writer.title: Memorizzazione del gruppo di varianti
     writer.title: Archivio entità
     csv_writer.title: Csv Writer
   export:
@@ -84,6 +98,8 @@ pim_base_connector:
     channel:
       label: Canale
       help: Canale che si desidera esportare
+    decimalSeparator:
+      label: Separatore decimale
   import:
     enabled:
       label: Attivare il prodotto
@@ -99,6 +115,7 @@ pim_base_connector:
       help: Nome della colonna gruppi
     filePath:
       label: File
+      help: File CSV da importare
     yamlFilePath:
       label: File
     uploadAllowed:

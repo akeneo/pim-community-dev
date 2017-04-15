@@ -31,6 +31,8 @@ flash:
     removed: Atrybut został pomyślnie usunięty
   family:
     removed: Rodzina produktów została usunięta pomyślnie
+  product:
+    removed: Produkt pomyślnie usunięty
   channel:
     removed: Kanał został pomyślnie usunięty
   group:
@@ -111,6 +113,7 @@ pim_enrich:
       update_failed: Błąd aktualizacji
       update_successful: Pomyślnie zaktualizowano
     product:
+      title: produkt
       btn:
         enable: Włacz
         enabled: Włączony
@@ -134,6 +137,7 @@ pim_enrich:
         new_values: Nowe wartości
         actions: Działania
       info:
+        deletion_successful: Produkt pomyślnie usunięty.
         deletion_failed: Produktu nie można usunąć.
         update_successful: Produkt pomyślnie zaktualizowany.
         update_failed: Produktu nie można zaktualizować.
