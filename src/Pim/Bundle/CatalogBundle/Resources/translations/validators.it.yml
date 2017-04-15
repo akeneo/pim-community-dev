@@ -1,5 +1,6 @@
 An identifier attribute already exists.: Attributo identificatore già esistente.
 Attribute code may contain only letters, numbers and underscore: Il codice attributo può contenere solo lettere, numeri e underscore
+Attribute code may contain only letters (at least one), numbers and underscores: Il codice attributo può contenere solo lettere (almeno una), numeri e underscore
 This attribute type can't be used as a grid filter: Questo tipo di attributo non può essere utilizzato come filtro griglia
 This code is not available: Questo codice non è disponibile
 This attribute type must be required: Questo tipo di attributo deve essere obbligatorio
@@ -9,3 +10,13 @@ No default value may be specified for this attribute type: Non può essere selez
 This value should be Yes or No: Questo valore può essere Sì o No
 This value should not be blank: Questo valore non può essere vuoto
 Option code may contain only letters, numbers and underscores: Il codice opzione può contenere solo lettere, numeri e caratteri di sottolineatura
+Option code may contain only letters (at least one), numbers and underscores: Il codice opzione può contenere solo lettere (almeno una), numeri e underscore
+This value should not be a decimal.: Questo valore non può essere un decimale.
+"The value %value% is already set on another product for the unique attribute %attribute%": Il valore %value% è già impostato su un altro prodotto per l'attributo univoco "%attribute%"
+regex.comma_or_semicolon.message: Questo campo non deve contenere virgola o punto e virgola.
+file.extensions.message: 'Questa estensione del file non è consentita (estensioni consentite: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Questo tipo di valore prevede l'uso di {{ decimal_separator }} per separare i decimali.
+"This type of value expects the use of dot (.) to separate decimals.": Questo tipo di valore prevede l'uso del punto (.) per separare i decimali.
+"This type of value expects the use of comma (,) to separate decimals.": Questo tipo di valore prevede l'uso della virgola (,) per separare i decimali.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Questo tipo di valore prevede l'uso del separatore decimale arabo (,) per separare i decimali.
+"This type of value expects the use of the format {{ date_format }} for dates.": Questo tipo di valore prevede l'uso del formato {{ date_format }} per le date.
