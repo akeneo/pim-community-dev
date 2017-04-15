@@ -1,0 +1,12 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Proposte da rivedere
+      date: Data
+      author: Autore
+      product: Prodotto
+      review: Da rivedere
+      empty: Nessuna bozza da revisionare
+  version:
+    community_edition: CE
+    enterprise_edition: EE
