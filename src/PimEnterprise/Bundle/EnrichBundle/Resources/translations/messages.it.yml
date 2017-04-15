@@ -1,0 +1,197 @@
+pim_title.locale:
+  edit: "Impostazioni locali %locale.code% | Modifica"
+Permissions: Autorizzazioni
+pane.accordion.permissions: Autorizzazioni
+attribute group.permissions:
+  view.label: Consentita la visualizzazione degli attributi
+  view.help: Consenti di visualizzare i prodotti in questo gruppo di attributi
+  edit.label: Consentita la modifica degli attributi
+  edit.help: Consenti di modificare i prodotti in questo gruppo di attributi
+  no_access_to_attributes: Non hai accesso a nessuno degli attributi di questo prodotto. Si prega di contattare l'amministratore.
+category.permissions:
+  view.label: Consentita la visualizzazione dei prodotti
+  view.help: Consenti di visualizzare i prodotti in questa categoria
+  edit.label: Consentita la modifica dei prodotti
+  edit.help: Consenti di modificare i prodotti in questa categoria (implica il permesso Visualizza)
+  own.label: Consentita la ownership dei prodotti
+  own.help: Consentito di revisionare, pubblicare, annullare la pubblicazione, classificare, associare prodotti in questa categoria (implica il permesso di modifica)
+  no_access_to_products: Non hai accesso ai prodotti in nessuna struttura ad albero. Si prega di contattare l'amministratore
+  apply_on_children.label: Applica le modifiche sui figli
+  apply_on_children.help: Copiare le modifiche ai permessi su tutti i figli, i permessi esistenti sui figli vengono mantenuti
+locale.permissions:
+  view.label: Consentita la visualizzazione delle informazioni di prodotto
+  view.help: Consentita la visualizzazione delle informazioni dl prodotto in questa lingua
+  edit.label: Consentita la modifica delle informazioni di prodotto
+  edit.help: Consenti di modificare le informazioni di prodotto in questa lingua (implica il permesso Visualizza)
+  no_access_to_products: Non hai accesso ai dati di prodotto in nessuna delle lingue attivate. Si prega di contattare l'amministratore
+btn:
+  save working copy: Salvare la copia di lavoro
+  save draft: Salva bozza
+  save working copy and next: Salva la copia di lavoro e vai avanti
+  save draft and next: Salva la bozza e vai avanti
+  save working copy and finish: Salva la copia di lavoro e termina
+  save draft and finish: Salva la bozza e termina
+  send for approval: Invia per approvazione
+  sent for approval: Inviata per approvazione
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: Non hai il permesso di modificare i prodotti "%identifiers%".
+      page_title: Articoli
+      page_subtitle: Modifica di massa (1 articolo) | Modifica di massa (%count% articoli)
+      title: Scegli l'operazione
+      subtitle: Scegliere l'operazione che si desidera eseguire sull'articolo selezionato|Scegliere l'operazione che si desidera eseguire sui %count% articoli selezionati
+      confirm: Stai per aggiornare un articolo con le seguenti informazioni, si prega di confermare. |Stai per aggiornare %count% articoli con le seguenti informazioni, si prega di confermare.
+      steps:
+        first: Scegli gli articoli
+        second: Scegli l'operazione
+        third: Configura
+        fourth: Conferma
+    publish:
+      label: Pubblica i prodotti
+      description: Pubblica i prodotti selezionati, i dati correnti pubblicati verranno cancellati dalla attuale copia di lavoro.
+      success_flash: I prodotti selezionati sono stati pubblicati con successo.
+      launched_flash: Il job di pubblicazione del(i) prodotto(i) è attualmente in esecuzione.
+      message:
+        error: Non sei il proprietario del prodotto, non puoi pubblicarlo.
+        warning: Non sei il proprietario di tutti i prodotti selezionati. Non puoi pubblicare i prodotti "%notGranted%".
+        info: I %nbProducts% prodotti selezionati saranno pubblicati.
+      not_editable: Non hai il permesso di modificare i prodotti "%identifiers%".
+    unpublish:
+      label: Annulla la pubblicazione dei prodotti
+      description: 'Annulla la pubblicazione dei prodotti selezionati: i dati pubblicati correnti verranno cancellati.'
+      success_flash: I prodotti selezionati sono stati ritirati con successo.
+      launched_flash: Il job di annullamento della pubblicazione del(i) prodotto(i) è attualmente in esecuzione.
+      message:
+        error: Non sei il proprietario del prodotto, non puoi ritirarlo.
+        warning: Non sei il proprietario di tutti i prodotti selezionati. Non puoi ritirare i prodotti "%notGranted%".
+        info: I %nbProducts% prodotti selezionati saranno ritirati.
+      not_editable: Non hai il permesso di modificare i prodotti "%identifiers%".
+    classify:
+      message:
+        error: Non sei il proprietario del prodotto, non puoi classificarlo.
+        warning: Non sei il proprietario di tutti i prodotti selezionati. Non puoi classificare i prodotti "%notGranted%".
+    edit_common_attributes:
+      message:
+        error: Non sei il proprietario del prodotto, non puoi modificarlo.
+flash.product.updated: La copia di lavoro del prodotto è stata aggiornata
+flash.product_draft.updated: La bozza è stata salvata con successo
+flash.locale.updated: Le lingua e i permessi sono stati aggiornati
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Autorizzazioni
+  product:
+    tab:
+      proposal.title: Proposte
+  category:
+    tab:
+      permission.title: Autorizzazioni
+  locale:
+    tab:
+      permission.title: Autorizzazioni
+  channel:
+    tab:
+      asset_transformation.title: Trasformazioni di asset
+  acl.product_ownership.title: Proprietà
+  attributes:
+    empty: nessuno
+  groups:
+    label: gruppi del proprietario
+    empty: nessuno
+  asset_transformation:
+    not_found: Nessuna trasformazione trovata
+    title:
+      transformation: Trasformazione
+      options: Opzioni
+    colorspace:
+      title: Spazio colori
+      options:
+        colorspace: '%value% spazio colore'
+    resize:
+      title: Ridimensiona
+      options:
+        width: '%value%px di larghezza'
+        height: '% value%px di altezza'
+    resolution:
+      title: Risoluzione
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Scala
+      options:
+        width: '%value%px di larghezza'
+        height: '% value%px di altezza'
+        ratio: '%value% % di rapporto'
+    thumbnail:
+      title: Thumbnail
+      options:
+        width: '%value%px di larghezza'
+        height: '% value%px di altezza'
+add_product_value_with_permission_and_rules:
+  steps.perform: Aggiungi un valore di prodotto
+update_product_value_with_permission_and_rules:
+  steps.perform: Modifica un valore di prodotto
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Modifica gli attributi comuni
+  steps.edit_common_attributes_processor.title: Modifica gli attributi comuni
+batch_jobs:
+  yml_asset_channel_configuration_import:
+    import:
+      label: Importazione della configurazione del canale asset
+  add_product_value_with_permission_and_rules:
+    label: Aggiungi il valore del prodotto con controllo dell'autorizzazione & delle regole applicazione
+    perform.label: Aggiungi un valore di prodotto
+    execute_rules.label: Esecuzione regole
+  update_product_value_with_permission_and_rules:
+    label: Aggiorna il valore del prodotto con controllo dell'autorizzazione & delle regole applicazione
+    perform.label: Aggiorna il valore di prodotto
+    execute_rules.label: Esecuzione regole
+  remove_product_value_with_permission_and_rules:
+    label: Rimuovi il valore del prodotto con controllo dell'autorizzazione & delle regole applicazione
+    perform.label: Rimuovi il valore di prodotto
+    execute_rules.label: Esecuzione regole
+  edit_common_attributes_with_permission_and_rules:
+    label: Modifica gli attributi comuni con controllo dell'autorizzazione & delle regole applicazione
+    perform.label: Modifica gli attributi comuni
+    execute_rules.label: Esecuzione regole
+    cleaner.label: Elimina file temporanei
+  add_to_variant_group_with_rules:
+    label: Aggiungi prodotti al gruppo di varianti con applicazione di regole
+    perform.label: Aggiungi i prodotti ad un gruppo di varianti
+    execute_rules.label: Esecuzione regole
+  csv_published_product_quick_export:
+    export.label: Esportazione rapida in CSV dei prodotti pubblicati
+    perform:
+      label: Esportazione rapida in CSV dei prodotti pubblicati
+  csv_published_product_grid_context_quick_export:
+    export.label: Esportazione rapida in Csv dei prodotti pubblicati presenti nel contesto griglia
+    perform:
+      label: Esportazione rapida in Csv dei prodotti pubblicati presenti nel contesto griglia
+  xlsx_published_product_quick_export:
+    export.label: Esportazione rapida in Xlsx dei prodotti pubblicati
+    perform:
+      label: Esportazione rapida in Xlsx dei prodotti pubblicati
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Esportazione rapida in Xlsx dei prodotti pubblicati presenti nel contesto griglia
+    perform:
+      label: Esportazione rapida in Xlsx dei prodotti pubblicati presenti nel contesto griglia
+add_to_variant_group_with_rules:
+  steps.perform: Aggiungi i prodotti ad un gruppo di varianti
+  steps.excluded.title: Prodotto escluso
+  steps.duplicated.title: Dimensione Duplicata
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Modifica gli attributi comuni
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Aggiungi il valore del prodotto con l'autorizzazione
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Aggiorna il valore del prodotto con l'autorizzazione
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Rimuovi il valore del prodotto con l'autorizzazione
+edit_common_attributes_with_permission: Modifica gli attributi comuni con permesso
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Modifica gli attributi comuni con permesso
+job_execution.summary:
+  mass_published: Prodotto pubblicato
+  mass_unpublished: Prodotto ritirato
+  proposal: Proposta creata
+  proposal_deleted: eliminato
+pim_assets_collection: Raccolta asset
+pim_enrich_attribute_form:
+  isReadOnly: Sola lettura

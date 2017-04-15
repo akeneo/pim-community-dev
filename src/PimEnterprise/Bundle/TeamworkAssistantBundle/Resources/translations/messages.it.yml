@@ -1,0 +1,51 @@
+project_calculation: Calcolo del progetto
+project_created: Un nuovo progetto per te
+project_finished: Progetto finito
+teamwork_assistant:
+  project:
+    required: Questo valore non può essere vuoto.
+    label_maxlength: Valore troppo lungo. Deve avere {{ max }} caratteri o meno.
+    project_identifier: Il progetto {{ project }} non esiste.
+    project_locale: La lingua {{ locale }} del progetto deve essere attivata.
+    project_due_date: Non è possibile selezionare una data nel passato.
+  notification:
+    project_calculation:
+      error: Il calcolo del progetto per <strong>%project_label%</strong> non è riuscito
+      warning: Il calcolo del progetto per <strong>%project_label%</strong> è terminato con alcuni avvisi
+      success: Il progetto <strong>%project_label%</strong> è pronto e i contributori sono stati avvisati. Iniziamo!
+      start: Inizio
+    message: Hai nuovi prodotti da arricchire per "%project_label%". La dato di scadenza è "%due_date%".
+    project_finished:
+      contributor: Complimenti! Hai completato il 100% dei prodotti per %project_label%.
+      owner: '%project_label% per il %due_date% è finito.'
+      show: Visualizza
+    due_date:
+      contributor: Sei al %percent%% dei prodotti per %project_label%. Ricorda di completare gli ultimi prodotti entro il %due_date%.
+      owner: '%project_label% per il %due_date% non è ancora al 100%.'
+      start: Inizio
+  datagrid:
+    project_completeness: Avanzamento del progetto
+    contributor_todo: Da fare
+    contributor_in_progress: In corso
+    contributor_done: Completato
+    owner_todo: Da fare (panoramica del progetto)
+    owner_in_progress: In corso (panoramica del progetto)
+    owner_done: Fatto (panoramica del progetto)
+batch_jobs:
+  project_calculation:
+    project_calculation:
+      label: Calcolo del progetto
+    prepare_project_calculation:
+      label: Prepara il calcolo del progetto
+    clean_contributor_group:
+      label: Controlla i permessi degli utenti sulla lingua del progetto
+  refresh_project_completeness_calculation:
+    label: Aggiorna la completezza del progetto
+    refresh_project_completeness_calculation:
+      label: Aggiorna la completezza del progetto
+job_execution:
+  summary:
+    processed_products: Prodotti elaborati
+pim_analytics:
+  info_type:
+    nb_projects: Numero di progetti

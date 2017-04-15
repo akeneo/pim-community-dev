@@ -1,0 +1,60 @@
+teamwork_assistant:
+  common:
+    required: Obbligatorio
+    warning: Non ti preoccupare, il calcolo del progetto potrebbe richiedere tempo, quindi il tuo progetto potrebbe non essere visibile fin da subito.
+  grid:
+    view_selector:
+      create: Crea progetto
+      edit: Modifica progetto
+      remove: Elimina progetto
+      create_from_view: Crea un progetto da questa visualizzazione
+      loading: Caricamento in corso...
+      start_new_project: Inizia un nuovo progetto
+      confirmation:
+        remove: Sei sicuro di voler eliminare questo progetto?
+        delete: Conferma cancellazione
+  project:
+    label: Nome
+    locale: Impostazioni locali
+    channel: Canale
+    label_maxlength: Valore troppo lungo. Deve avere {{ max }} caratteri o meno.
+    description: Descrizione
+    due_date: Data di scadenza
+    due_date_past: Non è possibile selezionare una data nel passato.
+    leaving_scope: Stai lasciando l'ambito del progetto.
+  edit_project_modal:
+    saved: Il progetto è stato salvato.
+    title: Modifica progetto
+    confirm: Salva
+    cancel: Cancella
+  create_project_modal:
+    saved: Il progetto è stato salvato, sarai avvisato quando il calcolo sarà finito.
+    title: Crea progetto
+    confirm: Salva
+    cancel: Cancella
+  widget:
+    no_project: Non si dispone di alcun progetto corrente
+    no_project_create: crea un nuovo progetto
+    description: Descrizione
+    due_date: Data di scadenza
+    todo: DA FARE
+    in_progress: IN CORSO
+    done: FATTO
+    all_contributors: Tutti i contributori
+    display_products: Visualizza i prodotti
+    placeholder:
+      contributor_selector: Ricerca contributore
+      project_selector: Ricerca progetto
+    completeness:
+      to_start: PRODOTTI DA INIZIARE
+      in_progress: PRODOTTI IN CORSO
+      done: PRODOTTI FATTI
+pim_datagrid:
+  view_selector:
+    project: Progetti
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: Assistente di lavoro
+        project_calculation: Assistente di lavoro
