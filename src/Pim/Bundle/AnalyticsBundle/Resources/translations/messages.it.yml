@@ -3,11 +3,34 @@ pim_analytics:
   system_config:
     group:
       notification.title: Notifiche
+      version_update.title: Aggiornamenti versione
+    form:
+      version_update.label: Notifiche di nuove versioni
+      version_update.tooltip: Invia la richiesta a un server remoto per recuperare informazioni sul rilascio di nuove patches
   system_info:
     title: Informazioni sistema
     download: TXT
   info_type:
+    pim_edition: Edizione
     pim_version: Versione
+    pim_storage_driver: Storage
+    pim_environment: Ambiente
+    pim_install_time: Data di installazione
+    registered_bundles: Bundle registrati
+    nb_channels: Numero di canali
+    nb_products: Numero di prodotti
+    nb_attributes: Numero di attributi
+    nb_locales: Numero di localizzazioni
+    nb_families: Numero di famiglie
+    nb_users: Numero di utenti
+    pim_storage_version: Versione del motore di storage
+    os_version: Versione OS
+    php_version: Versione PHP
+    mysql_version: Versione di MySQL
+    mariadb_version: Versione di MariaDB
+    mongodb_version: Versione di MongoDB
+    server_version: Versione del server
+    php_extensions: Estensioni PHP
   acl:
     system_info:
       index: Informazioni sistema

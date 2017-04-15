@@ -320,7 +320,6 @@ variant group:
   edit: edycja grupy wariantów
 association type:
   title: typ powiązania
-  overview: przegląd typów powiązań
   create: utwórz typ powiązania
   edit: edytuj typ powiązania
 products: produkty

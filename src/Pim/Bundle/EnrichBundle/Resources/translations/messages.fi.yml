@@ -334,7 +334,6 @@ variant group:
   edit: muokkaa tuotevariaatioryhmää
 association type:
   title: sidoksen tyyppi
-  overview: sidostyypin yleiskatsaus
   create: luo sidostyyppi
   edit: muokkaa sidostyyppiä
 products: tuotteet

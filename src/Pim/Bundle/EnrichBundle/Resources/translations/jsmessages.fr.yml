@@ -8,7 +8,7 @@ confirmation:
     channel: Êtes-vous sûr(e) de que vouloir supprimer ce canal ?
     group: Êtes-vous sûr(e) de vouloir supprimer ce groupe ?
     variant group: Êtes-vous sûr(e) de que vouloir supprimer ce groupe de variantes ?
-    group type: Êtes-vous sûr(e) de que vouloir supprimer ce type de groupe ?
+    group_type: Êtes-vous sûr(e) de que vouloir supprimer ce type de groupe ?
     import profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'import ?
     export profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'export ?
     user: Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ?
@@ -46,7 +46,7 @@ flash:
     removed: Groupe supprimé avec succès
   variant group:
     removed: Le groupe de variantes a bien été supprimé
-  group type:
+  group_type:
     removed: Le type de groupe a bien été supprimé
   import profile:
     removed: Le profil d'import a bien été supprimé
@@ -222,6 +222,24 @@ pim_enrich:
         updated_by: Mis à jour par
       btn:
         save: Enregistrer
+      title: type d'association
+    group_type:
+      info:
+        deletion_successful: Le type de groupe a bien été supprimé.
+        deletion_failed: Le type de groupe n'a pas pu être supprimé.
+        update_successful: Le type de groupe a bien été mis à jour.
+        update_failed: Le type de groupe n'a pas pu être mis à jour.
+        field_not_ready:
+          The group type cannot be saved right now. The following fields are not ready:
+            - champs
+      meta:
+        created: Créé
+        created_by: Créé par
+        updated: Mis à jour
+        updated_by: Mis à jour par
+      btn:
+        save: Enregistrer
+      title: type de groupe
     channel:
       title: canal
       info:
@@ -337,7 +355,7 @@ pim_enrich:
           info:
             search_attributes: Rechercher...
             no_available_attributes: Il n'y a plus d'attributs disponibles
-            attributes_selected: "{{ attributeCount }} attribut(s) sélectionné(s)"
+            attributes_selected: "{{ itemsCount }} attribut(s) sélectionné(s)"
             no_match: Aucune correspondance trouvée
             load_more: Chargement de plus de résultats...
         categories:
@@ -375,6 +393,15 @@ pim_enrich:
         select_attributes: Sélectionnez les attributs
         select: Sélectionner
     association_type:
+      tab:
+        properties:
+          title: Propriétés
+          general: Propriétés générales
+          code: Code
+          label_translations: Traduction des libellés
+        history:
+          title: Historique
+    group_type:
       tab:
         properties:
           title: Propriétés
@@ -466,6 +493,26 @@ pim_enrich:
           info:
             search_attributes: Rechercher...
             no_available_attributes: Il n'y a plus d'attributs disponibles
+    job_execution:
+      loading: Chargement en cours...
+      title.details: Détails d'exécution
+      refreshBtn.title: Mettre à jour
+      meta:
+        status.title: État
+      button:
+        show_profile.title: Afficher le profil
+        download_log.title: Télécharger l'historique
+        download_file.title: Télécharger le fichier généré
+        download_archive.title: Télécharger l'archive générée
+      summary:
+        fetching: Collecte de données de l'exécution...
+        warning: Attention
+        header.step: Étape
+        header.status: État
+        header.warnings: Aventissements
+        header.summary: Résumé
+        header.start: Début
+        header.end: Fin
     job_instance:
       fail:
         launch: Impossible de lancer le profil. Assurez-vous qu'il est valide et que vous avez les droits pour le lancer.
@@ -540,6 +587,15 @@ pim_enrich:
             help: Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances
         history:
           title: Historique
+    mass_edit:
+      family:
+        attributes:
+          label_label: Libellé
+          toolbox:
+            select_attributes_by_groups: Ajouter par groupes
+            select_attributes: Ajouter des attributs
+            add: Ajouter
+            attributes_groups_selected: '{{ itemsCount }} groupe(s) sélectionné(s)'
   job:
     upload: Glissez et déposer un fichier ou cliquez ici
   export:
@@ -683,5 +739,55 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: Les attributs des produits sélectionnés vont être édités avec les données suivantes pour la locale <span class="highlight">{{ locale }}</span> et le canal <span class="highlight">{{ channel }}</span>, choisis dans la grille des produits.
+  index:
+    association_type:
+      title: Liste des types d'association
+      create_btn: Créer un type d'association
 pim_enrich.error:
   exception.title: Oups! Une erreur {{ status_code }} s'est produite...
+batch_jobs:
+  add_product_value:
+    label: Ajouter une valeur de produit
+    perform:
+      label: Ajouter une valeur de produit
+  update_product_value:
+    label: Mise à jour de la valeur du produit
+    perform:
+      label: Mise à jour de la valeur du produit
+  edit_common_attributes:
+    label: Modifier les attributs communs
+    perform:
+      label: Modifier les attributs communs
+    cleaner:
+      label: Nettoyer les fichiers pour les attributs communs
+  set_attribute_requirements:
+    label: Choisir les attributs requis
+    perform:
+      label: Choisir les attributs requis
+  csv_product_quick_export:
+    quick_export.label: Export rapide de produits en CSV
+    perform:
+      label: Export rapide de produits en CSV
+  csv_product_grid_context_quick_export:
+    quick_export.label: Export rapide de la grille de produits en CSV
+    perform:
+      label: Export rapide de la grille de produits en CSV
+  xlsx_product_quick_export:
+    quick_export.label: Export rapide de produits en XLSX
+    perform:
+      label: Export rapide de produits en XLSX
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Export rapide de la grille de produits en XLSX
+    perform:
+      label: Export rapide de la grille de produits en XLSX
+  add_to_variant_group:
+    label: Ajouter au groupe de variantes
+    perform:
+      label: Ajouter au groupe de variantes
+Pim_mass_edit:
+  download_archive:
+    archive: Télécharger l'archive générée
+    output: Télécharger les fichiers générés
+    input: Télécharger le fichier lu
+    invalid_xlsx: Télécharger les données invalides
+    invalid_csv: Télécharger les données invalides

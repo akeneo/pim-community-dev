@@ -334,7 +334,6 @@ variant group:
   edit: editar grupo variante
 association type:
   title: tipo de associação
-  overview: visão geral do tipo de associação
   create: criar tipo de associação
   edit: editar tipo de associação
 products: produtos

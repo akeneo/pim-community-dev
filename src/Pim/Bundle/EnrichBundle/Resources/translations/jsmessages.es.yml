@@ -8,7 +8,7 @@ confirmation:
     channel: '¿Está seguro que desea eliminar este canal?'
     group: '¿Está seguro que desea eliminar este grupo?'
     variant group: '¿Está seguro que desea eliminar este grupo variante?'
-    group type: '¿Está seguro que desea eliminar este tipo de grupo?'
+    group_type: '¿Está seguro que desea eliminar este tipo de grupo?'
     import profile: '¿Está seguro que desea eliminar este perfil de importación?'
     export profile: '¿Está seguro que desea eliminar este perfil de exportación?'
     user: '¿Seguro que desea eliminar este usuario?'
@@ -46,7 +46,7 @@ flash:
     removed: Grupo eliminado correctamente
   variant group:
     removed: Grupo Variante eliminado correctamente
-  group type:
+  group_type:
     removed: Tipo de Grupo eliminado correctamente
   import profile:
     removed: Perfil de importación eliminado correctamente
@@ -222,6 +222,20 @@ pim_enrich:
         updated_by: Actualizado por
       btn:
         save: Guardar
+      title: tipo de asociación
+    group_type:
+      info:
+        field_not_ready:
+          The group type cannot be saved right now. The following fields are not ready:
+            - campos
+      meta:
+        created: Creado
+        created_by: Creado por
+        updated: Actualizado
+        updated_by: Actualizado por
+      btn:
+        save: Guardar
+      title: tipo de grupo
     channel:
       title: canal
       info:
@@ -334,7 +348,6 @@ pim_enrich:
           info:
             search_attributes: Buscar...
             no_available_attributes: No hay más atributos para agregar
-            attributes_selected: "{{ attributeCount }} atributo(s) seleccionado(s)"
             no_match: No se encuentran coincidencias
             load_more: Cargando más resultados...
         categories:
@@ -372,6 +385,15 @@ pim_enrich:
         select_attributes: Seleccionar atributos
         select: Seleccione
     association_type:
+      tab:
+        properties:
+          title: Propiedades
+          general: Propiedades generales
+          code: Código
+          label_translations: Traducciones de etiqueta
+        history:
+          title: Histórico
+    group_type:
       tab:
         properties:
           title: Propiedades
@@ -461,6 +483,23 @@ pim_enrich:
           info:
             search_attributes: Buscar...
             no_available_attributes: No hay más atributos para agregar
+    job_execution:
+      loading: Cargando...
+      refreshBtn.title: Actualizar
+      meta:
+        status.title: Estado
+      button:
+        show_profile.title: Ver perfil
+        download_log.title: Descargar registro de log
+      summary:
+        fetching: Colectando datos sobre la ejecución del trabajo...
+        warning: '¡Advertencia!'
+        header.step: Paso
+        header.status: Estado
+        header.warnings: Advertencias
+        header.summary: Resumen
+        header.start: Iniciar
+        header.end: Finalizar
     job_instance:
       fail:
         launch: Se ha producido un error al lanzar el perfil de trabajo. Asegúrese que sea válido y que usted posee los derechos para ejecutarlo.
@@ -535,6 +574,13 @@ pim_enrich:
             help: Significa que el historial del producto es actualizada automáticamente, puede ser desactivada para mejorar el desempeño
         history:
           title: Histórico
+    mass_edit:
+      family:
+        attributes:
+          label_label: Etiqueta
+          toolbox:
+            select_attributes: Agregar atributos
+            add: Agregar
   job:
     upload: Arrastrar y soltar un fichero o haga clic aquí
   export:
@@ -680,3 +726,26 @@ pim_enrich:
       description: Los atributos seleccionados serán editados con la siguiente información para el local <span class="highlight">{{ locale }}</span> y el canal <span class="highlight">{{ channel }}</span> elegidos en la grilla de productos.
 pim_enrich.error:
   exception.title: Oups! Un error {{ status_code }} ha ocurrido...
+batch_jobs:
+  add_product_value:
+    label: Agregar un valor de producto
+    perform:
+      label: Agregar un valor de producto
+  update_product_value:
+    label: Actualizar el valor del producto
+    perform:
+      label: Actualizar el valor del producto
+  edit_common_attributes:
+    label: Editar atributos comunes
+    perform:
+      label: Editar atributos comunes
+    cleaner:
+      label: Limpiar archivos para los atributos comunes
+  set_attribute_requirements:
+    label: Configurar requerimientos del atributo
+    perform:
+      label: Configurar requerimientos del atributo
+  add_to_variant_group:
+    label: Agregar a un grupo de variantes
+    perform:
+      label: Agregar a un grupo de variantes

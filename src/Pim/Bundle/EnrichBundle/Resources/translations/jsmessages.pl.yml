@@ -8,7 +8,7 @@ confirmation:
     channel: Czy na pewno chcesz usunąć ten kanał?
     group: Czy na pewno chcesz usunąć tę grupę?
     variant group: Czy na pewno chcesz usunąć tę grupę wariantów?
-    group type: Czy na pewno chcesz usunąć ten typ grupy?
+    group_type: Czy na pewno chcesz usunąć ten typ grupy?
     import profile: Czy na pewno chcesz usunąć ten profil importu?
     export profile: Czy na pewno chcesz usunąć ten profil eksportu?
     user: Czy na pewno chcesz usunąć tego użytkownika?
@@ -44,7 +44,7 @@ flash:
     removed: Grupa została pomyślnie usunięta
   variant group:
     removed: Grupa wariantów została pomyślnie usunięta
-  group type:
+  group_type:
     removed: Typ grupy został pomyślnie usunięty
   import profile:
     removed: Profil importu usunięty pomyślnie
@@ -199,6 +199,18 @@ pim_enrich:
         updated: Zaktualizowano
       btn:
         save: Zapisz
+      title: typ powiązania
+    group_type:
+      info:
+        field_not_ready:
+          The group type cannot be saved right now. The following fields are not ready:
+            - pola
+      meta:
+        created: Utworzono
+        updated: Zaktualizowano
+      btn:
+        save: Zapisz
+      title: typ grupy
     channel:
       title: kanał
       info:
@@ -278,7 +290,6 @@ pim_enrich:
           info:
             search_attributes: Szukaj...
             no_available_attributes: Nie ma więcej atrybutów do dodania
-            attributes_selected: "{{ attributeCount }} atrybut(ów) wybrany(ch)"
             no_match: Nie znaleziono dopasowań
             load_more: Ładowanie więcej wyników...
         categories:
@@ -316,6 +327,15 @@ pim_enrich:
         select_attributes: Wybierz atrybuty
         select: Wybierz
     association_type:
+      tab:
+        properties:
+          title: Właściwości
+          general: Ustawienia ogólne
+          code: Kod
+          label_translations: Tłumaczenia etykiety
+        history:
+          title: Historia
+    group_type:
       tab:
         properties:
           title: Właściwości
@@ -405,6 +425,21 @@ pim_enrich:
           info:
             search_attributes: Szukaj...
             no_available_attributes: Nie ma więcej atrybutów do dodania
+    job_execution:
+      loading: Ładuję...
+      refreshBtn.title: Odśwież
+      meta:
+        status.title: Status
+      button:
+        show_profile.title: Pokaż profil
+        download_log.title: Pobierz dziennik
+      summary:
+        fetching: Zbieranie danych o wykonywaniu zadania...
+        header.step: Krok
+        header.status: Status
+        header.summary: Podsumowanie
+        header.start: Start
+        header.end: Koniec
     job_instance:
       button:
         edit.title: Edytuj
@@ -465,6 +500,13 @@ pim_enrich:
             help: Oznacza że historia dla produktu będzie aktualizowana automatycznie, wyłącz w celu poprawy wydajności
         history:
           title: Historia
+    mass_edit:
+      family:
+        attributes:
+          label_label: Etykieta
+          toolbox:
+            select_attributes: Dodaj atrybuty
+            add: Dodaj
   export:
     product:
       structure:
@@ -531,3 +573,16 @@ pim_enrich:
       description: Atrybuty wybranych produktów będą edytowane z następującymi danymi dla ustawienia regionalnego <span class = "highlight"> {{ locale }} </span> oraz kanału <span class = "highlight"> {{ channel }} </span>, wybrane z listy produktów.
 pim_enrich.error:
   exception.title: O rany! Wystąpił błąd {{ status_code }}...
+batch_jobs:
+  update_product_value:
+    label: Aktualizacja wartości produktu
+    perform:
+      label: Aktualizacja wartości produktu
+  edit_common_attributes:
+    label: Edytuj wspólne atrybuty
+    perform:
+      label: Edytuj wspólne atrybuty
+  set_attribute_requirements:
+    label: Określ wymagania atrybutów
+    perform:
+      label: Określ wymagania atrybutów

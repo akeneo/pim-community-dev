@@ -8,7 +8,7 @@ confirmation:
     channel: Weet u zeker dat u dit kanaal wilt verwijderen?
     group: Weet u zeker dat u deze groep wilt verwijderen?
     variant group: Weet u zeker dat u deze variantgroep wilt verwijderen?
-    group type: Weet u zeker dat u dit groepstype wilt verwijderen?
+    group_type: Weet u zeker dat u dit groepstype wilt verwijderen?
     import profile: Weet u zeker dat u dit importprofiel wilt verwijderen?
     export profile: Weet u zeker dat u dit exportprofiel wilt verwijderen?
     user: Weet u zeker dat u deze gebruiker wilt verwijderen?
@@ -46,7 +46,7 @@ flash:
     removed: Groep succesvol verwijderd
   variant group:
     removed: Variantgroep succesvol verwijderd
-  group type:
+  group_type:
     removed: Groepstype succesvol verwijderd
   import profile:
     removed: Importprofiel succesvol verwijderd
@@ -218,6 +218,20 @@ pim_enrich:
         updated_by: Bijgewerkt door
       btn:
         save: Opslaan
+      title: koppelingstype
+    group_type:
+      info:
+        field_not_ready:
+          The group type cannot be saved right now. The following fields are not ready:
+            - velden
+      meta:
+        created: Aangemaakt
+        created_by: Aangemaakt door
+        updated: Bijgewerkt
+        updated_by: Bijgewerkt door
+      btn:
+        save: Opslaan
+      title: groepstype
     channel:
       title: kanaal
       info:
@@ -325,7 +339,6 @@ pim_enrich:
           info:
             search_attributes: Zoeken...
             no_available_attributes: Er zijn geen attributen meer om toe te voegen
-            attributes_selected: "{{ attributeCount }} attribu(u) t(en) geselecteerd"
             no_match: Geen overeenkomsten gevonden
             load_more: Meer resultaten laden...
         categories:
@@ -363,6 +376,15 @@ pim_enrich:
         select_attributes: Selecteer attributen
         select: Selecteer
     association_type:
+      tab:
+        properties:
+          title: Eigenschappen
+          general: Algemene eigenschappen
+          code: Code
+          label_translations: Labelvertalingen
+        history:
+          title: Geschiedenis
+    group_type:
       tab:
         properties:
           title: Eigenschappen
@@ -450,6 +472,23 @@ pim_enrich:
           info:
             search_attributes: Zoeken...
             no_available_attributes: Er zijn geen attributen meer om toe te voegen
+    job_execution:
+      loading: Laden...
+      refreshBtn.title: Vernieuwen
+      meta:
+        status.title: Status
+      button:
+        show_profile.title: Profiel weergeven
+        download_log.title: Logbestand downloaden
+      summary:
+        fetching: Gegevens verzamelen over taakverwerking...
+        warning: Waarschuwing
+        header.step: Stap
+        header.status: Status
+        header.warnings: Waarschuwingen
+        header.summary: Samenvatting
+        header.start: Start
+        header.end: Einde
     job_instance:
       title:
         import: Profiel importeren
@@ -512,6 +551,13 @@ pim_enrich:
             help: Betekent dat de productgeschiedenis automatisch wordt bijgewerkt. Dit kan worden uitgeschakeld om de prestaties te verbeteren
         history:
           title: Geschiedenis
+    mass_edit:
+      family:
+        attributes:
+          label_label: Label
+          toolbox:
+            select_attributes: Attributen toevoegen
+            add: Toevoegen
   job:
     upload: Klik en sleep om te uploaden of klik hier
   export:
@@ -655,3 +701,8 @@ pim_enrich:
       description: Het attribuut van het geselecteerde product zal worden gewijzigd met de volgende data voor de landinstelling <span class="highlight">{{ locale }}</span> en het kanaal <span class="highlight">{{ channel }}</span> gekozen in het product raster.
 pim_enrich.error:
   exception.title: Oh, nee! Een {{ status_code }} fout deed zich voor...
+batch_jobs:
+  update_product_value:
+    label: Update productwaarde
+    perform:
+      label: Update productwaarde

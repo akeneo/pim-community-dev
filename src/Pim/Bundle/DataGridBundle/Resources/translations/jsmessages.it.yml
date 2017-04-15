@@ -29,6 +29,7 @@ Please, select item to perform action.: Per favore, seleziona l'articolo per ese
 View per page: Mostra per pagina
 oro.datagrid.entityHint: Entità
 oro.datagrid.noentities: Nessun record trovato
+oro.datagrid.noresults: "Nessun risultato trovato. Prova a cambiare i criteri di ricerca."
 oro.datagrid.nocolumns: Nessuna colonna configurata per questa griglia
 oro.datagrid.pagination.label: "Pagina"
 oro.datagrid.pagination.totalPages: "di {{ totalPages }}"
@@ -39,18 +40,50 @@ oro_datagrid.select.all: "Tutto"
 oro_datagrid.select.visible: "Tutti visibili"
 oro_datagrid.select.none: "Nessun"
 pim.grid.ajax_choice_filter.label_empty: è vuoto
+pim.grid.ajax_choice_filter.label_not_empty: non è vuoto
+pim.grid.choice_filter:
+  label_empty: è vuoto
+  label_not_empty: non è vuoto
+  label_in_list: nell'elenco
 Available Columns: Colonne disponibili
+Displayed Columns: Colonne Selezionate
 datagrid_view.columns.min_message: È necessario selezionare almeno una colonna della griglia di dati da visualizzare
 pim_datagrid:
   column_configurator:
     label: Colonne
+    title: Selezione Colonna
+    all_groups: Tutti i gruppi
     search: Ricerca
+    clear: Ripulisci
+    displayed_columns: Colonne Selezionate
     apply: Applica
     cancel: Cancella
     remove_column: Rimuovere
+  mass_action:
+    delete:
+      confirm_title: Conferma cancellazione
+      confirm_ok: OK
+      empty_selection: Nessun prodotto selezionato
 pim.grid.mass_action.quick_export.title: Esportazione rapida
+pim.grid.mass_action.quick_export.launched: E' stata lanciata l'esportazione rapida
 pim.grid.action.launch.title: Lancia
 pim.grid.action.show.title: Visualizza
+Please select view: Per favore seleziona una visualizzazione
+Loading...: Caricamento in corso...
 View: Visualizzazione
 from: Da
 to: A
+grid.view_selector:
+  default_view: Visualizzazione predefinita
+  save_changes: Salva questa visualizzazione
+  remove: Eliminare questa visualizzazione
+  create_view: Creare vista
+  create: Crea
+  search: Ricerca
+  views: Visualizzazione
+  placeholder: Nome della nuova visualizzazione
+  choose_label: Scegliere un'etichetta per la visualizzazione
+  confirmation:
+    remove: Sei sicuro di voler eliminare questa visualizzazione della griglia di dati?
+    delete: Conferma cancellazione
+grid.view_selector.flash.updated: La griglia di dati è stata caricata con successo
