@@ -4,23 +4,32 @@ attribute group.permissions:
   view.label: Możliwość wyświetlenia atrybutów
   edit.label: Możliwość edycji atrybutów
 category.permissions:
+  view.label: Możliwość wyświetlania produktów
   view.help: Zezwól na przeglądanie produktów w kategorii
   edit.label: Możliwość edycji produktów
   own.label: Może zawierać produkty
   own.help: Możliwość przeglądu, publikowania, cofnięcia publikacji, klasyfikowania, powiązywania produktów w tej kategorii (implikuje możliwość edycji)
 locale.permissions:
   view.label: Możliwość wyświetlania informacji o produkcie
+  edit.label: Możliwość edycji informacji o produkcie
 btn:
   save working copy: Zapisz kopię roboczą
   save draft: Zapisz wersję tymczasową
   save working copy and next: Zapisz kopię roboczą i dalej
+  save draft and next: Zapisz szkic i przejdź dalej
+  save working copy and finish: Zapisz kopię roboczą i skończ
+  save draft and finish: Zapisz szkic i skończ
   send for approval: Wyślij do zatwierdzenia
+  sent for approval: Wyślij do zatwierdzenia
 pim_enrich:
   mass_edit_action:
+    publish:
+      success_flash: Wybrane produkty zostały pomyślnie opublikowane.
     published_product:
       page_title: Opublikowane produkty
       title: Wybierz działanie
       steps:
+        first: Wybierz opublikowane produkty
         second: Wybierz działanie
         third: Konfiguruj
         fourth: Potwierdź
@@ -52,6 +61,7 @@ pimee_enrich:
   locale:
     tab:
       permission.title: Uprawnienia
+  acl.product_ownership.title: Własność
   attributes:
     empty: żaden
   groups:
@@ -62,7 +72,27 @@ pimee_enrich:
       options: Ustawienia
     resize:
       title: Zmień rozmiar
+      options:
+        width: '% value%px szerokości'
+        height: '% value%px wysokość'
+    resolution:
+      title: Rozdzielczość
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Skalowanie
+      options:
+        width: '% value%px szerokości'
+        height: '% value%px wysokość'
     thumbnail:
       title: Miniatura
+      options:
+        width: '% value%px szerokości'
+        height: '% value%px wysokość'
 job_execution.summary:
+  mass_published: Produkt opublikowany
+  mass_unpublished: Publikacja produktu cofnięta
+  proposal: Propozycja utworzone
   proposal_deleted: usunięte
+pim_assets_collection: Kolekcja zasobów

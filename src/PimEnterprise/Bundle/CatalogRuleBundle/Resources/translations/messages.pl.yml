@@ -3,6 +3,7 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         delete: Usuń
+      title: Reguły
       column:
         code: Kod
         conditions: Stan
@@ -28,6 +29,7 @@ pimee_catalog_rule:
       "=": jest równe
       ">": większy niż
       "<": mniej niż
+      "<=": równy lub mniejszy niż
   acl_group:
     rule: Reguły
   acl:
@@ -44,3 +46,7 @@ pimee_catalog_rule:
   product:
     tooltip:
       loading.title: Ładuję...
+    history: Zastosowana reguła "%rule%"
+  jobs:
+    yml_rule_export:
+      export.title: Eksport reguł

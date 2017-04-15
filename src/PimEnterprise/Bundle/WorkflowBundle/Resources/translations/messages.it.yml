@@ -1,0 +1,117 @@
+pimee_workflow:
+  product_draft:
+    author: Autore
+    created: Proposto il
+    changes: Modifiche
+    locale: Contesto delle impostazioni locali
+    product:
+      label: Etichetta del prodotto
+    attribute:
+      label: Attributo
+    status:
+      label: Stato
+      working_copy: Copia di lavoro
+      in_progress: In corso
+      ready: In attesa di approvazione
+      can_be_partially_reviewed: Può essere parzialmente rivisto
+      can_not_be_approved: Non può essere revisionato
+      can_not_be_deleted: Non può essere eliminato
+    status_message:
+      can_be_partially_reviewed: È possibile revisionare questa proposta solo parzialmente perché alcune modifiche sono state fatte su valori che non ti è possibile modificare. Si prega di contattare l'amministratore per modificare i tuoi diritti.
+      can_not_be_approved: Non è possibile revisionare questa proposta perché alcune modifiche sono state fatte su valori che non ti è possibile modificare. Si prega di contattare l'amministratore per modificare i tuoi diritti.
+      can_not_be_deleted: Non è possibile eliminare questa proposta perché ciò impatterebbe su valori che non ti è possibile modificare. Si prega di contattare l'amministratore per modificare i tuoi diritti.
+      in_progress: Questa proposta è attualmente in corso e non è stata ancora inviata.
+    action:
+      approve: Approva tutto
+      refuse: Respingi tutto
+      remove: Rimuovere
+      partial_approve: Approva le modifiche sull'attributo %attribute% del prodotto %product%
+      partial_reject: Respingi le modifiche sull'attributo %attribute% del prodotto %product%
+    notification:
+      partial_approve: '%owner% ha accettato il valore o i valori per %attributes% del prodotto %product%'
+      partial_approve_number: '%owner% ha accettato i valori per %attributes_count% attributi del prodotto %product%'
+      partial_reject: '%owner% ha respinto il valore o i valori per %attributes% del prodotto %product%'
+      partial_reject_number: '%owner% ha respinto i valori per %attributes_count% attributi del prodotto %product%'
+      partial_remove: '%owner% ha eliminato il valore o i valori per %attributes% del prodotto %product%'
+      partial_remove_number: '%owner% ha eliminato i valori per %attributes_count% attributi del prodotto %product%'
+      approve: '%owner% ha accettato la tua proposta per il prodotto %product%'
+      refuse: '%owner% ha respinto la tua proposta per il prodotto %product%'
+      remove: '%owner% ha eliminato la tua proposta per il prodotto %product%'
+    mass_review_action:
+      approve: Approva tutti i selezionati
+      refuse: Respingi tutti i selezionati
+      error:
+        draft_not_ready: Questa proposta non è pronta per essere approvata
+        not_product_owner: Non possiedi il prodotto collegato alla presente proposta
+        cannot_edit_attributes: Non puoi editare gli attributi modificati da questa proposta
+        invalid_draft: Questa proposta non può essere applicata a causa del seguente errore. %error%
+  proposal:
+    to_review: '%author.firstname% %author.lastname% ha inviato una proposta di revisione per il prodotto %product.label%'
+    individual_import: '%author.firstname% %author.lastname% ha inviato proposte per la revisione da un job di importazione'
+    generic_import: Hai proposte da revisionare da un job di importazione
+    original_value: Originale
+    new_value: Nuovo
+    no_diff: Il valore "%value%" è lo stesso per la proposta e per la copia di lavoro.
+    draft_in_progress: Una bozza è in corso da parte di %author% per questo prodotto.
+  published_product:
+    index: Prodotti Pubblicati
+    title: Prodotto pubblicato
+  acl.published_product:
+    index: Gestisci i prodotti pubblicati
+  product:
+    permission:
+      label: Autorizzazioni
+      own: Revisiona / pubblica
+      edit: Modifica
+      view: Visualizzazione
+  jobs:
+    csv_product_proposal_import:
+      title: Importazione di proposte di prodotto in CSV
+      import.title: Importazione di proposte di prodotto
+    approve_product_draft:
+      title: Approva la proposta
+      perform.title: Approva la proposta
+    refuse_product_draft:
+      title: Rifiuta le proposte
+      perform.title: Rifiuta le proposte
+  steps:
+    product_draft_processor.title: Processore di proposta
+    refuse.title: Rifiuta la proposta
+pimee_workflow_product_draft_notification_new_proposal: Nuova proposta
+pimee_workflow_import_notification_new_proposals: Nuove proposte da importazione
+btn.publish: Pubblica
+btn.unpublish: Annulla la pubblicazione
+pimee_workflow_product_draft_notification_partial_approve: Proposta approvata parzialmente
+pimee_workflow_product_draft_notification_partial_reject: Proposta respinta parzialmente
+pimee_workflow_product_draft_notification_partial_remove: Proposta eliminata parzialmente
+pimee_workflow_product_draft_notification_approve: Proposta approvata
+pimee_workflow_product_draft_notification_refuse: Proposta respinta
+flash:
+  product:
+    published: Il prodotto è stato pubblicato con successo.
+    unpublished: Il prodotto è stato ritirato con successo.
+  product_draft:
+    approve:
+      success: La proposta è stata applicata con successo.
+      error: La proposta non può essere applicata a causa del seguente errore. %error%
+    refuse:
+      success: La proposta non è stata accettata.
+    remove:
+      success: La proposta è stata rimossa.
+pim_menu:
+  item:
+    published_product: Prodotti pubblicati
+    proposal: Proposte
+pim_title:
+  published_product:
+    index: Prodotti pubblicati
+    view: Prodotti pubblicati %product.sku% | Visualizza
+  product:
+    dispatch: "Prodotti %product.sku%"
+    show: "Prodotti %product.sku% | Visualizza"
+  proposal:
+    index: Proposte
+proposal.overview: Proposte
+Attributes.title: Attributi
+Completeness.title: Completamento
+published products: Prodotti pubblicati

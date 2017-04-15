@@ -1,0 +1,23 @@
+pimee_catalog_rule:
+  attribute:
+    list:
+      code.label: Codice
+      condition.label: Condizione
+      action.label: Azione
+      no_rule_yet.label: Nessuna regola per ora
+  rule:
+    condition:
+      if.label: se
+    action:
+      then.label: allora
+      set_value.label: è impostato in
+      copy_value.label: viene copiato in
+      set.label: è impostato in
+      copy.label: viene copiato in
+      add.label: viene aggiunto in
+confirmation:
+  remove:
+    rule: Sei sicuro di voler eliminare questa regola? Non è possibile annullare questa azione
+flash:
+  rule:
+    removed: Regola rimossa con successo
