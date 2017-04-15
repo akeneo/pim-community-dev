@@ -1,0 +1,95 @@
+View the product: Mostra il prodotto
+pimee_enrich.product_history.action.revert: Ritorna a questa versione
+permission-changes:
+  category:
+    grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong> in questa categoria
+    revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong> in questa categoria
+  locale:
+    grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong> in questa impostazione locale
+    revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong> in questa impostazione locale
+  attribute group:
+    grant: Il gruppo <strong>{{ group }}</strong> sarà <strong>{{ permission }}</strong> per questo gruppo di attributi
+    revoke: Il gruppo <strong>{{ group }}</strong> <strong>non avrà il permesso di {{ permission }}</strong> per questo gruppo di attributi
+  job profile:
+    grant: Il gruppo <strong>{{ group }}</strong> avrà il permesso <strong>{{ permission }}</strong>
+    revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong>
+pimee_enrich:
+  entity:
+    product:
+      history:
+        published: Pubblicato
+        revert: Ripristina
+      smart_attribute:
+        come_from: "Questo attributo può essere aggiornato da una regola:"
+      btn:
+        publish: Pubblica
+        publish_this_version: Pubblica questa versione
+        unpublish: Ritira
+        save_draft: Salva bozza
+      flash:
+        product_unpublished: Prodotto ritirato con successo
+        product_published: Prodotto pubblicato correttamente
+        product_not_published: Impossibile pubblicare questo prodotto
+        product_not_unpublished: Impossibile ritirare questo prodotto
+        product_reverted: Prodotto ripristinato correttamente
+      meta:
+        published: Versione pubblicata
+        owner_groups: Gruppi del proprietario
+        draft_status: Stato bozza
+        draft:
+          in_progress: In corso
+          sent_for_approval: In attesa di approvazione
+          working_copy: Copia di lavoro
+      tab:
+        proposals:
+          title: Proposte
+          messages:
+            approve:
+              success: La proposta è stata applicata con successo.
+              error:
+                The proposal can't be applied due to the following error:
+                  - errore
+            reject:
+              success: La proposta non è stata accettata.
+            remove:
+              success: La proposta è stata rimossa.
+      confirmation:
+        revert:
+          title: Conferma ripristino
+          content: Sei sicuro di voler ripristinare il prodotto a questa versione?
+        publish:
+          title: Pubblica questo prodotto
+          content: Sei sicuro di voler pubblicare questo prodotto?
+        unpublish:
+          title: Annulla la pubblicazione di questo prodotto
+          content: Sei sicuro di voler ritirare questo prodotto?
+      info:
+        update_successful: La copia di lavoro del prodotto è stata aggiornata
+      copy:
+        source:
+          working_copy: Copia di lavoro
+          draft: La mia bozza
+          draft_of: "Bozza di {{ author }}"
+    product_draft:
+      info:
+        update_successful: La bozza del prodotto è stata salvata con successo
+        update_failed: La bozza di prodotto non può essere aggiornata
+        value_modified: Questo valore viene modificato dalla bozza corrente
+      flash:
+        sent_for_approval: Bozza di prodotto inviata per approvazione
+        draft_not_sendable: Non è possibile inviare questa bozza per l'approvazione
+      btn:
+        send_for_approval: Invia per approvazione
+        sent_for_approval: Inviata per approvazione
+      modal:
+        accept_proposal: Accetta la proposta
+        accept_selected_proposal: Accetta la(e) proposta(e) selezionata(e)
+        reject_proposal: Rifiuta la proposta
+        reject_selected_proposal: Rifiuta la(e) proposta(e) selezionata(e)
+        remove_proposal: Rimuovi la proposta
+        send_for_approval: Invia per approvazione
+        cancel: Cancella
+        characters: caratteri.
+      confirmation:
+        discard_changes: Le modifiche non salvate andranno perse. Sei sicuro di voler inviare la bozza per l'approvazione senza che vengano salvate le modifiche?
+        discard_changes_title: Sei sicuro di voler inviare questa bozza?

@@ -1,0 +1,149 @@
+pimee_product_asset:
+  acl:
+    asset:
+      index: Arricchisci asset
+      create: Crea un asset
+      remove: Rimuovi asset
+      categories_view: Vedi le categorie di un asset
+      mass_upload: Caricamento di massa asset
+    category_asset_picker:
+      list: Elenca le categorie di asset nel selettore di asset
+    category:
+      create: Crea una categoria per gli asset
+      edit: Modifica una categoria per gli asset
+      list: Elenca le categorie degli asset
+      remove: Rimuovi una categoria degli asset
+      manage: Gestisci i permessi della categoria degli asset
+      history: Visualizza lo storico della categoria degli asset
+  acl_group:
+    asset: Asset di prodotto
+    category: Categorie degli asset
+  enrich_asset:
+    button:
+      upload: Carica file
+      delete: Eliminare
+      download: Scarica
+      generate_from_reference: Genera da riferimento
+      reset_variations: Reimposta varianti
+    confirmation.remove: Sei sicuro di vole rimuovere l'asset "%asset%"?
+    grid:
+      edit: Modifica le proprietà dell'asset
+    view:
+      title: Asset di prodotto
+      code: Codice
+      description: Descrizione
+      end_of_use: Fine dell'utilizzo il
+      reference: Riferimento
+      filename: Nome del file
+      width: Larghezza
+      height: Altezza
+      resolution: Risoluzione
+      colors: Spazio colore
+      filesize: Dimensioni file
+      filetype: Tipo file
+      actions: Azioni
+      download: Scarica
+      tag: Tag
+      no_reference: Nessun file dei riferimenti è stato ancora caricato.
+      no_variation: Nessun file di varianti è stato ancora generato.
+    flash:
+      update:
+        success: L'asset è stato aggiornato.
+        error: L'asset non è stato aggiornato. Si è verificato un errore.
+      create:
+        success: L'asset è stato creato.
+        error: L'asset non è stato creato. Si è verificato un errore.
+      remove:
+        success: L'asset è stato rimosso.
+  enrich_reference:
+    flash:
+      delete:
+        success: Il file dei riferimenti è stato eliminato.
+        error: Il file dei riferimenti non è stato eliminato. Si è verificato un errore.
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: Impossibile generare la variante %channel% a causa di opzioni non valide.
+        image_width_error: Impossibile generare la variante %channel% perché l'immagine caricata ha una larghezza inferiore di quanto richiesto dalla trasformazione.
+        image_height_error: Impossibile generare la variante %channel% perché l'immagine caricata ha un'altezza inferiore a quanto richiesto dalla trasformazione.
+        not_applicable: Impossibile generare la variante %channel%.
+        non_registered: Nessuna trasformazione %transformation% registrata per il tipo mime %mimeType%. Impossibile generare la variante %channel%.
+        error: Impossibile generare la variante %channel%.
+        success: I file di variante sono stati generati con successo.
+      update:
+        success: Il file di variante è stato aggiornato.
+        error: Il file di variante non è stato aggiornato. Si è verificato un errore.
+      delete:
+        success: Il file di variante è stato eliminato.
+        error: Il file di variante non è stato eliminato. Si è verificato un errore.
+  popin.create:
+    title: Crea un nuovo asset
+    is_localized: Localizzabile
+  page_tab:
+    title:
+      view: Asset di prodotto %asset.code% | Visualizza
+      edit: Asset di prodotto %asset.code% | Modifica
+      index: Asset di prodotto
+  code:
+    label: Codice
+  thumbnail:
+    label: Thumbnail
+  status:
+    label: Stato
+  description:
+    label: Descrizione
+  endOfUse:
+    label: Fine dell'utilizzo
+  createdAt:
+    label: Creato il
+  updatedAt:
+    label: Ultimo aggiornamento del
+  tabs:
+    properties.title: Proprietà
+    categories.title: Categorie
+  validation:
+    code:
+      not_empty: Il codice è richiesto. Non può essere vuoto.
+      unique: Il codice deve essere univoco.
+      new_generation: Ne abbiamo generato uno nuovo.
+  mass_upload:
+    add_files: aggiungi file
+    start: Inizia il caricamento
+    cancel: Annulla il caricamento
+    import: Importa
+    error:
+      localizable: Un asset esiste ma non è traducibile
+  category:
+    menu: Categorie degli asset
+    permissions:
+      apply_on_children.label: Applica le modifiche sui figli
+      apply_on_children.help: Copiare le modifiche ai permessi su tutti i figli, i permessi esistenti sui figli vengono mantenuti
+  mass_edit_action:
+    asset:
+      steps:
+        second: Configura
+        third: Conferma
+btn.create.asset: Crea un asset
+btn.drag_or_upload: Trascina e rilascia qui un file per caricarlo o fai click qui
+batch_jobs:
+  apply_assets_mass_upload:
+    perform.label: Caricamento di massa
+  yml_asset_channel_configuration_import:
+    validation.label: Validazione file
+  yml_asset_channel_configuration_export:
+    label: Configurazione dell'esportazione in Yaml degli asset
+    export.label: Configurazione dell'esportazione in Yaml degli asset
+  csv_asset_import:
+    validation.label: Validazione file
+  csv_tag_import:
+    validation.label: Validazione file
+  csv_asset_category_import:
+    validation.label: Validazione file
+  csv_asset_configuration_import:
+    validation.label: Validazione file
+  xlsx_tag_import:
+    validation.label: Validazione file
+  xlsx_asset_import:
+    validation.label: Validazione file
+  xlsx_asset_category_import:
+    validation.label: Validazione file
