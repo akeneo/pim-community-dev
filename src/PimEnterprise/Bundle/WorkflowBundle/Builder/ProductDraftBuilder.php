@@ -12,9 +12,10 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Builder;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
+use Pim\Component\Catalog\Factory\ProductValueCollectionFactory;
+use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
@@ -30,9 +31,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductDraftBuilder implements ProductDraftBuilderInterface
 {
-    /** @var ObjectManager */
-    protected $objectManager;
-
     /** @var NormalizerInterface */
     protected $normalizer;
 
@@ -48,28 +46,37 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
     /** @var ProductDraftRepositoryInterface */
     protected $productDraftRepo;
 
+    /** @var ProductValueCollectionFactory */
+    protected $valueCollectionFactory;
+
+    /** @var ProductValueFactory */
+    protected $valueFactory;
+
     /**
-     * @param ObjectManager                   $objectManager
      * @param NormalizerInterface             $normalizer
      * @param ComparatorRegistry              $comparatorRegistry
      * @param AttributeRepositoryInterface    $attributeRepository
      * @param ProductDraftFactory             $factory
      * @param ProductDraftRepositoryInterface $productDraftRepo
+     * @param ProductValueCollectionFactory   $valueCollectionFactory
+     * @param ProductValueFactory             $valueFactory
      */
     public function __construct(
-        ObjectManager $objectManager,
         NormalizerInterface $normalizer,
         ComparatorRegistry $comparatorRegistry,
         AttributeRepositoryInterface $attributeRepository,
         ProductDraftFactory $factory,
-        ProductDraftRepositoryInterface $productDraftRepo
+        ProductDraftRepositoryInterface $productDraftRepo,
+        ProductValueCollectionFactory $valueCollectionFactory,
+        ProductValueFactory $valueFactory
     ) {
-        $this->objectManager = $objectManager;
         $this->normalizer = $normalizer;
         $this->comparatorRegistry = $comparatorRegistry;
         $this->attributeRepository = $attributeRepository;
         $this->factory = $factory;
         $this->productDraftRepo = $productDraftRepo;
+        $this->valueCollectionFactory = $valueCollectionFactory;
+        $this->valueFactory = $valueFactory;
     }
 
     /**
@@ -77,7 +84,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      */
     public function build(ProductInterface $product, $username)
     {
-        $newValues = $this->normalizer->normalize($product->getValues(), 'standard', ['entity' => 'product']);
+        $newValues = $this->normalizer->normalize($product->getValues(), 'standard');
         $originalValues = $this->getOriginalValues($product);
         $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($newValues));
 
@@ -133,25 +140,10 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      */
     protected function getOriginalValues(ProductInterface $product)
     {
-        if ($this->objectManager instanceof \Doctrine\ODM\MongoDB\DocumentManager) {
-            $originalProduct = $this->objectManager->find(ClassUtils::getClass($product), $product->getId());
-            $this->objectManager->refresh($originalProduct);
-            $originalValues = $originalProduct->getValues();
-        } else {
-            $originalValues = new ArrayCollection();
-            foreach ($product->getValues() as $value) {
-                if (null !== $value->getId()) {
-                    $id = $value->getId();
-                    $class = ClassUtils::getClass($value);
-                    $this->objectManager->detach($value);
+        $rawValues = $product->getRawValues();
+        $originalValues = $this->valueCollectionFactory->createFromStorageFormat($rawValues);
 
-                    $value = $this->objectManager->find($class, $id);
-                    $originalValues->add($value);
-                }
-            }
-        }
-
-        return $this->normalizer->normalize($originalValues, 'standard', ['entity' => 'product']);
+        return $this->normalizer->normalize($originalValues, 'standard');
     }
 
     /**
