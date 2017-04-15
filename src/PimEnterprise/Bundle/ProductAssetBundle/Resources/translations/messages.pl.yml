@@ -3,28 +3,58 @@ pimee_product_asset:
     asset:
       index: Wzbogać zasób
       create: Utwórz zasób
+      remove: Usuwanie zasobu
+      mass_upload: Masowe przekazywanie zasobów
+    category:
+      create: Tworzenie kategorii zasobów
+      edit: Edytowanie kategorii zasobów
+      list: Przeglądanie kategorii zasobów
+      remove: Usuwaanie kategorii zasobów
+      manage: Zarządzanie uprawnieniami do kategorii zasobów
+      history: Przeglądanie historii kategorii zasobu
   acl_group:
+    asset: Zasoby produktu
     category: Kategorie aktywów
   enrich_asset:
     button:
       upload: Wgraj na serwer
       delete: Usuń
       download: Pobierz
+    grid:
+      edit: Edycja ustawień zasobu
     view:
+      title: Zasób produktu
       code: Kod
       description: Opis
       reference: Referencje
       filename: Nazwa pliku
       width: Szerokość
       height: Wysokość
+      resolution: Rozdzielczość
       colors: Przestrzeń kolorów
       filesize: Rozmiar pliku
       filetype: Typ pliku
       actions: Działania
       download: Pobierz
       tag: Tagi
+    flash:
+      update:
+        success: Zasób został zaktualizowany.
+        error: Zasób nie został zaktualizowany. Wystąpił błąd.
+      create:
+        success: Zasób został utworzony.
+        error: Zasób nie został utworzony. Wystąpił błąd.
+      remove:
+        success: Zasób został usunięty.
   popin.create:
+    title: Utwórz nowy zasób
     is_localized: Określaj ustawienia regionalne
+  menu: Zasoby
+  page_tab:
+    title:
+      view: Zasób produktu %asset.code% | Widok
+      edit: Zasób produktu %asset.code% | Edycja
+      index: Zasoby produktu
   code:
     label: Kod
   thumbnail:
@@ -43,13 +73,35 @@ pimee_product_asset:
     properties.title: Właściwości
     variations.title: Wariacje
     categories.title: Kategorie
+  validation:
+    code:
+      not_empty: Kod jest wymagany. Nie może być pusty.
+      unique: Kod musi być unikatowy.
+      new_generation: Wygenerowaliśmy nowy dla Ciebie.
+  jobs:
+    csv_asset_import.title: Import zasobów z Csv
+    csv_asset_export.title: Eksport zasobów do Csv
+    csv_asset_category_import.title: Import kategorii zasobów z csv
+    csv_asset_category_export.title: Eksport kategorii zasobów do csv
+    assets_mass_upload.title: Masowe przekazywanie zasobów
   notAvailable:
     label: nie dostępne
   mass_upload:
+    menu: Wczytaj zasoby
+    new: Nowy zasób zostanie utworzony
     add_files: dodaj pliki
     start: Zacznij wysyłanie
     cancel: Anuluj wysyłanie
     executed: Masowego wysyłania wykonywane
+    error:
+      upload: Wystąpił błąd podczas przesyłania
+      code: Nieprawidłowy format kodu dla zasobu
   category:
     menu: Kategorie aktywów
 btn.create.asset: Utwórz zasób
+btn.drag_or_upload: Przeciągnij i upuść plik lub kliknij tutaj
+job_execution.summary:
+  pimee_product_asset.mass_upload.updated: Zasób zaktualizowany
+assets_mass_upload.steps:
+  asset_mass_upload.title: Masowe przekazywanie zasobów
+mass_upload: Masowe Przekazywanie Zasobów

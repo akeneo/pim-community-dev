@@ -9,6 +9,7 @@ user:
       "no": false
   default_published_product_grid_view:
     label: Domyślny widok opublikowanych produktów
+Default asset tree: Domyślne drzewo zasobów
 pimee_user:
   user:
     tab:

@@ -11,18 +11,29 @@ pimee_product_asset:
           title: Zarządzaj zasobami
           cancel: Anuluj
           confirm: Potwierdź
+  enrich_asset:
+    grid:
+      edit: Edycja ustawień zasobu
   enrich_variation:
     popin:
       delete:
         title: Potwierdzenie usunięcia
         message: Czy na pewno chcesz usunąć ten element ?
   mass_upload:
+    menu: Wczytaj zasoby
     btn:
       cancel: Anuluj wysyłanie
       delete: Usuń
       start: Zacznij wysyłanie
+    success:
+      new: Nowy zasób zostanie utworzony
+      canceled: Przekazywania pomyślnie anulowane
+      deleted: Przesłany plik został pomyślnie usunięte
     error:
+      list: Nie można odczytać właśnie przesłanych plików
+      upload: Wystąpił błąd podczas przesyłania
       delete: Nie można usunąć pliku z serwera
+      code: Nieprawidłowy format kodu dla aktywów
       conflicts: Konflikt nazw plików
     grid:
       filename: nazwa pliku
@@ -39,3 +50,8 @@ pimee_product_asset:
       uploading: Przesyłanie
       error: Błąd
       success: Zakończono sukcesem
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Masowe przekazywanie

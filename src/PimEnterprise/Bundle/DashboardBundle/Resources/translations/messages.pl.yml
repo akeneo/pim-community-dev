@@ -6,6 +6,7 @@ pimee_dashboard:
       author: Autor
       product: Produkt
       review: Opinia
+      empty: Brak szkiców produktu do przeglądu
   version:
     community_edition: CE
     enterprise_edition: EE

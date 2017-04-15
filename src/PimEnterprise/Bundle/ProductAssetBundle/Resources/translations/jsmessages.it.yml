@@ -1,0 +1,69 @@
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: Gestisci asset
+        panel:
+          basket:
+            title: Basket
+            empty_basket: Il basket è vuoto
+        manage_asset:
+          title: Gestisci asset
+          cancel: Cancella
+          confirm: Conferma
+  enrich_asset:
+    grid:
+      edit: Modifica le proprietà dell'asset
+  enrich_variation:
+    popin:
+      delete:
+        title: Conferma cancellazione
+        message: Sei sicuro di voler eliminare questo elemento?
+      reset:
+        title: Reimposta varianti
+        message: Sei sicuro di voler resettare tutte le varianti?
+  mass_upload:
+    menu: Caricamento di asset
+    btn:
+      add_files: Aggiungi file
+      cancel: Annulla il caricamento
+      delete: Eliminare
+      schedule: Pianificazione
+      start: Inizia il caricamento
+    success:
+      new: Verrà creato un nuovo asset
+      scheduled: File pianificati per l'elaborazione di asset
+      canceled: Caricamento correttamente annullato
+      deleted: File caricato correttamente eliminato
+    error:
+      list: Non è possibile leggere file già caricati
+      upload: Si è verificato un errore durante il caricamento
+      delete: Impossibile eliminare il file dal server
+      schedule: Errore durante la pianificazione dell'elaborazione del caricamento
+      filename: Nome file non valido per l'asset
+      code: Formato codice non valido per l'asset
+      locale: Un asset esiste ma non è traducibile
+      invalid_locale: L'impostazione internazionale è disabilitata o non valida
+      exists: Un file con lo stesso nome è già pianificato per il caricamento
+      conflicts: Conflitto di nomi di file
+    grid:
+      medias: media
+      filename: nome file
+      filetype: tipo file
+      status: stato
+      progress: progresso
+      actions: azioni
+    action:
+      cancel: Cancella
+      delete: Eliminare
+    status:
+      added: Aggiunto
+      queued: Accodato
+      uploading: Caricamento
+      error: Errore
+      success: Successo
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Caricamento di massa

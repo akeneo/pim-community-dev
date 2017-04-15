@@ -35,6 +35,11 @@ pimee_workflow:
       own: Przejrzyj / publikuj
       edit: Edytuj
       view: Zobacz
+  jobs:
+    approve_product_draft:
+      perform.title: Zatwierdzenie propozycji
+    refuse_product_draft:
+      perform.title: Odrzucenie propozycji
 pimee_workflow_product_draft_notification_new_proposal: Nowa propozycja
 btn.publish: Opublikuj
 btn.unpublish: Cofnij publikację
@@ -43,6 +48,11 @@ flash:
   product:
     published: Produkt został pomyślnie opublikowany.
     unpublished: Publikacja produktu została cofnięta pomyślnie.
+  product_draft:
+    refuse:
+      success: Propozycja została odrzucona.
+    remove:
+      success: Propozycja została usunięta.
 pim_menu:
   item:
     published_product: Opublikowane produkty
@@ -61,4 +71,6 @@ unpublish_product.steps.unpublish_product_tasklet.title: Cofnij publikowanie pro
 job_execution.summary:
   approved: zatwierdzone
   refused: odrzucone
+  mass_published: Produkt opublikowany
+  mass_unpublished: Publikacja produktu cofnięta
 published products: Opublikowane produkty
