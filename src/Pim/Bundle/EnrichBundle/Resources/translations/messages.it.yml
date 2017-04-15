@@ -98,14 +98,20 @@ pim_enrich:
       label: Cambia stato (attiva / disattiva)
       description: Gli articoli selezionati saranno attivati o disattivati.
       success_flash: Lo stato dell'articolo/degli articoli è stato modificato
+      launched_flash: L'azione di massa "modifica stato" è stata lanciata. Sarai avvisato quando finisce.
     edit-common-attributes:
       label: Modificare gli attributi
       empty: Si prega di selezionare l'attributo/gli attributi che si desidera modificare
       success_flash: È in corso l'aggiornamento dello stato dell'articolo/degli articoli
+      launched_flash: L'azione di massa "modifica gli attributi comuni" è stata lanciata. Sarai avvisato quando finisce.
+      message:
+        warning: Non esiste un attributo in comune per i prodotti selezionati. Si prega di cambiare la selezione.
+        invalid_attribute: L'attributo con codice "attribute_code" non è comune ai prodotti selezionati, attributo saltato.
     classify:
       label: Classificare i prodotti in categorie
       description: Gli articoli saranno posizionati nelle seguenti categorie, il posizionamento attuale è mantenuto.
       success_flash: L'articolo/gli articoli è stato classificato nelle categorie selezionate
+      launched_flash: L'azione di massa "classifica" è stata lanciata. Sarai avvisato quando finisce.
     change-family:
       label: Cambiare la famiglia degli articoli
       description: La famiglia degli articoli selezionati verrà modificata nella famiglia selezionata
@@ -282,6 +288,7 @@ btn:
     variant group: Crea variante gruppo
     association type: Crea tipo associazione
     group type: Crea tipo gruppo
+    drag_or_upload: Trascina e rilascia qui un file per caricarlo o fai click qui
   edit: modifica
   save: salva
   save and back: Salva e torna alla griglia
@@ -735,3 +742,29 @@ oro.locale:
       timezone: "Selezionare il fuso orario per la visualizzazione di data e ora"
       currency: "Selezionare la valuta predefinita"
 Selected products successfully deleted: Gli articoli selezionati sono stati eliminati con successo
+pim_mass_edit:
+  notification:
+    mass_edit:
+      success: La modifica di massa <strong>%label%</strong> è stata completata
+    quick_export:
+      error: Esportazione rapida <strong>%label%</strong> non riuscita
+      warning: Esportazione rapida <strong>%label%</strong> completata con alcuni avvisi
+      success: Esportazione rapida <strong>%label%</strong> completata
+job_execution.summary:
+  mass_edited: Azione di massa modificata
+  skip: Saltato
+  skipped_products: Prodotti saltati
+  skipped_attributes: Attributi saltati
+pim_mass_edit_execution_show: Esecuzione modifiche di massa | Dettagli
+edit_common_attributes.steps.edit_common_attributes_processor.title: Modifica gli attributi comuni
+update_product_value.steps.update_product_value_processor.title: Aggiorna il valore di prodotto
+add_to_variant_group_clean.steps.excluded.title: Prodotto escluso
+add_to_variant_group_clean.steps.duplicated.title: Dimensione Duplicata
+add_to_variant_group.steps.cleaner.warning.description: 'Il prodotto non può essere impostato nel gruppo di varianti selezionato: duplica i valori della dimensione variante con un altro prodotto nella selezione'
+edit_common_attributes: Modifica gli attributi comuni
+edit_common_attributes_clean: Pulisci i file per gli attributi comuni
+mass_edit report:
+  overview: Modifica di massa dei report
+job_tracker:
+  tab:
+    title: Tracker di processo
