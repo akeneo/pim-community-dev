@@ -11,7 +11,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '@pim_catalog.doctrine.completeness_generator'
+            - '@pimee_product_asset.remover.completeness'
 
     pimee_product_asset.saver.tag:
         class: '%pimee_product_asset.saver.tag.class%'
@@ -25,14 +25,14 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '@pim_catalog.doctrine.completeness_generator'
+            - '@pimee_product_asset.remover.completeness'
 
     pimee_product_asset.saver.variation:
         class: '%pimee_product_asset.saver.variation.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '@pim_catalog.doctrine.completeness_generator'
+            - '@pimee_product_asset.remover.completeness'
 
     pimee_product_asset.saver.file_metadata:
         class: '%pimee_product_asset.saver.file_metadata.class%'

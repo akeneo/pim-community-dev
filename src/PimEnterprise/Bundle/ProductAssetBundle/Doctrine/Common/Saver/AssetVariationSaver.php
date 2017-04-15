@@ -17,6 +17,7 @@ use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
+use PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -34,22 +35,22 @@ class AssetVariationSaver implements SaverInterface, BulkSaverInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /** @var CompletenessGeneratorInterface */
-    protected $compGenerator;
+    /** @var CompletenessRemoverInterface */
+    protected $completenessRemover;
 
     /**
      * @param ObjectManager                  $objectManager
      * @param EventDispatcherInterface       $eventDispatcher
-     * @param CompletenessGeneratorInterface $compGenerator
+     * @param CompletenessRemoverInterface $completenessRemover
      */
     public function __construct(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
-        CompletenessGeneratorInterface $compGenerator
+        CompletenessRemoverInterface $completenessRemover
     ) {
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->compGenerator = $compGenerator;
+        $this->completenessRemover = $completenessRemover;
     }
 
     /**
@@ -64,7 +65,7 @@ class AssetVariationSaver implements SaverInterface, BulkSaverInterface
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($variation, $options));
 
         $this->objectManager->persist($variation);
-        $this->compGenerator->scheduleForAsset($variation->getAsset());
+        $this->completenessRemover->removeForAsset($variation->getAsset());
         $this->objectManager->flush();
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($variation, $options));

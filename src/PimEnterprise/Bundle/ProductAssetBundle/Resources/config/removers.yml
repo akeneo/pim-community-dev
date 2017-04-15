@@ -1,5 +1,6 @@
 parameters:
     pimee_product_asset.remover.category_asset.class: PimEnterprise\Component\ProductAsset\Remover\CategoryAssetRemover
+    pimee_product_asset.remover.completeness.class: PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\CompletenessRemover
 
 services:
     pimee_product_asset.remover.variation:
@@ -29,3 +30,9 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
             - '@pimee_product_asset.saver.asset'
+
+    pimee_product_asset.remover.completeness:
+        class: '%pimee_product_asset.remover.completeness.class%'
+        parent: pim_catalog.remover.completeness
+        arguments:
+            - '@pim_catalog.repository.attribute'
