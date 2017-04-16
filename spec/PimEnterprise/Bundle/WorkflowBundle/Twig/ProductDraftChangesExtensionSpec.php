@@ -5,6 +5,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Twig;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Factory\ProductValueFactory;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
@@ -21,14 +22,14 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         TranslatorInterface $translator,
         PresenterInterface $attributePresenter,
         PresenterInterface $valuePresenter,
-        ProductBuilderInterface $productBuilder,
-        AttributeFactory $attributeFactory
+        AttributeFactory $attributeFactory,
+        ProductValueFactory $valueFactory
     ) {
         $this->beConstructedWith(
             $attributeRepository,
             $renderer,
             $translator,
-            $productBuilder,
+            $valueFactory,
             $attributeFactory
         );
 
