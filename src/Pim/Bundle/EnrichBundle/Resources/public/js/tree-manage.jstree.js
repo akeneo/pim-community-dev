@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'routing', 'oro/loading-mask', 'oro/error', 'pim/ui', 'jquery.jstree', 'jstree/jquery.jstree.tree_selector'],
-    function ($, _, Backbone, Routing, LoadingMask, OroError, UI) {
+    ['jquery', 'underscore', 'oro/translator', 'backbone', 'routing', 'oro/loading-mask', 'oro/error', 'pim/ui', 'pim/dialog', 'jquery.jstree', 'jstree/jquery.jstree.tree_selector'],
+    function ($, _, __, Backbone, Routing, LoadingMask, OroError, UI, Dialog) {
         'use strict';
 
         return function (elementId) {
@@ -141,7 +141,11 @@ define(
                             }
                         },
                         error: function (jqXHR) {
-                            OroError.dispatch(null, jqXHR);
+                            if (jqXHR.status === 403) {
+                                Dialog.alert(__('alert.category.edit'));
+                            } else {
+                                OroError.dispatch(null, jqXHR);
+                            }
                             loadingMask.hide();
                         }
                     });
