@@ -1,0 +1,114 @@
+---
+pim_base_connector:
+  jobs:
+    csv_product_export:
+      title: Экспорт продуктов в CSV
+      export.title: Экспорт продуктов
+    csv_category_export:
+      title: Экспорт категории в CSV
+      export.title: Экспорт категории
+    csv_attribute_export:
+      title: Экспорт атрибутов в CSV
+      export.title: Экспорт атрибутов
+    csv_attribute_option_export:
+      title: Экспорт свойств атрибутов в CSV
+      export.title: Экспорт свойств атрибутов
+    csv_association_type_export:
+      title: Экспорт типов ассоциаций в CSV
+      export.title: Экспорт типов ассоциаций
+    csv_group_export:
+      title: Экспорт группы в CSV
+      export.title: Экспорт группы
+    csv_product_import:
+      title: Импорт продуктов из CSV
+      import.title: Импорт продуктов
+      import_associations.title: Импорт ассоциаций
+    csv_category_import:
+      title: Импорт категорий из CSV
+      import.title: Импорт категории
+    csv_attribute_import:
+      title: Импорт атрибутов из CSV
+      import.title: Импорт атрибутов
+    csv_attribute_option_import:
+      title: Импорт свойств атрибутов из CSV
+      import.title: Импорт параметров атрибутов
+    csv_association_type_import:
+      title: Импорт типов ассоциаций из CSV
+      import.title: Импорт типов ассоциаций
+    csv_group_import:
+      title: Импорт группы из CSV
+      import.title: Импорт группы
+  steps:
+    dummy_reader.title: Заглушка
+    product_reader.title: Извелечение продукта
+    entity_reader.title: Извлечение сущности
+    csv_reader:
+      title: CSV
+      invalid_item_columns_count: 'Ожидается получить %totalColumnsCount% колонок, но было передано %itemColumnsCount% в %csvPath%:%lineno%'
+    csv_product_reader.title: Разбор продуктов CSV
+    csv_category_reader.title: Разбор категорий CSV
+    dummy_processor.title: Заглушка
+    product_processor.title: Создание продукта
+    category_processor.title: Создание категории
+    association_processor.title: Создание ассоциации
+    group_processor.title: Создание группы
+    attribute_processor.title: Создание атрибутов
+    attribute_option_processor.title: Создание параметров атрибутов
+    heterogeneous_processor.title: Сериализатор продукта в CSV
+    homogeneous_processor.title: Сериализатор сущности в CSV
+    transformer_processor.title: Преобразование
+    dummy_writer.title: Заглушка
+    file_writer.title: Вывод в файл
+    product_writer.title: Хранилище продукта
+    category_writer.title: Хранилище категории
+    writer.title: Хранилище сущности
+  export:
+    delimiter:
+      label: Разделитель
+      help: Символ, используемый как разделитель полей
+    enclosure:
+      label: Символ обрамления
+      help: Символ, используемый для обрамления поля
+    withHeader:
+      label: Включая заголовки
+      help: Добавлять строку с заголовками
+    filePath:
+      label: Путь к файлу
+      help: Путь к сгенерированному файлу
+    channel:
+      label: Канал
+      help: Канал, который вы хотите экспортировать
+  import:
+    enabled:
+      label: Активировать продукт
+      help: Активировать импортируемые продукты
+    categoriesColumn:
+      label: Колонка категорий
+      help: Название колонки категорий
+    familyColumn:
+      label: Колонка семейства
+      help: Название колонки семейства
+    groupsColumn:
+      label: Колонка групп
+      help: Название колонки групп
+    filePath:
+      label: Файл
+      help: CSV-файл для импорта
+    uploadAllowed:
+      label: Разрешить загрузку файлов
+      help: Разрешить загрузку файлов
+    delimiter:
+      label: Разделитель
+      help: Символ, используемый как разделитель полей
+    enclosure:
+      label: Символ обрамления
+      help: Символ, используемый для обрамления полей
+    escape:
+      label: Экранирование
+      help: Символ, используемый для экранирования
+    circularRefsChecked:
+      label: Проверять циклические ссылки
+      help: Если да, данные будут обрабатываться чтобы убедиться, что нет циклических ссылок между категориями
+    realTimeVersioning:
+      label: Обновление истории изменений в реальном времени
+      help: Означает, что история изменений продукта автоматически обновляется, можно выключить для улучшения производительности

@@ -1,0 +1,7 @@
+---
+entity.user.name: ユーザー
+entity.user.description: ユーザープロフィール
+entity.role.name: ロール
+entity.role.description: ユーザー ロール
+entity.group.name: グループ
+entity.group.description: ロールグループ
