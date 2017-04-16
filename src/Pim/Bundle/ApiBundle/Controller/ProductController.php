@@ -272,9 +272,9 @@ class ProductController
     {
         $data = $this->getDecodedContent($request->getContent());
 
-        $data = $this->populateIdentifierProductValue($data);
+        $data['identifier'] = array_key_exists('identifier', $data) ? $data['identifier'] : null;
 
-        $product = $this->productBuilder->createProduct();
+        $product = $this->productBuilder->createProduct($data['identifier']);
 
         $this->updateProduct($product, $data, 'post_products');
         $this->validateProduct($product);
@@ -302,7 +302,7 @@ class ProductController
 
         if ($isCreation) {
             $this->validateCodeConsistency($code, $data);
-            $product = $this->productBuilder->createProduct();
+            $product = $this->productBuilder->createProduct($code);
         }
 
         $data['identifier'] = array_key_exists('identifier', $data) ? $data['identifier'] : $code;
@@ -626,7 +626,7 @@ class ProductController
      */
     protected function populateIdentifierProductValue(array $data)
     {
-        $identifierProperty = $this->productRepository->getIdentifierProperties()[0];
+        $identifierProperty = $this->attributeRepository->getIdentifierCode();
         $identifier = isset($data['identifier']) ? $data['identifier'] : null;
 
         unset($data['values'][$identifierProperty]);

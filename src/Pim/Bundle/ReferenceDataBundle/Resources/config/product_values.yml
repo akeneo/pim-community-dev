@@ -1,0 +1,3 @@
+parameters:
+    pim_reference_data.product_value.reference_data.class: Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValue
+    pim_reference_data.product_value.reference_data_collection.class: Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionProductValue

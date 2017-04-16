@@ -1,10 +1,4 @@
 parameters:
-    pim_datagrid.extension.selector.orm.product_value.base_selector.class:    Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductValue\BaseSelector
-    pim_datagrid.extension.selector.orm.product_value.option_selector.class:  Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductValue\OptionSelector
-    pim_datagrid.extension.selector.orm.product_value.options_selector.class: Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductValue\OptionsSelector
-    pim_datagrid.extension.selector.orm.product_value.prices_selector.class:  Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductValue\PricesSelector
-    pim_datagrid.extension.selector.orm.product_value.metric_selector.class:  Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductValue\MetricSelector
-    pim_datagrid.extension.selector.orm.product_value.media_selector.class:   Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductValue\MediaSelector
     pim_datagrid.extension.selector.orm.product.label_selector.class:         Pim\Bundle\DataGridBundle\Extension\Selector\Orm\Product\LabelSelector
     pim_datagrid.extension.selector.orm.product.groups_selector.class:        Pim\Bundle\DataGridBundle\Extension\Selector\Orm\Product\GroupsSelector
     pim_datagrid.extension.selector.orm.product.completeness_selector.class:  Pim\Bundle\DataGridBundle\Extension\Selector\Orm\Product\CompletenessSelector
@@ -12,46 +6,6 @@ parameters:
     pim_datagrid.extension.selector.orm.product.in_group_selector.class:      Pim\Bundle\DataGridBundle\Extension\Selector\Orm\Product\InGroupSelector
 
 services:
-    pim_datagrid.extension.selector.orm.product_value.base_selector:
-        class: '%pim_datagrid.extension.selector.orm.product_value.base_selector.class%'
-        tags:
-            - { name: pim_datagrid.extension.selector, type: product_value_base }
-
-    pim_datagrid.extension.selector.orm.product_value.option_selector:
-        class: '%pim_datagrid.extension.selector.orm.product_value.option_selector.class%'
-        arguments:
-            - '@pim_datagrid.extension.selector.orm.product_value.base_selector'
-        tags:
-            - { name: pim_datagrid.extension.selector, type: product_value_option }
-
-    pim_datagrid.extension.selector.orm.product_value.options_selector:
-        class: '%pim_datagrid.extension.selector.orm.product_value.options_selector.class%'
-        arguments:
-            - '@pim_datagrid.extension.selector.orm.product_value.base_selector'
-        tags:
-            - { name: pim_datagrid.extension.selector, type: product_value_options }
-
-    pim_datagrid.extension.selector.orm.product_value.prices_selector:
-        class: '%pim_datagrid.extension.selector.orm.product_value.prices_selector.class%'
-        arguments:
-            - '@pim_datagrid.extension.selector.orm.product_value.base_selector'
-        tags:
-            - { name: pim_datagrid.extension.selector, type: product_value_price }
-
-    pim_datagrid.extension.selector.orm.product_value.metric_selector:
-        class: '%pim_datagrid.extension.selector.orm.product_value.metric_selector.class%'
-        arguments:
-            - '@pim_datagrid.extension.selector.orm.product_value.base_selector'
-        tags:
-            - { name: pim_datagrid.extension.selector, type: product_value_metric }
-
-    pim_datagrid.extension.selector.orm.product_value.media_selector:
-        class: '%pim_datagrid.extension.selector.orm.product_value.media_selector.class%'
-        arguments:
-            - '@pim_datagrid.extension.selector.orm.product_value.base_selector'
-        tags:
-            - { name: pim_datagrid.extension.selector, type: product_value_media }
-
     pim_datagrid.extension.selector.orm.product.label_selector:
         class: '%pim_datagrid.extension.selector.orm.product.label_selector.class%'
         tags:

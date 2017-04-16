@@ -37,25 +37,6 @@ abstract class AbstractProductTestCase extends ApiTestCase
     }
 
     /**
-     * Replaces dates fields (created/updated) in the $data array by self::DATE_FIELD_COMPARISON.
-     *
-     * @param array $data
-     *
-     * @return array
-     */
-    protected function sanitizeDateFields(array $data)
-    {
-        if (isset($data['created'])) {
-            $data['created'] = DateSanitizer::sanitize($data['created']);
-        }
-        if (isset($data['updated'])) {
-            $data['updated'] = DateSanitizer::sanitize($data['updated']);
-        }
-
-        return $data;
-    }
-
-    /**
      * Replaces media attributes data in the $data array by self::MEDIA_ATTRIBUTE_DATA_COMPARISON.
      *
      * @param array $data
@@ -73,7 +54,9 @@ abstract class AbstractProductTestCase extends ApiTestCase
                 foreach ($values as $index => $value) {
                     $sanitizedData = ['data' => MediaSanitizer::sanitize($value['data'])];
                     if (isset($value['_links']['download']['href'])) {
-                        $sanitizedData['_links']['download']['href'] = MediaSanitizer::sanitize($value['_links']['download']['href']);
+                        $sanitizedData['_links']['download']['href'] = MediaSanitizer::sanitize(
+                            $value['_links']['download']['href']
+                        );
                     }
 
                     $data['values'][$attributeCode][$index] = array_replace($value, $sanitizedData);

@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Denormalizer\Standard;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -47,7 +48,7 @@ class ProductValuesDenormalizer implements DenormalizerInterface
      */
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        $values = new ArrayCollection();
+        $values = new ProductValueCollection();
 
         foreach ($data as $attributeCode => $valuesData) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);

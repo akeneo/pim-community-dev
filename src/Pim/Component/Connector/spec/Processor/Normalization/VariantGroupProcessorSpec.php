@@ -17,6 +17,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Connector\Processor\BulkMediaFetcher;
 use Prophecy\Argument;
@@ -99,7 +100,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $variantGroupUpdater,
         $stepExecution,
         $mediaFetcher,
-        ArrayCollection $emptyCollection,
+        ProductValueCollectionInterface $emptyCollection,
         GroupInterface $variantGroup,
         ProductTemplateInterface $productTemplate,
         ProductValueInterface $productValue,
@@ -166,7 +167,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $mediaFetcher,
         $stepExecution,
         $variantGroupUpdater,
-        ArrayCollection $productValueCollection,
+        ProductValueCollectionInterface $productValueCollection,
         FileInfoInterface $media1,
         FileInfoInterface $media2,
         GroupInterface $variantGroup,
@@ -187,8 +188,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $variantGroup->getCode()->willReturn('my_variant_group');
 
         $productValueCollection->toArray()->willReturn([$productValue1, $productValue2]);
-        $productValue1->setMedia($media1);
-        $productValue2->setMedia($media2);
+        $productValue1->getData()->willReturn($media1);
+        $productValue2->getData()->willReturn($media2);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
@@ -242,7 +243,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $mediaFetcher,
         $stepExecution,
         $variantGroupUpdater,
-        ArrayCollection $productValueCollection,
+        ProductValueCollectionInterface $productValueCollection,
         FileInfoInterface $media1,
         FileInfoInterface $media2,
         GroupInterface $variantGroup,
@@ -263,8 +264,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $variantGroup->getCode()->willReturn('my_variant_group');
 
         $productValueCollection->toArray()->willReturn([$productValue1, $productValue2]);
-        $productValue1->setMedia($media1);
-        $productValue2->setMedia($media2);
+        $productValue1->getData()->willReturn($media1);
+        $productValue2->getData()->willReturn($media2);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);

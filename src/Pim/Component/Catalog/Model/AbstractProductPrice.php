@@ -11,24 +11,10 @@ namespace Pim\Component\Catalog\Model;
  */
 abstract class AbstractProductPrice implements ProductPriceInterface
 {
-    /** @var int|string */
-    protected $id;
-
-    /** @var ProductValueInterface */
-    protected $value;
-
-    /**
-     * Store decimal value
-     *
-     * @var float
-     */
+    /** @var float */
     protected $data;
 
-    /**
-     * CurrencyInterface code
-     *
-     * @var string
-     */
+    /** @var null */
     protected $currency;
 
     /**
@@ -37,28 +23,10 @@ abstract class AbstractProductPrice implements ProductPriceInterface
      * @param float  $data
      * @param string $currency
      */
-    public function __construct($data = null, $currency = null)
+    public function __construct($data, $currency)
     {
         $this->data = $data;
         $this->currency = $currency;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     /**
@@ -72,16 +40,6 @@ abstract class AbstractProductPrice implements ProductPriceInterface
     /**
      * {@inheritdoc}
      */
-    public function setData($data)
-    {
-        $this->data = $data;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getCurrency()
     {
         return $this->currency;
@@ -90,29 +48,9 @@ abstract class AbstractProductPrice implements ProductPriceInterface
     /**
      * {@inheritdoc}
      */
-    public function setCurrency($currency)
+    public function isEqual(ProductPriceInterface $price)
     {
-        $this->currency = $currency;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setValue(ProductValueInterface $value)
-    {
-        $this->value = $value;
-
-        return $this;
+        return $price->getData() === $this->data && $price->getCurrency() === $this->currency;
     }
 
     /**

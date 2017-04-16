@@ -7,12 +7,16 @@ use Akeneo\Test\Integration\DateSanitizer;
 use Akeneo\Test\Integration\MediaSanitizer;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 
 /**
  * Integration tests to verify data from database are well formatted in the standard format
  */
 class ProductStandardIntegration extends TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function getConfiguration()
     {
         return new Configuration(
@@ -183,6 +187,13 @@ class ProductStandardIntegration extends TestCase
                             'data'   => 'this is a text',
                         ],
                     ],
+                    '123'                                => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => 'a text for an attribute with numerical code',
+                        ],
+                    ],
                     'a_text_area'                        => [
                         [
                             'locale' => null,
@@ -263,14 +274,15 @@ class ProductStandardIntegration extends TestCase
         $product = $repository->findOneByIdentifier($identifier);
 
         $result = $this->normalizeProductToStandardFormat($product);
-        $result = $this->sanitizeDateFields($result);
+
+        //TODO: why do we need that?
         $result = $this->sanitizeMediaAttributeData($result);
 
-        $expected = $this->sanitizeDateFields($expected);
+        //TODO: why do we need that?
         $expected = $this->sanitizeMediaAttributeData($expected);
 
-        ksort($expected['values']);
-        ksort($result['values']);
+        NormalizedProductCleaner::clean($expected);
+        NormalizedProductCleaner::clean($result);
 
         $this->assertSame($expected, $result);
     }

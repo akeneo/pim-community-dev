@@ -22,7 +22,6 @@ class MetricNormalizer implements NormalizerInterface
     public function normalize($metric, $format = null, array $context = [])
     {
         $amount = $metric->getData();
-        $attribute = $metric->getValue()->getAttribute();
 
         // if decimals_allowed is false, we return an integer
         // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)
@@ -33,7 +32,7 @@ class MetricNormalizer implements NormalizerInterface
 
         return [
             'amount' => $amount,
-            'unit'   => null !== $metric->getUnit() ? $metric->getUnit() : $attribute->getDefaultMetricUnit(),
+            'unit'   => $metric->getUnit(),
         ];
     }
 

@@ -2,12 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\UnexpectedResultException;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -19,7 +17,6 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 
 /**
  * Product repository
@@ -161,15 +158,11 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByIds(array $productIds)
+    public function getItemsFromIdentifiers(array $identifiers)
     {
-        $qb = $this->createQueryBuilder('Product');
-        $this->addJoinToValueTables($qb);
-        $rootAlias = current($qb->getRootAliases());
-        $qb->andWhere(
-            $qb->expr()->in($rootAlias.'.id', ':product_ids')
-        );
-        $qb->setParameter(':product_ids', $productIds);
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.identifier IN (:identifiers)')
+            ->setParameter('identifiers', $identifiers);
 
         return $qb->getQuery()->execute();
     }
@@ -187,29 +180,9 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getFullProduct($id)
-    {
-        return $this
-            ->createQueryBuilder('p')
-            ->select('p, f, v, pr, m, o, os')
-            ->leftJoin('p.family', 'f')
-            ->leftJoin('p.values', 'v')
-            ->leftJoin('v.prices', 'pr')
-            ->leftJoin('v.media', 'm')
-            ->leftJoin('v.option', 'o')
-            ->leftJoin('v.options', 'os')
-            ->where('p.id=:id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifierProperties()
     {
-        return [$this->attributeRepository->getIdentifierCode()];
+        return ['identifier'];
     }
 
     /**
@@ -315,6 +288,8 @@ class ProductRepository extends EntityRepository implements
      */
     public function valueExists(ProductValueInterface $value)
     {
+        return false;
+
         $criteria = [
             'attribute'                              => $value->getAttribute(),
             $value->getAttribute()->getBackendType() => $value->getData()
@@ -330,56 +305,20 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getEligibleProductIdsForVariantGroup($variantGroupId)
+    public function getEligibleProductsForVariantGroup($variantGroupId)
     {
-        $sql = 'SELECT v.entity_id as product_id ' .
-            'FROM %product_table% p ' .
-            'INNER JOIN %product_value_table% v ON v.entity_id = p.id ' .
-            'INNER JOIN pim_catalog_group_attribute ga ON ga.attribute_id = v.attribute_id AND ga.group_id = :groupId ' .
-            'LEFT JOIN  pim_catalog_group_product gp ON gp.product_id = p.id ' .
-            'AND gp.group_id IN ( ' .
-            '    SELECT gr.id FROM pim_catalog_group gr ' .
-            '    JOIN pim_catalog_group_type gr_type ON gr_type.id = gr.type_id AND gr_type.code = "VARIANT") ' .
-            'WHERE gp.group_id = :groupId OR gp.group_id IS NULL ' .
-            'AND ( ' .
-            '    v.option_id IS NOT NULL ';
-
-
-        if (null !== $this->referenceDataRegistry) {
-            $references = $this->referenceDataRegistry->all();
-            if (!empty($references)) {
-                $valueMetadata = QueryBuilderUtility::getProductValueMetadata($this->_em, $this->_entityName);
-
-                foreach ($references as $code => $referenceData) {
-                    if (ConfigurationInterface::TYPE_SIMPLE === $referenceData->getType()) {
-                        if ($valueMetadata->isAssociationWithSingleJoinColumn($code)) {
-                            $sql .= sprintf(
-                                ' OR v.%s IS NOT NULL',
-                                $valueMetadata->getSingleAssociationJoinColumnName($code)
-                            );
-                        }
-                    }
-                }
-            }
+        $variantGroup = $this->groupRepository->find($variantGroupId);
+        if (null === $variantGroup || !$variantGroup->getType()->isVariant()) {
+            return [];
         }
 
-        $sql .= ') ' .
-            'GROUP BY v.entity_id ' .
-            'HAVING COUNT(ga.attribute_id) = ( SELECT COUNT(*) FROM pim_catalog_group_attribute WHERE group_id = :groupId) ';
+        $pqb = $this->queryBuilderFactory->create();
+        foreach ($variantGroup->getAxisAttributes() as $axisAttribute) {
+            $pqb->addFilter($axisAttribute->getCode(), Operators::IS_NOT_EMPTY, null);
+        }
+        $pqb->addFilter('variant_group', Operators::IS_EMPTY, null);
 
-        $sql = QueryBuilderUtility::prepareDBALQuery($this->_em, $this->_entityName, $sql);
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-        $stmt->bindValue('groupId', $variantGroupId);
-        $stmt->execute();
-        $results = $stmt->fetchAll();
-        $productIds = array_map(
-            function ($row) {
-                return $row['product_id'];
-            },
-            $results
-        );
-
-        return $productIds;
+        return $pqb->execute();
     }
 
     /**
@@ -387,17 +326,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneByIdentifier($identifier)
     {
-        $pqb = $this->queryBuilderFactory->create();
-        $qb = $pqb->getQueryBuilder();
-        $attribute = $this->getIdentifierAttribute();
-        $pqb->addFilter($attribute->getCode(), Operators::EQUALS, $identifier);
-        $result = $qb->getQuery()->execute();
-
-        if (empty($result)) {
-            return null;
-        }
-
-        return reset($result);
+        return $this->findOneBy(['identifier' => $identifier]);
     }
 
     /**
@@ -407,38 +336,13 @@ class ProductRepository extends EntityRepository implements
     {
         $pqb = $this->queryBuilderFactory->create();
         $pqb->addFilter('id', '=', $id);
-        $qb = $pqb->getQueryBuilder();
-        $result = $qb->getQuery()->execute();
+        $result = $pqb->execute();
 
-        if (empty($result)) {
+        if (0 === $result->count()) {
             return null;
         }
 
-        return reset($result);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneByWithValues($id)
-    {
-        $productQb = $this->queryBuilderFactory->create();
-        $qb = $productQb->getQueryBuilder();
-        $rootAlias = current($qb->getRootAliases());
-        $this->addJoinToValueTables($qb);
-        $qb->leftJoin('Attribute.availableLocales', 'AttributeLocales');
-        $qb->addSelect('Value');
-        $qb->addSelect('Attribute');
-        $qb->addSelect('AttributeLocales');
-        $qb->leftJoin('Attribute.group', 'AttributeGroup');
-        $qb->addSelect('AttributeGroup');
-        $qb->andWhere(
-            $qb->expr()->eq($rootAlias.'.id', $id)
-        );
-
-        return $qb
-            ->getQuery()
-            ->getOneOrNullResult();
+        return $result->current();
     }
 
     /**
@@ -607,6 +511,12 @@ class ProductRepository extends EntityRepository implements
     protected function findAllForVariantGroupQB(GroupInterface $variantGroup, array $criteria = [])
     {
         $qb = $this->createQueryBuilder('Product');
+
+        //TODO - TIP-697: make the variant groups work again
+        $qb->where('Product.identifier = :no_identifier');
+        $qb->setParameter('no_identifier', 'THERE_IS_NO_SKU_LIKE_DAT');
+
+        return $qb;
 
         $qb
             ->where(':variantGroup MEMBER OF Product.groups')

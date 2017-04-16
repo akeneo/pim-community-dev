@@ -2,24 +2,21 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
+use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
-use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -82,45 +79,29 @@ class ProductController
     /** @var ConverterInterface */
     protected $productValueConverter;
 
-    /** @var CompletenessManager */
-    protected $completenessManager;
-
-    /** @var ObjectManager */
-    protected $productManager;
-
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var CollectionFilterInterface */
-    protected $collectionFilter;
-
     /** @var NormalizerInterface */
     protected $completenessCollectionNormalizer;
 
-    /** @var string */
-    protected $storageDriver;
+    /** @var CompletenessCalculatorInterface */
+    protected $completenessCalculator;
 
     /**
-     * @param ProductRepositoryInterface   $productRepository
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param ObjectUpdaterInterface       $productUpdater
-     * @param SaverInterface               $productSaver
-     * @param NormalizerInterface          $normalizer
-     * @param ValidatorInterface           $validator
-     * @param UserContext                  $userContext
-     * @param ObjectFilterInterface        $objectFilter
-     * @param CollectionFilterInterface    $productEditDataFilter
-     * @param RemoverInterface             $productRemover
-     * @param ProductBuilderInterface      $productBuilder
-     * @param AttributeConverterInterface  $localizedConverter
-     * @param ProductFilterInterface       $emptyValuesFilter
-     * @param ConverterInterface           $productValueConverter
-     * @param CompletenessManager          $completenessManager
-     * @param ObjectManager                $productManager
-     * @param ChannelRepositoryInterface   $channelRepository
-     * @param CollectionFilterInterface    $collectionFilter
-     * @param NormalizerInterface          $completenessCollectionNormalizer
-     * @param string                       $storageDriver
+     * @param ProductRepositoryInterface      $productRepository
+     * @param AttributeRepositoryInterface    $attributeRepository
+     * @param ObjectUpdaterInterface          $productUpdater
+     * @param SaverInterface                  $productSaver
+     * @param NormalizerInterface             $normalizer
+     * @param ValidatorInterface              $validator
+     * @param UserContext                     $userContext
+     * @param ObjectFilterInterface           $objectFilter
+     * @param CollectionFilterInterface       $productEditDataFilter
+     * @param RemoverInterface                $productRemover
+     * @param ProductBuilderInterface         $productBuilder
+     * @param AttributeConverterInterface     $localizedConverter
+     * @param ProductFilterInterface          $emptyValuesFilter
+     * @param ConverterInterface              $productValueConverter
+     * @param NormalizerInterface             $completenessCollectionNormalizer
+     * @param CompletenessCalculatorInterface $completenessCalculator
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -137,12 +118,8 @@ class ProductController
         AttributeConverterInterface $localizedConverter,
         ProductFilterInterface $emptyValuesFilter,
         ConverterInterface $productValueConverter,
-        CompletenessManager $completenessManager,
-        ObjectManager $productManager,
-        ChannelRepositoryInterface $channelRepository,
-        CollectionFilterInterface $collectionFilter,
         NormalizerInterface $completenessCollectionNormalizer,
-        $storageDriver
+        CompletenessCalculatorInterface $completenessCalculator
     ) {
         $this->productRepository = $productRepository;
         $this->attributeRepository = $attributeRepository;
@@ -158,12 +135,8 @@ class ProductController
         $this->localizedConverter = $localizedConverter;
         $this->emptyValuesFilter = $emptyValuesFilter;
         $this->productValueConverter = $productValueConverter;
-        $this->completenessManager = $completenessManager;
-        $this->productManager = $productManager;
-        $this->channelRepository = $channelRepository;
-        $this->collectionFilter = $collectionFilter;
         $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
-        $this->storageDriver = $storageDriver;
+        $this->completenessCalculator = $completenessCalculator;
     }
 
     /**
@@ -363,7 +336,7 @@ class ProductController
      */
     protected function findProductOr404($id)
     {
-        $product = $this->productRepository->findOneByWithValues($id);
+        $product = $this->productRepository->find($id);
         $product = $this->objectFilter->filterObject($product, 'pim.internal_api.product.view') ? null : $product;
 
         if (!$product) {
@@ -419,7 +392,6 @@ class ProductController
             $data['values'] = [];
         }
 
-
         $this->productUpdater->update($product, $data);
     }
 
@@ -432,19 +404,16 @@ class ProductController
      */
     protected function getNormalizedCompletenesses(ProductInterface $product)
     {
-        $this->completenessManager->generateMissingForProduct($product);
-        // Product have to be refreshed to have the completeness values generated by generateMissingForProduct()
-        // (on ORM, completeness is not calculated the same way and product doesn't need to be refreshed)
-        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $this->storageDriver) {
-            $this->productManager->refresh($product);
+        $completenessCollection = $product->getCompletenesses();
+
+        if ($completenessCollection->isEmpty()) {
+            $newCompletenesses = $this->completenessCalculator->calculate($product);
+
+            foreach ($newCompletenesses as $completeness) {
+                $completenessCollection->add($completeness);
+            }
         }
 
-        $channels = $this->channelRepository->getFullChannels();
-        $locales = $this->userContext->getUserLocales();
-
-        $filteredLocales = $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view');
-        $completenesses = $this->completenessManager->getProductCompleteness($product, $channels, $filteredLocales);
-
-        return $this->completenessCollectionNormalizer->normalize($completenesses, 'internal_api');
+        return $this->completenessCollectionNormalizer->normalize($completenessCollection, 'internal_api');
     }
 }

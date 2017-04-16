@@ -164,6 +164,8 @@ services:
 
     pim_enrich.normalizer.product_violation:
         class: '%pim_enrich.normalizer.product_violation.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

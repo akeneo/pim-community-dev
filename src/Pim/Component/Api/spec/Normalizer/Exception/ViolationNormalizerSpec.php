@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraint;
@@ -37,25 +38,16 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ConstraintViolation $violation,
         ProductInterface $product,
         \ArrayIterator $iterator,
-        \ArrayIterator $productValues,
+        ProductValueCollectionInterface $productValues,
         ProductValueInterface $identifier,
         AttributeInterface $attribute,
         Constraint $constraint
     ) {
-        $attribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $attribute->getType()->willReturn('pim_catalog_identifier');
         $attribute->getCode()->willReturn('identifier');
         $identifier->getAttribute()->willReturn($attribute);
         $product->getValues()->willReturn($productValues);
-        $productValues->rewind()->willReturn($identifier);
-        $valueCount = 1;
-        $productValues->valid()->will(
-            function () use (&$valueCount) {
-                return $valueCount-- > 0;
-            }
-        );
-        $productValues->current()->willReturn($identifier);
-        $productValues->offsetGet('sku')->willReturn($identifier);
-        $productValues->next()->willReturn(null);
+        $productValues->getByKey('sku')->willReturn($identifier);
 
         $violation->getRoot()->willReturn($product);
         $violation->getMessage()->willReturn('Not Blank');
@@ -92,27 +84,18 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ConstraintViolation $violation,
         ProductInterface $product,
         \ArrayIterator $iterator,
-        \ArrayIterator $productValues,
+        ProductValueCollectionInterface $productValues,
         ProductValueInterface $description,
         AttributeInterface $attribute,
         Constraint $constraint
     ) {
-        $attribute->getAttributeType()->willReturn('pim_catalog_text');
+        $attribute->getType()->willReturn('pim_catalog_text');
         $attribute->getCode()->willReturn('description');
         $description->getAttribute()->willReturn($attribute);
         $description->getLocale()->willReturn('en_US');
         $description->getScope()->willReturn('ecommerce');
         $product->getValues()->willReturn($productValues);
-        $productValues->rewind()->willReturn($description);
-        $valueCount = 1;
-        $productValues->valid()->will(
-            function () use (&$valueCount) {
-                return $valueCount-- > 0;
-            }
-        );
-        $productValues->current()->willReturn($description);
-        $productValues->offsetGet('description-en_US-ecommerce')->willReturn($description);
-        $productValues->next()->willReturn(null);
+        $productValues->getByKey('description-en_US-ecommerce')->willReturn($description);
 
         $violation->getRoot()->willReturn($product);
         $violation->getMessage()->willReturn('Not Blank');

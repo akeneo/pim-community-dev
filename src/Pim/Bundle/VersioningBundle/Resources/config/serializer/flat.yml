@@ -21,22 +21,6 @@ parameters:
     pim_serializer.normalizer.flat.price.class:             Pim\Bundle\VersioningBundle\Normalizer\Flat\PriceNormalizer
     pim_serializer.normalizer.flat.file.class:              Pim\Bundle\VersioningBundle\Normalizer\Flat\FileNormalizer
 
-    # Denormalizers
-    pim_serializer.denormalizer.flat.product.class:           Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductDenormalizer
-    pim_serializer.denormalizer.flat.family.class:            Pim\Bundle\VersioningBundle\Denormalizer\Flat\FamilyDenormalizer
-    pim_serializer.denormalizer.flat.category.class:          Pim\Bundle\VersioningBundle\Denormalizer\Flat\CategoryDenormalizer
-    pim_serializer.denormalizer.flat.group.class:             Pim\Bundle\VersioningBundle\Denormalizer\Flat\GroupDenormalizer
-    pim_serializer.denormalizer.flat.association.class:       Pim\Bundle\VersioningBundle\Denormalizer\Flat\AssociationDenormalizer
-    pim_serializer.denormalizer.flat.product_value.class:     Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValueDenormalizer
-    pim_serializer.denormalizer.flat.product_values.class:    Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValuesDenormalizer
-    pim_serializer.denormalizer.flat.base_value.class:        Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\BaseValueDenormalizer
-    pim_serializer.denormalizer.flat.attribute_option.class:  Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\AttributeOptionDenormalizer
-    pim_serializer.denormalizer.flat.attribute_options.class: Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\AttributeOptionsDenormalizer
-    pim_serializer.denormalizer.flat.prices.class:            Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\PricesDenormalizer
-    pim_serializer.denormalizer.flat.metric.class:            Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\MetricDenormalizer
-    pim_serializer.denormalizer.flat.datetime.class:          Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\DateTimeDenormalizer
-    pim_serializer.denormalizer.flat.file.class:              Pim\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\FileDenormalizer
-
 services:
     pim_versioning.serializer.normalizer.flat.product:
         class: '%pim_serializer.normalizer.flat.product.class%'
@@ -108,7 +92,6 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.translation'
             - '@pim_versioning.serializer.normalizer.flat.product_value'
-            - '@pim_catalog.denormalizer.standard.product_values'
 
     pim_versioning.serializer.normalizer.flat.job_instance:
         class: '%pim_serializer.normalizer.flat.job_instance.class%'

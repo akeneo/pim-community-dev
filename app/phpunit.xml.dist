@@ -17,6 +17,7 @@
         <ini name="intl.error_level" value="0"/>
         <ini name="memory_limit" value="-1"/>
         <ini name="zend.enable_gc" value="1"/>
+        <ini name="serialize_precision" value="14"/>
     </php>
 
     <testsuites>
@@ -30,9 +31,14 @@
         <testsuite name="PIM_Integration_Test">
             <directory suffix="Integration.php">../src/Pim/Component/*/tests/integration</directory>
             <directory suffix="Integration.php">../src/Pim/Bundle/*Bundle/tests/integration</directory>
+            <directory suffix="Integration.php">../src/Akeneo/Bundle/*Bundle/tests/integration</directory>
         </testsuite>
 
         <!-- Set of small suites for PIM integration tests -->
+        <testsuite name="Akeneo_Integration_Test">
+            <directory suffix="Integration.php">../src/Akeneo/Bundle/*/tests/integration</directory>
+        </testsuite>
+
         <testsuite name="PIM_Api_Base_Integration_Test">
             <directory suffix="Integration.php">../src/Pim/Component/Api/tests/integration</directory>
             <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/EventSubscriber</directory>
@@ -69,6 +75,10 @@
 
         <testsuite name="PIM_Catalog_PQB_Integration_Test">
             <directory suffix="Integration.php">../src/Pim/Bundle/CatalogBundle/tests/integration/PQB</directory>
+        </testsuite>
+
+        <testsuite name="PIM_ReferenceData_Integration_Test">
+            <directory suffix="Integration.php">../src/Pim/Bundle/ReferenceDataBundle/tests/integration/PQB</directory>
         </testsuite>
 
     </testsuites>

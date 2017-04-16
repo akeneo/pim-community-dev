@@ -73,7 +73,8 @@ class ChannelLocaleSubscriberSpec extends ObjectBehavior
     ) {
         $event->getSubject()->willReturn($channel);
         $repository->getDeletedLocalesForChannel($channel)->willReturn([$localeEn]);
-        $completeness->scheduleForChannelAndLocale($channel, $localeEn)->shouldBeCalled();
+        // TODO TIP-694: disabling completeness calculation
+        // $completeness->scheduleForChannelAndLocale($channel, $localeEn)->shouldBeCalled();
 
         $localeFr->hasChannel($channel)->willReturn(true);
         $localeEs->hasChannel($channel)->willReturn(false);

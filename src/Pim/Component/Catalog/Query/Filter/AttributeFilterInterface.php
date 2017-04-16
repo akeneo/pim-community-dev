@@ -20,7 +20,7 @@ interface AttributeFilterInterface extends FilterInterface
      * @param string             $operator  the used operator
      * @param string|array       $value     the value(s) to filter
      * @param string             $locale    the locale
-     * @param string             $scope     the scope
+     * @param string             $channel   the channel
      * @param array              $options   the filter options
      *
      * @return AttributeFilterInterface
@@ -30,7 +30,7 @@ interface AttributeFilterInterface extends FilterInterface
         $operator,
         $value,
         $locale = null,
-        $scope = null,
+        $channel = null,
         $options = []
     );
 

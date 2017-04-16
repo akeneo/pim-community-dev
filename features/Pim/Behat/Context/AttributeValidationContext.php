@@ -23,8 +23,8 @@ class AttributeValidationContext extends PimContext
      */
     public function thereShouldBeTheFollowingAttributes(TableNode $table)
     {
+        $this->getService('doctrine.orm.entity_manager')->clear();
         foreach ($table->getHash() as $data) {
-            /** @var AttributeInterface $attribute */
             $attribute = $this->getFixturesContext()->getAttribute($data['code']);
             $this->getFixturesContext()->refresh($attribute);
 
@@ -38,7 +38,7 @@ class AttributeValidationContext extends PimContext
                         assertEquals($value, $attribute->getTranslation($matches['locale'])->getLabel());
                         break;
                     case 'type':
-                        assertEquals($value, $attribute->getAttributeType());
+                        assertEquals($value, $attribute->getType());
                         break;
                     case 'localizable':
                         assertEquals('1' === $value, $attribute->isLocalizable());

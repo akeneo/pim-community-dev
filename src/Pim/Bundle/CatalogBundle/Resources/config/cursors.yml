@@ -1,0 +1,23 @@
+parameters:
+    pim_catalog.factory.product_cursor.page_size: 50
+
+services:
+    pim_catalog.factory.product_cursor:
+        class: '%akeneo_elasticsearch.cursor.cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client'
+            - '@pim_catalog.object_manager.product'
+            - '%pim_catalog.entity.product.class%'
+            - '%akeneo_elasticsearch.cursor.cursor.class%'
+            - '%pim_catalog.factory.product_cursor.page_size%'
+            - 'pim_catalog_product'
+
+    pim_catalog.factory.product_bounded_cursor:
+        class: '%akeneo_elasticsearch.cursor.bounded_cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client'
+            - '@pim_catalog.object_manager.product'
+            - '%pim_catalog.entity.product.class%'
+            - '%akeneo_elasticsearch.cursor.bounded_cursor.class%'
+            - '%pim_catalog.factory.product_cursor.page_size%'
+            - 'pim_catalog_product'

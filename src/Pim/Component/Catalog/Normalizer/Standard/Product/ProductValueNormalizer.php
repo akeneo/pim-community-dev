@@ -2,9 +2,11 @@
 
 namespace Pim\Component\Catalog\Normalizer\Standard\Product;
 
-use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\ProductValue\OptionsProductValueInterface;
+use Pim\Component\Catalog\ProductValue\PriceCollectionProductValueInterface;
+use Pim\Component\ReferenceData\ProductValue\ReferenceDataCollectionProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -36,7 +38,11 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     public function normalize($entity, $format = null, array $context = [])
     {
-        $data = $entity->getData() instanceof Collection ?
+        $isCollection = $entity instanceof OptionsProductValueInterface
+            || $entity instanceof PriceCollectionProductValueInterface
+            || $entity instanceof ReferenceDataCollectionProductValueInterface;
+
+        $data = $isCollection ?
             $this->getCollectionValue($entity, $format, $context) : $this->getSimpleValue($entity, $format, $context);
 
         return [

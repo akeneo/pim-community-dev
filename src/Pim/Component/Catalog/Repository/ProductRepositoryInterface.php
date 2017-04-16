@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Repository;
 
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -21,29 +22,11 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 interface ProductRepositoryInterface extends ObjectRepository
 {
     /**
-     * Load a product entity with related attribute values
-     *
-     * @param int $id
-     *
-     * @throws NonUniqueResultException
-     *
-     * @return ProductInterface|null
-     */
-    public function findOneByWithValues($id);
-
-    /**
      * @param ChannelInterface $channel
      *
      * @return mixed
      */
     public function buildByChannelAndCompleteness(ChannelInterface $channel);
-
-    /**
-     * @param array $ids
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function findByIds(array $ids);
 
     /**
      * Find all products in a variant group (by variant axis attribute values)
@@ -54,15 +37,6 @@ interface ProductRepositoryInterface extends ObjectRepository
      * @return array
      */
     public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = []);
-
-    /**
-     * Returns a full product with all relations
-     *
-     * @param int $id
-     *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
-     */
-    public function getFullProduct($id);
 
     /**
      * Returns true if a ProductValue with the provided value alread exists,
@@ -114,13 +88,13 @@ interface ProductRepositoryInterface extends ObjectRepository
     /**
      * @param int $variantGroupId
      *
-     * @return array product ids
+     * @return CursorInterface
      */
-    public function getEligibleProductIdsForVariantGroup($variantGroupId);
+    public function getEligibleProductsForVariantGroup($variantGroupId);
 
     /**
      * @param GroupInterface $group
-     * @param                $maxResults
+     * @param int            $maxResults
      *
      * @return array
      */

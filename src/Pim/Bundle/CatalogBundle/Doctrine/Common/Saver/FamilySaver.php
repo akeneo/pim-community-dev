@@ -58,7 +58,8 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
 
         $this->objectManager->persist($family);
 
-        $this->completenessManager->scheduleForFamily($family);
+        // TODO TIP-694
+        // $this->completenessManager->scheduleForFamily($family);
 
         $this->objectManager->flush();
 
@@ -85,7 +86,8 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
 
             $this->objectManager->persist($family);
 
-            $this->completenessManager->scheduleForFamily($family);
+            // TODO TIP-694
+            // $this->completenessManager->scheduleForFamily($family);
         }
 
         $this->objectManager->flush();
