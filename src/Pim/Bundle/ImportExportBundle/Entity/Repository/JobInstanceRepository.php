@@ -22,7 +22,9 @@ class JobInstanceRepository extends ReferableEntityRepository
     {
         $qb = $this->createQueryBuilder('j');
         $qb
-            ->addSelect('j.alias AS jobAlias')
+            ->addSelect(
+                "CONCAT(CONCAT('pim_base_connector.jobs.', j.alias), '.title') as jobAlias"
+            )
             ->addSelect(
                 "CONCAT('pim_import_export.status.', j.status) as statusLabel"
             )

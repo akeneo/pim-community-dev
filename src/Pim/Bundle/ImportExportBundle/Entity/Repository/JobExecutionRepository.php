@@ -67,7 +67,9 @@ class JobExecutionRepository extends EntityRepository
             ->addSelect('e.startTime as date')
             ->addSelect('j.code AS jobCode')
             ->addSelect('j.label AS jobLabel')
-            ->addSelect('j.alias AS jobAlias');
+            ->addSelect(
+                "CONCAT(CONCAT('pim_base_connector.jobs.', j.alias), '.title') as jobAlias"
+            );
 
         $qb->innerJoin('e.jobInstance', 'j');
 
