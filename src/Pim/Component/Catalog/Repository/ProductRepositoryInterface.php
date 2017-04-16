@@ -77,15 +77,6 @@ interface ProductRepositoryInterface extends ObjectRepository
     public function findOneByIdentifier($identifier);
 
     /**
-     * @param string|int $id
-     *
-     * @return ProductInterface|null
-     *
-     * @deprecated
-     */
-    public function findOneById($id);
-
-    /**
      * @param int $variantGroupId
      *
      * @return CursorInterface

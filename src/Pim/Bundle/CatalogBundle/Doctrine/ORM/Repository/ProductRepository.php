@@ -287,22 +287,6 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function findOneById($id)
-    {
-        $pqb = $this->queryBuilderFactory->create();
-        $pqb->addFilter('id', '=', $id);
-        $result = $pqb->execute();
-
-        if (0 === $result->count()) {
-            return null;
-        }
-
-        return $result->current();
-    }
-
-    /**
      * Add join to values tables
      *
      * @param QueryBuilder $qb
