@@ -20,17 +20,11 @@ class LoadProductValuesSubscriberSpec extends ObjectBehavior
 {
     function let(
         ContainerInterface $container,
-        NormalizerInterface $serializer,
-        ProductValueFactory $valueFactory,
-        ProductValueCollectionFactory $valueCollectionFactory,
-        AttributeRepositoryInterface $attributeRepository
+        ProductValueCollectionFactory $valueCollectionFactory
     ) {
         $this->beConstructedWith($container);
 
-        $container->get('pim_serializer')->willReturn($serializer);
-        $container->get('pim_catalog.factory.product_value')->willReturn($valueFactory);
         $container->get('pim_catalog.factory.product_value_collection')->willReturn($valueCollectionFactory);
-        $container->get('pim_catalog.repository.attribute')->willReturn($attributeRepository);
     }
 
     function it_is_initializable()
@@ -44,29 +38,18 @@ class LoadProductValuesSubscriberSpec extends ObjectBehavior
     }
 
     function it_loads_values_of_a_product(
-        $serializer,
-        $valueFactory,
         $valueCollectionFactory,
-        $attributeRepository,
         LifecycleEventArgs $event,
         ProductInterface $product,
-        AttributeInterface $sku,
-        ProductValueCollectionInterface $values,
-        ProductValueInterface $skuValue
+        ProductValueCollectionInterface $values
     ) {
         $event->getObject()->willReturn($product);
-        $attributeRepository->getIdentifier()->willReturn($sku);
         $product->getIdentifier()->willReturn('foo');
 
-        $valueFactory->create($sku, null, null, 'foo')->willReturn($skuValue);
-        $serializer->normalize($skuValue, 'storage')->willReturn(['sku' => 'raw_identifier_value']);
-
-        $skuValue->getAttribute()->willReturn($sku);
-        $sku->getCode()->willReturn('sku');
-        $product->getRawValues()->willReturn(['other_values' => 'raw_values']);
+        $product->getRawValues()->willReturn(['an attribute' => 'a value', 'another attribute' => 'another value']);
 
         $valueCollectionFactory
-            ->createFromStorageFormat(['other_values' => 'raw_values', 'sku' => 'raw_identifier_value'])
+            ->createFromStorageFormat(['an attribute' => 'a value', 'another attribute' => 'another value'])
             ->willReturn($values);
 
         $product->setValues($values)->shouldBeCalled();

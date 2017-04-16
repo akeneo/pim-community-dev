@@ -92,7 +92,6 @@ class ProductBuilder implements ProductBuilderInterface
         $product = new $this->productClass();
 
         if (null !== $identifier) {
-            $product->setIdentifier($identifier);
             $identifierAttribute = $this->attributeRepository->getIdentifier();
             $this->addOrReplaceProductValue($product, $identifierAttribute, null, null, $identifier);
         }
@@ -188,8 +187,8 @@ class ProductBuilder implements ProductBuilderInterface
         $product->addValue($productValue);
 
         // TODO: TIP-722: This is a temporary fix, Product identifier should be used only as a field
-        if (AttributeTypes::IDENTIFIER === $attribute->getType() && null !== $data) {
-            $product->setIdentifier($data);
+        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
+            $product->setIdentifier($productValue);
         }
 
         return $productValue;

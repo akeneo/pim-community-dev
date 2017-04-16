@@ -82,6 +82,7 @@ class ProductBuilderSpec extends ObjectBehavior
         $identifierAttribute->getType()->willReturn(AttributeTypes::IDENTIFIER);
 
         $productValueFactory->create($identifierAttribute, null, null, 'mysku')->willReturn($identifierValue);
+        $identifierValue->getData()->willReturn('mysku');
         $identifierValue->getAttribute()->willReturn($identifierAttribute);
         $identifierValue->getLocale()->willReturn(null);
         $identifierValue->getScope()->willReturn(null);
