@@ -1,0 +1,82 @@
+---
+oro.user.controller:
+  group.message.saved: Grupo salvo
+  role.message.saved: Função salva
+  user.message.saved: Usuário salvo
+  status.message.saved: Status salvo
+oro.user.grid.users:
+  columns:
+    username: Nome de usuário
+    email: E-Mail
+    firstName: Primeiro nome
+    lastName: Sobrenome
+    createdAt: Criado em
+    updatedAt: Atualizado em
+    enabled: Status
+oro.user.grid.roles:
+  columns:
+    label: Rótulo
+oro.user.grid.groups:
+  columns:
+    name: Nome
+Users Management: Gerenciamento de usuários
+Create user: Criar usuário
+New user: Novo usuário
+Additional: Adicional
+Groups and Roles: Grupos e Funções
+Username: Nome de usuário
+Password: Senha
+Re-enter password: Redigite a senha
+Name prefix: Prefixo do nome
+First name: Primeiro nome
+Middle name: Nome do meio
+Last name: Sobrenome
+Name suffix: Sufixo do nome
+Date of birth: Data de nascimento
+Avatar: Avatar
+Additional emails: E-Mails adicionais
+Add another email: Adicionar outro E-Mail
+Catalog locale: Catalogar localidade
+Catalog scope: Catalogar escopo
+Default tree: Catalogar árvore de categorias
+Business Units: Unidades de Negócios
+Email synchronization settings: Configurações de sincronização de E-Mail
+Host: Servidor
+Port: Porta
+Ssl: SSL
+Last logged in: Último acesso em
+Login count: Contagem de acessos
+Additional Information: Informações Adicionais
+Basic Information: Informações Básicas
+Contact Information: Informações para Contato
+User name: Nome de usuário
+Birthday: Data de Nascimento
+API key: Chave da API
+Generate key: Gerar chave
+Primary: primário
+Role: Função
+Owner: Proprietário
+General: Geral
+Entity: Entidade
+Capabilities: Capacidades
+Save and close: Salvar e Fechar
+Has role: Tem função
+(default): Permissão padrão nas entidades
+VIEW: Visão
+CREATE: Criar
+EDIT: Editar
+DELETE: Excluir
+ASSIGN: Atribuir
+SHARE: Compartilhar
+oro:
+  security:
+    access-level:
+      BASIC: Usuário
+      LOCAL: Unidade de negócios
+      DEEP: Divisão
+      GLOBAL: Organização
+      SYSTEM: Sistema
+      NONE: Nenhum
+Create group: Criar grupo
+Has group: Possui grupo
+Save and Close: Salvar e Fechar

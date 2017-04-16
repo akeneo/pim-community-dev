@@ -1,0 +1,23 @@
+---
+pim_dashboard.title: ダッシュボード
+pim_dashboard.link.label:
+  product: 製品管理
+  category: カテゴリ管理
+  attribute: 属性管理
+  family: ファミリー管理
+pim_dashboard.widget.error:
+  title: ウィジェットの読み込み中にエラーが発生しました
+  message: "ウィジェット'%alias%'がありません"
+pim_dashboard.widget.completeness:
+  title: チャンネルとロケールについての完全性
+pim_dashboard.widget.last_operations:
+  title: 最後の操作
+  empty: 操作が見つかりません
+  status: ステータス
+  date: 日付
+  type: タイプ
+  profile name: プロファイル名
+  details: 詳細
+  job_type:
+    import: インポート
+    export: エクスポート

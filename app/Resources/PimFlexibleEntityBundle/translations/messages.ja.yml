@@ -1,0 +1,23 @@
+---
+pim_flexibleentity_boolean: Yes/No
+pim_flexibleentity_text: テキストフィールド
+pim_flexibleentity_textarea: テキストエリア
+pim_flexibleentity_date: 日付
+pim_flexibleentity_datetime: 日付と時間
+pim_flexibleentity_integer: 整数
+pim_flexibleentity_money: 貨幣
+pim_flexibleentity_number: 数
+pim_flexibleentity_multiselect: 複数選択
+pim_flexibleentity_simpleselect: 単純選択
+pim_flexibleentity_metric: メトリック
+pim_flexibleentity_file: ファイルアップロード
+pim_flexibleentity_image: 画像アップロード
+pim_flexibleentity_fileurl: ファイルの url
+pim_flexibleentity_imageurl: 画像の url
+pim_flexibleentity_email: 電子メール
+pim_flexibleentity_url: Url
+pim_flexibleentity_multicheckbox: チェックボックス
+pim_flexibleentity_simpleradio: ラジオ
+pim_flexibleentity_price: 価格
+pim_flexibleentity_phone_collection: 電話番号リスト
+pim_flexibleentity_email_collection: メールアドレスリスト

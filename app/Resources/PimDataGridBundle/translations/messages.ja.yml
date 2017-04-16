@@ -1,0 +1,16 @@
+---
+oro_datagrid.no_data_hint %entityHint%: '%entityHint% がありません。'
+oro_datagrid.not_found_hint %entityHint%: '検索条件に一致する %entityHint% が見つかりませんでした。検索条件を変更してみてください.'
+oro_datagrid.label_add_filter: フィルター管理
+oro_datagrid.label_loading_mask: 読み込み中...
+oro.grid.mass_action.selected_rows: 選択した行
+oro.grid.mass_action.confirm_title: 一括操作の確認
+oro.grid.mass_action.confirm_content: 実行してもよろしいですか？
+oro.grid.mass_action.confirm_ok: はい、実行します
+oro.grid.mass_action.error_title: 一括操作エラー
+oro.grid.mass_action.error_content: 一括操作を実行できません
+oro.grid.mass_action.delete.label: 削除
+oro.grid.mass_action.delete.confirm_title: 一括削除の確認
+oro.grid.mass_action.delete.confirm_content: 選択した項目を削除してもよろしいですか?
+oro.grid.datagrid.page_size.all: すべて
+oro.grid.mass_action.delete.success_message: '{0} 削除されたエンティティはありませんでした| {1} 1件のエンティティが削除されました|]1,Inf [%count% 件のエンティティが削除されました'

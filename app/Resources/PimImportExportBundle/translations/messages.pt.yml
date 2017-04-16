@@ -1,0 +1,104 @@
+---
+export profile:
+  overview: visão geral do perfil de exportação
+  create: criar perfil de exportação
+  edit: editar perfil de exportação
+import profile:
+  overview: visão geral do perfil de importação
+  create: criar perfil de importação
+  edit: editar perfil de importação
+Job: Tarefa
+Connector: Conector
+pim_import_export:
+  status:
+    - Pronto
+  batch_status:
+    1: CONCLUÍDO
+    2: INICIANDO
+    3: INICIADO
+    4: PARANDO
+    5: PARADO
+    6: FALHOU
+    7: ABANDONADO
+    8: DESCONHECIDO
+  download_archive:
+    archive: baixar arquivo gerado | baixar arquivos gerados
+    output: baixar arquivo gerado | baixar arquivos gerados
+    input: baixar arquivo de leitura|baixar arquivos de leitura
+    invalid: baixar dados inválidos
+pim_title.export_profile.index: Gerenciamento dos perfis de exportação
+pim_title.export_profile.edit: 'Perfis de exportação %job.label% | Editar'
+pim_title.export_profile.show: 'Perfis de exportação %job.label% | Mostrar'
+pim_title.export_execution.index: Histórico de execuções de exportação
+pim_title.export_execution.show: Execuções de exportação | Detalhes
+pim_title.import_profile.index: Gerenciamento dos perfis de importação
+pim_title.import_profile.edit: 'Perfis de importação %job.label% | Editar'
+pim_title.import_profile.show: 'Perfis de importação %job.label% | Mostrar'
+pim_title.import_execution.index: Histórico de execuções de importação
+pim_title.import_execution.show: Execuções de importação | Detalhes
+export report:
+  overview: relatórios de exportação
+import report:
+  overview: relatórios de importação
+pim_importexport:
+  acl:
+    export_profile:
+      index: Ver lista de perfis de exportação
+      create: Criar um perfil de exportação
+      show: Mostrar um perfil de exportação
+      edit: Editar um perfil de exportação
+      remove: Remover um perfil de exportação
+      launch: Iniciar um perfil de exportação
+    import_profile:
+      index: Exibir a lista de perfis de importação
+      create: Criar um perfil de importação
+      show: Mostrar um perfil de importação
+      edit: Editar um perfil de importação
+      remove: Remover um perfil de importação
+      launch: Iniciar um perfil de importação
+    export_execution:
+      index: Exibir a lista de relatórios de exportação
+      show: Exibir os detalhes do relatório de exportação
+      dl_log: Baixar o log do relatório de exportação
+      dl_files: Baixar os arquivos exportados
+    import_execution:
+      index: Ver lista de relatórios de importação
+      show: Exibir os detalhes do relatório de importação
+      dl_log: Baixar o log do relatório de importação
+      dl_files: Baixar os arquivos importados
+btn:
+  create:
+    export profile: criar um perfil de exportação
+    import profile: criar um perfil de importação
+Upload and import: Carregar e importar
+confirmation:
+  remove:
+    export profile: 'Tem certeza de que deseja excluir o perfil de exportação %name%?'
+    import profile: 'Tem certeza de que deseja excluir o perfil de importação %name%?'
+flash:
+  export:
+    created: A exportação foi criada com sucesso
+    removed: A exportação foi removida
+    updated: A exportação foi atualizada com sucesso
+  import:
+    created: A importação foi criada com sucesso
+    removed: A importação foi removida
+    updated: A importação foi atualizada com sucesso
+pim_menu:
+  item:
+    export_history: Histórico de exportações
+    export_profile: Perfis de exportação
+    import_history: Histórico de importações
+    import_profile: Perfis de importação
+General properties: Propriedades gerais
+History: Histórico
+pane.accordion:
+  properties: Propriedades
+  global_settings: Configurações globais
+popin.create:
+  export_profile.title: Criar um novo perfil de exportação
+  import_profile.title: Criar um novo perfil de exportação
+Display item: Mostrar item
+Hide item: Esconder item
+Collecting data about job execution...: Coletando dados sobre a execução do trabalho...
+You must select a file to upload: Você deve selecionar um arquivo para carregar
