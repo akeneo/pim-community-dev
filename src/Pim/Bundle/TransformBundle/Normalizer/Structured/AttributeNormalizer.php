@@ -21,19 +21,13 @@ class AttributeNormalizer implements NormalizerInterface
     const CHANNEL_SCOPE       = 'Channel';
     const ALL_LOCALES         = 'All';
 
-    /**
-     * @var array
-     */
-    protected $supportedFormats = array('json', 'xml');
+    /** @var array */
+    protected $supportedFormats = ['json', 'xml'];
 
-    /**
-     * @var TranslationNormalizer
-     */
+    /** @var TranslationNormalizer */
     protected $transNormalizer;
 
     /**
-     * Constructor
-     *
      * @param TranslationNormalizer $transNormalizer
      */
     public function __construct(TranslationNormalizer $transNormalizer)
@@ -44,34 +38,40 @@ class AttributeNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $results = array(
+        $results = [
             'type' => $object->getAttributeType(),
             'code' => $object->getCode()
-        ) + $this->transNormalizer->normalize($object, $format, $context);
+        ] + $this->transNormalizer->normalize($object, $format, $context);
 
         $results = array_merge(
             $results,
-            array(
+            [
                 'group'                   => ($object->getGroup()) ? $object->getGroup()->getCode() : null,
                 'unique'                  => (int) $object->isUnique(),
+                'sort_order'              => (int) $object->getSortOrder(),
+                'available_locales'       => $this->normalizeAvailableLocales($object),
                 'useable_as_grid_filter'  => (int) $object->isUseableAsGridFilter(),
+                'max_characters'          => $object->getMaxCharacters(),
+                'decimals_allowed'        => (int) $object->isDecimalsAllowed(),
+                'negative_allowed'        => (int) $object->isNegativeAllowed(),
                 'allowed_extensions'      => implode(self::ITEM_SEPARATOR, $object->getAllowedExtensions()),
                 'metric_family'           => $object->getMetricFamily(),
                 'default_metric_unit'     => $object->getDefaultMetricUnit(),
-                'reference_data_name'     => $object->getReferenceDataName()
-            )
+                'reference_data_name'     => $object->getReferenceDataName(),
+                'max_file_size'           => $object->getMaxFileSize(),
+            ]
         );
         if (isset($context['versioning'])) {
             $results = array_merge($results, $this->getVersionedData($object));
         } else {
             $results = array_merge(
                 $results,
-                array(
+                [
                     'localizable' => (int) $object->isLocalizable(),
                     'scopable'    => (int) $object->isScopable(),
-                )
+                ]
             );
         }
 
@@ -98,12 +98,10 @@ class AttributeNormalizer implements NormalizerInterface
         $dateMin = (is_null($attribute->getDateMin())) ? '' : $attribute->getDateMin()->format(\DateTime::ISO8601);
         $dateMax = (is_null($attribute->getDateMax())) ? '' : $attribute->getDateMax()->format(\DateTime::ISO8601);
 
-        return array(
-            'available_locales'   => $this->normalizeAvailableLocales($attribute),
+        return [
             'localizable'         => $attribute->isLocalizable(),
             'scope'               => $attribute->isScopable() ? self::CHANNEL_SCOPE : self::GLOBAL_SCOPE,
             'options'             => $this->normalizeOptions($attribute),
-            'sort_order'          => (int) $attribute->getSortOrder(),
             'required'            => (int) $attribute->isRequired(),
             'max_characters'      => (string) $attribute->getMaxCharacters(),
             'validation_rule'     => (string) $attribute->getValidationRule(),
@@ -118,7 +116,7 @@ class AttributeNormalizer implements NormalizerInterface
             'metric_family'       => (string) $attribute->getMetricFamily(),
             'default_metric_unit' => (string) $attribute->getDefaultMetricUnit(),
             'max_file_size'       => (string) $attribute->getMaxFileSize(),
-        );
+        ];
     }
 
     /**
@@ -144,10 +142,10 @@ class AttributeNormalizer implements NormalizerInterface
      */
     protected function normalizeOptions(AttributeInterface $attribute)
     {
-        $data = array();
+        $data = [];
         $options = $attribute->getOptions();
         foreach ($options as $option) {
-            $data[$option->getCode()] = array();
+            $data[$option->getCode()] = [];
             foreach ($option->getOptionValues() as $value) {
                 $data[$option->getCode()][$value->getLocale()] = $value->getValue();
             }
