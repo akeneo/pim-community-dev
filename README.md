@@ -1,5 +1,5 @@
-Akeneo PIM Application
-======================
+Akeneo PIM Application toto
+===========================
 Welcome to Akeneo PIM Product.
 
 This repository is used to develop the Akeneo PIM product.
