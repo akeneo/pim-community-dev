@@ -84,6 +84,9 @@ class AppKernel extends Kernel
             new Pim\Bundle\TransformBundle\PimTransformBundle(),
             new Pim\Bundle\CommentBundle\PimCommentBundle(),
             new Pim\Bundle\PdfGeneratorBundle\PimPdfGeneratorBundle(),
+
+            // Acme bundles
+            new Acme\Bundle\CatalogBundle\AcmeCatalogBundle(),
         ];
     }
 
