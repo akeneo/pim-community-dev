@@ -15,7 +15,6 @@ use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
@@ -125,19 +124,17 @@ class FamilyController extends AbstractDoctrineController
     /**
      * List families
      *
-     * @Template
      * @AclAncestor("pim_enrich_family_index")
      * @return Response
      */
     public function indexAction()
     {
-        return [];
+        return $this->templating->renderResponse('PimEnrichBundle:Family:index.html.twig', []);
     }
 
     /**
      * Create a family
      *
-     * @Template
      * @AclAncestor("pim_enrich_family_create")
      * @return array
      */
@@ -160,9 +157,12 @@ class FamilyController extends AbstractDoctrineController
             return new Response(json_encode($response));
         }
 
-        return [
-            'form' => $this->familyForm->createView()
-        ];
+        return $this->templating->renderResponse(
+            'PimEnrichBundle:Family:create.html.twig',
+            [
+                'form' => $this->familyForm->createView()
+            ]
+        );
     }
 
     /**
@@ -172,7 +172,6 @@ class FamilyController extends AbstractDoctrineController
      *
      * @param Family $family
      *
-     * @Template
      * @AclAncestor("pim_enrich_family_index")
      * @return array
      */
@@ -182,13 +181,16 @@ class FamilyController extends AbstractDoctrineController
             $this->addFlash('success', 'flash.family.updated');
         }
 
-        return [
-            'form'            => $this->familyForm->createView(),
-            'attributesForm'  => $this->getAvailableAttributesForm(
-                $family->getAttributes()->toArray()
-            )->createView(),
-            'channels' => $this->channelManager->getChannels()
-        ];
+        return $this->templating->renderResponse(
+            'PimEnrichBundle:Family:edit.html.twig',
+            [
+                'form'            => $this->familyForm->createView(),
+                'attributesForm'  => $this->getAvailableAttributesForm(
+                    $family->getAttributes()->toArray()
+                )->createView(),
+                'channels' => $this->channelManager->getChannels()
+            ]
+        );
     }
 
     /**
