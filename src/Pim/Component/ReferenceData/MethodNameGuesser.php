@@ -2,7 +2,7 @@
 
 namespace Pim\Component\ReferenceData;
 
-use Symfony\Component\PropertyAccess\StringUtil;
+use Doctrine\Common\Inflector\Inflector;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -26,8 +26,6 @@ class MethodNameGuesser
      * @param string $dataName
      * @param bool   $singularify
      *
-     * @throws \LogicException If it can't singularify a word.
-     *
      * @return string
      */
     public static function guess($prefix, $dataName, $singularify = false)
@@ -35,13 +33,7 @@ class MethodNameGuesser
         $name = $dataName;
 
         if ($singularify) {
-            $name = StringUtil::singularify($dataName);
-
-            if (is_array($name)) {
-                throw new \LogicException(
-                    sprintf('Error while guessing the method name for "%s"', $dataName)
-                );
-            }
+            $name = Inflector::singularize($dataName);
         }
 
         $name = ucfirst($name);
