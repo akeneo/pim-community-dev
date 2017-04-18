@@ -71,7 +71,7 @@
                     <td colspan="5">
                         <span class="title"><%= warning.label.toUpperCase() %></span>&nbsp;
                         <ul>
-                            <% _.each(warning.reason.split("\n"), function(warningItem) { %>
+                            <% _.each(warning.reasons, function(warningItem) { %>
                                 <% if (warningItem) { %>
                                     <li><%= warningItem %></li>
                                 <% } %>

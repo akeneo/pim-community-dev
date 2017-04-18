@@ -192,14 +192,15 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
             } elseif (is_object($invalidValue)) {
                 $invalidValue = get_class($invalidValue);
             }
-            $errors[] = sprintf(
-                "%s: %s: %s\n",
-                $violation->getPropertyPath(),
-                $violation->getMessage(),
-                $invalidValue
-            );
+
+            $error = [];
+            $error['message'] = $violation->getMessageTemplate();
+            $error['parameters'] = $violation->getMessageParameters();
+            $error['parameters']['attribute'] = $violation->getPropertyPath();
+            $error['parameters']['invalid_value'] = $invalidValue;
+            $errors[] = $error;
         }
 
-        throw new InvalidItemException(implode("\n", $errors), $item, [], 0, $previousException);
+        throw new InvalidItemException('One or more errors occurred.', $item, [], 0, $previousException, $errors);
     }
 }
