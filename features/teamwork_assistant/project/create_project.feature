@@ -106,6 +106,7 @@ Feature: Create enrichment project
       | project-due-date | 01/31/2051           |
     And I press the "Save" button
     Then I should see the text "This value is already used."
+    And I reload the page
     When I am on the products page
     And I filter by "scope" with operator "equals" and value "Mobile"
     And I click on the create project button
