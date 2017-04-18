@@ -228,9 +228,16 @@ class AttributeOptionController
         return new JsonResponse($this->getFormErrors($form), 400);
     }
 
+    /**
+     * Parse form errors and return as an object
+     *
+     * @param FormInterface $form
+     *
+     * @return object
+     */
     protected function getFormErrors($form)
     {
-        $errors = array();
+        $errors = [];
 
         foreach ($form as $child) {
             foreach ($child->getErrors(true) as $error) {
