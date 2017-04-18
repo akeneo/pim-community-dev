@@ -53,7 +53,7 @@ services:
     oro_datagrid.twig.metadata:
         class: %oro_datagrid.twig.metadata.class%
         arguments:
-            - @oro_datagrid.datagrid.manager
+            - @service_container
             - @oro_datagrid.datagrid.request_params
             - @router
         tags:
