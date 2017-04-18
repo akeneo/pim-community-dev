@@ -36,7 +36,7 @@ config:
                 get: pim_enrich_variant_group_rest_get
         pim/controller/group:
             fetcher: group
-        pim/controller/group:
+        pim/controller/variant-group:
             fetcher: variant-group
         pim/remover/association-type:
             url: pim_enrich_associationtype_rest_remove
@@ -231,7 +231,7 @@ config:
                     module: pim/controller/group
                     aclResourceId: pim_enrich_group_edit
                 pim_enrich_variant_group_edit:
-                    module: pim/controller/group
+                    module: pim/controller/variant-group
                     aclResourceId: pim_enrich_variant_group_edit
                 pim_importexport_export_profile_edit:
                     module: pim/controller/job-instance
@@ -399,7 +399,8 @@ config:
         pim/controller/association-type:    pimenrich/js/controller/association-type
         pim/controller/redirect:            pimenrich/js/controller/redirect
         pim/controller/job-instance:        pimenrich/js/controller/job-instance
-        pim/controller/group:               pimenrich/js/controller/variant-group
+        pim/controller/group:               pimenrich/js/controller/    group
+        pim/controller/variant-group:       pimenrich/js/controller/variant-group
         pim/controller/role:                pimenrich/js/controller/role
         pim/controller/job-execution:       pimenrich/js/controller/job-execution
         pim/controller/group-type:          pimenrich/js/controller/group-type
