@@ -69,6 +69,7 @@ Feature: Read a single product by applying rules
     When I switch the locale to "fr_FR"
     Then the product Nom should be "Veste blanche"
     When I am on the "my-cardigan" product page
+    When I switch the locale to "en_US"
     Then the product Name should be "Red cardigan"
 
   Scenario: Successfully execute a rule with a "not empty" condition
