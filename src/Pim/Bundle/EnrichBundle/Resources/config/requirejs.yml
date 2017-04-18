@@ -399,7 +399,7 @@ config:
         pim/controller/association-type:    pimenrich/js/controller/association-type
         pim/controller/redirect:            pimenrich/js/controller/redirect
         pim/controller/job-instance:        pimenrich/js/controller/job-instance
-        pim/controller/group:               pimenrich/js/controller/    group
+        pim/controller/group:               pimenrich/js/controller/group
         pim/controller/variant-group:       pimenrich/js/controller/variant-group
         pim/controller/role:                pimenrich/js/controller/role
         pim/controller/job-execution:       pimenrich/js/controller/job-execution
