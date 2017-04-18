@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Normalizer\Product;
 
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\ProductValue\OptionProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -17,9 +18,19 @@ class OptionNormalizer implements NormalizerInterface
      */
     public function normalize($option, $format = null, array $context = [])
     {
-        $locale = isset($context['data_locale']) ? $context['data_locale'] : null;
-        $translation = $option->getData()->getTranslation($locale);
-        $label = null !== $translation->getValue() ? $translation->getValue() : sprintf('[%s]', $option->getData()->getCode());
+        $optionData = $option->getData();
+
+        $label = '';
+        if ($optionData instanceof AttributeOptionInterface) {
+            if (isset($context['data_locale'])) {
+                $optionData->setLocale($context['data_locale']);
+            }
+            $translation = $optionData->getTranslation();
+
+            $label = null !== $translation->getValue() ?
+                $translation->getValue() :
+                sprintf('[%s]', $option->getData()->getCode());
+        }
 
         return [
             'locale' => $option->getLocale(),
