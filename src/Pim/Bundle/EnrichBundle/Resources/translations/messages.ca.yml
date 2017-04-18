@@ -334,7 +334,6 @@ variant group:
   edit: editar grup de variants
 association type:
   title: tipus d'associació
-  overview: resum de tipus d'associació
   create: crear tipus d'associació
   edit: editar tipus d'associació
 products: productes

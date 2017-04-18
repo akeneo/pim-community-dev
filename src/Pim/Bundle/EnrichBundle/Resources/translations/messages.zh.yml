@@ -334,7 +334,6 @@ variant group:
   edit: 编辑属性组
 association type:
   title: 关联类型
-  overview: 关联类型概述
   create: 创建关联类型
   edit: 编辑关联类型
 products: 产品

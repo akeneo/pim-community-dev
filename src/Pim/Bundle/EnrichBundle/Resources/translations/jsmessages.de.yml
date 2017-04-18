@@ -8,7 +8,7 @@ confirmation:
     channel: Möchten Sie diesen Ausgabekanal wirklich löschen?
     group: Möchten Sie diese Gruppe wirklich löschen?
     variant group: Möchten Sie diese Variantengruppe wirklich löschen?
-    group type: Möchten Sie diesen Gruppentyp wirklich löschen?
+    group_type: Möchten Sie diesen Gruppentyp wirklich löschen?
     import profile: Möchten Sie dieses Importprofil wirklich löschen?
     export profile: Möchten Sie dieses Exportprofil wirklich löschen?
     user: Möchten Sie diesen Benutzer wirklich löschen?
@@ -46,7 +46,7 @@ flash:
     removed: Gruppe erfolgreich entfernt
   variant group:
     removed: Variantengruppe erfolgreich entfernt
-  group type:
+  group_type:
     removed: Gruppentyp erfolgreich gelöscht
   import profile:
     removed: Importprofil erfolgreich entfernt
@@ -222,6 +222,20 @@ pim_enrich:
         updated_by: Aktualisiert von
       btn:
         save: Speichern
+      title: Verbindungstyp
+    group_type:
+      info:
+        field_not_ready:
+          The group type cannot be saved right now. The following fields are not ready:
+            - Felder
+      meta:
+        created: Erstellt
+        created_by: Erstellt von
+        updated: Aktualisiert
+        updated_by: Aktualisiert von
+      btn:
+        save: Speichern
+      title: Gruppentyp
     channel:
       title: Ausgabekanal
       info:
@@ -337,7 +351,6 @@ pim_enrich:
           info:
             search_attributes: Suche...
             no_available_attributes: Es können keine weiteren Attribute hinzugefügt werden
-            attributes_selected: "{{ attributeCount }} Attribute ausgewählt"
             no_match: Keine Treffer gefunden
             load_more: Weitere Ergebnisse werden geladen...
         categories:
@@ -375,6 +388,15 @@ pim_enrich:
         select_attributes: Attribute auswählen
         select: Auswählen
     association_type:
+      tab:
+        properties:
+          title: Eigenschaften
+          general: Allgemeine Eigenschaften
+          code: Code
+          label_translations: Feldbezeichner-Übersetzungen
+        history:
+          title: Historie
+    group_type:
       tab:
         properties:
           title: Eigenschaften
@@ -466,6 +488,23 @@ pim_enrich:
           info:
             search_attributes: Suche...
             no_available_attributes: Es können keine weiteren Attribute hinzugefügt werden
+    job_execution:
+      loading: Lädt...
+      refreshBtn.title: Aktualisieren
+      meta:
+        status.title: Status
+      button:
+        show_profile.title: Profil anzeigen
+        download_log.title: Log herunterladen
+      summary:
+        fetching: Sammle Daten zur Ausführung des Jobs...
+        warning: Warnung
+        header.step: Schritt
+        header.status: Status
+        header.warnings: Warnungen
+        header.summary: Zusammenfassung
+        header.start: Start
+        header.end: Ende
     job_instance:
       fail:
         launch: Das Job-Profil konnte nicht geladen werden. Bitte prüfen Sie, ob es korrekt ist und Sie den entsprechen Rechte besitzen.
@@ -540,6 +579,15 @@ pim_enrich:
             help: Bedeutet, dass sich die Änderungsverfolgung von Produkten automatisch aktualisiert. Um die Systemleistung zu verbessern, kann diese Funktion ausgeschaltet werden
         history:
           title: Historie
+    mass_edit:
+      family:
+        attributes:
+          label_label: Bezeichnung
+          toolbox:
+            select_attributes_by_groups: Nach Gruppen hinzufügen
+            select_attributes: Attribute hinzufügen
+            add: Hinzufügen
+            attributes_groups_selected: '{{ itemsCount }} Gruppe(n) ausgewählt'
   job:
     upload: Drag & Drop einer Datei oder hier klicken
   export:
@@ -685,3 +733,26 @@ pim_enrich:
       description: Die ausgewählten Produktattribute werden für die folgenden Daten des Gebietsschemas <span class="bold-purple">{{ locale }}</span> und dem Ausgabekanal <span class="bold-purple">{{ channel }}</span>, welche in der Produktübersicht ausgewählt sind, bearbeitet.
 pim_enrich.error:
   exception.title: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
+batch_jobs:
+  add_product_value:
+    label: Produktwert hinzufügen
+    perform:
+      label: Produktwert hinzufügen
+  update_product_value:
+    label: Wert des Produkts aktualisieren
+    perform:
+      label: Wert des Produkts aktualisieren
+  edit_common_attributes:
+    label: Gemeinsame Attribute bearbeiten
+    perform:
+      label: Gemeinsame Attribute bearbeiten
+    cleaner:
+      label: Bereinige Dateien für gemeinsame Attribute
+  set_attribute_requirements:
+    label: Benötigte Attribute auswählen
+    perform:
+      label: Benötigte Attribute auswählen
+  add_to_variant_group:
+    label: Zu einer Variantengruppe hinzufügen
+    perform:
+      label: Zu einer Variantengruppe hinzufügen

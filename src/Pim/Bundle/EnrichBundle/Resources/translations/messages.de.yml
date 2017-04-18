@@ -334,7 +334,6 @@ variant group:
   edit: Variantengruppe bearbeiten
 association type:
   title: Verbindungstyp
-  overview: Verbindungstypen-Übersicht
   create: Verbindungstyp anlegen
   edit: Verbindungstyp bearbeiten
 products: Produkte

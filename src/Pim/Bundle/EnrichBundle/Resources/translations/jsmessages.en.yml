@@ -743,6 +743,10 @@ pim_enrich:
     mass_edit_action:
         edit_common_attributes:
             description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.
+    index:
+        association_type:
+          title:      Association type overview
+          create_btn: Create association type
 
 pim_enrich.error:
     exception.title: Oh snap! A {{ status_code }} error occured...

@@ -1,26 +1,38 @@
 confirmation:
   remove:
     item: Sei sicuro di voler eliminare questo articolo?
-    association type: Sei sicuro di voler eliminare questo tipo di associazione?
+    association_type: Sei sicuro di voler eliminare questo tipo di associazione?
     attribute: Sei sicuro di voler eliminare questo attributo?
     family: Sei sicuro di voler eliminare questa famiglia?
     product: Sei sicuro di voler eliminare questo prodotto?
     channel: Sei sicuro di voler eliminare questo canale?
     group: Sei sicuro di voler eliminare questo gruppo?
     variant group: Sei sicuro di voler eliminare questa variante del gruppo?
-    group type: Sei sicuro di voler eliminare questo tipo di gruppo?
+    group_type: Sei sicuro di voler eliminare questo tipo di gruppo?
     import profile: Sei sicuro di voler eliminare questo profilo di importazione?
     export profile: Sei sicuro di voler eliminare questo profilo di esportazione?
     user: Sei sicuro di voler eliminare questo utente?
     role: Sei sicuro di voler eliminare questo ruolo?
 pim_datagrid:
   mass_action_group:
+    bulk_actions:
+      label: Azioni Massive
     quick_export:
       label: Esportazione rapida
+  mass_action:
+    delete:
+      confirm_content: Sei sicuro di che voler eliminare i prodotti selezionati?
+      success: I prodotti selezionati sono stati eliminati con successo.
+      error: Si è verificato un errore cancellando i prodotti selezionati, per favore riprova.
+  view_selector:
+    view: Visualizzazione
+    create_view_modal:
+      confirm: OK
+      cancel: Cancella
 flash:
   item:
     removed: Articolo rimosso con successo
-  association type:
+  association_type:
     removed: Tipo di associazione rimossa con successo
   attribute:
     removed: Attributo eliminato con successo
@@ -34,7 +46,7 @@ flash:
     removed: Gruppo rimosso con successo
   variant group:
     removed: Variante gruppo rimossa con successo
-  group type:
+  group_type:
     removed: Tipo di gruppo rimosso con successo
   import profile:
     removed: Profilo di importazione rimosso con successo
@@ -45,9 +57,11 @@ flash:
   role:
     removed: Ruolo rimosso con successo
 error:
+  creating:
+    product: Nessun attributo è configurato come identificatore di prodotto o non hai i diritti per modificarlo.
   removing:
     item: Non è possibile eliminare questo articolo
-    association type: Non è possibile eliminare questo tipo di associazione
+    association_type: Non è possibile eliminare questo tipo di associazione
     attribute: Non è possibile eliminare questo attributo
     family: Non è possibile eliminare questa famiglia
     product: Non è possibile eliminare questo prodotto
@@ -59,6 +73,23 @@ error:
     export profile: Non è possibile eliminare questo profilo di esportazione
     user: Non è possibile eliminare questo utente
     role: Non è possibile eliminare questo ruolo
+    attribute_option: Errore durante la cancellazione dell'opzione attributo
+  saving:
+    attribute_option: Non è possibile salvare l'opzione dell'attributo
+    export_profile: Non è possibile salvare il profilo di esportazione. Si prega di verificare che tutti i filtri siano correttamente valorizzati
+alert:
+  attribute_option:
+    error_occured_during_submission: Si è verificato un errore durante l'invio del modulo al server
+    save_before_edit_other: Si prega di registrare le modifiche sulle altre righe prima di modificare questa
+  session_storage:
+    not_available: Il tuo browser non sembra compatibile con il sessionStorage. Contattare l'amministratore
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: Attenzione, si perderanno i dati non salvati. Sei sicuro di voler annullare le modifiche su questa nuova opzione?
+    cancel_edition_on_new_option_title: Annulla la modifica
+label:
+  attribute_option:
+    add_option: Aggiungi un'opzione
 Code: Codice
 Edit: Modifica
 Delete: Eliminare
@@ -67,9 +98,18 @@ Classify the product: Classificare il prodotto
 Delete the product: Eliminare il prodotto
 Change status: Modificare lo stato
 Toggle status: Stato di conversione
-pim.grid.mass_action.quick_export.csv_all: CSV (tutti gli attributi)
-pim.grid.mass_action.delete: Eliminare
-pim.grid.mass_action.mass_edit: Modifica di massa
+pim:
+  grid:
+    mass_action:
+      quick_export:
+        csv_all: CSV (tutti gli attributi)
+        csv_grid_context: CSV (Contesto di griglia)
+        xlsx_all: Excel (Tutti gli attributi)
+        xlsx_grid_context: Excel (Contesto di griglia)
+      delete: Elimina i prodotti
+      mass_edit: Cambia le informazioni del prodotto
+      category_edit: Spostare i prodotti nelle categorie
+      sequential_edit: Modificare i prodotti in sequenza
 jstree.create: Crea
 switch_on: "Sì"
 switch_off: "No"
@@ -77,9 +117,19 @@ pim_enrich:
   item:
     list:
       delete.label: Eliminare
+      delete.error: Errore durante l'eliminazione dell'articolo
+    delete:
+      confirm.content: Sei sicuro di che voler eliminare questo {{ itemName }}? Non è possibile annullare questa azione
+      confirm.title: Elimina questo {{ itemName }}
+  navigation:
+    link:
+      back_to_grid: Torna alla griglia
   entity:
     save:
       label: Salva
+    info:
+      update_failed: Aggiornamento non riuscito
+      update_successful: Aggiornamento completato
     product:
       title: Articoli
       btn:
@@ -87,14 +137,34 @@ pim_enrich:
         enabled: Attivato
         disable: Disabilita
         disabled: Disabilitato
+        download_pdf: PDF
+        compare_translate: Confronta / Traduci
         delete: Eliminare
         save: Salva
+        save_and_back: Salva e torna alla griglia
       history:
         version: Versione
         author: Autore
         logged_at: Loggato il
+        more: Altro
+        less: Meno
+        from: Da
+        modified: Modificato
+        property: Proprietà
         old_values: Vecchi valori
         new_values: Nuovi valori
+        actions: Azioni
+      info:
+        deletion_successful: Prodotto eliminato correttamente.
+        deletion_failed: Il prodotto non può essere eliminato.
+        update_successful: Prodotto aggiornato correttamente.
+        update_failed: Il prodotto non può essere aggiornato.
+        field_not_ready:
+          The product cannot be saved right now. The following fields are not ready:
+            - campi
+        already_in_upload: Un file è già in caricamento per questo attributo nell'impostazione internazionale "{{ locale }}" e nell'ambito "{{ scope }}"
+      error:
+        upload: Si è verificato un errore durante il caricamento del file
       meta:
         created: Creato
         created_by: Di
@@ -106,8 +176,10 @@ pim_enrich:
         groups:
           title: Gruppi
           modal:
+            title: Gruppo {{ group }}
             view_group: Visualizzazione gruppo
             group_label: Etichetta
+            more_products: '{{ count }} prodotti in più...'
             close: Chiudi
       copy:
         select: Selezionare
@@ -116,16 +188,113 @@ pim_enrich:
         none: Nessun
         copy: Copia
       variant_group:
+        updated_by: Aggiornato da un gruppo di varianti
         switch:
-          "yes": Sì
-          "no": No
+          "yes": "Sì"
+          "no": "No"
       optional_attribute:
         remove: Rimuovere l'attributo
+      locale_specific_attribute:
+        unavailable: Questo specifico campo relativo alle impostazioni internazionali non è disponibile in questa impostazione internazionale
+      localizable:
+        channel_locale_unavailable: Questo campo localizzabile non è disponibile per l'impostazione internazionale '{{ locale }}' e per il canale '{{ channel }}'
+      media:
+        upload: Rilascia i file qui dentro per caricarli oppure clicca qui
+      create_popin:
+        title: Crea un nuovo articolo
+        labels:
+          family: Scegli una famiglia
+          save: Salva
+          cancel: Cancella
+    association_type:
+      info:
+        deletion_successful: Tipo di associazione rimosso con successo.
+        deletion_failed: Il tipo di associazione non può essere eliminato.
+        update_successful: Tipo di associazione aggiornato con successo.
+        update_failed: Il tipo di associazione non può essere aggiornato.
+        field_not_ready:
+          The association type cannot be saved right now. The following fields are not ready:
+            - campi
+      meta:
+        created: Creato
+        created_by: Creato da
+        updated: Caricato
+        updated_by: Aggiornato da
+      btn:
+        save: Salva
+      title: Tipo associazione
+    group_type:
+      info:
+        deletion_successful: Il tipo di gruppo è stato eliminato correttamente.
+        deletion_failed: Il tipo di gruppo non può essere eliminato.
+        update_successful: Il tipo di gruppo è stato aggiornato correttamente.
+        update_failed: Il tipo di gruppo non può essere aggiornato.
+      meta:
+        created: Creato
+        updated: Caricato
+      btn:
+        save: Salva
+      title: Tipo gruppo
+    channel:
+      title: canale
+      info:
+        deletion_successful: Canale rimosso con successo.
+        deletion_failed: Impossibile eliminate il canale.
+        update_successful: Canale aggiornato con successo.
+        update_failed: Il canale non può essere aggiornato.
+        create_successful: Canale creato con successo.
+        create_failed: Il canale non può essere creato.
+      meta:
+        created: Creato
+        updated: Caricato
+      btn:
+        save: Salva
+    family:
+      title: famiglia
+      info:
+        create_successful: Canale creato con successo.
+        update_failed: Errore durante l'aggiornamento della famiglia.
+      meta:
+        created: Creato
+        updated: Caricato
+      btn:
+        save: Salva
     attribute_option:
       code: Codice
       label: Etichetta
+      actions: Azioni
+    variant_group:
+      info:
+        no_attributes: Questo gruppo di varianti non ha ancora attributi
+      btn:
+        save: Salva
+      meta:
+        product_count: Articoli
+        created: Creato
+        updated: Caricato
+    group:
+      title: Gruppo
+      info:
+        deletion_successful: Il gruppo è stato cancellato con successo.
+        deletion_failed: Il gruppo non può essere eliminato.
+        update_successful: Gruppo aggiornato con successo.
+        update_failed: Il gruppo non può essere aggiornato.
+      btn:
+        save: Salva
+      meta:
+        product_count: Articoli
+        created: Creato
+        updated: Caricato
+    job_instance:
+      title: profilo del job
+      info:
+        update_failed: Il profilo del job non può essere aggiornato.
+        update_successful: Il profilo del job è stato aggiornato con successo.
   confirmation:
     leave: Sei sicuro di voler lasciare questa pagina?
+    delete_item: Conferma cancellazione
+    delete:
+      attribute: Sei sicuro di voler rimuovere questo attributo dal prodotto?
   info:
     not_applicable: N/A
     entity:
@@ -146,6 +315,7 @@ pim_enrich:
             add_attributes: Aggiungi attributi
           info:
             no_available_attributes: Non ci sono altri attributi da aggiungere
+            attributes_selected: "{{ itemsCount }} attributo(i) selezionato(i)"
             no_match: Nessuna corrispondenza trovata
         categories:
           title: Categorie
@@ -155,8 +325,8 @@ pim_enrich:
         history:
           title: Cronologia
       switch:
-        "no": No
-        "yes": Sì
+        "no": "No"
+        "yes": "Sì"
       sequential_edit:
         info:
           products: Articoli
@@ -170,11 +340,316 @@ pim_enrich:
       mass_edit:
         select_attributes: Selezionare gli attributi
         select: Selezionare
+    association_type:
+      tab:
+        properties:
+          title: Proprietà
+          general: Proprietà generali
+          code: Codice
+          label_translations: Traduzioni etichetta
+        history:
+          title: Cronologia
+    group_type:
+      tab:
+        properties:
+          title: Proprietà
+          general: Proprietà generali
+          code: Codice
+          label_translations: Traduzioni etichetta
+        history:
+          title: Cronologia
+    channel:
+      tab:
+        history:
+          title: Cronologia
+        properties:
+          title: Proprietà
+          general: Generale
+          code: Codice
+          currencies: Valute
+          locales: Impostazioni locali
+          category_tree: Struttura della categoria
+          label_translations: Traduzioni etichetta
+          label_conversion_units: Scegliere un'unità di conversione per ogni attributo metrico che verrà utilizzato durante l'esportazione dell'articolo
+    family:
+      tab:
+        properties:
+          title: Proprietà
+          general: Generale
+          code: Codice
+          attribute_as_label: Attributo utilizzato come etichetta
+          label_translations: Traduzioni etichetta
+        attributes:
+          title: Attributi
+          label_label: Etichetta
+          toolbox:
+            select_attributes: Aggiungi attributi
+            add: Aggiungi
+            attributes_groups_selected: '{{ itemsCount }} gruppo(i) selezionato(i)'
+          not_required_label: Non obbligatorio
+          required_label: Obbligatorio
+        history:
+          title: Cronologia
     attribute_option:
       add_option_modal:
         confirm: Aggiungi
         cancel: Cancella
     entity:
       switch:
-        "no": No
-        "yes": Sì
+        "no": "No"
+        "yes": "Sì"
+    variant_group:
+      tab:
+        properties:
+          title: Proprietà
+          general: Proprietà generali
+          code: Codice
+          type: Tipo
+          axis: Asse
+          label_translations: Traduzioni etichetta
+        history:
+          title: Cronologia
+        products:
+          title: Articoli
+        attributes:
+          title: Attributi
+    group:
+      tab:
+        properties:
+          title: Proprietà
+          general: Proprietà generali
+          code: Codice
+          type: Tipo
+          label_translations: Traduzioni etichetta
+        history:
+          title: Cronologia
+        products:
+          title: Articoli
+    common:
+      tab:
+        attributes:
+          btn:
+            add: Aggiungi
+            add_attributes: Aggiungi attributi
+          info:
+            no_available_attributes: Non ci sono altri attributi da aggiungere
+    job_execution:
+      loading: Caricamento in corso...
+      title.details: Dettagli esecuzione
+      refreshBtn.title: Aggiorna
+      meta:
+        status.title: Stato
+      button:
+        show_profile.title: Visualizza profilo
+        download_log.title: Protocollo download
+        download_file.title: Scarica file generati
+        download_archive.title: Scarica archivi generati
+      summary:
+        fetching: Raccolta di dati sull'esecuzione del lavoro...
+        warning: Attenzione
+        header.step: Passo
+        header.status: Stato
+        header.warnings: Avvertenze
+        header.summary: Riepilogo
+        header.start: Inizio
+        header.end: Fine
+    job_instance:
+      fail:
+        launch: Impossibile avviare il profilo di lavoro. Assicurarsi che sia valido e che si abbia il permesso per lanciarlo.
+        save: Impossibile salvare il profilo di lavoro. Assicurarsi che si abbia il permesso per modificarlo.
+      title:
+        import: Profilo di importazione
+        export: Profilo di esportazione
+      button:
+        edit.title: Modifica
+        export.title: Esporta ora
+        import.launch: Importa ora
+        import.upload: Carica e importa ora
+      meta:
+        job: Lavoro
+        connector: Connettore
+      tab:
+        content:
+          title: Contenuto
+        properties:
+          title: Proprietà generali
+          code:
+            title: Codice
+          label:
+            title: Etichetta
+          decimal_separator:
+            title: Separatore decimale
+            help: Determina il separatore decimale
+          date_format:
+            title: Formato della data
+            help: Determina il formato dei campi data
+          file_path:
+            title: Percorso del file
+            help: Dove scrivere il file generato nel file System
+          delimiter:
+            title: Delimitatore
+            help: Un carattere utilizzato per impostare il delimitatore di campo
+          enclosure:
+            title: Contenitore
+            help: Un carattere utilizzato per impostare il contenitore del campo
+          with_header:
+            title: Con intestazione
+            help: Stampare o no la l'intestazione della colonna
+          with_media:
+            title: Esporta file e immagini
+            help: Esportare o meno i file e le immagini del prodotto
+          lines_per_file:
+            title: Numero di linee per file
+            help: Definire il numero limite di righe per file
+          upload_allowed:
+            title: Consentire il caricamento di file
+            help: Consentire o no il caricamento diretto di file
+          categories_column:
+            title: Colonna categorie
+            help: Nome della colonna categorie
+          escape:
+            title: Escape
+            help: Un carattere di escape utilizzato
+          family_column:
+            title: Colonna famiglia
+            help: Nome della colonna famiglia
+          groups_column:
+            title: Colonna gruppi
+            help: Nome della colonna gruppi
+          enabled:
+            title: Attivare il prodotto
+            help: Attivare o no i prodotti importati
+          enabled_comparison:
+            title: Confronta i valori
+            help: Abilita il confronto tra i valori originali e valori importati. L'importazione può essere velocizzata se i valori importati sono abbastanza simili ai valori originali
+          real_time_versioning:
+            title: Aggiornamento cronologia in tempo reale
+            help: Significa che la cronologia del prodotto viene aggiornata automaticamente, può essere disattivato per migliorare le prestazioni
+        history:
+          title: Cronologia
+    mass_edit:
+      family:
+        attributes:
+          label_label: Etichetta
+          toolbox:
+            select_attributes_by_groups: Aggiungi per gruppi
+            select_attributes: Aggiungi attributi
+            add: Aggiungi
+            attributes_groups_selected: '{{ itemsCount }} gruppo(i) selezionato(i)'
+  job:
+    upload: Drag and drop per caricare un file o fai click qui
+  export:
+    product:
+      data:
+        title: Filtra i prodotti
+      structure:
+        title: Filtra i dati
+        attributes:
+          title: Attributi
+      filter:
+        channel:
+          title: Canale
+          help: Il canale definisce l'ambito per i valori di prodotto, le impostazioni internazionali utilizzate per selezionare i dati e l'albero utilizzato per selezionare i prodotti.
+        locales:
+          title: Impostazioni locali
+          help: 'Le impostazioni internazionali determinano i valori localizzati di prodotto da esportare. Es: solo le informazioni di prodotto in francese.'
+        attributes:
+          title: Attributi
+          edit: Modifica
+          label: "{0} Tutti gli attributi |{1} Un attributo selezionato |] 1, Inf[ {{ count }} attributi selezionati"
+          help: 'Seleziona le informazioni di prodotto da esportare. Es: solo gli attributi tecnici.'
+          empty: Tutti gli attributi verranno esportati
+          modal:
+            apply: Applica
+            cancel: Cancella
+            title: Selezione attributi
+        attributes_selector:
+          attribute_group: Gruppi di attributi
+          attributes: "Cerca tra {{ attributeCount }} attributi"
+          selected: "Attributi selezionati"
+          clear: Ripulisci
+          all_group: Tutti i gruppi
+          empty_selection: Tutti gli attributi verranno esportati
+        family:
+          title: Famiglia
+          help: 'Seleziona i prodotti da esportare in base alla loro famiglia. Es: Esportare solo le scarpe e gli abiti.'
+          operators:
+            IN: In elenco
+            "NOT IN": Non in elenco
+            EMPTY: I prodotti che non hanno una famiglia
+            "NOT EMPTY": I prodotti che hanno una famiglia
+          empty_selection: Nessuna condizione sulle famiglie
+        updated:
+          title: Condizione di tempo
+          operators:
+            ALL: Nessuna condizione di data
+            "SINCE LAST N DAYS": Prodotti aggiornati negli ultimi n giorni (es. 6)
+            ">": Prodotti aggiornati da questa data
+            "SINCE LAST JOB": Prodotti aggiornati dall'ultima esportazione
+        enabled:
+          title: Stato
+          help: 'Selezionare i prodotti da esportare in base al loro stato. Es: Esportare prodotti qualunque sia lo stato.'
+          value:
+            all: Tutto
+            enabled: Attivato
+            disabled: Disabilitato
+        completeness:
+          title: Completamento
+          help: Seleziona i prodotti da esportare in base alla loro completezza.
+          operators:
+            ALL: Nessuna condizione sulla completezza
+            ">=": Completo in almeno una delle impostazioni internazionali selezionate
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Completo in tutte le impostazioni internazionali selezionate
+            LOWER THAN ON ALL LOCALES: Non completo in tutte le impostazione internazionali selezionate
+          empty_selection: Seleziona una famiglia
+        category:
+          title: Categoria
+          help: Utilizza le categorie di prodotto nell'albero (definito dal canale di cui sopra) per selezionare i prodotti da esportare
+        identifier:
+          title: Identificatore
+          help: Identificatori dei prodotti che si desidera esportare separati da virgola, spazio o interruzione di riga
+        metric:
+          operators:
+            "=": È uguale a
+            "!=": Non è uguale a
+            EMPTY: È vuoto
+        string:
+          operators:
+            ALL: Tutto
+            EMPTY: È vuoto
+        price-collection:
+          operators:
+            EMPTY: È vuoto
+        multi_select:
+          operators:
+            IN: In elenco
+            EMPTY: È vuoto
+        media:
+          operators:
+            EMPTY: È vuoto
+        date:
+          operators:
+            EMPTY: È vuoto
+        number:
+          operators:
+            EMPTY: È vuoto
+      properties:
+        title: Proprietà
+      global_settings:
+        title: Impostazioni Globali
+batch_jobs:
+  update_product_value:
+    label: Aggiorna il valore di prodotto
+    perform:
+      label: Aggiorna il valore di prodotto
+  edit_common_attributes:
+    cleaner:
+      label: Pulisci i file per gli attributi comuni
+  set_attribute_requirements:
+    label: Impostare gli attributi richiesti
+    perform:
+      label: Impostare gli attributi richiesti
+  add_to_variant_group:
+    label: Aggiungi al gruppo di varianti
+    perform:
+      label: Aggiungi al gruppo di varianti
