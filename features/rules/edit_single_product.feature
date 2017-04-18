@@ -328,9 +328,9 @@ Feature: Read a single product by applying rules
       | datasheet                | akeneo             |
       | side_view                | akeneo2            |
       | length                   | 50.0000 CENTIMETER |
-      | weather_conditions       | Dry, Hot           |
+      | weather_conditions       | [dry], [hot]       |
       | number_in_stock-tablet   | 8000               |
-      | size                     | L                  |
+      | size                     | [L]                |
       | price-EUR                | 180.00             |
       | description-fr_FR-tablet | En cuir            |
     Then product "my-jacket" should be disabled
@@ -432,12 +432,12 @@ Feature: Read a single product by applying rules
       | top_view                 | akeneo2                |
       | length                   | 55.0000 CENTIMETER     |
       | width                    | 55.0000 CENTIMETER     |
-      | weather_conditions       | Hot, Cold              |
-      | climate                  | Hot, Cold              |
+      | weather_conditions       | [hot], [cold]          |
+      | climate                  | [hot], [cold]          |
       | number_in_stock-mobile   | 800.00                 |
       | number_in_stock-tablet   | 800.00                 |
-      | main_color               | White                  |
-      | secondary_color          | White                  |
+      | main_color               | [white]                |
+      | secondary_color          | [white]                |
       | name-en_US               | White jacket           |
       | name-fr_FR               | White jacket           |
       | description-en_US-mobile | A stylish white jacket |
