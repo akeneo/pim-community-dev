@@ -1954,38 +1954,72 @@ Example for the ``>`` operator:
 
 Product id
 **********
-:Apply: id field
 
-Product system ids coming from DB (autoincrement in ORM or MongoDBRef in MongoDB) are used as
-the Elasticsearch ``"_id"`` field
+:Apply: apply datatype 'keyword' on the 'id' field
 
-.. code-block:: yaml
+Unique ID of the product. This field is also used as the Elasticsearch ``"_id"`` field.
 
-  _id: "54f96c28c1ad880c308b4b90"
+Data model
+~~~~~~~~~~
+.. code-block:: php
+
+    [
+        'id' => '4f3fcfec-2448-11e7-93ae-92361f002671'
+    ]
 
 Filtering
 ~~~~~~~~~
 Operators
 .........
+
 Equals (=)
-~~~~~~~~~~
+""""""""""
 
-.. code-block:: yaml
+.. code-block:: php
 
-    ids:
-        values: ["54f96c28c1ad880c308b4b66"]
+    'filter' => [
+        'term' => [
+            'id' => '4f3fcfec-2448-11e7-93ae-92361f002671'
+        ]
+    ]
 
-IN
-~~
+Not Equal (!=)
+""""""""""""""
 
-    ::
-        ids:
-            values: ["54f96c28c1ad880c308b4b66","54f96c28c1ad880c308b4b7b"]
+.. code-block:: php
 
-NOT IN
-~~~~~~
+    'must_not' => [
+        'term' => [
+            'id' => '4f3fcfec-2448-11e7-93ae-92361f002671'
+        ]
+    ],
+    'filter' => [
+        'exists' => [
+            'field' => 'id'
+        ]
+    ]
 
-Same as ``IN``, but with the ``must_not`` occured type
+In list
+"""""""
+
+.. code-block:: php
+
+    'filter' => [
+        'terms' => [
+            'id' => ['4f3fcfec-2448-11e7-93ae-92361f002671', '5f61fd3c-2448-11e7-93ae-92361f002671']
+        ]
+    ]
+
+Not In list
+"""""""""""
+
+.. code-block:: php
+
+    'must_not' => [
+        'terms' => [
+            'id' => ['4f3fcfec-2448-11e7-93ae-92361f002671', '5f61fd3c-2448-11e7-93ae-92361f002671']
+        ]
+    ]
 
 Family
 ******
