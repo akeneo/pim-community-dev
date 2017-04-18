@@ -32,7 +32,7 @@ services:
     pim_catalog.query.filter.registry:
         class: %pim_catalog.query.filter.registry.class%
         arguments:
-            - @pim_catalog.repository.attribute
+            - @pim_catalog.repository.cached_attribute
 
     pim_catalog.query.sorter.registry:
         class: %pim_catalog.query.sorter.registry.class%

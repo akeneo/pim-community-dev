@@ -105,25 +105,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFilter($field, $operator, $value, array $context = [])
     {
-        $attribute = $this->attributeRepository->findOneBy(['code' => FieldFilterHelper::getCode($field)]);
-
-        if ($attribute !== null) {
-            $filter = $this->filterRegistry->getAttributeFilter($attribute);
-        } else {
-            $filter = $this->filterRegistry->getFieldFilter($field);
-        }
-
-        if ($filter === null) {
-            throw new \LogicException(
-                sprintf('Filter on field "%s" is not supported', $field)
-            );
-        }
-
-        if ($filter->supportsOperator($operator) === false) {
-            throw new \LogicException(
-                sprintf('Filter on field "%s" doesn\'t provide operator "%s"', $field, $operator)
-            );
-        }
+        $filter = $this->filterRegistry->getFilter($field);
 
         $context = $this->getFinalContext($context);
         if ($attribute !== null) {
