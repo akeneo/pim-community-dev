@@ -12,10 +12,10 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
     protected static $placeholderValues = [];
 
     /** @var KernelInterface */
-    private $kernel;
+    protected $kernel;
 
     /** @var string */
-    private static $kernelRootDir;
+    protected static $kernelRootDir;
 
     public static function resetPlaceholderValues()
     {
