@@ -104,7 +104,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     {
         $this->getMainContext()->getSubcontext('fixtures')->setUsername($username);
 
-        $this->getSession()->visit($this->locatePath('/user/logout'));
+        $this->getSession()->visit($this->locatePath('/user/login'));
 
         $this->spin(function () {
             return $this->getSession()->getPage()->find('css', '.AknLogin-title');
