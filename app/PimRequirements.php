@@ -52,8 +52,8 @@ class PimRequirements extends OroRequirements
 
         $this->addPimRequirement(
             function_exists('apcu_store'),
-            'Extension php5-apcu should be installed',
-            'Install and enable <strong>php5-apcu</strong>'
+            'Extension APCu should be installed',
+            'Install and enable <strong>APCu</strong> extension'
         );
 
         // Check directories
