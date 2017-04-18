@@ -46,7 +46,7 @@ class RepositoryDatasource implements DatasourceInterface, ParameterizableInterf
     {
         $this->qb = $this->repository->createDatagridQueryBuilder();
 
-        if(array_key_exists(static::DEFAULT_QUERY_PARAMS_KEY, $config)) {
+        if (array_key_exists(static::DEFAULT_QUERY_PARAMS_KEY, $config)) {
             $this->parameters += $config[static::DEFAULT_QUERY_PARAMS_KEY];
         }
 
