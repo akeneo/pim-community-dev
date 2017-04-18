@@ -2351,3 +2351,70 @@ Sorting
 Testing
 -------
 All queries above are (or should be) defined as integration tests under the namespace `Pim\Bundle\CatalogBundle\tests\integration\PQB`.
+
+
+Id
+**
+:Apply: apply datatype 'keyword' on the 'id' field
+
+Data model
+~~~~~~~~~~
+.. code-block:: php
+
+    [
+        'id': '4f3fcfec-2448-11e7-93ae-92361f002671'
+    ]
+
+Filtering
+~~~~~~~~~
+Operators
+.........
+
+Equals (=)
+""""""""""
+
+.. code-block:: php
+
+    'filter' => [
+        'term' => [
+            'id' => '4f3fcfec-2448-11e7-93ae-92361f002671'
+        ]
+    ]
+
+Not Equal (!=)
+""""""""""""""
+
+.. code-block:: php
+
+    'must_not' => [
+        'term' => [
+            'id' => '4f3fcfec-2448-11e7-93ae-92361f002671'
+        ]
+    ],
+    'filter' => [
+        'exists' => [
+            'field' => 'id'
+        ]
+    ]
+
+In list
+"""""""
+
+.. code-block:: php
+
+    'filter' => [
+        'terms' => [
+            'id' => ['4f3fcfec-2448-11e7-93ae-92361f002671', '5f61fd3c-2448-11e7-93ae-92361f002671']
+        ]
+    ]
+
+Not In list
+"""""""""""
+
+.. code-block:: php
+
+    'must_not' => [
+        'terms' => [
+            'id' => ['4f3fcfec-2448-11e7-93ae-92361f002671', '5f61fd3c-2448-11e7-93ae-92361f002671']
+        ]
+    ]
