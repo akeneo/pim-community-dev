@@ -108,7 +108,7 @@ class BooleanValidatorSpec extends ObjectBehavior
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('foo');
         $attribute->getBackendType()->willReturn('boolean');
-        $productValue->getBoolean()->willReturn(true);
+        $productValue->getData()->willReturn(true);
 
         $context
             ->buildViolation(Argument::cetera())
@@ -126,7 +126,7 @@ class BooleanValidatorSpec extends ObjectBehavior
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('foo');
         $attribute->getBackendType()->willReturn('integer');
-        $productValue->getInteger()->willReturn(null);
+        $productValue->getData()->willReturn(null);
 
         $context
             ->buildViolation(Argument::cetera())
@@ -145,7 +145,7 @@ class BooleanValidatorSpec extends ObjectBehavior
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('foo');
         $attribute->getBackendType()->willReturn('integer');
-        $productValue->getInteger()->willReturn(666);
+        $productValue->getData()->willReturn(666);
 
         $context
             ->buildViolation(

@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Family interface
@@ -58,7 +59,7 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
     /**
      * Get attributes
      *
-     * @return AttributeInterface[]|ArrayCollection
+     * @return AttributeInterface[]|Collection
      */
     public function getAttributes();
 
@@ -116,7 +117,7 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
     /**
      * Set attribute requirements
      *
-     * @param array $requirements
+     * @param AttributeRequirementInterface[] $requirements
      *
      * @return FamilyInterface
      */
@@ -125,7 +126,7 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
     /**
      * Get attribute requirements
      *
-     * @return array
+     * @return AttributeRequirementInterface[]
      */
     public function getAttributeRequirements();
 

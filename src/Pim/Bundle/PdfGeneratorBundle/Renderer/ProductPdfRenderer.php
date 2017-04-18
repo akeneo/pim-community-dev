@@ -180,7 +180,7 @@ class ProductPdfRenderer implements RendererInterface
     protected function generateThumbnailsCache(ProductInterface $product, array $imageAttributes, $locale, $scope)
     {
         foreach ($imageAttributes as $attribute) {
-            $media = $product->getValue($attribute->getCode(), $locale, $scope)->getMedia();
+            $media = $product->getValue($attribute->getCode(), $locale, $scope)->getData();
             if (null !== $media && null !== $media->getKey()) {
                 $path = $media->getKey();
                 $filter = 'thumbnail';

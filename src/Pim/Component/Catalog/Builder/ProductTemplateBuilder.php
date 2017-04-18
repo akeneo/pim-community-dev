@@ -4,9 +4,7 @@ namespace Pim\Component\Catalog\Builder;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 
 /**
  * Product template builder, allows to create new product template and update them
@@ -17,40 +15,20 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductTemplateBuilder implements ProductTemplateBuilderInterface
 {
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var DenormalizerInterface */
-    protected $denormalizer;
-
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var string */
     protected $productTemplateClass;
 
-    /** @var string */
-    protected $productClass;
-
     /**
-     * @param NormalizerInterface     $normalizer
-     * @param DenormalizerInterface   $denormalizer
      * @param ProductBuilderInterface $productBuilder
      * @param string                  $productTemplateClass
-     * @param string                  $productClass
      */
-    public function __construct(
-        NormalizerInterface $normalizer,
-        DenormalizerInterface $denormalizer,
-        ProductBuilderInterface $productBuilder,
-        $productTemplateClass,
-        $productClass
-    ) {
-        $this->normalizer = $normalizer;
-        $this->denormalizer = $denormalizer;
+    public function __construct(ProductBuilderInterface $productBuilder, $productTemplateClass)
+    {
         $this->productBuilder = $productBuilder;
         $this->productTemplateClass = $productTemplateClass;
-        $this->productClass = $productClass;
     }
 
     /**
@@ -64,17 +42,10 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributes(ProductTemplateInterface $template, array $attributes, $locale)
+    public function addAttributes(ProductTemplateInterface $template, array $attributes)
     {
-        $options = [
-            'entity'                     => 'product',
-            'locale'                     => $locale,
-            'disable_grouping_separator' => true
-        ];
-
-        $values = $this->buildProductValuesFromTemplateValuesData($template, $attributes, $locale);
-        $valuesData = $this->normalizer->normalize($values, 'standard', $options);
-        $template->setValuesData($valuesData);
+        $values = $this->buildProductValuesFromTemplateValuesData($template, $attributes);
+        $template->setValues($values);
     }
 
     /**
@@ -82,11 +53,7 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
      */
     public function removeAttribute(ProductTemplateInterface $template, AttributeInterface $attribute)
     {
-        $valuesData = $template->getValuesData();
-
-        unset($valuesData[$attribute->getCode()]);
-
-        $template->setValuesData($valuesData);
+        $template->getValues()->removeByAttribute($attribute);
     }
 
     /**
@@ -94,25 +61,15 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
      *
      * @param ProductTemplateInterface $template
      * @param AttributeInterface[]     $attributes
-     * @param string                   $locale
      *
-     * @return ProductValueInterface[]
+     * @return ProductValueCollectionInterface
      */
     protected function buildProductValuesFromTemplateValuesData(
         ProductTemplateInterface $template,
-        array $attributes,
-        $locale
+        array $attributes
     ) {
-        $options = [
-            'locale'                     => $locale,
-            'disable_grouping_separator' => true
-        ];
-        $values = $this->denormalizer->denormalize($template->getValuesData(), 'ProductValue[]', 'standard', $options);
-        $product = new $this->productClass();
-
-        foreach ($values as $value) {
-            $product->addValue($value);
-        }
+        $product = $this->productBuilder->createProduct();
+        $product->setValues($template->getValues());
 
         foreach ($attributes as $attribute) {
             $this->productBuilder->addAttributeToProduct($product, $attribute);

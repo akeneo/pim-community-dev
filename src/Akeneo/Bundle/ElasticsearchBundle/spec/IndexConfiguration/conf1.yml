@@ -1,0 +1,18 @@
+settings:
+    analysis:
+        char_filter:
+            newline_pattern:
+                type: "pattern_replace"
+                pattern: "\\n"
+                replacement: ""
+
+mappings:
+    an_index_type1:
+        properties:
+            name:
+                properties:
+                    last:
+                        type: text
+            user_id:
+                type: keyword
+                ignore_above: 100

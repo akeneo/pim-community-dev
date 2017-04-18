@@ -40,8 +40,8 @@ class CategoryFilter implements FieldFilterInterface
      * @param CategoryRepositoryInterface           $categoryRepository
      * @param CategoryFilterableRepositoryInterface $itemCategoryRepo
      * @param ObjectIdResolverInterface             $objectIdResolver
-     * @param array                                 $supportedFields
-     * @param array                                 $supportedOperators
+     * @param string[]                              $supportedFields
+     * @param string[]                              $supportedOperators
      */
     public function __construct(
         CategoryRepositoryInterface $categoryRepository,
@@ -66,9 +66,7 @@ class CategoryFilter implements FieldFilterInterface
         if ($operator !== Operators::UNCLASSIFIED) {
             $this->checkValue($field, $value);
 
-            if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-                $categoryIds = $this->objectIdResolver->getIdsFromCodes('category', $value);
-            }
+            $categoryIds = $this->objectIdResolver->getIdsFromCodes('category', $value);
         }
 
         switch ($operator) {

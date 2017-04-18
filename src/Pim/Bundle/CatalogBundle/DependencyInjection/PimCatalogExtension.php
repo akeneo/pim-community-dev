@@ -29,12 +29,13 @@ class PimCatalogExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('attribute_types.yml');
         $loader->load('builders.yml');
-        $loader->load('collectors.yml');
         $loader->load('comparators.yml');
+        $loader->load('completeness.yml');
         $loader->load('completeness_checkers.yml');
         $loader->load('console.yml');
         $loader->load('context.yml');
-        $loader->load('doctrine.yml');
+        $loader->load('cursors.yml');
+        $loader->load('elasticsearch.yml');
         $loader->load('entities.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('factories.yml');
@@ -47,6 +48,7 @@ class PimCatalogExtension extends Extension
         $loader->load('localization/validators.yml');
         $loader->load('managers.yml');
         $loader->load('models.yml');
+        $loader->load('product_values.yml');
         $loader->load('query_builders.yml');
         $loader->load('removers.yml');
         $loader->load('repositories.yml');
@@ -56,7 +58,9 @@ class PimCatalogExtension extends Extension
         $loader->load('validators.yml');
         $loader->load('versions.yml');
         $loader->load('serializers.yml');
+        $loader->load('serializers_indexing.yml');
         $loader->load('serializers_standard.yml');
+        $loader->load('serializers_storage.yml');
         $loader->load('converters.yml');
 
         $this->loadStorageDriver($container);

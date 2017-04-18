@@ -177,15 +177,18 @@ class AttributeConverter implements AttributeConverterInterface
      */
     protected function buildPropertyPath(array $data, $code)
     {
-        $path = $code;
+        $path['code'] = $code;
+
+        $path['locale'] = null;
         if (isset($data['locale']) && '' !== $data['locale']) {
-            $path.= sprintf('-%s', $data['locale']);
+            $path['locale'] = $data['locale'];
         }
 
+        $path['scope'] = null;
         if (isset($data['scope']) && '' !== $data['scope']) {
-            $path.= sprintf('-%s', $data['scope']);
+            $path['scope'] = $data['scope'];
         }
 
-        return sprintf('values[%s]', $path);
+        return sprintf('values[%s]', json_encode($path));
     }
 }

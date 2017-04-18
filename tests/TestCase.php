@@ -2,6 +2,8 @@
 
 namespace Akeneo\Test\Integration;
 
+use Akeneo\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -13,6 +15,12 @@ abstract class TestCase extends KernelTestCase
 {
     /** @var int Count of executed tests inside the same test class */
     protected static $count = 0;
+
+    /** @var Client */
+    protected $esClient;
+
+    /** @var Loader */
+    protected $esConfigurationLoader;
 
     /**
      * {@inheritdoc}
@@ -36,9 +44,14 @@ abstract class TestCase extends KernelTestCase
 
         $configuration = $this->getConfiguration();
 
+        $this->esClient = $this->get('akeneo_elasticsearch.client');
+        $this->esConfigurationLoader = $this->get('akeneo_elasticsearch.index_configuration.loader');
+
         self::$count++;
 
         if ($configuration->isDatabasePurgedForEachTest() || 1 === self::$count) {
+            $this->resetIndex();
+
             $this->getDatabaseSchemaHandler()->reset();
 
             $fixturesLoader = $this->getFixturesLoader($configuration);
@@ -124,5 +137,19 @@ abstract class TestCase extends KernelTestCase
         }
 
         throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
+    }
+
+    /**
+     * Resets the index used for the integration tests
+     */
+    private function resetIndex()
+    {
+        $conf = $this->esConfigurationLoader->load();
+
+        if ($this->esClient->hasIndex()) {
+            $this->esClient->deleteIndex();
+        }
+
+        $this->esClient->createIndex($conf->buildAggregated());
     }
 }

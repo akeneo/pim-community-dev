@@ -1,0 +1,22 @@
+parameters:
+    pim_enrich.product_query_builder.filter.dummy.class: Pim\Bundle\EnrichBundle\ProductQueryBuilder\Filter\DummyFilter
+    pim_enrich.query.elasticsearch.sorter.in_group.class: Pim\Bundle\EnrichBundle\Elasticsearch\Sorter\InGroupSorter
+
+services:
+    # Filters
+    pim_enrich.product_query_builder.filter.dummy:
+        class: '%pim_enrich.product_query_builder.filter.dummy.class%'
+        arguments:
+            - []
+            - ['enabled', 'completeness']
+            - ['ALL']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
+
+    # Sorters
+    pim_catalog.query.elasticsearch.sorter.in_group:
+        class: '%pim_enrich.query.elasticsearch.sorter.in_group.class%'
+        arguments:
+            - '@pim_catalog.repository.group'
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }

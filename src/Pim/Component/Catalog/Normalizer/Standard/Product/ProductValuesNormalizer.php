@@ -2,8 +2,7 @@
 
 namespace Pim\Component\Catalog\Normalizer\Standard\Product;
 
-use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -24,12 +23,8 @@ class ProductValuesNormalizer extends SerializerAwareNormalizer implements Norma
         $result = [];
 
         foreach ($data as $value) {
-            $normalizedValue = $this->serializer->normalize($value, 'standard', $context);
-            if ($value instanceof ProductValueInterface) {
-                $result[$value->getAttribute()->getCode()][] = $normalizedValue;
-            } else {
-                $result[] = $normalizedValue;
-            }
+            $normalizedValue = $this->serializer->normalize($value, $format, $context);
+            $result[$value->getAttribute()->getCode()][] = $normalizedValue;
         }
 
         return $result;
@@ -40,6 +35,6 @@ class ProductValuesNormalizer extends SerializerAwareNormalizer implements Norma
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Collection && 'standard' === $format;
+        return 'standard' === $format && $data instanceof ProductValueCollectionInterface;
     }
 }

@@ -2,8 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -17,39 +16,48 @@ class ProductViolationNormalizer implements NormalizerInterface
     /** @var array */
     protected $supportedFormats = ['internal_api'];
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /**
+     * @param AttributeRepositoryInterface $attributeRepository
+     */
+    public function __construct(AttributeRepositoryInterface $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function normalize($violation, $format = null, array $context = [])
     {
-        $path = $violation->getPropertyPath();
+        $propertyPath = $violation->getPropertyPath();
 
-        if (0 === strpos($path, 'values')) {
+        if (1 === preg_match('|^values\[(?P<attribute>[a-z0-9-_\<\>]+)|i', $violation->getPropertyPath(), $matches)) {
             if (!isset($context['product'])) {
                 throw new \InvalidArgumentException('Expects a product context');
             }
 
-            $product = $context['product'];
-
-            if (!$product instanceof ProductInterface && !$product instanceof ProductTemplateInterface) {
-                throw new \InvalidArgumentException('Expects a product or a product template as context');
-            }
-
-            $codeStart = strpos($path, '[') + 1;
-            $codeLength = strpos($path, ']') - $codeStart;
-            $attributePath = substr($path, $codeStart, $codeLength);
-            $productValue = $product->getValues()[$attributePath];
+            $attribute = explode('-', $matches['attribute']);
 
             $normalizedViolation = [
-                'attribute' => $productValue->getAttribute()->getCode(),
-                'locale'    => $productValue->getLocale(),
-                'scope'     => $productValue->getScope(),
-                'message'   => $violation->getMessage()
+                'attribute' => $attribute[0],
+                'locale'    => '<all_locales>' === $attribute[2] ? null : $attribute[2],
+                'scope'     => '<all_channels>' === $attribute[1] ? null : $attribute[1],
+                'message'   => $violation->getMessage(),
+            ];
+        } elseif ('identifier' === $propertyPath) {
+            $normalizedViolation = [
+                'attribute' => $this->attributeRepository->getIdentifierCode(),
+                'locale'    => null,
+                'scope'     => null,
+                'message'   => $violation->getMessage(),
             ];
         } else {
             $normalizedViolation = [
                 'global'  => true,
-                'message' => $violation->getMessage()
+                'message' => $violation->getMessage(),
             ];
         }
 

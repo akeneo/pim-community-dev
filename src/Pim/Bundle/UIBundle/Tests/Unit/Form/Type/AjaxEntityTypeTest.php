@@ -40,6 +40,9 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
         'option2'               => 'option2'
     ];
 
+    /**
+     * @{@inheritdoc}
+     */
     protected function setUp()
     {
         $this->router = $this->createMock('Symfony\Component\Routing\RouterInterface');

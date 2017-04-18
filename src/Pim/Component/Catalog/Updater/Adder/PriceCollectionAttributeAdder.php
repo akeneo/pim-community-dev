@@ -2,13 +2,12 @@
 
 namespace Pim\Component\Catalog\Updater\Adder;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\PriceCollectionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Price collection attribute adder
@@ -19,24 +18,22 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 class PriceCollectionAttributeAdder extends AbstractAttributeAdder
 {
-    /** @var CurrencyRepositoryInterface */
-    protected $currencyRepository;
+    /** @var NormalizerInterface */
+    protected $normalizer;
 
     /**
      * @param ProductBuilderInterface     $productBuilder
-     * @param AttributeValidatorHelper    $attrValidatorHelper
-     * @param CurrencyRepositoryInterface $currencyRepository
+     * @param NormalizerInterface         $normalizer
      * @param array                       $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
-        AttributeValidatorHelper $attrValidatorHelper,
-        CurrencyRepositoryInterface $currencyRepository,
+        NormalizerInterface $normalizer,
         array $supportedTypes
     ) {
-        parent::__construct($productBuilder, $attrValidatorHelper);
+        parent::__construct($productBuilder);
 
-        $this->currencyRepository = $currencyRepository;
+        $this->normalizer = $normalizer;
         $this->supportedTypes = $supportedTypes;
     }
 
@@ -62,23 +59,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
-        $this->checkData($attribute, $data);
 
-        $this->addPrices($product, $attribute, $data, $options['locale'], $options['scope']);
-    }
-
-    /**
-     * Check if data are valid
-     *
-     * @param AttributeInterface $attribute
-     * @param mixed              $data
-     *
-     * @throws InvalidPropertyTypeException
-     * @throws InvalidPropertyException
-     */
-    protected function checkData(AttributeInterface $attribute, $data)
-    {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
@@ -87,57 +68,7 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
             );
         }
 
-        foreach ($data as $price) {
-            if (!is_array($price)) {
-                throw InvalidPropertyTypeException::arrayOfArraysExpected(
-                    $attribute->getCode(),
-                    static::class,
-                    $data
-                );
-            }
-
-            if (!array_key_exists('amount', $price)) {
-                throw InvalidPropertyTypeException::arrayKeyExpected(
-                    $attribute->getCode(),
-                    'amount',
-                    static::class,
-                    $data
-                );
-            }
-
-            if (!array_key_exists('currency', $price)) {
-                throw InvalidPropertyTypeException::arrayKeyExpected(
-                    $attribute->getCode(),
-                    'currency',
-                    static::class,
-                    $data
-                );
-            }
-
-            if (!is_numeric($price['amount']) && null !== $price['amount']) {
-                throw new InvalidPropertyTypeException(
-                    $attribute->getCode(),
-                    $price['amount'],
-                    static::class,
-                    sprintf(
-                        'Property "%s" expects a numeric as data for the currency, "%s" given.',
-                        $attribute->getCode(),
-                        $price['amount']
-                    ),
-                    InvalidPropertyTypeException::NUMERIC_EXPECTED_CODE
-                );
-            }
-
-            if (!in_array($price['currency'], $this->currencyRepository->getActivatedCurrencyCodes())) {
-                throw InvalidPropertyException::validEntityCodeExpected(
-                    $attribute->getCode(),
-                    'currency code',
-                    'The currency does not exist',
-                    static::class,
-                    $price['currency']
-                );
-            }
-        }
+        $this->addPrices($product, $attribute, $data, $options['locale'], $options['scope']);
     }
 
     /**
@@ -152,13 +83,37 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
     protected function addPrices(ProductInterface $product, AttributeInterface $attribute, $data, $locale, $scope)
     {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
-
-        if (null === $value) {
-            $value = $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope);
+        if (null !== $value) {
+            $data = $this->addNewPrices($value->getData(), $data);
         }
 
-        foreach ($data as $price) {
-            $this->productBuilder->addPriceForCurrency($value, $price['currency'], $price['amount']);
+        $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope, $data);
+    }
+
+    /**
+     * Returns the combination of the previous product prices and the new prices
+     * to add, all of them in PIM standard format.
+     *
+     * It is possible to have several prices for the same currency, this will be
+     * handled by the ProductValueFactory which will keep only the last one
+     * (here, it will be the new one passed to the adder).
+     *
+     * Validation will also be performed by the factory (array correctly
+     * formatted, locale, scope...).
+     *
+     * @param PriceCollectionInterface $previousPrices
+     * @param array                    $newPrices
+     *
+     * @return array
+     */
+    protected function addNewPrices(PriceCollectionInterface $previousPrices, array $newPrices)
+    {
+        $standardizedPreviousPrices = [];
+
+        foreach ($previousPrices as $previousPrice) {
+            $standardizedPreviousPrices[] = $this->normalizer->normalize($previousPrice, 'standard');
         }
+
+        return array_merge($standardizedPreviousPrices, $newPrices);
     }
 }

@@ -10,50 +10,32 @@ datagrid:
         source:
             type:              pim_datasource_associated_product
             entity:            '%pim_catalog.entity.product.class%'
-            repository_method: createAssociationDatagridQueryBuilder
             user_config_alias: product-grid
-            repository_parameters:
-                - product
         columns:
             is_checked:
                 frontend_type: boolean
-                data_name:     is_checked
                 editable:      true
             is_associated:
                 label:         Is associated
-                data_name:     is_associated
-                type:          twig
-                template:      PimDataGridBundle:Property:boolean.html.twig
-                frontend_type: html
-                primary:       true
+                frontend_type: boolean-label
             label:
                 label:         Label
-                data_name:     productLabel
-                selector:      product_label
+                type:          field
             family:
                 label:         Family
-                data_name:     familyLabel
-                selector:      product_family
+                type:          field
             enabled:
                 label:         Status
-                type:          twig
-                template:      PimDataGridBundle:Property:enabled.html.twig
-                frontend_type: html
+                frontend_type: enabled
             completeness:
                 label:         Complete
-                type:          twig
-                data_name:     ratio
-                template:      PimDataGridBundle:Property:completeness.html.twig
-                frontend_type: html
-                selector:      product_completeness
+                frontend_type: completeness
             created:
-                label:         Created
-                type:          product_value_date
-                frontend_type: date
+                label:         Created At
+                type:          field
             updated:
-                label:         Updated
-                type:          product_value_date
-                frontend_type: date
+                label:         Updated At
+                type:          field
         properties:
             id: ~
         sorters:

@@ -31,16 +31,16 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     protected $eventDispatcher;
 
     /**
-     * @param ObjectManager                  $om
-     * @param CompletenessManager            $completenessManager
-     * @param EventDispatcherInterface       $eventDispatcher
+     * @param ObjectManager            $objectManager
+     * @param CompletenessManager      $completenessManager
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
-        ObjectManager $om,
+        ObjectManager $objectManager,
         CompletenessManager $completenessManager,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->objectManager = $om;
+        $this->objectManager = $objectManager;
         $this->completenessManager = $completenessManager;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -57,11 +57,10 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
 
         $this->completenessManager->schedule($product);
+        $this->completenessManager->generateMissingForProduct($product);
 
         $this->objectManager->persist($product);
         $this->objectManager->flush();
-
-        $this->completenessManager->generateMissingForProduct($product);
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
     }
@@ -75,25 +74,25 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
+        foreach ($products as $product) {
+            $this->validateProduct($product);
+        }
+
         $options['unitary'] = false;
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
 
+
         foreach ($products as $product) {
-            $this->validateProduct($product);
-
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
-
             $this->completenessManager->schedule($product);
-
+            $this->completenessManager->generateMissingForProduct($product);
             $this->objectManager->persist($product);
         }
 
         $this->objectManager->flush();
 
         foreach ($products as $product) {
-            $this->completenessManager->generateMissingForProduct($product);
-
             $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
         }
 

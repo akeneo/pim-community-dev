@@ -104,76 +104,30 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
     ) {
         $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
-            $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
-            if (null === $toValue) {
-                $toValue = $this->productBuilder->addOrReplaceProductValue($toProduct, $toAttribute, $toLocale, $toScope);
-            }
-
-            $this->removeReferenceDataCollection($toValue, $toAttribute);
-            $this->copyReferenceDataCollection($fromValue, $toValue, $fromAttribute, $toAttribute);
-        }
-    }
-
-    /**
-     * Remove reference data collection from attribute
-     *
-     * @param ProductValueInterface $toValue
-     * @param AttributeInterface    $toAttribute
-     */
-    protected function removeReferenceDataCollection(ProductValueInterface $toValue, AttributeInterface $toAttribute)
-    {
-        $toDataGetter = $this->getValueMethodName($toValue, $toAttribute, 'get');
-        $toDataRemover = $this->getValueMethodName($toValue, $toAttribute, 'remove', true);
-
-        foreach ($toValue->$toDataGetter() as $attributeOption) {
-            $toValue->$toDataRemover($attributeOption);
-        }
-    }
-
-    /**
-     * Copy attribute reference data collection into a reference data collection attribute
-     *
-     * @param ProductValueInterface $fromValue
-     * @param ProductValueInterface $toValue
-     * @param AttributeInterface    $fromAttribute
-     * @param AttributeInterface    $toAttribute
-     */
-    protected function copyReferenceDataCollection(
-        ProductValueInterface $fromValue,
-        ProductValueInterface $toValue,
-        AttributeInterface $fromAttribute,
-        AttributeInterface $toAttribute
-    ) {
-        $fromDataGetter = $this->getValueMethodName($fromValue, $fromAttribute, 'get');
-        $toDataAdder = $this->getValueMethodName($toValue, $toAttribute, 'add', true);
-
-        foreach ($fromValue->$fromDataGetter() as $attributeOption) {
-            $toValue->$toDataAdder($attributeOption);
-        }
-    }
-
-    /**
-     * @param ProductValueInterface $value
-     * @param AttributeInterface    $attribute
-     * @param string                $type
-     * @param bool                  $singularify
-     *
-     * @return string
-     */
-    private function getValueMethodName(
-        ProductValueInterface $value,
-        AttributeInterface $attribute,
-        $type,
-        $singularify = false
-    ) {
-        $method = MethodNameGuesser::guess($type, $attribute->getReferenceDataName(), $singularify);
-
-        if (!method_exists($value, $method)) {
-            throw new \LogicException(
-                sprintf('ProductValue method "%s" is not implemented', $method)
+            $this->productBuilder->addOrReplaceProductValue(
+                $toProduct,
+                $toAttribute,
+                $toLocale,
+                $toScope,
+                $this->getReferenceDataCodes($fromValue)
             );
         }
+    }
 
-        return $method;
+    /**
+     * Gets the list of reference data codes contained in a product value collection.
+     *
+     * @param ProductValueInterface $fromValue
+     *
+     * @return string[]
+     */
+    protected function getReferenceDataCodes(ProductValueInterface $fromValue)
+    {
+        $referenceDataCodes = [];
+        foreach ($fromValue->getData() as $referenceData) {
+            $referenceDataCodes[] = $referenceData->getCode();
+        }
+
+        return $referenceDataCodes;
     }
 }

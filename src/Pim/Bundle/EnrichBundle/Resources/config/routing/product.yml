@@ -63,13 +63,6 @@ pim_enrich_product_category_rest_list:
         id: '[0-9a-f]+'
     methods: [GET]
 
-pim_enrich_product_completeness_rest_get:
-    path: /rest/{id}/completeness
-    defaults: { _controller: pim_enrich.controller.rest.completeness:getAction, _format: json }
-    requirements:
-        id: '[0-9a-f]+'
-    methods: [GET]
-
 pim_enrich_product_history_rest_get:
     path: /rest/{entityId}/history
     defaults: { _controller: pim_enrich.controller.rest.versioning:getAction, entityType: product, _format: json }

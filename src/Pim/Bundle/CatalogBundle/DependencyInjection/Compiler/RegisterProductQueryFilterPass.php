@@ -22,7 +22,7 @@ class RegisterProductQueryFilterPass implements CompilerPassInterface
     const QUERY_FILTER_REGISTRY = 'pim_catalog.query.filter.registry';
 
     /** @staticvar string */
-    const QUERY_FILTER_TAG = 'pim_catalog.doctrine.query.filter';
+    const QUERY_FILTER_TAG = 'pim_catalog.elasticsearch.query.filter';
 
     /**
      * {@inheritdoc}

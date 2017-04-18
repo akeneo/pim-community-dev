@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Catalog\Denormalizer\Standard;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\ProductValue\ScalarProductValue;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -14,7 +15,7 @@ class ProductValuesDenormalizerSpec extends ObjectBehavior
         DenormalizerInterface $denormalizer,
         AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->beConstructedWith($denormalizer, $attributeRepository, 'ProductValue');
+        $this->beConstructedWith($denormalizer, $attributeRepository, ProductValue::class);
     }
 
     function it_is_initializable()
@@ -52,22 +53,31 @@ class ProductValuesDenormalizerSpec extends ObjectBehavior
         ];
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($name);
+        $name->getCode()->willReturn('name');
+        $nameValue->getAttribute()->willReturn($name);
+        $nameValue->getScope()->willReturn(null);
+        $nameValue->getLocale()->willReturn(null);
+
         $attributeRepository->findOneByIdentifier('color')->willReturn($color);
+        $color->getCode()->willReturn('color');
+        $colorValue->getAttribute()->willReturn($color);
+        $colorValue->getScope()->willReturn('ecommerce');
+        $colorValue->getLocale()->willReturn('en_US');
 
         $denormalizer
-            ->denormalize($data['name'][0], 'ProductValue', 'standard', ['attribute' => $name])
+            ->denormalize($data['name'][0], ProductValue::class, 'standard', ['attribute' => $name])
             ->shouldBeCalled()
             ->willReturn($nameValue);
 
         $denormalizer
-            ->denormalize($data['color'][0], 'ProductValue', 'standard', ['attribute' => $color])
+            ->denormalize($data['color'][0], ProductValue::class, 'standard', ['attribute' => $color])
             ->shouldBeCalled()
             ->willReturn($colorValue);
 
         $values = $this->denormalize($data, 'ProductValue[]', 'standard');
 
         $values->shouldHaveCount(2);
-        $values[0]->shouldBe($nameValue);
-        $values[1]->shouldBe($colorValue);
+        $values->getByKey('name-<all_channels>-<all_locales>')->shouldBe($nameValue);
+        $values->getByKey('color-ecommerce-en_US')->shouldBe($colorValue);
     }
 }

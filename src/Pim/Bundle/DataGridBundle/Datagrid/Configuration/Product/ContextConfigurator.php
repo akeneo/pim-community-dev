@@ -41,6 +41,8 @@ class ContextConfigurator implements ConfiguratorInterface
     /** @staticvar string */
     const USER_CONFIG_ALIAS_KEY = 'user_config_alias';
 
+    const PRODUCTS_PER_PAGE = '_per_page';
+
     /** @var DatagridConfiguration */
     protected $configuration;
 
@@ -105,6 +107,8 @@ class ContextConfigurator implements ConfiguratorInterface
         $this->addDisplayedColumnCodes();
         $this->addAttributesIds();
         $this->addAttributesConfig();
+        $this->addPaginationConfig();
+        $this->addSearchAfter();
     }
 
     /**
@@ -231,7 +235,7 @@ class ContextConfigurator implements ConfiguratorInterface
     {
         $path = $this->getSourcePath(self::CURRENT_PRODUCT_KEY);
         $id = $this->requestParams->get('product', null);
-        $product = null !== $id ? $this->productRepository->findOneByWithValues($id) : null;
+        $product = null !== $id ? $this->productRepository->find($id) : null;
         $this->configuration->offsetSetByPath($path, $product);
     }
 
@@ -404,5 +408,28 @@ class ContextConfigurator implements ConfiguratorInterface
         }
 
         return null;
+    }
+
+    /**
+     * Inject requested _per_page parameters in the datagrid configuration
+     */
+    protected function addPaginationConfig()
+    {
+        $pager = $this->requestParams->get('_pager');
+
+        // TODO: remove static 25, will be done with TIP-664
+        $value = isset($pager[self::PRODUCTS_PER_PAGE]) ? $pager[self::PRODUCTS_PER_PAGE] : 25;
+
+        $this->configuration->offsetSetByPath($this->getSourcePath(self::PRODUCTS_PER_PAGE), $value);
+    }
+
+    /**
+     * Inject requested _per_page parameters in the datagrid configuration
+     */
+    protected function addSearchAfter()
+    {
+        $identifier = $this->requestParams->get('search_after', null);
+
+        $this->configuration->offsetSetByPath($this->getSourcePath('search_after'), $identifier);
     }
 }

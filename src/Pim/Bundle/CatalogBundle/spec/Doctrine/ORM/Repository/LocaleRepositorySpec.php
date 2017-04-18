@@ -36,7 +36,7 @@ class LocaleRepositorySpec extends ObjectBehavior
     {
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('l')->willReturn($queryBuilder);
-        $queryBuilder->from('locale', 'l')->willReturn($queryBuilder);
+        $queryBuilder->from('locale', 'l', null)->willReturn($queryBuilder);
         $queryBuilder->select('COUNT(l.id)')->willReturn($queryBuilder);
         $queryBuilder->expr()->willReturn($expr);
         $expr->eq('l.activated', true)->willReturn($expr);

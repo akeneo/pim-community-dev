@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class SuccessListProductIntegration extends AbstractProductTestCase
@@ -13,7 +14,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 
@@ -1214,12 +1215,15 @@ JSON;
         $expected = json_decode($expected, true);
 
         foreach ($result['_embedded']['items'] as $index => $product) {
-            $product = $this->sanitizeDateFields($product);
-            $result['_embedded']['items'][$index] = $this->sanitizeMediaAttributeData($product);
+            $product = $this->sanitizeMediaAttributeData($product);
+            NormalizedProductCleaner::clean($product);
+            $result['_embedded']['items'][$index] = $product;
 
             if (isset($expected['_embedded']['items'][$index])) {
-                $expected['_embedded']['items'][$index] = $this->sanitizeDateFields($expected['_embedded']['items'][$index]);
-                $expected['_embedded']['items'][$index] = $this->sanitizeMediaAttributeData($expected['_embedded']['items'][$index]);
+                $expectedProduct = $expected['_embedded']['items'][$index];
+                $expectedProduct = $this->sanitizeMediaAttributeData($expectedProduct);
+                NormalizedProductCleaner::clean($expectedProduct);
+                $expected['_embedded']['items'][$index] = $expectedProduct;
             }
         }
 
@@ -1242,7 +1246,8 @@ JSON;
     /**
      * @return array
      */
-    private function getStandardizedProducts() {
+    private function getStandardizedProducts()
+    {
         $standardizedProducts['simple'] = <<<JSON
 {
     "_links": {

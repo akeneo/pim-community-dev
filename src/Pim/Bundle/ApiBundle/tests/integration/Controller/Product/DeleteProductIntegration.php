@@ -23,7 +23,6 @@ class DeleteProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $this->assertCount(3, $this->get('pim_catalog.repository.product')->findAll());
-        $this->assertEquals(30, $this->get('pim_catalog.repository.product_value_counter')->count());
 
         $client->request('DELETE', 'api/rest/v1/products/foo');
 
@@ -31,7 +30,6 @@ class DeleteProductIntegration extends AbstractProductTestCase
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
 
         $this->assertCount(2, $this->get('pim_catalog.repository.product')->findAll());
-        $this->assertEquals(2, $this->get('pim_catalog.repository.product_value_counter')->count());
         $this->assertNull($this->get('pim_catalog.repository.product')->findOneByIdentifier('foo'));
     }
 

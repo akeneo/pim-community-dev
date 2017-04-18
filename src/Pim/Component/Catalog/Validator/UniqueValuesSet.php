@@ -43,6 +43,9 @@ class UniqueValuesSet
      */
     public function addValue(ProductValueInterface $productValue)
     {
+        // TODO: To be reworked in TIP-698
+        return true;
+
         $product = $productValue->getProduct();
         $productIdentifier = $this->getProductIdentifier($product);
         $productValueData = $this->getValueData($productValue);

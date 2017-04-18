@@ -32,6 +32,7 @@ use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\ProductValue\OptionProductValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
@@ -379,7 +380,7 @@ class FixturesContext extends BaseFixturesContext
         $optionLabelPattern = 'Option %d for attribute %d';
 
         $attributeConfig = [
-            'type'                   => $this->getAttributeType($type . 'select'),
+            'type'                   => $this->getType($type . 'select'),
             'group'                  => 'other',
             'useable_as_grid_filter' => (bool) $filterable
         ];
@@ -437,6 +438,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingFamilies(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $family = $this->getFamily($data['code']);
             unset($data['code']);
@@ -471,10 +473,11 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingCurrencies(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $currency = $this->getCurrency($data['code']);
 
-            assertEquals($data['activated'], (int)$currency->isActivated());
+            assertEquals($data['activated'], (int) $currency->isActivated());
         }
     }
 
@@ -485,6 +488,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingLocales(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $locale = $this->getLocale($data['code']);
 
@@ -499,6 +503,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingChannels(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $channel = $this->getChannel($data['code']);
             unset($data['code']);
@@ -537,6 +542,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingGroupTypes(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $groupType = $this->getGroupType($data['code']);
             unset($data['code']);
@@ -563,8 +569,8 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingAttributeGroups(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
-            /** @var AttributeGroup $group */
             $group = $this->getAttributeGroup($data['code']);
 
             assertEquals($data['label-en_US'], $group->getTranslation('en_US')->getLabel());
@@ -587,6 +593,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingOptions(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $attribute = $this->getEntityOrException('Attribute', ['code' => $data['attribute']]);
             $option    = $this->getEntityOrException(
@@ -609,6 +616,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingCategories(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $category = $this->getCategory($data['code']);
             assertEquals($data['label'], $category->getTranslation('en_US')->getLabel());
@@ -627,6 +635,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingAssociationTypes(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $associationType = $this->getAssociationType($data['code']);
             unset($data['code']);
@@ -654,7 +663,6 @@ class FixturesContext extends BaseFixturesContext
         $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $group = $this->getProductGroup($data['code']);
-            $this->refresh($group);
 
             assertEquals($data['label-en_US'], $group->getTranslation('en_US')->getLabel());
             assertEquals($data['label-fr_FR'], $group->getTranslation('fr_FR')->getLabel());
@@ -941,7 +949,8 @@ class FixturesContext extends BaseFixturesContext
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $value      = $this->getProductValue($identifier, strtolower($attribute));
-            $actualCode = $value->getOption() ? $value->getOption()->getCode() : null;
+            $actualCode = $value instanceof OptionProductValueInterface && $value->getData()
+                ? $value->getData()->getCode() : null;
             assertEquals($optionCode, $actualCode);
         }
     }
@@ -1132,7 +1141,7 @@ class FixturesContext extends BaseFixturesContext
                     if ('**empty**' === $value) {
                         assertEmpty((string) $productValue);
                     } else {
-                        assertTrue(false !== strpos((string) $productValue, $value));
+                        assertTrue(false !== strpos($productValue->getData()->getOriginalFilename(), $value));
                     }
                 } elseif ('prices' === $attribute->getBackendType() && null !== $priceCurrency) {
                     // $priceCurrency can be null if we want to test all the currencies at the same time
@@ -1142,7 +1151,7 @@ class FixturesContext extends BaseFixturesContext
                     $price = $productValue->getPrice($priceCurrency);
                     assertEquals($value, $price->getData());
                 } elseif ('date' === $attribute->getBackendType()) {
-                    assertEquals($value, $productValue->getDate()->format('Y-m-d'));
+                    assertEquals($value, $productValue->getData()->format('Y-m-d'));
                 } else {
                     assertEquals($value, (string) $productValue);
                 }
@@ -1453,7 +1462,7 @@ class FixturesContext extends BaseFixturesContext
         $mountManager = $this->getMountManager();
 
         foreach ($product->getValues() as $value) {
-            if (in_array($value->getAttribute()->getAttributeType(), [AttributeTypes::IMAGE, AttributeTypes::FILE])) {
+            if (in_array($value->getAttribute()->getType(), [AttributeTypes::IMAGE, AttributeTypes::FILE])) {
                 $media = $value->getData();
                 if (null !== $media) {
                     $fs = $mountManager->getFilesystem($media->getStorage());

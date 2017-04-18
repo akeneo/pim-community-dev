@@ -75,7 +75,7 @@ class ProductSaver extends BaseProductSaver
         $this->productClass = $productClass;
         $this->databaseName = $databaseName;
 
-        $this->collection = $this->objectManager->getDocumentCollection($this->productClass);
+        $this->collection = $this->entityManager->getDocumentCollection($this->productClass);
     }
 
     /**

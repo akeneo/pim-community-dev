@@ -60,6 +60,7 @@ datagrid:
                 frontend_type: date
         properties:
             id: ~
+            identifier: ~
         sorters:
             columns:
                 in_group:

@@ -49,8 +49,12 @@ class AddParametersToVariantProductGridListener extends AddParametersToProductGr
         $variantGroupId = $queryParameters['currentGroup'];
 
         if (null !== $variantGroupId) {
-            $productIds = $this->productRepository
-                ->getEligibleProductIdsForVariantGroup($variantGroupId);
+            $products = $this->productRepository->getEligibleProductsForVariantGroup($variantGroupId);
+            $productIds = [];
+            foreach ($products as $product) {
+                $productIds[] = $product->getId();
+            }
+
             if (count($productIds) === 0) {
                 $productIds = [0];
             }
@@ -58,7 +62,8 @@ class AddParametersToVariantProductGridListener extends AddParametersToProductGr
             $productIds = [0];
         }
 
-        $queryParameters['productIds'] = $productIds;
+        // TODO - TIP-664: make the datagrid work with ES
+//        $queryParameters['productIds'] = $productIds;
 
         return $queryParameters;
     }

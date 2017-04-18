@@ -3,6 +3,7 @@
 namespace Pim\Component\ReferenceData\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
  * Reference data repository interface
@@ -32,4 +33,13 @@ interface ReferenceDataRepositoryInterface extends ObjectRepository
      * @return array
      */
     public function findBySearch($search = null, array $options = []);
+
+    /**
+     * Return an array of reference data codes
+     *
+     * @param array $referenceDataCodes
+     *
+     * @return array
+     */
+    public function findCodesByIdentifiers(array $referenceDataCodes);
 }

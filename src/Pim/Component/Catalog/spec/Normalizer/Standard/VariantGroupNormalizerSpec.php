@@ -9,18 +9,13 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class VariantGroupNormalizerSpec extends ObjectBehavior
 {
-    function let(
-        TranslationNormalizer $translationNormalizer,
-        NormalizerInterface $valuesNormalizer,
-        DenormalizerInterface $valuesDenormalizer
-    )
+    function let(TranslationNormalizer $translationNormalizer, NormalizerInterface $valuesNormalizer)
     {
-        $this->beConstructedWith($translationNormalizer, $valuesNormalizer, $valuesDenormalizer);
+        $this->beConstructedWith($translationNormalizer, $valuesNormalizer);
     }
 
     function it_is_initializable()
@@ -51,7 +46,6 @@ class VariantGroupNormalizerSpec extends ObjectBehavior
     function it_normalizes_variant_group(
         $translationNormalizer,
         $valuesNormalizer,
-        $valuesDenormalizer,
         GroupInterface $variantGroup,
         GroupTypeInterface $variantGroupType,
         ProductTemplateInterface $productTemplate,
@@ -59,6 +53,16 @@ class VariantGroupNormalizerSpec extends ObjectBehavior
         AttributeInterface $size,
         Collection $variantGroupValues
     ) {
+        $values = [
+            [
+                'name' => [
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => 'Tshirt'
+                ]
+            ]
+        ];
+
         $translationNormalizer->normalize($variantGroup, 'standard', [])->willReturn([]);
 
         $variantGroup->getCode()->willReturn('my_code');
@@ -71,20 +75,7 @@ class VariantGroupNormalizerSpec extends ObjectBehavior
 
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
 
-
-        $values = [
-            [
-                'name' => [
-                    'locale' => null,
-                    'scope' => null,
-                    'data' => 'Tshirt'
-                ]
-            ]
-        ];
-
-        $productTemplate->getValuesData()->willReturn($values);
-
-        $valuesDenormalizer->denormalize($values, 'standard', [])->willReturn($variantGroupValues);
+        $productTemplate->getValues()->willReturn($variantGroupValues);
 
         $valuesNormalizer->normalize($variantGroupValues, 'standard', [])->willReturn($values);
 

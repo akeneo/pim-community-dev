@@ -2,32 +2,21 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Adder;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\PriceCollectionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
-use Pim\Component\Catalog\Model\ProductValue;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
-use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PriceCollectionAttributeAdderSpec extends ObjectBehavior
 {
-    function let(
-        ProductBuilderInterface $builder,
-        CurrencyRepositoryInterface $currencyRepository,
-        AttributeValidatorHelper $attrValidatorHelper
-    ) {
-        $this->beConstructedWith(
-            $builder,
-            $attrValidatorHelper,
-            $currencyRepository,
-            ['pim_catalog_price_collection']
-        );
+    function let(ProductBuilderInterface $builder, NormalizerInterface $normalizer)
+    {
+        $this->beConstructedWith($builder, $normalizer, ['pim_catalog_price_collection']);
     }
 
     function it_is_an_adder()
@@ -44,26 +33,6 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
 
         $textareaAttribute->getType()->willReturn('pim_catalog_textarea');
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
-    }
-
-    function it_checks_locale_and_scope_when_adding_an_attribute_data(
-        $attrValidatorHelper,
-        $currencyRepository,
-        AttributeInterface $attribute,
-        ProductInterface $product,
-        ProductValueInterface $priceValue,
-        ProductPriceInterface $price
-    ) {
-        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
-
-        $attribute->getCode()->willReturn('price');
-        $product->getValue('price', 'fr_FR', 'mobile')->willReturn($priceValue);
-        $priceValue->getPrices()->willReturn([$price]);
-
-        $data = [['amount' => 123.2, 'currency' => 'EUR']];
-        $this->addAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
     function it_throws_an_error_if_data_is_not_an_array(
@@ -83,126 +52,50 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
         )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
-    function it_throws_an_error_if_attribute_data_does_not_contain_an_array(
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = ['not an array'];
-
-        $this->shouldThrow(
-            InvalidPropertyTypeException::arrayOfArraysExpected(
-                'attributeCode',
-                'Pim\Component\Catalog\Updater\Adder\PriceCollectionAttributeAdder',
-                $data
-            )
-        )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
-    }
-
-    function it_throws_an_error_if_attribute_data_value_does_not_contain_amount_key(
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = [['not the data key' => 123]];
-
-        $this->shouldThrow(
-            InvalidPropertyTypeException::arrayKeyExpected(
-                'attributeCode',
-                'amount',
-                'Pim\Component\Catalog\Updater\Adder\PriceCollectionAttributeAdder',
-                $data
-            )
-        )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
-    }
-
-    function it_throws_an_error_if_attribute_data_value_contains_non_numeric_value(
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = [['amount' => 'non numeric value', 'currency' => 'EUR']];
-
-        $this->shouldThrow(
-            new InvalidPropertyTypeException(
-                'attributeCode',
-                'non numeric value',
-                'Pim\Component\Catalog\Updater\Adder\PriceCollectionAttributeAdder',
-                'Property "attributeCode" expects a numeric as data for the currency, "non numeric value" given.',
-                InvalidPropertyTypeException::NUMERIC_EXPECTED_CODE
-            )
-        )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
-    }
-
-    function it_throws_an_error_if_attribute_data_value_does_not_contain_currency_key(
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = [['amount' => 123, 'not the currency key' => 'euro']];
-
-        $this->shouldThrow(
-            InvalidPropertyTypeException::arrayKeyExpected(
-                'attributeCode',
-                'currency',
-                'Pim\Component\Catalog\Updater\Adder\PriceCollectionAttributeAdder',
-                $data
-            )
-        )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
-    }
-
-    function it_throws_an_error_if_attribute_data_value_does_not_contain_valid_currency(
-        $currencyRepository,
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
-
-        $data = [['amount' => 123, 'currency' => 'invalid currency']];
-
-        $this->shouldThrow(
-            InvalidPropertyException::validEntityCodeExpected(
-                'attributeCode',
-                'currency code',
-                'The currency does not exist',
-                'Pim\Component\Catalog\Updater\Adder\PriceCollectionAttributeAdder',
-                'invalid currency'
-            )
-        )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
-    }
-
     function it_adds_an_attribute_data_price_collection_value_to_a_product_value(
         $builder,
-        $currencyRepository,
+        $normalizer,
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductValue $productValue,
-        ProductPriceInterface $price
+        ProductValueInterface $productValue,
+        PriceCollectionInterface $prices,
+        ProductPriceInterface $price1,
+        ProductPriceInterface $price2,
+        \ArrayIterator $pricesIterator
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
         $data = [['amount' => 123.2, 'currency' => 'EUR']];
 
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
-
         $attribute->getCode()->willReturn('attributeCode');
-
-        $builder
-            ->addOrReplaceProductValue($product2, $attribute, $locale, $scope)
-            ->willReturn($productValue);
 
         $product1->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
-        $productValue->getPrices()->willReturn([$price]);
 
-        $builder->addPriceForCurrency($productValue, 'EUR', 123.2)->shouldBeCalledTimes(2);
+        $productValue->getData()->shouldBeCalledTimes(1)->willReturn($prices);
+        $prices->getIterator()->willReturn($pricesIterator);
+        $pricesIterator->rewind()->shouldBeCalled();
+        $pricesIterator->valid()->willReturn(true, true, false);
+        $pricesIterator->current()->willReturn($price1, $price2);
+        $pricesIterator->next()->shouldBeCalled();
+
+        $normalizer
+            ->normalize($price1, 'standard')
+            ->willReturn(['amount' => 42, 'currency' => 'USD']);
+
+        $normalizer
+            ->normalize($price2, 'standard')
+            ->willReturn(['amount' => 4.2, 'currency' => 'EUR']);
+
+        $builder->addOrReplaceProductValue($product1, $attribute, $locale, $scope, [
+            ['amount' => 42, 'currency' => 'USD'],
+            ['amount' => 4.2, 'currency' => 'EUR'],
+            ['amount' => 123.2, 'currency' => 'EUR'],
+        ])->shouldBeCalled();
+
+        $builder->addOrReplaceProductValue($product2, $attribute, $locale, $scope, $data)->shouldBeCalled();
+
         $this->addattributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->addattributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
     }

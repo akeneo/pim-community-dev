@@ -3,9 +3,15 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\StorageEvents;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Statement;
+use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
+use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -30,16 +36,17 @@ class ProductSaverSpec extends ObjectBehavior
         $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\BulkSaverInterface');
     }
 
-    function it_saves_a_product_and_schedule_completeness_in_database(
+    function it_saves_a_product_after_droping_its_previous_completenesses(
         $objectManager,
         $completenessManager,
         $eventDispatcher,
         ProductInterface $product
     ) {
-        $objectManager->persist($product)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
         $completenessManager->schedule($product)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
+
+        $objectManager->persist($product)->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
@@ -47,23 +54,22 @@ class ProductSaverSpec extends ObjectBehavior
         $this->save($product);
     }
 
-    function it_saves_multiple_products_and_schedule_completeness_in_database(
+    function it_saves_multiple_products_after_droping_their_previous_completenesses(
         $objectManager,
         $completenessManager,
         $eventDispatcher,
         ProductInterface $product1,
         ProductInterface $product2
     ) {
+        $completenessManager->schedule($product1)->shouldBeCalled();
+        $completenessManager->schedule($product2)->shouldBeCalled();
+        $completenessManager->generateMissingForProduct($product1)->shouldBeCalled();
+        $completenessManager->generateMissingForProduct($product2)->shouldBeCalled();
+
         $objectManager->persist($product1)->shouldBeCalled();
         $objectManager->persist($product2)->shouldBeCalled();
 
         $objectManager->flush()->shouldBeCalled();
-
-        $completenessManager->schedule($product1)->shouldBeCalled();
-        $completenessManager->schedule($product2)->shouldBeCalled();
-
-        $completenessManager->generateMissingForProduct($product1)->shouldBeCalled();
-        $completenessManager->generateMissingForProduct($product2)->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
