@@ -6,6 +6,7 @@ use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 use Pim\Component\Catalog\ProductValue\OptionProductValueInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class OptionNormalizerSpec extends ObjectBehavior
 {
@@ -33,7 +34,8 @@ class OptionNormalizerSpec extends ObjectBehavior
         AttributeOptionValueInterface $optionValue
     ) {
         $productValue->getData()->willReturn($color);
-        $color->getTranslation('fr_FR')->willReturn($optionValue);
+        $color->setLocale('fr_FR')->shouldBeCalled();
+        $color->getTranslation()->willReturn($optionValue);
         $optionValue->getValue()->willReturn('Violet');
         $productValue->getLocale()->willReturn(null);
         $productValue->getScope()->willReturn(null);
@@ -53,7 +55,8 @@ class OptionNormalizerSpec extends ObjectBehavior
         AttributeOptionValueInterface $optionValue
     ) {
         $productValue->getData()->willReturn($color);
-        $color->getTranslation('fr_FR')->willReturn($optionValue);
+        $color->setLocale('fr_FR')->shouldBeCalled();
+        $color->getTranslation()->willReturn($optionValue);
         $color->getCode()->willReturn('purple');
         $optionValue->getValue()->willReturn(null);
         $optionValue->getValue()->willReturn(null);
@@ -64,6 +67,25 @@ class OptionNormalizerSpec extends ObjectBehavior
             'locale' => null,
             'scope'  => null,
             'data'   => '[purple]',
+        ];
+
+        $this->normalize($productValue, 'datagrid', ['data_locale' => 'fr_FR'])->shouldReturn($data);
+    }
+
+    function it_normalizes_a_simple_select_product_value_without_data(
+        OptionProductValueInterface $productValue,
+        AttributeOptionInterface $color
+    ) {
+        $productValue->getData()->willReturn(null);
+        $color->setLocale(Argument::any())->shouldNotBeCalled();
+        $color->getTranslation()->shouldNotBeCalled();
+        $productValue->getLocale()->willReturn(null);
+        $productValue->getScope()->willReturn(null);
+
+        $data =  [
+            'locale' => null,
+            'scope'  => null,
+            'data'   => '',
         ];
 
         $this->normalize($productValue, 'datagrid', ['data_locale' => 'fr_FR'])->shouldReturn($data);
