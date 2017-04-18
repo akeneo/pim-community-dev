@@ -227,7 +227,6 @@ class ProductController
                 'internal_api',
                 $normalizationContext
             );
-            $normalizedProduct['meta']['completenesses'] = $this->getNormalizedCompletenesses($product);
 
             return new JsonResponse($normalizedProduct);
         }
