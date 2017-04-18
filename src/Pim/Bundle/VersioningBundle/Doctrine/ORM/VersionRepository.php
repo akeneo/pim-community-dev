@@ -3,10 +3,10 @@
 namespace Pim\Bundle\VersioningBundle\Doctrine\ORM;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
-use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 
 /**
@@ -18,9 +18,6 @@ use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
  */
 class VersionRepository extends EntityRepository implements VersionRepositoryInterface, CursorableRepositoryInterface
 {
-    /** @var CursorFactoryInterface */
-    protected $cursorFactory;
-
     /**
      * {@inheritdoc}
      */
@@ -129,10 +126,6 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
      */
     public function findPotentiallyPurgeableBy(array $options = [])
     {
-        if (null === $this->cursorFactory) {
-            throw new \RuntimeException('The cursor factory is not initialized');
-        }
-
         $qb = $this->createQueryBuilder('v');
 
         if (isset($options['resource_name'])) {
@@ -149,7 +142,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
             $qb->setParameter('limit_date', $options['limit_date'], Type::DATETIME);
         }
 
-        return $this->cursorFactory->createCursor($qb);
+        return new Paginator($qb);
     }
 
     /**
@@ -192,14 +185,6 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
         }
 
         return $versionId;
-    }
-
-    /**
-     * @param CursorFactoryInterface $cursorFactory
-     */
-    public function setCursorFactory(CursorFactoryInterface $cursorFactory)
-    {
-        $this->cursorFactory = $cursorFactory;
     }
 
     /**
