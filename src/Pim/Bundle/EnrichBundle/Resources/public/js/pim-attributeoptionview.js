@@ -165,9 +165,9 @@ define(
 
                 if (response.code) {
                     this.$el.find('.validation-tooltip')
+                        .attr('data-original-title', response.code)
                         .removeClass('AknIconButton--hide')
                         .tooltip('destroy')
-                        .tooltip({title: response.code})
                         .tooltip('show');
                 } else {
                     Dialog.alert(
