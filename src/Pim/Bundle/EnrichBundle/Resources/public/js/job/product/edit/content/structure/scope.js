@@ -94,6 +94,7 @@ define(
 
                 return _.map(channels, function (channel) {
                     channel.label = i18n.getLabel(channel.labels, locale, channel.code);
+
                     return channel;
                 });
             },
