@@ -73,7 +73,7 @@ Feature: Display the completeness of a product
     When I filter by "scope" with operator "equals" and value "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
-     | complete | 89%   |
+     | complete | 88%   |
     And the row "sandals" should contain:
      | column   | value |
      | complete | 25%   |
@@ -88,7 +88,7 @@ Feature: Display the completeness of a product
     When I filter by "scope" with operator "equals" and value "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
-     | complete | 78%   |
+     | complete | 77%   |
     And the row "sandals" should contain:
      | column   | value |
      | complete | 50%   |

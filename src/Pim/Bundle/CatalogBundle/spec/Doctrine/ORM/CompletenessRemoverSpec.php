@@ -45,11 +45,12 @@ class CompletenessRemoverSpec extends ObjectBehavior
         Collection $completenesses,
         Statement $statement
     ) {
-        $product->getIdentifier()->willReturn('foo');
+        $product->getId()->willReturn(42);
         $product->getCompletenesses()->willReturn($completenesses);
         $completenesses->clear()->shouldBeCalled();
 
-        $connection->executeQuery(Argument::any(), ['foo'])->willReturn($statement);
+        $connection->prepare(Argument::any())->willReturn($statement);
+        $statement->bindValue('productId', 42)->shouldBeCalled();
         $statement->execute()->shouldBeCalled();
 
         $indexer->index($product)->shouldBeCalled();
@@ -70,8 +71,8 @@ class CompletenessRemoverSpec extends ObjectBehavior
         CursorInterface $products,
         Statement $statement
     ) {
-        $product1->getIdentifier()->willReturn('foo');
-        $product2->getIdentifier()->willReturn('bar');
+        $product1->getId()->willReturn(21);
+        $product2->getId()->willReturn(42);
 
         $products->rewind()->shouldBeCalled();
         $products->valid()->willReturn(true, true, false);
@@ -91,7 +92,7 @@ class CompletenessRemoverSpec extends ObjectBehavior
         $pqb->execute()->willReturn($products);
 
         $connection->prepare(Argument::any())->willReturn($statement);
-        $statement->bindValue('identifiers', ['foo', 'bar'], Type::SIMPLE_ARRAY)->shouldBeCalled();
+        $statement->bindValue('productIds', [21, 42], Type::SIMPLE_ARRAY)->shouldBeCalled();
         $statement->execute()->shouldBeCalled();
 
         $product1->getCompletenesses()->willReturn($completenesses1);
@@ -119,8 +120,8 @@ class CompletenessRemoverSpec extends ObjectBehavior
         CursorInterface $products,
         Statement $statement
     ) {
-        $product1->getIdentifier()->willReturn('foo');
-        $product2->getIdentifier()->willReturn('bar');
+        $product1->getId()->willReturn(21);
+        $product2->getId()->willReturn(42);
 
         $products->rewind()->shouldBeCalled();
         $products->valid()->willReturn(true, true, false);
@@ -141,7 +142,7 @@ class CompletenessRemoverSpec extends ObjectBehavior
         $pqb->execute()->willReturn($products);
 
         $connection->prepare(Argument::any())->willReturn($statement);
-        $statement->bindValue('identifiers', ['foo', 'bar'], Type::SIMPLE_ARRAY)->shouldBeCalled();
+        $statement->bindValue('productIds', [21, 42], Type::SIMPLE_ARRAY)->shouldBeCalled();
         $statement->execute()->shouldBeCalled();
 
         $product1->getCompletenesses()->willReturn($completenesses1);

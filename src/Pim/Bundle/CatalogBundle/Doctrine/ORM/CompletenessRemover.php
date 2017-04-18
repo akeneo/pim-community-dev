@@ -56,12 +56,15 @@ class CompletenessRemover implements CompletenessRemoverInterface
      */
     public function removeForProduct(ProductInterface $product)
     {
-        $product->getCompletenesses()->clear();
-        $statement = $this->entityManager->getConnection()->executeQuery(
-            'DELETE c FROM pim_catalog_completeness c JOIN pim_catalog_product p WHERE p.identifier = ?',
-            [$product->getIdentifier()]
-        );
+        $statement = $this->entityManager->getConnection()->prepare('
+            DELETE c
+            FROM pim_catalog_completeness c
+            WHERE c.product_id = :productId
+        ');
+        $statement->bindValue('productId', $product->getId());
         $statement->execute();
+
+        $product->getCompletenesses()->clear();
 
         $this->indexer->index($product);
     }
@@ -97,25 +100,24 @@ class CompletenessRemover implements CompletenessRemoverInterface
         $statement = $this->entityManager->getConnection()->prepare('
             DELETE c
             FROM pim_catalog_completeness c
-            JOIN pim_catalog_product p
-            WHERE p.identifier IN (:identifiers)
+            WHERE c.product_id IN (:productIds)
         ');
 
         $bulkedProducts = [];
-        $identifiers = [];
+        $productIds = [];
         $bulkCounter = 0;
 
         foreach ($products as $product) {
             $bulkedProducts[] = $product;
-            $identifiers[] = $product->getIdentifier();
+            $productIds[] = $product->getId();
 
             if (self::BULK_SIZE === $bulkCounter) {
-                $statement->bindValue('identifiers', $identifiers, Type::SIMPLE_ARRAY);
+                $statement->bindValue('productIds', $productIds, Type::SIMPLE_ARRAY);
                 $statement->execute();
                 $this->indexer->indexAll($bulkedProducts);
 
                 $bulkedProducts = [];
-                $identifiers = [];
+                $productIds = [];
                 $bulkCounter = 0;
             } else {
                 $bulkCounter++;
@@ -124,8 +126,8 @@ class CompletenessRemover implements CompletenessRemoverInterface
             $product->getCompletenesses()->clear();
         }
 
-        if (!empty($identifiers)) {
-            $statement->bindValue('identifiers', $identifiers, Type::SIMPLE_ARRAY);
+        if (!empty($productIds)) {
+            $statement->bindValue('productIds', $productIds, Type::SIMPLE_ARRAY);
             $statement->execute();
             $this->indexer->indexAll($bulkedProducts);
         }

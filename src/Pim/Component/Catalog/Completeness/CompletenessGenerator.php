@@ -2,10 +2,7 @@
 
 namespace Pim\Component\Catalog\Completeness;
 
-use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -113,7 +110,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         }
 
         $newCompletenesses = $this->completenessCalculator->calculate($product);
-
         foreach ($newCompletenesses as $completeness) {
             $completenessCollection->add($completeness);
         }
