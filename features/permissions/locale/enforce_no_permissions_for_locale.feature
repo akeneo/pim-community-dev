@@ -74,8 +74,8 @@ Feature: Enforce no permissions for a locale
       | product category | user group | access |
       | 2014_collection  | All        | edit   |
     And the following attribute group accesses:
-      | attribute group | user group | access | group | type             |
-      | general         | All        | edit   | other | pim_catalog_text |
+      | attribute group | user group | access |
+      | general         | All        | edit   |
     And I am logged in as "admin"
     And I am on the user groups creation page
     And I fill in the following information:

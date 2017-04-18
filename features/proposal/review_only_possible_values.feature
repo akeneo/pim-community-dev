@@ -7,9 +7,9 @@ Feature: Review only possible values giving permissions on draft changes
   Background:
     Given a "clothing" catalog configuration
     And the following attribute group accesses:
-      | attribute group | user group | access | group | type             |
-      | sizes           | Manager    | view   | other | pim_catalog_text |
-      | sizes           | Redactor   | edit   | other | pim_catalog_text |
+      | attribute group | user group | access |
+      | sizes           | Manager    | view   |
+      | sizes           | Redactor   | edit   |
     And the following products:
       | sku  | family  | categories | name-en_US               | weather_conditions |
       | sp-1 | hoodies | tops       | South Park Hoodie - Timm | dry                |
