@@ -47,7 +47,7 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface
         $this->validateProduct($product);
 
         $normalizedProduct = $this->normalizer->normalize($product, 'indexing');
-        $this->indexer->index($this->indexType, $product->getIdentifier(), $normalizedProduct);
+        $this->indexer->index($this->indexType, $product->getId(), $normalizedProduct);
     }
 
     /**
@@ -58,10 +58,10 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface
         $normalizedProducts = [];
         foreach ($products as $product) {
             $this->validateProduct($product);
-            $normalizedProducts[$product->getIdentifier()] = $this->normalizer->normalize($product, 'indexing');
+            $normalizedProducts[] = $this->normalizer->normalize($product, 'indexing');
         }
 
-        $this->indexer->bulkIndexes($this->indexType, $normalizedProducts, 'identifier');
+        $this->indexer->bulkIndexes($this->indexType, $normalizedProducts, 'id');
     }
 
     /**
@@ -76,6 +76,10 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface
                     ClassUtils::getClass($product)
                 )
             );
+        }
+
+        if (null === $product->getId()) {
+            throw new \InvalidArgumentException('Only products with an ID can be indexed in the search engine.');
         }
     }
 }

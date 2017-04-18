@@ -20,6 +20,7 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
     const FIELD_COMPLETENESS = 'completeness';
     const FIELD_IS_ASSOCIATED = 'is_associated';
     const FIELD_IN_GROUP = 'in_group';
+    const FIELD_ID = 'id';
 
     /**
      * {@inheritdoc}
@@ -32,6 +33,7 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
 
         $data = [];
 
+        $data[self::FIELD_ID] = $product->getId();
         $data[StandardPropertiesNormalizer::FIELD_IDENTIFIER] = $product->getIdentifier();
         $data[StandardPropertiesNormalizer::FIELD_CREATED] = $this->serializer->normalize(
             $product->getCreated(),
