@@ -7,6 +7,7 @@
 - PIM-6286: Fix User repository
 - GITHUB-6061: Fix menu display for big words
 - PIM-5709: Fix clicking date picker also opens date picker in compare panel
+- PIM-6322: Add output for attribute option form validation
 
 # 1.7.2 (2017-04-07)
 
