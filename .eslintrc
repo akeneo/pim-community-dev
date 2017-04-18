@@ -15,7 +15,7 @@
       2,
       "all"
     ],
-    "eqeqeq": 2,
+    "eqeqeq": 1,
     "wrap-iife": [
         2,
         "any"
@@ -28,20 +28,14 @@
         "VariableDeclarator": 1
       }
     ],
+    "no-use-before-define": 0,
     "newline-before-return": 2,
-    "no-use-before-define": [
-      2,
-      {
-        "functions": false
-      }
-    ],
     "new-cap": [
-      2,
+      1,
       {
         "properties": false
       }
     ],
-    "no-new": 2,
     "quotes": [
       2,
       "single"

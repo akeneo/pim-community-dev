@@ -9,8 +9,7 @@ module.exports = function (grunt) {
         eslint: {
             options: {
                 quiet: true,
-                configFile: '.eslintrc',
-                fix: true
+                configFile: '.eslintrc'
             },
             target: [
                 'Gruntfile.js',
