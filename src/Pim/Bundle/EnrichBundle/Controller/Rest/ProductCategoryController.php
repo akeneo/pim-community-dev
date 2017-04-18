@@ -22,18 +22,18 @@ class ProductCategoryController
     protected $productRepository;
 
     /** @var ProductCategoryRepositoryInterface */
-    protected $productCategoryRepository;
+    protected $productCategoryRepo;
 
     /**
      * @param ProductRepositoryInterface         $productRepository
-     * @param ProductCategoryRepositoryInterface $productCategoryRepository
+     * @param ProductCategoryRepositoryInterface $productCategoryRepo
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
-        ProductCategoryRepositoryInterface $productCategoryRepository
+        ProductCategoryRepositoryInterface $productCategoryRepo
     ) {
-        $this->productRepository         = $productRepository;
-        $this->productCategoryRepository = $productCategoryRepository;
+        $this->productRepository   = $productRepository;
+        $this->productCategoryRepo = $productCategoryRepo;
     }
 
     /**
@@ -48,7 +48,7 @@ class ProductCategoryController
     public function listAction($id)
     {
         $product = $this->findProductOr404($id);
-        $trees   = $this->productCategoryRepository->getProductCountByTree($product);
+        $trees   = $this->productCategoryRepo->getProductCountByTree($product);
 
         $result = [
             'trees'      => [],

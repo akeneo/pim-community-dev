@@ -60,27 +60,27 @@ class ContextConfigurator implements ConfiguratorInterface
     protected $gridViewRepository;
 
     /** @var GroupRepositoryInterface */
-    protected $productGroupRepository;
+    protected $groupRepository;
 
     /**
      * @param ProductManager           $productManager
      * @param RequestParameters        $requestParams
      * @param UserContext              $userContext
      * @param EntityRepository         $gridViewRepository
-     * @param GroupRepositoryInterface $productGroupRepository
+     * @param GroupRepositoryInterface $groupRepository
      */
     public function __construct(
         ProductManager $productManager,
         RequestParameters $requestParams,
         UserContext $userContext,
         EntityRepository $gridViewRepository,
-        GroupRepositoryInterface $productGroupRepository = null
+        GroupRepositoryInterface $groupRepository = null
     ) {
         $this->productManager     = $productManager;
         $this->requestParams      = $requestParams;
         $this->userContext        = $userContext;
         $this->gridViewRepository = $gridViewRepository;
-        $this->productGroupRepository = $productGroupRepository;
+        $this->groupRepository    = $groupRepository;
     }
 
     /**
@@ -315,8 +315,8 @@ class ContextConfigurator implements ConfiguratorInterface
     {
         $attributeIds = [];
 
-        if ((null !== $productGroupId = $this->getProductGroupId()) && null !== $this->productGroupRepository) {
-            $group = $this->productGroupRepository->find($productGroupId);
+        if ((null !== $productGroupId = $this->getProductGroupId()) && null !== $this->groupRepository) {
+            $group = $this->groupRepository->find($productGroupId);
             if ($group->getType()->isVariant()) {
                 foreach ($group->getAxisAttributes() as $axis) {
                     $attributeIds[] = $axis->getId();

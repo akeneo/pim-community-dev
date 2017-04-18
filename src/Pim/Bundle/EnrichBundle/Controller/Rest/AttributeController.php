@@ -27,7 +27,7 @@ class AttributeController
     protected $normalizer;
 
     /** @var SearchableRepositoryInterface */
-    protected $attributeSearchRepository;
+    protected $attributeSearchRepo;
 
     /** @var TokenStorageInterface */
     protected $tokenStorage;
@@ -40,20 +40,20 @@ class AttributeController
      * @param NormalizerInterface           $normalizer
      * @param TokenStorageInterface         $tokenStorage
      * @param ObjectFilterInterface         $attributeFilter
-     * @param SearchableRepositoryInterface $attributeSearchRepository
+     * @param SearchableRepositoryInterface $attributeSearchRepo
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
         TokenStorageInterface $tokenStorage,
         ObjectFilterInterface $attributeFilter,
-        SearchableRepositoryInterface $attributeSearchRepository = null
+        SearchableRepositoryInterface $attributeSearchRepo = null
     ) {
-        $this->attributeRepository       = $attributeRepository;
-        $this->normalizer                = $normalizer;
-        $this->tokenStorage              = $tokenStorage;
-        $this->attributeFilter           = $attributeFilter;
-        $this->attributeSearchRepository = $attributeSearchRepository;
+        $this->attributeRepository = $attributeRepository;
+        $this->normalizer          = $normalizer;
+        $this->tokenStorage        = $tokenStorage;
+        $this->attributeFilter     = $attributeFilter;
+        $this->attributeSearchRepo = $attributeSearchRepo;
     }
 
     /**
@@ -89,8 +89,8 @@ class AttributeController
         $token = $this->tokenStorage->getToken();
         $options['user_groups_ids'] = $token->getUser()->getGroupsIds();
 
-        if (null !== $this->attributeSearchRepository) {
-            $attributes = $this->attributeSearchRepository->findBySearch(
+        if (null !== $this->attributeSearchRepo) {
+            $attributes = $this->attributeSearchRepo->findBySearch(
                 $request->request->get('search'),
                 $options
             );

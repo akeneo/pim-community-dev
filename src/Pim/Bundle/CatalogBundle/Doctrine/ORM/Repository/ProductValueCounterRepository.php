@@ -36,8 +36,8 @@ class ProductValueCounterRepository implements ProductValueCounterRepositoryInte
      */
     public function count()
     {
-        $productValueRepository = $this->entityManager->getRepository($this->productValueClass);
-        $qb = $productValueRepository->createQueryBuilder('pv');
+        $productValueRepo = $this->entityManager->getRepository($this->productValueClass);
+        $qb = $productValueRepo->createQueryBuilder('pv');
         $qb->select('count(pv.id)');
 
         return $qb->getQuery()->getSingleScalarResult();

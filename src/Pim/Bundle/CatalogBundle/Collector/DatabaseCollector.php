@@ -24,7 +24,7 @@ class DatabaseCollector extends DataCollector
     const MYSQL_PRODUCT_VALUE_LIMIT = 5000000;
 
     /** @var ProductValueCounterRepositoryInterface */
-    protected $productValueRepository;
+    protected $productValueRepo;
 
     /** @var string */
     protected $storageDriver;
@@ -37,17 +37,17 @@ class DatabaseCollector extends DataCollector
 
     /**
      * @param VersionProviderInterface               $versionProvider
-     * @param ProductValueCounterRepositoryInterface $productValueRepository
+     * @param ProductValueCounterRepositoryInterface $productValueRepo
      * @param string                                 $storageDriver
      */
     public function __construct(
         VersionProviderInterface $versionProvider,
-        ProductValueCounterRepositoryInterface $productValueRepository,
+        ProductValueCounterRepositoryInterface $productValueRepo,
         $storageDriver
     ) {
-        $this->productValueRepository = $productValueRepository;
-        $this->versionProvider = $versionProvider;
-        $this->storageDriver = $storageDriver;
+        $this->productValueRepo = $productValueRepo;
+        $this->versionProvider  = $versionProvider;
+        $this->storageDriver    = $storageDriver;
     }
 
     /**
@@ -125,7 +125,7 @@ class DatabaseCollector extends DataCollector
      */
     public function getProductValueCount()
     {
-        return $this->productValueRepository->count();
+        return $this->productValueRepo->count();
     }
 
     /**
