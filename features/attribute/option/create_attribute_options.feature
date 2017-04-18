@@ -62,6 +62,6 @@ Feature: Create attribute options
       And I am on the "size" attribute page
       When I visit the "Values" tab
       And I create the following attribute options:
-        | Code |
+        | Code      |
         | shoe size |
       Then I should see validation tooltip "Option code may contain only letters, numbers and underscores"
