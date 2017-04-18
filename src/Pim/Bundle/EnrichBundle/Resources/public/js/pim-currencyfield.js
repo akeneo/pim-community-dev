@@ -207,6 +207,7 @@ define(
                 if (e) {
                     e.preventDefault();
                 }
+
                 return this.expanded ? this._collapse() : this._expand();
             },
 

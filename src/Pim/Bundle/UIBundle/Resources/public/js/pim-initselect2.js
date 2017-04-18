@@ -3,6 +3,7 @@ define(
     ['jquery', 'underscore', 'pim/formatter/choices/base', 'pim/user-context', 'jquery.select2'],
     function ($, _, ChoicesFormatter, UserContext) {
         'use strict';
+
         return {
             resultsPerPage: 20,
             defaultOptions: {

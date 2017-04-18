@@ -1,14 +1,14 @@
 'use strict';
 
 define([
-        'jquery',
-        'underscore',
-        'module',
-        'oro/mediator',
-        'routing',
-        'pim/attribute-manager',
-        'pim/fetcher-registry'
-    ], function (
+    'jquery',
+    'underscore',
+    'module',
+    'oro/mediator',
+    'routing',
+    'pim/attribute-manager',
+    'pim/fetcher-registry'
+], function (
         $,
         _,
         module,
@@ -17,10 +17,10 @@ define([
         AttributeManager,
         FetcherRegistry
     ) {
-        return {
-            productValues: null,
-            doGenerateMissing: function (variantGroup) {
-                return AttributeManager.getAttributes(variantGroup)
+    return {
+        productValues: null,
+        doGenerateMissing: function (variantGroup) {
+            return AttributeManager.getAttributes(variantGroup)
                     .then(function (productAttributeCodes) {
                         return $.when(
                             FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(productAttributeCodes),
@@ -51,10 +51,10 @@ define([
 
                         return variantGroup;
                     });
-            },
-            generateMissing: function (product) {
-                return this.doGenerateMissing(product);
-            }
-        };
-    }
+        },
+        generateMissing: function (product) {
+            return this.doGenerateMissing(product);
+        }
+    };
+}
 );

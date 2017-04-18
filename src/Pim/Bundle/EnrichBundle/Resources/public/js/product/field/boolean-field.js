@@ -10,21 +10,21 @@
 define(
     ['pim/field', 'underscore', 'text!pim/template/product/field/boolean', 'bootstrap.bootstrapswitch'],
     function (Field, _, fieldTemplate) {
-    return Field.extend({
-        fieldTemplate: _.template(fieldTemplate),
-        events: {
-            'change .field-input input[type="checkbox"]': 'updateModel'
-        },
-        renderInput: function (context) {
-            return this.fieldTemplate(context);
-        },
-        postRender: function () {
-            this.$('.switch').bootstrapSwitch();
-        },
-        updateModel: function () {
-            var data = this.$('.field-input:first input[type="checkbox"]').prop('checked');
+        return Field.extend({
+            fieldTemplate: _.template(fieldTemplate),
+            events: {
+                'change .field-input input[type="checkbox"]': 'updateModel'
+            },
+            renderInput: function (context) {
+                return this.fieldTemplate(context);
+            },
+            postRender: function () {
+                this.$('.switch').bootstrapSwitch();
+            },
+            updateModel: function () {
+                var data = this.$('.field-input:first input[type="checkbox"]').prop('checked');
 
-            this.setCurrentValue(data);
-        }
+                this.setCurrentValue(data);
+            }
+        });
     });
-});

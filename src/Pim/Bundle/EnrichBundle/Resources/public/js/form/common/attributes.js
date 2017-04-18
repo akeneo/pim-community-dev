@@ -7,25 +7,25 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'jquery',
-        'underscore',
-        'backbone',
-        'oro/mediator',
-        'routing',
-        'pim/form',
-        'pim/field-manager',
-        'pim/fetcher-registry',
-        'pim/attribute-manager',
-        'pim/attribute-group-manager',
-        'pim/user-context',
-        'pim/security-context',
-        'text!pim/template/form/tab/attributes',
-        'pim/dialog',
-        'oro/messenger',
-        'pim/i18n'
-    ],
+ define(
+     [
+         'jquery',
+         'underscore',
+         'backbone',
+         'oro/mediator',
+         'routing',
+         'pim/form',
+         'pim/field-manager',
+         'pim/fetcher-registry',
+         'pim/attribute-manager',
+         'pim/attribute-group-manager',
+         'pim/user-context',
+         'pim/security-context',
+         'text!pim/template/form/tab/attributes',
+         'pim/dialog',
+         'oro/messenger',
+         'pim/i18n'
+     ],
     function (
         $,
         _,

@@ -90,6 +90,7 @@ define(
                         )
                     )
                 );
+
                 return this;
             }
         });
@@ -115,6 +116,7 @@ define(
                         )
                     )
                 );
+
                 return this;
             }
         });
@@ -151,6 +153,7 @@ define(
                         )
                     )
                 );
+
                 return this;
             }
         });
@@ -190,6 +193,7 @@ define(
                         )
                     )
                 );
+
                 return this;
             }
         });

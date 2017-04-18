@@ -8,13 +8,13 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'pim/fetcher-registry',
-        'text!pim/template/association-type/tab/properties/general',
-        'jquery.select2'
-    ],
+    'underscore',
+    'oro/translator',
+    'pim/form',
+    'pim/fetcher-registry',
+    'text!pim/template/association-type/tab/properties/general',
+    'jquery.select2'
+],
     function (
         _,
         __,

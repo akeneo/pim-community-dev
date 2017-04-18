@@ -1,9 +1,10 @@
 define(
     ['jquery', 'backbone', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog',
-     'pim/saveformstate', 'pim/asynctab', 'pim/ui', 'oro/loading-mask'],
+        'pim/saveformstate', 'pim/asynctab', 'pim/ui', 'oro/loading-mask'],
     function ($, Backbone, __, mediator, Navigation, messenger, Dialog, saveformstate, loadTab, UI, LoadingMask) {
         'use strict';
         var initialized = false;
+
         return function () {
             if (initialized) {
                 return;

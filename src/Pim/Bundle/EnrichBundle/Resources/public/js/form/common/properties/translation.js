@@ -8,11 +8,11 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
-        'underscore',
-        'pim/form',
-        'pim/fetcher-registry',
-        'text!pim/template/form/properties/translation'
-    ],
+    'underscore',
+    'pim/form',
+    'pim/fetcher-registry',
+    'text!pim/template/form/properties/translation'
+],
     function (
         _,
         BaseForm,
@@ -133,6 +133,7 @@ define([
                     .then(function (locales) {
                         if (!_.isEqual(this.locales, locales)) {
                             this.locales = locales;
+
                             return this.render();
                         }
 

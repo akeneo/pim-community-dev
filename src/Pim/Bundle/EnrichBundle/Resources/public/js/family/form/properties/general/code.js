@@ -8,11 +8,11 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'text!pim/template/form/properties/input'
-    ],
+    'underscore',
+    'oro/translator',
+    'pim/form',
+    'text!pim/template/form/properties/input'
+],
     function (
         _,
         __,

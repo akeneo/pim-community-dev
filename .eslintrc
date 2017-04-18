@@ -28,6 +28,7 @@
         "VariableDeclarator": 1
       }
     ],
+    "newline-before-return": 2,
     "no-use-before-define": [
       2,
       {
@@ -128,10 +129,6 @@
     "keyword-spacing": [
       2,
       {}
-    ],
-    "consistent-this": [
-      2,
-      "_this"
     ],
     "linebreak-style": [
       2,
