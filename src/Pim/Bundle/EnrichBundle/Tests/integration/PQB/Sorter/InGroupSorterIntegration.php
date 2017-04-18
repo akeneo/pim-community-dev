@@ -15,13 +15,13 @@ class InGroupSorterIntegration extends AbstractProductQueryBuilderTestCase
     public function testSortDescendant()
     {
         $result = $this->executeSorter([['in_group_4', Directions::DESCENDING]]);
-        $this->assertOrder($result, ['bar', 'foo', 'baz', 'empty']);
+        $this->assertOrder($result, ['foo', 'bar', 'baz', 'empty']);
     }
 
     public function testSortAscendant()
     {
         $result = $this->executeSorter([['in_group_4', Directions::ASCENDING]]);
-        $this->assertOrder($result, ['bar', 'foo', 'baz', 'empty']);
+        $this->assertOrder($result, ['foo', 'bar', 'baz', 'empty']);
     }
 
     /**

@@ -17,14 +17,14 @@ class IsAssociatedSorterIntegration extends AbstractProductQueryBuilderTestCase
         $result = $this->executeSorter([['is_associated', Directions::DESCENDING]]);
         $this->assertOrder($result, [
             'foo_bar',
-            'foo_bar_baz',
             'foo_baz',
+            'foo_bar_baz',
             'foo_group_A',
             'foo_group_B',
             'foo_groups_AB',
+            'foo',
             'bar',
             'baz',
-            'foo',
         ]);
     }
 
@@ -32,12 +32,12 @@ class IsAssociatedSorterIntegration extends AbstractProductQueryBuilderTestCase
     {
         $result = $this->executeSorter([['is_associated', Directions::ASCENDING]]);
         $this->assertOrder($result, [
+            'foo',
             'bar',
             'baz',
-            'foo',
             'foo_bar',
-            'foo_bar_baz',
             'foo_baz',
+            'foo_bar_baz',
             'foo_group_A',
             'foo_group_B',
             'foo_groups_AB',

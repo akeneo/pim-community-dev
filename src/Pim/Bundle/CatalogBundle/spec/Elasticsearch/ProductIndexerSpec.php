@@ -32,24 +32,47 @@ class ProductIndexerSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('index', [$aWrongProduct]);
     }
 
+    function it_throws_an_exception_when_attempting_to_index_a_product_without_id(
+        $normalizer,
+        $indexer,
+        ProductInterface $aWrongProduct
+    ) {
+        $normalizer->normalize(Argument::cetera())->willReturn([]);
+        $indexer->index(Argument::cetera())->shouldNotBeCalled();
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('index', [$aWrongProduct]);
+    }
+
     function it_throws_an_exception_when_attempting_to_bulk_index_a_non_product(
         $normalizer,
         $indexer,
         ProductInterface $product,
         \stdClass $aWrongProduct
     ) {
-        $normalizer->normalize(Argument::cetera())->shouldBeCalledTimes(1);
-        $indexer->index(Argument::cetera())->shouldNotBeCalled();
+        $normalizer->normalize($product, Argument::cetera())->willReturn(['id' => 'baz']);
+        $normalizer->normalize($aWrongProduct, Argument::cetera())->shouldNotBeCalled();
+        $indexer->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('indexAll', [[$product, $aWrongProduct]]);
+    }
+
+    function it_throws_an_exception_when_attempting_to_bulk_index_a_product_without_an_id(
+        $normalizer,
+        $indexer,
+        ProductInterface $product,
+        ProductInterface $aWrongProduct
+    ) {
+        $normalizer->normalize($product, Argument::cetera())->willReturn(['id' => 'baz']);
+        $normalizer->normalize($aWrongProduct, Argument::cetera())->willReturn([]);
+        $indexer->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('indexAll', [[$product, $aWrongProduct]]);
     }
 
     function it_indexes_a_single_product($normalizer, $indexer, ProductInterface $product)
     {
-        $product->getIdentifier()->willReturn('identifier');
-
-        $normalizer->normalize($product, 'indexing')->willReturn(['a key' => 'a value']);
-        $indexer->index('an_index_type_for_test_purpose', 'identifier', ['a key' => 'a value'])->shouldBeCalled();
+        $normalizer->normalize($product, 'indexing')->willReturn(['id' => 'foobar', 'a key' => 'a value']);
+        $indexer->index('an_index_type_for_test_purpose', 'foobar', ['id' => 'foobar', 'a key' => 'a value'])->shouldBeCalled();
 
         $this->index($product);
     }
@@ -60,16 +83,13 @@ class ProductIndexerSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2
     ) {
-        $product1->getIdentifier()->willReturn('identifier1');
-        $product2->getIdentifier()->willReturn('identifier2');
-
-        $normalizer->normalize($product1, 'indexing')->willReturn(['a key' => 'a value']);
-        $normalizer->normalize($product2, 'indexing')->willReturn(['a key' => 'another value']);
+        $normalizer->normalize($product1, 'indexing')->willReturn(['id' => 'foo', 'a key' => 'a value']);
+        $normalizer->normalize($product2, 'indexing')->willReturn(['id' => 'bar', 'a key' => 'another value']);
 
         $indexer->bulkIndexes('an_index_type_for_test_purpose', [
-            'identifier1' => ['a key' => 'a value'],
-            'identifier2' => ['a key' => 'another value']
-        ], 'identifier')->shouldBeCalled();
+            ['id' => 'foo', 'a key' => 'a value'],
+            ['id' => 'bar', 'a key' => 'another value']
+        ], 'id')->shouldBeCalled();
 
         $this->indexAll([$product1, $product2]);
     }

@@ -45,9 +45,9 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface
     public function index($product, array $options = [])
     {
         $this->validateProduct($product);
-
         $normalizedProduct = $this->normalizer->normalize($product, 'indexing');
-        $this->indexer->index($this->indexType, $product->getIdentifier(), $normalizedProduct);
+        $this->validateProductNormalization($normalizedProduct);
+        $this->indexer->index($this->indexType, $normalizedProduct['id'], $normalizedProduct);
     }
 
     /**
@@ -58,16 +58,18 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface
         $normalizedProducts = [];
         foreach ($products as $product) {
             $this->validateProduct($product);
-            $normalizedProducts[$product->getIdentifier()] = $this->normalizer->normalize($product, 'indexing');
+            $normalizedProduct = $this->normalizer->normalize($product, 'indexing');
+            $this->validateProductNormalization($normalizedProduct);
+            $normalizedProducts[] = $normalizedProduct;
         }
 
-        $this->indexer->bulkIndexes($this->indexType, $normalizedProducts, 'identifier');
+        $this->indexer->bulkIndexes($this->indexType, $normalizedProducts, 'id');
     }
 
     /**
      * @param mixed $product
      */
-    protected function validateProduct($product)
+    private function validateProduct($product)
     {
         if (!$product instanceof ProductInterface) {
             throw new \InvalidArgumentException(
@@ -76,6 +78,16 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface
                     ClassUtils::getClass($product)
                 )
             );
+        }
+    }
+
+    /**
+     * @param array $product
+     */
+    private function validateProductNormalization(array $product)
+    {
+        if (!isset($product['id'])) {
+            throw new \InvalidArgumentException('Only products with an ID can be indexed in the search engine.');
         }
     }
 }
