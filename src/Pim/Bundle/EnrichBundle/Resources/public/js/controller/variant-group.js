@@ -2,9 +2,14 @@
 
 define(
     [
-        'pim/controller/group'
+        'pim/controller/group',
+        'module'
     ],
-    function (BaseController) {
-        return BaseController.extend({});
+    function (BaseController, module) {
+        return BaseController.extend({
+            initialize: function () {
+                this.config = module.config();
+            }
+        });
     }
 );
