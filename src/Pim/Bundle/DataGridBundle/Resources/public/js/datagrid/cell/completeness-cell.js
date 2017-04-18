@@ -13,21 +13,20 @@ define(['oro/datagrid/string-cell'],
              * Render the completeness.
              */
             render: function () {
-                var ratio = this.formatter.fromRaw(this.model.get(this.column.get("name")));
+                var ratio = this.formatter.fromRaw(this.model.get(this.column.get('name')));
 
-                if (null === ratio || '' === ratio) {
-                    var completeness = '-';
-                } else {
+                var completeness = '-';
+                if (null !== ratio && '' !== ratio) {
                     var cssClass = '';
-                    if (100 == ratio) {
+                    if (100 === ratio) {
                         cssClass+= 'success';
-                    } else if (0 == ratio) {
+                    } else if (0 === ratio) {
                         cssClass+= 'important';
                     } else {
                         cssClass+= 'warning';
                     }
 
-                    var completeness = '<span class="AknBadge AknBadge--'+ cssClass +'">'+ ratio +'%</span>';
+                    completeness = '<span class="AknBadge AknBadge--'+ cssClass +'">'+ ratio +'%</span>';
                 }
 
                 this.$el.empty().html(completeness);
