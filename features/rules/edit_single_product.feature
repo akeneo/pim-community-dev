@@ -579,7 +579,7 @@ Feature: Read a single product by applying rules
     And the category of "my-jacket" should be "jackets"
     And the product rule "rule_sku_jacket" is executed
     Then the product "my-jacket" should have the following values:
-      | weather_conditions | Dry, Wet, Hot, Cold |
+      | weather_conditions | [dry], [wet], [hot], [cold] |
     And the category of "my-jacket" should be "jackets, tshirts"
 
   Scenario: Successfully execute a rule with an "equals" condition
@@ -617,6 +617,7 @@ Feature: Read a single product by applying rules
             scope: tablet
     """
     Then the product rule "set_name" is executed
+    And I am on the products page
     When I am on the "my-jacket" product page
     When I open the "Completeness" panel
     Then I should see the completeness:
