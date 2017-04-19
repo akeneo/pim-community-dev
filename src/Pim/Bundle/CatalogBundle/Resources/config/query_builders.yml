@@ -14,6 +14,7 @@ parameters:
     pim_catalog.doctrine.query.filter.object_code_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver
 
     pim_catalog.query.elasticsearch.filter.identifier.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\IdentifierFilter
+    pim_catalog.query.elasticsearch.filter.id.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\IdFilter
     pim_catalog.query.elasticsearch.filter.family.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\FamilyFilter
     pim_catalog.query.elasticsearch.filter.category.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CategoryFilter
     pim_catalog.query.elasticsearch.filter.group.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\GroupFilter
@@ -112,6 +113,14 @@ services:
             - ['identifier']
             - ['pim_catalog_identifier']
             - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'IN', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.id:
+        class: '%pim_catalog.query.elasticsearch.filter.id.class%'
+        arguments:
+            - ['id']
+            - ['IN', 'NOT IN', '=', '!=']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
 

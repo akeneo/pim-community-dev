@@ -40,6 +40,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         Collection $completenesses,
         Collection $associations
     ) {
+        $product->getId()->willReturn(67);
         $family = null;
         $product->getFamily()->willReturn($family);
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
@@ -72,6 +73,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, 'indexing')->shouldReturn(
             [
+                'id'            => '67',
                 'identifier'    => 'sku-001',
                 'created'       => $now->format('c'),
                 'updated'       => $now->format('c'),
@@ -94,6 +96,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         Collection $completenesses,
         Collection $associations
     ) {
+        $product->getId()->willReturn(67);
         $family = null;
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
@@ -132,6 +135,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, 'indexing')->shouldReturn(
             [
+                'id'            => '67',
                 'identifier'    => 'sku-001',
                 'created'       => $now->format('c'),
                 'updated'       => $now->format('c'),
@@ -158,6 +162,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
+        $product->getId()->willReturn(67);
         $product->getIdentifier()->willReturn('sku-001');
 
         $product->getCreated()->willReturn($now);
@@ -227,6 +232,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, 'indexing')->shouldReturn(
             [
+                'id'            => '67',
                 'identifier'    => 'sku-001',
                 'created'       => $now->format('c'),
                 'updated'       => $now->format('c'),
