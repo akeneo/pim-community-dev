@@ -48,6 +48,7 @@ define(
                             if ((!node || (node === -1)) && treeHasItem) {
                                 // First load of the tree: get the checked categories
                                 var selected = this.parseHiddenCategories();
+
                                 return Routing.generate(
                                     routes.list_categories,
                                     {
@@ -201,6 +202,7 @@ define(
              */
             this.parseHiddenCategories = function () {
                 var hiddenValue = $(hiddenCategoryId).val();
+
                 return hiddenValue.length > 0 ? hiddenValue.split(',') : [];
             };
 

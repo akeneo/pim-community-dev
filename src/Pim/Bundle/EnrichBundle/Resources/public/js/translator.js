@@ -36,6 +36,7 @@ function (module, _, Translator) {
      */
     Translator.get = function (id) {
         checkTranslation(id);
+
         return get.apply(Translator, arguments);
     };
 
@@ -51,6 +52,7 @@ function (module, _, Translator) {
             data = JSON.parse(data);
         }
         debug = data.debug || false;
+
         return fromJSON.call(Translator, data);
     };
 

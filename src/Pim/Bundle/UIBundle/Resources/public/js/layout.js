@@ -16,6 +16,7 @@ define(['jquery', 'bootstrap', 'jquery-ui'], function ($) {
                 if (r.length === 1) {
                     r = '0' + r;
                 }
+
                 return r;
             }
 

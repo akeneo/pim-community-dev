@@ -39,6 +39,7 @@ define(
             var indicatorView = new IndicatorView({el: el, model: indicator});
             indicator.setElement = function () {
                 indicatorView.setElement.apply(indicatorView, arguments);
+
                 return indicatorView.render();
             };
 

@@ -67,6 +67,7 @@ define(['jquery', 'underscore'],
 
                     setValue(data, path, value);
                 }
+
                 return data;
             },
 
@@ -80,6 +81,7 @@ define(['jquery', 'underscore'],
             _decodeComponent: function (string) {
                 var result = string.replace(/\+/g, '%20');
                 result = decodeURIComponent(result);
+
                 return result;
             },
 
@@ -108,6 +110,7 @@ define(['jquery', 'underscore'],
                         delete result[baseKey];
                     }
                 }
+
                 return result;
             },
 
@@ -125,10 +128,13 @@ define(['jquery', 'underscore'],
                             if (_.isString(v) && v === '') {
                                 return NaN;
                             }
+
                             return Number(v);
                         };
+
                         return (toNumber(value1) == toNumber(value2));
                     }
+
                     return ((value1 || '') == (value2 || ''));
 
                 } else if (_.isObject(value1)) {
@@ -144,6 +150,7 @@ define(['jquery', 'underscore'],
                             return false;
                         }
                     }
+
                     return true;
                 } else {
                     return value1 == value2;
