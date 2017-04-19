@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ApiBundle\Command;
 
 use OAuth2\OAuth2;
+use  FOS\OAuthServerBundle\Model\ClientInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -46,6 +47,13 @@ class CreateClientCommand extends ContainerAwareCommand
                 InputOption::VALUE_REQUIRED,
                 'Sets a label to ease the administration of client ids.'
             )
+            ->addOption(
+                'format',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'The output format (txt or xml)',
+                'xml'
+            )
         ;
     }
 
@@ -66,17 +74,43 @@ class CreateClientCommand extends ContainerAwareCommand
 
         $clientManager->updateClient($client);
 
-        $output->writeln([
-            'A new client has been added.',
-            sprintf('client_id: <info>%s</info>', $client->getPublicId()),
-            sprintf('secret: <info>%s</info>', $client->getSecret()),
-        ]);
-
-        $label = $client->getLabel();
-        if (null !== $label) {
-            $output->writeln(sprintf('label: <info>%s</info>', $label));
-        }
+        $this->displayOutput($output, $client, $input->getOption('format'));
 
         return 0;
+    }
+
+    /**
+     * Returns the output into the selected format
+     */
+    private function displayOutput(OutputInterface $output, ClientInterface $client, $format)
+    {
+        $label = $client->getLabel();
+        $publicId = $client->getPublicId();
+        $secret = $client->getSecret();
+        $isLabel = null !== $label;
+
+        switch ($format) {
+            case 'xml':
+                $xmlLabel = $isLabel ? sprintf(' label="%s"', $label) : '';
+                $output->writeln([
+                    '<?xml version="1.0" encoding="UTF-8" ?>',
+                    sprintf('<credentials%s>', $xmlLabel),
+                    sprintf('<client_id>%s</client_id>', $publicId),
+                    sprintf('<secret>%s</secret>', $secret),
+                    '</credentials>'
+                ]);
+                break;
+
+            default:
+                $output->writeln([
+                    'A new client has been added.',
+                    sprintf('client_id: <info>%s</info>', $publicId),
+                    sprintf('secret: <info>%s</info>', $secret),
+                ]);
+
+                if ($isLabel) {
+                    $output->writeln(sprintf('label: <info>%s</info>', $label));
+                }
+        }
     }
 }
