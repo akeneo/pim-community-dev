@@ -52,7 +52,7 @@ class CreateClientCommand extends ContainerAwareCommand
                 null,
                 InputOption::VALUE_REQUIRED,
                 'The output format (txt or xml)',
-                'xml'
+                'txt'
             )
         ;
     }
