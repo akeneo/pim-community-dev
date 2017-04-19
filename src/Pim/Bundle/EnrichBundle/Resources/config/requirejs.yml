@@ -640,7 +640,6 @@ config:
         pim/product-edit-form/panel/history:               pimenrich/js/product/form/panel/history
         pim/product-edit-form/panel/comments:              pimenrich/js/product/form/panel/comments
         pim/product-edit-form/save:                        pimenrich/js/product/form/save
-        pim/product-edit-form/save-and-back:               pimenrich/js/product/form/save-and-back
         pim/product-edit-form/sequential-edit:             pimenrich/js/product/form/sequential-edit
         pim/product-edit-form/delete:                      pimenrich/js/product/form/delete
         pim/product-edit-form/meta/family:                 pimenrich/js/product/form/meta/family

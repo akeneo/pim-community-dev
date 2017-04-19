@@ -80,12 +80,6 @@ extensions:
         targetZone: buttons
         position: 0
 
-    pim-product-edit-form-save-and-back:
-        module: pim/product-edit-form/save-and-back
-        parent: pim-product-edit-form
-        targetZone: buttons
-        position: 0
-
     pim-product-edit-form-state:
         module: pim/form/common/state
         parent: pim-product-edit-form
