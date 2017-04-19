@@ -83,6 +83,7 @@ services:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_catalog.object_manager.product'
             - '@pim_catalog.elasticsearch.product_indexer'
+            - 'pim_catalog_completeness'
 
     pim_catalog.remover.base_options_resolver:
         class: '%pim_catalog.remover.base_options_resolver.class%'

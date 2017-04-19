@@ -37,19 +37,25 @@ class CompletenessRemover implements CompletenessRemoverInterface
     /** @var ProductIndexer */
     protected $indexer;
 
+    /** @var string */
+    protected $completenessTable;
+
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param EntityManagerInterface              $entityManager
      * @param ProductIndexer                      $indexer
+     * @param string                              $completenessTable
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         EntityManagerInterface $entityManager,
-        ProductIndexer $indexer
+        ProductIndexer $indexer,
+        $completenessTable
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->entityManager = $entityManager;
         $this->indexer = $indexer;
+        $this->completenessTable = $completenessTable;
     }
 
     /**
@@ -57,11 +63,11 @@ class CompletenessRemover implements CompletenessRemoverInterface
      */
     public function removeForProduct(ProductInterface $product)
     {
-        $statement = $this->entityManager->getConnection()->prepare('
+        $statement = $this->entityManager->getConnection()->prepare(sprintf('
             DELETE c
-            FROM pim_catalog_completeness c
+            FROM %s c
             WHERE c.product_id = :productId
-        ');
+        ', $this->completenessTable));
         $statement->bindValue('productId', $product->getId());
         $statement->execute();
 
@@ -110,7 +116,7 @@ class CompletenessRemover implements CompletenessRemoverInterface
         $queryTypes = [Connection::PARAM_INT_ARRAY];
         $bulkCounter = 0;
 
-        $query = 'DELETE c FROM pim_catalog_completeness c WHERE c.product_id IN (?)';
+        $query = sprintf('DELETE c FROM %s c WHERE c.product_id IN (?)', $this->completenessTable);
         if (null !== $channel) {
             $query .= ' AND c.channel_id = ?';
             $queryParams[] = $channel->getId();

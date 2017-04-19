@@ -28,7 +28,7 @@ class CompletenessRemoverSpec extends ObjectBehavior
         ProductIndexer $indexer,
         Connection $connection
     ) {
-        $this->beConstructedWith($pqbFactory, $entityManager, $indexer);
+        $this->beConstructedWith($pqbFactory, $entityManager, $indexer, 'pim_catalog_completeness');
 
         $entityManager->getConnection()->willReturn($connection);
     }
