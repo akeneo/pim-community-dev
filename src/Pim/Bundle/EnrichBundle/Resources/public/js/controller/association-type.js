@@ -18,7 +18,7 @@ define(
              * {@inheritdoc}
              */
             renderRoute: function (route) {
-                return FetcherRegistry.getFetcher('association-type').fetch(route.params.code)
+                return FetcherRegistry.getFetcher('association-type').fetch(route.params.code, {cached: false})
                     .then(function (associationType) {
                         if (!this.active) {
                             return;

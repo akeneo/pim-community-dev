@@ -18,8 +18,9 @@ define(
              * {@inheritdoc}
              */
             renderRoute: function (route) {
-                return FetcherRegistry.getFetcher('job-execution').fetch(route.params.id, {id: route.params.id})
-                    .then(function (jobExecution) {
+                return FetcherRegistry.getFetcher('job-execution').fetch(
+                        route.params.id, {id: route.params.id, cached: false}
+                    ).then(function (jobExecution) {
                         if (!this.active) {
                             return;
                         }

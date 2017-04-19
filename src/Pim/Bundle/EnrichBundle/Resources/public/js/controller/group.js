@@ -23,7 +23,7 @@ define(
              * {@inheritdoc}
              */
             renderRoute: function (route) {
-                return FetcherRegistry.getFetcher(this.config.fetcher).fetch(route.params.code)
+                return FetcherRegistry.getFetcher(this.config.fetcher).fetch(route.params.code, {cached: false})
                     .then(function (group) {
                         if (!this.active) {
                             return;

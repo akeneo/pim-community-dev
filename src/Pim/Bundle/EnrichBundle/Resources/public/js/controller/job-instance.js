@@ -20,7 +20,7 @@ define(
                 var type = route.name.indexOf('pim_importexport_import') === -1 ? 'export' : 'import';
                 var mode = route.name.indexOf('_profile_show') === -1 ? 'edit' : 'show';
 
-                return FetcherRegistry.getFetcher('job-instance-' + type).fetch(route.params.code)
+                return FetcherRegistry.getFetcher('job-instance-' + type).fetch(route.params.code, {cached: false})
                     .then(function (jobInstance) {
                         if (!this.active) {
                             return;

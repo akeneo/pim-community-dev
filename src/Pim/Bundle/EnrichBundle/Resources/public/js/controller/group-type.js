@@ -18,7 +18,7 @@ define(
              * {@inheritdoc}
              */
             renderRoute: function (route) {
-                return FetcherRegistry.getFetcher('group-type').fetch(route.params.code)
+                return FetcherRegistry.getFetcher('group-type').fetch(route.params.code, {cached: false})
                     .then(function (groupType) {
                         if (!this.active) {
                             return;
