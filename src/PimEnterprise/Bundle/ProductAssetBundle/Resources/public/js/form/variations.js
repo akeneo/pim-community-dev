@@ -54,6 +54,7 @@ define(
                 confirmModal.on('ok', function () {
                     Navigation.getInstance().setLocation(targetUrl);
                 });
+
                 return confirmModal;
             }
         });
