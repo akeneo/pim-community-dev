@@ -40,13 +40,6 @@ extensions:
         config:
             backUrl: pim_enrich_product_index
 
-    pim-product-edit-form-download-pdf:
-        module: pim/product-edit-form/download-pdf
-        parent: pim-product-edit-form
-        targetZone: buttons
-        aclResourceId: pim_pdf_generator_product_download
-        position: 90
-
     pim-product-edit-form-delete:
         module: pim/product-edit-form/delete
         parent: pim-product-edit-form
@@ -67,6 +60,19 @@ extensions:
         targetZone: title-buttons
         aclResourceId: pim_enrich_product_change_state
         position: 110
+
+    pim-product-edit-form-secondary-actions:
+        module: pim/form/common/secondary-actions
+        parent: pim-product-edit-form
+        targetZone: buttons
+        position: 50
+
+    pim-product-edit-form-download-pdf:
+        module: pim/product-edit-form/download-pdf
+        parent: pim-product-edit-form-secondary-actions
+        targetZone: secondary-actions
+        aclResourceId: pim_pdf_generator_product_download
+        position: 10
 
     pim-product-edit-form-save-buttons:
         module: pim/form/common/save-buttons

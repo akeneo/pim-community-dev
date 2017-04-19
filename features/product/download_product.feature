@@ -11,6 +11,7 @@ Feature: Download a product
       | sku    | family  |
       | sandal | sandals |
 
+  @skip TODO !!!
   Scenario: Successfully download a product
     Given I am on the "sandal" product page
     When I press the "PDF" button
