@@ -12,6 +12,7 @@ use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\Completeness;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -32,7 +33,8 @@ class CompletenessCalculatorSpec extends ObjectBehavior
             $productValueFactory,
             $channelRepository,
             $localeRepository,
-            $productValueCompleteChecker
+            $productValueCompleteChecker,
+            Completeness::class
         );
     }
 
