@@ -1,4 +1,3 @@
-/* jshint node:true */
 'use strict';
 
 module.exports = function (grunt) {
@@ -71,7 +70,6 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-recess');
     grunt.loadNpmTasks('grunt-eslint');
