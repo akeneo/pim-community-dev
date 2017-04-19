@@ -54,6 +54,7 @@ define(
                         this.createSuccessMessage
                     );
                     router.redirectToRoute(this.config.redirectUrl, {'code': code});
+
                     return;
                 }
 

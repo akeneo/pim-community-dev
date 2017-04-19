@@ -13,7 +13,7 @@ define([
             /**
              * {@inheritdoc}
              */
-            afterSubmit: function (xhr) {
+            afterSubmit: function () {
                 securityContext.fetch();
                 configProvider.clear();
 

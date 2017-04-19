@@ -50,7 +50,7 @@ define(
                         );
 
                         return createForm.call(this, this.$el, channel, label, channel.meta.form);
-                    }.bind(this)).fail(function (response, textStatus, errorThrown) {
+                    }.bind(this)).fail(function (response) {
                         var errorView = new Error(response.responseJSON.message, response.status);
                         errorView.setElement('#channel-edit-form').render();
                     });

@@ -115,7 +115,7 @@ define(
             },
 
             handleError: function (xhr) {
-                switch(xhr.status) {
+                switch (xhr.status) {
                     case 401:
                         window.location = this.generate('oro_user_security_login');
                         break;

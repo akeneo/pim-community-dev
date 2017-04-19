@@ -42,7 +42,6 @@ define(
              */
             showOperationDetails: function (event) {
                 event.preventDefault();
-                var route;
                 var operationType = $(event.currentTarget).data('operation-type');
 
                 switch (operationType) {

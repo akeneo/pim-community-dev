@@ -13,7 +13,7 @@ define(['backbone'], function (Backbone) {
          *
          * @return {Promise}
          */
-        renderRoute: function (route, path) {
+        renderRoute: function () {
             throw new Error('Method renderRoute is abstract and must be implemented!');
         },
 

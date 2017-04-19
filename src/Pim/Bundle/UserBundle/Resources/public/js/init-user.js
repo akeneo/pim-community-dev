@@ -1,9 +1,9 @@
-/* jshint browser:true */
 /* global require */
 'use strict';
 
 define(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/messenger'],
-    function ($, _, __, app, mediator, messenger) {
+    function () {
+        // $, _, __, app, mediator, messenger
 
         /* ============================================================
          * from user.js
