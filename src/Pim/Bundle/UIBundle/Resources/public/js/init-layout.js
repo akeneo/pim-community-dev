@@ -129,6 +129,7 @@ define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/me
          * from remove.confirm.js
          * ============================================================ */
 
+        /* global router */
         $(document).on('click', '.remove-button', function () {
             var confirm;
             var el = $(this);

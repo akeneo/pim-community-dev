@@ -9,10 +9,9 @@ define(
         'pim/user-context',
         'pim/dialog',
         'pim/page-title',
-        'pim/error',
-        'pim/i18n'
+        'pim/error'
     ],
-    function (_, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, Error, i18n) {
+    function (_, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, Error) {
         return BaseController.extend({
             /**
              * {@inheritdoc}

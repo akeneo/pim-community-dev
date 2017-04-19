@@ -18,8 +18,7 @@ define(
         'pim/saver/product',
         'pim/field-manager',
         'pim/i18n',
-        'pim/user-context',
-        'pim/fetcher-registry'
+        'pim/user-context'
     ],
     function (
         $,
@@ -31,8 +30,7 @@ define(
         ProductSaver,
         FieldManager,
         i18n,
-        UserContext,
-        FetcherRegistry
+        UserContext
     ) {
         return BaseSave.extend({
             updateSuccessMessage: __('pim_enrich.entity.product.info.update_successful'),

@@ -26,8 +26,8 @@ define(
              * @param event
              */
             toggleDisplayWarning: function (event) {
-                var stepIndex = event.currentTarget.dataset['stepIndex'];
-                var warningIndex = event.currentTarget.dataset['warningIndex'];
+                var stepIndex = event.currentTarget.dataset.stepIndex;
+                var warningIndex = event.currentTarget.dataset.warningIndex;
                 var model = this.getFormData();
                 model.stepExecutions[stepIndex].warnings[warningIndex].expanded =
                     !model.stepExecutions[stepIndex].warnings[warningIndex].expanded;

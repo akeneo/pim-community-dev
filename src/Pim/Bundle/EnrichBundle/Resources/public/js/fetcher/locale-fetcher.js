@@ -48,7 +48,7 @@ define(
             /**
              * {inheritdoc}
              */
-            clear: function (identifier) {
+            clear: function () {
                 this.entityActivatedListPromise = null;
 
                 BaseFetcher.prototype.clear.apply(this, arguments);

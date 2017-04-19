@@ -9,7 +9,7 @@ define(
         'oro/mediator',
         'pim/router'
     ],
-    function ($, _, __, Backbone, Routing, LoadingMask, mediator, router) {
+    function ($, _, __, Backbone, Routing, LoadingMask, mediator) {
         'use strict';
 
         return Backbone.View.extend({
@@ -42,8 +42,8 @@ define(
 
                 mediator.on('route_complete', function (loadedRoute) {
                     if (loadedRoute === 'pim_dashboard_index') {
-                      this.needsData = true;
-                      this.delayedLoad();
+                        this.needsData = true;
+                        this.delayedLoad();
                     }
                 }, this);
             },
