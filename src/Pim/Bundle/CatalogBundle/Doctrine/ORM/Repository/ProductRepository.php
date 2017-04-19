@@ -273,7 +273,6 @@ class ProductRepository extends EntityRepository implements
         foreach ($variantGroup->getAxisAttributes() as $axisAttribute) {
             $pqb->addFilter($axisAttribute->getCode(), Operators::IS_NOT_EMPTY, null);
         }
-        $pqb->addFilter('variant_group', Operators::IS_EMPTY, null);
 
         return $pqb->execute();
     }
