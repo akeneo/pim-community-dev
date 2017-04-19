@@ -181,7 +181,7 @@ define(
                     if (null !== this.currentGroup) {
                         /* jshint sub:true */
                         /* jscs:disable requireDotNotation */
-                        searchOptions.options['attribute_groups'] = [this.currentGroup];
+                        searchOptions.options.attribute_groups = [this.currentGroup];
                         /* jshint sub:false */
                         /* jscs:enable requireDotNotation */
                     }
@@ -200,10 +200,10 @@ define(
                                 return;
                             }
                             attributeList.append(this.attributeListTemplate({
-                                    attributes: attributes,
-                                    i18n: i18n,
-                                    userContext: userContext
-                                })
+                                attributes: attributes,
+                                i18n: i18n,
+                                userContext: userContext
+                            })
                             );
 
                             if (0 !== attributes.length) {

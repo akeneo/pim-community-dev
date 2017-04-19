@@ -3,16 +3,16 @@
 //Should be reworked to be a boolean filter
 
 define([
-        'underscore',
-        'oro/translator',
-        'pim/filter/filter',
-        'routing',
-        'text!pim/template/filter/product/enabled',
-        'pim/fetcher-registry',
-        'pim/user-context',
-        'pim/i18n',
-        'jquery.select2'
-    ], function (_, __, BaseFilter, Routing, template) {
+    'underscore',
+    'oro/translator',
+    'pim/filter/filter',
+    'routing',
+    'text!pim/template/filter/product/enabled',
+    'pim/fetcher-registry',
+    'pim/user-context',
+    'pim/i18n',
+    'jquery.select2'
+], function (_, __, BaseFilter, Routing, template) {
     return BaseFilter.extend({
         shortname: 'enabled',
         template: _.template(template),

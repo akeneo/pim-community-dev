@@ -87,6 +87,7 @@ define(
                             } else {
                                 id = -1;
                             }
+
                             return {
                                 id: id,
                                 select_node_id: selectedNode,
@@ -153,6 +154,7 @@ define(
                     var url = Routing.generate(prefixRoute + '_categorytree_edit', { id: id });
                     if ('#url=' + url === Backbone.history.location.hash || preventFirst) {
                         preventFirst = false;
+
                         return;
                     }
                     loadingMask.show();
