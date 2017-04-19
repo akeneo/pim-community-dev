@@ -6,11 +6,8 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use Pim\Component\Catalog\Factory\ProductValueCollectionFactory;
-use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Load real product values object from the $rawValues field (ie: values in JSON)
@@ -29,17 +26,8 @@ class LoadProductValuesSubscriber implements EventSubscriber
     /** @var ContainerInterface */
     protected $container;
 
-    /** @var ProductValueFactory */
-    protected $valueFactory;
-
     /** @var ProductValueCollectionFactory */
     protected $valueCollectionFactory;
-
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var NormalizerInterface */
-    protected $serializer;
 
     /**
      * TODO: The container is injected here to avoid a circular reference
@@ -80,32 +68,10 @@ class LoadProductValuesSubscriber implements EventSubscriber
             return;
         }
 
-        $identifierValue = $this->getProductValueFactory()->create(
-            $this->getAttributeRepository()->getIdentifier(),
-            null,
-            null,
-            $product->getIdentifier()
-        );
-        $identifierRawValue = $this->getSerializer()->normalize($identifierValue, 'storage');
-
         $rawValues = $product->getRawValues();
-        $identifierCode = $identifierValue->getAttribute()->getCode();
-        $rawValues[$identifierCode] = $identifierRawValue[$identifierCode];
 
         $values = $this->getProductValueCollectionFactory()->createFromStorageFormat($rawValues);
         $product->setValues($values);
-    }
-
-    /**
-     * @return AttributeRepositoryInterface
-     */
-    private function getAttributeRepository()
-    {
-        if (null === $this->attributeRepository) {
-            $this->attributeRepository = $this->container->get('pim_catalog.repository.attribute');
-        }
-
-        return $this->attributeRepository;
     }
 
     /**
@@ -118,29 +84,5 @@ class LoadProductValuesSubscriber implements EventSubscriber
         }
 
         return $this->valueCollectionFactory;
-    }
-
-    /**
-     * @return ProductValueFactory
-     */
-    private function getProductValueFactory()
-    {
-        if (null === $this->valueFactory) {
-            $this->valueFactory = $this->container->get('pim_catalog.factory.product_value');
-        }
-
-        return $this->valueFactory;
-    }
-
-    /**
-     * @return NormalizerInterface
-     */
-    private function getSerializer()
-    {
-        if (null === $this->serializer) {
-            $this->serializer = $this->container->get('pim_serializer');
-        }
-
-        return $this->serializer;
     }
 }

@@ -293,9 +293,12 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setIdentifier($identifier)
+    public function setIdentifier(ProductValueInterface $identifier)
     {
-        $this->identifier = $identifier;
+        $this->identifier = $identifier->getData();
+
+        $this->values->removeByAttribute($identifier->getAttribute());
+        $this->values->add($identifier);
 
         return $this;
     }

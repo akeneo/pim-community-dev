@@ -49,10 +49,6 @@ class ComputeProductRawValuesSubscriber implements EventSubscriberInterface
     /**
      * Normalizes product values into "storage" format, and sets the result as raw values.
      *
-     * We also remove the identifier value that was loaded by
-     * \Pim\Bundle\CatalogBundle\EventSubscriber\LoadProductValuesSubscriber
-     * as we don't need in the raw values. We already have this information in the identifier column.
-     *
      * @param GenericEvent $event
      */
     public function computeRawValues(GenericEvent $event)
@@ -62,13 +58,7 @@ class ComputeProductRawValuesSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $identifierCode = $this->attributeRepository->getIdentifierCode();
-
         $rawValues = $this->normalizer->normalize($product->getValues(), 'storage');
-        if (array_key_exists($identifierCode, $rawValues)) {
-            unset($rawValues[$identifierCode]);
-        }
-
         $product->setRawValues($rawValues);
     }
 }

@@ -47,16 +47,4 @@ class ComputeProductRawValuesSubscriberSpec extends ObjectBehavior
 
         $this->computeRawValues($event);
     }
-
-    function it_compute_raw_values_of_a_product_and_removes_the_identifier_value($serializer, $attributeRepository, ProductInterface $product, GenericEvent $event)
-    {
-        $event->getSubject()->willReturn($product);
-        $product->getValues()->willReturn(['value1', 'sku', 'value2']);
-        $attributeRepository->getIdentifierCode()->willReturn('sku');
-
-        $serializer->normalize(['value1', 'sku', 'value2'], 'storage')->willReturn(['storage_value1' => 'data1', 'sku' => 'data sku', 'storage_value2' => 'data2']);
-        $product->setRawValues(['storage_value1' => 'data1', 'storage_value2' => 'data2'])->shouldBeCalled();
-
-        $this->computeRawValues($event);
-    }
 }
