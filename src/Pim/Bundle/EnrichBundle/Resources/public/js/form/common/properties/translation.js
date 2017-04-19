@@ -133,6 +133,7 @@ define([
                     .then(function (locales) {
                         if (!_.isEqual(this.locales, locales)) {
                             this.locales = locales;
+
                             return this.render();
                         }
 

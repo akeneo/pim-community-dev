@@ -20,6 +20,7 @@ define([
              */
             getMediaShowUrl: function (filePath, filter) {
                 var filename = encodeURIComponent(filePath);
+
                 return Routing.generate('pim_enrich_media_show', {
                     filename: filename,
                     filter: filter
@@ -35,6 +36,7 @@ define([
              */
             getMediaDownloadUrl: function (filePath) {
                 var filename = encodeURIComponent(filePath);
+
                 return Routing.generate('pim_enrich_media_download', {
                     filename: filename
                 });

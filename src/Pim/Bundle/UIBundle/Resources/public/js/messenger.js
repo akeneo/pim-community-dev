@@ -22,6 +22,7 @@ function ($, _) {
         if (delay) {
             _.delay(actions.close, delay);
         }
+
         return actions;
     };
 
@@ -35,6 +36,7 @@ function ($, _) {
         } else if ($.cookie) {
             messages = JSON.parse($.cookie(storageKey));
         }
+
         return messages || [];
     };
 
@@ -48,6 +50,7 @@ function ($, _) {
         } else if ($.cookie) {
             $.cookie(storageKey, messages);
         }
+
         return true;
     };
 
@@ -82,6 +85,7 @@ function ($, _) {
                 // if container is not ready then save message for later
                 queue.push([args, actions]);
             }
+
             return actions;
         },
 

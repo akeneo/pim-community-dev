@@ -1,4 +1,3 @@
-/* jshint node:true */
 'use strict';
 
 module.exports = function (grunt) {
@@ -6,33 +5,19 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        jshint: {
-            all: [
+        eslint: {
+            options: {
+                quiet: true,
+                configFile: '.eslintrc'
+            },
+            target: [
                 'Gruntfile.js',
                 'src/**/*.js',
                 '!src/**/lib/**/*.js',
                 '!src/**/DataGridBundle/**/*.js',
                 '!src/**/NavigationBundle/**/*.js',
                 '!src/Oro/**/**/*.js'
-            ],
-            options: {
-                jshintrc: '.jshintrc',
-                reporter: require('jshint-stylish')
-            }
-        },
-        jscs: {
-            all: [
-                'Gruntfile.js',
-                'src/**/*.js',
-                '!src/**/lib/**/*.js',
-                '!src/**/DataGridBundle/**/*.js',
-                '!src/**/NavigationBundle/**/*.js',
-                '!src/Oro/**/**/*.js'
-            ],
-            options: {
-                config: '.jscsrc',
-                reporter: require('jscs-stylish').path
-            }
+            ]
         },
         recess: {
             all: [
@@ -85,12 +70,11 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-recess');
-    grunt.loadNpmTasks('grunt-jscs');
+    grunt.loadNpmTasks('grunt-eslint');
 
     grunt.registerTask('test', ['jasmine']);
-    grunt.registerTask('codestyle', ['jshint', 'jscs', 'recess']);
+    grunt.registerTask('codestyle', ['eslint', 'recess']);
     grunt.registerTask('default', ['codestyle', 'test']);
 };

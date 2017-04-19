@@ -42,7 +42,7 @@ define(['module', 'jquery', 'underscore'], function (module, $, _) {
          * @return Fetcher
          */
         getFetcher: function (entityType) {
-            return (this.fetchers[entityType] || this.fetchers['default']).loadedModule;
+            return (this.fetchers[entityType] || this.fetchers.default).loadedModule;
         },
 
         /**

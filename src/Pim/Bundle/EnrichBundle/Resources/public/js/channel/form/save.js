@@ -55,6 +55,7 @@ define(
                     );
                     var navigation = Navigation.getInstance();
                     navigation.setLocation(Routing.generate(this.config.redirectUrl, {'code': code}));
+
                     return;
                 }
 

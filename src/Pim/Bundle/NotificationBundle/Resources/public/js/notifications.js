@@ -70,6 +70,7 @@ define(
                     this.scheduleRefresh();
                     if (this.freezeCount) {
                         this.freezeCount = false;
+
                         return;
                     }
                     if (this.indicator.get('value') !== count) {
