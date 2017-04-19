@@ -9,6 +9,7 @@ define(
             var message = $form.attr('data-updated-message');
             if (!message) {
                 console.warn('FormUpdateListener: message not provided.');
+
                 return;
             }
             var title = $form.attr('data-updated-title');
@@ -51,6 +52,7 @@ define(
                 } else {
                     Dialog.confirm(message, title, doAction);
                 }
+
                 return false;
             };
 

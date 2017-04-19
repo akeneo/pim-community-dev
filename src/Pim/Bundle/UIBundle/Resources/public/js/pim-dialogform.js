@@ -107,6 +107,7 @@ define(
                 } catch (e) {
                     return false;
                 }
+
                 return true;
             }
 

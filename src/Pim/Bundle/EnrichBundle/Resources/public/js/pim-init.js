@@ -4,6 +4,7 @@ define(
     function ($, _, Backbone, mediator, messenger, Dialog, saveformstate, loadTab, UI, LoadingMask, router) {
         'use strict';
         var initialized = false;
+
         return function () {
             if (initialized) {
                 return;
