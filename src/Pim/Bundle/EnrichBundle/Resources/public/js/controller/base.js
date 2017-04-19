@@ -23,6 +23,18 @@ define(['backbone'], function (Backbone) {
 
         setActive: function (active) {
             this.active = active;
+        },
+
+        /**
+         * Return if wether or not the user can leave the page
+         *
+         * @return {boolean}
+         */
+        canLeave: function () {
+            var event = {canLeave: true};
+            this.trigger('pim:controller:can-leave', event);
+
+            return event.canLeave;
         }
     });
 });

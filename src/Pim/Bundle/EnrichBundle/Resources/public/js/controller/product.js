@@ -27,6 +27,9 @@ define(
 
                         FormBuilder.build(product.meta.form)
                             .then(function (form) {
+                                this.on('pim:controller:can-leave', function (event) {
+                                    form.trigger('pim_enrich:form:can-leave', event);
+                                });
                                 form.setData(product);
 
                                 form.trigger('pim_enrich:form:entity:post_fetch', product);

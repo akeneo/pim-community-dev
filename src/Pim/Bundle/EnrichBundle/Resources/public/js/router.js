@@ -202,6 +202,10 @@ define(
              * {@inheritdoc}
              */
             redirect: function (fragment, options) {
+                if (this.currentController && !this.currentController.canLeave()) {
+                    return false;
+                }
+
                 fragment = fragment.indexOf('#') === 0 ? fragment : '#' + fragment;
                 Backbone.history.navigate(fragment, options);
             },

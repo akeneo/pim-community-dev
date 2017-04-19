@@ -36,6 +36,9 @@ define(
 
                         FormBuilder.build(associationType.meta.form)
                             .then(function (form) {
+                                this.on('pim:controller:can-leave', function (event) {
+                                    form.trigger('pim_enrich:form:can-leave', event);
+                                });
                                 form.setData(associationType);
                                 form.trigger('pim_enrich:form:entity:post_fetch', associationType);
                                 form.setElement(this.$el).render();

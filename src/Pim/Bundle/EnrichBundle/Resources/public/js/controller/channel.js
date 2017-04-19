@@ -21,7 +21,8 @@ define(
                 if (undefined === route.params.code) {
                     var label = 'pim_enrich.entity.channel.title.create';
 
-                    return createForm(
+                    return createForm.call(
+                        this,
                         this.$el,
                         {
                             'code': '',
@@ -48,7 +49,7 @@ define(
                             )
                         );
 
-                        return createForm(this.$el, channel, label, channel.meta.form);
+                        return createForm.call(this, this.$el, channel, label, channel.meta.form);
                     }.bind(this)).fail(function (response, textStatus, errorThrown) {
                         var errorView = new Error(response.responseJSON.message, response.status);
                         errorView.setElement('#channel-edit-form').render();
@@ -60,10 +61,13 @@ define(
 
                     return FormBuilder.build(formExtension)
                         .then(function (form) {
+                            this.on('pim:controller:can-leave', function (event) {
+                                form.trigger('pim_enrich:form:can-leave', event);
+                            });
                             form.setData(channel);
                             form.trigger('pim_enrich:form:entity:post_fetch', channel);
                             form.setElement(domElement).render();
-                        });
+                        }.bind(this));
                 }
             }
         });

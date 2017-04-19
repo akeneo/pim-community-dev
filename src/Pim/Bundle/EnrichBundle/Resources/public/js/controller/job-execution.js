@@ -27,6 +27,9 @@ define(
 
                         FormBuilder.build('pim-job-execution-form')
                             .then(function (form) {
+                                this.on('pim:controller:can-leave', function (event) {
+                                    form.trigger('pim_enrich:form:can-leave', event);
+                                });
                                 form.setData(jobExecution);
                                 form.getRoot().trigger('pim-job-execution-form:start-auto-update', jobExecution);
 

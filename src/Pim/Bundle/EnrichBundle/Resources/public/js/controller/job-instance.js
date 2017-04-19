@@ -30,6 +30,9 @@ define(
 
                         FormBuilder.build(jobInstance.meta.form + '-' + mode)
                             .then(function (form) {
+                                this.on('pim:controller:can-leave', function (event) {
+                                    form.trigger('pim_enrich:form:can-leave', event);
+                                });
                                 form.setData(jobInstance);
                                 form.trigger('pim_enrich:form:entity:post_fetch', jobInstance);
                                 form.setElement(this.$el).render();

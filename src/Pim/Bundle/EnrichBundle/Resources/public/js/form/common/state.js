@@ -61,7 +61,7 @@ define(
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.collectAndRender);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:state:confirm', this.onConfirmation);
-                mediator.on('hash_navigation_click', this.linkClicked.bind(this), 'pim_enrich:form');
+                this.listenTo(this.getRoot(), 'pim_enrich:form:can-leave', this.linkClicked);
                 $(window).on('beforeunload', this.beforeUnload.bind(this));
 
                 Backbone.Router.prototype.on('route', this.unbindEvents);
@@ -125,15 +125,7 @@ define(
              * @return {boolean}
              */
             linkClicked: function (event) {
-                event.stoppedProcess = true;
-
-                var doAction = function () {
-                    router.redirect(event.link);
-                };
-
-                this.confirmAction(this.confirmationMessage, this.confirmationTitle, doAction);
-
-                return false;
+                event.canLeave = confirm(this.confirmationMessage);
             },
 
             /**
