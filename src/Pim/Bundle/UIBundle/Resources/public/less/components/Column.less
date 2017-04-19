@@ -1,0 +1,140 @@
+@import '../base/variables';
+
+.AknColumn {
+  @timing: 0.3s;
+  @width: 280px;
+  @iconSize: 24px;
+  @padding: 20px;
+  @littleWidth: 40px;
+  @transition: ease-in-out;
+  @scrollbarWidth: 16px;
+
+  flex-basis: @width;
+  position: relative;
+  overflow: hidden;
+  transition: flex-basis @timing @transition;
+  order: -1;
+  background: #f9f9fb;
+  border-right: 1px solid #d2d7dc;
+  flex-shrink: 0;
+
+  &-inner {
+    width: @width;
+    height: ~"calc(100% - 20px - 24px - 20px)";
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 11px;
+    position: absolute;
+    right: 0;
+    overflow-x: auto;
+    transition: right @timing @transition;
+  }
+
+  &-innerTop,
+  &-innerBottom {
+    padding: @padding;
+    transition: margin-right @timing @transition;
+  }
+
+  &-innerTop {
+    flex-grow: 1;
+  }
+
+  &-innerBottom {
+    border-top: 1px solid #d2d7dc;
+  }
+
+  &-block:not(:empty) {
+    padding: 18px 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-title {
+    color: #a2abb9;
+    text-transform: uppercase;
+    font-size: 11px;
+  }
+
+  &-value {
+    color: #11324D;
+    font-size: 12px;
+  }
+
+  &-navigationLink {
+    font-size: 14px;
+    padding: 8px 0;
+    color: #11324D;
+    cursor: pointer;
+    opacity: 0.85;
+    transition: opacity 0.2s ease-in;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &--active {
+      color: #9452BA;
+    }
+  }
+
+  &-title + &-navigationLink {
+    margin-top: 12px;
+  }
+
+  &-navigation {
+    position: fixed;
+    margin-top: -10px;
+    left: -@littleWidth;
+    opacity: 0;
+    transition:
+      opacity @timing @transition,
+      left @timing @transition;
+  }
+
+  &-collapseButton {
+    height: @iconSize + @padding;
+    width: @width;
+    background: url("../../images/icon-panelClose.svg") no-repeat 20px 100%;
+    background-size: @iconSize;
+    cursor: pointer;
+    opacity: 0.8;
+    position: absolute;
+    bottom: @padding;
+    right: 0;
+    border-top: 1px solid #d2d7dc;
+    transition:
+      opacity 0.2s @transition,
+      width @timing @transition,
+      background-position-x @timing @transition;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &--collapsed {
+    flex-basis: @littleWidth;
+  }
+
+  &--collapsed &-navigation {
+    left: 3px;
+    opacity: 1;
+  }
+
+  &--collapsed &-inner {
+    right: -@scrollbarWidth;
+  }
+
+  &--collapsed &-innerTop,
+  &--collapsed &-innerBottom {
+    margin-right: @littleWidth + @scrollbarWidth;
+  }
+
+  &--collapsed &-collapseButton {
+    width: @littleWidth;
+    background-position-x: (@littleWidth - @iconSize) / 2;
+    background-image: url("../../images/icon-panelOpen.svg");
+  }
+}

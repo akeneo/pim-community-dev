@@ -13,18 +13,6 @@ Feature: Product edition clicking on another action
     And I am on the products page
     And I display the columns SKU, Name, Description and Family
 
-  Scenario: Successfully edit a product and back to the grid
-    Given I am on the "sandal" product page
-    And I fill in the following information:
-      | Name | My Sandal |
-    When I save and back to the grid
-    Then I should be on the products page
-    And I should see product sandal
-    And the row "sandal" should contain:
-      | column | value     |
-      | sku    | sandal    |
-      | name   | My Sandal |
-
   @skip-nav
   Scenario: Display a message when form submission fails and I try to leave the page
     Given I am on the "sandal" product page

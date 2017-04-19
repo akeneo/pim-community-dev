@@ -152,6 +152,8 @@ pim_enrich:
             update_failed: Update failed
             update_successful: Successfully updated
         product:
+            navigation: Product navigation
+            infos: Product infos
             title: product
             btn:
                 enable: Enable
