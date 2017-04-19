@@ -3,6 +3,7 @@
 namespace Pim\Behat\Context\Domain\Spread;
 
 use Akeneo\Component\Batch\Model\JobInstance;
+use Behat\Behat\Context\Step\Then;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
@@ -129,6 +130,8 @@ class ExportProfilesContext extends ImportExportContext
         }, 'Cannot find the export button');
 
         $exportButton->click();
+
+        return new Then('I should see the text "Execution details"');
     }
 
     /**
