@@ -391,7 +391,8 @@ define(
                     }
                 }
 
-                if (attributeOptionRow.model.id)                {
+                if (attributeOptionRow.model.id)
+                {
                     this.currentlyEditedItemView = attributeOptionRow;
                 }
 
@@ -485,19 +486,19 @@ define(
 
         return function ($element) {
             var itemCollectionView = new ItemCollectionView(
-                {
-                    $target: $element,
-                    updateUrl: Routing.generate(
+            {
+                $target: $element,
+                updateUrl: Routing.generate(
                     'pim_enrich_attributeoption_index',
                     {attributeId: $element.data('attribute-id')}
                 ),
-                    sortingUrl: Routing.generate(
+                sortingUrl: Routing.generate(
                     'pim_enrich_attributeoption_update_sorting',
                     {attributeId: $element.data('attribute-id')}
                 ),
-                    locales: $element.data('locales'),
-                    sortable: $element.data('sortable')
-                });
+                locales: $element.data('locales'),
+                sortable: $element.data('sortable')
+            });
 
             mediator.on('attribute:auto_option_sorting:changed', function (autoSorting) {
                 itemCollectionView.updateSortableStatus(!autoSorting);

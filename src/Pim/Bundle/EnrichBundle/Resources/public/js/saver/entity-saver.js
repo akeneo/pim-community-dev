@@ -8,34 +8,33 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
-    'underscore',
-    'pim/saver/base',
-    'module',
-    'routing'
-], function (
+        'underscore',
+        'pim/saver/base',
+        'module',
+        'routing'
+    ], function (
         _,
         BaseSaver,
         module,
         Routing
     ) {
-    return _.extend({}, BaseSaver, {
+        return _.extend({}, BaseSaver, {
             /**
              * {@inheritdoc}
              */
-        getUrl: function (code) {
-            return Routing.generate(this.url, { code: code });
-        },
+            getUrl: function (code) {
+                return Routing.generate(this.url, { code: code });
+            },
 
             /**
              * Sets the url
              *
              * @param {Sringt} url Route url
              */
-        setUrl: function (url) {
-            this.url = url;
-
-            return this;
-        }
-    });
-}
+            setUrl: function (url) {
+                this.url = url;
+                return this;
+            }
+        });
+    }
 );

@@ -8,14 +8,14 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
-    'jquery',
-    'backbone',
-    'underscore',
-    'text!pim/template/product/field/field',
-    'pim/attribute-manager',
-    'pim/i18n',
-    'oro/mediator'
-],
+        'jquery',
+        'backbone',
+        'underscore',
+        'text!pim/template/product/field/field',
+        'pim/attribute-manager',
+        'pim/i18n',
+        'oro/mediator'
+    ],
     function ($, Backbone, _, fieldTemplate, AttributeManager, i18n, mediator) {
         var FieldModel = Backbone.Model.extend({
             values: []

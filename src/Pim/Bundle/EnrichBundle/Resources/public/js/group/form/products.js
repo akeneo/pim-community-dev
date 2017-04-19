@@ -8,12 +8,12 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
-    'oro/translator',
-    'pim/form',
-    'pim/fetcher-registry',
-    'pim/user-context',
-    'pim/common/grid'
-],
+        'oro/translator',
+        'pim/form',
+        'pim/fetcher-registry',
+        'pim/user-context',
+        'pim/common/grid'
+    ],
     function (
         __,
         BaseForm,

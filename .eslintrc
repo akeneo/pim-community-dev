@@ -25,7 +25,11 @@
       4,
       {
         "SwitchCase": 1,
-        "VariableDeclarator": 1
+        "VariableDeclarator": 1,
+        "FunctionDeclaration": {
+            parameters: 0
+        },
+        "ArrayExpression": "first"
       }
     ],
     "no-use-before-define": 0,

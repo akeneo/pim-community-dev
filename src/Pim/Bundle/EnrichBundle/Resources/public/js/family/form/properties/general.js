@@ -16,7 +16,7 @@ define([
     'text!pim/template/form/tab/section',
     'oro/loading-mask',
     'jquery.select2'
-],
+    ],
     function (
         _,
         __,

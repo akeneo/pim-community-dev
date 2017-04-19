@@ -8,17 +8,17 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
-    'underscore',
-    'pim/remover/base',
-    'module',
-    'routing'
-], function (
+        'underscore',
+        'pim/remover/base',
+        'module',
+        'routing'
+    ], function (
         _,
         BaseRemover,
         module,
         Routing
     ) {
-    return _.extend({}, BaseRemover, {
+        return _.extend({}, BaseRemover, {
             /**
              * Gets url in configuration for remover module
              *
@@ -26,9 +26,9 @@ define([
              *
              * {@inheritdoc}
              */
-        getUrl: function (code) {
-            return Routing.generate(module.config().url, {code: code});
-        }
-    });
-}
+            getUrl: function (code) {
+                return Routing.generate(module.config().url, {code: code});
+            }
+        });
+    }
 );

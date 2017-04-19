@@ -8,18 +8,18 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
-    'jquery',
-    'pim/field',
-    'underscore',
-    'routing',
-    'pim/attribute-manager',
-    'text!pim/template/product/field/media',
-    'pim/dialog',
-    'oro/mediator',
-    'oro/navigation',
-    'pim/media-url-generator',
-    'jquery.slimbox'
-],
+        'jquery',
+        'pim/field',
+        'underscore',
+        'routing',
+        'pim/attribute-manager',
+        'text!pim/template/product/field/media',
+        'pim/dialog',
+        'oro/mediator',
+        'oro/navigation',
+        'pim/media-url-generator',
+        'jquery.slimbox'
+    ],
     function ($, Field, _, Routing, AttributeManager, fieldTemplate, Dialog, mediator, Navigation, MediaUrlGenerator) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),

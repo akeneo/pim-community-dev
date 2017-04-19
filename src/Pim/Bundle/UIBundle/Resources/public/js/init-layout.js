@@ -11,7 +11,7 @@ require(['oro/mediator'], function (mediator) {
 
 require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout', 'oro/navigation',
     'oro/delete-confirmation', 'oro/messenger', 'bootstrap', 'jquery-ui'
-], function ($, _, __, app, mediator, layout, Navigation, DeleteConfirmation, messenger) {
+    ], function ($, _, __, app, mediator, layout, Navigation, DeleteConfirmation, messenger) {
     'use strict';
 
     /* ============================================================

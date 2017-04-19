@@ -1,17 +1,17 @@
 'use strict';
 
 define([
-    'jquery',
-    'module',
-    'oro/mediator',
-    'routing'
-], function (
+        'jquery',
+        'module',
+        'oro/mediator',
+        'routing'
+    ], function (
         $,
         module,
         mediator,
         Routing
     ) {
-    return {
+        return {
             /**
              * Save an entity
              *
@@ -20,18 +20,18 @@ define([
              *
              * @return {Promise}
              */
-        save: function (code, data, method) {
-            return $.ajax({
+            save: function (code, data, method) {
+                return $.ajax({
                     /* todo: remove ternary when all instances using this module will provide method parameter */
-                type: 'undefined' === typeof method ? 'POST' : method,
-                url: this.getUrl(code),
-                data: JSON.stringify(data)
-            }).then(function (entity) {
-                mediator.trigger('pim_enrich:form:entity:post_save', entity);
+                    type: 'undefined' === typeof method ? 'POST' : method,
+                    url: this.getUrl(code),
+                    data: JSON.stringify(data)
+                }).then(function (entity) {
+                    mediator.trigger('pim_enrich:form:entity:post_save', entity);
 
-                return entity;
-            }.bind(this));
-        },
+                    return entity;
+                }.bind(this));
+            },
 
             /**
              * Get the entity url
@@ -39,9 +39,9 @@ define([
              *
              * @return {String}
              */
-        getUrl: function (code) {
-            return Routing.generate(module.config().url, {code: code});
-        }
-    };
-}
+            getUrl: function (code) {
+                return Routing.generate(module.config().url, {code: code});
+            }
+        };
+    }
 );

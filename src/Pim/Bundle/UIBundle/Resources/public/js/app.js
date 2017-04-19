@@ -49,7 +49,7 @@ define(['jquery', 'underscore'],
                 };
                 var nvp = query.split('&');
                 var data = {};
-                for (var i = 0; i < nvp.length; i++) {
+                for (var i = 0 ; i < nvp.length ; i++) {
                     var pair  = nvp[i].split('=');
                     var name  = this._decodeComponent(pair[0]);
                     var value = this._decodeComponent(pair[1]);

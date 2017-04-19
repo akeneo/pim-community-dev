@@ -1,12 +1,12 @@
 'use strict';
 
 define([
-    'module',
-    'underscore',
-    'pim/form',
-    'oro/mediator',
-    'pim/fetcher-registry'
-],
+        'module',
+        'underscore',
+        'pim/form',
+        'oro/mediator',
+        'pim/fetcher-registry'
+    ],
     function (module, _, BaseForm, mediator, FetcherRegistry) {
         return BaseForm.extend({
             /**

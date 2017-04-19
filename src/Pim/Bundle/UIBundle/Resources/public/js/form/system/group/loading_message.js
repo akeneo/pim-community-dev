@@ -1,12 +1,12 @@
 'use strict';
 
 define([
-    'underscore',
-    'jquery',
-    'pim/form',
-    'text!pim/template/system/group/loading_message',
-    'bootstrap.bootstrapswitch'
-],
+        'underscore',
+        'jquery',
+        'pim/form',
+        'text!pim/template/system/group/loading_message',
+        'bootstrap.bootstrapswitch'
+    ],
     function (
         _,
         $,

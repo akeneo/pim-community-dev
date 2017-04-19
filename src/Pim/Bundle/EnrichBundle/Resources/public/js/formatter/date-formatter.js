@@ -9,25 +9,25 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
-    'jquery',
-    'underscore',
-    'datepicker',
-    'pim/date-context'
-], function (
+        'jquery',
+        'underscore',
+        'datepicker',
+        'pim/date-context'
+    ], function (
         $,
         _,
         Datepicker,
         DateContext
     ) {
-    return {
+        return {
             /**
              * Date widget options
              */
-        datetimepickerOptions: {
-            format: DateContext.get('date').format,
-            defaultFormat: DateContext.get('date').defaultFormat,
-            language: DateContext.get('language')
-        },
+            datetimepickerOptions: {
+                format: DateContext.get('date').format,
+                defaultFormat: DateContext.get('date').defaultFormat,
+                language: DateContext.get('language')
+            },
 
             /**
              * Format a date according to specified format.
@@ -40,22 +40,22 @@ define([
              *
              * @return {String}
              */
-        format: function (date, fromFormat, toFormat) {
-            if (_.isEmpty(date) || _.isUndefined(date) || _.isArray(date)) {
-                return null;
+            format: function (date, fromFormat, toFormat) {
+                if (_.isEmpty(date) || _.isUndefined(date) || _.isArray(date)) {
+                    return null;
+                }
+
+                var options = $.extend({}, this.datetimepickerOptions, {format: fromFormat});
+                var fakeDatepicker = Datepicker.init($('<input>'), options).data('datetimepicker');
+
+                if (null !== fakeDatepicker.parseDate(date)) {
+                    fakeDatepicker.setValue(date);
+                    fakeDatepicker.format = toFormat;
+                    fakeDatepicker._compileFormat();
+                }
+
+                return fakeDatepicker.formatDate(fakeDatepicker.getDate());
             }
-
-            var options = $.extend({}, this.datetimepickerOptions, {format: fromFormat});
-            var fakeDatepicker = Datepicker.init($('<input>'), options).data('datetimepicker');
-
-            if (null !== fakeDatepicker.parseDate(date)) {
-                fakeDatepicker.setValue(date);
-                fakeDatepicker.format = toFormat;
-                fakeDatepicker._compileFormat();
-            }
-
-            return fakeDatepicker.formatDate(fakeDatepicker.getDate());
-        }
-    };
-}
+        };
+    }
 );
