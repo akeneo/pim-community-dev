@@ -29,8 +29,11 @@ define(
     ) {
         return BaseForm.extend({
             tagName: 'button',
-            className: 'AknButton AknButton--important AknButton--withIcon AknTitleContainer-rightButton delete',
+
+            className: 'AknDropdown-menuLink delete',
+
             template: _.template(template),
+
             events: {
                 'click': 'delete'
             },

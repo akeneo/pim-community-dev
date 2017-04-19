@@ -31,7 +31,7 @@ Feature: Remove a product
 
   Scenario: Successfully delete a product from the edit form
     Given I am on the "boots" product page
-    And I press the "Delete" button and wait for modal
+    And I press the secondary action "Delete"
     Then I should see the text "Confirm deletion"
     When I confirm the removal
     Then I should not see product boots

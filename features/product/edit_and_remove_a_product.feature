@@ -32,7 +32,7 @@ Feature: Edit and remove a product
     And I should not see product boots
 
   Scenario: Successfully delete a product from the edit form
-    Given I press the "Delete" button and wait for modal
+    Given I press the secondary action "Delete"
     Then I should see "Confirm deletion"
     When I confirm the removal
     Then I should not see product boots

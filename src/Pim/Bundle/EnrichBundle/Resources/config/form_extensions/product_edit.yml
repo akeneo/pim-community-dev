@@ -42,8 +42,8 @@ extensions:
 
     pim-product-edit-form-delete:
         module: pim/product-edit-form/delete
-        parent: pim-product-edit-form
-        targetZone: buttons
+        parent: pim-product-edit-form-secondary-actions
+        targetZone: secondary-actions
         aclResourceId: pim_enrich_product_remove
         position: 100
         config:

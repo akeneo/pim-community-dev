@@ -10,10 +10,9 @@ Feature: Download a product
     And the following products:
       | sku    | family  |
       | sandal | sandals |
-
-  @skip TODO !!!
+    
   Scenario: Successfully download a product
     Given I am on the "sandal" product page
-    When I press the "PDF" button
+    When I press the secondary action "PDF"
     # Then the response status code should be 200
     # Then the response content type should be "application/pdf"

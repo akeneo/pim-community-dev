@@ -26,7 +26,7 @@ Feature: Manage associations
     And I wait for the "csv_footwear_product_import" job to finish
     And I should see the text "Association import COMPLETED"
     And I edit the "deletable_product" product
-    And I press the "Delete" button and wait for modal
+    And I press the secondary action "Delete"
     And I confirm the deletion
     And I am on the "csv_footwear_product_import" import job page
     When I launch the import job
@@ -52,7 +52,7 @@ Feature: Manage associations
     And I wait for the "csv_footwear_product_import" job to finish
     And I should see the text "Association import COMPLETED"
     And I edit the "deletable_product" product
-    And I press the "Delete" button and wait for modal
+    And I press the secondary action "Delete"
     And I confirm the deletion
     When I edit the "<product_sku>" product
     And I visit the "Associations" tab
