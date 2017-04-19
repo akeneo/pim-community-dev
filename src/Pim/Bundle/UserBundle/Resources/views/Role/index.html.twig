@@ -11,18 +11,20 @@
         require(
             [
                 'jquery',
-                'pim/form-builder'
+                'pim/form-builder',
+                'pim/fetcher-registry'
             ],
             function (
                 $,
-                FormBuilder
+                FormBuilder,
+                FetcherRegistry
             ) {
-                $(function () {
+                FetcherRegistry.initialize().done(function () {
                     FormBuilder.build('pim-user-role-index')
                         .then(function (form) {
                             form.setElement('#system-user-role').render();
                         });
-                })
+                });
             });
     </script>
 {% endblock %}
