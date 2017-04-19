@@ -33,6 +33,7 @@ define([
              */
             setUrl: function (url) {
                 this.url = url;
+
                 return this;
             }
         });
