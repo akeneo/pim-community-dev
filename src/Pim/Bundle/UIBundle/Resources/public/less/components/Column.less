@@ -14,8 +14,8 @@
   overflow: hidden;
   transition: flex-basis @timing @transition;
   order: -1;
-  background: #f9f9fb;
-  border-right: 1px solid #d2d7dc;
+  background: @AknLightGray;
+  border-right: 1px solid @AknBorderColor;
   flex-shrink: 0;
 
   &-inner {
@@ -42,7 +42,7 @@
   }
 
   &-innerBottom {
-    border-top: 1px solid #d2d7dc;
+    border-top: 1px solid @AknBorderColor;
   }
 
   &-block:not(:empty) {
@@ -52,20 +52,20 @@
   }
 
   &-title {
-    color: #a2abb9;
+    color: @AknGrey;
     text-transform: uppercase;
     font-size: 11px;
   }
 
   &-value {
-    color: #11324D;
+    color: @AknDarkBlue;
     font-size: 12px;
   }
 
   &-navigationLink {
     font-size: 14px;
     padding: 8px 0;
-    color: #11324D;
+    color: @AknDarkBlue;
     cursor: pointer;
     opacity: 0.85;
     transition: opacity 0.2s ease-in;
@@ -75,7 +75,7 @@
     }
 
     &--active {
-      color: #9452BA;
+      color: @AknLightPurple;
     }
   }
 
@@ -103,7 +103,7 @@
     position: absolute;
     bottom: @padding;
     right: 0;
-    border-top: 1px solid #d2d7dc;
+    border-top: 1px solid @AknBorderColor;
     transition:
       opacity 0.2s @transition,
       width @timing @transition,
