@@ -1795,6 +1795,7 @@ class WebUser extends RawMinkContext
             // Force to retrieve its job executions
             $jobInstance->getJobExecutions()->setInitialized(false);
 
+            $this->getFixturesContext()->refresh($jobInstance);
             $jobExecution = $jobInstance->getJobExecutions()->last();
             $this->getFixturesContext()->refresh($jobExecution);
 
