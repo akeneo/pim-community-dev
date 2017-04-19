@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ApiBundle\Command;
 
 use OAuth2\OAuth2;
-use  FOS\OAuthServerBundle\Model\ClientInterface;
+use FOS\OAuthServerBundle\Model\ClientInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
