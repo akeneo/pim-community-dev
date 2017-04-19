@@ -14,7 +14,7 @@ Feature: Ensure that a published product is safe
   @skip @jira https://akeneo.atlassian.net/browse/PIM-6314
   Scenario: Fail to remove a product that has been published
     Given I am on the "my-jacket" product page
-    And I press the "Delete" button and wait for modal
+    And I press the secondary action "Delete"
     And I confirm the removal
     Then I am on the products page
     And I should see product my-jacket
