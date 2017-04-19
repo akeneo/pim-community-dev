@@ -61,7 +61,7 @@ define(
                 /* jshint sub:true */
                 /* jscs:disable requireDotNotation */
                 var attributeGroupPermission = _.findWhere(
-                    permissions['attribute_groups'],
+                    permissions.attribute_groups,
                     {code: attribute.group_code}
                 );
 
