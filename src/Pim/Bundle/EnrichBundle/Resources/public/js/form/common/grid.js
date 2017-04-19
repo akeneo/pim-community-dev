@@ -1,14 +1,14 @@
 'use strict';
 
 define([
-        'jquery',
-        'underscore',
-        'backbone',
-        'oro/datagrid-builder',
-        'routing',
-        'oro/mediator',
-        'text!pim/template/form/grid'
-    ],
+    'jquery',
+    'underscore',
+    'backbone',
+    'oro/datagrid-builder',
+    'routing',
+    'oro/mediator',
+    'text!pim/template/form/grid'
+],
     function (
         $,
         _,

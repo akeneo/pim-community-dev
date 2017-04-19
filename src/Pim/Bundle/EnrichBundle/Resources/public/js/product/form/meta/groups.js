@@ -7,24 +7,24 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'jquery',
-        'underscore',
-        'oro/mediator',
-        'backbone',
-        'pim/form',
-        'routing',
-        'text!pim/template/product/meta/groups',
-        'text!pim/template/product/meta/group-modal',
-        'pim/user-context',
-        'pim/fetcher-registry',
-        'pim/group-manager',
-        'oro/navigation',
-        'pim/i18n',
-        'oro/loading-mask',
-        'backbone/bootstrap-modal'
-    ],
+ define(
+     [
+         'jquery',
+         'underscore',
+         'oro/mediator',
+         'backbone',
+         'pim/form',
+         'routing',
+         'text!pim/template/product/meta/groups',
+         'text!pim/template/product/meta/group-modal',
+         'pim/user-context',
+         'pim/fetcher-registry',
+         'pim/group-manager',
+         'oro/navigation',
+         'pim/i18n',
+         'oro/loading-mask',
+         'backbone/bootstrap-modal'
+     ],
     function (
         $,
         _,

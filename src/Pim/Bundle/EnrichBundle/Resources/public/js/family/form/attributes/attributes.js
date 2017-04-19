@@ -8,19 +8,19 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
-        'underscore',
-        'oro/translator',
-        'jquery',
-        'pim/form',
-        'text!pim/template/family/tab/attributes/attributes',
-        'pim/user-context',
-        'pim/security-context',
-        'pim/i18n',
-        'pim/fetcher-registry',
-        'pim/dialog',
-        'oro/messenger',
-        'oro/loading-mask'
-    ],
+    'underscore',
+    'oro/translator',
+    'jquery',
+    'pim/form',
+    'text!pim/template/family/tab/attributes/attributes',
+    'pim/user-context',
+    'pim/security-context',
+    'pim/i18n',
+    'pim/fetcher-registry',
+    'pim/dialog',
+    'oro/messenger',
+    'oro/loading-mask'
+],
     function (
         _,
         __,
