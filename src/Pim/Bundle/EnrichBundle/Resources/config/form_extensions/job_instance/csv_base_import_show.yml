@@ -132,7 +132,7 @@ extensions:
             backUrl: pim_importexport_import_profile_index
 
     pim-job-instance-csv-base-import-show-edit:
-        module: pim/common/redirect
+        module: pim/job/export/edit/edit-button
         parent: pim-job-instance-csv-base-import-show
         targetZone: buttons
         position: 100

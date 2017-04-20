@@ -213,7 +213,7 @@ extensions:
         parent: pim-job-instance-xlsx-product-export-show-content-data
 
     pim-job-instance-xlsx-product-export-show-edit:
-        module: pim/common/redirect
+        module: pim/job/export/edit/edit-button
         parent: pim-job-instance-xlsx-product-export-show
         targetZone: buttons
         position: 100
