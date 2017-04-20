@@ -226,7 +226,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
             assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actualUrl));
 
             return true;
-        }, sprintf('Cannot got to the * edit page', $page));
+        }, sprintf('Cannot got to the %s edit page', $page));
     }
 
     /**

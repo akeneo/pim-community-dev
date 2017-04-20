@@ -125,7 +125,9 @@ define(
              * @return {boolean}
              */
             linkClicked: function (event) {
-                event.canLeave = confirm(this.confirmationMessage);
+                if (this.hasModelChanged()) {
+                    event.canLeave = confirm(this.confirmationMessage);
+                }
             },
 
             /**
