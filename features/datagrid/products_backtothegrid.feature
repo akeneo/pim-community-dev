@@ -52,14 +52,15 @@ Feature: Products back to the grid
     Then the page number should be 2
 
   Scenario: Successfully restore the scope dropdown
-    Given I filter by "sku" with operator "is equal to" and value "sneakers_1"
-    And the grid should contain 1 element
     And I should see the text "Ecommerce"
     And I should not see the text "Mobile"
     And I click on the "sneakers_1" row
     And I should be on the product "sneakers_1" edit page
     And I switch the scope to "mobile"
-    And I am on the products page
+    And I should see the text "Mobile"
+    And I should not see the text "Ecommerce"
+    And I move backward one page
     Then the grid should contain 1 element
     And I should see the text "Mobile"
-    And I should not see the text "E-Commerce"
+    And I should not see the text "ECommerce"
+    Then I refresh current page

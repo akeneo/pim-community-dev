@@ -39,4 +39,4 @@ Feature: Delete a family
     And I display the columns SKU, Family
     Then I should not see the text "sneakers"
     When I edit the "foo" product
-    Then I should see "Family: None"
+    Then I should see the text "Family None"
