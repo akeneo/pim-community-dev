@@ -3,11 +3,12 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\CatalogBundle\Elasticsearch\ProductIndexer;
 use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -87,33 +88,50 @@ class CompletenessRemover implements CompletenessRemoverInterface
     {
         $products = $this->createProductQueryBuilder($channel, $locale)->execute();
 
-        $this->bulkRemoveCompletenesses($products);
+        $this->bulkRemoveCompletenesses($products, $channel, $locale);
     }
 
     /**
-     * Drops the current completenesses from the database and from the index for a list of products.
+     * Drops the current completenesses from the database and from the index for
+     * a list of products and optionally for a channel and/or locale.
      *
-     * @param CursorInterface $products
+     * @param CursorInterface       $products
+     * @param null|ChannelInterface $channel
+     * @param null|LocaleInterface  $locale
      */
-    protected function bulkRemoveCompletenesses(CursorInterface $products)
-    {
-        $statement = $this->entityManager->getConnection()->prepare('
-            DELETE c
-            FROM pim_catalog_completeness c
-            WHERE c.product_id IN (:productIds)
-        ');
-
+    protected function bulkRemoveCompletenesses(
+        CursorInterface $products,
+        ChannelInterface $channel = null,
+        LocaleInterface $locale = null
+    ) {
         $bulkedProducts = [];
         $productIds = [];
+        $queryParams = [];
+        $queryTypes = [Connection::PARAM_INT_ARRAY];
         $bulkCounter = 0;
+
+        $query = 'DELETE c FROM pim_catalog_completeness c WHERE c.product_id IN (?)';
+        if (null !== $channel) {
+            $query .= ' AND c.channel_id = ?';
+            $queryParams[] = $channel->getId();
+            $queryTypes[] = \PDO::PARAM_INT;
+        }
+        if (null !== $locale) {
+            $query .= ' AND c.locale_id = ?';
+            $queryParams[] = $locale->getId();
+            $queryTypes[] = \PDO::PARAM_INT;
+        }
 
         foreach ($products as $product) {
             $bulkedProducts[] = $product;
             $productIds[] = $product->getId();
 
             if (self::BULK_SIZE === $bulkCounter) {
-                $statement->bindValue('productIds', $productIds, Type::SIMPLE_ARRAY);
-                $statement->execute();
+                $this->entityManager->getConnection()->executeQuery(
+                    $query,
+                    array_merge([$productIds], $queryParams),
+                    $queryTypes
+                );
                 $this->indexer->indexAll($bulkedProducts);
 
                 $bulkedProducts = [];
@@ -123,13 +141,42 @@ class CompletenessRemover implements CompletenessRemoverInterface
                 $bulkCounter++;
             }
 
-            $product->getCompletenesses()->clear();
+            $this->clearProductCompleteness($product, $channel, $locale);
         }
 
         if (!empty($productIds)) {
-            $statement->bindValue('productIds', $productIds, Type::SIMPLE_ARRAY);
-            $statement->execute();
+            $this->entityManager->getConnection()->executeQuery(
+                $query,
+                array_merge([$productIds], $queryParams),
+                $queryTypes
+            );
             $this->indexer->indexAll($bulkedProducts);
+        }
+    }
+
+    /**
+     * @param ProductInterface      $product
+     * @param null|ChannelInterface $channel
+     * @param null|LocaleInterface  $locale
+     */
+    protected function clearProductCompleteness(
+        ProductInterface $product,
+        ChannelInterface $channel = null,
+        LocaleInterface $locale = null
+    ) {
+        if (null === $channel && null === $locale) {
+            $product->getCompletenesses()->clear();
+        } else {
+            $productCompletenesses = $product->getCompletenesses();
+            $completenessesToRemove = $productCompletenesses->filter(
+                function (CompletenessInterface $completeness) use ($channel, $locale) {
+                    return $channel === $completeness->getChannel() && $locale === $completeness->getLocale();
+                }
+            );
+
+            foreach ($completenessesToRemove as $completeness) {
+                $productCompletenesses->removeElement($completeness);
+            }
         }
     }
 

@@ -6,12 +6,12 @@ use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessRemover;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\ProductIndexer;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -68,8 +68,7 @@ class CompletenessRemoverSpec extends ObjectBehavior
         Collection $completenesses1,
         Collection $completenesses2,
         FamilyInterface $family,
-        CursorInterface $products,
-        Statement $statement
+        CursorInterface $products
     ) {
         $product1->getId()->willReturn(21);
         $product2->getId()->willReturn(42);
@@ -91,9 +90,11 @@ class CompletenessRemoverSpec extends ObjectBehavior
 
         $pqb->execute()->willReturn($products);
 
-        $connection->prepare(Argument::any())->willReturn($statement);
-        $statement->bindValue('productIds', [21, 42], Type::SIMPLE_ARRAY)->shouldBeCalled();
-        $statement->execute()->shouldBeCalled();
+        $connection->executeQuery(
+            'DELETE c FROM pim_catalog_completeness c WHERE c.product_id IN (?)',
+            [[21, 42]],
+            [Connection::PARAM_INT_ARRAY]
+        )->shouldBeCalled();
 
         $product1->getCompletenesses()->willReturn($completenesses1);
         $completenesses1->clear()->shouldBeCalled();
@@ -118,7 +119,8 @@ class CompletenessRemoverSpec extends ObjectBehavior
         ChannelInterface $channel,
         LocaleInterface $locale,
         CursorInterface $products,
-        Statement $statement
+        CompletenessInterface $completeness1,
+        CompletenessInterface $completeness2
     ) {
         $product1->getId()->willReturn(21);
         $product2->getId()->willReturn(42);
@@ -129,7 +131,9 @@ class CompletenessRemoverSpec extends ObjectBehavior
         $products->next()->shouldBeCalled();
 
         $channel->getCode()->willReturn('ecommerce');
+        $channel->getId()->willReturn(12);
         $locale->getCode()->willReturn('en_US');
+        $locale->getId()->willReturn(24);
 
         $pqbFactory->create(
             [
@@ -141,15 +145,24 @@ class CompletenessRemoverSpec extends ObjectBehavior
 
         $pqb->execute()->willReturn($products);
 
-        $connection->prepare(Argument::any())->willReturn($statement);
-        $statement->bindValue('productIds', [21, 42], Type::SIMPLE_ARRAY)->shouldBeCalled();
-        $statement->execute()->shouldBeCalled();
+        $connection->executeQuery(
+            'DELETE c FROM pim_catalog_completeness c WHERE c.product_id IN (?) AND c.channel_id = ? AND c.locale_id = ?',
+            [[21, 42], 12, 24],
+            [Connection::PARAM_INT_ARRAY, \PDO::PARAM_INT, \PDO::PARAM_INT]
+        )->shouldBeCalled();
+
+        $completeness1->getChannel()->willReturn($channel);
+        $completeness1->getLocale()->willReturn($locale);
+        $completeness2->getChannel()->willReturn($channel);
+        $completeness2->getLocale()->willReturn($locale);
 
         $product1->getCompletenesses()->willReturn($completenesses1);
-        $completenesses1->clear()->shouldBeCalled();
+        $completenesses1->filter(Argument::any())->willReturn([$completeness1]);
+        $completenesses1->removeElement($completeness1)->shouldBeCalled();
 
         $product2->getCompletenesses()->willReturn($completenesses2);
-        $completenesses2->clear()->shouldBeCalled();
+        $completenesses2->filter(Argument::any())->willReturn([$completeness2]);
+        $completenesses2->removeElement($completeness2)->shouldBeCalled();
 
         $indexer->indexAll([$product1, $product2])->shouldBeCalled();
 

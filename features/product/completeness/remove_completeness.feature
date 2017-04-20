@@ -71,7 +71,7 @@ Feature: Display the completeness of a product
       | channel | locale | state   | missing_values         | ratio |
       | mobile  | en_US  | success |                        | 100%  |
       | mobile  | fr_FR  | success |                        | 100%  |
-      | tablet  | fr_FR  | warning | Description, Side view | 78%   |
+      | tablet  | fr_FR  | warning | Description, Side view | 77%   |
     When I am on the "sandals" product page
     And I open the "Completeness" panel
     Then I should see the completeness:
@@ -112,7 +112,7 @@ Feature: Display the completeness of a product
     When I filter by "scope" with operator "equals" and value "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
-     | complete | 78%   |
+     | complete | 77%   |
     And the row "sandals" should contain:
      | column   | value |
      | complete | 50%   |

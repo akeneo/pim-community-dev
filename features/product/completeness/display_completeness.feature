@@ -31,9 +31,9 @@ Feature: Display the completeness of a product
     And I should see the completeness:
       | channel | locale | state   | missing_values         | ratio |
       | mobile  | en_US  | success |                        | 100%  |
-      | tablet  | en_US  | warning | Side view              | 89%   |
+      | tablet  | en_US  | warning | Side view              | 88%   |
       | mobile  | fr_FR  | success |                        | 100%  |
-      | tablet  | fr_FR  | warning | Description, Side view | 78%   |
+      | tablet  | fr_FR  | warning | Description, Side view | 77%   |
     When I am on the products page
     Then I am on the "sandals" product page
     And the Name field should be highlighted
@@ -117,7 +117,7 @@ Feature: Display the completeness of a product
     When I filter by "scope" with operator "equals" and value "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
-     | complete | 89%   |
+     | complete | 88%   |
 
   Scenario: Don't display the completeness if the family is not defined
     Given I am on the "sneakers" product page
