@@ -21,7 +21,7 @@ Feature: Ensures the appropriate tab is displayed to the user
   Scenario: Successfully keeps tabs between products
     Given I am on the "jacket-white" product page
     And I visit the "Categories" tab
-    When I click back to grid
+    And I am on the products page
     And I am on the "jacket-white" product page
     Then I should be on the "Categories" tab
 

@@ -17,18 +17,18 @@ Feature: Product edition clicking on another action
   Scenario: Display a message when form submission fails and I try to leave the page
     Given I am on the "sandal" product page
     And I visit the "Marketing" group
-    Given I fill in the following information:
+    And I fill in the following information:
       | Price | foo EUR |
-    And I save the product
+    When I save the product
     Then I should see the flash message "The product could not be updated."
-    Then I click back to grid
-    And I should see "You will lose changes to the product if you leave the page." in popup
+    When I click on the Akeneo logo
+    Then I should see "You will lose changes to the product if you leave the page." in popup
 
   @skip-nav
   Scenario: Display a message when I try to leave the page and there are unsaved values
     Given I am on the "sandal" product page
     And I visit the "Marketing" group
-    Given I fill in the following information:
+    And I fill in the following information:
       | Price | 1234 USD |
-    Then I click back to grid
-    And I should see "You will lose changes to the product if you leave the page." in popup
+    When I click on the Akeneo logo
+    Then I should see "You will lose changes to the product if you leave the page." in popup

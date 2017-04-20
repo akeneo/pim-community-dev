@@ -39,15 +39,6 @@ extensions:
         targetZone: title
         position: 100
 
-    pim-product-edit-form-back-to-grid:
-        module: pim/form/common/back-to-grid
-        parent: pim-product-edit-form
-        targetZone: back
-        aclResourceId: pim_enrich_product_index
-        position: 80
-        config:
-            backUrl: pim_enrich_product_index
-
     pim-product-edit-form-delete:
         module: pim/product-edit-form/delete
         parent: pim-product-edit-form-secondary-actions

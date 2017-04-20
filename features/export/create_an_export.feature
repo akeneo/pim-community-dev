@@ -17,7 +17,7 @@ Feature: Create an export
       | Label | Products export       |
       | Job   | Product export in CSV |
     And I press the "Save" button
-    Then I click back to grid
+    And I am on the products page
     And the grid should contain 1 element
     And I should see export profile PRODUCT_EXPORT
 

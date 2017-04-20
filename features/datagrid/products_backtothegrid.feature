@@ -25,7 +25,7 @@ Feature: Products back to the grid
     And the grid should contain 1 element
     And I click on the "sneakers_1" row
     And I should be on the product "sneakers_1" edit page
-    And I click back to grid
+    And I am on the products page
     Then the grid should contain 1 element
     And I should see "SKU: contains \"sneakers_1\""
     And I should see product sneakers_1
@@ -47,7 +47,8 @@ Feature: Products back to the grid
     And I change the page size to 10
     When I change the page number to 2
     And I click on the "boots_1" row
-    And I click back to grid
+    And I should be on the product "boots_1" edit page
+    And I am on the products page
     Then the page number should be 2
 
   Scenario: Successfully restore the scope dropdown
@@ -58,7 +59,7 @@ Feature: Products back to the grid
     And I click on the "sneakers_1" row
     And I should be on the product "sneakers_1" edit page
     And I switch the scope to "mobile"
-    And I click back to grid
+    And I am on the products page
     Then the grid should contain 1 element
     And I should see the text "Mobile"
     And I should not see the text "E-Commerce"

@@ -17,7 +17,7 @@ Feature: Create an import
       | Label | Products import       |
       | Job   | Product import in CSV |
     And I press the "Save" button
-    Then I click back to grid
+    And I am on the products page
     And the grid should contain 2 element
     And I should see import profile PRODUCT_IMPORT
 
