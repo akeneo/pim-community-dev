@@ -147,12 +147,3 @@ Feature: Publish a product
     When I remove the "Hot" option
     And I confirm the deletion
     Then I should see "Impossible to remove attribute option linked to a published product"
-
-  @jira https://akeneo.atlassian.net/browse/PIM-4927
-  Scenario: Back to grid from a published product should redirect to published products
-    Given the following published product:
-      | sku       | family  | name-en_US |
-      | my-jacket | jackets | Jackets    |
-    And I am on the "my-jacket" published product show page
-    When I click back to grid
-    Then I should be on the published index page
