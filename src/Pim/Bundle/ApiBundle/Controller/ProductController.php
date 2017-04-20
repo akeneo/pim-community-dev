@@ -201,11 +201,17 @@ class ProductController
         ], $request->query->all());
         $pqbOptions = ['limit' => $queryParameters['limit']];
 
-        if (isset($queryParameters['search_before']) && '' !== $queryParameters['search_before']) {
-            $pqbOptions['search_after_unique_key'] = $queryParameters['search_before'];
-            $pqbOptions['search_after'] = [$queryParameters['search_before']];
-        } elseif (isset($queryParameters['search_after'])) {
-            $pqbOptions['search_after_unique_key'] = $queryParameters['search_after'];
+        $searchParameter = null;
+        if (isset($queryParameters['search_after'])) {
+            $searchParameter = $queryParameters['search_after'];
+        } elseif (isset($queryParameters['search_before']) && '' !== $queryParameters['search_before']) {
+            $searchParameter = $queryParameters['search_before'];
+        }
+
+        if (null !== $searchParameter) {
+            $searchParameterDecrypted = $this->primaryKeyEncrypter->decrypt($searchParameter);
+            $pqbOptions['search_after_unique_key'] = $searchParameterDecrypted;
+            $pqbOptions['search_after'] = [$searchParameterDecrypted];
         }
 
         $pqb = $this->pqbFactory->create($pqbOptions);
@@ -222,7 +228,7 @@ class ProductController
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
 
-        $paginatedProducts = $this->searchAfterIdentifier($pqb, $queryParameters, $normalizerOptions);
+        $paginatedProducts = $this->searchAfterIdentifier($pqb, $queryParameters, $normalizerOptions, $searchParameter);
 
         return new JsonResponse($paginatedProducts);
     }
@@ -687,19 +693,24 @@ class ProductController
      * @param ProductQueryBuilderInterface $pqb
      * @param array                        $queryParameters
      * @param array                        $normalizerOptions
+     * @param string                       $searchParameter
      *
      * @return array
      */
     protected function searchAfterIdentifier(
         ProductQueryBuilderInterface $pqb,
         array $queryParameters,
-        array $normalizerOptions
+        array $normalizerOptions,
+        $searchParameter
     ) {
-        if (isset($queryParameters['search_before'])) {
-            $pqb->addSorter('identifier', Directions::DESCENDING);
-        }
+        $direction = isset($queryParameters['search_before']) ? Directions::DESCENDING : Directions::ASCENDING;
+        $pqb->addSorter('id', $direction);
 
         $productCursor = $pqb->execute();
+        $products = iterator_to_array($productCursor);
+        if (isset($queryParameters['search_before'])) {
+            $products = array_reverse($products);
+        }
 
         $parameters = [
             'query_parameters'    => $queryParameters,
@@ -708,13 +719,13 @@ class ProductController
             'item_identifier_key' => 'identifier',
         ];
 
+        $parameters['search_after']['self'] = $searchParameter;
+        $parameters['search_after']['next'] = !empty($products) ? $this->primaryKeyEncrypter->encrypt(end($products)->getId()) : '';
+        $parameters['search_after']['previous'] = !empty($products) ? $this->primaryKeyEncrypter->encrypt(reset($products)->getId()) : '';
+
         $count = isset($queryParameters['with_count']) && 'true' === $queryParameters['with_count'] ?
             $productCursor->count() : null;
-        $products = $this->normalizer->normalize($productCursor, 'external_api', $normalizerOptions);
-
-        if (isset($queryParameters['search_before'])) {
-            $products = array_reverse($products);
-        }
+        $products = $this->normalizer->normalize($products, 'external_api', $normalizerOptions);
 
         $paginatedProducts = $this->searchAfterPaginator->paginate($products, $parameters, $count);
 

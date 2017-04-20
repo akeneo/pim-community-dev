@@ -119,12 +119,12 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     "current_page" : null,
     "_embedded"    : {
 		"items": [
+            {$standardizedProducts['simple']},
             {$standardizedProducts['localizable']},
+            {$standardizedProducts['scopable']},
             {$standardizedProducts['localizable_and_scopable']},
             {$standardizedProducts['product_china']},
-            {$standardizedProducts['product_without_category']},
-            {$standardizedProducts['scopable']},
-            {$standardizedProducts['simple']}
+            {$standardizedProducts['product_without_category']}
 		]
     }
 }
@@ -138,21 +138,23 @@ JSON;
         $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();
 
+        $nextId = urlencode($this->getEncryptedId('scopable'));
+
         $client->request('GET', 'api/rest/v1/products?with_count=true&limit=3');
         $expected = <<<JSON
 {
     "_links": {
         "self"  : {"href": "http://localhost/api/rest/v1/products?limit=3&with_count=true"},
         "first" : {"href": "http://localhost/api/rest/v1/products?limit=3&with_count=true"},
-        "next"  : {"href": "http://localhost/api/rest/v1/products?limit=3&with_count=true&search_after=product_china"}
+        "next"  : {"href": "http://localhost/api/rest/v1/products?limit=3&with_count=true&search_after={$nextId}"}
     },
     "current_page" : null,
     "items_count"  : 6,
     "_embedded"    : {
 		"items": [
+            {$standardizedProducts['simple']},
             {$standardizedProducts['localizable']},
-            {$standardizedProducts['localizable_and_scopable']},
-            {$standardizedProducts['product_china']}
+            {$standardizedProducts['scopable']}
 		]
     }
 }
@@ -169,20 +171,26 @@ JSON;
         $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?search_before=product_without_category&limit=2');
+        $ids = [
+            'localizable'              => urlencode($this->getEncryptedId('localizable')),
+            'localizable_and_scopable' => urlencode($this->getEncryptedId('localizable_and_scopable')),
+            'scopable'                 => urlencode($this->getEncryptedId('scopable')),
+        ];
+
+        $client->request('GET', sprintf('api/rest/v1/products?search_before=%s&limit=2', $ids['localizable_and_scopable']));
         $expected = <<<JSON
 {
     "_links": {
-        "self" : {"href": "http://localhost/api/rest/v1/products?limit=2&search_before=product_without_category"},
+        "self" : {"href": "http://localhost/api/rest/v1/products?limit=2&search_before={$ids['localizable_and_scopable']}"},
         "first" : {"href": "http://localhost/api/rest/v1/products?limit=2"},
-        "next": {"href": "http://localhost/api/rest/v1/products?limit=2&search_after=product_china"},
-        "previous": {"href": "http://localhost/api/rest/v1/products?limit=2&search_before=localizable_and_scopable"}
+        "next": {"href": "http://localhost/api/rest/v1/products?limit=2&search_after={$ids['scopable']}"},
+        "previous": {"href": "http://localhost/api/rest/v1/products?limit=2&search_before={$ids['localizable']}"}
     },
     "current_page" : null,
     "_embedded"    : {
 		"items": [
-            {$standardizedProducts['localizable_and_scopable']},
-            {$standardizedProducts['product_china']}
+            {$standardizedProducts['localizable']},
+            {$standardizedProducts['scopable']}
 		]
     }
 }
@@ -199,20 +207,25 @@ JSON;
         $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();
 
+        $ids = [
+            'product_china'            => urlencode($this->getEncryptedId('product_china')),
+            'product_without_category' => urlencode($this->getEncryptedId('product_without_category'))
+        ];
+
         $client->request('GET', 'api/rest/v1/products?search_before=&limit=2');
         $expected = <<<JSON
 {
     "_links": {
         "self" : {"href": "http://localhost/api/rest/v1/products?limit=2&search_before="},
         "first" : {"href": "http://localhost/api/rest/v1/products?limit=2"},
-        "next": {"href": "http://localhost/api/rest/v1/products?limit=2&search_after=simple"},
-        "previous": {"href": "http://localhost/api/rest/v1/products?limit=2&search_before=scopable"}
+        "next": {"href": "http://localhost/api/rest/v1/products?limit=2&search_after={$ids['product_without_category']}"},
+        "previous": {"href": "http://localhost/api/rest/v1/products?limit=2&search_before={$ids['product_china']}"}
     },
     "current_page" : null,
     "_embedded"    : {
 		"items": [
-            {$standardizedProducts['scopable']},
-            {$standardizedProducts['simple']}
+            {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_without_category']}
 		]
     }
 }
@@ -243,6 +256,7 @@ JSON;
     "current_page" : null,
     "_embedded"    : {
         "items" : [
+            {$standardizedProducts['simple']},
             {
                 "_links" : {
                     "self" : {"href" : "http://localhost/api/rest/v1/products/localizable"}
@@ -265,25 +279,6 @@ JSON;
                                 }
                             }
                         }
-                    ]
-                },
-                "created"       : "2017-01-23T11:44:25+01:00",
-                "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
-            },
-            {
-                "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/products/localizable_and_scopable"}
-                },
-                "identifier"    : "localizable_and_scopable",
-                "family"        : null,
-                "groups"        : [],
-                "variant_group" : null,
-                "categories"    : ["categoryA", "master_china"],
-                "enabled"       : true,
-                "values"        : {
-                    "a_localized_and_scopable_text_area" : [
-                        {"locale" : "en_US", "scope" : "ecommerce", "data" : "Big description"}
                     ]
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -317,7 +312,25 @@ JSON;
                 "updated"       : "2017-01-23T11:44:25+01:00",
                 "associations"  : {}
             },
-            {$standardizedProducts['simple']}
+            {
+                "_links" : {
+                    "self" : {"href" : "http://localhost/api/rest/v1/products/localizable_and_scopable"}
+                },
+                "identifier"    : "localizable_and_scopable",
+                "family"        : null,
+                "groups"        : [],
+                "variant_group" : null,
+                "categories"    : ["categoryA", "master_china"],
+                "enabled"       : true,
+                "values"        : {
+                    "a_localized_and_scopable_text_area" : [
+                        {"locale" : "en_US", "scope" : "ecommerce", "data" : "Big description"}
+                    ]
+                },
+                "created"       : "2017-01-23T11:44:25+01:00",
+                "updated"       : "2017-01-23T11:44:25+01:00",
+                "associations"  : {}
+            }
         ]
     }
 }
@@ -348,6 +361,7 @@ JSON;
     "current_page" : null,
     "_embedded"    : {
         "items" : [
+            {$standardizedProducts['simple']},
             {
                 "_links" : {
                     "self" : {"href" : "http://localhost/api/rest/v1/products/localizable"}
@@ -388,26 +402,6 @@ JSON;
             },
             {
                 "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/products/localizable_and_scopable"}
-                },
-                "identifier"    : "localizable_and_scopable",
-                "family"        : null,
-                "groups"        : [],
-                "variant_group" : null,
-                "categories"    : ["categoryA", "master_china"],
-                "enabled"       : true,
-                "values"        : {
-                    "a_localized_and_scopable_text_area" : [
-                        {"locale" : "en_US", "scope" : "tablet", "data" : "Medium description"},
-                        {"locale" : "fr_FR", "scope" : "tablet", "data" : "Description moyenne"}
-                    ]
-                },
-                "created"       : "2017-01-23T11:44:25+01:00",
-                "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
-            },
-            {
-                "_links" : {
                     "self" : {"href" : "http://localhost/api/rest/v1/products/scopable"}
                 },
                 "identifier"    : "scopable",
@@ -433,7 +427,26 @@ JSON;
                 "updated"       : "2017-01-23T11:44:25+01:00",
                 "associations"  : {}
             },
-            {$standardizedProducts['simple']}
+            {
+                "_links" : {
+                    "self" : {"href" : "http://localhost/api/rest/v1/products/localizable_and_scopable"}
+                },
+                "identifier"    : "localizable_and_scopable",
+                "family"        : null,
+                "groups"        : [],
+                "variant_group" : null,
+                "categories"    : ["categoryA", "master_china"],
+                "enabled"       : true,
+                "values"        : {
+                    "a_localized_and_scopable_text_area" : [
+                        {"locale" : "en_US", "scope" : "tablet", "data" : "Medium description"},
+                        {"locale" : "fr_FR", "scope" : "tablet", "data" : "Description moyenne"}
+                    ]
+                },
+                "created"       : "2017-01-23T11:44:25+01:00",
+                "updated"       : "2017-01-23T11:44:25+01:00",
+                "associations"  : {}
+            }
         ]
     }
 }
@@ -464,6 +477,7 @@ JSON;
     "current_page" : null,
     "_embedded"    : {
         "items" : [
+            {$standardizedProducts['simple']},
             {
                 "_links" : {
                     "self" : {"href" : "http://localhost/api/rest/v1/products/localizable"}
@@ -486,25 +500,6 @@ JSON;
                                 }
                             }
                         }
-                    ]
-                },
-                "created"       : "2017-01-23T11:44:25+01:00",
-                "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
-            },
-            {
-                "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/products/localizable_and_scopable"}
-                },
-                "identifier"    : "localizable_and_scopable",
-                "family"        : null,
-                "groups"        : [],
-                "variant_group" : null,
-                "categories"    : ["categoryA", "master_china"],
-                "enabled"       : true,
-                "values"        : {
-                    "a_localized_and_scopable_text_area" : [
-                        {"locale" : "fr_FR", "scope" : "tablet", "data" : "Description moyenne"}
                     ]
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -538,7 +533,25 @@ JSON;
                 "updated"       : "2017-01-23T11:44:25+01:00",
                 "associations"  : {}
             },
-            {$standardizedProducts['simple']}
+            {
+                "_links" : {
+                    "self" : {"href" : "http://localhost/api/rest/v1/products/localizable_and_scopable"}
+                },
+                "identifier"    : "localizable_and_scopable",
+                "family"        : null,
+                "groups"        : [],
+                "variant_group" : null,
+                "categories"    : ["categoryA", "master_china"],
+                "enabled"       : true,
+                "values"        : {
+                    "a_localized_and_scopable_text_area" : [
+                        {"locale" : "fr_FR", "scope" : "tablet", "data" : "Description moyenne"}
+                    ]
+                },
+                "created"       : "2017-01-23T11:44:25+01:00",
+                "updated"       : "2017-01-23T11:44:25+01:00",
+                "associations"  : {}
+            }
         ]
     }
 }
@@ -631,6 +644,7 @@ JSON;
     "current_page" : null,
     "_embedded"    : {
         "items" : [
+            {$standardizedProducts['simple']},
             {
                 "_links" : {
                     "self" : {"href" : "http://localhost/api/rest/v1/products/localizable"}
@@ -671,29 +685,6 @@ JSON;
             },
             {
                 "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/products/localizable_and_scopable"}
-                },
-                "identifier"    : "localizable_and_scopable",
-                "family"        : null,
-                "groups"        : [],
-                "variant_group" : null,
-                "categories"    : ["categoryA", "master_china"],
-                "enabled"       : true,
-                "values"        : {
-                    "a_localized_and_scopable_text_area" : [
-                        {"locale" : "en_US", "scope" : "ecommerce", "data" : "Big description"},
-                        {"locale" : "en_US", "scope" : "tablet", "data" : "Medium description"},
-                        {"locale" : "zh_CN", "scope" : "ecommerce_china", "data" : "hum..."}
-                    ]
-                },
-                "created"       : "2017-01-23T11:44:25+01:00",
-                "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : []
-            },
-            {$standardizedProducts['product_china']},
-            {$standardizedProducts['product_without_category']},
-            {
-                "_links" : {
                     "self" : {"href" : "http://localhost/api/rest/v1/products/scopable"}
                 },
                 "identifier"    : "scopable",
@@ -728,7 +719,29 @@ JSON;
                 "updated"       : "2017-01-23T11:44:25+01:00",
                 "associations"  : {}
             },
-            {$standardizedProducts['simple']}
+            {
+                "_links" : {
+                    "self" : {"href" : "http://localhost/api/rest/v1/products/localizable_and_scopable"}
+                },
+                "identifier"    : "localizable_and_scopable",
+                "family"        : null,
+                "groups"        : [],
+                "variant_group" : null,
+                "categories"    : ["categoryA", "master_china"],
+                "enabled"       : true,
+                "values"        : {
+                    "a_localized_and_scopable_text_area" : [
+                        {"locale" : "en_US", "scope" : "ecommerce", "data" : "Big description"},
+                        {"locale" : "en_US", "scope" : "tablet", "data" : "Medium description"},
+                        {"locale" : "zh_CN", "scope" : "ecommerce_china", "data" : "hum..."}
+                    ]
+                },
+                "created"       : "2017-01-23T11:44:25+01:00",
+                "updated"       : "2017-01-23T11:44:25+01:00",
+                "associations"  : []
+            },
+            {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_without_category']}
         ]
     }
 }
@@ -753,6 +766,29 @@ JSON;
         "items" : [
             {
                 "_links" : {
+                    "self" : {"href" : "http://localhost/api/rest/v1/products/simple"}
+                },
+                "identifier"    : "simple",
+                "family"        : null,
+                "groups"        : [],
+                "variant_group" : null,
+                "categories"    : ["master"],
+                "enabled"       : true,
+                "values"        : {
+                    "a_text" : [
+                        {
+                            "locale" : null,
+                            "scope"  : null,
+                            "data"   : "Text"
+                        }
+                    ]
+                },
+                "created"       : "2017-01-23T11:44:25+01:00",
+                "updated"       : "2017-01-23T11:44:25+01:00",
+                "associations"  : {}
+            },
+            {
+                "_links" : {
                     "self" : {"href" : "http://localhost/api/rest/v1/products/localizable"}
                 },
                 "identifier"    : "localizable",
@@ -760,6 +796,21 @@ JSON;
                 "groups"        : [],
                 "variant_group" : null,
                 "categories"    : ["categoryB"],
+                "enabled"       : true,
+                "values"        : {},
+                "created"       : "2017-01-23T11:44:25+01:00",
+                "updated"       : "2017-01-23T11:44:25+01:00",
+                "associations"  : {}
+            },
+            {
+                "_links" : {
+                    "self" : {"href" : "http://localhost/api/rest/v1/products/scopable"}
+                },
+                "identifier"    : "scopable",
+                "family"        : null,
+                "groups"        : [],
+                "variant_group" : null,
+                "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -810,44 +861,6 @@ JSON;
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
                 "associations"  : {}
-            },
-            {
-                "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/products/scopable"}
-                },
-                "identifier"    : "scopable",
-                "family"        : null,
-                "groups"        : [],
-                "variant_group" : null,
-                "categories"    : ["categoryA1", "categoryA2"],
-                "enabled"       : true,
-                "values"        : {},
-                "created"       : "2017-01-23T11:44:25+01:00",
-                "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
-            },
-            {
-                "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/products/simple"}
-                },
-                "identifier"    : "simple",
-                "family"        : null,
-                "groups"        : [],
-                "variant_group" : null,
-                "categories"    : ["master"],
-                "enabled"       : true,
-                "values"        : {
-                    "a_text" : [
-                        {
-                            "locale" : null,
-                            "scope"  : null,
-                            "data"   : "Text"
-                        }
-                    ]
-                },
-                "created"       : "2017-01-23T11:44:25+01:00",
-                "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
             }
         ]
     }
@@ -873,6 +886,32 @@ JSON;
         "items" : [
             {
                 "_links" : {
+                    "self" : {"href" : "http://localhost/api/rest/v1/products/simple"}
+                },
+                "identifier"    : "simple",
+                "family"        : null,
+                "groups"        : [],
+                "variant_group" : null,
+                "categories"    : ["master"],
+                "enabled"       : true,
+                "values"        : {
+                    "a_metric" : [
+                        {
+                            "locale" : null,
+                            "scope"  : null,
+                            "data"   : {
+                                "amount" : "10.0000",
+                                "unit"   : "KILOWATT"
+                            }
+                        }
+                    ]
+                },
+                "created"       : "2017-01-23T11:44:25+01:00",
+                "updated"       : "2017-01-23T11:44:25+01:00",
+                "associations"  : {}
+            },
+            {
+                "_links" : {
                     "self" : {"href" : "http://localhost/api/rest/v1/products/localizable"}
                 },
                 "identifier"    : "localizable",
@@ -882,25 +921,6 @@ JSON;
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
                 "values"        : [],
-                "created"       : "2017-01-23T11:44:25+01:00",
-                "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
-            },
-            {
-                "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/products/localizable_and_scopable"}
-                },
-                "identifier"    : "localizable_and_scopable",
-                "family"        : null,
-                "groups"        : [],
-                "variant_group" : null,
-                "categories"    : ["categoryA", "master_china"],
-                "enabled"       : true,
-                "values"        : {
-                    "a_localized_and_scopable_text_area" : [
-                        {"locale" : "fr_FR", "scope" : "tablet", "data" : "Description moyenne"}
-                    ]
-                },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
                 "associations"  : {}
@@ -934,24 +954,17 @@ JSON;
             },
             {
                 "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/products/simple"}
+                    "self" : {"href" : "http://localhost/api/rest/v1/products/localizable_and_scopable"}
                 },
-                "identifier"    : "simple",
+                "identifier"    : "localizable_and_scopable",
                 "family"        : null,
                 "groups"        : [],
                 "variant_group" : null,
-                "categories"    : ["master"],
+                "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {
-                    "a_metric" : [
-                        {
-                            "locale" : null,
-                            "scope"  : null,
-                            "data"   : {
-                                "amount" : "10.0000",
-                                "unit"   : "KILOWATT"
-                            }
-                        }
+                    "a_localized_and_scopable_text_area" : [
+                        {"locale" : "fr_FR", "scope" : "tablet", "data" : "Description moyenne"}
                     ]
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -970,27 +983,33 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?attributes=a_text&search_after=product_without_category&limit=2&with_count=false');
+        $ids = [
+            'localizable_and_scopable' => urlencode($this->getEncryptedId('localizable_and_scopable')),
+            'product_china'            => urlencode($this->getEncryptedId('product_china')),
+            'product_without_category' => urlencode($this->getEncryptedId('product_without_category')),
+        ];
+
+        $client->request('GET', sprintf('api/rest/v1/products?attributes=a_text&search_after=%s&limit=2&with_count=false', $ids['localizable_and_scopable']));
         $expected = <<<JSON
 {
     "_links"       : {
-        "self"     : {"href" : "http://localhost/api/rest/v1/products?limit=2&attributes=a_text&search_after=product_without_category&with_count=false"},
+        "self"     : {"href" : "http://localhost/api/rest/v1/products?limit=2&attributes=a_text&search_after={$ids['localizable_and_scopable']}&with_count=false"},
         "first"    : {"href" : "http://localhost/api/rest/v1/products?limit=2&attributes=a_text&with_count=false"},
-        "previous" : {"href" : "http://localhost/api/rest/v1/products?limit=2&attributes=a_text&with_count=false&search_before=scopable"},
-        "next"     : {"href" : "http://localhost/api/rest/v1/products?limit=2&attributes=a_text&search_after=simple&with_count=false"}
+        "previous" : {"href" : "http://localhost/api/rest/v1/products?limit=2&attributes=a_text&with_count=false&search_before={$ids['product_china']}"},
+        "next"     : {"href" : "http://localhost/api/rest/v1/products?limit=2&attributes=a_text&search_after={$ids['product_without_category']}&with_count=false"}
     },
     "current_page" : null,
     "_embedded"    : {
         "items" : [
             {
                 "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/products/scopable"}
+                    "self" : {"href" : "http://localhost/api/rest/v1/products/product_china"}
                 },
-                "identifier"    : "scopable",
+                "identifier"    : "product_china",
                 "family"        : null,
                 "groups"        : [],
                 "variant_group" : null,
-                "categories"    : ["categoryA1", "categoryA2"],
+                "categories"    : ["master_china"],
                 "enabled"       : true,
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -999,23 +1018,15 @@ JSON;
             },
             {
                 "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/products/simple"}
+                    "self" : {"href" : "http://localhost/api/rest/v1/products/product_without_category"}
                 },
-                "identifier"    : "simple",
+                "identifier"    : "product_without_category",
                 "family"        : null,
                 "groups"        : [],
                 "variant_group" : null,
-                "categories"    : ["master"],
+                "categories"    : [],
                 "enabled"       : true,
-                "values"        : {
-                    "a_text" : [
-                        {
-                            "locale" : null,
-                            "scope"  : null,
-                            "data"   : "Text"
-                        }
-                    ]
-                },
+                "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
                 "associations"  : {}
@@ -1032,11 +1043,13 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?search_after=simple&with_count=true');
+        $id = urlencode($this->getEncryptedId('product_without_category'));
+
+        $client->request('GET', sprintf('api/rest/v1/products?search_after=%s&with_count=true', $id));
         $expected = <<<JSON
 {
     "_links" : {
-        "self": {"href" : "http://localhost/api/rest/v1/products?limit=10&search_after=simple&with_count=true"},
+        "self": {"href" : "http://localhost/api/rest/v1/products?limit=10&search_after={$id}&with_count=true"},
         "first" : {"href" : "http://localhost/api/rest/v1/products?limit=10&with_count=true"},
         "previous": {"href" : "http://localhost/api/rest/v1/products?limit=10&with_count=true&search_before="}
     },
@@ -1159,20 +1172,24 @@ JSON;
         $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?limit=4&search_after=product_china');
+        $ids = [
+            'localizable_and_scopable' => urlencode($this->getEncryptedId('localizable_and_scopable')),
+            'product_china'            => urlencode($this->getEncryptedId('product_china')),
+        ];
+
+        $client->request('GET', sprintf('api/rest/v1/products?limit=4&search_after=%s', $ids['localizable_and_scopable']));
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/products?limit=4&search_after=product_china"},
+        "self"  : {"href": "http://localhost/api/rest/v1/products?limit=4&search_after={$ids['localizable_and_scopable']}"},
         "first" : {"href": "http://localhost/api/rest/v1/products?limit=4"},
-        "previous": {"href": "http://localhost/api/rest/v1/products?limit=4&search_before=product_without_category"}
+        "previous": {"href": "http://localhost/api/rest/v1/products?limit=4&search_before={$ids['product_china']}"}
     },
     "current_page" : null,
     "_embedded"    : {
         "items" : [
-            {$standardizedProducts['product_without_category']},
-            {$standardizedProducts['scopable']},
-            {$standardizedProducts['simple']}
+            {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_without_category']}
         ]
     }
 }
@@ -1204,6 +1221,19 @@ JSON;
         }
 
         $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @param string $productIdentifier
+     */
+    private function getEncryptedId($productIdentifier)
+    {
+        $encrypter = $this->get('pim_api.security.primary_key_encrypter');
+        $productRepository = $this->get('pim_catalog.repository.product');
+
+        $product = $productRepository->findOneByIdentifier($productIdentifier);
+
+        return $encrypter->encrypt($product->getId());
     }
 
     /**

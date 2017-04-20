@@ -36,10 +36,9 @@ class SearchAfterHalPaginator implements PaginatorInterface
             'item_identifier_key' => 'code',
         ]);
 
-        $this->resolver->setDefined(['previous']);
-
         $this->resolver->setRequired([
             'query_parameters',
+            'search_after',
             'list_route_name',
             'item_route_name',
         ]);
@@ -47,6 +46,7 @@ class SearchAfterHalPaginator implements PaginatorInterface
         $this->resolver->setAllowedTypes('uri_parameters', 'array');
         $this->resolver->setAllowedTypes('item_identifier_key', 'string');
         $this->resolver->setAllowedTypes('query_parameters', 'array');
+        $this->resolver->setAllowedTypes('search_after', 'array');
         $this->resolver->setAllowedTypes('list_route_name', 'string');
         $this->resolver->setAllowedTypes('item_route_name', 'string');
 
@@ -86,15 +86,20 @@ class SearchAfterHalPaginator implements PaginatorInterface
         ];
 
         if (isset($uriParameters['search_after']) || isset($uriParameters['search_before'])) {
-            $searchBefore = !empty($items) ? $items[0][$parameters['item_identifier_key']] : '';
-            $links[] = $this->createLink($parameters['list_route_name'], $uriParameters, null, $searchBefore, 'previous');
+            $links[] = $this->createLink(
+                $parameters['list_route_name'],
+                $uriParameters,
+                null,
+                $parameters['search_after']['previous'],
+                'previous'
+            );
         }
 
         if (count($items) === (int) $parameters['query_parameters']['limit']) {
             $links[] = $this->createLink(
                 $parameters['list_route_name'],
                 $uriParameters,
-                end($items)[$parameters['item_identifier_key']],
+                $parameters['search_after']['next'],
                 null,
                 'next'
             );
