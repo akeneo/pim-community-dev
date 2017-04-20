@@ -44,9 +44,6 @@ class CompletenessManager
     /** @var ProductValueCompleteCheckerInterface */
     protected $valueCompleteChecker;
 
-    /** @var string */
-    protected $class;
-
     /**
      * @param FamilyRepositoryInterface            $familyRepository
      * @param ChannelRepositoryInterface           $channelRepository
@@ -54,7 +51,6 @@ class CompletenessManager
      * @param CompletenessGeneratorInterface       $generator
      * @param CompletenessRemoverInterface         $remover
      * @param ProductValueCompleteCheckerInterface $valueCompleteChecker
-     * @param string                               $class
      */
     public function __construct(
         FamilyRepositoryInterface $familyRepository,
@@ -62,8 +58,7 @@ class CompletenessManager
         LocaleRepositoryInterface $localeRepository,
         CompletenessGeneratorInterface $generator,
         CompletenessRemoverInterface $remover,
-        ProductValueCompleteCheckerInterface $valueCompleteChecker,
-        $class
+        ProductValueCompleteCheckerInterface $valueCompleteChecker
     ) {
         $this->familyRepository = $familyRepository;
         $this->channelRepository = $channelRepository;
@@ -71,7 +66,6 @@ class CompletenessManager
         $this->generator = $generator;
         $this->remover = $remover;
         $this->valueCompleteChecker = $valueCompleteChecker;
-        $this->class = $class;
     }
 
     /**

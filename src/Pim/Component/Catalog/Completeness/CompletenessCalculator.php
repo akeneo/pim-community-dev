@@ -4,11 +4,14 @@ namespace Pim\Component\Catalog\Completeness;
 
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\Completeness;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
@@ -40,22 +43,28 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
     /** @var ProductValueCompleteCheckerInterface */
     protected $productValueCompleteChecker;
 
+    /** @var string */
+    protected $completenessClass;
+
     /**
      * @param ProductValueFactory                  $productValueFactory
      * @param CachedObjectRepositoryInterface      $channelRepository
      * @param CachedObjectRepositoryInterface      $localeRepository
      * @param ProductValueCompleteCheckerInterface $productValueCompleteChecker
+     * @param string                               $completenessClass
      */
     public function __construct(
         ProductValueFactory $productValueFactory,
         CachedObjectRepositoryInterface $channelRepository,
         CachedObjectRepositoryInterface $localeRepository,
-        ProductValueCompleteCheckerInterface $productValueCompleteChecker
+        ProductValueCompleteCheckerInterface $productValueCompleteChecker,
+        $completenessClass
     ) {
         $this->productValueFactory = $productValueFactory;
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
         $this->productValueCompleteChecker = $productValueCompleteChecker;
+        $this->completenessClass = $completenessClass;
     }
 
     /**
@@ -218,7 +227,7 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
             $requiredCount++;
         }
 
-        $completeness = new Completeness(
+        $completeness = $this->createCompleteness(
             $product,
             $channel,
             $locale,
@@ -228,5 +237,33 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
         );
 
         return $completeness;
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param ChannelInterface $channel
+     * @param LocaleInterface  $locale
+     * @param Collection       $missingAttributes
+     * @param int              $missingCount
+     * @param int              $requiredCount
+     *
+     * @return CompletenessInterface
+     */
+    private function createCompleteness(
+        ProductInterface $product,
+        ChannelInterface $channel,
+        LocaleInterface $locale,
+        Collection $missingAttributes,
+        $missingCount,
+        $requiredCount
+    ) {
+        return new $this->completenessClass(
+            $product,
+            $channel,
+            $locale,
+            $missingAttributes,
+            $missingCount,
+            $requiredCount
+        );
     }
 }
