@@ -508,6 +508,100 @@ Descendant
         ]
     ]
 
+Id
+**
+:Apply: apply datatype 'keyword' on the 'id' field
+
+Data model
+~~~~~~~~~~
+.. code-block:: php
+
+    [
+        'id' => '42'
+    ]
+
+Filtering
+~~~~~~~~~
+Operators
+.........
+All operators are the same as the Text field type except that the 'EMPTY' and 'NOT EMPTY' operators do not exists for this property.
+
+Equals (=)
+""""""""""
+
+.. code-block:: php
+
+    'filter' => [
+        'term' => [
+            'id' => '42'
+        ]
+    ]
+
+Not Equal (!=)
+""""""""""""""
+
+.. code-block:: php
+
+    'must_not' => [
+        'term' => [
+            'id' => '42'
+        ]
+    ],
+    'filter' => [
+        'exists' => [
+            'field' => 'id'
+        ]
+    ]
+
+In list
+"""""""
+
+.. code-block:: php
+
+    'filter' => [
+        'terms' => [
+            'id' => ['21', '42']
+        ]
+    ]
+
+Not In list
+"""""""""""
+
+.. code-block:: php
+
+    'must_not' => [
+        'terms' => [
+            'id' => ['21', '42']
+        ]
+    ]
+
+Sorting
+~~~~~~~
+Operators
+.........
+
+Whenever one wants to sort on the field 'id'. The sort query will be performed on the field 'id'.
+
+ASCENDANT
+"""""""""
+
+.. code-block:: php
+
+    'sort' => [
+        'id' => 'ASC',
+        'missing' => '_last'
+    ]
+
+DESCENDANT
+""""""""""
+
+.. code-block:: php
+
+    'sort' => [
+        'id' => 'DESC',
+        'missing' => '_last'
+    ]
+
 Identifier
 **********
 :Apply: apply datatype 'keyword' on the 'identifier' field
@@ -518,7 +612,7 @@ Data model
 .. code-block:: php
 
     [
-        'identifier': 'prct-eb-1256'
+        'identifier' => 'prct-eb-1256'
     ]
 
 Filtering

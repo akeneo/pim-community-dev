@@ -336,6 +336,13 @@ services:
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
 
+    pim_catalog.query.elasticsearch.sorter.id:
+        class: '%pim_catalog.query.elasticsearch.sorter.base_field.class%'
+        arguments:
+            - ['id']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
     # Attributes sorters
     pim_catalog.query.elasticsearch.sorter.metric:
         class: '%pim_catalog.query.elasticsearch.sorter.attribute.metric.class%'
