@@ -65,7 +65,7 @@ PimEnterprise\Component\Workflow\Model\PublishedProduct:
                 - refresh
                 - detach
         completenesses:
-            targetEntity: Pim\Component\Catalog\Model\CompletenessInterface
+            targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductCompletenessInterface
             mappedBy: product
             cascade:
                 - remove

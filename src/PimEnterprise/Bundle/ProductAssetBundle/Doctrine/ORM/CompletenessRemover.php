@@ -28,15 +28,17 @@ class CompletenessRemover extends BaseCompletenessRemover implements Completenes
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param EntityManagerInterface              $entityManager
      * @param ProductIndexer                      $indexer
+     * @param string                              $completenessTable
      * @param AttributeRepositoryInterface        $attributeRepository
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         EntityManagerInterface $entityManager,
         ProductIndexer $indexer,
+        $completenessTable,
         AttributeRepositoryInterface $attributeRepository
     ) {
-        parent::__construct($pqbFactory, $entityManager, $indexer);
+        parent::__construct($pqbFactory, $entityManager, $indexer, $completenessTable);
         $this->attributeRepository = $attributeRepository;
     }
 

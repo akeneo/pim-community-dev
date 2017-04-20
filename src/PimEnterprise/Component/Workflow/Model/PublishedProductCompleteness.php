@@ -12,13 +12,12 @@
 namespace PimEnterprise\Component\Workflow\Model;
 
 use Pim\Component\Catalog\Model\AbstractCompleteness;
-use Pim\Component\Catalog\Model\CompletenessInterface;
 
 /**
  * Published product completeness
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class PublishedProductCompleteness extends AbstractCompleteness implements CompletenessInterface
+class PublishedProductCompleteness extends AbstractCompleteness implements PublishedProductCompletenessInterface
 {
 }

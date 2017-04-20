@@ -8,9 +8,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use PimEnterprise\Component\Workflow\Publisher\Product\RelatedAssociationPublisher;
 use PimEnterprise\Component\Workflow\Publisher\PublisherInterface;
 use Prophecy\Argument;
@@ -29,11 +31,11 @@ class ProductPublisherSpec extends ObjectBehavior
     }
 
     public function let(
+        ProductBuilderInterface $builder,
         PublisherInterface $publisher,
         RelatedAssociationPublisher $associationsPublisher,
         VersionManager $versionManager,
         ProductInterface $product,
-        CompletenessManager $completenessManager,
         NormalizerInterface $productNormalizer,
         ObjectUpdaterInterface $productUpdater
     ) {
@@ -48,17 +50,17 @@ class ProductPublisherSpec extends ObjectBehavior
         $product->setEnabled(Argument::any())->willReturn($product);
 
         $this->beConstructedWith(
-            'PimEnterprise\Component\Workflow\Model\PublishedProduct',
+            $builder,
             $publisher,
             $associationsPublisher,
             $versionManager,
-            $completenessManager,
             $productNormalizer,
             $productUpdater
         );
     }
 
     public function it_publishes_a_product_with_associations(
+        $builder,
         $versionManager,
         $product,
         $productNormalizer,
@@ -67,83 +69,88 @@ class ProductPublisherSpec extends ObjectBehavior
         $associationsPublisher,
         Version $version,
         AssociationInterface $association,
-        AssociationInterface $copiedAssociation
+        AssociationInterface $copiedAssociation,
+        PublishedProductInterface $publishedProduct
     ) {
         $versionManager->getNewestLogEntry($product, null)->willReturn($version);
 
         $product->getIdentifier()->willReturn('sku-01');
+        $product->getFamily()->willReturn();
         $product->getAssociations()->willReturn(new ArrayCollection([$association]));
 
         $productNormalizer->normalize($product, 'standard')->willReturn([]);
-        $productUpdater->update(
-            Argument::type('PimEnterprise\Component\Workflow\Model\PublishedProduct'),
-            []
-        )->shouldBeCalled();
+        $productUpdater->update($publishedProduct, [])->shouldBeCalled();
+
+        $publishedProduct->setVersion($version)->shouldBeCalled();
+        $publishedProduct->setOriginalProduct($product)->shouldBeCalled();
+        $publishedProduct->addAssociation($copiedAssociation)->shouldBeCalled();
+
+        $builder->createProduct('sku-01', null)->willReturn($publishedProduct);
 
         $publisher->publish($association, Argument::cetera())->willReturn($copiedAssociation);
-        $associationsPublisher->publish(Argument::type('PimEnterprise\Component\Workflow\Model\PublishedProduct'))
-            ->shouldBeCalled();
+        $associationsPublisher->publish($publishedProduct)->shouldBeCalled();
 
-        $published = $this->publish($product);
-        $published->shouldHaveType('PimEnterprise\Component\Workflow\Model\PublishedProduct');
-        $published->getIdentifier()->shouldEqual('sku-01');
-        $published->getAssociations()->shouldHaveCount(1);
-        $published->getAssociations()[0]->shouldEqual($copiedAssociation);
+        $this->publish($product)->shouldReturn($publishedProduct);
     }
 
     public function it_sets_the_version_during_publishing(
+        $builder,
         $versionManager,
         $product,
         $productNormalizer,
         $productUpdater,
-        Version $version
+        Version $version,
+        PublishedProductInterface $publishedProduct
     ) {
         $versionManager->getNewestLogEntry($product, null)->willReturn($version);
         $version->isPending()->willReturn(false);
 
+        $product->getFamily()->willReturn();
         $product->getIdentifier()->willReturn('sku-01');
 
         $productNormalizer->normalize($product, 'standard')->willReturn([]);
-        $productUpdater->update(
-            Argument::type('PimEnterprise\Component\Workflow\Model\PublishedProduct'),
-            []
-        )->shouldBeCalled();
+        $productUpdater->update($publishedProduct, [])->shouldBeCalled();
 
-        $published = $this->publish($product);
+        $builder->createProduct('sku-01', null)->willReturn($publishedProduct);
 
-        $published->getVersion()->shouldReturn($version);
+        $publishedProduct->setVersion($version)->shouldBeCalled();
+        $publishedProduct->setOriginalProduct($product)->shouldBeCalled();
+
+        $this->publish($product)->shouldReturn($publishedProduct);
     }
 
     public function it_builds_the_version_if_needed_during_publishing(
+        $builder,
         $versionManager,
         $product,
         $productNormalizer,
         $productUpdater,
         ObjectManager $objectManager,
         Version $pendingVersion,
-        Version $newVersion
+        Version $newVersion,
+        PublishedProductInterface $publishedProduct
     ) {
         $versionManager->getNewestLogEntry($product, null)->willReturn($pendingVersion);
         $pendingVersion->isPending()->willReturn(true);
 
         $versionManager->buildVersion($product)->willReturn([$pendingVersion, $newVersion]);
-        $pendingVersion->getChangeset()->willReturn(['foo' => 'bar']);
-        $newVersion->getChangeset()->willReturn([]);
+        $newVersion->getChangeset()->willReturn(['foo' => 'bar']);
+        $pendingVersion->getChangeset()->willReturn([]);
 
         $versionManager->getObjectManager()->willReturn($objectManager);
-        $objectManager->persist($pendingVersion)->shouldBeCalled();
-        $objectManager->persist($newVersion)->shouldNotBeCalled();
+        $objectManager->persist($newVersion)->shouldBeCalled();
+        $objectManager->persist($pendingVersion)->shouldNotBeCalled();
 
+        $product->getFamily()->willReturn();
         $product->getIdentifier()->willReturn('sku-01');
 
-        $productNormalizer->normalize($product, 'standard')
-            ->willReturn([]);
-        $productUpdater->update(
-            Argument::type('PimEnterprise\Component\Workflow\Model\PublishedProduct'),
-            []
-        )->shouldBeCalled();
-        $published = $this->publish($product);
+        $productNormalizer->normalize($product, 'standard')->willReturn([]);
+        $builder->createProduct('sku-01', null)->willReturn($publishedProduct);
+        $productUpdater->update($publishedProduct, [])->shouldBeCalled();
 
-        $published->getVersion()->shouldReturn($pendingVersion);
+        $publishedProduct->setVersion($newVersion)->shouldBeCalled();
+        $publishedProduct->setOriginalProduct($product)->shouldBeCalled();
+
+        $this->publish($product)->shouldReturn($publishedProduct);
     }
 }

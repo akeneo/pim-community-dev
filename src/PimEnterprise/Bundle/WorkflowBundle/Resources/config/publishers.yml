@@ -14,11 +14,10 @@ services:
     pimee_workflow.publisher.product:
         class: '%pimee_workflow.publisher.product.class%'
         arguments:
-            - '%pimee_workflow.entity.published_product.class%'
+            - '@pimee_workflow.builder.published_product'
             - '@pimee_workflow.publisher.chained'
             - '@pimee_workflow.publisher.product_related_association'
             - '@pim_versioning.manager.version'
-            - '@pim_catalog.manager.completeness'
             - '@pim_serializer'
             - '@pim_catalog.updater.product'
         tags:

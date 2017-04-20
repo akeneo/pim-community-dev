@@ -29,7 +29,13 @@ class CompletenessRemoverSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         Connection $connection
     ) {
-        $this->beConstructedWith($pqbFactory, $entityManager, $indexer, $attributeRepository);
+        $this->beConstructedWith(
+            $pqbFactory,
+            $entityManager,
+            $indexer,
+            'pim_catalog_completeness',
+            $attributeRepository
+        );
 
         $entityManager->getConnection()->willReturn($connection);
     }
