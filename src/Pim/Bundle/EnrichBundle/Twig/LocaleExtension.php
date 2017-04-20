@@ -36,7 +36,8 @@ class LocaleExtension extends \Twig_Extension
             new \Twig_SimpleFunction('locale_code', [$this, 'currentLocaleCode']),
             new \Twig_SimpleFunction('locale_label', [$this, 'localeLabel']),
             new \Twig_SimpleFunction('currency_symbol', [$this, 'currencySymbol']),
-            new \Twig_SimpleFunction('currency_label', [$this, 'currencyLabel'])
+            new \Twig_SimpleFunction('currency_label', [$this, 'currencyLabel']),
+            new \Twig_SimpleFunction('activated_locale_codes', [$this, 'activatedLocaleCodes'])
         ];
     }
 
@@ -55,6 +56,16 @@ class LocaleExtension extends \Twig_Extension
                 ]
             ),
         ];
+    }
+
+    /**
+     * Gets activated locale codes
+     *
+     * @return string[]
+     */
+    public function activatedLocaleCodes()
+    {
+        return $this->localeHelper->getActivatedLocaleCodes();
     }
 
     /**
