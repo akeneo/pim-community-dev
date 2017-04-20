@@ -21,6 +21,7 @@ pimee_workflow:
             modal.title: Leave a comment (optional - 255 characters max.)
 
     proposal:
+        overview: Proposals
         mass_action_group:
             review:
                 label: Bulk Action

@@ -1,0 +1,31 @@
+extensions:
+    pimee-rules-index:
+        module: pim/form/common/index/index
+        config:
+            title: pimee_catalog_rule.overview
+
+    pimee-rules-index-grid:
+        module: pim/form/common/index/grid
+        parent: pimee-rules-index
+        position: 1000
+        targetZone: content
+        config:
+            alias: rule-grid
+            localeKey: dataLocale
+
+    pim-rules-index-confirm-button:
+        module: pim/form/common/index/confirm-button
+        parent: pimee-rules-index
+        targetZone: buttons
+        position: 100
+        aclResourceId: pimee_catalog_rule_rule_execute_permissions
+        config:
+            iconName: play
+            url: pimee_catalog_rule_rule_execute
+            redirectUrl: pimee_catalog_rule_rule_index
+            successMessage: pimee_catalog_rule.notification.launched
+            errorMessage: pimee_catalog_rule.notification.fail
+            buttonLabel: pimee_catalog_rule.execution_button
+            buttonClass: AknButton--apply execute-all-rules
+            message: pimee_catalog_rule.popin.execute_rules.confirm_content
+            title: pimee_catalog_rule.popin.execute_rules.confirm_title

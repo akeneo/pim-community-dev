@@ -128,8 +128,6 @@ confirmation:
         publish: Are you sure you want to publish this product ?
         unpublish: Are you sure you want to unpublish this product ?
 
-proposal.overview: Proposals
-
 Attributes.title: Attributes
 Completeness.title: Completeness
 
