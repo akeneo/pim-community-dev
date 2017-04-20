@@ -70,6 +70,10 @@ define(
                 extension.targetZone = zone;
                 extension.position   = position;
 
+                if ((undefined === this.extensions) || (null === this.extensions)) {
+                    throw 'this.extensions have to be defined. Please ensure you called initialize() method.';
+                }
+
                 this.extensions[code] = extension;
             },
 

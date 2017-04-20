@@ -31,22 +31,25 @@
     transition: right @timing @transition;
   }
 
-  &-innerTop,
-  &-innerBottom {
+  &-innerTop:not(:empty),
+  &-innerBottom:not(:empty) {
     padding: @padding;
-    transition: margin-right @timing @transition;
+    line-height: 14px;
+    transition:
+      margin-right @timing @transition,
+      margin-left @timing @transition;
   }
 
   &-innerTop {
     flex-grow: 1;
   }
 
-  &-innerBottom {
+  &-innerBottom:not(:empty) {
     border-top: 1px solid @AknBorderColor;
   }
 
   &-block:not(:empty) {
-    padding: 18px 0;
+    padding: 36px 0 0 0;
     display: flex;
     flex-direction: column;
   }
@@ -130,6 +133,7 @@
   &--collapsed &-innerTop,
   &--collapsed &-innerBottom {
     margin-right: @littleWidth + @scrollbarWidth;
+    margin-left: -(@littleWidth + @scrollbarWidth);
   }
 
   &--collapsed &-collapseButton {

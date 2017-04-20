@@ -644,6 +644,8 @@ config:
         pim/product-edit-form/delete:                      pimenrich/js/product/form/delete
         pim/product-edit-form/meta/family:                 pimenrich/js/product/form/meta/family
         pim/product-edit-form/meta/change-family:          pimenrich/js/product/form/meta/change-family
+        pim/product-edit-form/meta/created:                pimenrich/js/product/form/meta/created
+        pim/product-edit-form/meta/updated:                pimenrich/js/product/form/meta/updated
         pim/product-edit-form/meta/groups:                 pimenrich/js/product/form/meta/groups
         pim/product-edit-form/status-switcher:             pimenrich/js/product/form/status-switcher
         pim/product-edit-form/download-pdf:                pimenrich/js/product/form/download-pdf
@@ -773,6 +775,7 @@ config:
         pim/form/common/save-form:                           pimenrich/js/form/common/save-form
         pim/form/common/save-buttons:                        pimenrich/js/form/common/save-buttons
         pim/form/common/state:                               pimenrich/js/form/common/state
+        pim/form/common/meta:                                pimenrich/js/form/common/meta
         pim/form/common/meta/created:                        pimenrich/js/form/common/meta/created
         pim/form/common/meta/updated:                        pimenrich/js/form/common/meta/updated
         pim/form/common/meta/status:                         pimenrich/js/form/common/meta/status
@@ -843,6 +846,7 @@ config:
         pim/template/form/back-to-grid:                           pimenrich/templates/form/back-to-grid.html
         pim/template/form/form-tabs:                              pimenrich/templates/form/form-tabs.html
         pim/template/form/state:                                  pimenrich/templates/form/state.html
+        pim/template/form/meta:                                   pimenrich/templates/form/meta.html
         pim/template/form/meta/created:                           pimenrich/templates/form/meta/created.html
         pim/template/form/meta/updated:                           pimenrich/templates/form/meta/updated.html
         pim/template/form/meta/status:                            pimenrich/templates/form/meta/status.html
@@ -895,6 +899,8 @@ config:
         pim/template/product/meta/change-family-modal:       pimenrich/templates/product/meta/change-family-modal.html
         pim/template/product/meta/groups:                    pimenrich/templates/product/meta/groups.html
         pim/template/product/meta/group-modal:               pimenrich/templates/product/meta/group-modal.html
+        pim/template/product/meta/created:                   pimenrich/templates/product/meta/created.html
+        pim/template/product/meta/updated:                   pimenrich/templates/product/meta/updated.html
         pim/template/product/scope-switcher:                 pimenrich/templates/product/scope-switcher.html
         pim/template/product/field/field:                    pimenrich/templates/product/field/field.html
         pim/template/product/field/boolean:                  pimenrich/templates/product/field/boolean.html
