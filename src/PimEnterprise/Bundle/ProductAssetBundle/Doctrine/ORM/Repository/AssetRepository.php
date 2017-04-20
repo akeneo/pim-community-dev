@@ -256,23 +256,6 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function findProducts(AssetInterface $asset, $hydrationMode = Query::HYDRATE_OBJECT)
-    {
-        $qb = $this->_em->createQueryBuilder();
-
-        $qb->select('p')
-            ->from($this->getProductClass(), 'p')
-            ->join('p.values', 'v')
-            ->join('v.assets', 'a')
-            ->where('a.id = :assetId')
-            ->setParameter(':assetId', $asset->getId(), \PDO::PARAM_INT);
-
-        return $qb->getQuery()->getResult($hydrationMode);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function countCompleteAssets(array $assetIds, $localeId, $channelId)
     {
         $selectSql = 'SELECT a.id,

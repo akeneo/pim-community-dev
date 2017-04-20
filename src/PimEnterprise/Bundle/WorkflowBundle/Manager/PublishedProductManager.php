@@ -94,7 +94,7 @@ class PublishedProductManager
      */
     public function findPublishedProductById($publishedId)
     {
-        return $this->repository->findOneById($publishedId);
+        return $this->repository->find($publishedId);
     }
 
     /**

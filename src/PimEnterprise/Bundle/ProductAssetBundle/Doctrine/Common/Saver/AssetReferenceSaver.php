@@ -16,7 +16,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
+use PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -34,22 +34,22 @@ class AssetReferenceSaver implements SaverInterface, BulkSaverInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /** @var CompletenessGeneratorInterface */
-    protected $compGenerator;
+    /** @var CompletenessRemoverInterface */
+    protected $completenessRemover;
 
     /**
-     * @param ObjectManager                  $objectManager
-     * @param EventDispatcherInterface       $eventDispatcher
-     * @param CompletenessGeneratorInterface $compGenerator
+     * @param ObjectManager                $objectManager
+     * @param EventDispatcherInterface     $eventDispatcher
+     * @param CompletenessRemoverInterface $completenessRemover
      */
     public function __construct(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
-        CompletenessGeneratorInterface $compGenerator
+        CompletenessRemoverInterface $completenessRemover
     ) {
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->compGenerator = $compGenerator;
+        $this->completenessRemover = $completenessRemover;
     }
 
     /**
@@ -65,7 +65,7 @@ class AssetReferenceSaver implements SaverInterface, BulkSaverInterface
 
         $this->objectManager->persist($reference);
         $this->objectManager->flush();
-        $this->compGenerator->scheduleForAsset($reference->getAsset());
+        $this->completenessRemover->removeForAsset($reference->getAsset());
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($reference, $options));
     }

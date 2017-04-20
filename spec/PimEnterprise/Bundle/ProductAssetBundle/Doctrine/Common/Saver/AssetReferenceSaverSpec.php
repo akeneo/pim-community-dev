@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
+use PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use Prophecy\Argument;
@@ -16,9 +16,9 @@ class AssetReferenceSaverSpec extends ObjectBehavior
     function let(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
-        CompletenessGeneratorInterface $completenessGenerator
+        CompletenessRemoverInterface $completenessRemover
     ) {
-        $this->beConstructedWith($objectManager, $eventDispatcher, $completenessGenerator);
+        $this->beConstructedWith($objectManager, $eventDispatcher, $completenessRemover);
     }
 
     function it_is_a_saver()
@@ -30,14 +30,14 @@ class AssetReferenceSaverSpec extends ObjectBehavior
     function it_persists_the_reference_and_flushes_the_unit_of_work_and_schedule_completeness_for_the_asset(
         $objectManager,
         $eventDispatcher,
-        $completenessGenerator,
+        $completenessRemover,
         ReferenceInterface $reference,
         AssetInterface $asset
     ) {
         $objectManager->persist($reference)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
         $reference->getAsset()->willReturn($asset);
-        $completenessGenerator->scheduleForAsset($asset)->shouldBeCalled();
+        $completenessRemover->removeForAsset($asset)->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
@@ -48,13 +48,13 @@ class AssetReferenceSaverSpec extends ObjectBehavior
     function it_persists_the_references_and_flushes_the_unit_of_work_and_does_not_schedule_completeness(
         $objectManager,
         $eventDispatcher,
-        $completenessGenerator,
+        $completenessRemover,
         ReferenceInterface $reference1,
         ReferenceInterface $reference2
     ) {
         $objectManager->persist($reference1)->shouldBeCalled();
         $objectManager->persist($reference2)->shouldBeCalled();
-        $completenessGenerator->scheduleForAsset(Argument::any())->shouldNotBeCalled();
+        $completenessRemover->removeForAsset(Argument::any())->shouldNotBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();

@@ -74,16 +74,6 @@ services:
             - '@security.token_storage'
             - '@pim_catalog.filter.chained'
 
-    pimee_workflow.controller.completeness_rest:
-        class: '%pimee_workflow.controller.completeness_rest.class%'
-        arguments:
-            - '@pim_catalog.manager.completeness'
-            - '@pimee_workflow.repository.published_product'
-            - '@pim_catalog.repository.channel'
-            - '@pim_user.context.user'
-            - '@pim_enrich.normalizer.completeness_collection'
-            - '@pim_catalog.filter.chained'
-
     pimee_workflow.controller.published.mass_edit_action:
         class: '%pimee_workflow.controller.published.mass_edit_action.class%'
         parent: pim_enrich.controller.mass_edit.abtsract

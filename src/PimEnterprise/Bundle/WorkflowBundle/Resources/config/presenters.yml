@@ -31,7 +31,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pimee_workflow.product_draft_renderer'
             - '@translator'
-            - '@pim_catalog.builder.product'
+            - '@pim_catalog.factory.product_value'
             - '@pim_catalog.factory.attribute'
         tags:
             - { name: twig.extension }
