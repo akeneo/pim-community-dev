@@ -51,14 +51,14 @@ define(
                 return this.getJobInstanceSaver()
                     .save(jobInstance.code, jobInstance)
                     .then(function (data) {
-                        router.redirectToRoute(
-                            this.config.redirectPath,
-                            {code: jobInstance.code}
-                        );
                         this.postSave();
 
                         this.setData(data);
                         this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data);
+                        router.redirectToRoute(
+                            this.config.redirectPath,
+                            {code: jobInstance.code}
+                        );
                     }.bind(this))
                     .fail(this.fail.bind(this))
                     .always(this.hideLoadingMask.bind(this));
