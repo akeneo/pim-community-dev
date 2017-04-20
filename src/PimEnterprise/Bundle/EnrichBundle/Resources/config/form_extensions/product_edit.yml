@@ -38,19 +38,19 @@ extensions:
 
     pim-product-edit-form-meta-published:
         module: pimee/product-edit-form/meta/published
-        parent: pim-product-edit-form
+        parent: pim-product-edit-form-meta
         targetZone: meta
         position: 100
 
     pim-product-edit-form-meta-owner-group:
         module: pimee/product-edit-form/meta/owner-groups
-        parent: pim-product-edit-form
+        parent: pim-product-edit-form-meta
         targetZone: meta
         position: 120
 
     pim-product-edit-form-meta-draft-status:
         module: pimee/product-edit-form/meta/draft-status
-        parent: pim-product-edit-form
+        parent: pim-product-edit-form-meta
         targetZone: meta
         position: 130
 
