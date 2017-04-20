@@ -4,6 +4,7 @@ namespace Context;
 
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
+use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
@@ -121,6 +122,8 @@ class FixturesContext extends BaseFixturesContext
 
         $this->refresh($product);
         $this->buildProductHistory($product);
+
+        $this->getElasticsearchClient()->refreshIndex();
 
         return $product;
     }
@@ -2059,5 +2062,13 @@ class FixturesContext extends BaseFixturesContext
         sort($array1);
         sort($array2);
         assertEquals(join(', ', $array1), join(', ', $array2));
+    }
+
+    /**
+     * @return Client
+     */
+    protected function getElasticsearchClient()
+    {
+        return $this->getContainer()->get('akeneo_elasticsearch.client');
     }
 }

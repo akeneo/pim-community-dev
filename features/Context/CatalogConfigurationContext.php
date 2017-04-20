@@ -3,6 +3,7 @@
 namespace Context;
 
 use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
+use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Loader\ReferenceDataLoader;
 use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
@@ -116,6 +117,8 @@ class CatalogConfigurationContext extends RawMinkContext
             $referenceDataLoader = new ReferenceDataLoader();
             $referenceDataLoader->load($this->getEntityManager());
         }
+
+        $this->getElasticsearchClient()->refreshIndex();
     }
 
     /**
@@ -124,6 +127,14 @@ class CatalogConfigurationContext extends RawMinkContext
     protected function getFixtureJobLoader()
     {
         return $this->getContainer()->get('pim_installer.fixture_loader.job_loader');
+    }
+
+    /**
+     * @return Client
+     */
+    protected function getElasticsearchClient()
+    {
+        return $this->getContainer()->get('akeneo_elasticsearch.client');
     }
 
     /**
