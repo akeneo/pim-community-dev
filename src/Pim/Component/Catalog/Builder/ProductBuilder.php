@@ -296,7 +296,7 @@ class ProductBuilder implements ProductBuilderInterface
                 $requiredValues = $this->valuesResolver->resolveEligibleValues([$attribute]);
 
                 foreach ($requiredValues as $value) {
-                    $this->addOrReplaceProductValue($product, $attribute, $value['scope'], $value['locale'], false);
+                    $this->addOrReplaceProductValue($product, $attribute, $value['locale'], $value['scope'], false);
                 }
             }
         }
