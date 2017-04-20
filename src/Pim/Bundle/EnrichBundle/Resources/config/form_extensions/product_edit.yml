@@ -14,7 +14,7 @@ extensions:
         aclResourceId: pim_enrich_product_edit_attributes
         position: 100
 
-    pim-product-edit-form-column:
+    pim-product-edit-form-left-column:
         module: pimenrich/js/form/common/column
         parent: pim-product-edit-form
         position: 5

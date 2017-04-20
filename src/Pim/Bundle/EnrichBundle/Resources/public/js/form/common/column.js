@@ -27,13 +27,9 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                this.$el.html(this.template({
-                    labelInfos: __('pim_enrich.entity.product.infos')
-                }));
+                this.$el.html(this.template());
 
-                this.renderExtensions();
-
-                return this;
+                return BaseForm.prototype.render.apply(this, arguments);
             },
 
             /**

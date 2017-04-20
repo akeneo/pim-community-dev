@@ -46,7 +46,9 @@ class ComparisonPanelDecorator extends ElementDecorator
             return 0 !== $this->selectedItemsCount();
         }, 'No selection before copy');
 
-        $this->find('css', $this->selectors['Copy selected button'])->click();
+        $this->spin(function () {
+            return $this->find('css', $this->selectors['Copy selected button']);
+        }, 'Cannot find the "copy" button')->click();
 
         $this->spin(function () {
             return 0 === $this->selectedItemsCount();

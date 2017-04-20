@@ -9,11 +9,13 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'pim/form',
         'text!pim/template/form/secondary-actions'
     ],
     function (
         _,
+        __,
         BaseForm,
         template
     ) {
@@ -33,7 +35,7 @@ define(
 
                 if (!_.isEmpty(this.extensions)) {
                     this.$el.html(this.template({
-                        titleLabel: 'Other actions'
+                        titleLabel: __('pim_enrich.navigation.other_actions')
                     }));
 
                     this.renderExtensions();

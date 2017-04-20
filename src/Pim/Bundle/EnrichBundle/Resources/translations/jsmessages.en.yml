@@ -145,6 +145,7 @@ pim_enrich:
     navigation:
         link:
             back_to_grid: Back to grid
+        other_actions: Other actions
     entity:
         save:
             label: Save
