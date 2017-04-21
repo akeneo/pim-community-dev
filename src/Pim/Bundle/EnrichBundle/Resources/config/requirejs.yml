@@ -270,6 +270,8 @@ config:
                     module: pim/controller/form
                 oro_user_update:
                     module: pim/controller/form
+                oro_user_profile_update:
+                    module: pim/controller/user
                 oro_user_role_create:
                     module: pim/controller/form
                 oro_user_role_update:
@@ -381,6 +383,8 @@ config:
                     aclResourceId: pim_importexport_export_execution_show
                 pim_enrich_job_tracker_show:
                     module: pim/controller/job-execution
+                oro_config_configuration_system:
+                    module: pim/controller/system
 
     paths:
         pim/app:                            pimenrich/js/app
@@ -404,6 +408,8 @@ config:
         pim/controller/role:                pimenrich/js/controller/role
         pim/controller/job-execution:       pimenrich/js/controller/job-execution
         pim/controller/group-type:          pimenrich/js/controller/group-type
+        pim/controller/system:              pimenrich/js/controller/system
+        pim/controller/user:                pimenrich/js/controller/user
 
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector

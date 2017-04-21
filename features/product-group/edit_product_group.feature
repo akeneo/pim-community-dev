@@ -16,12 +16,11 @@ Feature: Edit a product group
     And I press the "Save" button
     Then I should see "My similar boots"
 
+  @skip-nav
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I fill in the product group property "English (United States)" with "My similar boots"
-    And I click on the Akeneo logo
-    Then I should see a confirm dialog with the following content:
-      | title   | Are you sure you want to leave this page?                          |
-      | content | You will lose changes to the product group if you leave this page. |
+    And I click back to grid
+    Then I should see "You will lose changes to the Group if you leave the page." in popup
 
   Scenario: Successfully display a message when there are unsaved changes
     When I fill in the product group property "English (United States)" with "My similar boots"

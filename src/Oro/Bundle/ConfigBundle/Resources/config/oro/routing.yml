@@ -1,6 +1,5 @@
 oro_config_configuration_system:
     path: /system/
-    defaults: { _controller: OroConfigBundle:Configuration:system }
 
 oro_config_configuration_system_get:
     path: /system/rest

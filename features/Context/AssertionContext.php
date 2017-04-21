@@ -757,4 +757,18 @@ class AssertionContext extends RawMinkContext
     {
         return $this->getMainContext()->getSubcontext('fixtures')->replacePlaceholders($value);
     }
+
+    /**
+     * @When /^(?:|I )should see "([^"]*)" in popup$/
+     *
+     * @param string $message The message.
+     *
+     * @return bool
+     */
+    public function assertPopupMessage($message)
+    {
+        return $this->spin(function () use ($message) {
+            return $message == $this->getSession()->getDriver()->getWebDriverSession()->getAlert_text();
+        }, sprintf('Cannot assert that the modal contains %s', $message));
+    }
 }

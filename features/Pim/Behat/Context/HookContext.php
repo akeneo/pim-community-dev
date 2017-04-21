@@ -174,6 +174,13 @@ class HookContext extends PimContext
      */
     public function listenToErrors()
     {
+        try {
+            $this->getSession()->getDriver()->getWebDriverSession()->getAlert_text();
+
+            return false;
+        } catch (\Exception $e) {
+            //We just avoid to dismiss an alert
+        }
         $script = "if (typeof $ != 'undefined') { window.onerror=function (err) { $('body').attr('JSerr', err); } }";
 
         $this->getMainContext()->executeScript($script);
@@ -187,10 +194,22 @@ class HookContext extends PimContext
     public function collectErrors()
     {
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
-            $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
-            $result = $this->getSession()->evaluateScript($script);
-            if ($result) {
-                $this->getMainContext()->addErrorMessage("WARNING: Encountered a JS error: '{$result}'");
+            try {
+                $this->getSession()->getDriver()->getWebDriverSession()->getAlert_text();
+
+                return false;
+            } catch (\Exception $e) {
+                //We just avoid to dismiss an alert
+            }
+
+            try {
+                $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
+                $result = $this->getSession()->evaluateScript($script);
+                if ($result) {
+                    $this->getMainContext()->addErrorMessage("WARNING: Encountered a JS error: '{$result}'");
+                }
+            } catch (\Exception $e) {
+                echo "Unable to retrieve js error\n";
             }
         }
     }
@@ -273,6 +292,13 @@ class HookContext extends PimContext
     public function resetCurrentPage(BaseScenarioEvent $event)
     {
         if ($event->getResult() !== StepEvent::UNDEFINED) {
+            try {
+                $this->getSession()->getDriver()->getWebDriverSession()->getAlert_text();
+
+                return false;
+            } catch (\Exception $e) {
+                //We just avoid to dismiss an alert
+            }
             $script = 'sessionStorage.clear(); typeof $ !== "undefined" && $(window).off("beforeunload");';
             $this->getMainContext()->executeScript($script);
         }
