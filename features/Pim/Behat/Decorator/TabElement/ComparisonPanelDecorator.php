@@ -31,7 +31,9 @@ class ComparisonPanelDecorator extends ElementDecorator
 
         $dropdown->click();
 
-        $selector = $dropdown->getParent()->find('css', sprintf('a.select-%s', $mode));
+        $selector = $this->spin(function () use ($mode, $dropdown) {
+            return $dropdown->getParent()->find('css', sprintf('a.select-%s', str_replace(' ', '-', $mode)));
+        }, sprintf('Unable to find the mode %s', $mode));
         $selector->click();
     }
 
