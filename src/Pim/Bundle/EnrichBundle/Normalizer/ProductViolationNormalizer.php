@@ -47,6 +47,21 @@ class ProductViolationNormalizer implements NormalizerInterface
                 'scope'     => '<all_channels>' === $attribute[1] ? null : $attribute[1],
                 'message'   => $violation->getMessage(),
             ];
+        } elseif (0 === strpos($propertyPath, 'values[')) {
+            if (!isset($context['product'])) {
+                throw new \InvalidArgumentException('Expects a product context');
+            }
+
+            $codeStart = strpos($propertyPath, '[') + 1;
+            $codeLength = strpos($propertyPath, ']') - $codeStart;
+            $attribute = json_decode(substr($propertyPath, $codeStart, $codeLength), true);
+
+            $normalizedViolation = [
+                'attribute' => $attribute['code'],
+                'locale'    => $attribute['locale'],
+                'scope'     => $attribute['scope'],
+                'message'   => $violation->getMessage(),
+            ];
         } elseif ('identifier' === $propertyPath) {
             $normalizedViolation = [
                 'attribute' => $this->attributeRepository->getIdentifierCode(),
