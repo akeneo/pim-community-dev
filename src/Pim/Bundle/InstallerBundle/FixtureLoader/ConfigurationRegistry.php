@@ -76,9 +76,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
         $ordered = [];
 
         foreach ($filePaths as $filePath) {
-            if (!is_dir($filePath)) {
-                $this->setFixtures($ordered, $filePath);
-            }
+            $this->setFixtures($ordered, $filePath);
         }
 
         ksort($ordered);
@@ -130,7 +128,12 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
      */
     protected function setFixtures(array &$ordered, $filePath)
     {
+        if (!is_file($filePath)) {
+            throw new \InvalidArgumentException(sprintf('Error, not a file: "%s"', $filePath));
+        }
+
         $pathInfo = pathinfo($filePath);
+        $fixturesFound = 0;
         foreach ($this->getConfiguration() as $fixtureName => $fixtureConfig) {
             if (!isset($fixtureConfig[$pathInfo['extension']])) {
                 continue;
@@ -150,6 +153,10 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
                 'name'      => $fixtureName,
                 'extension' => $pathInfo['extension']
             ];
+            $fixturesFound++;
+        }
+        if (0 === $fixturesFound) {
+            throw new \UnexpectedValueException(sprintf('Can not identify file as fixture: "%s"', $filePath));
         }
     }
 
