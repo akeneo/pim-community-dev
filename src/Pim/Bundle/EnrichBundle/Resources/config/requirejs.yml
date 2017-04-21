@@ -772,6 +772,8 @@ config:
         pim/form/common/delete:                              pimenrich/js/form/common/delete
         pim/form/common/back-to-grid:                        pimenrich/js/form/common/back-to-grid
         pim/form/common/form-tabs:                           pimenrich/js/form/common/form-tabs
+        pim/form/common/column-tabs:                         pimenrich/js/form/common/column-tabs
+        pim/form/common/column-navigation:                   pimenrich/js/form/common/column-navigation
         pim/form/common/save-form:                           pimenrich/js/form/common/save-form
         pim/form/common/save-buttons:                        pimenrich/js/form/common/save-buttons
         pim/form/common/state:                               pimenrich/js/form/common/state
@@ -865,6 +867,8 @@ config:
         pim/template/form/index/confirm-button:                   pimenrich/templates/form/index/confirm-button.html
         pim/template/form/column:                                 pimenrich/templates/form/column.html
         pim/template/form/secondary-actions:                      pimenrich/templates/form/secondary-actions.html
+        pim/template/form/column-tabs:                            pimenrich/templates/form/column-tabs.html
+        pim/template/form/column-navigation:                      pimenrich/templates/form/column-navigation.html
 
         # Attribute group
         pim/template/form/attribute-group/tab/attribute: pimenrich/templates/attribute-group/tab/attribute.html

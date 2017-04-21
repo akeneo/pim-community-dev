@@ -21,6 +21,12 @@ extensions:
         config:
           stateCode: product_edit_form
 
+    pim-product-edit-form-column-navigation:
+        module: pim/form/common/column-navigation
+        parent: pim-product-edit-form-left-column
+        targetZone: navigation
+        position: 10
+
     pim-product-edit-form-meta:
         module: pim/form/common/meta
         parent: pim-product-edit-form-left-column
@@ -29,8 +35,8 @@ extensions:
         config:
             label: pim_enrich.entity.product.infos
 
-    pim-product-edit-form-form-tabs:
-        module: pim/form/common/form-tabs
+    pim-product-edit-form-column-tabs:
+        module: pim/form/common/column-tabs
         parent: pim-product-edit-form
         targetZone: content
         position: 100
@@ -134,7 +140,7 @@ extensions:
 
     pim-product-edit-form-attributes:
         module: pim/product-edit-form/attributes
-        parent: pim-product-edit-form-form-tabs
+        parent: pim-product-edit-form-column-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_edit_attributes
         position: 90
@@ -146,21 +152,21 @@ extensions:
 
     pim-product-edit-form-categories:
         module: pim/product-edit-form/categories
-        parent: pim-product-edit-form-form-tabs
+        parent: pim-product-edit-form-column-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_categories_view
         position: 100
 
     pim-product-edit-form-associations:
         module: pim/product-edit-form/associations
-        parent: pim-product-edit-form-form-tabs
+        parent: pim-product-edit-form-column-tabs
         targetZone: container
         aclResourceId: pim_enrich_associations_view
         position: 110
 
     pim-product-edit-form-panels:
         module: pim/product-edit-form/panel/panels
-        parent: pim-product-edit-form-form-tabs
+        parent: pim-product-edit-form-column-tabs
         targetZone: panels
         position: 100
 

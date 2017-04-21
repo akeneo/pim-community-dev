@@ -42,9 +42,6 @@ define(
                 this.onExtensions('tab:register',  this.registerTab.bind(this));
                 this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:change', this.setCurrentTab);
 
-                window.addEventListener('resize', this.resize.bind(this));
-                this.listenTo(this.getRoot(), 'pim_enrich:form:render:after', this.resize);
-
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
@@ -89,7 +86,6 @@ define(
                     var zone = this.getZone('container');
                     zone.appendChild(currentTab.el);
                     this.renderExtension(currentTab);
-                    this.resize();
                 }
 
                 var panelsExtension = this.getExtension('panels');
@@ -113,16 +109,6 @@ define(
                 });
 
                 return tabs;
-            },
-
-            /**
-             * Resize the container to avoid multiple scrollbar
-             */
-            resize: function () {
-                var currentTab = this.getTabExtension(this.getCurrentTab());
-                if (currentTab && _.isFunction(currentTab.resize)) {
-                    currentTab.resize();
-                }
             },
 
             /**
