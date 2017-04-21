@@ -30,9 +30,9 @@ Feature: Save a product draft
   @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully show the product draft status
     Given I edit the "tshirt" product
-    Then I should see the text "Draft status: Working copy"
+    Then I should see the text "Draft status Working copy"
     When I change the "Description" to "Hammer time"
     And I save the product
-    Then I should see the text "Draft status: In progress"
+    Then I should see the text "Draft status In progress"
     When I press the Send for approval button
-    Then I should see the text "Draft status: Waiting for approval"
+    Then I should see the text "Draft status Waiting for approval"

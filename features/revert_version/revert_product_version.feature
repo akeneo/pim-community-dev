@@ -37,11 +37,11 @@ Feature: Revert a product to a previous version
     When I revert the product version number 1
     Then product "shirt" should be enabled
     And I should see history in panel:
-      | version | author                          | property | value |
-      | 3       | Julia Stark - Julia@example.com | enabled  | 1     |
-      | 2       | Julia Stark - Julia@example.com | enabled  | 0     |
-      | 1       | Julia Stark - Julia@example.com | SKU      | shirt |
-      | 1       | Julia Stark - Julia@example.com | enabled  | 1     |
+      | version | author      | property | value |
+      | 3       | Julia Stark | enabled  | 1     |
+      | 2       | Julia Stark | enabled  | 0     |
+      | 1       | Julia Stark | SKU      | shirt |
+      | 1       | Julia Stark | enabled  | 1     |
 
   Scenario: Successfully revert the status of a product (disabled)
     Given I am on the products page
