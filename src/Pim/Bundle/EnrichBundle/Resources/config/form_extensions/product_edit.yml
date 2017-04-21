@@ -18,6 +18,8 @@ extensions:
         module: pim/form/common/column
         parent: pim-product-edit-form
         position: 5
+        config:
+          collapsed: product_edit_form
 
     pim-product-edit-form-meta:
         module: pim/form/common/meta
