@@ -1260,7 +1260,9 @@ class FixturesContext extends BaseFixturesContext
      */
     public function getUserGroup($userGroupName)
     {
-        return $this->getEntityOrException('UserGroup', ['name' => $userGroupName]);
+        return $this->spin(function () use ($userGroupName) {
+            return $this->getEntityOrException('UserGroup', ['name' => $userGroupName]);
+        }, sprintf('Cannot find group %s', $userGroupName));
     }
 
     /**
