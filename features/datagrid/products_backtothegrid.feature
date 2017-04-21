@@ -56,11 +56,9 @@ Feature: Products back to the grid
     And I should not see the text "Mobile"
     And I click on the "sneakers_1" row
     And I should be on the product "sneakers_1" edit page
-    And I switch the scope to "mobile"
-    And I should see the text "Mobile"
+    When I switch the scope to "mobile"
+    Then I should see the text "Mobile"
     And I should not see the text "Ecommerce"
-    And I move backward one page
-    Then the grid should contain 1 element
-    And I should see the text "Mobile"
+    When I move backward one page
+    Then I should see the text "Mobile"
     And I should not see the text "ECommerce"
-    Then I refresh current page

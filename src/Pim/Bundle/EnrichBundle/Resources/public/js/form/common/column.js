@@ -20,15 +20,15 @@ define(
             template: _.template(template),
 
             events: {
-                'click .AknColumn-collapseButton': '_toggleColumn'
+                'click .AknColumn-collapseButton': 'toggleColumn'
             },
 
             config: {},
 
             /**
              * Configuration:
-             * - collapsed: This is a key to identify each module using column, to store if the column is collapsed
-             *   or not. If you want to use the different collapsed states, use different "collapsed" value.
+             * - stateCode: This is a key to identify each module using column, to store if the column is collapsed
+             *   or not. If you want to use the different collapsed states, use different "stateCode" value.
              *
              * {@inheritdoc}
              */
@@ -43,8 +43,8 @@ define(
              */
             render: function () {
                 this.$el.html(this.template());
-                if (this._isCollapsed()) {
-                    this._toggleColumn();
+                if (this.isCollapsed()) {
+                    this.setCollapsed(true);
                 }
 
                 return BaseForm.prototype.render.apply(this, arguments);
@@ -53,9 +53,8 @@ define(
             /**
              * {@inheritdoc}
              */
-            _toggleColumn: function (e) {
-                $(this.$el).toggleClass('AknColumn--collapsed');
-                this._setCollapsed($(this.$el).hasClass('AknColumn--collapsed'));
+            toggleColumn: function () {
+                this.setCollapsed(!this.isCollapsed());
             },
 
             /**
@@ -65,11 +64,10 @@ define(
              *
              * @returns {boolean}
              */
-            _isCollapsed: function () {
-                var result = sessionStorage.getItem(this._getSessionStorageKey());
-                if (null === result) {
-                    this._setCollapsed(false);
+            isCollapsed: function () {
+                var result = sessionStorage.getItem(this.getSessionStorageKey());
 
+                if (null === result) {
                     return false;
                 }
 
@@ -79,10 +77,16 @@ define(
             /**
              * Stores in the session storage if the column is collapsed or not.
              *
-             * @param value
+             * @param {boolean} value
              */
-            _setCollapsed: function (value) {
-                sessionStorage.setItem(this._getSessionStorageKey(), value ? '1' : '0');
+            setCollapsed: function (value) {
+                sessionStorage.setItem(this.getSessionStorageKey(), value ? '1' : '0');
+
+                if (value) {
+                    this.$el.addClass('AknColumn--collapsed');
+                } else {
+                    this.$el.removeClass('AknColumn--collapsed');
+                }
             },
 
             /**
@@ -90,8 +94,8 @@ define(
              *
              * @returns {string}
              */
-            _getSessionStorageKey: function () {
-                return 'collapsedColumn_' + this.config.collapsed;
+            getSessionStorageKey: function () {
+                return 'collapsedColumn_' + this.config.stateCode;
             }
         });
     }

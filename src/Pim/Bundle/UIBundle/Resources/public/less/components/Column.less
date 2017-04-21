@@ -110,7 +110,7 @@
     transition:
       opacity 0.2s @transition,
       width @timing @transition,
-      background-position-x @timing @transition;
+      background-position @timing @transition;
 
     &:hover {
       opacity: 1;
@@ -138,7 +138,7 @@
 
   &--collapsed &-collapseButton {
     width: @littleWidth;
-    background-position-x: (@littleWidth - @iconSize) / 2;
+    background-position: ((@littleWidth - @iconSize) / 2) 100%;
     background-image: url("../../images/icon-panelOpen.svg");
   }
 }
