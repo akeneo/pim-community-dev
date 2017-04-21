@@ -971,11 +971,12 @@ class FixturesContext extends BaseFixturesContext
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            $options      = $productValue->getOptions();
-            $optionCodes  = $options->map(
-                function ($option) {
+            $options      = $productValue->getData();
+            $optionCodes  = array_map(
+                function($option) {
                     return $option->getCode();
-                }
+                },
+                $options
             );
 
             $values = array_map(
@@ -986,12 +987,12 @@ class FixturesContext extends BaseFixturesContext
             );
             $values = array_filter($values);
 
-            assertEquals(count($values), $options->count());
+            assertEquals(count($values), count($options));
             foreach ($values as $value) {
                 assertContains(
                     $value,
                     $optionCodes,
-                    sprintf('"%s" does not contain "%s"', implode(', ', $optionCodes->toArray()), $value)
+                    sprintf('"%s" does not contain "%s"', implode(', ', $optionCodes), $value)
                 );
             }
         }
@@ -1009,7 +1010,7 @@ class FixturesContext extends BaseFixturesContext
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            $media        = $productValue->getMedia();
+            $media        = $productValue->getData();
             if ('' === trim($filename)) {
                 if ($media) {
                     assertNull($media->getOriginalFilename());
@@ -1032,7 +1033,7 @@ class FixturesContext extends BaseFixturesContext
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            assertEquals($data, $productValue->getMetric()->getData());
+            assertEquals($data, $productValue->getData()->getData());
         }
     }
 

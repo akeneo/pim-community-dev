@@ -39,22 +39,28 @@ class MassActionDispatcher
     /** @var MassActionParametersParser */
     protected $parametersParser;
 
+    /** @var array */
+    protected $gridsWithoutMassActionRepository;
+
     /**
      * @param MassActionHandlerRegistry  $handlerRegistry
      * @param ManagerInterface           $manager
      * @param RequestParameters          $requestParams
      * @param MassActionParametersParser $parametersParser
+     * @param array                      $gridsWithoutMassActionRepository
      */
     public function __construct(
         MassActionHandlerRegistry $handlerRegistry,
         ManagerInterface $manager,
         RequestParameters $requestParams,
-        MassActionParametersParser $parametersParser
+        MassActionParametersParser $parametersParser,
+        array $gridsWithoutMassActionRepository
     ) {
         $this->handlerRegistry = $handlerRegistry;
         $this->manager = $manager;
         $this->requestParams = $requestParams;
         $this->parametersParser = $parametersParser;
+        $this->gridsWithoutMassActionRepository = $gridsWithoutMassActionRepository;
     }
 
     /**
@@ -165,8 +171,10 @@ class MassActionDispatcher
             }
         }
 
-        $repository = $datagrid->getDatasource()->getMassActionRepository();
-        $repository->applyMassActionParameters($qb, $inset, $values);
+        if (!in_array($datagridName, $this->gridsWithoutMassActionRepository)) {
+            $repository = $datagrid->getDatasource()->getMassActionRepository();
+            $repository->applyMassActionParameters($qb, $inset, $values);
+        }
 
         return [
             'datagrid'   => $datagrid,
