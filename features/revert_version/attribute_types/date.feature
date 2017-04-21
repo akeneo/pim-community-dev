@@ -22,7 +22,7 @@ Feature: Revert product attributes to a previous version
     And I save the product
     And I should not see the text "There are unsaved changes."
     And the history of the product "akeneo-jacket" has been built
-    And I open the history
+    And I visit the "History" column tab
     Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "akeneo-jacket" should have the following values:
@@ -38,7 +38,7 @@ Feature: Revert product attributes to a previous version
     And I save the product
     And I should not see the text "There are unsaved changes."
     And the history of the product "akeneo-jacket" has been built
-    And I open the history
+    And I visit the "History" column tab
     Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "akeneo-jacket" should have the following values:
@@ -54,7 +54,7 @@ Feature: Revert product attributes to a previous version
     And I save the product
     And I should not see the text "There are unsaved changes."
     And the history of the product "akeneo-jacket" has been built
-    And I open the history
+    And I visit the "History" column tab
     Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "akeneo-jacket" should have the following values:

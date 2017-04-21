@@ -24,7 +24,7 @@ Feature: Delete only possible values
       | Size               | M                         |        |        | Sizes               |
     And I am logged in as "Julia"
     And I edit the "sp-1" product
-    And I visit the "Proposals" tab
+    And I visit the "Proposals" column tab
     And I click on the "remove" action of the row which contains "Mary"
     And I press the "Send" button in the popin
     Then the row "Mary" should contain:

@@ -30,7 +30,7 @@ Feature: Classify a product in the trees I have access
   @skip
   Scenario: Associate a product to categories
     Given I edit the "rangers" product
-    When I visit the "Categories" tab
+    When I visit the "Categories" column tab
     And I select the "Shoes" tree
     And I expand the "shoes" category
     And I click on the "vintage" category
@@ -45,7 +45,7 @@ Feature: Classify a product in the trees I have access
       | product category | user group | access |
       | slippers         | Manager    | none   |
     When I edit the "rangers" product
-    And I visit the "Categories" tab
+    And I visit the "Categories" column tab
     Then I should see the text "Boots"
     And I should see the text "Shoes"
     But I should not see the text "Slippers"

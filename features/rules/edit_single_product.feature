@@ -593,7 +593,7 @@ Feature: Read a single product by applying rules
       | my-jacket | name        | Mocassin blanc         | fr_FR  |        |
       | my-jacket | description | A stylish white jacket | en_US  | mobile |
     And I am on the "my-jacket" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values                                                                             | ratio |
       | mobile  | en_US  | warning | Price, Size, Main color, gallery                                                           | 33%   |
@@ -620,7 +620,7 @@ Feature: Read a single product by applying rules
     Then the product rule "set_name" is executed
     And I am on the products page
     When I am on the "my-jacket" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values                                                                             | ratio |
       | mobile  | en_US  | warning | Price, Size, Main color, gallery                                                           | 33%   |

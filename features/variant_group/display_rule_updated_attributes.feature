@@ -29,7 +29,7 @@ Feature: Display warning message on attributes coming from rules on variant attr
       """
     And I am logged in as "Julia"
     And I am on the "tshirts" variant group page
-    And I visit the "Attributes" tab
+    And I visit the "Attributes" column tab
 
   @unstable
   Scenario: Successfully see the rule icon

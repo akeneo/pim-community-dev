@@ -31,12 +31,12 @@ Feature: Review a product draft
       | Name  | Coat  |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Proposals" tab
+    When I visit the "Proposals" column tab
     And I click on the "Reject all" action of the row which contains "Name"
     And I press the "Send" button in the popin
     Then the grid should contain 1 element
     And the row "Mary" should contain:
       | column | value       |
       | Status | In progress |
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     Then the product Name should be "Jacket"

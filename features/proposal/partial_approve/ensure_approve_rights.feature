@@ -36,7 +36,7 @@ Feature: Partial approve
       | marketing       | Manager    | view   |
     And I am logged in as "Julia"
     When I edit the "tshirt" product
-    And I visit the "Proposals" tab
+    And I visit the "Proposals" column tab
     Then the row "Mary" should contain:
       | column | value                     |
       | Status | Can be partially reviewed |
@@ -56,7 +56,7 @@ Feature: Partial approve
       | marketing       | Manager    | view   |
     And I am logged in as "Julia"
     When I edit the "tshirt" product
-    And I visit the "Proposals" tab
+    And I visit the "Proposals" column tab
     Then I should not see the following partial approve button:
       | product | author | attribute |
       | tshirt  | Mary   | price     |
@@ -75,7 +75,7 @@ Feature: Partial approve
       | Description | fr_FR  | Maillot de corps |
     And I am logged in as "Julia"
     When I edit the "tshirt" product
-    And I visit the "Proposals" tab
+    And I visit the "Proposals" column tab
     Then I should see the following partial approve button:
       | product | author | attribute   | locale |
       | tshirt  | Mary   | description | en_US  |
@@ -91,7 +91,7 @@ Feature: Partial approve
     And I logout
     And I am logged in as "Julia"
     When I edit the "tshirt" product
-    And I visit the "Proposals" tab
+    And I visit the "Proposals" column tab
     Then I should not see the following partial approve button:
       | product | author | attribute | locale |
       | tshirt  | Mary   | name      | en_US  |

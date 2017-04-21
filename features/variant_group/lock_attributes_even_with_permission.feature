@@ -18,7 +18,7 @@ Feature: Make the attribute unmodifiable if coming from a variant group, even if
       | media           | Redactor   | view   |
       | media           | Manager    | edit   |
     And I am on the "hm_jackets" variant group page
-    And I visit the "Attributes" tab
+    And I visit the "Attributes" column tab
     And I add available attributes Side view
     And I attach file "akeneo.jpg" to "Side view"
     And I save the variant group
@@ -36,7 +36,7 @@ Feature: Make the attribute unmodifiable if coming from a variant group, even if
       | media           | Redactor   | edit   |
       | media           | Manager    | edit   |
     And I am on the "hm_jackets" variant group page
-    And I visit the "Attributes" tab
+    And I visit the "Attributes" column tab
     And I add available attributes Side view
     And I attach file "akeneo.jpg" to "Side view"
     And I save the variant group

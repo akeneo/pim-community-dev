@@ -24,7 +24,7 @@ Feature: Revert an assets collection in a product
     And I confirm the asset modification
     Then the "gallery" asset gallery should contain machine, minivan
     When I save the product
-    And I open the history
+    And I visit the "History" column tab
     Then I should see history:
       | version | property | value           |
       | 2       | gallery  | machine,minivan |
@@ -36,7 +36,7 @@ Feature: Revert an assets collection in a product
     And I confirm the asset modification
     Then the "gallery" asset gallery should contain minivan
     When I save the product
-    And I open the history
+    And I visit the "History" column tab
     Then I should see history:
       | version | property | value   |
       | 3       | gallery  | minivan |

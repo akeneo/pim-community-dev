@@ -41,7 +41,7 @@ Feature: Update product history when rules are executed
     And the history of the product "converse-sneakers" has been built
     And I am on the products page
     And I am on the "converse-sneakers" product page
-    And I open the history
+    And I visit the "History" column tab
     Then there should be 3 updates
     And I should see history:
       | version | property              | value                        |
@@ -79,7 +79,7 @@ Feature: Update product history when rules are executed
             locale: fr_FR
       """
     When I am on the "converse-sneakers" product page
-    And I open the history
+    And I visit the "History" column tab
     Then there should be 2 updates
     When the product rule "set_description" is executed
     And the history of the product "converse-sneakers" has been built
@@ -87,7 +87,7 @@ Feature: Update product history when rules are executed
     And the history of the product "converse-sneakers" has been built
     And I am on the products page
     And I am on the "converse-sneakers" product page
-    And I open the history
+    And I visit the "History" column tab
     Then there should be 4 updates
     And I should see history:
       | version | property              | value                        |

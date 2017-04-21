@@ -19,13 +19,13 @@ Feature: Revert product attributes to a previous version
     And I save the product
     And I should not see the text "There are unsaved changes"
     And the history of the product "t-shirt" has been built
-    When I open the history
+    When I visit the "History" column tab
     Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "t-shirt" should have the following values:
     | description-en_US-tablet | A nice t-shirt. |
     Given I am on the "marcel" product page
-    And I visit the "Attributes" tab
+    And I visit the "Attributes" column tab
     And I visit the "Product information" group
     And I change the "Name" to "test"
     And I switch the scope to "tablet"
@@ -33,7 +33,7 @@ Feature: Revert product attributes to a previous version
     And I save the product
     And I should not see the text "There are unsaved changes"
     And the history of the product "marcel" has been built
-    When I open the history
+    When I visit the "History" column tab
     Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "marcel" should have the following values:

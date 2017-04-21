@@ -22,7 +22,7 @@ Feature: Revert product attributes to a previous version
     And I save the product
     And I should not see the text "There are unsaved changes"
     And the history of the product "jean" has been built
-    And I open the history
+    And I visit the "History" column tab
     Then I should see 2 versions in the history
     And I should see history:
       | version | property           | value    |
@@ -51,13 +51,13 @@ Feature: Revert product attributes to a previous version
       | family | Tees   |
     And I press the "Save" button in the popin
     And I wait to be on the "marcel" product page
-    And I visit the "Attributes" tab
+    And I visit the "Attributes" column tab
     And I add available attributes Weather conditions
     And I change the "Weather conditions" to "Hot, Wet"
     And I save the product
     And I should not see the text "There are unsaved changes"
     And the history of the product "marcel" has been built
-    And I open the history
+    And I visit the "History" column tab
     Then I should see 2 versions in the history
     And I should see history:
       | version | property           | value   |

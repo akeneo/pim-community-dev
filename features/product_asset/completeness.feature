@@ -38,7 +38,7 @@ Feature: Display the completeness of a product with assets
     And I visit the "Media" group
     And I attach file "akeneo.jpg" to "Side view"
     And I save the product
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values                      | ratio |
       | mobile  | en_US  | warning | gallery                             | 83%   |
@@ -50,7 +50,7 @@ Feature: Display the completeness of a product with assets
     And I check the row "paint"
     And I confirm the asset modification
     And I save the product
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values             | ratio |
       | mobile  | en_US  | success |                            | 100%  |
@@ -58,8 +58,8 @@ Feature: Display the completeness of a product with assets
       | mobile  | de_DE  | success |                            | 100%  |
       | tablet  | de_DE  | warning | Weather conditions, Rating | 80%   |
     Given I delete the paint variation for channel mobile and locale ""
-    And I save the product
-    When I open the "Completeness" panel
+    When I am on the "jacket-white" product page
+    When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values             | ratio |
       | mobile  | en_US  | warning | gallery                    | 83%   |
@@ -72,7 +72,7 @@ Feature: Display the completeness of a product with assets
     And I visit the "Media" group
     And I attach file "akeneo.jpg" to "Side view"
     And I save the product
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values                      | ratio |
       | mobile  | en_US  | warning | gallery                             | 83%   |
@@ -93,8 +93,7 @@ Feature: Display the completeness of a product with assets
       | tablet  | de_DE  | warning | Weather conditions, Rating | 80%   |
     And I delete the paint variation for channel mobile and locale ""
     When I am on the "jacket-white" product page
-    And I save the product
-    When I open the "Completeness" panel
+    And I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values             | ratio |
       | mobile  | en_US  | warning | gallery                    | 83%   |

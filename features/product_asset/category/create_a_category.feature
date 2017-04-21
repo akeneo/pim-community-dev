@@ -32,5 +32,5 @@ Feature: Create an asset category
     Then I should be on the asset category "newcategory" edit page
     And I should see the flash message "Tree successfully created"
     Then I edit the "mugs" asset
-    And I visit the "Categories" tab
+    And I visit the "Categories" column tab
     Then I should see the text "[newcategory]"

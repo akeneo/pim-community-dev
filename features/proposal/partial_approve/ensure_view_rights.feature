@@ -37,7 +37,7 @@ Feature: Partial approve
       | en_US  | Manager    | view   |
     And I am logged in as "Julia"
     And I edit the "tshirt" product
-    And I visit the "Proposals" tab
+    And I visit the "Proposals" column tab
     And I should not see the following changes on the proposals:
       | product | author | attribute   | locale |
       | tshirt  | Mary   | price       |        |

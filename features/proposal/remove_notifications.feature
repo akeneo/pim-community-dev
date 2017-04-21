@@ -28,7 +28,7 @@ Feature: Remove notifications
       | Name  | Coat  |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    And I visit the "Proposals" tab
+    And I visit the "Proposals" column tab
     And I click on the "remove" action of the row which contains "Mary"
 
   Scenario: A notification is sent when I remove a proposal with comment from the product draft page

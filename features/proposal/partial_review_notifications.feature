@@ -64,7 +64,7 @@ Feature: Adapt notification for redactor depending on action on their proposal
       | Size               | M                         |        |        | Sizes               |
     And I am logged in as "Julia"
     And I edit the "sp-1" product
-    And I visit the "Proposals" tab
+    And I visit the "Proposals" column tab
     And I click on the "remove" action of the row which contains "Mary"
     And I press the "Send" button in the popin
     And I logout

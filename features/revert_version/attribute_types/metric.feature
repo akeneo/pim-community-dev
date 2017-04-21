@@ -27,7 +27,7 @@ Feature: Revert product attributes to a previous version
     And I save the product
     And I should not see the text "There are unsaved changes"
     And the history of the product "t-shirt" has been built
-    And I open the history
+    And I visit the "History" column tab
     Then I should see 3 versions in the history
 
     When I revert the product version number 2
@@ -47,7 +47,7 @@ Feature: Revert product attributes to a previous version
     And I save the product
     And I should not see the text "There are unsaved changes"
     And the history of the product "marcel" has been built
-    And I open the history
+    And I visit the "History" column tab
     Then I should see 2 versions in the history
 
     When I revert the product version number 1
