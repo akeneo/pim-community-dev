@@ -76,7 +76,11 @@ class MetricAttributeCopierSpec extends ObjectBehavior
 
         $normalizer
             ->normalize($fromProductValue, 'standard')
-            ->willReturn(['amount' => 123, 'unit' => 'GRAM']);
+            ->willReturn([
+                'locale' => 'fr_FR',
+                'scope'  => 'mobile',
+                'data'   => ['amount' => 123, 'unit' => 'GRAM'],
+            ]);
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $builder

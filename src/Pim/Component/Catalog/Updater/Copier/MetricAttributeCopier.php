@@ -97,12 +97,13 @@ class MetricAttributeCopier extends AbstractAttributeCopier
     ) {
         $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
+            $standardData = $this->normalizer->normalize($fromValue, 'standard');
             $this->productBuilder->addOrReplaceProductValue(
                 $toProduct,
                 $toAttribute,
                 $toLocale,
                 $toScope,
-                $this->normalizer->normalize($fromValue, 'standard')
+                $standardData['data']
             );
         }
     }

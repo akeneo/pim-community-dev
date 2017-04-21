@@ -90,7 +90,12 @@ class AttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $normalizer->normalize($fromProductValue, 'standard')->willReturn(true);
+        $normalizer->normalize($fromProductValue, 'standard')
+            ->willReturn([
+                'locale' => 'fr_FR',
+                'scope' => 'mobile',
+                'data' => true
+            ]);
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $builder
@@ -141,7 +146,11 @@ class AttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $normalizer->normalize($fromProductValue, 'standard')->willReturn('1970-01-01');
+        $normalizer->normalize($fromProductValue, 'standard')->willReturn([
+            'locale' => 'fr_FR',
+            'scope' => 'mobile',
+            'data' => '1970-01-01'
+        ]);
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $builder
@@ -192,7 +201,11 @@ class AttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $normalizer->normalize($fromProductValue, 'standard')->willReturn(123);
+        $normalizer->normalize($fromProductValue, 'standard')->willReturn([
+            'locale' => 'fr_FR',
+            'scope' => 'mobile',
+            'data' => 123
+        ]);
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $builder
@@ -243,7 +256,11 @@ class AttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $normalizer->normalize($fromProductValue, 'standard')->willReturn('data');
+        $normalizer->normalize($fromProductValue, 'standard')->willReturn([
+                'locale' => 'fr_FR',
+                'scope' => 'mobile',
+                'data' => 'data'
+            ]);
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $builder

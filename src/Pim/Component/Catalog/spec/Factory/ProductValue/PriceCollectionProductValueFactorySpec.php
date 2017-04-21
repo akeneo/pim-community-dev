@@ -116,6 +116,43 @@ class PriceCollectionProductValueFactorySpec extends ObjectBehavior
         $productValue->shouldHavePrices();
     }
 
+    function it_creates_a_price_collection_product_value_when_multiple_amount_are_specified_for_one_currency(
+        $priceFactory,
+        AttributeInterface $attribute,
+        ProductPriceInterface $priceEUR,
+        ProductPriceInterface $priceUSD
+    ) {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('price_collection_attribute');
+        $attribute->getType()->willReturn('pim_catalog_price_collection');
+        $attribute->getBackendType()->willReturn('prices');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $priceFactory->createPrice(42, 'EUR')->shouldNotBeCalled();
+        $priceFactory->createPrice(null, 'EUR')->shouldBeCalled()->willReturn($priceEUR);
+        $priceFactory->createPrice(null, 'USD')->shouldNotBeCalled();
+        $priceFactory->createPrice(63, 'USD')->shouldBeCalled()->willReturn($priceUSD);
+
+        $productValue = $this->create(
+            $attribute,
+            null,
+            null,
+            [
+                ['amount' => null, 'currency' => 'USD'],
+                ['amount' => 42, 'currency' => 'EUR'],
+                ['amount' => 63, 'currency' => 'USD'],
+                ['amount' => null, 'currency' => 'EUR'],
+            ]
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ScalarProductValue::class);
+        $productValue->shouldHaveAttribute('price_collection_attribute');
+        $productValue->shouldNotBeLocalizable();
+        $productValue->shouldNotBeScopable();
+        $productValue->shouldHavePrices();
+    }
+
     function it_creates_a_localizable_and_scopable_price_collection_product_value(
         $priceFactory,
         AttributeInterface $attribute,

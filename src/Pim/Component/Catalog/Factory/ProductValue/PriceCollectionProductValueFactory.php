@@ -125,7 +125,8 @@ class PriceCollectionProductValueFactory implements ProductValueFactoryInterface
     {
         $prices = new PriceCollection();
 
-        $sortedData = $this->sortByCurrency($data);
+        $filteredData = $this->filterByCurrency($data);
+        $sortedData = $this->sortByCurrency($filteredData);
         foreach ($sortedData as $price) {
             $prices->add($this->priceFactory->createPrice($price['amount'], $price['currency']));
         }
@@ -168,24 +169,48 @@ class PriceCollectionProductValueFactory implements ProductValueFactoryInterface
      */
     protected function sortByCurrency(array $arrayPrices)
     {
-        $amouts = [];
+        $amounts = [];
         $currencies = [];
 
         foreach ($arrayPrices as $price) {
-            $amouts[] = $price['amount'];
+            $amounts[] = $price['amount'];
             $currencies[] = $price['currency'];
         }
 
-        $sort = array_multisort($currencies, SORT_ASC, $amouts, SORT_ASC, $arrayPrices);
+        $sort = array_multisort($currencies, SORT_ASC, $amounts, SORT_ASC, $arrayPrices);
 
         if (false === $sort) {
             throw new \LogicException(
-                sprintf('Impossible to permorm multisort on the following array: %s', json_encode($arrayPrices)),
+                sprintf('Impossible to perform multisort on the following array: %s', json_encode($arrayPrices)),
                 0,
                 static::class
             );
         }
 
         return $arrayPrices;
+    }
+
+    /**
+     * Checks that for each currency there is only one value. If it's the case, this method keeps the last value
+     * for the duplicated currency in the given array
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    protected function filterByCurrency(array $data)
+    {
+        $uniqueData = [];
+        $filteredData = [];
+
+        foreach ($data as $price) {
+            $uniqueData[$price['currency']] = $price['amount'];
+        }
+
+        foreach ($uniqueData as $currency => $price) {
+            $filteredData[] = ['currency' => $currency, 'amount' => $price];
+        }
+
+        return $filteredData;
     }
 }

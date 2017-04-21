@@ -10,6 +10,7 @@ Feature: Update multi select fields
       | body_color    | pim_catalog_multiselect | other |
       | sleeves_color | pim_catalog_multiselect | other |
     And the following "body_color" attribute options: Red, Yellow, Black and White
+    And the following "sleeves_color" attribute options: Red, Yellow, Black and White
     And the following products:
       | sku             | body_color   |
       | STRIPED_T_SHIRT | Black, White |
