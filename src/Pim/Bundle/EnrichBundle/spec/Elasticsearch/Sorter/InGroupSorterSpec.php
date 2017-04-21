@@ -51,8 +51,9 @@ class InGroupSorterSpec extends ObjectBehavior
         $sqb->addSort(
             [
                 'in_group.group_code' => [
-                    "order"   => 'ASC',
-                    "missing" => "_last",
+                    'order'   => 'ASC',
+                    'missing' => '_last',
+                    'unmapped_type'=> 'boolean',
                 ],
             ]
         )->shouldBeCalled();
@@ -74,8 +75,9 @@ class InGroupSorterSpec extends ObjectBehavior
         $sqb->addSort(
             [
                 'in_group.group_code' => [
-                    "order"   => 'DESC',
-                    "missing" => "_last",
+                    'order'   => 'DESC',
+                    'missing' => '_last',
+                    'unmapped_type'=> 'boolean',
                 ],
             ]
         )->shouldBeCalled();

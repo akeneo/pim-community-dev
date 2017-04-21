@@ -53,7 +53,10 @@ class PagerExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        return !in_array($config->offsetGetByPath('name'), ['product-grid', 'association-product-grid']);
+        return !in_array(
+            $config->offsetGetByPath('name'),
+            ['product-grid', 'association-product-grid', 'product-variant-group-grid']
+        );
     }
 
     /**

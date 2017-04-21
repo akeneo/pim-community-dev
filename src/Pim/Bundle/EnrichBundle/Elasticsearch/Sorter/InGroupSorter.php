@@ -4,6 +4,8 @@ namespace Pim\Bundle\EnrichBundle\Elasticsearch\Sorter;
 
 use Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Field\BaseFieldSorter;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Exception\InvalidDirectionException;
+use Pim\Component\Catalog\Query\Sorter\Directions;
 use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 
@@ -51,7 +53,37 @@ class InGroupSorter extends BaseFieldSorter implements FieldSorterInterface
         }
 
         $field = sprintf('%s.%s', 'in_group', $group->getCode());
-        parent::addFieldSorter($field, $direction, $locale, $channel);
+
+        if (null === $this->searchQueryBuilder) {
+            throw new \LogicException('The search query builder is not initialized in the sorter.');
+        }
+
+        switch ($direction) {
+            case Directions::ASCENDING:
+                $sortClause = [
+                    $field => [
+                        'order'   => 'ASC',
+                        'missing' => '_last',
+                        'unmapped_type'=> 'boolean',
+                    ],
+                ];
+                $this->searchQueryBuilder->addSort($sortClause);
+
+                break;
+            case Directions::DESCENDING:
+                $sortClause = [
+                    $field => [
+                        'order'   => 'DESC',
+                        'missing' => '_last',
+                        'unmapped_type'=> 'boolean',
+                    ],
+                ];
+                $this->searchQueryBuilder->addSort($sortClause);
+
+                break;
+            default:
+                throw InvalidDirectionException::notSupported($direction, static::class);
+        }
     }
 
     /**
