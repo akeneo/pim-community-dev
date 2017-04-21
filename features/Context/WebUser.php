@@ -1560,10 +1560,15 @@ class WebUser extends RawMinkContext
      */
     public function iPressOnTheDropdownButton($item, $button)
     {
-        $this
-            ->getCurrentPage()
-            ->getDropdownButtonItem($item, $button)
-            ->click();
+        $this->spin(function () use ($item, $button) {
+            $this
+                ->getCurrentPage()
+                ->getDropdownButtonItem($item, $button)
+                ->click();
+
+                return true;
+        }, sprintf('Cannot click on item %s ', $item));
+
         $this->wait();
     }
 

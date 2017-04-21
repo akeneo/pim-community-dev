@@ -619,7 +619,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSortByValue($columnName, $order = 'ascending')
     {
-        $this->datagrid->sortBy($columnName, $order);
+        $this->spin(function() use ($columnName, $order) {
+            $this->datagrid->sortBy($columnName, $order);
+
+            return true;
+        }, sprintf('Cannot sort by %s %s', $columnName, $order));
 
         $loadingMask = $this->datagrid
             ->getElement('Grid container')

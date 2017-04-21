@@ -87,10 +87,10 @@ define(
                 return ChannelSaver
                     .save(code, channel, method)
                     .then(function (data) {
-                        this.postSave(isUpdate);
 
                         this.setData(data);
                         this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data);
+                        this.postSave(isUpdate);
                     }.bind(this))
                     .fail(this.fail.bind(this))
                     .always(this.hideLoadingMask.bind(this));
