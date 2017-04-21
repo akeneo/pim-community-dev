@@ -174,16 +174,18 @@ class HookContext extends PimContext
      */
     public function listenToErrors()
     {
-        try {
-            $this->getSession()->getDriver()->getWebDriverSession()->getAlert_text();
+        if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            try {
+                $this->getSession()->getDriver()->getWebDriverSession()->getAlert_text();
 
-            return false;
-        } catch (\Exception $e) {
-            //We just avoid to dismiss an alert
+                return false;
+            } catch (\Exception $e) {
+                //We just avoid to dismiss an alert
+            }
+            $script = "if (typeof $ != 'undefined') { window.onerror=function (err) { $('body').attr('JSerr', err); } }";
+
+            $this->getMainContext()->executeScript($script);
         }
-        $script = "if (typeof $ != 'undefined') { window.onerror=function (err) { $('body').attr('JSerr', err); } }";
-
-        $this->getMainContext()->executeScript($script);
     }
 
     /**
@@ -292,15 +294,17 @@ class HookContext extends PimContext
     public function resetCurrentPage(BaseScenarioEvent $event)
     {
         if ($event->getResult() !== StepEvent::UNDEFINED) {
-            try {
-                $this->getSession()->getDriver()->getWebDriverSession()->getAlert_text();
+            if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+                try {
+                    $this->getSession()->getDriver()->getWebDriverSession()->getAlert_text();
 
-                return false;
-            } catch (\Exception $e) {
-                //We just avoid to dismiss an alert
+                    return false;
+                } catch (\Exception $e) {
+                    //We just avoid to dismiss an alert
+                }
+                $script = 'sessionStorage.clear(); typeof $ !== "undefined" && $(window).off("beforeunload");';
+                $this->getMainContext()->executeScript($script);
             }
-            $script = 'sessionStorage.clear(); typeof $ !== "undefined" && $(window).off("beforeunload");';
-            $this->getMainContext()->executeScript($script);
         }
 
         $this->currentPage = null;
