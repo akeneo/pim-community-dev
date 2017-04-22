@@ -41,6 +41,9 @@ class FileController
     /** @var array */
     protected $filesystemAliases;
 
+    /** @var string */
+    protected $tmpStorageDir;
+
     /**
      * @param ImagineController             $imagineController
      * @param FilesystemProvider            $filesystemProvider
@@ -48,6 +51,7 @@ class FileController
      * @param FileTypeGuesserInterface      $fileTypeGuesser
      * @param DefaultImageProviderInterface $defaultImageProvider
      * @param array                         $filesystemAliases
+     * @param string                        $tmpStorageDir
      */
     public function __construct(
         ImagineController $imagineController,
@@ -55,7 +59,8 @@ class FileController
         FileInfoRepositoryInterface $fileInfoRepository,
         FileTypeGuesserInterface $fileTypeGuesser,
         DefaultImageProviderInterface $defaultImageProvider,
-        array $filesystemAliases
+        array $filesystemAliases,
+        $tmpStorageDir
     ) {
         $this->imagineController = $imagineController;
         $this->filesystemProvider = $filesystemProvider;
@@ -63,6 +68,7 @@ class FileController
         $this->fileTypeGuesser = $fileTypeGuesser;
         $this->defaultImageProvider = $defaultImageProvider;
         $this->filesystemAliases = $filesystemAliases;
+        $this->tmpStorageDir = $tmpStorageDir;
     }
 
     /**
@@ -107,14 +113,19 @@ class FileController
 
         foreach ($this->filesystemAliases as $alias) {
             $fs = $this->filesystemProvider->getFilesystem($alias);
+
+            if ('tmpStorage' === $alias) {
+                $filename = str_replace($this->tmpStorageDir, '', $filename);
+            }
+
             if ($fs->has($filename)) {
                 $stream = $fs->readStream($filename);
                 $headers = [];
 
-                if (null !== $fileInfo = $this->fileInfoRepository->findOneByIdentifier($filename)) {
+                if (null !== $originalFileName = $this->getOriginalFilename($filename, $alias)) {
                     $headers['Content-Disposition'] = sprintf(
                         'attachment; filename="%s"',
-                        $fileInfo->getOriginalFilename()
+                        $originalFileName
                     );
                 }
 
@@ -125,6 +136,23 @@ class FileController
         throw new NotFoundHttpException(
             sprintf('File with key "%s" could not be found.', $filename)
         );
+    }
+
+    /**
+     * @param string $filename
+     * @param string $alias
+     *
+     * @return string|null
+     */
+    private function getOriginalFilename($filename, $alias)
+    {
+        if (null !== $fileInfo = $this->fileInfoRepository->findOneByIdentifier($filename)) {
+            return $fileInfo->getOriginalFilename();
+        } elseif ('tmpStorage' === $alias) {
+            preg_match('#\/([^\/]*\..[\w]*)$#', $filename, $matches);
+
+            return $matches[1];
+        }
     }
 
     /**
