@@ -13,8 +13,29 @@ extensions:
         targetZone: sequential
         position: 100
 
-    pimee-product-view-form-tabs:
-        module: pim/form/common/form-tabs
+    pimee-product-view-left-column:
+        module: pim/form/common/column
+        parent: pimee-product-view-form
+        position: 5
+        config:
+          stateCode: product_edit_form
+
+    pimee-product-edit-form-column-navigation:
+        module: pim/form/common/column-navigation
+        parent: pimee-product-view-left-column
+        targetZone: navigation
+        position: 10
+
+    pimee-product-edit-form-meta:
+        module: pim/form/common/meta
+        parent: pimee-product-view-left-column
+        targetZone: bottom
+        position: 10
+        config:
+            label: pim_enrich.entity.product.infos
+
+    pimee-product-view-column-tabs:
+        module: pim/form/common/column-tabs
         parent: pimee-product-view-form
         targetZone: content
         position: 100
@@ -43,13 +64,13 @@ extensions:
 
     pimee-product-view-family:
         module: pim/product-edit-form/meta/family
-        parent: pimee-product-view-form
+        parent: pimee-product-edit-form-meta
         targetZone: meta
         position: 80
 
     pimee-product-view-created:
-        module: pim/form/common/meta/created
-        parent: pimee-product-view-form
+        module: pim/product-edit-form/meta/created
+        parent: pimee-product-edit-form-meta
         targetZone: meta
         position: 90
         config:
@@ -57,8 +78,8 @@ extensions:
             labelBy: pim_enrich.entity.product.meta.created_by
 
     pimee-product-view-updated:
-        module: pim/form/common/meta/updated
-        parent: pimee-product-view-form
+        module: pim/product-edit-form/meta/updated
+        parent: pimee-product-edit-form-meta
         targetZone: meta
         position: 100
         config:
@@ -67,13 +88,13 @@ extensions:
 
     pimee-product-view-form-meta-owner-group:
         module: pimee/product-edit-form/meta/owner-groups
-        parent: pimee-product-view-form
+        parent: pimee-product-edit-form-meta
         targetZone: meta
         position: 120
 
     pimee-product-view-attributes:
         module: pimee/product-view-form/attributes
-        parent: pimee-product-view-form-tabs
+        parent: pimee-product-view-column-tabs
         targetZone: container
         position: 90
 
@@ -81,12 +102,6 @@ extensions:
         module: pim/form/common/attributes/attribute-group-selector
         parent: pimee-product-view-attributes
         targetZone: sidebar
-        position: 100
-
-    pimee-product-view-panels:
-        module: pim/product-edit-form/panel/panels
-        parent: pimee-product-view-form-tabs
-        targetZone: panels
         position: 100
 
     pimee-product-view-scope-switcher:
@@ -114,22 +129,17 @@ extensions:
         position: 90
 
     pimee-product-view-completeness:
-        module: pim/product-edit-form/panel/completeness
-        parent: pimee-product-view-panels
-        targetZone: panel-content
-        position: 100
+        module: pim/product-edit-form/completeness
+        parent: pimee-product-view-column-tabs
+        targetZone: container
+        position: 120
 
     pimee-product-view-comments:
-        module: pim/product-edit-form/panel/comments
-        parent: pimee-product-view-panels
-        targetZone: panel-content
+        module: pim/product-edit-form/comments
+        parent: pimee-product-view-column-tabs
+        targetZone: container
         aclResourceId: pim_enrich_product_comment
-        position: 110
-
-    pimee-product-view-panel-selector:
-        module: pim/product-edit-form/panel/selector
-        parent: pimee-product-view-panels
-        position: 100
+        position: 130
 
     pimee-product-view-state:
         module: pim/form/common/state
