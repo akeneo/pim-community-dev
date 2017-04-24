@@ -164,12 +164,6 @@ extensions:
         aclResourceId: pim_enrich_associations_view
         position: 110
 
-    pim-product-edit-form-panels:
-        module: pim/product-edit-form/panel/panels
-        parent: pim-product-edit-form-column-tabs
-        targetZone: panels
-        position: 100
-
     pim-product-edit-form-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector
         parent: pim-product-edit-form-attributes
@@ -231,12 +225,14 @@ extensions:
         position: 90
 
     pim-product-edit-form-completeness:
+        # TODO Move file
         module: pim/product-edit-form/panel/completeness
         parent: pim-product-edit-form-column-tabs
         targetZone: container
         position: 100
 
     pim-product-edit-form-comments:
+        # TODO Move file
         module: pim/product-edit-form/panel/comments
         parent: pim-product-edit-form-column-tabs
         targetZone: container
@@ -244,16 +240,12 @@ extensions:
         position: 110
 
     pim-product-edit-form-history:
+        # TODO Move file
         module: pim/product-edit-form/panel/history
         parent: pim-product-edit-form-column-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_history
         position: 120
-
-    pim-product-edit-form-panel-selector:
-        module: pim/product-edit-form/panel/selector
-        parent: pim-product-edit-form-panels
-        position: 100
 
     pim-product-edit-form-copy-scope-switcher:
         module: pim/product-edit-form/scope-switcher

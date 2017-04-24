@@ -632,8 +632,6 @@ config:
         pim/product-edit-form/attributes/localizable:      pimenrich/js/product/form/attributes/localizable
         pim/product-edit-form/categories:                  pimenrich/js/product/form/categories
         pim/product-edit-form/associations:                pimenrich/js/product/form/associations
-        pim/product-edit-form/panel/panels:                pimenrich/js/product/form/panel/panels
-        pim/product-edit-form/panel/selector:              pimenrich/js/product/form/panel/selector
         pim/product-edit-form/locale-switcher:             pimenrich/js/product/form/locale-switcher
         pim/product-edit-form/scope-switcher:              pimenrich/js/product/form/scope-switcher
         pim/product-edit-form/panel/completeness:          pimenrich/js/product/form/panel/completeness
@@ -890,8 +888,6 @@ config:
         pim/template/product/tab/attribute/variant-group:    pimenrich/templates/product/tab/attributes/variant-group.html
         pim/template/product/tab/associations:               pimenrich/templates/product/tab/associations.html
         pim/template/product/tab/association-panes:          pimenrich/templates/product/tab/association-panes.html
-        pim/template/product/panel/container:                pimenrich/templates/product/panel/container.html
-        pim/template/product/panel/selector:                 pimenrich/templates/product/panel/selector.html
         pim/template/product/panel/completeness:             pimenrich/templates/product/panel/completeness.html
         pim/template/product/panel/history:                  pimenrich/templates/product/panel/history.html
         pim/template/product/panel/comments:                 pimenrich/templates/product/panel/comments.html
