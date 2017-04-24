@@ -4,6 +4,7 @@
 
 - PIM-6322: Add output for attribute option form validation
 - PIM-6378: Fix translations for channel labels in export builder
+- PIM-6377: Fix potential notice in price property formatter
 
 # 1.7.3 (2017-04-14)
 
