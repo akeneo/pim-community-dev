@@ -20,12 +20,7 @@ define(
                             );
 
                             if ($version.children('.label-published').length === 0) {
-                                $version.append(this.template({
-                                    display: this.getParent()
-                                        .getParent()
-                                        .getParent()
-                                        .isFullPanel() ? 'big' : 'small'
-                                }));
+                                $version.append(this.template());
                             }
                         }
                     }.bind(this));
