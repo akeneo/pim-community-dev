@@ -363,10 +363,9 @@ class Edit extends ProductEditForm
      */
     public function createComment($message)
     {
-        $textarea = $this->getElement('Comment threads')->find('css', 'li.comment-create textarea');
-        if (!$textarea) {
-            throw new \LogicException('Comment creation box not found !');
-        }
+        $textarea = $this->spin(function () {
+            return $this->getElement('Comment threads')->find('css', 'li.comment-create textarea');
+        }, 'Comment creation box not found !');
 
         $textarea->click();
         $textarea->setValue($message);
@@ -429,48 +428,26 @@ class Edit extends ProductEditForm
      * @param string $message
      * @param string $author
      *
-     * @throws \LogicException in case the comment does not exist
-     *
      * @return NodeElement the comment
      */
     public function findComment($message, $author)
     {
-        $comments = array_merge($this->findCommentTopics(), $this->findCommentReplies());
-        if (empty($comments)) {
-            throw new \InvalidArgumentException('No comment nodes found !');
-        }
-
-        $columnIdx = null;
-        foreach ($comments as $index => $thread) {
-            if (null !== $currentMessage = $this->findCommentMessage($thread)) {
-                $currentMessage = $currentMessage->getText();
-            }
-            if (null !== $currentAuthor = $this->findCommentAuthor($thread)) {
-                $currentAuthor = $currentAuthor->getText();
-            }
-
-            /*
-            if (null !== $currentDate = $this->findCommentDate($thread)) {
-                $currentDate = preg_replace('/[^a-zA-Z0-9 -]/', ' ', $currentDate->getText());
-                if (false !== $atIdx = strpos($currentDate, 'at')) {
-                    $currentDate = trim(substr($currentDate, 0, $atIdx));
+        return $this->spin(function () use ($message, $author) {
+            $comments = array_merge($this->findCommentTopics(), $this->findCommentReplies());
+            foreach ($comments as $index => $thread) {
+                if (null !== $currentMessage = $this->findCommentMessage($thread)) {
+                    $currentMessage = $currentMessage->getText();
+                }
+                if (null !== $currentAuthor = $this->findCommentAuthor($thread)) {
+                    $currentAuthor = $currentAuthor->getText();
+                }
+                if ($currentMessage === $message && $currentAuthor === $author) {
+                    return $comments[$index];
                 }
             }
-            */
 
-            if ($currentMessage === $message && $currentAuthor === $author) {
-                $columnIdx = $index;
-                break;
-            }
-        }
-
-        if (null === $columnIdx) {
-            throw new \LogicException(
-                sprintf('Comment "%s" from "%s" not found.', $message, $author)
-            );
-        }
-
-        return $comments[$columnIdx];
+            return null;
+        }, sprintf('Comment "%s" from "%s" not found.', $message, $author));
     }
 
     /**

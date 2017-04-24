@@ -11,6 +11,7 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'backbone',
         'pim/form',
         'pim/user-context',
@@ -19,11 +20,14 @@ define(
         'oro/messenger',
         'pim/dialog'
     ],
-    function ($, _, Backbone, BaseForm, UserContext, template, Routing, messenger, Dialog) {
+    function ($, _, __, Backbone, BaseForm, UserContext, template, Routing, messenger, Dialog) {
         return BaseForm.extend({
             template: _.template(template),
+
             className: 'panel-pane',
+
             comments: [],
+
             events: {
                 'keyup .comment-create textarea, .reply-to-comment textarea': 'toggleButtons',
                 'click .comment-create .send-comment': 'saveComment',
@@ -31,21 +35,33 @@ define(
                 'click .comment-thread .send-comment': 'saveReply',
                 'click .comment-thread .cancel-comment, .comment-create .cancel-comment': 'cancelComment'
             },
+
+            /**
+             * {@inheritdoc}
+             */
             initialize: function () {
                 this.comment = new Backbone.Model();
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
-                this.trigger('panel:register', {
+                this.trigger('tab:register', {
                     code: this.code,
-                    label: _.__('pim_comment.product.panel.comment.title')
+                    label: __('pim_comment.product.panel.comment.title')
                 });
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
-                if (!this.configured || this.code !== this.getParent().getCurrentPanelCode()) {
+                if (!this.configured || this.code !== this.getParent().getCurrentTab()) {
                     return this;
                 }
 
@@ -63,6 +79,12 @@ define(
 
                 return this;
             },
+
+            /**
+             * Load the comments from database
+             *
+             * @return {Promise}
+             */
             loadData: function () {
                 return $.get(
                     Routing.generate(
@@ -73,6 +95,12 @@ define(
                     )
                 );
             },
+
+            /**
+             * Display or hide the save/cancel buttons attached to the text area
+             *
+             * @param {Event} event
+             */
             toggleButtons: function (event) {
                 var $element = $(event.currentTarget).parents('.comment-thread, .comment-create');
                 if ($element.find('textarea').val()) {
@@ -83,12 +111,22 @@ define(
                     $element.find('.AknButtonList').addClass('AknButtonList--hide');
                 }
             },
+
+            /**
+             * Cancels the current written comment
+             *
+             * @param {Event} event
+             */
             cancelComment: function (event) {
                 var $element = $(event.currentTarget).parents('.comment-thread, .comment-create');
                 $element.find('textarea').val('');
                 $element.removeClass('active');
                 $element.find('.AknButtonList').addClass('AknButtonList--hide');
             },
+
+            /**
+             * Saves the current comment to database
+             */
             saveComment: function () {
                 $.ajax({
                     type: 'POST',
@@ -97,18 +135,30 @@ define(
                     data: JSON.stringify({ 'body': this.$('.comment-create textarea').val() })
                 }).done(function () {
                     this.render();
-                    messenger.notify('success', _.__('flash.comment.create.success'));
+                    messenger.notify('success', __('flash.comment.create.success'));
                 }.bind(this)).fail(function () {
-                    messenger.notify('error', _.__('flash.comment.create.error'));
+                    messenger.notify('error', __('flash.comment.create.error'));
                 });
             },
+
+            /**
+             * Shows a confirm dialog before removing the current comment
+             *
+             * @param {Event} event
+             */
             removeComment: function (event) {
                 Dialog.confirm(
-                    _.__('confirmation.remove.comment'),
-                    _.__('pim_enrich.confirmation.delete_item'),
+                    __('confirmation.remove.comment'),
+                    __('pim_enrich.confirmation.delete_item'),
                     this.doRemove.bind(this, event)
                 );
             },
+
+            /**
+             * Removes the comment from database
+             *
+             * @param {Event} event
+             */
             doRemove: function (event) {
                 $.ajax({
                     url: Routing.generate('pim_comment_comment_delete', { id: event.currentTarget.dataset.commentId }),
@@ -117,11 +167,17 @@ define(
                     data: { _method: 'DELETE' }
                 }).done(function () {
                     this.render();
-                    messenger.notify('success', _.__('flash.comment.delete.success'));
+                    messenger.notify('success', __('flash.comment.delete.success'));
                 }.bind(this)).fail(function () {
-                    messenger.notify('error', _.__('flash.comment.delete.error'));
+                    messenger.notify('error', __('flash.comment.delete.error'));
                 });
             },
+
+            /**
+             * Save the current reply of a comment
+             *
+             * @param {Event} event
+             */
             saveReply: function (event) {
                 var $thread = $(event.currentTarget).parents('.comment-thread');
 
@@ -139,9 +195,9 @@ define(
                 }).done(function () {
                     $thread.find('textarea').val('');
                     this.render();
-                    messenger.notify('success', _.__('flash.comment.reply.success'));
+                    messenger.notify('success', __('flash.comment.reply.success'));
                 }.bind(this)).fail(function () {
-                    messenger.notify('error', _.__('flash.comment.reply.error'));
+                    messenger.notify('error', __('flash.comment.reply.error'));
                 });
             }
         });

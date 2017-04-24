@@ -238,8 +238,8 @@ extensions:
 
     pim-product-edit-form-comments:
         module: pim/product-edit-form/panel/comments
-        parent: pim-product-edit-form-panels
-        targetZone: panel-content
+        parent: pim-product-edit-form-column-tabs
+        targetZone: container
         aclResourceId: pim_enrich_product_comment
         position: 110
 
