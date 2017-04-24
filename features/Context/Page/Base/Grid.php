@@ -533,6 +533,13 @@ class Grid extends Index
             rsort($sortedValues, SORT_NATURAL | SORT_FLAG_CASE);
         }
 
+        $valuesCount = count($sortedValues);
+        $sortedValues = array_filter($sortedValues, function ($value) {
+            return $value !== '';
+        });
+
+        $sortedValues = array_pad($sortedValues, $valuesCount, '');
+
         return $sortedValues === $values;
     }
 

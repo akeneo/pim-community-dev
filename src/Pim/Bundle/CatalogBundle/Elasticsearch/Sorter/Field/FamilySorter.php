@@ -53,8 +53,9 @@ class FamilySorter extends BaseFieldSorter
                 if (null !== $familyLabelPath) {
                     $sortFamilyLabelClause = [
                         $familyLabelPath => [
-                            'order'   => 'ASC',
-                            'missing' => '_last',
+                            'order'         => 'ASC',
+                            'unmapped_type' => 'string',
+                            'missing'       => '_last',
                         ],
                     ];
                     $this->searchQueryBuilder->addSort($sortFamilyLabelClause);
@@ -73,8 +74,9 @@ class FamilySorter extends BaseFieldSorter
                 if (null !== $familyLabelPath) {
                     $sortFamilyLabelClause = [
                         $familyLabelPath => [
-                            'order'   => 'DESC',
-                            'missing' => '_last',
+                            'order'         => 'DESC',
+                            'unmapped_type' => 'string',
+                            'missing'       => '_last',
                         ],
                     ];
                     $this->searchQueryBuilder->addSort($sortFamilyLabelClause);

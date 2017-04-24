@@ -41,6 +41,7 @@ services:
         class: '%pim_catalog.normalizer.indexing.product.family.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.repository.locale'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
