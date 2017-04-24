@@ -237,7 +237,7 @@ class ProductBuilder implements ProductBuilderInterface
      */
     public function createProductValue(AttributeInterface $attribute, $locale = null, $scope = null)
     {
-        return $this->productValueFactory->create($attribute, $locale, $scope);
+        return $this->productValueFactory->create($attribute, $scope, $locale);
     }
 
     /**
