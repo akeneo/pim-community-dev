@@ -26,8 +26,8 @@ Feature: Proper completeness display for locale specific attributes
   @jira https://akeneo.atlassian.net/browse/PIM-5453
   Scenario: Well display completeness missing labels for product locale specific attributes
     Given I am on the "baz" product page
-    When I open the "Completeness" panel
-    And I switch the locale to "fr_FR"
+    When I switch the locale to "fr_FR"
+    And I visit the "Completeness" column tab
     Then I should see the completeness:
       | locale | channel   | missing_values                                         |
       | fr_FR  | ecommerce | Nom, Description, Imagette, Légende, [locale_specific] |
@@ -38,7 +38,9 @@ Feature: Proper completeness display for locale specific attributes
       | en_US  | ecommerce | Nom, Description, Imagette, Légende, [locale_specific] |
       | en_US  | print     |                                                        |
       | en_US  | tablet    |                                                        |
-    When I switch the locale to "de_DE"
+    When I visit the "Attributes" column tab
+    And I switch the locale to "de_DE"
+    And I visit the "Completeness" column tab
     Then I should see the completeness:
       | locale | channel   | missing_values                                                  |
       | de_DE  | ecommerce | Name, Beschreibung, Miniaturansicht, Legende, [locale_specific] |

@@ -232,8 +232,8 @@ extensions:
 
     pim-product-edit-form-completeness:
         module: pim/product-edit-form/panel/completeness
-        parent: pim-product-edit-form-panels
-        targetZone: panel-content
+        parent: pim-product-edit-form-column-tabs
+        targetZone: container
         position: 100
 
     pim-product-edit-form-comments:

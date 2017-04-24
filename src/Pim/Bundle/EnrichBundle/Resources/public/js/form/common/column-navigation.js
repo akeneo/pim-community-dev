@@ -92,13 +92,15 @@ define(
              * If there is no selected tab, returns the first available tab.
              */
             getCurrentTabOrDefault: function () {
+                var result = null;
+
                 _.each(this.tabs, function (tab) {
                     if (tab.code === this.currentTab) {
-                        return this.currentTab;
+                        result = this.currentTab;
                     }
                 }.bind(this));
 
-                return _.first(_.pluck(this.tabs, 'code'));
+                return (null !== result) ? result : _.first(_.pluck(this.tabs, 'code'));
             }
         });
     }

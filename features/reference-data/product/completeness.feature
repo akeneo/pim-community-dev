@@ -29,7 +29,7 @@ Feature: Display the completeness of a product with reference data
 
   Scenario: Successfully display the completeness of the products with reference data
     Given I am on the "red-heels" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | ratio |
       | mobile  | en_US  | warning | 50%   |
@@ -37,7 +37,7 @@ Feature: Display the completeness of a product with reference data
       | mobile  | fr_FR  | success | 100%  |
       | tablet  | fr_FR  | warning | 75%   |
     When I am on the "black-heels" product page
-    And I open the "Completeness" panel
+    And I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | ratio |
       | mobile  | en_US  | warning | 50%   |
@@ -45,7 +45,7 @@ Feature: Display the completeness of a product with reference data
       | mobile  | fr_FR  | warning | 25%   |
       | tablet  | fr_FR  | warning | 75%   |
     When I am on the "green-heels" product page
-    And I open the "Completeness" panel
+    And I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | ratio |
       | mobile  | en_US  | warning | 50%   |
@@ -53,7 +53,7 @@ Feature: Display the completeness of a product with reference data
       | mobile  | fr_FR  | warning | 50%   |
       | tablet  | fr_FR  | success | 100%  |
     When I am on the "high-heels" product page
-    And I open the "Completeness" panel
+    And I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | ratio |
       | mobile  | en_US  | warning | 25%   |

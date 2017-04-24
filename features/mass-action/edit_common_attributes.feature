@@ -192,13 +192,13 @@ Feature: Edit common attributes of many products at once
 
   Scenario: Successfully mass edit products and the completeness should be computed
     Given I am on the "sneakers" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values                                                               | ratio |
       | mobile  | en_US  | warning | Name, Price, Size, Color                                                     | 20%   |
       | tablet  | en_US  | warning | Name, Weather conditions, Description, Price, Rating, Side view, Size, Color | 11%   |
     And I am on the "sandals" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values                                           | ratio |
       | mobile  | en_US  | warning | Name, Price, Size, Color                                 | 20%   |
@@ -220,13 +220,13 @@ Feature: Edit common attributes of many products at once
     And I should see the text "44"
     And I should see the text "50"
     Then I am on the "sneakers" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     And I should see the completeness:
       | channel | locale | state   | missing_values                                            | ratio |
       | mobile  | en_US  | warning | Color                                                     | 80%   |
       | tablet  | en_US  | warning | Weather conditions, Description, Rating, Side view, Color | 44%   |
     And I am on the "sandals" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     And I should see the completeness:
       | channel | locale | state   | missing_values                        | ratio |
       | mobile  | en_US  | warning | Color                                 | 80%   |
