@@ -1,0 +1,34 @@
+Pim\Component\Catalog\Model\ProductUniqueValue:
+    type: entity
+    table: pim_catalog_product_unique_value
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        rawValue:
+            type: native_json
+            column: raw_value
+    uniqueConstraints:
+        unique_value_idx:
+            columns:
+                - product_id
+                - attribute_id
+                - raw_value
+    manyToOne:
+        product:
+            targetEntity: Pim\Component\Catalog\Model\ProductInterface
+            joinColumns:
+                product_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+        attribute:
+            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
+            joinColumns:
+                attribute_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false

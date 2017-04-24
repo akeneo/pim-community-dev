@@ -80,6 +80,11 @@ abstract class AbstractProduct implements ProductInterface
     protected $identifier;
 
     /**
+     * @var ArrayCollection
+     */
+    protected $uniqueValues;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -89,6 +94,7 @@ abstract class AbstractProduct implements ProductInterface
         $this->completenesses = new ArrayCollection();
         $this->groups = new ArrayCollection();
         $this->associations = new ArrayCollection();
+        $this->uniqueValues = new ArrayCollection();
     }
 
     /**

@@ -72,3 +72,11 @@ Pim\Component\Catalog\Model\Product:
                 - persist
                 - refresh
                 - detach
+        uniqueValues:
+            targetEntity: Pim\Component\Catalog\Model\ProductUniqueValueInterface
+            mappedBy: product
+            cascade:
+                - remove
+                - persist
+                - refresh
+                - detach
