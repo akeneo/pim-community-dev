@@ -70,6 +70,11 @@ define([
                 this.urlParams.params = $.extend(true, {}, params);
                 this.urlParams[alias] = $.extend(true, {}, params);
 
+                var viewStored = DatagridState.get(alias, ['view']);
+                if (!viewStored.view) {
+                    DatagridState.refreshFiltersFromUrl(alias);
+                }
+
                 var state = DatagridState.get(alias, ['view', 'filters', 'columns']) || {};
                 this.applyView(state.view, alias);
                 this.applyFilters(state.filters, alias);

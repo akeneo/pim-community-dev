@@ -22,4 +22,4 @@ extensions:
             iconName: plus
             label: pim_enrich.index.user_group.create_btn
             route: oro_user_group_create
-            actionType: apply
+            buttonClass: AknButton--apply
