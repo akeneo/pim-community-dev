@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Bundle\ElasticsearchBundle\Cursor;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\Cursor\Cursor;
+use Akeneo\Bundle\ElasticsearchBundle\Cursor\BoundedCursor;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -21,7 +21,7 @@ class BoundedCursorFactorySpec extends ObjectBehavior
             $searchEngine,
             $om,
             ProductInterface::class,
-            Cursor::class,
+            BoundedCursor::class,
             self::DEFAULT_BATCH_SIZE,
             'pim_catalog_product'
         );
@@ -36,14 +36,30 @@ class BoundedCursorFactorySpec extends ObjectBehavior
     function it_creates_a_cursor($om, $searchEngine, CursorableRepositoryInterface $cursorableRepository)
     {
         $om->getRepository(ProductInterface::class)->willReturn($cursorableRepository);
-        $searchEngine->search('pim_catalog_product', ['size' => 100, 'sort' => ['_uid' => 'asc']])->willReturn([
+        $searchEngine->search('pim_catalog_product', ['size' => 100, 'sort' => ['_uid' => 'asc'], 'search_after' => ['foo']])->willReturn([
             'hits' => [
                 'total' => 0,
                 'hits' => []
             ]
         ]);
 
-        $this->createCursor([], ['limit' => 150, 'search_after' => 'foo'])
+        $this->createCursor([], ['size' => 100, 'limit' => 150, 'search_after' => ['foo']])
+            ->shouldBeAnInstanceOf('Akeneo\Component\StorageUtils\Cursor\CursorInterface');
+    }
+
+    function it_creates_a_cursor_with_search_after_identifier($om, $searchEngine, CursorableRepositoryInterface $cursorableRepository)
+    {
+        $om->getRepository(ProductInterface::class)->willReturn($cursorableRepository);
+        $searchEngine->search('pim_catalog_product', [
+            'size' => 100, 'sort' => ['_uid' => 'asc'], 'search_after' => ['2017-12-12', 'pim_catalog_product#foo']
+        ])->willReturn([
+            'hits' => [
+                'total' => 0,
+                'hits' => []
+            ]
+        ]);
+
+        $this->createCursor([], ['size' => 100, 'limit' => 150, 'search_after' => ['2017-12-12'], 'search_after_unique_key' => 'foo'])
             ->shouldBeAnInstanceOf('Akeneo\Component\StorageUtils\Cursor\CursorInterface');
     }
 

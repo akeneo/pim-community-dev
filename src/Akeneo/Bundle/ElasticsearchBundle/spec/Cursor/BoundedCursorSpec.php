@@ -47,6 +47,7 @@ class BoundedCursorSpec extends ObjectBehavior
             $esClient,
             $repository,
             [],
+            [],
             'pim_catalog_product',
             3,
             2,

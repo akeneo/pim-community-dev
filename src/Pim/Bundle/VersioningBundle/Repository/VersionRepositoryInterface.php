@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\VersioningBundle\Repository;
 
-use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\Versioning\Model\Version;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * Version repository interface
@@ -88,7 +88,7 @@ interface VersionRepositoryInterface
      *
      * @param array $options
      *
-     * @return CursorInterface
+     * @return Paginator
      */
     public function findPotentiallyPurgeableBy(array $options = []);
 

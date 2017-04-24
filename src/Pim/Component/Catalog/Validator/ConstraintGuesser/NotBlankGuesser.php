@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Validator\ConstraintGuesser;
 
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -20,7 +21,12 @@ class NotBlankGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AttributeInterface $attribute)
     {
-        return true;
+        return !in_array(
+            $attribute->getType(),
+            [
+                AttributeTypes::IDENTIFIER
+            ]
+        );
     }
 
     /**
