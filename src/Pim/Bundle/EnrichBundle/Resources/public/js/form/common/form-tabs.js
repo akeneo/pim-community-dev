@@ -20,7 +20,6 @@ define(
             template: _.template(template),
             className: 'AknTabContainer tabbable tabs-top',
             tabs: [],
-            fullPanel: false,
             urlParsed: false,
             events: {
                 'click header ul.nav-tabs li': 'selectTab'
@@ -75,8 +74,7 @@ define(
                 this.$el.html(
                     this.template({
                         tabs: tabs,
-                        currentTab: this.getCurrentTab(),
-                        fullPanel: this.fullPanel
+                        currentTab: this.getCurrentTab()
                     })
                 );
                 this.delegateEvents();
@@ -134,11 +132,6 @@ define(
                     needRender = true;
                 }
 
-                if (this.fullPanel) {
-                    this.fullPanel = false;
-                    needRender = true;
-                }
-
                 if (needRender) {
                     this.render();
                 }
@@ -153,27 +146,6 @@ define(
              */
             getCurrentTab: function () {
                 return sessionStorage.getItem(this.currentKey);
-            },
-
-            /**
-             * Is the form-tabs in full panel mode ?
-             *
-             * @return {Boolean}
-             */
-            isFullPanel: function () {
-                return this.fullPanel;
-            },
-
-            /**
-             * Set the form tabs in full panel or not
-             *
-             * @param {Boolean} fullPanel
-             */
-            setFullPanel: function (fullPanel) {
-                if (this.fullPanel !== fullPanel) {
-                    this.fullPanel = fullPanel;
-                    this.render();
-                }
             },
 
             /**
