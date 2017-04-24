@@ -145,6 +145,16 @@ class WebUser extends RawMinkContext
     /**
      * @param string $tab
      *
+     * @Given /^I visit the "([^"]*)" column tab$/
+     */
+    public function iVisitTheColumnTab($tab)
+    {
+        return $this->getCurrentPage()->visitColumnTab($tab);
+    }
+
+    /**
+     * @param string $tab
+     *
      * @throws ExpectationException
      *
      * @Then /^I should be on the "([^"]*)" tab$/
@@ -159,6 +169,20 @@ class WebUser extends RawMinkContext
         if (null === $tabElement || !$tabElement->getParent()->hasClass('active')) {
             throw $this->createExpectationException(sprintf('We are not in the %s tab', $tab));
         }
+    }
+
+    /**
+     * @param string $tabName
+     *
+     * @Then /^I should be on the "([^"]*)" column tab$/
+     */
+    public function iShouldBeOnTheColumnTab($tabName)
+    {
+        $this->spin(function () use ($tabName) {
+            $tab = $this->getCurrentPage()->getCurrentColumnTab($tabName);
+
+            return null !== $tab && $tabName === trim($tab->getText());
+        }, sprintf('Failed to check current column tab is "%s"', $tabName));
     }
 
     /**
@@ -186,22 +210,8 @@ class WebUser extends RawMinkContext
     {
         $this->getCurrentPage()->getElement('Panel sidebar')->openPanel('History');
         $this->getMainContext()->spin(function () {
-            $fullPanel = $this->getCurrentPage()->find(
-                'css',
-                '.AknTabContainer-contentThreeColumns.AknTabContainer-contentThreeColumns--fullPanel'
-            );
-
-            if ((null === $fullPanel) || !$fullPanel->isVisible()) {
-                $expandHistory = $this->getCurrentPage()->find('css', '.expand-history');
-                if (null !== $expandHistory && $expandHistory->isVisible()) {
-                    $expandHistory->click();
-                }
-
-                return false;
-            }
-
-            return true;
-        }, 'Cannot expand history');
+            return $this->getCurrentPage()->find('css', '.expand-history');
+        }, 'Cannot expand history')->click();
 
         $this->wait();
     }

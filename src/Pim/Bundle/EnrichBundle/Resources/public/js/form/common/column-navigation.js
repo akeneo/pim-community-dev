@@ -52,7 +52,7 @@ define(
                     .empty()
                     .html(this.template({
                         tabs: this.tabs,
-                        currentTab: this.currentTab,
+                        currentTab: this.getCurrentTabOrDefault(),
                         title: __('pim_enrich.entity.product.navigation')
                     }));
             },
@@ -85,6 +85,20 @@ define(
                 this.currentTab = event.currentTarget.dataset.tab;
 
                 this.render();
+            },
+
+            /**
+             * Returns the current tab.
+             * If there is no selected tab, returns the first available tab.
+             */
+            getCurrentTabOrDefault: function () {
+                _.each(this.tabs, function (tab) {
+                    if (tab.code === this.currentTab) {
+                        return this.currentTab;
+                    }
+                }.bind(this));
+
+                return _.first(_.pluck(this.tabs, 'code'));
             }
         });
     }

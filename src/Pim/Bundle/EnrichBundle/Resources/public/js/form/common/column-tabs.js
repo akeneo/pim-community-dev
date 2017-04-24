@@ -20,6 +20,8 @@ define(
 
             template: _.template(template),
 
+            currentKey: 'current_column_tab',
+
             /**
              * {@inheritdoc}
              */
@@ -35,7 +37,6 @@ define(
             registerTab: function (event) {
                 FormTabs.prototype.registerTab.apply(this, arguments);
 
-                this.ensureDefault();
                 event.currentTab = this.getCurrentTab();
                 this.getRoot().trigger('column-tab:register', event);
             }

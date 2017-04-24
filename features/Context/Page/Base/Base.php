@@ -7,6 +7,7 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Context\FeatureContext;
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
 use Pim\Behat\Decorator\ElementDecorator;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
@@ -25,19 +26,21 @@ class Base extends Page
     use ClosestTrait;
 
     protected $elements = [
-        'Body'             => ['css' => 'body'],
-        'Dialog'           => ['css' => 'div.modal'],
-        'Title'            => ['css' => '.AknTitleContainer-title'],
-        'Product title'    => ['css' => '.entity-title'],
-        'HeadTitle'        => ['css' => 'title'],
-        'Flash messages'   => ['css' => '.flash-messages-holder'],
-        'Navigation Bar'   => ['css' => '.AknHeader-menus'],
-        'Container'        => ['css' => '#container'],
-        'Locales dropdown' => ['css' => '#locale-switcher'],
-        'Tabs'             => ['css' => '#form-navbar'],
-        'Oro tabs'         => ['css' => '.navbar.scrollspy-nav, .AknHorizontalNavtab'],
-        'Form tabs'        => ['css' => '.nav-tabs.form-tabs'],
-        'Active tab'       => ['css' => '.form-horizontal .tab-pane.active'],
+        'Body'                   => ['css' => 'body'],
+        'Dialog'                 => ['css' => 'div.modal'],
+        'Title'                  => ['css' => '.AknTitleContainer-title'],
+        'Product title'          => ['css' => '.entity-title'],
+        'HeadTitle'              => ['css' => 'title'],
+        'Flash messages'         => ['css' => '.flash-messages-holder'],
+        'Navigation Bar'         => ['css' => '.AknHeader-menus'],
+        'Container'              => ['css' => '#container'],
+        'Locales dropdown'       => ['css' => '#locale-switcher'],
+        'Tabs'                   => ['css' => '#form-navbar'],
+        'Oro tabs'               => ['css' => '.navbar.scrollspy-nav, .AknHorizontalNavtab'],
+        'Form tabs'              => ['css' => '.nav-tabs.form-tabs'],
+        'Active tab'             => ['css' => '.form-horizontal .tab-pane.active'],
+        'Column navigation link' => ['css' => '.column-navigation-link'],
+        'Current column link'    => ['css' => '.AknColumn-navigationLink--active'],
     ];
 
     /**
@@ -450,6 +453,35 @@ class Base extends Page
 
             return $tabDom->getParent()->hasClass('active') || $tabDom->getParent()->hasClass('tab-scrollable');
         }, sprintf('Cannot switch to the tab %s', $tab));
+    }
+
+    /**
+     * @param string $tabName
+     *
+     * @throws TimeoutException
+     */
+    public function visitColumnTab($tabName)
+    {
+        $this->spin(function () use ($tabName) {
+            $tabs = $this->findAll('css', $this->elements['Column navigation link']['css']);
+            foreach ($tabs as $tab) {
+                if (trim($tab->getText()) === $tabName) {
+                    $tab->click();
+
+                    return true;
+                }
+            }
+
+            return null;
+        }, sprintf('Can not find any column tab named "%s"', $tabName));
+    }
+
+    /**
+     * @return NodeElement|null
+     */
+    public function getCurrentColumnTab()
+    {
+        return $this->find('css', $this->elements['Current column link']['css']);
     }
 
     /**

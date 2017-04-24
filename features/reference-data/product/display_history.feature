@@ -29,7 +29,7 @@ Feature: Display the product history
     And I should see history:
       | version | property | value |
       | 2       | [color]  | Red   |
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I fill in the following information:
       | color | Green |
     Then I save the product

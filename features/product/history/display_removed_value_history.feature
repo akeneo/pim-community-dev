@@ -45,7 +45,7 @@ Feature: Display the product history
       | SKU | boots |
     And I press the "Save" button in the popin
     And I wait to be on the "boots" product page
-    And I visit the "Categories" tab
+    And I visit the "Categories" column tab
     And I select the "2014 collection" tree
     And I expand the "2014_collection" category
     And I expand the "winter_collection" category
@@ -77,7 +77,7 @@ Feature: Display the product history
       | SKU | boots |
     And I press the "Save" button in the popin
     And I wait to be on the "boots" product page
-    And I visit the "Categories" tab
+    And I visit the "Categories" column tab
     And I select the "2014 collection" tree
     And I expand the "2014_collection" category
     And I click on the "men_2014" category

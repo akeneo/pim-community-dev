@@ -421,7 +421,9 @@ class AssertionContext extends RawMinkContext
                 );
             }
             if (!$row->hasClass('expanded')) {
-                $row->find('css', '.version-expander')->click();
+                $this->spin(function () use ($row) {
+                    return $row->find('css', '.version-expander');
+                }, sprintf('Can not find the row version expander of %s', json_encode($data)))->click();
             }
             if (isset($data['author'])) {
                 $author = $row->find('css', 'td.author')->getText();

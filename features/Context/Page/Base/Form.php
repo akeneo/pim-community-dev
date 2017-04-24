@@ -829,26 +829,6 @@ class Form extends Base
     }
 
     /**
-     * Returns the tabs of the current page, if any.
-     *
-     * @return NodeElement
-     */
-    protected function getPageTabs()
-    {
-        return $this->spin(function () {
-            $tabs = $this->find('css', $this->elements['Tabs']['css']);
-            if (null === $tabs) {
-                $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
-            }
-            if (null === $tabs) {
-                $tabs = $this->find('css', $this->elements['Form tabs']['css']);
-            }
-
-            return $tabs;
-        }, 'Cannot find any tabs in this page');
-    }
-
-    /**
      * Returns if the "add available attributes" button is enabled
      *
      * @return bool

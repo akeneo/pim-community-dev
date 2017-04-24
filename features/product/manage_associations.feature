@@ -55,7 +55,7 @@ Feature: Manage associations
     And I press the secondary action "Delete"
     And I confirm the deletion
     When I edit the "<product_sku>" product
-    And I visit the "Associations" tab
+    And I visit the "Associations" column tab
     And I visit the "<group_name>" group
     Then the rows "<checked_rows>" should be checked
 

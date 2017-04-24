@@ -44,7 +44,7 @@ Feature: Display the product history
       | version | property  | value  |
       | 2       | Price EUR | €10.00 |
       | 2       | Price USD | $20.00 |
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I visit the "Marketing" group
     And I change the "Price" to "19 USD"
     And I save the product
@@ -56,7 +56,7 @@ Feature: Display the product history
       | version | property  | value  |
       | 3       | Price USD | $19.00 |
     When I close the "history" panel
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I visit the "Marketing" group
     And I remove the "Price" attribute
     And I confirm the deletion
@@ -90,7 +90,7 @@ Feature: Display the product history
       | 2       | Length      | 30         |
       | 2       | Length unit | Centimeter |
     When I close the "history" panel
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I change the "Length" to "35 Centimeter"
     And I save the product
     And the history of the product "boots" has been built
@@ -100,7 +100,7 @@ Feature: Display the product history
       | version | property | value |
       | 3       | Length   | 35    |
     When I close the "history" panel
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I remove the "Length" attribute
     And I confirm the deletion
     And I save the product
@@ -133,7 +133,7 @@ Feature: Display the product history
       | version | property  | value           |
       | 2       | Side view | .*SNKRS_1R\.png |
     When I close the "history" panel
-    When I visit the "Attributes" tab
+    When I visit the "Attributes" column tab
     And I visit the "Media" group
     And I remove the "Side view" file
     And I save the product

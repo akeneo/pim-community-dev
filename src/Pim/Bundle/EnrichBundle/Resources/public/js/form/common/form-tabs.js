@@ -25,6 +25,7 @@ define(
             events: {
                 'click header ul.nav-tabs li': 'selectTab'
             },
+            currentKey: 'current_form_tab',
 
             /**
              * {@inheritdoc}
@@ -129,7 +130,7 @@ define(
                 var needRender = false;
 
                 if (this.getCurrentTab() !== tab) {
-                    sessionStorage.setItem('current_form_tab', tab);
+                    sessionStorage.setItem(this.currentKey, tab);
                     needRender = true;
                 }
 
@@ -151,7 +152,7 @@ define(
              * @return {string}
              */
             getCurrentTab: function () {
-                return sessionStorage.getItem('current_form_tab');
+                return sessionStorage.getItem(this.currentKey);
             },
 
             /**

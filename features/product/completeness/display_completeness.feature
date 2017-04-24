@@ -96,7 +96,7 @@ Feature: Display the completeness of a product
 
   Scenario: Successfully display the completeness of the product in the grid after product save (PIM-2916)
     Given I am on the "sneakers" product page
-    And I visit the "Attributes" tab
+    And I visit the "Attributes" column tab
     And I visit the "Media" group
     And I attach file "SNKRS-1C-s.png" to "Side view"
     And I save the product
