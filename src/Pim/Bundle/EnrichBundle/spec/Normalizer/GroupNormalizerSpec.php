@@ -104,7 +104,7 @@ class GroupNormalizerSpec extends ObjectBehavior
         $productsIterator->next()->shouldBeCalled();
         $productsIterator->current()->will(new ReturnPromise([$product]));
 
-        $product->getId()->willReturn(42);
+        $product->getIdentifier()->willReturn(42);
         $tshirt->getId()->willReturn(12);
         $tshirt->getProducts()->willReturn($products);
 
