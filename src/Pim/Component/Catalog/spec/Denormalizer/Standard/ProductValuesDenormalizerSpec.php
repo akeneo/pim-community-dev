@@ -54,12 +54,14 @@ class ProductValuesDenormalizerSpec extends ObjectBehavior
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($name);
         $name->getCode()->willReturn('name');
+        $name->isUnique()->willReturn(false);
         $nameValue->getAttribute()->willReturn($name);
         $nameValue->getScope()->willReturn(null);
         $nameValue->getLocale()->willReturn(null);
 
         $attributeRepository->findOneByIdentifier('color')->willReturn($color);
         $color->getCode()->willReturn('color');
+        $color->isUnique()->willReturn(false);
         $colorValue->getAttribute()->willReturn($color);
         $colorValue->getScope()->willReturn('ecommerce');
         $colorValue->getLocale()->willReturn('en_US');

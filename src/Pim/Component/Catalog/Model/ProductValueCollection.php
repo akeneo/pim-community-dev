@@ -13,6 +13,8 @@ namespace Pim\Component\Catalog\Model;
  * This collection also contains the list of attributes used in the collection. The attributes
  * are indexed by attribute codes.
  *
+ * The collection also contains the list of unique values.
+ *
  * @author    Julien Janvier <j.janvier@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -21,6 +23,9 @@ class ProductValueCollection implements ProductValueCollectionInterface
 {
     /** @var ProductValueInterface[] */
     private $values;
+
+    /** @var ProductValueInterface[] */
+    private $uniqueValues;
 
     /** @var AttributeInterface[] */
     private $attributes;
@@ -31,6 +36,7 @@ class ProductValueCollection implements ProductValueCollectionInterface
     public function __construct(array $values = [])
     {
         $this->values = [];
+        $this->uniqueValues = [];
         $this->attributes = [];
 
         foreach ($values as $value) {
@@ -97,6 +103,7 @@ class ProductValueCollection implements ProductValueCollectionInterface
 
         $removed = $this->values[$key];
         unset($this->values[$key]);
+        unset($this->uniqueValues[$key]);
 
         $this->reIndexAllAttributes();
 
@@ -115,6 +122,7 @@ class ProductValueCollection implements ProductValueCollectionInterface
         }
 
         unset($this->values[$key]);
+        unset($this->uniqueValues[$key]);
 
         $this->reIndexAllAttributes();
 
@@ -213,6 +221,10 @@ class ProductValueCollection implements ProductValueCollectionInterface
 
         $this->values[$key] = $value;
 
+        if ($attribute->isUnique() && null !== $value->getData()) {
+            $this->uniqueValues[$key] = $value;
+        }
+
         $this->indexAttribute($attribute);
 
         return true;
@@ -240,6 +252,7 @@ class ProductValueCollection implements ProductValueCollectionInterface
     public function clear()
     {
         $this->values = [];
+        $this->uniqueValues = [];
         $this->attributes = [];
     }
 
@@ -257,6 +270,14 @@ class ProductValueCollection implements ProductValueCollectionInterface
     public function getAttributes()
     {
         return array_values($this->attributes);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUniqueValues()
+    {
+        return $this->uniqueValues;
     }
 
     /**

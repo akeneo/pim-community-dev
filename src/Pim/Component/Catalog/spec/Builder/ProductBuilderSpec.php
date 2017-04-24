@@ -77,6 +77,7 @@ class ProductBuilderSpec extends ObjectBehavior
         $tshirtFamily->getId()->shouldBeCalled();
         $tshirtFamily->getAttributes()->willReturn([]);
 
+        $identifierAttribute->isUnique()->willReturn(false);
         $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
         $identifierAttribute->getCode()->willReturn('sku');
         $identifierAttribute->getType()->willReturn(AttributeTypes::IDENTIFIER);

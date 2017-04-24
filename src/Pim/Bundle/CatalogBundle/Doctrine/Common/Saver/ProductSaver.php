@@ -30,19 +30,25 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
+    /** @var ProductUniqueDataSynchronizer */
+    protected $uniqueDataSynchronizer;
+
     /**
-     * @param ObjectManager            $objectManager
-     * @param CompletenessManager      $completenessManager
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param ObjectManager                 $objectManager
+     * @param CompletenessManager           $completenessManager
+     * @param EventDispatcherInterface      $eventDispatcher
+     * @param ProductUniqueDataSynchronizer $uniqueDataSynchronizer
      */
     public function __construct(
         ObjectManager $objectManager,
         CompletenessManager $completenessManager,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        ProductUniqueDataSynchronizer $uniqueDataSynchronizer
     ) {
         $this->objectManager = $objectManager;
         $this->completenessManager = $completenessManager;
         $this->eventDispatcher = $eventDispatcher;
+        $this->uniqueDataSynchronizer = $uniqueDataSynchronizer;
     }
 
     /**
@@ -58,6 +64,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
 
         $this->completenessManager->schedule($product);
         $this->completenessManager->generateMissingForProduct($product);
+        $this->uniqueDataSynchronizer->synchronize($product);
 
         $this->objectManager->persist($product);
         $this->objectManager->flush();
@@ -87,6 +94,8 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
             $this->completenessManager->schedule($product);
             $this->completenessManager->generateMissingForProduct($product);
+            $this->uniqueDataSynchronizer->synchronize($product);
+
             $this->objectManager->persist($product);
         }
 

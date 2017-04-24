@@ -33,7 +33,9 @@ class ProductValueCollectionFactorySpec extends ObjectBehavior
         ProductValueInterface $value4
     ) {
         $sku->getCode()->wilLReturn('sku');
+        $sku->isUnique()->wilLReturn(false);
         $description->getCode()->wilLReturn('description');
+        $description->isUnique()->wilLReturn(false);
 
         $value1->getLocale()->willReturn(null);
         $value1->getScope()->willReturn(null);

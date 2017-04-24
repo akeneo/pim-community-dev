@@ -73,6 +73,7 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         ProductValueCollectionInterface $actualProductValues,
         ProductValueInterface $requiredProductValue
     ) {
+        $attribute->isUnique()->willReturn(false);
         $channel->getCode()->willReturn('channel_code');
         $locale->getCode()->willReturn('locale_code');
 
@@ -133,6 +134,7 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         ProductValueInterface $requiredProductValue,
         ProductValueInterface $actualProductValue
     ) {
+        $attribute->isUnique()->willReturn(false);
         $channel->getCode()->willReturn('channel_code');
         $locale->getCode()->willReturn('locale_code');
 
@@ -195,6 +197,7 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         ProductValueInterface $requiredProductValue,
         ProductValueInterface $actualProductValue
     ) {
+        $attribute->isUnique()->willReturn(false);
         $channel->getCode()->willReturn('channel_code');
         $locale->getCode()->willReturn('locale_code');
 
@@ -281,12 +284,14 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         $localesIterator->current()->willReturn($locale);
         $localesIterator->next()->shouldBeCalled();
 
+        $attribute1->isUnique()->willReturn(false);
         $attribute1->isLocaleSpecific()->willReturn(false);
         $attribute1->hasLocaleSpecific($locale)->shouldNotBeCalled();
         $attribute1->isScopable()->willReturn(false);
         $attribute1->isLocalizable()->willReturn(false);
         $attribute1->getCode()->willReturn('attribute_code_1');
 
+        $attribute2->isUnique()->willReturn(false);
         $attribute2->isLocaleSpecific()->willReturn(false);
         $attribute2->hasLocaleSpecific($locale)->shouldNotBeCalled();
         $attribute2->isScopable()->willReturn(false);

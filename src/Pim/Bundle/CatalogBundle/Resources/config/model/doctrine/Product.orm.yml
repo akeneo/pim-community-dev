@@ -72,3 +72,11 @@ Pim\Component\Catalog\Model\Product:
                 - persist
                 - refresh
                 - detach
+        uniqueData:
+            targetEntity: Pim\Component\Catalog\Model\ProductUniqueDataInterface
+            mappedBy: product
+            cascade:
+                - remove
+                - persist
+                - refresh
+                - detach
