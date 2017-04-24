@@ -78,7 +78,8 @@ class ComparisonPanelDecorator extends ElementDecorator
      *
      * @return integer
      */
-    protected function selectedItemsCount() {
+    protected function selectedItemsCount()
+    {
         $checkboxes = $this->getBody()->findAll('css', '.copy-field-selector');
         $checkedCount = 0;
         foreach ($checkboxes as $checkbox) {

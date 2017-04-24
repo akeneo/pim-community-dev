@@ -859,7 +859,8 @@ class WebUser extends RawMinkContext
             throw $this->createExpectationException(
                 sprintf(
                     'Order of choices for field "%s" is not as expected, got: %s',
-                    $fieldName, implode(', ', $fieldsArray)
+                    $fieldName,
+                    implode(', ', $fieldsArray)
                 )
             );
         }
@@ -1566,7 +1567,7 @@ class WebUser extends RawMinkContext
                 ->getDropdownButtonItem($item, $button)
                 ->click();
 
-                return true;
+            return true;
         }, sprintf('Cannot click on item %s ', $item));
 
         $this->wait();
