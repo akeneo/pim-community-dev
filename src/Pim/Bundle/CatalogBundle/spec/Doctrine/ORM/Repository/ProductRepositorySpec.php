@@ -73,7 +73,6 @@ class ProductRepositorySpec extends ObjectBehavior
 
         $pqb->addFilter('size', Operators::IS_NOT_EMPTY, Argument::any())->shouldBeCalled();
         $pqb->addFilter('color', Operators::IS_NOT_EMPTY, Argument::any())->shouldBeCalled();
-        $pqb->addFilter('variant_group', Operators::IS_EMPTY, Argument::any())->shouldBeCalled();
 
         $pqb->execute()->willReturn([$product1, $product2, $product3]);
         $product1->getId()->willReturn(42);
