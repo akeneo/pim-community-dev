@@ -634,9 +634,9 @@ config:
         pim/product-edit-form/associations:                pimenrich/js/product/form/associations
         pim/product-edit-form/locale-switcher:             pimenrich/js/product/form/locale-switcher
         pim/product-edit-form/scope-switcher:              pimenrich/js/product/form/scope-switcher
-        pim/product-edit-form/panel/completeness:          pimenrich/js/product/form/panel/completeness
-        pim/product-edit-form/panel/history:               pimenrich/js/product/form/panel/history
-        pim/product-edit-form/panel/comments:              pimenrich/js/product/form/panel/comments
+        pim/product-edit-form/completeness:                pimenrich/js/product/form/completeness
+        pim/product-edit-form/history:                     pimenrich/js/product/form/history
+        pim/product-edit-form/comments:                    pimenrich/js/product/form/comments
         pim/product-edit-form/save:                        pimenrich/js/product/form/save
         pim/product-edit-form/sequential-edit:             pimenrich/js/product/form/sequential-edit
         pim/product-edit-form/delete:                      pimenrich/js/product/form/delete
@@ -888,9 +888,9 @@ config:
         pim/template/product/tab/attribute/variant-group:    pimenrich/templates/product/tab/attributes/variant-group.html
         pim/template/product/tab/associations:               pimenrich/templates/product/tab/associations.html
         pim/template/product/tab/association-panes:          pimenrich/templates/product/tab/association-panes.html
-        pim/template/product/panel/completeness:             pimenrich/templates/product/panel/completeness.html
-        pim/template/product/panel/history:                  pimenrich/templates/product/panel/history.html
-        pim/template/product/panel/comments:                 pimenrich/templates/product/panel/comments.html
+        pim/template/product/completeness:                   pimenrich/templates/product/completeness.html
+        pim/template/product/history:                        pimenrich/templates/product/history.html
+        pim/template/product/comments:                       pimenrich/templates/product/comments.html
         pim/template/product/locale-switcher:                pimenrich/templates/product/locale-switcher.html
         pim/template/product/sequential-edit:                pimenrich/templates/product/sequential-edit.html
         pim/template/product/status-switcher:                pimenrich/templates/product/status-switcher.html

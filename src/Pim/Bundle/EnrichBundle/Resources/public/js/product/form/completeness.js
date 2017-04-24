@@ -13,7 +13,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'pim/template/product/panel/completeness',
+        'pim/template/product/completeness',
         'pim/fetcher-registry',
         'pim/i18n',
         'pim/user-context'

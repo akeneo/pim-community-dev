@@ -14,7 +14,7 @@ define(
         'oro/translator',
         'backbone',
         'pim/form',
-        'pim/template/product/panel/history',
+        'pim/template/product/history',
         'routing',
         'oro/mediator',
         'pim/fetcher-registry',

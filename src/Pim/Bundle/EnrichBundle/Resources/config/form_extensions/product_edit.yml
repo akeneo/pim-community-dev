@@ -225,27 +225,24 @@ extensions:
         position: 90
 
     pim-product-edit-form-completeness:
-        # TODO Move file
-        module: pim/product-edit-form/panel/completeness
+        module: pim/product-edit-form/completeness
         parent: pim-product-edit-form-column-tabs
         targetZone: container
-        position: 100
+        position: 120
 
     pim-product-edit-form-comments:
-        # TODO Move file
-        module: pim/product-edit-form/panel/comments
+        module: pim/product-edit-form/comments
         parent: pim-product-edit-form-column-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_comment
-        position: 110
+        position: 130
 
     pim-product-edit-form-history:
-        # TODO Move file
-        module: pim/product-edit-form/panel/history
+        module: pim/product-edit-form/history
         parent: pim-product-edit-form-column-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_history
-        position: 120
+        position: 140
 
     pim-product-edit-form-copy-scope-switcher:
         module: pim/product-edit-form/scope-switcher
