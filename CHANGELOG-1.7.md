@@ -217,6 +217,7 @@
 
 ### Classes
 
+- Remove class `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ScalarConverter`
 - Remove class `Pim\Component\ReferenceData\Normalizer\Structured\ReferenceDataNormalizer`
 - Remove class `Oro\Bundle\UserBundle\Entity\Manager\GroupManager`
 - Remove class `Oro\Bundle\UserBundle\Entity\Manager\RoleManager`
