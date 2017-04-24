@@ -202,21 +202,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Given /^I open the history$/
-     *
-     * @throws ExpectationException
-     */
-    public function iOpenTheHistory()
-    {
-        $this->getCurrentPage()->getElement('Panel sidebar')->openPanel('History');
-        $this->getMainContext()->spin(function () {
-            return $this->getCurrentPage()->find('css', '.expand-history');
-        }, 'Cannot expand history')->click();
-
-        $this->wait();
-    }
-
-    /**
      * @Then /^I should see (\d+) versions in the history$/
      */
     public function iShouldSeeVersionsInTheHistory($expectedCount)

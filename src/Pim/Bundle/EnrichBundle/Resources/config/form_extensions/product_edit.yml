@@ -245,8 +245,8 @@ extensions:
 
     pim-product-edit-form-history:
         module: pim/product-edit-form/panel/history
-        parent: pim-product-edit-form-panels
-        targetZone: panel-content
+        parent: pim-product-edit-form-column-tabs
+        targetZone: container
         aclResourceId: pim_enrich_product_history
         position: 120
 

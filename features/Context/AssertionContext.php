@@ -328,7 +328,7 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeHistory(TableNode $table)
     {
-        if ($this->getCurrentPage()->find('css', '.panel-container')) {
+        if ($this->getCurrentPage()->find('css', '.history-panel')) {
             $this->iShouldSeeHistoryInPanel($table);
 
             return;

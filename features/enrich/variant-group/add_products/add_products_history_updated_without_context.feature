@@ -40,7 +40,7 @@ Feature: Add products to a variant group
     And I click on the "Delete" action of the row which contains "SANDAL"
     And I confirm the deletion
     Then I edit the "sandal-white-37" product
-    And I open the history
+    And I visit the "History" column tab
     And I should see history in panel:
       | version | author                                        | property | value           |
       | 5       | Julia Stark                                   | groups   |                 |

@@ -25,7 +25,7 @@ Feature: Display the product history
     And I fill in the following information:
       | color | Red |
     Then I save the product
-    And I open the history
+    And I visit the "History" column tab
     And I should see history:
       | version | property | value |
       | 2       | [color]  | Red   |
@@ -33,7 +33,7 @@ Feature: Display the product history
     And I fill in the following information:
       | color | Green |
     Then I save the product
-    And I open the history
+    And I visit the "History" column tab
     And I should see history in panel:
       | version | property | value |
       | 3       | [color]  | Green |
@@ -43,7 +43,7 @@ Feature: Display the product history
     And I fill in the following information:
       | fabrics | Cashmerewool, Neoprene |
     Then I save the product
-    And I open the history
+    And I visit the "History" column tab
     And I should see history in panel:
       | version | property  | value                 |
       | 2       | [fabrics] | Cashmerewool,Neoprene |
