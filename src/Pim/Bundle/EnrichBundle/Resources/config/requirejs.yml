@@ -356,7 +356,6 @@ config:
         pim/job/common/edit/label:                                   pimenrich/js/job/common/edit/label
         pim/job/common/edit/meta:                                    pimenrich/js/job/common/edit/meta
         pim/job/export/edit/delete:                                  pimenrich/js/job/export/edit/delete
-        pim/job/export/edit/edit-button:                             pimenrich/js/job/export/edit/edit-button
         pim/job/import/edit/delete:                                  pimenrich/js/job/import/edit/delete
         pim/job/common/edit/validation:                              pimenrich/js/job/common/edit/validation
         pim/job/common/edit/launch:                                  pimenrich/js/job/common/edit/launch

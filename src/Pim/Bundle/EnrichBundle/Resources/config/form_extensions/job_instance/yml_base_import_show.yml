@@ -99,7 +99,7 @@ extensions:
             backUrl: pim_importexport_import_profile_index
 
     pim-job-instance-yml-base-import-show-edit:
-        module: pim/job/export/edit/edit-button
+        module: pim/common/redirect
         parent: pim-job-instance-yml-base-import-show
         targetZone: buttons
         position: 100
