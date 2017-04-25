@@ -226,7 +226,6 @@ config:
                     aclResourceId: pim_enrich_grouptype_edit
                 pim_enrich_product_edit:
                     module: pim/controller/product
-                    aclResourceId: pim_enrich_product_edit_attributes
                 pim_enrich_group_edit:
                     module: pim/controller/group
                     aclResourceId: pim_enrich_group_edit
