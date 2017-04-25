@@ -156,8 +156,9 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.group_type'
-            - '@pim_catalog.builder.product'
-            - '@pim_catalog.updater.product'
+            - '@pim_catalog.factory.product_value'
+            - '@akeneo_file_storage.repository.file_info'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@pim_catalog.query.product_query_builder_factory'
             - '%pim_catalog.entity.product_template.class%'
 

@@ -42,7 +42,9 @@
     `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`,
     `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface` and
     `$storageDriver`, and add `Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface`
-- Change the constructor of `Pim\Component\Connector\Writer\File\ProductColumnSorter` to repace `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` by `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepositoryInterface`
+- Change the constructor of `Pim\Component\Connector\Writer\File\ProductColumnSorter` to replace `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` by `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepositoryInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\VariantGroupUpdater` to replace `Pim\Component\Catalog\BuilderProductBuilderInterface` and `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`
+    by `Pim\Component\Catalog\Factory\ProductValueFactory`, `Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface` and `Akeneo\Component\FileStorage\File\FileStorerInterface`
 
 ### Others
 

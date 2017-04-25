@@ -77,10 +77,8 @@ class MassActionDispatcher
         $parameters = $this->prepareMassActionParameters($request);
         $datagrid = $parameters['datagrid'];
         $massAction = $parameters['massAction'];
-        $inset = $parameters['inset'];
-        $values = $parameters['values'];
 
-        return $this->performMassAction($datagrid, $massAction, $inset, $values);
+        return $this->performMassAction($datagrid, $massAction);
     }
 
     /**
