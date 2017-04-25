@@ -55,7 +55,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
      *     },
      *     {
      *         "amount": "12.0"|12|null,
-     *         "currency": "EUR"
+     *         "currency": "USD"
      *     }
      * ]
      * "data" index is not used so it can be null
@@ -85,15 +85,20 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
     {
         $productValue = $product->getValue($attribute->getCode(), $locale, $scope);
 
+        $currencyToRemove = [];
+        foreach ($data as $priceToRemove) {
+            $currencyToRemove[] = $priceToRemove['currency'];
+        }
+
         if (null !== $productValue) {
             $prices = [];
             foreach ($productValue->getData() as $price) {
-                if (!in_array(['amount' => $price->getData(), 'currency' => $price->getCurrency()], $data)) {
+                if (!in_array($price->getCurrency(), $currencyToRemove)) {
                     $prices[] = ['amount' => $price->getData(), 'currency' => $price->getCurrency()];
                 }
             }
 
-            $this->productBuilder->addOrReplaceProductValue($product, $attribute, $scope, $locale, $prices);
+            $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope, $prices);
         }
     }
 

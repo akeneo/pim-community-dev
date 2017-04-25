@@ -972,7 +972,7 @@ class FixturesContext extends BaseFixturesContext
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
             $options      = $productValue->getData();
             $optionCodes  = array_map(
-                function($option) {
+                function ($option) {
                     return $option->getCode();
                 },
                 $options

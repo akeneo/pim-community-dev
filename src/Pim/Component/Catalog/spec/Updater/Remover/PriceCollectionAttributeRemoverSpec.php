@@ -83,7 +83,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $priceUSD->getCurrency()->willReturn('USD');
 
         $productBuilder
-            ->addOrReplaceProductValue($penProduct, $attribute, $scope, $locale, [['amount' => 42, 'currency' => 'USD']])
+            ->addOrReplaceProductValue($penProduct, $attribute, $locale, $scope, [])
             ->shouldBeCalled();
 
         $productBuilder->addOrReplaceProductValue($bookProduct, Argument::cetera())->shouldNotBeCalled();
