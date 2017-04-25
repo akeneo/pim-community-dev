@@ -18,12 +18,17 @@ define(
     function ($, _, Backbone, BaseForm, template) {
         return BaseForm.extend({
             template: _.template(template),
+
             className: 'AknTabContainer tabbable tabs-top',
+
             tabs: [],
+
             urlParsed: false,
+
             events: {
                 'click header ul.nav-tabs li': 'selectTab'
             },
+
             currentKey: 'current_form_tab',
 
             /**

@@ -36,8 +36,6 @@ define(
              */
             registerTab: function (event) {
                 FormTabs.prototype.registerTab.apply(this, arguments);
-
-                event.currentTab = this.getCurrentTab();
                 this.getRoot().trigger('column-tab:register', event);
             }
         });

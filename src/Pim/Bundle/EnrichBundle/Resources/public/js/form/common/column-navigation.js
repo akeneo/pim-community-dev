@@ -33,11 +33,13 @@ define(
                 'click .AknDropdown-menuLink': 'selectTab'
             },
 
+            currentKey: 'current_column_tab',
+
             /**
              * {@inheritdoc}
              */
             configure: function () {
-                this.tabs = [];
+                this.currentTab = sessionStorage.getItem(this.currentKey);
 
                 this.listenTo(this.getRoot(), 'column-tab:register', this.registerTab);
 
@@ -69,8 +71,6 @@ define(
                     label: event.label
                 });
 
-                this.currentTab = event.currentTab;
-
                 this.render();
             },
 
@@ -92,15 +92,9 @@ define(
              * If there is no selected tab, returns the first available tab.
              */
             getCurrentTabOrDefault: function () {
-                var result = null;
+                var result = _.findWhere(this.tabs, {code: this.currentTab});
 
-                _.each(this.tabs, function (tab) {
-                    if (tab.code === this.currentTab) {
-                        result = this.currentTab;
-                    }
-                }.bind(this));
-
-                return (null !== result) ? result : _.first(_.pluck(this.tabs, 'code'));
+                return (undefined !== result) ? result.code : _.first(_.pluck(this.tabs, 'code'));
             }
         });
     }

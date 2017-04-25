@@ -33,13 +33,13 @@ define(
                 this.showMessage(type, message, options);
             },
 
-            enqueueMessage: function (type, message, options) {
+            enqueueMessage: function () {
                 this.queue.push(arguments);
             },
 
             showQueuedMessages: function () {
                 while (this.queue.length) {
-                    var args = queue.shift();
+                    var args = this.queue.shift();
                     this.showMessage.apply(this, args);
                 }
             },

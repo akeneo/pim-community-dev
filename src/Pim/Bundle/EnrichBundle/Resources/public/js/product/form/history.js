@@ -37,15 +37,10 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            
             className: 'panel-pane history-panel',
-            
             loading: false,
-            
             versions: [],
-            
             actions: {},
-            
             events: {
                 'click .expanded .AknGrid-bodyCell': 'toggleVersion'
             },
