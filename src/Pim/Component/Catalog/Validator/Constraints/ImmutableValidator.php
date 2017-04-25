@@ -57,12 +57,4 @@ class ImmutableValidator extends ConstraintValidator
             }
         }
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTargets()
-    {
-        return self::CLASS_CONSTRAINT;
-    }
 }
