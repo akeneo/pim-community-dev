@@ -84,7 +84,7 @@ class CreateClientCommand extends ContainerAwareCommand
      * Returns the output into the selected format.
      * @param OutputInterface $output
      * @param ClientInterface $client
-     * @param $format
+     * @param string $format
      */
     private function displayOutput(OutputInterface $output, ClientInterface $client, $format)
     {
