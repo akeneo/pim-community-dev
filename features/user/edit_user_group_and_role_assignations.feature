@@ -50,6 +50,7 @@ Feature: Edit a user groups and roles
     And I visit the "Users" tab
     And I click on the "Peter" row
     And I save the group
+    And I visit the "Users" tab
     Then I should see the flash message "Group saved"
     And the row "Peter" should be checked
 
