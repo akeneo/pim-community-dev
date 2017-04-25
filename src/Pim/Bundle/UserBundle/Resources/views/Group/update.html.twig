@@ -2,6 +2,9 @@
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
+{% set entityId = form.vars.value.id %}
+{% set title = entityId ? 'Update Group'|trans : 'New Group'|trans %}
+{% set gridName = 'pimgroup-user-grid' %}
 {% set formAction = entityId ? path('oro_user_group_update', { 'id': entityId}) : path('oro_user_group_create') %}
 
 {% set breadcrumbs = {} %}
