@@ -1,28 +1,37 @@
-<div class="tabbable tabs-left">
-    <div class="sidebar">
-        <ul class="AknVerticalNavtab nav nav-tabs" id="trees-list">
-            <li class="AknVerticalNavtab-item AknVerticalNavtab-header header"></li>
-            <% _.each(trees, function (tree) { %>
-                <li class="AknVerticalNavtab-item <% if (tree.code === state.currentTree) { %> AknVerticalNavtab-item--active active<% } %>" data-tree="<%- tree.code %>" data-tree-id="<%- tree.id %>">
-                    <a class="AknVerticalNavtab-link" href="javascript:void(0);" id="<%- treeLinkSelector + tree.id %>">
-                        <div class="AknAcl">
-                            <i class="icon-ok <%- tree.associated ? 'green AknAcl-icon--granted' : 'gray' %>"></i>
-                            <%- tree.label %>
-                        </div>
-                        <span class="AknBadge AknBadge--grey" data-tree-id="<%- tree.code %>"><%- categoriesCount[tree.id] %></span>
-                    </a>
-                </li>
-            <% }); %>
-        </ul>
+<div class="tabbable">
+    <div class="AknSearch">
+        <div class="AknSearch-selectors AknButtonList AknButtonList--right">
+            <ul class="AknDropdown AknButtonList-item nav nav-tabs group-selector">
+                <a class="AknActionButton" data-toggle="dropdown" href="#">
+                    Catalog:
+                    <span class="AknActionButton-strong current-category">
+                        <% _.each(trees, function (tree) { %>
+                            <% if (tree.code === state.currentTree) { %>
+                                <%- tree.label %>
+                            <% } %>
+                        <% }); %>
+                    </span>
+                    <span class="AknActionButton-caret AknCaret"></span>
+                </a>
+                <ul class="AknDropdown-menu AknDropdown-menu--right" id="trees-list">
+                    <li class="AknDropdown-menuTitle">Catalog</li>
+                    <% _.each(trees, function (tree) { %>
+                        <li data-tree="<%- tree.code %>" data-tree-id="<%- tree.id %>">
+                            <a class="AknDropdown-menuLink <% if (tree.code === state.currentTree) { %> AknDropdown-menuLink--active<% } %>" href="javascript:void(0);" id="<%- treeLinkSelector + tree.id %>">
+                                <span class="tree-label"><%- tree.label %></span>
+                                <span class="AknBadge AknBadge--grey" data-tree-id="<%- tree.code %>"><%- categoriesCount[tree.id] %></span>
+                            </a>
+                        </li>
+                    <% }); %>
+                </ul>
+            </ul>
+        </div>
     </div>
-    <div class="AknTabContainer-content tab-content">
+    <div class="tab-content">
         <div class="tab-pane active" id="product-categories">
             <div id="trees" data-id="<%- product.meta.id %>" data-datalocale="<%- locale %>" data-selected-tree="<%- trees[0].id %>">
                 <% _.each(trees, function (tree) { %>
                     <div class="tree root-unselectable" data-tree-id="<%- tree.id %>">
-                        <header class="AknTabHeader tab-header">
-                            <div class="AknTabHeader-title"><%- tree.label %></div>
-                        </header>
                         <div id="tree-<%- tree.id %>" class="buffer-small-left"></div>
                     </div>
                 <% }); %>

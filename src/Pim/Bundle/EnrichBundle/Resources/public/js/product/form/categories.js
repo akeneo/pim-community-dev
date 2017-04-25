@@ -33,6 +33,9 @@ define(
             treeAssociate: null,
             cache: {},
 
+            /**
+             * {@inheritdoc}
+             */
             initialize: function () {
                 this.state = new Backbone.Model();
 
@@ -41,6 +44,9 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
 
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.trigger('tab:register', {
                     code: this.code,
@@ -51,12 +57,18 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 this.loadTrees().done(function (trees) {
                     var categoriesCount = {};
                     _.each(_.pluck(trees, 'id'), function (id) {
                         categoriesCount[id] = 0;
                     });
+
+                    this.state.set('currentTree', _.first(trees).code);
+                    this.state.set('currentTreeId', _.first(trees).id);
 
                     this.$el.html(
                         this.template({
@@ -73,9 +85,8 @@ define(
                         list_categories: 'pim_enrich_product_listcategories',
                         children:        'pim_enrich_categorytree_children'
                     });
+
                     this.delegateEvents();
-                    this.state.set('currentTree', _.first(trees).code);
-                    this.state.set('currentTreeId', _.first(trees).id);
                     this.initCategoryCount(trees);
                 }.bind(this));
 
@@ -107,10 +118,15 @@ define(
                 this.state.set('currentTree', event.currentTarget.dataset.tree);
                 this.state.set('currentTreeId', event.currentTarget.dataset.treeId);
                 this.treeAssociate.switchTree(event.currentTarget.dataset.treeId);
+
+                // TODO Use category switcher template
                 $(event.currentTarget)
-                    .addClass('AknVerticalNavtab-item--active')
-                    .siblings('.AknVerticalNavtab-item')
-                    .removeClass('AknVerticalNavtab-item--active');
+                    .find('.AknDropdown-menuLink').addClass('AknDropdown-menuLink--active').end()
+                    .siblings('[data-tree]')
+                    .each(function (i, link) {
+                        $(link).find('.AknDropdown-menuLink').removeClass('AknDropdown-menuLink--active')
+                    }).end();
+                this.$el.find('.current-category:first').html($(event.currentTarget).find('.tree-label').text());
             },
 
             updateModel: function (event) {
@@ -148,7 +164,8 @@ define(
             /**
              * count selected leaves in the category jstree
              *
-             * @param {String} rootTreeCode
+             * @param {String}  rootTreeCode
+             * @param {integer} treeId
              */
             updateCategoryCount: function (rootTreeCode, treeId) {
                 var $rootTreeContainer = this.$('li[data-code=' + rootTreeCode +  ']');
@@ -170,7 +187,14 @@ define(
              * @param {integer} categoryCount
              */
             updateCategoryBadge: function (rootTreeCode, categoryCount) {
-                this.$('li[data-tree=' + rootTreeCode +  ']').find('.AknBadge').html(categoryCount);
+                var badge = this.$('li[data-tree=' + rootTreeCode +  ']').find('.AknBadge');
+                badge.html(categoryCount);
+
+                if (categoryCount > 0) {
+                    badge.addClass('AknBadge--enabled').removeClass('AknBadge--grey');
+                } else {
+                    badge.removeClass('AknBadge--enabled').addClass('AknBadge--grey');
+                }
             },
 
             /**
