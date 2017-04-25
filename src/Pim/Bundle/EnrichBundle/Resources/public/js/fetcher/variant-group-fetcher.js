@@ -48,7 +48,7 @@ define(
 
                         return variantGroup;
                     })
-                    .then(ProductManager.generateMissing)
+                    .then(ProductManager.generateMissing.bind(ProductManager))
                     .then(function (variantGroup) {
                         mediator.trigger('pim_enrich:form:variant_group:post_fetch', variantGroup);
 
