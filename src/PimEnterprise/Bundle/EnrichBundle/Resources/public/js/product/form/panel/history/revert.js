@@ -27,14 +27,29 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(revertTemplate),
-            render: function () {
+
+            /**
+             * Trigger a new event 'action:register' to send the revert action button to the parent.
+             *
+             * {@inheritdoc}
+             */
+            configure: function () {
                 var $revertAction = $(this.template());
                 $revertAction.on('click', this.revert.bind(this));
 
-                this.getParent().addAction('revert', $revertAction);
+                this.trigger('action:register', {
+                    code: 'revert',
+                    element: $revertAction
+                });
 
-                return this;
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
+
+            /**
+             * Revert the product to the specified version
+             *
+             * @param {Event} event
+             */
             revert: function (event) {
                 event.stopPropagation();
 
