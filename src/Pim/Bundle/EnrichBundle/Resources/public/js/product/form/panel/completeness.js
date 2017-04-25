@@ -120,9 +120,11 @@ define(
              * On family change listener
              */
             onChangeFamily: function () {
-                if (!_.isEmpty(this.getRoot().model._previousAttributes)) {
-                    this.render();
-                }
+                var data = this.getFormData();
+                data.meta.completenesses = [];
+                this.setData(data);
+
+                this.render();
             }
         });
     }
