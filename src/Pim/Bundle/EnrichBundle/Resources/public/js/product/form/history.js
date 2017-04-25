@@ -60,6 +60,7 @@ define(
                 });
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.update);
+                this.onExtensions('action:register',  this.addAction.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -83,6 +84,8 @@ define(
                                 })
                             );
 
+                            this.renderExtensions();
+
                             if (this.actions) {
                                 _.each(this.$el.find('td.actions'), function (element) {
                                     _.each(this.actions, function (action) {
@@ -90,9 +93,6 @@ define(
                                     }.bind(this));
                                 }.bind(this));
                             }
-
-                            this.delegateEvents();
-                            this.renderExtensions();
 
                             this.delegateEvents();
                         }.bind(this));
@@ -199,11 +199,10 @@ define(
             /**
              * Add action to the history
              *
-             * @param {action code} code
-             * @param {DOMElement}  element
+             * @param {Event} event
              */
-            addAction: function (code, element) {
-                this.actions[code] = element;
+            addAction: function (event) {
+                this.actions[event.code] = event.element;
             },
 
             /**
