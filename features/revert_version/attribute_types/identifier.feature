@@ -15,6 +15,7 @@ Feature: Revert product attributes to a previous version
     Given I am on the "jeans" product page
     When I change the "SKU" to "pantalon"
     And I save the product
+    And I should not see the text "There are unsaved changes."
     And the history of the product "pantalon" has been built
     And I open the history
     Then I should see 2 versions in the history

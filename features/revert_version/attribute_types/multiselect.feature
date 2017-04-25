@@ -20,6 +20,7 @@ Feature: Revert product attributes to a previous version
     | Code | very_wet      |
     | en   | Extremely wet |
     And I save the product
+    And I should not see the text "There are unsaved changes"
     And the history of the product "jean" has been built
     And I open the history
     Then I should see 2 versions in the history
@@ -54,6 +55,7 @@ Feature: Revert product attributes to a previous version
     And I add available attributes Weather conditions
     And I change the "Weather conditions" to "Hot, Wet"
     And I save the product
+    And I should not see the text "There are unsaved changes"
     And the history of the product "marcel" has been built
     And I open the history
     Then I should see 2 versions in the history

@@ -73,6 +73,7 @@ Feature: Follow project completeness
       | todo | in_progress | done |
       | 0    | 3           | 0    |
     When I am on the "tshirt-the-witcher-3" product page
+    And I switch the locale to "en_US"
     And I fill in the following information:
       | Description | Description |
     And I press the "Save" button
