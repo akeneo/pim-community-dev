@@ -23,10 +23,9 @@ Feature: purge product versions
     And I confirm the publishing
     And I change the Description to "Very high quality boots"
     And I save the product
-    And I open the "History" panel
+    And I visit the "History" column tab
     Then there should be 4 updates
     When I launch the purge versions command for entity "Pim\Component\Catalog\Model\Product"
     And I am on the "boots" product page
     And I save the product
-    And I open the "History" panel
     Then there should be 3 updates

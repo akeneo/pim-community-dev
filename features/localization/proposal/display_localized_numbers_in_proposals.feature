@@ -34,7 +34,7 @@ Feature: Display localized numbers in proposals
       | UI locale | French (France) |
     And I save the user
     And I am on the "tshirt" product page
-    When I visit the "Propositions" tab
+    When I visit the "Propositions" column tab
     Then I should see the text "15,25 $US"
     And I should see the text "12,1234 KILOGRAM"
     And I should see the text "98,765"

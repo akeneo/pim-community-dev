@@ -11,7 +11,7 @@ Feature: Create product drafts for new attributes added to the product
       | tshirt | tees   | summer_collection |
     And I am logged in as "Mary"
     Given I am on the "tees" family page
-    And I visit the "Attributes" column tab
+    And I visit the "Attributes" tab
     And I add available attribute Comment
     And I save the family
     And I should not see the text "There are unsaved changes"

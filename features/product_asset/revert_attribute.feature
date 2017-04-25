@@ -28,7 +28,7 @@ Feature: Revert an assets collection in a product
     Then I should see history:
       | version | property | value           |
       | 2       | gallery  | machine,minivan |
-    When I close the "History" panel
+    And I visit the "Attributes" column tab
     And I start to manage assets for "gallery"
     And I change the page size to 100
     And I uncheck the row "machine"

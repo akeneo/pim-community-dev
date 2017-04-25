@@ -18,9 +18,7 @@ Feature: Check product edit tabs visibility
   Scenario: Not being able to classify a product if I am not owner
     Given I am logged in as "Mary"
     And I edit the "rangers" product
-    And I wait 300 seconds
     Then I should not see the "Categories" column tab
-
     When I logout
     And I am logged in as "Julia"
     And I edit the "rangers" product

@@ -23,7 +23,7 @@ Feature: Partial approve
       | Name  | Summer jacket |
     And I am logged in as "Mary"
     When I edit the "jacket" product
-    Then I should not see the "Proposals" tab
+    Then I should not see the "Proposals" column tab
 
   Scenario: I am informed if a proposal can be only partially reviewed
     Given Mary proposed the following change to "tshirt":

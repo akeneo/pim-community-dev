@@ -39,7 +39,7 @@ Feature: Revert product attributes to a previous version
       | 1       | SKU                | jean     |
       | 1       | family             | pants    |
       | 1       | enabled            | 1        |
-    When I visit the "Attribute" tab
+    When I visit the "Attributes" column tab
     Then the product "jean" should have the following values:
       | weather_conditions |  |
 

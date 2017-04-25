@@ -16,4 +16,4 @@ Feature: Proposal tab should be visible
     And I save the role
     Then I should not see the text "There are unsaved changes."
     When I edit the "black-boots" product
-    Then I should see the "Proposals" tab
+    Then I should see the "Proposals" column tab

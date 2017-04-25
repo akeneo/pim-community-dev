@@ -22,7 +22,7 @@ Feature: Enforce no permissions for an attribute group in variant group
       | Allowed to view attributes | IT support |
     And I save the attribute group
     When I edit the "SANDAL" variant group
-    And I visit the "Attributes" column tab
+    And I visit the "Attributes" tab
     Then I should not see available attributes Name in group "info"
     And I should not see the Name field
 
@@ -34,5 +34,5 @@ Feature: Enforce no permissions for an attribute group in variant group
       | Allowed to edit attributes | IT support          |
     And I save the attribute group
     When I edit the "SANDAL" variant group
-    And I visit the "Attributes" column tab
+    And I visit the "Attributes" tab
     Then the fields Name should be disabled

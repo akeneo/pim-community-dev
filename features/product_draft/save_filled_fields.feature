@@ -24,7 +24,7 @@ Feature: Save only filled fields after a save
     And I logout
     When I am logged in as "Julia"
     And I edit the "sport-sock" product
-    And I visit the "Proposal" tab
+    And I visit the "Proposals" column tab
     Then I should see the following changes on the proposals:
       | product    | author | attribute |
       | sport-sock | Mary   | name      |

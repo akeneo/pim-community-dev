@@ -108,8 +108,8 @@ extensions:
 
     pimee-published-product-view-completeness:
         module: pim/product-edit-form/panel/completeness
-        parent: pimee-published-product-view-panels
-        targetZone: panel-content
+        parent: pimee-published-product-view-column-tabs
+        targetZone: container
         position: 100
 
     pimee-published-product-view-panel-selector:
