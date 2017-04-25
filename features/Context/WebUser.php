@@ -7,14 +7,11 @@ use Behat\Behat\Context\Step\Then;
 use Behat\Behat\Exception\BehaviorException;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Box\Spout\Common\Type;
-use Box\Spout\Reader\ReaderFactory;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\SpinException;
 use Context\Spin\TimeoutException;
@@ -34,8 +31,8 @@ class WebUser extends RawMinkContext
 {
     use SpinCapableTrait;
     use ClosestTrait;
-    /* -------------------- Page-related methods -------------------- */
 
+    /* -------------------- Page-related methods -------------------- */
 
     /**
      * @param string $name
@@ -191,6 +188,30 @@ class WebUser extends RawMinkContext
     public function iShouldSeeTheTab($tab)
     {
         assertNotNull($this->getCurrentPage()->getFormTab($tab));
+    }
+
+    /**
+     * @param $not     string|null
+     * @param $tabName string
+     *
+     * @Then /^I should (?P<not>not )?see the "(?P<tabName>[^"]*)" column tab$/
+     */
+    public function iShouldSeeTheColumnTab($tabName, $not = null)
+    {
+        $this->spin(function () use ($not, $tabName) {
+            $found = false;
+            foreach ($this->getCurrentPage()->getColumnTabs() as $tab) {
+                if (trim($tab->getText()) === $tabName) {
+                    $found = true;
+                }
+            }
+
+            if (!$not) {
+                return !$found;
+            } else {
+                return $found;
+            }
+        }, sprintf('Expected to %ssee the "" column tab', $not, $tabName));
     }
 
     /**
@@ -1124,7 +1145,7 @@ class WebUser extends RawMinkContext
      * @When /^I remove the "([^"]*)" attribute$/
      *
      * @throws ExpectationException
-     * @throws \Behat\Mink\Exception\ElementNotFoundException
+     * @throws ElementNotFoundException
      */
     public function iRemoveTheAttribute($field)
     {

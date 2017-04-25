@@ -14,7 +14,6 @@ use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
 use Pim\Behat\Context\Domain\Enrich\CompletenessContext;
 use Pim\Behat\Context\Domain\Enrich\GridPaginationContext;
-use Pim\Behat\Context\Domain\Enrich\PanelContext;
 use Pim\Behat\Context\Domain\Enrich\Product\AssociationTabContext;
 use Pim\Behat\Context\Domain\Enrich\ProductGroupContext;
 use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
@@ -74,7 +73,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('domain-xlsx-files', new XlsxFileContext());
         $this->useContext('domain-import-profiles', new ImportProfilesContext());
         $this->useContext('domain-pagination-grid', new GridPaginationContext());
-        $this->useContext('domain-panel', new PanelContext());
         $this->useContext('domain-product-association-tab', new AssociationTabContext());
         $this->useContext('domain-tree', new TreeContext());
         $this->useContext('domain-secondary-actions', new SecondaryActionsContext());

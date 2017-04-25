@@ -463,8 +463,7 @@ class Base extends Page
     public function visitColumnTab($tabName)
     {
         $this->spin(function () use ($tabName) {
-            $tabs = $this->findAll('css', $this->elements['Column navigation link']['css']);
-            foreach ($tabs as $tab) {
+            foreach ($this->getColumnTabs() as $tab) {
                 if (trim($tab->getText()) === $tabName) {
                     $tab->click();
 
@@ -482,6 +481,14 @@ class Base extends Page
     public function getCurrentColumnTab()
     {
         return $this->find('css', $this->elements['Current column link']['css']);
+    }
+
+    /**
+     * @return NodeElement[]
+     */
+    public function getColumnTabs()
+    {
+        return $this->findAll('css', $this->elements['Column navigation link']['css']);
     }
 
     /**
