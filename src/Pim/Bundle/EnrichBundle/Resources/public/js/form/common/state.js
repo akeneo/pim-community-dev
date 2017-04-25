@@ -15,9 +15,7 @@ define(
         'backbone',
         'pim/dialog',
         'pim/form',
-        'text!pim/template/form/state',
-        'pim/router',
-        'oro/mediator'
+        'text!pim/template/form/state'
     ],
     function (
         $,
@@ -26,9 +24,7 @@ define(
         Backbone,
         Dialog,
         BaseForm,
-        template,
-        router,
-        mediator
+        template
     ) {
         return BaseForm.extend({
             className: 'updated-status',
