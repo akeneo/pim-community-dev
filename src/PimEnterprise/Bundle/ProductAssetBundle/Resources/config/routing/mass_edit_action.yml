@@ -1,6 +1,6 @@
 pimee_product_asset_mass_edit_asset_action_choose:
-    path: /asset/choose/{operationGroup}
-    defaults: { _controller: pimee_product_asset.controller.asset.mass_edit_action:chooseAction, operationGroup: mass-edit }
+    path: /asset/choose
+    defaults: { _controller: pimee_product_asset.controller.asset.mass_edit_action:chooseAction }
     methods: [GET, POST]
 
 pimee_product_asset_mass_edit_asset_action_configure:

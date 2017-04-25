@@ -1,6 +1,6 @@
 pimee_workflow_mass_edit_published_action_choose:
-    path: /published/choose/{operationGroup}
-    defaults: { _controller: pimee_workflow.controller.published.mass_edit_action:chooseAction, operationGroup: mass-edit }
+    path: /published/choose
+    defaults: { _controller: pimee_workflow.controller.published.mass_edit_action:chooseAction }
     methods: [GET, POST]
 
 pimee_workflow_mass_edit_published_action_configure:
