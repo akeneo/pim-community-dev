@@ -18,15 +18,13 @@ extensions:
         position: 100
 
     pim-product-edit-form-history-published:
-        # TODO Move module
-        module: pimee/product-edit-form/panel/history/published
+        module: pimee/product-edit-form/tab/history/published
         parent: pim-product-edit-form-history
         targetZone: self
         position: 100
 
     pim-product-edit-form-revert:
-        # TODO Move module
-        module: pimee/product-edit-form/panel/history/revert
+        module: pimee/product-edit-form/tab/history/revert
         parent: pim-product-edit-form-history
         aclResourceId: pimee_versioning_product_version_revert
         targetZone: self

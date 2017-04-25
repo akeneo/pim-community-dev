@@ -23,7 +23,7 @@ config:
         # Form extensions
         pimee/product-edit-form/meta/published:            pimenterpriseworkflow/js/product/form/meta/published
         pimee/product-edit-form/meta/draft-status:         pimenterpriseworkflow/js/product/form/meta/draft-status
-        pimee/product-edit-form/panel/history/published:   pimenterpriseworkflow/js/product/form/panel/history/published
+        pimee/product-edit-form/tab/history/published:     pimenterpriseworkflow/js/product/form/tab/history/published
         pimee/product-edit-form/proposals:                 pimenterpriseworkflow/js/product/form/proposals
         pimee/product-edit-form/publish:                   pimenterpriseworkflow/js/product/form/publish
         pimee/product-edit-form/unpublish:                 pimenterpriseworkflow/js/product/form/unpublish
@@ -40,7 +40,7 @@ config:
         pimee/template/product/meta/published:                  pimenterpriseworkflow/templates/product/meta/published.html
         pimee/template/product/meta/draft-status:               pimenterpriseworkflow/templates/product/meta/draft-status.html
         pimee/template/product/meta/notification-comment:       pimenterpriseworkflow/templates/product/meta/comment.html
-        pimee/template/product/panel/history/published:         pimenterpriseworkflow/templates/product/panel/history/published.html
+        pimee/template/product/tab/history/published:           pimenterpriseworkflow/templates/product/tab/history/published.html
         pimee/template/product/tab/proposals:                   pimenterpriseworkflow/templates/product/tab/proposals.html
         pimee/template/product/publish:                         pimenterpriseworkflow/templates/product/publish.html
         pimee/template/product/unpublish:                       pimenterpriseworkflow/templates/product/unpublish.html
