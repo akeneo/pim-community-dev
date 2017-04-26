@@ -15,6 +15,11 @@ permission-changes:
         grant: The group <strong>{{ group }}</strong> will <strong>be {{ permission }}</strong>
         revoke: The group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong>
 
+pim_enrich:
+    entity:
+        attribute_label:
+            pim_assets_collection: Assets collection
+
 pimee_enrich:
     form:
         job_instance:
