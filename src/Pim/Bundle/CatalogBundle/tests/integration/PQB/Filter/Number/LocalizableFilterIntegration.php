@@ -17,34 +17,32 @@ class LocalizableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_localizable_number',
-                'type'                => AttributeTypes::NUMBER,
-                'localizable'         => true,
-                'scopable'            => false,
-                'negative_allowed'    => true
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_localizable_number',
+            'type'                => AttributeTypes::NUMBER,
+            'localizable'         => true,
+            'scopable'            => false,
+            'negative_allowed'    => true
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_localizable_number' => [
-                        ['data' => -15, 'locale' => 'en_US', 'scope' => null],
-                        ['data' => -14, 'locale' => 'fr_FR', 'scope' => null]
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_localizable_number' => [
+                    ['data' => -15, 'locale' => 'en_US', 'scope' => null],
+                    ['data' => -14, 'locale' => 'fr_FR', 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_localizable_number' => [
-                        ['data' => 19, 'locale' => 'en_US', 'scope' => null]
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_localizable_number' => [
+                    ['data' => 19, 'locale' => 'en_US', 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorInferior()

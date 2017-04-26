@@ -16,19 +16,17 @@ class BooleanFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct('yes', [
-                'values' => [
-                    'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]]
-                ]
-            ]);
+        $this->createProduct('yes', [
+            'values' => [
+                'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]]
+            ]
+        ]);
 
-            $this->createProduct('no', [
-                'values' => [
-                    'a_yes_no' => [['data' => false, 'locale' => null, 'scope' => null]]
-                ]
-            ]);
-        }
+        $this->createProduct('no', [
+            'values' => [
+                'a_yes_no' => [['data' => false, 'locale' => null, 'scope' => null]]
+            ]
+        ]);
     }
 
     public function testOperatorEquals()

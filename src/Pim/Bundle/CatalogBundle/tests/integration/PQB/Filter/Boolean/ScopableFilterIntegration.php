@@ -17,32 +17,30 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_scopable_yes_no',
-                'type'                => AttributeTypes::BOOLEAN,
-                'localizable'         => false,
-                'scopable'            => true,
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_scopable_yes_no',
+            'type'                => AttributeTypes::BOOLEAN,
+            'localizable'         => false,
+            'scopable'            => true,
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_scopable_yes_no' => [
-                        ['data' => true, 'scope' => 'ecommerce', 'locale' => null],
-                        ['data' => false, 'scope' => 'tablet', 'locale' => null]
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_scopable_yes_no' => [
+                    ['data' => true, 'scope' => 'ecommerce', 'locale' => null],
+                    ['data' => false, 'scope' => 'tablet', 'locale' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_scopable_yes_no' => [
-                        ['data' => true, 'scope' => 'ecommerce', 'locale' => null],
-                        ['data' => true, 'scope' => 'tablet', 'locale' => null],
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_scopable_yes_no' => [
+                    ['data' => true, 'scope' => 'ecommerce', 'locale' => null],
+                    ['data' => true, 'scope' => 'tablet', 'locale' => null],
                 ]
-            ]);
-        }
+            ]
+        ]);
     }
 
     public function testOperatorEquals()
