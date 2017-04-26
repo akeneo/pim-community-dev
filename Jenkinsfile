@@ -16,7 +16,7 @@ stage("Checkout") {
             choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehatTests'),
             string(defaultValue: 'ee,ce', description: 'PIM edition the behat tests should run on (comma separated values)', name: 'editions'),
             string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
-            choice(choices: '7.0\n7.1\n5.6', description: 'PHP version to run behat with', name: 'phpVersion'),
+            choice(choices: '7.0\n7.1', description: 'PHP version to run behat with', name: 'phpVersion'),
         ])
 
         editions = userInput['editions'].tokenize(',')
@@ -47,7 +47,7 @@ stage("Checkout") {
     checkouts['community'] = {
         node('docker') {
             deleteDir()
-            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer") {
                 unstash "pim_community_dev"
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -63,7 +63,7 @@ stage("Checkout") {
         checkouts['enterprise'] = {
             node('docker') {
                 deleteDir()
-            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer") {
                     unstash "pim_enterprise_dev"
 
                     sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -84,11 +84,9 @@ if (launchUnitTests.equals("yes")) {
     stage("Unit tests and Code style") {
         def tasks = [:]
 
-        tasks["phpunit-5.6"] = {runPhpUnitTest("5.6")}
         tasks["phpunit-7.0"] = {runPhpUnitTest("7.0")}
         tasks["phpunit-7.1"] = {runPhpUnitTest("7.1")}
 
-        tasks["phpspec-5.6"] = {runPhpSpecTest("5.6")}
         tasks["phpspec-7.0"] = {runPhpSpecTest("7.0")}
         tasks["phpspec-7.1"] = {runPhpSpecTest("7.1")}
 
@@ -163,7 +161,7 @@ def runPhpUnitTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer") {
                 unstash "pim_community_dev"
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -192,7 +190,7 @@ def runIntegrationTest(phpVersion, testSuiteName) {
         try {
             docker.image("elasticsearch:5.2").withRun("--name elasticsearch -e ES_JAVA_OPTS=\"-Xms256m -Xmx256m\"") {
                 docker.image("mysql:5.7").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim", "--sql_mode=ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION") {
-                    docker.image("carcel/php:${phpVersion}").inside("--link mysql:mysql --link elasticsearch:elasticsearch -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+                    docker.image("carcel/php:${phpVersion}").inside("--link mysql:mysql --link elasticsearch:elasticsearch -v /home/akeneo/.composer:/home/docker/.composer") {
                         unstash "pim_community_dev"
 
                         sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -223,7 +221,7 @@ def runPhpSpecTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer") {
                 unstash "pim_community_dev"
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -247,7 +245,7 @@ def runPhpCsFixerTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:7.1").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:7.1").inside("-v /home/akeneo/.composer:/home/docker/.composer") {
                 unstash "pim_community_dev"
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -313,11 +311,10 @@ def runPhpCouplingDetectorTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:7.1").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("carcel/php:7.1").inside("-v /home/akeneo/.composer:/home/docker/.composer") {
                 unstash "pim_community_dev"
 
-                sh "composer remove --dev --no-update doctrine/mongodb-odm-bundle;"
-                sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "./bin/php-coupling-detector detect --config-file=.php_cd.php src"
             }
         } finally {
