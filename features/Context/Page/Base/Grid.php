@@ -731,6 +731,11 @@ class Grid extends Index
     public function selectRow($value, $check = true)
     {
         $this->spin(function () use ($value, $check) {
+            $loadingWrapper = $this->find('css', '#loading-wrapper');
+            if ((null !== $loadingWrapper) && $loadingWrapper->isVisible()) {
+                return false;
+            }
+
             $row = $this->getRow($value);
             if (null === $row) {
                 return false;
