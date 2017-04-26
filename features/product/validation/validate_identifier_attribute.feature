@@ -17,7 +17,7 @@ Feature: Validate identifier attribute of a product
     When I am on the "bar" product page
     And I change the SKU to "sku-001"
     And I save the product
-    Then I should see validation tooltip "The value sku-001 is already set on another product for the unique attribute sku"
+    Then I should see validation tooltip "The same identifier is already set on another product"
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the max characters constraint of identifier attribute
