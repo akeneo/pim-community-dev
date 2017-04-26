@@ -167,7 +167,7 @@ extensions:
     pim-product-edit-form-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector
         parent: pim-product-edit-form-attributes
-        targetZone: sidebar
+        targetZone: attribute-group-selector
         position: 100
 
     pim-product-edit-form-add-attribute:

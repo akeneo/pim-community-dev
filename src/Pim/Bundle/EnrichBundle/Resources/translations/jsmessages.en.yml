@@ -390,6 +390,7 @@ pim_enrich:
                         attributes_selected: "{{ itemsCount }} attribute(s) selected"
                         no_match: No matches found
                         load_more: Loading more results...
+                    attribute_group_selector: Attribute group
                 categories:
                     title: Categories
                     catalog-switcher: Catalog

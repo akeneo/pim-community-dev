@@ -46,7 +46,7 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(formTemplate),
-            className: 'tabbable tabs-left object-attributes',
+            className: 'tabbable object-attributes',
             events: {
                 'click .remove-attribute': 'removeAttribute'
             },

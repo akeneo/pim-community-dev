@@ -103,7 +103,7 @@ extensions:
     pim-variant-group-edit-form-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector
         parent: pim-variant-group-edit-form-attributes
-        targetZone: sidebar
+        targetZone: attribute-group-selector
         position: 100
 
     pim-variant-group-edit-form-add-attribute:

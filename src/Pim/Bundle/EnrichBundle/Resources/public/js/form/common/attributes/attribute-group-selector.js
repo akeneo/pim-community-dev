@@ -11,6 +11,7 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'pim/form/common/group-selector',
         'pim/attribute-group-manager',
         'pim/template/form/tab/attribute/attribute-group-selector',
@@ -18,8 +19,22 @@ define(
         'pim/i18n',
         'pim/provider/to-fill-field-provider'
     ],
-    function ($, _, GroupSelectorForm, AttributeGroupManager, template, UserContext, i18n, toFillFieldProvider) {
+    function (
+        $,
+        _,
+        __,
+        GroupSelectorForm,
+        AttributeGroupManager,
+        template,
+        UserContext,
+        i18n,
+        toFillFieldProvider
+    ) {
         return GroupSelectorForm.extend({
+            tagName: 'div',
+
+            className: 'AknDropdown AknButtonList-item nav nav-tabs group-selector',
+
             template: _.template(template),
 
             /**
@@ -93,14 +108,18 @@ define(
                         );
                     }));
 
-                    this.$el.html(this.template({
-                        current: this.getCurrent(),
-                        elements: _.sortBy(this.getElements(), 'sort_order'),
-                        badges: this.badges,
-                        locale: UserContext.get('catalogLocale'),
-                        toFillAttributeGroups: toFillAttributeGroups,
-                        i18n: i18n
-                    }));
+                    this.$el.empty();
+                    if (!_.isEmpty(this.getElements())) {
+                        this.$el.html(this.template({
+                            current: this.getCurrent(),
+                            elements: _.sortBy(this.getElements(), 'sort_order'),
+                            badges: this.badges,
+                            locale: UserContext.get('catalogLocale'),
+                            toFillAttributeGroups: toFillAttributeGroups,
+                            i18n: i18n,
+                            label: __('pim_enrich.form.product.tab.attributes.attribute_group_selector')
+                        }));
+                    }
 
                     this.delegateEvents();
                 }.bind(this));
