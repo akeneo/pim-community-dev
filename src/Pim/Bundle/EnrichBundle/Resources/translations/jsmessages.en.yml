@@ -379,6 +379,7 @@ pim_enrich:
                         show_products: Show products
                         show_groups: Show groups
                         number_of_associations: "{{ productCount }} products and {{ groupCount }} groups"
+                    association_type_selector: Association type
                 attributes:
                     title: Attributes
                     btn:

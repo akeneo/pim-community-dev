@@ -11,6 +11,7 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'backbone',
         'pim/form',
         'pim/template/product/tab/associations',
@@ -28,6 +29,7 @@ define(
     function (
         $,
         _,
+        __,
         Backbone,
         BaseForm,
         formTemplate,
@@ -64,8 +66,8 @@ define(
                             var params = {
                                 product: this.getFormData().meta.id
                             };
-                            var paramValue = this.datagrids.products.getParamValue(associationType);
-                            params[this.datagrids.products.paramName] = paramValue;
+                            params[this.datagrids.products.paramName] =
+                                this.datagrids.products.getParamValue(associationType);
                             params.dataLocale = UserContext.get('catalogLocale');
 
                             return params;
@@ -104,7 +106,7 @@ define(
                 this.trigger('tab:register', {
                     code: this.code,
                     isVisible: this.isVisible.bind(this),
-                    label: _.__('pim_enrich.form.product.tab.associations.title')
+                    label: __('pim_enrich.form.product.tab.associations.title')
                 });
 
                 _.each(this.datagrids, function (datagrid) {
@@ -144,7 +146,8 @@ define(
                             locale: UserContext.get('catalogLocale'),
                             associationTypes: associationTypes,
                             currentAssociationTarget: this.getCurrentAssociationTarget(),
-                            currentAssociationType: this.getCurrentAssociationType()
+                            currentAssociationType: this.getCurrentAssociationType(),
+                            label: __('pim_enrich.form.product.tab.associations.association_type_selector')
                         })
                     );
                     this.renderPanes();
@@ -231,10 +234,10 @@ define(
                 var associationType = event.currentTarget.dataset.associationType;
                 this.setCurrentAssociationType(associationType);
 
-                $(event.currentTarget)
-                    .addClass('active AknVerticalNavtab-item--active')
-                    .siblings('.active.AknVerticalNavtab-item--active')
-                    .removeClass('active AknVerticalNavtab-item--active');
+                this.$el.find('.current-association-type').html($(event.currentTarget).text());
+                this.$el.find('.association-type-selector .AknDropdown-menuLink--active')
+                    .removeClass('AknDropdown-menuLink--active');
+                $(event.currentTarget).find('.AknDropdown-menuLink ').addClass('AknDropdown-menuLink--active');
 
                 this.$('.AknTitleContainer.association-type[data-association-type="' + associationType + '"]')
                     .removeClass('AknTitleContainer--hidden')
