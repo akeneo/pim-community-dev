@@ -100,7 +100,7 @@ stage("Checkout") {
 
     parallel checkouts
 }
-
+echo "toto1"
 if (launchUnitTests.equals("yes")) {
     stage("Unit tests and Code style") {
         def tasks = [:]
@@ -122,7 +122,7 @@ if (launchUnitTests.equals("yes")) {
         parallel tasks
     }
 }
-
+echo "toto2"
 if (launchIntegrationTests.equals("yes")) {
     stage("Integration tests") {
         def tasks = [:]
@@ -159,7 +159,7 @@ if (launchIntegrationTests.equals("yes")) {
         parallel tasks
     }
 }
-
+echo "toto3"
 if (launchBehatTests.equals("yes")) {
     echo "DEBUG_BEHAT_2"
     stage("Functional tests") {
