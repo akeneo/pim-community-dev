@@ -1,0 +1,6 @@
+parameters:
+  acme_xml_connector.writer.file.xml.class: Acme\Bundle\XmlConnectorBundle\Writer\XmlWriter
+
+services:
+    acme_xml_connector.writer.file.invalid_items_xml:
+        class: '%acme_xml_connector.writer.file.xml.class%'

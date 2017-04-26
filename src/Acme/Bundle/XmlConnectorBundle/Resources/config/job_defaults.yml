@@ -1,0 +1,13 @@
+parameters:
+    acme_xml_connector.job.job_parameters.default_values_provider.simple_xml_export.class: Acme\Bundle\XmlConnectorBundle\Job\JobParameters\DefaultValuesProvider\SimpleXmlImport
+
+services:
+    acme_xml_connector.job.job_parameters.simple_xml_product_import:
+        class: '%acme_xml_connector.job.job_parameters.default_values_provider.simple_xml_export.class%'
+        arguments:
+            - '%pim_catalog.localization.decimal_separators%'
+            - '%pim_catalog.localization.date_formats%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+            - { name: pim_import_export.job_parameters.form_configuration_provider }

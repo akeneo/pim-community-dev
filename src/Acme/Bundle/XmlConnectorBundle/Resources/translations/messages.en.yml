@@ -1,0 +1,19 @@
+acme_xml_connector:
+    jobs:
+        xml_product_import:
+            title: Product Import XML
+            import:
+                title: Product Import Step
+    steps:
+        product_processor.title: Product processor
+        import.filePath:
+            label: File path
+            help: Path of the XML file
+
+batch_jobs:
+    xml_product_import:
+        label: Product Import XML
+
+pim_import_export:
+    download_archive:
+      invalid_xml: Download invalid items in XML

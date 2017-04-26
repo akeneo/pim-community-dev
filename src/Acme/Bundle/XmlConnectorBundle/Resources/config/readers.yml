@@ -1,0 +1,15 @@
+parameters:
+    acme_xml_connector.reader.file.xml_product.class: Acme\Bundle\XmlConnectorBundle\Reader\File\XmlProductReader
+    acme_xml_connector.reader.file.file_iterator.class: Acme\Bundle\XmlConnectorBundle\Reader\File\XmlFileIterator
+
+services:
+    acme_xml_connector.reader.file.xml_iterator_factory:
+        class: '%pim_connector.reader.file.file_iterator_factory.class%'
+        arguments:
+            - '%acme_xml_connector.reader.file.file_iterator.class%'
+            - 'xml'
+
+    acme_xml_connector.reader.file.xml_product:
+        class: '%acme_xml_connector.reader.file.xml_product.class%'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product'

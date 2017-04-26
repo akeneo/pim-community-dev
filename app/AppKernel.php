@@ -48,6 +48,8 @@ class AppKernel extends Kernel
             $bundles
         );
 
+        $bundles[] = new Acme\Bundle\XmlConnectorBundle\AcmeXmlConnectorBundle();
+
         return $bundles;
     }
 

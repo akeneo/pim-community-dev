@@ -1,0 +1,15 @@
+parameters:
+    acme_xml_connector.archiver.invalid_item_xml_writer.class: Acme\Bundle\XmlConnectorBundle\Archiver\XmlInvalidItemWriter
+
+services:
+    acme_xml_connector.archiver.invalid_item_xml_writer:
+        class: '%acme_xml_connector.archiver.invalid_item_xml_writer.class%'
+        arguments:
+            - '@pim_connector.event_listener.invalid_items_collector'
+            - '@acme_xml_connector.writer.file.invalid_items_xml'
+            - '@acme_xml_connector.reader.file.xml_iterator_factory'
+            - '@oneup_flysystem.archivist_filesystem'
+            - '@acme_xml_connector.job.job_parameters.simple_xml_product_import'
+            - 'xml'
+        tags:
+            - { name: pim_connector.archiver }

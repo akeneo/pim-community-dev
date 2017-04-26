@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<products>
+    <product sku="sku-1" name="my name 1" family="camcorders" enabled="1"/>
+    <product sku="sku-2" name="my name 2" enabled="1"/>
+    <product sku="sku-3" name="my name 3" enabled="1"/>
+</products>
