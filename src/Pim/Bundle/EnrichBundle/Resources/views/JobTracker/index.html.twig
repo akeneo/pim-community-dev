@@ -1,10 +1,30 @@
 {% extends 'PimEnrichBundle::layout.html.twig' %}
-{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% block content %}
+    <div id="system-process">
+    </div>
+{% endblock %}
 
-    {{ elements.page_header("job_tracker.tab.title"|trans) }}
-
-    {{ dataGrid.renderStatefulGrid('job-tracker-grid', { localeCode: locale_code() }) }}
-
+{% block head_script %}
+    {{ parent() }}
+    <script>
+        require(
+            [
+                'jquery',
+                'pim/form-builder',
+                'pim/fetcher-registry'
+            ],
+            function (
+                $,
+                FormBuilder,
+                FetcherRegistry
+            ) {
+                FetcherRegistry.initialize().done(function () {
+                    FormBuilder.build('pim-process-index')
+                        .then(function (form) {
+                            form.setElement('#system-process').render();
+                        });
+                });
+            });
+    </script>
 {% endblock %}

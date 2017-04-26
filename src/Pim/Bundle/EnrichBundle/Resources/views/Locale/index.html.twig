@@ -1,12 +1,30 @@
 {% extends 'PimEnrichBundle::layout.html.twig' %}
-{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% block content %}
+    <div id="settings-locale">
+    </div>
+{% endblock %}
 
-    {% set title = 'locale.overview'|trans %}
-
-    {{ elements.page_header(title) }}
-
-    {{ dataGrid.renderStatefulGrid('locale-grid') }}
-
+{% block head_script %}
+    {{ parent() }}
+    <script>
+        require(
+            [
+                'jquery',
+                'pim/form-builder',
+                'pim/fetcher-registry'
+            ],
+            function (
+                $,
+                FormBuilder,
+                FetcherRegistry
+            ) {
+                FetcherRegistry.initialize().done(function () {
+                    FormBuilder.build('pim-locale-index')
+                        .then(function (form) {
+                            form.setElement('#settings-locale').render();
+                        });
+                });
+            });
+    </script>
 {% endblock %}

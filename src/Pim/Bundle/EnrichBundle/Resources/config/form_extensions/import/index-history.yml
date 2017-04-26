@@ -1,0 +1,15 @@
+extensions:
+    pim-import-history-index:
+        module: pim/form/common/index/index
+        config:
+            title: pim_enrich.index.import_history.title
+
+    pim-import-history-index-grid:
+        module: pim/form/common/index/grid
+        parent: pim-import-history-index
+        position: 1000
+        targetZone: content
+        config:
+            alias: import-execution-grid
+            metadata:
+                jobType: import

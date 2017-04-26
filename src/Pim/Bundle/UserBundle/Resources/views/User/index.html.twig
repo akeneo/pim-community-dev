@@ -1,16 +1,30 @@
 {% extends 'PimEnrichBundle::layout.html.twig' %}
-{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% block content %}
+    <div id="system-user">
+    </div>
+{% endblock %}
 
-    {% set title = 'user.overview'|trans %}
-
-    {% set buttons %}
-        {{ elements.createBtn('user', path('oro_user_create'), null, 'pim_user_user_create', 'plus') }}
-    {% endset %}
-
-    {{ elements.page_header(title, buttons) }}
-
-    {{ dataGrid.renderGrid('pim-user-grid', { }) }}
-
+{% block head_script %}
+    {{ parent() }}
+    <script>
+        require(
+            [
+                'jquery',
+                'pim/form-builder',
+                'pim/fetcher-registry'
+            ],
+            function (
+                $,
+                FormBuilder,
+                FetcherRegistry
+            ) {
+                FetcherRegistry.initialize().done(function () {
+                    FormBuilder.build('pim-user-index')
+                        .then(function (form) {
+                            form.setElement('#system-user').render();
+                        });
+                });
+            });
+    </script>
 {% endblock %}

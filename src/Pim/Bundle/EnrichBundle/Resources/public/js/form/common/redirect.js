@@ -44,7 +44,8 @@ define(
 
                     this.$el.html(this.template({
                         label: __(this.config.label),
-                        iconName: this.config.iconName
+                        iconName: this.config.iconName,
+                        buttonClass: this.config.buttonClass || 'AknButton--action'
                     }));
                 }.bind(this));
 
@@ -65,10 +66,12 @@ define(
              */
             getUrl: function () {
                 var params = {};
-                params[this.config.identifier.name] = propertyAccessor.accessProperty(
-                    this.getFormData(),
-                    this.config.identifier.path
-                );
+                if (this.config.identifier) {
+                    params[this.config.identifier.name] = propertyAccessor.accessProperty(
+                        this.getFormData(),
+                        this.config.identifier.path
+                    );
+                }
 
                 return Routing.generate(this.config.route, params);
             },

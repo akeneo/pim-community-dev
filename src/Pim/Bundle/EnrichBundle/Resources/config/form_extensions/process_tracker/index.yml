@@ -1,0 +1,13 @@
+extensions:
+    pim-process-index:
+        module: pim/form/common/index/index
+        config:
+            title: pim_enrich.index.process_tracker.title
+
+    pim-process-index-grid:
+        module: pim/form/common/index/grid
+        parent: pim-process-index
+        position: 1000
+        targetZone: content
+        config:
+            alias: job-tracker-grid

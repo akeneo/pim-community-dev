@@ -1,7 +1,30 @@
-{% set entityName     = 'export profile' %}
-{% set gridName       = 'export-profile-grid' %}
-{% set createRoute    = path('pim_importexport_export_profile_create') %}
-{% set createRouteAcl = 'pim_importexport_export_profile_create' %}
-{% set jobType        = 'export' %}
+{% extends 'PimEnrichBundle::layout.html.twig' %}
 
-{% include 'PimImportExportBundle:JobProfile:index.html.twig' %}
+{% block content %}
+    <div id="export-profile">
+    </div>
+{% endblock %}
+
+{% block head_script %}
+    {{ parent() }}
+    <script>
+        require(
+            [
+                'jquery',
+                'pim/form-builder',
+                'pim/fetcher-registry'
+            ],
+            function (
+                $,
+                FormBuilder,
+                FetcherRegistry
+            ) {
+                FetcherRegistry.initialize().done(function () {
+                    FormBuilder.build('pim-export-profile-index')
+                        .then(function (form) {
+                            form.setElement('#export-profile').render();
+                        });
+                })
+            });
+    </script>
+{% endblock %}

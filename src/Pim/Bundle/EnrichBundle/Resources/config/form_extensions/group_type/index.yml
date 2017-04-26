@@ -1,0 +1,24 @@
+extensions:
+    pim-group-type-index:
+        module: pim/form/common/index/index
+        config:
+            title: pim_enrich.index.grouptype.title
+
+    pim-group-type-index-grid:
+        module: pim/form/common/index/grid
+        parent: pim-group-type-index
+        position: 1000
+        targetZone: content
+        config:
+            alias: group-type-grid
+
+    pim-group-type-index-create-button:
+        module: pim/form/common/index/create-button
+        parent: pim-group-type-index
+        targetZone: buttons
+        position: 100
+        aclResourceId: pim_enrich_grouptype_create
+        config:
+           iconName:  plus
+           title:     pim_enrich.index.grouptype.create_btn
+           url:       pim_enrich_grouptype_create

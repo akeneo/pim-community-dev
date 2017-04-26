@@ -1,5 +1,30 @@
-{% set title    = 'import report.overview'|trans %}
-{% set gridName = 'import-execution-grid' %}
-{% set jobType  = 'import' %}
+{% extends 'PimEnrichBundle::layout.html.twig' %}
 
-{% include 'PimImportExportBundle:JobExecution:index.html.twig' %}
+{% block content %}
+    <div id="import-history">
+    </div>
+{% endblock %}
+
+{% block head_script %}
+    {{ parent() }}
+    <script>
+        require(
+            [
+                'jquery',
+                'pim/form-builder',
+                'pim/fetcher-registry'
+            ],
+            function (
+                $,
+                FormBuilder,
+                FetcherRegistry
+            ) {
+                FetcherRegistry.initialize().done(function () {
+                    FormBuilder.build('pim-import-history-index')
+                        .then(function (form) {
+                            form.setElement('#import-history').render();
+                        });
+                })
+            });
+    </script>
+{% endblock %}
