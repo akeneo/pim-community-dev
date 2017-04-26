@@ -15,7 +15,7 @@ Feature: Classify a product
   Scenario: Associate a product to categories
     Given I edit the "tea" product
     When I visit the "Categories" column tab
-    And I select the "2014 collection" tree
+    And I visit the "2014 collection" tree
     And I expand the "2014_collection" category
     And I click on the "summer_collection" category
     And I click on the "winter_collection" category
@@ -26,7 +26,7 @@ Feature: Classify a product
   Scenario: Count product categories
     Given I edit the "tea" product
     When I visit the "Categories" column tab
-    And I select the "2014 collection" tree
+    And I visit the "2014 collection" tree
     And I expand the "2014_collection" category
     And I click on the "summer_collection" category
     Then I should see 1 category count
@@ -56,7 +56,7 @@ Feature: Classify a product
   Scenario: Change categories without saving
     Given I edit the "tea" product
     When I visit the "Categories" column tab
-    And I select the "2014 collection" tree
+    And I visit the "2014 collection" tree
     And I expand the "2014_collection" category
     And I click on the "summer_collection" category
     And I click on the "winter_collection" category
@@ -68,9 +68,9 @@ Feature: Classify a product
   Scenario: Change the product state when it is classified
     Given I edit the "tea" product
     When I visit the "Categories" column tab
-    And I select the "2014 collection" tree
+    And I visit the "2014 collection" tree
     And I expand the "2014_collection" category
     And I click on the "summer_collection" category
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."
     When I press the "Save" button
     Then I should not see the text "There are unsaved changes."

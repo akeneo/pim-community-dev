@@ -13,25 +13,11 @@ class AssociationTabContext extends PimContext
     /**
      * @param string $association
      *
-     * @Given /^I select the "([^"]*)" association$/
-     */
-    public function iSelectTheAssociation($association)
-    {
-        $this->spin(function () use ($association) {
-            $this->getCurrentPage()
-                ->getAssociationsList()
-                ->clickLink($association);
-
-            return true;
-        }, sprintf('Cannot select the association "%s"', $association));
-    }
-
-    /**
-     * @param string $association
-     *
      * @throws ExpectationException
      *
      * @Given /^I should be on the "([^"]*)" association$/
+     *
+     * TODO Check if used
      */
     public function iShouldBeOnTheAssociation($association)
     {

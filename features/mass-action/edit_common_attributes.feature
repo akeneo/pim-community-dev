@@ -150,7 +150,6 @@ Feature: Edit common attributes of many products at once
     Then I visit the "Other" group
     And I change the "Weight" to "Edith"
     And I move on to the next step
-    Then I should see the text "Product information"
     And I should see the text "Weight"
     Then I visit the "Product information" group
     And I should see the text "Name"

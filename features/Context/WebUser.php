@@ -240,11 +240,11 @@ class WebUser extends RawMinkContext
     /**
      * @param string $group
      *
-     * @Given /^I visit the "([^"]*)" group$/
+     * @Given /^I visit the "([^"]*)" (group|association type|tree)$/
      */
-    public function iVisitTheGroup($group)
+    public function iVisitTheGroup($group, $type)
     {
-        $this->getCurrentPage()->visitGroup($group);
+        $this->getCurrentPage()->visitGroup($group, ucfirst($type));
     }
 
     /**
@@ -267,9 +267,7 @@ class WebUser extends RawMinkContext
      */
     public function thereShouldBeErrorsInTheTab($expectedErrorsCount, $tabName)
     {
-        $tab = $this->spin(function () use ($tabName) {
-            return $this->getCurrentPage()->getTab($tabName);
-        }, sprintf('Tab "%s" not found', $tabName));
+        $tab = $this->getCurrentPage()->getTab($tabName);
 
         $this->spin(function () use ($tab, $expectedErrorsCount) {
             return $this->getTabErrorsCount($tab) === intval($expectedErrorsCount);

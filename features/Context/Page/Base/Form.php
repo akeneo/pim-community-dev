@@ -37,6 +37,8 @@ class Form extends Base
                 'Dialog'                          => ['css' => 'div.modal'],
                 'Associations list'               => ['css' => '.associations-list'],
                 'Group selector'                  => ['css' => '.group-selector'],
+                'Association type selector'       => ['css' => '.association-type-selector'],
+                'Tree selector'                   => ['css' => '.tree-selector'],
                 'Validation errors'               => ['css' => '.validation-tooltip'],
                 'Available attributes form'       => ['css' => '#pim_available_attributes'],
                 'Available attributes button'     => ['css' => 'button:contains("Add attributes")'],
@@ -137,6 +139,51 @@ class Form extends Base
     }
 
     /**
+     * Visit the specified group
+     *
+     * @param string $groupName
+     * @param string $type
+     */
+    public function visitGroup($groupName, $type = 'Group')
+    {
+        $this->getGroup($groupName, $type)->click();
+    }
+
+    /**
+     * @param $groupName
+     * @param string $type
+     *
+     * @return NodeElement
+     */
+    public function getGroup($groupName, $type = 'Group')
+    {
+        return $this->spin(function () use ($groupName, $type) {
+            $groupSelector = $this->openGroupSelector($type);
+
+            $groupLabels = $groupSelector->findAll('css', '.label');
+            foreach ($groupLabels as $groupLabel) {
+                if (trim($groupLabel->getText()) === $groupName && $groupLabel->isVisible()) {
+                    return $this->getClosest($groupLabel, 'AknDropdown-menuLink');
+                }
+            }
+
+            return false;
+        }, sprintf('Cannot find the %s "%s"', $type, $groupName));
+    }
+
+    /**
+     * Get the tabs in the current page
+     *
+     * @return NodeElement[]
+     */
+    public function getTabs()
+    {
+        return $this->spin(function () {
+            return $this->find('css', $this->elements['Tabs']['css']);
+        }, 'Cannot find the tab container')->findAll('css', 'a');
+    }
+
+    /**
      * Get the specified tab
      *
      * @param string $tab
@@ -145,38 +192,17 @@ class Form extends Base
      */
     public function getTab($tab)
     {
-        return $this->spin(function () use ($tab) {
-            return $this->find('css', sprintf('a:contains("%s")', $tab));
+        $groupSelector = $this->openGroupSelector();
+
+        return $this->spin(function () use ($tab, $groupSelector) {
+            return $groupSelector->find('css', sprintf('.AknDropdown-menuLink:contains("%s")', $tab));
         }, sprintf('Cannot find the tab named "%s"', $tab));
     }
 
     /**
-     * Visit the specified group
-     *
-     * @param string $groupName
-     */
-    public function visitGroup($groupName)
-    {
-        $this->spin(function () use ($groupName) {
-            $groupSelector = $this->find('css', $this->elements['Group selector']['css']);
-            if (null === $groupSelector || !$groupSelector->isVisible()) {
-                return false;
-            }
-            $groupSelector->find('css', '[data-toggle="dropdown"]')->click();
-
-            $groupLabels = $groupSelector->findAll('css', '.group-label');
-            foreach ($groupLabels as $groupLabel) {
-                if (trim($groupLabel->getText()) === $groupName && $groupLabel->isVisible()) {
-                    return $this->getClosest($groupLabel, 'AknDropdown-menuLink');
-                }
-            }
-
-            return false;
-        }, sprintf('Cannot visit the group "%s"', $groupName))->click();
-    }
-
-    /**
      * @return NodeElement
+     *
+     * TODO Check if used
      */
     public function getAssociationsList()
     {
@@ -803,6 +829,24 @@ class Form extends Base
 
         $field = $this->findPriceField($label->labelContent, $label->subLabelContent);
         $field->setValue($value);
+    }
+    
+    /**
+     * @param string $type
+     *
+     * @return NodeElement
+     */
+    protected function openGroupSelector($type = 'Group')
+    {
+        $groupSelector = $this->spin(function () use ($type) {
+            $result = $this->find('css', $this->elements[sprintf('%s selector', $type)]['css']);
+
+            return null !== $result && $result->isVisible() ? $result : null;
+        }, sprintf('Can not find the "%s" selector', $type));
+
+        $groupSelector->find('css', '[data-toggle="dropdown"]')->click();
+
+        return $groupSelector;
     }
 
     /**

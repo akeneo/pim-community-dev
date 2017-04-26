@@ -7,7 +7,7 @@
 <% } else { %>
     <div class="tabbable">
         <div class="AknSearch">
-            <div class="AknSearch-selectors AknButtonList AknButtonList--right catalog-switcher">
+            <div class="AknSearch-selectors AknButtonList AknButtonList--right">
                 <div class="AknDropdown AknButtonList-item nav nav-tabs association-type-selector">
                     <a class="AknActionButton" data-toggle="dropdown" href="#">
                         <%- label %>:
@@ -22,7 +22,7 @@
                         <% _.each(associationTypes, function (associationType) { %>
                             <li data-association-type="<%- associationType.code %>">
                                 <a class="AknDropdown-menuLink <% if (associationType.code === currentAssociationType) { %> AknDropdown-menuLink--active<% } %>" href="#">
-                                    <%- associationType.labels[locale] || '[' + associationType.code + ']' %>
+                                    <span class="label"><%- associationType.labels[locale] || '[' + associationType.code + ']' %></span>
                                 </a>
                             </li>
                         <% }); %>

@@ -509,29 +509,6 @@ class Edit extends ProductEditForm
     }
 
     /**
-     * @param string $category
-     *
-     * @return Edit
-     */
-    public function selectTree($category)
-    {
-        if (null !== $treeSelect = $this->findById('tree_select')) {
-            $treeSelect->selectOption($category);
-
-            return $this;
-        }
-
-        $link = $this->getElement('Category pane')->find('css', sprintf('#trees-list li a:contains("%s")', $category));
-
-        if (null === $link) {
-            throw new \InvalidArgumentException(sprintf('Tree "%s" not found', $category));
-        }
-        $link->click();
-
-        return $this;
-    }
-
-    /**
      * @param Category $category
      *
      * @throws \Exception

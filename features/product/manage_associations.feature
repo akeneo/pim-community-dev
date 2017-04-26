@@ -56,7 +56,7 @@ Feature: Manage associations
     And I confirm the deletion
     When I edit the "<product_sku>" product
     And I visit the "Associations" column tab
-    And I visit the "<group_name>" group
+    And I visit the "<group_name>" association type
     Then the rows "<checked_rows>" should be checked
 
   Examples:

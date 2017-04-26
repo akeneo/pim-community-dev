@@ -41,6 +41,7 @@ Feature: Proper completeness display for locale specific attributes
     When I visit the "Attributes" column tab
     And I switch the locale to "de_DE"
     And I visit the "Completeness" column tab
+    And I should see the text "Beschreibung"
     Then I should see the completeness:
       | locale | channel   | missing_values                                                  |
       | de_DE  | ecommerce | Name, Beschreibung, Miniaturansicht, Legende, [locale_specific] |

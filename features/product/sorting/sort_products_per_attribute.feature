@@ -22,12 +22,12 @@ Feature: Sort products per attributes
 
   Scenario: Successfully sort products by boolean value for boolean attributes
     And I am on the "blue_shirt" product page
-    And I visit the "Additional" group
+    And I visit the "Additional information" group
     When I check the "Handmade" switch
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     When I am on the "orange_shirt" product page
-    And I visit the "Additional" group
+    And I visit the "Additional information" group
     When I check the "Handmade" switch
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."

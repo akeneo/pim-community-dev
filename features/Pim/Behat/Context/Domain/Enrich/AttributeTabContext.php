@@ -2,6 +2,7 @@
 
 namespace Pim\Behat\Context\Domain\Enrich;
 
+use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Pim\Behat\Context\PimContext;
@@ -88,20 +89,22 @@ class AttributeTabContext extends PimContext
      * @param string $fieldName
      * @param mixed  $not
      *
+     * @throws TimeoutException
+     *
      * @Then /^the ([^"]*) field should (not )?be highlighted$/
      */
     public function theFieldShouldBeHighlighted($fieldName, $not = null)
     {
         $field = $this->getCurrentPage()->findField($fieldName);
         try {
-            $badge = $this->spin(function () use ($field) {
+            $this->spin(function () use ($field) {
                 return $field->getParent()->getParent()->find('css', '.AknBadge--highlight:not(.AknBadge--hidden)');
             }, 'Cannot find the badge element');
         } catch (TimeoutException $e) {
             if ('not ' !== $not) {
                 throw $e;
             } else {
-                return true;
+                return;
             }
         }
 
@@ -117,22 +120,24 @@ class AttributeTabContext extends PimContext
 
     /**
      * @param string $groupName
-     * @param mixed  $not
+     * @param mixed $not
+     *
+     * @throws TimeoutException
      *
      * @Then /^the ([^"]*) group should (not )?be highlighted$/
      */
     public function theGroupShouldBeHighlighted($groupName, $not = null)
     {
-        $group = $this->getCurrentPage()->findGroup($groupName);
+        $group = $this->getCurrentPage()->getGroup($groupName);
         try {
-            $badge = $this->spin(function () use ($group) {
-                return $group->getParent()->find('css', '.AknBadge--highlight:not(.AknBadge--hidden)');
+            $this->spin(function () use ($group) {
+                return $group->find('css', '.AknBadge--highlight:not(.AknBadge--hidden)');
             }, 'Cannot find the badge element');
         } catch (TimeoutException $e) {
             if ('not ' !== $not) {
                 throw $e;
             } else {
-                return true;
+                return;
             }
         }
 

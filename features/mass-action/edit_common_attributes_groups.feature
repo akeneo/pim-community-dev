@@ -26,7 +26,6 @@ Feature: Edit common attributes of many products at once
     And I choose the "Edit common attributes" operation
     And I display the Nom and Taille attributes
     Then I should see "[info]"
-    And I should see "[sizes]"
     And I should see "Nom"
     When I visit the "[sizes]" group
     Then I should see "Taille"
