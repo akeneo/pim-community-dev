@@ -61,7 +61,7 @@ stage("Checkout") {
 
     checkouts = [:];
     checkouts['community'] = {
-        node('kubernetes-docker-ce') {
+        node('docker') {
             //cleanUpEnvironment()
             docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/docker/.composer") {
                 unstash "pim_community_dev"
@@ -79,7 +79,7 @@ stage("Checkout") {
 
     if (editions.contains('ee') && 'yes' == launchBehatTests) {
         checkouts['enterprise'] = {
-            node('kubernetes-docker-ee') {
+            node('docker') {
                 //cleanUpEnvironment()
                 docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/docker/.composer") {
                     unstash "pim_enterprise_dev"
