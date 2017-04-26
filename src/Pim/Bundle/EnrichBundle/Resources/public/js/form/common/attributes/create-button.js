@@ -12,6 +12,7 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
+        'backbone',
         'pim/form',
         'text!pim/template/form/tab/attribute/create-button',
         'text!pim/template/form/tab/attribute/create-modal-content',
@@ -25,6 +26,7 @@ define(
         $,
         _,
         __,
+        Backbone,
         BaseForm,
         template,
         templateModal,
@@ -112,10 +114,12 @@ define(
 
                 var sortedAttributeTypesByLabel = [];
                 for (var key in attributeTypesMap) {
-                    sortedAttributeTypesByLabel.push({
-                        code: key,
-                        label: __('pim_enrich.entity.attribute_label.' + attributeTypesMap[key])
-                    });
+                    if (attributeTypesMap.hasOwnProperty(key)) {
+                        sortedAttributeTypesByLabel.push({
+                            code: key,
+                            label: __('pim_enrich.entity.attribute_label.' + attributeTypesMap[key])
+                        });
+                    }
                 }
 
                 sortedAttributeTypesByLabel.sort(function (a, b) {
