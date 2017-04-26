@@ -30,6 +30,7 @@ stage("Checkout") {
         features = "features/channel/*"
         launchUnitTests = "no"
         launchIntegrationTests = "no"
+        launchBehatTests = "yes"
 
         //storages = userInput['storages'].tokenize(',')
         //editions = userInput['editions'].tokenize(',')
@@ -158,11 +159,12 @@ if (launchIntegrationTests.equals("yes")) {
 }
 
 if (launchBehatTests.equals("yes")) {
+    echo "DEBUG_BEHAT_2"
     stage("Functional tests") {
         def tasks = [:]
         def paths = features.split(' *, *')
 
-        echo "DEBUG_BEHAT_2"
+        echo "DEBUG_BEHAT_3"
 
         for(int i = 0; i < paths.size(); i++) {
             for(int j = 0; j < editions.size(); j++) {
