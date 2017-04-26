@@ -33,9 +33,10 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                this.grid = new Grid(this.config.alias, {
-                    localeCode: UserContext.get('catalogLocale')
-                });
+                var metaData = this.config.metadata || {};
+                metaData[this.config.localeKey || 'localeCode'] = UserContext.get('catalogLocale');
+
+                this.grid = new Grid(this.config.alias, metaData);
 
                 BaseForm.prototype.configure.apply(this, arguments);
             },

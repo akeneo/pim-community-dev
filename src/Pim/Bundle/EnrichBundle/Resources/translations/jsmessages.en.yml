@@ -745,8 +745,48 @@ pim_enrich:
             description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.
     index:
         association_type:
-          title:      Association type overview
-          create_btn: Create association type
+            title:      Association type overview
+            create_btn: Create association type
+        import_profiles:
+            title:      Import profile overview
+            create_btn: Create import profile
+        import_history:
+            title:      Import reports
+        variant_group:
+            title:      Variant group overview
+            create_btn: Create variant group
+        group:
+            title:      Group overview
+            create_btn: Create group
+        export_profiles:
+            title:      Export profile overview
+            create_btn: Create export profile
+        export_history:
+            title:      Export reports
+        family:
+            title:      Family overview
+            create_btn: Create family
+        grouptype:
+            title:      Group type overview
+            create_btn: Create group type
+        currency:
+            title:      Currency overview
+        locale:
+            title:      Locale overview
+        user:
+            title:      User
+            create_btn: Create user
+        user_role:
+            title:      Role
+            create_btn: Create role
+        user_group:
+            title:      Groups
+            create_btn: Create group
+        process_tracker:
+            title:      Process tracker
+        channel:
+            title:      Channel overview
+            create_btn: Create channel
 
 pim_enrich.error:
     exception.title: Oh snap! A {{ status_code }} error occured...

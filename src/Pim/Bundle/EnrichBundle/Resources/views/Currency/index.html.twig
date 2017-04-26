@@ -2,11 +2,27 @@
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% block content %}
+    <div id="settings-currency">
+    </div>
 
-    {% set title = 'currency.overview'|trans %}
-
-    {{ elements.page_header(title) }}
-
-    {{ dataGrid.renderStatefulGrid('currency-grid') }}
-
+    <script>
+        require(
+            [
+                'jquery',
+                'pim/form-builder',
+                'pim/fetcher-registry'
+            ],
+            function (
+                $,
+                FormBuilder,
+                FetcherRegistry
+            ) {
+                FetcherRegistry.initialize().done(function () {
+                    FormBuilder.build('pim-currency-index')
+                        .then(function (form) {
+                            form.setElement('#settings-currency').render();
+                        });
+                });
+            });
+    </script>
 {% endblock %}

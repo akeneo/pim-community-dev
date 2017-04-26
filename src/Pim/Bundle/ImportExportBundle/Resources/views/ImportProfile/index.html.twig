@@ -1,7 +1,30 @@
-{% set entityName     = 'import profile' %}
-{% set gridName       = 'import-profile-grid' %}
-{% set createRoute    = path('pim_importexport_import_profile_create') %}
-{% set createRouteAcl = 'pim_importexport_import_profile_create' %}
-{% set jobType        = 'import' %}
+{% extends 'PimEnrichBundle::layout.html.twig' %}
 
-{% include 'PimImportExportBundle:JobProfile:index.html.twig' %}
+{% block content %}
+    <div id="import-profile">
+    </div>
+{% endblock %}
+
+{% block head_script %}
+    {{ parent() }}
+    <script>
+        require(
+            [
+                'jquery',
+                'pim/form-builder',
+                'pim/fetcher-registry'
+            ],
+            function (
+                $,
+                FormBuilder,
+                FetcherRegistry
+            ) {
+                FetcherRegistry.initialize().done(function () {
+                    FormBuilder.build('pim-import-profile-index')
+                        .then(function (form) {
+                            form.setElement('#import-profile').render();
+                        });
+                })
+            });
+    </script>
+{% endblock %}

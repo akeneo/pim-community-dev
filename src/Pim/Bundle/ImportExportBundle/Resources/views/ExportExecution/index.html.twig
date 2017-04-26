@@ -1,5 +1,30 @@
-{% set title    = 'export report.overview'|trans %}
-{% set gridName = 'export-execution-grid' %}
-{% set jobType  = 'export' %}
+{% extends 'PimEnrichBundle::layout.html.twig' %}
 
-{% include 'PimImportExportBundle:JobExecution:index.html.twig' %}
+{% block content %}
+    <div id="export-history">
+    </div>
+{% endblock %}
+
+{% block head_script %}
+    {{ parent() }}
+    <script>
+        require(
+            [
+                'jquery',
+                'pim/form-builder',
+                'pim/fetcher-registry'
+            ],
+            function (
+                $,
+                FormBuilder,
+                FetcherRegistry
+            ) {
+                FetcherRegistry.initialize().done(function () {
+                    FormBuilder.build('pim-export-history-index')
+                        .then(function (form) {
+                            form.setElement('#export-history').render();
+                        });
+                })
+            });
+    </script>
+{% endblock %}
