@@ -3,13 +3,12 @@
 namespace spec\Pim\Component\Catalog\Factory;
 
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
-use Pim\Component\Catalog\Factory\ProductValueCollectionFactory;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Factory\ProductValueCollectionFactory;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Prophecy\Argument;
 
 class ProductValueCollectionFactorySpec extends ObjectBehavior
 {
@@ -51,11 +50,18 @@ class ProductValueCollectionFactorySpec extends ObjectBehavior
 
         $attributeRepository->findOneByIdentifier('sku')->willReturn($sku);
         $attributeRepository->findOneByIdentifier('description')->willReturn($description);
+        $attributeRepository->findOneByIdentifier('attribute_that_does_not_exists')->willReturn(null);
 
         $valueFactory->create($sku, null, null, 'foo')->willReturn($value1);
-        $valueFactory->create($description, 'ecommerce', 'en_US', 'a text area for ecommerce in English')->willReturn($value2);
-        $valueFactory->create($description, 'tablet', 'en_US', 'a text area for tablets in English')->willReturn($value3);
-        $valueFactory->create($description, 'tablet', 'fr_FR', 'une zone de texte pour les tablettes en français')->willReturn($value4);
+        $valueFactory
+            ->create($description, 'ecommerce', 'en_US', 'a text area for ecommerce in English')
+            ->willReturn($value2);
+        $valueFactory
+            ->create($description, 'tablet', 'en_US', 'a text area for tablets in English')
+            ->willReturn($value3);
+        $valueFactory
+            ->create($description, 'tablet', 'fr_FR', 'une zone de texte pour les tablettes en français')
+            ->willReturn($value4);
 
         $actualValues = $this->createFromStorageFormat([
             'sku' => [
@@ -71,6 +77,11 @@ class ProductValueCollectionFactorySpec extends ObjectBehavior
                     'en_US' => 'a text area for tablets in English',
                     'fr_FR' => 'une zone de texte pour les tablettes en français',
 
+                ],
+            ],
+            'attribute_that_does_not_exists' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'bar'
                 ],
             ],
         ]);
