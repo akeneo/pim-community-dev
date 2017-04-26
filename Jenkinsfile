@@ -61,7 +61,7 @@ stage("Checkout") {
 
     checkouts = [:];
     checkouts['community'] = {
-        node('docker') {
+        node('kubernetes-docker') {
             //cleanUpEnvironment()
             docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/docker/.composer") {
                 unstash "pim_community_dev"
@@ -79,7 +79,7 @@ stage("Checkout") {
 
     if (editions.contains('ee') && 'yes' == launchBehatTests) {
         checkouts['enterprise'] = {
-            node('docker') {
+            node('kubernetes-docker') {
                 //cleanUpEnvironment()
                 docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/docker/.composer") {
                     unstash "pim_enterprise_dev"
@@ -172,7 +172,7 @@ if (launchBehatTests.equals("yes")) {
             for(int j = 0; j < editions.size(); j++) {
                 for(int k = 0; k < storages.size(); k++) {
                     echo "trololo"
-                    node('docker') {
+                    node('kubernetes-docker') {
                         docker.image("carcel/php:5.6").inside() {
                             tags = "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app"
                             if ('ce' == editions[j]) {
