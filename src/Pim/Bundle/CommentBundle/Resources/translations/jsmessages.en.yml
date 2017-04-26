@@ -22,6 +22,8 @@ flash:
 comment:
     index:
         empty: No comment for now
+        header_comment: '{{ user }} comments the product'
+        header_reply: '{{ user }} replies to the comment'
     placeholder:
         new: Write a new comment...
         reply: Reply to this comment...

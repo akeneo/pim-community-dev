@@ -20,7 +20,18 @@ define(
         'oro/messenger',
         'pim/dialog'
     ],
-    function ($, _, __, Backbone, BaseForm, UserContext, template, Routing, messenger, Dialog) {
+    function (
+        $,
+        _,
+        __,
+        Backbone,
+        BaseForm,
+        UserContext,
+        template,
+        Routing,
+        messenger,
+        Dialog
+    ) {
         return BaseForm.extend({
             template: _.template(template),
 
@@ -70,8 +81,10 @@ define(
 
                     this.$el.html(
                         this.template({
+                            __: __,
                             comments: this.comments,
-                            currentUser: UserContext.toJSON()
+                            currentUser: UserContext.toJSON(),
+                            emptyLabel: __('comment.index.empty')
                         })
                     );
                     this.delegateEvents();
