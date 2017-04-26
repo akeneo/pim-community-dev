@@ -38,12 +38,18 @@
 
   &-icon {
     margin-left: 5px;
+    opacity: 0;
+    transition: opacity 0.1s ease-in;
+  }
+
+  &-item:hover &-icon {
+    opacity: 1;
   }
 
   &-message {
     margin: 5px 0 20px @avatarSize + @avatarMargin;
     border-left: 2px solid @AknLightPurple;
-    background: #f9f9fb;
+    background: @AknLightGray;
     padding: 20px;
     font-size: @AknFontSizeBig;
   }

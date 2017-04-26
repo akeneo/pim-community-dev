@@ -381,7 +381,7 @@ class Edit extends ProductEditForm
     public function replyComment(NodeElement $comment, $message)
     {
         $comment->click();
-        $replyBox = $this->getElement('Comment threads')->find('css', 'li.reply-to-comment');
+        $replyBox = $this->getElement('Comment threads')->find('css', '.reply-to-comment');
         if (!$replyBox) {
             throw new \LogicException('Comment reply box not found !');
         }
@@ -441,6 +441,7 @@ class Edit extends ProductEditForm
                 if (null !== $currentAuthor = $this->findCommentAuthor($thread)) {
                     $currentAuthor = $currentAuthor->getText();
                 }
+
                 if ($currentMessage === $message && $currentAuthor === $author) {
                     return $comments[$index];
                 }
@@ -504,7 +505,7 @@ class Edit extends ProductEditForm
      */
     protected function findCommentMessage(NodeElement $element)
     {
-        return $element->find('css', 'span.message');
+        return $element->find('css', '.message');
     }
 
     /**
