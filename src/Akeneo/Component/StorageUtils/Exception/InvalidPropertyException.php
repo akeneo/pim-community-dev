@@ -23,9 +23,6 @@ class InvalidPropertyException extends PropertyException
     const VALID_DATA_EXPECTED_CODE = 305;
 
     /** @var string */
-    protected $propertyName;
-
-    /** @var string */
     protected $propertyValue;
 
     /** @var string */
@@ -231,14 +228,6 @@ class InvalidPropertyException extends PropertyException
             $exception->getCode(),
             $exception
         );
-    }
-
-    /**
-     * @return string
-     */
-    public function getPropertyName()
-    {
-        return $this->propertyName;
     }
 
     /**

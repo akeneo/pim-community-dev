@@ -11,9 +11,6 @@ namespace Akeneo\Component\StorageUtils\Exception;
  */
 class UnknownPropertyException extends PropertyException
 {
-    /** @var string */
-    protected $propertyName;
-
     /**
      * @param string          $propertyName
      * @param string          $message
@@ -43,13 +40,5 @@ class UnknownPropertyException extends PropertyException
             0,
             $previous
         );
-    }
-
-    /**
-     * @return string
-     */
-    public function getPropertyName()
-    {
-        return $this->propertyName;
     }
 }
