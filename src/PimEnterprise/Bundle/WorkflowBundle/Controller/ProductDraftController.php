@@ -132,24 +132,6 @@ class ProductDraftController
     }
 
     /**
-     * List proposals
-     *
-     * @Template
-     *
-     * @throws AccessDeniedException if the current user is not the owner of any categories
-     *
-     * @return Response
-     */
-    public function indexAction()
-    {
-        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN_AT_LEAST_ONE_CATEGORY)) {
-            throw new AccessDeniedException();
-        }
-
-        return [];
-    }
-
-    /**
      * @param Request    $request
      * @param int|string $id
      * @param string     $action  either "approve" or "refuse"

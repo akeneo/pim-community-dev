@@ -74,6 +74,19 @@ config:
                     module: pim/controller/form
                 teamwork_assistant_project_show:
                     module: pim/controller/template
+                pimee_workflow_proposal_index:
+                    module: pim/controller/common/index
+                    config:
+                        entity: proposal
+                pimee_catalog_rule_rule_index:
+                    module: pim/controller/common/index
+                    aclResourceId: pimee_catalog_rule_rule_view_permissions
+                    config:
+                        entity: rule
+                pimee_workflow_published_product_index:
+                    module: pim/controller/template
+                    aclResourceId: pimee_workflow_published_product_index
+
 
     map:
         '*':

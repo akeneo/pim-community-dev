@@ -13,7 +13,6 @@ namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\EnrichBundle\Controller\LocaleController as BaseLocaleController;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -25,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class LocaleController extends BaseLocaleController
+class LocaleController
 {
     /** @var FormFactoryInterface */
     protected $formFactory;
