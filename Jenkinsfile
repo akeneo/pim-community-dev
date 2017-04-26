@@ -27,7 +27,7 @@ stage("Checkout") {
 
         storages = ["orm"]
         editions = ["ce"]
-        features = "features/channel/*"
+        features = "features/channel/create_channel.feature,features/channel/delete_channel.feature"
         launchUnitTests = "no"
         launchIntegrationTests = "no"
         launchBehatTests = "yes"
