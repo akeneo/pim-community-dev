@@ -280,6 +280,21 @@ pim_enrich:
                 updated_by: Updated by
             btn:
                 save: Save
+        attribute_label:
+            pim_catalog_identifier:           Identifier
+            pim_catalog_text:                 Text
+            pim_catalog_textarea:             Text Area
+            pim_catalog_number:               Number
+            pim_catalog_price_collection:     Price
+            pim_catalog_multiselect:          Multi select
+            pim_catalog_simpleselect:         Simple select
+            pim_catalog_file:                 File
+            pim_catalog_image:                Image
+            pim_catalog_boolean:              "Yes/No"
+            pim_catalog_date:                 Date
+            pim_catalog_metric:               Metric
+            pim_reference_data_simpleselect:  Reference data simple select
+            pim_reference_data_multiselect:   Reference data multi select
         attribute_option:
             code: Code
             label: Label
@@ -787,6 +802,10 @@ pim_enrich:
         channel:
             title:      Channel overview
             create_btn: Create channel
+        attribute:
+            title:       Attribute overview
+            create_btn:  Create attribute
+            modal_title: Choose the attribute type
 
 pim_enrich.error:
     exception.title: Oh snap! A {{ status_code }} error occured...

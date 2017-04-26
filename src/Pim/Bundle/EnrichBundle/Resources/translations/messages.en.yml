@@ -302,8 +302,6 @@ pim_enrich:
 # Entity and page header titles
 attribute:
     title:    attribute
-    overview: attribute overview
-    create:   create attribute
     edit:     edit attribute
 attribute group:
     title:    attribute group
