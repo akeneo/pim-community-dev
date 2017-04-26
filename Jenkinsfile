@@ -62,7 +62,7 @@ stage("Checkout") {
     checkouts = [:];
     checkouts['community'] = {
         node('kubernetes-docker') {
-            cleanUpEnvironment()
+            //cleanUpEnvironment()
             docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/docker/.composer") {
                 unstash "pim_community_dev"
 
@@ -72,14 +72,15 @@ stage("Checkout") {
 
                 stash "pim_community_dev_full"
             }
-            cleanUpEnvironment()
+            //cleanUpEnvironment()
+            deleteDir()
         }
     }
 
     if (editions.contains('ee') && 'yes' == launchBehatTests) {
         checkouts['enterprise'] = {
             node('kubernetes-docker') {
-                cleanUpEnvironment()
+                //cleanUpEnvironment()
                 docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/docker/.composer") {
                     unstash "pim_enterprise_dev"
 
@@ -89,12 +90,14 @@ stage("Checkout") {
 
                     stash "pim_enterprise_dev_full"
                 }
-                cleanUpEnvironment()
+                //cleanUpEnvironment()
+                deleteDir()
             }
         }
     }
 
     echo "DEBUG_BEHAT_1"
+    echo "${checkouts}"
 
     parallel checkouts
 }
