@@ -105,3 +105,4 @@
 - Remove service `pim_enrich.controller.rest.completeness` and parameter `pim_enrich.controller.rest.completeness.class`
 - Add method `findCodesByIdentifiers` in `Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface`
 - Add method `findCodesByIdentifiers` in `Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface`
+- Remove class `Pim\Bundle\DataGridBundle\EventListener\AddParametersToVariantProductGridListener`
