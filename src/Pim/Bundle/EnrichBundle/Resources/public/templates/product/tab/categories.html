@@ -1,30 +1,6 @@
 <div class="tabbable">
     <div class="AknSearch">
-        <div class="AknSearch-selectors AknButtonList AknButtonList--right">
-            <ul class="AknDropdown AknButtonList-item nav nav-tabs group-selector">
-                <a class="AknActionButton" data-toggle="dropdown" href="#">
-                    Catalog:
-                    <span class="AknActionButton-strong current-category">
-                        <% _.each(trees, function (tree) { %>
-                            <% if (tree.code === state.currentTree) { %>
-                                <%- tree.label %>
-                            <% } %>
-                        <% }); %>
-                    </span>
-                    <span class="AknActionButton-caret AknCaret"></span>
-                </a>
-                <ul class="AknDropdown-menu AknDropdown-menu--right" id="trees-list">
-                    <li class="AknDropdown-menuTitle">Catalog</li>
-                    <% _.each(trees, function (tree) { %>
-                        <li data-tree="<%- tree.code %>" data-tree-id="<%- tree.id %>">
-                            <a class="AknDropdown-menuLink <% if (tree.code === state.currentTree) { %> AknDropdown-menuLink--active<% } %>" href="javascript:void(0);" id="<%- treeLinkSelector + tree.id %>">
-                                <span class="tree-label"><%- tree.label %></span>
-                                <span class="AknBadge AknBadge--grey" data-tree-id="<%- tree.code %>"><%- categoriesCount[tree.id] %></span>
-                            </a>
-                        </li>
-                    <% }); %>
-                </ul>
-            </ul>
+        <div class="AknSearch-selectors AknButtonList AknButtonList--right category-switcher">
         </div>
     </div>
     <div class="tab-content">

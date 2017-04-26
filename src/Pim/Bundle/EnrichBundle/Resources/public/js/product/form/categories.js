@@ -14,14 +14,26 @@ define(
         'backbone',
         'pim/form',
         'pim/template/product/tab/categories',
+        'pim/template/product/tab/category-switcher',
         'pim/user-context',
         'routing',
         'pim/tree/associate',
         'oro/mediator'
     ],
-    function ($, _, Backbone, BaseForm, formTemplate, UserContext, Routing, TreeAssociate, mediator) {
+    function ($,
+              _,
+              Backbone,
+              BaseForm,
+              formTemplate,
+              switcherTemplate,
+              UserContext,
+              Routing,
+              TreeAssociate,
+              mediator
+    ) {
         return BaseForm.extend({
             template: _.template(formTemplate),
+            switcherTemplate: _.template(switcherTemplate),
             className: 'tab-pane active',
             id: 'product-categories',
             treeLinkSelector: 'tree-link-',
@@ -75,11 +87,16 @@ define(
                             product: this.getFormData(),
                             locale: UserContext.get('catalogLocale'),
                             state: this.state.toJSON(),
-                            trees: trees,
-                            categoriesCount: categoriesCount,
-                            treeLinkSelector: this.treeLinkSelector
+                            trees: trees
                         })
                     );
+
+                    this.$el.find('.category-switcher').html(this.switcherTemplate({
+                        state: this.state.toJSON(),
+                        trees: trees,
+                        categoriesCount: categoriesCount,
+                        treeLinkSelector: this.treeLinkSelector
+                    }));
 
                     this.treeAssociate = new TreeAssociate('#trees', '#hidden-tree-input', {
                         list_categories: 'pim_enrich_product_listcategories',
