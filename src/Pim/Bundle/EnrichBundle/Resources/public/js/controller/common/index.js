@@ -15,7 +15,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            renderRoute: function (route) {
+            renderRoute: function () {
                 return FormBuilder.build('pim-' + this.options.config.entity + '-index')
                     .then(function (form) {
                         form.setElement(this.$el).render();

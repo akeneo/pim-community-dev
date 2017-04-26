@@ -1,13 +1,9 @@
 'use strict';
 
 define([
-        'pim/controller/form',
-        'pim/security-context',
-        'pim/form-config-provider'
+        'pim/controller/form'
     ], function (
-        FormController,
-        securityContext,
-        configProvider
+        FormController
     ) {
         return FormController.extend({
             /**

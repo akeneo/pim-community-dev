@@ -7,14 +7,15 @@ define(
         'pim/controller/base',
         'pim/form-builder',
         'pim/page-title',
-        'pim/error'
+        'pim/error',
+        'routing'
     ],
-    function ($, _, BaseController, FormBuilder, PageTitle, Error) {
+    function ($, _, BaseController, FormBuilder, PageTitle, Error, Routing) {
         return BaseController.extend({
             /**
              * {@inheritdoc}
              */
-            renderRoute: function (route) {
+            renderRoute: function () {
                 return $.when(
                     FormBuilder.build('oro-system-config-form'),
                     $.get(Routing.generate('oro_config_configuration_system_get'))
