@@ -1,34 +1,36 @@
 @import '../../base/variables';
 
 .AknCommentPanel {
-  @avatarSize: @AknMicroButtonSize;
+  @avatarSize: 48px;
+  @avatarMargin: 10px;
 
   &-thread {
     margin-top: 10px;
   }
 
   &-item {
-    border-left: 1px solid @AknBorderColor;
-    border-top: 1px solid @AknBorderColor;
-    border-right: 1px solid @AknBorderColor;
+    &--reply {
+      margin-left: @avatarSize + @avatarMargin;
+    }
   }
 
   &-header {
     display: flex;
     align-items: center;
-    padding: 5px;
+    font-size: @AknFontSizeBigger;
   }
 
   &-avatar {
     width: @avatarSize;
     height: @avatarSize;
-    border: 1px solid @AknBorderColor;
-    border-radius: 2px;
-    margin-right: 5px;
+    border-radius: @avatarSize;
+    margin-right: @avatarMargin;
   }
 
   &-author {
     flex-grow: 1;
+    color: @AknLightPurple;
+    font-style: italic;
   }
 
   &-icon {
@@ -36,6 +38,18 @@
   }
 
   &-message {
-    padding: 5px;
+    margin: 5px 0 20px @avatarSize + @avatarMargin;
+    border-left: 2px solid @AknLightPurple;
+    background: #f9f9fb;
+    padding: 20px;
+    font-size: @AknFontSizeBig;
+  }
+
+  &-date {
+    font-size: @AknDefaultFontSize;
+  }
+
+  &-replyContainer {
+    margin: 20px 0 -4px 0;
   }
 }
