@@ -93,6 +93,8 @@ stage("Checkout") {
         }
     }
 
+    echo "DEBUG_BEHAT_1"
+
     parallel checkouts
 }
 
@@ -159,6 +161,8 @@ if (launchBehatTests.equals("yes")) {
     stage("Functional tests") {
         def tasks = [:]
         def paths = features.split(' *, *')
+
+        echo "DEBUG_BEHAT_2"
 
         for(int i = 0; i < paths.size(); i++) {
             for(int j = 0; j < editions.size(); j++) {
