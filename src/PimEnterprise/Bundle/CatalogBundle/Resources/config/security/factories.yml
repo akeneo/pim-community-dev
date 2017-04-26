@@ -1,0 +1,14 @@
+parameters:
+    pimee_catalog.factory.value_collection.class: PimEnterprise\Component\Catalog\Security\Factory\ValueCollectionFactory
+
+services:
+    pimee_catalog.factory.value_collection_with_permissions:
+        class: '%pimee_catalog.factory.value_collection.class%'
+        decorates: pim_catalog.factory.value_collection
+        decoration_inner_name: pim_catalog.factory.value_collection_without_permission
+        arguments:
+            - '@pim_catalog.factory.value_collection_without_permission'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@logger'
+            - '@pim_catalog.repository.cached_attribute'
