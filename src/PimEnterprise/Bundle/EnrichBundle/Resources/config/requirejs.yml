@@ -29,15 +29,12 @@ config:
 
     map:
         '*':
-            pim/product-manager:        pimee/product-manager
-            pim/job/common/edit/launch: pimee/job/common/edit/launch
-            pim/common/redirect:        pimee/common/redirect
+            pim/product-manager:             pimee/product-manager
+            pim/job/common/edit/launch:      pimee/job/common/edit/launch
         pimee/product-manager:
             pim/product-manager: pim/product-manager
         pimee/job/common/edit/launch:
             pim/job/common/edit/launch: pim/job/common/edit/launch
-        pimee/common/redirect:
-            pim/common/redirect: pim/common/redirect
 
     paths:
         pimee/product-view-form:            pimenterpriseenrich/js/product/view-form
@@ -62,9 +59,11 @@ config:
         pim/common/tab/asset-transformation:                          pimenterpriseenrich/js/channel/tab/asset-transformation
 
         # Common
-        pimee/common/tab/permission:  pimenterpriseenrich/js/form/common/tab/permission
-        pimee/job/common/edit/launch: pimenterpriseenrich/js/job/common/edit/launch
-        pimee/common/redirect:        pimenterpriseenrich/js/form/common/redirect
+        pimee/common/tab/permission:       pimenterpriseenrich/js/form/common/tab/permission
+        pimee/job/common/edit/launch:      pimenterpriseenrich/js/job/common/edit/launch
+
+        #Job
+        pimee/job/export/edit/edit-button: pimenterpriseenrich/js/job/export/edit/edit-button
 
         # Filters
         pimee/filter/attribute/assets-collection: pimenterpriseenrich/js/filter/attribute/assets-collection
