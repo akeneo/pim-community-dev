@@ -69,21 +69,6 @@ class VariantGroupController
      * {@inheritdoc}
      *
      * @Template
-     * @AclAncestor("pim_enrich_variant_group_index")
-     *
-     * @return Response
-     */
-    public function indexAction()
-    {
-        return [
-            'groupTypes' => $this->groupTypeRepository->findTypeIds(true)
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @Template
      * @AclAncestor("pim_enrich_variant_group_create")
      */
     public function createAction(Request $request)

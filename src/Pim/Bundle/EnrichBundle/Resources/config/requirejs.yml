@@ -191,6 +191,11 @@ config:
                 pim_enrich_associationtype_edit:
                     module: pim/controller/association-type
                     aclResourceId: pim_enrich_associationtype_edit
+                pim_enrich_associationtype_index:
+                    module: pim/controller/common/index
+                    aclResourceId: pim_enrich_associationtype_index
+                    config:
+                        entity: association-type
                 pim_enrich_attribute_create:
                     module: pim/controller/form
                     aclResourceId: pim_enrich_attribute_create
@@ -213,14 +218,16 @@ config:
                     module: pim/controller/form
                     aclResourceId: pim_enrich_product_category_list
                 pim_enrich_channel_edit:
-                    module: pim/controller/channel
+                    module: pim/controller/channel/edit
                     aclResourceId: pim_enrich_channel_edit
                 pim_enrich_channel_create:
-                    module: pim/controller/channel
+                    module: pim/controller/channel/edit
                     aclResourceId: pim_enrich_channel_create
-                pim_enrich_family_edit:
-                    module: pim/controller/family
-                    aclResourceId: pim_enrich_family_index
+                pim_enrich_channel_index:
+                    module: pim/controller/common/index
+                    aclResourceId: pim_enrich_channel_index
+                    config:
+                        entity: channel
                 pim_enrich_grouptype_edit:
                     module: pim/controller/group-type
                     aclResourceId: pim_enrich_grouptype_edit
@@ -232,6 +239,21 @@ config:
                 pim_enrich_variant_group_edit:
                     module: pim/controller/variant-group
                     aclResourceId: pim_enrich_variant_group_edit
+                pim_enrich_channel_index:
+                    module: pim/controller/common/index
+                    aclResourceId: pim_enrich_channel_index
+                    config:
+                        entity: channel
+                pim_importexport_export_profile_index:
+                    module: pim/controller/common/index
+                    aclResourceId: pim_importexport_export_profile_index
+                    config:
+                        entity: export-profile
+                pim_importexport_import_profile_index:
+                    module: pim/controller/common/index
+                    aclResourceId: pim_importexport_export_profile_index
+                    config:
+                        entity: import-profile
                 pim_importexport_export_profile_edit:
                     module: pim/controller/job-instance
                     aclResourceId: pim_importexport_export_profile_edit
@@ -244,6 +266,11 @@ config:
                 pim_importexport_export_profile_show:
                     module: pim/controller/job-instance
                     aclResourceId: pim_importexport_export_profile_show
+                pim_enrich_currency_index:
+                    module: pim/controller/common/index
+                    aclResourceId: pim_enrich_currency_index
+                    config:
+                        entity: currency
                 pim_enrich_currency_toggle:
                     module: pim/controller/redirect
                     aclResourceId: pim_enrich_currency_toggle
@@ -258,24 +285,47 @@ config:
                 pim_enrich_mass_edit_product_action_perform:
                     module: pim/controller/form
                     aclResourceId: pim_enrich_mass_edit
+                pim_enrich_family_index:
+                    module: pim/controller/common/index
+                    aclResourceId: pim_enrich_family_index
+                    config:
+                        entity: family
+                pim_enrich_family_create:
+                    module: pim/controller/template
+                    aclResourceId: pim_enrich_family_create
+                pim_enrich_family_edit:
+                    module: pim/controller/family
+                    aclResourceId: pim_enrich_family_index
                 pim_enrich_mass_edit_family_action_choose:
                     module: pim/controller/form
                 pim_enrich_mass_edit_family_action_configure:
                     module: pim/controller/form
                 pim_enrich_mass_edit_family_action_perform:
                     module: pim/controller/form
+                oro_user_index:
+                    module: pim/controller/common/index
+                    config:
+                        entity: user
                 oro_user_create:
                     module: pim/controller/form
                 oro_user_update:
                     module: pim/controller/form
                 oro_user_profile_update:
                     module: pim/controller/user
+                oro_user_role_index:
+                    module: pim/controller/common/index
+                    config:
+                        entity: user-role
                 oro_user_role_create:
                     module: pim/controller/form
                 oro_user_role_update:
                     module: pim/controller/role
                 oro_user_group_create:
                     module: pim/controller/form
+                oro_user_group_index:
+                    module: pim/controller/common/index
+                    config:
+                        entity: user-group
                 oro_user_group_update:
                     module: pim/controller/form
                 pim_enrich_mass_edit_action_choose:
@@ -310,21 +360,11 @@ config:
                 pim_enrich_attributegroup_remove:
                     module: pim/controller/template
                     aclResourceId: pim_enrich_attributegroup_remove
-                pim_enrich_channel_index:
-                    module: pim/controller/template
-                    aclResourceId: pim_enrich_channel_index
-                pim_enrich_currency_index:
-                    module: pim/controller/template
-                    aclResourceId: pim_enrich_currency_index
-                pim_enrich_family_index:
-                    module: pim/controller/template
-                    aclResourceId: pim_enrich_family_index
-                pim_enrich_family_create:
-                    module: pim/controller/template
-                    aclResourceId: pim_enrich_family_create
                 pim_enrich_locale_index:
-                    module: pim/controller/template
+                    module: pim/controller/common/index
                     aclResourceId: pim_enrich_locale_index
+                    config:
+                        entity: locale
                 pim_enrich_attribute_index:
                     module: pim/controller/template
                     aclResourceId: pim_enrich_attribute_index
@@ -341,14 +381,18 @@ config:
                     module: pim/controller/template
                     aclResourceId: pim_enrich_product_create
                 pim_enrich_variant_group_index:
-                    module: pim/controller/template
+                    module: pim/controller/common/index
                     aclResourceId: pim_enrich_variant_group_index
+                    config:
+                        entity: variant-group
                 pim_enrich_variant_group_create:
                     module: pim/controller/template
                     aclResourceId: pim_enrich_variant_group_create
                 pim_enrich_group_index:
-                    module: pim/controller/template
+                    module: pim/controller/common/index
                     aclResourceId: pim_enrich_group_index
+                    config:
+                        entity: group
                 pim_enrich_group_create:
                     module: pim/controller/template
                     aclResourceId: pim_enrich_group_create
@@ -362,8 +406,10 @@ config:
                     module: pim/controller/template
                     aclResourceId: pim_enrich_associationtype_create
                 pim_enrich_grouptype_index:
-                    module: pim/controller/template
+                    module: pim/controller/common/index
                     aclResourceId: pim_enrich_grouptype_index
+                    config:
+                        entity: group-type
                 pim_enrich_grouptype_create:
                     module: pim/controller/template
                     aclResourceId: pim_enrich_grouptype_create
@@ -371,11 +417,23 @@ config:
                     module: pim/controller/template
                     aclResourceId: pim_enrich_grouptype_remove
                 pim_enrich_job_tracker_index:
-                    module: pim/controller/template
+                    module: pim/controller/common/index
                     aclResourceId: pim_enrich_job_tracker_index
+                    config:
+                        entity: process
+                pim_importexport_import_execution_index:
+                    module: pim/controller/common/index
+                    aclResourceId: pim_importexport_import_execution_index
+                    config:
+                        entity: import-execution
                 pim_importexport_import_execution_show:
                     module: pim/controller/job-execution
                     aclResourceId: pim_importexport_import_execution_show
+                pim_importexport_export_execution_index:
+                    module: pim/controller/common/index
+                    aclResourceId: pim_importexport_export_execution_index
+                    config:
+                        entity: export-execution
                 pim_importexport_export_execution_show:
                     module: pim/controller/job-execution
                     aclResourceId: pim_importexport_export_execution_show
@@ -397,7 +455,8 @@ config:
         pim/controller/form:                pimenrich/js/controller/form
         pim/controller/product:             pimenrich/js/controller/product
         pim/controller/family:              pimenrich/js/controller/family
-        pim/controller/channel:             pimenrich/js/controller/channel
+        pim/controller/channel/edit:        pimenrich/js/controller/channel/edit
+        pim/controller/common/index:        pimenrich/js/controller/common/index
         pim/controller/association-type:    pimenrich/js/controller/association-type
         pim/controller/redirect:            pimenrich/js/controller/redirect
         pim/controller/job-instance:        pimenrich/js/controller/job-instance

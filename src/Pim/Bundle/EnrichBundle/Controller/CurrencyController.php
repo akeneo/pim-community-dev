@@ -7,7 +7,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Component\Catalog\Exception\LinkedChannelException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -40,19 +39,6 @@ class CurrencyController
         $this->request = $request;
         $this->router = $router;
         $this->currencySaver = $currencySaver;
-    }
-
-    /**
-     * List currencies
-     *
-     * @Template
-     * @AclAncestor("pim_enrich_currency_index")
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function indexAction()
-    {
-        return [];
     }
 
     /**

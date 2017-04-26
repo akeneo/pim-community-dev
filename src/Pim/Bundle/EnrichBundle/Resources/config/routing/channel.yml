@@ -1,17 +1,13 @@
 pim_enrich_channel_index:
     path: ''
-    defaults: { _controller: pim_enrich.controller.channel:indexAction }
 
 pim_enrich_channel_create:
     path: /create
-    defaults: { _controller: pim_enrich.controller.channel:createAction }
 
 pim_enrich_channel_edit:
     path: /{code}/edit
-    defaults: { _controller: pim_enrich.controller.channel:editAction }
     requirements:
         code: '[a-zA-Z0-9_]+'
-
 
 pim_enrich_channel_rest_index:
     path: /rest

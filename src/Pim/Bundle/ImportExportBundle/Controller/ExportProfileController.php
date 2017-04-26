@@ -17,22 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 class ExportProfileController extends JobProfileController
 {
     /**
-     * List the export profiles
-     *
-     * @Template
-     * @AclAncestor("pim_importexport_export_profile_index")
-     *
-     * @return array
-     */
-    public function indexAction()
-    {
-        return [
-            'jobType'    => $this->getJobType(),
-            'connectors' => $this->jobRegistry->allByType($this->getJobType())
-        ];
-    }
-
-    /**
      * {@inheritdoc}
      *
      * @AclAncestor("pim_importexport_export_profile_create")

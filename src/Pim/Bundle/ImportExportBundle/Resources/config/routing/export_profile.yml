@@ -1,6 +1,5 @@
 pim_importexport_export_profile_index:
     path: /
-    defaults: { _controller: pim_import_export.controller.export_profile:indexAction }
 
 pim_importexport_export_profile_create:
     path: /create

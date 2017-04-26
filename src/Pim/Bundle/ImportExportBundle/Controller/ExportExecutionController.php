@@ -17,16 +17,6 @@ class ExportExecutionController extends JobExecutionController
     /**
      * {@inheritdoc}
      *
-     * @AclAncestor("pim_importexport_export_execution_index")
-     */
-    public function indexAction()
-    {
-        return parent::indexAction();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
      * @AclAncestor("pim_importexport_export_execution_download_log")
      */
     public function downloadLogFileAction($id)

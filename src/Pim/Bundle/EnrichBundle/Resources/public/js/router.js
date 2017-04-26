@@ -95,7 +95,8 @@ define(
                         return;
                     }
 
-                    this.currentController = new controller.class({ el: $view});
+                    controller.el = $view;
+                    this.currentController = new controller.class(controller);
                     this.currentController.setActive(true);
                     this.currentController.renderRoute(route, path)
                         .done(function () {

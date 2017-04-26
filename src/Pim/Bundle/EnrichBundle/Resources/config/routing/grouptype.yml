@@ -1,6 +1,5 @@
 pim_enrich_grouptype_index:
     path: ''
-    defaults: { _controller: pim_enrich.controller.group_type:indexAction }
 
 pim_enrich_grouptype_create:
     path: /create
@@ -8,7 +7,6 @@ pim_enrich_grouptype_create:
 
 pim_enrich_grouptype_edit:
     path: /{code}/edit
-    defaults: { _controller: pim_enrich.controller.group_type:editAction }
     requirements:
         code: '[a-zA-Z0-9_]+'
 

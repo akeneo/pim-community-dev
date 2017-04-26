@@ -57,19 +57,6 @@ class FamilyController
     }
 
     /**
-     * List families
-     *
-     * @Template
-     * @AclAncestor("pim_enrich_family_index")
-     *
-     * @return Response
-     */
-    public function indexAction()
-    {
-        return [];
-    }
-
-    /**
      * Create a family
      *
      * @Template

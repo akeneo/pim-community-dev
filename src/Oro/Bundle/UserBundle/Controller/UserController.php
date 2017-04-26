@@ -70,15 +70,6 @@ class UserController extends Controller
     }
 
     /**
-     * @Template
-     * @AclAncestor("pim_user_user_index")
-     */
-    public function indexAction()
-    {
-        return [];
-    }
-
-    /**
      * Delete user
      *
      * @AclAncestor("pim_user_user_remove")

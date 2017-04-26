@@ -75,23 +75,6 @@ class GroupController
     }
 
     /**
-     * List groups
-     *
-     * @Template
-     * @AclAncestor("pim_enrich_group_index")
-     *
-     * @return Response
-     */
-    public function indexAction()
-    {
-        $groupTypes = $this->groupTypeRepository->findTypeIds(false);
-
-        return [
-            'groupTypes' => $groupTypes
-        ];
-    }
-
-    /**
      * Create a group
      *
      * @param Request $request
@@ -119,19 +102,6 @@ class GroupController
 
         return [
             'form' => $this->groupForm->createView()
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @AclAncestor("pim_enrich_group_edit")
-     * @Template
-     */
-    public function editAction($code)
-    {
-        return [
-            'code' => $code
         ];
     }
 }

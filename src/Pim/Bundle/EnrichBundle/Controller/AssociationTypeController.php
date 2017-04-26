@@ -77,19 +77,6 @@ class AssociationTypeController
     }
 
     /**
-     * List association types
-     *
-     * @Template
-     * @AclAncestor("pim_enrich_associationtype_index")
-     *
-     * @return Response
-     */
-    public function indexAction()
-    {
-        return [];
-    }
-
-    /**
      * Create an association type
      *
      * @param Request $request

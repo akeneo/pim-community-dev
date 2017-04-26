@@ -30,15 +30,6 @@ class RoleController extends Controller
     }
 
     /**
-     * @AclAncestor("pim_user_role_index")
-     * @Template
-     */
-    public function indexAction(Request $request)
-    {
-        return [];
-    }
-
-    /**
      * Delete role
      *
      * @AclAncestor("pim_user_role_remove")

@@ -10,7 +10,6 @@ oro_user_group_update:
 
 oro_user_group_index:
     path: /user/group/
-    defaults: { _controller: OroUserBundle:Group:index }
 
 oro_user_group_delete:
     path: /user/group/delete/{id}
@@ -53,7 +52,6 @@ oro_user_role_update:
 
 oro_user_role_index:
     path: /user/role/
-    defaults: { _controller: OroUserBundle:Role:index }
 
 oro_user_role_delete:
     path: /user/role/delete/{id}
@@ -100,7 +98,6 @@ oro_user_update:
 
 oro_user_index:
     path: /user/
-    defaults: { _controller: OroUserBundle:User:index }
 
 oro_user_user_delete:
     path: /user/delete/{id}

@@ -38,15 +38,6 @@ class GroupController extends Controller
     }
 
     /**
-     * @AclAncestor("pim_user_group_index")
-     * @Template
-     */
-    public function indexAction(Request $request)
-    {
-        return [];
-    }
-
-    /**
      * Delete group
      *
      * @AclAncestor("pim_user_group_remove")

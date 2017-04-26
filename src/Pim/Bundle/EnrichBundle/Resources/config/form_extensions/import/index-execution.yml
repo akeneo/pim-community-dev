@@ -1,12 +1,12 @@
 extensions:
-    pim-import-history-index:
+    pim-import-execution-index:
         module: pim/form/common/index/index
         config:
             title: pim_enrich.index.import_history.title
 
-    pim-import-history-index-grid:
+    pim-import-execution-index-grid:
         module: pim/form/common/index/grid
-        parent: pim-import-history-index
+        parent: pim-import-execution-index
         position: 1000
         targetZone: content
         config:

@@ -90,18 +90,6 @@ class JobExecutionController
     }
 
     /**
-     * List the reports
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function indexAction()
-    {
-        return $this->templating->renderResponse(
-            sprintf('PimImportExportBundle:%sExecution:index.html.twig', ucfirst($this->getJobType()))
-        );
-    }
-
-    /**
      * Download the log file of the job execution
      *
      * @param int $id

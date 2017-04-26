@@ -1,6 +1,5 @@
 pim_enrich_group_index:
     path: ''
-    defaults: { _controller: pim_enrich.controller.group:indexAction }
 
 pim_enrich_group_create:
     path: /create
@@ -8,7 +7,6 @@ pim_enrich_group_create:
 
 pim_enrich_group_edit:
     path: /{code}/edit
-    defaults: { _controller: pim_enrich.controller.group:editAction }
     requirements:
         code: '[a-zA-Z0-9_]+'
 
