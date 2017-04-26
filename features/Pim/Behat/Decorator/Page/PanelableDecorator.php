@@ -8,6 +8,8 @@ use Pim\Behat\Decorator\ElementDecorator;
 
 /**
  * Decorator to add panel management feature to an element
+ *
+ * TODO to remove
  */
 class PanelableDecorator extends ElementDecorator
 {

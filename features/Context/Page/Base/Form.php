@@ -36,8 +36,7 @@ class Form extends Base
             [
                 'Dialog'                          => ['css' => 'div.modal'],
                 'Associations list'               => ['css' => '.associations-list'],
-                'Groups'                          => ['css' => '.tab-groups, .AknVerticalNavtab'],
-                'Group'                           => ['css' => '.AknVerticalNavtab-link:contains("%s")'],
+                'Group selector'                  => ['css' => '.group-selector'],
                 'Validation errors'               => ['css' => '.validation-tooltip'],
                 'Available attributes form'       => ['css' => '#pim_available_attributes'],
                 'Available attributes button'     => ['css' => 'button:contains("Add attributes")'],
@@ -103,6 +102,8 @@ class Form extends Base
      * Close the specified panel
      *
      * @throws \Context\Spin\TimeoutException
+     *
+     * TODO to remove
      */
     public function closePanel()
     {
@@ -111,24 +112,6 @@ class Form extends Base
         });
 
         $elt->click();
-    }
-
-    /**
-     * Get the tabs in the current page
-     *
-     * @return NodeElement[]
-     */
-    public function getTabs()
-    {
-        $tabs = $this->spin(function () {
-            return $this->find('css', $this->elements['Tabs']['css']);
-        });
-
-        if (!$tabs) {
-            $tabs = $this->getElement('Oro tabs');
-        }
-
-        return $tabs->findAll('css', 'a');
     }
 
     /**
@@ -170,32 +153,26 @@ class Form extends Base
     /**
      * Visit the specified group
      *
-     * @param string $group
+     * @param string $groupName
      */
-    public function visitGroup($group)
+    public function visitGroup($groupName)
     {
-        $this->spin(function () use ($group) {
-            $group = $this->findGroup($group);
-            if ($group->isVisible()) {
-                $group->click();
-
-                return true;
+        $this->spin(function () use ($groupName) {
+            $groupSelector = $this->find('css', $this->elements['Group selector']['css']);
+            if (null === $groupSelector || !$groupSelector->isVisible()) {
+                return false;
             }
-        }, sprintf('Cannot click the group "%s".', $group));
-    }
+            $groupSelector->find('css', '[data-toggle="dropdown"]')->click();
 
-    /**
-     * Get the specified group
-     *
-     * @param string $group
-     */
-    public function findGroup($group)
-    {
-        return $this->spin(function () use ($group) {
-            $group = $this->find('css', sprintf($this->elements['Group']['css'], $group));
+            $groupLabels = $groupSelector->findAll('css', '.group-label');
+            foreach ($groupLabels as $groupLabel) {
+                if (trim($groupLabel->getText()) === $groupName && $groupLabel->isVisible()) {
+                    return $this->getClosest($groupLabel, 'AknDropdown-menuLink');
+                }
+            }
 
-            return $group;
-        }, sprintf('Cannot find the group "%s".', $group));
+            return false;
+        }, sprintf('Cannot visit the group "%s"', $groupName))->click();
     }
 
     /**

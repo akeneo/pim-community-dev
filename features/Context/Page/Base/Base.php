@@ -498,16 +498,9 @@ class Base extends Page
      */
     public function getTabs()
     {
-        $tabs = $this->spin(function () {
+        return $this->spin(function () {
             return $this->find('css', $this->elements['Tabs']['css']);
-        }, sprintf('Cannot find "%s" tab', $this->elements['Tabs']['css']));
-
-        // Is this dead code?
-        if (null === $tabs) {
-            $tabs = $this->getElement('Oro tabs');
-        }
-
-        return $tabs->findAll('css', 'a');
+        }, 'Cannot find the tab container')->findAll('css', 'a');
     }
 
     /**
