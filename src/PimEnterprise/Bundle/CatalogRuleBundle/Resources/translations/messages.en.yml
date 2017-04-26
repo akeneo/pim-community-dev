@@ -81,15 +81,9 @@ pimee_catalog_rule:
     notification:
         rule:
             executed: Execution of the rule(s) finished
-            launched: The rules execution has been launched. You will be notified when it is done.
         mass_edit_rule:
             success: Calculation of the affected products for the rules finished
             error: An error as occurred during the calculation of the affected products for the rules
-
-    popin:
-        execute_rules:
-            confirm_title: Execute confirmation
-            confirm_content: Are you sure you want to execute all the rules? (this could take a long time)
 
 btn:
     Execute rules: Execute rules

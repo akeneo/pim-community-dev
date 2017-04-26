@@ -2,9 +2,27 @@
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% block content %}
-    {% set title = 'proposal.overview'|trans %}
+    <div id="enrich-proposal">
+    </div>
 
-    {{ elements.page_header(title) }}
-
-    {{ dataGrid.renderStatefulGrid('proposal-grid', { dataLocale: locale_code(), currentUser: app.user }) }}
+    <script>
+        require(
+            [
+                'jquery',
+                'pim/form-builder',
+                'pim/fetcher-registry'
+            ],
+            function (
+                $,
+                FormBuilder,
+                FetcherRegistry
+            ) {
+                FetcherRegistry.initialize().done(function () {
+                    FormBuilder.build('pimee-proposal-index')
+                        .then(function (form) {
+                            form.setElement('#enrich-proposal').render();
+                        });
+                });
+            });
+    </script>
 {% endblock %}

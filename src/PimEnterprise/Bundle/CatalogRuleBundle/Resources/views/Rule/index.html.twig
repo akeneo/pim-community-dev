@@ -1,26 +1,30 @@
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
-{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
-
 {% block content %}
-    {% if resource_granted('pimee_catalog_rule_rule_execute_permissions') %}
-        {% set buttons %}
-            {{ elements.confirmLink(
-            path('pimee_catalog_rule_rule_execute'),
-            path('pimee_catalog_rule_rule_index'),
-            'pimee_catalog_rule.notification.rule.launched'|trans,
-            'Execute rules',
-            'play',
-            'pimee_catalog_rule.popin.execute_rules.confirm_content'|trans,
-            'AknButton--apply execute-all-rules',
-            'pimee_catalog_rule.popin.execute_rules.confirm_title'|trans
-            ) }}
-        {% endset %}
+    <div id="settings-rules">
+    </div>
+{% endblock %}
 
-        {{ elements.page_header('pimee_catalog_rule.datagrid.rule-grid.title'|trans, buttons) }}
-    {% else %}
-        {{ elements.page_header('pimee_catalog_rule.datagrid.rule-grid.title'|trans) }}
-    {% endif %}
-
-    {{ dataGrid.renderGrid('rule-grid') }}
+{% block head_script %}
+    {{ parent() }}
+    <script>
+        require(
+            [
+                'jquery',
+                'pim/form-builder',
+                'pim/fetcher-registry'
+            ],
+            function (
+                $,
+                FormBuilder,
+                FetcherRegistry
+            ) {
+                FetcherRegistry.initialize().done(function () {
+                    FormBuilder.build('pimee-rules-index')
+                        .then(function (form) {
+                            form.setElement('#settings-rules').render();
+                        });
+                });
+            });
+    </script>
 {% endblock %}

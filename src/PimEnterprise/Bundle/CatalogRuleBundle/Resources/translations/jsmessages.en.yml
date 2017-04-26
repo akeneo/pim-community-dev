@@ -1,4 +1,13 @@
 pimee_catalog_rule:
+    overview: Rules
+    execution_button: Execute rules
+    popin:
+        execute_rules:
+            confirm_title: Execute confirmation
+            confirm_content: Are you sure you want to execute all the rules? (this could take a long time)
+    notification:
+        fail: The action could not be performed
+        launched: The rules execution has been launched. You will be notified when it is done.
     attribute:
         list:
             code.label: Code

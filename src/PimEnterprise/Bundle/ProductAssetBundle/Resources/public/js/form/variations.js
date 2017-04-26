@@ -54,6 +54,7 @@ define(
                 confirmModal.on('ok', function () {
                     router.redirect(targetUrl);
                 });
+
                 return confirmModal;
             }
         });
