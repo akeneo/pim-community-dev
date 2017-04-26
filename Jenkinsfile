@@ -171,7 +171,7 @@ if (launchBehatTests.equals("yes")) {
         for(int i = 0; i < paths.size(); i++) {
             for(int j = 0; j < editions.size(); j++) {
                 for(int k = 0; k < storages.size(); k++) {
-                    node('kubernetes-docker') {
+                    node('docker') {
                         docker.image("carcel/php:5.6").inside() {
                             tags = "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app"
                             if ('ce' == editions[j]) {
