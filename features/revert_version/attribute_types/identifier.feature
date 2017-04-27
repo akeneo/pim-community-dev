@@ -9,10 +9,13 @@ Feature: Revert product attributes to a previous version
     And I am logged in as "Julia"
 
   Scenario: Successfully revert a identifier attribute
-    Given the following product:
-    | sku   | family |
-    | jeans | pants  |
-    Given I am on the "jeans" product page
+    Given I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | jeans |
+      | family | Pants |
+    And I press the "Save" button in the popin
+    And I wait to be on the "jeans" product page
     When I change the "SKU" to "pantalon"
     And I save the product
     And I should not see the text "There are unsaved changes."
