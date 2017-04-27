@@ -90,8 +90,8 @@ Feature: List proposals
       | Blue | Blue  | Bleu  | Blau  |
     And I logout
     And Mary proposed the following change to "tshirt":
-      | tab        | field              | value |
-      | Additional | Weather conditions | Blue  |
+      | tab                    | field              | value |
+      | Additional information | Weather conditions | Blue  |
     And I am logged in as "Julia"
     When I am on the proposals page
     Then I should see the following proposals:

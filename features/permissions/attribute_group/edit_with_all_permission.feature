@@ -20,6 +20,5 @@ Feature: Edit attribute group with all permissions
       | Allowed to edit attributes | All |
     And I press the "Save" button
     And I edit the "socket" product
-    Then I should see the text "Marketing"
     And I visit the "Marketing" group
     Then I should see the text "price"

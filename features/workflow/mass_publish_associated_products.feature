@@ -30,12 +30,12 @@ Feature: Publish many products at once
     Given I am logged in as "Julia"
     And I edit the "unionjack" product
     When I visit the "Associations" column tab
-    And I visit the "Cross sell" group
+    And I visit the "Cross sell" association type
     And I check the row "jackadi"
     And I save the product
     And I edit the "jackadi" product
     When I visit the "Associations" column tab
-    And I visit the "Cross sell" group
+    And I visit the "Cross sell" association type
     And I check the row "unionjack"
     And I save the product
     And I am on the products page
@@ -67,18 +67,18 @@ Feature: Publish many products at once
     Given I am logged in as "Peter"
     And I edit the "unionjack" product
     When I visit the "Associations" column tab
-    And I visit the "Cross sell" group
+    And I visit the "Cross sell" association type
     And I check the row "jackadi"
     And I save the product
     And I edit the "teafortwo" product
     When I visit the "Associations" column tab
-    And I visit the "Cross sell" group
+    And I visit the "Cross sell" association type
     And I check the row "jackadi"
     And I check the row "unionjack"
     And I save the product
     And I edit the "jackadi" product
     When I visit the "Associations" column tab
-    And I visit the "Cross sell" group
+    And I visit the "Cross sell" association type
     And I check the row "teafortwo"
     And I save the product
     And I am on the products page
@@ -107,7 +107,7 @@ Feature: Publish many products at once
     Given I am logged in as "Peter"
     And I edit the "unionjack" product
     When I visit the "Associations" column tab
-    And I visit the "Cross sell" group
+    And I visit the "Cross sell" association type
     And I check the row "jackadi"
     And I save the product
     And I am on the products page

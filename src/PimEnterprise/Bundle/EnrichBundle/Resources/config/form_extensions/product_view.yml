@@ -101,7 +101,7 @@ extensions:
     pimee-product-view-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector
         parent: pimee-product-view-attributes
-        targetZone: sidebar
+        targetZone: attribute-group-selector
         position: 100
 
     pimee-product-view-scope-switcher:
