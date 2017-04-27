@@ -156,10 +156,10 @@ define(
                         }.bind(this),
                         error: function (data, xhr) {
                             this.inLoading(false);
-
                             var response = xhr.responseJSON;
 
-                            if (response.children &&
+                            if (response &&
+                                response.children &&
                                 response.children.code &&
                                 response.children.code.errors &&
                                 response.children.code.errors.length > 0
