@@ -12,7 +12,7 @@ help:           ## Show this help
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
 install:        ## [start composer db-create pim-install clear-all asset-install] Setup the project using Docker and docker-compose
-install: start composer db-create clear-all pim-install asset-install
+install: start composer clear-all pim-install asset-install
 
 pim-install:    ## Install the PIM
 	$(CONSOLE) pim:install --env=prod --force
