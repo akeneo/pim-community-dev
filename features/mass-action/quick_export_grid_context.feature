@@ -33,10 +33,10 @@ Feature: Quick export products according to the product grid context
     And the name of the exported file of "csv_product_grid_context_quick_export" should be "products_export_grid_context_en_US_tablet.csv"
     And exported file of "csv_product_grid_context_quick_export" should contain:
     """
-    sku;color;family;groups;name-en_US;price-EUR;price-USD;size;description-en_US-tablet;weight;weight-unit
-    boots;black;boots;;Amazing boots;20;25;40;Mob;20;GRAM
-    sneakers;white;sneakers;;Sneakers;50;60;42;ylette;4;GRAM
-    pump;blue;Pump;;;15;20;41;;;
+    sku;color;description-en_US-tablet;family;groups;name-en_US;price-EUR;price-USD;size;weight;weight-unit
+    boots;black;Mob;boots;;Amazing boots;20;25;40;20;GRAM
+    sneakers;white;ylette;sneakers;;Sneakers;50;60;42;4;GRAM
+    pump;blue;;;;Pump;15;20;41;;
     """
 
   Scenario: Successfully quick export products from grid context as a XSLX file
@@ -54,7 +54,7 @@ Feature: Quick export products according to the product grid context
     Then I should see "COMPLETED"
     And the name of the exported file of "xlsx_product_grid_context_quick_export" should be "products_export_grid_context_en_US_tablet.xlsx"
     And exported xlsx file of "xlsx_product_grid_context_quick_export" should contain:
-      | sku      | color | family   | groups | name-en_US    | price-EUR | price-USD | size | description-en_US-tablet | weight | weight-unit |
-      | boots    | black | boots    |        | Amazing boots | 20        | 25        | 40   | Mob                      | 20     | GRAM        |
-      | sneakers | white | sneakers |        | Sneakers      | 50        | 60        | 42   | ylette                   | 4      | GRAM        |
-      | pump     | blue  |          |        | Pump          | 15        | 20        | 41   |                          |        |             |
+      | sku      | color | description-en_US-tablet | family   | groups | name-en_US    | price-EUR | price-USD | size | weight | weight-unit |
+      | boots    | black | Mob                      | boots    |        | Amazing boots | 20        | 25        | 40   | 20     | GRAM        |
+      | sneakers | white | ylette                   | sneakers |        | Sneakers      | 50        | 60        | 42   | 4      | GRAM        |
+      | pump     | blue  |                          |          |        | Pump          | 15        | 20        | 41   |        |             |
