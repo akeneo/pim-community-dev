@@ -42,7 +42,9 @@
     `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`,
     `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface` and
     `$storageDriver`, and add `Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface`
-- Change the constructor of `Pim\Component\Connector\Writer\File\ProductColumnSorter` to repace `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` by `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepositoryInterface`
+- Change the constructor of `Pim\Component\Connector\Writer\File\ProductColumnSorter` to replace `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` by `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepositoryInterface`
+- Change the constructor of `Pim\Component\Catalog\Updater\VariantGroupUpdater` to replace `Pim\Component\Catalog\BuilderProductBuilderInterface` and `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`
+    by `Pim\Component\Catalog\Factory\ProductValueFactory`, `Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface` and `Akeneo\Component\FileStorage\File\FileStorerInterface`
 
 ### Others
 
@@ -103,3 +105,4 @@
 - Remove service `pim_enrich.controller.rest.completeness` and parameter `pim_enrich.controller.rest.completeness.class`
 - Add method `findCodesByIdentifiers` in `Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface`
 - Add method `findCodesByIdentifiers` in `Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface`
+- Remove class `Pim\Bundle\DataGridBundle\EventListener\AddParametersToVariantProductGridListener`

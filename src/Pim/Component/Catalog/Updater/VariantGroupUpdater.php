@@ -2,13 +2,19 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Factory\ProductValueFactory;
+use Pim\Component\Catalog\FileStorage;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValueCollection;
@@ -33,11 +39,14 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     /** @var GroupTypeRepositoryInterface */
     protected $groupTypeRepository;
 
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
+    /** @var ProductValueFactory */
+    protected $productValueFactory;
 
-    /** @var ObjectUpdaterInterface */
-    protected $productUpdater;
+    /** @var FileInfoRepositoryInterface */
+    protected $fileInfoRepository;
+
+    /** @var FileStorerInterface */
+    protected $fileStorer;
 
     /** @var ProductQueryBuilderFactoryInterface */
     protected $productQueryBuilderFactory;
@@ -48,23 +57,26 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     /**
      * @param AttributeRepositoryInterface        $attributeRepository
      * @param GroupTypeRepositoryInterface        $groupTypeRepository
-     * @param ProductBuilderInterface             $productBuilder
-     * @param ObjectUpdaterInterface              $productUpdater
+     * @param ProductValueFactory                 $productValueFactory
+     * @param FileInfoRepositoryInterface         $fileInfoRepository
+     * @param FileStorerInterface                 $fileStorer
      * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
      * @param string                              $productTemplateClass
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         GroupTypeRepositoryInterface $groupTypeRepository,
-        ProductBuilderInterface $productBuilder,
-        ObjectUpdaterInterface $productUpdater,
+        ProductValueFactory $productValueFactory,
+        FileInfoRepositoryInterface $fileInfoRepository,
+        FileStorerInterface $fileStorer,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         $productTemplateClass
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->groupTypeRepository = $groupTypeRepository;
-        $this->productBuilder = $productBuilder;
-        $this->productUpdater = $productUpdater;
+        $this->productValueFactory = $productValueFactory;
+        $this->fileInfoRepository = $fileInfoRepository;
+        $this->fileStorer = $fileStorer;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
         $this->productTemplateClass = $productTemplateClass;
     }
@@ -210,25 +222,15 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
                 throw ImmutablePropertyException::immutableProperty(
                     'axes',
                     implode(',', $axes),
-                    static::class,
-                    'variant group'
+                    static::class
                 );
             }
         }
 
         foreach ($axes as $axis) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($axis);
-            if (null !== $attribute) {
-                $variantGroup->addAxisAttribute($attribute);
-            } else {
-                throw InvalidPropertyException::validEntityCodeExpected(
-                    'axes',
-                    'attribute code',
-                    'The attribute does not exist',
-                    static::class,
-                    $axis
-                );
-            }
+            $attribute = $this->getAttributeOrThrowException($axis);
+
+            $variantGroup->addAxisAttribute($attribute);
         }
     }
 
@@ -239,12 +241,12 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     protected function setValues(GroupInterface $variantGroup, array $newValues)
     {
         $template = $this->getProductTemplate($variantGroup);
-        $originalValues = $template->getValues();
+        $templateProductValues = $template->getValues();
 
-        if (null === $originalValues) {
-            $originalValues = new ProductValueCollection();
+        if (null === $templateProductValues) {
+            $templateProductValues = new ProductValueCollection();
         }
-        $mergedValues = $this->updateTemplateValues($originalValues, $newValues);
+        $mergedValues = $this->updateTemplateValues($templateProductValues, $newValues);
 
         $template->setValues($mergedValues);
 
@@ -257,19 +259,68 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      * New values respect the standard format, so we can use the product updater
      * on a temporary product.
      *
-     * @param ProductValueCollectionInterface $values
+     * @param ProductValueCollectionInterface $templateProductValues
      * @param array                           $newValues
      *
      * @return ProductValueCollectionInterface
      */
-    protected function updateTemplateValues(ProductValueCollectionInterface $values, array $newValues)
+    protected function updateTemplateValues(ProductValueCollectionInterface $templateProductValues, array $newValues)
     {
-        $product = $this->productBuilder->createProduct();
-        $product->setValues($values);
+        foreach ($newValues as $attributeCode => $newValue) {
+            $attribute = $this->getAttributeOrThrowException($attributeCode);
 
-        $this->productUpdater->update($product, ['values' => $newValues]);
+            foreach ($newValue as $standardValue) {
+                if (AttributeTypes::BACKEND_TYPE_MEDIA === $attribute->getBackendType()) {
+                    $file = $this->fileInfoRepository->findOneByIdentifier($standardValue['data']);
+                    if (null === $file) {
+                        $file = $this->storeFile($attribute, $standardValue['data']);
+                    }
 
-        return $product->getValues();
+                    $standardValue['data'] = $file->getKey();
+                }
+
+                $newProductValue = $this->productValueFactory->create(
+                    $attribute,
+                    $standardValue['scope'],
+                    $standardValue['locale'],
+                    $standardValue['data']
+                );
+
+                $templateProductValues->add($newProductValue);
+            }
+        }
+
+        return $templateProductValues;
+    }
+
+    /**
+     * TODO: inform the user that this could take some time.
+     *
+     * @param AttributeInterface $attribute
+     * @param string             $data
+     *
+     * @throws InvalidPropertyException If an invalid filePath is provided
+     * @return FileInfoInterface|null
+     */
+    protected function storeFile(AttributeInterface $attribute, $data)
+    {
+        if (null === $data) {
+            return null;
+        }
+
+        $rawFile = new \SplFileInfo($data);
+
+        if (!$rawFile->isFile()) {
+            throw InvalidPropertyException::validPathExpected(
+                $attribute->getCode(),
+                static::class,
+                $data
+            );
+        }
+
+        $file = $this->fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS);
+
+        return $file;
     }
 
     /**
@@ -325,5 +376,27 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         foreach ($products as $product) {
             $variantGroup->addProduct($product);
         }
+    }
+
+    /**
+     * @param string $attributeCode
+     *
+     * @return AttributeInterface
+     */
+    protected function getAttributeOrThrowException($attributeCode)
+    {
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+
+        if (null === $attribute) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'axes',
+                'attribute code',
+                'The attribute does not exist',
+                static::class,
+                $attributeCode
+            );
+        }
+
+        return $attribute;
     }
 }

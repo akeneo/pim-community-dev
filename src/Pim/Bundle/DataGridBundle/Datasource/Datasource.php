@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
@@ -21,7 +22,7 @@ use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterf
  */
 class Datasource implements DatasourceInterface, ParameterizableInterface
 {
-    /** @var \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder */
+    /** @var QueryBuilder|SearchQueryBuilder */
     protected $qb;
 
     /** @var ObjectManager */
@@ -146,10 +147,6 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
 
         if ($this->qb instanceof QueryBuilder) {
             $this->qb->setParameters($this->parameters);
-        }
-        // TODO - TIP-664: make the datagrid work with ES
-        elseif ($this->qb instanceof \Pim\Bundle\ElasticSearchBundle\Query\QueryBuilder) {
-            $this->qb->getStorageQb()->setParameters($this->parameters);
         }
 
         return $this;

@@ -33,7 +33,10 @@ class ProductValueCollectionFactory
 
     /**
      * Create product values from raw values described in the storage format.
-     * @see Pim\Component\Catalog\Normalizer\Storage\Product\ProductValuesNormalizer.php
+     * Raw values that correspond to an non existing attribute (that was deleted
+     * for instance) are NOT loaded.
+     *
+     * @see \Pim\Component\Catalog\Normalizer\Storage\Product\ProductValuesNormalizer.php
      *
      * @param array $rawValues
      *
@@ -46,19 +49,19 @@ class ProductValueCollectionFactory
         foreach ($rawValues as $attributeCode => $channelRawValue) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
-            //TODO: TIP-673 what to do in case the attribute does not exist?
-
-            foreach ($channelRawValue as $channelCode => $localeRawValue) {
-                if ('<all_channels>' === $channelCode) {
-                    $channelCode = null;
-                }
-
-                foreach ($localeRawValue as $localeCode => $data) {
-                    if ('<all_locales>' === $localeCode) {
-                        $localeCode = null;
+            if (null !== $attribute) {
+                foreach ($channelRawValue as $channelCode => $localeRawValue) {
+                    if ('<all_channels>' === $channelCode) {
+                        $channelCode = null;
                     }
 
-                    $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data);
+                    foreach ($localeRawValue as $localeCode => $data) {
+                        if ('<all_locales>' === $localeCode) {
+                            $localeCode = null;
+                        }
+
+                        $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data);
+                    }
                 }
             }
         }

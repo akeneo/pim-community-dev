@@ -2,22 +2,22 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
@@ -31,16 +31,18 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
     function let(
         AttributeRepositoryInterface $attributeRepository,
         GroupTypeRepositoryInterface $groupTypeRepository,
-        ProductBuilderInterface $productBuilder,
-        ObjectUpdaterInterface $productUpdater,
+        ProductValueFactory $productValueFactory,
+        FileInfoRepositoryInterface $fileInfoRepository,
+        FileStorerInterface $fileStorer,
         ProductQueryBuilderFactoryInterface $pqbFactory,
         $productTemplateClass
     ) {
         $this->beConstructedWith(
             $attributeRepository,
             $groupTypeRepository,
-            $productBuilder,
-            $productUpdater,
+            $productValueFactory,
+            $fileInfoRepository,
+            $fileStorer,
             $pqbFactory,
             $productTemplateClass
         );
@@ -72,9 +74,9 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
     function it_updates_a_variant_group(
         $attributeRepository,
         $groupTypeRepository,
+        $productValueFactory,
+        $fileInfoRepository,
         $pqbFactory,
-        $productBuilder,
-        $productUpdater,
         GroupInterface $variantGroup,
         AttributeInterface $mainColor,
         AttributeInterface $secondaryColor,
@@ -85,8 +87,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         ProductTemplateInterface $productTemplate,
         ProductQueryBuilderInterface $pqb,
         ProductValueCollectionInterface $originalValueCollection,
-        ProductValueCollectionInterface $newValueCollection,
-        ProductInterface $tmpProduct
+        ProductValueInterface $whiteValue
     ) {
         $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
         $attributeRepository->getIdentifierCode()->willReturn('code');
@@ -121,12 +122,88 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
         $productTemplate->getValues()->willReturn($originalValueCollection);
 
-        $productBuilder->createProduct()->willReturn($tmpProduct);
-        $tmpProduct->setValues($originalValueCollection)->shouldBeCalled();
-        $productUpdater->update($tmpProduct, ['values' => $values])->shouldBeCalled();
+        $productValueFactory->create($mainColor, null, null, 'white')->willReturn($whiteValue);
+        $originalValueCollection->add($whiteValue)->shouldBeCalled();
+        $fileInfoRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
 
-        $tmpProduct->getValues()->willReturn($newValueCollection);
-        $productTemplate->setValues($newValueCollection)->shouldBeCalled();
+        $productTemplate->setValues($originalValueCollection)->shouldBeCalled();
+        $variantGroup->setProductTemplate($productTemplate)->shouldBeCalled();
+
+        $data = [
+            'code'         => 'mycode',
+            'axes'         => ['main_color', 'secondary_color'],
+            'type'         => 'VARIANT',
+            'labels'       => [
+                'fr_FR' => 'T-shirt super beau',
+            ],
+            'values' => $values,
+            'products' => ['foo']
+        ];
+
+        $this->update($variantGroup, $data, []);
+    }
+
+    function it_updates_a_variant_group_with_media_value(
+        $attributeRepository,
+        $groupTypeRepository,
+        $productValueFactory,
+        $fileInfoRepository,
+        $pqbFactory,
+        GroupInterface $variantGroup,
+        AttributeInterface $mainColor,
+        AttributeInterface $secondaryColor,
+        AttributeInterface $pictureAttribute,
+        GroupTypeInterface $type,
+        GroupTranslation $translatable,
+        ProductInterface $removedProduct,
+        ProductInterface $addedProduct,
+        ProductTemplateInterface $productTemplate,
+        ProductQueryBuilderInterface $pqb,
+        ProductValueCollectionInterface $originalValueCollection,
+        FileInfoInterface $fileInfo,
+        ProductValueInterface $pictureValue
+    ) {
+        $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
+        $attributeRepository->getIdentifierCode()->willReturn('code');
+        $attributeRepository->findOneByIdentifier('main_color')->willReturn($mainColor);
+        $attributeRepository->findOneByIdentifier('secondary_color')->willReturn($secondaryColor);
+        $attributeRepository->findOneByIdentifier('picture')->willReturn($pictureAttribute);
+        $pqbFactory->create()->willReturn($pqb);
+        $pqb->addFilter('identifier', 'IN', ['foo'])->shouldBeCalled();
+        $pqb->execute()->willReturn([$addedProduct]);
+
+        $variantGroup->getTranslation()->willReturn($translatable);
+        $translatable->setLabel('T-shirt super beau')->shouldBeCalled();
+        $variantGroup->setCode('mycode')->shouldBeCalled();
+        $variantGroup->setLocale('fr_FR')->shouldBeCalled();
+        $variantGroup->setType($type)->shouldBeCalled();
+        $variantGroup->getId()->willReturn(null);
+        $variantGroup->addAxisAttribute(Argument::any())->shouldBeCalled();
+
+        $variantGroup->removeProduct($removedProduct)->shouldBeCalled();
+        $variantGroup->addProduct($addedProduct)->shouldBeCalled();
+        $variantGroup->getProducts()->willReturn([$removedProduct]);
+
+        $values = [
+            'picture'   => [
+                [
+                    'locale' => null,
+                    'scope'  => null,
+                    'data'   => 'path/to/picture.jpg',
+                ]
+            ]
+        ];
+
+        $variantGroup->getProductTemplate()->willReturn($productTemplate);
+        $productTemplate->getValues()->willReturn($originalValueCollection);
+
+        $pictureAttribute->getBackendType()->willReturn('media');
+        $fileInfoRepository->findOneByIdentifier('path/to/picture.jpg')->willReturn($fileInfo);
+        $fileInfo->getKey()->willReturn('path/to/picture.jpg');
+
+        $productValueFactory->create($pictureAttribute, null, null, 'path/to/picture.jpg')->willReturn($pictureValue);
+        $originalValueCollection->add($pictureValue)->shouldBeCalled();
+        $productTemplate->setValues($originalValueCollection)->shouldBeCalled();
         $variantGroup->setProductTemplate($productTemplate)->shouldBeCalled();
 
         $data = [
@@ -147,14 +224,10 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         $attributeRepository,
         $groupTypeRepository,
         $pqbFactory,
-        $productBuilder,
-        $productUpdater,
         GroupInterface $variantGroup,
         GroupTypeInterface $type,
         ProductTemplateInterface $productTemplate,
-        ProductValueCollectionInterface $originalValueCollection,
-        ProductValueCollectionInterface $newValueCollection,
-        ProductInterface $tmpProduct
+        ProductValueCollectionInterface $originalValueCollection
     ) {
         $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
         $attributeRepository->getIdentifierCode()->willReturn('code');
@@ -169,12 +242,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
         $productTemplate->getValues()->willReturn($originalValueCollection);
 
-        $productBuilder->createProduct()->willReturn($tmpProduct);
-        $tmpProduct->setValues($originalValueCollection)->shouldBeCalled();
-        $productUpdater->update($tmpProduct, ['values' => []])->shouldBeCalled();
-
-        $tmpProduct->getValues()->willReturn($newValueCollection);
-        $productTemplate->setValues($newValueCollection)->shouldBeCalled();
+        $productTemplate->setValues($originalValueCollection)->shouldBeCalled();
         $variantGroup->setProductTemplate($productTemplate)->shouldBeCalled();
 
 
