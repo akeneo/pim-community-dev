@@ -1255,7 +1255,11 @@ class WebUser extends RawMinkContext
         }
 
         foreach ($table->getRowsHash() as $field => $value) {
-            $this->getCurrentPage()->fillField($field, $value, $element);
+            $this->spin(function () use ($field, $value, $element) {
+                $this->getCurrentPage()->fillField($field, $value, $element);
+
+                return true;
+            }, sprintf('Cannot fill the field %s', $field));
         }
     }
 
