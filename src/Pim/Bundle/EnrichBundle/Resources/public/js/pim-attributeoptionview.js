@@ -387,8 +387,7 @@ define(
                     }
                 }
 
-                if (attributeOptionRow.model.id)
-                {
+                if (attributeOptionRow.model.id) {
                     this.currentlyEditedItemView = attributeOptionRow;
                 }
 
