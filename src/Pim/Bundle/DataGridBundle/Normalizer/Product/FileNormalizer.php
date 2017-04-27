@@ -17,13 +17,19 @@ class FileNormalizer implements NormalizerInterface
      */
     public function normalize($file, $format = null, array $context = [])
     {
+        $fileData = null;
+
+        if (null !== $file->getData()) {
+            $fileData = [
+                'originalFilename' => $file->getData()->getOriginalFilename(),
+                'filePath'         => $file->getData()->getKey(),
+            ];
+        }
+
         return [
             'locale' => $file->getLocale(),
             'scope'  => $file->getScope(),
-            'data'   => [
-                'originalFilename' => $file->getData()->getOriginalFilename(),
-                'filePath'         => $file->getData()->getKey()
-            ]
+            'data'   => $fileData,
         ];
     }
 

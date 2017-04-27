@@ -96,7 +96,7 @@ class ProductIndexingIntegration extends TestCase
             ],
             'enabled'       => true,
             'categories'    => ['categoryA1', 'categoryB'],
-            'groups'        => ['groupA', 'groupB'],
+            'groups'        => ['groupA', 'groupB', 'variantA'],
             'variant_group' => 'variantA',
             'in_group'      => [
                 'groupA'   => true,

@@ -32,7 +32,6 @@ Feature: Filter products per media
     And I should be able to use the following filters:
       | filter     | operator         | value      | result                    |
       | image      | starts with      | a          | shirt-one                 |
-      | attachment | ends with        | txt        | shirt-one and shirt-two   |
       | image      | contains         | ic         | shirt-two and shirt-three |
       | attachment | does not contain | neo        | shirt-two                 |
       | image      | is equal to      | akeneo.jpg | shirt-one                 |
