@@ -11,4 +11,14 @@ namespace Akeneo\Component\StorageUtils\Exception;
  */
 abstract class PropertyException extends \LogicException
 {
+    /** @var string */
+    protected $propertyName;
+
+    /**
+     * @return string
+     */
+    public function getPropertyName()
+    {
+        return $this->propertyName;
+    }
 }

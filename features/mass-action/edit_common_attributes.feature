@@ -53,9 +53,9 @@ Feature: Edit common attributes of many products at once
     And I change the "Name" to "boots"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then the english name of "boots" should be "boots"
-    And the english name of "sandals" should be "boots"
-    And the english name of "sneakers" should be "boots"
+    Then the english localizable value name of "boots" should be "boots"
+    And the english localizable value name of "sandals" should be "boots"
+    And the english localizable value name of "sneakers" should be "boots"
 
   Scenario: Successfully update many multi-valued values at once
     Given I am on the products page
@@ -82,8 +82,8 @@ Feature: Edit common attributes of many products at once
     And I change the "Name" to "boots"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then the english name of "pump" should be "boots"
-    And the english name of "sneakers" should be "boots"
+    Then the english localizable value name of "pump" should be "boots"
+    And the english localizable value name of "sneakers" should be "boots"
 
   @info https://akeneo.atlassian.net/browse/PIM-3070
   Scenario: Successfully mass edit a price not added to the product
@@ -246,9 +246,9 @@ Feature: Edit common attributes of many products at once
     And I change the "Comment" to "$(echo "shell_injection" > shell_injection.txt)"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then the english name of "boots" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
-    And the english name of "sandals" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
-    And the english name of "sneakers" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
+    Then the english localizable value name of "boots" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
+    And the english localizable value name of "sandals" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
+    And the english localizable value name of "sneakers" should be "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
     And the english tablet description of "boots" should be ";`echo \"SHELL_INJECTION\"`"
     And the english tablet description of "sandals" should be ";`echo \"SHELL_INJECTION\"`"
     And the english tablet description of "sneakers" should be ";`echo \"SHELL_INJECTION\"`"

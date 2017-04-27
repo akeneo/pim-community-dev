@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Factory\ProductValue;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Factory\PriceFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -50,7 +51,9 @@ class PriceCollectionProductValueFactory implements ProductValueFactoryInterface
             $data = [];
         }
 
-        $value = new $this->productValueClass($attribute, $channelCode, $localeCode, $this->getPrices($data));
+        $value = new $this->productValueClass(
+            $attribute, $channelCode, $localeCode, $this->getPrices($attribute, $data)
+        );
 
         return $value;
     }
@@ -117,18 +120,25 @@ class PriceCollectionProductValueFactory implements ProductValueFactoryInterface
     /**
      * Gets a collection of price from prices in standard format.
      *
-     * @param array $data
+     * @param AttributeInterface $attribute
+     * @param array              $data
      *
      * @return PriceCollection
      */
-    protected function getPrices(array $data)
+    protected function getPrices(AttributeInterface $attribute, array $data)
     {
         $prices = new PriceCollection();
 
         $filteredData = $this->filterByCurrency($data);
         $sortedData = $this->sortByCurrency($filteredData);
         foreach ($sortedData as $price) {
-            $prices->add($this->priceFactory->createPrice($price['amount'], $price['currency']));
+            try {
+                $newPrice = $this->priceFactory->createPrice($price['amount'], $price['currency']);
+            } catch (InvalidPropertyException $e) {
+                throw InvalidPropertyException::expectedFromPreviousException($attribute->getCode(), self::class, $e);
+            }
+
+            $prices->add($newPrice);
         }
 
         return $prices;

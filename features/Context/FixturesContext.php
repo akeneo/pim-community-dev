@@ -884,12 +884,28 @@ class FixturesContext extends BaseFixturesContext
      * @param string $identifier
      * @param string $value
      *
-     * @Given /^the (\w+) (\w+) of "([^"]*)" should be "(.*)"$/
+     * @Given /^the (\w+) localizable value (\w+) of "([^"]*)" should be "(.*)"$/
      */
-    public function theLocalizableOfShouldBe($lang, $attribute, $identifier, $value)
+    public function theLocalizableValueOfShouldBe($lang, $attribute, $identifier, $value)
     {
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute), $this->locales[$lang]);
+
+        $this->assertDataEquals($productValue->getData(), $value);
+    }
+
+    /**
+     * @param string $channel
+     * @param string $attribute
+     * @param string $identifier
+     * @param string $value
+     *
+     * @Given /^the (\w+) scopable value (\w+) of "([^"]*)" should be "(.*)"$/
+     */
+    public function theScopableValueOfShouldBe($channel, $attribute, $identifier, $value)
+    {
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
+        $productValue = $this->getProductValue($identifier, strtolower($attribute), null, $channel);
 
         $this->assertDataEquals($productValue->getData(), $value);
     }
@@ -905,7 +921,7 @@ class FixturesContext extends BaseFixturesContext
      *
      * @Given /^the (\w+) (\w+) (\w+) of "([^"]*)" should be "(.*)"$/
      */
-    public function theScopableOfShouldBe($lang, $scope, $attribute, $identifier, $value)
+    public function theScopableAndLocalizableOfShouldBe($lang, $scope, $attribute, $identifier, $value)
     {
         $locale = 'unlocalized' === $lang ? null : $this->locales[$lang];
         $value = str_replace('|NL|', "\n", $value);

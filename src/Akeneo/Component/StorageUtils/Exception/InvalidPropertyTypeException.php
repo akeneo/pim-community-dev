@@ -26,9 +26,6 @@ class InvalidPropertyTypeException extends PropertyException
     const ARRAY_OF_ARRAYS_EXPECTED_CODE = 202;
     const ARRAY_KEY_EXPECTED_CODE = 203;
 
-    /** @var string */
-    protected $propertyName;
-
     /** @var mixed */
     protected $propertyValue;
 
@@ -278,14 +275,6 @@ class InvalidPropertyTypeException extends PropertyException
             sprintf($message, $propertyName, $key),
             self::ARRAY_KEY_EXPECTED_CODE
         );
-    }
-
-    /**
-     * @return string
-     */
-    public function getPropertyName()
-    {
-        return $this->propertyName;
     }
 
     /**

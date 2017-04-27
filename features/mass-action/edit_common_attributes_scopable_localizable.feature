@@ -41,7 +41,7 @@ Feature: Edit common attributes of many products at once
     And I change the "Name" to "Une veste"
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then the german name of "black_jacket" should be "Une veste"
-    And the german name of "white_jacket" should be "Une veste"
-    And the english name of "black_jacket" should be "A black jacket"
-    And the english name of "white_jacket" should be "A white jacket"
+    Then the german localizable value name of "black_jacket" should be "Une veste"
+    And the german localizable value name of "white_jacket" should be "Une veste"
+    And the english localizable value name of "black_jacket" should be "A black jacket"
+    And the english localizable value name of "white_jacket" should be "A white jacket"

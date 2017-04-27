@@ -69,7 +69,7 @@ class PriceCollectionProductValue extends AbstractProductValue implements PriceC
         $options = [];
         foreach ($this->data as $price) {
             if (null !== $price->getData()) {
-                $options[] = sprintf('%s %s', $price->getData(), $price->getCurrency());
+                $options[] = sprintf('%.2F %s', $price->getData(), $price->getCurrency());
             }
         }
 
