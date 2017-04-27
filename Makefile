@@ -49,7 +49,6 @@ clear-all:      ## Deeply clean the application (remove all the cache, the logs,
 	$(APP) rm -rf web/css/*
 	$(APP) rm -rf web/js/*
 	$(APP) rm -rf web/media/*
-	$(APP) rm -rf supervisord.log supervisord.pid .tmp
 
 clean:          ## Removes all generated files
 	- @make clear-all
