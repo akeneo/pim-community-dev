@@ -8,6 +8,7 @@ Feature: Enforce no permissions for a locale
     Given an "apparel" catalog configuration
     And a "foo" product
 
+  @skip-nav
   Scenario: Redirect users from the product page to the dashboard when they can't see product data in any locales
     Given the following locale accesses:
       | locale | user group | access |
