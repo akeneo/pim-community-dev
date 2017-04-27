@@ -34,6 +34,7 @@ Feature: Revert product attributes to a previous version
     And I visit the "Marketing" group
     And I switch the scope to "tablet"
     And I change the "Number in stock" to "42"
+    And I should see the text "There are unsaved changes."
     And I save the product
     And I should not see the text "There are unsaved changes."
     And the history of the product "t-shirt" has been built
