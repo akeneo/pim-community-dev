@@ -169,10 +169,13 @@ class MassActionDispatcher
             }
         }
 
-        if (!in_array($datagridName, $this->gridsWithoutMassActionRepository)) {
-            $repository = $datagrid->getDatasource()->getMassActionRepository();
-            $repository->applyMassActionParameters($qb, $inset, $values);
+        $datasource = $datagrid->getDatasource();
+        if ($datasource instanceof ProductDatasource) {
+            $qb = $datasource->getProductQueryBuilder();
         }
+
+        $repository = $datasource->getMassActionRepository();
+        $repository->applyMassActionParameters($qb, $inset, $values);
 
         return [
             'datagrid'   => $datagrid,

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
@@ -33,8 +34,12 @@ class DeleteProductsMassActionHandler extends DeleteMassActionHandler
         $datasource = $datagrid->getDatasource();
         $datasource->setHydrator($this->hydrator);
 
-        // hydrator uses index by id
-        $objectIds = $datasource->getResults();
+        $resultRecords = $datasource->getResults();
+        $objectIds = [];
+        foreach ($resultRecords['data'] as $resultRecord) {
+            /** @var ResultRecord $resultRecord */
+            $objectIds[] = $resultRecord->getValue('identifier');
+        }
 
         try {
             $this->eventDispatcher->dispatch(ProductEvents::PRE_MASS_REMOVE, new GenericEvent($objectIds));
