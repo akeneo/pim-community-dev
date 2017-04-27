@@ -25,6 +25,7 @@ class RegexGuesser implements ConstraintGuesserInterface
             $attribute->getType(),
             [
                 AttributeTypes::TEXT,
+                AttributeTypes::IDENTIFIER,
             ]
         );
     }

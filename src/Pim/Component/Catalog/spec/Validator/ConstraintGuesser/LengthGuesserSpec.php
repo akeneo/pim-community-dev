@@ -29,7 +29,7 @@ class LengthGuesserSpec extends ObjectBehavior
         $image->getType()->willReturn('pim_catalog_image');
 
         $this->supportAttribute($text)->shouldReturn(true);
-        $this->supportAttribute($identifier)->shouldReturn(false);
+        $this->supportAttribute($identifier)->shouldReturn(true);
         $this->supportAttribute($textarea)->shouldReturn(true);
 
         $this->supportAttribute($image)->shouldReturn(false);

@@ -22,7 +22,7 @@ class RegexGuesserSpec extends ObjectBehavior
         $attribute->getType()
             ->willReturn('pim_catalog_identifier');
         $this->supportAttribute($attribute)
-            ->shouldReturn(false);
+            ->shouldReturn(true);
 
         $attribute->getType()
             ->willReturn('foo');

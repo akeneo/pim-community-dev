@@ -17,12 +17,11 @@ Pim\Component\Catalog\Model\Product:
                 - pim_catalog_variant_group
     properties:
         identifier:
-            - NotBlank: ~
+            # TODO: TIP-722 - Add not Blank and Length validation here once the product value
+            # identifier is removed.
             - Regex:
                 pattern: '/^[^,;]+$/'
                 message: 'regex.comma_or_semicolon.message'
-            - Length:
-                max: 255
     getters:
         values:
             - Symfony\Component\Validator\Constraints\Valid:
