@@ -11,14 +11,15 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Twig;
 
+use Pim\Bundle\EnrichBundle\Twig\AttributeExtension as BaseAttributeExtension;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
- * Twig extension to test if an attribute is 'localizable'
+ * Override Twig extension to add 'isAttributeLocalizable' method
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class AttributeExtension extends \Twig_Extension
+class AttributeExtension extends BaseAttributeExtension
 {
     /**
      * @param AttributeRepositoryInterface $repository
@@ -26,6 +27,8 @@ class AttributeExtension extends \Twig_Extension
     public function __construct(AttributeRepositoryInterface $repository)
     {
         $this->repository = $repository;
+
+        parent::__construct($repository);
     }
 
     /**
@@ -33,9 +36,9 @@ class AttributeExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return [
-            'is_attribute_localizable' => new \Twig_Function_Method($this, 'isAttributeLocalizable')
-        ];
+        return array_merge(parent::getFunctions(), [
+            'is_attribute_localizable' => new \Twig_Function_Method($this, 'isAttributeLocalizable'),
+        ]);
     }
 
     /**

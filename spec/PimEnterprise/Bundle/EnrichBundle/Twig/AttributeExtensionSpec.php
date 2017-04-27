@@ -21,8 +21,11 @@ class AttributeExtensionSpec extends ObjectBehavior
     function it_has_functions()
     {
         $functions = $this->getFunctions();
+        $functions->shouldHaveCount(2);
 
-        $functions->shouldHaveCount(1);
+        $functions[0]->getName()->shouldBeEqualTo('get_attribute_label_from_code');
+        $functions[0]->shouldBeAnInstanceOf('\Twig_SimpleFunction');
+
         $functions->shouldHaveKey('is_attribute_localizable');
         $functions['is_attribute_localizable']->shouldBeAnInstanceOf('\Twig_Function_Method');
     }
