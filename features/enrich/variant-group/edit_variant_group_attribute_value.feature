@@ -135,6 +135,7 @@ Feature: Editing attribute values of a variant group also updates products
     When I am on the "boot" product page
     And I visit the "[marketing]" group
     And I switch the scope to "mobile"
+    And I switch the locale to "en_US"
     Then I should see the text "[red]"
     When I switch the locale to "fr_FR"
     Then I should see the text "[blue]"

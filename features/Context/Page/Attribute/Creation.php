@@ -64,6 +64,11 @@ class Creation extends Form
 
         $this->fillLastOption($name, $labels);
         $this->saveLastOption();
+
+        return $this->getElement('attribute_option_table')->find(
+            'css',
+            sprintf('.option-code:contains("%s")', $name)
+        );
     }
 
     public function createOption()
@@ -87,7 +92,9 @@ class Creation extends Form
     {
         $row = $this->getLastOption();
 
-        $row->find('css', '.attribute_option_code')->setValue($name);
+        $this->spin(function () use ($row) {
+            return $row->find('css', '.attribute_option_code');
+        }, 'Unable to find the attribute option code field')->setValue($name);
 
         foreach ($labels as $locale => $label) {
             $this->spin(function () use ($row, $label, $locale) {
