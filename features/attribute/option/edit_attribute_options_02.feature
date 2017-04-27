@@ -42,5 +42,6 @@ Feature: Edit attribute options
       | blue  | blue  |
       | green | green |
     And I save the attribute
+    And I should not see the text "There are unsaved changes."
     And I edit the attribute option "red" to turn it to "red" and cancel
     Then I should not see the text "r\"ed"

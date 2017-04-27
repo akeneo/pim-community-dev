@@ -1387,6 +1387,7 @@ class WebUser extends RawMinkContext
 
                 $this->getCurrentPage()->addOption($code, $data);
 
+                $this->wait();
                 return true;
             }, sprintf('Unable to create the attribute option %s', $data['Code']));
         }
