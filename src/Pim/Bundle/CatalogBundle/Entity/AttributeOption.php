@@ -224,8 +224,11 @@ class AttributeOption implements AttributeOptionInterface
                 }
             }
         );
-        $value = $values->first();
 
-        return $value;
+        if ($values->isEmpty()) {
+            return null;
+        }
+
+        return $values->first();
     }
 }
