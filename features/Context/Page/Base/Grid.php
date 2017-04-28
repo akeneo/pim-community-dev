@@ -512,10 +512,11 @@ class Grid extends Index
      *
      * @param string $columnName
      * @param string $order
+     * @param bool   $natural If TRUE, empty values are taken in account when sorting
      *
      * @return bool
      */
-    public function isSortedAndOrdered($columnName, $order)
+    public function isSortedAndOrdered($columnName, $order, $natural)
     {
         $order = strtolower($order);
         if (!$this->getColumnHeader($columnName)->hasClass($order)) {
@@ -531,6 +532,16 @@ class Grid extends Index
             sort($sortedValues, SORT_NATURAL | SORT_FLAG_CASE);
         } else {
             rsort($sortedValues, SORT_NATURAL | SORT_FLAG_CASE);
+        }
+
+        // If not sorted naturally, always put empty values at the end, whatever the $order
+        if (!$natural) {
+            $valuesCount = count($sortedValues);
+            $sortedValues = array_filter($sortedValues, function ($value) {
+                return $value !== '';
+            });
+
+            $sortedValues = array_pad($sortedValues, $valuesCount, '');
         }
 
         return $sortedValues === $values;

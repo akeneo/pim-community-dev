@@ -55,8 +55,9 @@ class FamilySorterSpec extends ObjectBehavior
         $sqb->addSort(
             [
                 'family.labels.en_US' => [
-                    'order'   => 'ASC',
-                    'missing' => '_last',
+                    'order'         => 'ASC',
+                    'unmapped_type' => 'string',
+                    'missing'       => '_last',
                 ],
             ]
         )->shouldBeCalled();
@@ -96,8 +97,9 @@ class FamilySorterSpec extends ObjectBehavior
         $sqb->addSort(
             [
                 'family.labels.en_US' => [
-                    'order'   => 'DESC',
-                    'missing' => '_last',
+                    'order'         => 'DESC',
+                    'unmapped_type' => 'string',
+                    'missing'       => '_last',
                 ],
             ]
         )->shouldBeCalled();

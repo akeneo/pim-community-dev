@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -17,12 +18,19 @@ class FamilyNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $translationNormalizer;
 
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
     /**
-     * @param NormalizerInterface $translationNormalizer
+     * @param NormalizerInterface       $translationNormalizer
+     * @param LocaleRepositoryInterface $localeRepository
      */
-    public function __construct(NormalizerInterface $translationNormalizer)
-    {
+    public function __construct(
+        NormalizerInterface $translationNormalizer,
+        LocaleRepositoryInterface $localeRepository
+    ) {
         $this->translationNormalizer = $translationNormalizer;
+        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -30,6 +38,10 @@ class FamilyNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
+        $context = array_merge($context, [
+            'locales' => $this->localeRepository->getActivatedLocaleCodes()
+        ]);
+
         return [
             'code'   => $object->getCode(),
             'labels' => $this->translationNormalizer->normalize($object, $format, $context)

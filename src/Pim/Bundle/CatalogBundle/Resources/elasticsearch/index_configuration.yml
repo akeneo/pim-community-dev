@@ -5,7 +5,7 @@ mappings:
             categories:
                 type: 'keyword'
             family.code:
-                    type: 'keyword'
+                type: 'keyword'
             # family labels are handled by the "family" dynamic template
             id:
                 type: 'keyword'

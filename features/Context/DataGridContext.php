@@ -494,17 +494,18 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $order
      * @param string $columnName
+     * @param bool   $naturally If TRUE, empty values are taken in account when sorting
      *
      * @throws ExpectationException
      *
-     * @Then /^the rows should be sorted (ascending|descending) by (.*)$/
+     * @Then /^the rows should be( naturally)? sorted (ascending|descending) by (.*)$/
      */
-    public function theRowsShouldBeSortedBy($order, $columnName)
+    public function theRowsShouldBeSortedBy($naturally, $order, $columnName)
     {
         $columnName = strtoupper($columnName);
 
-        $this->spin(function () use ($columnName, $order) {
-            return $this->datagrid->isSortedAndOrdered($columnName, $order);
+        $this->spin(function () use ($naturally, $columnName, $order) {
+            return $this->datagrid->isSortedAndOrdered($columnName, $order, $naturally);
         }, sprintf('The rows are not sorted %s by column %s', $order, $columnName));
     }
 
@@ -547,13 +548,14 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param bool   $naturally If TRUE, empty values are taken in account when sorting
      * @param string $columns
      *
-     * @Then /^I should be able to sort the rows by (.*)$/
+     * @Then /^I should be able to( naturally)? sort the rows by (.*)$/
      *
      * @return Then[]
      */
-    public function iShouldBeAbleToSortTheRowsBy($columns)
+    public function iShouldBeAbleToSortTheRowsBy($naturally, $columns)
     {
         $steps = [
             new Step\Then(sprintf('the rows should be sortable by %s', $columns))
@@ -562,9 +564,13 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         foreach ($columns as $column) {
             $steps[] = new Step\Then(sprintf('I sort by "%s" value ascending', $column));
-            $steps[] = new Step\Then(sprintf('the rows should be sorted ascending by %s', $column));
+            $steps[] = new Step\Then(sprintf(
+                'the rows should be%s sorted ascending by %s', $naturally ? ' naturally' : '', $column
+            ));
             $steps[] = new Step\Then(sprintf('I sort by "%s" value descending', $column));
-            $steps[] = new Step\Then(sprintf('the rows should be sorted descending by %s', $column));
+            $steps[] = new Step\Then(sprintf(
+                'the rows should be%s sorted descending by %s', $naturally ? ' naturally' : '', $column
+            ));
         }
 
         return $steps;

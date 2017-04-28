@@ -6,13 +6,14 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductPrice;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\FamilyNormalizer;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class FamilyNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $translationNormalizer)
+    function let(NormalizerInterface $translationNormalizer, LocaleRepositoryInterface $localeRepository)
     {
-        $this->beConstructedWith($translationNormalizer);
+        $this->beConstructedWith($translationNormalizer, $localeRepository);
     }
 
     function it_is_initializable()
@@ -33,12 +34,14 @@ class FamilyNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($price, 'standard')->shouldReturn(false);
     }
 
-    function it_normalizes_families($translationNormalizer, FamilyInterface $family)
+    function it_normalizes_families($translationNormalizer, $localeRepository, FamilyInterface $family)
     {
+        $localeRepository->getActivatedLocaleCodes()->willReturn(['de_DE']);
         $family->getCode()->willReturn('camcorders');
-        $translationNormalizer->normalize($family, 'indexing', [])->willReturn([
+        $translationNormalizer->normalize($family, 'indexing', ['locales' => ['de_DE']])->willReturn([
             'fr_FR' => 'La famille des caméras',
             'en_US' => 'Camcorders family',
+            'de_DE' => null,
         ]);
 
         $this->normalize($family, 'indexing')->shouldReturn(
@@ -47,6 +50,7 @@ class FamilyNormalizerSpec extends ObjectBehavior
                 'labels' => [
                     'fr_FR' => 'La famille des caméras',
                     'en_US' => 'Camcorders family',
+                    'de_DE' => null,
                 ],
             ]
         );

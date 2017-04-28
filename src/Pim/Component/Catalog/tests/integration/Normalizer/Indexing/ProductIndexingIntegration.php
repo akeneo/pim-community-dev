@@ -90,8 +90,9 @@ class ProductIndexingIntegration extends TestCase
             'family'        => [
                 'code'   => 'familyA',
                 'labels' => [
-                    'fr_FR' => 'Une famille A',
+                    'de_DE' => null,
                     'en_US' => 'A family A',
+                    'fr_FR' => 'Une famille A',
                 ],
             ],
             'enabled'       => true,
