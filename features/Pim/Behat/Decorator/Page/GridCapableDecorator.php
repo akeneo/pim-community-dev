@@ -224,7 +224,6 @@ class GridCapableDecorator extends ElementDecorator
 
             return true;
         }, sprintf('Cannot click element in the View Type Switcher dropdown with name "%s".', $type));
-
     }
 
     /**
