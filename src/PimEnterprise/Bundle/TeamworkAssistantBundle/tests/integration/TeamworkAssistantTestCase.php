@@ -12,8 +12,7 @@
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
-use Akeneo\TestEnterprise\Integration\PermissionCleaner;
+use Akeneo\TestEnterprise\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
@@ -23,34 +22,11 @@ class TeamworkAssistantTestCase extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
-    {
-        parent::setUp();
-
-        $configuration = $this->getConfiguration();
-        if ($configuration->isDatabasePurgedForEachTest() || 1 === self::$count) {
-            $permissionCleaner = new PermissionCleaner(static::$kernel);
-            $permissionCleaner->cleanPermission(static::$kernel);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDatabaseSchemaHandler()
-    {
-        return new DatabaseSchemaHandler(static::$kernel);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function getConfiguration()
     {
         $rootPath = $this->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
         return new Configuration(
-            [$rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'teamwork_assistant'],
-            false
+            [$rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'teamwork_assistant']
         );
     }
 
