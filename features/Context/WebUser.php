@@ -215,6 +215,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $tab
+     *
      * @Then /^I should not see the "([^"]*)" tab$/
      */
     public function iShouldNotSeeTheTab($tab)
@@ -223,6 +225,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $expectedCount
+     *
      * @Then /^I should see (\d+) versions in the history$/
      */
     public function iShouldSeeVersionsInTheHistory($expectedCount)
@@ -238,13 +242,24 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $group
+     * @param string      $group
+     * @param string|null $type
      *
      * @Given /^I visit the "([^"]*)" (group|association type|tree)$/
      */
     public function iVisitTheGroup($group, $type)
     {
         $this->getCurrentPage()->visitGroup($group, ucfirst($type));
+    }
+
+    /**
+     * @param string $type
+     *
+     * @Given /^I open the (group|association type|tree) selector$/
+     */
+    public function iOpenTheGroup($type)
+    {
+        $this->getCurrentPage()->openGroupSelector(ucfirst($type));
     }
 
     /**

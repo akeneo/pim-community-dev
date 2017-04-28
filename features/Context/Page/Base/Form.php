@@ -12,7 +12,6 @@ use Context\Traits\ClosestTrait;
 use Pim\Behat\Decorator\Common\AddSelect\AttributeAddSelectDecorator;
 use Pim\Behat\Decorator\Common\AddSelect\AttributeGroupAddSelectDecorator;
 use Pim\Behat\Decorator\Field\Select2Decorator;
-use Pim\Behat\Decorator\Page\PanelableDecorator;
 
 /**
  * Basic form page
@@ -49,10 +48,6 @@ class Form extends Base
                     'css' => '.tab-pane.tab-history table.grid, .tab-container .history'
                 ],
                 'Save'                            => ['css' => '.AknButton--apply'],
-                'Panel sidebar'                   => [
-                    'css'        => '.edit-form > .content',
-                    'decorators' => [PanelableDecorator::class],
-                ],
                 'Available attributes'            => [
                     'css'        => '.add-attribute',
                     'decorators' => [AttributeAddSelectDecorator::class]
@@ -98,22 +93,6 @@ class Form extends Base
         if (null === $elt->find('css', sprintf('button[data-panel$="%s"].active', $panel))) {
             $elt->find('css', sprintf('button[data-panel$="%s"]', $panel))->click();
         }
-    }
-
-    /**
-     * Close the specified panel
-     *
-     * @throws \Context\Spin\TimeoutException
-     *
-     * TODO to remove
-     */
-    public function closePanel()
-    {
-        $elt = $this->spin(function () {
-            return $this->getElement('Panel container')->find('css', 'header .close');
-        });
-
-        $elt->click();
     }
 
     /**
@@ -197,18 +176,6 @@ class Form extends Base
         return $this->spin(function () use ($tab, $groupSelector) {
             return $groupSelector->find('css', sprintf('.AknDropdown-menuLink:contains("%s")', $tab));
         }, sprintf('Cannot find the tab named "%s"', $tab));
-    }
-
-    /**
-     * @return NodeElement
-     *
-     * TODO Check if used
-     */
-    public function getAssociationsList()
-    {
-        return $this->spin(function () {
-            return $this->find('css', $this->elements['Associations list']['css']);
-        }, sprintf('Cannot find association list "%s"', $this->elements['Associations list']['css']));
     }
 
     /**
@@ -836,7 +803,7 @@ class Form extends Base
      *
      * @return NodeElement
      */
-    protected function openGroupSelector($type = 'Group')
+    public function openGroupSelector($type = 'Group')
     {
         $groupSelector = $this->spin(function () use ($type) {
             $result = $this->find('css', $this->elements[sprintf('%s selector', $type)]['css']);
@@ -844,7 +811,9 @@ class Form extends Base
             return null !== $result && $result->isVisible() ? $result : null;
         }, sprintf('Can not find the "%s" selector', $type));
 
-        $groupSelector->find('css', '[data-toggle="dropdown"]')->click();
+        if (!$groupSelector->hasClass('open')) {
+            $groupSelector->find('css', '[data-toggle="dropdown"]')->click();
+        }
 
         return $groupSelector;
     }

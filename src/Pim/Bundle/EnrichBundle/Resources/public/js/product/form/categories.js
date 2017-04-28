@@ -121,7 +121,7 @@ define(
                     trees: this.trees,
                     categoriesCount: this.categoriesCount,
                     treeLinkSelector: this.treeLinkSelector,
-                    label: __('pim_enrich.form.product.tab.categories.catalog-switcher')
+                    label: __('pim_enrich.form.product.tab.categories.catalog_selector')
                 }));
             },
 
