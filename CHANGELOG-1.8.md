@@ -22,3 +22,7 @@
 ## Requirements
 
 - GITHUB-5937: Remove the need to have mcrypt installed
+
+## Bug Fixes
+
+- GITHUB-6101: Fix Summernote (WYSIWYG) style
