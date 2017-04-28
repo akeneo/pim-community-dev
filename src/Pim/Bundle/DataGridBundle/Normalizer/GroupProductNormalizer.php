@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\Normalizer;
 
+use Pim\Component\Catalog\Model\GroupInterface;
+
 /**
  * Normalize Products for variant group grid
  *
@@ -9,7 +11,7 @@ namespace Pim\Bundle\DataGridBundle\Normalizer;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class VariantGroupProductNormalizer extends ProductNormalizer
+class GroupProductNormalizer extends ProductNormalizer
 {
     /**
      * {@inheritdoc}
@@ -18,8 +20,12 @@ class VariantGroupProductNormalizer extends ProductNormalizer
     {
         $data = parent::normalize($product, $format, $context);
 
-        $data['in_group'] = null !== $product->getVariantGroup();
-        $data['is_checked'] = null !== $product->getVariantGroup();
+        $groupIds = array_map(function (GroupInterface $group) {
+            return $group->getId();
+        }, $product->getGroups()->toArray());
+
+        $data['in_group'] = in_array($context['current_group_id'], $groupIds);
+        $data['is_checked'] = in_array($context['current_group_id'], $groupIds);
 
         return $data;
     }

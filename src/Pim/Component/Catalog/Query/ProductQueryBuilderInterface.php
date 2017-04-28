@@ -20,7 +20,7 @@ interface ProductQueryBuilderInterface
      *
      * @param string $field    the field
      * @param string $operator the used operator
-     * @param string $value    the value to filter
+     * @param mixed  $value    the value to filter
      * @param array  $context  the filter context, used for locale and scope
      *
      * @throws \LogicException

@@ -72,7 +72,7 @@ class VariantGroupController
      * @Template
      * @AclAncestor("pim_enrich_variant_group_index")
      *
-     * @return Response
+     * @return array
      */
     public function indexAction()
     {
