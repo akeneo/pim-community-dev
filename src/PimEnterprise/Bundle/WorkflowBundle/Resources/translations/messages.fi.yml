@@ -92,7 +92,6 @@ confirmation:
   product:
     publish: Oletko varma, että haluat julkaista tämän tuotteen?
     unpublish: Oletko varma, että haluat muuttaa tuotteen tilan tilaan "Julkaisematon"?
-proposal.overview: Ehdotukset
 Attributes.title: Attribuutit
 Completeness.title: Valmistumisaste
 publish_product.steps.publish_product_tasklet.title: Julkaise tuote

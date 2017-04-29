@@ -1,4 +1,12 @@
 pimee_catalog_rule:
+  overview: Regles
+  execution_button: Executar regles
+  popin:
+    execute_rules:
+      confirm_title: Executar la confirmació
+      confirm_content: Esteu segur que voleu executar totes les regles? (podria trigar molt de temps)
+  notification:
+    launched: S'ha engegat la execució de la regla. Se li notificarà quan finalitzi.
   attribute:
     list:
       code.label: Codi

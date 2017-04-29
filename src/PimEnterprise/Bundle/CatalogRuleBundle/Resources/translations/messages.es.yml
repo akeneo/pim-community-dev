@@ -60,7 +60,7 @@ pimee_catalog_rule:
     tab:
       rule.title: Reglas
     grid:
-      is_smart.label: Inteligente
+      is_smart.label: Atributo inteligente
     acl:
       rule.view_permissions: Ver reglas
   product:
@@ -80,14 +80,9 @@ pimee_catalog_rule:
   notification:
     rule:
       executed: Ejecución de la(s) regla(s) finalizada
-      launched: La ejecución de la(s) regla(s) ha sido lanzada. Será notificado una vez finalizada.
     mass_edit_rule:
       success: Cálculo de productos afectados por las reglas finalizado
       error: Un error ocurrió durante el cálculo de los productos afectados por la(s) regla(s)
-  popin:
-    execute_rules:
-      confirm_title: Confirmación de ejecución
-      confirm_content: '¿Está seguro que desea ejecutar todas las reglas? (esto puede tomar algún tiempo)'
 btn:
   Execute rules: Ejecutar reglas
 rule: Configuración de reglas
