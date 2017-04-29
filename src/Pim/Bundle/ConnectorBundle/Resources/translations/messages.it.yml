@@ -110,11 +110,18 @@ pim_connector:
       realTimeVersioning:
         label: Aggiornamento cronologia in tempo reale
         help: Significa che la cronologia del prodotto viene aggiornata automaticamente, può essere disattivato per migliorare le prestazioni
+      copyValuesToProducts:
+        label: Copia i valori della variante gruppo sui prodotti
+        help: Significa che i prodotti vengono aggiornati automaticamente con i valori del gruppo di varianti, può essere limitato all'aggiornamento del solo gruppo di varianti
       enabledComparison:
         label: Confronta i valori
         help: Abilita il confronto tra i valori originali e valori importati. L'importazione può essere velocizzata se i valori importati sono abbastanza simili ai valori originali
       decimalSeparator:
         label: Separatore decimale
+        help: Carattere utilizzato per impostare il separatore dei decimali
+      dateFormat:
+        label: Formato della data
+        help: Specifica il formato di tutte le colonne di tipo data nel file, ad esempio usa GG/MM/AAAA per il formato 31/04/2014.
     xlsx:
       enabled:
         label: Attivare il prodotto
@@ -130,6 +137,7 @@ pim_connector:
         help: Nome della colonna gruppi
       filePath:
         label: File
+        help: File XLSX da importare
       uploadAllowed:
         label: Consentire il caricamento di file
         help: Consentire o no il caricamento diretto di file
@@ -139,17 +147,41 @@ pim_connector:
       realTimeVersioning:
         label: Aggiornamento cronologia in tempo reale
         help: Significa che la cronologia del prodotto viene aggiornata automaticamente, può essere disattivato per migliorare le prestazioni
+      copyValuesToProducts:
+        label: Copia i valori della variante gruppo sui prodotti
+        help: Significa che i prodotti vengono aggiornati automaticamente con i valori del gruppo di varianti, può essere limitato all'aggiornamento del solo gruppo di varianti
+      enabledComparison:
+        label: Confronta i valori
+        help: Abilita il confronto tra i valori originali e valori importati. L'importazione può essere velocizzata se i valori importati sono abbastanza simili ai valori originali
+      decimalSeparator:
+        label: Separatore decimale
+        help: Carattere utilizzato per impostare il separatore dei decimali
+      dateFormat:
+        label: Formato della data
+        help: Specifica il formato di tutte le colonne di data nel file, ad esempio usa GG/MM/AAAA per il formato 31/04/2014.
     yml:
       filePath:
         label: File
+        help: File YAML da importare
       uploadAllowed:
         label: Consentire il caricamento di file
         help: Consentire o no il caricamento diretto di file
 job_execution.summary:
   read: leggere
+  read_lines: linee lette
   write: scritti
   skip: saltato
   create: creato
+  process: elaborato
+  update_products: prodotti aggiornati
+  process_products: prodotti elaborati
+  skip_products: prodotti saltati
+  displayed: primi avvisi visualizzati
+  charset_validator:
+    title: 'Codifica del file:'
+    skipped: saltato, estensione nella white list
+  product_skipped_no_diff: prodotto saltato (nessuna differenza)
+  product_skipped_no_associations: prodotto saltato (nessuna associazione rilevata)
 batch_jobs:
   csv_product_export:
     label: Esportazione prodotti in CSV
@@ -244,39 +276,62 @@ batch_jobs:
     validation.label: Validazione file
     import.label: Importazione dei tipi di gruppo
   xlsx_category_import:
+    label: Importazione categorie in XLSX
     validation.label: Validazione file
     import.label: Importazione categorie
   xlsx_association_type_import:
+    label: Importazione dei tipi di associazione in XLSX
     validation.label: Validazione file
     import.label: Importazione tipi associazione
   xlsx_attribute_import:
+    label: Importazione attributi in XLSX
     validation.label: Validazione file
     import.label: Importazione attributi
   xlsx_attribute_option_import:
+    label: Importazione delle opzioni degli attributi in XLSX
     validation.label: Validazione file
     import.label: Opzioni importazione attributi
   xlsx_family_import:
+    label: Importazione famiglie in XLSX
     validation.label: Validazione file
     import.label: Importazione famiglie
   xlsx_product_export:
+    label: Esportazione prodotti in XLSX
     export.label: Esportazione Prodotti
   xlsx_product_import:
+    label: Importazione prodotti in XLSX
     validation.label: Validazione file
     import.label: Importazione prodotti
     import_associations.label: Importazione associazioni
   xlsx_group_export:
+    label: Esportazione gruppi in XLSX
     export.label: Esportazione gruppi
   xlsx_variant_group_export:
+    label: Esportazione in XLSX dei gruppi di varianti
     export.label: Esportazione gruppi varianti
   xlsx_group_import:
+    label: Importazione gruppi in XLSX
     validation.label: Validazione file
     import.label: importazione gruppi
   xlsx_variant_group_import:
+    label: Importazione gruppi di varianti in XLSX
     validation.label: Validazione file
+    import.label: Importazione dei gruppi di varianti
   xlsx_family_export:
+    label: Esportazione famiglie in XLSX
     export.label: Esportazione famiglie
   xlsx_category_export:
+    label: Esportazione categorie in XLSX
     export.label: Esportazione categorie
+  xlsx_attribute_export:
+    label: Esportazione attributi in XLSX
+    export.label: Esportazione attributi in XLSX
+  xlsx_attribute_option_export:
+    label: Esportazione delle opzioni degli attributi in XLSX
+    export.label: Esportazione delle opzioni degli attributi in XLSX
+  xlsx_association_type_export:
+    label: Esportazione dei tipi di associazione in XLSX
+    export.label: Esportazione dei tipi di associazione in XLSX
   xlsx_channel_export:
     label: Esportazione canali in XLSX
     export.label: Esportazione canali
