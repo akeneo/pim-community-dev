@@ -60,6 +60,7 @@ pim_datagrid:
   mass_action:
     delete:
       confirm_title: Conferma cancellazione
+      confirm_ok: OK
       empty_selection: Nessun prodotto selezionato
 pim.grid.mass_action.quick_export.title: Esportazione rapida
 pim.grid.mass_action.quick_export.launched: E' stata lanciata l'esportazione rapida
