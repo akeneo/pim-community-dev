@@ -78,12 +78,16 @@ pimee_catalog_rule:
     product_rule_definition_writer.title: Scrittore di importazione per le regole di prodotto
     rules_execution.title: Esecuzione regole
   notification:
+    rule:
+      executed: Esecuzione della(e) regola(e) terminata
+      launched: L'esecuzione delle regole è stata lanciata. Sarai avvisato quando finisce.
     mass_edit_rule:
       success: Il calcolo dei prodotti interessati dalle le regole è finito
       error: Si è verificato un errore durante il calcolo dei prodotti interessati dalle regole
   popin:
     execute_rules:
       confirm_title: Conferma esecuzione
+      confirm_content: Sei sicuro di voler eseguire tutte le regole? (potrebbe richiedere molto tempo)
 btn:
   Execute rules: Esegui le regole
 rule: Impostazioni delle Regole
@@ -96,6 +100,9 @@ batch_jobs:
   yml_rule_export:
     label: Esportazione regole in YAML
     export.label: Esportazione regole
+  rule_impacted_product_count:
+    label: Prodotti interessati dalle regole
+    perform.label: Conta i prodotti interessati
   csv_product_import_with_rules:
     label: Importazione prodotti in formato CSV con regole
     execute_rules.label: Esecuzione regole
@@ -103,6 +110,7 @@ batch_jobs:
     import.label: Importazione prodotti
     import_associations.label: Importazione associazioni
   xlsx_product_import_with_rules:
+    label: Importazione prodotti in formato XLSX con regole
     execute_rules.label: Esecuzione regole
     validation.label: Validazione file
     import.label: Importazione prodotti

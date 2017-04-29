@@ -87,6 +87,9 @@ btn.unpublish: Annulla la pubblicazione
 pimee_workflow_product_draft_notification_partial_approve: Proposta approvata parzialmente
 pimee_workflow_product_draft_notification_partial_reject: Proposta respinta parzialmente
 pimee_workflow_product_draft_notification_partial_remove: Proposta eliminata parzialmente
+pimee_workflow_product_draft_notification_approve: Proposta approvata
+pimee_workflow_product_draft_notification_refuse: Proposta respinta
+pimee_workflow_product_draft_notification_remove: Proposta eliminata
 flash:
   product:
     published: Il prodotto è stato pubblicato con successo.
@@ -94,6 +97,9 @@ flash:
   product_draft:
     approve:
       success: La proposta è stata applicata con successo.
+      error: La proposta non può essere applicata a causa del seguente errore. %error%
+    refuse:
+      success: La proposta non è stata accettata.
     remove:
       success: La proposta è stata rimossa.
 pim_menu:
@@ -104,11 +110,33 @@ pim_title:
   published_product:
     index: Prodotti pubblicati
     view: Prodotti pubblicati %product.sku% | Visualizza
+  product:
+    dispatch: "Prodotti %product.sku%"
+    show: "Prodotti %product.sku% | Visualizza"
   proposal:
     index: Proposte
+btn.editworkingcopy: Modifica la copia di lavoro
+confirmation:
+  product:
+    publish: Sei sicuro di voler pubblicare questo prodotto?
+    unpublish: Sei sicuro di voler annullare la pubblicazione di questo prodotto?
 proposal.overview: Proposte
 Attributes.title: Attributi
 Completeness.title: Completamento
+publish_product.steps.publish_product_tasklet.title: Pubblica prodotto
+unpublish_product.steps.unpublish_product_tasklet.title: Annulla la pubblicazione del prodotto
+approve_product_draft.steps.approve.title: Approva la proposta
+approve_product_draft.steps.refuse.title: Rifiuta la proposta
+job_execution.summary:
+  approved: approvato
+  refused: rifiutato
+  mass_published: Prodotto pubblicato
+  mass_unpublished: Prodotto ritirato
+  proposal: Proposta creata
+  proposal_deleted: proposta eliminata
+  proposal_updated: proposta aggiornata
+  proposal_created: proposta creata
+  proposal_skipped: proposta saltata (nessuna differenza)
 published products: Prodotti pubblicati
 batch_jobs:
   csv_published_product_export:
@@ -117,8 +145,15 @@ batch_jobs:
   csv_product_proposal_import:
     label: Importazione di proposte di prodotto in CSV
     import.label: Importazione di proposte di prodotto
+  approve_product_draft:
+    label: Approva la proposta
+    perform.label: Approva la proposta
   refuse_product_draft:
     label: Rifiuta le proposte
     perform.label: Rifiuta le proposte
   xlsx_published_product_export:
+    label: Esportazione dei prodotti pubblicati in XLSX
     export.label: Esportazione del prodotto pubblicato
+  xlsx_product_proposal_import:
+    label: Importazione di proposte di prodotto in XLSX
+    import.label: Importazione di proposte di prodotto in XLSX
