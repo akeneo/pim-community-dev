@@ -143,6 +143,7 @@ batch_jobs:
     validation.label: Validazione file
     import.label: Importazione categorie
   xlsx_association_type_import:
+    label: Importazione dei tipi di associazione in XLSX
     validation.label: Validazione file
     import.label: Importazione tipi associazione
   xlsx_attribute_import:
@@ -150,6 +151,7 @@ batch_jobs:
     validation.label: Validazione file
     import.label: Importazione attributi
   xlsx_attribute_option_import:
+    label: Importazione delle opzioni degli attributi in XLSX
     validation.label: Validazione file
     import.label: Opzioni importazione attributi
   xlsx_family_import:
@@ -168,6 +170,7 @@ batch_jobs:
     label: Esportazione gruppi in XLSX
     export.label: Esportazione gruppi
   xlsx_variant_group_export:
+    label: Esportazione in XLSX dei gruppi di varianti
     export.label: Esportazione gruppo varianti
   xlsx_group_import:
     label: Importazione gruppi in XLSX
@@ -186,6 +189,12 @@ batch_jobs:
   xlsx_attribute_export:
     label: Esportazione attributi in XLSX
     export.label: Esportazione attributi in XLSX
+  xlsx_attribute_option_export:
+    label: Esportazione delle opzioni degli attributi in XLSX
+    export.label: Esportazione delle opzioni degli attributi in XLSX
+  xlsx_association_type_export:
+    label: Esportazione dei tipi di associazione in XLSX
+    export.label: Esportazione dei tipi di associazione in XLSX
   xlsx_channel_export:
     label: Esportazione canali in XLSX
     export.label: Esportazione canali

@@ -60,10 +60,12 @@ datetimepicker:
     Tue: Mar
     Wed: Mer
     Thu: Gio
+    Fri: Ven
     Sat: Sab
   daysMin:
     Su: Do
     Mo: Lu
+    Tu: Ma
     We: Me
     Th: Gi
     Fr: Ve
@@ -72,14 +74,28 @@ datetimepicker:
     January: Gennaio
     February: Febbraio
     March: Marzo
+    April: Aprile
+    May: Maggio
+    June: Giugno
     July: Luglio
     August: Agosto
     September: Settembre
     October: Ottobre
+    November: Novembre
+    December: Dicembre
   monthsShort:
+    Jan: Gen
     Feb: Feb
     Mar: Mar
     Apr: Apr
+    May: Mag
+    Jun: Giu
+    Jul: Lug
+    Aug: Ago
+    Sep: Set
+    Oct: Ott
+    Nov: Nov
+    Dec: Dic
 oro_config:
   form:
     config:
