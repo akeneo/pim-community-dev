@@ -690,6 +690,20 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: Атрибуты выбранного продукта будут редактироваться со следующими данными для локали <span class="highlight">{{ locale }}</span> и канала <span class="highlight">{{ channel }}</span>, выбранных в таблице продуктов.
+  index:
+    group:
+      create_btn: Создать группу
+    user:
+      title: Пользователь
+      create_btn: Создать пользователя
+    user_role:
+      title: Роль
+      create_btn: Создать роль
+    user_group:
+      title: Группы
+      create_btn: Создать группу
+    process_tracker:
+      title: Трекер процессов
 pim_enrich.error:
   exception.title: Ах, нет! Произошла ошибка {{ status_code }}...
 batch_jobs:

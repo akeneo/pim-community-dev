@@ -38,18 +38,10 @@ pim_title.import_execution.index: Importar històric d'execucions
 pim_title.import_execution.show: Importar execucions | Detalls
 export profile:
   title: exportar perfil
-  overview: resum d'exportació de perfil
-  create: crear perfil d'exportació
   edit: editar perfil d'exportació
-export report:
-  overview: exportar informes
 import profile:
   title: importar perfil
-  overview: resum de perfil d'importació
-  create: crear perfil d'importació
   edit: editar perfil d'importació
-import report:
-  overview: importar informes
 pim_importexport:
   acl:
     export_profile:

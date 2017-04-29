@@ -35,18 +35,10 @@ pim_title.import_execution.index: Povijest izvođenja uvoza
 pim_title.import_execution.show: Uvoz izvođenja | Detalji
 export profile:
   title: izvoz profila
-  overview: pregled izvoza profila
-  create: kreiraj profil izvoza
   edit: uredi profil izvoza
-export report:
-  overview: izvoz izvješća
 import profile:
   title: uvoz profila
-  overview: pregled profila uvoza
-  create: kreiraj profil uvoza
   edit: uredi profil uvoza
-import report:
-  overview: uvoz izvješća
 pim_importexport:
   acl:
     export_profile:

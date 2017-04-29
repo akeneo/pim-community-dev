@@ -664,6 +664,20 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: 使用产品网格中的本地化语言 <span class="highlight">{{ locale }}</span> 和通道 <span class="highlight">{{ channel }}</span>对应的数据，对所选的产品属性进行编辑
+  index:
+    group:
+      create_btn: 创建组
+    user:
+      title: 用户
+      create_btn: 创建用户
+    user_role:
+      title: 角色
+      create_btn: 创建角色
+    user_group:
+      title: 分组
+      create_btn: 创建组
+    process_tracker:
+      title: 过程跟踪器
 pim_enrich.error:
   exception.title: 我靠 ！{{ status_code }} 出错了...
 batch_jobs:

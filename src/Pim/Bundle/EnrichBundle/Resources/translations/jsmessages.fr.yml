@@ -743,6 +743,46 @@ pim_enrich:
     association_type:
       title: Liste des types d'association
       create_btn: Créer un type d'association
+    import_profiles:
+      title: Liste des profils d'import
+      create_btn: Créer un profil d'import
+    import_history:
+      title: Rapports d'import
+    variant_group:
+      title: Liste des groupes de variantes
+      create_btn: Créer un groupe de variantes
+    group:
+      title: Liste des groupes
+      create_btn: Créer un groupe
+    export_profiles:
+      title: Liste des profils d'export
+      create_btn: Créer un profil d'export
+    export_history:
+      title: Rapports d'export
+    family:
+      title: Liste des familles
+      create_btn: Créer une famille
+    grouptype:
+      title: Liste des types de groupe
+      create_btn: Créer un type de groupe
+    currency:
+      title: Liste des devises
+    locale:
+      title: Liste des locales
+    user:
+      title: Utilisateur
+      create_btn: Créer un utilisateur
+    user_role:
+      title: Rôle
+      create_btn: Créer un rôle
+    user_group:
+      title: Groupes
+      create_btn: Créer un groupe
+    process_tracker:
+      title: Traqueur de processus
+    channel:
+      title: Liste des canaux
+      create_btn: Créer un canal
 pim_enrich.error:
   exception.title: Oups! Une erreur {{ status_code }} s'est produite...
 batch_jobs:

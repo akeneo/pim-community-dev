@@ -695,6 +695,20 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: Els atributs del producte seleccionat s'editaran amb les següents dades per la configuració regional <span class="highlight">{{ locale }}</span> i el canal <span class="highlight">{{ channel }}</span>, seleccionats a la quadrícula de productes.
+  index:
+    group:
+      create_btn: Crear grup
+    user:
+      title: Usuari
+      create_btn: Crear usuari
+    user_role:
+      title: Rol
+      create_btn: Crear rol
+    user_group:
+      title: Grups
+      create_btn: Crear grup
+    process_tracker:
+      title: Seguiment del procés
 pim_enrich.error:
   exception.title: Oh no! S'ha produït un error de {{ status_code }}...
 batch_jobs:

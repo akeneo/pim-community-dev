@@ -229,9 +229,14 @@ pim_enrich:
         deletion_failed: Il tipo di gruppo non può essere eliminato.
         update_successful: Il tipo di gruppo è stato aggiornato correttamente.
         update_failed: Il tipo di gruppo non può essere aggiornato.
+        field_not_ready:
+          The group type cannot be saved right now. The following fields are not ready:
+            - campi
       meta:
         created: Creato
+        created_by: Creato da
         updated: Caricato
+        updated_by: Aggiornato da
       btn:
         save: Salva
       title: Tipo gruppo
@@ -244,19 +249,29 @@ pim_enrich:
         update_failed: Il canale non può essere aggiornato.
         create_successful: Canale creato con successo.
         create_failed: Il canale non può essere creato.
+        field_not_ready:
+          The channel cannot be saved right now. The following fields are not ready:
+            - campi
       meta:
         created: Creato
+        created_by: Creato da
         updated: Caricato
+        updated_by: Aggiornato da
       btn:
         save: Salva
     family:
       title: famiglia
       info:
+        update_successful: Famiglia aggiornata con successo.
         create_successful: Canale creato con successo.
         update_failed: Errore durante l'aggiornamento della famiglia.
+        cant_remove_attribute_as_label: Impossibile rimuovere l'attributo utilizzato come etichetta
+        attribute_edit_permission_is_not_granted: Non hai i diritti per modificare gli attributi della famiglia
       meta:
         created: Creato
+        created_by: Creato da
         updated: Caricato
+        updated_by: Aggiornato da
       btn:
         save: Salva
     attribute_option:
@@ -264,14 +279,25 @@ pim_enrich:
       label: Etichetta
       actions: Azioni
     variant_group:
+      title: Gruppo di varianti
       info:
+        deletion_successful: Gruppo di varianti rimosso con successo.
+        deletion_failed: Il gruppo di varianti non può essere eliminato.
+        update_successful: Gruppo di varianti aggiornato con successo.
+        update_failed: Il gruppo di varianti non può essere aggiornato.
+        field_not_ready:
+          The variant group cannot be saved right now. The following fields are not ready:
+            - campi
+        already_in_upload: Un file è già in caricamento per questo attributo nell'impostazione internazionale "{{ locale }}" e nell'ambito "{{ scope }}"
         no_attributes: Questo gruppo di varianti non ha ancora attributi
       btn:
         save: Salva
       meta:
         product_count: Articoli
         created: Creato
+        created_by: Creato da
         updated: Caricato
+        updated_by: Aggiornato da
     group:
       title: Gruppo
       info:
@@ -279,12 +305,17 @@ pim_enrich:
         deletion_failed: Il gruppo non può essere eliminato.
         update_successful: Gruppo aggiornato con successo.
         update_failed: Il gruppo non può essere aggiornato.
+        field_not_ready:
+          The group cannot be saved right now. The following fields are not ready:
+            - campi
       btn:
         save: Salva
       meta:
         product_count: Articoli
         created: Creato
+        created_by: Creato da
         updated: Caricato
+        updated_by: Aggiornato da
     job_instance:
       title: profilo del job
       info:
@@ -292,6 +323,7 @@ pim_enrich:
         update_successful: Il profilo del job è stato aggiornato con successo.
   confirmation:
     leave: Sei sicuro di voler lasciare questa pagina?
+    discard_changes: Perderai le modifiche a {{ entity }} se lasci la pagina.
     delete_item: Conferma cancellazione
     delete:
       attribute: Sei sicuro di voler rimuovere questo attributo dal prodotto?
@@ -299,7 +331,13 @@ pim_enrich:
     not_applicable: N/A
     entity:
       updated: Ci sono modifiche non salvate.
+  error:
+    upload: Si è verificato un errore durante il caricamento del file
+  alert:
+    not_allowed: Non sei autorizzato ad accedere a questa pagina
+    error_occured: Si è verificato un errore durante il caricamento della pagina
   form:
+    required: (richiesto)
     product:
       tab:
         associations:
@@ -308,20 +346,27 @@ pim_enrich:
             none_exist: Nessun tipo di associazione esistente.
             show_products: Mostra articoli
             show_groups: Mostra gruppi
+            number_of_associations: "{{ productCount }} prodotti e {{ groupCount }} gruppi"
         attributes:
           title: Attributi
           btn:
             add: Aggiungi
             add_attributes: Aggiungi attributi
           info:
+            search_attributes: Ricerca...
             no_available_attributes: Non ci sono altri attributi da aggiungere
             attributes_selected: "{{ itemsCount }} attributo(i) selezionato(i)"
             no_match: Nessuna corrispondenza trovata
+            load_more: Carica ulteriori risultati...
         categories:
           title: Categorie
       panel:
         completeness:
           title: Completamento
+          info:
+            no_family: Nessuna famiglia definita. Si prega di definire una famiglia per calcolare il livello di completamento di questo prodotto.
+            no_completeness: Hai appena cambiato la famiglia del prodotto. Si prega di salvare prima di calcolare il livello di completamento per la nuova famiglia.
+          missing_values: Valori mancanti
         history:
           title: Cronologia
       switch:
@@ -330,6 +375,11 @@ pim_enrich:
       sequential_edit:
         info:
           products: Articoli
+          previous: Torna indietro a {{ product }} senza salvare.
+          next: Vai a {{ product }} senza salvare.
+        btn:
+          save_and_next: Salva e successivo
+          save_and_finish: Salva e termina
       change_family:
         modal:
           title: Cambiare la famiglia dell'articolo
@@ -337,6 +387,8 @@ pim_enrich:
           keep_attributes: Nessun attributo verrà rimosso.
           change_family_to: Cambiare la famiglia in
           empty_selection: Scegli una famiglia
+      flash:
+        attribute_deletion_error: Errore durante la cancellazione dell'attributo
       mass_edit:
         select_attributes: Selezionare gli attributi
         select: Selezionare
@@ -371,6 +423,8 @@ pim_enrich:
           category_tree: Struttura della categoria
           label_translations: Traduzioni etichetta
           label_conversion_units: Scegliere un'unità di conversione per ogni attributo metrico che verrà utilizzato durante l'esportazione dell'articolo
+          conversion_unit:
+            do_not_convert: Non convertire
     family:
       tab:
         properties:
@@ -383,6 +437,7 @@ pim_enrich:
           title: Attributi
           label_label: Etichetta
           toolbox:
+            select_attributes_by_groups: Aggiungi per gruppi
             select_attributes: Aggiungi attributi
             add: Aggiungi
             attributes_groups_selected: '{{ itemsCount }} gruppo(i) selezionato(i)'
@@ -391,7 +446,11 @@ pim_enrich:
         history:
           title: Cronologia
     attribute_option:
+      flash:
+        option_created: Opzione di attributo creata correttamente
+        error_creating_option: Si è verificato un errore durante il tentativo di creare l'opzione di attributo
       add_option_modal:
+        title: Aggiungi l'opzione dell'attributo
         confirm: Aggiungi
         cancel: Cancella
     entity:
@@ -432,6 +491,7 @@ pim_enrich:
             add: Aggiungi
             add_attributes: Aggiungi attributi
           info:
+            search_attributes: Ricerca...
             no_available_attributes: Non ci sono altri attributi da aggiungere
     job_execution:
       loading: Caricamento in corso...
@@ -612,44 +672,135 @@ pim_enrich:
           operators:
             "=": È uguale a
             "!=": Non è uguale a
+            ">=": Maggiore o uguale a
+            ">": Maggiore di
+            "<=": Inferiore o uguale a
+            "<": Inferiore a
             EMPTY: È vuoto
+            NOT EMPTY: Non è vuoto
         string:
           operators:
             ALL: Tutto
+            CONTAINS: Contiene
+            DOES NOT CONTAIN: Non contiene
+            "=": È uguale a
+            STARTS WITH: Inizia con
+            ENDS WITH: Termina con
             EMPTY: È vuoto
+            NOT EMPTY: Non è vuoto
         price-collection:
           operators:
+            "=": È uguale a
+            "!=": Non è uguale a
+            ">=": Maggiore o uguale a
+            ">": Maggiore di
+            "<=": Inferiore o uguale a
+            "<": Inferiore a
             EMPTY: È vuoto
+            NOT EMPTY: Non è vuoto
         multi_select:
           operators:
             IN: In elenco
             EMPTY: È vuoto
+            NOT EMPTY: Non è vuoto
         media:
           operators:
+            CONTAINS: Contiene
+            DOES NOT CONTAIN: Non contiene
+            "=": È uguale a
+            STARTS WITH: Inizia con
+            ENDS WITH: Termina con
             EMPTY: È vuoto
+            NOT EMPTY: Non è vuoto
         date:
           operators:
+            ">": Maggiore di
+            "<": Inferiore a
+            "=": È uguale a
+            "!=": Non è uguale a
+            BETWEEN: Compreso tra
+            NOT BETWEEN: Non compreso tra
             EMPTY: È vuoto
+            NOT EMPTY: Non è vuoto
         number:
           operators:
+            "=": È uguale a
+            "!=": Non è uguale a
+            ">=": Maggiore o uguale a
+            ">": Maggiore di
+            "<=": Inferiore o uguale a
+            "<": Inferiore a
             EMPTY: È vuoto
+            NOT EMPTY: Non è vuoto
       properties:
         title: Proprietà
       global_settings:
         title: Impostazioni Globali
+  mass_edit_action:
+    edit_common_attributes:
+      description: Gli attributi dei prodotto selezionati nella griglia verranno modificati con i dati seguenti per le impostazioni internazionali <span class="highlight">{{ locale }}</span> e per il canale <span class="highlight">{{ channel }}</span>.
+  index:
+    association_type:
+      title: Anteprima tipi associazione
+      create_btn: Crea tipo associazione
+    group:
+      create_btn: Crea gruppo
+    user:
+      title: Utente
+      create_btn: Crea utente
+    user_role:
+      title: Ruolo
+      create_btn: Crea Ruolo
+    user_group:
+      title: Gruppi
+      create_btn: Crea gruppo
+    process_tracker:
+      title: Tracker di processo
+pim_enrich.error:
+  exception.title: Accidenti! Si è verificato un errore con il codice {{ status_code }}...
 batch_jobs:
+  add_product_value:
+    label: Aggiungi un valore di prodotto
+    perform:
+      label: Aggiungi un valore di prodotto
   update_product_value:
     label: Aggiorna il valore di prodotto
     perform:
       label: Aggiorna il valore di prodotto
   edit_common_attributes:
+    label: Modifica gli attributi comuni
+    perform:
+      label: Modifica gli attributi comuni
     cleaner:
       label: Pulisci i file per gli attributi comuni
   set_attribute_requirements:
     label: Impostare gli attributi richiesti
     perform:
       label: Impostare gli attributi richiesti
+  csv_product_quick_export:
+    quick_export.label: Esportazione rapida prodotti in Csv
+    perform:
+      label: Esportazione rapida prodotti in Csv
+  csv_product_grid_context_quick_export:
+    quick_export.label: Esportazione rapida prodotti in Csv presenti nel contesto griglia
+    perform:
+      label: Esportazione rapida prodotti in Csv presenti nel contesto griglia
+  xlsx_product_quick_export:
+    quick_export.label: Esportazione rapida prodotti in XLSX
+    perform:
+      label: Esportazione rapida prodotti in XLSX
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Esportazione rapida prodotti in XLSX presenti nel contesto griglia
+    perform:
+      label: Esportazione rapida prodotti in XLSX presenti nel contesto griglia
   add_to_variant_group:
     label: Aggiungi al gruppo di varianti
     perform:
       label: Aggiungi al gruppo di varianti
+Pim_mass_edit:
+  download_archive:
+    archive: Scarica archivio generato
+    output: Scarica file generati
+    input: Scarica file letti
+    invalid_xlsx: Scarica dati non validi
+    invalid_csv: Scarica dati non validi
