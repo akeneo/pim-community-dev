@@ -571,6 +571,20 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: Atrybuty wybranych produktów będą edytowane z następującymi danymi dla ustawienia regionalnego <span class = "highlight"> {{ locale }} </span> oraz kanału <span class = "highlight"> {{ channel }} </span>, wybrane z listy produktów.
+  index:
+    group:
+      create_btn: Utwórz grupę
+    user:
+      title: Użytkownik
+      create_btn: Utwórz użytkownika
+    user_role:
+      title: Rola
+      create_btn: Utwórz rolę
+    user_group:
+      title: Grupy
+      create_btn: Utwórz grupę
+    process_tracker:
+      title: Śledzenie procesu
 pim_enrich.error:
   exception.title: O rany! Wystąpił błąd {{ status_code }}...
 batch_jobs:

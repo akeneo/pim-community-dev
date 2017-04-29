@@ -695,6 +695,20 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: Atributi odabranih proizvoda u tabličnom prikazu proizvoda će se promijeniti s podacima za lokalizaciju <span class="highlight">{{ locale }}</span> i kanala <span class="highlight">{{ channel }}</span>.
+  index:
+    group:
+      create_btn: Kreiraj grupu
+    user:
+      title: Korisnik
+      create_btn: Kreiraj korisnika
+    user_role:
+      title: Rola
+      create_btn: Kreiraj rolu
+    user_group:
+      title: Grupe
+      create_btn: Kreiraj grupu
+    process_tracker:
+      title: Proces praćenja
 pim_enrich.error:
   exception.title: Ups! Pojavila se pogreška u {{ status_code }}...
 batch_jobs:

@@ -731,6 +731,20 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: Die ausgewählten Produktattribute werden für die folgenden Daten des Gebietsschemas <span class="bold-purple">{{ locale }}</span> und dem Ausgabekanal <span class="bold-purple">{{ channel }}</span>, welche in der Produktübersicht ausgewählt sind, bearbeitet.
+  index:
+    group:
+      create_btn: Gruppe anlegen
+    user:
+      title: Benutzer
+      create_btn: Benutzer anlegen
+    user_role:
+      title: Rolle
+      create_btn: Rolle anlegen
+    user_group:
+      title: Gruppen
+      create_btn: Gruppe anlegen
+    process_tracker:
+      title: Prozess-Tracker
 pim_enrich.error:
   exception.title: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
 batch_jobs:

@@ -38,18 +38,10 @@ pim_title.import_execution.index: История запусков импорта
 pim_title.import_execution.show: Запуск импорта | Детали
 export profile:
   title: Профиль экспорта
-  overview: Обзор профиля экспорта
-  create: Создать профиль экспорта
   edit: Редактировать профиль экспорта
-export report:
-  overview: Отчеты экспорта
 import profile:
   title: Профиль импорта
-  overview: Обзор профилей импорта
-  create: Создать профиль импорта
   edit: Редактировать профиль импорта
-import report:
-  overview: Отчеты импорта
 pim_importexport:
   acl:
     export_profile:

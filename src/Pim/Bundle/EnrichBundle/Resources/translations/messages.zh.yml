@@ -299,17 +299,13 @@ channel:
   edit: 编辑频道
 currency:
   title: 货币
-  overview: 货币概述
   create: 创建货币
   edit: 编辑货币
 family:
   title: 分类
-  overview: 分类概述
-  create: 创建分类
   edit: 编辑分类
 locale:
   title: 区域
-  overview: 区域概述
   create: 创建区域
   edit: 编辑区域
 product:
@@ -319,18 +315,12 @@ product:
   edit: 编辑产品
 group:
   title: 分组
-  overview: 分组概述
-  create: 创建分组
   edit: 编辑分组
 group type:
   title: 分组类型
-  overview: 分组类型概述
-  create: 创建分组类型
   edit: 编辑分组类型
 variant group:
   title: 属性组
-  overview: 款式组概述
-  create: 创建款式组
   edit: 编辑属性组
 association type:
   title: 关联类型

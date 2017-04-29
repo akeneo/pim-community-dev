@@ -690,6 +690,20 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: Tuoteruudukosta valitun tuotteen attribuutit muokataan seuraavilla tiedoilla lokaatiolle <span class="highlight">{{ locale }}</span> ja kanavalle <span class="highlight">{{ channel }}</span>.
+  index:
+    group:
+      create_btn: Luo ryhmä
+    user:
+      title: Käyttäjä
+      create_btn: Luo käyttäjä
+    user_role:
+      title: Rooli
+      create_btn: Luo rooli
+    user_group:
+      title: Ryhmät
+      create_btn: Luo ryhmä
+    process_tracker:
+      title: Prosessiseurain
 pim_enrich.error:
   exception.title: Voi ei! {{ status_code }} virhe tapahtui...
 batch_jobs:
