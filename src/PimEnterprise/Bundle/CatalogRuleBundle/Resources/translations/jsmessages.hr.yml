@@ -1,4 +1,12 @@
 pimee_catalog_rule:
+  overview: Pravila
+  execution_button: Izvrši pravila
+  popin:
+    execute_rules:
+      confirm_title: Potvrda izvršenja
+      confirm_content: Jeste li sigurni da želite izvršiti sva pravila? (to može potrajati duže vrijeme)
+  notification:
+    launched: Izvođenje pravila je pokrenuto. Biti ćete obaviješteni kad bude gotovo.
   attribute:
     list:
       code.label: Kod

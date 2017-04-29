@@ -1,4 +1,12 @@
 pimee_catalog_rule:
+  overview: Regole
+  execution_button: Esegui le regole
+  popin:
+    execute_rules:
+      confirm_title: Conferma esecuzione
+      confirm_content: Sei sicuro di voler eseguire tutte le regole? (potrebbe richiedere molto tempo)
+  notification:
+    launched: L'esecuzione delle regole è stata lanciata. Sarai avvisato quando finisce.
   attribute:
     list:
       code.label: Codice

@@ -120,7 +120,6 @@ confirmation:
   product:
     publish: Esteu segur que voleu publicar aquest producte ?
     unpublish: Esteu segur que voleu despublicar aquest producte ?
-proposal.overview: Propostes
 Attributes.title: Atributs
 Completeness.title: Integritat
 publish_product.steps.publish_product_tasklet.title: Publicar el producte

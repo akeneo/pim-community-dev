@@ -80,14 +80,9 @@ pimee_catalog_rule:
   notification:
     rule:
       executed: Ha acabat l'execució de les regles
-      launched: S'ha engegat la execució de la regla. Se li notificarà quan finalitzi.
     mass_edit_rule:
       success: Ha finalitzat el càlcul dels productes afectats per les regles
       error: S'ha produït un error durant el càlcul dels productes afectats per les regles
-  popin:
-    execute_rules:
-      confirm_title: Executar la confirmació
-      confirm_content: Esteu segur que voleu executar totes les regles? (podria trigar molt de temps)
 btn:
   Execute rules: Executar regles
 rule: Configuració de les regles

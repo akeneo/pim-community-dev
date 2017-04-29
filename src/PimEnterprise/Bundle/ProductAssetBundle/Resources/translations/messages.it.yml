@@ -99,56 +99,147 @@ pimee_product_asset:
     label: Creato il
   updatedAt:
     label: Ultimo aggiornamento del
+  tags:
+    label: Tag
   tabs:
     properties.title: Proprietà
+    variations.title: Varianti
     categories.title: Categorie
   validation:
     code:
       not_empty: Il codice è richiesto. Non può essere vuoto.
       unique: Il codice deve essere univoco.
       new_generation: Ne abbiamo generato uno nuovo.
+  notAvailable:
+    label: non disponibile
+  asset:
+    title: Asset
   mass_upload:
+    menu: Carica asset
     new: Verrà creato un nuovo asset
     add_files: aggiungi file
     start: Inizia il caricamento
     cancel: Annulla il caricamento
     import: Importa
+    executed: Caricamento di massa eseguito
     error:
+      upload: Si è verificato un errore durante il caricamento
+      code: Formato codice non valido per l'asset
       localizable: Un asset esiste ma non è traducibile
+      invalid_locale: L'impostazione internazionale è disabilitata o non valida
   category:
     menu: Categorie degli asset
     permissions:
+      view.label: Consentita la visualizzazione degli asset
+      view.help: Consenti di visualizzare gli asset in questa categoria
+      edit.label: Consentita la modifica degli asset
+      edit.help: Consenti di modificare gli asset in questa categoria (implica il permesso Visualizza)
+      no_access_to_products: Non hai accesso agli asset in nessuna struttura ad albero. Si prega di contattare l'amministratore
       apply_on_children.label: Applica le modifiche sui figli
       apply_on_children.help: Copiare le modifiche ai permessi su tutti i figli, i permessi esistenti sui figli vengono mantenuti
   mass_edit_action:
     asset:
+      page_title: Asset
+      page_subtitle: Modifica di massa (1 asset) | Modifica di massa (%count% asset)
+      confirm: Stai per aggiornare un asset con le seguenti informazioni, si prega di confermare. |Stai per aggiornare %count% asset con le seguenti informazioni, si prega di confermare.
       steps:
+        first: Scegli gli asset
         second: Configura
         third: Conferma
+pim_enrich:
+  mass_edit_action:
+    asset-classify-move:
+      label: Sposta gli asset nelle categorie
+      description: Gli asset saranno posizionati nelle seguenti categorie; il posizionamento attuale viene perso
+      success_flash: L'asset/gli asset è stato spostato/sono stati spostati nelle categorie selezionate
+      launched_flash: L'azione di massa "sposta nelle categorie" è stata lanciata. Sarai avvisato quando finisce.
+    add-tags-to-assets:
+      label: Aggiungi tag agli asset
+      description: I tag verranno aggiunti all'asset. Se alcuni tag non esistono, essi verranno creati.
+      success_flash: I tag sono stati aggiunti all'asset
+      launched_flash: L'azione di massa "Aggiungi tag agli asset" è stata lanciata. Sarai avvisato quando finisce.
+      message.error: Il tag fornito non esiste
+pim:
+  grid:
+    mass_action:
+      mass_classify_assets: Classifica
+      add_tags_to_assets: Aggiungi tag
+      delete_assets: Elimina gli asset
 btn.create.asset: Crea un asset
 btn.drag_or_upload: Trascina e rilascia qui un file per caricarlo o fai click qui
+job_execution.summary:
+  variations_not_generated: Varianti non generate
+  pimee_product_asset.mass_upload.new: Asset creato dal file
+  pimee_product_asset.mass_upload.updated: Asset aggiornato
+  error: Errore nell'elaborazione del file di asset
+  skipped_assets: Asset saltati
+assets_mass_upload.steps:
+  asset_mass_upload.title: Caricamento di massa di asset
+import_asset.steps.channel_configuration_processor.title: Elaborazione delle configurazioni di canale
+mass_upload: Caricamento di massa asset
 batch_jobs:
   apply_assets_mass_upload:
+    label: Caricamento di massa di asset
     perform.label: Caricamento di massa
   yml_asset_channel_configuration_import:
+    label: Importazione in Yaml della configurazione del canale asset
     validation.label: Validazione file
+    import_asset.label: Importazione in Yaml della configurazione del canale asset
   yml_asset_channel_configuration_export:
     label: Configurazione dell'esportazione in Yaml degli asset
     export.label: Configurazione dell'esportazione in Yaml degli asset
   csv_asset_import:
+    label: Importazione asset in CSV
     validation.label: Validazione file
+    import_tags.label: Importazione tag in CSV
+    import_asset.label: Importazione asset in CSV
+  csv_asset_export:
+    label: Esportazione asset in CSV
+    export.label: Esportazione asset in CSV
+  csv_asset_variation_export:
+    label: Esportazione varianti asset in CSV
+    export.label: Esportazione varianti asset in CSV
   csv_tag_import:
+    label: Importazione tag in CSV
     validation.label: Validazione file
+    import.label: Importazione tag in CSV
   csv_asset_category_import:
+    label: Importazione categorie asset in CSV
     validation.label: Validazione file
+    import_asset_category.label: Importazione categorie asset in CSV
   csv_asset_configuration_import:
+    label: Importazione in CSV della configurazione del canale asset
     validation.label: Validazione file
+    import_asset.label: Importazione in CSV della configurazione del canale asset
+  csv_asset_category_export:
+    label: Esportazione categorie asset in CSV
+    export.label: Esportazione categorie asset in CSV
   xlsx_tag_import:
+    label: Importazione tag in XLSX
     validation.label: Validazione file
+    import.label: Importazione tag in XLSX
   xlsx_asset_import:
+    label: Importazione asset in XLSX
     validation.label: Validazione file
+    import_tags.label: Importazione tag in XLSX
+    import_asset.label: Importazione asset in XLSX
   xlsx_asset_category_import:
+    label: Importazione categorie asset in XLSX
     validation.label: Validazione file
+    import_asset_category.label: Importazione categorie asset in XLSX
+  xlsx_asset_export:
+    label: Esportazione asset in XLSX
+    export.label: Esportazione asset in XLSX
+  xlsx_asset_category_export:
+    label: Esportazione categorie asset in XLSX
+    export.label: Esportazione categorie asset in XLSX
+  xlsx_asset_variation_export:
+    label: Esportazione categorie asset in XLSX
+    export.label: Esportazione categorie asset in XLSX
+  classify_assets:
+    perform.label: Sposta gli asset nelle categorie
+  add_tags_to_assets:
+    perform.label: Aggiungi tag agli asset
 pim_analytics:
   info_type:
     nb_assets: Numero di asset

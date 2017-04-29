@@ -18,6 +18,7 @@ pimee_workflow:
     proposal:
       modal.title: Kommentar hinterlassen (optional - max. 255 Zeichen)
   proposal:
+    overview: Vorschläge
     mass_action_group:
       review:
         label: Stapelverarbeitung

@@ -1,4 +1,12 @@
 pimee_catalog_rule:
+  overview: Regeln
+  execution_button: Regeln anwenden
+  popin:
+    execute_rules:
+      confirm_title: Ausführen bestätigen
+      confirm_content: Sind Sie sicher, dass Sie alle Regeln anwenden möchten? (Dies kann sehr lange dauern)
+  notification:
+    launched: Die Anwendung der Regeln wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
   attribute:
     list:
       code.label: Code

@@ -80,14 +80,9 @@ pimee_catalog_rule:
   notification:
     rule:
       executed: Anwenden der Regel(n) abgeschlossen
-      launched: Die Anwendung der Regeln wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
     mass_edit_rule:
       success: Berechnung der von dieser Regel betroffenen Produkte abgeschlossen
       error: Während der Berechnung, der von diesen Regeln betroffenen Produkte, ist ein Fehler aufgetreten
-  popin:
-    execute_rules:
-      confirm_title: Ausführen bestätigen
-      confirm_content: Sind Sie sicher, dass Sie alle Regeln anwenden möchten? (Dies kann sehr lange dauern)
 btn:
   Execute rules: Regeln anwenden
 rule: Regeleinstellungen
