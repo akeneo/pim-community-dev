@@ -100,6 +100,10 @@ pim_base_connector:
       help: Canale che si desidera esportare
     decimalSeparator:
       label: Separatore decimale
+      help: Determina il separatore decimale
+    dateFormat:
+      label: Formato della data
+      help: Determina il formato dei campi data
   import:
     enabled:
       label: Attivare il prodotto
@@ -118,6 +122,7 @@ pim_base_connector:
       help: File CSV da importare
     yamlFilePath:
       label: File
+      help: File YAML da importare
     uploadAllowed:
       label: Consentire il caricamento di file
       help: Consentire o no il caricamento diretto di file
@@ -136,3 +141,6 @@ pim_base_connector:
     realTimeVersioning:
       label: Aggiornamento cronologia in tempo reale
       help: Significa che la cronologia del prodotto viene aggiornata automaticamente, può essere disattivato per migliorare le prestazioni
+    copyValuesToProducts:
+      label: Copia i valori della variante gruppo sui prodotti
+      help: Significa che i prodotti vengono aggiornati automaticamente con i valori del gruppo di varianti, può essere limitato all'aggiornamento del solo gruppo di varianti
