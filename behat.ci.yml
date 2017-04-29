@@ -4,7 +4,7 @@ default:
     context:
         class: Context\FeatureContext
         parameters:
-            base_url: 'http://akeneo/'
+            base_url: 'http://akeneo-behat/'
             timeout: 50000
             window_width: 1280
             window_height: 1024
@@ -14,7 +14,7 @@ default:
             show_cmd: chromium-browser %s
             selenium2:
                 wd_host: 'http://selenium:4444/wd/hub'
-            base_url: 'http://akeneo/'
+            base_url: 'http://akeneo-behat/'
             files_path: 'features/Context/fixtures/'
         Behat\Symfony2Extension\Extension:
             kernel:
@@ -22,6 +22,6 @@ default:
                 debug: false
         SensioLabs\Behat\PageObjectExtension\Extension: ~
     formatter:
-        name: Context\SummaryFormatter, Pim\Behat\Formatter\JUnitFormatter
+        name: progress, Pim\Behat\Formatter\JUnitFormatter
         parameters:
-            output_path: null,app/build/logs/behat/
+            output_path: null,app/logs/

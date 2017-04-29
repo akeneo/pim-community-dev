@@ -1,0 +1,49 @@
+#!/usr/bin/env php
+<?php
+
+if ($argc <= 2) {
+    die("Usage: behat-list path tags\n");
+}
+
+// Init the Composer autoloader
+require realpath(dirname(__FILE__)) . '/../vendor/autoload.php';
+
+$keywords = new \Behat\Gherkin\Keywords\CachedArrayKeywords(__DIR__ . '/../vendor/behat/gherkin/i18n.php');
+$lexer    = new \Behat\Gherkin\Lexer($keywords);
+$dumper   = new \Behat\Gherkin\Dumper\GherkinDumper($keywords);
+$parser   = new \Behat\Gherkin\Parser($lexer);
+$gherkin  = new \Behat\Gherkin\Gherkin();
+$gherkin->setFreeze(false);
+$gherkin->addLoader(new \Behat\Gherkin\Loader\DirectoryLoader($gherkin));
+$gherkin->addLoader(new \Behat\Gherkin\Loader\GherkinFileLoader($parser));
+$gherkin->addFilter(new \Behat\Gherkin\Filter\TagFilter($argv[2]));
+
+$maxPerBatch = 10;
+$scenarioCount = 0;
+$tags = [];
+$resource = __DIR__ . '/../' . $argv[1];
+
+if (!file_exists($resource)) {
+    exit(0);
+}
+
+$features = $gherkin->load($resource);
+
+/** @var \Behat\Gherkin\Node\FeatureNode $feature */
+foreach ($features as $feature) {
+    /** @var \Behat\Gherkin\Node\ScenarioNode $scenario */
+    foreach ($feature->getScenarios() as $scenario) {
+        $tag = 'batch-'.floor($scenarioCount / $maxPerBatch);
+
+        if (!in_array($tag, $tags)) {
+            $tags[] = $tag;
+        }
+
+        $scenario->addTag($tag);
+        $scenarioCount++;
+    }
+
+    file_put_contents($feature->getFile(), $dumper->dump($feature));
+}
+
+echo join(PHP_EOL, $tags) . PHP_EOL;
