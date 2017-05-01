@@ -113,6 +113,7 @@ pim_connector:
       help: File CSV da importare
     yamlFilePath:
       label: File
+      help: File YAML da importare
     uploadAllowed:
       label: Consentire il caricamento di file
       help: Consentire o no il caricamento diretto di file
@@ -131,8 +132,24 @@ pim_connector:
     realTimeVersioning:
       label: Aggiornamento cronologia in tempo reale
       help: Significa che la cronologia del prodotto viene aggiornata automaticamente, può essere disattivato per migliorare le prestazioni
+    copyValuesToProducts:
+      label: Copia i valori della variante gruppo sui prodotti
+      help: Significa che i prodotti vengono aggiornati automaticamente con i valori del gruppo di varianti, può essere limitato all'aggiornamento del solo gruppo di varianti
+    enabledComparison:
+      label: Confronta i valori
+      help: Abilita il confronto tra i valori originali e valori importati. L'importazione può essere velocizzata se i valori importati sono abbastanza simili ai valori originali
 job_execution.summary:
   read: leggere
+  read_lines: linee lette
   write: scritti
   skip: saltato
   create: creato
+  process: elaborato
+  update_products: prodotti aggiornati
+  process_products: prodotti elaborati
+  skip_products: prodotti saltati
+  displayed: primi avvisi visualizzati
+  charset_validator:
+    title: 'Codifica del file:'
+    skipped: saltato, estensione nella white list
+  product_skipped_no_diff: prodotto saltato (nessuna differenza)
