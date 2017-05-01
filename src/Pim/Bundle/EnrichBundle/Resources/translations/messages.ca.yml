@@ -299,17 +299,13 @@ channel:
   edit: editar canal
 currency:
   title: moneda
-  overview: resum de moneda
   create: crear moneda
   edit: editar moneda
 family:
   title: família
-  overview: resum de família
-  create: crear família
   edit: editar família
 locale:
   title: configuració regional
-  overview: resum de configuració regional
   create: crear configuració regional
   edit: editar configuració regional
 product:
@@ -319,18 +315,12 @@ product:
   edit: editar producte
 group:
   title: grup
-  overview: resum del grup
-  create: crear grup
   edit: editar grup
 group type:
   title: tipus de grup
-  overview: resum de tipus de grup
-  create: crear tipus de grup
   edit: editar tipus de grup
 variant group:
   title: grup de variants
-  overview: resum de grup de variants
-  create: crear grup de variants
   edit: editar grup de variants
 association type:
   title: tipus d'associació

@@ -12,6 +12,7 @@ This value should not be blank: Wartość nie może być pusta
 Option code may contain only letters, numbers and underscores: Kod opcji może zawierać tylko litery, cyfry i znaki podkreślenia
 Option code may contain only letters (at least one), numbers and underscores: Kod opcji może zawierać tylko litery (co najmniej jedną), liczby i znaki podkreślenia
 This value should not be a decimal.: Wartość ta nie powinna być liczą dziesiętną.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Rozszerzenie tego pliku nie jest dozwolone (dozwolone rozszerzenia to: %extensions%).'
 "The value %value% is already set on another product for the unique attribute %attribute%": Wartość %value% jest już wykorzystana w innym produkcie w unikatowym atrybucie %attribute%
 regex.comma_or_semicolon.message: To pole nie powinno zawierać żadnych przecinków ani średników.
 file.extensions.message: 'Rozszerzenie tego pliku nie jest dozwolone (dozwolone rozszerzenia to: %extensions%).'

@@ -263,17 +263,13 @@ channel:
   edit: kanaal bewerken
 currency:
   title: valuta
-  overview: valuta overzicht
   create: valuta aanmaken
   edit: valuta bewerken
 family:
   title: familie
-  overview: familieoverzicht
-  create: familie aanmaken
   edit: familie bewerken
 locale:
   title: lokalisatie
-  overview: lokalisatieoverzicht
   create: lokalisatie aanmaken
   edit: lokalisatie bewerken
 product:
@@ -283,18 +279,12 @@ product:
   edit: product bewerken
 group:
   title: groep
-  overview: groepsoverzicht
-  create: groep aanmaken
   edit: groep bewerken
 group type:
   title: groepstype
-  overview: groepstype overzicht
-  create: groepstype aanmaken
   edit: groepstype bewerken
 variant group:
   title: variantgroep
-  overview: variantgroepen overzicht
-  create: variantgroep aanmaken
   edit: variantgroep bewerken
 association type:
   title: koppelingstype

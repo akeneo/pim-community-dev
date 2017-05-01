@@ -299,17 +299,13 @@ channel:
   edit: редактировать канал
 currency:
   title: валюта
-  overview: обзор валют
   create: создать валюту
   edit: редактировать валюту
 family:
   title: семейство
-  overview: обзор семейства
-  create: создать семейство
   edit: редактировать семейство
 locale:
   title: локаль
-  overview: обзор локалей
   create: создать локаль
   edit: редактировать локаль
 product:
@@ -319,18 +315,12 @@ product:
   edit: редактировать продукт
 group:
   title: группа
-  overview: обзор групп
-  create: создать группу
   edit: редактировать группу
 group type:
   title: тип группы
-  overview: обзор типов группы
-  create: создать тип группы
   edit: редактировать тип группы
 variant group:
   title: группа вариантов
-  overview: обзор вариативных групп
-  create: создать вариатвную группу
   edit: редактировать вариативную группу
 association type:
   title: тип ассоциации
