@@ -89,6 +89,8 @@ pimee_enrich:
         remove_proposal: Rimuovi la proposta
         send_for_approval: Invia per approvazione
         cancel: Cancella
+        confirm: Invia
+        title: Commenta la tua proposta (opzionale - 255 caratteri max.)
         characters: caratteri.
       confirmation:
         discard_changes: Le modifiche non salvate andranno perse. Sei sicuro di voler inviare la bozza per l'approvazione senza che vengano salvate le modifiche?

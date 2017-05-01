@@ -76,6 +76,7 @@ pimee_workflow:
       perform.title: Rifiuta le proposte
   steps:
     product_draft_processor.title: Processore di proposta
+    approve.title: Approva la proposta
     refuse.title: Rifiuta la proposta
 pimee_workflow_product_draft_notification_new_proposal: Nuova proposta
 pimee_workflow_import_notification_new_proposals: Nuove proposte da importazione
@@ -86,6 +87,7 @@ pimee_workflow_product_draft_notification_partial_reject: Proposta respinta parz
 pimee_workflow_product_draft_notification_partial_remove: Proposta eliminata parzialmente
 pimee_workflow_product_draft_notification_approve: Proposta approvata
 pimee_workflow_product_draft_notification_refuse: Proposta respinta
+pimee_workflow_product_draft_notification_remove: Proposta eliminata
 flash:
   product:
     published: Il prodotto è stato pubblicato con successo.
@@ -111,7 +113,26 @@ pim_title:
     show: "Prodotti %product.sku% | Visualizza"
   proposal:
     index: Proposte
+btn.editworkingcopy: Modifica la copia di lavoro
+confirmation:
+  product:
+    publish: Sei sicuro di voler pubblicare questo prodotto?
+    unpublish: Sei sicuro di voler annullare la pubblicazione di questo prodotto?
 proposal.overview: Proposte
 Attributes.title: Attributi
 Completeness.title: Completamento
+publish_product.steps.publish_product_tasklet.title: Pubblica prodotto
+unpublish_product.steps.unpublish_product_tasklet.title: Annulla la pubblicazione del prodotto
+approve_product_draft.steps.approve.title: Approva la proposta
+approve_product_draft.steps.refuse.title: Rifiuta la proposta
+job_execution.summary:
+  approved: approvato
+  refused: rifiutato
+  mass_published: Prodotto pubblicato
+  mass_unpublished: Prodotto ritirato
+  proposal: Proposta creata
+  proposal_deleted: proposta eliminata
+  proposal_updated: proposta aggiornata
+  proposal_created: proposta creata
+  proposal_skipped: proposta saltata (nessuna differenza)
 published products: Prodotti pubblicati
