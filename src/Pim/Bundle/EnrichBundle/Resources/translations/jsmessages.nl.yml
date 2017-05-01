@@ -699,6 +699,18 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: Het attribuut van het geselecteerde product zal worden gewijzigd met de volgende data voor de landinstelling <span class="highlight">{{ locale }}</span> en het kanaal <span class="highlight">{{ channel }}</span> gekozen in het product raster.
+  index:
+    group:
+      create_btn: Groep aanmaken
+    user:
+      title: Gebruiker
+      create_btn: Gebruiker aanmaken
+    user_role:
+      title: Rol
+      create_btn: Rol aanmaken
+    user_group:
+      title: Groepen
+      create_btn: Groep aanmaken
 pim_enrich.error:
   exception.title: Oh, nee! Een {{ status_code }} fout deed zich voor...
 batch_jobs:

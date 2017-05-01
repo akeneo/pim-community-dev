@@ -639,6 +639,20 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: Os atributos dos produtos selecionados serão editados com os seguintes dados para a linguagem <span class="highlight">{{ locale }}</span> e o canal <span class="highlight">{{ channel }}</span>, escolhidos na grelha de produtos.
+  index:
+    group:
+      create_btn: Criar grupo
+    user:
+      title: Usuário
+      create_btn: Criar usuário
+    user_role:
+      title: Função
+      create_btn: Criar papel
+    user_group:
+      title: Grupos
+      create_btn: Criar grupo
+    process_tracker:
+      title: Visualizador de processos
 pim_enrich.error:
   exception.title: Oh snap! Um {{ status_code }} erro aconteceu...
 batch_jobs:

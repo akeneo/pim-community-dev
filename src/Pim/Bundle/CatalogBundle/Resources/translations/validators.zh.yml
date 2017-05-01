@@ -12,6 +12,7 @@ This value should not be blank: 该值不应该为空
 Option code may contain only letters, numbers and underscores: 选项代码仅可包含字母，数字和下划线
 Option code may contain only letters (at least one), numbers and underscores: 选项代码仅可包含字母（至少1个），数字和下划线
 This value should not be a decimal.: 该值不应该为小数
+'The file extension is not allowed (allowed extensions: %extensions%).': '不允许的文件扩展名 (允许扩展︰ %extensions%)。'
 "The value %value% is already set on another product for the unique attribute %attribute%": 值 %value% 已经设置为另一个产品的唯一属性 %attribute%
 regex.comma_or_semicolon.message: 此字段不应该包含任何逗号或分号。
 file.extensions.message: 不允许的文件扩展名 (允许扩展︰ %extensions%)。

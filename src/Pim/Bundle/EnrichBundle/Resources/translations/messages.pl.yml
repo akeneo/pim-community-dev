@@ -285,17 +285,13 @@ channel:
   edit: edytuj kanał
 currency:
   title: waluta
-  overview: Przegląd walut
   create: utwórz walutę
   edit: edytuj walutę
 family:
   title: rodzina
-  overview: Przegląd rodziny
-  create: utwórz rodzinę
   edit: edytuj rodzinę
 locale:
   title: ustawienia regionalne
-  overview: przegląd ustawień regionalnych
   create: utwórz ustawienie regionalne
   edit: edytuj ustawienie regionalne
 product:
@@ -305,18 +301,12 @@ product:
   edit: edytuj produkt
 group:
   title: grupa
-  overview: przegląd grupy
-  create: utwórz grupę
   edit: edytuj grupę
 group type:
   title: typ grupy
-  overview: przegląd typu grupy
-  create: utwórz typ grupy
   edit: edytuj typ grupy
 variant group:
   title: grupa wariantów
-  overview: przegląd grupy wariantów
-  create: utwórz grupę wariantów
   edit: edycja grupy wariantów
 association type:
   title: typ powiązania
