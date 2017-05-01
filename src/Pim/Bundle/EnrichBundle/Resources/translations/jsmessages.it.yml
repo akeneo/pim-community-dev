@@ -103,10 +103,14 @@ pim_enrich:
     delete:
       confirm.content: Sei sicuro di che voler eliminare la voce {{ itemName }}? Non è possibile annullare questa azione
       confirm.title: Elimina la voce {{ itemName }}
+  navigation:
+    link:
+      back_to_grid: Torna alla griglia
   entity:
     save:
       label: Salva
     info:
+      update_failed: Aggiornamento non riuscito
       update_successful: Aggiornato correttamente
     product:
       title: Articoli
@@ -119,13 +123,28 @@ pim_enrich:
         compare_translate: Confronta / Traduci
         delete: Eliminare
         save: Salva
+        save_and_back: Salva e torna alla griglia
       history:
         version: Versione
         author: Autore
         logged_at: Loggato il
+        more: Altro
+        less: Meno
+        from: Da
+        modified: Modificato
+        property: Proprietà
         old_values: Vecchi valori
         new_values: Nuovi valori
         actions: Azioni
+      info:
+        deletion_successful: Prodotto eliminato correttamente.
+        deletion_failed: Il prodotto non può essere eliminato.
+        update_successful: Prodotto aggiornato correttamente.
+        update_failed: Il prodotto non può essere aggiornato.
+        field_not_ready: 'Il prodotto non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}'
+        already_in_upload: Un file è già in caricamento per questo attributo nell'impostazione internazionale "{{ locale }}" e nell'ambito "{{ scope }}"
+      error:
+        upload: Si è verificato un errore durante il caricamento del file
       meta:
         created: Creato
         created_by: Di
@@ -137,8 +156,10 @@ pim_enrich:
         groups:
           title: Gruppi
           modal:
+            title: Gruppo {{ group }}
             view_group: Visualizzazione gruppo
             group_label: Etichetta
+            more_products: '{{ count }} altri prodotti...'
             close: Chiudi
       copy:
         select: Selezionare
@@ -147,11 +168,16 @@ pim_enrich:
         none: Nessun
         copy: Copia
       variant_group:
+        updated_by: Aggiornato da un gruppo di varianti
         switch:
           "yes": "Sì"
           "no": "No"
       optional_attribute:
         remove: Rimuovere l'attributo
+      locale_specific_attribute:
+        unavailable: Questo specifico campo relativo alle impostazioni internazionali non è disponibile in questa impostazione internazionale
+      localizable:
+        channel_locale_unavailable: Questo campo localizzabile non è disponibile per l'impostazione internazionale '{{ locale }}' e per il canale '{{ channel }}'
       media:
         upload: Trascina e rilascia qui un file per caricarlo o fai click qui
     attribute_option:
@@ -159,6 +185,7 @@ pim_enrich:
       label: Etichetta
   confirmation:
     leave: Sei sicuro di voler lasciare questa pagina?
+    discard_changes: Perderai le modifiche a {{ entity }} se lasci la pagina.
     delete_item: Conferma cancellazione
     delete:
       product_attribute: Sei sicuro di voler rimuovere questo attributo dal prodotto?
@@ -166,6 +193,11 @@ pim_enrich:
     not_applicable: N/A
     entity:
       updated: Ci sono modifiche non salvate.
+  error:
+    upload: Si è verificato un errore durante il caricamento del file
+  alert:
+    not_allowed: Non sei autorizzato ad accedere a questa pagina
+    error_occured: Si è verificato un errore durante il caricamento della pagina
   form:
     product:
       tab:
@@ -175,19 +207,27 @@ pim_enrich:
             none_exist: Nessun tipo di associazione esistente.
             show_products: Mostra articoli
             show_groups: Mostra gruppi
+            number_of_associations: "{{ productCount }} prodotti e {{ groupCount }} gruppi"
         attributes:
           title: Attributi
           btn:
             add: Aggiungi
             add_attributes: Aggiungi attributi
           info:
+            search_attributes: Ricerca...
             no_available_attributes: Non ci sono altri attributi da aggiungere
+            attributes_selected: "{{ attributeCount }} attributo(i) selezionato(i)"
             no_match: Nessuna corrispondenza trovata
+            load_more: Carica ulteriori risultati...
         categories:
           title: Categorie
       panel:
         completeness:
           title: Completamento
+          info:
+            no_family: Nessuna famiglia definita. Si prega di definire una famiglia per calcolare il livello di completamento di questo prodotto.
+            no_completeness: Hai appena cambiato la famiglia del prodotto. Si prega di salvare prima di calcolare il livello di completamento per la nuova famiglia.
+          missing_values: Valori mancanti
         history:
           title: Cronologia
       switch:
@@ -196,6 +236,11 @@ pim_enrich:
       sequential_edit:
         info:
           products: Articoli
+          previous: Torna indietro a {{ product }} senza salvare.
+          next: Torna a {{ product }} senza salvare.
+        btn:
+          save_and_next: Salva e successivo
+          save_and_finish: Salva e termina
       change_family:
         modal:
           title: Cambiare la famiglia dell'articolo
@@ -203,14 +248,25 @@ pim_enrich:
           keep_attributes: Nessun attributo verrà rimosso.
           change_family_to: Cambiare la famiglia in
           empty_selection: Scegli una famiglia
+      flash:
+        attribute_deletion_error: Errore durante la cancellazione dell'attributo
       mass_edit:
         select_attributes: Selezionare gli attributi
         select: Selezionare
     attribute_option:
+      flash:
+        option_created: Opzione di attributo creata correttamente
+        error_creating_option: Si è verificato un errore durante il tentativo di creare l'opzione di attributo
       add_option_modal:
+        title: Aggiungi l'opzione dell'attributo
         confirm: Aggiungi
         cancel: Cancella
     entity:
       switch:
         "no": "No"
         "yes": "Sì"
+  mass_edit_action:
+    edit_common_attributes:
+      description: Gli attributi dei prodotto selezionati nella griglia verranno modificati con i dati seguenti per le impostazioni internazionali <span class="highlight">{{ locale }}</span> e per il canale <span class="highlight">{{ channel }}</span>.
+pim_enrich.error:
+  exception.title: Accidenti! Si è verificato un errore con il codice {{ status_code }}...
