@@ -79,6 +79,7 @@ pimee_product_asset:
   popin.create:
     title: Crea un nuovo asset
     is_localized: Localizzabile
+  menu: Asset
   page_tab:
     title:
       view: Asset di prodotto %asset.code% | Visualizza
@@ -98,8 +99,11 @@ pimee_product_asset:
     label: Creato il
   updatedAt:
     label: Ultimo aggiornamento del
+  tags:
+    label: Tag
   tabs:
     properties.title: Proprietà
+    variations.title: Varianti
     categories.title: Categorie
   validation:
     code:
@@ -107,20 +111,52 @@ pimee_product_asset:
       unique: Il codice deve essere univoco.
       new_generation: Ne abbiamo generato uno nuovo.
   jobs:
+    csv_asset_import.title: Importazione asset in Csv
+    csv_asset_export.title: Importazione asset in Csv
+    csv_asset_variation_export.title: Esportazione varianti asset in Csv
     csv_tag_import.title: Importazione tag in CSV
     csv_asset_category_import.title: Importazione categorie asset in CSV
     csv_asset_configuration_import.title: Configurazione dell'importazione in CSV  degli asset
     yml_asset_configuration_export.title: Configurazione dell'esportazione in Yaml degli asset
+    csv_asset_category_export.title: Esportazione categorie asset in CSV
+    yml_asset_channel_configuration_import.title: Importazione in Yaml della configurazione del canale asset
+    assets_mass_upload.title: Caricamento di massa di asset
+  steps:
+    channel_configuration.processor.title: Elaborazione delle configurazioni di canale
+  notAvailable:
+    label: non disponibile
+  asset:
+    title: Asset
   mass_upload:
+    menu: Carica asset
+    new: Verrà creato un nuovo asset
     add_files: aggiungi file
     start: Inizia il caricamento
     cancel: Annulla il caricamento
+    schedule: pianifica
+    executed: Caricamento di massa eseguito
     error:
+      upload: Si è verificato un errore durante il caricamento
+      code: Formato codice non valido per l'asset
       localizable: Un asset esiste ma non è traducibile
+      invalid_locale: L'impostazione internazionale è disabilitata o non valida
   category:
     menu: Categorie degli asset
     permissions:
+      view.label: Consentita la visualizzazione degli asset
+      view.help: Consenti di visualizzare gli asset in questa categoria
+      edit.label: Consentita la modifica degli asset
+      edit.help: Consenti di modificare gli asset in questa categoria (implica il permesso Visualizza)
+      no_access_to_products: Non hai accesso agli asset in nessuna struttura ad albero. Si prega di contattare l'amministratore
       apply_on_children.label: Applica le modifiche sui figli
       apply_on_children.help: Copiare le modifiche ai permessi su tutti i figli, i permessi esistenti sui figli vengono mantenuti
 btn.create.asset: Crea un asset
 btn.drag_or_upload: Trascina e rilascia qui un file per caricarlo o fai click qui
+job_execution.summary:
+  asset_file_processed: File di asset elaborato
+  variations_not_generated: Varianti non generate
+  pimee_product_asset.mass_upload.new: Asset creato dal file
+  pimee_product_asset.mass_upload.updated: Asset aggiornato
+assets_mass_upload.steps:
+  asset_mass_upload.title: Caricamento di massa di asset
+mass_upload: Caricamento di massa asset

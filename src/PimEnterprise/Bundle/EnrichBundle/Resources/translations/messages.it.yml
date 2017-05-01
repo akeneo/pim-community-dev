@@ -71,6 +71,10 @@ pim_enrich:
     classify:
       message:
         error: Non sei il proprietario del prodotto, non puoi classificarlo.
+        warning: Non sei il proprietario di tutti i prodotti selezionati. Non puoi classificare i prodotti "%notGranted%".
+    edit_common_attributes:
+      message:
+        error: Non sei il proprietario del prodotto, non puoi modificarlo.
 pim_enrich.mass_edit_action:
   limit_exceeded: Si prega di scegliere meno di %limit% elementi da modificare
   product:
@@ -119,6 +123,7 @@ pimee_enrich:
       options:
         colorspace: spazio colore %value%
     resize:
+      title: Ridimensiona
       options:
         width: '%value%px di larghezza'
         height: '%value%px di altezza'
@@ -132,8 +137,19 @@ pimee_enrich:
       options:
         width: '%value%px di larghezza'
         height: '%value%px di altezza'
+        ratio: '%value% % di rapporto'
     thumbnail:
       title: Thumbnail
       options:
         width: '%value%px di larghezza'
         height: '%value%px di altezza'
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Aggiungi il valore del prodotto con il permesso
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Aggiorna il valore del prodotto con il permesso
+edit_common_attributes_with_permission: Modifica gli attributi comuni con permesso
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Modifica gli attributi comuni con permesso
+job_execution.summary:
+  mass_published: Prodotto pubblicato
+  mass_unpublished: Prodotto ritirato
+  proposal: Proposta creata
+  proposal_deleted: eliminato
+pim_assets_collection: Raccolta asset
