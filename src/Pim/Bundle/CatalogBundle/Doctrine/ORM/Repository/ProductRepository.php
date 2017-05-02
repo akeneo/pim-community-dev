@@ -189,25 +189,6 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function valueExists(ProductValueInterface $value)
-    {
-        return false;
-
-        $criteria = [
-            'attribute'                              => $value->getAttribute(),
-            $value->getAttribute()->getBackendType() => $value->getData()
-        ];
-        $result = $this->getEntityManager()->getRepository(get_class($value))->findBy($criteria);
-
-        return (
-            (0 !== count($result)) &&
-            !(1 === count($result) && $value === ($result instanceof \Iterator ? $result->current() : current($result)))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getEligibleProductsForVariantGroup($variantGroupId)
     {
         $variantGroup = $this->groupRepository->find($variantGroupId);

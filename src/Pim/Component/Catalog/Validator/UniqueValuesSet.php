@@ -43,27 +43,23 @@ class UniqueValuesSet
      */
     public function addValue(ProductValueInterface $productValue)
     {
-        // TODO: To be reworked in TIP-698
-        return true;
+        $identifier = spl_object_hash($productValue);
+        $data = $productValue->__toString();
+        $attributeCode = $productValue->getAttribute()->getCode();
 
-        $product = $productValue->getProduct();
-        $productIdentifier = $this->getProductIdentifier($product);
-        $productValueData = $this->getValueData($productValue);
-        $uniqueValueCode = $this->getUniqueValueCode($productValue);
-
-        if (isset($this->uniqueValues[$uniqueValueCode][$productValueData])) {
-            $storedIdentifier = $this->uniqueValues[$uniqueValueCode][$productValueData];
-            if ($storedIdentifier !== $productIdentifier) {
+        if (isset($this->uniqueValues[$attributeCode][$data])) {
+            $storedIdentifier = $this->uniqueValues[$attributeCode][$data];
+            if ($storedIdentifier !== $identifier) {
                 return false;
             }
         }
 
-        if (!isset($this->uniqueValues[$uniqueValueCode])) {
-            $this->uniqueValues[$uniqueValueCode] = [];
+        if (!isset($this->uniqueValues[$attributeCode])) {
+            $this->uniqueValues[$attributeCode] = [];
         }
 
-        if (!isset($this->uniqueValues[$uniqueValueCode][$productValueData])) {
-            $this->uniqueValues[$uniqueValueCode][$productValueData] = $productIdentifier;
+        if (!isset($this->uniqueValues[$attributeCode][$data])) {
+            $this->uniqueValues[$attributeCode][$data] = $identifier;
         }
 
         return true;
@@ -75,46 +71,5 @@ class UniqueValuesSet
     public function getUniqueValues()
     {
         return $this->uniqueValues;
-    }
-
-    /**
-     * spl_object_hash for new product and id when product exists
-     *
-     * @param ProductInterface $product
-     *
-     * @return string
-     */
-    protected function getProductIdentifier(ProductInterface $product)
-    {
-        $identifier = $product->getId() ? $product->getId() : spl_object_hash($product);
-
-        return $identifier;
-    }
-
-    /**
-     * @param ProductValueInterface $productValue
-     *
-     * @return string
-     */
-    protected function getUniqueValueCode(ProductValueInterface $productValue)
-    {
-        $attributeCode = $productValue->getAttribute()->getCode();
-        $uniqueValueCode = $attributeCode;
-        $uniqueValueCode .= (null !== $productValue->getLocale()) ? $productValue->getLocale() : '';
-        $uniqueValueCode .= (null !== $productValue->getScope()) ? $productValue->getScope() : '';
-
-        return $uniqueValueCode;
-    }
-
-    /**
-     * @param ProductValueInterface $productValue
-     *
-     * @return string
-     */
-    protected function getValueData(ProductValueInterface $productValue)
-    {
-        $data = $productValue->getData();
-
-        return ($data instanceof \DateTime) ? $data->format('Y-m-d') : (string) $data;
     }
 }
