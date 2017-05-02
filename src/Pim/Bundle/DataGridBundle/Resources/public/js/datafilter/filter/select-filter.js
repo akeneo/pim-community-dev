@@ -17,8 +17,10 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          * @property
          */
         template: _.template(
-            '<div class="AknActionButton filter-select filter-criteria-selector">' +
-                '<% if (showLabel) { %><%= label %>: <% } %>' +
+            '<div class="AknFilterBox-filter filter-select filter-criteria-selector">' +
+                '<% if (showLabel) { %>' +
+                    '<span class="AknFilterBox-filterLabel"><%= label %></span>' +
+                '<% } %>' +
                 '<select>' +
                     '<% _.each(options, function (option) { %>' +
                         '<option value="<%= option.value %>"<% if (option.value == emptyValue.type) { %> selected="selected"<% } %>><%= option.label %></option>' +
@@ -84,7 +86,7 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          */
         widgetOptions: {
             multiple: false,
-            classes: 'AknActionButton-selectButton select-filter-widget'
+            classes: 'AknFilterBox-filterCriteria select-filter-widget'
         },
 
         /**
@@ -203,7 +205,7 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
 
             this.selectWidget.setViewDesign(this);
             this.$(this.buttonSelector)
-                .append('<span class="AknActionButton-caret AknCaret"></span>')
+                .append('<span class="AknFilterBox-filterCaret"></span>')
                 .find('span:first-child').addClass('filter-criteria-hint');
         },
 

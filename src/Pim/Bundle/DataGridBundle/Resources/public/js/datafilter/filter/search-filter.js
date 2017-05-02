@@ -19,11 +19,11 @@ function($, _, __, AbstractFilter) {
 
         timerDelay: 500,
 
-        className: 'AknSearch-inputContainer filter-item',
+        className: 'AknFilterBox-searchContainer filter-item',
 
         render: function () {
             this.$el.html(
-                '<input class="AknSearch-input" autocomplete="off" type="text" name="value" value="" placeholder="Search">'
+                '<input class="AknFilterBox-search" autocomplete="off" type="text" name="value" value="" placeholder="Search">'
             );
         },
 

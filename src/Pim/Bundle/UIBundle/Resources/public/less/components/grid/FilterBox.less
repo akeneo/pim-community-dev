@@ -1,6 +1,8 @@
 @import '../../base/variables';
 
 .AknFilterBox {
+  @searchHeight: 44px;
+
   background: lighten(@AknGrey, 20%);;
   padding: 20px 20px 10px 140px;
   z-index: 800;
@@ -17,9 +19,7 @@
     width: auto !important; // The width is updated by JS method.
   }
 
-  &-filter {
-    margin-left: 10px;
-    margin-bottom: 10px;
+  &-filterContainer {
     display: inline-block;
 
     &--inline {
@@ -31,5 +31,94 @@
     text-align: center;
     display: inline-block;
     width: 20px;
+  }
+
+  &--search {
+    height: @searchHeight;
+    display: flex;
+    width: 100%;
+    border-bottom: 1px solid @AknBorderColor;
+    justify-content: flex-end;
+    padding: 0 0 1px 0;
+    margin-bottom: 10px;
+    background: none;
+    min-height: 0;
+  }
+
+  &-search {
+    height: @searchHeight;
+    line-height: @searchHeight;
+    color: @AknDefaultFontColor;
+    font-size: 15px;
+    border: none;
+    background: url("../../../images/icon-search.svg") no-repeat 0 center;
+    padding-left: 30px;
+    flex-grow: 1;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &-searchContainer {
+    order: -1;
+    flex-grow: 1;
+    display: flex;
+  }
+
+  &--search &-disableFilter {
+    display: none;
+  }
+
+  &-filterLabel {
+    &:after {
+      content: ':';
+      margin-right: 3px;
+    }
+  }
+
+  &-filter {
+    background: white;
+    border: 1px solid @AknBorderColor;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 10px;
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  &-filterCriteria {
+    &.ui-multiselect {
+      // jQuery select adds style for the button, we need to remove it for the filters.
+      width: auto !important;
+      padding: 0 !important;
+      border: none;
+      background: none;
+    }
+  }
+
+  &--search &-filter {
+    display: flex;
+    height: @searchHeight;
+    line-height: @searchHeight;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+
+  &--search &-filterCriteria {
+    color: @AknLightPurple;
+    height: @searchHeight;
+    line-height: @searchHeight;
+    display: inherit;
+  }
+
+  &--search &-filterCaret {
+    display: inline-block;
+    width: 12px;
+    height: @searchHeight;
+    background: url("../../../images/jstree/icon-down.svg") no-repeat 0 center;
+    background-size: 12px;
+    margin-left: 3px;
   }
 }
