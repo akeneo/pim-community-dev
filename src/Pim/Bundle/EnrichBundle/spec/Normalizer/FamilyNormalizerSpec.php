@@ -17,6 +17,7 @@ class FamilyNormalizerSpec extends ObjectBehavior
     function let(
         NormalizerInterface $familyNormalizer,
         NormalizerInterface $translationNormalizer,
+        CollectionFilterInterface $collectionFilter,
         AttributeRepositoryInterface $attributeRepository,
         VersionManager $versionManager,
         NormalizerInterface $versionNormalizer
@@ -24,6 +25,7 @@ class FamilyNormalizerSpec extends ObjectBehavior
         $this->beConstructedWith(
             $familyNormalizer,
             $translationNormalizer,
+            $collectionFilter,
             $attributeRepository,
             $versionManager,
             $versionNormalizer

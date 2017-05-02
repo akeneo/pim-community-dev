@@ -103,7 +103,6 @@ define([
                     this.getAttributeGroups(attributeGroupsToFetch)
                 ).then(function (channels, attributeGroups) {
                     this.channels = channels;
-
                     var groupedAttributes = _.groupBy(data.attributes, function (attribute) {
                         return attribute.group_code;
                     });
@@ -147,13 +146,15 @@ define([
              * @return {Promise}
              */
             getAttributeGroups: function (attributeGroupsToFetch) {
-                if (null !== this.attributeGroups) {
-                    return this.attributeGroups;
-                }
-
                 if (0 === attributeGroupsToFetch.length) {
                     return FetcherRegistry.getFetcher('attribute-group').fetchAll();
                 }
+
+                if (null !== this.attributeGroups &&
+                    attributeGroupsToFetch.length === this.attributeGroups.length) {
+                    return this.attributeGroups;
+                }
+
                 this.attributeGroups = FetcherRegistry.getFetcher('attribute-group')
                     .search({
                         options: {
