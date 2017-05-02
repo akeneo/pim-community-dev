@@ -54,8 +54,9 @@ class WebUser extends RawMinkContext
      */
     public function iCreateANew($entity)
     {
+        $entity = implode('', array_map('ucfirst', explode(' ', $entity)));
+
         $this->spin(function () use ($entity) {
-            $entity = implode('', array_map('ucfirst', explode(' ', $entity)));
             $this->getPage(sprintf('%s index', $entity))->clickCreationLink();
 
             return true;
