@@ -182,13 +182,13 @@ Feature: Edit common attributes of many products at once
     Then I should see the completeness:
       | channel | locale | state   | missing_values                                                               | ratio |
       | mobile  | en_US  | warning | Name, Price, Size, Color                                                     | 20%   |
-      | tablet  | en_US  | warning | Name, Description, Weather conditions, Price, Rating, Side view, Size, Color | 11%   |
+      | tablet  | en_US  | warning | Name, Weather conditions, Description, Price, Rating, Side view, Size, Color | 11%   |
     And I am on the "sandals" product page
     When I open the "Completeness" panel
     Then I should see the completeness:
       | channel | locale | state   | missing_values                                           | ratio |
       | mobile  | en_US  | warning | Name, Price, Size, Color                                 | 20%   |
-      | tablet  | en_US  | warning | Name, Description, Price, Rating, Side view, Size, Color | 13%   |
+      | tablet  | en_US  | warning | Name, Description, Price, Rating, Side view, Size, Color | 12%   |
     Then I am on the products page
     And I select rows sandals, sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
@@ -210,7 +210,7 @@ Feature: Edit common attributes of many products at once
     And I should see the completeness:
       | channel | locale | state   | missing_values                                            | ratio |
       | mobile  | en_US  | warning | Color                                                     | 80%   |
-      | tablet  | en_US  | warning | Description, Weather conditions, Rating, Side view, Color | 44%   |
+      | tablet  | en_US  | warning | Weather conditions, Description, Rating, Side view, Color | 44%   |
     And I am on the "sandals" product page
     When I open the "Completeness" panel
     And I should see the completeness:
