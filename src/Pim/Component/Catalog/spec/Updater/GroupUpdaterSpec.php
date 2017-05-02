@@ -66,7 +66,7 @@ class GroupUpdaterSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('size')->willReturn($attributeSize);
 
         $pqbFactory->create()->willReturn($pqb);
-        $pqb->addFilter('id', 'IN', [2])->shouldBeCalled();
+        $pqb->addFilter('identifier', 'IN', ['foo'])->shouldBeCalled();
         $pqb->execute()->willReturn([$addedProduct]);
 
         $group->getTranslation()->willReturn($translatable);
@@ -74,7 +74,6 @@ class GroupUpdaterSpec extends ObjectBehavior
         $group->setCode('mycode')->shouldBeCalled();
         $group->setLocale('fr_FR')->shouldBeCalled();
         $group->setType($type)->shouldBeCalled();
-        $group->setAxisAttributes([$attributeColor, $attributeSize])->shouldBeCalled();
         $group->getId()->willReturn(null);
 
         $group->removeProduct($removedProduct)->shouldBeCalled();
@@ -87,8 +86,7 @@ class GroupUpdaterSpec extends ObjectBehavior
             'labels'   => [
                 'fr_FR' => 'T-shirt super beau',
             ],
-            'axis'     => ['color', 'size'],
-            'products' => [2]
+            'products' => ['foo']
         ];
 
         $this->update($group, $values, []);
@@ -133,28 +131,6 @@ class GroupUpdaterSpec extends ObjectBehavior
                 'Cannot process variant group, only groups are supported',
                 'Pim\Component\Catalog\Updater\GroupUpdater',
                 'mycode'
-            )
-        )->during('update', [$group, $values, []]);
-    }
-
-    function it_throws_an_exception_if_attribute_is_unknown($attributeRepository, GroupInterface $group)
-    {
-        $group->setCode('mycode')->shouldBeCalled();
-        $attributeRepository->findOneByIdentifier('foo')->willReturn(null);
-        $group->getId()->willReturn(null);
-
-        $values = [
-            'code' => 'mycode',
-            'axis' => ['foo']
-        ];
-
-        $this->shouldThrow(
-            InvalidPropertyException::validEntityCodeExpected(
-                'axis',
-                'attribute code',
-                'The attribute does not exist',
-                'Pim\Component\Catalog\Updater\GroupUpdater',
-                'foo'
             )
         )->during('update', [$group, $values, []]);
     }

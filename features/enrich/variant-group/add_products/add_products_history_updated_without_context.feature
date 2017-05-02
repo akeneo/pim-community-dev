@@ -43,7 +43,8 @@ Feature: Add products to a variant group
     And I open the history
     And I should see history in panel:
       | version | author                                                            | property | value           |
-      | 4       | Julia Stark - Julia@example.com                                   | groups   |                 |
+      | 5       | Julia Stark - Julia@example.com                                   | groups   |                 |
+      | 4       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | Comment  | New comment     |
       | 3       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
       | 2       | John Doe - admin@example.com                                      | Color    | white           |
       | 1       | John Doe - admin@example.com                                      | SKU      | sandal-white-37 |

@@ -134,7 +134,7 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_associated_product }
 
-    pim_datagrid.datasource.variant_group_product:
+    pim_datagrid.datasource.group_product:
         class: '%pim_datagrid.datasource.product.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
@@ -142,7 +142,7 @@ services:
             - '@pim_catalog.query.product_query_builder_bounded_factory'
             - '@pim_datagrid.normalizer.group_product'
         tags:
-            - { name: oro_datagrid.datasource, type: pim_datasource_variant_group_product }
+            - { name: oro_datagrid.datasource, type: pim_datasource_group_product }
 
     pim_datagrid.datasource.support_resolver:
         class: '%pim_datagrid.datasource.support_resolver.class%'

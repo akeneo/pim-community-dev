@@ -6,11 +6,8 @@ use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
-use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
 use Pim\Component\Catalog\FileStorage;
@@ -19,7 +16,6 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
-use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
@@ -31,14 +27,8 @@ use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupUpdater implements ObjectUpdaterInterface
+class VariantGroupUpdater extends GroupUpdater
 {
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var GroupTypeRepositoryInterface */
-    protected $groupTypeRepository;
-
     /** @var ProductValueFactory */
     protected $productValueFactory;
 
@@ -47,9 +37,6 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
 
     /** @var FileStorerInterface */
     protected $fileStorer;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $productQueryBuilderFactory;
 
     /** @var string */
     protected $productTemplateClass;
@@ -72,59 +59,12 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         $productTemplateClass
     ) {
-        $this->attributeRepository = $attributeRepository;
-        $this->groupTypeRepository = $groupTypeRepository;
+        parent::__construct($groupTypeRepository, $attributeRepository, $productQueryBuilderFactory);
+
         $this->productValueFactory = $productValueFactory;
         $this->fileInfoRepository = $fileInfoRepository;
         $this->fileStorer = $fileStorer;
-        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
         $this->productTemplateClass = $productTemplateClass;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Expected input format :
-     * {
-     *     "code": "mycode",
-     *     "labels": {
-     *         "en_US": "T-shirt very beautiful",
-     *         "fr_FR": "T-shirt super beau"
-     *     }
-     *     "axes": ["main_color", "secondary_color"],
-     *     "type": "VARIANT",
-     *     "values": {
-     *         "main_color": "white",
-     *         "tshirt_style": ["turtleneck","sportwear"],
-     *         "description": [
-     *              {
-     *                  "locale": "fr_FR",
-     *                  "scope": "ecommerce",
-     *                  "data": "<p>description</p>",
-     *              },
-     *              {
-     *                  "locale": "en_US",
-     *                  "scope": "ecommerce",
-     *                  "data": "<p>description</p>",
-     *              }
-     *          ]
-     *     }
-     * }
-     */
-    public function update($variantGroup, array $data, array $options = [])
-    {
-        if (!$variantGroup instanceof GroupInterface) {
-            throw InvalidObjectException::objectExpected(
-                ClassUtils::getClass($variantGroup),
-                GroupInterface::class
-            );
-        }
-
-        foreach ($data as $field => $item) {
-            $this->setData($variantGroup, $field, $item);
-        }
-
-        return $this;
     }
 
     /**
@@ -138,39 +78,15 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     protected function setData(GroupInterface $variantGroup, $field, $data)
     {
         switch ($field) {
-            case 'code':
-                $this->setCode($variantGroup, $data);
-                break;
-
-            case 'type':
-                $this->setType($variantGroup, $data);
-                break;
-
-            case 'labels':
-                $this->setLabels($variantGroup, $data);
-                break;
-
             case 'axes':
                 $this->setAxes($variantGroup, $data);
                 break;
-
             case 'values':
                 $this->setValues($variantGroup, $data);
                 break;
-
-            case 'products':
-                $this->setProducts($variantGroup, $data);
-                break;
+            default:
+                parent::setData($variantGroup, $field, $data);
         }
-    }
-
-    /**
-     * @param GroupInterface $variantGroup
-     * @param string         $code
-     */
-    protected function setCode(GroupInterface $variantGroup, $code)
-    {
-        $variantGroup->setCode($code);
     }
 
     /**
@@ -192,19 +108,6 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
                 static::class,
                 $type
             );
-        }
-    }
-
-    /**
-     * @param GroupInterface $variantGroup
-     * @param array          $labels
-     */
-    protected function setLabels(GroupInterface $variantGroup, array $labels)
-    {
-        foreach ($labels as $localeCode => $label) {
-            $variantGroup->setLocale($localeCode);
-            $translation = $variantGroup->getTranslation();
-            $translation->setLabel($label);
         }
     }
 
@@ -352,30 +255,6 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         }
 
         return $data;
-    }
-
-    /**
-     * @param GroupInterface $variantGroup
-     * @param array          $productIdentifiers
-     */
-    protected function setProducts(GroupInterface $variantGroup, array $productIdentifiers)
-    {
-        foreach ($variantGroup->getProducts() as $product) {
-            $variantGroup->removeProduct($product);
-        }
-
-        if (empty($productIdentifiers)) {
-            return;
-        }
-
-        $pqb = $this->productQueryBuilderFactory->create();
-        $pqb->addFilter('identifier', Operators::IN_LIST, $productIdentifiers);
-
-        $products = $pqb->execute();
-
-        foreach ($products as $product) {
-            $variantGroup->addProduct($product);
-        }
     }
 
     /**
