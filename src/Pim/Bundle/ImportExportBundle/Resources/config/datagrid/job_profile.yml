@@ -1,5 +1,7 @@
 datagrid:
     job-profile-grid:
+        options:
+            manageFilters: false
         source:
             type: pim_datasource_job_instance
         columns:
