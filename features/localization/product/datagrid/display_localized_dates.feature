@@ -28,6 +28,7 @@ Feature: Localize dates in the product grid
       | column          | value      |
       | Destocking date | 31/01/2015 |
 
+  @skip
   Scenario: Successfully show English format dates for French catalog
     Given I am logged in as "Julia"
     And I add the "french" locale to the "mobile" channel

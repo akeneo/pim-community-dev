@@ -20,6 +20,7 @@ Feature: Remove a category
     And I should see the flash message "Category successfully removed"
     And I should not see the "Sandals" category under the "summer_collection" category
 
+  @skip
   Scenario: Remove a category with sub-categories
     Given I am on the "winter_collection" category page
     When I press the "Delete" button
