@@ -140,7 +140,7 @@ services:
             - '@pim_catalog.object_manager.product'
             - '@pim_datagrid.datasource.result_record.hydrator.associated_product'
             - '@pim_catalog.query.product_query_builder_bounded_factory'
-            - '@pim_datagrid.normalizer.variant_group_product'
+            - '@pim_datagrid.normalizer.group_product'
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_variant_group_product }
 
