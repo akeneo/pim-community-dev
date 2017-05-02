@@ -1,5 +1,3 @@
-/* jshint browser:true */
-/* global define */
 define(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/navigation/abstract-view',
     'oro/navigation/pinbar/item-view', 'oro/navigation/pinbar/collection', 'oro/navigation/pinbar/model'],
 function($, _, Backbone, mediator, AbstractView,

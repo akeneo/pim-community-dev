@@ -27,7 +27,6 @@ define(['routing'], function (Routing) {
             return value.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
         };
 
-        /* jshint loopfunc:true */
         for (var name in routes) {
             route = routes[name];
             var pattern = '';

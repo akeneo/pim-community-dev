@@ -114,9 +114,7 @@ define(
              * @return {Object}
              */
             getRoot: function () {
-                /* jscs:disable safeContextKeyword */
                 var rootView = this;
-                /* jscs:enable safeContextKeyword */
                 var parent = this.getParent();
                 while (parent) {
                     rootView = parent;

@@ -1,5 +1,3 @@
-/* jshint browser:true */
-/* global define */
 define(['jquery', 'underscore', 'backbone', 'oro/app', 'oro/mediator', 'oro/error'],
 function($, _, Backbone, app, mediator, error) {
     'use strict';

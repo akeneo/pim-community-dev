@@ -1,4 +1,3 @@
-/* jshint unused:false */
 'use strict';
 
 define(['backbone'], function (Backbone) {

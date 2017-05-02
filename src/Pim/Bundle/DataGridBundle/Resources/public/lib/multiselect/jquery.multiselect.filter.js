@@ -1,4 +1,3 @@
-/* jshint forin:true, noarg:true, noempty:true, eqeqeq:true, boss:true, undef:true, curly:true, browser:true, jquery:true */
 /*
  * jQuery MultiSelect UI ImportExport Filtering Plugin 1.5pre
  * Copyright (c) 2012 Eric Hynds

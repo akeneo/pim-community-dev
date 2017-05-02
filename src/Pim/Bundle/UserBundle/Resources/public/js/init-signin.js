@@ -1,5 +1,3 @@
-/* jshint browser:true */
-/* global require */
 'use strict';
 
 define(['jquery'],
