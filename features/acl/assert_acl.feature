@@ -15,9 +15,7 @@ Feature: Define user rights
     When I revoke rights to resources List products and List channels
     And I save the role
     Then I should be on the "Administrator" role page
-    Then I should not see a nice loading message
     And I should not be able to access the products page
-    Then I should not see a nice loading message
     And I should not be able to access the channels page
     But I should be able to access the attributes page
 

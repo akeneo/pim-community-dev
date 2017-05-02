@@ -158,7 +158,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         $this->currentPage = $page;
         $this->getCurrentPage()->open();
 
-        return new Step\Then('I should see the text "You are not allowed to access this page"');
+        return new Step\Then('I should see the text "Forbidden"');
     }
 
     /**
