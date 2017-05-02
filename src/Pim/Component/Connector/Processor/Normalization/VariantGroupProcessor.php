@@ -36,25 +36,19 @@ class VariantGroupProcessor implements ItemProcessorInterface, StepExecutionAwar
     /** @var BulkMediaFetcher */
     protected $mediaFetcher;
 
-    /** @var ObjectUpdaterInterface */
-    protected $variantGroupUpdater;
-
     /**
      * @param NormalizerInterface     $normalizer
      * @param ObjectDetacherInterface $objectDetacher
      * @param BulkMediaFetcher        $mediaFetcher
-     * @param ObjectUpdaterInterface  $variantGroupUpdater
      */
     public function __construct(
         NormalizerInterface $normalizer,
         ObjectDetacherInterface $objectDetacher,
-        BulkMediaFetcher $mediaFetcher,
-        ObjectUpdaterInterface $variantGroupUpdater
+        BulkMediaFetcher $mediaFetcher
     ) {
         $this->normalizer = $normalizer;
         $this->objectDetacher = $objectDetacher;
         $this->mediaFetcher = $mediaFetcher;
-        $this->variantGroupUpdater = $variantGroupUpdater;
     }
 
     /**
@@ -102,7 +96,6 @@ class VariantGroupProcessor implements ItemProcessorInterface, StepExecutionAwar
         }
 
         $identifier = $variantGroup->getCode();
-        $this->variantGroupUpdater->update($variantGroup, ['values' => $productTemplate->getValuesData()]);
 
         $this->mediaFetcher->fetchAll($productTemplate->getValues(), $directory, $identifier);
 
