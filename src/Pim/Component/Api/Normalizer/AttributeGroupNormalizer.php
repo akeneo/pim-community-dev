@@ -31,7 +31,7 @@ class AttributeGroupNormalizer implements NormalizerInterface
         $normalizedGroup = $this->stdNormalizer->normalize($group, 'standard', $context);
 
         if (empty($normalizedGroup['labels'])) {
-            $normalizedGroup['labels'] = (object)$normalizedGroup['labels'];
+            $normalizedGroup['labels'] = (object) $normalizedGroup['labels'];
         }
 
         return $normalizedGroup;
