@@ -27,24 +27,32 @@ const bundles = [
 ]
 
 // Import paths for resources and transform to json
+// Also add oro bundles
+// Add aliases for e.g. pimenrich, pimui etc..
 const getImportPaths = () => {
     let paths = {}
 
     for (const bundle of bundles) {
         const configPath = path.join(__dirname, `/src/Pim/Bundle/${bundle}Bundle/Resources/config/requirejs.yml`)
-        // promises.push(getPathsFromConfig(configPath))
         try {
             const contents = fs.readFileSync(configPath, 'utf8')
             const bundlePaths = yaml.parse(contents).config.paths
+            const fixedBundlePaths = replacePathSegments(bundlePaths, bundle);
             paths = Object.assign(paths, bundlePaths)
         } catch(e) {}
     }
-
     return paths;
 }
 
-// Search in /public/js for each bundle
-// Include oro bundles
+const replacePathSegments = (paths, bundle) => {
+    for (const name in paths) {
+        let loc = paths[name].split('/')
+        loc.shift();
+        loc.unshift(`${__dirname}/src/Pim/Bundle/${bundle}Bundle/Resources/public`)
+        paths[name] = loc.join('/')
+    }
+    return paths;
+}
 
 module.exports = {
     entry: './src/Pim/Bundle/EnrichBundle/Resources/public/js/app.js',
