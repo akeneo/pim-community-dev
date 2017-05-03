@@ -2,7 +2,14 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource;
 
-use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
+use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author    Damien Carcel (damien.carcel@akeneo.com)
@@ -11,24 +18,74 @@ use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator
  */
 class VariantGroupProductDatasource extends ProductDatasource
 {
+    /** @var GroupRepositoryInterface */
+    protected $groupRepository;
+
     /**
-     * @param string $method the query builder creation method
-     * @param array  $config the query builder creation config
-     *
-     * @return Datasource
+     * @param ObjectManager                       $om
+     * @param HydratorInterface                   $hydrator
+     * @param ProductQueryBuilderFactoryInterface $factory
+     * @param NormalizerInterface                 $normalizer
+     * @param GroupRepositoryInterface            $groupRepository
+     */
+    public function __construct(
+        ObjectManager $om,
+        HydratorInterface $hydrator,
+        ProductQueryBuilderFactoryInterface $factory,
+        NormalizerInterface $normalizer,
+        GroupRepositoryInterface $groupRepository
+    ) {
+        parent::__construct($om, $hydrator, $factory, $normalizer);
+
+        $this->groupRepository = $groupRepository;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function initializeQueryBuilder($method, array $config = [])
     {
-        $factoryConfig['repository_parameters'] = $config;
-        $factoryConfig['repository_method'] = $method;
-        $factoryConfig['default_locale'] = $this->getConfiguration('locale_code');
-        $factoryConfig['default_scope'] = $this->getConfiguration('scope_code');
-        $factoryConfig['limit'] = $this->getConfiguration(ContextConfigurator::PRODUCTS_PER_PAGE);
-        $factoryConfig['search_after'] =  $this->getConfiguration('search_after', false);
+        parent::initializeQueryBuilder($method, $config);
 
-        $this->pqb = $this->factory->create($factoryConfig);
-        $this->qb = $this->pqb->getQueryBuilder();
+        $currentVariantGroup = $this->groupRepository->find($this->getConfiguration('current_group_id'));
+
+        $this->addAxesFilters($currentVariantGroup);
+
+        $this->pqb->addFilter(
+            'variant_group',
+            Operators::NOT_IN_LIST,
+            $this->getOtherVariantGroupsCodes($currentVariantGroup)
+        );
 
         return $this;
+    }
+
+    /**
+     * @param GroupInterface $variantGroup
+     */
+    protected function addAxesFilters(GroupInterface $variantGroup)
+    {
+        /** @var AttributeInterface $attribute */
+        foreach ($variantGroup->getAxisAttributes() as $attribute) {
+            $this->pqb->addFilter($attribute->getCode(), Operators::IS_NOT_EMPTY, []);
+        }
+    }
+
+    /**
+     * @param GroupInterface $currentVariantGroup
+     *
+     * @return string[]
+     */
+    protected function getOtherVariantGroupsCodes(GroupInterface $currentVariantGroup)
+    {
+        $variantGroupCodes = [];
+
+        foreach ($this->groupRepository->getAllVariantGroups() as $variantGroup) {
+            if ($variantGroup->getCode() !== $currentVariantGroup->getCode()) {
+                $variantGroupCodes[] = $variantGroup->getCode();
+            }
+        }
+
+        return $variantGroupCodes;
     }
 }

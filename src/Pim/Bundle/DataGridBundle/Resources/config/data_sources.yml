@@ -152,6 +152,7 @@ services:
             - '@pim_datagrid.datasource.result_record.hydrator.associated_product'
             - '@pim_catalog.query.product_query_builder_bounded_factory'
             - '@pim_datagrid.normalizer.group_product'
+            - '@pim_catalog.repository.group'
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_variant_group_product }
 
@@ -173,3 +174,5 @@ services:
         calls:
             - [addProductDatasource, ['pim_datasource_product']]
             - [addProductDatasource, ['pim_datasource_associated_product']]
+            - [addProductDatasource, ['pim_datasource_group_product']]
+            - [addProductDatasource, ['pim_datasource_variant_group_product']]

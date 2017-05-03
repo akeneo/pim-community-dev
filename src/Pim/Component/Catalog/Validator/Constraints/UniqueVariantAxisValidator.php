@@ -66,7 +66,9 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             foreach ($variantGroup->getAxisAttributes() as $attribute) {
                 $code = $attribute->getCode();
                 $value = $product->getValue($code);
-                $option = $value instanceof OptionProductValueInterface && null !== $value->getData() ? $value->getData()->getCode() : null;
+                $option = $value instanceof OptionProductValueInterface && null !== $value->getData() ?
+                    $value->getData()->getCode() :
+                    null;
 
                 if (null === $option && !$attribute->isBackendTypeReferenceData()) {
                     $this->addEmptyAxisViolation(
@@ -105,7 +107,9 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         if (count($matches) !== 0) {
             $values = [];
             foreach ($criteria as $item) {
-                $data = $item['attribute']->isBackendTypeReferenceData() ? $item['referenceData']['data'] : $item['option'];
+                $data = $item['attribute']->isBackendTypeReferenceData() ?
+                    $item['referenceData']['data'] :
+                    $item['option'];
                 $values[] = sprintf('%s: %s', $item['attribute']->getCode(), (string)$data);
             }
             $this->addExistingCombinationViolation($constraint, $group->getLabel(), implode(', ', $values));
@@ -132,7 +136,9 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             $isOption = $value instanceof OptionProductValueInterface;
 
             // we don't add criteria when option is null, as this check is performed by HasVariantAxesValidator
-            if (null === $value || (null === $value->getData() && $isOption && !$attribute->isBackendTypeReferenceData())) {
+            if (null === $value ||
+                (null === $value->getData() && $isOption && !$attribute->isBackendTypeReferenceData())
+            ) {
                 $this->addEmptyAxisViolation(
                     $constraint,
                     $variantGroup->getLabel(),
