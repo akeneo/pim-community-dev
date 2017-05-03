@@ -1,5 +1,7 @@
 datagrid:
     job-tracker-grid:
+        options:
+            manageFilters: false
         source:
             type: pim_datasource_job_tracker
         columns:
@@ -57,7 +59,7 @@ datagrid:
                     label:     Type
                     data_name: j.type
                 job:
-                    type: string
+                    type: search
                     label: Job
                     data_name: j.label
                 user:

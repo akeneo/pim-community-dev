@@ -2,6 +2,7 @@ datagrid:
     variant-group-grid:
         options:
             entityHint: group
+            manageFilters: false
         source:
             acl_resource: pim_enrich_variant_group_index
             type: pim_datasource_group
@@ -56,7 +57,7 @@ datagrid:
                     label:     Code
                     data_name: g.code
                 label:
-                    type:      string
+                    type:      search
                     label:     Label
                     data_name: translation.label
                 axisAttributes:

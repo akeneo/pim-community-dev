@@ -3,6 +3,7 @@ datagrid:
         options:
             entityHint: family
             locale_parameter: localeCode
+            manageFilters: false
         source:
             acl_resource: pim_enrich_family_index
             type: pim_datasource_family
@@ -54,7 +55,7 @@ datagrid:
                     label:     Code
                     data_name: f.code
                 label:
-                    type: string
+                    type: search
                     label: Label
                     data_name: translation.label
                 attributeAsLabel:
