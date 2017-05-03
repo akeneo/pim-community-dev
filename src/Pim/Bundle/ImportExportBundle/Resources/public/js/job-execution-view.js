@@ -1,4 +1,3 @@
-/* jshint nonew:false, boss:true */
 define(
     ['jquery', 'backbone', 'underscore', 'oro/translator'],
     function ($, Backbone, _, __) {
@@ -244,4 +243,3 @@ define(
         };
     }
 );
-

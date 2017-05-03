@@ -1,5 +1,3 @@
-/* jshint browser:true */
-/* global define, require */
 define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/collection-filters-manager'],
 function($, _, tools,  mediator, FiltersManager) {
     'use strict';

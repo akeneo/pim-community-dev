@@ -1,9 +1,9 @@
+@javascript
 Feature: Export locales
   In order to be able to access and modify locales data outside PIM
   As an administrator
   I need to be able to export locales
 
-  @javascript
   Scenario: Successfully export locales
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_locale_export" configuration:

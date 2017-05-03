@@ -1,3 +1,4 @@
+@javascript
 Feature: Attribute group creation
   In order to organize attributes into group
   As Julia
@@ -14,7 +15,6 @@ Feature: Attribute group creation
       | red  | colors | pim_catalog_text |
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully delete an attribute group
     Given I am on the "sizes" attribute group page
     When I press the "Delete" button

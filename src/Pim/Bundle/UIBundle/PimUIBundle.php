@@ -5,7 +5,7 @@ namespace Pim\Bundle\UIBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Override OroUIBundle
+ * Override PimUIBundle
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

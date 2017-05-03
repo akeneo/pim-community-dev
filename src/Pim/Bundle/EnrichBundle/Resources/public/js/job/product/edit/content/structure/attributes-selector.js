@@ -179,11 +179,7 @@ define(
                     };
 
                     if (null !== this.currentGroup) {
-                        /* jshint sub:true */
-                        /* jscs:disable requireDotNotation */
                         searchOptions.options.attribute_groups = [this.currentGroup];
-                        /* jshint sub:false */
-                        /* jscs:enable requireDotNotation */
                     }
 
                     this.isFetching = true;

@@ -17,15 +17,14 @@ Feature: Edit a channel
     And I press the "Save" button
     Then I should see the text "My tablet"
 
+  @skip-nav
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am logged in as "Peter"
     When  I am on the "mobile" channel page
     And I fill in the following information:
       | English (United States) | My mobile |
     And I click on the Akeneo logo
-    Then I should see a confirm dialog with the following content:
-      | title   | Are you sure you want to leave this page?                    |
-      | content | You will lose changes to the channel if you leave this page. |
+    Then I should see "You will lose changes to the channel if you leave this page." in popup
 
   Scenario: Successfully display a message when there are unsaved changes
     Given I am logged in as "Peter"

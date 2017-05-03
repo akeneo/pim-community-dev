@@ -64,7 +64,9 @@ define(
             /**
              * Prompt the datagrid view deletion modal.
              */
-            promptDeletion: function () {
+            promptDeletion: function (event) {
+                event.stopPropagation();
+
                 Dialog.confirm(
                     __('grid.view_selector.confirmation.remove'),
                     __('grid.view_selector.confirmation.delete'),

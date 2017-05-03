@@ -174,9 +174,15 @@ class HookContext extends PimContext
      */
     public function listenToErrors()
     {
-        $script = "if (typeof $ != 'undefined') { window.onerror=function (err) { $('body').attr('JSerr', err); } }";
+        if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            try {
+                $script = "if (typeof $ != 'undefined') { window.onerror=function (err) { $('body').attr('JSerr', err); } }";
 
-        $this->getMainContext()->executeScript($script);
+                $this->getMainContext()->executeScript($script);
+            } catch (\Exception $e) {
+                //
+            }
+        }
     }
 
     /**
@@ -187,10 +193,14 @@ class HookContext extends PimContext
     public function collectErrors()
     {
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
-            $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
-            $result = $this->getSession()->evaluateScript($script);
-            if ($result) {
-                $this->getMainContext()->addErrorMessage("WARNING: Encountered a JS error: '{$result}'");
+            try {
+                $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
+                $result = $this->getSession()->evaluateScript($script);
+                if ($result) {
+                    $this->getMainContext()->addErrorMessage("WARNING: Encountered a JS error: '{$result}'");
+                }
+            } catch (\Exception $e) {
+                echo "Unable to retrieve js error\n";
             }
         }
     }
@@ -273,8 +283,14 @@ class HookContext extends PimContext
     public function resetCurrentPage(BaseScenarioEvent $event)
     {
         if ($event->getResult() !== StepEvent::UNDEFINED) {
-            $script = 'sessionStorage.clear(); typeof $ !== "undefined" && $(window).off("beforeunload");';
-            $this->getMainContext()->executeScript($script);
+            if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+                try {
+                    $script = 'sessionStorage.clear(); typeof $ !== "undefined" && $(window).off("beforeunload");';
+                    $this->getMainContext()->executeScript($script);
+                } catch (\Exception $e) {
+                    //
+                }
+            }
         }
 
         $this->currentPage = null;

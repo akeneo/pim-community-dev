@@ -1,14 +1,5 @@
 {% extends 'PimUserBundle::layout.html.twig' %}
 
-{% block head %}
-    {{ parent() }}
-    <script type="text/javascript">
-        if (sessionStorage) {
-            sessionStorage.clear()
-        }
-    </script>
-{% endblock %}
-
 {% block bodyClass %}AknLogin{% endblock %}
 
 {% block content %}
@@ -47,7 +38,6 @@
 <script type="text/javascript">
     require(['oro/layout'], function (layout) {
         $(function () {
-            layout.hideProgressBar();
             layout.init();
             document.title = '{{ 'Login'|trans }}';
         });

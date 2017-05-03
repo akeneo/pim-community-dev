@@ -65,12 +65,9 @@ class PimEnrichExtension extends Extension
         $loader->load('steps.yml');
         $loader->load('twig.yml');
         $loader->load('view_elements.yml');
-        $loader->load('view_elements/association_type.yml');
         $loader->load('view_elements/attribute.yml');
         $loader->load('view_elements/attribute_group.yml');
         $loader->load('view_elements/category.yml');
-        $loader->load('view_elements/channel.yml');
-        $loader->load('view_elements/family.yml');
         $loader->load('view_elements/group.yml');
         $loader->load('view_elements/group_type.yml');
         $loader->load('view_elements/mass_edit.yml');

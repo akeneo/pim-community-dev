@@ -1,15 +1,12 @@
 <% _.each(archives, function (archive, archiver) { %>
     <% if (_.size(archive.files) === 1) { %>
-
         <% _.each(archive.files, function (file, key) { %>
         <a class="AknButton AknButton--grey AknButton--withIcon AknButtonList-item" title="<%- __(archive.label) %>"
            href="<%- generateRoute({id: executionId, archiver: archiver, key: key }) %>">
             <i class="AknButton-icon icon-download-alt"></i> <%- __(archive.label) %>
         </a>
         <% }); %>
-
     <% } else { %>
-
         <div class="AknDropdownButton AknDropdownButton--grey AknDropdown AknButtonList-item">
             <a class="AknDropdownButton-button" data-toggle="dropdown" href="#">
                 <%- __(archive.label) %>
@@ -28,6 +25,5 @@
                 <% }); %>
             </ul>
         </div>
-
     <% } %>
 <% }); %>

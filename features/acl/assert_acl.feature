@@ -39,8 +39,6 @@ Feature: Define user rights
       | Create a variant group     | variant groups    | Create variant group    | VariantGroup creation    |
       | Create a group type        | group types       | Create group type       | GroupType creation       |
       | Create an attribute        | attributes        | Create attribute        | Attribute creation       |
-      | Create an export profile   | exports           | Create export profile   | Export creation          |
-      | Create an import profile   | imports           | Create import profile   | Import creation          |
 
   Scenario Outline: Successfully hide entity creation and deletion buttons when user doesn't have the rights
     Given I am logged in as "Peter"

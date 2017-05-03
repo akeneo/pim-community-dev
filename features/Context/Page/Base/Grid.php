@@ -935,13 +935,7 @@ class Grid extends Index
      */
     public function selectAll()
     {
-        $selector = $this->getDropdownSelector();
-
-        $allBtn = $this->spin(function () use ($selector) {
-            return $selector->find('css', 'button:contains("All")');
-        }, '"All" button on dropdown row selector not found');
-
-        $allBtn->click();
+        $this->clickOnDropdownSelector('All');
     }
 
     /**

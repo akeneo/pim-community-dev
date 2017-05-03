@@ -10,7 +10,7 @@
 
     {{ parent() }}
 
-    {{ JSFV(form) }}
+
     {{ form_start(form, {'attr': {'class': 'span12 '~operationAlias}, 'action': path(performRoute, queryParams|merge({ 'operationAlias': operationAlias })) }) }}
 
         <div class="AknWidget">
@@ -41,7 +41,7 @@
                 <div class="AknButtonList AknButtonList--right configuration">
                     {{ elements.link(
                         'btn.back',
-                        path(backButtonRoute, queryParams),
+                        '#' ~ path(backButtonRoute, queryParams),
                         {'class': 'btn-cancel AknButtonList-item', 'icon': 'chevron-left'}
                     ) }}
                     {{ elements.link(

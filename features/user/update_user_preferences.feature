@@ -8,6 +8,7 @@ Feature: Update user preferences
     Given an "apparel" catalog configuration
     And I am logged in as "Peter"
 
+  @skip 
   Scenario: Successfully delete a tree used by a user
     Given I edit the "Julia" user
     And I visit the "Additional" tab

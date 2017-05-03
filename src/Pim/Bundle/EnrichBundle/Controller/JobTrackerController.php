@@ -98,16 +98,6 @@ class JobTrackerController extends Controller
     }
 
     /**
-     * List jobs execution
-     *
-     * @Template
-     */
-    public function indexAction()
-    {
-        return [];
-    }
-
-    /**
      * Show a job executions report
      *
      * @param Request $request

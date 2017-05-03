@@ -43,6 +43,15 @@ define(
                 }
 
                 return this.entityActivatedListPromise;
+            },
+
+            /**
+             * {inheritdoc}
+             */
+            clear: function () {
+                this.entityActivatedListPromise = null;
+
+                BaseFetcher.prototype.clear.apply(this, arguments);
             }
         });
     }

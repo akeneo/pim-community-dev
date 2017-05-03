@@ -70,6 +70,8 @@ datagrid:
                 type: edit
                 label: pim.grid.mass_action.mass_edit
                 route: pim_enrich_mass_edit_family_action_choose
+                route_parameters:
+                    operationGroup: mass-edit
                 acl_resource: pim_enrich_family_edit_attributes
                 icon: pencil
                 className: AknActionButton

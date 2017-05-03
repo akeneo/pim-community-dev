@@ -90,35 +90,6 @@ class JobExecutionController
     }
 
     /**
-     * List the reports
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function indexAction()
-    {
-        return $this->templating->renderResponse(
-            sprintf('PimImportExportBundle:%sExecution:index.html.twig', ucfirst($this->getJobType()))
-        );
-    }
-
-    /**
-     * Show a report
-     *
-     * @param int     $id
-     *
-     * @return \Symfony\Component\HttpFoundation\Response|JsonResponse
-     */
-    public function showAction($id)
-    {
-        return $this->templating->renderResponse(
-            'PimEnrichBundle:JobExecution:show.html.twig',
-            [
-                'id' => $id
-            ]
-        );
-    }
-
-    /**
      * Download the log file of the job execution
      *
      * @param int $id

@@ -16,5 +16,5 @@ class Edit extends Form
     /**
      * @var string
      */
-    protected $path = '/collect/import/{code}/edit';
+    protected $path = '#/collect/import/{code}/edit';
 }

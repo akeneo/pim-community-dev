@@ -51,7 +51,7 @@
         ]
 #}
 {% macro button(parameters) %}
-    <a href="{{ parameters.path }}"
+    <a href="#{{ parameters.path }}"
        class="AknButton{% if parameters.iClass is defined %} AknButton--withIcon{% endif %} {{ parameters.aClass is defined? parameters.aClass : '' }}"
        title="{{ parameters.title|trans }}">
         {% if parameters.iClass is defined %}

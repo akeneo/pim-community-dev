@@ -11,7 +11,6 @@ function(_, routing, Backbone) {
     return Backbone.Model.extend({
         defaults: {
             title: '',
-            title_rendered: '',
             url: null,
             position: null,
             type: null

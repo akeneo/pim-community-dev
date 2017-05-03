@@ -148,11 +148,7 @@ define(
                     .then(function (attribute) {
                         return {
                             field: attribute.code,
-                            /* jshint sub:true */
-                            /* jscs:disable requireDotNotation */
                             view: attribute.filter_types['product-export-builder'],
-                            /* jscs:enable requireDotNotation */
-                            /* jshint sub:false */
                             isRemovable: true
                         };
                     });

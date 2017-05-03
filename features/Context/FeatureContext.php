@@ -270,7 +270,11 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function iShouldSeeText(PyStringNode $error)
     {
-        $this->assertSession()->pageTextContains((string) $error);
+        $this->spin(function () use ($error) {
+            $this->assertSession()->pageTextContains((string) $error);
+
+            return true;
+        }, sprintf('Unable to find the text "%s" in the page', $error));
     }
 
     /**

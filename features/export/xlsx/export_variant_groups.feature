@@ -1,3 +1,4 @@
+@javascript
 Feature: Export variant groups in XLSX
   In order to be able to access and modify attributes data outside PIM
   As a product manager
@@ -7,7 +8,6 @@ Feature: Export variant groups in XLSX
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully export variant groups in xlsx
     Given the following job "xlsx_variant_group_export" configuration:
       | filePath | %tmp%/xlsx_variant_group_export/xlsx_variant_group_export.xlsx |
@@ -20,7 +20,6 @@ Feature: Export variant groups in XLSX
       | sweaters | variant | color,size                  | Sweaters    | Chandails   | Sweaters    | Pullovern   |
       | jackets  | variant | chest_size,color,waist_size | Jackets     | Jackets     | Vestes      | Jacken      |
 
-  @javascript
   Scenario: Successfully export variant groups in xlsx without header
     Given the following job "xlsx_variant_group_export" configuration:
       | filePath   | %tmp%/xlsx_variant_group_export/xlsx_variant_group_export.xlsx |
@@ -33,7 +32,6 @@ Feature: Export variant groups in XLSX
       | sweaters | variant | color,size                  | Sweaters | Chandails | Sweaters | Pullovern |
       | jackets  | variant | chest_size,color,waist_size | Jackets  | Jackets   | Vestes   | Jacken    |
 
-  @javascript
   Scenario: Successfully export products into several files
     Given the following job "xlsx_variant_group_export" configuration:
       | filePath     | %tmp%/xlsx_variant_group_export/xlsx_variant_group_export.xlsx |

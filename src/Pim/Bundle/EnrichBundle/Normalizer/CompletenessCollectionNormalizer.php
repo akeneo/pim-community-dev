@@ -103,18 +103,24 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
                 $channelCode = $channelCompleteness['completeness']->getChannel()->getCode();
             }
 
-            $attributes = $channelCompleteness['missing'];
-            $normChannel = $this->normalizer->normalize($channelCompleteness, $format, $context);
-            $normChannel['missing'] = [];
-
-            foreach ($attributes as $attribute) {
-                $normChannel['missing'][] = [
-                    'code'   => $attribute->getCode(),
-                    'labels' => $this->normalizeAttributeLabels($attribute, $locales)
-                ];
-            }
-
             if (null !== $channelCode) {
+                $attributes = $channelCompleteness['missing'];
+                $normChannel = [];
+                $normChannel['completeness'] = $this->normalizer->normalize(
+                    $channelCompleteness['completeness'],
+                    $format,
+                    $context
+                );
+
+                $normChannel['missing'] = [];
+
+                foreach ($attributes as $attribute) {
+                    $normChannel['missing'][] = [
+                        'code'   => $attribute->getCode(),
+                        'labels' => $this->normalizeAttributeLabels($attribute, $locales)
+                    ];
+                }
+
                 $normalizedCompChannels[$channelCode] = $normChannel;
             }
         }

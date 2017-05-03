@@ -17,6 +17,7 @@ use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -347,7 +348,7 @@ class JobInstanceController
         $jobExecution = $this->launchJob($jobInstance);
 
         return new JsonResponse([
-            'redirectUrl' => $this->router->generate(
+            'redirectUrl' => '#' . $this->router->generate(
                 sprintf('pim_importexport_%s_execution_show', $jobInstance->getType()),
                 ['id' => $jobExecution->getId()]
             )
@@ -401,6 +402,7 @@ class JobInstanceController
     protected function getValidationErrors(JobInstance $jobInstance)
     {
         $rawParameters = $jobInstance->getRawParameters();
+        $parametersViolations = [];
         if (!empty($rawParameters)) {
             $job = $this->jobRegistry->get($jobInstance->getJobName());
             $parameters = $this->jobParamsFactory->create($job, $rawParameters);
@@ -409,7 +411,7 @@ class JobInstanceController
 
         $errors = [];
         $accessor = PropertyAccess::createPropertyAccessorBuilder()->getPropertyAccessor();
-        if ($parametersViolations->count() > 0) {
+        if (count($parametersViolations) > 0) {
             foreach ($parametersViolations as $error) {
                 $accessor->setValue($errors, '[configuration]' . $error->getPropertyPath(), $error->getMessage());
             }

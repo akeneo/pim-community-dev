@@ -1,4 +1,3 @@
-/* jshint forin:true, noarg:true, noempty:true, eqeqeq:true, boss:true, undef:true, curly:true, browser:true, jquery:true */
 /*
  * jQuery MultiSelect UI ImportExport 1.14pre
  * Copyright (c) 2012 Eric Hynds
@@ -18,7 +17,7 @@
  *   http://www.gnu.org/licenses/gpl.html
  *
  */
-(function($, undefined) {
+define(['jquery'], function ($) {
 
   var multiselectID = 0;
   var $doc = $(document);
@@ -233,7 +232,7 @@
       return value;
     },
 
-    // this exists as a separate method so that the developer 
+    // this exists as a separate method so that the developer
     // can easily override it.
     _setButtonValue: function(value) {
       this.buttonlabel.text(value);
@@ -731,4 +730,4 @@
     }
   });
 
-})(jQuery);
+});

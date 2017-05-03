@@ -87,6 +87,7 @@ Feature: Display jobs execution in job tracker
       | type   | is equal to | import                      |                                                           |
       | type   | is equal to | export                      | CSV footwear product export, CSV footwear category export |
 
+  @skip-nav
   Scenario: Successfully deny to view progress when the user do not have export show access
     Given I am logged in as "admin"
     And I am on the "csv_footwear_product_export" export job page

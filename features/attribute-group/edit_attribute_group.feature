@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit an attribute group
   In order to manage existing attribute groups in the catalog
   As a product manager
@@ -7,7 +8,6 @@ Feature: Edit an attribute group
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully edit an attribute group
     Given I am on the "sizes" attribute group page
     Then I should see the Code field
@@ -17,15 +17,13 @@ Feature: Edit an attribute group
     And I press the "Save" button
     Then I should see "My sizes"
 
-  @javascript
+  @skip-nav
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "media" attribute group page
     When I fill in the following information:
       | English (United States) | My media |
     And I click on the Akeneo logo
-    Then I should see a confirm dialog with the following content:
-      | title   | Are you sure you want to leave this page?                            |
-      | content | You will lose changes to the attribute group if you leave this page. |
+    Then I should see "You will lose changes to the attribute group if you leave this page." in popup
 
   @skip
   Scenario: Successfully display a message when there are unsaved changes

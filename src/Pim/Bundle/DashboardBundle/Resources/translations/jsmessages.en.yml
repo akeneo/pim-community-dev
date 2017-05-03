@@ -17,3 +17,6 @@ pim_dashboard:
             load_more: 'Load more...'
         header:
             view_all: View all
+
+page_title:
+    pim_dashboard_index: Dashboard

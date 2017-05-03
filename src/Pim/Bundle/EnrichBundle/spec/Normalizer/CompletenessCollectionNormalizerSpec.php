@@ -71,22 +71,52 @@ class CompletenessCollectionNormalizerSpec extends ObjectBehavior
                         'stats'    => [],
                         'channels' => [
                             'mobile' => [
-                                'missing' => [
-                                    ['code' => 'name', 'labels' => ['en_US' => 'labelEn', 'fr_FR' => 'labelFr']],
+                                'completeness' => [
+                                  'missing' => [
+                                  ],
+                                  'completeness' => 'normalized_completeness',
                                 ],
-                                'completeness' => 'normalized_completeness'
+                                'missing' => [
+                                  [
+                                    'code' => 'name',
+                                    'labels' => [
+                                      'en_US' => 'labelEn',
+                                      'fr_FR' => 'labelFr',
+                                    ],
+                                  ],
+                                ],
                             ],
                             'print'  => [
-                                'missing' => [
-                                    ['code' => 'name', 'labels' => ['en_US' => 'labelEn', 'fr_FR' => 'labelFr']],
+                                'completeness' => [
+                                  'missing' => [
+                                  ],
+                                  'completeness' => 'normalized_completeness',
                                 ],
-                                'completeness' => 'normalized_completeness'
+                                'missing' => [
+                                  [
+                                    'code' => 'name',
+                                    'labels' => [
+                                      'en_US' => 'labelEn',
+                                      'fr_FR' => 'labelFr',
+                                    ],
+                                  ],
+                                ],
                             ],
                             'tablet' => [
-                                'missing' => [
-                                    ['code' => 'name', 'labels' => ['en_US' => 'labelEn', 'fr_FR' => 'labelFr']],
+                                'completeness' => [
+                                  'missing' => [
+                                  ],
+                                  'completeness' => 'normalized_completeness',
                                 ],
-                                'completeness' => 'normalized_completeness'
+                                'missing' => [
+                                  [
+                                    'code' => 'name',
+                                    'labels' => [
+                                      'en_US' => 'labelEn',
+                                      'fr_FR' => 'labelFr',
+                                    ],
+                                  ],
+                                ],
                             ],
                         ],
                     ],
@@ -95,22 +125,52 @@ class CompletenessCollectionNormalizerSpec extends ObjectBehavior
                         'stats'    => [],
                         'channels' => [
                             'mobile' => [
-                                'missing' => [
-                                    ['code' => 'name', 'labels' => ['en_US' => 'labelEn', 'fr_FR' => 'labelFr']],
+                                'completeness' => [
+                                  'missing' => [
+                                  ],
+                                  'completeness' => 'normalized_completeness',
                                 ],
-                                'completeness' => 'normalized_completeness'
+                                'missing' => [
+                                  [
+                                    'code' => 'name',
+                                    'labels' => [
+                                      'en_US' => 'labelEn',
+                                      'fr_FR' => 'labelFr',
+                                    ],
+                                  ],
+                                ],
                             ],
                             'print'  => [
-                                'missing' => [
-                                    ['code' => 'name', 'labels' => ['en_US' => 'labelEn', 'fr_FR' => 'labelFr']],
+                                'completeness' => [
+                                  'missing' => [
+                                  ],
+                                  'completeness' => 'normalized_completeness',
                                 ],
-                                'completeness' => 'normalized_completeness'
+                                'missing' => [
+                                  [
+                                    'code' => 'name',
+                                    'labels' => [
+                                      'en_US' => 'labelEn',
+                                      'fr_FR' => 'labelFr',
+                                    ],
+                                  ],
+                                ],
                             ],
                             'tablet' => [
-                                'missing' => [
-                                    ['code' => 'name', 'labels' => ['en_US' => 'labelEn', 'fr_FR' => 'labelFr']],
+                                'completeness' => [
+                                  'missing' => [
+                                  ],
+                                  'completeness' => 'normalized_completeness',
                                 ],
-                                'completeness' => 'normalized_completeness'
+                                'missing' => [
+                                  [
+                                    'code' => 'name',
+                                    'labels' => [
+                                      'en_US' => 'labelEn',
+                                      'fr_FR' => 'labelFr',
+                                    ],
+                                  ],
+                                ]
                             ],
                         ],
                     ],

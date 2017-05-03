@@ -12,17 +12,13 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'routing',
-        'oro/navigation',
-        'pim/common/property',
-        'oro/messenger',
         'text!pim/template/job-execution/summary-table'
     ],
-    function ($, _, __, BaseForm, Routing, Navigation, propertyAccessor, messenger, template) {
+    function ($, _, __, BaseForm, template) {
         return BaseForm.extend({
             template: _.template(template),
             events: {
-                'click a.data': 'toggleDisplayWarning'
+                'click .data': 'toggleDisplayWarning'
             },
 
             /**
@@ -30,12 +26,12 @@ define(
              * @param event
              */
             toggleDisplayWarning: function (event) {
-                var link = $(event.currentTarget);
-                var stepIndex = link.data('step-index');
-                var warningIndex = link.data('warning-index');
+                var stepIndex = event.currentTarget.dataset.stepIndex;
+                var warningIndex = event.currentTarget.dataset.warningIndex;
                 var model = this.getFormData();
                 model.stepExecutions[stepIndex].warnings[warningIndex].expanded =
                     !model.stepExecutions[stepIndex].warnings[warningIndex].expanded;
+
                 this.render();
             },
 

@@ -24,10 +24,5 @@ class PimNavigationExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('entities.yml');
-        $loader->load('listeners.yml');
-        $loader->load('providers.yml');
-        $loader->load('repositories.yml');
-        $loader->load('savers.yml');
     }
 }

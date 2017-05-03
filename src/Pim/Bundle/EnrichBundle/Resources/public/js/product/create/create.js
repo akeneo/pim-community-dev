@@ -10,9 +10,9 @@ define(
         'pim/user-context',
         'oro/translator',
         'oro/loading-mask',
-        'oro/navigation'
+        'pim/router'
     ],
-    function ($, _, Backbone, Routing, FormBuilder, UserContext, __, LoadingMask, Navigation) {
+    function ($, _, Backbone, Routing, FormBuilder, UserContext, __, LoadingMask, router) {
         return {
             /**
              * Opens the modal then instantiates the creation form inside it.
@@ -58,11 +58,10 @@ define(
                                     modal.remove();
                                     deferred.resolve();
 
-                                    var navigation = Navigation.getInstance();
-                                    navigation.setLocation(Routing.generate(
+                                    router.redirectToRoute(
                                         'pim_enrich_product_edit',
                                         { id: newProduct.meta.id }
-                                    ));
+                                    );
                                 });
                         });
                     }.bind(this));

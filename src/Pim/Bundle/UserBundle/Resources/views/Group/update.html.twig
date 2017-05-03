@@ -1,10 +1,10 @@
 {% extends 'PimUIBundle:actions:update.html.twig' %}
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {% set entityId = form.vars.value.id %}
 {% set title = entityId ? 'Update Group'|trans : 'New Group'|trans %}
-{% oro_title_set({params : { "%group%": form.vars.value.name } }) %}
-{% set gridName = 'pim-group-user-grid' %}
+{% set gridName = 'pimgroup-user-grid' %}
 {% set formAction = entityId ? path('oro_user_group_update', { 'id': entityId}) : path('oro_user_group_create') %}
 
 {% set breadcrumbs = {} %}
@@ -46,41 +46,19 @@
 {% block content_data %}
     {% set id = 'group-profile' %}
 
-    {% set dataBlocks = [{
-            'title': 'General'|trans,
-            'subblocks': [
-                {
-                    'class': 'AknFormContainer AknFormContainer--withPadding',
-                    'title': '',
-                    'data': [
-                        form_widget(form.appendUsers, {'id': 'groupAppendUsers'}),
-                        form_widget(form.removeUsers, {'id': 'groupRemoveUsers'}),
-                        form_row(form.name)
-                    ]
-                }
-            ]
-        }]
-    %}
+        <div class="AknTabContainer">
+            {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 
-    {% set dataBlocks = dataBlocks|merge(
-        [{
-            'title' : 'Users'|trans,
-            'subblocks':
-            [
-                {
-                    'title' : null,
-                    'data' : [dataGrid.renderGrid(gridName, {group_id: entityId}, { cssClass: 'inner-grid' })]
-                }
-            ]
-        }]
-    )
-    %}
+            <div class="AknTabContainer-content tab-content">
+                {{ elements.form_errors(form) }}
+                {{ view_elements(form.vars.id ~ '.form_tab') }}
+            </div>
+        </div>
 
-    {% set data =
-        {
-            'formErrors': form_errors(form)? form_errors(form) : null,
-            'dataBlocks': dataBlocks,
-        }
-    %}
-    {{ parent() }}
+    {{ form_end(form) }}
+    <script type="text/javascript">
+        require('pim/page-title').set({'group': '{{ form.vars.value.name }}'});
+
+        window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
+    </script>
 {% endblock content_data %}

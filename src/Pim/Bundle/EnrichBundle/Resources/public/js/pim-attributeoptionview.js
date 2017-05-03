@@ -154,31 +154,27 @@ define(
                             this.clean();
                             this.stopEditItem();
                         }.bind(this),
-                        error: function (data, xhr) {
-                            this.inLoading(false);
-
-                            var response = xhr.responseJSON;
-
-                            if (response.children &&
-                                response.children.code &&
-                                response.children.code.errors &&
-                                response.children.code.errors.length > 0
-                            ) {
-                                var message = response.children.code.errors.join('<br/>');
-                                this.$el.find('.validation-tooltip')
-                                    .removeClass('AknIconButton--hide')
-                                    .tooltip('destroy')
-                                    .tooltip({title: message})
-                                    .tooltip('show');
-                            } else {
-                                Dialog.alert(
-                                    __('alert.attribute_option.error_occured_during_submission'),
-                                    __('error.saving.attribute_option')
-                                );
-                            }
-                        }.bind(this)
+                        error: this.showValidationErrors.bind(this)
                     }
                 );
+            },
+            showValidationErrors: function (data, xhr) {
+                this.inLoading(false);
+
+                var response = xhr.responseJSON;
+
+                if (response.code) {
+                    this.$el.find('.validation-tooltip')
+                        .attr('data-original-title', response.code)
+                        .removeClass('AknIconButton--hide')
+                        .tooltip('destroy')
+                        .tooltip('show');
+                } else {
+                    Dialog.alert(
+                        __('alert.attribute_option.error_occured_during_submission'),
+                        __('error.saving.attribute_option')
+                    );
+                }
             },
             cancelSubmit: function (e) {
                 if (e.keyCode === 13) {

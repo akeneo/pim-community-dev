@@ -72,7 +72,7 @@ fos_oauth_server:
 4. Update the security configuration `$PIM_DIR/app/config/security.yml`:
 
     Add these new lines under `security.firewalls`:
-   
+
 ```YAML
 oauth_token:
         pattern:                        ^/api/oauth/v1/token
@@ -88,14 +88,14 @@ api:
 ```
 
     Add these new lines under `security.access_control`:
-    
+
 ```YAML
 - { path: ^/api/rest/v1$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 - { path: ^/api/, role: pim_api_overall_access }
 ```
 
 Remove these lines under `security.firewalls`:
-    
+
 ```YAML
 wsse_secured:
         pattern:                        ^/api/(rest|soap).*
