@@ -2,6 +2,7 @@ const webpack = require('webpack')
 const path = require('path')
 const yaml = require('yamljs')
 const fs = require('fs')
+const camelCase = require('camelcase')
 
 // traverse with filewalker automatically later for any bundles
 const bundles = [
@@ -44,11 +45,26 @@ const getImportPaths = () => {
     return paths;
 }
 
+// Use case converter and do it with code later
+const resolvedPaths = {
+    pimanalytics: 'Analytics',
+    pimdashboard: 'Dashboard',
+    pimdatagrid: 'DataGrid',
+    pimenrich: 'Enrich',
+    pimimportexport: 'ImportExport',
+    pimnavigation: 'Navigation',
+    fosjsrouting: 'Enrich',
+    pimnotification: 'Notification',
+    pimreferencedata: 'ReferenceData',
+    pimui: 'UI',
+    pimuser: 'User'
+}
+
 const replacePathSegments = (paths, bundle) => {
     for (const name in paths) {
         let loc = paths[name].split('/')
-        loc.shift();
-        loc.unshift(`${__dirname}/src/Pim/Bundle/${bundle}Bundle/Resources/public`)
+        const resolved = resolvedPaths[loc.shift()]
+        loc.unshift(`${__dirname}/src/Pim/Bundle/${resolved}Bundle/Resources/public`)
         paths[name] = loc.join('/')
     }
     return paths;

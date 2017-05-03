@@ -4,6 +4,7 @@
   "description": "Akeneo PIM Application",
   "homepage": "http://www.akeneo.com",
   "devDependencies": {
+    "camelcase": "^4.1.0",
     "eslint": "^3.19.0",
     "grunt": "~0.4.5",
     "grunt-contrib-jasmine": "~1.0.0",
