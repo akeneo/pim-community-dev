@@ -73,6 +73,12 @@ class OptionsProductValue extends AbstractProductValue implements OptionsProduct
      */
     public function __toString()
     {
-        return implode(', ', $this->getOptionCodes());
+        $optionValues = [];
+        foreach ($this->data as $option) {
+            $optionValue = $option->getOptionValue();
+            $optionValues[] = null !== $optionValue ? $optionValue->getValue() : '['.$option->getCode().']';
+        }
+
+        return implode(', ', $optionValues);
     }
 }

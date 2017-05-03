@@ -1318,7 +1318,7 @@ class FixturesContext extends BaseFixturesContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return ProductInterface
      */
     public function getProduct($sku)
     {
