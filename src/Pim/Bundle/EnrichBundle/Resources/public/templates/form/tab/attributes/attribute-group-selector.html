@@ -1,16 +1,15 @@
-<a class="AknActionButton" data-toggle="dropdown" href="#">
+<div class="AknActionButton" data-toggle="dropdown">
     <%- label %>:
-        <span class="AknActionButton-strong">
-            <% currentElement = _.findWhere(elements, {code: current}) %>
-            <%- i18n.getLabel(currentElement.labels, locale, currentElement.code) %>
-        </span>
+    <span class="AknActionButton-strong">
+        <%- i18n.getLabel(currentElement.labels, locale, currentElement.code) %>
+    </span>
     <span class="AknActionButton-caret AknCaret"></span>
-</a>
+</div>
 <ul class="AknDropdown-menu AknDropdown-menu--right">
     <li class="AknDropdown-menuTitle"><%- label %></li>
     <% _.each(elements, function (element) { %>
         <li class="<%- current === element.code ? 'active' : '' %>" data-element="<%- element.code %>">
-            <a class="AknDropdown-menuLink <%- current === element.code ? 'AknDropdown-menuLink--active' : '' %>">
+            <div class="AknDropdown-menuLink <%- current === element.code ? 'AknDropdown-menuLink--active' : '' %>">
                 <span class="label"><%- i18n.getLabel(element.labels, locale, element.code) %></span>
                 <span class="badge-elements-container">
                     <span class="AknBadge AknBadge--round AknBadge--highlight <%- !_.contains(toFillAttributeGroups, element.code) ? 'AknBadge--hidden' : '' %>"></span>
@@ -18,7 +17,7 @@
                         <span class="AknBadge AknBadge--<%- type %> <%- type %>-badge label"><%- badge %></span>
                     <% }) %>
                 </span>
-            </a>
+            </div>
         </li>
     <% }); %>
 </ul>

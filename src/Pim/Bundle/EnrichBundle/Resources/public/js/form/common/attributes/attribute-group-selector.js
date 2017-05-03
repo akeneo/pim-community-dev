@@ -116,6 +116,7 @@ define(
                             badges: this.badges,
                             locale: UserContext.get('catalogLocale'),
                             toFillAttributeGroups: toFillAttributeGroups,
+                            currentElement: _.findWhere(this.getElements(), {code: this.getCurrent()}),
                             i18n: i18n,
                             label: __('pim_enrich.form.product.tab.attributes.attribute_group_selector')
                         }));

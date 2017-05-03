@@ -9,21 +9,20 @@
         <div class="AknSearch">
             <div class="AknSearch-selectors AknButtonList AknButtonList--right">
                 <div class="AknDropdown AknButtonList-item nav nav-tabs association-type-selector">
-                    <a class="AknActionButton" data-toggle="dropdown" href="#">
+                    <div class="AknActionButton" data-toggle="dropdown">
                         <%- label %>:
                         <span class="AknActionButton-strong current-association-type">
-                            <% current = _.findWhere(associationTypes, { code: currentAssociationType }) %>
-                            <%- current.labels[locale] || '[' + current.code + ']' %>
+                            <%- currentAssociationType.labels[locale] || '[' + currentAssociationType.code + ']' %>
                         </span>
                         <span class="AknActionButton-caret AknCaret"></span>
-                    </a>
+                    </div>
                     <ul class="AknDropdown-menu AknDropdown-menu--right associations-list">
                         <li class="AknDropdown-menuTitle"><%- label %></li>
                         <% _.each(associationTypes, function (associationType) { %>
                             <li data-association-type="<%- associationType.code %>">
-                                <a class="AknDropdown-menuLink <% if (associationType.code === currentAssociationType) { %> AknDropdown-menuLink--active<% } %>" href="#">
+                                <div class="AknDropdown-menuLink <% if (associationType.code === currentAssociationTypeCode) { %> AknDropdown-menuLink--active<% } %>">
                                     <span class="label"><%- associationType.labels[locale] || '[' + associationType.code + ']' %></span>
-                                </a>
+                                </div>
                             </li>
                         <% }); %>
                     </ul>

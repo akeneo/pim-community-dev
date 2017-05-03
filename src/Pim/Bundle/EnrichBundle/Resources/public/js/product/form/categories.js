@@ -121,6 +121,11 @@ define(
                     trees: this.trees,
                     categoriesCount: this.categoriesCount,
                     treeLinkSelector: this.treeLinkSelector,
+                    currentCategory: _.result(_.findWhere(
+                        this.trees,
+                        {code: this.state.toJSON().currentTree}),
+                        'label'
+                    ),
                     label: __('pim_enrich.form.product.tab.categories.catalog_selector')
                 }));
             },

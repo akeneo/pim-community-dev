@@ -146,7 +146,11 @@ define(
                             locale: UserContext.get('catalogLocale'),
                             associationTypes: associationTypes,
                             currentAssociationTarget: this.getCurrentAssociationTarget(),
-                            currentAssociationType: this.getCurrentAssociationType(),
+                            currentAssociationTypeCode: this.getCurrentAssociationType(),
+                            currentAssociationType: _.findWhere(
+                                associationTypes,
+                                {code: this.getCurrentAssociationType()}
+                            ),
                             label: __('pim_enrich.form.product.tab.associations.association_type_selector')
                         })
                     );
