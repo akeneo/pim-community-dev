@@ -45,6 +45,7 @@ Feature: Remove a category
       | version | property   | value           |
       | 2       | categories | 2014_collection |
 
+  @skip
   Scenario: Remove a category with sub-categories and products linked
     Given I am on the "winter_collection" category page
     When I press the "Delete" button
