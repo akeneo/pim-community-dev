@@ -67,27 +67,6 @@ Feature: Display jobs execution in job tracker
     And the grid should contain 1 element
     And I should see entity CSV footwear category import
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6140
-  Scenario: Successfully filter job executions with "equals to" filter
-    Given I am logged in as "Julia"
-    And I am on the exports page
-    And I am on the "csv_footwear_product_export" export job page
-    And I launch the export job
-    And I wait for the "csv_footwear_product_export" job to finish
-    And I logout
-    And I am logged in as "admin"
-    And I am on the "csv_footwear_category_export" export job page
-    And I launch the export job
-    And I wait for the "csv_footwear_category_export" job to finish
-    When I am on the job tracker page
-    Then I should be able to use the following filters:
-      | filter | operator    | value                       | result                                                    |
-      | job    | is equal to | CSV footwear product export | CSV footwear product export                               |
-      | user   | is equal to | Julia                       | CSV footwear product export                               |
-      | type   | is equal to | import                      |                                                           |
-      | type   | is equal to | export                      | CSV footwear product export, CSV footwear category export |
-
-  @skip-nav
   Scenario: Successfully deny to view progress when the user do not have export show access
     Given I am logged in as "admin"
     And I am on the "csv_footwear_product_export" export job page

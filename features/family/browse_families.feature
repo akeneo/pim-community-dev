@@ -4,34 +4,41 @@ Feature: Browse families
   As an administrator
   I need to be able to view a list of them
 
-  Scenario: Successfully display all the families
+  Background:
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
     When I am on the families page
     Then the grid should contain 5 elements
-    And I should see the columns Code, Label and Attribute as label
+
+  Scenario: Successfully view and sort families
+    Then I should see the columns Code, Label and Attribute as label
     And I should see families boots, sandals and sneakers
     And the rows should be sorted ascending by Code
     And I should be able to sort the rows by Code, Label and Attribute as label
-    And I should be able to use the following filters:
-      | filter           | operator | value | result                                      |
-      | code             | contains | a     | sandals and sneakers                        |
-      | label            | contains | Boo   | boots                                       |
-      | attributeAsLabel |          | Name  | boots, heels, led_tvs, sandals and sneakers |
+
+  Scenario Outline: Successfully filter families
+    When I show the filter "<filter>"
+    And I filter by "<filter>" with operator "<operator>" and value "<value>"
+    Then the grid should contain <count> elements
+    Then I should see entities <result>
+
+    Examples:
+      | filter           | operator | value | result                                      | count |
+      | code             | contains | a     | sandals and sneakers                        | 2     |
+      | attributeAsLabel |          | Name  | boots, heels, led_tvs, sandals and sneakers | 5     |
+
+  Scenario: Successfully search on label
+    When I search "Boo"
+    Then the grid should contain 1 element
+    And I should see entity boots
 
   Scenario: Successfully keep descending sorting order after refreshing the page
-    Given a "footwear" catalog configuration
-    And I am logged in as "Peter"
-    And I am on the families page
     And I sort by "code" value descending
     When I refresh current page
     And I wait 3 seconds
     Then the rows should be sorted descending by Code
 
   Scenario: Successfully keep ascending sorting order after refreshing the page
-    Given a "footwear" catalog configuration
-    And I am logged in as "Peter"
-    And I am on the families page
     And I sort by "code" value descending
     And I sort by "code" value ascending
     When I refresh current page
@@ -40,8 +47,7 @@ Feature: Browse families
 
   @jira https://akeneo.atlassian.net/browse/PIM-4494
   Scenario: Successfully sort families and use them for mass edit
-    Given a "footwear" catalog configuration
-    And the following product:
+    Given the following product:
       | sku         | family   |
       | caterpillar | boots    |
       | dr-martens  | boots    |

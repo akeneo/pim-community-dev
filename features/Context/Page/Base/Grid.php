@@ -320,7 +320,15 @@ class Grid extends Index
      */
     public function search($value)
     {
-        $this->getElement('Search filter')->setValue($value);
+        $this->spin(function () use ($value) {
+            $input = $this->getElement('Search filter');
+
+            if (null !== $input) {
+                $input->setValue($value);
+
+                return true;
+            }
+        }, 'Unable to find the search filter');
     }
 
     /**

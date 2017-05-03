@@ -4,7 +4,7 @@ Feature: Browse variant groups
   As a product manager
   I need to be able to see variant groups
 
-  Scenario: Successfully view, sort and filter variant groups
+  Background:
     Given the "default" catalog configuration
     And the following attributes:
       | code      | label-en_US | type                     | group |
@@ -32,10 +32,23 @@ Feature: Browse variant groups
     Then the grid should contain 10 elements
     And I should see the columns Code, Label and Axis
     And I should see groups bike_akeneo, boat_akeneo, car_akeneo, helicopter_akeneo, mug, mug_akeneo, plane_akeneo, tshirt_akeneo, sticker_akeneo, watch_akeneo
+
+  Scenario: Successfully view and sort variant groups
     And the rows should be sorted ascending by Code
     And I should be able to sort the rows by Code and Label
-    And I should be able to use the following filters:
-      | filter         | operator | value  | result                                                                                                                            |
-      | code           | contains | mug    | mug, mug_akeneo                                                                                                                   |
-      | label          | contains | Akeneo | bike_akeneo, boat_akeneo, car_akeneo, helicopter_akeneo, mug_akeneo, plane_akeneo, tshirt_akeneo, sticker_akeneo and watch_akeneo |
-      | axisAttributes |          | Color  | tshirt_akeneo and mug                                                                                                             |
+
+  Scenario Outline: Successfully filter variant groups
+    When I show the filter "<filter>"
+    And I filter by "<filter>" with operator "<operator>" and value "<value>"
+    Then the grid should contain <count> elements
+    Then I should see entities <result>
+
+    Examples:
+      | filter         | operator | value  | result                | count |
+      | code           | contains | mug    | mug, mug_akeneo       | 2     |
+      | axisAttributes |          | Color  | tshirt_akeneo and mug | 2     |
+
+  Scenario: Successfully search on label
+    When I search "Akeneo"
+    Then the grid should contain 9 elements
+    And I should see entities bike_akeneo, boat_akeneo, car_akeneo, helicopter_akeneo, mug_akeneo, plane_akeneo, tshirt_akeneo, sticker_akeneo and watch_akeneo

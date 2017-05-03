@@ -56,7 +56,7 @@ Feature: Apply a mass action on all entities
       | 2_blocks   | Lego 2 blocks   |
       | characters | Lego characters |
     When I am on the families page
-    And I filter by "label" with operator "contains" and value "blocks"
+    And I search "blocks"
     And I select all entities
     And I press the "Change product information" button
     And I choose the "Set attribute requirements" operation
