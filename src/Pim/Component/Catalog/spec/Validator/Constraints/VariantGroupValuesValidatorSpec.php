@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Validator\Constraints\VariantGroupValues;
 use Prophecy\Argument;
@@ -47,13 +48,14 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
     }
 
     function it_does_not_add_violations_if_variant_group_template_does_not_contain_axis_or_unique_attributes(
+        $attributeRepository,
+        $context,
         GroupInterface $variantGroup,
         GroupType $type,
         ProductTemplateInterface $template,
         Constraint $constraint,
-        $attributeRepository,
         AttributeInterface $axisAttribute,
-        $context
+        ProductValueCollectionInterface $productValueCollection
     ) {
         $variantGroup->getType()->willReturn($type);
         $type->isVariant()->willReturn(true);
@@ -62,7 +64,8 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
         $variantGroup->getAxisAttributes()->willReturn([$axisAttribute]);
         $attributeRepository->findUniqueAttributeCodes()->willReturn(['sku', 'barcode']);
 
-        $template->getValuesData()->willReturn([]);
+        $template->getValues()->willReturn($productValueCollection);
+        $productValueCollection->getAttributesKeys()->willReturn([]);
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
@@ -70,14 +73,15 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
     }
 
     function it_adds_a_violation_if_variant_group_template_contains_an_axis_attribute(
+        $attributeRepository,
+        $context,
         GroupInterface $variantGroup,
         GroupType $type,
         ProductTemplateInterface $template,
         VariantGroupValues $constraint,
-        $attributeRepository,
         AttributeInterface $axisAttribute,
-        $context,
-        ConstraintViolationBuilderInterface $violation
+        ConstraintViolationBuilderInterface $violation,
+        ProductValueCollectionInterface $productValueCollection
     ) {
         $variantGroup->getType()->willReturn($type);
         $variantGroup->getCode()->willReturn('tshirt');
@@ -88,7 +92,8 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
         $axisAttribute->getCode()->willReturn('size');
         $attributeRepository->findUniqueAttributeCodes()->willReturn(['sku', 'barcode']);
 
-        $template->getValuesData()->willReturn(['size' => 'M']);
+        $template->getValues()->willReturn($productValueCollection);
+        $productValueCollection->getAttributesKeys()->willReturn(['size']);
 
         $violationData = [
             '%group%'      => 'tshirt',
@@ -102,13 +107,14 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
     }
 
     function it_adds_a_violation_if_variant_group_template_contains_a_unique_attribute(
+        $attributeRepository,
+        $context,
         GroupInterface $variantGroup,
         GroupType $type,
         ProductTemplateInterface $template,
         VariantGroupValues $constraint,
-        $attributeRepository,
-        $context,
-        ConstraintViolationBuilderInterface $violation
+        ConstraintViolationBuilderInterface $violation,
+        ProductValueCollectionInterface $productValueCollection
     ) {
         $variantGroup->getType()->willReturn($type);
         $variantGroup->getCode()->willReturn('tshirt');
@@ -118,7 +124,8 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
         $variantGroup->getAxisAttributes()->willReturn([]);
         $attributeRepository->findUniqueAttributeCodes()->willReturn(['sku', 'barcode']);
 
-        $template->getValuesData()->willReturn(['sku' => 'SKU-001']);
+        $template->getValues()->willReturn($productValueCollection);
+        $productValueCollection->getAttributesKeys()->willReturn(['sku']);
 
         $violationData = [
             '%group%'      => 'tshirt',
@@ -130,7 +137,8 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
 
         $this->validate($variantGroup, $constraint);
 
-        $template->getValuesData()->willReturn(['sku' => 'SKU-001', 'barcode' => 001122334455]);
+        $template->getValues()->willReturn($productValueCollection);
+        $productValueCollection->getAttributesKeys()->willReturn(['sku', 'barcode']);
 
         $violationData = [
             '%group%'      => 'tshirt',
