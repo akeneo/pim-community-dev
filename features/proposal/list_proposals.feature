@@ -38,6 +38,7 @@ Feature: List proposals
       | product category | user group | access |
       | 2014_collection  | IT support | own    |
     When I am on the proposals page
+    And I reload the page
     Then the grid should contain 3 elements
     And the rows should be sorted descending by proposed at
     And I should be able to sort the rows by author and proposed at
@@ -58,6 +59,7 @@ Feature: List proposals
       | product category | user group | access |
       | 2014_collection  | IT support | own    |
     And I am on the proposals page
+    And I reload the page
     And I should see entities tshirt, sweater and jacket
     When I click on the "Approve all" action of the row which contains "tshirt"
     And I press the "Send" button in the popin

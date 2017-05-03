@@ -1,3 +1,4 @@
+@javascript
 Feature: Join a document to a product
   In order to join a document to a product
   As a product manager
@@ -13,7 +14,6 @@ Feature: Join a document to a product
     And I am logged in as "Julia"
     And I am on the "Car" product page
 
-  @javascript
   Scenario: Succesfully leave the document empty
     # Flash message is different from CE
     When I save the product

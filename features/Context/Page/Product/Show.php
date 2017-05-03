@@ -13,5 +13,5 @@ class Show extends Edit
     /**
      * @var string
      */
-    protected $path = '/enrich/product/{id}';
+    protected $path = '#/enrich/product/{id}';
 }

@@ -1,8 +1,7 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% block head_script %}
-    {{ parent() }}
     {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_create-js-handler.html.twig' %}
     <script type="text/javascript">
         require(

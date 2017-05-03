@@ -1,3 +1,2 @@
 pimee_workflow_proposal_index:
     path: /
-    defaults: { _controller: pimee_workflow.controller.product_draft:indexAction }

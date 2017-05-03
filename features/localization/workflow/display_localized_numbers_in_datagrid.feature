@@ -35,6 +35,7 @@ Feature: Localize numbers in the published product grid
       | Rate of Sale | 1 000,1234               |
       | Weight       | 1 000,3456 Kilogramme    |
 
+  @skip
   Scenario: Successfully show English format numbers for French catalog
     Given I am logged in as "Julia"
     And I add the "french" locale to the "mobile" channel

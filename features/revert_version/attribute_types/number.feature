@@ -9,14 +9,18 @@ Feature: Revert product attributes to a previous version
     And I am logged in as "Julia"
 
   Scenario: Successfully revert a product number and leave it empty
-    And the following product:
-    | sku   | family  |
-    | jeans | jackets |
-    When I edit the "jeans" product
+    Given I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | jeans   |
+      | family | Jackets |
+    And I press the "Save" button in the popin
+    And I wait to be on the "jeans" product page
     And I visit the "Marketing" group
     And I switch the scope to "tablet"
     And I change the "Number in stock" to "100"
     And I save the product
+    And I should not see the text "There are unsaved changes."
     And the history of the product "jeans" has been built
     And I open the history
     Then I should see 2 versions in the history
@@ -25,15 +29,20 @@ Feature: Revert product attributes to a previous version
     | number_in_stock-tablet |  |
 
   Scenario: Successfully revert a number attribute
-    Given the following product:
-    | sku     | family |
-    | t-shirt | tees   |
-    Given I am on the "t-shirt" product page
+    Given I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | t-shirt |
+      | family | Tees    |
+    And I press the "Save" button in the popin
+    And I wait to be on the "t-shirt" product page
     And I add available attributes Number in stock
     And I visit the "Marketing" group
     And I switch the scope to "tablet"
     And I change the "Number in stock" to "42"
+    And I should see the text "There are unsaved changes."
     And I save the product
+    And I should not see the text "There are unsaved changes."
     And the history of the product "t-shirt" has been built
     When I open the history
     Then I should see 2 versions in the history

@@ -1,3 +1,4 @@
+@javascript
 Feature: Manage permissions to calculate impacted product by a rule
   In order to allow to calculate impacted products
   As an administrator
@@ -7,7 +8,6 @@ Feature: Manage permissions to calculate impacted product by a rule
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
 
-  @javascript
   Scenario: Successfully disable permission to calculate impacted products by a rule
     Given the following product rule definitions:
       """

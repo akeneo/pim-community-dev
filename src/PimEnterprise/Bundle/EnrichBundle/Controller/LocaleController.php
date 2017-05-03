@@ -13,39 +13,27 @@ namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\EnrichBundle\Controller\LocaleController as BaseLocaleController;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Locale controller for configuration
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class LocaleController extends BaseLocaleController
+class LocaleController
 {
-    /** @var Request */
-    protected $request;
-
     /** @var FormFactoryInterface */
     protected $formFactory;
 
-    /** @var RouterInterface */
-    protected $router;
-
     /**
-     * @param Request              $request
-     * @param RouterInterface      $router
      * @param FormFactoryInterface $formFactory
      */
-    public function __construct(Request $request, RouterInterface $router, FormFactoryInterface $formFactory)
+    public function __construct(FormFactoryInterface $formFactory)
     {
-        $this->request = $request;
-        $this->router = $router;
         $this->formFactory = $formFactory;
     }
 
@@ -57,18 +45,21 @@ class LocaleController extends BaseLocaleController
      * @Template
      * @AclAncestor("pimee_enrich_locale_edit")
      *
-     * @return array
+     * @return JsonResponse|array
      */
-    public function editAction(Locale $locale)
+    public function editAction(Request $request, Locale $locale)
     {
         $form = $this->formFactory->create('pimee_enrich_locale', $locale);
-        if ($this->request->isMethod('POST')) {
-            $form->submit($this->request);
+        if ($request->isMethod('POST')) {
+            $form->submit($request);
             if ($form->isValid()) {
-                $this->request->getSession()->getFlashBag()->add('success', new Message('flash.locale.updated'));
+                $request->getSession()->getFlashBag()->add('success', new Message('flash.locale.updated'));
 
-                return new RedirectResponse(
-                    $this->router->generate('pimee_enrich_locale_edit', ['id' => $locale->getId()])
+                return new JsonResponse(
+                    [
+                        'route'  => 'pimee_enrich_locale_edit',
+                        'params' => ['id' => $locale->getId()],
+                    ]
                 );
             }
         }

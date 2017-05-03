@@ -12,5 +12,5 @@ use Context\Page\Base\Grid;
 class Index extends Grid
 {
     /** @var string */
-    protected $path = '/proposal/';
+    protected $path = '#/proposal/';
 }

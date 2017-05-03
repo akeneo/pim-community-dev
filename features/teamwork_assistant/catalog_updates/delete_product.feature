@@ -53,6 +53,6 @@ Feature: Catalog updates - Remove a product used by a project
     Then I should be on the products page
     When I select all entities
     And I press "Delete" on the "Bulk Actions" dropdown button
-    Then I should see "Are you sure you want to delete selected products?"
+    Then I should see the text "Are you sure you want to delete selected products?"
     When I confirm the removal
     Then the grid should contain 0 elements

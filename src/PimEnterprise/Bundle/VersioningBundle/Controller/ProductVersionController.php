@@ -15,7 +15,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\VersioningBundle\Reverter\ProductReverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -51,7 +50,7 @@ class ProductVersionController
      *
      * @param string|int $id
      *
-     * @return RedirectResponse
+     * @return JsonResponse
      *
      * @AclAncestor("pimee_versioning_product_version_revert")
      */

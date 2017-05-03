@@ -41,7 +41,6 @@ class PublishedProductNormalizer implements NormalizerInterface
     public function normalize($publishedProduct, $format = null, array $context = [])
     {
         $normalizedProduct = $this->normalizer->normalize($publishedProduct, 'standard', $context);
-
         $normalizedProduct['meta'] = array_merge(
             $normalizedProduct['meta'],
             [

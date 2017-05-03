@@ -21,8 +21,7 @@ published_product:
 pimee_workflow_product_draft_ready:
     path: /product/{productId}/send-draft
     defaults: { _controller: pimee_workflow.controller.product_draft_rest:readyAction }
-    requirements:
-        _method: POST
+    methods: [POST]
 
 pimee_workflow_categorytree:
     resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/categorytree.yml'

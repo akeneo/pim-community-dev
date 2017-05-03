@@ -18,8 +18,6 @@ Feature: Save a product draft
     And I change the "Name" to "Dark Tshirt"
     When I save the product
     Then the product Name should be "Dark Tshirt"
-    When I reload the page
-    Then the product Name should be "Dark Tshirt"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully save an existing product draft value
@@ -27,8 +25,6 @@ Feature: Save a product draft
     And I visit the "Attributes" tab
     And I change the "Description" to "Yes I can"
     When I save the product
-    Then the product Description should be "Yes I can"
-    When I reload the page
     Then the product Description should be "Yes I can"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4597

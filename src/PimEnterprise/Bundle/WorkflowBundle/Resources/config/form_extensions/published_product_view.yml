@@ -20,11 +20,13 @@ extensions:
         position: 100
 
     pimee-published-product-view-back-to-grid:
-        module: pimee/published-view-form/back-to-grid
+        module: pim/form/common/back-to-grid
         parent: pimee-published-product-view-form
         targetZone: back
         aclResourceId: pimee_workflow_published_product_index
         position: 80
+        config:
+            backUrl: pimee_workflow_published_product_index
 
     pimee-published-product-view-original-product:
         module: pimee/product-edit-form/original-product
@@ -99,7 +101,7 @@ extensions:
         position: 110
 
     pimee-published-product-view-completeness:
-        module: pimee/published-view-form/panel/completeness
+        module: pim/product-edit-form/panel/completeness
         parent: pimee-published-product-view-panels
         targetZone: panel-content
         position: 100

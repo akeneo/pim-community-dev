@@ -100,7 +100,8 @@ Feature: Assign assets to a product
     When I filter by "asset category" with value "unclassified"
     Then I should see assets mugs, photo and tiger
 
-  Scenario: Do not see the category tree when the user has not the permission
+  @skip-nav @info Unskip when the role controller won't need to reload the page anymore
+  Scenario: Do not show the category tree when the user has not the permission
     Given I am logged in as "Peter"
     And I am on the "shirt" product page
     And I add available attributes Front view
@@ -118,8 +119,6 @@ Feature: Assign assets to a product
     And I add available attributes Front view
     And I start to manage assets for "Front view"
     Then I should not see the text "Asset main catalog"
-    And I confirm the asset modification
-    And I save the product
 
   @jira https://akeneo.atlassian.net/browse/PIM-5988
   Scenario: Correctly add assets by their code in the basket, even if not in the first 20 assets

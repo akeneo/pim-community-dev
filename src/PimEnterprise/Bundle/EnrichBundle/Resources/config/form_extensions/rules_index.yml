@@ -1,21 +1,21 @@
 extensions:
-    pimee-rules-index:
+    pim-rule-index:
         module: pim/form/common/index/index
         config:
             title: pimee_catalog_rule.overview
 
-    pimee-rules-index-grid:
+    pim-rule-index-grid:
         module: pim/form/common/index/grid
-        parent: pimee-rules-index
+        parent: pim-rule-index
         position: 1000
         targetZone: content
         config:
             alias: rule-grid
             localeKey: dataLocale
 
-    pim-rules-index-confirm-button:
+    pim-rule-index-confirm-button:
         module: pim/form/common/index/confirm-button
-        parent: pimee-rules-index
+        parent: pim-rule-index
         targetZone: buttons
         position: 100
         aclResourceId: pimee_catalog_rule_rule_execute_permissions

@@ -1,12 +1,10 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
-
 {% block content %}
 <div id="loading-project-filtered-grid"></div>
 
 <script type="text/javascript">
     require(
-        ['jquery', 'pim/datagrid/state', 'routing', 'oro/loading-mask'],
-        function ($, DatagridState, Routing, LoadingMask)
+        ['jquery', 'pim/datagrid/state', 'pim/router', 'oro/loading-mask'],
+        function ($, DatagridState, router, LoadingMask)
         {
             'use strict';
 
@@ -23,7 +21,7 @@
                     columns: '{{ view.columns|join(',') }}'
                 });
 
-                window.location.replace(Routing.generate('pim_enrich_product_index'));
+                router.redirectToRoute('pim_enrich_product_index');
             });
         }
     );

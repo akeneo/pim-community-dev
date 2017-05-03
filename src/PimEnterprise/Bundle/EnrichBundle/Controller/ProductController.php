@@ -21,6 +21,7 @@ use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
@@ -80,7 +81,7 @@ class ProductController extends BaseProductController
      * @AclAncestor("pim_enrich_product_index")
      * @Template
      *
-     * @return Response|RedirectResponse
+     * @return []
      */
     public function indexAction(Request $request)
     {
@@ -111,7 +112,7 @@ class ProductController extends BaseProductController
     /**
      * Override to return only granted user locales
      *
-     * @return Locale[]
+     * @return LocaleInterface[]
      */
     protected function getUserLocales()
     {

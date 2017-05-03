@@ -1,3 +1,4 @@
+@javascript
 Feature: Update user preferences
   In order for users to be able to choose their preferences
   As a user
@@ -7,7 +8,6 @@ Feature: Update user preferences
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully disable/enable email notifications
     Given I edit the "Julia" user
     And I visit the "Groups and Roles" tab
@@ -20,7 +20,6 @@ Feature: Update user preferences
     And I save the user
     Then the user "Julia" should have email notifications disabled
 
-  @javascript
   Scenario: Successfully set the delay before to send an asset expiration notification
     Given I edit the "Julia" user
     And I visit the "Groups and Roles" tab
@@ -35,7 +34,8 @@ Feature: Update user preferences
       | 2014_collection  | IT support | none   |
       | 2015_collection  | IT support | none   |
       | 2013_collection  | IT support | none   |
-    When I am logged in as "Peter"
-    And I edit the "Peter" user
-    Then I should see "Users"
-    And I should see "Login count"
+    And I logout
+    And I am logged in as "Peter"
+    When I edit the "Peter" user
+    Then I should see the text "Edit user"
+    And I should see the text "Login count"
