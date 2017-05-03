@@ -155,6 +155,7 @@ class Grid extends Index
                 'View selector'         => ['css' => '.grid-view-selector'],
                 'Views list'            => ['css' => '.ui-multiselect-menu.highlight-hover'],
                 'Select2 results'       => ['css' => '#select2-drop .select2-results'],
+                'Search filter'         => ['css' => '.search-filter input'],
                 'Main context selector' => [
                     'css'        => '#container',
                     'decorators' => [
@@ -310,9 +311,39 @@ class Grid extends Index
     public function filterBy($filterName, $operator, $value)
     {
         $filter = $this->getFilter($filterName);
-
         $filter->open();
         $filter->filter($operator, $value);
+    }
+
+    /**
+     * @param string $value
+     */
+    public function search($value)
+    {
+        $this->getElement('Search filter')->setValue($value);
+    }
+
+    /**
+     * @param string $filterName
+     */
+    public function openFilter($filterName)
+    {
+        $filter = $this->getFilter($filterName);
+        $filter->open();
+    }
+
+    /**
+     * Returns the displayed criteria of a filter
+     *
+     * @param $filterName
+     *
+     * @return string
+     */
+    public function getCriteria($filterName)
+    {
+        $filter = $this->getFilter($filterName);
+
+        return trim($filter->find('css', '.filter-criteria-hint')->getText());
     }
 
     /**

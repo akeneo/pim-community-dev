@@ -19,7 +19,7 @@ function($, _, __, AbstractFilter) {
 
         timerDelay: 500,
 
-        className: 'AknFilterBox-searchContainer filter-item',
+        className: 'AknFilterBox-searchContainer filter-item search-filter',
 
         render: function () {
             this.$el.html(
