@@ -20,6 +20,8 @@ services:
 
     pim_datagrid.extension.sorter.product.value_sorter:
         class: '%pim_datagrid.extension.sorter.product.value_sorter.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: pim_datagrid.extension.sorter, type: product_value }
 

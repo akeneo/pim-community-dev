@@ -565,11 +565,15 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         foreach ($columns as $column) {
             $steps[] = new Step\Then(sprintf('I sort by "%s" value ascending', $column));
             $steps[] = new Step\Then(sprintf(
-                'the rows should be%s sorted ascending by %s', $naturally ? ' naturally' : '', $column
+                'the rows should be%s sorted ascending by %s',
+                $naturally ? ' naturally' : '',
+                $column
             ));
             $steps[] = new Step\Then(sprintf('I sort by "%s" value descending', $column));
             $steps[] = new Step\Then(sprintf(
-                'the rows should be%s sorted descending by %s', $naturally ? ' naturally' : '', $column
+                'the rows should be%s sorted descending by %s',
+                $naturally ? ' naturally' : '',
+                $column
             ));
         }
 
