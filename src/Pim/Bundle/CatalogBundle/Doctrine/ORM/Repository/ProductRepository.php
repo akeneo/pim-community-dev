@@ -187,60 +187,6 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * Returns the ProductValue class
-     *
-     * @return string
-     */
-    protected function getValuesClass()
-    {
-        return $this->getClassMetadata()
-            ->getAssociationTargetClass('values');
-    }
-
-    /**
-     * Returns the Attribute class
-     *
-     * @return string
-     */
-    protected function getAttributeClass()
-    {
-        return $this->getEntityManager()
-            ->getClassMetadata($this->getValuesClass())
-            ->getAssociationTargetClass('attribute');
-    }
-
-    /**
-     * @return QueryBuilder
-     */
-    public function createGroupDatagridQueryBuilder()
-    {
-        $qb = $this->getEntityManager()->createQueryBuilder()
-            ->select('p')
-            ->from($this->_entityName, 'p', 'p.id');
-
-        $isCheckedExpr =
-            'CASE WHEN ' .
-            '(:currentGroup MEMBER OF p.groups '.
-            'OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in) '.
-            'THEN true ELSE false END';
-        $qb
-            ->addSelect($isCheckedExpr.' AS is_checked');
-
-        return $qb;
-    }
-
-    /**
-     * @return QueryBuilder
-     */
-    public function createVariantGroupDatagridQueryBuilder()
-    {
-        $qb = $this->createGroupDatagridQueryBuilder();
-        $qb->andWhere($qb->expr()->in('p.id', ':productIds'));
-
-        return $qb;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function valueExists(ProductValueInterface $value)
@@ -283,19 +229,6 @@ class ProductRepository extends EntityRepository implements
     public function findOneByIdentifier($identifier)
     {
         return $this->findOneBy(['identifier' => $identifier]);
-    }
-
-    /**
-     * Add join to values tables
-     *
-     * @param QueryBuilder $qb
-     */
-    protected function addJoinToValueTables(QueryBuilder $qb)
-    {
-        $qb->leftJoin(current($qb->getRootAliases()).'.values', 'Value')
-            ->leftJoin('Value.attribute', 'Attribute')
-            ->leftJoin('Value.options', 'ValueOption')
-            ->leftJoin('ValueOption.optionValues', 'AttributeOptionValue');
     }
 
     /**
