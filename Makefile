@@ -1,4 +1,11 @@
-ifeq ($(OS), Windows_NT)
+# Platform detection
+ifeq ($(OS),Windows_NT)
+    PLATFORM := Windows
+else
+    PLATFORM := $(shell uname -s)
+endif
+
+ifeq ($(PLATFORM), Windows)
 	APP=docker-compose exec -T app
 else
 	APP=docker-compose exec --user docker -T app
