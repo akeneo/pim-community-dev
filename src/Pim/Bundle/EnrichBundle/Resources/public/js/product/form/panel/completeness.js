@@ -21,9 +21,19 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane completeness-panel',
+            initialFamily: null,
             events: {
                 'click header': 'switchLocale',
                 'click .missing-attributes a': 'showAttribute'
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function () {
+                this.initialFamily = null;
+
+                BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**
@@ -54,13 +64,18 @@ define(
                     $.when(
                         FetcherRegistry.getFetcher('locale').fetchActivated()
                     ).then(function (locales) {
+                        if (null === this.initialFamily) {
+                            this.initialFamily = this.getFormData().family;
+                        }
+
                         this.$el.html(
                             this.template({
                                 hasFamily: this.getFormData().family !== null,
                                 completenesses: this.sortCompleteness(this.getFormData().meta.completenesses),
                                 i18n: i18n,
                                 locales: locales,
-                                catalogLocale: UserContext.get('catalogLocale')
+                                catalogLocale: UserContext.get('catalogLocale'),
+                                hasFamilyChanged: this.getFormData().family !== this.initialFamily
                             })
                         );
                         this.delegateEvents();
@@ -120,11 +135,9 @@ define(
              * On family change listener
              */
             onChangeFamily: function () {
-                var data = this.getFormData();
-                data.meta.completenesses = [];
-                this.setData(data);
-
-                this.render();
+                if (!_.isEmpty(this.getRoot().model._previousAttributes)) {
+                    this.render();
+                }
             }
         });
     }
