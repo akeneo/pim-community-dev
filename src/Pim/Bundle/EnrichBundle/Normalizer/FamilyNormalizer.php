@@ -70,15 +70,15 @@ class FamilyNormalizer implements NormalizerInterface
      */
     public function normalize($family, $format = null, array $context = array())
     {
-        if (array_key_exists('no_filter', $context) &&
-            true === $context['no_filter']) {
+        if (array_key_exists('no_filters', $context) &&
+            true === $context['no_filters']) {
             $this->toBeFiltered = false;
         }
 
         $normalizedFamily = $this->familyNormalizer->normalize(
             $family,
             'standard',
-            $context
+            []
         );
 
         $normalizedFamily['attributes'] = $this->normalizeAttributes($family);
