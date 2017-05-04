@@ -25,6 +25,7 @@
 - PIM-6404: Update buttons design
 - PIM-6409: Update all the title containers design
 - PIM-6290: Update the main navigation design
+- PIM-6397: Enable Search filter on all grids
 
 ## BC breaks
 
