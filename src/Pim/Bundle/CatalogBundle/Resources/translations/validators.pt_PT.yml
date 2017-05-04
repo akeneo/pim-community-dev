@@ -12,6 +12,7 @@ This value should not be blank: Este valor não deve estar em branco
 Option code may contain only letters, numbers and underscores: O código da opção só pode conter letras, números e sublinhados
 Option code may contain only letters (at least one), numbers and underscores: O código da opção só pode conter letras (pelo menos uma), números e sublinhados
 This value should not be a decimal.: Este valor não deve ser um número decimal.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Extensão de ficheiro não permitida (extensões permitidas: %extensions%).'
 "The value %value% is already set on another product for the unique attribute %attribute%": O valor %value% já está definido noutro produto para o atributo único %attribute%
 regex.comma_or_semicolon.message: Este campo não deve conter qualquer vírgula ou ponto e vírgula.
 file.extensions.message: 'Extensão de ficheiro não permitida (extensões permitidas: %extensions%).'

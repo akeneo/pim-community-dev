@@ -1,10 +1,8 @@
-{% if elements is not defined %}
-    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
-{% endif %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {% set editMode = form.vars.value.id ? true : false %}
 
-{{ JSFV(form) }}
+
 {{ form_start(form, {
     'action': editMode ? path('pim_enrich_attributegroup_edit', { id: form.vars.value.id }) : path('pim_enrich_attributegroup_create'),
     'attr': {

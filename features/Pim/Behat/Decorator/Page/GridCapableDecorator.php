@@ -202,17 +202,28 @@ class GridCapableDecorator extends ElementDecorator
     {
         $selector = $this->selectors['View type switcher'];
 
-        $viewTypeSwitcher = $this->spin(function () use ($selector) {
-            return $this->find('css', $selector);
-        }, 'Cannot find the View Type Switcher.');
+        $this->spin(function () use ($selector) {
+            $viewTypeSwitcher = $this->find('css', $selector);
+            if (null == $viewTypeSwitcher) {
+                return false;
+            }
 
-        $viewTypeSwitcher->click();
+            $viewTypeSwitcher->click();
 
-        $viewType = $this->spin(function () use ($type) {
-            return $this->find('css', sprintf('.view-type-item[title="%s"]', $type));
-        }, sprintf('Cannot find element in the View Type Switcher dropdown with name "%s".', $type));
+            return true;
+        }, 'Cannot click the View Type Switcher.');
 
-        $viewType->click();
+
+        $this->spin(function () use ($type) {
+            $viewType = $this->find('css', sprintf('.view-type-item[title="%s"]', $type));
+            if (null == $viewType) {
+                return false;
+            }
+
+            $viewType->click();
+
+            return true;
+        }, sprintf('Cannot click element in the View Type Switcher dropdown with name "%s".', $type));
     }
 
     /**

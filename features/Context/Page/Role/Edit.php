@@ -14,7 +14,7 @@ use Context\Page\Base\Form;
 class Edit extends Form
 {
     /** @var string */
-    protected $path = '/user/role/update/{id}';
+    protected $path = '#/user/role/update/{id}';
 
     /**
      * {@inheritdoc}

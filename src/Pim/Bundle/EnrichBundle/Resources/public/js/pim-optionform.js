@@ -30,7 +30,6 @@ define(
                     messenger.notificationFlashMessage('error', $field.data('error-message'));
                 }
             };
-            /* jshint nonew:false */
             new DialogForm(fieldId, callback);
         };
 

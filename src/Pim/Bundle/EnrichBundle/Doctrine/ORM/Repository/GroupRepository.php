@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr;
 use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
@@ -61,20 +62,20 @@ class GroupRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('g');
 
         $groupLabelExpr = '(CASE WHEN translation.label IS NULL THEN g.code ELSE translation.label END)';
-        $typeLabelExpr = '(CASE WHEN typTrans.label IS NULL THEN typ.code ELSE typTrans.label END)';
-        $typeExpr = $qb->expr()->in('type.id', ':groupTypes');
+        $typeLabelExpr = '(CASE WHEN typeTrans.label IS NULL THEN type.code ELSE typeTrans.label END)';
 
         $qb
             ->addSelect(sprintf('%s AS groupLabel', $groupLabelExpr))
             ->addSelect(sprintf('%s AS typeLabel', $typeLabelExpr))
-            ->addSelect('translation.label');
+            ->addSelect('translation.label')
+        ;
 
         $qb
-            ->leftJoin('g.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
-            ->leftJoin('g.type', 'typ')
-            ->leftJoin('typ.translations', 'typTrans', 'WITH', 'typTrans.locale = :localeCode')
+            ->innerJoin('g.type', 'type', Expr\Join::WITH, 'type.variant = :isVariant')
+            ->leftJoin('g.translations', 'translation', Expr\Join::WITH, 'translation.locale = :localeCode')
+            ->leftJoin('type.translations', 'typeTrans', Expr\Join::WITH, 'typeTrans.locale = :localeCode')
             ->leftJoin('g.axisAttributes', 'attribute')
-            ->innerJoin('g.type', 'type', 'WITH', $typeExpr);
+        ;
 
         $qb->groupBy('g');
 

@@ -1,5 +1,3 @@
-/* jshint devel:true */
-/* global define */
 define(['module', 'underscore', 'translator', 'json'],
 function (module, _, Translator) {
     'use strict';
@@ -36,6 +34,7 @@ function (module, _, Translator) {
      */
     Translator.get = function (id) {
         checkTranslation(id);
+
         return get.apply(Translator, arguments);
     };
 
@@ -51,6 +50,7 @@ function (module, _, Translator) {
             data = JSON.parse(data);
         }
         debug = data.debug || false;
+
         return fromJSON.call(Translator, data);
     };
 

@@ -190,7 +190,7 @@ services:
           - '@oro_config.user'
           - '@oro_navigation.breadcrumb_manager'
         calls:
-          - [ setTitles, [ '%oro_titles%' ] ]
+          - [ setTitles, [ [] ] ]
 
     oro_navigation.title_annotations_reader:
         class:                        '%oro_navigation.title_service.annotations_reader.class%'
@@ -198,7 +198,7 @@ services:
 
     oro_navigation.title_config_reader:
         class:                        '%oro_navigation.title_service.config_reader.class%'
-        arguments:                    ['%oro_titles%']
+        arguments:                    [[]]
 
     oro_navigation.title_service.twig.extension:
         class: '%oro_navigation.title_service.twig.extension.class%'

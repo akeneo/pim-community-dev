@@ -29,15 +29,6 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function () {
-                this.initialFamily = null;
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
-             */
             configure: function () {
                 this.trigger('panel:register', {
                     code: this.code,
@@ -63,18 +54,13 @@ define(
                     $.when(
                         FetcherRegistry.getFetcher('locale').fetchActivated()
                     ).then(function (locales) {
-                        if (null === this.initialFamily) {
-                            this.initialFamily = this.getFormData().family;
-                        }
-
                         this.$el.html(
                             this.template({
                                 hasFamily: this.getFormData().family !== null,
                                 completenesses: this.sortCompleteness(this.getFormData().meta.completenesses),
                                 i18n: i18n,
                                 locales: locales,
-                                catalogLocale: UserContext.get('catalogLocale'),
-                                hasFamilyChanged: this.getFormData().family !== this.initialFamily
+                                catalogLocale: UserContext.get('catalogLocale')
                             })
                         );
                         this.delegateEvents();
@@ -134,9 +120,11 @@ define(
              * On family change listener
              */
             onChangeFamily: function () {
-                if (!_.isEmpty(this.getRoot().model._previousAttributes)) {
-                    this.render();
-                }
+                var data = this.getFormData();
+                data.meta.completenesses = [];
+                this.setData(data);
+
+                this.render();
             }
         });
     }

@@ -20,7 +20,7 @@ class Edit extends ProductEditForm
     /**
      * @var string
      */
-    protected $path = '/enrich/variant-group/{code}/edit';
+    protected $path = '#/enrich/variant-group/{code}/edit';
 
     /**
      * {@inheritdoc}

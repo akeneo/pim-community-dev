@@ -7,7 +7,6 @@ use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -73,16 +72,16 @@ class SequentialEditController
      *
      * @param Request $request
      *
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function sequentialEditAction(Request $request)
     {
         if ($this->seqEditManager->findByUser($this->userContext->getUser())) {
-            return new RedirectResponse(
-                $this->router->generate(
-                    'pim_enrich_product_index',
-                    ['dataLocale' => $request->get('dataLocale')]
-                )
+            return new JsonResponse(
+                [
+                    'route'  => 'pim_enrich_product_index',
+                    'params' => ['dataLocale' => $request->get('dataLocale')]
+                ]
             );
         }
 
@@ -93,14 +92,14 @@ class SequentialEditController
 
         $this->saver->save($sequentialEdit);
 
-        return new RedirectResponse(
-            $this->router->generate(
-                'pim_enrich_product_edit',
-                [
+        return new JsonResponse(
+            [
+                'route'  => 'pim_enrich_product_edit',
+                'params' => [
                     'dataLocale' => $request->get('dataLocale'),
                     'id'         => current($sequentialEdit->getObjectSet())
                 ]
-            )
+            ]
         );
     }
 

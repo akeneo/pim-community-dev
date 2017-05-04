@@ -1,0 +1,25 @@
+extensions:
+    pim-user-role-index:
+        module: pim/form/common/index/index
+        config:
+            title: pim_enrich.index.user_role.title
+
+    pim-user-role-index-grid:
+        module: pim/form/common/index/grid
+        parent: pim-user-role-index
+        position: 1000
+        targetZone: content
+        config:
+            alias: pim-role-grid
+
+    pim-user-role-index-create-button:
+        module: pim/common/redirect
+        parent: pim-user-role-index
+        targetZone: buttons
+        position: 100
+        aclResourceId: pim_user_role_create
+        config:
+            iconName: plus
+            label: pim_enrich.index.user_role.create_btn
+            route: oro_user_role_create
+            buttonClass: AknButton--apply

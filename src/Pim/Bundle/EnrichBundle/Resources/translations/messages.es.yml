@@ -299,17 +299,13 @@ channel:
   edit: editar canal
 currency:
   title: moneda
-  overview: resumen de moneda
   create: crear moneda
   edit: editar moneda
 family:
   title: familia
-  overview: familia resumen
-  create: crear familia
   edit: editar familia
 locale:
   title: configuración regional
-  overview: resumen de configuración regional
   create: crear local
   edit: editar configuración de local
 product:
@@ -319,22 +315,15 @@ product:
   edit: editar productos
 group:
   title: grupo
-  overview: resumen de grupo
-  create: crear grupo
   edit: editar un grupo
 group type:
   title: tipo de grupo
-  overview: resumen de grupo tipo
-  create: crear tipo de grupo
   edit: editar tipo de grupo
 variant group:
   title: grupo de variantes
-  overview: resumen de grupo de variantes
-  create: crear un grupo de variante
   edit: Editar un grupo de variante
 association type:
   title: tipo de asociación
-  overview: Resumen de tipo Asociación
   create: crear Asociación de tipo
   edit: Editar tipo de asociación
 products: productos
@@ -539,7 +528,7 @@ Attributetype: Tipo de atributo
 Attribute type: Tipo de atributo
 Defaultvalue: Valor predefinido
 Variant: Variante
-Smart: Inteligente
+Smart: Atributo inteligente
 Useable as grid column: Se puede usar como columna de grilla
 Useable as grid filter: Se puede usar en la grilla
 Family: Familia
@@ -906,6 +895,8 @@ pim_enrich_attribute_form:
   code: Código
   type: Tipo de atributo
   reference_data_name: Nombre de datos de referencia
+  scopable: Valor por canal
+  localizable: Valor por local
   unique: Valor único
   availableLocales: Locales disponibles
   locale_specific: Local específico

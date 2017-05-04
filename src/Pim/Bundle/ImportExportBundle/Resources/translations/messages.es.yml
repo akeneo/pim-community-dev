@@ -47,18 +47,10 @@ pim_title.import_execution.index: Historia de las ejecuciones de importación
 pim_title.import_execution.show: Ejecuciones de importación | Detalles
 export profile:
   title: Perfil de exportación
-  overview: Resumen del perfil de exportación
-  create: crear perfil exportador
   edit: Editar perfil exportador
-export report:
-  overview: informes de exportaciones
 import profile:
   title: Perfil de importación
-  overview: resumen del perfil de importación
-  create: crear perfil de importación
   edit: editar perfil de importación
-import report:
-  overview: informes de importación
 pim_importexport:
   acl:
     export_profile:

@@ -1,3 +1,4 @@
+@javascript
 Feature: Display the attribute history
   In order to know who, when and what changes has been made to an attribute
   As a product manager
@@ -7,7 +8,6 @@ Feature: Display the attribute history
     Given the "default" catalog configuration
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully edit a attribute and see the history
     Given I am on the attributes page
     And I create a "Simple select" attribute

@@ -1,6 +1,6 @@
 extensions:
-    pim-system-config-group-loading_message:
-        module: pim/form/system/config/group/loading_message
+    pim-system-config-group-loading-message:
+        module: pim/form/system/config/group/loading-message
         parent: oro-system-config-system
         targetZone: content
         position: 120

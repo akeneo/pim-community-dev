@@ -13,7 +13,7 @@ define(
         'underscore',
         'oro/mediator',
         'pim/form',
-        'oro/navigation',
+        'pim/router',
         'routing',
         'oro/messenger'
     ],
@@ -22,7 +22,7 @@ define(
         _,
         mediator,
         BaseForm,
-        Navigation,
+        router,
         Routing,
         messenger
     ) {
@@ -49,8 +49,7 @@ define(
                             _.__('pim_enrich.entity.product.info.update_successful'),
                             {hashNavEnabled: true}
                         );
-                        var navigation = Navigation.getInstance();
-                        navigation.setLocation(Routing.generate('pim_enrich_product_index'));
+                        router.redirectToRoute('pim_enrich_product_index');
                     }.bind(this))
                     .fail(function () {
                         messenger.notificationFlashMessage(

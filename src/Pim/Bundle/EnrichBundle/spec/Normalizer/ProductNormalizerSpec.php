@@ -4,16 +4,21 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
+use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
+use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
-use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -27,17 +32,31 @@ class ProductNormalizerSpec extends ObjectBehavior
         StructureVersionProviderInterface $structureVersionProvider,
         FormProviderInterface $formProvider,
         AttributeConverterInterface $localizedConverter,
-        ConverterInterface $converter
+        ConverterInterface $productValueConverter,
+        ObjectManager $productManager,
+        CompletenessManager $completenessManager,
+        ChannelRepositoryInterface $channelRepository,
+        CollectionFilterInterface $collectionFilter,
+        NormalizerInterface $completenessCollectionNormalizer,
+        $storageDriver,
+        UserContext $userContext
     ) {
         $this->beConstructedWith(
-            $productNormalizer,
-            $versionNormalizer,
-            $versionManager,
-            $localeRepository,
-            $structureVersionProvider,
-            $formProvider,
-            $localizedConverter,
-            $converter
+        $productNormalizer,
+        $versionNormalizer,
+        $versionManager,
+        $localeRepository,
+        $structureVersionProvider,
+        $formProvider,
+        $localizedConverter,
+        $productValueConverter,
+        $productManager,
+        $completenessManager,
+        $channelRepository,
+        $collectionFilter,
+        $completenessCollectionNormalizer,
+        $storageDriver,
+        $userContext
         );
     }
 
@@ -54,7 +73,10 @@ class ProductNormalizerSpec extends ObjectBehavior
         $structureVersionProvider,
         $formProvider,
         $localizedConverter,
-        $converter,
+        $productValueConverter,
+        $channelRepository,
+        $userContext,
+        $collectionFilter,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -104,7 +126,11 @@ class ProductNormalizerSpec extends ObjectBehavior
             ]
         ];
 
-        $converter->convert($valuesLocalized)->willReturn($valuesConverted);
+        $channelRepository->getFullChannels()->willReturn([]);
+        $userContext->getUserLocales()->willReturn([]);
+        $collectionFilter->filterCollection([], 'pim.internal_api.locale.view')->willReturn([]);
+
+        $productValueConverter->convert($valuesLocalized)->willReturn($valuesConverted);
 
         $mug->getId()->willReturn(12);
         $versionManager->getOldestLogEntry($mug)->willReturn('create_version');
@@ -139,6 +165,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                     'updated'           => 'normalized_update_version',
                     'model_type'        => 'product',
                     'structure_version' => 12,
+                    'completenesses'    => null,
                     'label'             => [
                         'en_US' => 'A nice Mug!',
                         'fr_FR' => 'Un très beau Mug !'

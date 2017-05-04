@@ -1,8 +1,5 @@
 pim_enrich_grouptype_index:
-    path: /.{_format}
-    defaults: { _controller: pim_enrich.controller.group_type:indexAction, _format: html }
-    requirements:
-        _format: html|json
+    path: ''
 
 pim_enrich_grouptype_create:
     path: /create
@@ -10,21 +7,19 @@ pim_enrich_grouptype_create:
 
 pim_enrich_grouptype_edit:
     path: /{code}/edit
-    defaults: { _controller: pim_enrich.controller.group_type:editAction }
     requirements:
         code: '[a-zA-Z0-9_]+'
 
 pim_enrich_grouptype_rest_index:
     path: /rest
-    defaults: { _controller: pim_enrich.controller.rest.group_type:indexAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.group_type:indexAction }
     methods: [GET]
 
 pim_enrich_grouptype_rest_get:
     path: /rest/{identifier}
-    defaults: { _controller: pim_enrich.controller.rest.group_type:getAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.group_type:getAction }
     methods: [GET]
     requirements:
-        _format: json
         identifier: '[a-zA-Z0-9_]+'
 
 pim_enrich_grouptype_rest_post:

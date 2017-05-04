@@ -141,20 +141,6 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $path
-     * @param string $referrer
-     *
-     * @Given /^I am on the relative path ([^"]+) from ([^"]+)$/
-     */
-    public function iAmOnTheRelativePath($path, $referrer)
-    {
-        $basePath = parse_url($this->baseUrl)['path'];
-        $uri = sprintf('%s%s/#url=%s%s', $this->baseUrl, $referrer, $basePath, $path);
-
-        $this->getSession()->visit($uri);
-    }
-
-    /**
      * @param string $not
      * @param string $page
      *
@@ -172,7 +158,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         $this->currentPage = $page;
         $this->getCurrentPage()->open();
 
-        return new Step\Then('I should see "403 Forbidden"');
+        return new Step\Then('I should see the text "Forbidden"');
     }
 
     /**
@@ -213,7 +199,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         $this->currentPage = sprintf('%s %s', $page, $action);
         $this->getCurrentPage()->open(['id' => $entity->getId()]);
 
-        return new Step\Then('I should see "403 Forbidden"');
+        return new Step\Then('I should see "Forbidden"');
     }
 
     /**
@@ -225,10 +211,22 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      */
     public function iAmOnTheEntityEditPage($identifier, $page)
     {
-        $page   = ucfirst($page);
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+        $this->spin(function () use ($identifier, $page) {
+            $page   = ucfirst($page);
+            $getter = sprintf('get%s', $page);
+            $entity = $this->getFixturesContext()->$getter($identifier);
+            $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+
+            $expected = $this->getPage(sprintf('%s edit', $page))->getUrl(['id' => $entity->getId()]);
+
+            $actualFullUrl = $this->getSession()->getCurrentUrl();
+            $actualUrl     = $this->sanitizeUrl($actualFullUrl);
+            $result        = parse_url($expected, PHP_URL_PATH) === $actualUrl;
+
+            assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actualUrl));
+
+            return true;
+        }, sprintf('Cannot got to the %s edit page', $page));
     }
 
     /**
@@ -384,15 +382,14 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      */
     public function iShouldNotSeeANiceLoadingMessage()
     {
-        $messageNode = $this->spin(function () {
-            return $this->getSession()
+        $messageNodeIsNull = $this->spin(function () {
+            $node = $this->getSession()
                 ->getPage()
                 ->find('css', $this->elements['Loading message']['css']);
-        }, 'Unable to find any loading message');
+            return ($node === null);
+        }, 'Found the loading message');
 
-        $message = trim($messageNode->getHtml());
-
-        assertEquals('Loading ...', $message, 'The loading message should equals the default value');
+        assertEquals($messageNodeIsNull, true, 'The loading message should not be found');
     }
 
     /**
@@ -451,6 +448,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
             $actualFullUrl = $this->getSession()->getCurrentUrl();
             $actualUrl     = $this->sanitizeUrl($actualFullUrl);
             $result        = parse_url($expected, PHP_URL_PATH) === $actualUrl;
+
             assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actualUrl));
 
             return true;
@@ -469,7 +467,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         $parsedUrl = parse_url($fullUrl);
 
         if (isset($parsedUrl['fragment'])) {
-            $filteredUrl = preg_split('/url=/', $parsedUrl['fragment'])[1];
+            $filteredUrl = $parsedUrl['fragment'];
         } else {
             $filteredUrl = $parsedUrl['path'];
         }

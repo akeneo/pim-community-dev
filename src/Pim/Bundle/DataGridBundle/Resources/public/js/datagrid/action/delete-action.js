@@ -6,9 +6,10 @@ define([
         'oro/delete-confirmation',
         'oro/modal',
         'oro/datagrid/model-action',
-        'oro/mediator'
+        'oro/mediator',
+        'pim/user-context'
     ],
-    function(_, messenger, __, DeleteConfirmation, Modal, ModelAction, mediator) {
+    function(_, messenger, __, DeleteConfirmation, Modal, ModelAction, mediator, userContext) {
         'use strict';
 
         /**
@@ -62,6 +63,7 @@ define([
                     success: function() {
                         var messageText = __('flash.' + this.getEntityHint() + '.removed');
                         messenger.notificationFlashMessage('success', messageText);
+                        userContext.fetch();
 
                         mediator.trigger('datagrid:doRefresh:' + this.gridName);
                     }.bind(this)

@@ -40,12 +40,6 @@ class OroRequirements extends SymfonyRequirements
         );
 
         $this->addOroRequirement(
-            function_exists('mcrypt_encrypt'),
-            'mcrypt_encrypt() should be available',
-            'Install and enable the <strong>Mcrypt</strong> extension.'
-        );
-
-        $this->addOroRequirement(
             class_exists('Locale'),
             'intl extension should be available',
             'Install and enable the <strong>intl</strong> extension.'

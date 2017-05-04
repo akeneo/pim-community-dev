@@ -44,8 +44,8 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                this.listenTo(this.getRoot(), 'pim-job-execution-form:start-auto-update',
-                    this.startAutoUpdate);
+                this.listenTo(this.getRoot(), 'pim-job-execution-form:start-auto-update', this.startAutoUpdate);
+                this.listenTo(this.getRoot(), 'pim-job-execution-form:stop-auto-update', this.stopAll);
 
                 // Clear interval/timeout when changing the page
                 Backbone.Router.prototype.on('route', this.stopAll.bind(this));

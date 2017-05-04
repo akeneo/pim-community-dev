@@ -20,7 +20,7 @@ define(
         'pim/user-context',
         'pim/fetcher-registry',
         'pim/group-manager',
-        'oro/navigation',
+        'pim/router',
         'pim/i18n',
         'oro/loading-mask',
         'backbone/bootstrap-modal'
@@ -37,7 +37,7 @@ define(
         UserContext,
         FetcherRegistry,
         GroupManager,
-        Navigation,
+        router,
         i18n,
         LoadingMask
     ) {
@@ -149,17 +149,15 @@ define(
                                 'pim_enrich_group_edit';
                             var parameters = { code: group.code };
 
-                            Navigation.getInstance().setLocation(Routing.generate(route, parameters));
+                            router.redirectToRoute(route, parameters);
                         }.bind(this));
                         this.groupModal.open();
 
                         this.groupModal.$el.on('click', 'a[data-product-id]', function visitProduct(event) {
                             this.groupModal.close();
-                            Navigation.getInstance().setLocation(
-                                Routing.generate(
-                                    'pim_enrich_product_edit',
-                                    { id: event.currentTarget.dataset.productId }
-                                )
+                            router.redirectToRoute(
+                                'pim_enrich_product_edit',
+                                { id: event.currentTarget.dataset.productId }
                             );
                         }.bind(this));
                     }.bind(this));

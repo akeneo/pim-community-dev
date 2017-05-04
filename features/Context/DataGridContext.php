@@ -625,7 +625,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSortByValue($columnName, $order = 'ascending')
     {
-        $this->datagrid->sortBy($columnName, $order);
+        $this->spin(function () use ($columnName, $order) {
+            $this->datagrid->sortBy($columnName, $order);
+
+            return true;
+        }, sprintf('Cannot sort by %s %s', $columnName, $order));
 
         $loadingMask = $this->datagrid
             ->getElement('Grid container')
@@ -633,7 +637,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         $this->spin(function () use ($loadingMask) {
             return (null === $loadingMask) || !$loadingMask->isVisible();
-        }, '".loading-mask" is still visible');
+        }, 'Loading mask is still visible');
     }
 
     /**
@@ -731,7 +735,14 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iFilterBy($filterName, $operator, $value)
     {
         $this->datagrid->filterBy($filterName, $operator, $value);
-        $this->wait();
+
+        $loadingMask = $this->datagrid
+            ->getElement('Grid container')
+            ->find('css', '.loading-mask .loading-mask');
+
+        $this->spin(function () use ($loadingMask) {
+            return (null === $loadingMask) || !$loadingMask->isVisible();
+        }, 'Loading mask is still visible');
     }
 
     /**
@@ -927,11 +938,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iClickBackToGrid()
     {
-        $this->spin(function () {
-            $this->getSession()->getPage()->clickLink('Back to grid');
-
-            return true;
+        $backButton = $this->spin(function () {
+            return $this->getSession()->getPage()->find('css', '.back-link');
         }, 'Cannot find the button "Back to grid"');
+
+        $backButton->click();
     }
 
     /**

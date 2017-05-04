@@ -93,5 +93,5 @@ config:
         oro/error:                 pimui/js/pim-error
         pim/dropzonejs:            pimui/lib/dropzonejs/dist/dropzone-amd-module.js
 
-        pim/form/system/config/group/loading_message: pimui/js/form/system/group/loading_message
-        pim/template/system/group/loading_message: pimui/js/templates/system/group/loading_message.html
+        pim/form/system/config/group/loading-message: pimui/js/form/system/group/loading-message
+        pim/template/system/group/loading-message: pimui/js/templates/system/group/loading-message.html

@@ -87,6 +87,7 @@ define(
                         paramName: 'associatedIds',
                         getParamValue: function (associationType) {
                             var associations = this.getFormData().meta.associations;
+
                             return associations[associationType] ? associations[associationType].groupIds : [];
                         }.bind(this),
                         getModelIdentifier: function (model) {

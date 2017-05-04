@@ -35,18 +35,10 @@ pim_title.import_execution.index: 导入处理记录
 pim_title.import_execution.show: 导入处理记录|详情
 export profile:
   title: 导出配置文件
-  overview: 导出配置文件概述
-  create: 创建导出配置文件
   edit: 编辑导出配置文件
-export report:
-  overview: 导出报告
 import profile:
   title: 导入方案
-  overview: 导入方案列表
-  create: 创建导入方案
   edit: 编辑导入方案
-import report:
-  overview: 导入报表
 pim_importexport:
   acl:
     export_profile:

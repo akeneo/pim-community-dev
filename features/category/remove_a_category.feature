@@ -20,6 +20,7 @@ Feature: Remove a category
     And I should see the flash message "Category successfully removed"
     And I should not see the "Sandals" category under the "summer_collection" category
 
+  @skip
   Scenario: Remove a category with sub-categories
     Given I am on the "winter_collection" category page
     When I press the "Delete" button
@@ -35,7 +36,7 @@ Feature: Remove a category
     And I confirm the deletion
     Then I should be on the category "winter_collection" edit page
     And I should see the flash message "Category successfully removed"
-    When I expand the "Winter collection" category
+    When I expand the "winter_collection" category
     Then I should not see "Winter boots"
     When I edit the "caterpillar_2" product
     Then the category of "caterpillar_2" should be "2014_collection"
@@ -44,6 +45,7 @@ Feature: Remove a category
       | version | property   | value           |
       | 2       | categories | 2014_collection |
 
+  @skip
   Scenario: Remove a category with sub-categories and products linked
     Given I am on the "winter_collection" category page
     When I press the "Delete" button
@@ -58,6 +60,7 @@ Feature: Remove a category
       | code            | parent | label-en_US     |
       | 2013_collection |        | 2013 collection |
     And I am on the "2013_collection" category page
+    And I should see the text "Edit tree - 2013 collection"
     When I press the "Delete" button
     And I confirm the deletion
     Then I should be redirected on the category tree creation page

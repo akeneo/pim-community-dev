@@ -60,14 +60,13 @@ Feature: Edit an export
     And I should see the text "Not complete on all selected locales"
     And I should see the text "identifier1, identifier2, identifier3, identifier4"
 
+  @skip-nav
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "csv_footwear_product_export" export job edit page
     When I fill in the following information:
       | Label | My export |
     When I click on the Akeneo logo
-    Then I should see a confirm dialog with the following content:
-      | title   | Are you sure you want to leave this page?                           |
-      | content | You will lose changes to the export profile if you leave this page. |
+    Then I should see "You will lose changes to the export profile if you leave this page." in popup
 
   @skip
   Scenario: Successfully display a message when there are unsaved changes

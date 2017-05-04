@@ -337,9 +337,6 @@ class Form extends Base
         }, sprintf('Cannot find "%s" file field', $locator));
 
         $field->attachFile($path);
-        $this
-            ->getSession()
-            ->executeScript('$(\'.edit .field-input input[type="file"], .AknMediaField-fileUploaderInput\').trigger(\'change\');');
     }
 
     /**
@@ -476,14 +473,14 @@ class Form extends Base
      */
     public function fillPopinFields($fields)
     {
-        foreach ($fields as $field => $value) {
-            $field = $this->spin(function () use ($field) {
-                return $this->find('css', sprintf('.modal-body .control-label:contains("%s") input', $field));
-            }, sprintf('Cannot find "%s" in popin field', $field));
+        foreach ($fields as $fieldCode => $value) {
+            $field = $this->spin(function () use ($fieldCode) {
+                return $this->find('css', sprintf('.modal-body .control-label:contains("%s") input', $fieldCode));
+            }, sprintf('Cannot find "%s" in popin field', $fieldCode));
 
             $field->setValue($value);
             $this->getSession()
-                ->executeScript('$(\'.modal-body .control-label:contains("%s") input\').trigger(\'change\');');
+                ->executeScript(sprintf('$(\'.modal-body .control-label:contains("%s") input\').trigger(\'change\');', $fieldCode));
         }
     }
 

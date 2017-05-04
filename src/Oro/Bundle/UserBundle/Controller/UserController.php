@@ -9,7 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -71,15 +70,6 @@ class UserController extends Controller
     }
 
     /**
-     * @Template
-     * @AclAncestor("pim_user_user_index")
-     */
-    public function indexAction()
-    {
-        return [];
-    }
-
-    /**
      * Delete user
      *
      * @AclAncestor("pim_user_user_remove")
@@ -133,8 +123,8 @@ class UserController extends Controller
 
             $this->get('session')->remove('dataLocale');
 
-            return new RedirectResponse(
-                $this->get('router')->generate('oro_user_update', ['id' => $user->getId()])
+            return new JsonResponse(
+                ['route' => 'oro_user_update', 'params' => ['id' => $user->getId()]]
             );
         }
 

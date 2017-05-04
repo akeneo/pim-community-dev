@@ -16,7 +16,7 @@ class Index extends Base
     /**
      * @var string
      */
-    protected $path = '/';
+    protected $path = '#/';
 
     /**
      * Get the channel completeness ratio inside the completeness widget

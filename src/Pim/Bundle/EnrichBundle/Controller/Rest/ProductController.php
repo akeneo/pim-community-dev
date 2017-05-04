@@ -19,7 +19,6 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -79,29 +78,21 @@ class ProductController
     /** @var ConverterInterface */
     protected $productValueConverter;
 
-    /** @var NormalizerInterface */
-    protected $completenessCollectionNormalizer;
-
-    /** @var CompletenessCalculatorInterface */
-    protected $completenessCalculator;
-
     /**
-     * @param ProductRepositoryInterface      $productRepository
-     * @param AttributeRepositoryInterface    $attributeRepository
-     * @param ObjectUpdaterInterface          $productUpdater
-     * @param SaverInterface                  $productSaver
-     * @param NormalizerInterface             $normalizer
-     * @param ValidatorInterface              $validator
-     * @param UserContext                     $userContext
-     * @param ObjectFilterInterface           $objectFilter
-     * @param CollectionFilterInterface       $productEditDataFilter
-     * @param RemoverInterface                $productRemover
-     * @param ProductBuilderInterface         $productBuilder
-     * @param AttributeConverterInterface     $localizedConverter
-     * @param ProductFilterInterface          $emptyValuesFilter
-     * @param ConverterInterface              $productValueConverter
-     * @param NormalizerInterface             $completenessCollectionNormalizer
-     * @param CompletenessCalculatorInterface $completenessCalculator
+     * @param ProductRepositoryInterface   $productRepository
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param ObjectUpdaterInterface       $productUpdater
+     * @param SaverInterface               $productSaver
+     * @param NormalizerInterface          $normalizer
+     * @param ValidatorInterface           $validator
+     * @param UserContext                  $userContext
+     * @param ObjectFilterInterface        $objectFilter
+     * @param CollectionFilterInterface    $productEditDataFilter
+     * @param RemoverInterface             $productRemover
+     * @param ProductBuilderInterface      $productBuilder
+     * @param AttributeConverterInterface  $localizedConverter
+     * @param ProductFilterInterface       $emptyValuesFilter
+     * @param ConverterInterface           $productValueConverter
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -117,9 +108,7 @@ class ProductController
         ProductBuilderInterface $productBuilder,
         AttributeConverterInterface $localizedConverter,
         ProductFilterInterface $emptyValuesFilter,
-        ConverterInterface $productValueConverter,
-        NormalizerInterface $completenessCollectionNormalizer,
-        CompletenessCalculatorInterface $completenessCalculator
+        ConverterInterface $productValueConverter
     ) {
         $this->productRepository = $productRepository;
         $this->attributeRepository = $attributeRepository;
@@ -135,25 +124,6 @@ class ProductController
         $this->localizedConverter = $localizedConverter;
         $this->emptyValuesFilter = $emptyValuesFilter;
         $this->productValueConverter = $productValueConverter;
-        $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
-        $this->completenessCalculator = $completenessCalculator;
-    }
-
-    /**
-     * Edit product
-     *
-     * @param int $id
-     *
-     * @Template("PimEnrichBundle:Product:edit.html.twig")
-     * @AclAncestor("pim_enrich_product_index")
-     *
-     * @return array
-     */
-    public function editAction($id)
-    {
-        return [
-            'productId' => $id
-        ];
     }
 
     /**
@@ -178,7 +148,6 @@ class ProductController
             'internal_api',
             $normalizationContext
         );
-        $normalizedProduct['meta']['completenesses'] = $this->getNormalizedCompletenesses($product);
 
         return new JsonResponse($normalizedProduct);
     }
@@ -259,7 +228,6 @@ class ProductController
                 'internal_api',
                 $normalizationContext
             );
-            $normalizedProduct['meta']['completenesses'] = $this->getNormalizedCompletenesses($product);
 
             return new JsonResponse($normalizedProduct);
         }
@@ -393,27 +361,5 @@ class ProductController
         }
 
         $this->productUpdater->update($product, $data);
-    }
-
-    /**
-     * Get Product Completeness and normalize it
-     *
-     * @param ProductInterface $product
-     *
-     * @return array
-     */
-    protected function getNormalizedCompletenesses(ProductInterface $product)
-    {
-        $completenessCollection = $product->getCompletenesses();
-
-        if ($completenessCollection->isEmpty()) {
-            $newCompletenesses = $this->completenessCalculator->calculate($product);
-
-            foreach ($newCompletenesses as $completeness) {
-                $completenessCollection->add($completeness);
-            }
-        }
-
-        return $this->completenessCollectionNormalizer->normalize($completenessCollection, 'internal_api');
     }
 }

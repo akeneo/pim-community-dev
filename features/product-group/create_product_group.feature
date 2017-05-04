@@ -17,6 +17,7 @@ Feature: Product group creation
       | Code | Cross      |
       | Type | Cross sell |
     And I press the "Save" button
+    And I should see the text "[Cross]"
     Then I am on the product groups page
     And I should see groups Cross
 
