@@ -7,6 +7,7 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConf
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
+use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * Sorters configurator for product grid
@@ -53,6 +54,10 @@ class SortersConfigurator implements ConfiguratorInterface
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );
         foreach ($attributes as $attributeCode => $attribute) {
+            if (AttributeTypes::IDENTIFIER === $attribute['type']) {
+                $attributeCode = 'identifier';
+            }
+
             $attributeType = $attribute['type'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
             $columnExists = isset($columns[$attributeCode]);
