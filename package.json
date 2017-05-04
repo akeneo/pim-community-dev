@@ -12,6 +12,7 @@
     "grunt-eslint": "^19.0.0",
     "grunt-recess": "~1.0.1",
     "grunt-template-jasmine-requirejs": "~0.2.3",
+    "summernote": "0.6.5",
     "text-loader": "0.0.1",
     "time-grunt": "~1.1.0",
     "webpack": "^2.4.1",
@@ -28,5 +29,8 @@
   "license": "OSL-3.0",
   "bugs": {
     "url": "https://github.com/akeneo/pim-community-dev/issues"
+  },
+  "dependencies": {
+    "bundle-loader": "^0.5.5"
   }
 }

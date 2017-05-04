@@ -74,27 +74,25 @@ const importPaths = Object.assign(getImportPaths(),
 {
     text: 'text-loader',
     'pimuser/js/init-signin': path.resolve(__dirname, './src/Pim/Bundle/UserBundle/Resources/public/js/init-signin.js') ,
-    'bootstrap-modal': path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/bootstrap-modal.js')
-    // Replace summernote with webpack
+    'bootstrap-modal': path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/bootstrap-modal.js'),
+    summernote: path.resolve(__dirname, './node_modules/summernote/dist/summernote.min.js'),
+    translator: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/lib/translator.js')
 })
 
 console.log(importPaths['bootstrap-modal'])
 
 module.exports = {
+    target: 'web',
     entry: './src/Pim/Bundle/EnrichBundle/Resources/public/js/app.js',
     output: {
-        filename: './web/app.min.js'
+        publicPath: path.resolve(__dirname, './web/'),
+        filename: './web/app.min.js',
+        pathinfo: true
     },
-    // module: {
-    //     rules: [
-    //       { test: /\.(js)$/, use: 'babel-loader' }
-    //     ]
-    // },
     resolve: {
-        // modules: [ path.resolve(__dirname, 'src'), 'node_modules' ],
         alias: importPaths
     },
     plugins: [
-        new webpack.optimize.UglifyJsPlugin(),
+        // new webpack.optimize.UglifyJsPlugin(),
     ]
 }

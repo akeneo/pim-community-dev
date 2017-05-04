@@ -13,13 +13,15 @@ define(['module', 'jquery', 'underscore'], function (module, $, _) {
                 var deferred = $.Deferred();
                 var fetchers = {};
 
-                _.each(module.config().fetchers, function (config, name) {
+                var fetchers = module.config().fetchers || {}
+
+                _.each(fetchers, function (config, name) {
                     config = _.isString(config) ? { module: config } : config;
                     config.options = config.options || {};
                     fetchers[name] = config;
                 });
 
-                require(_.pluck(fetchers, 'module'), function () {
+                require.ensure(_.pluck(fetchers, 'module'), function () {
                     _.each(fetchers, function (fetcher) {
                         fetcher.loadedModule = new (require(fetcher.module))(fetcher.options);
                     });

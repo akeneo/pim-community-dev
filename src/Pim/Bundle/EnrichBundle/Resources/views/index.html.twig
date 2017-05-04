@@ -12,7 +12,8 @@
         {% block script %}
             {% include 'OroNavigationBundle:Js:dot.menu.js.twig' %}
             {% include 'OroNavigationBundle:Js:pinbar.js.twig' %}
-            {% include 'OroRequireJSBundle::scripts.html.twig' with {compressed: not app.debug} %}
+            <!-- {% include 'OroRequireJSBundle::scripts.html.twig' with {compressed: not app.debug} %} -->
+            <script type="text/javascript" src="{{asset('app.min.js')}}"></script>
             <script type="text/javascript">
                 {% if app.request.session.get('__target_path') %}
                     window.location.hash = '{{ app.request.session.get('__target_path') }}';
