@@ -234,14 +234,13 @@ class ProductController
     }
 
     /**
-     * @param Request $request
-     * @param string  $code
+     * @param string $code
      *
      * @throws NotFoundHttpException
      *
      * @return JsonResponse
      */
-    public function getAction(Request $request, $code)
+    public function getAction($code)
     {
         $product = $this->productRepository->findOneByIdentifier($code);
         if (null === $product) {
@@ -254,14 +253,13 @@ class ProductController
     }
 
     /**
-     * @param Request $request
-     * @param string  $code
+     * @param string $code
      *
      * @throws NotFoundHttpException
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function deleteAction(Request $request, $code)
+    public function deleteAction($code)
     {
         $product = $this->productRepository->findOneByIdentifier($code);
         if (null === $product) {
