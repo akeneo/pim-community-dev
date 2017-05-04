@@ -52,7 +52,7 @@ class InGroupSorterSpec extends ObjectBehavior
             [
                 'in_group.group_code' => [
                     'order'   => 'ASC',
-                    'missing' => '_last',
+                    'missing' => '_first',
                     'unmapped_type'=> 'boolean',
                 ],
             ]

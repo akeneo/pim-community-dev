@@ -63,7 +63,7 @@ class InGroupSorter extends BaseFieldSorter implements FieldSorterInterface
                 $sortClause = [
                     $field => [
                         'order'   => 'ASC',
-                        'missing' => '_last',
+                        'missing' => '_first',
                         'unmapped_type'=> 'boolean',
                     ],
                 ];
