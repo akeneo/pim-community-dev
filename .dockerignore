@@ -1,0 +1,15 @@
+*.md
+.git
+.gitignore
+.idea
+.tmp
+docker-compose.yml
+phpunit.xml.dist
+Dockerfile
+Makefile
+tests
+app/cache
+app/logs
+app/sessions
+app/file_storage
+vendor

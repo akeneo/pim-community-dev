@@ -47,6 +47,8 @@ RUN apt-get update && \
     curl https://getcomposer.org/composer.phar > /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 
 COPY docker/akeneo.local.conf /etc/apache2/sites-available/000-default.conf
+COPY . /app
+RUN chown -R docker:docker /app
 USER docker
 
 CMD ["sudo", "/usr/sbin/apache2ctl", "-D", "FOREGROUND"]

@@ -5,12 +5,7 @@ else
     PLATFORM := $(shell uname -s)
 endif
 
-ifeq ($(PLATFORM), Windows)
-	APP=docker-compose exec -T app
-else
-	APP=docker-compose exec --user docker -T app
-endif
-
+APP=docker-compose exec --user docker -T app
 CONSOLE=$(APP) /usr/bin/php app/console
 
 .PHONY: help install pim-install asset-install start stop composer db-create clear-all clean
