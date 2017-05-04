@@ -161,12 +161,12 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
             $normalizedCompleteness['completeness'] = $this->normalizer->normalize($completeness, $format, $context);
             $normalizedCompleteness['missing'] = [];
 
-                foreach ($completeness->getMissingAttributes() as $attribute) {
-                    $normalizedCompleteness['missing'][] = [
-                        'code'   => $attribute->getCode(),
-                        'labels' => $this->normalizeAttributeLabels($attribute, $localeCodes),
-                    ];
-                }
+            foreach ($completeness->getMissingAttributes() as $attribute) {
+                $normalizedCompleteness['missing'][] = [
+                    'code'   => $attribute->getCode(),
+                    'labels' => $this->normalizeAttributeLabels($attribute, $localeCodes),
+                ];
+            }
 
             $normalizedCompletenesses[$channelCode] = $normalizedCompleteness;
         }
