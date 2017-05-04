@@ -91,7 +91,7 @@ class CursorSpec extends ObjectBehavior
         $this->valid()->shouldReturn(false);
 
         // check behaviour after the end of data
-        $this->current()->shouldReturn(false);
+        $this->current()->shouldReturn(null);
         $this->key()->shouldReturn(null);
     }
 }

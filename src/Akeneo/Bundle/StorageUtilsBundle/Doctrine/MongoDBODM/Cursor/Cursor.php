@@ -70,9 +70,6 @@ class Cursor extends AbstractCursor
     {
         parent::next();
         $this->currentDocument = $this->getCursor()->getNext();
-        if (null === $this->currentDocument) {
-            $this->currentDocument = false;
-        }
     }
 
     /**
