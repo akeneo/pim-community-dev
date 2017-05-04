@@ -16,6 +16,7 @@ Feature: Revert product attributes to a previous version
     Given I am on the "jeans" product page
     When I uncheck the "Handmade" switch
     And I save the product
+    And I should not see the text "There are unsaved changes."
     And the history of the product "jeans" has been built
     And I open the history
     Then I should see 2 versions in the history
@@ -27,6 +28,7 @@ Feature: Revert product attributes to a previous version
     And I add available attributes Handmade
     When I check the "Handmade" switch
     And I save the product
+    And I should not see the text "There are unsaved changes."
     And the history of the product "short" has been built
     And I open the history
     Then I should see 2 versions in the history

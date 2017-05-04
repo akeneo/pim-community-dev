@@ -12,6 +12,7 @@ pimee_workflow:
     proposal:
       modal.title: Jätä kommentti (valinnainen - 255 merkkiä max.)
   proposal:
+    overview: Ehdotukset
     partial_accept:
       modal.title: Hyväksy osittaisia tietoja
       modal.label: Jätä kommentti (valinnainen)

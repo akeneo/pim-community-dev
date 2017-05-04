@@ -119,7 +119,6 @@ confirmation:
   product:
     publish: '¿Está seguro que desea publicar este producto?'
     unpublish: '¿Está seguro que desea quitar la publicación este producto ?'
-proposal.overview: Propuestas
 Attributes.title: Atributos
 Completeness.title: Completitud
 publish_product.steps.publish_product_tasklet.title: Publicar producto

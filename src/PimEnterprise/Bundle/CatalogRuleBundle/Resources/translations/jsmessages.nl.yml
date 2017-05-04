@@ -1,4 +1,12 @@
 pimee_catalog_rule:
+  overview: Regels
+  execution_button: Voer regels uit
+  popin:
+    execute_rules:
+      confirm_title: Bevestiging uitvoeren
+      confirm_content: Weet u zeker dat u alle regels wilt uitvoeren? (dit kan even duren)
+  notification:
+    launched: De uitvoering van de regels is gelanceerd. U wordt op de hoogte gebracht wanneer dit is voltooid.
   attribute:
     list:
       code.label: Code

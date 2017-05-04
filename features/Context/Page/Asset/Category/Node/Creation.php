@@ -13,5 +13,5 @@ use Context\Page\Asset\Category\Tree\Creation as TreeCreation;
 class Creation extends TreeCreation
 {
     /** @var string */
-    protected $path = '/enrich/asset-category-tree/create/{id}';
+    protected $path = '#/enrich/asset-category-tree/create/{id}';
 }

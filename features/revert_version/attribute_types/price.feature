@@ -20,6 +20,7 @@ Feature: Revert product attributes to a previous version
     And I visit the "Marketing" group
     And I change the "Price" to "42 EUR"
     And I save the product
+    And I should not see the text "There are unsaved changes"
     And the history of the product "jeans" has been built
     And I open the history
     Then I should see 2 versions in the history
@@ -40,9 +41,11 @@ Feature: Revert product attributes to a previous version
     And I visit the "Marketing" group
     And I change the "Price" to "49 EUR"
     And I save the product
+    And I should not see the text "There are unsaved changes"
     And I visit the "Marketing" group
     And I change the "Price" to "39 EUR"
     And I save the product
+    And I should not see the text "There are unsaved changes"
     And the history of the product "t-shirt" has been built
     When I open the history
     Then I should see 3 versions in the history
@@ -63,6 +66,7 @@ Feature: Revert product attributes to a previous version
     And I visit the "Marketing" group
     And I change the "Price" to "19.99 EUR"
     And I save the product
+    And I should not see the text "There are unsaved changes"
     And the history of the product "marcel" has been built
     When I open the history
     Then I should see 2 versions in the history

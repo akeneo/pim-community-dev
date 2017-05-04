@@ -39,6 +39,7 @@ Feature: Update product history when rules are executed
       """
     And the product rule "set_description" is executed
     And the history of the product "converse-sneakers" has been built
+    And I am on the products page
     And I am on the "converse-sneakers" product page
     And I open the history
     Then there should be 3 updates
@@ -84,6 +85,7 @@ Feature: Update product history when rules are executed
     And the history of the product "converse-sneakers" has been built
     And the product rule "set_name" is executed
     And the history of the product "converse-sneakers" has been built
+    And I am on the products page
     And I am on the "converse-sneakers" product page
     And I open the history
     Then there should be 4 updates

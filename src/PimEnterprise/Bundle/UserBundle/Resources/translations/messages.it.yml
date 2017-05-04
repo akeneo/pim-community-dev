@@ -1,0 +1,17 @@
+user:
+  email:
+    notifications: Notifiche email
+  proposals:
+    notifications:
+      to_review: Quando una nuova proposta è da revisionare
+      state: Quando una proposta è accettata o rifiutata
+      "yes": true
+      "no": false
+  asset_delay_reminder: Promemoria di ritardo dell'asset (in giorni)
+  default_published_product_grid_view:
+    label: Griglia di visualizzazione predefinita dei prodotti pubblicati
+Default asset tree: Struttura ad albero predefinita per gli asset
+pimee_user:
+  user:
+    tab:
+      notifications.title: Notifiche

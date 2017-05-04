@@ -120,7 +120,6 @@ confirmation:
   product:
     publish: Sind Sie sicher, dass Sie dieses Produkt veröffentlichen möchten?
     unpublish: Sind Sie sicher, dass Sie diesem Produkt die Veröffentlichung entziehen möchten?
-proposal.overview: Vorschläge
 Attributes.title: Attribute
 Completeness.title: Vollständigkeit
 publish_product.steps.publish_product_tasklet.title: Produkte veröffentlichen

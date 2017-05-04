@@ -17,6 +17,7 @@ Feature: Revert product attributes to a previous version
     And I switch the scope to "tablet"
     And I change the "Description" to "A really nice t-shirt !"
     And I save the product
+    And I should not see the text "There are unsaved changes"
     And the history of the product "t-shirt" has been built
     When I open the history
     Then I should see 2 versions in the history
@@ -30,6 +31,7 @@ Feature: Revert product attributes to a previous version
     And I switch the scope to "tablet"
     And I change the "Description" to "One does not simply fill a description."
     And I save the product
+    And I should not see the text "There are unsaved changes"
     And the history of the product "marcel" has been built
     When I open the history
     Then I should see 2 versions in the history

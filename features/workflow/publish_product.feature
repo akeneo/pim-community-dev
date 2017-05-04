@@ -154,5 +154,5 @@ Feature: Publish a product
       | sku       | family  | name-en_US |
       | my-jacket | jackets | Jackets    |
     And I am on the "my-jacket" published product show page
-    When I press the "Back to grid" button
+    When I click back to grid
     Then I should be on the published index page

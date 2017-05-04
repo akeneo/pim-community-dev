@@ -26,18 +26,76 @@ config:
                     options:
                         urls:
                             get: pimee_enrich_channel_asset_transformation
+        pim/controller-registry:
+            defaultController:
+                module: pim/controller/template
+            controllers:
+                pimee_enrich_locale_edit:
+                    module: pim/controller/form
+                    aclResourceId: pimee_enrich_locale_edit_permissions
+                pimee_product_asset_edit:
+                    module: pim/controller/form
+                    aclResourceId: pimee_product_asset_index
+                pimee_product_asset_mass_edit_asset_action_choose:
+                    module: pim/controller/form
+                    aclResourceId: pim_enrich_mass_edit
+                pimee_product_asset_mass_edit_asset_action_configure:
+                    module: pim/controller/form
+                    aclResourceId: pim_enrich_mass_edit
+                pimee_product_asset_mass_edit_asset_action_perform:
+                    module: pim/controller/form
+                    aclResourceId: pim_enrich_mass_edit
+                pimee_product_asset_reference_delete:
+                    module: pim/controller/redirect
+                pimee_product_asset_variation_delete:
+                    module: pim/controller/redirect
+                pimee_product_asset_variation_reset:
+                    module: pim/controller/redirect
+                pimee_product_asset_variations_reset:
+                    module: pim/controller/redirect
+                pimee_asset_categorytree_create:
+                    module: pim/controller/form
+                    aclResourceId: pimee_product_asset_category_create
+                pimee_asset_categorytree_edit:
+                    module: pim/controller/form
+                    aclResourceId: pimee_product_asset_category_edit
+                pimee_asset_categorytree_remove:
+                    module: pim/controller/template
+                    aclResourceId: pimee_asset_categorytree_remove
+                pimee_workflow_product_draft_mass_approve:
+                    module: pim/controller/redirect
+                pimee_workflow_product_draft_mass_approve:
+                    module: pim/controller/redirect
+                pimee_workflow_mass_edit_published_action_choose:
+                    module: pim/controller/form
+                pimee_workflow_mass_edit_published_action_configure:
+                    module: pim/controller/form
+                pimee_workflow_mass_edit_published_action_perform:
+                    module: pim/controller/form
+                teamwork_assistant_project_show:
+                    module: pim/controller/template
+                pimee_workflow_proposal_index:
+                    module: pim/controller/common/index
+                    config:
+                        entity: proposal
+                pimee_catalog_rule_rule_index:
+                    module: pim/controller/common/index
+                    aclResourceId: pimee_catalog_rule_rule_view_permissions
+                    config:
+                        entity: rule
+                pimee_workflow_published_product_index:
+                    module: pim/controller/template
+                    aclResourceId: pimee_workflow_published_product_index
+
 
     map:
         '*':
-            pim/product-manager:        pimee/product-manager
-            pim/job/common/edit/launch: pimee/job/common/edit/launch
-            pim/common/redirect:        pimee/common/redirect
+            pim/product-manager:             pimee/product-manager
+            pim/job/common/edit/launch:      pimee/job/common/edit/launch
         pimee/product-manager:
             pim/product-manager: pim/product-manager
         pimee/job/common/edit/launch:
             pim/job/common/edit/launch: pim/job/common/edit/launch
-        pimee/common/redirect:
-            pim/common/redirect: pim/common/redirect
 
     paths:
         pimee/product-view-form:            pimenterpriseenrich/js/product/view-form
@@ -51,7 +109,7 @@ config:
         pimee/product-edit-form/attributes/copy:                      pimenterpriseenrich/js/product/form/attributes/copy
         pimee/product-edit-form/attributes/read-only-attribute-group: pimenterpriseenrich/js/product/form/attributes/read-only-attribute-group
         pimee/product-edit-form/attributes/read-only-locale:          pimenterpriseenrich/js/product/form/attributes/read-only-locale
-        pimee/product-edit-form/attributes/read-only-attribute:        pimenterpriseenrich/js/product/form/attributes/read-only-attribute
+        pimee/product-edit-form/attributes/read-only-attribute:       pimenterpriseenrich/js/product/form/attributes/read-only-attribute
         pimee/product-edit-form/attributes/smart-attribute:           pimenterpriseenrich/js/product/form/attributes/smart-attribute
         pimee/product-edit-form/meta/owner-groups:                    pimenterpriseenrich/js/product/form/meta/owner-groups
         pimee/product-edit-form/panel/history/revert:                 pimenterpriseenrich/js/product/form/panel/history/revert
@@ -62,9 +120,11 @@ config:
         pim/common/tab/asset-transformation:                          pimenterpriseenrich/js/channel/tab/asset-transformation
 
         # Common
-        pimee/common/tab/permission:  pimenterpriseenrich/js/form/common/tab/permission
-        pimee/job/common/edit/launch: pimenterpriseenrich/js/job/common/edit/launch
-        pimee/common/redirect:        pimenterpriseenrich/js/form/common/redirect
+        pimee/common/tab/permission:       pimenterpriseenrich/js/form/common/tab/permission
+        pimee/job/common/edit/launch:      pimenterpriseenrich/js/job/common/edit/launch
+
+        #Job
+        pimee/job/export/edit/edit-button: pimenterpriseenrich/js/job/export/edit/edit-button
 
         # Filters
         pimee/filter/attribute/assets-collection: pimenterpriseenrich/js/filter/attribute/assets-collection

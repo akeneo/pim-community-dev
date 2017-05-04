@@ -18,45 +18,16 @@ namespace PimEnterprise\Component\Workflow\Exception;
  */
 class PublishedProductConsistencyException extends \Exception
 {
-    /** @var string */
-    protected $route;
-
-    /** @var array */
-    protected $routeParams;
-
     /**
      * @param string     $message
      * @param int        $code
      * @param \Exception $previous
-     * @param string     $route
-     * @param array      $routeParams
      */
     public function __construct(
-        $message = "",
+        $message,
         $code = 409,
-        \Exception $previous = null,
-        $route = null,
-        $routeParams = []
+        \Exception $previous = null
     ) {
         parent::__construct($message, $code, $previous);
-
-        $this->route = $route;
-        $this->routeParams = $routeParams;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRoute()
-    {
-        return $this->route;
-    }
-
-    /**
-     * @return array
-     */
-    public function getRouteParams()
-    {
-        return $this->routeParams;
     }
 }

@@ -7,14 +7,16 @@ define(
         'underscore',
         'pimee/product-edit-form/attributes/copy',
         'pim/fetcher-registry',
-        'pimee/product-draft-fetcher'
+        'pimee/product-draft-fetcher',
+        'backbone'
     ],
     function (
         $,
         _,
         Copy,
         FetcherRegistry,
-        Fetcher
+        Fetcher,
+        Backbone
     ) {
         describe('Copy extension override', function () {
 
@@ -22,7 +24,7 @@ define(
             var fetcher;
 
             beforeEach(function () {
-                copy = new Copy();
+                copy = new Copy({ model: new Backbone.Model() });
                 fetcher = new Fetcher();
 
                 spyOn(FetcherRegistry, 'getFetcher').and.returnValue(fetcher);

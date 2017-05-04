@@ -10,13 +10,17 @@ Feature: Revert product attributes to a previous version
 
   @jira https://akeneo.atlassian.net/browse/PIM-3301
   Scenario: Successfully revert a product date and leave it empty
-    And the following product:
-    | sku           | family  |
-    | akeneo-jacket | jackets |
-    When I edit the "akeneo-jacket" product
+    Given I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | akeneo-jacket |
+      | family | Jackets       |
+    And I press the "Save" button in the popin
+    And I wait to be on the "akeneo-jacket" product page
     And I switch the scope to "mobile"
     And I change the "Release date" to "05/20/2014"
     And I save the product
+    And I should not see the text "There are unsaved changes."
     And the history of the product "akeneo-jacket" has been built
     And I open the history
     Then I should see 2 versions in the history
@@ -32,6 +36,7 @@ Feature: Revert product attributes to a previous version
     And I switch the scope to "mobile"
     When I change the "Release date" to "01/01/2001"
     And I save the product
+    And I should not see the text "There are unsaved changes."
     And the history of the product "akeneo-jacket" has been built
     And I open the history
     Then I should see 2 versions in the history
@@ -47,6 +52,7 @@ Feature: Revert product attributes to a previous version
     And I switch the scope to "mobile"
     When I change the "Release date" to "01/01/2001"
     And I save the product
+    And I should not see the text "There are unsaved changes."
     And the history of the product "akeneo-jacket" has been built
     And I open the history
     Then I should see 2 versions in the history

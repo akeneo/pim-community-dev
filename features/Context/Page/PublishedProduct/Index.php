@@ -15,5 +15,5 @@ class Index extends BaseIndex
     /**
      * @var string
      */
-    protected $path = '/workflow/published-product/';
+    protected $path = '#/workflow/published-product/';
 }

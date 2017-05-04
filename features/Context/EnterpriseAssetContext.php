@@ -56,7 +56,9 @@ class EnterpriseAssetContext extends RawMinkContext
      */
     public function iGenerateVariationFile($channel)
     {
-        $this->getCurrentPage()->generateVariationFile($channel);
+        $this->spin(function () use ($channel) {
+            return $this->getCurrentPage()->generateVariationFile($channel);
+        }, 'Cannot generate file variation');
     }
 
     /**
@@ -86,13 +88,17 @@ class EnterpriseAssetContext extends RawMinkContext
      */
     public function iCanGenerateChannel($not, $channel)
     {
-        try {
-            $this->getCurrentPage()->findVariationGenerateZone($channel);
-        } catch (ElementNotFoundException $e) {
-            if (!$not) {
-                throw $e;
+        $this->spin(function () use ($channel, $not) {
+            try {
+                $this->getCurrentPage()->findVariationGenerateZone($channel);
+            } catch (ElementNotFoundException $e) {
+                if (!$not) {
+                    throw $e;
+                }
             }
-        }
+
+            return true;
+        }, sprintf('It was not possible to check that channel was %s possible to generate', $not));
     }
 
     /**

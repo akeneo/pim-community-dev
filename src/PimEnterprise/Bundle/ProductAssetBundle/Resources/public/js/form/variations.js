@@ -5,10 +5,10 @@ define(
         'backbone',
         'oro/delete-confirmation',
         'oro/translator',
-        'oro/navigation',
+        'pim/router',
         'pimee/productasset/uploader'
     ],
-    function ($, _, Backbone, DeleteConfirmation, __, Navigation, Uploader) {
+    function ($, _, Backbone, DeleteConfirmation, __, router, Uploader) {
         'use strict';
 
         return Backbone.View.extend({
@@ -52,8 +52,9 @@ define(
                 }
                 var confirmModal = new DeleteConfirmation(options);
                 confirmModal.on('ok', function () {
-                    Navigation.getInstance().setLocation(targetUrl);
+                    router.redirect(targetUrl);
                 });
+
                 return confirmModal;
             }
         });

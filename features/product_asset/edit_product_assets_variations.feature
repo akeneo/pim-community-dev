@@ -75,7 +75,7 @@ Feature: Edit product assets variations
     And I confirm the deletion
     Then I should be able to generate Mobile from reference
     Given I generate Mobile variation from reference
-    Then I should be able to generate Mobile from reference
+    Then I should not be able to generate Mobile from reference
 
   Scenario: Successfully check the size of the file
     Given I am on the "bridge" asset page

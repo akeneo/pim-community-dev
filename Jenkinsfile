@@ -207,7 +207,7 @@ def runBehatTest(features, phpVersion) {
         dir("behat") {
             deleteDir()
             unstash "project_files_full"
-            tags = "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce"
+            tags = "~skip&&~skip-pef&&~skip-nav&&~doc&&~skip-nav&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce"
 
             // Configure the PIM
             sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"

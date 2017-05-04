@@ -13,5 +13,5 @@ use Context\Page\Category\CategoryView;
 class Index extends CategoryView
 {
     /** @var string */
-    protected $path = '/enrich/asset-category-tree/';
+    protected $path = '#/enrich/asset-category-tree/';
 }

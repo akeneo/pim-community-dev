@@ -1,0 +1,61 @@
+pimee_catalog_rule:
+  overview: Regole
+  execution_button: Esegui le regole
+  popin:
+    execute_rules:
+      confirm_title: Conferma esecuzione
+      confirm_content: Sei sicuro di voler eseguire tutte le regole? (potrebbe richiedere molto tempo)
+  notification:
+    launched: L'esecuzione delle regole è stata lanciata. Sarai avvisato quando finisce.
+  attribute:
+    list:
+      code.label: Codice
+      condition.label: Condizione
+      action.label: Azione
+      no_rule_yet.label: Nessuna regola per ora
+  rule:
+    condition:
+      if.label: se
+    action:
+      then.label: allora
+      set_value.label: è impostato in
+      copy_value.label: viene copiato in
+      set.label: è impostato in
+      copy.label: viene copiato in
+      add.label: viene aggiunto in
+      remove.label: viene rimosso da
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: Conferma esecuzione
+          confirm_content: Sei sicuro di voler eseguire la regola?
+          confirm_ok: OK
+      mass_edit_action:
+        confirm_title: Conferma del calcolo
+        confirm_content: Sei sicuro di voler calcolare i prodotti interessati dalle regole?
+        confirm_ok: OK
+      mass_action:
+        execute:
+          confirm_ok: OK
+          confirm_title: Conferma esecuzione
+          confirm_content: Sei sicuro di voler eseguire le regole selezionate?
+          success: L'azione di massa per eseguire le regole selezionate è stata lanciata. Sarai avvisato quando finisce
+          error: Si è verificato un errore durante la creazione delle regole.
+          empty_selection: Nessuna regola selezionata.
+        delete:
+          confirm_ok: OK
+          confirm_title: Conferma cancellazione
+          confirm_content: Sei sicuro di voler eliminare le regole selezionate?
+          success: Hai eliminato correttamente le regole.
+          error: Si è verificato un errore durante la cancellazione delle regole.
+          empty_selection: Nessuna regola selezionata.
+confirmation:
+  remove:
+    rule: Sei sicuro di voler eliminare questa regola? Non è possibile annullare questa azione
+flash:
+  rule:
+    removed: Regola rimossa con successo
+    impacted_product_count: L'azione di massa per calcolare i prodotti interessati dalle regole è stata lanciata. Sarai avvisato quando finisce.
+    executed: L'esecuzione della regola è stata lanciata. Sarai avvisato quando finisce.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Impostazioni delle regole
