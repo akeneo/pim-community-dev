@@ -6,7 +6,7 @@
 - PIM-6378: Fix translations for channel labels in export builder
 - PIM-6377: Fix potential notice in price property formatter
 - PIM-6387: Fix HTTP code returned when the token is invalid or expired
-- PIM-6314: Fix parameters inversion in Pim\Component\Catalog\Builder\ProductBuilder::createProductValue
+- PIM-6388: Fix parameters inversion in Pim\Component\Catalog\Builder\ProductBuilder::createProductValue
 
 # 1.7.3 (2017-04-14)
 
