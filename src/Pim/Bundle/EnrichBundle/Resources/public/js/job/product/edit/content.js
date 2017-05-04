@@ -12,7 +12,7 @@ define(
         'underscore',
         'oro/translator',
         'backbone',
-        'text!pim/template/export/product/edit/content',
+        'text-loader!pim/template/export/product/edit/content',
         'pim/form'
     ],
     function (

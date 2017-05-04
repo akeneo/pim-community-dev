@@ -12,7 +12,7 @@ define([
         'pim/common/properties/translation',
         'pim/security-context',
         'pim/fetcher-registry',
-        'text!pim/template/form/properties/translation'
+        'text-loader!pim/template/form/properties/translation'
     ],
     function (
         _,

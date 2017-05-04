@@ -6,7 +6,7 @@ define([
         'module',
         'routing',
         'pim/form/common/save',
-        'text!pim/template/form/save'
+        'text-loader!pim/template/form/save'
     ],
     function(
         _,

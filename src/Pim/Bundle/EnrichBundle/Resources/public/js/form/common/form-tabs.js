@@ -13,7 +13,7 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'text!pim/template/form/form-tabs'
+        'text-loader!pim/template/form/form-tabs'
     ],
     function ($, _, Backbone, BaseForm, template) {
         return BaseForm.extend({

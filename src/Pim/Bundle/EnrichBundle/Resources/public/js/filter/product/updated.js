@@ -6,7 +6,7 @@ define([
     'oro/translator',
     'pim/filter/filter',
     'routing',
-    'text!pim/template/filter/product/updated',
+    'text-loader!pim/template/filter/product/updated',
     'pim/fetcher-registry',
     'pim/user-context',
     'pim/i18n',

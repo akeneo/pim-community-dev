@@ -11,7 +11,7 @@ define(
     [
         'pim/field',
         'underscore',
-        'text!pim/template/product/field/textarea',
+        'text-loader!pim/template/product/field/textarea',
         'summernote'
     ],
     function (

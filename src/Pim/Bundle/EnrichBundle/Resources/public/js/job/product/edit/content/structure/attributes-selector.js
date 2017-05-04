@@ -15,8 +15,8 @@ define(
         'pim/i18n',
         'pim/user-context',
         'pim/fetcher-registry',
-        'text!pim/template/export/product/edit/content/structure/attributes-selector',
-        'text!pim/template/export/product/edit/content/structure/attribute-list'
+        'text-loader!pim/template/export/product/edit/content/structure/attributes-selector',
+        'text-loader!pim/template/export/product/edit/content/structure/attribute-list'
     ],
     function (
         $,

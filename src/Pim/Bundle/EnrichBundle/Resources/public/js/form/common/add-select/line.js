@@ -12,7 +12,7 @@ define(
         'jquery',
         'underscore',
         'backbone',
-        'text!pim/template/form/add-select/line'
+        'text-loader!pim/template/form/add-select/line'
     ],
     function (
         $,

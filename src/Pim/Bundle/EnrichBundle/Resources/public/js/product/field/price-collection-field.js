@@ -12,7 +12,7 @@ define([
         'pim/field',
         'underscore',
         'pim/fetcher-registry',
-        'text!pim/template/product/field/price-collection'
+        'text-loader!pim/template/product/field/price-collection'
     ],
     function ($, Field, _, FetcherRegistry, fieldTemplate) {
     return Field.extend({

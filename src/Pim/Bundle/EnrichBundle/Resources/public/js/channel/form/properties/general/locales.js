@@ -13,7 +13,7 @@ define([
         'oro/translator',
         'pim/form',
         'pim/fetcher-registry',
-        'text!pim/template/channel/tab/properties/general/locales',
+        'text-loader!pim/template/channel/tab/properties/general/locales',
         'jquery.select2'
     ],
     function (

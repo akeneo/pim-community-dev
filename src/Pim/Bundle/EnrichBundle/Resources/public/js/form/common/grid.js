@@ -7,7 +7,7 @@ define([
         'oro/datagrid-builder',
         'routing',
         'oro/mediator',
-        'text!pim/template/form/grid',
+        'text-loader!pim/template/form/grid',
         'oro/pageable-collection',
         'pim/datagrid/state'
     ],

@@ -6,7 +6,7 @@ define([
         'oro/mediator',
         'pim/form',
         'pim/fetcher-registry',
-        'text!oro/template/system/config'
+        'text-loader!oro/template/system/config'
     ],
     function(
         Backbone,

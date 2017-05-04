@@ -13,7 +13,7 @@ define(
         'underscore',
         'oro/translator',
         'backbone',
-        'text!pim/template/form/edit-form',
+        'text-loader!pim/template/form/edit-form',
         'pim/form',
         'oro/mediator',
         'pim/fetcher-registry',

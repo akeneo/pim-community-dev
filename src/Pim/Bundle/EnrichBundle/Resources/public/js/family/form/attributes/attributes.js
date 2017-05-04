@@ -12,7 +12,7 @@ define([
         'oro/translator',
         'jquery',
         'pim/form',
-        'text!pim/template/family/tab/attributes/attributes',
+        'text-loader!pim/template/family/tab/attributes/attributes',
         'pim/user-context',
         'pim/security-context',
         'pim/i18n',

@@ -13,7 +13,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pim/template/variant-group/form/no-attribute'
+        'text-loader!pim/template/variant-group/form/no-attribute'
     ],
     function (
         $,

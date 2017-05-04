@@ -14,7 +14,7 @@ define(
         'backbone',
         'pim/form',
         'oro/mediator',
-        'text!pim/template/product/panel/container'
+        'text-loader!pim/template/product/panel/container'
     ],
     function ($, _, Backbone, BaseForm, mediator, template) {
         return BaseForm.extend({

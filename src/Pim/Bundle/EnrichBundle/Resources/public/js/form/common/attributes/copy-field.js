@@ -11,7 +11,7 @@ define([
         'backbone',
         'underscore',
         'pim/field',
-        'text!pim/template/form/tab/attribute/copy-field',
+        'text-loader!pim/template/form/tab/attribute/copy-field',
         'pim/i18n',
         'oro/mediator'
     ],

@@ -11,7 +11,7 @@ define([
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pim/template/family/tab/attributes/toolbar'
+        'text-loader!pim/template/family/tab/attributes/toolbar'
     ],
     function (
         _,

@@ -1,5 +1,5 @@
 /* global define */
-define(['underscore', 'backbone', 'text!pim/template/datagrid/actions-group'],
+define(['underscore', 'backbone', 'text-loader!pim/template/datagrid/actions-group'],
 function(_, Backbone, groupTemplate) {
     'use strict';
 

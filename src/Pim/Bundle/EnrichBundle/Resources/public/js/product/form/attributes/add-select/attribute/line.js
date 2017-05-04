@@ -12,7 +12,7 @@ define(
         'jquery',
         'underscore',
         'pim/common/add-select/line',
-        'text!pim/template/product/add-select/attribute/line'
+        'text-loader!pim/template/product/add-select/attribute/line'
     ],
     function (
         $,

@@ -11,7 +11,7 @@ define(
     [
         'underscore',
         'pim/form',
-        'text!pim/template/product/download-pdf',
+        'text-loader!pim/template/product/download-pdf',
         'routing',
         'pim/user-context'
     ],

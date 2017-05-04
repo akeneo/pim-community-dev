@@ -15,7 +15,7 @@ define([
     'pim/fetcher-registry',
     'pim/user-context',
     'pim/i18n',
-    'text!pim/template/filter/attribute/boolean',
+    'text-loader!pim/template/filter/attribute/boolean',
     'bootstrap.bootstrapswitch'
 ], function (
     $,

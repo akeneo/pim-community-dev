@@ -13,7 +13,7 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'text!pim/template/product/tab/categories',
+        'text-loader!pim/template/product/tab/categories',
         'pim/user-context',
         'routing',
         'pim/tree/associate',

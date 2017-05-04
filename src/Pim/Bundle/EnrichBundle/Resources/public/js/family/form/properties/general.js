@@ -13,7 +13,7 @@ define([
     'pim/form',
     'pim/fetcher-registry',
     'pim/common/property',
-    'text!pim/template/form/tab/section',
+    'text-loader!pim/template/form/tab/section',
     'oro/loading-mask',
     'jquery.select2'
     ],

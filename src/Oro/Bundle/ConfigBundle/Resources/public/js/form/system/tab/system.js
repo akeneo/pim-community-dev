@@ -2,7 +2,7 @@
 
 define([
         'pim/form',
-        'text!oro/template/system/tab/system'
+        'text-loader!oro/template/system/tab/system'
     ],
     function(
         BaseForm,

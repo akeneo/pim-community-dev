@@ -70,6 +70,16 @@ const replacePathSegments = (paths, bundle) => {
     return paths;
 }
 
+const importPaths = Object.assign(getImportPaths(),
+{
+    text: 'text-loader',
+    'pimuser/js/init-signin': path.resolve(__dirname, './src/Pim/Bundle/UserBundle/Resources/public/js/init-signin.js') ,
+    'bootstrap-modal': path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/bootstrap-modal.js')
+    // Replace summernote with webpack
+})
+
+console.log(importPaths['bootstrap-modal'])
+
 module.exports = {
     entry: './src/Pim/Bundle/EnrichBundle/Resources/public/js/app.js',
     output: {
@@ -81,7 +91,8 @@ module.exports = {
     //     ]
     // },
     resolve: {
-        alias: getImportPaths()
+        // modules: [ path.resolve(__dirname, 'src'), 'node_modules' ],
+        alias: importPaths
     },
     plugins: [
         new webpack.optimize.UglifyJsPlugin(),

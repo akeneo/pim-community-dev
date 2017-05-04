@@ -2,7 +2,7 @@
 
 define([
         'pim/form',
-        'text!oro/template/system/group/notification',
+        'text-loader!oro/template/system/group/notification',
         'bootstrap.bootstrapswitch'
     ],
     function(

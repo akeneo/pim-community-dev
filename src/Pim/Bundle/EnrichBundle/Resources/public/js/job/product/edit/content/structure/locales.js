@@ -11,7 +11,7 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
-        'text!pim/template/export/product/edit/content/structure/locales',
+        'text-loader!pim/template/export/product/edit/content/structure/locales',
         'pim/form',
         'pim/fetcher-registry',
         'jquery.select2'
