@@ -17,6 +17,7 @@ Feature: Create an export
       | Label | Products export       |
       | Job   | Product export in CSV |
     And I press the "Save" button
+    And I should not see the text "There are unsaved changes"
     And I am on the exports page
     And the grid should contain 1 element
     And I should see export profile PRODUCT_EXPORT

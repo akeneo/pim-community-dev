@@ -57,10 +57,7 @@ define(
             configure: function () {
                 return $.when(FetcherRegistry.initialize(), initTranslator.fetch())
                     .then(function () {
-                        messenger.setup({
-                            container: '.flash-messages-holder',
-                            template: this.flashTemplate
-                        });
+                        messenger.showQueuedMessages();
 
                         init();
 

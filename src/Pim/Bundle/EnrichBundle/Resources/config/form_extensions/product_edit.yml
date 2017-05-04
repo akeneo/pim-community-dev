@@ -18,6 +18,7 @@ extensions:
         module: pim/form/common/column
         parent: pim-product-edit-form
         position: 5
+        targetZone: column
         config:
           stateCode: product_edit_form
 

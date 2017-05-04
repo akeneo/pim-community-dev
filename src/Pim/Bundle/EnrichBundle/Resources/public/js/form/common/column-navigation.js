@@ -39,6 +39,8 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
+                this.tabs = [];
+                
                 this.currentTab = sessionStorage.getItem(this.currentKey);
 
                 this.listenTo(this.getRoot(), 'column-tab:register', this.registerTab);

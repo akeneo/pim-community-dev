@@ -11,7 +11,7 @@ define(
     [
         'jquery',
         'underscore',
-        'pimenrich/js/form/common/form-tabs',
+        'pim/form/common/form-tabs',
         'text!pim/template/form/column-tabs'
     ],
     function ($, _, FormTabs, template) {
