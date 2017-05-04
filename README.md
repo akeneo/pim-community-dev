@@ -1,5 +1,11 @@
 Akeneo PIM Application
 ======================
+
+Akeneo PIM Application
+======================
+
+Akeneo PIM Application
+======================
 Welcome to Akeneo PIM Product.
 
 This repository is used to develop the Akeneo PIM product.
