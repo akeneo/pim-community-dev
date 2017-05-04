@@ -1,3 +1,5 @@
+#YOLO GOAT
+
 Akeneo PIM Application
 ======================
 Welcome to Akeneo PIM Product.
