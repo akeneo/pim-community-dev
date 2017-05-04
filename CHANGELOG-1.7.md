@@ -7,6 +7,8 @@
 - PIM-6377: Fix potential notice in price property formatter
 - PIM-6387: Fix HTTP code returned when the token is invalid or expired
 - PIM-6388: Fix parameters inversion in Pim\Component\Catalog\Builder\ProductBuilder::createProductValue
+- PIM-6314: Fix parameters inversion in Pim\Component\Catalog\Builder\ProductBuilder::createProductValue
+- PIM-6381: Fix `Delete` button is visible on channel create screen
 
 # 1.7.3 (2017-04-14)
 
