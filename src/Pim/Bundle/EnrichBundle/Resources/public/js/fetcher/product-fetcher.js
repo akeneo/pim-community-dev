@@ -4,7 +4,7 @@ define(
     [
         'jquery',
         'backbone',
-        'module',
+        'module-config',
         'routing',
         'oro/mediator',
         'pim/cache-invalidator',

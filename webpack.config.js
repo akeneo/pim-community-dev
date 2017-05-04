@@ -76,7 +76,8 @@ const importPaths = Object.assign(getImportPaths(),
     'pimuser/js/init-signin': path.resolve(__dirname, './src/Pim/Bundle/UserBundle/Resources/public/js/init-signin.js') ,
     'bootstrap-modal': path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/bootstrap-modal.js'),
     summernote: path.resolve(__dirname, './node_modules/summernote/dist/summernote.min.js'),
-    translator: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/lib/translator.js')
+    translator: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/lib/translator.js'),
+    'module-config': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/module-config.js')
 })
 
 console.log(importPaths['bootstrap-modal'])

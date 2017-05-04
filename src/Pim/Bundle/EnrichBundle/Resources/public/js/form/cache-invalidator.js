@@ -1,7 +1,7 @@
 'use strict';
 
 define([
-        'module',
+        'module-config',
         'underscore',
         'pim/form',
         'oro/mediator',

@@ -11,7 +11,7 @@ define(
     [
         'jquery',
         'oro/translator',
-        'module',
+        'module-config',
         'pim/form',
         'oro/mediator',
         'oro/loading-mask',

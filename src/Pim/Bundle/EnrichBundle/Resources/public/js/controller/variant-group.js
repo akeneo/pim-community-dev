@@ -3,7 +3,7 @@
 define(
     [
         'pim/controller/group',
-        'module'
+        'module-config'
     ],
     function (BaseController, module) {
         return BaseController.extend({

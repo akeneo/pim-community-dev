@@ -19,7 +19,7 @@ define(
         'pim/i18n',
         'pim/user-context',
         'routing',
-        'module',
+        'module-config',
         'pim/router'
     ],
     function (

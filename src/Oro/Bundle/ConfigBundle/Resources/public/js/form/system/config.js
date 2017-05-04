@@ -2,7 +2,7 @@
 
 define([
         'backbone',
-        'module',
+        'module-config',
         'oro/mediator',
         'pim/form',
         'pim/fetcher-registry',

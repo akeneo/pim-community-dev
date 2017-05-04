@@ -1,6 +1,6 @@
 'use strict';
 
-define(['module', 'jquery', 'underscore'], function (module, $, _) {
+define(['module-config', 'jquery', 'underscore'], function (module, $, _) {
     return {
         fetchers: {},
         initializePromise: null,
@@ -21,7 +21,7 @@ define(['module', 'jquery', 'underscore'], function (module, $, _) {
                     fetchers[name] = config;
                 });
 
-                require.ensure(_.pluck(fetchers, 'module'), function () {
+                require.ensure(_.pluck(fetchers, 'module-config'), function () {
                     _.each(fetchers, function (fetcher) {
                         fetcher.loadedModule = new (require(fetcher.module))(fetcher.options);
                     });

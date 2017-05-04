@@ -11,7 +11,7 @@ define(
         'pim/page-title',
         'pim/error',
         'pim/i18n',
-        'module'
+        'module-config'
     ],
     function (_, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, Error, i18n, module) {
         return BaseController.extend({

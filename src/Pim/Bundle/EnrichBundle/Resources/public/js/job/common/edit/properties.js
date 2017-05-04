@@ -8,7 +8,7 @@
  */
 define(
     [
-        'module',
+        'module-config',
         'underscore',
         'oro/translator',
         'text-loader!pim/template/export/common/edit/properties',

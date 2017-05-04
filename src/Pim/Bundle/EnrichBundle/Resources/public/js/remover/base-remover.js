@@ -2,7 +2,7 @@
 
 define([
         'jquery',
-        'module',
+        'module-config',
         'oro/mediator'
     ], function (
         $,

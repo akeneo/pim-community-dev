@@ -8,7 +8,7 @@
 'use strict';
 
 define([
-    'module',
+    'module-config',
     'jquery',
     'underscore',
     'backbone',

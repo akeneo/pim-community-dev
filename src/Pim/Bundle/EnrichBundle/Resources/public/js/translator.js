@@ -1,11 +1,10 @@
-define(['module', 'underscore', 'translator', 'json'],
+define(['module-config', 'underscore', 'translator', 'json'],
 function (module, _, Translator) {
     'use strict';
 
-    console.log(Translator);
+    console.log(module);
 
-// module.config().messages ||
-    var messages = '{}';
+    var messages = module.config().messages || '{}';
     var dict = {};
     var debug = false;
     var add = Translator.add;

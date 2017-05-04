@@ -1,7 +1,7 @@
 'use strict';
 
 define(
-    ['jquery', 'module'],
+    ['jquery', 'module-config'],
     function ($, module) {
         var controllers       = module.config().controllers || {};
         var defaultController = module.config().defaultController;
