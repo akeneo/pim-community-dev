@@ -1,3 +1,13 @@
+# ONE MORE
+
+# JENKINS HOOK TEST
+
+# JENKINS PULL REQUEST CATCH TEST
+
+# API RATE LIMIT 
+
+# LAST FIGHT TESTING
+
 Akeneo PIM Application
 ======================
 Welcome to Akeneo PIM Product.
