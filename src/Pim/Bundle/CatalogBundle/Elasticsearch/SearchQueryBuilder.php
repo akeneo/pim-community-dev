@@ -131,6 +131,7 @@ class SearchQueryBuilder
 
         if (!empty($this->shouldClauses)) {
             $searchQuery['query']['bool']['should'] = $this->shouldClauses;
+            $searchQuery['query']['bool']['minimum_should_match'] = 1;
         }
 
         if (!empty($this->sortClauses)) {

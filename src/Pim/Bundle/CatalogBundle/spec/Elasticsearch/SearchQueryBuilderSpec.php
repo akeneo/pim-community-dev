@@ -135,6 +135,7 @@ class SearchQueryBuilderSpec extends ObjectBehavior
                         'should' => [
                             ['term' => ['family' => 'camcorders']],
                         ],
+                        'minimum_should_match' => 1,
                     ],
                 ],
             ]
@@ -168,6 +169,7 @@ class SearchQueryBuilderSpec extends ObjectBehavior
 
                             ],
                         ],
+                        'minimum_should_match' => 1,
                     ],
                 ],
             ]
@@ -256,7 +258,8 @@ class SearchQueryBuilderSpec extends ObjectBehavior
                                     ]
                                 ]
                             ]
-                        ]
+                        ],
+                        'minimum_should_match' => 1,
                     ],
                 ],
             ]
