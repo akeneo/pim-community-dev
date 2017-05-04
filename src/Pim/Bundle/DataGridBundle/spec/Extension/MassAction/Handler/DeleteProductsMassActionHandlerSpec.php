@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
+use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
@@ -27,12 +28,14 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
         DatasourceInterface $datasource,
         DeleteMassAction $massAction,
         ActionConfiguration $options,
-        ProductMassActionRepositoryInterface $massActionRepo
+        ProductMassActionRepositoryInterface $massActionRepo,
+        BulkRemoverInterface $indexRemover
     ) {
         $this->beConstructedWith(
             $hydrator,
             $translator,
-            $eventDispatcher
+            $eventDispatcher,
+            $indexRemover
         );
 
         $translator->trans('qux')->willReturn('qux');
@@ -52,9 +55,10 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
         $massActionRepo,
         $datagrid,
         $massAction,
+        $indexRemover,
         ResultRecord $resultRecord
     ) {
-        $resultRecord->getValue('identifier')->willReturn('foo');
+        $resultRecord->getValue('id')->willReturn('foo');
         $objectIds = ['foo'];
         $datasource->getResults()->willReturn(['data' => [$resultRecord]]);
         $massActionRepo->deleteFromIds($objectIds)->willReturn(1);
@@ -75,6 +79,8 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
             ProductEvents::POST_MASS_REMOVE,
             new GenericEvent($objectIds)
         )->shouldBeCalled();
+
+        $indexRemover->removeAll(['foo'])->shouldBeCalled();
 
         $this->handle($datagrid, $massAction);
     }

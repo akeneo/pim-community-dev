@@ -3,6 +3,10 @@
 namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
+use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
+use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Elasticsearch\ProductIndexer;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -19,6 +23,18 @@ class ProductIndexerSpec extends ObjectBehavior
     function let(NormalizerInterface $normalizer, Client $indexer)
     {
         $this->beConstructedWith($normalizer, $indexer, 'an_index_type_for_test_purpose');
+    }
+
+    function it_is_an_indexer()
+    {
+        $this->shouldImplement(IndexerInterface::class);
+        $this->shouldImplement(BulkIndexerInterface::class);
+    }
+
+    function it_is_a_index_remover()
+    {
+        $this->shouldImplement(RemoverInterface::class);
+        $this->shouldImplement(BulkRemoverInterface::class);
     }
 
     function it_throws_an_exception_when_attempting_to_index_a_non_product(
@@ -92,5 +108,19 @@ class ProductIndexerSpec extends ObjectBehavior
         ], 'id')->shouldBeCalled();
 
         $this->indexAll([$product1, $product2]);
+    }
+
+    function it_deletes_products_from_elasticsearch_index($indexer)
+    {
+        $indexer->delete('an_index_type_for_test_purpose', 40)->shouldBeCalled();
+
+        $this->remove(40)->shouldReturn(null);
+    }
+
+    function it_bulk_deletes_products_from_elasticsearch_index($indexer)
+    {
+        $indexer->bulkDelete('an_index_type_for_test_purpose', [40, 33])->shouldBeCalled();
+
+        $this->removeAll([40, 33])->shouldReturn(null);
     }
 }

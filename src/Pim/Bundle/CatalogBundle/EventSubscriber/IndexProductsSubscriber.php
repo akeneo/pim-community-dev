@@ -2,13 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Bundle\CatalogBundle\Elasticsearch\ProductIndexer;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Index products in the search engine.
@@ -39,8 +38,9 @@ class IndexProductsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::POST_SAVE     => 'indexProduct',
+            StorageEvents::POST_SAVE => 'indexProduct',
             StorageEvents::POST_SAVE_ALL => 'bulkIndexProducts',
+            StorageEvents::POST_REMOVE => 'deleteProduct',
         ];
     }
 
@@ -80,5 +80,20 @@ class IndexProductsSubscriber implements EventSubscriberInterface
         }
 
         $this->indexer->indexAll($products);
+    }
+
+    /**
+     * Delete one single product from ES index
+     *
+     * @param RemoveEvent $event
+     */
+    public function deleteProduct(RemoveEvent $event)
+    {
+        $product = $event->getSubject();
+        if (!$product instanceof ProductInterface) {
+            return;
+        }
+
+        $this->indexer->remove($event->getSubjectId());
     }
 }
