@@ -87,7 +87,7 @@ const importPaths = Object.assign(getImportPaths(), {
     routes: path.resolve(__dirname, './web/js/routes.js'),
 })
 
-// console.log(importPaths.routes);
+console.log(importPaths.jquery);
 
 module.exports = {
     target: 'web',
@@ -99,5 +99,20 @@ module.exports = {
     },
     resolve: {
         alias: importPaths
+    },
+    module: {
+        rules: [
+            {
+                test: path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/backbone/backbone.js'),
+                use: 'imports-loader?this=>window'
+            },
+            {
+              test: path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/jquery/jquery-1.10.2'),
+              use: [{
+                  loader: 'expose-loader',
+                  options: 'jQuery'
+              }]
+          }
+        ],
     },
 }
