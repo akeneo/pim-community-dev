@@ -43,11 +43,18 @@
                                 {% placeholder navbar %}
                             </div>
                         {% endblock navbar %}
-                        <div id="main-menu">
-                            {% block application_menu %}
-                                {% include 'OroNavigationBundle:ApplicationMenu:applicationMenu.html.twig' %}
-                            {% endblock application_menu %}
-                         </div>
+                        <div id="main-menu"></div>
+                        <script>
+                            require(
+                                ['jquery', 'pim/form-builder'],
+                                function($, FormBuilder) {
+                                    FormBuilder.build('pim-menu')
+                                        .then(function (form) {
+                                            $('#main-menu').append(form.render().$el);
+                                        });
+                                }
+                            );
+                        </script>
                         {% block user_menu %}
                             <ul class="AknHeader-userMenu">
                                 {% include 'PimNotificationBundle:Default:notifications.html.twig' %}
