@@ -147,6 +147,7 @@ pimee_enrich:
 
 pim_menu:
     item:
+        upload_asset: Upload Assets
         asset: Assets
         asset_category: Asset categories
         proposal: Proposals

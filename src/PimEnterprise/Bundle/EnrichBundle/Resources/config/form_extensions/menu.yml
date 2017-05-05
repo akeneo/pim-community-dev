@@ -3,6 +3,7 @@ extensions:
         module: pim/menu/item
         parent: pim-menu-collect
         targetZone: item
+        position: 105
         aclResourceId: pimee_product_asset_mass_upload
         config:
             title: pim_menu.item.upload_asset
