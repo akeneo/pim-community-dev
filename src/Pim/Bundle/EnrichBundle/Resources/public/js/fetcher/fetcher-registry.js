@@ -4,27 +4,12 @@ define([
     'module-config',
     'jquery',
     'underscore',
-    'pim/attribute-fetcher',
-    'pim/attribute-group-fetcher',
-    'pim/datagrid-view-fetcher',
-    'pim/base-fetcher',
-    'pim/completeness-fetcher',
-    'pim/locale-fetcher',
-    'pim/product-fetcher',
-    'pim/variant-group-fetcher',
-    'pim/datagrid-view-fetcher'
+    'fetchers'
 ], function (
         module,
         $,
         _,
-        AttributeFetcher,
-        AttributeGroupFetcher,
-        BaseFetcher,
-        CompletenessFetcher,
-        LocaleFetcher,
-        ProductFetcher,
-        VariantGroupFetcher,
-        DatagridViewFetcher
+        fetcherMapping
     ) {
     return {
         fetchers: {},
@@ -39,18 +24,6 @@ define([
                 var fetchers = {};
                 var fetchers = module.config().fetchers || {}
 
-                // @TODO - burn this and use json instead
-                var fetcherMapping = {
-                    'pim/attribute-fetcher': AttributeFetcher,
-                    'pim/attribute-group-fetcher': AttributeGroupFetcher,
-                    'pim/base-fetcher': BaseFetcher,
-                    'pim/completeness-fetcher': CompletenessFetcher,
-                    'pim/locale-fetcher': LocaleFetcher,
-                    'pim/product-fetcher': ProductFetcher,
-                    'pim/variant-group-fetcher': VariantGroupFetcher,
-                    'pim/datagrid-view-fetcher': DatagridViewFetcher
-                };
-
                 _.each(fetchers, function (config, name) {
                     config = _.isString(config) ? { module: config } : config;
                     config.options = config.options || {};
@@ -58,7 +31,8 @@ define([
                 });
 
                 _.each(fetchers, function (fetcher) {
-                    fetcher.loadedModule = new (fetcherMapping[fetcher.module])(fetcher.options)
+                    var MatchedFetcher = (fetcherMapping[fetcher.module]);
+                    if (MatchedFetcher) fetcher.loadedModule = new MatchedFetcher(fetcher.options)
                 });
 
 
