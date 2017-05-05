@@ -4,10 +4,24 @@ const fs = require('fs')
 const _ = require('lodash')
 
 const bundleDirectory = './src/Pim/Bundle'
-const requirePath = _.template(`${bundleDirectory}/<%=bundleName%>/Resources/config/requirejs.yml`);
+const requirePath = _.template(`${bundleDirectory}/<%=bundleName%>/Resources/config/requirejs.yml`)
+
+const configOutputs = {
+    fetchers: {
+        inputPath: `config.config['pim/fetcher-registry'].fetchers`,
+        outputType: 'module',
+        outputPath: './web/js/config/fetchers.json'
+    },
+    paths: {
+        inputPath: 'config.paths',
+        outputType: 'json',
+        outputPath: './web/js/config/paths.json'
+    },
+}
+
 
 const getBundleNames = () => {
-    return fs.readdirSync(bundleDirectory, 'utf8');
+    return fs.readdirSync(bundleDirectory, 'utf8')
 }
 
 const getParsedFile = (fileName) => {
@@ -22,30 +36,42 @@ const getParsedFile = (fileName) => {
 
 const getConfigFiles = () => {
     const bundles = getBundleNames()
-    const bundleConfigs = {};
+    const bundleConfigs = {}
 
     _.each(bundles, (bundleName) => {
         const requireFilePath = requirePath({ bundleName })
         bundleConfigs[bundleName] = getParsedFile(requireFilePath)
     })
 
-    console.log(bundleConfigs);
-}
-
-const parseConfigFiles = () => {
-
+    return bundleConfigs
 }
 
 const extractConfig = () => {
 
 }
 
-const createFileWithContents = (name, contents) => {
+const createModuleWithContents = (name, contents) => {
 
 }
 
-getConfigFiles()
+const createJSONWithContents = (name, contents) => {
 
+}
+
+const configFiles = getConfigFiles()
+
+const files = _.map(configOutputs, (output) => {
+    const contents = {}
+    _.each(configFiles, (file) => {
+        const props = _.get(file, output.inputPath) || {}
+        _.each(props, (prop, name) => {
+            contents[name] = prop
+        })
+    })
+    return { [output.outputPath]: contents };
+})
+
+console.log(files)
 // To grab and generate
     // fetchers.js - enrich/requirejs.yml:config.pim/fetcher-registry.fetchers
     // controllers.js - enrich/requirejs.yml:config.pim/controller-registry.controllers
