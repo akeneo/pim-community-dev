@@ -84,4 +84,4 @@ config:
         pim/form/system/config/tab/loading-message: pimui/js/form/system/tab/loading-message
         pim/template/system/tab/loading-message:    pimui/js/templates/system/tab/loading-message.html
 
-        pim/template/system/flash_message:          pimui/js/templates/system/flash_message.html
+        pim/template/flash-message: pimui/js/templates/flash-message.html

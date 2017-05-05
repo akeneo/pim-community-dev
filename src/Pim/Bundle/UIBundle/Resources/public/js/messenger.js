@@ -4,7 +4,7 @@ define(
     [
         'jquery',
         'underscore',
-        'text!pim/template/system/flash_message'
+        'text!pim/template/flash-message'
     ],
     function ($, _, flashMessageTemplate) {
         return {
