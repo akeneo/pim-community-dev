@@ -42,6 +42,7 @@ define(
             initialize: function () {
                 this.loadingMask = new LoadingMask();
                 this.loadingMask.render().$el.appendTo($('.hash-loading-mask'));
+                console.log('initialize', $('.hash-loading-mask'));
                 _.bindAll(this, 'showLoadingMask', 'hideLoadingMask');
 
                 this.listenTo(mediator, 'route_complete', this._processLinks);

@@ -46,6 +46,11 @@ const getImportPaths = () => {
     return paths;
 }
 
+const getControllers = () => {
+    const enrichConfig = fs.readFileSync(path.join(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/config/requirejs.yml'), 'utf8');
+    return yaml.parse(enrichConfig).config.config['pim/controller-registry'].controllers;
+}
+
 const getModuleConfigs = () => {
     // Get Resources/requirejs.yml:config:config of each bundle
 }
@@ -88,8 +93,6 @@ const importPaths = Object.assign(getImportPaths(), {
     'pim/datagrid-view-fetcher': path.resolve(__dirname, './src/Pim/Bundle/DataGridBundle/Resources/public/js/fetcher/datagrid-view-fetcher.js')
 })
 
-console.log(importPaths['pim/product-fetcher']);
-
 module.exports = {
     target: 'web',
     entry: './src/Pim/Bundle/EnrichBundle/Resources/public/js/app.js',
@@ -106,7 +109,8 @@ module.exports = {
             {
                 test: path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/backbone/backbone.js'),
                 use: 'imports-loader?this=>window'
-            }, {
+            },
+            {
                 test: path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/jquery/jquery-1.10.2'),
                 use: [
                     {
@@ -127,6 +131,8 @@ module.exports = {
     plugins: [
         new webpack.ProvidePlugin({'_': 'underscore', 'Backbone': 'backbone'}),
         // This is needed until summernote is updated
-        new webpack.DefinePlugin({'require.specified': 'require.resolve'})
+        new webpack.DefinePlugin({
+            'require.specified': 'require.resolve',
+        })
     ]
 }

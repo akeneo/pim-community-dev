@@ -10,7 +10,6 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
          * @param {Object} options
          */
         initialize: function (options) {
-            console.log('initialize', options);
             this.entityListPromise = null;
             this.entityPromises    = {};
             this.options           = options || {};

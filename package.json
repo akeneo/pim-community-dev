@@ -17,6 +17,7 @@
     "grunt-recess": "~1.0.1",
     "grunt-template-jasmine-requirejs": "~0.2.3",
     "imports-loader": "^0.7.1",
+    "jquery": "^1.11.0",
     "summernote": "0.6.5",
     "text-loader": "0.0.1",
     "time-grunt": "~1.1.0",

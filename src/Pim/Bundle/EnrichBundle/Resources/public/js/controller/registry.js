@@ -19,7 +19,7 @@ define(
 
                 var controller = controllers[name] || defaultController;
 
-                require.ensure([controller.module], function (Controller) {
+                require.ensure(['bundle-loader?lazy!' + controller.module], function (Controller) {
                     controller.class = Controller;
 
                     deferred.resolve(controller);
