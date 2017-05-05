@@ -51,9 +51,9 @@ Feature: Execute an import with valid data
     And I should see "read lines 1"
     And I should see "Processed 1"
     And I should see "Updated products 6"
-    And the english tablet name of "sandal-white-37" should be "My sandal"
+    And the english localizable value name of "sandal-white-37" should be "My sandal"
     And the english tablet description of "sandal-white-37" should be "My sandal description for locale en_US and channel tablet"
-    And the english tablet name of "sandal-white-38" should be "My sandal"
+    And the english localizable value name of "sandal-white-38" should be "My sandal"
     And the english tablet description of "sandal-white-38" should be "My sandal description for locale en_US and channel tablet"
 
   Scenario: Successfully import a csv file of variant group values with numbers

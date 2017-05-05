@@ -438,7 +438,8 @@ class Grid extends Index
         foreach ($rows as $row) {
             $cell = $this->getRowCell($row, $position);
             if ($span = $cell->find('css', 'span')) {
-                $values[] = (string) (strpos($span->getAttribute('class'), 'success') !== false);
+                $value = strpos($span->getAttribute('class'), 'success') !== false;
+                $values[] = true === $value ? '1' : '0';
             } else {
                 $values[] = $cell->getText();
             }

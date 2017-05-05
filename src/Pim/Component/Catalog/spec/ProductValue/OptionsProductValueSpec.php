@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Catalog\ProductValue;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 
 class OptionsProductValueSpec extends ObjectBehavior
 {
@@ -32,5 +33,33 @@ class OptionsProductValueSpec extends ObjectBehavior
         $optionA->getCode()->willReturn('option_a');
         $optionB->getCode()->willReturn('option_b');
         $this->getOptionCodes()->shouldReturn(['option_a', 'option_b']);
+    }
+
+    function it_can_be_formatted_as_string_when_there_is_no_translation($optionA, $optionB)
+    {
+        $optionA->getOptionValue()->willReturn(null);
+        $optionA->getCode()->willReturn('option_a');
+
+        $optionB->getOptionValue()->willReturn(null);
+        $optionB->getCode()->willReturn('option_b');
+
+        $this->__toString()->shouldReturn('[option_a], [option_b]');
+    }
+
+    function it_can_be_formatted_as_string_when_there_is_a_translation(
+        $optionA,
+        $optionB,
+        AttributeOptionValueInterface $translationA,
+        AttributeOptionValueInterface $translationB
+    ) {
+        $optionA->getOptionValue()->willReturn($translationA);
+        $translationA->getValue()->willReturn('Translation A');
+        $optionA->getCode()->shouldNotBeCalled();
+
+        $optionB->getOptionValue()->willReturn($translationB);
+        $translationB->getValue()->willReturn('Translation B');
+        $optionB->getCode()->shouldNotBeCalled();
+
+        $this->__toString()->shouldReturn('Translation A, Translation B');
     }
 }
