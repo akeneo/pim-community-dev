@@ -1,8 +1,6 @@
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% import '@PimEnterpriseProductAsset/ProductAsset/macros.html.twig' as pamMacros %}
 
-{% oro_title_set({ params: { "%asset.code%": asset.code } }) %}
-
 {% block head_script %}
     {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_js-handler.html.twig' %}
 {% endblock %}

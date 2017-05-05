@@ -1,7 +1,5 @@
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
-{% oro_title_set({ params: { "%asset.code%": asset.code } }) %}
-
 {% block content %}
     {% set title %}
         {{ 'pimee_product_asset.enrich_asset.view.title'|trans }} / {{ asset.code }}
