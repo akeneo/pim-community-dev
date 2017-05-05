@@ -130,7 +130,7 @@ define([
          * Sets the current value.
          *
          * @param {string} value
-         * @param {object} options
+         * @param {object} [options]
          */
         setValue: function (value, options) {
             options = options || {silent: true};

@@ -44,9 +44,12 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          * @property
          */
         className: function () {
-            return (true === this.displayManageFilters())
-                ? 'AknFilterBox filter-box oro-clearfix-width'
-                : 'AknFilterBox AknFilterBox--search filter-box oro-clearfix-width ';
+            var name = 'AknFilterBox filter-box oro-clearfix-width';
+            if (true !== this.displayManageFilters()) {
+                name += ' AknFilterBox--search';
+            }
+
+            return name;
         },
 
         /**

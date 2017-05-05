@@ -155,7 +155,12 @@ class Grid extends Index
                 'View selector'         => ['css' => '.grid-view-selector'],
                 'Views list'            => ['css' => '.ui-multiselect-menu.highlight-hover'],
                 'Select2 results'       => ['css' => '#select2-drop .select2-results'],
-                'Search filter'         => ['css' => '.search-filter input'],
+                'Search filter'         => [
+                    'css' => '.search-filter input',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\Grid\Filter\SearchDecorator'
+                    ]
+                ],
                 'Main context selector' => [
                     'css'        => '#container',
                     'decorators' => [
@@ -322,9 +327,8 @@ class Grid extends Index
     {
         $this->spin(function () use ($value) {
             $input = $this->getElement('Search filter');
-
             if (null !== $input) {
-                $input->setValue($value);
+                $input->search($value);
 
                 return true;
             }
@@ -349,9 +353,7 @@ class Grid extends Index
      */
     public function getCriteria($filterName)
     {
-        $filter = $this->getFilter($filterName);
-
-        return trim($filter->find('css', '.filter-criteria-hint')->getText());
+        return $this->getFilter($filterName)->getCriteriaHint();
     }
 
     /**

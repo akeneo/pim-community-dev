@@ -1,64 +1,95 @@
-/* global define */
-define(['jquery', 'underscore', 'oro/translator', 'oro/datafilter/abstract-filter'],
-function($, _, __, AbstractFilter) {
-    'use strict';
+'use strict';
 
-    return AbstractFilter.extend({
-        inputValueSelector: 'input[name="value"]',
+define(
+    [
+        'jquery',
+        'underscore',
+        'oro/translator',
+        'oro/datafilter/abstract-filter',
+        'text!pim/template/datagrid/filter/search-filter'
+    ], function (
+        $,
+        _,
+        __,
+        AbstractFilter,
+        template
+    ) {
+        return AbstractFilter.extend({
+            inputValueSelector: 'input[name="value"]',
 
-        events: {
-            'keydown input[name="value"]': 'keyPress',
-            'keypress input[name="value"]': 'keyPress'
-        },
+            events: {
+                'keydown input[name="value"]': 'runTimeout',
+                'keypress input[name="value"]': 'runTimeout'
+            },
 
-        emptyValue: {
-            value: ''
-        },
+            emptyValue: {
+                value: ''
+            },
 
-        timer: null,
+            timer: null,
 
-        timerDelay: 500,
+            timeoutDelay: 500,
 
-        className: 'AknFilterBox-searchContainer filter-item search-filter',
+            className: 'AknFilterBox-searchContainer filter-item search-filter',
 
-        render: function () {
-            this.$el.html(
-                '<input class="AknFilterBox-search" autocomplete="off" type="text" name="value" value="" placeholder="Search">'
-            );
-        },
+            template: _.template(template),
 
-        /**
-         * @inheritDoc
-         */
-        _writeDOMValue: function(value) {
-            this._setInputValue(this.inputValueSelector, value.value);
-            return this;
-        },
+            /**
+             * {@inheritDoc}
+             */
+            render: function () {
+                this.$el.html(
+                    this.template({
+                        label: __('Search', {label: this.label})
+                    })
+                );
+            },
 
-        /**
-         * @inheritDoc
-         */
-        _readDOMValue: function() {
-            return {
-                value: this._getInputValue(this.inputValueSelector)
-            };
-        },
+            /**
+             * @inheritDoc
+             */
+            _writeDOMValue: function (value) {
+                this._setInputValue(this.inputValueSelector, value.value);
 
-        keyPress: function(event) {
-            if (null !== this.timer) {
-                clearTimeout(this.timer);
+                return this;
+            },
+
+            /**
+             * @inheritDoc
+             */
+            _readDOMValue: function () {
+                return {
+                    value: this._getInputValue(this.inputValueSelector)
+                };
+            },
+
+            /**
+             * Runs a timer to wait some time. When the time is done, it execute the search.
+             * If the user types another time in the search box, it resets the timer and restart one.
+             *
+             * @param {Event} event
+             */
+            runTimeout: function (event) {
+                if (null !== this.timer) {
+                    clearTimeout(this.timer);
+                }
+
+                if (13 === event.keyCode) { // Enter key
+                    this.doSearch();
+                } else {
+                    this.timer = setTimeout(
+                        this.doSearch.bind(this),
+                        this.timeoutDelay
+                    );
+                }
+            },
+
+            /**
+             * Executes the search by setting the value.
+             */
+            doSearch: function () {
+                this.setValue(this._readDOMValue());
             }
-
-            if (13 === event.keyCode) {
-                // Enter key
-                this.doSearch();
-            } else {
-                this.timer = setTimeout(this.doSearch.bind(this), this.timerDelay);
-            }
-        },
-
-        doSearch: function() {
-            this.setValue(this._readDOMValue());
-        }
-    });
-});
+        });
+    }
+);
