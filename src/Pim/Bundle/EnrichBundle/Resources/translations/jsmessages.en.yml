@@ -902,6 +902,7 @@ pim_menu:
         collect: Collect
         enrich: Enrich
         settings: Settings
+        system: System
         spread: Spread
     item:
         association_type: Association types

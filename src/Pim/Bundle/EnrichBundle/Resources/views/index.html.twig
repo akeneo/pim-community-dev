@@ -10,8 +10,6 @@
         {% endblock %}
 
         {% block script %}
-            {% include 'OroNavigationBundle:Js:dot.menu.js.twig' %}
-            {% include 'OroNavigationBundle:Js:pinbar.js.twig' %}
             {% include 'OroRequireJSBundle::scripts.html.twig' with {compressed: not app.debug} %}
             <script type="text/javascript">
                 {% if app.request.session.get('__target_path') %}
@@ -34,7 +32,6 @@
     <div id="top-page" class="AknDefault-topPage">
         {% block header %}
             <header class="AknHeader">
-                {% include 'OroNavigationBundle:ApplicationMenu:dotsMenu.html.twig' %}
                 <div class="AknHeader-menus">
                     <div class="AknHeader-leftMenus">
                         {% include 'PimUIBundle:Default:logo.html.twig' %}
@@ -69,14 +66,6 @@
         {% block main %}
             <div id="main" >
                 <div class="AknBreadcrumbContainer">
-                        <div id="breadcrumb">
-                        {% block breadcrumb %}
-                            {% include 'OroNavigationBundle:ApplicationMenu:breabcrumbs.html.twig' %}
-                        {% endblock breadcrumb %}
-                    </div>
-
-                    {% include 'OroNavigationBundle:ApplicationMenu:pinButton.html.twig' %}
-
                     <div id="flash-messages">
                         {% block messages %}
                             <div class="flash-messages-frame">
