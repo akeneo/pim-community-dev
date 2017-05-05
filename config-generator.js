@@ -1,6 +1,50 @@
 const path = require('path')
 const yaml = require('yamljs')
 const fs = require('fs')
+const _ = require('lodash')
+
+const bundleDirectory = './src/Pim/Bundle'
+const requirePath = _.template(`${bundleDirectory}/<%=bundleName%>/Resources/config/requirejs.yml`);
+
+const getBundleNames = () => {
+    return fs.readdirSync(bundleDirectory, 'utf8');
+}
+
+const getParsedFile = (fileName) => {
+    try {
+        const resolvedPath = path.resolve(__dirname, fileName)
+        return yaml.parse(fs.readFileSync(resolvedPath, 'utf8'))
+    } catch(e) {
+        // console.info(e, 'Error in getParsedFile')
+        return {}
+    }
+}
+
+const getConfigFiles = () => {
+    const bundles = getBundleNames()
+    const bundleConfigs = {};
+
+    _.each(bundles, (bundleName) => {
+        const requireFilePath = requirePath({ bundleName })
+        bundleConfigs[bundleName] = getParsedFile(requireFilePath)
+    })
+
+    console.log(bundleConfigs);
+}
+
+const parseConfigFiles = () => {
+
+}
+
+const extractConfig = () => {
+
+}
+
+const createFileWithContents = (name, contents) => {
+
+}
+
+getConfigFiles()
 
 // To grab and generate
     // fetchers.js - enrich/requirejs.yml:config.pim/fetcher-registry.fetchers
