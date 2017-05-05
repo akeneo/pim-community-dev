@@ -21,7 +21,7 @@ define(['module-config', 'jquery', 'underscore'], function (module, $, _) {
                     fetchers[name] = config;
                 });
 
-                require.ensure(_.pluck(fetchers, 'module-config'), function () {
+                require.ensure(_.pluck(fetchers, 'module'), function () {
                     _.each(fetchers, function (fetcher) {
                         fetcher.loadedModule = new (require(fetcher.module))(fetcher.options);
                     });

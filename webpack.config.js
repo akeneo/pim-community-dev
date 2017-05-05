@@ -87,8 +87,6 @@ const importPaths = Object.assign(getImportPaths(), {
     routes: path.resolve(__dirname, './web/js/routes.js')
 })
 
-console.log(importPaths['pim/app']);
-
 module.exports = {
     target: 'web',
     entry: './src/Pim/Bundle/EnrichBundle/Resources/public/js/app.js',
