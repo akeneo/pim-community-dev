@@ -115,4 +115,10 @@ module.exports = {
           }
         ],
     },
+    plugins: [
+        new webpack.ProvidePlugin({
+            '_': 'underscore',
+            'Backbone': 'backbone'
+        })
+    ]
 }
