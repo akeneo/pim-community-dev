@@ -19,7 +19,7 @@
                     window.location.hash = '{{ app.request.session.get('__target_path') }}';
                     {% do app.request.session.remove('__target_path') %}
                 {% endif %}
-
+                console.log(window.PimApp)
                 require(['pim/app'], function (app) {
                     app.bootstrap({
                         debug: {{ app.debug ? 'true' : 'false' }}

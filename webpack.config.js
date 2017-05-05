@@ -118,7 +118,11 @@ module.exports = {
     plugins: [
         new webpack.ProvidePlugin({
             '_': 'underscore',
-            'Backbone': 'backbone'
+            'Backbone': 'backbone',
+        }),
+        // This is needed until summernote is updated
+        new webpack.DefinePlugin({
+          'require.specified': 'require.resolve'
         })
     ]
 }
