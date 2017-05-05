@@ -14,18 +14,23 @@ class SearchFilter extends AbstractFilter
     public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $data = $this->parseData($data);
-        if (!$data) {
+        if (0 === count($data)) {
             return false;
         }
 
-        $parameterName = $ds->generateParameterName($this->getName());
-
-        $this->applyFilterToClause(
-            $ds,
-            $ds->expr()->comparison($this->get(FilterUtility::DATA_NAME_KEY), Operators::IS_LIKE, $parameterName, true)
-        );
-
-        $ds->setParameter($parameterName, $data['value']);
+        foreach ($data as $word) {
+            $parameterName = $ds->generateParameterName($this->getName());
+            $this->applyFilterToClause(
+                $ds,
+                $ds->expr()->comparison(
+                    $this->get(FilterUtility::DATA_NAME_KEY),
+                    Operators::IS_LIKE,
+                    $parameterName,
+                    true
+                )
+            );
+            $ds->setParameter($parameterName, $word);
+        }
 
         return true;
     }
@@ -41,16 +46,16 @@ class SearchFilter extends AbstractFilter
     /**
      * @param mixed $data
      *
-     * @return array|bool
+     * @return array
      */
     protected function parseData($data)
     {
         if (!is_array($data) || !array_key_exists('value', $data) || !$data['value']) {
-            return false;
+            return [];
         }
 
-        $data['value'] = sprintf('%%%s%%', $data['value']);
-
-        return $data;
+        return array_map(function ($word) {
+            return sprintf('%%%s%%', $word);
+        }, preg_split('/\s+/', $words = $data['value']));
     }
 }
