@@ -36,15 +36,15 @@ datagrid:
 #                frontend_type: html
             endOfUseAt:
                 frontend_type: date
-                type:          product_value_date
+                type:          asset_datetime
                 label:         pimee_product_asset.endOfUse.label
             createdAt:
                 frontend_type: date
-                type:          product_value_date
+                type:          asset_datetime
                 label:         pimee_product_asset.createdAt.label
             updatedAt:
                 frontend_type: date
-                type:          product_value_date
+                type:          asset_datetime
                 label:         pimee_product_asset.updatedAt.label
         sorters:
             columns:

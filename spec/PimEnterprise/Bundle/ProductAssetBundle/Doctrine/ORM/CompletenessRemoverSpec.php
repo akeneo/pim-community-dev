@@ -62,6 +62,12 @@ class CompletenessRemoverSpec extends ObjectBehavior
         Statement $statement1,
         AssetInterface $asset
     ) {
+        $connection->executeQuery(
+            'DELETE c FROM pim_catalog_completeness c WHERE c.product_id IN (?)',
+            [['foo', 'bar', 'baz']],
+            [101]
+        )->shouldBeCalled();
+
         $asset->getCode()->willReturn('gallery');
         $attributeRepository->getAttributeCodesByType(AssetAttributeTypes::ASSETS_COLLECTION)->willReturn(
             ['assetAttribute']
@@ -83,8 +89,6 @@ class CompletenessRemoverSpec extends ObjectBehavior
         $pqb->execute()->willReturn($products);
 
         $connection->prepare(Argument::any())->willReturn($statement1);
-        $statement1->bindValue('productIds', ['foo', 'bar', 'baz'], Type::SIMPLE_ARRAY)->shouldBeCalled();
-        $statement1->execute()->shouldBeCalled();
 
         $product1->getCompletenesses()->willReturn($completenesses1);
         $completenesses1->clear()->shouldBeCalled();
