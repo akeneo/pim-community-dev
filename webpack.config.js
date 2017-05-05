@@ -84,8 +84,11 @@ const importPaths = Object.assign(getImportPaths(), {
     'module-config': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/module-config.js'),
     'fos-routing-base': path.resolve(__dirname, './vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js'),
     routing: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/fos-routing-wrapper.js'),
-    routes: path.resolve(__dirname, './web/js/routes.js')
+    routes: path.resolve(__dirname, './web/js/routes.js'),
+    'pim/datagrid-view-fetcher': path.resolve(__dirname, './src/Pim/Bundle/DataGridBundle/Resources/public/js/fetcher/datagrid-view-fetcher.js')
 })
+
+console.log(importPaths['pim/product-fetcher']);
 
 module.exports = {
     target: 'web',

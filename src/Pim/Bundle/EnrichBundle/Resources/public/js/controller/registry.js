@@ -19,7 +19,7 @@ define(
 
                 var controller = controllers[name] || defaultController;
 
-                require([controller.module], function (Controller) {
+                require.ensure([controller.module], function (Controller) {
                     controller.class = Controller;
 
                     deferred.resolve(controller);

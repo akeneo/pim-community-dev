@@ -1,6 +1,31 @@
 'use strict';
 
-define(['module-config', 'jquery', 'underscore'], function (module, $, _) {
+define([
+    'module-config',
+    'jquery',
+    'underscore',
+    'pim/attribute-fetcher',
+    'pim/attribute-group-fetcher',
+    'pim/datagrid-view-fetcher',
+    'pim/base-fetcher',
+    'pim/completeness-fetcher',
+    'pim/locale-fetcher',
+    'pim/product-fetcher',
+    'pim/variant-group-fetcher',
+    'pim/datagrid-view-fetcher'
+], function (
+        module,
+        $,
+        _,
+        AttributeFetcher,
+        AttributeGroupFetcher,
+        BaseFetcher,
+        CompletenessFetcher,
+        LocaleFetcher,
+        ProductFetcher,
+        VariantGroupFetcher,
+        DatagridViewFetcher
+    ) {
     return {
         fetchers: {},
         initializePromise: null,
@@ -12,8 +37,19 @@ define(['module-config', 'jquery', 'underscore'], function (module, $, _) {
             if (null === this.initializePromise) {
                 var deferred = $.Deferred();
                 var fetchers = {};
-
                 var fetchers = module.config().fetchers || {}
+
+                // @TODO - burn this and use json instead
+                var fetcherMapping = {
+                    'pim/attribute-fetcher': AttributeFetcher,
+                    'pim/attribute-group-fetcher': AttributeGroupFetcher,
+                    'pim/base-fetcher': BaseFetcher,
+                    'pim/completeness-fetcher': CompletenessFetcher,
+                    'pim/locale-fetcher': LocaleFetcher,
+                    'pim/product-fetcher': ProductFetcher,
+                    'pim/variant-group-fetcher': VariantGroupFetcher,
+                    'pim/datagrid-view-fetcher': DatagridViewFetcher
+                };
 
                 _.each(fetchers, function (config, name) {
                     config = _.isString(config) ? { module: config } : config;
@@ -21,14 +57,14 @@ define(['module-config', 'jquery', 'underscore'], function (module, $, _) {
                     fetchers[name] = config;
                 });
 
-                require.ensure(_.pluck(fetchers, 'module'), function () {
-                    _.each(fetchers, function (fetcher) {
-                        fetcher.loadedModule = new (require(fetcher.module))(fetcher.options);
-                    });
+                _.each(fetchers, function (fetcher) {
+                    fetcher.loadedModule = new (fetcherMapping[fetcher.module])(fetcher.options)
+                });
 
-                    this.fetchers = fetchers;
-                    deferred.resolve();
-                }.bind(this));
+
+                this.fetchers = fetchers;
+                deferred.resolve();
+
 
                 this.initializePromise = deferred.promise();
             }

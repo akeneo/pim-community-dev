@@ -1,7 +1,18 @@
-/* global console */
-'use strict';
+webpackJsonp([0],{
 
-define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone, Routing) {
+/***/ 17:
+/* unknown exports provided */
+/* all exports used */
+/*!*********************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/fetcher/base-fetcher.js ***!
+  \*********************************************************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global console */
+
+
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 2), __webpack_require__(/*! routing */ 4)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, Backbone, Routing) {
     return Backbone.Model.extend({
         entityListPromise: null,
         entityPromises: {},
@@ -10,7 +21,6 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
          * @param {Object} options
          */
         initialize: function (options) {
-            console.log('initialize', options);
             this.entityListPromise = null;
             this.entityPromises    = {};
             this.options           = options || {};
@@ -167,4 +177,10 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
             });
         }
     });
+}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ })
+
 });
