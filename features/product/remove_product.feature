@@ -41,3 +41,12 @@ Feature: Remove a product
     Then I should get the following proposals:
       | product | username | result                                                                                                                                                            |
       | short   | Mary     | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "Short"}]}, "review_statuses": {"name": [{"locale": "en_US", "scope": null, "status": "draft"}]}} |
+
+  Scenario: Not being able to delete a published product
+    Given I am on the "jean" product page
+    And I publish the product "jean"
+    When I press the "Delete" button
+    And I confirm the removal
+    Then I should see the text "Impossible to remove a published product"
+    When I am on the products page
+    Then I should see product jean
