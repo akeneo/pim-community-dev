@@ -84,10 +84,10 @@ const importPaths = Object.assign(getImportPaths(), {
     'module-config': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/module-config.js'),
     'fos-routing-base': path.resolve(__dirname, './vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js'),
     routing: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/fos-routing-wrapper.js'),
-    routes: path.resolve(__dirname, './web/js/routes.js'),
+    routes: path.resolve(__dirname, './web/js/routes.js')
 })
 
-console.log(importPaths.jquery);
+console.log(importPaths['pim/app']);
 
 module.exports = {
     target: 'web',
@@ -105,24 +105,27 @@ module.exports = {
             {
                 test: path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/backbone/backbone.js'),
                 use: 'imports-loader?this=>window'
+            }, {
+                test: path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/jquery/jquery-1.10.2'),
+                use: [
+                    {
+                        loader: 'expose-loader',
+                        options: 'jQuery'
+                    }
+                ]
             },
             {
-              test: path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/jquery/jquery-1.10.2'),
-              use: [{
-                  loader: 'expose-loader',
-                  options: 'jQuery'
-              }]
-          }
-        ],
+                test: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/app'),
+                use: [{
+                    loader: 'expose-loader',
+                    options: 'PimApp'
+                }]
+            }
+        ]
     },
     plugins: [
-        new webpack.ProvidePlugin({
-            '_': 'underscore',
-            'Backbone': 'backbone',
-        }),
+        new webpack.ProvidePlugin({'_': 'underscore', 'Backbone': 'backbone'}),
         // This is needed until summernote is updated
-        new webpack.DefinePlugin({
-          'require.specified': 'require.resolve'
-        })
+        new webpack.DefinePlugin({'require.specified': 'require.resolve'})
     ]
 }
