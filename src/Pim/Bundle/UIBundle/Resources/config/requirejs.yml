@@ -82,6 +82,7 @@ config:
         pim/dropzonejs:            pimui/lib/dropzonejs/dist/dropzone-amd-module.js
 
         pim/form/system/config/tab/loading-message: pimui/js/form/system/tab/loading-message
-        pim/template/system/tab/loading-message:    pimui/js/templates/system/tab/loading-message.html
 
-        pim/template/flash-message: pimui/js/templates/flash-message.html
+        # Templates
+        pim/template/flash-message:              pimui/js/templates/flash-message.html
+        pim/template/system/tab/loading-message: pimui/js/templates/system/tab/loading-message.html

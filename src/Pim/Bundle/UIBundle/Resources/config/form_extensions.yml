@@ -1,5 +1,5 @@
 extensions:
-    pim-system-config-group-loading-message:
+    pim-system-config-tab-loading-message:
         module: pim/form/system/config/tab/loading-message
         parent: oro-system-config-tabs
         targetZone: container

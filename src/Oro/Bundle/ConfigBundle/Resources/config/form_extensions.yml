@@ -14,13 +14,13 @@ extensions:
         targetZone: buttons
         position: 100
 
-    oro-system-config-group-localization:
+    oro-system-config-tab-localization:
         module: oro/form/system/config/tab/localization
         parent: oro-system-config-tabs
         targetZone: container
         position: 100
 
-    oro-system-config-group-notification:
+    oro-system-config-tab-notification:
         module: oro/form/system/config/tab/notification
         parent: oro-system-config-tabs
         targetZone: container
