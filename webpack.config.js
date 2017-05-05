@@ -26,9 +26,11 @@ const bundles = [
     'Versioning'
 ]
 
+// @TODO - Use the same method for extracting paths and module config
 // Import paths for resources and transform to json
 // Also add oro bundles
 // Add aliases for e.g. pimenrich, pimui etc..
+//
 const getImportPaths = () => {
     let paths = {}
 
@@ -42,6 +44,10 @@ const getImportPaths = () => {
         } catch (e) {}
     }
     return paths;
+}
+
+const getModuleConfigs = () => {
+    // Get Resources/requirejs.yml:config:config of each bundle
 }
 
 // Use case converter and do it with code later
@@ -78,8 +84,10 @@ const importPaths = Object.assign(getImportPaths(), {
     'module-config': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/module-config.js'),
     'fos-routing-base': path.resolve(__dirname, './vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js'),
     routing: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/fos-routing-wrapper.js'),
+    routes: path.resolve(__dirname, './web/js/routes.js'),
 })
 
+// console.log(importPaths.routes);
 
 module.exports = {
     target: 'web',

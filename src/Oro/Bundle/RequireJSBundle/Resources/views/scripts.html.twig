@@ -17,6 +17,7 @@
         {{ get_requirejs_config() }}
     </script>
     <script type="text/javascript">
+    // All these need to be compiled by webpack
         {% include 'PimUIBundle::requirejs.config.js.twig' %}
         {% include 'OroNavigationBundle:Js:requirejs.config.js.twig' %}
         {% include 'OroTranslationBundle::requirejs.config.js.twig' %}
