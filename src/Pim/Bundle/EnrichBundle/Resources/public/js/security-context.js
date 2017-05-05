@@ -3,6 +3,7 @@
 define(
     ['backbone', 'routing'],
     function (Backbone, Routing) {
+        console.log(Routing)
         var SecurityContext = Backbone.Model.extend({
             url: Routing.generate('pim_user_security_rest_get'),
             isGranted: function (acl) {

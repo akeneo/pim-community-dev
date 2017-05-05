@@ -2,7 +2,6 @@ const webpack = require('webpack')
 const path = require('path')
 const yaml = require('yamljs')
 const fs = require('fs')
-const camelCase = require('camelcase')
 
 // traverse with filewalker automatically later for any bundles
 const bundles = [
@@ -40,7 +39,7 @@ const getImportPaths = () => {
             const bundlePaths = yaml.parse(contents).config.paths
             const fixedBundlePaths = replacePathSegments(bundlePaths, bundle);
             paths = Object.assign(paths, bundlePaths)
-        } catch(e) {}
+        } catch (e) {}
     }
     return paths;
 }
@@ -70,17 +69,17 @@ const replacePathSegments = (paths, bundle) => {
     return paths;
 }
 
-const importPaths = Object.assign(getImportPaths(),
-{
+const importPaths = Object.assign(getImportPaths(), {
     text: 'text-loader',
-    'pimuser/js/init-signin': path.resolve(__dirname, './src/Pim/Bundle/UserBundle/Resources/public/js/init-signin.js') ,
+    'pimuser/js/init-signin': path.resolve(__dirname, './src/Pim/Bundle/UserBundle/Resources/public/js/init-signin.js'),
     'bootstrap-modal': path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/bootstrap-modal.js'),
     summernote: path.resolve(__dirname, './node_modules/summernote/dist/summernote.min.js'),
     translator: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/lib/translator.js'),
-    'module-config': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/module-config.js')
+    'module-config': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/module-config.js'),
+    routing: path.resolve(__dirname, './vendor/friendsofsymfony/jsrouting-bundle/Resources/js/router.js')
 })
 
-console.log(importPaths['bootstrap-modal'])
+console.log(importPaths['routing'])
 
 module.exports = {
     target: 'web',
@@ -93,7 +92,34 @@ module.exports = {
     resolve: {
         alias: importPaths
     },
+    module: {
+        loaders: [
+            {
+                loaders: ['closure-loader'],
+                exclude: [/node_modules/, /test/]
+            }, {
+                test: /node_modules\/google-closure-library\/closure\/goog\/base/,
+                loaders: ['imports-loader?this=>{goog:{}}&goog=>this.goog', 'exports-loader?goog']
+            },
+            {
+                test : /node_modules\/google-closure-library\/closure\/goog\/.*\.js/,
+                loaders : [require.resolve('./node_modules/closure-loader/index.js')],
+                exclude : [/node_modules\/google-closure-library\/closure\/goog\/base\.js$/]
+            }
+        ]
+    },
+
     plugins: [
-        // new webpack.optimize.UglifyJsPlugin(),
+        new webpack.ProvidePlugin({'window.Routing': 'routing', goog: 'google-closure-library/closure/goog/base'}),
+        new webpack.LoaderOptionsPlugin({
+            options: {
+                closureLoader: {
+                    paths: [
+                        __dirname + '/node_modules/google-closure-library/closure/goog/',
+                    ],
+                    watch: false,
+                }
+            }
+        })
     ]
 }
