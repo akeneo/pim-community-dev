@@ -94,6 +94,7 @@ class ProductNormalizer implements NormalizerInterface
      * @param NormalizerInterface               $completenessCollectionNormalizer
      * @param string                            $storageDriver
      * @param UserContext                       $userContext
+     * @param CompletenessCalculatorInterface   $completenessCalculator
      */
     public function __construct(
         NormalizerInterface $productNormalizer,
@@ -128,7 +129,7 @@ class ProductNormalizer implements NormalizerInterface
         $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
         $this->storageDriver                    = $storageDriver;
         $this->userContext                      = $userContext;
-        $this->completenessCalculator = $completenessCalculator;
+        $this->completenessCalculator           = $completenessCalculator;
     }
 
     /**
