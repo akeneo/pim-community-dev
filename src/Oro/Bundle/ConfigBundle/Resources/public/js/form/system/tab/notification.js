@@ -1,11 +1,15 @@
 "use strict";
 
 define([
+    'underscore',
+        'oro/translator',
         'pim/form',
-        'oro/template/system/group/notification',
+        'oro/template/system/tab/notification',
         'bootstrap.bootstrapswitch'
     ],
     function(
+        _,
+        __,
         BaseForm,
         template
     ) {
@@ -14,8 +18,21 @@ define([
                 'change input[type="checkbox"]': 'updateModel'
             },
             isGroup: true,
-            label: _.__('oro_config.form.config.group.notification.title'),
+            label: __('oro_config.form.config.group.notification.title'),
             template: _.template(template),
+            code: 'oro_config_notification',
+
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.trigger('tab:register', {
+                    code: this.code,
+                    label: this.label
+                });
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
 
             /**
              * {@inheritdoc}
@@ -35,7 +52,7 @@ define([
             /**
              * Update model after value change
              *
-             * @param {Event}
+             * @param {Event} event
              */
             updateModel: function (event) {
                 var data = this.getFormData();

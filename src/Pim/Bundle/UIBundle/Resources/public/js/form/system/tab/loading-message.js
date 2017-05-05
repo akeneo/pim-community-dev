@@ -2,13 +2,15 @@
 
 define([
         'underscore',
+        'oro/translator',
         'jquery',
         'pim/form',
-        'pim/template/system/group/loading-message',
+        'pim/template/system/tab/loading-message',
         'bootstrap.bootstrapswitch'
     ],
     function (
         _,
+        __,
         $,
         BaseForm,
         template
@@ -19,8 +21,21 @@ define([
                 'change textarea': 'updateText'
             },
             isGroup: true,
-            label: _.__('oro_config.form.config.group.loading_message.title'),
+            label: __('oro_config.form.config.group.loading_message.title'),
             template: _.template(template),
+            code: 'oro_config_loading_message',
+
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.trigger('tab:register', {
+                    code: this.code,
+                    label: this.label
+                });
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
 
             /**
              * {@inheritdoc}
@@ -41,7 +56,7 @@ define([
             /**
              * Update model after value change
              *
-             * @param {Event}
+             * @param {Event} event
              */
             updateBoolean: function (event) {
                 var data = this.getFormData();
@@ -52,7 +67,7 @@ define([
             /**
              * Update model after value change
              *
-             * @param {Event}
+             * @param {Event} event
              */
             updateText: function (event) {
                 var data = this.getFormData();

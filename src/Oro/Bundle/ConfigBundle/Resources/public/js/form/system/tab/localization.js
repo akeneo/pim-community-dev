@@ -1,13 +1,18 @@
 "use strict";
 
-define([
+define(
+    [
+        'underscore',
+        'oro/translator',
         'pim/form',
         'pim/fetcher-registry',
         'oro/loading-mask',
-        'oro/template/system/group/localization',
+        'oro/template/system/tab/localization',
         'pim/initselect2'
     ],
     function(
+        _,
+        __,
         BaseForm,
         FetcherRegistry,
         LoadingMask,
@@ -19,8 +24,21 @@ define([
                 'change select': 'updateModel'
             },
             isGroup: true,
-            label: _.__('oro_config.form.config.group.localization.title'),
+            label: __('oro_config.form.config.group.localization.title'),
             template: _.template(template),
+            code: 'oro_config_localization',
+
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.trigger('tab:register', {
+                    code: this.code,
+                    label: this.label
+                });
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
 
             /**
              * {@inheritdoc}
@@ -47,7 +65,7 @@ define([
             /**
              * Update model after value change
              *
-             * @param {Event}
+             * @param {Event} event
              */
             updateModel: function (event) {
                 var data = this.getFormData();
