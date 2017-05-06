@@ -152,7 +152,16 @@ module.exports = {
                     loader: 'expose-loader',
                     options: 'CompletenessWidget'
                 }]
+            },
+            {
+                test: path.resolve(__dirname, './src/Pim/Bundle/AnalyticsBundle/Resources/public/js/patch-fetcher.js'),
+                use: [{
+                    loader: 'expose-loader',
+                    options: 'PatchFetcher'
+                }]
             }
+
+
         ]
     },
     plugins: [

@@ -1,11 +1,9 @@
 define(
     ['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/messenger', 'pim/dialog',
-     'pim/saveformstate', 'pim/asynctab', 'pim/ui', 'oro/loading-mask', 'pim/router', 'pim/dashboard/widget-container', 'pim/dashboard/last-operations-widget', 'pim/dashboard/completeness-widget'],
-    function ($, _, Backbone, mediator, messenger, Dialog, saveformstate, loadTab, UI, LoadingMask, router, widgetContainer, lastOperationsWidget, completenessWidget) {
+     'pim/saveformstate', 'pim/asynctab', 'pim/ui', 'oro/loading-mask', 'pim/router', 'pim/dashboard/widget-container', 'pim/dashboard/last-operations-widget', 'pim/dashboard/completeness-widget', 'pim/patch-fetcher'],
+    function ($, _, Backbone, mediator, messenger, Dialog, saveformstate, loadTab, UI, LoadingMask, router, WidgetContainer, LastOperationsWidget, CompletenessWidget, PatchFetcher) {
         'use strict';
         var initialized = false;
-
-        console.log(widgetContainer, lastOperationsWidget, completenessWidget)
 
         return function () {
             if (initialized) {

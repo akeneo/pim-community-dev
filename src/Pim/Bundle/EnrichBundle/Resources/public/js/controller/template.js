@@ -23,7 +23,6 @@ define(
                     return;
                 }
 
-                console.log(this.$el)
                 this.$el.html(content);
             }
         });
