@@ -100,7 +100,7 @@ define(
                 }
 
                 Controller.el = $view;
-                this.currentController = new Controller();
+                this.currentController = new Controller(Controller);
                 this.currentController.setActive(true);
                 this.currentController.renderRoute(route, path)
                     .done(function () {
