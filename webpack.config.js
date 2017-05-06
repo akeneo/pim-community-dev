@@ -93,10 +93,9 @@ const importPaths = Object.assign(getImportPaths(), {
     'pim/datagrid-view-fetcher': path.resolve(__dirname, './src/Pim/Bundle/DataGridBundle/Resources/public/js/fetcher/datagrid-view-fetcher.js'),
     'fetchers': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/fetchers.js'),
     'controllers': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/controllers.js'),
-    'pim-router': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/router.js')
+    'require-polyfill': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/require-polyfill.js'),
+    'pim-router': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/router.js'),
 })
-
-console.log(importPaths['pim/dashboard/last-operations-widget'])
 
 module.exports = {
     target: 'web',
@@ -132,6 +131,7 @@ module.exports = {
                     options: 'PimApp'
                 }]
             },
+            // Expose with original path names instead
             {
                 test: path.resolve(__dirname, './src/Pim/Bundle/DashboardBundle/Resources/public/js/widget-container.js'),
                 use: [{
@@ -159,6 +159,13 @@ module.exports = {
                     loader: 'expose-loader',
                     options: 'PatchFetcher'
                 }]
+            },
+            {
+                test: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/require-polyfill.js'),
+                use: [{
+                    loader: 'expose-loader',
+                    options: 'require'
+                }]
             }
 
 
@@ -168,11 +175,11 @@ module.exports = {
         new webpack.ProvidePlugin({
             '_': 'underscore',
             'Backbone': 'backbone',
-            '$': 'jquery'
+            '$': 'jquery',
         }),
         // This is needed until summernote is updated
         new webpack.DefinePlugin({
-            'require.specified': 'require.resolve'
+            'require.specified': 'require.resolve',
         })
     ]
 }

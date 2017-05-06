@@ -75,7 +75,7 @@
 
     {% set action = path(configureRoute, queryParams|merge({ 'operationAlias': operationAlias })) %}
     <script type="text/javascript">
-        require(
+        window.require(
             ['jquery', 'oro/mediator', 'wysiwyg', 'jquery.wizard', 'jquery.select2', 'bootstrap.bootstrapswitch', 'jquery.multiselect'],
             function ($, mediator, wysiwyg) {
                 'use strict';

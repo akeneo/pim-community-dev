@@ -12,7 +12,7 @@
                 <div class="AknFormContainer AknFormContainer--withPadding" id="attribute-option-switcher"></div>
                 <div id="attribute-option-grid" class="AknGridContainer" data-attribute-id="{{ form.vars.value.id }}" data-locales="{{ locales|json_encode() }}" data-sortable="{{ sortable }}"></div>
                 <script type="text/javascript">
-                    require(['jquery', 'pim/attributeoptionview'], function($, attributeoptiongrid) {
+                    window.require(['jquery', 'pim/attributeoptionview'], function($, attributeoptiongrid) {
                         attributeoptiongrid($('#attribute-option-grid'));
                     });
                 </script>

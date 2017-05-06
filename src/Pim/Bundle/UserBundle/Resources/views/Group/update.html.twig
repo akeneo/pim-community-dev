@@ -57,7 +57,7 @@
 
     {{ form_end(form) }}
     <script type="text/javascript">
-        require('pim/page-title').set({'group': '{{ form.vars.value.name }}'});
+        window.require('pim/page-title').set({'group': '{{ form.vars.value.name }}'});
 
         window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
     </script>

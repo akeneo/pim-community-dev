@@ -169,7 +169,7 @@
 {% block form_errors %}{% spaceless %}
     {% if errors|length > 0 %}
         <script type="text/javascript">
-            require(['jquery'], function ($) {
+            window.require(['jquery'], function ($) {
                 'use strict';
 
                 $(function() {
@@ -253,7 +253,7 @@
             </div>
         </div>
         <script type="text/javascript">
-            require(
+            window.require(
                 ['pim/fileinput'],
                 function(fileinput) {
                     fileinput.init('{{ form.uploadedFile.vars.id }}');
@@ -295,7 +295,7 @@
         <input type="hidden" {{ block('widget_attributes') }}{% if checked or attr.checked is defined and attr.checked %} value="1"{% endif %}>
     </div>
     <script type="text/javascript">
-    require(
+    window.require(
         ['jquery'],
         function ($) {
             'use strict';

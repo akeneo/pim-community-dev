@@ -6,7 +6,7 @@
 
 {% block head_script %}
     <script type="text/javascript">
-        require(
+        window.require(
             ['jquery', 'pim/security-context'],
             function ($, securityContext) {
                 'use strict';
@@ -65,7 +65,7 @@
                 });
             }
         );
-        require('pim/page-title').set({'role': '{{ form.vars.value.label }}'});
+        window.require('pim/page-title').set({'role': '{{ form.vars.value.label }}'});
     </script>
 {% endblock %}
 
@@ -230,7 +230,7 @@
     {{ form_end(form) }}
 
     <script type="text/javascript">
-        require(
+        window.require(
             ['jquery'],
             function ($) {
                 'use strict';

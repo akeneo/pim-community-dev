@@ -2,7 +2,7 @@
 
 {% block groupTab %}
     <script type="text/javascript">
-        require('pim/page-title').set({'group.label': '{{ form.vars.value }}'});
+        window.require('pim/page-title').set({'group.label': '{{ form.vars.value }}'});
     </script>
 
     {% include 'PimEnrichBundle:AttributeGroup:form.html.twig' %}

@@ -8,7 +8,7 @@
          {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}
          data-metadata="{{ metaData|json_encode }}"></div>
     <script type="text/javascript">
-        require(['jquery', 'oro/datagrid-builder'].concat({{ metaData.requireJSModules|json_encode|raw }}),
+        window.require(['jquery', 'oro/datagrid-builder'].concat({{ metaData.requireJSModules|json_encode|raw }}),
         function ($, datagridBuilder) {
             var builders = _.toArray(arguments).slice(2);
             $(function () {
@@ -24,7 +24,7 @@
 {% macro renderStatefulGrid(name, params = {}, renderParams = {}, defaultView = {}, categoryBaseRoute = null) %}
     <div id="grid-{{ name }}" data-type="datagrid" {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}></div>
     <script type="text/javascript">
-        require(
+        window.require(
             [
                 'underscore',
                 'jquery',
@@ -170,7 +170,7 @@
 
                             var modules = resp.metadata.requireJSModules;
                             modules.push('pim/datagrid/state-listener');
-                            require(modules, function () {
+                            window.require(modules, function () {
                                 var builders = _.toArray(arguments);
                                 $(function () {
                                     datagridBuilder(builders);
