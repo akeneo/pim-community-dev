@@ -6,6 +6,7 @@ pimee_catalog_rule:
       confirm_title: Ausführen bestätigen
       confirm_content: Sind Sie sicher, dass Sie alle Regeln anwenden möchten? (Dies kann sehr lange dauern)
   notification:
+    fail: Dieser Vorgang konnte nicht ausgeführt werden
     launched: Die Anwendung der Regeln wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
   attribute:
     list:
