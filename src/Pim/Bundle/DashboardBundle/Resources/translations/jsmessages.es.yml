@@ -17,3 +17,5 @@ pim_dashboard:
       load_more: 'Cargar más...'
     header:
       view_all: Ver todo
+page_title:
+  pim_dashboard_index: Cartelera

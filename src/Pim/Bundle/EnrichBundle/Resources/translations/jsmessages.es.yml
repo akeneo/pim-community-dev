@@ -327,7 +327,6 @@ pim_enrich:
   error:
     upload: Un error ha ocurrido durante la subida del fichero
   alert:
-    not_allowed: Usted no tiene permisos para acceder a esta página
     error_occured: Un error ha ocurrido durante la carga de esta página
   form:
     required: (obligatorio)
@@ -740,6 +739,29 @@ pim_enrich:
       title: Seguimiento de procesos
 pim_enrich.error:
   exception.title: Oups! Un error {{ status_code }} ha ocurrido...
+page_title:
+  oro_default: Cartelera
+  pim_enrich_attributegroup_index: Grupos de atributos
+  pim_enrich_attributegroup_create: Grupos de Atributos | Crear
+  pim_enrich_categorytree_index: Árbol de categoría
+  pim_enrich_categorytree_create: Árboles de categoría | Crear
+  pim_enrich_categorytree_create_tree: Árboles de categoría | Crear
+  pim_enrich_attribute_index: Atributos
+  pim_enrich_attribute_create: Atributos | Crear
+  pim_enrich_product_index: Productos
+  pim_enrich_family_index: Familias
+  pim_enrich_channel_index: Canales
+  pim_enrich_channel_create: Canales | Crear
+  pim_enrich_currency_index: Monedas
+  pim_enrich_locale_index: Locales
+  pim_enrich_group_index: Grupos
+  pim_enrich_variant_group_index: Grupos de variantes
+  pim_enrich_associationtype_index: Tipos de asociaciones
+  pim_enrich_grouptype_index: Tipos de grupo
+  pim_enrich_mass_edit_action_choose: Edición masiva | Seleccionar
+  pim_enrich_mass_edit_action_configure: Edición masiva | Configurar
+  pim_enrich_job_tracker_index: Seguimiento de procesos
+  pim_enrich_job_tracker_show: Seguimiento de procesos | Ver el trabajo
 batch_jobs:
   add_product_value:
     label: Agregar un valor de producto

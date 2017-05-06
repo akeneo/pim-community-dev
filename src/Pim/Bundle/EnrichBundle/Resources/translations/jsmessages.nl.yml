@@ -318,7 +318,6 @@ pim_enrich:
   error:
     upload: Er deed zich een fout voor tijdens het upload van het bestand
   alert:
-    not_allowed: U heeft geen toegang tot deze pagina
     error_occured: Er deed zich een four voor tijdens het laden van de pagina
   form:
     required: (vereist)
@@ -713,6 +712,27 @@ pim_enrich:
       create_btn: Groep aanmaken
 pim_enrich.error:
   exception.title: Oh, nee! Een {{ status_code }} fout deed zich voor...
+page_title:
+  oro_default: Dashboard
+  pim_enrich_attributegroup_index: Attribuutgroepen
+  pim_enrich_attributegroup_create: Attribuutgroepen | Aanmaken
+  pim_enrich_categorytree_index: Categorie boomstructuren
+  pim_enrich_categorytree_create: Categoriestructuren|Aanmaken
+  pim_enrich_categorytree_create_tree: Categoriestructuren|Aanmaken
+  pim_enrich_attribute_index: Attributen
+  pim_enrich_attribute_create: Attributen | Aanmaken
+  pim_enrich_product_index: Producten
+  pim_enrich_family_index: Families
+  pim_enrich_channel_index: Kanalen
+  pim_enrich_channel_create: Kanalen | Aanmaken
+  pim_enrich_currency_index: Valuta
+  pim_enrich_locale_index: Lokalisaties
+  pim_enrich_group_index: Groepen
+  pim_enrich_variant_group_index: Variantgroepen
+  pim_enrich_associationtype_index: Associatietypes
+  pim_enrich_grouptype_index: Groepstypen
+  pim_enrich_mass_edit_action_choose: Massa bewerken | Kies
+  pim_enrich_mass_edit_action_configure: Massa bewerken | Configureren
 batch_jobs:
   update_product_value:
     label: Update productwaarde

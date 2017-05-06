@@ -16,3 +16,5 @@ pim_dashboard:
       load_more: 'Загрузить больше...'
     header:
       view_all: Просмотреть все
+page_title:
+  pim_dashboard_index: Панель управления
