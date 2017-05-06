@@ -96,7 +96,7 @@ const importPaths = Object.assign(getImportPaths(), {
     'pim-router': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/router.js')
 })
 
-console.log(importPaths['pim/router'])
+console.log(importPaths['pim/dashboard/last-operations-widget'])
 
 module.exports = {
     target: 'web',
@@ -133,19 +133,37 @@ module.exports = {
                 }]
             },
             {
-                test: path.resolve(__dirname, './src/Pim/Bundle/NotificationBundle/Resources/public/js/notifications.js'),
+                test: path.resolve(__dirname, './src/Pim/Bundle/DashboardBundle/Resources/public/js/widget-container.js'),
                 use: [{
                     loader: 'expose-loader',
-                    options: 'PimNotifications'
+                    options: 'WidgetContainer'
+                }]
+            },
+            {
+                test: path.resolve(__dirname, './src/Pim/Bundle/DashboardBundle/Resources/public/js/last-operations-widget.js'),
+                use: [{
+                    loader: 'expose-loader',
+                    options: 'LastOperationsWidget'
+                }]
+            },
+            {
+                test: path.resolve(__dirname, './src/Pim/Bundle/DashboardBundle/Resources/public/js/completeness-widget.js'),
+                use: [{
+                    loader: 'expose-loader',
+                    options: 'CompletenessWidget'
                 }]
             }
         ]
     },
     plugins: [
-        new webpack.ProvidePlugin({'_': 'underscore', 'Backbone': 'backbone'}),
+        new webpack.ProvidePlugin({
+            '_': 'underscore',
+            'Backbone': 'backbone',
+            '$': 'jquery'
+        }),
         // This is needed until summernote is updated
         new webpack.DefinePlugin({
-            'require.specified': 'require.resolve',
+            'require.specified': 'require.resolve'
         })
     ]
 }
