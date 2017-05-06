@@ -102,10 +102,8 @@ define(
                 Controller.el = $view;
                 this.currentController = new Controller();
                 this.currentController.setActive(true);
-                console.log(route, path)
                 this.currentController.renderRoute(route, path)
                     .done(function () {
-                        console.log('done renderRoute', arguments)
                         this.triggerComplete(route);
                     }.bind(this))
                     .fail(this.handleError.bind(this))

@@ -131,6 +131,13 @@ module.exports = {
                     loader: 'expose-loader',
                     options: 'PimApp'
                 }]
+            },
+            {
+                test: path.resolve(__dirname, './src/Pim/Bundle/NotificationBundle/Resources/public/js/notifications.js'),
+                use: [{
+                    loader: 'expose-loader',
+                    options: 'PimNotifications'
+                }]
             }
         ]
     },
