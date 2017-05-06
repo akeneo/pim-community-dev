@@ -123,7 +123,7 @@ pim_enrich:
       confirm.title: '{{ itemName }} löschen'
   navigation:
     link:
-      back_to_grid: Zurück zur Übersicht
+      back_to_grid: Zurück zur Tabellenansicht
   entity:
     save:
       label: Speichern
@@ -141,7 +141,7 @@ pim_enrich:
         compare_translate: Vergleichen / Übersetzen
         delete: Löschen
         save: Speichern
-        save_and_back: Speichern und zurück zur Übersicht
+        save_and_back: Speichern und zurück zur Tabellenansicht
       history:
         version: Version
         author: Autor
@@ -337,6 +337,7 @@ pim_enrich:
           info:
             search_attributes: Suche...
             no_available_attributes: Es können keine weiteren Attribute hinzugefügt werden
+            attributes_selected: "{{ itemsCount }} Attribut(e) ausgewählt"
             no_match: Keine Treffer gefunden
             load_more: Weitere Ergebnisse werden geladen...
         categories:
@@ -577,6 +578,7 @@ pim_enrich:
             title: Attribut wählen
         attributes_selector:
           attribute_group: Attributgruppen
+          attributes: "Suche in {{ itemsCount }} Attributen"
           selected: "Ausgewählte Attribute"
           clear: Zurücksetzen
           all_group: Alle Gruppen
@@ -689,6 +691,6 @@ pim_enrich:
         title: Globale Einstellungen
   mass_edit_action:
     edit_common_attributes:
-      description: Die ausgewählten Produktattribute werden für die folgenden Daten des Gebietsschemas <span class="bold-purple">{{ locale }}</span> und dem Ausgabekanal <span class="bold-purple">{{ channel }}</span>, welche in der Produktübersicht ausgewählt sind, bearbeitet.
+      description: Die ausgewählten Produktattribute werden für die folgenden Daten des Gebietsschemas <span class="bold-purple">{{ locale }}</span> und dem Ausgabekanal <span class="bold-purple">{{ channel }}</span>, welche in der Produktliste ausgewählt sind, bearbeitet.
 pim_enrich.error:
   exception.title: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
