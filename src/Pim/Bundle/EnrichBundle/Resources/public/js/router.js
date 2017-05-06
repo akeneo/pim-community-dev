@@ -1,4 +1,5 @@
 'use strict';
+console.log('router');
 
 define(
     [
@@ -9,10 +10,11 @@ define(
         'routing',
         'pim/route-matcher',
         'oro/loading-mask',
-        'pim/controller-registry',
+        'controllers',
         'oro/mediator',
         'pim/error',
-        'pim/security-context'
+        'pim/security-context',
+        'pim/controller/template'
     ],
     function (
         $,
@@ -25,7 +27,8 @@ define(
         ControllerRegistry,
         mediator,
         Error,
-        securityContext
+        securityContext,
+        controllerTemplate
     ) {
         var Router = Backbone.Router.extend({
             DEFAULT_ROUTE: 'oro_default',
@@ -82,31 +85,32 @@ define(
                 this.showLoadingMask();
 
                 this.triggerStart(route);
-                ControllerRegistry.get(route.name).done(function (controller) {
-                    if (this.currentController) {
-                        this.currentController.remove();
-                    }
+                var Controller = ControllerRegistry[route.name] || controllerTemplate
+                if (this.currentController) {
+                    this.currentController.remove();
+                }
 
-                    $('#container').empty();
-                    var $view = $('<div>', {'class': 'view'}).appendTo($('#container'));
+                $('#container').empty();
+                var $view = $('<div>', {'class': 'view'}).appendTo($('#container'));
 
-                    if (controller.aclResourceId && !securityContext.isGranted(controller.aclResourceId)) {
-                        this.hideLoadingMask();
+                if (Controller.aclResourceId && !securityContext.isGranted(Controller.aclResourceId)) {
+                    this.hideLoadingMask();
 
-                        return this.displayErrorPage(__('pim_enrich.error.http.403'), '403');
-                    }
+                    return this.displayErrorPage(__('pim_enrich.error.http.403'), '403');
+                }
 
-                    controller.el = $view;
-                    this.currentController = new controller.class(controller);
-                    this.currentController.setActive(true);
-                    this.currentController.renderRoute(route, path)
-                        .done(function () {
-                            this.triggerComplete(route);
-                        }.bind(this))
-                        .fail(this.handleError.bind(this))
-                        .always(this.hideLoadingMask)
-                    ;
-                }.bind(this));
+                Controller.el = $view;
+                this.currentController = new Controller();
+                this.currentController.setActive(true);
+                console.log(route, path)
+                this.currentController.renderRoute(route, path)
+                    .done(function () {
+                        console.log('done renderRoute', arguments)
+                        this.triggerComplete(route);
+                    }.bind(this))
+                    .fail(this.handleError.bind(this))
+                    .always(this.hideLoadingMask)
+                ;
             },
 
             /**

@@ -21,7 +21,9 @@ define([
         init,
         initUser,
         initLayout,
-        initSignin
+        initSignin,
+        router,
+        pageTitle
     ) {
     return (function () {
         return {

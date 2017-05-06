@@ -9,6 +9,7 @@ const requirePath = _.template(`${bundleDirectory}/<%=bundleName%>/Resources/con
 
 const moduleOutputs = {
     fetchers: {
+        // make sure completeness fetcher is in
         inputPath: `config.config['pim/fetcher-registry'].fetchers`,
         outputPath: `${bundleDirectory}/EnrichBundle/Resources/public/js/config/fetchers.js`,
         formatter: (contents, path) => {
@@ -18,6 +19,16 @@ const moduleOutputs = {
             }
         }
     },
+    controllers: {
+        inputPath: `config.config['pim/controller-registry'].controllers`,
+        outputPath: `${bundleDirectory}/EnrichBundle/Resources/public/js/config/controllers.js`,
+        formatter: (contents, path) => {
+            return {
+                path,
+                exports: _.uniq(_.compact(_.map(contents[path], 'module')))
+            }
+        }
+    }
 }
 
 const JSONOutputs = {

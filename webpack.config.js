@@ -91,8 +91,12 @@ const importPaths = Object.assign(getImportPaths(), {
     routing: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/fos-routing-wrapper.js'),
     routes: path.resolve(__dirname, './web/js/routes.js'),
     'pim/datagrid-view-fetcher': path.resolve(__dirname, './src/Pim/Bundle/DataGridBundle/Resources/public/js/fetcher/datagrid-view-fetcher.js'),
-    'fetchers': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/fetchers.js')
+    'fetchers': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/fetchers.js'),
+    'controllers': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/controllers.js'),
+    'pim-router': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/router.js')
 })
+
+console.log(importPaths['pim/router'])
 
 module.exports = {
     target: 'web',
@@ -100,7 +104,8 @@ module.exports = {
     output: {
         publicPath: path.resolve(__dirname, './web/'),
         filename: './web/app.min.js',
-        pathinfo: true
+        pathinfo: true,
+        devtoolLineToLine: true
     },
     resolve: {
         alias: importPaths
