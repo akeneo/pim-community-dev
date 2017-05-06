@@ -334,7 +334,6 @@ pim_enrich:
   error:
     upload: Si è verificato un errore durante il caricamento del file
   alert:
-    not_allowed: Non sei autorizzato ad accedere a questa pagina
     error_occured: Si è verificato un errore durante il caricamento della pagina
   form:
     required: (richiesto)
@@ -758,6 +757,29 @@ pim_enrich:
       title: Tracker di processo
 pim_enrich.error:
   exception.title: Accidenti! Si è verificato un errore con il codice {{ status_code }}...
+page_title:
+  oro_default: Dashboard
+  pim_enrich_attributegroup_index: Gruppi di attributi
+  pim_enrich_attributegroup_create: Gruppi di attributo | Crea
+  pim_enrich_categorytree_index: Albero della categoria
+  pim_enrich_categorytree_create: Strutture di categoria | Crea
+  pim_enrich_categorytree_create_tree: Strutture di categoria | Crea
+  pim_enrich_attribute_index: Attributi
+  pim_enrich_attribute_create: Attributi | Crea
+  pim_enrich_product_index: Articoli
+  pim_enrich_family_index: Famiglie
+  pim_enrich_channel_index: Canali
+  pim_enrich_channel_create: Canali | Crea
+  pim_enrich_currency_index: Valute
+  pim_enrich_locale_index: Impostazioni locali
+  pim_enrich_group_index: Gruppi
+  pim_enrich_variant_group_index: Gruppi varianti
+  pim_enrich_associationtype_index: Tipi di associazione
+  pim_enrich_grouptype_index: Tipi di gruppo
+  pim_enrich_mass_edit_action_choose: Modifica di massa| Scegli
+  pim_enrich_mass_edit_action_configure: Modifica di massa| Configura
+  pim_enrich_job_tracker_index: Tracker di processo
+  pim_enrich_job_tracker_show: Tracker di processo | Visualizza lavoro
 batch_jobs:
   add_product_value:
     label: Aggiungi un valore di prodotto
@@ -797,10 +819,3 @@ batch_jobs:
     label: Aggiungi al gruppo di varianti
     perform:
       label: Aggiungi al gruppo di varianti
-Pim_mass_edit:
-  download_archive:
-    archive: Scarica archivio generato
-    output: Scarica file generati
-    input: Scarica file letti
-    invalid_xlsx: Scarica dati non validi
-    invalid_csv: Scarica dati non validi

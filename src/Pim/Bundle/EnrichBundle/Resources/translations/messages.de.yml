@@ -895,6 +895,8 @@ pim_enrich_attribute_form:
   code: Code
   type: Attributtyp
   reference_data_name: Referenzdaten Name
+  scopable: Wert je Ausgabekanal
+  localizable: Wert je Gebietsschema
   unique: Eindeutiger Wert
   availableLocales: Verfügbare Gebietsschemata
   locale_specific: Gebietsschema-spezifisch
