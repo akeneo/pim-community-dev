@@ -2,8 +2,13 @@
 
 ## Bug fixes
 
-- PIM-6315: Fix publish button still clickable after a product is published
 - PIM-6314: Fix FOSRestBundle exceptions codes configuration
+
+# 1.7.3 (2017-04-14)
+
+## Bug fixes
+
+- PIM-6315: Fix publish button still clickable after a product is published
 
 # 1.7.2 (2017-04-07)
 
