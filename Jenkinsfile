@@ -90,9 +90,9 @@ if (launchIntegrationTests.equals("yes")) {
         tasks["phpunit-5.6-orm"] = {runIntegrationTest("5.6", "orm")}
         tasks["phpunit-7.0-orm"] = {runIntegrationTest("7.0", "orm")}
         tasks["phpunit-7.1-orm"] = {runIntegrationTest("7.1", "orm")}
-        tasks["phpunit-5.6-odm"] = {runIntegrationTest("5.6", "odm")}
-        tasks["phpunit-7.0-odm"] = {runIntegrationTest("7.0", "odm")}
-        tasks["phpunit-7.1-odm"] = {runIntegrationTest("7.1", "odm")}
+        // tasks["phpunit-5.6-odm"] = {runIntegrationTest("5.6", "odm")}
+        // tasks["phpunit-7.0-odm"] = {runIntegrationTest("7.0", "odm")}
+        // tasks["phpunit-7.1-odm"] = {runIntegrationTest("7.1", "odm")}
 
         parallel tasks
     }
