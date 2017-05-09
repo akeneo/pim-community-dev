@@ -1,16 +1,6 @@
 'use strict';
 
-define([
-    'module-config',
-    'jquery',
-    'underscore',
-    'fetchers'
-], function (
-        module,
-        $,
-        _,
-        fetcherMapping
-    ) {
+define(['module-config', 'jquery', 'underscore'], function (module, $, _) {
     return {
         fetchers: {},
         initializePromise: null,
@@ -22,23 +12,21 @@ define([
             if (null === this.initializePromise) {
                 var deferred = $.Deferred();
                 var fetchers = {};
-                var fetchers = module.config().fetchers || {}
 
-                _.each(fetchers, function (config, name) {
+                _.each(module.config().fetchers, function (config, name) {
                     config = _.isString(config) ? { module: config } : config;
                     config.options = config.options || {};
                     fetchers[name] = config;
                 });
 
-                _.each(fetchers, function (fetcher) {
-                    var MatchedFetcher = (fetcherMapping[fetcher.module]);
-                    if (MatchedFetcher) fetcher.loadedModule = new MatchedFetcher(fetcher.options)
-                });
+                require.ensure([], function () {
+                    _.each(fetchers, function (fetcher) {
+                        fetcher.loadedModule = new (require('bundle-loader!./' +  fetcher.module))(fetcher.options);
+                    });
 
-
-                this.fetchers = fetchers;
-                deferred.resolve();
-
+                    this.fetchers = fetchers;
+                    deferred.resolve();
+                }.bind(this));
 
                 this.initializePromise = deferred.promise();
             }

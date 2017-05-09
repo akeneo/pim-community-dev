@@ -101,8 +101,10 @@ module.exports = {
     target: 'web',
     entry: './src/Pim/Bundle/EnrichBundle/Resources/public/js/app.js',
     output: {
-        publicPath: path.resolve(__dirname, './web/'),
-        filename: './web/app.min.js',
+        path: path.resolve(__dirname, './web/'),
+        publicPath: path.resolve(__dirname, '/'),
+        filename: 'app.min.js',
+        chunkFilename: '[name].bundle.js',
         pathinfo: true,
         devtoolLineToLine: true
     },
