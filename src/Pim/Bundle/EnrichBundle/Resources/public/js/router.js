@@ -85,7 +85,8 @@ define(
                 this.showLoadingMask();
 
                 this.triggerStart(route);
-                var Controller = ControllerRegistry[route.name] || controllerTemplate
+
+                var Controller = ControllerRegistry[route.name].resolvedModule || controllerTemplate
                 if (this.currentController) {
                     this.currentController.remove();
                 }

@@ -1,12 +1,10 @@
 'use strict';
 
-// Remove this
 define(
-    ['jquery', 'module-config', 'controllers'],
+    ['jquery', 'controllers'],
     function ($, module) {
-        // var controllers       = module.config().controllers || {};
+        var controllers       = controllers || {}
         var defaultController = module.config().defaultController;
-        console.log('controller registry')
 
         return {
             /**
@@ -17,14 +15,17 @@ define(
              * @return {Promise}
              */
             get: function (name) {
-                console.log('get from bundle loader', require(['bundle-loader!.' + name]))
+                var deferred = $.Deferred();
 
-                return require(['bundle-loader!.' + name]) || defaultController;
-                // var deferred = $.Deferred();
-                // return controllers[name] || defaultController;
-                // deferred.resolve(controller);
-                //
-                // return deferred.promise();
+                var controller = controllers[name] || defaultController;
+                console.log(controller)
+                require([controller.module], function (Controller) {
+                    controller.class = Controller;
+
+                    deferred.resolve(controller);
+                });
+
+                return deferred.promise();
             }
         };
     }
