@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\DateSanitizer;
 use Akeneo\Test\Integration\MediaSanitizer;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
@@ -14,17 +13,6 @@ use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
  */
 abstract class AbstractProductTestCase extends ApiTestCase
 {
-    /**
-     * @return Configuration
-     */
-    protected function getConfiguration()
-    {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()],
-            false
-        );
-    }
-
     /**
      * @param string $identifier
      * @param array  $data

@@ -16,25 +16,23 @@ class NumberFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count) {
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_number_float_negative' => [
-                        ['data' => -15.5, 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_number_float_negative' => [
+                    ['data' => -15.5, 'locale' => null, 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_number_float_negative' => [
-                        ['data' => 19.0, 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_number_float_negative' => [
+                    ['data' => 19.0, 'locale' => null, 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorInferior()

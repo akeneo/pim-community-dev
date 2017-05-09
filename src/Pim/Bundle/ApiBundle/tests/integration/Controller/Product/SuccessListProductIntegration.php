@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
+use Akeneo\Test\Integration\Configuration;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -17,85 +18,83 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count) {
-            // no locale, no scope, 1 category
-            $this->createProduct('simple', [
-                'categories' => ['master'],
-                'values'     => [
-                    'a_metric' => [
-                        ['data' => ['amount' => 10, 'unit' => 'KILOWATT'], 'locale' => null, 'scope' => null]
+        // no locale, no scope, 1 category
+        $this->createProduct('simple', [
+            'categories' => ['master'],
+            'values'     => [
+                'a_metric' => [
+                    ['data' => ['amount' => 10, 'unit' => 'KILOWATT'], 'locale' => null, 'scope' => null]
+                ],
+                'a_text' => [
+                    ['data' => 'Text', 'locale' => null, 'scope' => null]
+                ]
+            ]
+        ]);
+
+        // localizable, categorized in 1 tree (master)
+        $this->createProduct('localizable', [
+            'categories' => ['categoryB'],
+            'values'     => [
+                'a_localizable_image' => [
+                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'en_US', 'scope' => null],
+                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'fr_FR', 'scope' => null],
+                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'zh_CN', 'scope' => null]
+                ]
+            ]
+        ]);
+
+        // scopable, categorized in 1 tree (master)
+        $this->createProduct('scopable', [
+            'categories' => ['categoryA1', 'categoryA2'],
+            'values'     => [
+                'a_scopable_price' => [
+                    [
+                        'locale' => null,
+                        'scope'  => 'ecommerce',
+                        'data'   => [
+                            ['amount' => '10.50', 'currency' => 'EUR'],
+                            ['amount' => '11.50', 'currency' => 'USD'],
+                            ['amount' => '78.77', 'currency' => 'CNY']
+                        ]
                     ],
-                    'a_text' => [
-                        ['data' => 'Text', 'locale' => null, 'scope' => null]
-                    ]
-                ]
-            ]);
-
-            // localizable, categorized in 1 tree (master)
-            $this->createProduct('localizable', [
-                'categories' => ['categoryB'],
-                'values'     => [
-                    'a_localizable_image' => [
-                        ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'en_US', 'scope' => null],
-                        ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'fr_FR', 'scope' => null],
-                        ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'zh_CN', 'scope' => null]
-                    ]
-                ]
-            ]);
-
-            // scopable, categorized in 1 tree (master)
-            $this->createProduct('scopable', [
-                'categories' => ['categoryA1', 'categoryA2'],
-                'values'     => [
-                    'a_scopable_price' => [
-                        [
-                            'locale' => null,
-                            'scope'  => 'ecommerce',
-                            'data'   => [
-                                ['amount' => '10.50', 'currency' => 'EUR'],
-                                ['amount' => '11.50', 'currency' => 'USD'],
-                                ['amount' => '78.77', 'currency' => 'CNY']
-                            ]
-                        ],
-                        [
-                            'locale' => null,
-                            'scope'  => 'tablet',
-                            'data'   => [
-                                ['amount' => '10.50', 'currency' => 'EUR'],
-                                ['amount' => '11.50', 'currency' => 'USD'],
-                                ['amount' => '78.77', 'currency' => 'CNY']
-                            ]
+                    [
+                        'locale' => null,
+                        'scope'  => 'tablet',
+                        'data'   => [
+                            ['amount' => '10.50', 'currency' => 'EUR'],
+                            ['amount' => '11.50', 'currency' => 'USD'],
+                            ['amount' => '78.77', 'currency' => 'CNY']
                         ]
                     ]
                 ]
-            ]);
+            ]
+        ]);
 
-            // localizable & scopable, categorized in 2 trees (master and master_china)
-            $this->createProduct('localizable_and_scopable', [
-                'categories' => ['categoryA', 'master_china'],
-                'values'     => [
-                    'a_localized_and_scopable_text_area' => [
-                        ['data' => 'Big description', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => 'Medium description', 'locale' => 'en_US', 'scope' => 'tablet'],
-                        ['data' => 'Grande description', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                        ['data' => 'Description moyenne', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                        ['data' => 'hum...', 'locale' => 'zh_CN', 'scope' => 'ecommerce_china'],
-                    ]
+        // localizable & scopable, categorized in 2 trees (master and master_china)
+        $this->createProduct('localizable_and_scopable', [
+            'categories' => ['categoryA', 'master_china'],
+            'values'     => [
+                'a_localized_and_scopable_text_area' => [
+                    ['data' => 'Big description', 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => 'Medium description', 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => 'Grande description', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['data' => 'Description moyenne', 'locale' => 'fr_FR', 'scope' => 'tablet'],
+                    ['data' => 'hum...', 'locale' => 'zh_CN', 'scope' => 'ecommerce_china'],
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_china', [
-                'categories' => ['master_china']
-            ]);
+        $this->createProduct('product_china', [
+            'categories' => ['master_china']
+        ]);
 
-            $this->createProduct('product_without_category', [
-                'values' => [
-                    'a_yes_no' => [
-                        ['data' => true, 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('product_without_category', [
+            'values' => [
+                'a_yes_no' => [
+                    ['data' => true, 'locale' => null, 'scope' => null]
                 ]
-            ]);
-        }
+            ]
+        ]);
 
         $this->products = $this->get('pim_catalog.repository.product')->findAll();
     }
@@ -1463,5 +1462,12 @@ JSON;
 JSON;
 
         return $standardizedProducts;
+    }
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration()
+    {
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }

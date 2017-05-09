@@ -17,37 +17,35 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_localizable_scopable_date',
-                'type'                => AttributeTypes::DATE,
-                'localizable'         => true,
-                'scopable'            => true
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_localizable_scopable_date',
+            'type'                => AttributeTypes::DATE,
+            'localizable'         => true,
+            'scopable'            => true
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_localizable_scopable_date' => [
-                        ['data' => '2016-04-23', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => '2016-04-23', 'locale' => 'en_US', 'scope' => 'tablet'],
-                        ['data' => '2016-05-23', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                        ['data' => '2016-05-23', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_localizable_scopable_date' => [
+                    ['data' => '2016-04-23', 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => '2016-04-23', 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => '2016-05-23', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['data' => '2016-05-23', 'locale' => 'fr_FR', 'scope' => 'tablet'],
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_localizable_scopable_date' => [
-                        ['data' => '2016-09-23', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => '2016-09-23', 'locale' => 'en_US', 'scope' => 'tablet'],
-                        ['data' => '2016-09-23', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_localizable_scopable_date' => [
+                    ['data' => '2016-09-23', 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => '2016-09-23', 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => '2016-09-23', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorInferior()

@@ -17,40 +17,38 @@ class LocalizableScopableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_scopable_localizable_metric',
-                'type'                => AttributeTypes::METRIC,
-                'localizable'         => true,
-                'scopable'            => true,
-                'decimals_allowed'    => true,
-                'metric_family'       => 'Power',
-                'default_metric_unit' => 'KILOWATT'
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_scopable_localizable_metric',
+            'type'                => AttributeTypes::METRIC,
+            'localizable'         => true,
+            'scopable'            => true,
+            'decimals_allowed'    => true,
+            'metric_family'       => 'Power',
+            'default_metric_unit' => 'KILOWATT'
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_scopable_localizable_metric' => [
-                        ['data' => ['amount' => '-5.00', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => ['amount' => '14', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'tablet'],
-                        ['data' => ['amount' => '100', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                    ],
-                ]
-            ]);
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_scopable_localizable_metric' => [
+                    ['data' => ['amount' => '-5.00', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => ['amount' => '14', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => ['amount' => '100', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'tablet'],
+                ],
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_scopable_localizable_metric' => [
-                        ['data' => ['amount' => '-5.00', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => ['amount' => '10', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'tablet'],
-                        ['data' => ['amount' => '75', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                        ['data' => ['amount' => '75', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ],
-                ]
-            ]);
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_scopable_localizable_metric' => [
+                    ['data' => ['amount' => '-5.00', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => ['amount' => '10', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['data' => ['amount' => '75', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'tablet'],
+                    ['data' => ['amount' => '75', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                ],
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorInferior()

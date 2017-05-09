@@ -16,27 +16,25 @@ class StringFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct('cat', [
-                'values' => [
-                    'a_text' => [['data' => 'cat', 'locale' => null, 'scope' => null]]
-                ]
-            ]);
+        $this->createProduct('cat', [
+            'values' => [
+                'a_text' => [['data' => 'cat', 'locale' => null, 'scope' => null]]
+            ]
+        ]);
 
-            $this->createProduct('cattle', [
-                'values' => [
-                    'a_text' => [['data' => 'cattle', 'locale' => null, 'scope' => null]]
-                ]
-            ]);
+        $this->createProduct('cattle', [
+            'values' => [
+                'a_text' => [['data' => 'cattle', 'locale' => null, 'scope' => null]]
+            ]
+        ]);
 
-            $this->createProduct('dog', [
-                'values' => [
-                    'a_text' => [['data' => 'dog', 'locale' => null, 'scope' => null]]
-                ]
-            ]);
+        $this->createProduct('dog', [
+            'values' => [
+                'a_text' => [['data' => 'dog', 'locale' => null, 'scope' => null]]
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorStartsWith()

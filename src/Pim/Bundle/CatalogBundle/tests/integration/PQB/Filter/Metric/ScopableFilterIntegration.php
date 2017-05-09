@@ -17,37 +17,35 @@ class ScopableFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createAttribute([
-                'code'                => 'a_scopable_metric',
-                'type'                => AttributeTypes::METRIC,
-                'localizable'         => false,
-                'scopable'            => true,
-                'decimals_allowed'    => true,
-                'metric_family'       => 'Length',
-                'default_metric_unit' => 'METER'
-            ]);
+        $this->createAttribute([
+            'code'                => 'a_scopable_metric',
+            'type'                => AttributeTypes::METRIC,
+            'localizable'         => false,
+            'scopable'            => true,
+            'decimals_allowed'    => true,
+            'metric_family'       => 'Length',
+            'default_metric_unit' => 'METER'
+        ]);
 
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_scopable_metric' => [
-                        ['data' => ['amount' => '10.55', 'unit' => 'CENTIMETER'], 'locale' => null, 'scope' => 'ecommerce'],
-                        ['data' => ['amount' => '25', 'unit' => 'CENTIMETER'], 'locale' => null, 'scope' => 'tablet']
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_scopable_metric' => [
+                    ['data' => ['amount' => '10.55', 'unit' => 'CENTIMETER'], 'locale' => null, 'scope' => 'ecommerce'],
+                    ['data' => ['amount' => '25', 'unit' => 'CENTIMETER'], 'locale' => null, 'scope' => 'tablet']
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_scopable_metric' => [
-                        ['data' => ['amount' => '2', 'unit' => 'CENTIMETER'], 'locale' => null, 'scope' => 'ecommerce'],
-                        ['data' => ['amount' => '30', 'unit' => 'CENTIMETER'], 'locale' => null, 'scope' => 'tablet']
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_scopable_metric' => [
+                    ['data' => ['amount' => '2', 'unit' => 'CENTIMETER'], 'locale' => null, 'scope' => 'ecommerce'],
+                    ['data' => ['amount' => '30', 'unit' => 'CENTIMETER'], 'locale' => null, 'scope' => 'tablet']
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorInferior()

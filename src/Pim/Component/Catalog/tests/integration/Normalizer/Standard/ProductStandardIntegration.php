@@ -13,12 +13,12 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 class ProductStandardIntegration extends TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalSqlCatalogPath()],
-            false
-        );
+        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
     }
 
     public function testEmptyDisabledProduct()

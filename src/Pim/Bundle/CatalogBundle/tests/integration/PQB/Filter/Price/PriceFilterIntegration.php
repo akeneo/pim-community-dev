@@ -16,28 +16,26 @@ class PriceFilterIntegration extends AbstractFilterTestCase
     {
         parent::setUp();
 
-        if (1 === self::$count || $this->getConfiguration()->isDatabasePurgedForEachTest()) {
-            $this->createProduct('product_one', [
-                'values' => [
-                    'a_price' => [
-                        ['data' => [
-                            ['amount' => '10.55', 'currency' => 'EUR'],
-                            ['amount' => '11', 'currency' => 'USD']
-                        ], 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('product_one', [
+            'values' => [
+                'a_price' => [
+                    ['data' => [
+                        ['amount' => '10.55', 'currency' => 'EUR'],
+                        ['amount' => '11', 'currency' => 'USD']
+                    ], 'locale' => null, 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('product_two', [
-                'values' => [
-                    'a_price' => [
-                        ['data' => [['amount' => '15', 'currency' => 'EUR']], 'locale' => null, 'scope' => null]
-                    ]
+        $this->createProduct('product_two', [
+            'values' => [
+                'a_price' => [
+                    ['data' => [['amount' => '15', 'currency' => 'EUR']], 'locale' => null, 'scope' => null]
                 ]
-            ]);
+            ]
+        ]);
 
-            $this->createProduct('empty_product', []);
-        }
+        $this->createProduct('empty_product', []);
     }
 
     public function testOperatorInferior()
