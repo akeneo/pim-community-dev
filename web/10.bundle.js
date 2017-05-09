@@ -1,52 +1,6 @@
-webpackJsonp([6,8],{
+webpackJsonp([10],{
 
-/***/ 104:
-/* unknown exports provided */
-/* all exports used */
-/*!********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/fetcher/attribute-group-fetcher.js ***!
-  \********************************************************************************************/
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-
-/**
- * Attribute group fetcher
- *
- * @author    Alexandr Jeliuc <alex@jeliuc.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-    __webpack_require__(/*! jquery */ 1),
-    __webpack_require__(/*! pim/base-fetcher */ 90),
-    __webpack_require__(/*! routing */ 10)
-], __WEBPACK_AMD_DEFINE_RESULT__ = function (
-    $,
-    BaseFetcher,
-    Routing
-) {
-    return BaseFetcher.extend({
-        /**
-         * Overrides base method, to send query using POST instead GET,
-         * because the request URI can be too long.
-         * TODO Should be deleted to set it back to GET.
-         * SEE attribute fetcher
-         *
-         * {@inheritdoc}
-         */
-        getJSON: function (url, parameters) {
-            return $.post(Routing.generate(url), parameters, null, 'json');
-        }
-    });
-}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-
-/***/ }),
-
-/***/ 90:
+/***/ 91:
 /* unknown exports provided */
 /* all exports used */
 /*!*********************************************************************************!*\

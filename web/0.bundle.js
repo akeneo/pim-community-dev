@@ -3,6 +3,56 @@ webpackJsonp([0],{
 /***/ 100:
 /* unknown exports provided */
 /* all exports used */
+/*!*****************************************************************************************************!*\
+  !*** ./~/bundle-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/js/fetcher/locale-fetcher.js ***!
+  \*****************************************************************************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+var cbs = [], 
+	data;
+module.exports = function(cb) {
+	if(cbs) cbs.push(cb);
+	else cb(data);
+}
+__webpack_require__.e/* require.ensure */(4).then((function(require) {
+	data = __webpack_require__(/*! !./locale-fetcher.js */ 106);
+	var callbacks = cbs;
+	cbs = null;
+	for(var i = 0, l = callbacks.length; i < l; i++) {
+		callbacks[i](data);
+	}
+}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+
+/***/ }),
+
+/***/ 101:
+/* unknown exports provided */
+/* all exports used */
+/*!******************************************************************************************************!*\
+  !*** ./~/bundle-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/js/fetcher/product-fetcher.js ***!
+  \******************************************************************************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+var cbs = [], 
+	data;
+module.exports = function(cb) {
+	if(cbs) cbs.push(cb);
+	else cb(data);
+}
+__webpack_require__.e/* require.ensure */(3).then((function(require) {
+	data = __webpack_require__(/*! !./product-fetcher.js */ 107);
+	var callbacks = cbs;
+	cbs = null;
+	for(var i = 0, l = callbacks.length; i < l; i++) {
+		callbacks[i](data);
+	}
+}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+
+/***/ }),
+
+/***/ 102:
+/* unknown exports provided */
+/* all exports used */
 /*!************************************************************************************************************!*\
   !*** ./~/bundle-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/js/fetcher/variant-group-fetcher.js ***!
   \************************************************************************************************************/
@@ -15,7 +65,7 @@ module.exports = function(cb) {
 	else cb(data);
 }
 __webpack_require__.e/* require.ensure */(2).then((function(require) {
-	data = __webpack_require__(/*! !./variant-group-fetcher.js */ 106);
+	data = __webpack_require__(/*! !./variant-group-fetcher.js */ 108);
 	var callbacks = cbs;
 	cbs = null;
 	for(var i = 0, l = callbacks.length; i < l; i++) {
@@ -25,7 +75,7 @@ __webpack_require__.e/* require.ensure */(2).then((function(require) {
 
 /***/ }),
 
-/***/ 86:
+/***/ 88:
 /* unknown exports provided */
 /* all exports used */
 /*!*********************************************************************************************!*\
@@ -34,22 +84,22 @@ __webpack_require__.e/* require.ensure */(2).then((function(require) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./attribute-fetcher": 93,
-	"./attribute-fetcher.js": 93,
-	"./attribute-group-fetcher": 94,
-	"./attribute-group-fetcher.js": 94,
-	"./base-fetcher": 95,
-	"./base-fetcher.js": 95,
-	"./completeness-fetcher": 96,
-	"./completeness-fetcher.js": 96,
-	"./fetcher-registry": 97,
-	"./fetcher-registry.js": 97,
-	"./locale-fetcher": 98,
-	"./locale-fetcher.js": 98,
-	"./product-fetcher": 99,
-	"./product-fetcher.js": 99,
-	"./variant-group-fetcher": 100,
-	"./variant-group-fetcher.js": 100
+	"./attribute-fetcher": 95,
+	"./attribute-fetcher.js": 95,
+	"./attribute-group-fetcher": 96,
+	"./attribute-group-fetcher.js": 96,
+	"./base-fetcher": 97,
+	"./base-fetcher.js": 97,
+	"./completeness-fetcher": 98,
+	"./completeness-fetcher.js": 98,
+	"./fetcher-registry": 99,
+	"./fetcher-registry.js": 99,
+	"./locale-fetcher": 100,
+	"./locale-fetcher.js": 100,
+	"./product-fetcher": 101,
+	"./product-fetcher.js": 101,
+	"./variant-group-fetcher": 102,
+	"./variant-group-fetcher.js": 102
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -65,11 +115,11 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 86;
+webpackContext.id = 88;
 
 /***/ }),
 
-/***/ 93:
+/***/ 95:
 /* unknown exports provided */
 /* all exports used */
 /*!********************************************************************************************************!*\
@@ -84,7 +134,7 @@ module.exports = function(cb) {
 	else cb(data);
 }
 __webpack_require__.e/* require.ensure */(7).then((function(require) {
-	data = __webpack_require__(/*! !./attribute-fetcher.js */ 101);
+	data = __webpack_require__(/*! !./attribute-fetcher.js */ 103);
 	var callbacks = cbs;
 	cbs = null;
 	for(var i = 0, l = callbacks.length; i < l; i++) {
@@ -94,7 +144,7 @@ __webpack_require__.e/* require.ensure */(7).then((function(require) {
 
 /***/ }),
 
-/***/ 94:
+/***/ 96:
 /* unknown exports provided */
 /* all exports used */
 /*!**************************************************************************************************************!*\
@@ -109,7 +159,7 @@ module.exports = function(cb) {
 	else cb(data);
 }
 __webpack_require__.e/* require.ensure */(6).then((function(require) {
-	data = __webpack_require__(/*! !./attribute-group-fetcher.js */ 102);
+	data = __webpack_require__(/*! !./attribute-group-fetcher.js */ 104);
 	var callbacks = cbs;
 	cbs = null;
 	for(var i = 0, l = callbacks.length; i < l; i++) {
@@ -119,7 +169,7 @@ __webpack_require__.e/* require.ensure */(6).then((function(require) {
 
 /***/ }),
 
-/***/ 95:
+/***/ 97:
 /* unknown exports provided */
 /* all exports used */
 /*!***************************************************************************************************!*\
@@ -134,7 +184,7 @@ module.exports = function(cb) {
 	else cb(data);
 }
 __webpack_require__.e/* require.ensure */(8).then((function(require) {
-	data = __webpack_require__(/*! !./base-fetcher.js */ 88);
+	data = __webpack_require__(/*! !./base-fetcher.js */ 90);
 	var callbacks = cbs;
 	cbs = null;
 	for(var i = 0, l = callbacks.length; i < l; i++) {
@@ -144,7 +194,7 @@ __webpack_require__.e/* require.ensure */(8).then((function(require) {
 
 /***/ }),
 
-/***/ 96:
+/***/ 98:
 /* unknown exports provided */
 /* all exports used */
 /*!***********************************************************************************************************!*\
@@ -159,7 +209,7 @@ module.exports = function(cb) {
 	else cb(data);
 }
 __webpack_require__.e/* require.ensure */(5).then((function(require) {
-	data = __webpack_require__(/*! !./completeness-fetcher.js */ 103);
+	data = __webpack_require__(/*! !./completeness-fetcher.js */ 105);
 	var callbacks = cbs;
 	cbs = null;
 	for(var i = 0, l = callbacks.length; i < l; i++) {
@@ -169,7 +219,7 @@ __webpack_require__.e/* require.ensure */(5).then((function(require) {
 
 /***/ }),
 
-/***/ 97:
+/***/ 99:
 /* unknown exports provided */
 /* all exports used */
 /*!*******************************************************************************************************!*\
@@ -185,56 +235,6 @@ module.exports = function(cb) {
 }
 Promise.resolve().then((function(require) {
 	data = __webpack_require__(/*! !./fetcher-registry.js */ 8);
-	var callbacks = cbs;
-	cbs = null;
-	for(var i = 0, l = callbacks.length; i < l; i++) {
-		callbacks[i](data);
-	}
-}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
-
-/***/ }),
-
-/***/ 98:
-/* unknown exports provided */
-/* all exports used */
-/*!*****************************************************************************************************!*\
-  !*** ./~/bundle-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/js/fetcher/locale-fetcher.js ***!
-  \*****************************************************************************************************/
-/***/ (function(module, exports, __webpack_require__) {
-
-var cbs = [], 
-	data;
-module.exports = function(cb) {
-	if(cbs) cbs.push(cb);
-	else cb(data);
-}
-__webpack_require__.e/* require.ensure */(4).then((function(require) {
-	data = __webpack_require__(/*! !./locale-fetcher.js */ 104);
-	var callbacks = cbs;
-	cbs = null;
-	for(var i = 0, l = callbacks.length; i < l; i++) {
-		callbacks[i](data);
-	}
-}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
-
-/***/ }),
-
-/***/ 99:
-/* unknown exports provided */
-/* all exports used */
-/*!******************************************************************************************************!*\
-  !*** ./~/bundle-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/js/fetcher/product-fetcher.js ***!
-  \******************************************************************************************************/
-/***/ (function(module, exports, __webpack_require__) {
-
-var cbs = [], 
-	data;
-module.exports = function(cb) {
-	if(cbs) cbs.push(cb);
-	else cb(data);
-}
-__webpack_require__.e/* require.ensure */(3).then((function(require) {
-	data = __webpack_require__(/*! !./product-fetcher.js */ 105);
 	var callbacks = cbs;
 	cbs = null;
 	for(var i = 0, l = callbacks.length; i < l; i++) {

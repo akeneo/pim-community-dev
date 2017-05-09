@@ -1,6 +1,6 @@
 webpackJsonp([2,8],{
 
-/***/ 106:
+/***/ 108:
 /* unknown exports provided */
 /* all exports used */
 /*!******************************************************************************************!*\
@@ -13,12 +13,12 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
         __webpack_require__(/*! jquery */ 1),
-        __webpack_require__(/*! pim/base-fetcher */ 88),
+        __webpack_require__(/*! pim/base-fetcher */ 90),
         __webpack_require__(/*! module-config */ 16),
         __webpack_require__(/*! routing */ 10),
         __webpack_require__(/*! oro/mediator */ 14),
-        __webpack_require__(/*! pim/cache-invalidator */ 89),
-        __webpack_require__(/*! pim/product-manager */ 91)
+        __webpack_require__(/*! pim/cache-invalidator */ 91),
+        __webpack_require__(/*! pim/product-manager */ 93)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
         $,
         BaseFetcher,
@@ -71,7 +71,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 /***/ }),
 
-/***/ 88:
+/***/ 90:
 /* unknown exports provided */
 /* all exports used */
 /*!*********************************************************************************!*\
@@ -254,7 +254,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global consol
 
 /***/ }),
 
-/***/ 89:
+/***/ 91:
 /* unknown exports provided */
 /* all exports used */
 /*!***********************************************************************************!*\
@@ -268,7 +268,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
         __webpack_require__(/*! module-config */ 16),
         __webpack_require__(/*! underscore */ 0),
-        __webpack_require__(/*! pim/form */ 92),
+        __webpack_require__(/*! pim/form */ 94),
         __webpack_require__(/*! oro/mediator */ 14),
         __webpack_require__(/*! pim/fetcher-registry */ 8)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (module, _, BaseForm, mediator, FetcherRegistry) {
@@ -333,7 +333,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 /***/ }),
 
-/***/ 90:
+/***/ 92:
 /* unknown exports provided */
 /* all exports used */
 /*!**************************************************************************************!*\
@@ -557,7 +557,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 /***/ }),
 
-/***/ 91:
+/***/ 93:
 /* unknown exports provided */
 /* all exports used */
 /*!************************************************************************************!*\
@@ -574,7 +574,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
         __webpack_require__(/*! module-config */ 16),
         __webpack_require__(/*! oro/mediator */ 14),
         __webpack_require__(/*! routing */ 10),
-        __webpack_require__(/*! pim/attribute-manager */ 90),
+        __webpack_require__(/*! pim/attribute-manager */ 92),
         __webpack_require__(/*! pim/fetcher-registry */ 8)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
         $,
@@ -635,7 +635,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 /***/ }),
 
-/***/ 92:
+/***/ 94:
 /* unknown exports provided */
 /* all exports used */
 /*!*************************************************************************!*\

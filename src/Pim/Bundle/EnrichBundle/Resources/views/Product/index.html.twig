@@ -5,7 +5,7 @@
 
 {% block head_script %}
     <script type="text/javascript">
-        window.require(['jquery', 'pim/user-context'], function ($, UserContext) {
+        require(['jquery', 'pim/user-context'], function ($, UserContext) {
             'use strict';
             UserContext.set('catalogLocale', '{{ dataLocale.code }}');
         });
@@ -19,7 +19,7 @@
     {% set buttons %}
         {% include 'PimEnrichBundle:Product:_index_buttons.html.twig' %}
         <script type="text/javascript">
-            window.require(['jquery', 'pim/product-create'], function ($, ProductCreate) {
+            require(['jquery', 'pim/product-create'], function ($, ProductCreate) {
                 'use strict';
                 $('.create-product').on('click', function () {
                     ProductCreate.openProductModal();
@@ -53,7 +53,7 @@
 
     {% if resource_granted('pim_enrich_product_category_list') %}
         <script type="text/javascript">
-            window.require(['jquery', 'jquery.sidebarize'], function ($) {
+            require(['jquery', 'jquery.sidebarize'], function ($) {
                 'use strict';
 
                 $(function() {

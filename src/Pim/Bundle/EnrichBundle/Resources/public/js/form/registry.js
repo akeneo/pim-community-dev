@@ -14,7 +14,7 @@ define(
                     );
                 }
 
-                require(['bundle-loader!' + form.module], function (Form) {
+                require(['bundle-loader!.' + form.module], function (Form) {
                     deferred.resolve(Form);
                 });
 

@@ -3,6 +3,9 @@ const yaml = require('yamljs')
 const fs = require('fs')
 const _ = require('lodash')
 const pascalCase = require('pascal-case')
+const glob = require('glob')
+const cheerio = require('cheerio')
+const detective = require('detective-amd');
 
 const bundleDirectory = './src/Pim/Bundle'
 const requirePath = _.template(`${bundleDirectory}/<%=bundleName%>/Resources/config/requirejs.yml`)
@@ -122,13 +125,33 @@ const createModuleDefinitions = (modules) => {
 const generateModules = (name, contents) => {
     const moduleDefinitions = createModuleDefinitions(modules)
     _.each(moduleDefinitions, (def) => {
-        console.log(def.fileName)
         fs.writeFileSync(path.resolve(__dirname, def.fileName), def.contents, 'utf8')
     })
 }
 
+const getRequiresFromTwig = () => {
+    // get files ./src/**/*.html.twig
 
-generateModules()
+    glob('./src/**/*.html.twig', {}, (err, files) => {
+        files.forEach((filePath) => {
+            const contents = fs.readFileSync(filePath, 'utf8')
+            const $ = cheerio.load(contents)
+            $('script').each((i, el) => {
+                const scriptContents = $(el).html();
+                try {
+                    console.log(scriptContents)
+                    console.log(detective(scriptContents))
+                }  catch (e) {
+                    console.log('e')
+                }
+            })
+        })
+    })
+}
+
+
+// generateModules()
+getRequiresFromTwig()
 
 // To grab and generate
     // fetchers.js - enrich/requirejs.yml:config.pim/fetcher-registry.fetchers

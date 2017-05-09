@@ -15,7 +15,7 @@
         </a>
         {% if buttonId is defined %}
             <script type="text/javascript">
-                window.require(
+                require(
                     ['jquery', 'pim/dialogform'],
                     function ($, DialogForm) {
                         'use strict';
@@ -195,7 +195,7 @@
         </span>
     </div>
     <script type="text/javascript">
-        window.require(
+        require(
             ['jquery', 'pim/formupdatelistener'],
             function ($, FormUpdateListener) {
                 'use strict';
@@ -221,7 +221,7 @@
             <button id="{{ switchId }}" type="button" class="btn">{{ form.enabled.vars.value ? disableLabel : enableLabel }}</button>
         </div>
         <script type="text/javascript">
-            window.require(
+            require(
                 ['jquery'],
                 function ($) {
                     'use strict';
@@ -272,7 +272,7 @@
                 </div>
             </script>
             <script type="text/javascript">
-                window.require(
+                require(
                     ['jquery', 'oro/messenger'],
                     function($, messenger) {
                         messenger.setup({
