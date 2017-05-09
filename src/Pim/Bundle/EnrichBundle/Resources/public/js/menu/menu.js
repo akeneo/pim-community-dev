@@ -18,15 +18,6 @@ define(
     ) {
         return BaseForm.extend({
             tagName: 'ul',
-            className: 'AknMainMenu',
-
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
-                
-                BaseForm.prototype.initialize.apply(this, arguments);
-            }
+            className: 'AknMainMenu'
         });
     });

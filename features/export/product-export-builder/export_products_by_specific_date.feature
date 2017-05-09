@@ -45,8 +45,8 @@ Feature: Export products according to a date
     And I filter by "updated" with operator "Updated products over the last n days (e.g. 6)" and value "12"
     And I filter by "updated" with operator "Updated products since this date" and value ""
     And I filter by "updated" with operator "Updated products since last export" and value ""
+    And I should see the text "There are unsaved changes"
     And I press "Save"
-    And I should not see the text "There are unsaved changes"
 
   @skip
   Scenario: Error management when the updated time condition field is updated

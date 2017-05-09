@@ -11,16 +11,6 @@
             <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
             {% include 'OroAsseticBundle:Assets:oro_css.html.twig' %}
         {% endblock %}
-
-        {% block script %}
-            {% include 'OroRequireJSBundle::scripts.html.twig' with {compressed: not app.debug} %}
-
-            <script type="text/javascript">
-                if (sessionStorage) {
-                    sessionStorage.clear()
-                }
-            </script>
-        {% endblock %}
     {% endblock %}
 </head>
 <body class="{% block bodyClass %}{% endblock %}">

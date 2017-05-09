@@ -1,96 +1,26 @@
 <!DOCTYPE html>
 <html>
-<head>
-    {% block head %}
-        <title>{% trans %}Loading...{% endtrans %}</title>
+    <head>
+        <title>Loading...</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        {% block head_style %}
-            <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
-           {% placeholder head_style %}
-        {% endblock %}
+        <link rel="shortcut icon" href="favicon.ico" />
+        <link rel="stylesheet" href="css/pim.css"/>
 
-        {% block script %}
-            {% include 'OroRequireJSBundle::scripts.html.twig' with {compressed: not app.debug} %}
-            <script type="text/javascript">
-                {% if app.request.session.get('__target_path') %}
-                    window.location.hash = '{{ app.request.session.get('__target_path') }}';
-                    {% do app.request.session.remove('__target_path') %}
-                {% endif %}
-
-                require(['pim/app'], function (app) {
-                    app.bootstrap({
-                        debug: {{ app.debug ? 'true' : 'false' }}
-                    });
-                });
-            </script>
-        {% endblock %}
-    {% endblock %}
-</head>
-<body class="{% block bodyClass %}{% endblock %}">
-
-<div id="page" class="AknDefault-page">
-    <div id="top-page" class="AknDefault-topPage">
-        {% block header %}
-            <header class="AknHeader">
-                <div class="AknHeader-menus">
-                    <div class="AknHeader-leftMenus">
-                        {% include 'PimUIBundle:Default:logo.html.twig' %}
-                        {% block navbar %}
-                            <div class="nav pull-left top-search shortcuts">
-                                {% placeholder navbar %}
-                            </div>
-                        {% endblock navbar %}
-                        <div id="main-menu"></div>
-                        <script>
-                            require(
-                                ['jquery', 'pim/form-builder'],
-                                function($, FormBuilder) {
-                                    FormBuilder.build('pim-menu')
-                                        .then(function (form) {
-                                            $('#main-menu').append(form.render().$el);
-                                        });
-                                }
-                            );
-                        </script>
-                        {% block user_menu %}
-                            <ul class="AknHeader-userMenu">
-                                {% include 'PimNotificationBundle:Default:notifications.html.twig' %}
-                                {% include 'PimUserBundle:Menu:menuProfile.html.twig' %}
-                                {% include 'PimUIBundle:Default:help.html.twig' %}
-                            </ul>
-                        {% endblock %}
-                    </div>
-                </div>
-            </header>
-        {% endblock header %}
-        {% block main %}
-            <div id="main" >
-                <div class="AknBreadcrumbContainer">
-                    <div id="flash-messages">
-                        {% block messages %}
-                            <div class="flash-messages-frame">
-                                <div class="flash-messages-holder"></div>
-                            </div>
-                            <script type="text/template" id="message-item-template">
-                                <div class="alert <% if (type) {  %><%= 'alert-' + type %><% } %> fade in top-messages ">
-                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                    <div class="message"><%= message %></div>
-                                </div>
-                            </script>
-                        {% endblock messages %}
-                    </div>
-                </div>
-                <div class="hash-loading-mask"></div>
-                <div id="container" class="scrollable-container">
-                    {% block content %}
-                    {% endblock %}
+        <script type="text/javascript" src="bundles/ororequirejs/lib/require.js"></script>
+        <script type="text/javascript" src="js/require-config.js"></script>
+        <script type="text/javascript" src="bundles/pimenrich/js/index.js"></script>
+    </head>
+    <body>
+        <div class="app">
+            <div class="AknDefault-progressContainer">
+                <h3>
+                    Loading ...
+                </h3>
+                <div class="AknProgress AknProgress--main progress">
+                    <div class="AknProgress-bar bar" style="width: 90%;"></div>
                 </div>
             </div>
-        {% endblock main %}
-    </div>
-</div>
-{% if uservoice_key is not null %}
-    {% include 'PimUIBundle:Default:pim_uservoice.js.twig' %}
-{% endif %}
-</body>
+        </div>
+        <div class="hash-loading-mask"></div>
+    </body>
 </html>

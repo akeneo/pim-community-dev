@@ -470,6 +470,7 @@ config:
         pim/router:                         pimenrich/js/router
         pim/route-matcher:                  pimenrich/js/route-matcher
         pim/page-title:                     pimenrich/js/page-title
+        pim/init-translator:                pimenrich/js/init-translator
 
         # Controllers
         pim/controller-registry:            pimenrich/js/controller/registry
@@ -743,6 +744,8 @@ config:
         # Root
         pim/form/common/edit-form: pimenrich/js/form/common/edit-form
 
+        pim/app: pimenrich/js/app
+
         pim/form/common/label:                               pimenrich/js/form/common/label
         pim/form/common/group-selector:                      pimenrich/js/form/common/group-selector
         pim/form/common/attributes/attribute-group-selector: pimenrich/js/form/common/attributes/attribute-group-selector
@@ -768,6 +771,10 @@ config:
         pim/menu/menu:                                       pimenrich/js/menu/menu
         pim/menu/tab:                                        pimenrich/js/menu/tab
         pim/menu/item:                                       pimenrich/js/menu/item
+        pim/header/header:                                   pimenrich/js/header/header
+        pim/header/logo:                                     pimenrich/js/header/logo
+        pim/header/user:                                     pimenrich/js/header/user
+
 
         # Fields
         pim/field:                  pimenrich/js/product/field/field
@@ -887,6 +894,11 @@ config:
 
         pim/template/menu/tab:                               pimenrich/templates/menu/tab.html
         pim/template/menu/item:                              pimenrich/templates/menu/item.html
+        pim/template/header/header:                          pimenrich/templates/header/header.html
+        pim/template/header/logo:                            pimenrich/templates/header/logo.html
+        pim/template/header/user:                            pimenrich/templates/header/user.html
+        pim/template/app:                                    pimenrich/templates/app.html
+        pim/template/header/flash:                           pimenrich/templates/header/flash.html
 
         pim/template/variant-group/tab/properties/general:     pimenrich/templates/variant-group/tab/properties/general.html
         pim/template/variant-group/form/no-attribute:          pimenrich/templates/variant-group/form/no-attribute.html

@@ -1,6 +1,9 @@
 extensions:
     pim-menu:
         module: pim/menu/menu
+        parent: pim-header
+        position: 110
+        targetZone: left
 
     pim-menu-collect:
         module: pim/menu/tab

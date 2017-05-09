@@ -928,3 +928,11 @@ pim_menu:
         user_role: Roles
         info: System information
         job_tracker: Process tracker
+
+pim_header:
+    user:
+        logout: Logout
+        user_account: My Account
+
+pim_notification:
+    mark_all_as_read: Mark all as read
