@@ -422,7 +422,7 @@
         {% set class = class ~ ' AknTextField--file' %}
     {% endif %}
     {% set attr = attr|merge({'class': class }) %}
-    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value == '\\' or value is not empty %}value="{{ value }}" {% endif %}/>
 {%- endblock form_widget_simple -%}
 
 {%- block textarea_widget -%}

@@ -141,6 +141,7 @@ pim_enrich:
         property: Propriedade
         old_values: Valores antigos
         new_values: Novos valores
+        actions: Ações
       info:
         deletion_successful: Produto eliminado com sucesso.
         deletion_failed: Não foi possível eliminar o produto.
