@@ -95,7 +95,10 @@ const importPaths = Object.assign(getImportPaths(), {
     'controllers': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/controllers.js'),
     'require-polyfill': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/require-polyfill.js'),
     'pim-router': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/router.js'),
+    'paths': path.resolve(__dirname, './web/js/paths.js')
 })
+
+fs.writeFileSync('./web/js/paths.js', `module.exports = ${JSON.stringify(importPaths)}`, 'utf8')
 
 module.exports = {
     target: 'web',

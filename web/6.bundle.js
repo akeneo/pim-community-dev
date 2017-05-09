@@ -1,6 +1,6 @@
 webpackJsonp([6,8],{
 
-/***/ 104:
+/***/ 105:
 /* unknown exports provided */
 /* all exports used */
 /*!********************************************************************************************!*\
@@ -20,7 +20,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
  */
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
     __webpack_require__(/*! jquery */ 1),
-    __webpack_require__(/*! pim/base-fetcher */ 90),
+    __webpack_require__(/*! pim/base-fetcher */ 91),
     __webpack_require__(/*! routing */ 10)
 ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
     $,
@@ -46,7 +46,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 /***/ }),
 
-/***/ 90:
+/***/ 91:
 /* unknown exports provided */
 /* all exports used */
 /*!*********************************************************************************!*\

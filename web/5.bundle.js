@@ -1,6 +1,6 @@
 webpackJsonp([5,8],{
 
-/***/ 105:
+/***/ 106:
 /* unknown exports provided */
 /* all exports used */
 /*!*****************************************************************************************!*\
@@ -11,7 +11,7 @@ webpackJsonp([5,8],{
 "use strict";
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! routing */ 10), __webpack_require__(/*! pim/base-fetcher */ 90)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, Routing, BaseFetcher) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! routing */ 10), __webpack_require__(/*! pim/base-fetcher */ 91)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, Routing, BaseFetcher) {
     return BaseFetcher.extend({
         /**
          * Fetch completenesses for the given product id
@@ -45,7 +45,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 /***/ }),
 
-/***/ 90:
+/***/ 91:
 /* unknown exports provided */
 /* all exports used */
 /*!*********************************************************************************!*\

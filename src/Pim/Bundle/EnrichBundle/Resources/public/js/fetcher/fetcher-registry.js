@@ -1,6 +1,6 @@
 'use strict';
 
-define(['module-config', 'jquery', 'underscore'], function (module, $, _) {
+define(['module-config', 'jquery', 'underscore', 'fetchers'], function (module, $, _, fetcherConfig) {
     return {
         fetchers: {},
         initializePromise: null,
@@ -21,7 +21,7 @@ define(['module-config', 'jquery', 'underscore'], function (module, $, _) {
 
                 require.ensure([], function () {
                     _.each(fetchers, function (fetcher) {
-                        fetcher.loadedModule = new (require('bundle-loader!./' +  fetcher.module))(fetcher.options);
+                        fetcher.loadedModule = new fetcherConfig[fetcher](fetcher.options);
                     });
 
                     this.fetchers = fetchers;

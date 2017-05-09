@@ -25,6 +25,7 @@
     "summernote": "0.6.5",
     "text-loader": "0.0.1",
     "time-grunt": "~1.1.0",
+    "twig": "^1.10.4",
     "webpack": "^2.4.1",
     "yamljs": "^0.2.10"
   },
@@ -42,6 +43,7 @@
   },
   "dependencies": {
     "bundle-loader": "^0.5.5",
+    "detect-import-require": "^2.0.0",
     "detective-amd": "^2.4.0",
     "pascal-case": "^2.0.1"
   }

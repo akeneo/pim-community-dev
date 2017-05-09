@@ -1,6 +1,6 @@
 webpackJsonp([3],{
 
-/***/ 107:
+/***/ 108:
 /* unknown exports provided */
 /* all exports used */
 /*!************************************************************************************!*\
@@ -17,8 +17,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
         __webpack_require__(/*! module-config */ 16),
         __webpack_require__(/*! routing */ 10),
         __webpack_require__(/*! oro/mediator */ 14),
-        __webpack_require__(/*! pim/cache-invalidator */ 91),
-        __webpack_require__(/*! pim/product-manager */ 93)
+        __webpack_require__(/*! pim/cache-invalidator */ 92),
+        __webpack_require__(/*! pim/product-manager */ 94)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
         $,
         Backbone,
@@ -65,7 +65,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 /***/ }),
 
-/***/ 91:
+/***/ 92:
 /* unknown exports provided */
 /* all exports used */
 /*!***********************************************************************************!*\
@@ -79,7 +79,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
         __webpack_require__(/*! module-config */ 16),
         __webpack_require__(/*! underscore */ 0),
-        __webpack_require__(/*! pim/form */ 94),
+        __webpack_require__(/*! pim/form */ 95),
         __webpack_require__(/*! oro/mediator */ 14),
         __webpack_require__(/*! pim/fetcher-registry */ 8)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (module, _, BaseForm, mediator, FetcherRegistry) {
@@ -144,7 +144,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 /***/ }),
 
-/***/ 92:
+/***/ 93:
 /* unknown exports provided */
 /* all exports used */
 /*!**************************************************************************************!*\
@@ -368,7 +368,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 /***/ }),
 
-/***/ 93:
+/***/ 94:
 /* unknown exports provided */
 /* all exports used */
 /*!************************************************************************************!*\
@@ -385,7 +385,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
         __webpack_require__(/*! module-config */ 16),
         __webpack_require__(/*! oro/mediator */ 14),
         __webpack_require__(/*! routing */ 10),
-        __webpack_require__(/*! pim/attribute-manager */ 92),
+        __webpack_require__(/*! pim/attribute-manager */ 93),
         __webpack_require__(/*! pim/fetcher-registry */ 8)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
         $,
@@ -446,7 +446,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 /***/ }),
 
-/***/ 94:
+/***/ 95:
 /* unknown exports provided */
 /* all exports used */
 /*!*************************************************************************!*\

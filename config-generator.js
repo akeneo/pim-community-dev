@@ -3,34 +3,19 @@ const yaml = require('yamljs')
 const fs = require('fs')
 const _ = require('lodash')
 const pascalCase = require('pascal-case')
-const glob = require('glob')
-const cheerio = require('cheerio')
-const detective = require('detective-amd');
 
 const bundleDirectory = './src/Pim/Bundle'
 const requirePath = _.template(`${bundleDirectory}/<%=bundleName%>/Resources/config/requirejs.yml`)
 
 const moduleOutputs = {
     fetchers: {
-        // make sure completeness fetcher is in
+
         inputPath: `config.config['pim/fetcher-registry'].fetchers`,
         outputPath: `${bundleDirectory}/EnrichBundle/Resources/public/js/config/fetchers.js`,
-        formatter: (contents, path) => {
-            return {
-                path,
-                exports: _.uniq(_.compact(_.map(contents[path], 'module')))
-            }
-        }
     },
     controllers: {
         inputPath: `config.config['pim/controller-registry'].controllers`,
         outputPath: `${bundleDirectory}/EnrichBundle/Resources/public/js/config/controllers.js`,
-        formatter: (contents, path) => {
-            return {
-                path,
-                exports: _.uniq(_.compact(_.map(contents[path], 'module')))
-            }
-        }
     }
 }
 
@@ -69,89 +54,67 @@ const getConfigFiles = () => {
     return bundleConfigs
 }
 
-const generateJSONs = (name, contents) => {
-
-}
-
-const configFiles = getConfigFiles()
-
-const getModuleOutputs = () => {
+const getModuleOutputs = (configFiles) => {
     return _.map(moduleOutputs, (output) => {
         const contents = {}
+
         _.each(configFiles, (file) => {
             const props = _.get(file, output.inputPath) || {}
             _.each(props, (prop, name) => {
-                contents[name] = prop
-            })
-        })
-
-        const fileContents = { [output.outputPath]: contents }
-        if (output.formatter) return output.formatter(fileContents, output.outputPath)
-        return fileContents
-    })
-}
-
-const formatVars = (modulePaths) => {
-    const mappedPaths = {}
-    _.each(modulePaths, (modulePath) => {
-        const moduleName = modulePath.split('/').pop()
-        mappedPaths[modulePath] = pascalCase(moduleName)
-    })
-    return mappedPaths
-}
-
-const modules = getModuleOutputs()
-
-const createModuleDefinitions = (modules) => {
-    const moduleTemplate = _.template(`define(<%=moduleNames%>, function (<%=moduleVars%>) { return { <% _.forEach(moduleExports, function(moduleVar, key) { %>"<%- key %>": <%- moduleVar %>, <% }); %> } })`)
-
-    const files = _.map(modules, (definition) => {
-        const moduleNames = JSON.stringify(definition.exports)
-        const moduleVars = formatVars(definition.exports)
-        return {
-            fileName: definition.path,
-            contents: moduleTemplate({
-                moduleNames,
-                moduleVars: _.values(moduleVars).join(', '),
-                moduleExports: moduleVars
-            })
-        }
-    })
-
-    return files
-
-}
-
-const generateModules = (name, contents) => {
-    const moduleDefinitions = createModuleDefinitions(modules)
-    _.each(moduleDefinitions, (def) => {
-        fs.writeFileSync(path.resolve(__dirname, def.fileName), def.contents, 'utf8')
-    })
-}
-
-const getRequiresFromTwig = () => {
-    // get files ./src/**/*.html.twig
-
-    glob('./src/**/*.html.twig', {}, (err, files) => {
-        files.forEach((filePath) => {
-            const contents = fs.readFileSync(filePath, 'utf8')
-            const $ = cheerio.load(contents)
-            $('script').each((i, el) => {
-                const scriptContents = $(el).html();
-                try {
-                    console.log(scriptContents)
-                    console.log(detective(scriptContents))
-                }  catch (e) {
-                    console.log('e')
+                prop.resolvedModule = pascalCase(prop.module)
+                if (typeof prop === 'string') {
+                    contents[name] = { module: prop }
+                } else {
+                    contents[name] = prop
                 }
             })
         })
+
+        return {
+            fileName: output.outputPath,
+            modules: contents
+         }
     })
 }
 
+const configFiles = getConfigFiles()
+const files = getModuleOutputs(configFiles)
 
+files.forEach((file) => {
+    // Put this in a file
+    const fileTemplate = _.template(`define(<%=paths%>, function (<%=values%>) {
+        return {
+            <% _.forEach(modules, function(options, key) {
+                %>"<%- key %>": {
+                <% _.forEach(options, function(value, key) { %>
+                    <% if (key === 'resolvedModule') { %> "<%- key %>": <%= value %>, <% } else { %> "<%- key %>": <%= JSON.stringify(value) %>, <% }%>
+                <% }) %>
+            },
+            <% }) %>
+        }
+    });`)
+
+    const paths = _.compact(_.uniq(_.map(file.modules, 'module')))
+    const values =  _.map(paths, path => pascalCase(path))
+
+    console.log(fileTemplate({
+        paths: JSON.stringify(paths),
+        values,
+        modules: file.modules
+    }))
+
+})
+
+// const generateModules = (name, contents) => {
+//     const moduleDefinitions = createModuleDefinitions(modules)
+//     _.each(moduleDefinitions, (def) => {
+//         console.log(def)
+//         fs.writeFileSync(path.resolve(__dirname, def.fileName), def.contents, 'utf8')
+//     })
+// }
+//
+//
 // generateModules()
-getRequiresFromTwig()
 
 // To grab and generate
     // fetchers.js - enrich/requirejs.yml:config.pim/fetcher-registry.fetchers

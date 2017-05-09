@@ -1,14 +1,11 @@
-// Generate twig modules instead
-// , 'twig-requires'
-define(['jquery', 'underscore'], function () {
+define(['jquery', 'underscore', 'paths'], function ($, _) {
     return function(modules) {
         console.trace();
         console.log('hijack require from twig template', modules)
 
+        _.each(modules, function() {
+        })
 
-        // require(['bundle-loader!.' + form.module], function (Form) {
-        //     deferred.resolve(Form);
-        // });
 
         return {}
     }
