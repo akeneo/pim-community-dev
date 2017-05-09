@@ -4,6 +4,26 @@
   width: 100%;
   border-color: @AknBorderColor;
   border-radius: 2px;
+
+  .note-editable {
+    ol {
+      list-style-type: decimal;
+      margin-left: 1em;
+
+      > li {
+        list-style-type: decimal;
+      }
+    }
+
+    ul {
+      list-style-type: disc;
+      margin-left: 1em;
+
+      > li {
+        list-style-type: disc;
+      }
+    }
+  }
 }
 
 .note-editor .note-toolbar {

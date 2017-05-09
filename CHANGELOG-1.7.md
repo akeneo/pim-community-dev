@@ -9,6 +9,7 @@
 - PIM-6388: Fix parameters inversion in Pim\Component\Catalog\Builder\ProductBuilder::createProductValue
 - PIM-6314: Fix parameters inversion in Pim\Component\Catalog\Builder\ProductBuilder::createProductValue
 - PIM-6381: Fix `Delete` button is visible on channel create screen
+- PIM-6398: Fix Summernote (WYSIWYG) style (backport GITHUB-6101 into 1.7)
 
 # 1.7.3 (2017-04-14)
 
