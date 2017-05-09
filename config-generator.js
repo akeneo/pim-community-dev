@@ -3,13 +3,13 @@ const yaml = require('yamljs')
 const fs = require('fs')
 const _ = require('lodash')
 const pascalCase = require('pascal-case')
+const configModuleTemplate = fs.readFileSync('./config-module-template.html', 'utf8')
 
 const bundleDirectory = './src/Pim/Bundle'
 const requirePath = _.template(`${bundleDirectory}/<%=bundleName%>/Resources/config/requirejs.yml`)
 
 const moduleOutputs = {
     fetchers: {
-
         inputPath: `config.config['pim/fetcher-registry'].fetchers`,
         outputPath: `${bundleDirectory}/EnrichBundle/Resources/public/js/config/fetchers.js`,
     },
@@ -81,40 +81,19 @@ const configFiles = getConfigFiles()
 const files = getModuleOutputs(configFiles)
 
 files.forEach((file) => {
-    // Put this in a file
-    const fileTemplate = _.template(`define(<%=paths%>, function (<%=values%>) {
-        return {
-            <% _.forEach(modules, function(options, key) {
-                %>"<%- key %>": {
-                <% _.forEach(options, function(value, key) { %>
-                    <% if (key === 'resolvedModule') { %> "<%- key %>": <%= value %>, <% } else { %> "<%- key %>": <%= JSON.stringify(value) %>, <% }%>
-                <% }) %>
-            },
-            <% }) %>
-        }
-    });`)
-
+    const fileTemplate = _.template(configModuleTemplate)
     const paths = _.compact(_.uniq(_.map(file.modules, 'module')))
     const values =  _.map(paths, path => pascalCase(path))
 
-    console.log(fileTemplate({
+    const fileContents =  fileTemplate({
         paths: JSON.stringify(paths),
         values,
         modules: file.modules
-    }))
+    })
 
+    fs.writeFileSync(path.resolve(__dirname, file.fileName), fileContents, 'utf8')
 })
 
-// const generateModules = (name, contents) => {
-//     const moduleDefinitions = createModuleDefinitions(modules)
-//     _.each(moduleDefinitions, (def) => {
-//         console.log(def)
-//         fs.writeFileSync(path.resolve(__dirname, def.fileName), def.contents, 'utf8')
-//     })
-// }
-//
-//
-// generateModules()
 
 // To grab and generate
     // fetchers.js - enrich/requirejs.yml:config.pim/fetcher-registry.fetchers

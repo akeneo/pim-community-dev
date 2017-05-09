@@ -1,6 +1,6 @@
 'use strict';
 
-define(['module-config', 'jquery', 'underscore', 'fetchers'], function (module, $, _, fetcherConfig) {
+define(['module-config', 'jquery', 'underscore', 'fetchers', 'pim/base-fetcher'], function (module, $, _, fetcherConfig, BaseFetcher) {
     return {
         fetchers: {},
         initializePromise: null,
@@ -13,7 +13,7 @@ define(['module-config', 'jquery', 'underscore', 'fetchers'], function (module, 
                 var deferred = $.Deferred();
                 var fetchers = {};
 
-                _.each(module.config().fetchers, function (config, name) {
+                _.each(fetcherConfig, function (config, name) {
                     config = _.isString(config) ? { module: config } : config;
                     config.options = config.options || {};
                     fetchers[name] = config;
@@ -21,7 +21,8 @@ define(['module-config', 'jquery', 'underscore', 'fetchers'], function (module, 
 
                 require.ensure([], function () {
                     _.each(fetchers, function (fetcher) {
-                        fetcher.loadedModule = new fetcherConfig[fetcher](fetcher.options);
+                        var Module = fetcher.resolvedModule || BaseFetcher
+                        fetcher.loadedModule = new (Module)(fetcher.options);
                     });
 
                     this.fetchers = fetchers;
