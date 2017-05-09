@@ -8,6 +8,10 @@ pim_user:
       business_unit.title: Unidades de negocio
       email_synchronization.title: Configuración de sincronización de correo electrónico
       interfaces.title: Interfaces
+  group:
+    tab:
+      general.title: General
+      users.title: Usuarios
 oro.user.controller:
   group.message.saved: "Grupo guardado"
   role.message.saved: "Rol guardado"

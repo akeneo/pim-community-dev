@@ -334,7 +334,7 @@ pim_enrich:
   error:
     upload: Une erreur s'est produite pendant le chargement du fichier
   alert:
-    not_allowed: Vous n'êtes pas autorisé(e) à accéder à cette page
+    not_allowed: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
     error_occured: Une erreur s'est produite lors du chargement de la page
   form:
     required: (obligatoire)
@@ -785,6 +785,42 @@ pim_enrich:
       create_btn: Créer un canal
 pim_enrich.error:
   exception.title: Oups! Une erreur {{ status_code }} s'est produite...
+  http:
+    403: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
+page_title:
+  oro_default: Tableau de bord
+  pim_enrich_attributegroup_index: Groupes d'attributs
+  pim_enrich_attributegroup_create: Groupe d'attributs | Créer
+  pim_enrich_attributegroup_edit: Groupe d'attribut {{ group.label }} | Editer
+  pim_enrich_categorytree_index: Arborescences des catégories
+  pim_enrich_categorytree_create: Arborescences | Créer
+  pim_enrich_categorytree_edit: Arborescence {{ category.label }} | Editer
+  pim_enrich_categorytree_create_tree: Arborescences | Créer
+  pim_enrich_attribute_index: Attributs
+  pim_enrich_attribute_create: Attributs | Créer
+  pim_enrich_attribute_edit: Attribut {{ attribute.label }} | Editer
+  pim_enrich_product_index: Produits
+  pim_enrich_product_edit: Produit {{ product.sku }} | Editer
+  pim_enrich_family_index: Familles
+  pim_enrich_family_edit: Famille {{ family.label }} Editer
+  pim_enrich_channel_index: Canaux
+  pim_enrich_channel_create: Canaux | Créer
+  pim_enrich_channel_edit: Canal {{ channel.label }} | Editer
+  pim_enrich_currency_index: Devises
+  pim_enrich_locale_index: Locales
+  pim_enrich_group_index: Groupes
+  pim_enrich_group_edit: Groupe {{ group.label }} | Editer
+  pim_enrich_variant_group_index: Groupes de variantes
+  pim_enrich_variant_group_edit: Groupe de variantes {{ group.label }} | Editer
+  pim_enrich_associationtype_index: Types d'association
+  pim_enrich_associationtype_edit: Type d'association {{ association type.label }} | Modifier
+  pim_enrich_grouptype_index: Types de groupe
+  pim_enrich_grouptype_edit: Type de groupes {{ group type.label }} | Modifier
+  pim_enrich_mass_edit_action_choose: Edition de masse | Choisir
+  pim_enrich_mass_edit_action_configure: Edition de masse | Configurer
+  pim_enrich_mass_edit_action_perform: Edition en masse | Effectuer
+  pim_enrich_job_tracker_index: Traqueur de processus
+  pim_enrich_job_tracker_show: Traqueur de processus | Voir la tâche
 batch_jobs:
   add_product_value:
     label: Ajouter une valeur de produit
@@ -824,10 +860,10 @@ batch_jobs:
     label: Ajouter au groupe de variantes
     perform:
       label: Ajouter au groupe de variantes
-Pim_mass_edit:
+job_tracker:
   download_archive:
     archive: Télécharger l'archive générée
     output: Télécharger les fichiers générés
-    input: Télécharger le fichier lu
+    input: Télécharger les fichiers lus
     invalid_xlsx: Télécharger les données invalides
     invalid_csv: Télécharger les données invalides

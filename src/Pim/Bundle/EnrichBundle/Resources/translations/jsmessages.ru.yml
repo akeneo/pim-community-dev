@@ -303,7 +303,6 @@ pim_enrich:
   error:
     upload: Произошла ошибка во время загрузки файла
   alert:
-    not_allowed: Вы не имеете доступа к этой странице
     error_occured: Произошла ошибка во время загрузки страницы
   form:
     required: (требуется)
@@ -706,6 +705,29 @@ pim_enrich:
       title: Трекер процессов
 pim_enrich.error:
   exception.title: Ах, нет! Произошла ошибка {{ status_code }}...
+page_title:
+  oro_default: Панель управления
+  pim_enrich_attributegroup_index: Группы атрибутов
+  pim_enrich_attributegroup_create: Группы атрибутов | Создать
+  pim_enrich_categorytree_index: Деревья категории
+  pim_enrich_categorytree_create: Деревья категорий | Создать
+  pim_enrich_categorytree_create_tree: Деревья категорий | Создать
+  pim_enrich_attribute_index: Атрибуты
+  pim_enrich_attribute_create: Атрибуты | Создать
+  pim_enrich_product_index: Продукты
+  pim_enrich_family_index: Семейства
+  pim_enrich_channel_index: Каналы
+  pim_enrich_channel_create: Каналы | Создать
+  pim_enrich_currency_index: Валюты
+  pim_enrich_locale_index: Локали
+  pim_enrich_group_index: Группы
+  pim_enrich_variant_group_index: Вариативные группы
+  pim_enrich_associationtype_index: Типы ассоциаций
+  pim_enrich_grouptype_index: Типы групп
+  pim_enrich_mass_edit_action_choose: Массовое редактирование | Выбрать
+  pim_enrich_mass_edit_action_configure: Массовое редактирование | Настройка
+  pim_enrich_job_tracker_index: Трекер процессов
+  pim_enrich_job_tracker_show: Трекер процессов | Показать задание
 batch_jobs:
   add_product_value:
     label: Добавить значение продукта

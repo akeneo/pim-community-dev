@@ -274,7 +274,6 @@ pim_enrich:
   error:
     upload: Ocorreu um erro durante o envio do ficheiro
   alert:
-    not_allowed: Não tem autorização para aceder a esta página
     error_occured: Ocorreu um erro durante o carregamento da página
   form:
     product:
@@ -605,6 +604,29 @@ pim_enrich:
       title: Visualizador de processos
 pim_enrich.error:
   exception.title: Ora bolas! Ocorreu o erro {{ status_code }}...
+page_title:
+  oro_default: Painel
+  pim_enrich_attributegroup_index: Grupos de atributos
+  pim_enrich_attributegroup_create: Grupos de atributos | Criar
+  pim_enrich_categorytree_index: Árvores de categorias
+  pim_enrich_categorytree_create: Árvores de categorias | Criar
+  pim_enrich_categorytree_create_tree: Árvores de categorias | Criar
+  pim_enrich_attribute_index: Atributos
+  pim_enrich_attribute_create: Atributos | Criar
+  pim_enrich_product_index: Produtos
+  pim_enrich_family_index: Famílias
+  pim_enrich_channel_index: Canais
+  pim_enrich_channel_create: Canais | Criar
+  pim_enrich_currency_index: Moedas
+  pim_enrich_locale_index: Linguagens
+  pim_enrich_group_index: Grupos
+  pim_enrich_variant_group_index: Grupos variantes
+  pim_enrich_associationtype_index: Tipos de associação
+  pim_enrich_grouptype_index: Tipos de grupo
+  pim_enrich_mass_edit_action_choose: Editar em massa | Escolher
+  pim_enrich_mass_edit_action_configure: Editar em massa | Configurar
+  pim_enrich_job_tracker_index: Visualizador de processos
+  pim_enrich_job_tracker_show: Visualizador de processos | Mostrar tarefa
 batch_jobs:
   update_product_value:
     label: Atualizar o valor do produto

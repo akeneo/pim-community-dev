@@ -8,6 +8,10 @@ pim_user:
       business_unit.title: 业务单元
       email_synchronization.title: 电子邮件同步设置
       interfaces.title: 界面
+  group:
+    tab:
+      general.title: 一般信息
+      users.title: 用户
 oro.user.controller:
   group.message.saved: "分组已保存"
   role.message.saved: "角色已保存"
