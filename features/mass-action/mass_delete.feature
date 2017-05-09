@@ -51,7 +51,8 @@ Feature: Delete many product at once
     And the grid should contain 10 elements
 
   Scenario: Successfully mass delete visible products
-    Given I change the page size to 10
+    Given I sort by "SKU" value ascending
+    And I change the page size to 10
     And I select all visible entities
     Then I press "Delete" on the "Bulk Actions" dropdown button
     And I should see "Are you sure you want to delete selected products?"
