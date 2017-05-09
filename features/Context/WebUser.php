@@ -88,7 +88,7 @@ class WebUser extends RawMinkContext
      */
     public function iChooseTheAttributeType($type)
     {
-        $this->getCurrentPage()->clickLink($type);
+        $this->getCurrentPage()->selectAttributeType($type);
         $this->wait();
     }
 

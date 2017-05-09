@@ -303,6 +303,7 @@ pim_enrich:
 attribute:
     title:    attribute
     edit:     edit attribute
+    create:   create attribute
 attribute group:
     title:    attribute group
     overview: attribute group overview

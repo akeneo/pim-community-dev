@@ -229,4 +229,24 @@ class Creation extends Form
 
         throw new \InvalidArgumentException(sprintf('Option %s was not found', $optionName));
     }
+
+    /**
+     * Select the attribute type in the modal
+     *
+     * @param $name
+     *
+     */
+    public function selectAttributeType($name)
+    {
+        $this->spin(function () use ($name) {
+            $fields = $this->findAll('css', '.attribute-choice');
+            foreach ($fields as $field) {
+                if (trim($field->getText()) === $name) {
+                    return $field;
+                }
+            }
+
+            return null;
+        }, sprintf('Cannot find attribute type "%s"', $name))->click();
+    }
 }

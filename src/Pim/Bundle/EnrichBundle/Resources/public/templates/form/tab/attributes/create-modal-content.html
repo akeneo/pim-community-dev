@@ -1,11 +1,11 @@
 <div id="attribute-modal-content">
     <div class="AknButtonList AknButtonList--twoColumns">
         <% _.each(attributeTypes, function(attributeType){ %>
-            <a class="AknButtonList-item AknButton AknButton--withIcon attribute-choice"
-               href="<%- generateRoute('pim_enrich_attribute_create', { attribute_type: attributeType.code }) %>">
+            <span class="AknButtonList-item AknButton AknButton--withIcon attribute-choice"
+                data-route="<%- generateRoute('pim_enrich_attribute_create', { attribute_type: attributeType.code }) %>">
                 <i class="AknButton-icon icon-<%- iconsMap[attributeType.code] %>"></i>
                 <%- attributeType.label %>
-            </a>
+            </span>
         <% }); %>
     </div>
 </div>

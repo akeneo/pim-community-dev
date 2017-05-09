@@ -18,7 +18,7 @@ define(
         'text!pim/template/form/tab/attribute/create-modal-content',
         'routing',
         'pim/fetcher-registry',
-        'oro/navigation',
+        'pim/router',
         'module',
         'backbone/bootstrap-modal'
     ],
@@ -32,7 +32,7 @@ define(
         templateModal,
         Routing,
         FetcherRegistry,
-        navigation,
+        router,
         module
     ) {
         return BaseForm.extend({
@@ -52,7 +52,6 @@ define(
              * Create the dialog modal and bind clicks
              */
             createModal: function (attributeTypesMap) {
-
                 var attributeTypes = this.formatAndSortAttributeTypesByLabel(attributeTypesMap);
 
                 var modal = null;
@@ -63,28 +62,26 @@ define(
                         return Routing.generate(route, params);
                     }
                 });
-                var modalTitle = __(this.config.modalTitle);
 
                 $('#attribute-create-button').on('click', function () {
                     if (modal) {
                         modal.open();
                     } else {
                         modal = new Backbone.BootstrapModal({
-                            title: modalTitle,
+                            title: __(this.config.modalTitle),
                             content: modalContent
                         });
 
                         modal.open();
                         modal.$el.find('.modal-footer').remove();
 
-                        modal.$el.on('click', 'a.attribute-choice', function (e) {
-                            e.preventDefault();
+                        modal.$el.on('click', 'span.attribute-choice', function (e) {
                             modal.close();
                             modal.$el.remove();
-                            navigation.getInstance().navigate('#url=' + $(this).attr('href'), {trigger: true});
+                            router.redirect($(this).attr('data-route'), {trigger: true});
                         });
                     }
-                });
+                }.bind(this));
             },
 
             /**
@@ -94,7 +91,6 @@ define(
                 FetcherRegistry.getFetcher('attribute-type')
                     .fetchAll()
                     .then(function (attributeTypes) {
-
                         this.$el.html(this.template({
                             buttonTitle: __(this.config.buttonTitle)
                         }));
@@ -107,11 +103,10 @@ define(
 
             /**
              * Format the map to an array and sort attributeTypes by label
-             * @param attributeTypesMap => Map of attributeTypes
+             * @param attributeTypesMap
              * @returns {Array}
              */
             formatAndSortAttributeTypesByLabel: function (attributeTypesMap) {
-
                 var sortedAttributeTypesByLabel = [];
                 for (var key in attributeTypesMap) {
                     if (attributeTypesMap.hasOwnProperty(key)) {
@@ -123,7 +118,7 @@ define(
                 }
 
                 sortedAttributeTypesByLabel.sort(function (a, b) {
-                    return a.label > b.label ? 1 : -1;
+                    return a.label.localeCompare(b.label);
                 });
 
                 return sortedAttributeTypesByLabel;
