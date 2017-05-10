@@ -156,6 +156,10 @@
 - Add argument `Pim\Component\Catalog\Model\ProductInterface` to `addValue` method of `Pim\Component\Catalog\Validator\UniqueValueSet`
 - Remove OroNavigationBundle
 
+### Methods
+
+- Remove `attributeIcon` method from `Pim\Bundle\EnrichBundle\Twig\AttributeExtension`
+
 ## Requirements
 
 - GITHUB-5937: Remove the need to have mcrypt installed
