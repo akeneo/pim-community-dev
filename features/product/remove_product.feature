@@ -34,7 +34,7 @@ Feature: Remove a product
 
   Scenario: Successfully delete a product and associated drafts
     Given I am on the "jean" product page
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     Then I should see "Confirm deletion"
     And I confirm the removal
     Then I should not see product jean
