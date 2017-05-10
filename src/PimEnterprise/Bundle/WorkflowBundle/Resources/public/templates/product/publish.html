@@ -1,8 +1,8 @@
 <% if (product.meta.published) { %>
     <% if (product.meta.published.version !== product.meta.updated.version) { %>
-        <a class="AknDropdown-menuLink publish-product "><%- _.__('pimee_enrich.entity.product.btn.publish_this_version') %></a>
+        <span class="AknDropdown-menuLink publish-product "><%- _.__('pimee_enrich.entity.product.btn.publish_this_version') %></span>
     <% } %>
-    <a class="AknDropdown-menuLink unpublish-product"><%- _.__('pimee_enrich.entity.product.btn.unpublish') %></a>
+    <span class="AknDropdown-menuLink unpublish-product"><%- _.__('pimee_enrich.entity.product.btn.unpublish') %></span>
 <% } else { %>
-    <a class="AknDropdown-menuLink publish-product"><%- _.__('pimee_enrich.entity.product.btn.publish') %></a>
+    <span class="AknDropdown-menuLink publish-product"><%- _.__('pimee_enrich.entity.product.btn.publish') %></span>
 <% } %>
