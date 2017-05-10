@@ -49,7 +49,7 @@ class ImmutablePropertyException extends PropertyException
      */
     public static function immutableProperty($propertyName, $propertyValue, $className)
     {
-        return new self(
+        return new static(
             $propertyName,
             $propertyValue,
             $className,
