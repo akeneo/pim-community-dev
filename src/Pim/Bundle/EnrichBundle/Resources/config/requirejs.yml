@@ -545,8 +545,6 @@ config:
         pim/form-config-provider: pimenrich/js/form/config-provider
         pim/cache-invalidator:    pimenrich/js/form/cache-invalidator
 
-        pim/form: pimenrich/js/product/form
-
         # Association type
         pim/association-type-edit-form/delete:                 pimenrich/js/association-type/form/delete
 
@@ -564,15 +562,15 @@ config:
         # Family
         pim/family-edit-form/delete:                                        pimenrich/js/family/form/delete
         pim/family-edit-form/save:                                          pimenrich/js/family/form/save
-        pim/family-edit-form/properties/general:                            pimenrich/js/family/form/properties/general
         pim/family-edit-form/properties/general/code:                       pimenrich/js/family/form/properties/general/code
         pim/family-edit-form/properties/general/attribute-as-label:         pimenrich/js/family/form/properties/general/attribute-as-label
         pim/family-edit-form/properties/general/translation:                pimenrich/js/family/form/properties/general/translation
-        pim/family-edit-form/attributes:                                    pimenrich/js/family/form/attributes
-        pim/family-edit-form/attributes/toolbar:                            pimenrich/js/family/form/attributes/toolbar
-        pim/family-edit-form/attributes/toolbar/add-select/attribute:       pimenrich/js/family/form/attributes/toolbar/add-select/attribute/select
         pim/family-edit-form/attributes/toolbar/add-select/attribute-group: pimenrich/js/family/form/attributes/toolbar/add-select/attribute-group/select
         pim/family-edit-form/attributes/attributes:                         pimenrich/js/family/form/attributes/attributes
+        pim/family-edit-form/attributes/toolbar/add-select/attribute:       pimenrich/js/family/form/attributes/toolbar/add-select/attribute/select
+        pim/family-edit-form/attributes/toolbar:                            pimenrich/js/family/form/attributes/toolbar
+        pim/family-edit-form/properties/general:                            pimenrich/js/family/form/properties/general
+        pim/family-edit-form/attributes:                                    pimenrich/js/family/form/attributes
 
         # Variant group
         pim/variant-group-edit-form/save: pimenrich/js/variant-group/form/save
@@ -614,17 +612,16 @@ config:
         pim/product-edit-form/attributes:                  pimenrich/js/product/form/attributes
 
         # Exports
-        pim/job/product/edit/content:                                pimenrich/js/job/product/edit/content
         pim/job/product/edit/content/readonly:                       pimenrich/js/job/product/edit/content/readonly
-        pim/job/product/edit/content/structure:                      pimenrich/js/job/product/edit/content/structure
         pim/job/product/edit/content/structure/scope:                pimenrich/js/job/product/edit/content/structure/scope
         pim/job/product/edit/content/structure/locales:              pimenrich/js/job/product/edit/content/structure/locales
         pim/job/product/edit/content/structure/attributes:           pimenrich/js/job/product/edit/content/structure/attributes
         pim/job/product/edit/content/structure/attributes-selector:  pimenrich/js/job/product/edit/content/structure/attributes-selector
-        pim/job/product/edit/content/data:                           pimenrich/js/job/product/edit/content/data
+        pim/job/product/edit/content/structure:                      pimenrich/js/job/product/edit/content/structure
         pim/job/product/edit/content/data/add-select/attribute:      pimenrich/js/job/product/edit/content/data/add-select/attribute/select
         pim/job/product/edit/content/data/default-attribute-filters: pimenrich/js/job/product/edit/content/data/default-attribute-filters
         pim/job/common/edit/content/data/help:                       pimenrich/js/job/common/edit/content/data/help
+        pim/job/product/edit/content/data:                           pimenrich/js/job/product/edit/content/data
         pim/job/product/edit/field/date-format:                      pimenrich/js/job/product/edit/field/date-format
         pim/job/common/edit/field/decimal-separator:                 pimenrich/js/job/common/edit/field/decimal-separator
         pim/job/common/edit/properties:                              pimenrich/js/job/common/edit/properties
@@ -646,6 +643,7 @@ config:
         pim/job/execution/show-profile:                              pimenrich/js/job/execution/show-profile
         pim/job/execution/download-archives-buttons:                 pimenrich/js/job/execution/download-archives-buttons
         pim/job/execution/download-log:                              pimenrich/js/job/execution/download-log
+        pim/job/product/edit/content:                                pimenrich/js/job/product/edit/content
 
         # Filters
         pim/filter/filter:                     pimenrich/js/filter/filter
@@ -665,6 +663,7 @@ config:
         pim/filter/attribute/select:           pimenrich/js/filter/attribute/select
         pim/filter/attribute/media:            pimenrich/js/filter/attribute/media
         pim/filter/attribute/date:             pimenrich/js/filter/attribute/date
+        pim/filter/text: pimdatagrid/js/datafilter/filter/text-filter
 
         # Product edit form
         pim/field-manager: pimenrich/js/product/field-manager
@@ -714,9 +713,9 @@ config:
         pim/common/tab/history:            pimenrich/js/form/common/tab/history
         pim/common/tab/properties:         pimenrich/js/form/common/tab/properties
         pim/common/properties/translation: pimenrich/js/form/common/properties/translation
-        pim/common/add-select:             pimenrich/js/form/common/add-select/select
         pim/common/add-select/line:        pimenrich/js/form/common/add-select/line
         pim/common/add-select/footer:      pimenrich/js/form/common/add-select/footer
+        pim/common/add-select:             pimenrich/js/form/common/add-select/select
 
         # Root
         pim/form/common/edit-form: pimenrich/js/form/common/edit-form
@@ -758,8 +757,8 @@ config:
         pim/wysiwyg-field:          pimenrich/js/product/field/wysiwyg-field
 
         # Product add select
-        pim/product/add-select/attribute:      pimenrich/js/product/form/attributes/add-select/attribute/select
         pim/product/add-select/attribute/line: pimenrich/js/product/form/attributes/add-select/attribute/line
+        pim/product/add-select/attribute:      pimenrich/js/product/form/attributes/add-select/attribute/select
 
         # Formatters
         pim/formatter/choices/base: pimenrich/js/formatter/choices/base
@@ -805,16 +804,16 @@ config:
         pim/template/form/index/create-button:                    pimenrich/templates/form/index/create-button.html
         pim/template/form/index/confirm-button:                   pimenrich/templates/form/index/confirm-button.html
 
-        pim/template/channel/tab/properties/general:                pimenrich/templates/channel/tab/properties/general.html
         pim/template/channel/tab/properties/general/currencies:     pimenrich/templates/channel/tab/properties/general/currencies.html
         pim/template/channel/tab/properties/general/locales:        pimenrich/templates/channel/tab/properties/general/locales.html
         pim/template/channel/tab/properties/general/category-tree:  pimenrich/templates/channel/tab/properties/general/category-tree.html
         pim/template/channel/tab/properties/conversion-unit:        pimenrich/templates/channel/tab/properties/conversion-unit.html
+        pim/template/channel/tab/properties/general:                pimenrich/templates/channel/tab/properties/general.html
 
-        pim/template/family/tab/attributes:                  pimenrich/templates/family/tab/attributes.html
         pim/template/family/tab/attributes/toolbar:          pimenrich/templates/family/tab/attributes/toolbar.html
         pim/template/family/tab/attributes/attributes:       pimenrich/templates/family/tab/attributes/attributes.html
         pim/template/family/tab/general/attribute-as-label:  pimenrich/templates/family/tab/general/attribute-as-label.html
+        pim/template/family/tab/attributes:                  pimenrich/templates/family/tab/attributes.html
 
         pim/template/product/tab/categories:                 pimenrich/templates/product/tab/categories.html
         pim/template/product/tab/attribute/validation-error: pimenrich/templates/product/tab/attributes/validation-error.html
@@ -864,15 +863,15 @@ config:
         pim/template/group/meta/product-count:         pimenrich/templates/group/meta/product-count.html
 
         # Exports
-        pim/template/export/product/edit/content:                               pimenrich/templates/export/product/edit/content.html
-        pim/template/export/product/edit/content/data:                          pimenrich/templates/export/product/edit/content/data.html
         pim/template/export/product/edit/content/data/help:                     pimenrich/templates/export/product/edit/content/data/help.html
-        pim/template/export/product/edit/content/structure:                     pimenrich/templates/export/product/edit/content/structure.html
+        pim/template/export/product/edit/content/data:                          pimenrich/templates/export/product/edit/content/data.html
+
         pim/template/export/product/edit/content/structure/scope:               pimenrich/templates/export/product/edit/content/structure/scope.html
         pim/template/export/product/edit/content/structure/locales:             pimenrich/templates/export/product/edit/content/structure/locales.html
         pim/template/export/product/edit/content/structure/attributes:          pimenrich/templates/export/product/edit/content/structure/attributes.html
         pim/template/export/product/edit/content/structure/attributes-selector: pimenrich/templates/export/product/edit/content/structure/attributes-selector.html
         pim/template/export/product/edit/content/structure/attribute-list:      pimenrich/templates/export/product/edit/content/structure/attribute-list.html
+        pim/template/export/product/edit/content/structure:                     pimenrich/templates/export/product/edit/content/structure.html
         pim/template/export/common/edit/properties:                             pimenrich/templates/export/common/edit/properties.html
         pim/template/export/common/edit/field/field:                            pimenrich/templates/export/common/edit/field/field.html
         pim/template/export/common/edit/field/text:                             pimenrich/templates/export/common/edit/field/text.html
@@ -882,6 +881,7 @@ config:
         pim/template/export/common/edit/validation:                             pimenrich/templates/export/common/edit/validation.html
         pim/template/export/common/edit/launch:                                 pimenrich/templates/export/common/edit/launch.html
         pim/template/export/common/edit/upload:                                 pimenrich/templates/export/common/edit/upload.html
+        pim/template/export/product/edit/content:                               pimenrich/templates/export/product/edit/content.html
 
         # Filters
         pim/template/filter/filter:                     pimenrich/templates/filter/filter.html
@@ -890,8 +890,8 @@ config:
         pim/template/filter/product/enabled:            pimenrich/templates/filter/product/enabled.html
         pim/template/filter/product/updated:            pimenrich/templates/filter/product/updated.html
         pim/template/filter/product/completeness:       pimenrich/templates/filter/product/completeness.html
-        pim/template/filter/product/category:           pimenrich/templates/filter/product/category.html
         pim/template/filter/product/category/selector:  pimenrich/templates/filter/product/category/selector.html
+        pim/template/filter/product/category:           pimenrich/templates/filter/product/category.html
         pim/template/filter/product/identifier:         pimenrich/templates/filter/product/identifier.html
         pim/template/filter/attribute/boolean:          pimenrich/templates/filter/attribute/boolean.html
         pim/template/filter/attribute/string:           pimenrich/templates/filter/attribute/string.html
@@ -903,15 +903,18 @@ config:
         pim/template/filter/attribute/date:             pimenrich/templates/filter/attribute/date.html
 
         # Grid view selector
-        pim/template/grid/view-selector: pimenrich/templates/grid/view-selector.html
         pim/template/grid/view-selector/create-view-label-input: pimenrich/templates/grid/view-selector-create-view-label-input.html
         pim/template/grid/view-selector/line: pimenrich/templates/grid/view-selector-line.html
         pim/template/grid/view-selector/create-view: pimenrich/templates/grid/view-selector-create-view.html
         pim/template/grid/view-selector/save-view: pimenrich/templates/grid/view-selector-save-view.html
         pim/template/grid/view-selector/remove-view: pimenrich/templates/grid/view-selector-remove-view.html
         pim/template/grid/view-selector/current: pimenrich/templates/grid/view-selector-current.html
+        pim/template/grid/view-selector: pimenrich/templates/grid/view-selector.html
 
         # Job execution
         pim/template/job-execution/summary-table:             pimenrich/templates/job-execution/summary-table.html
         pim/template/job-execution/auto-refresh:              pimenrich/templates/job-execution/auto-refresh.html
         pim/template/job-execution/download-archives-buttons: pimenrich/templates/job-execution/download-archives-buttons.html
+
+        # Order last
+        pim/form: pimenrich/js/product/form

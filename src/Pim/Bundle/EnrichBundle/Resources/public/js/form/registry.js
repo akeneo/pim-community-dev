@@ -1,8 +1,8 @@
 'use strict';
 
 define(
-    ['jquery', 'underscore', 'pim/form-config-provider'],
-    function ($, _, ConfigProvider) {
+    ['jquery', 'underscore', 'pim/form-config-provider', 'form-dependencies'],
+    function ($, _, ConfigProvider, formDependencies) {
         var getForm = function (formName) {
             return ConfigProvider.getExtensionMap().then(function (extensionMap) {
                 var form     = _.first(_.where(extensionMap, { code: formName }));
@@ -14,9 +14,14 @@ define(
                     );
                 }
 
-                require(['bundle-loader!.' + form.module], function (Form) {
-                    deferred.resolve(Form);
-                });
+                console.log(formDependencies)
+                // require.ensure([], function() {
+                //     console.log(require(['bundle-loader!' + paths[form.module]]))
+                // })
+
+                // require([form.module], function (Form) {
+                //     deferred.resolve(Form);
+                // });
 
                 return deferred.promise();
             });

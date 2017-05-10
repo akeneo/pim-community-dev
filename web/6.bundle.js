@@ -1,229 +1,179 @@
-webpackJsonp([6,8],{
+webpackJsonp([6],{
 
-/***/ 105:
+/***/ 149:
 /* unknown exports provided */
 /* all exports used */
-/*!********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/fetcher/attribute-group-fetcher.js ***!
-  \********************************************************************************************/
+/*!****************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/common/property.js ***!
+  \****************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 /**
- * Attribute group fetcher
+ * Property accessor extension
  *
- * @author    Alexandr Jeliuc <alex@jeliuc.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-    __webpack_require__(/*! jquery */ 1),
-    __webpack_require__(/*! pim/base-fetcher */ 91),
-    __webpack_require__(/*! routing */ 10)
-], __WEBPACK_AMD_DEFINE_RESULT__ = function (
-    $,
-    BaseFetcher,
-    Routing
-) {
-    return BaseFetcher.extend({
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+    return {
         /**
-         * Overrides base method, to send query using POST instead GET,
-         * because the request URI can be too long.
-         * TODO Should be deleted to set it back to GET.
-         * SEE attribute fetcher
+         * Access a property in an object
          *
-         * {@inheritdoc}
+         * @param {object} data
+         * @param {string} path
+         * @param {mixed}  defaultValue
+         *
+         * @return {mixed}
          */
-        getJSON: function (url, parameters) {
-            return $.post(Routing.generate(url), parameters, null, 'json');
+        accessProperty: function (data, path, defaultValue) {
+            defaultValue = defaultValue || null;
+            var pathPart = path.split('.');
+
+            if (undefined === data[pathPart[0]]) {
+                return defaultValue;
+            }
+
+            return 1 === pathPart.length ?
+                data[pathPart[0]] :
+                this.accessProperty(data[pathPart[0]], pathPart.slice(1).join('.'), defaultValue);
+        },
+
+        /**
+         * Update a property in an object
+         *
+         * @param {object} data
+         * @param {string} path
+         * @param {mixed}  value
+         *
+         * @return {mixed}
+         */
+        updateProperty: function (data, path, value) {
+            var pathPart = path.split('.');
+
+            data[pathPart[0]] = 1 === pathPart.length ?
+                value :
+                this.updateProperty(data[pathPart[0]], pathPart.slice(1).join('.'), value);
+
+            return data;
         }
-    });
+    };
 }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 
 /***/ }),
 
-/***/ 91:
+/***/ 206:
+/* unknown exports provided */
+/* all exports used */
+/*!***************************************************************************************************!*\
+  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/redirect.html ***!
+  \***************************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<button class=\"AknButton <%- buttonClass %> AknButton--withIcon AknButtonList-item\">\n    <i class=\"AknButton-icon icon-<%- iconName %>\"></i>\n    <%- label %>\n</button>\n"
+
+/***/ }),
+
+/***/ 238:
 /* unknown exports provided */
 /* all exports used */
 /*!*********************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/fetcher/base-fetcher.js ***!
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/form/common/redirect.js ***!
   \*********************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global console */
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+/**
+ * Redirect button
+ *
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
+        __webpack_require__(/*! jquery */ 1),
+        __webpack_require__(/*! underscore */ 0),
+        __webpack_require__(/*! oro/translator */ 4),
+        __webpack_require__(/*! pim/form */ 41),
+        __webpack_require__(/*! routing */ 3),
+        __webpack_require__(/*! pim/router */ 12),
+        __webpack_require__(/*! pim/common/property */ 149),
+        __webpack_require__(/*! text-loader!pim/template/form/redirect */ 206)
+    ], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, __, BaseForm, Routing, router, propertyAccessor, template) {
+        return BaseForm.extend({
+            template: _.template(template),
+            events: {
+                'click': 'redirect'
+            },
 
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (config) {
+                this.config = config.config;
 
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 2), __webpack_require__(/*! routing */ 10)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, Backbone, Routing) {
-    return Backbone.Model.extend({
-        entityListPromise: null,
-        entityPromises: {},
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
 
-        /**
-         * @param {Object} options
-         */
-        initialize: function (options) {
-            this.entityListPromise = null;
-            this.entityPromises    = {};
-            this.options           = options || {};
-        },
+            /**
+             * {@inheritdoc}
+             */
+            render: function () {
+                this.isVisible().then(function (isVisible) {
+                    if (!isVisible) {
+                        return this;
+                    }
 
-        /**
-         * Fetch all elements of the collection
-         *
-         * @return {Promise}
-         */
-        fetchAll: function () {
-            if (!this.entityListPromise) {
-                if (!_.has(this.options.urls, 'list')) {
-                    return $.Deferred().reject().promise();
-                }
-
-                this.entityListPromise = $.getJSON(
-                    Routing.generate(this.options.urls.list)
-                ).then(_.identity).promise();
-            }
-
-            return this.entityListPromise;
-        },
-
-        /**
-         * Search elements of the collection
-         *
-         * @return {Promise}
-         */
-        search: function (searchOptions) {
-            if (!_.has(this.options.urls, 'list')) {
-                return $.Deferred().reject().promise();
-            }
-
-            return this.getJSON(this.options.urls.list, searchOptions).then(_.identity).promise();
-        },
-
-        /**
-         * Fetch an element based on its identifier
-         *
-         * @param {string} identifier
-         * @param {Object} options
-         *
-         * @return {Promise}
-         */
-        fetch: function (identifier, options) {
-            options = options || {};
-
-            if (!(identifier in this.entityPromises) || false === options.cached) {
-                var deferred = $.Deferred();
-
-                if (this.options.urls.get) {
-                    $.getJSON(
-                        Routing.generate(this.options.urls.get, _.extend({identifier: identifier}, options))
-                    ).then(_.identity).done(function (entity) {
-                        deferred.resolve(entity);
-                    }).fail(function () {
-                        console.error('Error during fetching: ', arguments);
-
-                        return deferred.reject();
-                    });
-                } else {
-                    this.fetchAll().done(function (entities) {
-                        var entity = _.findWhere(entities, {code: identifier});
-                        if (entity) {
-                            deferred.resolve(entity);
-                        } else {
-                            deferred.reject();
-                        }
-                    });
-                }
-
-                this.entityPromises[identifier] = deferred.promise();
-            }
-
-            return this.entityPromises[identifier];
-        },
-
-        /**
-         * Fetch all entities for the given identifiers
-         *
-         * @param {Array} identifiers
-         *
-         * @return {Promise}
-         */
-        fetchByIdentifiers: function (identifiers) {
-            if (0 === identifiers.length) {
-                return $.Deferred().resolve([]).promise();
-            }
-
-            var uncachedIdentifiers = _.difference(identifiers, _.keys(this.entityPromises));
-            if (0 === uncachedIdentifiers.length) {
-                return this.getObjects(_.pick(this.entityPromises, identifiers));
-            }
-
-            return $.when(
-                    this.getJSON(this.options.urls.list, { identifiers: uncachedIdentifiers.join(',') })
-                        .then(_.identity),
-                    this.getIdentifierField()
-                ).then(function (entities, identifierCode) {
-                    _.each(entities, function (entity) {
-                        this.entityPromises[entity[identifierCode]] = $.Deferred().resolve(entity).promise();
-                    }.bind(this));
-
-                    return this.getObjects(_.pick(this.entityPromises, identifiers));
+                    this.$el.html(this.template({
+                        label: __(this.config.label),
+                        iconName: this.config.iconName,
+                        buttonClass: this.config.buttonClass || 'AknButton--action'
+                    }));
                 }.bind(this));
-        },
 
-        /**
-         * Get the list of elements in JSON format.
-         *
-         * @param {string} url
-         * @param {Object} parameters
-         *
-         * @returns {Promise}
-         */
-        getJSON: function (url, parameters) {
-            return $.getJSON(Routing.generate(url, parameters));
-        },
+                return this;
+            },
 
-        /**
-         * Get the identifier attribute of the collection
-         *
-         * @return {Promise}
-         */
-        getIdentifierField: function () {
-            return $.Deferred().resolve('code');
-        },
+            /**
+             * Redirect to the route given in the config
+             */
+            redirect: function () {
+                router.redirect(this.getUrl());
+            },
 
-        /**
-         * Clear cache of the fetcher
-         *
-         * @param {string|null} identifier
-         */
-        clear: function (identifier) {
-            if (identifier) {
-                delete this.entityPromises[identifier];
-            } else {
-                this.entityListPromise = null;
-                this.entityPromises    = {};
+            /**
+             * Get the route to redirect to
+             *
+             * @return {string}
+             */
+            getUrl: function () {
+                var params = {};
+                if (this.config.identifier) {
+                    params[this.config.identifier.name] = propertyAccessor.accessProperty(
+                        this.getFormData(),
+                        this.config.identifier.path
+                    );
+                }
+
+                return Routing.generate(this.config.route, params);
+            },
+
+            /**
+             * Should this extension render
+             *
+             * @return {Promise}
+             */
+            isVisible: function () {
+                return $.Deferred().resolve(true).promise();
             }
-        },
-
-        /**
-         * Wait for promises to resolve and return the promises results wrapped in a Promise
-         *
-         * @param {Array|Object} promises
-         *
-         * @return {Promise}
-         */
-        getObjects: function (promises) {
-            return $.when.apply($, _.toArray(promises)).then(function () {
-                return 0 !== arguments.length ? _.toArray(arguments) : [];
-            });
-        }
-    });
-}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+        });
+    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 

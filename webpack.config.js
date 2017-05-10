@@ -26,29 +26,25 @@ const bundles = [
     'Versioning'
 ]
 
-// @TODO - Use the same method for extracting paths and module config
-// Import paths for resources and transform to json
-// Also add oro bundles
-// Add aliases for e.g. pimenrich, pimui etc..
-//
 const getImportPaths = () => {
     let paths = {}
 
     for (const bundle of bundles) {
+        // Use node-glob instead
         const configPath = path.join(__dirname, `/src/Pim/Bundle/${bundle}Bundle/Resources/config/requirejs.yml`)
         try {
             const contents = fs.readFileSync(configPath, 'utf8')
             const bundlePaths = yaml.parse(contents).config.paths
-            const fixedBundlePaths = replacePathSegments(bundlePaths, bundle);
+            const fixedBundlePaths = replacePathSegments(bundlePaths, bundle)
             paths = Object.assign(paths, bundlePaths)
         } catch (e) {}
     }
-    return paths;
+    return paths
 }
 
 const getControllers = () => {
-    const enrichConfig = fs.readFileSync(path.join(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/config/requirejs.yml'), 'utf8');
-    return yaml.parse(enrichConfig).config.config['pim/controller-registry'].controllers;
+    const enrichConfig = fs.readFileSync(path.join(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/config/requirejs.yml'), 'utf8')
+    return yaml.parse(enrichConfig).config.config['pim/controller-registry'].controllers
 }
 
 const getModuleConfigs = () => {
@@ -77,10 +73,12 @@ const replacePathSegments = (paths, bundle) => {
         loc.unshift(`${__dirname}/src/Pim/Bundle/${resolved}Bundle/Resources/public`)
         paths[name] = loc.join('/')
     }
-    return paths;
+    return paths
 }
 
-const importPaths = Object.assign(getImportPaths(), {
+const importedPaths = getImportPaths()
+
+const importPaths = Object.assign(importedPaths, {
     text: 'text-loader',
     'pimuser/js/init-signin': path.resolve(__dirname, './src/Pim/Bundle/UserBundle/Resources/public/js/init-signin.js'),
     'bootstrap-modal': path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/bootstrap-modal.js'),
@@ -98,10 +96,11 @@ const importPaths = Object.assign(getImportPaths(), {
     'paths': path.resolve(__dirname, './web/js/paths.js'),
     'twig-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/twig-dependencies.js'),
     'widget-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/widget-dependencies.js'),
-
+    'form-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/form-dependencies.js')
 })
 
-console.log(importPaths['oro/translator'])
+// console.log(importPaths['pim/family-edit-form/attributes/toolbar/add-select/attribute-group'])
+
 // fs.writeFileSync('./web/js/paths.js', `module.exports = ${JSON.stringify(importPaths)}`, 'utf8')
 
 module.exports = {
@@ -116,7 +115,7 @@ module.exports = {
         devtoolLineToLine: true
     },
     resolve: {
-        alias: importPaths
+        alias: importPaths,
     },
     module: {
         rules: [
@@ -177,7 +176,6 @@ module.exports = {
                 }]
             }
 
-
         ]
     },
     plugins: [
@@ -189,6 +187,6 @@ module.exports = {
         // This is needed until summernote is updated
         new webpack.DefinePlugin({
             'require.specified': 'require.resolve',
-        })
+        }),
     ]
 }

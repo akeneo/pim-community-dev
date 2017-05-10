@@ -1,4 +1,4 @@
-webpackJsonp([7],{
+webpackJsonp([12],{
 
 /***/ 149:
 /* unknown exports provided */
@@ -67,31 +67,32 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 /***/ }),
 
-/***/ 202:
+/***/ 194:
 /* unknown exports provided */
 /* all exports used */
-/*!******************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/meta/status.html ***!
-  \******************************************************************************************************/
+/*!********************************************************************************************************!*\
+  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/download-file.html ***!
+  \********************************************************************************************************/
 /***/ (function(module, exports) {
 
-module.exports = "<span title=\"<%- label %>: <%- value %>\" id=\"status\">\n    <%- label %>: <%- value %>\n</span>\n"
+module.exports = "<a class=\"AknButton AknButton--grey AknButton--withIcon btn-download AknButtonList-item\" href=\"<%- url %>\">\n    <i class=\"AknButton-icon icon-<%- btnIcon %>\"></i>\n    <%- btnLabel %>\n</a>\n"
 
 /***/ }),
 
-/***/ 234:
+/***/ 224:
 /* unknown exports provided */
 /* all exports used */
-/*!************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/form/common/meta/status.js ***!
-  \************************************************************************************/
+/*!**************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/form/common/download-file.js ***!
+  \**************************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 /**
- * Updated at extension
+ * Download file extension
  *
+ * @author    Julien Sanchez <julien@akeneo.com>
  * @author    Alban Alnot <alban.alnot@consertotech.pro>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -100,22 +101,26 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
         __webpack_require__(/*! underscore */ 0),
         __webpack_require__(/*! oro/translator */ 4),
         __webpack_require__(/*! pim/form */ 41),
-        __webpack_require__(/*! oro/mediator */ 5),
-        __webpack_require__(/*! text-loader!pim/template/form/meta/status */ 202),
+        __webpack_require__(/*! text-loader!pim/template/form/download-file */ 194),
+        __webpack_require__(/*! routing */ 3),
+        __webpack_require__(/*! pim/user-context */ 7),
         __webpack_require__(/*! pim/common/property */ 149)
-    ], __WEBPACK_AMD_DEFINE_RESULT__ = function (_, __, BaseForm, mediator, formTemplate, propertyAccessor) {
+    ], __WEBPACK_AMD_DEFINE_RESULT__ = function (_,
+              __,
+              BaseForm,
+              template,
+              Routing,
+              UserContext,
+              propertyAccessor
+    ) {
         return BaseForm.extend({
-            tagName: 'span',
-            className: 'AknTitleContainer-metaItem',
-            template: _.template(formTemplate),
+            template: _.template(template),
 
             /**
              * {@inheritdoc}
              */
             initialize: function (meta) {
                 this.config = meta.config;
-                this.label   = __(this.config.label);
-                this.value   = __(this.config.value);
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -133,16 +138,46 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
              * {@inheritdoc}
              */
             render: function () {
-                var status = this.getFormData();
-                var value = this.config.valuePath ?
-                    propertyAccessor.accessProperty(status, this.config.valuePath) : '';
-
+                if (!this.isVisible()) {
+                    return this;
+                }
                 this.$el.html(this.template({
-                    label: this.label,
-                    value: value
+                    btnLabel: __(this.config.label),
+                    btnIcon: this.config.iconName,
+                    url: this.getUrl()
                 }));
 
                 return this;
+            },
+
+            /**
+             * Get the url with parameters
+             *
+             * @returns {string}
+             */
+            getUrl: function () {
+                var parameters = {};
+                if (this.config.urlParams) {
+                    var formData = this.getFormData();
+                    this.config.urlParams.forEach(function (urlParam) {
+                        parameters[urlParam.property] =
+                            propertyAccessor.accessProperty(formData, urlParam.path);
+                    });
+                }
+
+                return Routing.generate(
+                    this.config.url,
+                    parameters
+                );
+            },
+
+            /**
+             * Returns true if the extension should be visible
+             *
+             * @returns {boolean}
+             */
+            isVisible: function () {
+                return propertyAccessor.accessProperty(this.getFormData(), this.config.isVisiblePath);
             }
         });
     }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),

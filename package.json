@@ -4,11 +4,13 @@
   "description": "Akeneo PIM Application",
   "homepage": "http://www.akeneo.com",
   "devDependencies": {
+    "async-module-loader": "^2.1.0",
     "bundle-loader": "^0.5.5",
     "camelcase": "^4.1.0",
     "cheerio": "^0.22.0",
     "closure-loader": "^0.2.0",
     "codemirror": "^5.25.2",
+    "directory-named-webpack-plugin": "^2.1.0",
     "eslint": "^3.19.0",
     "exports-loader": "^0.6.4",
     "expose-loader": "^0.7.3",

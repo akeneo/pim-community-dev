@@ -1,4 +1,4 @@
-webpackJsonp([10,23],{
+webpackJsonp([23],{
 
 /***/ 148:
 /* unknown exports provided */
@@ -232,71 +232,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
                 DatagridState.set(alias, {
                     columns: columns
                 });
-            }
-        });
-    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-
-/***/ }),
-
-/***/ 230:
-/* unknown exports provided */
-/* all exports used */
-/*!***********************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/form/common/index/grid.js ***!
-  \***********************************************************************************/
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-/**
- * Generic grid renderer
- *
- * @author    Alban Alnot <alban.alnot@consertotech.pro>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-        __webpack_require__(/*! pim/form */ 41),
-        __webpack_require__(/*! pim/common/grid */ 150),
-        __webpack_require__(/*! pim/user-context */ 7)
-    ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
-        BaseForm,
-        Grid,
-        UserContext
-    ) {
-        return BaseForm.extend({
-            grid: null,
-
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                var metaData = this.config.metadata || {};
-                metaData[this.config.localeKey || 'localeCode'] = UserContext.get('catalogLocale');
-
-                this.grid = new Grid(this.config.alias, metaData);
-
-                BaseForm.prototype.configure.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                this.$el.empty().append(this.grid.render().$el);
-
-                return this;
             }
         });
     }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),

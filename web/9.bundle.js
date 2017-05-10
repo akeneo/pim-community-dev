@@ -1,183 +1,311 @@
-webpackJsonp([9],{
+webpackJsonp([9,23],{
 
-/***/ 92:
+/***/ 148:
 /* unknown exports provided */
 /* all exports used */
-/*!*********************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/fetcher/base-fetcher.js ***!
-  \*********************************************************************************/
+/*!***********************************************************************************************!*\
+  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/grid.html ***!
+  \***********************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"grid-drop\" data-type=\"datagrid\"></div>\n<input type=\"hidden\" id=\"added_objects\"/>\n<input type=\"hidden\" id=\"removed_objects\"/>\n"
+
+/***/ }),
+
+/***/ 150:
+/* unknown exports provided */
+/* all exports used */
+/*!*****************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/form/common/grid.js ***!
+  \*****************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global console */
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
+        __webpack_require__(/*! jquery */ 1),
+        __webpack_require__(/*! underscore */ 0),
+        __webpack_require__(/*! backbone */ 2),
+        __webpack_require__(/*! oro/datagrid-builder */ 43),
+        __webpack_require__(/*! routing */ 3),
+        __webpack_require__(/*! oro/mediator */ 5),
+        __webpack_require__(/*! text-loader!pim/template/form/grid */ 148),
+        __webpack_require__(/*! oro/pageable-collection */ 22),
+        __webpack_require__(/*! pim/datagrid/state */ 44)
+    ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
+        $,
+        _,
+        Backbone,
+        datagridBuilder,
+        Routing,
+        mediator,
+        template,
+        PageableCollection,
+        DatagridState
+    ) {
+        return Backbone.View.extend({
+            template: _.template(template),
+            className: 'AknTabContainer-content--fullWidth',
+            urlParams: {},
 
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 2), __webpack_require__(/*! routing */ 10)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, Backbone, Routing) {
-    return Backbone.Model.extend({
-        entityListPromise: null,
-        entityPromises: {},
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (alias, options) {
+                this.alias = alias;
+                this.selection = options.selection || [];
+                this.selection = _.map(this.selection, function (item) {
+                    return String(item);
+                });
+                this.options = options;
 
-        /**
-         * @param {Object} options
-         */
-        initialize: function (options) {
-            this.entityListPromise = null;
-            this.entityPromises    = {};
-            this.options           = options || {};
-        },
-
-        /**
-         * Fetch all elements of the collection
-         *
-         * @return {Promise}
-         */
-        fetchAll: function () {
-            if (!this.entityListPromise) {
-                if (!_.has(this.options.urls, 'list')) {
-                    return $.Deferred().reject().promise();
-                }
-
-                this.entityListPromise = $.getJSON(
-                    Routing.generate(this.options.urls.list)
-                ).then(_.identity).promise();
-            }
-
-            return this.entityListPromise;
-        },
-
-        /**
-         * Search elements of the collection
-         *
-         * @return {Promise}
-         */
-        search: function (searchOptions) {
-            if (!_.has(this.options.urls, 'list')) {
-                return $.Deferred().reject().promise();
-            }
-
-            return this.getJSON(this.options.urls.list, searchOptions).then(_.identity).promise();
-        },
-
-        /**
-         * Fetch an element based on its identifier
-         *
-         * @param {string} identifier
-         * @param {Object} options
-         *
-         * @return {Promise}
-         */
-        fetch: function (identifier, options) {
-            options = options || {};
-
-            if (!(identifier in this.entityPromises) || false === options.cached) {
-                var deferred = $.Deferred();
-
-                if (this.options.urls.get) {
-                    $.getJSON(
-                        Routing.generate(this.options.urls.get, _.extend({identifier: identifier}, options))
-                    ).then(_.identity).done(function (entity) {
-                        deferred.resolve(entity);
-                    }).fail(function () {
-                        console.error('Error during fetching: ', arguments);
-
-                        return deferred.reject();
-                    });
-                } else {
-                    this.fetchAll().done(function (entities) {
-                        var entity = _.findWhere(entities, {code: identifier});
-                        if (entity) {
-                            deferred.resolve(entity);
-                        } else {
-                            deferred.reject();
-                        }
-                    });
-                }
-
-                this.entityPromises[identifier] = deferred.promise();
-            }
-
-            return this.entityPromises[identifier];
-        },
-
-        /**
-         * Fetch all entities for the given identifiers
-         *
-         * @param {Array} identifiers
-         *
-         * @return {Promise}
-         */
-        fetchByIdentifiers: function (identifiers) {
-            if (0 === identifiers.length) {
-                return $.Deferred().resolve([]).promise();
-            }
-
-            var uncachedIdentifiers = _.difference(identifiers, _.keys(this.entityPromises));
-            if (0 === uncachedIdentifiers.length) {
-                return this.getObjects(_.pick(this.entityPromises, identifiers));
-            }
-
-            return $.when(
-                    this.getJSON(this.options.urls.list, { identifiers: uncachedIdentifiers.join(',') })
-                        .then(_.identity),
-                    this.getIdentifierField()
-                ).then(function (entities, identifierCode) {
-                    _.each(entities, function (entity) {
-                        this.entityPromises[entity[identifierCode]] = $.Deferred().resolve(entity).promise();
-                    }.bind(this));
-
-                    return this.getObjects(_.pick(this.entityPromises, identifiers));
+                mediator.on('datagrid:selectModel:' + this.alias, function (model) {
+                    this.addElement(model.get('id'));
                 }.bind(this));
-        },
 
-        /**
-         * Get the list of elements in JSON format.
-         *
-         * @param {string} url
-         * @param {Object} parameters
-         *
-         * @returns {Promise}
-         */
-        getJSON: function (url, parameters) {
-            return $.getJSON(Routing.generate(url, parameters));
-        },
+                mediator.on('datagrid:unselectModel:' + this.alias, function (model) {
+                    this.removeElement(model.get('id'));
+                }.bind(this));
+            },
 
-        /**
-         * Get the identifier attribute of the collection
-         *
-         * @return {Promise}
-         */
-        getIdentifierField: function () {
-            return $.Deferred().resolve('code');
-        },
+            /**
+             * {@inheritdoc}
+             */
+            render: function () {
+                this.$el.html(this.template({}));
 
-        /**
-         * Clear cache of the fetcher
-         *
-         * @param {string|null} identifier
-         */
-        clear: function (identifier) {
-            if (identifier) {
-                delete this.entityPromises[identifier];
-            } else {
-                this.entityListPromise = null;
-                this.entityPromises    = {};
+                this.renderGrid(this.alias, this.options);
+
+                return this;
+            },
+
+            /**
+             * Render the given grid
+             *
+             * @param {String} alias
+             * @param {Object} params
+             */
+            renderGrid: function (alias, params) {
+                this.urlParams = $.extend(true, {}, params);
+                this.urlParams.alias = alias;
+                this.urlParams.params = $.extend(true, {}, params);
+                this.urlParams[alias] = $.extend(true, {}, params);
+
+                var viewStored = DatagridState.get(alias, ['view']);
+                if (!viewStored.view) {
+                    DatagridState.refreshFiltersFromUrl(alias);
+                }
+
+                var state = DatagridState.get(alias, ['view', 'filters', 'columns']) || {};
+                this.applyView(state.view, alias);
+                this.applyFilters(state.filters, alias);
+                this.applyColumns(state.columns, alias);
+
+                //TODO Manage columns for product form (when refactoring product form index)
+                //TODO Manage category filter (when refactoring category index)
+
+                $.get(Routing.generate('pim_datagrid_load', this.urlParams)).then(function (response) {
+
+                    this.$el.find('.grid-drop').data({
+                        metadata: response.metadata,
+                        data: JSON.parse(response.data)
+                    });
+
+                    !(function webpackMissingModule() { var e = new Error("Cannot find module \"unsupported\""); e.code = 'MODULE_NOT_FOUND'; throw e; }())
+                }.bind(this));
+            },
+
+            /**
+             * Get the current grid selection
+             *
+             * @return {Array}
+             */
+            getSelection: function () {
+                return this.selection;
+            },
+
+            /**
+             * Add an element to the selection
+             *
+             * @param {Object} element
+             */
+            addElement: function (element) {
+                this.selection = _.union(this.selection, [element]);
+                this.trigger('grid:selection:updated', this.selection);
+            },
+
+            /**
+             * Remove an element to the selection
+             *
+             * @param {Object} element
+             */
+            removeElement: function (element) {
+                this.selection = _.without(this.selection, element);
+                this.trigger('grid:selection:updated', this.selection);
+            },
+
+            /**
+             * Ask for a refresh of the grid (aware that we should not call the mediator for that but we don't have
+             * the choice for now)
+             */
+            refresh: function () {
+                mediator.trigger('datagrid:doRefresh:' + this.alias);
+            },
+
+            /**
+             * Apply the view to the DatagridState
+             * @param viewId
+             * @param alias
+             */
+            applyView: function (viewId, alias) {
+                if (!viewId) {
+                    return;
+                }
+
+                this.urlParams[alias + '[_parameters][view][id]'] = viewId;
+
+                DatagridState.set(alias, {
+                    view: viewId
+                });
+            },
+
+            /**
+             * Apply the filters to the DatagridState
+             * @param rawFilters
+             * @param alias
+             */
+            applyFilters: function (rawFilters, alias) {
+                if (!rawFilters) {
+                    return;
+                }
+
+                var filters = PageableCollection.prototype.decodeStateData(rawFilters);
+                var options = {};
+
+                if (!_.isEmpty(filters.filters)) {
+                    options = {
+                        state: {
+                            filters: _.omit(filters.filters, 'scope')
+                        }
+                    };
+                }
+
+                var collection = new PageableCollection(null, options);
+                collection.processFiltersParams(this.urlParams, filters, alias + '[_filter]');
+
+                for (var column in filters.sorters) {
+                    this.urlParams[alias + '[_sort_by][' + column + ']'] =
+                        1 === parseInt(filters.sorters[column]) ?
+                            'DESC' :
+                            'ASC';
+                }
+
+                if (undefined !== filters.pageSize) {
+                    this.urlParams[alias + '[_pager][_per_page]'] = filters.pageSize;
+                }
+
+                if (undefined !== filters.currentPage) {
+                    this.urlParams[alias + '[_pager][_page]'] = filters.currentPage;
+                }
+
+                DatagridState.set(alias, {
+                    filters: rawFilters
+                });
+            },
+
+            /**
+             * Apply the columns to the DatagridState
+             * @param columns
+             * @param alias
+             */
+            applyColumns: function (columns, alias) {
+                if (!columns) {
+                    return;
+                }
+
+                if (_.isArray(columns)) {
+                    columns = columns.join();
+                }
+                this.urlParams[alias + '[_parameters][view][columns]'] = columns;
+
+                DatagridState.set(alias, {
+                    columns: columns
+                });
             }
-        },
+        });
+    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-        /**
-         * Wait for promises to resolve and return the promises results wrapped in a Promise
-         *
-         * @param {Array|Object} promises
-         *
-         * @return {Promise}
-         */
-        getObjects: function (promises) {
-            return $.when.apply($, _.toArray(promises)).then(function () {
-                return 0 !== arguments.length ? _.toArray(arguments) : [];
-            });
-        }
-    });
-}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+
+/***/ }),
+
+/***/ 243:
+/* unknown exports provided */
+/* all exports used */
+/*!************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/form/common/tab/history.js ***!
+  \************************************************************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
+        __webpack_require__(/*! underscore */ 0),
+        __webpack_require__(/*! pim/form */ 41),
+        __webpack_require__(/*! pim/common/grid */ 150),
+        __webpack_require__(/*! oro/translator */ 4)
+    ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
+        _,
+        BaseForm,
+        Grid,
+        __
+    ) {
+        return BaseForm.extend({
+            className: 'AknTabContainer-content tabbable tabs-left history',
+            historyGrid: null,
+
+            /**
+             * @param {Object} meta
+             */
+            initialize: function (meta) {
+                this.config = _.extend({}, meta.config);
+                this.config.modelDependent = false;
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.trigger('tab:register', {
+                    code: this.config.tabCode ? this.config.tabCode : this.code,
+                    label: __(this.config.title)
+                });
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            render: function () {
+                if (!this.historyGrid) {
+                    this.historyGrid = new Grid(
+                        'history-grid',
+                        {
+                            object_class: this.config.class,
+                            object_id: this.getFormData().meta.id
+                        }
+                    );
+                }
+
+                this.$el.empty().append(this.historyGrid.render().$el);
+
+                return this;
+            }
+        });
+    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 

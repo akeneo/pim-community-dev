@@ -1,183 +1,235 @@
 webpackJsonp([8],{
 
-/***/ 91:
+/***/ 199:
 /* unknown exports provided */
 /* all exports used */
-/*!*********************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/fetcher/base-fetcher.js ***!
-  \*********************************************************************************/
+/*!**************************************************************************************************************!*\
+  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/index/create-button.html ***!
+  \**************************************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<a id=\"create-button-extension\" class=\"AknButton AknButton--apply AknButton--withIcon AknButtonList-item\" data-form-url=\"<%- url %>\">\n    <i class=\"AknButton-icon icon-<%- iconName %>\"></i>\n    <%- title %>\n</a>\n"
+
+/***/ }),
+
+/***/ 229:
+/* unknown exports provided */
+/* all exports used */
+/*!********************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/form/common/index/create-button.js ***!
+  \********************************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+/**
+ * Create button
+ *
+ * @author    Alban Alnot <alban.alnot@consertotech.pro>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
+        __webpack_require__(/*! jquery */ 1),
+        __webpack_require__(/*! underscore */ 0),
+        __webpack_require__(/*! oro/translator */ 4),
+        __webpack_require__(/*! pim/form */ 41),
+        __webpack_require__(/*! text-loader!pim/template/form/index/create-button */ 199),
+        __webpack_require__(/*! routing */ 3),
+        __webpack_require__(/*! pim/dialogform */ 250)
+    ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
+        $,
+        _,
+        __,
+        BaseForm,
+        template,
+        Routing,
+        DialogForm
+    ) {
+        return BaseForm.extend({
+            template: _.template(template),
+            dialog: null,
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (config) {
+                this.config = config.config;
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            render: function () {
+                this.$el.html(this.template({
+                    title: __(this.config.title),
+                    iconName: this.config.iconName,
+                    url: Routing.generate(this.config.url)
+                }));
+
+                this.dialog = new DialogForm('#create-button-extension');
+
+                return this;
+            }
+        });
+    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ }),
+
+/***/ 250:
+/* unknown exports provided */
+/* all exports used */
+/*!***********************************************************************!*\
+  !*** ./src/Pim/Bundle/UIBundle/Resources/public/js/pim-dialogform.js ***!
+  \***********************************************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global console */
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! oro/mediator */ 5), __webpack_require__(/*! pim/router */ 12), __webpack_require__(/*! oro/loading-mask */ 19), __webpack_require__(/*! pim/initselect2 */ 28), __webpack_require__(/*! jquery-ui */ 47), __webpack_require__(/*! bootstrap */ 23)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, mediator, router, LoadingMask, initSelect2) {
+        'use strict';
 
+        // Allow using select2 search box in jquery ui dialog
+        $.ui.dialog.prototype._allowInteraction = function (e) {
+            return !!$(e.target).closest('.ui-dialog, .select2-drop').length;
+        };
 
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 2), __webpack_require__(/*! routing */ 10)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, Backbone, Routing) {
-    return Backbone.Model.extend({
-        entityListPromise: null,
-        entityPromises: {},
+        return function (elementId, callback) {
+            var $el = $(elementId);
+            if (!$el.length) {
+                return console.error('DialogForm: the element could not be found!');
+            }
+            var $dialog;
+            var url = $el.attr('data-form-url');
+            if (!url) {
+                throw new Error('DialogForm: please specify the url');
+            }
+            var width = $el.attr('data-form-width') || 400;
 
-        /**
-         * @param {Object} options
-         */
-        initialize: function (options) {
-            this.entityListPromise = null;
-            this.entityPromises    = {};
-            this.options           = options || {};
-        },
+            var loadingMask = null;
 
-        /**
-         * Fetch all elements of the collection
-         *
-         * @return {Promise}
-         */
-        fetchAll: function () {
-            if (!this.entityListPromise) {
-                if (!_.has(this.options.urls, 'list')) {
-                    return $.Deferred().reject().promise();
+            function showLoadingMask() {
+                if (!loadingMask) {
+                    loadingMask = new LoadingMask();
+                    loadingMask.render().$el.appendTo($('#container'));
                 }
-
-                this.entityListPromise = $.getJSON(
-                    Routing.generate(this.options.urls.list)
-                ).then(_.identity).promise();
+                loadingMask.show();
             }
 
-            return this.entityListPromise;
-        },
-
-        /**
-         * Search elements of the collection
-         *
-         * @return {Promise}
-         */
-        search: function (searchOptions) {
-            if (!_.has(this.options.urls, 'list')) {
-                return $.Deferred().reject().promise();
+            function destroyDialog() {
+                if ($dialog && $dialog.length) {
+                    $dialog.remove();
+                }
+                $dialog = null;
             }
 
-            return this.getJSON(this.options.urls.list, searchOptions).then(_.identity).promise();
-        },
+            function createDialog(data) {
+                destroyDialog();
+                var $form = $(data);
+                var formTitle = $form.data('title');
+                var formId = '#' + $form.attr('id');
 
-        /**
-         * Fetch an element based on its identifier
-         *
-         * @param {string} identifier
-         * @param {Object} options
-         *
-         * @return {Promise}
-         */
-        fetch: function (identifier, options) {
-            options = options || {};
-
-            if (!(identifier in this.entityPromises) || false === options.cached) {
-                var deferred = $.Deferred();
-
-                if (this.options.urls.get) {
-                    $.getJSON(
-                        Routing.generate(this.options.urls.get, _.extend({identifier: identifier}, options))
-                    ).then(_.identity).done(function (entity) {
-                        deferred.resolve(entity);
-                    }).fail(function () {
-                        console.error('Error during fetching: ', arguments);
-
-                        return deferred.reject();
+                var formButtons = [];
+                var submitButton = $form.data('button-submit');
+                var cancelButton = $form.data('button-cancel');
+                if (submitButton) {
+                    formButtons.push({
+                        text: submitButton,
+                        'class': 'btn btn-primary',
+                        click: function () {
+                            showLoadingMask();
+                            $.ajax({
+                                url: url,
+                                type: 'post',
+                                data: $(formId).serialize(),
+                                success: function (data) {
+                                    processResponse(data);
+                                    mediator.trigger('dialog:open:after', this);
+                                }
+                            });
+                        }
                     });
-                } else {
-                    this.fetchAll().done(function (entities) {
-                        var entity = _.findWhere(entities, {code: identifier});
-                        if (entity) {
-                            deferred.resolve(entity);
-                        } else {
-                            deferred.reject();
+                }
+                if (cancelButton) {
+                    formButtons.push({
+                        text: cancelButton,
+                        'class': 'btn',
+                        click: function () {
+                            destroyDialog();
                         }
                     });
                 }
 
-                this.entityPromises[identifier] = deferred.promise();
+                $dialog = $form.dialog({
+                    title: formTitle,
+                    modal: true,
+                    resizable: false,
+                    width: width,
+                    buttons: formButtons,
+                    open: function () {
+                        $(this).parent().keypress(function (e) {
+                            if (e.keyCode === $.ui.keyCode.ENTER) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                $(this).find('button.btn-primary:eq(0)').click();
+                            }
+                        });
+                    },
+                    close: function () {
+                        $(this).remove();
+                    }
+                });
+
+                initSelect2.init($(formId));
+                $(formId + ' .switch').bootstrapSwitch();
+
+                $(formId).find('[data-toggle="tooltip"]').tooltip();
             }
 
-            return this.entityPromises[identifier];
-        },
+            function isJSON(str) {
+                try {
+                    JSON.parse(str);
+                } catch (e) {
+                    return false;
+                }
 
-        /**
-         * Fetch all entities for the given identifiers
-         *
-         * @param {Array} identifiers
-         *
-         * @return {Promise}
-         */
-        fetchByIdentifiers: function (identifiers) {
-            if (0 === identifiers.length) {
-                return $.Deferred().resolve([]).promise();
+                return true;
             }
 
-            var uncachedIdentifiers = _.difference(identifiers, _.keys(this.entityPromises));
-            if (0 === uncachedIdentifiers.length) {
-                return this.getObjects(_.pick(this.entityPromises, identifiers));
+            function processResponse(data) {
+                loadingMask.hide();
+                if (isJSON(data)) {
+                    data = $.parseJSON(data);
+                    destroyDialog();
+                    if (callback) {
+                        callback(data);
+                    } else {
+                        router.redirect(data.url);
+                    }
+                } else if ($(data).prop('tagName').toLowerCase() === 'form') {
+                    createDialog(data);
+                }
             }
 
-            return $.when(
-                    this.getJSON(this.options.urls.list, { identifiers: uncachedIdentifiers.join(',') })
-                        .then(_.identity),
-                    this.getIdentifierField()
-                ).then(function (entities, identifierCode) {
-                    _.each(entities, function (entity) {
-                        this.entityPromises[entity[identifierCode]] = $.Deferred().resolve(entity).promise();
-                    }.bind(this));
-
-                    return this.getObjects(_.pick(this.entityPromises, identifiers));
-                }.bind(this));
-        },
-
-        /**
-         * Get the list of elements in JSON format.
-         *
-         * @param {string} url
-         * @param {Object} parameters
-         *
-         * @returns {Promise}
-         */
-        getJSON: function (url, parameters) {
-            return $.getJSON(Routing.generate(url, parameters));
-        },
-
-        /**
-         * Get the identifier attribute of the collection
-         *
-         * @return {Promise}
-         */
-        getIdentifierField: function () {
-            return $.Deferred().resolve('code');
-        },
-
-        /**
-         * Clear cache of the fetcher
-         *
-         * @param {string|null} identifier
-         */
-        clear: function (identifier) {
-            if (identifier) {
-                delete this.entityPromises[identifier];
-            } else {
-                this.entityListPromise = null;
-                this.entityPromises    = {};
-            }
-        },
-
-        /**
-         * Wait for promises to resolve and return the promises results wrapped in a Promise
-         *
-         * @param {Array|Object} promises
-         *
-         * @return {Promise}
-         */
-        getObjects: function (promises) {
-            return $.when.apply($, _.toArray(promises)).then(function () {
-                return 0 !== arguments.length ? _.toArray(arguments) : [];
+            $el.on('click', function (e) {
+                e.preventDefault();
+                showLoadingMask();
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    success: function (data) {
+                        loadingMask.hide();
+                        createDialog(data);
+                        mediator.trigger('dialog:open:after', this);
+                    }
+                });
             });
-        }
-    });
-}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+        };
+    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 

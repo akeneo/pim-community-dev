@@ -1,45 +1,509 @@
 webpackJsonp([2],{
 
-/***/ 111:
+/***/ 211:
 /* unknown exports provided */
 /* all exports used */
-/*!*****************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/fetcher/completeness-fetcher.js ***!
-  \*****************************************************************************************/
+/*!********************************************************************************************************************!*\
+  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/tab/attributes/copy-field.html ***!
+  \********************************************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"AknComparableFields-copyContainer copy-container\">\n    <input type=\"checkbox\" class=\"AknComparableFields-checkbox copy-field-selector\" <%- selected ? 'checked' : '' %>></input>\n    <div class=\"<%- type %> AknFieldContainer AknComparableFields-item\">\n        <div class=\"AknFieldContainer-header\">\n            <label class=\"AknFieldContainer-label\"><%- label %></label>\n            <span class=\"AknFieldContainer-fieldInfo field-info\">\n                <% if (attribute.localizable || attribute.scopable) { %>\n                    <span class=\"field-context\">\n                        <% if (attribute.scopable) { %> <span><%- context.scopeLabel %></span> <% } %>\n                        <% if (attribute.localizable) { %> <span><%= i18n.getFlag(context.locale) %></span> <% } %>\n                    </span>\n                <% } %>\n            </span>\n        </div>\n        <div class=\"AknFieldContainer-inputContainer field-input\">\n        </div>\n    </div>\n</div>\n"
+
+/***/ }),
+
+/***/ 214:
+/* unknown exports provided */
+/* all exports used */
+/*!*********************************************************************************************************!*\
+  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/field.html ***!
+  \*********************************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"<%- type %> AknComparableFields-item AknFieldContainer original-field <%- editMode %>\">\n    <div class=\"AknFieldContainer-header\">\n        <label class=\"AknFieldContainer-label\" for=\"<%- fieldId %>\">\n            <span class=\"badge-elements-container\"></span>\n            <%- label %>\n            <span class=\"label-elements-container\"></span>\n        </label>\n        <span class=\"AknFieldContainer-fieldInfo field-info\">\n            <% if (attribute.localizable || attribute.scopable) { %>\n                <span class=\"field-context\">\n                    <% if (attribute.scopable) { %> <span><%- context.scopeLabel %></span> <% } %>\n                    <% if (attribute.localizable) { %> <span><%= i18n.getFlag(context.locale) %></span> <% } %>\n                </span>\n            <% } %>\n        </span>\n        <% if (context.optional && context.removable && 'edit' === editMode) { %>\n            <i class=\"AknIconButton AknIconButton--small icon-remove remove-attribute\" data-attribute=\"<%- attribute.code %>\" data-toggle=\"tooltip\" title=\"<%- _.__('pim_enrich.entity.product.optional_attribute.remove') %>\"></i>\n        <% } %>\n    </div>\n    <div class=\"AknFieldContainer-inputContainer field-input\">\n    </div>\n    <footer>\n        <div class=\"AknFieldContainer-footer footer-elements-container\">\n\n        </div>\n    </footer>\n</div>\n<div class=\"AknComparableFields-item AknComparableFields-item--comparisonContainer AknFieldContainer comparison-elements-container\"></div>\n"
+
+/***/ }),
+
+/***/ 220:
+/* unknown exports provided */
+/* all exports used */
+/*!**********************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/form/common/attributes/copy-field.js ***!
+  \**********************************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+/**
+ * Copy field extension
+ *
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @author    Filips Alpe <filips@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
+        __webpack_require__(/*! backbone */ 2),
+        __webpack_require__(/*! underscore */ 0),
+        __webpack_require__(/*! pim/field */ 246),
+        __webpack_require__(/*! text-loader!pim/template/form/tab/attribute/copy-field */ 211),
+        __webpack_require__(/*! pim/i18n */ 18),
+        __webpack_require__(/*! oro/mediator */ 5)
+    ], __WEBPACK_AMD_DEFINE_RESULT__ = function (Backbone, _, Field, template, i18n, mediator) {
+        return Field.extend({
+            tagName: 'div',
+            field: null,
+            template: _.template(template),
+            selected: false,
+            events: {
+                'click': 'onSelect'
+            },
 
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! routing */ 3), __webpack_require__(/*! pim/base-fetcher */ 16)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, Routing, BaseFetcher) {
-    return BaseFetcher.extend({
-        /**
-         * Fetch completenesses for the given product id
-         *
-         * @param Integer productId
-         *
-         * @return Promise
-         */
-        fetchForProduct: function (productId, family) {
-            if (!(productId in this.entityPromises)) {
-                this.entityPromises[productId] = $.getJSON(
-                    Routing.generate(this.options.urls.get, { id: productId })
-                ).then(function (completenesses) {
-                    return {completenesses: completenesses, family: family};
+            /**
+             * Initialize the view
+             */
+            initialize: function () {
+                this.selected = false;
+                this.field    = null;
+
+                Field.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * Render the copy field view
+             * Delegates the render of the input itself to the Field.renderCopyInput() method
+             *
+             * @returns {Object}
+             */
+            render: function () {
+                this.$el.empty();
+
+                var templateContext = {
+                    type: this.field.attribute.field_type,
+                    label: this.field.getLabel(),
+                    config: this.field.config,
+                    attribute: this.field.attribute,
+                    selected: this.selected,
+                    context: this.context,
+                    i18n: i18n
+                };
+
+                mediator.trigger('pim_enrich:form:field:extension:add', {'field': this, 'promises': []});
+
+                this.$el.html(this.template(templateContext));
+                this.field.renderCopyInput(this.getCurrentValue())
+                    .then(function (render) {
+                        this.$('.field-input').html(render);
+                        this.renderElements();
+                    }.bind(this));
+
+                this.delegateEvents();
+
+                return this;
+            },
+
+            /**
+             * Render elements of this field in different available positions.
+             * In the copy case, only implements extension on input position.
+             */
+            renderElements: function () {
+                _.each(this.elements, function (elements, position) {
+                    if ('field-input' === position) {
+                        var $container = this.$('.field-input');
+                        $container.empty();
+
+                        _.each(elements, function (element) {
+                            if (typeof element.render === 'function') {
+                                $container.append(element.render().$el);
+                            } else {
+                                $container.append(element);
+                            }
+                        }.bind(this));
+                    }
+                }.bind(this));
+            },
+
+            /**
+             * Bound this copy field to the original field
+             *
+             * @param {Field} field
+             */
+            setField: function (field) {
+                this.field = field;
+            },
+
+            /**
+             * Callback called when the copy field is clicked, toggle the select checkbox state
+             */
+            onSelect: function () {
+                this.selected = !this.selected;
+                this.$('.copy-field-selector').prop('checked', this.selected);
+            },
+
+            /**
+             * Mark this copy field as selected or not
+             *
+             * @param {boolean} selected
+             */
+            setSelected: function (selected) {
+                this.selected = selected;
+            }
+        });
+    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ }),
+
+/***/ 246:
+/* unknown exports provided */
+/* all exports used */
+/*!********************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/field.js ***!
+  \********************************************************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+/**
+ * Field abstract class
+ *
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @author    Filips Alpe <filips@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
+        __webpack_require__(/*! jquery */ 1),
+        __webpack_require__(/*! backbone */ 2),
+        __webpack_require__(/*! underscore */ 0),
+        __webpack_require__(/*! text-loader!pim/template/product/field/field */ 214),
+        __webpack_require__(/*! pim/attribute-manager */ 42),
+        __webpack_require__(/*! pim/i18n */ 18),
+        __webpack_require__(/*! oro/mediator */ 5)
+    ], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, Backbone, _, fieldTemplate, AttributeManager, i18n, mediator) {
+        var FieldModel = Backbone.Model.extend({
+            values: []
+        });
+
+        return Backbone.View.extend({
+            tagName: 'div',
+            className: 'AknComparableFields field-container',
+            options: {},
+            attributes: function () {
+                return {
+                    'data-attribute': this.options ? this.options.code : null
+                };
+            },
+            attribute: null,
+            context: {},
+            model: FieldModel,
+            template: _.template(fieldTemplate),
+            elements: {},
+            editable: true,
+            ready: true,
+            valid: true,
+
+            /**
+             * Initialize this field
+             *
+             * @param {Object} attribute
+             *
+             * @returns {Object}
+             */
+            initialize: function (attribute) {
+                this.attribute = attribute;
+                this.model     = new FieldModel({values: []});
+                this.elements  = {};
+                this.context   = {};
+
+                return this;
+            },
+
+            /**
+             * Render this field
+             *
+             * @returns {Object}
+             */
+            render: function () {
+                this.setEditable(true);
+                this.setValid(true);
+                this.elements = {};
+                var promises  = [];
+                mediator.trigger('pim_enrich:form:field:extension:add', {'field': this, 'promises': promises});
+
+                $.when.apply($, promises)
+                    .then(this.getTemplateContext.bind(this))
+                    .then(function (templateContext) {
+                        this.$el.html(this.template(templateContext));
+
+                        this.$('.original-field .field-input').append(this.renderInput(templateContext));
+
+                        this.renderElements();
+                        this.postRender();
+                        this.delegateEvents();
+                    }.bind(this));
+
+                return this;
+            },
+
+            /**
+             * Render elements of this field in different available positions
+             */
+            renderElements: function () {
+                _.each(this.elements, function (elements, position) {
+                    var $container = 'field-input' === position ?
+                        this.$('.original-field .field-input') :
+                        this.$('.' + position + '-elements-container');
+
+                    $container.empty();
+
+                    _.each(elements, function (element) {
+                        if (typeof element.render === 'function') {
+                            $container.append(element.render().$el);
+                        } else {
+                            $container.append(element);
+                        }
+                    }.bind(this));
+
+                }.bind(this));
+            },
+
+            /**
+             * Render the input inside the field area
+             *
+             * @throws {Error} if this method is not implemented
+             */
+            renderInput: function () {
+                throw new Error('You should implement your field template');
+            },
+
+            /**
+             * Is called after rendering the input
+             */
+            postRender: function () {},
+
+            /**
+             * Render this input in copy mode
+             *
+             * @param {Object} value
+             *
+             * @returns {Promise}
+             */
+            renderCopyInput: function (value) {
+                return this.getTemplateContext()
+                    .then(function (context) {
+                        var copyContext = $.extend(true, {}, context);
+                        copyContext.value = value;
+                        copyContext.context.locale = value.locale;
+                        copyContext.context.scope = value.scope;
+                        copyContext.editMode = 'view';
+
+                        return this.renderInput(copyContext);
+                    }.bind(this));
+            },
+
+            /**
+             * Get the template context
+             *
+             * @returns {Promise}
+             */
+            getTemplateContext: function () {
+                var deferred = $.Deferred();
+
+                deferred.resolve({
+                    type: this.attribute.field_type,
+                    label: this.getLabel(),
+                    value: this.getCurrentValue(),
+                    fieldId: 'field-' + Math.random().toString(10).substring(2),
+                    context: this.context,
+                    attribute: this.attribute,
+                    info: this.elements,
+                    editMode: this.getEditMode(),
+                    i18n: i18n
                 });
 
-                return this.entityPromises[productId];
-            } else {
-                return this.entityPromises[productId].then(function (completeness) {
-                    return (family !== completeness.family) ?
-                        {completenesses: {}, family: family} :
-                        this.entityPromises[productId];
-                }.bind(this));
-            }
+                return deferred.promise();
+            },
 
-        }
-    });
-}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+            /**
+             * Update the model linked to this field
+             */
+            updateModel: function () {
+                this.valid = true;
+            },
+
+            /**
+             * Set values to the model linked to this field
+             *
+             * @param {Array} values
+             */
+            setValues: function (values) {
+                if (_.isUndefined(values) || values.length === 0) {
+                    /*global console: true */
+                    console.error('Value array is empty');
+                }
+
+                this.model.set('values', values);
+            },
+
+            /**
+             * Set the context of this field
+             *
+             * @param {Object} context
+             */
+            setContext: function (context) {
+                this.context = context;
+            },
+
+            /**
+             * Add an element to this field block
+             *
+             * @param {string} position 'footer', 'label' or 'comparison'
+             * @param {string} code
+             * @param {Object} element
+             */
+            addElement: function (position, code, element) {
+                if (!this.elements[position]) {
+                    this.elements[position] = {};
+                }
+                this.elements[position][code] = element;
+            },
+
+            /**
+             * Remove an element of this field block, with the given position & code
+             *
+             * @param {string} position
+             * @param {string} code
+             */
+            removeElement: function (position, code) {
+                if (this.elements[position] && this.elements[position][code]) {
+                    delete this.elements[position][code];
+                }
+            },
+
+            /**
+             * Set as valid
+             *
+             * @param {boolean} valid
+             */
+            setValid: function (valid) {
+                this.valid = valid;
+            },
+
+            /**
+             * Return whether is valid
+             *
+             * @returns {boolean}
+             */
+            isValid: function () {
+                return this.valid;
+            },
+
+            /**
+             * Set the focus on the input of this field
+             */
+            setFocus: function () {
+                this.$('input:first').focus();
+            },
+
+            /**
+             * Set this field as editable
+             *
+             * @param {boolean} editable
+             */
+            setEditable: function (editable) {
+                this.editable = editable;
+            },
+
+            /**
+             * Return whether this field is editable
+             *
+             * @returns {boolean}
+             */
+            isEditable: function () {
+                return this.editable;
+            },
+
+            /**
+             * Set this field as ready
+             *
+             * @param {boolean} ready
+             */
+            setReady: function (ready) {
+                this.ready = ready;
+            },
+
+            /**
+             * Return whether this field is ready
+             *
+             * @returns {boolean}
+             */
+            isReady: function () {
+                return this.ready;
+            },
+
+            /**
+             * Get the current edit mode (can be 'edit' or 'view')
+             *
+             * @returns {string}
+             */
+            getEditMode: function () {
+                if (this.editable) {
+                    return 'edit';
+                } else {
+                    return 'view';
+                }
+            },
+
+            /**
+             * Return whether this field can be seen
+             *
+             * @returns {boolean}
+             */
+            canBeSeen: function () {
+                return true;
+            },
+
+            /**
+             * Get current model value for this field, in this format:
+             * {locale: 'en_US', scope: null, data: 'stuff'}
+             *
+             * @returns {Object}
+             */
+            getCurrentValue: function () {
+                return AttributeManager.getValue(
+                    this.model.get('values'),
+                    this.attribute,
+                    this.context.locale,
+                    this.context.scope
+                );
+            },
+
+            /**
+             * Set current model value for this field
+             *
+             * @param {*} value
+             */
+            setCurrentValue: function (value) {
+                var productValue = this.getCurrentValue();
+
+                productValue.data = value;
+                mediator.trigger('pim_enrich:form:entity:update_state');
+            },
+
+            /**
+             * Get the label of this field (default is code surrounded by brackets)
+             *
+             * @returns {string}
+             */
+            getLabel: function () {
+                return this.attribute.labels[this.context.uiLocale] ?
+                    this.attribute.labels[this.context.uiLocale] :
+                    '[' + this.attribute.code + ']';
+            }
+        });
+    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 

@@ -89,13 +89,10 @@ define(
                     resolvedModule: controllerTemplate
                 }
 
-                console.log('controllerName', controllerName)
                 var Controller = controllerName.resolvedModule
                 if (this.currentController) {
                     this.currentController.remove();
                 }
-
-                console.log('Controller', Controller)
 
                 $('#container').empty();
                 var $view = $('<div>', {'class': 'view'}).appendTo($('#container'));
