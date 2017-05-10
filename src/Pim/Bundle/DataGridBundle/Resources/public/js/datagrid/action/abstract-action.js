@@ -166,13 +166,13 @@ function($, _, Backbone, routing, router, __, mediator, messenger, error, Modal,
             if (action.dispatched) {
                 return;
             }
-            require(
-                ['oro/' + action.frontend_type + '-widget'],
-                function(ExportAction) {
-                    var exportAction = new ExportAction(action);
-                    exportAction.run();
-                }
-            );
+            // require(
+            //     ['oro/' + action.frontend_type + '-widget'],
+            //     function(ExportAction) {
+            //         var exportAction = new ExportAction(action);
+            //         exportAction.run();
+            //     }
+            // );
         },
 
         _handleWidget: function(action) {
@@ -181,11 +181,11 @@ function($, _, Backbone, routing, router, __, mediator, messenger, error, Modal,
             }
             action.frontend_options.url = action.frontend_options.url || this.getLinkWithParameters();
             action.frontend_options.title = action.frontend_options.title || this.label;
-            require(['oro/' + action.frontend_type + '-widget'],
-            function(WidgetType) {
-                var widget = new WidgetType(action.frontend_options);
-                widget.render();
-            });
+            // require(['oro/' + action.frontend_type + '-widget'],
+            // function(WidgetType) {
+            //     var widget = new WidgetType(action.frontend_options);
+            //     widget.render();
+            // });
         },
 
         _handleRedirect: function(action) {

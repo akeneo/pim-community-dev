@@ -3,6 +3,8 @@ define(['jquery', 'backbone', 'backgrid'],
 function ($, Backbone, Backgrid) {
     "use strict";
 
+    Backgrid = Backgrid.Backgrid;
+    
     /**
      * Renders a checkbox for row selection.
      *

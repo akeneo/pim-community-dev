@@ -45,7 +45,6 @@ define(
             initialize: function () {
                 this.loadingMask = new LoadingMask();
                 this.loadingMask.render().$el.appendTo($('.hash-loading-mask'));
-                console.log('initialize', $('.hash-loading-mask'));
                 _.bindAll(this, 'showLoadingMask', 'hideLoadingMask');
 
                 this.listenTo(mediator, 'route_complete', this._processLinks);
@@ -83,13 +82,20 @@ define(
                 }
 
                 this.showLoadingMask();
-
                 this.triggerStart(route);
 
-                var Controller = ControllerRegistry[route.name].resolvedModule || controllerTemplate
+                var controllerName = ControllerRegistry[route.name] || {
+                    module: 'defaultController',
+                    resolvedModule: controllerTemplate
+                }
+
+                console.log('controllerName', controllerName)
+                var Controller = controllerName.resolvedModule
                 if (this.currentController) {
                     this.currentController.remove();
                 }
+
+                console.log('Controller', Controller)
 
                 $('#container').empty();
                 var $view = $('<div>', {'class': 'view'}).appendTo($('#container'));

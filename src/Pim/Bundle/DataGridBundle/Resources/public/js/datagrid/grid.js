@@ -37,6 +37,8 @@ define(
     ) {
         'use strict';
 
+        Backgrid = Backgrid.Backgrid;
+
         /**
          * Basic grid class.
          *

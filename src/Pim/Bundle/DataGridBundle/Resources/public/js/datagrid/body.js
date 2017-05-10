@@ -3,6 +3,8 @@ define(['underscore', 'backgrid', 'oro/datagrid/row'],
 function(_, Backgrid, Row) {
     'use strict';
 
+    Backgrid = Backgrid.Backgrid;
+
     /**
      * Grid body widget
      *

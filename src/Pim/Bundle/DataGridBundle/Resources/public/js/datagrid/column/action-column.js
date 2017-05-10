@@ -3,6 +3,8 @@ define(['underscore', 'backgrid', 'oro/datagrid/action-cell'],
 function(_, Backgrid, ActionCell) {
     'use strict';
 
+    Backgrid = Backgrid.Backgrid;
+
     /**
      * Column of grid that contains row actions
      *

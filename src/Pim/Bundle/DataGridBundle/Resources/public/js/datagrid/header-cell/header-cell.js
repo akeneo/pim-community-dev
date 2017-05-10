@@ -3,6 +3,8 @@ define(['jquery', 'underscore', 'backbone', 'backgrid', 'oro/pageable-collection
 function ($, _, Backbone, Backgrid, PageableCollection) {
     "use strict";
 
+    Backgrid = Backgrid.Backgrid;
+
     /**
      * Datagrid header cell
      *

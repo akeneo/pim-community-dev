@@ -3,6 +3,8 @@ define(['jquery', 'underscore', 'backgrid', 'oro/datagrid/select-row-cell'],
 function ($, _, Backgrid, SelectRowCell) {
     "use strict";
 
+    Backgrid = Backgrid.Backgrid;
+
     /**
      * Contains mass-selection logic
      *  - watches models selection, keeps reference to selected

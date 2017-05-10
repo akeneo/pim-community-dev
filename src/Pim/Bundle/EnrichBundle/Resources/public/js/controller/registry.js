@@ -18,7 +18,6 @@ define(
                 var deferred = $.Deferred();
 
                 var controller = controllers[name] || defaultController;
-                console.log(controller)
                 require([controller.module], function (Controller) {
                     controller.class = Controller;
 

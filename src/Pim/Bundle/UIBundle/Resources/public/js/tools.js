@@ -15,8 +15,9 @@ function (_) {
          */
         loadModules: function (modules, callback) {
             var requirements = _.values(modules);
+            console.log(requirements)
             // load all dependencies and build grid
-            require(requirements, function () {
+            require.ensure(requirements, function () {
                 _.each(modules, _.bind(function (value, key) {
                     modules[key] = this[value];
                 }, _.object(requirements, _.toArray(arguments))));

@@ -1,12 +1,9 @@
-define(['jquery', 'underscore', 'paths'], function ($, _) {
-    return function(modules) {
-        console.trace();
-        console.log('hijack require from twig template', modules)
-
-        _.each(modules, function() {
-        })
-
-
-        return {}
+define(['jquery', 'underscore', 'twig-dependencies'], function ($, _, twigDependencies) {
+    return function(modules, cb) {
+        var resolvedModules = [];
+        _.each(modules, function (module) {
+            resolvedModules.push(twigDependencies[module])
+        });
+        cb.apply(this, resolvedModules)
     }
 })

@@ -3,6 +3,8 @@ define(['jquery', 'underscore', 'backgrid'],
 function($, _, Backgrid) {
     'use strict';
 
+    Backgrid = Backgrid.Backgrid;
+
     /**
      * Boolean column cell. Added missing behaviour.
      *

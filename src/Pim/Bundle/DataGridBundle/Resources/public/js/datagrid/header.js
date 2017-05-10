@@ -3,6 +3,8 @@ define(['backbone', 'backgrid', 'oro/datagrid/header-cell'],
 function (Backbone, Backgrid, HeaderCell) {
     "use strict";
 
+    Backgrid = Backgrid.Backgrid;
+
     /**
      * Datagrid header widget
      *

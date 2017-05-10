@@ -3,6 +3,8 @@ define(['underscore', 'backgrid'],
 function(_, Backgrid) {
     'use strict';
 
+    Backgrid = Backgrid.Backgrid;
+
     /**
      * Cell formatter with fixed fromRaw method
      *
