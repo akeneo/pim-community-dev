@@ -3,15 +3,10 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\Statement;
-use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
-use Pim\Component\Catalog\Model\CompletenessInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -21,9 +16,10 @@ class ProductSaverSpec extends ObjectBehavior
     function let(
         ObjectManager $objectManager,
         CompletenessManager $completenessManager,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        ProductUniqueDataSynchronizer $uniqueDataSynchronizer
     ) {
-        $this->beConstructedWith($objectManager, $completenessManager, $eventDispatcher);
+        $this->beConstructedWith($objectManager, $completenessManager, $eventDispatcher, $uniqueDataSynchronizer);
     }
 
     function it_is_a_saver()
@@ -40,12 +36,14 @@ class ProductSaverSpec extends ObjectBehavior
         $objectManager,
         $completenessManager,
         $eventDispatcher,
+        $uniqueDataSynchronizer,
         ProductInterface $product
     ) {
         $completenessManager->schedule($product)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
 
         $objectManager->persist($product)->shouldBeCalled();
+        $uniqueDataSynchronizer->synchronize($product)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
@@ -58,6 +56,7 @@ class ProductSaverSpec extends ObjectBehavior
         $objectManager,
         $completenessManager,
         $eventDispatcher,
+        $uniqueDataSynchronizer,
         ProductInterface $product1,
         ProductInterface $product2
     ) {
@@ -67,7 +66,9 @@ class ProductSaverSpec extends ObjectBehavior
         $completenessManager->generateMissingForProduct($product2)->shouldBeCalled();
 
         $objectManager->persist($product1)->shouldBeCalled();
+        $uniqueDataSynchronizer->synchronize($product1)->shouldBeCalled();
         $objectManager->persist($product2)->shouldBeCalled();
+        $uniqueDataSynchronizer->synchronize($product2)->shouldBeCalled();
 
         $objectManager->flush()->shouldBeCalled();
 

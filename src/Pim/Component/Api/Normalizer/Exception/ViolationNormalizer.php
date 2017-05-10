@@ -6,6 +6,7 @@ use Doctrine\Common\Inflector\Inflector;
 use Pim\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Validator\Constraints\UniqueValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -45,11 +46,16 @@ class ViolationNormalizer implements NormalizerInterface
 
     /**
      * The product field "identifier" introduced during the single storage development (in addition to the "identifier"
-     * product value) added a new Length constraint on this property (see the product entity mapping in doctrine)
+     * product value) added a new Length constraint on this property (see the product validation mapping)
      * which is breaking the API.
      *
      * This method does not normalize the "identifier" property to normalize only the constraint regarding the product
      * value (Because its Length max number is dynamic compared to the identifier property).
+     *
+     * Also, product field "identifier" has a unique entity constraint with the message
+     * "The same identifier is already set on another product". The same behavior is ensured thanks to the
+     * {@see Pim\Component\Catalog\Validator\Constraints\UniqueValue} constraint, but with a different message.
+     * Here we keep only the first violation.
      *
      * TODO: TIP-722 - to revert once the identifier product value is dropped.
      *
@@ -69,6 +75,7 @@ class ViolationNormalizer implements NormalizerInterface
             ];
 
             $propertyPath = $violation->getPropertyPath();
+            $violationMessage = $violation->getMessageTemplate();
 
             if ($violation->getRoot() instanceof ProductInterface &&
                 1 === preg_match(
@@ -82,10 +89,19 @@ class ViolationNormalizer implements NormalizerInterface
                 $productValue = $violation->getRoot()->getValues()->getByKey($matches['attribute']);
                 $attributeType = $productValue->getAttribute()->getType();
 
-                $propertyPath = AttributeTypes::IDENTIFIER === $attributeType ? 'identifier' : $violation->getPropertyPath();
+                if (AttributeTypes::IDENTIFIER === $attributeType) {
+                    $propertyPath = 'identifier';
+                    $uniqueValueConstraint = new UniqueValue();
+
+                    if ($uniqueValueConstraint->message === $violationMessage) {
+                        // this is the translation key used in
+                        // Pim/Bundle/CatalogBundle/Resources/config/validation/product.yml
+                        $violationMessage = 'The same identifier is already set on another product';
+                    }
+                }
             }
 
-            $key = $propertyPath.$violation->getMessageTemplate();
+            $key = $propertyPath.$violationMessage;
             if (!array_key_exists($key, $existingViolation)) {
                 $errors[] = $error;
             }

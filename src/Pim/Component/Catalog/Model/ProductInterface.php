@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Model;
 use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\Localization\Model\LocalizableInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
 
@@ -339,4 +340,16 @@ interface ProductInterface extends
      * @return ProductInterface
      */
     public function setFamilyId($familyId);
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getUniqueData();
+
+    /**
+     * @param ProductUniqueDataInterface $uniqueData
+     *
+     * @return ProductInterface
+     */
+    public function addUniqueData(ProductUniqueDataInterface $uniqueData);
 }

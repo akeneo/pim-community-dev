@@ -79,6 +79,9 @@ abstract class AbstractProduct implements ProductInterface
     /** @var string */
     protected $identifier;
 
+    /** @var ArrayCollection */
+    protected $uniqueData;
+
     /**
      * Constructor
      */
@@ -89,6 +92,7 @@ abstract class AbstractProduct implements ProductInterface
         $this->completenesses = new ArrayCollection();
         $this->groups = new ArrayCollection();
         $this->associations = new ArrayCollection();
+        $this->uniqueData = new ArrayCollection();
     }
 
     /**
@@ -666,5 +670,25 @@ abstract class AbstractProduct implements ProductInterface
     public function getReference()
     {
         return $this->getIdentifier();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getUniqueData()
+    {
+        return $this->uniqueData;
+    }
+
+    /**
+     * @param ProductUniqueDataInterface $uniqueData
+     *
+     * @return ProductInterface
+     */
+    public function addUniqueData(ProductUniqueDataInterface $uniqueData)
+    {
+        $this->uniqueData->add($uniqueData);
+
+        return $this;
     }
 }

@@ -39,16 +39,6 @@ interface ProductRepositoryInterface extends ObjectRepository
     public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = []);
 
     /**
-     * Returns true if a ProductValue with the provided value alread exists,
-     * false otherwise.
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return bool
-     */
-    public function valueExists(ProductValueInterface $value);
-
-    /**
      * @param ProductQueryBuilderFactoryInterface $factory
      *
      * @return ProductRepositoryInterface
