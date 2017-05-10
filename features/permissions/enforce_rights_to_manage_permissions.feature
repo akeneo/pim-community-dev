@@ -22,11 +22,11 @@ Feature: Enforce rights to manage permissions for attribute groups, categories, 
     And I revoke rights to resources Manage locale permissions, Manage category permissions, Manage attribute group permissions, Manage export profile permissions and Manage import profile permissions
     And I save the role
     Then I should not see the text "There are unsaved changes."
+    When I am on the "en_US" locale page
+    Then I should not see the text "Permissions"
     When I am on the "media" attribute group page
     Then I should not see the text "Permissions"
     When I am on the "2014_collection" category page
-    Then I should not see the text "Permissions"
-    When I am on the "en_US" locale page
     Then I should not see the text "Permissions"
     When I am on the "attribute_export" export job edit page
     Then I should not see the text "Permissions"

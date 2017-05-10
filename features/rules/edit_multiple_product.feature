@@ -1,3 +1,4 @@
+@javascript
 Feature: Update multiple product by applying rules
   In order ease the enrichment of the catalog
   As a regular user
@@ -8,7 +9,6 @@ Feature: Update multiple product by applying rules
     And I add the "french" locale to the "tablet" channel
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully execute a rule with a setter action on multiple products
     Given the following products:
     | sku         | family  |
@@ -51,7 +51,6 @@ Feature: Update multiple product by applying rules
     When I am on the "mug" product page
     Then the product Name should be "Mug"
 
-  @javascript
   Scenario: Successfully execute a rule with a setter action on multiple products
     Given the following products:
     | sku       | family  |
@@ -104,7 +103,6 @@ Feature: Update multiple product by applying rules
     And I switch the locale to "fr_FR"
     Then the product name should be "Mug"
 
-  @javascript
   Scenario: Successfully execute a rule with a setter action and a NOT EMPTY condition on multiple products
     Given the following products:
       | sku       | family  |

@@ -1,4 +1,12 @@
 pimee_catalog_rule:
+  overview: 规则
+  execution_button: 执行规则
+  popin:
+    execute_rules:
+      confirm_title: 执行确认
+      confirm_content: 你确定要执行所有的规则吗？(这可能需要很长时间)
+  notification:
+    launched: 规则执行已经启动。完成后会通知您。
   attribute:
     list:
       code.label: 代码

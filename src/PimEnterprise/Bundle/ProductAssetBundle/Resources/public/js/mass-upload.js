@@ -5,8 +5,7 @@ define(
         'underscore',
         'oro/translator',
         'backbone',
-        'routing',
-        'oro/navigation',
+        'pim/router',
         'pim/dropzonejs',
         'oro/messenger',
         'text!pimee/template/asset/mass-upload',
@@ -17,8 +16,7 @@ define(
         _,
         __,
         Backbone,
-        Routing,
-        Navigation,
+        router,
         Dropzone,
         messenger,
         pageTemplate,
@@ -75,7 +73,7 @@ define(
              */
             initializeDropzone: function () {
                 var myDropzone = new Dropzone('body', {
-                    url: Routing.generate('pimee_product_asset_rest_upload'),
+                    url: router.generate('pimee_product_asset_rest_upload'),
                     thumbnailWidth: 70,
                     thumbnailHeight: 70,
                     parallelUploads: 4,
@@ -107,7 +105,7 @@ define(
                     }
 
                     $.get(
-                        Routing.generate('pimee_product_asset_rest_verify_upload', {
+                        router.generate('pimee_product_asset_rest_verify_upload', {
                             filename: encodeURIComponent(file.name)
                         })
                     ).done(function () {
@@ -120,7 +118,7 @@ define(
                             message = response.responseJSON.error;
                         }
                         file.previewElement.querySelector('.AknFieldContainer-validationError')
-                            .textContent = _.__(message);
+                            .textContent = __(message);
                     }).complete(function () {
                         this.setStatus(file);
                         file.previewElement.querySelector('.dz-type').textContent = file.type;
@@ -131,7 +129,7 @@ define(
                         myDropzone.emit(
                             'thumbnail',
                             file,
-                            Routing.generate('pim_enrich_default_thumbnail', {mimeType: file.type})
+                            router.generate('pim_enrich_default_thumbnail', {mimeType: file.type})
                         );
                     }
                 }.bind(this));
@@ -146,7 +144,7 @@ define(
 
                 myDropzone.on('error', function (file, error) {
                     file.previewElement.querySelector('.filename .error.text-danger')
-                        .textContent = _.__(error.error);
+                        .textContent = __(error.error);
                     this.setStatus(file);
                 }.bind(this));
 
@@ -169,7 +167,7 @@ define(
                 myDropzone.removeFile = function (file) {
                     if (Dropzone.SUCCESS === file.status) {
                         $.ajax({
-                            url: Routing.generate(
+                            url: router.generate(
                                 'pimee_product_asset_mass_upload_rest_delete',
                                 {
                                     filename: encodeURIComponent(file.name)
@@ -183,7 +181,7 @@ define(
                         .fail(function () {
                             messenger.notificationFlashMessage(
                                 'error',
-                                _.__('pimee_product_asset.mass_upload.error.delete')
+                                __('pimee_product_asset.mass_upload.error.delete')
                             );
                         });
                     } else {
@@ -191,29 +189,29 @@ define(
                     }
                 };
 
-                $.ajax({
-                    url: Routing.generate('pimee_product_asset_mass_upload_rest_list'),
-                    type: 'GET'
-                }).done(function (response) {
-                    _.each(response.files, function (file) {
-                        var mockFile = {
-                            name: file.name,
-                            type: file.type,
-                            size: file.size,
-                            status: Dropzone.SUCCESS,
-                            upload: {progress: 100}
-                        };
-                        myDropzone.files.push(mockFile);
-                        myDropzone.emit('addedfile', mockFile);
-                        myDropzone.emit('complete', mockFile);
-                        myDropzone.emit('success', mockFile, {});
-                    });
-                }).fail(function () {
-                    messenger.notificationFlashMessage(
-                        'error',
-                        _.__('pimee_product_asset.mass_upload.error.list')
-                    );
-                });
+                $.get(router.generate('pimee_product_asset_mass_upload_rest_list'))
+                    .done(function (response) {
+                        _.each(response.files, function (file) {
+                            var mockFile = {
+                                name: file.name,
+                                type: file.type,
+                                size: file.size,
+                                status: Dropzone.SUCCESS,
+                                upload: {progress: 100}
+                            };
+                            myDropzone.files.push(mockFile);
+                            myDropzone.emit('addedfile', mockFile);
+                            myDropzone.emit('complete', mockFile);
+                            myDropzone.emit('success', mockFile, {});
+                        });
+                    })
+                    .fail(function () {
+                        messenger.notificationFlashMessage(
+                            'error',
+                            __('pimee_product_asset.mass_upload.error.list')
+                        );
+                    })
+                ;
 
                 this.myDropzone = myDropzone;
             },
@@ -233,7 +231,7 @@ define(
                 this.myDropzone.removeAllFiles(true);
                 messenger.notificationFlashMessage(
                     'success',
-                    _.__('pimee_product_asset.mass_upload.success.canceled')
+                    __('pimee_product_asset.mass_upload.success.canceled')
                 );
             },
 
@@ -242,21 +240,22 @@ define(
              */
             importAll: function () {
                 $importButton.addClass('AknButton--disabled');
-                $.get(
-                    Routing.generate('pimee_product_asset_mass_upload_rest_import')
-                ).done(function (response) {
-                    var jobReportUrl = Routing.generate('pim_enrich_job_tracker_show', {id: response.jobId});
-                    messenger.notificationFlashMessage(
-                        'success',
-                        _.__('pimee_product_asset.mass_upload.success.imported')
-                    );
-                    Navigation.getInstance().setLocation(jobReportUrl);
-                }.bind(this)).fail(function () {
-                    messenger.notificationFlashMessage(
-                        'error',
-                        _.__('pimee_product_asset.mass_upload.error.import')
-                    );
-                });
+                $.get(router.generate('pimee_product_asset_mass_upload_rest_import'))
+                    .done(function (response) {
+                        messenger.notificationFlashMessage(
+                            'success',
+                            __('pimee_product_asset.mass_upload.success.imported')
+                        );
+
+                        router.redirectToRoute('pim_enrich_job_tracker_show', {id: response.jobId});
+                    }.bind(this))
+                    .fail(function () {
+                        messenger.notificationFlashMessage(
+                            'error',
+                            __('pimee_product_asset.mass_upload.error.import')
+                        );
+                    })
+                ;
             },
 
             /**
@@ -273,7 +272,7 @@ define(
                 };
                 statusElement.classList.add(statusClasses[file.status]);
                 var statusKey = 'pimee_product_asset.mass_upload.status.' + file.status;
-                statusElement.textContent = _.__(statusKey);
+                statusElement.textContent = __(statusKey);
             },
 
             /**

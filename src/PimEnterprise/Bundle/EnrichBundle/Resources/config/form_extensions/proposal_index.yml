@@ -1,0 +1,14 @@
+extensions:
+    pim-proposal-index:
+        module: pim/form/common/index/index
+        config:
+            title: pimee_workflow.proposal.overview
+
+    pim-proposal-index-grid:
+        module: pim/form/common/index/grid
+        parent: pim-proposal-index
+        position: 1000
+        targetZone: content
+        config:
+            alias: proposal-grid
+            localeKey: dataLocale

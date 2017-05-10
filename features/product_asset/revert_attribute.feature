@@ -8,10 +8,13 @@ Feature: Revert an assets collection in a product
     And I am logged in as "Julia"
 
   Scenario: Successfully revert an assets collection in a product
-    Given the following product:
-      | sku   | family  |
-      | jeans | jackets |
-    When I edit the "jeans" product
+    Given I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | jeans   |
+      | family | Jackets |
+    And I press the "Save" button in the popin
+    And I wait to be on the "jeans" product page
     And I visit the "Media" group
     And I start to manage assets for "gallery"
     And I change the page size to 100

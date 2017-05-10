@@ -97,7 +97,6 @@ confirmation:
   product:
     publish: Weet u zeker dat u dit product wilt publiceren?
     unpublish: Weet u zeker dat u dit product wilt depubliceren?
-proposal.overview: Voorstellen
 Attributes.title: Attributen
 Completeness.title: Volledigheid
 published products: Gepubliceerde producten

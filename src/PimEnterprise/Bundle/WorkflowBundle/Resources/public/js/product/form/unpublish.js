@@ -12,14 +12,14 @@ define(
         'text!pimee/template/product/unpublish',
         'routing',
         'pimee/product-edit-form/publish',
-        'oro/navigation'
+        'pim/router'
     ],
     function (
         _,
         template,
         Routing,
         Publish,
-        Navigation
+        router
     ) {
         return Publish.extend({
             className: 'btn-group',
@@ -29,11 +29,7 @@ define(
             },
             togglePublished: function () {
                 Publish.prototype.togglePublished.apply(this, arguments).then(function () {
-                    Navigation.getInstance().setLocation(
-                        Routing.generate(
-                            'pimee_workflow_published_product_index'
-                        )
-                    );
+                    router.redirectToRoute('pimee_workflow_published_product_index');
                 });
             }
         });

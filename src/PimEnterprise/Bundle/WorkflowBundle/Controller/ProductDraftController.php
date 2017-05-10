@@ -23,7 +23,6 @@ use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -133,24 +132,6 @@ class ProductDraftController
     }
 
     /**
-     * List proposals
-     *
-     * @Template
-     *
-     * @throws AccessDeniedException if the current user is not the owner of any categories
-     *
-     * @return Response
-     */
-    public function indexAction()
-    {
-        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN_AT_LEAST_ONE_CATEGORY)) {
-            throw new AccessDeniedException();
-        }
-
-        return [];
-    }
-
-    /**
      * @param Request    $request
      * @param int|string $id
      * @param string     $action  either "approve" or "refuse"
@@ -159,7 +140,7 @@ class ProductDraftController
      * @throws NotFoundHttpException
      * @throws AccessDeniedHttpException
      *
-     * @return JsonResponse|RedirectResponse
+     * @return JsonResponse
      */
     public function reviewAction(Request $request, $id, $action)
     {
@@ -184,26 +165,11 @@ class ProductDraftController
             $this->translator->trans(sprintf('flash.product_draft.approve.%s', $status), $messageParams) :
             $this->translator->trans('flash.product_draft.refuse.success');
 
-        if ($request->isXmlHttpRequest()) {
-            return new JsonResponse(
-                [
-                    'successful' => $status === 'success',
-                    'message'    => $message
-                ]
-            );
-        }
-
-        $this->request->getSession()->getFlashBag()
-            ->add($status, new Message($message));
-
-        return new RedirectResponse(
-            $this->router->generate(
-                'pim_enrich_product_edit',
-                [
-                    'id'         => $productDraft->getProduct()->getId(),
-                    'dataLocale' => $this->getCurrentLocaleCode()
-                ]
-            )
+        return new JsonResponse(
+            [
+                'successful' => $status === 'success',
+                'message'    => $message
+            ]
         );
     }
 
@@ -212,11 +178,11 @@ class ProductDraftController
      *
      * @param Request $request
      *
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function massApproveAction(Request $request)
     {
-        $request->request->add(['actionName' => 'massApprove' ]);
+        $request->request->add(['actionName' => 'massApprove']);
         $params = $this->gridFilterAdapter->adapt($request);
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::MASS_APPROVE_JOB_CODE);
         $configuration = [
@@ -227,11 +193,11 @@ class ProductDraftController
         $jobExecution = $this->simpleJobLauncher
             ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
 
-        return new RedirectResponse(
-            $this->router->generate(
-                'pim_enrich_job_tracker_show',
-                ['id' => $jobExecution->getId()]
-            )
+        return new JsonResponse(
+            [
+                'route'  => 'pim_enrich_job_tracker_show',
+                'params' => ['id' => $jobExecution->getId()],
+            ]
         );
     }
 
@@ -240,11 +206,11 @@ class ProductDraftController
      *
      * @param Request $request
      *
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function massRefuseAction(Request $request)
     {
-        $request->request->add(['actionName' => 'massApprove' ]);
+        $request->request->add(['actionName' => 'massApprove']);
         $params = $this->gridFilterAdapter->adapt($request);
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::MASS_REFUSE_JOB_CODE);
         $configuration = [
@@ -255,24 +221,12 @@ class ProductDraftController
         $jobExecution = $this->simpleJobLauncher
             ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
 
-        return new RedirectResponse(
-            $this->router->generate(
-                'pim_enrich_job_tracker_show',
-                ['id' => $jobExecution->getId()]
-            )
+        return new JsonResponse(
+            [
+                'route'  => 'pim_enrich_job_tracker_show',
+                'params' => ['id' => $jobExecution->getId()],
+            ]
         );
-    }
-
-    /**
-     * Transform the query string build by the Oro grid into a usable array
-     *
-     * @param Request $request
-     *
-     * @return array
-     */
-    protected function parseGridParameters(Request $request)
-    {
-        return $this->gridParameterParser->parse($request);
     }
 
     /**

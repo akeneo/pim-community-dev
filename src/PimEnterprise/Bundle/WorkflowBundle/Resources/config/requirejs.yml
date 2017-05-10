@@ -35,8 +35,6 @@ config:
         pimee/product-edit-form/proposal-add-comment:      pimenterpriseworkflow/js/product/form/proposal-add-comment
         pimee/product-edit-form/abstract-add-notification-comment: pimenterpriseworkflow/js/product/form/abstract-add-notification-comment
         pimee/proposal/partial-approve-proposal-comment:   pimenterpriseworkflow/js/proposal/form/partial-approve-proposal-comment
-        pimee/published-view-form/back-to-grid:            pimenterpriseworkflow/js/published-product/form/back-to-grid
-        pimee/published-view-form/panel/completeness:      pimenterpriseworkflow/js/published-product/form/panel/completeness
 
         # Templates
         pimee/template/product/meta/published:                  pimenterpriseworkflow/templates/product/meta/published.html

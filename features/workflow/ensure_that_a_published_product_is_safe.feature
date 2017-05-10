@@ -11,6 +11,7 @@ Feature: Ensure that a published product is safe
       | my-jacket | jackets    | jackets | similar_jackets | 1        | Volcom       | dry                |
     And I am logged in as "Julia"
 
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-6314
   Scenario: Fail to remove a product that has been published
     Given I am on the "my-jacket" product page
     And I press the "Delete" button
@@ -18,12 +19,14 @@ Feature: Ensure that a published product is safe
     Then I am on the products page
     And I should see product my-jacket
 
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-6314
   Scenario: Fail to remove a category that is linked to a published product
     Given I am on the "jackets" category page
     And I press the "Delete" button
     And I confirm the removal
     Then I should see the "jackets" category under the "summer_collection" category
 
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-6314
   Scenario: Fail to remove a category if one of these children is linked to a published product
     Given I am on the "summer_collection" category page
     And I press the "Delete" button
@@ -37,6 +40,7 @@ Feature: Ensure that a published product is safe
     And I confirm the removal
     Then I should not see the "winter_top" category under the "winter_collection" category
 
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-6314
   Scenario: Fail to remove a family that is linked to a published product
     Given I am on the "jackets" family page
     And I press the "Delete" button
@@ -51,6 +55,7 @@ Feature: Ensure that a published product is safe
     When I am on the families page
     Then I should not see family pants
 
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-6314
   Scenario: Fail to remove a group that is linked to a published product
     Given I edit the "similar_jackets" product group
     When I press the "Delete" button

@@ -26,8 +26,12 @@ Feature: Revert a product to a previous version
     And I am logged in as "Julia"
 
   Scenario: Successfully revert a product
-    Given an enabled "shirt" product
-    And I am on the "shirt" product page
+    Given I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | shirt   |
+    And I press the "Save" button in the popin
+    And I wait to be on the "shirt" product page
     And I disable the product
     And I open the history
     When I revert the product version number 1
@@ -36,12 +40,16 @@ Feature: Revert a product to a previous version
       | version | author                          | property | value |
       | 3       | Julia Stark - Julia@example.com | enabled  | 1     |
       | 2       | Julia Stark - Julia@example.com | enabled  | 0     |
-      | 1       | John Doe - admin@example.com    | SKU      | shirt |
-      | 1       | John Doe - admin@example.com    | enabled  | 1     |
+      | 1       | Julia Stark - Julia@example.com | SKU      | shirt |
+      | 1       | Julia Stark - Julia@example.com | enabled  | 1     |
 
   Scenario: Successfully revert the status of a product (disabled)
-    Given an enabled "shirt" product
-    And I am on the "shirt" product page
+    Given I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | shirt   |
+    And I press the "Save" button in the popin
+    And I wait to be on the "shirt" product page
     And I disable the product
     And the history of the product "shirt" has been built
     And I open the history
@@ -50,19 +58,31 @@ Feature: Revert a product to a previous version
     Then product "shirt" should be enabled
 
   Scenario: Successfully revert the status of a product (enable)
-    Given a disabled "shirt" product
+    Given I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | shirt   |
+    And I press the "Save" button in the popin
+    And I wait to be on the "shirt" product page
+    And I am on the "shirt" product page
+    And I disable the product
+    Then I should not see the text "There are unsaved changes."
     And I am on the "shirt" product page
     And I enable the product
     And the history of the product "shirt" has been built
     And I open the history
-    Then I should see 2 versions in the history
-    When I revert the product version number 1
+    Then I should see 3 versions in the history
+    When I revert the product version number 2
     Then product "shirt" should be disabled
 
   Scenario: Successfully revert the family of a product
-    Given the following product:
-      | sku  | family |
-      | jean | pants  |
+    Given I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | jean  |
+      | family | Pants |
+    And I press the "Save" button in the popin
+    And I wait to be on the "jean" product page
     And I am on the products page
     Then I select rows jean
     And I press "Change product information" on the "Bulk Actions" dropdown button
@@ -79,10 +99,18 @@ Feature: Revert a product to a previous version
     Then the family of product "jean" should be "pants"
 
   Scenario: Successfully revert the category of a product
-    Given the following product:
-      | sku     | categories        |
-      | sandals | winter_collection |
-    And I edit the "sandals" product
+    Given I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU | sandals |
+    And I press the "Save" button in the popin
+    And I wait to be on the "sandals" product page
+    And I visit the "Categories" tab
+    And I select the "2014 collection" tree
+    And I expand the "2014_collection" category
+    And I click on the "winter_collection" category
+    And I press the "Save" button
+    Then I should not see the text "There are unsaved changes."
     And I visit the "Categories" tab
     And I select the "2014 collection" tree
     And I expand the "2014_collection" category
@@ -91,8 +119,8 @@ Feature: Revert a product to a previous version
     And I press the "Save" button
     And the history of the product "sandals" has been built
     Then I open the history
-    Then I should see 2 versions in the history
-    When I revert the product version number 1
+    Then I should see 3 versions in the history
+    When I revert the product version number 2
     Then the category of "sandals" should be "winter_collection"
 
   @skip @jira https://akeneo.atlassian.net/browse/PIM-3765
@@ -120,7 +148,7 @@ Feature: Revert a product to a previous version
     When I revert the product version number 1
     Then I should see the flash message "Product can not be reverted because it belongs to a variant group"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5796
+  @skip-nav @jira https://akeneo.atlassian.net/browse/PIM-5796
   Scenario: Hide revert button if user cannot revert a product
     Given the following product:
       | sku     |

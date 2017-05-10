@@ -112,7 +112,6 @@ confirmation:
   product:
     publish: 确定要发布这个产品吗？
     unpublish: 确定要取消发布这个产品吗？
-proposal.overview: 提案
 Attributes.title: 属性
 Completeness.title: 完整性
 publish_product.steps.publish_product_tasklet.title: 发布产品

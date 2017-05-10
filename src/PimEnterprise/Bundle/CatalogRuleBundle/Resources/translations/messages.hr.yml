@@ -80,14 +80,9 @@ pimee_catalog_rule:
   notification:
     rule:
       executed: Izvođenje pravila je završeno
-      launched: Izvođenje pravila je pokrenuto. Biti ćete obaviješteni kad bude gotovo.
     mass_edit_rule:
       success: Izračun zahvaćenih proizvoda za pravila je završeno
       error: Došlo je do pogreške prilikom izračuna zahvaćenih proizvoda za pravila
-  popin:
-    execute_rules:
-      confirm_title: Potvrda izvršenja
-      confirm_content: Jeste li sigurni da želite izvršiti sva pravila? (to može potrajati duže vrijeme)
 btn:
   Execute rules: Izvrši pravila
 rule: Postavke pravila

@@ -27,5 +27,6 @@ Feature: purge product versions
     Then there should be 4 updates
     When I launch the purge versions command for entity "Pim\Component\Catalog\Model\Product"
     And I am on the "boots" product page
+    And I save the product
     And I open the "History" panel
     Then there should be 3 updates

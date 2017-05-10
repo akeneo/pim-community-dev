@@ -12,8 +12,7 @@ define(
         'module',
         'pim/form',
         'text!pimee/template/product/original-product',
-        'routing',
-        'oro/navigation',
+        'pim/router',
         'pim/user-context'
     ],
     function (
@@ -21,8 +20,7 @@ define(
         module,
         BaseForm,
         template,
-        Routing,
-        Navigation,
+        router,
         UserContext
     ) {
         return BaseForm.extend({
@@ -47,14 +45,12 @@ define(
                 return this;
             },
             goToOriginalProduct: function () {
-                Navigation.getInstance().setLocation(
-                    Routing.generate(
-                        module.config().urls.product_edit,
-                        {
-                            id: this.getFormData().meta.original_product_id,
-                            dataLocale: UserContext.get('catalogLocale')
-                        }
-                    )
+                router.redirectToRoute(
+                    module.config().urls.product_edit,
+                    {
+                        id: this.getFormData().meta.original_product_id,
+                        dataLocale: UserContext.get('catalogLocale')
+                    }
                 );
             }
         });

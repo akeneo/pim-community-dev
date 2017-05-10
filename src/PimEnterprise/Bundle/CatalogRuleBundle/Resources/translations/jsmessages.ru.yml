@@ -1,4 +1,12 @@
 pimee_catalog_rule:
+  overview: Правила
+  execution_button: Выполнить привила
+  popin:
+    execute_rules:
+      confirm_title: Подтверждение исполнения
+      confirm_content: Вы уверены, что хотите выполнить все правила? (это может занять много времени)
+  notification:
+    launched: Начато выполнение правил. Вы будете уведомлены, когда это будет сделано.
   attribute:
     list:
       code.label: Код

@@ -17,6 +17,7 @@ Feature: Create product assets
     And I am on the asset index page
     Then I should not see the text "Create an asset"
 
+  @skip-nav
   Scenario: Create a localized asset
     Given I am logged in as "Pamela"
     And I am on the assets page
@@ -33,6 +34,7 @@ Feature: Create product assets
     And I should see the Tablette variation upload zone
     And the locale "fr_FR" should be selected
 
+  @skip-nav
   Scenario: Create a non localized asset
     Given I am logged in as "Pamela"
     And I am on the assets page
@@ -47,6 +49,7 @@ Feature: Create product assets
     And I should see the Mobile variation upload zone
     And I should see the Tablet variation upload zone
 
+  @skip-nav
   Scenario: Create a non localized asset with a picture
     Given I am logged in as "Pamela"
     And I am on the assets page
@@ -60,6 +63,7 @@ Feature: Create product assets
     And I should not be able to generate Mobile from reference
     And I should not be able to generate Tablet from reference
 
+  @skip-nav
   Scenario: Successfully increment an existing asset code
     Given I am logged in as "Pamela"
     And I am on the assets page
@@ -73,7 +77,7 @@ Feature: Create product assets
     And I hover over the element ".validation-tooltip"
     Then I should see the text "Code must be unique. We generated a new one for you."
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6023
+  @skip-nav @jira https://akeneo.atlassian.net/browse/PIM-6023
   Scenario: Successfully create an asset with a non existent similar code
     Given I am logged in as "Pamela"
     And I am on the assets page

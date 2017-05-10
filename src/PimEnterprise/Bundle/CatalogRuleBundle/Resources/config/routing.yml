@@ -1,6 +1,5 @@
 pimee_catalog_rule_rule_index:
     path: /configuration/rules
-    defaults: { _controller: pimee_catalog_rule.controller.rule:indexAction }
     methods: [GET]
 
 pimee_catalog_rule_rule_delete:

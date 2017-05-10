@@ -7,11 +7,11 @@ Feature: Display teamwork assistant projects in the datagrid view selector
   Background:
     Given the "teamwork_assistant" catalog configuration
     And the following attribute groups:
-      | code      | label-en_US | group | type             |
-      | marketing | Marketing   | other | pim_catalog_text |
-      | technical | Technical   | other | pim_catalog_text |
-      | other     | Other       | other | pim_catalog_text |
-      | media     | Media       | other | pim_catalog_text |
+      | code      | label-en_US | group |
+      | marketing | Marketing   | other |
+      | technical | Technical   | other |
+      | other     | Other       | other |
+      | media     | Media       | other |
     And the following attributes:
       | code         | label-en_US  | type                   | localizable | scopable | decimals_allowed | negative_allowed | metric_family | default_metric_unit | useable_as_grid_filter | group     | allowed_extensions |
       | sku          | SKU          | pim_catalog_identifier | 0           | 0        |                  |                  |               |                     | 1                      | other     |                    |
@@ -46,27 +46,27 @@ Feature: Display teamwork assistant projects in the datagrid view selector
       | decoration       | Read Only           | view   |
       | decoration       | Media manager       | edit   |
     And the following attribute group accesses:
-      | attribute group | user group          | access | group | type             |
-      | marketing       | Marketing           | edit   | other | pim_catalog_text |
-      | marketing       | Technical Clothing  | view   | other | pim_catalog_text |
-      | marketing       | Technical High-Tech | view   | other | pim_catalog_text |
-      | marketing       | Read Only           | view   | other | pim_catalog_text |
-      | marketing       | Media manager       | view   | other | pim_catalog_text |
-      | technical       | Marketing           | view   | other | pim_catalog_text |
-      | technical       | Technical Clothing  | edit   | other | pim_catalog_text |
-      | technical       | Technical High-Tech | edit   | other | pim_catalog_text |
-      | technical       | Read Only           | view   | other | pim_catalog_text |
-      | technical       | Media manager       | none   | other | pim_catalog_text |
-      | other           | Marketing           | edit   | other | pim_catalog_text |
-      | other           | Technical Clothing  | edit   | other | pim_catalog_text |
-      | other           | Technical High-Tech | edit   | other | pim_catalog_text |
-      | other           | Read Only           | view   | other | pim_catalog_text |
-      | other           | Media manager       | view   | other | pim_catalog_text |
-      | media           | Marketing           | view   | other | pim_catalog_text |
-      | media           | Technical Clothing  | view   | other | pim_catalog_text |
-      | media           | Technical High-Tech | view   | other | pim_catalog_text |
-      | media           | Read Only           | view   | other | pim_catalog_text |
-      | media           | Media manager       | edit   | other | pim_catalog_text |
+      | attribute group | user group          | access | group |
+      | marketing       | Marketing           | edit   | other |
+      | marketing       | Technical Clothing  | view   | other |
+      | marketing       | Technical High-Tech | view   | other |
+      | marketing       | Read Only           | view   | other |
+      | marketing       | Media manager       | view   | other |
+      | technical       | Marketing           | view   | other |
+      | technical       | Technical Clothing  | edit   | other |
+      | technical       | Technical High-Tech | edit   | other |
+      | technical       | Read Only           | view   | other |
+      | technical       | Media manager       | none   | other |
+      | other           | Marketing           | edit   | other |
+      | other           | Technical Clothing  | edit   | other |
+      | other           | Technical High-Tech | edit   | other |
+      | other           | Read Only           | view   | other |
+      | other           | Media manager       | view   | other |
+      | media           | Marketing           | view   | other |
+      | media           | Technical Clothing  | view   | other |
+      | media           | Technical High-Tech | view   | other |
+      | media           | Read Only           | view   | other |
+      | media           | Media manager       | edit   | other |
     And the following families:
       | code     | label-en_US | attributes                                                     | requirements-ecommerce                     | requirements-mobile                |
       | tshirt   | TShirts     | sku,name,description,size,weight,release_date,material         | sku,name,size,description,material         | sku,name,size,description,material |

@@ -18,6 +18,7 @@ pimee_workflow:
     proposal:
       modal.title: Оставить комментарий (255 символов макс.)
   proposal:
+    overview: Предложения
     mass_action_group:
       review:
         label: Массовое действие

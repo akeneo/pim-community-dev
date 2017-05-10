@@ -2,7 +2,7 @@
     <span class="AknProjectWidget-boxLabel"><%- todoLabel %></span>
     <div class="AknProjectWidget-box AknProjectWidget-box--important">
         <% if (displayLinks) { %>
-            <a class="AknProjectWidget-boxHover" href="<%- urls.todo %>">
+            <a class="AknProjectWidget-boxHover" href="#<%- urls.todo %>">
                 <span class="AknProjectWidget-boxHoverText"><%- displayProductsLabel %></span>
             </a>
         <% } %>
@@ -16,7 +16,7 @@
     <span class="AknProjectWidget-boxLabel"><%- inProgressLabel %></span>
     <div class="AknProjectWidget-box AknProjectWidget-box--warning">
         <% if (displayLinks) { %>
-            <a class="AknProjectWidget-boxHover" href="<%- urls.inprogress %>">
+            <a class="AknProjectWidget-boxHover" href="#<%- urls.inprogress %>">
                 <span class="AknProjectWidget-boxHoverText"><%- displayProductsLabel %></span>
             </a>
         <% } %>
@@ -30,7 +30,7 @@
     <span class="AknProjectWidget-boxLabel"><%- doneLabel %></span>
     <div class="AknProjectWidget-box AknProjectWidget-box--success">
         <% if (displayLinks) { %>
-            <a class="AknProjectWidget-boxHover" href="<%- urls.done %>">
+            <a class="AknProjectWidget-boxHover" href="#<%- urls.done %>">
                 <span class="AknProjectWidget-boxHoverText"><%- displayProductsLabel %></span>
             </a>
         <% } %>

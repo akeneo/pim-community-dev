@@ -13,5 +13,5 @@ use Context\Page\Category\CategoryView;
 class Edit extends CategoryView
 {
     /** @var string */
-    protected $path = '/enrich/asset-category-tree/{id}/edit';
+    protected $path = '#/enrich/asset-category-tree/{id}/edit';
 }

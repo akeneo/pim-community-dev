@@ -18,6 +18,7 @@ pimee_workflow:
     proposal:
       modal.title: Schrijf een reactie (optioneel - 255 tekens max.)
   proposal:
+    overview: Voorstellen
     mass_action_group:
       review:
         label: Bulkactie

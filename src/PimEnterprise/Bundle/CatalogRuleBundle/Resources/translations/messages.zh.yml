@@ -80,14 +80,9 @@ pimee_catalog_rule:
   notification:
     rule:
       executed: 执行的规则完成
-      launched: 规则执行已经启动。完成后会通知您。
     mass_edit_rule:
       success: 计算此规则下受影响的产品
       error: 在计算在该规则下受影响的产品期间，发生了一个错误
-  popin:
-    execute_rules:
-      confirm_title: 执行确认
-      confirm_content: 你确定要执行所有的规则吗？(这可能需要很长时间)
 btn:
   Execute rules: 执行规则
 rule: 规则设定

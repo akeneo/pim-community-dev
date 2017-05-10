@@ -83,20 +83,6 @@ class RuleController
     }
 
     /**
-     * List all rules
-     *
-     * @Template
-     *
-     * @AclAncestor("pimee_catalog_rule_rule_view_permissions")
-     *
-     * @return array
-     */
-    public function indexAction()
-    {
-        return [];
-    }
-
-    /**
      * Delete a rule
      *
      * @AclAncestor("pimee_catalog_rule_rule_delete_permissions")

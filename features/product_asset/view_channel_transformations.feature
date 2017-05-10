@@ -1,3 +1,4 @@
+@javascript
 Feature: View channel variations' configurations
   In order to check the transformations of the assets
   As a user
@@ -7,7 +8,6 @@ Feature: View channel variations' configurations
     Given the "apparel" catalog configuration
     And I am logged in as "Peter"
 
-  @javascript
   Scenario: View the channel variations' configurations
     Given the following YAML file to import:
     """

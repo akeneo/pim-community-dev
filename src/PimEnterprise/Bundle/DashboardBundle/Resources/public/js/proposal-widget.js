@@ -4,29 +4,23 @@ define(
     [
         'jquery',
         'underscore',
-        'routing',
-        'oro/navigation',
+        'pim/router',
         'pim/dashboard/abstract-widget',
         'text!pimee/templates/dashboard/proposal-widget',
         'text!pim/dashboard/template/view-all-btn'
     ],
-    function ($, _, Routing, Navigation, AbstractWidget, widgetTemplate, widgetTemplateHeader) {
+    function ($, _, router, AbstractWidget, widgetTemplate, widgetTemplateHeader) {
         return AbstractWidget.extend({
             tagName: 'table',
-
             id: 'proposal-widget',
-
             viewAllTitle: 'View all proposals',
-
             className: 'table table-condensed table-light groups unspaced',
+            template: _.template(widgetTemplate),
+            viewAllLinkTemplate: _.template(widgetTemplateHeader),
 
             options: {
                 contentLoaded: false
             },
-
-            template: _.template(widgetTemplate),
-
-            viewAllLinkTemplate: _.template(widgetTemplateHeader),
 
             events: {
                 'click .product-label': 'followLink',
@@ -45,11 +39,9 @@ define(
                     sessionStorage.setItem('redirectTab', $(event.currentTarget).data('redirecttab'));
                 }
 
-                Navigation.getInstance().setLocation(
-                    Routing.generate(
-                        'pim_enrich_product_edit',
-                        { id: $(event.currentTarget).data('id') }
-                    )
+                router.redirectToRoute(
+                    'pim_enrich_product_edit',
+                    { id: $(event.currentTarget).data('id') }
                 );
             },
 
@@ -60,7 +52,7 @@ define(
              */
             productReview: function (event) {
                 event.preventDefault();
-                Navigation.getInstance().setLocation($(event.currentTarget).data('product-review-url'));
+                router.redirect($(event.currentTarget).data('product-review-url'));
             },
 
             /**
@@ -121,7 +113,7 @@ define(
             _viewAll: function (event) {
                 event.preventDefault();
 
-                Navigation.getInstance().setLocation(Routing.generate('pimee_workflow_proposal_index'));
+                router.redirectToRoute('pimee_workflow_proposal_index');
             },
 
             /**

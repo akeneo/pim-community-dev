@@ -1,4 +1,5 @@
 pimee_catalog_rule:
+  overview: Säännöt
   attribute:
     list:
       code.label: Koodi
