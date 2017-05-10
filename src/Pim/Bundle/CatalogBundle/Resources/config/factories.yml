@@ -121,6 +121,7 @@ services:
         arguments:
             - '@pim_catalog.factory.product_value'
             - '@pim_catalog.repository.cached_attribute'
+            - '@logger'
 
     pim_catalog.factory.product_value:
         class: '%pim_catalog.factory.product_value.class%'

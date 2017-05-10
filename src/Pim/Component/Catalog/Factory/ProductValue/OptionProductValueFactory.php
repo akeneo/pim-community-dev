@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Factory\ProductValue;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Pim\Component\Catalog\Exception\InvalidOptionException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
@@ -96,7 +97,7 @@ class OptionProductValueFactory implements ProductValueFactoryInterface
      * @param AttributeInterface $attribute
      * @param string|null        $optionCode
      *
-     * @throws InvalidPropertyException
+     * @throws InvalidOptionException
      * @return AttributeOptionInterface|null
      */
     protected function getOption(AttributeInterface $attribute, $optionCode)
@@ -109,7 +110,7 @@ class OptionProductValueFactory implements ProductValueFactoryInterface
         $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
 
         if (null === $option) {
-            throw InvalidPropertyException::validEntityCodeExpected(
+            throw InvalidOptionException::validEntityCodeExpected(
                 $attribute->getCode(),
                 'code',
                 'The option does not exist',
