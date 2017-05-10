@@ -2,6 +2,8 @@ const webpack = require('webpack')
 const path = require('path')
 const yaml = require('yamljs')
 const fs = require('fs')
+const paths = require('./web/js/paths')
+const ContextReplacementPlugin = require("webpack/lib/ContextReplacementPlugin")
 
 // traverse with filewalker automatically later for any bundles
 const bundles = [
@@ -103,7 +105,8 @@ const importPaths = Object.assign(importedPaths.paths, {
     'twig-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/twig-dependencies.js'),
     'oro-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/oro-dependencies.js'),
     'widget-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/widget-dependencies.js'),
-    'form-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/form-dependencies.js')
+    'form-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/form-dependencies.js'),
+    'CodeMirror': path.resolve(__dirname, './node_modules/codemirror/lib/codemirror.js')
 })
 
 // console.log(importPaths['pim/family-edit-form/attributes/toolbar/add-select/attribute-group'])
@@ -199,5 +202,10 @@ module.exports = {
         new webpack.DefinePlugin({
             'require.specified': 'require.resolve',
         }),
+        new ContextReplacementPlugin(
+          /bundles/,
+          path.resolve(__dirname, './web'),
+          paths
+        )
     ]
 }

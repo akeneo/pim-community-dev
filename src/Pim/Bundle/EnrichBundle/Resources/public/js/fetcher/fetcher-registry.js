@@ -1,6 +1,6 @@
 'use strict';
 
-define(['module-config', 'jquery', 'underscore', 'fetchers', 'pim/base-fetcher'], function (module, $, _, fetcherConfig, BaseFetcher) {
+define(['module-config', 'jquery', 'underscore', 'fetchers', 'pim/base-fetcher', 'paths'], function (module, $, _, fetcherConfig, BaseFetcher, paths) {
     return {
         fetchers: {},
         initializePromise: null,
@@ -11,21 +11,28 @@ define(['module-config', 'jquery', 'underscore', 'fetchers', 'pim/base-fetcher']
         initialize: function () {
             if (null === this.initializePromise) {
                 var deferred = $.Deferred();
-                var fetchers = {};
+                // var fetchers = {};
 
-                _.each(fetcherConfig, function (config, name) {
-                    config = _.isString(config) ? { module: config } : config;
-                    config.options = config.options || {};
-                    fetchers[name] = config;
-                });
+                // console.log(fetcherConfig)
+                // _.each(fetcherConfig, function (config, name) {
+                //     config = _.isString(config) ? { module: config } : config;
+                //     config.options = config.options || {};
+                //     fetchers[name] = config;
+                // });
 
                 require.ensure([], function () {
-                    _.each(fetchers, function (fetcher) {
-                        var Module = fetcher.resolvedModule || BaseFetcher
-                        fetcher.loadedModule = new (Module)(fetcher.options);
-                    });
+                  for (var fetcher in paths) {
+                    console.log(fetcher)
+                      console.log(require('bundles/' + fetcher))
+                  }
+                    // _.each(fetcherConfig, function (fetcher) {
+                    //   console.log(paths[fetcher.module])
+                    //   console.log(require('./bundles' + paths[fetcher.module] + '.js'))
+                    //     var Module = fetcher.resolvedModule || BaseFetcher
+                    //     fetcher.loadedModule = new (Module)(fetcher.options);
+                    // });
 
-                    this.fetchers = fetchers;
+                    // this.fetchers = fetchers;
                     deferred.resolve();
                 }.bind(this));
 
