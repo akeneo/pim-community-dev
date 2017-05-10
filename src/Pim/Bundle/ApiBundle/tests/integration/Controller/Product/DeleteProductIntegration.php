@@ -24,6 +24,8 @@ class DeleteProductIntegration extends AbstractProductTestCase
 
         $this->assertCount(3, $this->get('pim_catalog.repository.product')->findAll());
 
+        $fooProduct = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
+        $this->get('pim_catalog.elasticsearch.product_indexer')->index($fooProduct);
         $client->request('DELETE', 'api/rest/v1/products/foo');
 
         $response = $client->getResponse();

@@ -5,6 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Elasticsearch;
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
+use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -16,7 +18,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductIndexer implements IndexerInterface, BulkIndexerInterface
+class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverInterface, BulkRemoverInterface
 {
     /** @var NormalizerInterface */
     protected $normalizer;
@@ -64,6 +66,22 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface
         }
 
         $this->indexer->bulkIndexes($this->indexType, $normalizedProducts, 'id');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove($productId, array $options = [])
+    {
+        $this->indexer->delete($this->indexType, $productId);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeAll(array $productIds, array $options = [])
+    {
+        $this->indexer->bulkDelete($this->indexType, $productIds);
     }
 
     /**

@@ -77,6 +77,32 @@ class ClientSpec extends ObjectBehavior
         $this->delete('an_index_type', 'identifier');
     }
 
+    public function it_bulk_deletes_documents($client)
+    {
+        $client->bulk(
+            [
+                'body' => [
+                    [
+                        'delete' => [
+                            '_index' => 'an_index_name',
+                            '_type' => 'an_index_type',
+                            '_id' => 40
+                        ],
+                    ],
+                    [
+                        'delete' => [
+                            '_index' => 'an_index_name',
+                            '_type' => 'an_index_type',
+                            '_id' => 33
+                        ],
+                    ],
+                ]
+            ]
+        )->shouldBeCalled();
+
+        $this->bulkDelete('an_index_type', [40, 33]);
+    }
+
     public function it_deletes_an_index($client, IndicesNamespace $indices)
     {
         $client->indices()->willReturn($indices);

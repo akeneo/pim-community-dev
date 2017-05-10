@@ -149,6 +149,29 @@ class Client
     }
 
     /**
+     * @param $indexType
+     * @param $documentIds
+     *
+     * @return array
+     */
+    public function bulkDelete($indexType, $documentIds)
+    {
+        $params = [];
+
+        foreach ($documentIds as $identifier) {
+            $params['body'][] = [
+                'delete' => [
+                    '_index' => $this->indexName,
+                    '_type'  => $indexType,
+                    '_id'    => $identifier
+                ]
+            ];
+        }
+
+        return $this->client->bulk($params);
+    }
+
+    /**
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_delete_an_index}
      */
     public function deleteIndex()

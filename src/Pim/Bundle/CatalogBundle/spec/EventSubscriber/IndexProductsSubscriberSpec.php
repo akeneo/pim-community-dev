@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
+use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Bundle\CatalogBundle\Elasticsearch\ProductIndexer;
 use Pim\Bundle\CatalogBundle\EventSubscriber\IndexProductsSubscriber;
@@ -22,12 +23,32 @@ class IndexProductsSubscriberSpec extends ObjectBehavior
         $this->shouldHaveType(IndexProductsSubscriber::class);
     }
 
-    function it_subscribe_to_the_save_events()
+    function it_subscribes_to_events()
     {
-        $events = $this->getSubscribedEvents();
-        $events->shouldHaveCount(2);
-        $events->shouldHaveKey(StorageEvents::POST_SAVE);
-        $events->shouldHaveKey(StorageEvents::POST_SAVE_ALL);
+        $this->getSubscribedEvents()->shouldReturn([
+            StorageEvents::POST_SAVE => 'indexProduct',
+            StorageEvents::POST_SAVE_ALL => 'bulkIndexProducts',
+            StorageEvents::POST_REMOVE => 'deleteProduct',
+        ]);
+    }
+
+    function it_does_not_delete_non_product_entity_from_elasticsearch($indexer, RemoveEvent $event, \stdClass $subject)
+    {
+        $event->getSubject()->willReturn($subject);
+
+        $indexer->remove(40)->shouldNotBeCalled();
+
+        $this->deleteProduct($event)->shouldReturn(null);
+    }
+
+    function it_delete_products_from_elasticsearch_index($indexer, RemoveEvent $event, ProductInterface $product)
+    {
+        $event->getSubjectId()->willReturn(40);
+        $event->getSubject()->willReturn($product);
+
+        $indexer->remove(40)->shouldBeCalled();
+
+        $this->deleteProduct($event)->shouldReturn(null);
     }
 
     function it_does_not_index_a_non_product_entity($indexer, GenericEvent $event, \stdClass $subject)
