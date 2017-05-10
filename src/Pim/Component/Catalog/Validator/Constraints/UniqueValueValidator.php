@@ -58,7 +58,13 @@ class UniqueValueValidator extends ConstraintValidator
         }
 
         if ($productValue instanceof ProductValueInterface && $productValue->getAttribute()->isUnique()) {
-            $valueAlreadyExists = $this->alreadyExists($productValue, $this->context->getRoot());
+            $root = $this->context->getRoot();
+            // during the validation of variant groups, $root is not a product but a product value
+            // we don't have to check if the value already exists in this case
+            $valueAlreadyExists = $root instanceof ProductInterface ? $this->alreadyExists(
+                $productValue,
+                $root
+            ) : false;
             $valueAlreadyProcessed = $this->hasAlreadyValidatedTheSameValue($productValue);
 
             if ($valueAlreadyExists || $valueAlreadyProcessed) {
