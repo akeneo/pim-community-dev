@@ -18,7 +18,6 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 class PropertiesNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
 {
     const FIELD_COMPLETENESS = 'completeness';
-    const FIELD_IS_ASSOCIATED = 'is_associated';
     const FIELD_IN_GROUP = 'in_group';
     const FIELD_ID = 'id';
 
@@ -58,8 +57,6 @@ class PropertiesNormalizer extends SerializerAwareNormalizer implements Normaliz
         foreach ($product->getGroupCodes() as $groupCode) {
             $data[self::FIELD_IN_GROUP][$groupCode] = true;
         }
-
-        $data[self::FIELD_IS_ASSOCIATED] = !$product->getAssociations()->isEmpty();
 
         $data[self::FIELD_COMPLETENESS] = !$product->getCompletenesses()->isEmpty()
             ? $this->serializer->normalize($product->getCompletenesses(), 'indexing', $context) : [];

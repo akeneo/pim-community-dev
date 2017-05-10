@@ -25,6 +25,7 @@
         <!-- Legacy PIM phpunit unit tests -->
         <testsuite name="PIM_Unit_Test">
             <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Unit</directory>
+            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/tests/Unit</directory>
         </testsuite>
 
         <!-- Complete suite for PIM integration tests -->

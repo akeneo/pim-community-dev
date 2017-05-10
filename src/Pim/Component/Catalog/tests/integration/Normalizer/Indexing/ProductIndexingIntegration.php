@@ -40,7 +40,6 @@ class ProductIndexingIntegration extends TestCase
             'categories'    => [],
             'groups'        => [],
             'variant_group' => null,
-            'is_associated' => false,
             'completeness'  => [],
             'values'        => [],
         ];
@@ -66,7 +65,6 @@ class ProductIndexingIntegration extends TestCase
             'categories'    => [],
             'groups'        => [],
             'variant_group' => null,
-            'is_associated' => false,
             'completeness'  => [],
             'values'        => [],
         ];
@@ -104,7 +102,6 @@ class ProductIndexingIntegration extends TestCase
                 'groupB'   => true,
                 'variantA' => true,
             ],
-            'is_associated' => true,
             'completeness'  => [
                 'ecommerce' => ['en_US' => 100],
                 'tablet'    => ['de_DE' => 89, 'en_US' => 100, 'fr_FR' => 100],

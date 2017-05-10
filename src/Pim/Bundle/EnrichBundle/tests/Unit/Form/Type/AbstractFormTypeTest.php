@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Tests\Unit\Form\Type;
+namespace Pim\Bundle\EnrichBundle\tests\Unit\Form\Type;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver;

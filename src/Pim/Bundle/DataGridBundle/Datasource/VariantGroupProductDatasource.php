@@ -3,7 +3,6 @@
 namespace Pim\Bundle\DataGridBundle\Datasource;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -23,19 +22,17 @@ class VariantGroupProductDatasource extends ProductDatasource
 
     /**
      * @param ObjectManager                       $om
-     * @param HydratorInterface                   $hydrator
      * @param ProductQueryBuilderFactoryInterface $factory
      * @param NormalizerInterface                 $normalizer
      * @param GroupRepositoryInterface            $groupRepository
      */
     public function __construct(
         ObjectManager $om,
-        HydratorInterface $hydrator,
         ProductQueryBuilderFactoryInterface $factory,
         NormalizerInterface $normalizer,
         GroupRepositoryInterface $groupRepository
     ) {
-        parent::__construct($om, $hydrator, $factory, $normalizer);
+        parent::__construct($om, $factory, $normalizer);
 
         $this->groupRepository = $groupRepository;
     }

@@ -37,8 +37,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $serializer,
         ProductInterface $product,
         ProductValueCollectionInterface $productValueCollection,
-        Collection $completenesses,
-        Collection $associations
+        Collection $completenesses
     ) {
         $product->getId()->willReturn(67);
         $family = null;
@@ -65,9 +64,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn([]);
         $productValueCollection->isEmpty()->willReturn(true);
 
-        $product->getAssociations()->willReturn($associations);
-        $associations->isEmpty()->willReturn(true);
-
         $product->getCompletenesses()->willReturn($completenesses);
         $completenesses->isEmpty()->willReturn(true);
 
@@ -82,7 +78,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'categories'    => [],
                 'groups'        => [],
                 'variant_group' => null,
-                'is_associated' => false,
                 'completeness'  => [],
                 'values'        => [],
             ]
@@ -93,8 +88,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $serializer,
         ProductInterface $product,
         ProductValueCollectionInterface $productValueCollection,
-        Collection $completenesses,
-        Collection $associations
+        Collection $completenesses
     ) {
         $product->getId()->willReturn(67);
         $family = null;
@@ -125,9 +119,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn([]);
         $productValueCollection->isEmpty()->willReturn(true);
 
-        $product->getAssociations()->willReturn($associations);
-        $associations->isEmpty()->willReturn(true);
-
         $product->getCompletenesses()->willReturn($completenesses);
         $completenesses->isEmpty()->willReturn(false);
 
@@ -144,7 +135,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'categories'    => [],
                 'groups'        => [],
                 'variant_group' => null,
-                'is_associated' => false,
                 'completeness'  => ['the completenesses'],
                 'values'        => [],
             ]
@@ -157,8 +147,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         ProductValueCollectionInterface $productValueCollection,
         FamilyInterface $family,
         Collection $completenessCollection,
-        Group $variantGroup,
-        Collection $associations
+        Group $variantGroup
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
@@ -198,9 +187,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'second_category',
             ]
         );
-
-        $product->getAssociations()->willReturn($associations);
-        $associations->isEmpty()->willReturn(false);
 
         $completenessCollection->isEmpty()->willReturn(false);
         $product->getCompletenesses()->willReturn($completenessCollection);
@@ -252,7 +238,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                     'second_group'    => true,
                     'a_variant_group' => true,
                 ],
-                'is_associated' => true,
                 'completeness'  => [
                     'ecommerce' => [
                         'en_US' => [

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Normalizer;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
@@ -25,10 +24,6 @@ class ProductAssociationNormalizer extends SerializerAwareNormalizer implements 
             throw new \LogicException('Serializer must be a normalizer');
         }
 
-        if (!isset($context['current_product']) || !$context['current_product'] instanceof ProductInterface) {
-            throw InvalidObjectException::objectExpected($context['current_product'], ProductInterface::class);
-        }
-
         $data = [];
         $locale = current($context['locales']);
 
@@ -38,9 +33,8 @@ class ProductAssociationNormalizer extends SerializerAwareNormalizer implements 
         $data['created'] = $this->serializer->normalize($product->getCreated(), $format, $context);
         $data['updated'] = $this->serializer->normalize($product->getUpdated(), $format, $context);
 
-        $isAssociated = $this->isAssociated($context['current_product'], $product, $context['association_type_id']);
-        $data['is_checked'] = $isAssociated;
-        $data['is_associated'] = $isAssociated;
+        $data['is_checked'] = $context['is_associated'];
+        $data['is_associated'] = $context['is_associated'];
         $data['label'] = $product->getLabel($locale);
         $data['completeness'] = $this->getCompleteness($product, $context);
 
@@ -106,27 +100,5 @@ class ProductAssociationNormalizer extends SerializerAwareNormalizer implements 
     protected function getLabel($code, $value = null)
     {
         return '' === $value || null === $value ? sprintf('[%s]', $code) : $value;
-    }
-
-    /**
-     * @param ProductInterface $currentProduct
-     * @param ProductInterface $product
-     * @param int              $associationTypeId
-     *
-     * @return bool
-     */
-    protected function isAssociated(ProductInterface $currentProduct, ProductInterface $product, $associationTypeId)
-    {
-        foreach ($currentProduct->getAssociations() as $association) {
-            if ($association->getAssociationType()->getId() == $associationTypeId) {
-                foreach ($association->getProducts() as $associatedProduct) {
-                    if ($associatedProduct->getId() === $product->getId()) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
     }
 }

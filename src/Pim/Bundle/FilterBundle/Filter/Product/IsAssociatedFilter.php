@@ -122,10 +122,10 @@ class IsAssociatedFilter extends BooleanFilter
 
         if ($association) {
             foreach ($association->getProducts() as $product) {
-                $productIds[] = $product->getId();
+                $productIds[] = (string) $product->getId();
             }
         }
 
-        return $productIds ?: [0];
+        return $productIds ?: ['0'];
     }
 }

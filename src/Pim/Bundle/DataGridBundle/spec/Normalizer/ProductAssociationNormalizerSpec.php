@@ -2,17 +2,13 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\Completeness;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyTranslationInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\GroupTranslationInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductAssociationNormalizerSpec extends ObjectBehavior
@@ -47,16 +43,17 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         FamilyInterface $family,
         FamilyTranslationInterface $familyEN,
-        ProductValueCollectionInterface $productValues,
         Completeness $completeness,
         LocaleInterface $localeEN,
         ChannelInterface $channelEcommerce,
         ProductInterface $currentProduct
     ) {
         $context = [
-            'locales' => ['en_US'], 'channels' => ['ecommerce'],
-            'current_product' => $currentProduct,
-            'association_type_id' => 1
+            'locales'             => ['en_US'],
+            'channels'            => ['ecommerce'],
+            'current_product'     => $currentProduct,
+            'association_type_id' => 1,
+            'is_associated'       => false,
         ];
 
         $currentProduct->getAssociations()->willReturn([]);
@@ -103,16 +100,17 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         FamilyInterface $family,
         FamilyTranslationInterface $familyEN,
-        ProductValueCollectionInterface $productValues,
         Completeness $completeness,
         LocaleInterface $localeEN,
         ChannelInterface $channelEcommerce,
         ProductInterface $currentProduct
     ) {
         $context = [
-            'locales' => ['en_US'], 'channels' => ['ecommerce'],
-            'current_product' => $currentProduct,
-            'association_type_id' => 1
+            'locales'             => ['en_US'],
+            'channels'            => ['ecommerce'],
+            'current_product'     => $currentProduct,
+            'association_type_id' => 1,
+            'is_associated'       => false,
         ];
 
         $currentProduct->getAssociations()->willReturn([]);

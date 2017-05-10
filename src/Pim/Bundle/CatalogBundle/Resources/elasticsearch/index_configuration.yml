@@ -15,8 +15,6 @@ mappings:
                 type: 'keyword'
             variant_group:
                 type: 'keyword'
-            is_associated:
-                type: 'boolean'
             created:
                 type: 'date'
             updated:
