@@ -19,3 +19,6 @@ pim_api.acl_group.channel:
 pim_api.acl_group.locale:
     order: 20
     permission_group: api
+pim_api.acl_group.attribute_group:
+    order: 20
+    permission_group: api

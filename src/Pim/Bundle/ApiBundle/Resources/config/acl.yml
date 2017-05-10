@@ -22,6 +22,11 @@ pim_api_attribute_option_edit:
     label: pim_api.acl.attribute_option.edit
     group_name: pim_api.acl_group.attribute_option
 
+pim_api_attribute_group_list:
+    type: action
+    label: pim_api.acl.attribute_group.list
+    group_name: pim_api.acl_group.attribute_group
+
 pim_api_category_list:
     type: action
     label: pim_api.acl.category.list
