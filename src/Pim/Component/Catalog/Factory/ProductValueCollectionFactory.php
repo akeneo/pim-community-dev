@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Factory;
 
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
+use Pim\Component\Catalog\Exception\InvalidAttributeException;
 use Pim\Component\Catalog\Exception\InvalidOptionException;
 use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
@@ -77,6 +78,14 @@ class ProductValueCollectionFactory
                                 sprintf(
                                     'Tried to load a product value with the option "%s" that does not exist.',
                                     $e->getPropertyValue()
+                                )
+                            );
+                        } catch (InvalidAttributeException $e) {
+                            $this->logger->warning(
+                                sprintf(
+                                    'Tried to load a product value with an invalid attribute "%s". %s',
+                                    $attributeCode,
+                                    $e->getMessage()
                                 )
                             );
                         }

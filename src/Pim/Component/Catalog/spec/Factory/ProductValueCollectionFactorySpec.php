@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Catalog\Factory;
 
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Exception\InvalidAttributeException;
 use Pim\Component\Catalog\Exception\InvalidOptionException;
 use Pim\Component\Catalog\Factory\ProductValueCollectionFactory;
 use Pim\Component\Catalog\Factory\ProductValueFactory;
@@ -141,6 +142,35 @@ class ProductValueCollectionFactorySpec extends ObjectBehavior
         );
         
         $logger->warning('Tried to load a product value with the option "color.red" that does not exist.');
+
+        $actualValues = $this->createFromStorageFormat([
+            'color' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'red'
+                ],
+            ],
+        ]);
+
+        $actualValues->shouldReturnAnInstanceOf(ProductValueCollection::class);
+        $actualValues->shouldHaveCount(0);
+    }
+
+    function it_skips_invalid_attributes_when_creating_a_values_collection_from_the_storage_format(
+        $valueFactory,
+        $attributeRepository,
+        $logger,
+        AttributeInterface $color
+    ) {
+        $color->getCode()->willReturn('color');
+        $color->isUnique()->willReturn(false);
+        $color->isLocalizable()->willReturn(true);
+
+        $attributeRepository->findOneByIdentifier('color')->willReturn($color);
+        $valueFactory->create($color, null, null, 'red')->willThrow(
+            new InvalidAttributeException('attribute', 'color', static::class)
+        );
+
+        $logger->warning(Argument::containingString('Tried to load a product value with an invalid attribute "color".'));
 
         $actualValues = $this->createFromStorageFormat([
             'color' => [
