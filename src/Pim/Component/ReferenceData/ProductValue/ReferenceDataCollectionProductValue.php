@@ -60,6 +60,10 @@ class ReferenceDataCollectionProductValue extends AbstractProductValue implement
      */
     public function __toString()
     {
-        return implode(', ', $this->getReferenceDataCodes());
+        $codes = array_map(function ($option) {
+            return (string) $option;
+        }, $this->data);
+
+        return implode(', ', $codes);
     }
 }
