@@ -32,9 +32,9 @@ extensions:
 
     pim-product-edit-form-publish:
         module: pimee/product-edit-form/publish
-        parent: pim-product-edit-form
-        targetZone: buttons
-        position: 90
+        parent: pim-product-edit-form-secondary-actions
+        targetZone: secondary-actions
+        position: 30
 
     pim-product-edit-form-meta-published:
         module: pimee/product-edit-form/meta/published

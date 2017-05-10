@@ -11,6 +11,7 @@ extensions:
         module: pim/form/common/column
         parent: pimee-published-product-view-form
         position: 5
+        targetZone: column
         config:
           stateCode: product_edit_form
 
@@ -40,10 +41,16 @@ extensions:
         targetZone: title
         position: 100
 
-    pimee-published-product-view-original-product:
-        module: pimee/product-edit-form/original-product
+    pimee-published-product-view-secondary-actions:
+        module: pim/form/common/secondary-actions
         parent: pimee-published-product-view-form
         targetZone: buttons
+        position: 50
+
+    pimee-published-product-view-original-product:
+        module: pimee/product-edit-form/original-product
+        parent: pimee-published-product-view-secondary-actions
+        targetZone: secondary-actions
         position: 90
 
     pimee-published-product-view-unpublish:
@@ -107,7 +114,7 @@ extensions:
         position: 110
 
     pimee-published-product-view-completeness:
-        module: pim/product-edit-form/panel/completeness
+        module: pim/product-edit-form/completeness
         parent: pimee-published-product-view-column-tabs
         targetZone: container
         position: 100
