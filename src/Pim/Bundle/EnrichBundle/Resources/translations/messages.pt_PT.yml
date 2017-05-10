@@ -299,17 +299,13 @@ channel:
   edit: editar canal
 currency:
   title: moeda
-  overview: visão geral de moeda
   create: criar moeda
   edit: editar moeda
 family:
   title: família
-  overview: visão geral de família
-  create: criar família
   edit: editar família
 locale:
   title: linguagem
-  overview: visão geral de linguagem
   create: criar linguagem
   edit: editar linguagem
 product:
@@ -319,22 +315,15 @@ product:
   edit: editar produto
 group:
   title: grupo
-  overview: visão geral do grupo
-  create: criar grupo
   edit: editar grupo
 group type:
   title: tipo de grupo
-  overview: visão geral do tipo de grupo
-  create: criar o tipo de grupo
   edit: editar o tipo de grupo
 variant group:
   title: grupo variante
-  overview: visão geral do grupo variante
-  create: criar grupo variante
   edit: editar grupo variante
 association type:
   title: tipo de associação
-  overview: visão geral do tipo de associação
   create: criar o tipo de associação
   edit: editar o tipo de associação
 products: produtos

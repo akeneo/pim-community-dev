@@ -17,7 +17,7 @@ class Creation extends Form
     /**
      * @var string
      */
-    protected $path = '/configuration/attribute/create';
+    protected $path = '#/configuration/attribute/create';
 
     /**
      * {@inheritdoc}
@@ -64,6 +64,11 @@ class Creation extends Form
 
         $this->fillLastOption($name, $labels);
         $this->saveLastOption();
+
+        return $this->getElement('attribute_option_table')->find(
+            'css',
+            sprintf('.option-code:contains("%s")', $name)
+        );
     }
 
     public function createOption()
@@ -87,7 +92,9 @@ class Creation extends Form
     {
         $row = $this->getLastOption();
 
-        $row->find('css', '.attribute_option_code')->setValue($name);
+        $this->spin(function () use ($row) {
+            return $row->find('css', '.attribute_option_code');
+        }, 'Unable to find the attribute option code field')->setValue($name);
 
         foreach ($labels as $locale => $label) {
             $this->spin(function () use ($row, $label, $locale) {
@@ -119,7 +126,9 @@ class Creation extends Form
      */
     public function editOptionAndCancel($name, $newValue)
     {
-        $row = $this->getOptionElement($name);
+        $row = $this->spin(function () use ($name) {
+            return $this->getOptionElement($name);
+        }, 'Cannot find option row');
 
         $row->find('css', '.edit-row')->click();
         $row->find('css', '.attribute-option-value:first-child')->setValue($newValue);
@@ -169,7 +178,9 @@ class Creation extends Form
      */
     public function removeOption($optionName)
     {
-        $optionRow = $this->getOptionElement($optionName);
+        $optionRow = $this->spin(function () use ($optionName) {
+            return $this->getOptionElement($optionName);
+        }, 'Cannot find option row');
         $deleteBtn = $optionRow->find('css', '.delete-row');
 
         if ($deleteBtn === null) {

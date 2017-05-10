@@ -25,7 +25,7 @@ Feature: Validate values for unique attributes when importing products
       | filePath | %file to import% |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "The value 2014-01-01 is already set on another product for the unique attribute date"
     And there should be 1 product
 
@@ -40,7 +40,7 @@ Feature: Validate values for unique attributes when importing products
       | filePath | %file to import% |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "The value 123 is already set on another product for the unique attribute number"
     And there should be 1 product
 
@@ -55,7 +55,7 @@ Feature: Validate values for unique attributes when importing products
       | filePath | %file to import% |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "product_import" job to finish
+    And I wait for the "csv_footwear_product_import" job to finish
     Then I should see "The value foo is already set on another product for the unique attribute text"
     And there should be 1 product
 

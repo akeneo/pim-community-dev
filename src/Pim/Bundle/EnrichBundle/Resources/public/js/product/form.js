@@ -114,9 +114,7 @@ define(
              * @return {Object}
              */
             getRoot: function () {
-                /* jscs:disable safeContextKeyword */
                 var rootView = this;
-                /* jscs:enable safeContextKeyword */
                 var parent = this.getParent();
                 while (parent) {
                     rootView = parent;
@@ -184,6 +182,11 @@ define(
              * @return {Object}
              */
             renderExtensions: function () {
+                // If the view is no longer attached to the DOM, don't render the extensions
+                if (undefined === this.el) {
+                    return this;
+                }
+
                 this.initializeDropZones();
 
                 _.each(this.extensions, function (extension) {

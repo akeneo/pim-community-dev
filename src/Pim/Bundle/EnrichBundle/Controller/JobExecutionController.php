@@ -110,24 +110,6 @@ class JobExecutionController
     }
 
     /**
-     * Show a job execution report
-     *
-     * @param Request $request
-     * @param int     $id
-     *
-     * @return \Symfony\Component\HttpFoundation\Response|JsonResponse
-     */
-    public function showAction($id)
-    {
-        return $this->templating->renderResponse(
-            'PimEnrichBundle:JobExecution:show.html.twig',
-            [
-                'id' => $id
-            ]
-        );
-    }
-
-    /**
      * Download the log file of the job execution
      *
      * @param int $id

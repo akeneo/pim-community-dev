@@ -111,5 +111,6 @@ Feature: Edit a product
     And I revoke rights to group Families
     And I revoke rights to group Locales
     And I save the role
+    Then I should not see the text "There are unsaved changes."
     And I edit the "sandal" product
     Then I should see the text "Sandal"

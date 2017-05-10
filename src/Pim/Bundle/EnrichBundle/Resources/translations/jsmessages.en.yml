@@ -336,7 +336,7 @@ pim_enrich:
     error:
         upload: An error occured during the upload of the file
     alert:
-        not_allowed: You are not allowed to access this page
+        not_allowed: Forbidden. You are not allowed to access this page
         error_occured: An error occured during the loading of the page
     form:
         required: (required)
@@ -743,9 +743,91 @@ pim_enrich:
     mass_edit_action:
         edit_common_attributes:
             description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.
+    index:
+        association_type:
+            title:      Association type overview
+            create_btn: Create association type
+        import_profiles:
+            title:      Import profile overview
+            create_btn: Create import profile
+        import_history:
+            title:      Import reports
+        variant_group:
+            title:      Variant group overview
+            create_btn: Create variant group
+        group:
+            title:      Group overview
+            create_btn: Create group
+        export_profiles:
+            title:      Export profile overview
+            create_btn: Create export profile
+        export_history:
+            title:      Export reports
+        family:
+            title:      Family overview
+            create_btn: Create family
+        grouptype:
+            title:      Group type overview
+            create_btn: Create group type
+        currency:
+            title:      Currency overview
+        locale:
+            title:      Locale overview
+        user:
+            title:      User
+            create_btn: Create user
+        user_role:
+            title:      Role
+            create_btn: Create role
+        user_group:
+            title:      Groups
+            create_btn: Create group
+        process_tracker:
+            title:      Process tracker
+        channel:
+            title:      Channel overview
+            create_btn: Create channel
 
 pim_enrich.error:
     exception.title: Oh snap! A {{ status_code }} error occured...
+    http:
+        403: Forbidden. You are not allowed to access this page
+
+# Page titles
+page_title:
+    oro_default:                           Dashboard
+    pim_enrich_attributegroup_index:       Attribute groups
+    pim_enrich_attributegroup_create:      Attribute groups | Create
+    pim_enrich_attributegroup_edit:        Attribute groups {{ group.label }} | Edit
+    pim_enrich_categorytree_index:         Category trees
+    pim_enrich_categorytree_create:        Category trees | Create
+    pim_enrich_categorytree_edit:          Category trees {{ category.label }} | Edit
+    pim_enrich_categorytree_create_tree:   Category trees | Create
+    pim_enrich_attribute_index:            Attributes
+    pim_enrich_attribute_create:           Attributes | Create
+    pim_enrich_attribute_edit:             Attributes {{ attribute.label }} | Edit
+    pim_enrich_product_index:              Products
+    pim_enrich_product_edit:               Products {{ product.sku }} | Edit
+    pim_enrich_family_index:               Families
+    pim_enrich_family_edit:                Families {{ family.label }} | Edit
+    pim_enrich_channel_index:              Channels
+    pim_enrich_channel_create:             Channels | Create
+    pim_enrich_channel_edit:               Channels {{ channel.label }} | Edit
+    pim_enrich_currency_index:             Currencies
+    pim_enrich_locale_index:               Locales
+    pim_enrich_group_index:                Groups
+    pim_enrich_group_edit:                 Groups {{ group.label }} | Edit
+    pim_enrich_variant_group_index:        Variant groups
+    pim_enrich_variant_group_edit:         Variant groups {{ group.label }} | Edit
+    pim_enrich_associationtype_index:      Association types
+    pim_enrich_associationtype_edit:       Association types {{ association type.label }} | Edit
+    pim_enrich_grouptype_index:            Group types
+    pim_enrich_grouptype_edit:             Group types {{ group type.label }} | Edit
+    pim_enrich_mass_edit_action_choose:    Mass Edit | Choose
+    pim_enrich_mass_edit_action_configure: Mass Edit | Configure
+    pim_enrich_mass_edit_action_perform:   Mass Edit | Perform
+    pim_enrich_job_tracker_index:          Process tracker
+    pim_enrich_job_tracker_show:           Process tracker | Show job
 
 # Batch job labels
 batch_jobs:
@@ -788,7 +870,7 @@ batch_jobs:
         perform:
             label: Add to variant group
 
-Pim_mass_edit:
+job_tracker:
     download_archive:
         archive: Download generated archive
         output:  Download generated files

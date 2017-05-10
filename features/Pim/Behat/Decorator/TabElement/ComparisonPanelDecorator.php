@@ -31,7 +31,9 @@ class ComparisonPanelDecorator extends ElementDecorator
 
         $dropdown->click();
 
-        $selector = $dropdown->getParent()->find('css', sprintf('a:contains("%s")', ucfirst($mode)));
+        $selector = $this->spin(function () use ($mode, $dropdown) {
+            return $dropdown->getParent()->find('css', sprintf('a.select-%s', str_replace(' ', '-', $mode)));
+        }, sprintf('Unable to find the mode %s', $mode));
         $selector->click();
     }
 
@@ -41,8 +43,14 @@ class ComparisonPanelDecorator extends ElementDecorator
     public function copySelectedElements()
     {
         $this->spin(function () {
-            return $this->find('css', $this->selectors['Copy selected button']);
-        }, 'Cannot find the "copy" button')->click();
+            return 0 !== $this->selectedItemsCount();
+        }, 'No selection before copy');
+
+        $this->find('css', $this->selectors['Copy selected button'])->click();
+
+        $this->spin(function () {
+            return 0 === $this->selectedItemsCount();
+        }, 'Still a selection after copy');
     }
 
     /**
@@ -63,5 +71,23 @@ class ComparisonPanelDecorator extends ElementDecorator
             return $dropdown->find('css', sprintf('.AknDropdown-menuLink[data-source="%s"]', $source));
         }, sprintf('Could not find source "%s" in switcher', $source));
         $option->click();
+    }
+
+    /**
+     * Get le count of selected items in the panel
+     *
+     * @return integer
+     */
+    protected function selectedItemsCount()
+    {
+        $checkboxes = $this->getBody()->findAll('css', '.copy-field-selector');
+        $checkedCount = 0;
+        foreach ($checkboxes as $checkbox) {
+            if ($checkbox->isChecked()) {
+                $checkedCount++;
+            }
+        }
+
+        return $checkedCount;
     }
 }

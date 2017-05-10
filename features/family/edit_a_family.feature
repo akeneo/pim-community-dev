@@ -18,7 +18,6 @@ Feature: Edit a family
     Then I should see "Family successfully updated"
     And I should see "My family"
 
-  @javascript
   Scenario: Successfully edit a family
     And the following attributes:
       | label-en_US | type             | useable_as_grid_filter | group | code   |
@@ -45,14 +44,13 @@ Feature: Edit a family
     Then I should not see the text "There are unsaved changes."
     Then I should see "NewBoots"
 
+  @skip-nav
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "Boots" family page
     And I fill in the following information:
       | English (United States) | NewBoots |
     When I click on the Akeneo logo
-    Then I should see a confirm dialog with the following content:
-      | title   | Are you sure you want to leave this page?                  |
-      | content | You will lose changes to the family if you leave the page. |
+    Then I should see "You will lose changes to the family if you leave the page." in popup
 
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "Boots" family page

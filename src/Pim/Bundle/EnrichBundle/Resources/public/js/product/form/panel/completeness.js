@@ -21,6 +21,7 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane completeness-panel',
+            initialFamily: null,
             events: {
                 'click header': 'switchLocale',
                 'click .missing-attributes a': 'showAttribute'

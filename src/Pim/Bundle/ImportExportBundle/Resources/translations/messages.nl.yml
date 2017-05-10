@@ -37,18 +37,10 @@ pim_title.import_execution.index: Importverwerkingen geschiedenis
 pim_title.import_execution.show: Importverwerkingen | Details
 export profile:
   title: Profiel exporteren
-  overview: exportprofiel overzicht
-  create: exportprofiel toevoegen
   edit: exportprofiel bewerken
-export report:
-  overview: Exporteer rapporten
 import profile:
   title: Profiel importeren
-  overview: importprofiel overzicht
-  create: importprofiel toevoegen
   edit: importprofiel bewerken
-import report:
-  overview: Importeer rapporten
 pim_importexport:
   acl:
     export_profile:

@@ -1,9 +1,9 @@
+@javascript
 Feature: Export families
   In order to be able to access and modify families outside PIM
   As a product manager
   I need to be able to export families in CSV
 
-  @javascript
   Scenario: Successfully export catalog families
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_family_export" configuration:
@@ -24,7 +24,6 @@ Feature: Export families
       led_tvs;"LED TVs";color,description,manufacturer,name,price,rating,side_view,size,sku;name;color,name,price,size,sku;color,description,name,price,rating,side_view,size,sku
       """
 
-  @javascript
   Scenario: Successfully export families CSV
     Given a "footwear" catalog configuration
     And the following family:
@@ -49,7 +48,7 @@ Feature: Export families
       tractors;;sku;sku;sku;sku
       """
 
-  @ce @javascript @jira https://akeneo.atlassian.net/browse/SDS-511
+  @ce @jira https://akeneo.atlassian.net/browse/SDS-511
   Scenario: Successfully export families after activating new locales
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_family_export" configuration:

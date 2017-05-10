@@ -8,6 +8,10 @@ pim_user:
       business_unit.title: Poslovne jedinice
       email_synchronization.title: Postavke sinkronizacije e-pošte
       interfaces.title: Sučelja
+  group:
+    tab:
+      general.title: Općenito
+      users.title: Korisnici
 oro.user.controller:
   group.message.saved: "Grupa je spremljena"
   role.message.saved: "Rola je spremljena"

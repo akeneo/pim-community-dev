@@ -81,6 +81,7 @@ datagrid:
                 label: Toggle status
                 icon:  retweet
                 link:  toggle_status_link
+                acl_resource: pim_enrich_product_change_state
         mass_actions_groups:
             bulk_actions:
                 label: pim_datagrid.mass_action_group.bulk_actions.label
@@ -93,6 +94,8 @@ datagrid:
                 label: pim.grid.mass_action.mass_edit
                 handler: product_mass_edit
                 route: pim_enrich_mass_edit_product_action_choose
+                route_parameters:
+                    operationGroup: mass-edit
                 launcherOptions:
                     group: bulk_actions
             sequential_edit:

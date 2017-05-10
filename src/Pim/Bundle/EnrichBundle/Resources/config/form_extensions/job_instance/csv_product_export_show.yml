@@ -220,7 +220,7 @@ extensions:
             types: [pim_catalog_identifier]
 
     pim-job-instance-csv-product-export-show-content-data-help:
-        module: pim/job/product/edit/content/data/help
+        module: pim/job/common/edit/content/data/help
         parent: pim-job-instance-csv-product-export-show-content-data
 
     pim-job-instance-csv-product-export-show-edit:

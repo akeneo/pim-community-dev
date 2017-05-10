@@ -16,3 +16,5 @@ pim_dashboard:
       load_more: 'Lataa lisää...'
     header:
       view_all: Näytä kaikki
+page_title:
+  pim_dashboard_index: Ohjauspaneeli

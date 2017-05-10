@@ -10,8 +10,8 @@
         {% for locale in locales %}
             <li>
                 {% set routeParams = routeParams|default({})|merge({ (localeParamName): locale.code }) %}
-                <a  class="AknDropdown-menuLink {% if currentLocaleCode == locale.code %}AknDropdown-menuLink--active{% endif %}"
-                    href="{{ path(routeName, routeParams) }}"
+                <a class="AknDropdown-menuLink {% if currentLocaleCode == locale.code %}AknDropdown-menuLink--active{% endif %}"
+                    href="#{{ path(routeName, routeParams) }}"
                     title="{{ locale_label(locale.code) }}">
                         {{ locale.code|flag }}
                 </a>

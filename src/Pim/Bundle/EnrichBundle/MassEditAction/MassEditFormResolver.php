@@ -54,7 +54,6 @@ class MassEditFormResolver
     {
         $choices = [];
         $availableOperations = $this->operationRegistry->getAllByGridNameAndGroup($gridName, $operationGroup);
-
         foreach (array_keys($availableOperations) as $alias) {
             $choices[$alias] = sprintf('pim_enrich.mass_edit_action.%s.label', $alias);
         }

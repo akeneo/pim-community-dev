@@ -299,17 +299,13 @@ channel:
   edit: uredi kanal
 currency:
   title: valuta
-  overview: pregled valuta
   create: kreiraj valutu
   edit: uredi valutu
 family:
   title: obitelj
-  overview: pregled obitelji
-  create: kreiraj obitelj
   edit: uredi obitelji
 locale:
   title: lokalizacija
-  overview: pregled lokalizacije
   create: kreiraj lokalizaciju
   edit: uredi lokalizaciju
 product:
@@ -319,22 +315,15 @@ product:
   edit: uredi proizvod
 group:
   title: grupa
-  overview: pregled grupe
-  create: kreiraj grupu
   edit: uredi grupu
 group type:
   title: tip grupe
-  overview: pregled tipa grupe
-  create: kreiraj tip grupe
   edit: uredi tip grupe
 variant group:
   title: varijanta grupe
-  overview: pregled varijante grupe
-  create: kreiraj varijantu grupe
   edit: uredi varijantu grupe
 association type:
   title: tip pridruživanja
-  overview: pregled tipa pridruživanja
   create: kreiraj tip pridruživanja
   edit: uredi tip pridruživanja
 products: proizvodi

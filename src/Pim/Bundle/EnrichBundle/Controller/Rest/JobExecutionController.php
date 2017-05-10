@@ -55,12 +55,14 @@ class JobExecutionController
 
     /**
      * Get jobs
-     * @param $id
+     *
+     * @param $identifier
+     *
      * @return JsonResponse
      */
-    public function getAction($id)
+    public function getAction($identifier)
     {
-        $jobExecution = $this->jobExecutionRepo->find($id);
+        $jobExecution = $this->jobExecutionRepo->find($identifier);
         if (null === $jobExecution) {
             throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
         }
@@ -68,11 +70,11 @@ class JobExecutionController
         $archives = [];
         foreach ($this->archivist->getArchives($jobExecution) as $archiveName => $files) {
             $label = $this->translator->transChoice(
-                sprintf('pim_mass_edit.download_archive.%s', $archiveName),
+                sprintf('job_tracker.download_archive.%s', $archiveName),
                 count($files)
             );
             $archives[$archiveName] = [
-                'label' => ucfirst($label),
+                'label' => $label,
                 'files' => $files,
             ];
         }
@@ -87,8 +89,9 @@ class JobExecutionController
         $jobResponse['meta'] = [
             'logExists'           => file_exists($jobExecution->getLogFile()),
             'archives'      => $archives,
-            'id'            => $id
+            'id'            => $identifier
         ];
+
         return new JsonResponse($jobResponse);
     }
 }

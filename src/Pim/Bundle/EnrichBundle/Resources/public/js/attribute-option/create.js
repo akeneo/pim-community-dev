@@ -65,14 +65,10 @@ define(
                         }).fail(function (xhr) {
                             var response = xhr.responseJSON;
 
-                            if (response.children &&
-                                response.children.code &&
-                                response.children.code.errors &&
-                                response.children.code.errors.length
-                            ) {
+                            if (response.code) {
                                 form.$('input[name="code"]').after(
                                     this.errorTemplate({
-                                        errors: response.children.code.errors
+                                        errors: [response.code]
                                     })
                                 );
                             } else {

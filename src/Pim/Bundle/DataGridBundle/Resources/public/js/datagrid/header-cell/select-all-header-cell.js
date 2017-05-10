@@ -184,8 +184,6 @@ function ($, _, Backgrid, SelectRowCell) {
          * @returns {oro.datagrid.SelectAllHeaderCell}
          */
         render: function () {
-            /*jshint multistr:true */
-            /*jslint es5: true */
             /* temp solution: start */
             // It's not clear for now, how mass selection will be designed,
             // thus implementation is done just to check functionality.

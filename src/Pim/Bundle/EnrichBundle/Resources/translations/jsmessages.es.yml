@@ -8,7 +8,7 @@ confirmation:
     channel: '¿Está seguro que desea eliminar este canal?'
     group: '¿Está seguro que desea eliminar este grupo?'
     variant group: '¿Está seguro que desea eliminar este grupo variante?'
-    group type: '¿Está seguro que desea eliminar este tipo de grupo?'
+    group_type: '¿Está seguro que desea eliminar este tipo de grupo?'
     import profile: '¿Está seguro que desea eliminar este perfil de importación?'
     export profile: '¿Está seguro que desea eliminar este perfil de exportación?'
     user: '¿Seguro que desea eliminar este usuario?'
@@ -46,7 +46,7 @@ flash:
     removed: Grupo eliminado correctamente
   variant group:
     removed: Grupo Variante eliminado correctamente
-  group type:
+  group_type:
     removed: Tipo de Grupo eliminado correctamente
   import profile:
     removed: Perfil de importación eliminado correctamente
@@ -145,7 +145,7 @@ pim_enrich:
       history:
         version: Versión
         author: Autor
-        logged_at: Sesión iniciada el
+        logged_at: Registrado el
         more: Más
         less: Menos
         from: De
@@ -222,6 +222,20 @@ pim_enrich:
         updated_by: Actualizado por
       btn:
         save: Guardar
+      title: tipo de asociación
+    group_type:
+      info:
+        field_not_ready:
+          The group type cannot be saved right now. The following fields are not ready:
+            - campos
+      meta:
+        created: Creado
+        created_by: Creado por
+        updated: Actualizado
+        updated_by: Actualizado por
+      btn:
+        save: Guardar
+      title: tipo de grupo
     channel:
       title: canal
       info:
@@ -313,7 +327,6 @@ pim_enrich:
   error:
     upload: Un error ha ocurrido durante la subida del fichero
   alert:
-    not_allowed: Usted no tiene permisos para acceder a esta página
     error_occured: Un error ha ocurrido durante la carga de esta página
   form:
     required: (obligatorio)
@@ -334,7 +347,6 @@ pim_enrich:
           info:
             search_attributes: Buscar...
             no_available_attributes: No hay más atributos para agregar
-            attributes_selected: "{{ attributeCount }} atributo(s) seleccionado(s)"
             no_match: No se encuentran coincidencias
             load_more: Cargando más resultados...
         categories:
@@ -372,6 +384,15 @@ pim_enrich:
         select_attributes: Seleccionar atributos
         select: Seleccione
     association_type:
+      tab:
+        properties:
+          title: Propiedades
+          general: Propiedades generales
+          code: Código
+          label_translations: Traducciones de etiqueta
+        history:
+          title: Histórico
+    group_type:
       tab:
         properties:
           title: Propiedades
@@ -461,6 +482,23 @@ pim_enrich:
           info:
             search_attributes: Buscar...
             no_available_attributes: No hay más atributos para agregar
+    job_execution:
+      loading: Cargando...
+      refreshBtn.title: Actualizar
+      meta:
+        status.title: Estado
+      button:
+        show_profile.title: Ver perfil
+        download_log.title: Descargar registro de log
+      summary:
+        fetching: Colectando datos sobre la ejecución del trabajo...
+        warning: '¡Advertencia!'
+        header.step: Paso
+        header.status: Estado
+        header.warnings: Advertencias
+        header.summary: Resumen
+        header.start: Iniciar
+        header.end: Finalizar
     job_instance:
       fail:
         launch: Se ha producido un error al lanzar el perfil de trabajo. Asegúrese que sea válido y que usted posee los derechos para ejecutarlo.
@@ -535,6 +573,13 @@ pim_enrich:
             help: Significa que el historial del producto es actualizada automáticamente, puede ser desactivada para mejorar el desempeño
         history:
           title: Histórico
+    mass_edit:
+      family:
+        attributes:
+          label_label: Etiqueta
+          toolbox:
+            select_attributes: Agregar atributos
+            add: Agregar
   job:
     upload: Arrastrar y soltar un fichero o haga clic aquí
   export:
@@ -678,5 +723,65 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: Los atributos seleccionados serán editados con la siguiente información para el local <span class="highlight">{{ locale }}</span> y el canal <span class="highlight">{{ channel }}</span> elegidos en la grilla de productos.
+  index:
+    group:
+      create_btn: Crear grupo
+    user:
+      title: Usuario
+      create_btn: Crear usuario
+    user_role:
+      title: Rol
+      create_btn: Crear rol
+    user_group:
+      title: Grupos
+      create_btn: Crear grupo
+    process_tracker:
+      title: Seguimiento de procesos
 pim_enrich.error:
   exception.title: Oups! Un error {{ status_code }} ha ocurrido...
+page_title:
+  oro_default: Cartelera
+  pim_enrich_attributegroup_index: Grupos de atributos
+  pim_enrich_attributegroup_create: Grupos de Atributos | Crear
+  pim_enrich_categorytree_index: Árbol de categoría
+  pim_enrich_categorytree_create: Árboles de categoría | Crear
+  pim_enrich_categorytree_create_tree: Árboles de categoría | Crear
+  pim_enrich_attribute_index: Atributos
+  pim_enrich_attribute_create: Atributos | Crear
+  pim_enrich_product_index: Productos
+  pim_enrich_family_index: Familias
+  pim_enrich_channel_index: Canales
+  pim_enrich_channel_create: Canales | Crear
+  pim_enrich_currency_index: Monedas
+  pim_enrich_locale_index: Locales
+  pim_enrich_group_index: Grupos
+  pim_enrich_variant_group_index: Grupos de variantes
+  pim_enrich_associationtype_index: Tipos de asociaciones
+  pim_enrich_grouptype_index: Tipos de grupo
+  pim_enrich_mass_edit_action_choose: Edición masiva | Seleccionar
+  pim_enrich_mass_edit_action_configure: Edición masiva | Configurar
+  pim_enrich_job_tracker_index: Seguimiento de procesos
+  pim_enrich_job_tracker_show: Seguimiento de procesos | Ver el trabajo
+batch_jobs:
+  add_product_value:
+    label: Agregar un valor de producto
+    perform:
+      label: Agregar un valor de producto
+  update_product_value:
+    label: Actualizar el valor del producto
+    perform:
+      label: Actualizar el valor del producto
+  edit_common_attributes:
+    label: Editar atributos comunes
+    perform:
+      label: Editar atributos comunes
+    cleaner:
+      label: Limpiar archivos para los atributos comunes
+  set_attribute_requirements:
+    label: Configurar requerimientos del atributo
+    perform:
+      label: Configurar requerimientos del atributo
+  add_to_variant_group:
+    label: Agregar a un grupo de variantes
+    perform:
+      label: Agregar a un grupo de variantes

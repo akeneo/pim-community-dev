@@ -1,10 +1,10 @@
+@javascript
 Feature: Export variant groups with localizable and scopable values
   In order to be able to access and modify groups data outside PIM
   As a product manager
   I need to be able to export variant groups
 
   # extracted from export_variant_group.feature to avoid issue with changing the catalog in a same feature
-  @javascript
   Scenario: Successfully export variant groups with localizable and scopable attributes
   Given an "apparel" catalog configuration
   And the following attributes:

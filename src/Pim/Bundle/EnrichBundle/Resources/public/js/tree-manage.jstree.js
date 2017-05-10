@@ -87,6 +87,7 @@ define(
                             } else {
                                 id = -1;
                             }
+
                             return {
                                 id: id,
                                 select_node_id: selectedNode,
@@ -151,8 +152,9 @@ define(
                     }
                     var id  = data.rslt.obj.attr('id').replace('node_', '');
                     var url = Routing.generate(prefixRoute + '_categorytree_edit', { id: id });
-                    if ('#url=' + url === Backbone.history.location.hash || preventFirst) {
+                    if ('#' + url === Backbone.history.location.hash || preventFirst) {
                         preventFirst = false;
+
                         return;
                     }
                     loadingMask.show();
@@ -163,7 +165,7 @@ define(
                         success: function (data) {
                             if (data) {
                                 $('#category-form').html(data);
-                                Backbone.history.navigate('url=' + url, {trigger: false});
+                                Backbone.history.navigate('#' + url, {trigger: false});
                                 UI($('#category-form'));
                                 loadingMask.hide();
                             }
@@ -193,7 +195,7 @@ define(
                         success: function (data) {
                             if (data) {
                                 $('#category-form').html(data);
-                                Backbone.history.navigate('url=' + url, {trigger: false});
+                                Backbone.history.navigate('#' + url, {trigger: false});
                                 loadingMask.hide();
                             }
                         },

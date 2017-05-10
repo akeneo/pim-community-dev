@@ -13,11 +13,11 @@ define(
         'oro/translator',
         'pim/form',
         'routing',
-        'oro/navigation',
+        'pim/router',
         'pim/common/property',
         'text!pim/template/form/redirect'
     ],
-    function ($, _, __, BaseForm, Routing, Navigation, propertyAccessor, template) {
+    function ($, _, __, BaseForm, Routing, router, propertyAccessor, template) {
         return BaseForm.extend({
             template: _.template(template),
             events: {
@@ -44,7 +44,8 @@ define(
 
                     this.$el.html(this.template({
                         label: __(this.config.label),
-                        iconName: this.config.iconName
+                        iconName: this.config.iconName,
+                        buttonClass: this.config.buttonClass || 'AknButton--action'
                     }));
                 }.bind(this));
 
@@ -55,7 +56,7 @@ define(
              * Redirect to the route given in the config
              */
             redirect: function () {
-                Navigation.getInstance().setLocation(this.getUrl());
+                router.redirect(this.getUrl());
             },
 
             /**
@@ -65,10 +66,12 @@ define(
              */
             getUrl: function () {
                 var params = {};
-                params[this.config.identifier.name] = propertyAccessor.accessProperty(
-                    this.getFormData(),
-                    this.config.identifier.path
-                );
+                if (this.config.identifier) {
+                    params[this.config.identifier.name] = propertyAccessor.accessProperty(
+                        this.getFormData(),
+                        this.config.identifier.path
+                    );
+                }
 
                 return Routing.generate(this.config.route, params);
             },

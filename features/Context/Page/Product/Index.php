@@ -19,7 +19,7 @@ class Index extends Grid
     /**
      * @var string
      */
-    protected $path = '/enrich/product/';
+    protected $path = '#/enrich/product/';
 
     /**
      * {@inheritdoc}
@@ -65,7 +65,7 @@ class Index extends Grid
     public function findLocaleLink($locale, $label, $flag = null)
     {
         $link = $this->getElement('Locales dropdown')
-            ->find('css', sprintf('li > a[href="/enrich/product/?dataLocale=%s"]', $locale));
+            ->find('css', sprintf('li > a[href="#/enrich/product/?dataLocale=%s"]', $locale));
 
         if (!$link) {
             throw new ElementNotFoundException(

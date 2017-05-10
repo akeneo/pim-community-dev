@@ -8,6 +8,10 @@ pim_user:
       business_unit.title: Liiketoimintayksiköt
       email_synchronization.title: Sähköpostin synkronoinnin asetukset
       interfaces.title: Rajapinnat
+  group:
+    tab:
+      general.title: Yleinen
+      users.title: Käyttäjät
 oro.user.controller:
   group.message.saved: "Ryhmä tallennettu"
   role.message.saved: "Rooli tallennettu"

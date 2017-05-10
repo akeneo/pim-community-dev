@@ -299,17 +299,13 @@ channel:
   edit: modifier un canal
 currency:
   title: devise
-  overview: Liste des devises
   create: Créer une monnaie
   edit: modifier une monnaie
 family:
   title: famille
-  overview: Liste des familles
-  create: Créer une famille
   edit: modifier une famille
 locale:
   title: locale
-  overview: Liste des locales
   create: Créer une locale
   edit: Modifier une locale
 product:
@@ -319,22 +315,15 @@ product:
   edit: Modifier un produit
 group:
   title: groupe
-  overview: Liste des groupes
-  create: Créer un groupe
   edit: modifier un groupe
 group type:
   title: type de groupe
-  overview: Liste des types de groupe
-  create: Créer le type de groupe
   edit: modifier le type de groupe
 variant group:
   title: groupe de variantes
-  overview: Liste des groupes de variantes
-  create: Créer un groupe de variantes
   edit: Modifier un groupe de variantes
 association type:
   title: type d'association
-  overview: Liste des types d'association
   create: Créer un type d'association
   edit: Modifier le type d'association
 products: Produits

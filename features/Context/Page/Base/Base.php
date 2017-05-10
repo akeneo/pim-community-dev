@@ -156,7 +156,7 @@ class Base extends Page
      */
     public function getUrl(array $options = [])
     {
-        $url = $this->getPath();
+        $url = preg_split('/#/', $this->getPath())[1];
 
         foreach ($options as $parameter => $value) {
             $url = str_replace(sprintf('{%s}', $parameter), $value, $url);
@@ -303,19 +303,13 @@ class Base extends Page
     /**
      * Get the confirm dialog element
      *
-     * @throws \Exception
-     *
-     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Element
+     * @return NodeElement
      */
     protected function getConfirmDialog()
     {
-        $element = $this->getElement('Dialog');
-
-        if (null === $element) {
-            throw new \Exception('Could not find dialog window');
-        }
-
-        return $element;
+        return $this->spin(function () {
+            return $this->getElement('Dialog');
+        }, 'Could not find dialog popin');
     }
 
     /**

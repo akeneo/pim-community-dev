@@ -299,17 +299,13 @@ channel:
   edit: Ausgabekanal bearbeiten
 currency:
   title: Währung
-  overview: Währungsübersicht
   create: Währung anlegen
   edit: Währung bearbeiten
 family:
   title: Produktfamilie
-  overview: Produktfamilien-Übersicht
-  create: Produktfamilie anlegen
   edit: Produktfamilie bearbeiten
 locale:
   title: Gebietsschema
-  overview: Gebietsschema-Übersicht
   create: Gebietsschema anlegen
   edit: Gebietsschema bearbeiten
 product:
@@ -319,22 +315,15 @@ product:
   edit: Produkt bearbeiten
 group:
   title: Gruppe
-  overview: Gruppenübersicht
-  create: Gruppe anlegen
   edit: Gruppe bearbeiten
 group type:
   title: Gruppentyp
-  overview: Gruppentypen-Übersicht
-  create: Gruppentyp anlegen
   edit: Gruppentyp bearbeiten
 variant group:
   title: Variantengruppe
-  overview: Variantengruppen-Übersicht
-  create: Variantengruppe anlegen
   edit: Variantengruppe bearbeiten
 association type:
   title: Verbindungstyp
-  overview: Verbindungstypen-Übersicht
   create: Verbindungstyp anlegen
   edit: Verbindungstyp bearbeiten
 products: Produkte
@@ -906,6 +895,8 @@ pim_enrich_attribute_form:
   code: Code
   type: Attributtyp
   reference_data_name: Referenzdaten Name
+  scopable: Wert je Ausgabekanal
+  localizable: Wert je Gebietsschema
   unique: Eindeutiger Wert
   availableLocales: Verfügbare Gebietsschemata
   locale_specific: Gebietsschema-spezifisch

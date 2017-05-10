@@ -8,7 +8,7 @@ confirmation:
     channel: Êtes-vous sûr(e) de que vouloir supprimer ce canal ?
     group: Êtes-vous sûr(e) de vouloir supprimer ce groupe ?
     variant group: Êtes-vous sûr(e) de que vouloir supprimer ce groupe de variantes ?
-    group type: Êtes-vous sûr(e) de que vouloir supprimer ce type de groupe ?
+    group_type: Êtes-vous sûr(e) de que vouloir supprimer ce type de groupe ?
     import profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'import ?
     export profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'export ?
     user: Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ?
@@ -46,7 +46,7 @@ flash:
     removed: Groupe supprimé avec succès
   variant group:
     removed: Le groupe de variantes a bien été supprimé
-  group type:
+  group_type:
     removed: Le type de groupe a bien été supprimé
   import profile:
     removed: Le profil d'import a bien été supprimé
@@ -222,6 +222,24 @@ pim_enrich:
         updated_by: Mis à jour par
       btn:
         save: Enregistrer
+      title: type d'association
+    group_type:
+      info:
+        deletion_successful: Le type de groupe a bien été supprimé.
+        deletion_failed: Le type de groupe n'a pas pu être supprimé.
+        update_successful: Le type de groupe a bien été mis à jour.
+        update_failed: Le type de groupe n'a pas pu être mis à jour.
+        field_not_ready:
+          The group type cannot be saved right now. The following fields are not ready:
+            - champs
+      meta:
+        created: Créé
+        created_by: Créé par
+        updated: Mis à jour
+        updated_by: Mis à jour par
+      btn:
+        save: Enregistrer
+      title: type de groupe
     channel:
       title: canal
       info:
@@ -316,7 +334,7 @@ pim_enrich:
   error:
     upload: Une erreur s'est produite pendant le chargement du fichier
   alert:
-    not_allowed: Vous n'êtes pas autorisé(e) à accéder à cette page
+    not_allowed: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
     error_occured: Une erreur s'est produite lors du chargement de la page
   form:
     required: (obligatoire)
@@ -337,7 +355,7 @@ pim_enrich:
           info:
             search_attributes: Rechercher...
             no_available_attributes: Il n'y a plus d'attributs disponibles
-            attributes_selected: "{{ attributeCount }} attribut(s) sélectionné(s)"
+            attributes_selected: "{{ itemsCount }} attribut(s) sélectionné(s)"
             no_match: Aucune correspondance trouvée
             load_more: Chargement de plus de résultats...
         categories:
@@ -375,6 +393,15 @@ pim_enrich:
         select_attributes: Sélectionnez les attributs
         select: Sélectionner
     association_type:
+      tab:
+        properties:
+          title: Propriétés
+          general: Propriétés générales
+          code: Code
+          label_translations: Traduction des libellés
+        history:
+          title: Historique
+    group_type:
       tab:
         properties:
           title: Propriétés
@@ -466,6 +493,26 @@ pim_enrich:
           info:
             search_attributes: Rechercher...
             no_available_attributes: Il n'y a plus d'attributs disponibles
+    job_execution:
+      loading: Chargement en cours...
+      title.details: Détails d'exécution
+      refreshBtn.title: Mettre à jour
+      meta:
+        status.title: État
+      button:
+        show_profile.title: Afficher le profil
+        download_log.title: Télécharger l'historique
+        download_file.title: Télécharger le fichier généré
+        download_archive.title: Télécharger l'archive générée
+      summary:
+        fetching: Collecte de données de l'exécution...
+        warning: Attention
+        header.step: Étape
+        header.status: État
+        header.warnings: Aventissements
+        header.summary: Résumé
+        header.start: Début
+        header.end: Fin
     job_instance:
       fail:
         launch: Impossible de lancer le profil. Assurez-vous qu'il est valide et que vous avez les droits pour le lancer.
@@ -540,6 +587,15 @@ pim_enrich:
             help: Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances
         history:
           title: Historique
+    mass_edit:
+      family:
+        attributes:
+          label_label: Libellé
+          toolbox:
+            select_attributes_by_groups: Ajouter par groupes
+            select_attributes: Ajouter des attributs
+            add: Ajouter
+            attributes_groups_selected: '{{ itemsCount }} groupe(s) sélectionné(s)'
   job:
     upload: Glissez et déposer un fichier ou cliquez ici
   export:
@@ -683,5 +739,131 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: Les attributs des produits sélectionnés vont être édités avec les données suivantes pour la locale <span class="highlight">{{ locale }}</span> et le canal <span class="highlight">{{ channel }}</span>, choisis dans la grille des produits.
+  index:
+    association_type:
+      title: Liste des types d'association
+      create_btn: Créer un type d'association
+    import_profiles:
+      title: Liste des profils d'import
+      create_btn: Créer un profil d'import
+    import_history:
+      title: Rapports d'import
+    variant_group:
+      title: Liste des groupes de variantes
+      create_btn: Créer un groupe de variantes
+    group:
+      title: Liste des groupes
+      create_btn: Créer un groupe
+    export_profiles:
+      title: Liste des profils d'export
+      create_btn: Créer un profil d'export
+    export_history:
+      title: Rapports d'export
+    family:
+      title: Liste des familles
+      create_btn: Créer une famille
+    grouptype:
+      title: Liste des types de groupe
+      create_btn: Créer un type de groupe
+    currency:
+      title: Liste des devises
+    locale:
+      title: Liste des locales
+    user:
+      title: Utilisateur
+      create_btn: Créer un utilisateur
+    user_role:
+      title: Rôle
+      create_btn: Créer un rôle
+    user_group:
+      title: Groupes
+      create_btn: Créer un groupe
+    process_tracker:
+      title: Traqueur de processus
+    channel:
+      title: Liste des canaux
+      create_btn: Créer un canal
 pim_enrich.error:
   exception.title: Oups! Une erreur {{ status_code }} s'est produite...
+  http:
+    403: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
+page_title:
+  oro_default: Tableau de bord
+  pim_enrich_attributegroup_index: Groupes d'attributs
+  pim_enrich_attributegroup_create: Groupe d'attributs | Créer
+  pim_enrich_attributegroup_edit: Groupe d'attribut {{ group.label }} | Editer
+  pim_enrich_categorytree_index: Arborescences des catégories
+  pim_enrich_categorytree_create: Arborescences | Créer
+  pim_enrich_categorytree_edit: Arborescence {{ category.label }} | Editer
+  pim_enrich_categorytree_create_tree: Arborescences | Créer
+  pim_enrich_attribute_index: Attributs
+  pim_enrich_attribute_create: Attributs | Créer
+  pim_enrich_attribute_edit: Attribut {{ attribute.label }} | Editer
+  pim_enrich_product_index: Produits
+  pim_enrich_product_edit: Produit {{ product.sku }} | Editer
+  pim_enrich_family_index: Familles
+  pim_enrich_family_edit: Famille {{ family.label }} Editer
+  pim_enrich_channel_index: Canaux
+  pim_enrich_channel_create: Canaux | Créer
+  pim_enrich_channel_edit: Canal {{ channel.label }} | Editer
+  pim_enrich_currency_index: Devises
+  pim_enrich_locale_index: Locales
+  pim_enrich_group_index: Groupes
+  pim_enrich_group_edit: Groupe {{ group.label }} | Editer
+  pim_enrich_variant_group_index: Groupes de variantes
+  pim_enrich_variant_group_edit: Groupe de variantes {{ group.label }} | Editer
+  pim_enrich_associationtype_index: Types d'association
+  pim_enrich_associationtype_edit: Type d'association {{ association type.label }} | Modifier
+  pim_enrich_grouptype_index: Types de groupe
+  pim_enrich_grouptype_edit: Type de groupes {{ group type.label }} | Modifier
+  pim_enrich_mass_edit_action_choose: Edition de masse | Choisir
+  pim_enrich_mass_edit_action_configure: Edition de masse | Configurer
+  pim_enrich_mass_edit_action_perform: Edition en masse | Effectuer
+  pim_enrich_job_tracker_index: Traqueur de processus
+  pim_enrich_job_tracker_show: Traqueur de processus | Voir la tâche
+batch_jobs:
+  add_product_value:
+    label: Ajouter une valeur de produit
+    perform:
+      label: Ajouter une valeur de produit
+  update_product_value:
+    label: Mise à jour de la valeur du produit
+    perform:
+      label: Mise à jour de la valeur du produit
+  edit_common_attributes:
+    label: Modifier les attributs communs
+    perform:
+      label: Modifier les attributs communs
+    cleaner:
+      label: Nettoyer les fichiers pour les attributs communs
+  set_attribute_requirements:
+    label: Choisir les attributs requis
+    perform:
+      label: Choisir les attributs requis
+  csv_product_quick_export:
+    quick_export.label: Export rapide de produits en CSV
+    perform:
+      label: Export rapide de produits en CSV
+  csv_product_grid_context_quick_export:
+    quick_export.label: Export rapide de la grille de produits en CSV
+    perform:
+      label: Export rapide de la grille de produits en CSV
+  xlsx_product_quick_export:
+    quick_export.label: Export rapide de produits en XLSX
+    perform:
+      label: Export rapide de produits en XLSX
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Export rapide de la grille de produits en XLSX
+    perform:
+      label: Export rapide de la grille de produits en XLSX
+  add_to_variant_group:
+    label: Ajouter au groupe de variantes
+    perform:
+      label: Ajouter au groupe de variantes
+job_tracker:
+  download_archive:
+    archive: Télécharger l'archive générée
+    output: Télécharger les fichiers générés
+    input: Télécharger les fichiers lus
+    invalid_xlsx: Télécharger les données invalides
+    invalid_csv: Télécharger les données invalides

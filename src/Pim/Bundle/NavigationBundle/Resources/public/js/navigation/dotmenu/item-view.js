@@ -1,5 +1,3 @@
-/* jshint browser:true */
-/* global define */
 define(['jquery', 'underscore', 'backbone'],
 function($, _, Backbone) {
     'use strict';
@@ -12,7 +10,7 @@ function($, _, Backbone) {
     return Backbone.View.extend({
         tagName:  'li',
 
-        template: _.template($("#template-dot-menu-item").html()),
+        template: _.template($('#template-dot-menu-item').html()),
 
         events: {
             'click .close': 'close',

@@ -8,7 +8,7 @@ confirmation:
     channel: Jeste li sigurni da želite izbrisati ovaj kanal?
     group: Jeste li sigurni da želite izbrisati ovu grupu?
     variant group: Jeste li sigurni da želite izbrisati ovu varijantu grupe?
-    group type: Jeste li sigurni da želite izbrisati ovaj tip grupe?
+    group_type: Jeste li sigurni da želite izbrisati ovaj tip grupe?
     import profile: Jeste li sigurni da želite izbrisati ovaj profil uvoza?
     export profile: Jeste li sigurni da želite izbrisati ovaj profil izvoza?
     user: Jeste li sigurni da želite izbrisati ovog korisnika?
@@ -46,7 +46,7 @@ flash:
     removed: Grupa je uspješno uklonjena
   variant group:
     removed: Varijanta grupe je uspješno uklonjena
-  group type:
+  group_type:
     removed: Tip grupe je uspješno uklonjen
   import profile:
     removed: Profil uvoza je uspješno uklonjen
@@ -216,6 +216,20 @@ pim_enrich:
         updated_by: Ažurirao korisnik
       btn:
         save: Spremi
+      title: tip pridruživanja
+    group_type:
+      info:
+        field_not_ready:
+          The group type cannot be saved right now. The following fields are not ready:
+            - polja
+      meta:
+        created: Kreirano
+        created_by: Kreirao korisnik
+        updated: Ažurirano
+        updated_by: Ažurirao korisnik
+      btn:
+        save: Spremi
+      title: tip grupe
     channel:
       title: kanal
       info:
@@ -293,7 +307,6 @@ pim_enrich:
   error:
     upload: Došlo je do pogreške tijekom prijenosa datoteke
   alert:
-    not_allowed: Ne možete pristupiti ovoj stranici
     error_occured: Došlo je do pogreške tijekom učitavanja stranice
   form:
     required: (obavezno)
@@ -314,7 +327,6 @@ pim_enrich:
           info:
             search_attributes: Pretraži...
             no_available_attributes: Nema više atributa koje se može dodati
-            attributes_selected: "{{ attributeCount }} atributa odabrano"
             no_match: Nisu pronađeni rezultati
             load_more: Učitavanje više rezultata...
         categories:
@@ -352,6 +364,15 @@ pim_enrich:
         select_attributes: Odaberi atribute
         select: Odaberi
     association_type:
+      tab:
+        properties:
+          title: Svojstva
+          general: Opća svojstva
+          code: Kod
+          label_translations: Prijevodi oznaka
+        history:
+          title: Povijest
+    group_type:
       tab:
         properties:
           title: Svojstva
@@ -441,6 +462,22 @@ pim_enrich:
           info:
             search_attributes: Pretraži...
             no_available_attributes: Nema više atributa koje se može dodati
+    job_execution:
+      loading: Učitavanje...
+      refreshBtn.title: Osvježi
+      meta:
+        status.title: Status
+      button:
+        show_profile.title: Prikaži profil
+        download_log.title: Preuzmi log
+      summary:
+        fetching: Prikupljanje podataka o izvršenju posla...
+        warning: Upozorenje
+        header.step: Korak
+        header.status: Status
+        header.summary: Sažetak
+        header.start: Početak
+        header.end: Kraj
     job_instance:
       button:
         edit.title: Uredi
@@ -509,6 +546,13 @@ pim_enrich:
             help: Znači da će se povijest proizvoda automatski ažurirati, može se isključiti za poboljšanje performansi
         history:
           title: Povijest
+    mass_edit:
+      family:
+        attributes:
+          label_label: Oznaka
+          toolbox:
+            select_attributes: Dodaj atribute
+            add: Dodaj
   export:
     product:
       data:
@@ -650,5 +694,65 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: Atributi odabranih proizvoda u tabličnom prikazu proizvoda će se promijeniti s podacima za lokalizaciju <span class="highlight">{{ locale }}</span> i kanala <span class="highlight">{{ channel }}</span>.
+  index:
+    group:
+      create_btn: Kreiraj grupu
+    user:
+      title: Korisnik
+      create_btn: Kreiraj korisnika
+    user_role:
+      title: Rola
+      create_btn: Kreiraj rolu
+    user_group:
+      title: Grupe
+      create_btn: Kreiraj grupu
+    process_tracker:
+      title: Proces praćenja
 pim_enrich.error:
   exception.title: Ups! Pojavila se pogreška u {{ status_code }}...
+page_title:
+  oro_default: Nadzorna ploča
+  pim_enrich_attributegroup_index: Grupe atributa
+  pim_enrich_attributegroup_create: Atribut grupe | Kreiraj
+  pim_enrich_categorytree_index: Kategorija stabala
+  pim_enrich_categorytree_create: Kategorija stabala | Kreiraj
+  pim_enrich_categorytree_create_tree: Kategorija stabala | Kreiraj
+  pim_enrich_attribute_index: Atributi
+  pim_enrich_attribute_create: Atributi | Kreiraj
+  pim_enrich_product_index: Proizvodi
+  pim_enrich_family_index: Obitelji
+  pim_enrich_channel_index: Kanali
+  pim_enrich_channel_create: Kanali | Kreiraj
+  pim_enrich_currency_index: Valute
+  pim_enrich_locale_index: Lokalizacija
+  pim_enrich_group_index: Grupe
+  pim_enrich_variant_group_index: Varijante grupa
+  pim_enrich_associationtype_index: Tipovi pridruživanja
+  pim_enrich_grouptype_index: Tipovi grupa
+  pim_enrich_mass_edit_action_choose: Masovno uredi | Odaberi
+  pim_enrich_mass_edit_action_configure: Masovno uredi | Konfiguriraj
+  pim_enrich_job_tracker_index: Proces praćenja
+  pim_enrich_job_tracker_show: Proces praćenja | Pokaži posao
+batch_jobs:
+  add_product_value:
+    label: Dodaj vrijednosti proizvoda
+    perform:
+      label: Dodaj vrijednosti proizvoda
+  update_product_value:
+    label: Ažuriraj vrijednosti proizvoda
+    perform:
+      label: Ažuriraj vrijednosti proizvoda
+  edit_common_attributes:
+    label: Uredi uobičajene atribute
+    perform:
+      label: Uredi uobičajene atribute
+    cleaner:
+      label: Obriši datoteke za uobičajene atribute
+  set_attribute_requirements:
+    label: Postavi zahtjeve za atribute
+    perform:
+      label: Postavi zahtjeve za atribute
+  add_to_variant_group:
+    label: Dodaj u varijantu grupe
+    perform:
+      label: Dodaj u varijantu grupe

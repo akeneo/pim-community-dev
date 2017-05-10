@@ -14,7 +14,7 @@
                     }).html(
                         $('<i>', { 'class': 'icon-plus-sign' })
                     ).on('click', function () {
-                        Backbone.history.navigate('url={{ path(route ~ '_categorytree_create') }}', { trigger: true });
+                        Backbone.history.navigate('#{{ path(route ~ '_categorytree_create') }}', { trigger: true });
                     }).tooltip());
                 {% endif %}
                 // Instantiate sidebar

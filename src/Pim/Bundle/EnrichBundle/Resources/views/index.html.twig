@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+        <title>{% trans %}Loading...{% endtrans %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% block head_style %}
+            <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+           {% placeholder head_style %}
+        {% endblock %}
+
+        {% block script %}
+            {% include 'OroNavigationBundle:Js:dot.menu.js.twig' %}
+            {% include 'OroNavigationBundle:Js:pinbar.js.twig' %}
+            {% include 'OroRequireJSBundle::scripts.html.twig' with {compressed: not app.debug} %}
+            <script type="text/javascript">
+                {% if app.request.session.get('__target_path') %}
+                    window.location.hash = '{{ app.request.session.get('__target_path') }}';
+                    {% do app.request.session.remove('__target_path') %}
+                {% endif %}
+
+                require(['pim/app'], function (app) {
+                    app.bootstrap({
+                        debug: {{ app.debug ? 'true' : 'false' }}
+                    });
+                });
+            </script>
+        {% endblock %}
+    {% endblock %}
+</head>
+<body class="{% block bodyClass %}{% endblock %}">
+
+<div id="page" class="AknDefault-page">
+    <div id="top-page" class="AknDefault-topPage">
+        {% block header %}
+            <header class="AknHeader">
+                {% include 'OroNavigationBundle:ApplicationMenu:dotsMenu.html.twig' %}
+                <div class="AknHeader-menus">
+                    <div class="AknHeader-leftMenus">
+                        {% include 'PimUIBundle:Default:logo.html.twig' %}
+                        {% block navbar %}
+                            <div class="nav pull-left top-search shortcuts">
+                                {% placeholder navbar %}
+                            </div>
+                        {% endblock navbar %}
+                        <div id="main-menu">
+                            {% block application_menu %}
+                                {% include 'OroNavigationBundle:ApplicationMenu:applicationMenu.html.twig' %}
+                            {% endblock application_menu %}
+                         </div>
+                        {% block user_menu %}
+                            <ul class="AknHeader-userMenu">
+                                {% include 'PimNotificationBundle:Default:notifications.html.twig' %}
+                                {% include 'PimUserBundle:Menu:menuProfile.html.twig' %}
+                                {% include 'PimUIBundle:Default:help.html.twig' %}
+                            </ul>
+                        {% endblock %}
+                    </div>
+                </div>
+            </header>
+        {% endblock header %}
+        {% block main %}
+            <div id="main" >
+                <div class="AknBreadcrumbContainer">
+                        <div id="breadcrumb">
+                        {% block breadcrumb %}
+                            {% include 'OroNavigationBundle:ApplicationMenu:breabcrumbs.html.twig' %}
+                        {% endblock breadcrumb %}
+                    </div>
+
+                    {% include 'OroNavigationBundle:ApplicationMenu:pinButton.html.twig' %}
+
+                    <div id="flash-messages">
+                        {% block messages %}
+                            <div class="flash-messages-frame">
+                                <div class="flash-messages-holder"></div>
+                            </div>
+                            <script type="text/template" id="message-item-template">
+                                <div class="alert <% if (type) {  %><%= 'alert-' + type %><% } %> fade in top-messages ">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <div class="message"><%= message %></div>
+                                </div>
+                            </script>
+                        {% endblock messages %}
+                    </div>
+                </div>
+                <div class="hash-loading-mask"></div>
+                <div id="container" class="scrollable-container">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        {% endblock main %}
+    </div>
+</div>
+{% if uservoice_key is not null %}
+    {% include 'PimUIBundle:Default:pim_uservoice.js.twig' %}
+{% endif %}
+</body>
+</html>

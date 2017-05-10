@@ -1,0 +1,24 @@
+extensions:
+    pim-association-type-index:
+        module: pim/form/common/index/index
+        config:
+            title: pim_enrich.index.association_type.title
+
+    pim-association-type-index-grid:
+        module: pim/form/common/index/grid
+        parent: pim-association-type-index
+        position: 1000
+        targetZone: content
+        config:
+            alias: association-type-grid
+
+    pim-association-type-index-create-button:
+        module: pim/form/common/index/create-button
+        parent: pim-association-type-index
+        targetZone: buttons
+        position: 100
+        aclResourceId: pim_enrich_associationtype_create
+        config:
+           iconName:  plus
+           title:     pim_enrich.index.association_type.create_btn
+           url:       pim_enrich_associationtype_create

@@ -60,18 +60,10 @@ pim_title.import_execution.show:  Import executions | Details
 # Entity and page header titles
 export profile:
     title:    export profile
-    overview: export profile overview
-    create:   create export profile
     edit:     edit export profile
-export report:
-    overview: export reports
 import profile:
     title:    import profile
-    overview: import profile overview
-    create:   create import profile
     edit:     edit import profile
-import report:
-    overview: import reports
 
 # ACLs
 pim_importexport:

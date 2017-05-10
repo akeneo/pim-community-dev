@@ -570,12 +570,20 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldHaveNewNotification($count)
     {
-        $actualCount = (int) $this->getCurrentPage()->find('css', '.AknBell-countContainer')->getText();
+        $this->spin(function () use ($count) {
+            $actualCount = (int) $this->getCurrentPage()->find('css', '.AknBell-countContainer')->getText();
 
-        assertEquals(
-            $actualCount,
+            assertEquals(
+                $actualCount,
+                $count,
+                sprintf('Expecting to see %d new notifications, saw %d', $count, $actualCount)
+            );
+
+            return true;
+        }, sprintf(
+            'Expecting to see %d new notifications, saw %d',
             $count,
-            sprintf('Expecting to see %d new notifications, saw %d', $count, $actualCount)
+            (int) $this->getCurrentPage()->find('css', '.AknBell-countContainer')->getText())
         );
     }
 
@@ -748,5 +756,19 @@ class AssertionContext extends RawMinkContext
     protected function replacePlaceholders($value)
     {
         return $this->getMainContext()->getSubcontext('fixtures')->replacePlaceholders($value);
+    }
+
+    /**
+     * @When /^(?:|I )should see "([^"]*)" in popup$/
+     *
+     * @param string $message The message.
+     *
+     * @return bool
+     */
+    public function assertPopupMessage($message)
+    {
+        return $this->spin(function () use ($message) {
+            return $message == $this->getSession()->getDriver()->getWebDriverSession()->getAlert_text();
+        }, sprintf('Cannot assert that the modal contains %s', $message));
     }
 }

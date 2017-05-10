@@ -8,7 +8,7 @@ confirmation:
     channel: Tem certeza que deseja eliminar este canal?
     group: Tem certeza que deseja eliminar este grupo?
     variant group: Tem certeza que deseja eliminar este grupo variante?
-    group type: Tem certeza que deseja eliminar este tipo de grupo?
+    group_type: Tem certeza que deseja eliminar este tipo de grupo?
     import profile: Tem certeza que deseja eliminar este perfil de importação?
     export profile: Tem certeza que deseja eliminar este perfil de exportação?
     user: Tem a certeza que deseja eliminar este utilizador?
@@ -44,7 +44,7 @@ flash:
     removed: Grupo removido com sucesso
   variant group:
     removed: Grupo variante removido com sucesso
-  group type:
+  group_type:
     removed: Tipo de grupo removido com sucesso
   import profile:
     removed: Perfil de importação removido com sucesso
@@ -203,6 +203,18 @@ pim_enrich:
         updated: Atualizado
       btn:
         save: Guardar
+      title: tipo de associação
+    group_type:
+      info:
+        field_not_ready:
+          The group type cannot be saved right now. The following fields are not ready:
+            - campos
+      meta:
+        created: Criado
+        updated: Atualizado
+      btn:
+        save: Guardar
+      title: tipo de grupo
     channel:
       title: canal
       info:
@@ -262,7 +274,6 @@ pim_enrich:
   error:
     upload: Ocorreu um erro durante o envio do ficheiro
   alert:
-    not_allowed: Não tem autorização para aceder a esta página
     error_occured: Ocorreu um erro durante o carregamento da página
   form:
     product:
@@ -282,7 +293,6 @@ pim_enrich:
           info:
             search_attributes: Pesquisar...
             no_available_attributes: Não há mais atributos para adicionar
-            attributes_selected: "{{ attributeCount }} atributo(s) selecionado(s)"
             no_match: Nenhuma correspondência encontrada
             load_more: A carregar mais resultados...
         categories:
@@ -320,6 +330,15 @@ pim_enrich:
         select_attributes: Selecionar atributos
         select: Selecionar
     association_type:
+      tab:
+        properties:
+          title: Propriedades
+          general: Propriedades gerais
+          code: Código
+          label_translations: Traduções de rótulo
+        history:
+          title: Histórico
+    group_type:
       tab:
         properties:
           title: Propriedades
@@ -409,6 +428,22 @@ pim_enrich:
           info:
             search_attributes: Pesquisar...
             no_available_attributes: Não há mais atributos para adicionar
+    job_execution:
+      loading: A carregar...
+      refreshBtn.title: Atualizar
+      meta:
+        status.title: Estado
+      button:
+        show_profile.title: Ver perfil
+        download_log.title: Transferir log
+      summary:
+        fetching: A recolher dados sobre a execução da tarefa...
+        warning: Aviso
+        header.step: Passo
+        header.status: Estado
+        header.summary: Resumo
+        header.start: Início
+        header.end: Fim
     job_instance:
       button:
         edit.title: Editar
@@ -474,6 +509,13 @@ pim_enrich:
             help: Signifca que a história do produto é atualizada automaticmente, pode ser desligado para melhorar a performance
         history:
           title: Histórico
+    mass_edit:
+      family:
+        attributes:
+          label_label: Rótulo
+          toolbox:
+            select_attributes: Adicionar atributos
+            add: Adicionar
   export:
     product:
       structure:
@@ -546,5 +588,61 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: Os atributos dos produtos selecionados serão editados com os seguintes dados para a linguagem <span class="highlight">{{ locale }}</span> e o canal <span class="highlight">{{ channel }}</span>, escolhidos na grelha de produtos.
+  index:
+    group:
+      create_btn: Criar grupo
+    user:
+      title: Utilizador
+      create_btn: Criar utilizador
+    user_role:
+      title: Função
+      create_btn: Criar função
+    user_group:
+      title: Grupos
+      create_btn: Criar grupo
+    process_tracker:
+      title: Visualizador de processos
 pim_enrich.error:
   exception.title: Ora bolas! Ocorreu o erro {{ status_code }}...
+page_title:
+  oro_default: Painel
+  pim_enrich_attributegroup_index: Grupos de atributos
+  pim_enrich_attributegroup_create: Grupos de atributos | Criar
+  pim_enrich_categorytree_index: Árvores de categorias
+  pim_enrich_categorytree_create: Árvores de categorias | Criar
+  pim_enrich_categorytree_create_tree: Árvores de categorias | Criar
+  pim_enrich_attribute_index: Atributos
+  pim_enrich_attribute_create: Atributos | Criar
+  pim_enrich_product_index: Produtos
+  pim_enrich_family_index: Famílias
+  pim_enrich_channel_index: Canais
+  pim_enrich_channel_create: Canais | Criar
+  pim_enrich_currency_index: Moedas
+  pim_enrich_locale_index: Linguagens
+  pim_enrich_group_index: Grupos
+  pim_enrich_variant_group_index: Grupos variantes
+  pim_enrich_associationtype_index: Tipos de associação
+  pim_enrich_grouptype_index: Tipos de grupo
+  pim_enrich_mass_edit_action_choose: Editar em massa | Escolher
+  pim_enrich_mass_edit_action_configure: Editar em massa | Configurar
+  pim_enrich_job_tracker_index: Visualizador de processos
+  pim_enrich_job_tracker_show: Visualizador de processos | Mostrar tarefa
+batch_jobs:
+  update_product_value:
+    label: Atualizar o valor do produto
+    perform:
+      label: Atualizar o valor do produto
+  edit_common_attributes:
+    label: Editar atributos comuns
+    perform:
+      label: Editar atributos comuns
+    cleaner:
+      label: Limpar ficheiros de atributos comuns
+  set_attribute_requirements:
+    label: Estabelecer requisitos do atributo
+    perform:
+      label: Estabelecer requisitos do atributo
+  add_to_variant_group:
+    label: Adicionar a grupo variante
+    perform:
+      label: Adicionar a grupo variante

@@ -13,13 +13,15 @@ define(
         'oro/translator',
         'pim/form',
         'text!pim/template/form/back-to-grid',
-        'routing',
-        'pim/user-context',
-        'oro/navigation'
+        'pim/router',
+        'pim/user-context'
     ],
-    function (_, __, BaseForm, template, Routing, UserContext, Navigation) {
+    function (_, __, BaseForm, template, router, UserContext) {
         return BaseForm.extend({
-            tagName: 'a',
+            tagName: 'span',
+            events: {
+                'click': 'backToGrid'
+            },
             className: 'AknTitleContainer-backLink back-link',
             template: _.template(template),
             config: {},
@@ -49,16 +51,17 @@ define(
              */
             render: function () {
                 this.$el.html(this.template());
-                this.$el.attr('href', Routing.generate(
+
+                return this;
+            },
+
+            backToGrid: function () {
+                router.redirectToRoute(
                     this.config.backUrl,
                     {
                         dataLocale: UserContext.get('catalogLocale')
                     }
-                ));
-
-                Navigation.getInstance().processClicks(this.$el);
-
-                return this;
+                );
             }
         });
     }
