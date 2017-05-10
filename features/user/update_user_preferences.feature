@@ -21,7 +21,7 @@ Feature: Update user preferences
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     And I edit the "2013_collection" category
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I confirm the deletion
     And I edit the "Julia" user
     And I visit the "Additional" tab
@@ -33,7 +33,7 @@ Feature: Update user preferences
     Then I should see the text "Catalog scope"
     And I should see the text "Print"
     When I am on the "Print" channel page
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I confirm the deletion
     And I edit the "Peter" user
     And I visit the "Additional" tab
@@ -50,7 +50,7 @@ Feature: Update user preferences
     Then I should see the text "Catalog locale"
     And I should see the text "fr_FR"
     When I am on the "ecommerce" channel page
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I confirm the deletion
     And I edit the "Julia" user
     And I visit the "Additional" tab

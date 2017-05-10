@@ -58,7 +58,7 @@ Feature: Display the product history
       | 2       | categories | winter_boots |
     When I close the "history" panel
     When I edit the "winter_boots" category
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I confirm the deletion
     And I edit the "boots" product
     And the history of the product "boots" has been built
@@ -94,7 +94,7 @@ Feature: Display the product history
       | 2       | categories | men_2014,men_2015_autumn,men_2015_winter |
     When I close the "history" panel
     When I edit the "men_2015_autumn" category
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I confirm the deletion
     And I edit the "boots" product
     And the history of the product "boots" has been built
@@ -125,7 +125,7 @@ Feature: Display the product history
       | 2       | Manufacturer | Converse |
     When I close the "history" panel
     When I edit the "manufacturer" attribute
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I confirm the deletion
     And I edit the "boots" product
     And the history of the product "boots" has been built
@@ -159,10 +159,10 @@ Feature: Display the product history
       | 2       | Comment            | nice boots |
     When I close the "history" panel
     When I edit the "weather_conditions" attribute
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I confirm the deletion
     And I edit the "comment" attribute
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I confirm the deletion
     And I edit the "boots" product
     And the history of the product "boots" has been built

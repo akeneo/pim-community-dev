@@ -1446,14 +1446,22 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $button
+     * $modalWait is a temporary solution waiting for Attributes PEFization
+     * TODO Remove the $modalWait parameter after the merge of TIP-732
      *
-     * @Given /^I press the "([^"]*)" button$/
+     * @param string      $button
+     * @param string|null $modalWait
+     *
+     * @Given /^I press the "([^"]*)" button( and wait for modal)?$/
      */
-    public function iPressTheButton($button)
+    public function iPressTheButton($button, $modalWait = null)
     {
-        $this->spin(function () use ($button) {
+        $this->spin(function () use ($button, $modalWait) {
             $this->getCurrentPage()->pressButton($button, true);
+
+            if (null !== $modalWait) {
+                return null !== $this->getCurrentPage()->find('css', '.modal');
+            }
 
             return true;
         }, sprintf("Can not find any '%s' button", $button));
