@@ -28,10 +28,16 @@ extensions:
         config:
             backUrl: pim_enrich_family_index
 
-    pim-family-edit-form-delete:
-        module: pim/family-edit-form/delete
+    pim-family-edit-form-secondary-actions:
+        module: pim/form/common/secondary-actions
         parent: pim-family-edit-form
         targetZone: buttons
+        position: 50
+
+    pim-family-edit-form-delete:
+        module: pim/family-edit-form/delete
+        parent: pim-family-edit-form-secondary-actions
+        targetZone: secondary-actions
         aclResourceId: pim_enrich_family_remove
         position: 100
         config:

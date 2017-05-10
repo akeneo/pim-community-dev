@@ -37,7 +37,7 @@ extensions:
     pim-association-type-edit-form-delete:
         module: pim/association-type-edit-form/delete
         parent: pim-association-type-edit-form-secondary-actions
-        targetZone: secondary-buttons
+        targetZone: secondary-actions
         aclResourceId: pim_enrich_associationtype_remove
         position: 100
         config:

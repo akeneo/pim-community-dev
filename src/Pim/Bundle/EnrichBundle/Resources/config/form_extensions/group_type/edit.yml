@@ -28,10 +28,16 @@ extensions:
         config:
             backUrl: pim_enrich_grouptype_index
 
-    pim-group-type-edit-form-delete:
-        module: pim/group-type-edit-form/delete
+    pim-group-type-edit-form-secondary-actions:
+        module: pim/form/common/secondary-actions
         parent: pim-group-type-edit-form
         targetZone: buttons
+        position: 50
+
+    pim-group-type-edit-form-delete:
+        module: pim/group-type-edit-form/delete
+        parent: pim-group-type-edit-form-secondary-actions
+        targetZone: secondary-actions
         aclResourceId: pim_enrich_grouptype_remove
         position: 100
         config:

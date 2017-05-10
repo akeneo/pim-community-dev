@@ -28,10 +28,16 @@ extensions:
         config:
             backUrl: pim_enrich_channel_index
 
-    pim-channel-edit-form-delete:
-        module: pim/channel-edit-form/delete
+    pim-channel-edit-form-secondary-actions:
+        module: pim/form/common/secondary-actions
         parent: pim-channel-edit-form
         targetZone: buttons
+        position: 50
+
+    pim-channel-edit-form-delete:
+        module: pim/channel-edit-form/delete
+        parent: pim-channel-edit-form-secondary-actions
+        targetZone: secondary-actions
         aclResourceId: pim_enrich_channel_remove
         position: 90
         config:
