@@ -17,7 +17,7 @@ Feature: Display the product history
     And I fill in the following information:
       | Name | BG sandals |
     And I save the product
-    And I press the "Publish" button
+    And I press the secondary action "Publish"
     And I confirm the publishing
     And I fill in the following information:
       | SKU | sandals-001-bis |

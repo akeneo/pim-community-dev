@@ -83,7 +83,7 @@ define(
                         FetcherRegistry.getFetcher('product')
                             .fetch(this.getFormData().meta.id).done(function (product) {
                                 loadingMask.hide().$el.remove();
-                                messenger.notificationFlashMessage(
+                                messenger.notify(
                                     'success',
                                     __(
                                         'pimee_enrich.entity.product.flash.product_' +
@@ -98,7 +98,7 @@ define(
                             }.bind(this));
                     }.bind(this))
                     .fail(function () {
-                        messenger.notificationFlashMessage(
+                        messenger.notify(
                             'error',
                             __(
                                 'pimee_enrich.entity.product.flash.product_not_' +

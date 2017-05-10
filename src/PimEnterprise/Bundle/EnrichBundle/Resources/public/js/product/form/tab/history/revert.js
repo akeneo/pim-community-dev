@@ -88,7 +88,7 @@ define(
                                 loadingMask.hide().$el.remove();
                                 var message = response.responseJSON ? response.responseJSON.error : __('error.common');
 
-                                messenger.notificationFlashMessage('error', message);
+                                messenger.notify('error', message);
                             }
                         );
                     }.bind(this)

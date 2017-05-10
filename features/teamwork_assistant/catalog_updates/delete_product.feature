@@ -55,4 +55,4 @@ Feature: Catalog updates - Remove a product used by a project
     And I press "Delete" on the "Bulk Actions" dropdown button
     Then I should see the text "Are you sure you want to delete selected products?"
     When I confirm the removal
-    Then the grid should contain 0 elements
+    Then the grid should contain 0 element

@@ -99,25 +99,20 @@ Feature: Revert a product to a previous version
     Then the family of product "jean" should be "pants"
 
   Scenario: Successfully revert the category of a product
-    Given the following product:
-      | sku     | categories        |
-      | sandals | winter_collection |
-    And I edit the "sandals" product
-    And I visit the "Categories" column tab
     Given I am on the products page
     And I create a new product
     And I fill in the following information in the popin:
       | SKU | sandals |
     And I press the "Save" button in the popin
     And I wait to be on the "sandals" product page
-    And I visit the "Categories" tab
+    And I visit the "Categories" column tab
     And I visit the "2014 collection" tree
     And I expand the "2014_collection" category
     And I click on the "winter_collection" category
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
-    And I visit the "Categories" tab
-    And I select the "2014 collection" tree
+    And I visit the "Categories" column tab
+    And I visit the "2014 collection" tree
     And I expand the "2014_collection" category
     And I click on the "winter_collection" category
     And I click on the "summer_collection" category

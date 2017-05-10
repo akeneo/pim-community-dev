@@ -19,7 +19,7 @@ Feature: purge product versions
     And I save the product
     And I change the Name to "Top Akeneo boots"
     And I save the product
-    And I press the "Publish" button
+    And I press the secondary action "Publish"
     And I confirm the publishing
     And I change the Description to "Very high quality boots"
     And I save the product

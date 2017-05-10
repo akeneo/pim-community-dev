@@ -44,13 +44,13 @@ Feature: Export published products in XLSX
     Then I should not see the text "There are unsaved changes."
     When I launched the completeness calculator
     And I edit the "jacket-white" product
-    And I press the "Publish" button
+    And I press the secondary action "Publish"
     And I confirm the publishing
     And I edit the "jacket-black" product
-    Then I press the "Publish" button
+    Then I press the secondary action "Publish"
     And I confirm the publishing
     When I edit the "jacket-blue" product
-    Then I press the "Publish" button
+    Then I press the secondary action "Publish"
     And I confirm the publishing
     When I am on the "xlsx_clothing_mobile_published_product_export" export job page
     And I launch the export job

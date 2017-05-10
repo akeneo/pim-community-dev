@@ -26,13 +26,16 @@ Feature: Revert product attributes to a previous version
     Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "akeneo-jacket" should have the following values:
-    | release_date-mobile |  |
+      | release_date-mobile |  |
 
   Scenario: Successfully revert a date attribute with original empty value
-    Given the following product:
-    | sku           | family  | release_date-mobile |
-    | akeneo-jacket | jackets |                     |
-    And I am on the "akeneo-jacket" product page
+    Given I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | akeneo-jacket |
+      | family | Jackets       |
+    And I press the "Save" button in the popin
+    And I wait to be on the "akeneo-jacket" product page
     And I switch the scope to "mobile"
     When I change the "Release date" to "01/01/2001"
     And I save the product
@@ -42,20 +45,26 @@ Feature: Revert product attributes to a previous version
     Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "akeneo-jacket" should have the following values:
-    | release_date-mobile |  |
+      | release_date-mobile |  |
 
   Scenario: Successfully revert a date attribute with original non empty value
-    Given the following product:
-    | sku           | family  | release_date-mobile |
-    | akeneo-jacket | jackets | 2011-08-17          |
-    And I am on the "akeneo-jacket" product page
+    Given I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | akeneo-jacket |
+      | family | Jackets       |
+    And I press the "Save" button in the popin
+    And I wait to be on the "akeneo-jacket" product page
     And I switch the scope to "mobile"
-    When I change the "Release date" to "01/01/2001"
+    And I change the "Release date" to "08/17/2011"
+    And I save the product
+    And I should not see the text "There are unsaved changes."
+    And I change the "Release date" to "01/01/2001"
     And I save the product
     And I should not see the text "There are unsaved changes."
     And the history of the product "akeneo-jacket" has been built
     And I visit the "History" column tab
-    Then I should see 2 versions in the history
-    When I revert the product version number 1
+    Then I should see 3 versions in the history
+    When I revert the product version number 2
     Then the product "akeneo-jacket" should have the following values:
-    | release_date-mobile | 2011-08-17 |
+      | release_date-mobile | 2011-08-17 |

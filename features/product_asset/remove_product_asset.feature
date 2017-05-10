@@ -40,7 +40,7 @@ Feature: Remove product assets
     And I check the row "akene"
     And I confirm the asset modification
     And I save the product
-    And I press the "Publish" button
+    And I press the secondary action "Publish"
     And I confirm the publishing
     When I am on the "chicagoskyline" asset page
     And I press the "Delete" button and wait for modal
