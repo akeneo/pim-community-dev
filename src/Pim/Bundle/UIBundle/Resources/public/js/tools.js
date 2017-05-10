@@ -1,5 +1,5 @@
-define(['underscore'],
-function (_) {
+define(['underscore', 'oro-dependencies'],
+function (_, oroDependencies) {
     'use strict';
 
     /**
@@ -15,14 +15,10 @@ function (_) {
          */
         loadModules: function (modules, callback) {
             var requirements = _.values(modules);
-            console.log(requirements)
-            // load all dependencies and build grid
-            require.ensure(requirements, function () {
-                _.each(modules, _.bind(function (value, key) {
-                    modules[key] = this[value];
-                }, _.object(requirements, _.toArray(arguments))));
-                callback(modules);
-            });
+            _.each(modules, _.bind(function (value, key) {
+                modules[key] = oroDependencies[value]
+            }, _.object(requirements, _.toArray(arguments))));
+            callback(modules);
         }
     };
 });

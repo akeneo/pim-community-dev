@@ -28,6 +28,7 @@ const bundles = [
 
 const getImportPaths = () => {
     let paths = {}
+    let originalPaths = {}
 
     for (const bundle of bundles) {
         // Use node-glob instead
@@ -35,11 +36,16 @@ const getImportPaths = () => {
         try {
             const contents = fs.readFileSync(configPath, 'utf8')
             const bundlePaths = yaml.parse(contents).config.paths
+            originalPaths = Object.assign(originalPaths, bundlePaths)
+
             const fixedBundlePaths = replacePathSegments(bundlePaths, bundle)
             paths = Object.assign(paths, bundlePaths)
         } catch (e) {}
     }
-    return paths
+    return {
+        originalPaths,
+        paths
+    }
 }
 
 const getControllers = () => {
@@ -78,7 +84,7 @@ const replacePathSegments = (paths, bundle) => {
 
 const importedPaths = getImportPaths()
 
-const importPaths = Object.assign(importedPaths, {
+const importPaths = Object.assign(importedPaths.paths, {
     text: 'text-loader',
     'pimuser/js/init-signin': path.resolve(__dirname, './src/Pim/Bundle/UserBundle/Resources/public/js/init-signin.js'),
     'bootstrap-modal': path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/bootstrap-modal.js'),
@@ -95,13 +101,14 @@ const importPaths = Object.assign(importedPaths, {
     'pim-router': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/router.js'),
     'paths': path.resolve(__dirname, './web/js/paths.js'),
     'twig-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/twig-dependencies.js'),
+    'oro-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/oro-dependencies.js'),
     'widget-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/widget-dependencies.js'),
     'form-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/form-dependencies.js')
 })
 
 // console.log(importPaths['pim/family-edit-form/attributes/toolbar/add-select/attribute-group'])
 
-// fs.writeFileSync('./web/js/paths.js', `module.exports = ${JSON.stringify(importPaths)}`, 'utf8')
+fs.writeFileSync('./web/js/paths.js', `module.exports = ${JSON.stringify(importedPaths.originalPaths)}`, 'utf8')
 
 module.exports = {
     target: 'web',
@@ -129,6 +136,10 @@ module.exports = {
                     {
                         loader: 'expose-loader',
                         options: 'jQuery'
+                    },
+                    {
+                        loader: 'expose-loader',
+                        options: '$'
                     }
                 ]
             },

@@ -4,7 +4,6 @@
   "description": "Akeneo PIM Application",
   "homepage": "http://www.akeneo.com",
   "devDependencies": {
-    "async-module-loader": "^2.1.0",
     "bundle-loader": "^0.5.5",
     "camelcase": "^4.1.0",
     "cheerio": "^0.22.0",
