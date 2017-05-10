@@ -28,10 +28,16 @@ extensions:
         config:
             backUrl: pim_enrich_associationtype_index
 
-    pim-association-type-edit-form-delete:
-        module: pim/association-type-edit-form/delete
+    pim-association-type-edit-form-secondary-actions:
+        module: pim/form/common/secondary-actions
         parent: pim-association-type-edit-form
         targetZone: buttons
+        position: 50
+
+    pim-association-type-edit-form-delete:
+        module: pim/association-type-edit-form/delete
+        parent: pim-association-type-edit-form-secondary-actions
+        targetZone: secondary-buttons
         aclResourceId: pim_enrich_associationtype_remove
         position: 100
         config:

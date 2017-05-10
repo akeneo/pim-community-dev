@@ -48,6 +48,12 @@ extensions:
         targetZone: title
         position: 100
 
+    pim-product-edit-form-secondary-actions:
+        module: pim/form/common/secondary-actions
+        parent: pim-product-edit-form
+        targetZone: buttons
+        position: 50
+
     pim-product-edit-form-delete:
         module: pim/product-edit-form/delete
         parent: pim-product-edit-form-secondary-actions
@@ -68,12 +74,6 @@ extensions:
         targetZone: title-buttons
         aclResourceId: pim_enrich_product_change_state
         position: 110
-
-    pim-product-edit-form-secondary-actions:
-        module: pim/form/common/secondary-actions
-        parent: pim-product-edit-form
-        targetZone: buttons
-        position: 50
 
     pim-product-edit-form-download-pdf:
         module: pim/product-edit-form/download-pdf

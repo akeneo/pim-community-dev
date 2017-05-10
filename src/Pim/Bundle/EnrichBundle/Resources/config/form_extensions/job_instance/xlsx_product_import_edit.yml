@@ -174,10 +174,16 @@ extensions:
         config:
             backUrl: pim_importexport_import_profile_index
 
-    pim-job-instance-xlsx-product-import-edit-delete:
-        module: pim/job/import/edit/delete
+    pim-job-instance-xlsx-product-import-edit-secondary-actions:
+        module: pim/form/common/secondary-actions
         parent: pim-job-instance-xlsx-product-import-edit
         targetZone: buttons
+        position: 50
+
+    pim-job-instance-xlsx-product-import-edit-delete:
+        module: pim/job/import/edit/delete
+        parent: pim-job-instance-xlsx-product-import-edit-secondary-actions
+        targetZone: secondary-actions
         aclResourceId: pim_importexport_import_profile_remove
         position: 100
         config:
