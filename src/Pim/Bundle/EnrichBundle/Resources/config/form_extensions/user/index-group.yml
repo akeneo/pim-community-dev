@@ -19,7 +19,6 @@ extensions:
         position: 100
         aclResourceId: pim_user_group_create
         config:
-            iconName: plus
             label: pim_enrich.index.user_group.create_btn
             route: oro_user_group_create
             buttonClass: AknButton--apply

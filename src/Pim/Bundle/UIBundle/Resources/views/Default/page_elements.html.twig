@@ -7,10 +7,7 @@
             {% set url = null %}
         {% endif %}
         {% set title = ('btn.create.' ~ entity)|trans|capitalize %}
-        <a class="AknButton AknButton--apply{% if attr.class is defined %} {{ attr.class }}{% endif %} {% if icon %} AknButton--withIcon {% endif %}" href="{{ url ? '#' ~ url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
-        {% if icon %}
-            <i class="AknButton-icon icon-{{ icon }}"></i>
-          {% endif %}
+        <a class="AknButton AknButton--apply{% if attr.class is defined %} {{ attr.class }}{% endif %}" href="{{ url ? '#' ~ url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
           {{ title }}
         </a>
         {% if buttonId is defined %}
@@ -33,10 +30,7 @@
 {% macro submitBtn(text, icon, class = '') %}
 {% spaceless %}
     {% set text = text|default('btn.save')|trans|capitalize %}
-    <button type="submit" class="AknButton AknButton--apply AknButton--withIcon {{ class }}" title="{{ text }}">
-        {% if icon %}
-            <i class="AknButton-icon icon-{{ icon }}"></i>
-        {% endif %}
+    <button type="submit" class="AknButton AknButton--apply {{ class }}" title="{{ text }}">
         {{ text }}
     </button>
 {% endspaceless %}
@@ -78,8 +72,7 @@
 {% macro deleteLink(url, acl, redirectUrl, message, successMessage, title, class = '') %}{% spaceless %}
     {% if acl is null or resource_granted(acl) %}
         {% import _self as elements %}
-        <a class="AknButton AknButton--withIcon AknButton--important {{ class }}" title="{{ 'btn.delete'|trans|capitalize }}" {{elements.deleteLinkAttributes(url, redirectUrl, message, successMessage, title)}} >
-            <i class="AknButton-icon icon-trash"></i>
+        <a class="AknButton AknButton--important {{ class }}" title="{{ 'btn.delete'|trans|capitalize }}" {{elements.deleteLinkAttributes(url, redirectUrl, message, successMessage, title)}} >
             {{ 'btn.delete'|trans|capitalize }}
         </a>
     {% endif %}
@@ -89,8 +82,7 @@
 {% spaceless %}
     {% set title = opts.title is defined ? opts.title : text %}
     {% set icon = opts.icon is defined ? opts.icon : null %}
-    <a{% if opts.id is defined %} id="{{ opts.id }}"{% endif %} class="AknButton {{ opts.class is defined ? opts.class|join(' ') }}{% if text and icon %} AknButton--withIcon{% elseif icon %} icons-holder{% endif %} {{ icon }}" href="{{ url ? url : 'javascript:void(0);' }}"{% if title %} title="{{ title|trans|capitalize }}"{% endif %}{% if opts.attr is defined %}{% for key, value in opts.attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>
-        {% if icon %}<i class="AknButton-icon icon-{{ icon }}"></i>{% endif %}
+    <a{% if opts.id is defined %} id="{{ opts.id }}"{% endif %} class="AknButton {{ opts.class is defined ? opts.class|join(' ') }}" href="{{ url ? url : 'javascript:void(0);' }}"{% if title %} title="{{ title|trans|capitalize }}"{% endif %}{% if opts.attr is defined %}{% for key, value in opts.attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>
         {{ text|trans|capitalize }}
     </a>
 {% endspaceless %}

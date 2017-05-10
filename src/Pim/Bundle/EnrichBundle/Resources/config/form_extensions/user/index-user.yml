@@ -19,7 +19,6 @@ extensions:
         position: 100
         aclResourceId: pim_user_user_create
         config:
-            iconName: plus
             label: pim_enrich.index.user.create_btn
             route: oro_user_create
             buttonClass: AknButton--apply

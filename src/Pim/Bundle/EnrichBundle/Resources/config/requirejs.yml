@@ -747,15 +747,9 @@ config:
         pim/common/tab/properties:         pimenrich/js/form/common/tab/properties
         pim/common/properties/translation: pimenrich/js/form/common/properties/translation
         pim/common/properties/general:     pimenrich/js/form/common/properties/general
-        pim/common/grid:                   pimenrich/js/form/common/grid
-        pim/common/redirect:               pimenrich/js/form/common/redirect
-        pim/common/column-list-view:       pimenrich/js/common/column-list-view
-        pim/common/tab/history:            pimenrich/js/form/common/tab/history
-        pim/common/tab/properties:         pimenrich/js/form/common/tab/properties
-        pim/common/properties/translation: pimenrich/js/form/common/properties/translation
+        pim/common/add-select:             pimenrich/js/form/common/add-select/select
         pim/common/add-select/line:        pimenrich/js/form/common/add-select/line
         pim/common/add-select/footer:      pimenrich/js/form/common/add-select/footer
-        pim/common/add-select:             pimenrich/js/form/common/add-select/select
         pim/create/properties/general:     pimenrich/js/create/form/properties/general
 
         # Root

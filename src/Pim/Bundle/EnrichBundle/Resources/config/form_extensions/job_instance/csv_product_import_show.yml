@@ -226,7 +226,6 @@ extensions:
         targetZone: buttons
         position: 100
         config:
-            iconName: pencil
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_import_profile_edit
             identifier:

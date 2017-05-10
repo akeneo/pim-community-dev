@@ -11,8 +11,7 @@
                     <br/>
                     {{ 'category.or'|trans }}
                     <br/>
-                    <a class="AknButton AknButton--withIcon AknButton--apply" href="#{{ path(route ~ '_categorytree_create', { parent: 0 }) }}">
-                        <i class="AknButton-icon icon-plus"></i>
+                    <a class="AknButton AknButton--apply" href="#{{ path(route ~ '_categorytree_create', { parent: 0 }) }}">
                         {{ 'category.create new'|trans }}
                     </a>
                 {% endif %}

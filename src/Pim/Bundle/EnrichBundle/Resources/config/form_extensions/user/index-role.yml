@@ -19,7 +19,6 @@ extensions:
         position: 100
         aclResourceId: pim_user_role_create
         config:
-            iconName: plus
             label: pim_enrich.index.user_role.create_btn
             route: oro_user_role_create
             buttonClass: AknButton--apply
