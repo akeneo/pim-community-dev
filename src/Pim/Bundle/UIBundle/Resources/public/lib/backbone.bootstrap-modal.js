@@ -34,7 +34,7 @@
     <div class="AknButtonList AknButtonList--right modal-footer">\
       <% if (allowCancel) { %>\
         <% if (cancelText) { %>\
-          <a href="#" title="{{cancelText}}" class="AknButtonList-item AknButton AknButton--withIcon AknButton--grey cancel icons-holder-text">\
+          <a href="#" title="{{cancelText}}" class="AknButtonList-item AknButton AknButton--withIcon AknButton--greyLight cancel icons-holder-text">\
             <i class="AknButton-icon icon-chevron-left"></i>\
             {{cancelText}}\
           </a>\
