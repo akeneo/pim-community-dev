@@ -198,7 +198,7 @@ class Base extends Page
      */
     public function pressButton($locator, $forceVisible = false)
     {
-        $button = $this->spin(function () use ($locator, $forceVisible) {
+        $this->spin(function () use ($locator, $forceVisible) {
             $result = $forceVisible ? $this->getVisibleButton($locator) : $this->getButton($locator);
 
             if (null === $result) {
@@ -210,11 +210,12 @@ class Base extends Page
                     ]
                 );
             }
+            if (null !== $result) {
+                $result->click();
 
-            return $result;
+                return true;
+            }
         }, sprintf('Can not find any "%s" button', $locator));
-
-        $button->click();
     }
 
     /**
@@ -389,10 +390,13 @@ class Base extends Page
     public function getDropdownButtonItem($item, $button)
     {
         $dropdownToggle = $this->spin(function () use ($button) {
-            return $this->find('css', sprintf('*[data-toggle="dropdown"]:contains("%s")', $button));
-        }, sprintf('Dropdown button "%s" not found', $button));
+            $toggle = $this->find('css', sprintf('*[data-toggle="dropdown"]:contains("%s")', $button));
+            if (null !== $toggle) {
+                $toggle->click();
 
-        $dropdownToggle->click();
+                return $toggle;
+            }
+        }, sprintf('Dropdown button "%s" not found', $button));
 
         $dropdownMenu = $dropdownToggle->getParent()->find('css', '.dropdown-menu, .AknDropdown-menu');
 

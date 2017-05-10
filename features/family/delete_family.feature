@@ -18,7 +18,7 @@ Feature: Delete a family
 
   Scenario: Successfully delete a family from the edit page
     Given I am on the "sneakers" family page
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should be on the families page
     And the grid should contain 4 elements
@@ -33,7 +33,7 @@ Feature: Delete a family
     And I display the columns SKU, Family
     Then I should see the text "sneakers"
     When I am on the "sneakers" family page
-    And I press the "Delete" button and wait for modal
+    And I press the secondary action "Delete"
     And I confirm the deletion
     And I am on the products page
     And I display the columns SKU, Family

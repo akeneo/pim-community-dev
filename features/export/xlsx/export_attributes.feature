@@ -97,7 +97,7 @@ Feature: Export attributes in XLSX
     When I am on the "xlsx_footwear_attribute_export" export job page
     And I launch the export job
     And I wait for the "xlsx_footwear_attribute_export" job to finish
-    And I press the "Download generated files" button
+    And I press the secondary action "Download generated files"
     Then I should see the text "xlsx_footwear_attribute_export_1.xlsx"
     And I should see the text "xlsx_footwear_attribute_export_2.xlsx"
     And I should see the text "xlsx_footwear_attribute_export_3.xlsx"

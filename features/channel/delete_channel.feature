@@ -19,7 +19,7 @@ Feature: Delete a channel
 
   Scenario: Successfully delete a channel
     Given I am on the "mobile" channel page
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should see the flash message "Channel successfully removed"
     And the grid should contain 1 element
