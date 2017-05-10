@@ -2,7 +2,7 @@
 
 ## Bug fixes
 
-- PIM-6376: MongoDB timeout on attribute option import
+- PIM-6376: Fix slow MongoDB queries when editing attribute options
 
 # 1.6.14 (2017-04-21)
 
