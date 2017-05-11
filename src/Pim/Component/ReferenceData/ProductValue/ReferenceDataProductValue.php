@@ -46,6 +46,6 @@ class ReferenceDataProductValue extends AbstractProductValue implements Referenc
      */
     public function __toString()
     {
-        return null !== $this->data ? $this->data->getCode() : '';
+        return null !== $this->data ? (string) $this->data : '';
     }
 }
