@@ -103,7 +103,6 @@ const importPaths = Object.assign(importedPaths.paths, {
     'require-polyfill': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/require-polyfill.js'),
     'pim-router': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/router.js'),
     'paths': path.resolve(__dirname, './web/js/paths.js'),
-    'twig-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/twig-dependencies.js'),
     'widget-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/widget-dependencies.js'),
     'form-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/form-dependencies.js'),
     'CodeMirror': path.resolve(__dirname, './node_modules/codemirror/lib/codemirror.js'),

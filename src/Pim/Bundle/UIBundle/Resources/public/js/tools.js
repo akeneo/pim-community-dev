@@ -14,7 +14,6 @@ function (_, paths) {
          * @param {function (Object)} callback
          */
         loadModules: function (modules, callback) {
-            console.trace()
             var arrayArguments = _.object(requirements,  arguments)
             var requirements = _.values(modules);
             var requestFetcher = require.context('./src/Pim/Bundle', true, /^\.\/.*\.js$/)
