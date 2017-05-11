@@ -213,8 +213,13 @@ define([
                 return;
             }
             $el.attr('data-rendered', true);
+
+            if (!_.isArray(builders)) {
+                builders = [builders];
+            }
+
             methods.initBuilder.call({ $el: $el }, function () {
-                _.each(_.toArray([builders]), function (builder) {
+                _.each(builders, function (builder) {
                     if (!_.has(builder, 'init') || !$.isFunction(builder.init)) {
                         throw new TypeError('Builder does not have init method');
                     }

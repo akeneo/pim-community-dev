@@ -46,10 +46,6 @@ define(['module-config', 'jquery', 'underscore', 'pim/base-fetcher', 'fetcher-li
          */
         getFetcher: function (entityType) {
             var fetcher = (this.fetchers[entityType] || this.fetchers.default)
-            console.dir(this.fetchers)
-            // console.log('fetcher', fetcher)
-            // console.log('default', this.fetchers.default)
-
             return fetcher.loadedModule;
         },
 

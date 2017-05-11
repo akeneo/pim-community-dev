@@ -22,7 +22,8 @@ define(
         'oro/mediator',
         'oro/datagrid-builder',
         'oro/pageable-collection',
-        'pim/datagrid/state'
+        'pim/datagrid/state',
+        'paths'
     ],
     function (
         $,
@@ -38,7 +39,8 @@ define(
         mediator,
         datagridBuilder,
         PageableCollection,
-        DatagridState
+        DatagridState,
+        paths
     ) {
         var state = {};
 
@@ -322,9 +324,17 @@ define(
 
                     var gridModules = metadata.requireJSModules;
                     gridModules.push('pim/datagrid/state-listener');
-                    require(gridModules, function () {
-                        datagridBuilder(_.toArray(arguments));
-                    });
+
+                    var requestFetcher = require.context('./src/Pim/Bundle', true, /^\.\/.*\.js$/)
+
+                    require.ensure([], function() {
+                        var resolvedModules = []
+                        _.each(gridModules, function(module) {
+                            resolvedModules.push(requestFetcher(paths[module]));
+                        })
+                        console.log('resolvedModules', resolvedModules)
+                        datagridBuilder(resolvedModules)
+                    })
                 }.bind(this));
             },
             setListenerSelectors: function () {
