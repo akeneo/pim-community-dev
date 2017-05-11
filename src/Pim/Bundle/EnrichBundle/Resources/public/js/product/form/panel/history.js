@@ -13,7 +13,7 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'text-loader!pim/template/product/panel/history',
+        'pim/template/product/panel/history',
         'routing',
         'oro/mediator',
         'pim/fetcher-registry',

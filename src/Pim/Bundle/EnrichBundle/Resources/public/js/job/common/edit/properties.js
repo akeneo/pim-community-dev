@@ -11,7 +11,7 @@ define(
         'module-config',
         'underscore',
         'oro/translator',
-        'text-loader!pim/template/export/common/edit/properties',
+        'pim/template/export/common/edit/properties',
         'pim/form',
         'pim/common/property'
     ],

@@ -8,9 +8,9 @@ define(
         'oro/mediator',
         'oro/loading-mask',
         'pim/dialog',
-        'text-loader!pim/template/attribute-option/index',
-        'text-loader!pim/template/attribute-option/edit',
-        'text-loader!pim/template/attribute-option/show',
+        'pim/template/attribute-option/index',
+        'pim/template/attribute-option/edit',
+        'pim/template/attribute-option/show',
         'jquery-ui'
     ],
     function (

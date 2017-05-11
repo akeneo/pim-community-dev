@@ -13,7 +13,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text-loader!pim/template/form/index/create-button',
+        'pim/template/form/index/create-button',
         'routing',
         'pim/dialogform'
     ],

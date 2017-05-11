@@ -11,7 +11,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text-loader!pim/template/form/delete',
+        'pim/template/form/delete',
         'pim/router',
         'oro/loading-mask',
         'oro/messenger',

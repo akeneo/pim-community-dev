@@ -10,7 +10,7 @@
 define([
         'pim/field',
         'underscore',
-        'text-loader!pim/template/product/field/number'
+        'pim/template/product/field/number'
     ], function (
         Field,
         _,

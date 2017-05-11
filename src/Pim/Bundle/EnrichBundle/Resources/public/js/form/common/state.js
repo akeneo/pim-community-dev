@@ -15,7 +15,7 @@ define(
         'backbone',
         'pim/dialog',
         'pim/form',
-        'text-loader!pim/template/form/state'
+        'pim/template/form/state'
     ],
     function (
         $,

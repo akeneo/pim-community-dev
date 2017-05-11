@@ -17,7 +17,7 @@ define(
         'oro/translator',
         'backbone',
         'pim/form',
-        'text-loader!pim/template/grid/view-selector',
+        'pim/template/grid/view-selector',
         'pim/initselect2',
         'pim/datagrid/state',
         'pim/fetcher-registry',

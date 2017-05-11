@@ -1,6 +1,6 @@
 'use strict';
 
-define(['module-config', 'jquery', 'underscore', 'fetchers', 'pim/base-fetcher', 'fetcher-list', 'paths'], function (module, $, _, fetcherConfig, BaseFetcher, fetcherList, paths) {
+define(['module-config', 'jquery', 'underscore', 'pim/base-fetcher', 'fetcher-list', 'paths'], function (module, $, _, BaseFetcher, fetcherList, paths) {
     return {
         fetchers: {},
         initializePromise: null,

@@ -11,7 +11,7 @@ define(
     [
         'underscore',
         'pim/form',
-        'text-loader!pim/template/product/scope-switcher',
+        'pim/template/product/scope-switcher',
         'pim/fetcher-registry',
         'pim/user-context',
         'pim/i18n'

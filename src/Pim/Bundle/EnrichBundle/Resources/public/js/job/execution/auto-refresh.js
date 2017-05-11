@@ -13,7 +13,7 @@ define(
         'oro/translator',
         'pim/form',
         'pim/fetcher-registry',
-        'text-loader!pim/template/job-execution/auto-refresh',
+        'pim/template/job-execution/auto-refresh',
         'backbone'
     ],
     function ($, _, __, BaseForm, FetcherRegistry, template, Backbone) {

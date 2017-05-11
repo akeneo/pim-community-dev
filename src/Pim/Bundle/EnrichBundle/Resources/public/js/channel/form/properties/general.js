@@ -12,7 +12,7 @@ define([
         'oro/translator',
         'pim/form',
         'pim/fetcher-registry',
-        'text-loader!pim/template/channel/tab/properties/general',
+        'pim/template/channel/tab/properties/general',
         'pim/user-context',
         'oro/mediator',
         'pim/common/property',

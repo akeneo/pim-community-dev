@@ -11,7 +11,7 @@ define(
     [
         'underscore',
         'pim/form/common/edit-form',
-        'text-loader!pim/template/family-mass-edit/base-form'
+        'pim/template/family-mass-edit/base-form'
     ],
     function (
         _,

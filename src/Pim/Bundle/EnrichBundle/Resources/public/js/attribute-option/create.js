@@ -8,7 +8,7 @@ define(
         'routing',
         'pim/form-builder',
         'oro/messenger',
-        'text-loader!pim/template/attribute-option/validation-error'
+        'pim/template/attribute-option/validation-error'
     ],
     function (
         $,

@@ -3,8 +3,8 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'text-loader!pim/template/datagrid/action-launcher-button',
-    'text-loader!pim/template/datagrid/action-launcher-list-item'
+    'pim/template/datagrid/action-launcher-button',
+    'pim/template/datagrid/action-launcher-list-item'
 ], function($, _, Backbone, buttonTemplate, listItemTemplate) {
     'use strict';
 

@@ -5,7 +5,7 @@ define([
     'oro/translator',
     'pim/filter/filter',
     'routing',
-    'text-loader!pim/template/filter/product/completeness',
+    'pim/template/filter/product/completeness',
     'jquery.select2'
 ], function (_, __, BaseFilter, Routing, template) {
     return BaseFilter.extend({

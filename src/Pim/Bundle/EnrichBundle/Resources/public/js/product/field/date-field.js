@@ -11,7 +11,7 @@ define(
     [
         'pim/field',
         'underscore',
-        'text-loader!pim/template/product/field/date',
+        'pim/template/product/field/date',
         'datepicker',
         'pim/date-context'
     ],

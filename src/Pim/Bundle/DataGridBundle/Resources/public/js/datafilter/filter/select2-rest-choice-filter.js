@@ -9,7 +9,7 @@ define(
         'oro/datafilter/text-filter',
         'pim/formatter/choices/base',
         'pim/user-context',
-        'text-loader!pim/template/datagrid/filter/select2-choice-filter',
+        'pim/template/datagrid/filter/select2-choice-filter',
         'pim/initselect2',
         'jquery.select2'
     ],

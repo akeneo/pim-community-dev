@@ -4,7 +4,7 @@ define([
         'underscore',
         'jquery',
         'pim/form',
-        'text-loader!pim/template/system/group/loading-message',
+        'pim/template/system/group/loading-message',
         'bootstrap.bootstrapswitch'
     ],
     function (

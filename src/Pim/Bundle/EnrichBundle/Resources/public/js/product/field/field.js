@@ -11,7 +11,7 @@ define([
         'jquery',
         'backbone',
         'underscore',
-        'text-loader!pim/template/product/field/field',
+        'pim/template/product/field/field',
         'pim/attribute-manager',
         'pim/i18n',
         'oro/mediator'

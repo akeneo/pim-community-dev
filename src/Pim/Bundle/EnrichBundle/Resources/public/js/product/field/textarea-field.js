@@ -11,7 +11,7 @@ define(
     [
         'pim/field',
         'underscore',
-        'text-loader!pim/template/product/field/textarea'
+        'pim/template/product/field/textarea'
     ],
     function (
         Field,

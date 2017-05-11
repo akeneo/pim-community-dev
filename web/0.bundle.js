@@ -1,5 +1,5 @@
-webpackJsonp([0],Array(456).concat([
-/* 456 */
+webpackJsonp([0],Array(449).concat([
+/* 449 */
 /* unknown exports provided */
 /* all exports used */
 /*!*************************************!*\
@@ -8,547 +8,547 @@ webpackJsonp([0],Array(456).concat([
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"pimanalytics/js/data-collector": 100,
+	"pimanalytics/js/data-collector": 215,
 	"pimanalytics/js/patch-fetcher": 97,
 	"pimdashboard/js/abstract-widget": 62,
 	"pimdashboard/js/completeness-widget": 95,
 	"pimdashboard/js/last-operations-widget": 96,
 	"pimdashboard/js/widget-container": 99,
-	"pimdashboard/templates/completeness-widget.html": 488,
-	"pimdashboard/templates/last-operations-widget.html": 489,
-	"pimdashboard/templates/view-all-btn.html": 490,
-	"pimdatagrid/js/datafilter-builder": 491,
-	"pimdatagrid/js/datafilter/collection-filters-manager": 468,
-	"pimdatagrid/js/datafilter/filter/abstract-filter": 87,
-	"pimdatagrid/js/datafilter/filter/ajax-choice-filter": 492,
+	"pimdashboard/templates/completeness-widget.html": 100,
+	"pimdashboard/templates/last-operations-widget.html": 101,
+	"pimdashboard/templates/view-all-btn.html": 102,
+	"pimdatagrid/js/datafilter-builder": 505,
+	"pimdatagrid/js/datafilter/collection-filters-manager": 484,
+	"pimdatagrid/js/datafilter/filter/abstract-filter": 86,
+	"pimdatagrid/js/datafilter/filter/ajax-choice-filter": 506,
 	"pimdatagrid/js/datafilter/filter/choice-filter": 89,
-	"pimdatagrid/js/datafilter/filter/date-filter": 469,
-	"pimdatagrid/js/datafilter/filter/datetime-filter": 493,
-	"pimdatagrid/js/datafilter/filter/metric-filter": 494,
-	"pimdatagrid/js/datafilter/filter/multiselect-filter": 470,
-	"pimdatagrid/js/datafilter/filter/none-filter": 495,
-	"pimdatagrid/js/datafilter/filter/number-filter": 88,
-	"pimdatagrid/js/datafilter/filter/price-filter": 496,
-	"pimdatagrid/js/datafilter/filter/product_category-filter": 101,
-	"pimdatagrid/js/datafilter/filter/product_completeness-filter": 497,
-	"pimdatagrid/js/datafilter/filter/product_scope-filter": 498,
-	"pimdatagrid/js/datafilter/filter/select-filter": 457,
-	"pimdatagrid/js/datafilter/filter/select-row-filter": 499,
-	"pimdatagrid/js/datafilter/filter/select2-choice-filter": 500,
-	"pimdatagrid/js/datafilter/filter/select2-rest-choice-filter": 501,
-	"pimdatagrid/js/datafilter/filter/text-filter": 59,
-	"pimdatagrid/js/datafilter/filters-manager": 471,
-	"pimdatagrid/js/datafilter/formatter/abstract-formatter": 502,
-	"pimdatagrid/js/datagrid-builder": 49,
-	"pimdatagrid/js/datagrid/action-launcher": 102,
-	"pimdatagrid/js/datagrid/action/abstract-action": 40,
-	"pimdatagrid/js/datagrid/action/ajax-action": 103,
-	"pimdatagrid/js/datagrid/action/configure-columns-action": 503,
-	"pimdatagrid/js/datagrid/action/delete-action": 104,
-	"pimdatagrid/js/datagrid/action/mass-action": 105,
-	"pimdatagrid/js/datagrid/action/model-action": 50,
+	"pimdatagrid/js/datafilter/filter/date-filter": 485,
+	"pimdatagrid/js/datafilter/filter/datetime-filter": 507,
+	"pimdatagrid/js/datafilter/filter/metric-filter": 508,
+	"pimdatagrid/js/datafilter/filter/multiselect-filter": 486,
+	"pimdatagrid/js/datafilter/filter/none-filter": 509,
+	"pimdatagrid/js/datafilter/filter/number-filter": 87,
+	"pimdatagrid/js/datafilter/filter/price-filter": 510,
+	"pimdatagrid/js/datafilter/filter/product_category-filter": 216,
+	"pimdatagrid/js/datafilter/filter/product_completeness-filter": 511,
+	"pimdatagrid/js/datafilter/filter/product_scope-filter": 512,
+	"pimdatagrid/js/datafilter/filter/select-filter": 450,
+	"pimdatagrid/js/datafilter/filter/select-row-filter": 513,
+	"pimdatagrid/js/datafilter/filter/select2-choice-filter": 514,
+	"pimdatagrid/js/datafilter/filter/select2-rest-choice-filter": 515,
+	"pimdatagrid/js/datafilter/filter/text-filter": 57,
+	"pimdatagrid/js/datafilter/filters-manager": 487,
+	"pimdatagrid/js/datafilter/formatter/abstract-formatter": 516,
+	"pimdatagrid/js/datagrid-builder": 47,
+	"pimdatagrid/js/datagrid/action-launcher": 217,
+	"pimdatagrid/js/datagrid/action/abstract-action": 39,
+	"pimdatagrid/js/datagrid/action/ajax-action": 218,
+	"pimdatagrid/js/datagrid/action/configure-columns-action": 517,
+	"pimdatagrid/js/datagrid/action/delete-action": 219,
+	"pimdatagrid/js/datagrid/action/mass-action": 220,
+	"pimdatagrid/js/datagrid/action/model-action": 48,
 	"pimdatagrid/js/datagrid/action/navigate-action": 63,
-	"pimdatagrid/js/datagrid/action/refresh-collection-action": 106,
-	"pimdatagrid/js/datagrid/action/reset-collection-action": 107,
-	"pimdatagrid/js/datagrid/action/tab-redirect-action": 108,
-	"pimdatagrid/js/datagrid/actions-panel": 109,
-	"pimdatagrid/js/datagrid/body": 110,
-	"pimdatagrid/js/datagrid/cell/action-cell": 111,
-	"pimdatagrid/js/datagrid/cell/boolean-cell": 504,
-	"pimdatagrid/js/datagrid/cell/date-cell": 112,
-	"pimdatagrid/js/datagrid/cell/datetime-cell": 113,
-	"pimdatagrid/js/datagrid/cell/html-cell": 114,
-	"pimdatagrid/js/datagrid/cell/integer-cell": 505,
-	"pimdatagrid/js/datagrid/cell/number-cell": 506,
-	"pimdatagrid/js/datagrid/cell/select-cell": 507,
+	"pimdatagrid/js/datagrid/action/refresh-collection-action": 221,
+	"pimdatagrid/js/datagrid/action/reset-collection-action": 222,
+	"pimdatagrid/js/datagrid/action/tab-redirect-action": 223,
+	"pimdatagrid/js/datagrid/actions-panel": 224,
+	"pimdatagrid/js/datagrid/body": 225,
+	"pimdatagrid/js/datagrid/cell/action-cell": 226,
+	"pimdatagrid/js/datagrid/cell/boolean-cell": 518,
+	"pimdatagrid/js/datagrid/cell/date-cell": 227,
+	"pimdatagrid/js/datagrid/cell/datetime-cell": 228,
+	"pimdatagrid/js/datagrid/cell/html-cell": 229,
+	"pimdatagrid/js/datagrid/cell/integer-cell": 519,
+	"pimdatagrid/js/datagrid/cell/number-cell": 520,
+	"pimdatagrid/js/datagrid/cell/select-cell": 521,
 	"pimdatagrid/js/datagrid/cell/select-row-cell": 64,
-	"pimdatagrid/js/datagrid/cell/string-cell": 51,
-	"pimdatagrid/js/datagrid/column/action-column": 115,
-	"pimdatagrid/js/datagrid/formatter/cell-formatter": 116,
-	"pimdatagrid/js/datagrid/grid": 120,
-	"pimdatagrid/js/datagrid/grid-views/collection": 117,
-	"pimdatagrid/js/datagrid/grid-views/model": 118,
-	"pimdatagrid/js/datagrid/grid-views/view": 119,
-	"pimdatagrid/js/datagrid/header": 123,
-	"pimdatagrid/js/datagrid/header-cell/header-cell": 121,
-	"pimdatagrid/js/datagrid/header-cell/select-all-header-cell": 122,
-	"pimdatagrid/js/datagrid/listener/abstract-listener": 458,
-	"pimdatagrid/js/datagrid/listener/callback-listener": 508,
-	"pimdatagrid/js/datagrid/listener/column-form-listener": 509,
-	"pimdatagrid/js/datagrid/listener/oro-column-form-listener": 472,
-	"pimdatagrid/js/datagrid/page-size": 124,
-	"pimdatagrid/js/datagrid/pagination": 126,
-	"pimdatagrid/js/datagrid/pagination-input": 125,
-	"pimdatagrid/js/datagrid/row": 127,
-	"pimdatagrid/js/datagrid/state": 35,
-	"pimdatagrid/js/datagrid/state-listener": 510,
-	"pimdatagrid/js/datagrid/toolbar": 128,
-	"pimdatagrid/js/datagrid/widget/export-widget": 511,
-	"pimdatagrid/js/fetcher/datagrid-view-fetcher": 129,
+	"pimdatagrid/js/datagrid/cell/string-cell": 49,
+	"pimdatagrid/js/datagrid/column/action-column": 230,
+	"pimdatagrid/js/datagrid/formatter/cell-formatter": 231,
+	"pimdatagrid/js/datagrid/grid": 235,
+	"pimdatagrid/js/datagrid/grid-views/collection": 232,
+	"pimdatagrid/js/datagrid/grid-views/model": 233,
+	"pimdatagrid/js/datagrid/grid-views/view": 234,
+	"pimdatagrid/js/datagrid/header": 238,
+	"pimdatagrid/js/datagrid/header-cell/header-cell": 236,
+	"pimdatagrid/js/datagrid/header-cell/select-all-header-cell": 237,
+	"pimdatagrid/js/datagrid/listener/abstract-listener": 451,
+	"pimdatagrid/js/datagrid/listener/callback-listener": 522,
+	"pimdatagrid/js/datagrid/listener/column-form-listener": 523,
+	"pimdatagrid/js/datagrid/listener/oro-column-form-listener": 488,
+	"pimdatagrid/js/datagrid/page-size": 239,
+	"pimdatagrid/js/datagrid/pagination": 241,
+	"pimdatagrid/js/datagrid/pagination-input": 240,
+	"pimdatagrid/js/datagrid/row": 242,
+	"pimdatagrid/js/datagrid/state": 34,
+	"pimdatagrid/js/datagrid/state-listener": 524,
+	"pimdatagrid/js/datagrid/toolbar": 243,
+	"pimdatagrid/js/datagrid/widget/export-widget": 525,
+	"pimdatagrid/js/fetcher/datagrid-view-fetcher": 526,
 	"pimdatagrid/js/loading-mask": 15,
-	"pimdatagrid/js/multiselect-decorator": 460,
-	"pimdatagrid/js/pageable-collection": 38,
-	"pimdatagrid/js/remover/datagrid-view-remover": 130,
+	"pimdatagrid/js/multiselect-decorator": 455,
+	"pimdatagrid/js/pageable-collection": 37,
+	"pimdatagrid/js/remover/datagrid-view-remover": 244,
 	"pimdatagrid/js/saver/datagrid-view-saver": 65,
-	"pimdatagrid/lib/backbone-pageable": 131,
+	"pimdatagrid/lib/backbone-pageable": 245,
 	"pimdatagrid/lib/backgrid/backgrid": 20,
-	"pimdatagrid/lib/multiselect/jquery.multiselect": 462,
-	"pimdatagrid/lib/multiselect/jquery.multiselect.filter": 461,
-	"pimdatagrid/templates/configure-columns-action.html": 512,
-	"pimdatagrid/templates/datagrid/action-launcher-button.html": 513,
-	"pimdatagrid/templates/datagrid/action-launcher-list-item.html": 514,
-	"pimdatagrid/templates/datagrid/actions-group.html": 515,
-	"pimdatagrid/templates/filter/date-filter.html": 516,
-	"pimdatagrid/templates/filter/metric-filter.html": 517,
-	"pimdatagrid/templates/filter/select2-choice-filter.html": 518,
+	"pimdatagrid/lib/multiselect/jquery.multiselect": 457,
+	"pimdatagrid/lib/multiselect/jquery.multiselect.filter": 456,
+	"pimdatagrid/templates/configure-columns-action.html": 463,
+	"pimdatagrid/templates/datagrid/action-launcher-button.html": 103,
+	"pimdatagrid/templates/datagrid/action-launcher-list-item.html": 104,
+	"pimdatagrid/templates/datagrid/actions-group.html": 105,
+	"pimdatagrid/templates/filter/date-filter.html": 464,
+	"pimdatagrid/templates/filter/metric-filter.html": 465,
+	"pimdatagrid/templates/filter/select2-choice-filter.html": 453,
 	"pimenrich/js/app": 98,
-	"pimenrich/js/association-type/form/delete": 132,
-	"pimenrich/js/attribute-option/create": 463,
-	"pimenrich/js/attribute-option/form": 133,
-	"pimenrich/js/channel/form/delete": 134,
-	"pimenrich/js/channel/form/properties/conversion-unit": 135,
-	"pimenrich/js/channel/form/properties/general": 136,
-	"pimenrich/js/channel/form/properties/general/currencies": 137,
-	"pimenrich/js/channel/form/properties/general/locales": 138,
-	"pimenrich/js/channel/form/save": 139,
-	"pimenrich/js/common/column-list-view": 473,
+	"pimenrich/js/association-type/form/delete": 246,
+	"pimenrich/js/attribute-option/create": 458,
+	"pimenrich/js/attribute-option/form": 247,
+	"pimenrich/js/channel/form/delete": 248,
+	"pimenrich/js/channel/form/properties/conversion-unit": 249,
+	"pimenrich/js/channel/form/properties/general": 250,
+	"pimenrich/js/channel/form/properties/general/currencies": 251,
+	"pimenrich/js/channel/form/properties/general/locales": 252,
+	"pimenrich/js/channel/form/save": 253,
+	"pimenrich/js/common/column-list-view": 489,
 	"pimenrich/js/common/property": 18,
-	"pimenrich/js/controller/association-type": 140,
+	"pimenrich/js/controller/association-type": 254,
 	"pimenrich/js/controller/base": 19,
-	"pimenrich/js/controller/channel/edit": 141,
-	"pimenrich/js/controller/common/index": 142,
-	"pimenrich/js/controller/family": 143,
-	"pimenrich/js/controller/form": 52,
+	"pimenrich/js/controller/channel/edit": 255,
+	"pimenrich/js/controller/common/index": 256,
+	"pimenrich/js/controller/family": 257,
+	"pimenrich/js/controller/form": 50,
 	"pimenrich/js/controller/group": 66,
-	"pimenrich/js/controller/group-type": 144,
-	"pimenrich/js/controller/job-execution": 145,
-	"pimenrich/js/controller/job-instance": 146,
-	"pimenrich/js/controller/product": 147,
-	"pimenrich/js/controller/redirect": 148,
-	"pimenrich/js/controller/registry": 519,
-	"pimenrich/js/controller/role": 149,
-	"pimenrich/js/controller/system": 150,
-	"pimenrich/js/controller/template": 53,
-	"pimenrich/js/controller/user": 151,
-	"pimenrich/js/controller/variant-group": 152,
-	"pimenrich/js/date-context": 44,
+	"pimenrich/js/controller/group-type": 258,
+	"pimenrich/js/controller/job-execution": 259,
+	"pimenrich/js/controller/job-instance": 260,
+	"pimenrich/js/controller/product": 261,
+	"pimenrich/js/controller/redirect": 262,
+	"pimenrich/js/controller/registry": 527,
+	"pimenrich/js/controller/role": 263,
+	"pimenrich/js/controller/system": 264,
+	"pimenrich/js/controller/template": 51,
+	"pimenrich/js/controller/user": 265,
+	"pimenrich/js/controller/variant-group": 266,
+	"pimenrich/js/date-context": 42,
 	"pimenrich/js/error/error": 22,
-	"pimenrich/js/family/form/attributes": 153,
+	"pimenrich/js/family/form/attributes": 267,
 	"pimenrich/js/family/form/attributes/attributes": 67,
-	"pimenrich/js/family/form/attributes/toolbar": 154,
-	"pimenrich/js/family/form/attributes/toolbar/add-select/attribute-group/select": 155,
+	"pimenrich/js/family/form/attributes/toolbar": 268,
+	"pimenrich/js/family/form/attributes/toolbar/add-select/attribute-group/select": 269,
 	"pimenrich/js/family/form/attributes/toolbar/add-select/attribute/select": 68,
-	"pimenrich/js/family/form/delete": 156,
-	"pimenrich/js/family/form/properties/general": 157,
-	"pimenrich/js/family/form/properties/general/attribute-as-label": 158,
-	"pimenrich/js/family/form/properties/general/code": 159,
-	"pimenrich/js/family/form/properties/general/translation": 160,
-	"pimenrich/js/family/form/save": 161,
-	"pimenrich/js/family/mass-edit/attributes": 162,
-	"pimenrich/js/family/mass-edit/hidden-field-updater": 163,
-	"pimenrich/js/family/mass-edit/toolbar/add-select/attribute/select": 164,
-	"pimenrich/js/fetcher/attribute-fetcher": 165,
-	"pimenrich/js/fetcher/attribute-group-fetcher": 166,
-	"pimenrich/js/fetcher/base-fetcher": 28,
-	"pimenrich/js/fetcher/completeness-fetcher": 520,
+	"pimenrich/js/family/form/delete": 270,
+	"pimenrich/js/family/form/properties/general": 271,
+	"pimenrich/js/family/form/properties/general/attribute-as-label": 272,
+	"pimenrich/js/family/form/properties/general/code": 273,
+	"pimenrich/js/family/form/properties/general/translation": 274,
+	"pimenrich/js/family/form/save": 275,
+	"pimenrich/js/family/mass-edit/attributes": 276,
+	"pimenrich/js/family/mass-edit/hidden-field-updater": 277,
+	"pimenrich/js/family/mass-edit/toolbar/add-select/attribute/select": 278,
+	"pimenrich/js/fetcher/attribute-fetcher": 528,
+	"pimenrich/js/fetcher/attribute-group-fetcher": 529,
+	"pimenrich/js/fetcher/base-fetcher": 56,
+	"pimenrich/js/fetcher/completeness-fetcher": 530,
 	"pimenrich/js/fetcher/fetcher-registry": 4,
-	"pimenrich/js/fetcher/locale-fetcher": 167,
-	"pimenrich/js/fetcher/product-fetcher": 168,
-	"pimenrich/js/fetcher/variant-group-fetcher": 169,
-	"pimenrich/js/filter/attribute/attribute": 29,
-	"pimenrich/js/filter/attribute/boolean": 170,
-	"pimenrich/js/filter/attribute/date": 171,
-	"pimenrich/js/filter/attribute/identifier": 172,
-	"pimenrich/js/filter/attribute/media": 173,
-	"pimenrich/js/filter/attribute/metric": 174,
-	"pimenrich/js/filter/attribute/number": 175,
-	"pimenrich/js/filter/attribute/price-collection": 176,
-	"pimenrich/js/filter/attribute/select": 177,
-	"pimenrich/js/filter/attribute/string": 178,
-	"pimenrich/js/filter/filter": 32,
-	"pimenrich/js/filter/product/category": 179,
-	"pimenrich/js/filter/product/category/selector": 180,
-	"pimenrich/js/filter/product/completeness": 181,
-	"pimenrich/js/filter/product/enabled": 182,
-	"pimenrich/js/filter/product/family": 183,
-	"pimenrich/js/filter/product/updated": 184,
+	"pimenrich/js/fetcher/locale-fetcher": 531,
+	"pimenrich/js/fetcher/product-fetcher": 532,
+	"pimenrich/js/fetcher/variant-group-fetcher": 533,
+	"pimenrich/js/filter/attribute/attribute": 28,
+	"pimenrich/js/filter/attribute/boolean": 279,
+	"pimenrich/js/filter/attribute/date": 280,
+	"pimenrich/js/filter/attribute/identifier": 281,
+	"pimenrich/js/filter/attribute/media": 282,
+	"pimenrich/js/filter/attribute/metric": 283,
+	"pimenrich/js/filter/attribute/number": 284,
+	"pimenrich/js/filter/attribute/price-collection": 285,
+	"pimenrich/js/filter/attribute/select": 286,
+	"pimenrich/js/filter/attribute/string": 287,
+	"pimenrich/js/filter/filter": 31,
+	"pimenrich/js/filter/product/category": 288,
+	"pimenrich/js/filter/product/category/selector": 289,
+	"pimenrich/js/filter/product/completeness": 290,
+	"pimenrich/js/filter/product/enabled": 291,
+	"pimenrich/js/filter/product/family": 292,
+	"pimenrich/js/filter/product/updated": 293,
 	"pimenrich/js/form/builder": 16,
-	"pimenrich/js/form/cache-invalidator": 54,
-	"pimenrich/js/form/common/add-select/footer": 185,
+	"pimenrich/js/form/cache-invalidator": 88,
+	"pimenrich/js/form/common/add-select/footer": 294,
 	"pimenrich/js/form/common/add-select/line": 69,
 	"pimenrich/js/form/common/add-select/select": 70,
-	"pimenrich/js/form/common/attributes": 55,
-	"pimenrich/js/form/common/attributes/attribute-group-selector": 186,
-	"pimenrich/js/form/common/attributes/copy": 188,
-	"pimenrich/js/form/common/attributes/copy-field": 187,
-	"pimenrich/js/form/common/back-to-grid": 189,
+	"pimenrich/js/form/common/attributes": 52,
+	"pimenrich/js/form/common/attributes/attribute-group-selector": 295,
+	"pimenrich/js/form/common/attributes/copy": 297,
+	"pimenrich/js/form/common/attributes/copy-field": 296,
+	"pimenrich/js/form/common/back-to-grid": 298,
 	"pimenrich/js/form/common/delete": 25,
-	"pimenrich/js/form/common/download-file": 190,
-	"pimenrich/js/form/common/edit-form": 191,
-	"pimenrich/js/form/common/form-tabs": 192,
-	"pimenrich/js/form/common/grid": 56,
-	"pimenrich/js/form/common/group-selector": 193,
-	"pimenrich/js/form/common/index/confirm-button": 521,
-	"pimenrich/js/form/common/index/create-button": 194,
-	"pimenrich/js/form/common/index/grid": 195,
-	"pimenrich/js/form/common/index/index": 196,
-	"pimenrich/js/form/common/label": 41,
-	"pimenrich/js/form/common/meta/created": 197,
-	"pimenrich/js/form/common/meta/status": 198,
-	"pimenrich/js/form/common/meta/updated": 199,
-	"pimenrich/js/form/common/properties/general": 200,
+	"pimenrich/js/form/common/download-file": 299,
+	"pimenrich/js/form/common/edit-form": 300,
+	"pimenrich/js/form/common/form-tabs": 301,
+	"pimenrich/js/form/common/grid": 53,
+	"pimenrich/js/form/common/group-selector": 302,
+	"pimenrich/js/form/common/index/confirm-button": 534,
+	"pimenrich/js/form/common/index/create-button": 303,
+	"pimenrich/js/form/common/index/grid": 304,
+	"pimenrich/js/form/common/index/index": 305,
+	"pimenrich/js/form/common/label": 40,
+	"pimenrich/js/form/common/meta/created": 306,
+	"pimenrich/js/form/common/meta/status": 307,
+	"pimenrich/js/form/common/meta/updated": 308,
+	"pimenrich/js/form/common/properties/general": 309,
 	"pimenrich/js/form/common/properties/translation": 71,
 	"pimenrich/js/form/common/redirect": 72,
-	"pimenrich/js/form/common/save": 33,
-	"pimenrich/js/form/common/save-buttons": 201,
-	"pimenrich/js/form/common/save-form": 202,
-	"pimenrich/js/form/common/state": 203,
-	"pimenrich/js/form/common/tab/history": 204,
-	"pimenrich/js/form/common/tab/properties": 205,
-	"pimenrich/js/form/config-provider": 57,
-	"pimenrich/js/form/form-modal": 522,
-	"pimenrich/js/form/registry": 206,
-	"pimenrich/js/formatter/choices/base": 47,
-	"pimenrich/js/formatter/date-formatter": 61,
-	"pimenrich/js/generator/media-url-generator": 474,
-	"pimenrich/js/grid/view-selector": 212,
-	"pimenrich/js/grid/view-selector-create-view": 207,
-	"pimenrich/js/grid/view-selector-current": 208,
-	"pimenrich/js/grid/view-selector-line": 209,
-	"pimenrich/js/grid/view-selector-remove-view": 210,
-	"pimenrich/js/grid/view-selector-save-view": 211,
-	"pimenrich/js/group-type/form/delete": 213,
-	"pimenrich/js/group/form/delete": 214,
-	"pimenrich/js/group/form/meta/product-count": 215,
-	"pimenrich/js/group/form/products": 216,
-	"pimenrich/js/group/form/properties/general": 217,
-	"pimenrich/js/group/form/save": 218,
+	"pimenrich/js/form/common/save": 32,
+	"pimenrich/js/form/common/save-buttons": 310,
+	"pimenrich/js/form/common/save-form": 311,
+	"pimenrich/js/form/common/state": 312,
+	"pimenrich/js/form/common/tab/history": 313,
+	"pimenrich/js/form/common/tab/properties": 314,
+	"pimenrich/js/form/config-provider": 54,
+	"pimenrich/js/form/form-modal": 535,
+	"pimenrich/js/form/registry": 315,
+	"pimenrich/js/formatter/choices/base": 45,
+	"pimenrich/js/formatter/date-formatter": 60,
+	"pimenrich/js/generator/media-url-generator": 490,
+	"pimenrich/js/grid/view-selector": 321,
+	"pimenrich/js/grid/view-selector-create-view": 316,
+	"pimenrich/js/grid/view-selector-current": 317,
+	"pimenrich/js/grid/view-selector-line": 318,
+	"pimenrich/js/grid/view-selector-remove-view": 319,
+	"pimenrich/js/grid/view-selector-save-view": 320,
+	"pimenrich/js/group-type/form/delete": 322,
+	"pimenrich/js/group/form/delete": 323,
+	"pimenrich/js/group/form/meta/product-count": 324,
+	"pimenrich/js/group/form/products": 325,
+	"pimenrich/js/group/form/properties/general": 326,
+	"pimenrich/js/group/form/save": 327,
 	"pimenrich/js/i18n": 9,
-	"pimenrich/js/job/common/edit/content/data/help": 219,
-	"pimenrich/js/job/common/edit/field/decimal-separator": 220,
-	"pimenrich/js/job/common/edit/field/field": 58,
+	"pimenrich/js/job/common/edit/content/data/help": 328,
+	"pimenrich/js/job/common/edit/field/decimal-separator": 329,
+	"pimenrich/js/job/common/edit/field/field": 55,
 	"pimenrich/js/job/common/edit/field/select": 73,
-	"pimenrich/js/job/common/edit/field/switch": 221,
-	"pimenrich/js/job/common/edit/field/text": 222,
-	"pimenrich/js/job/common/edit/label": 223,
+	"pimenrich/js/job/common/edit/field/switch": 330,
+	"pimenrich/js/job/common/edit/field/text": 331,
+	"pimenrich/js/job/common/edit/label": 332,
 	"pimenrich/js/job/common/edit/launch": 74,
-	"pimenrich/js/job/common/edit/meta": 224,
-	"pimenrich/js/job/common/edit/properties": 225,
+	"pimenrich/js/job/common/edit/meta": 333,
+	"pimenrich/js/job/common/edit/properties": 334,
 	"pimenrich/js/job/common/edit/save": 75,
-	"pimenrich/js/job/common/edit/upload": 227,
-	"pimenrich/js/job/common/edit/upload-launch": 226,
-	"pimenrich/js/job/common/edit/validation": 228,
-	"pimenrich/js/job/common/label": 229,
-	"pimenrich/js/job/execution/auto-refresh": 230,
-	"pimenrich/js/job/execution/download-archives-buttons": 231,
-	"pimenrich/js/job/execution/download-log": 232,
-	"pimenrich/js/job/execution/show-profile": 233,
-	"pimenrich/js/job/execution/summary-table": 234,
-	"pimenrich/js/job/export/edit/delete": 235,
-	"pimenrich/js/job/export/edit/save": 236,
-	"pimenrich/js/job/import/edit/delete": 237,
-	"pimenrich/js/job/import/edit/save": 238,
-	"pimenrich/js/job/product/edit/content": 239,
-	"pimenrich/js/job/product/edit/content/data": 240,
-	"pimenrich/js/job/product/edit/content/data/add-select/attribute/select": 241,
-	"pimenrich/js/job/product/edit/content/data/default-attribute-filters": 242,
-	"pimenrich/js/job/product/edit/content/readonly": 243,
-	"pimenrich/js/job/product/edit/content/structure": 244,
-	"pimenrich/js/job/product/edit/content/structure/attributes": 246,
-	"pimenrich/js/job/product/edit/content/structure/attributes-selector": 245,
-	"pimenrich/js/job/product/edit/content/structure/locales": 247,
-	"pimenrich/js/job/product/edit/content/structure/scope": 248,
-	"pimenrich/js/job/product/edit/field/date-format": 249,
-	"pimenrich/js/jquery.wizard": 523,
-	"pimenrich/js/jstree/jquery.jstree.nested_switch": 250,
+	"pimenrich/js/job/common/edit/upload": 336,
+	"pimenrich/js/job/common/edit/upload-launch": 335,
+	"pimenrich/js/job/common/edit/validation": 337,
+	"pimenrich/js/job/common/label": 338,
+	"pimenrich/js/job/execution/auto-refresh": 339,
+	"pimenrich/js/job/execution/download-archives-buttons": 340,
+	"pimenrich/js/job/execution/download-log": 341,
+	"pimenrich/js/job/execution/show-profile": 342,
+	"pimenrich/js/job/execution/summary-table": 343,
+	"pimenrich/js/job/export/edit/delete": 344,
+	"pimenrich/js/job/export/edit/save": 345,
+	"pimenrich/js/job/import/edit/delete": 346,
+	"pimenrich/js/job/import/edit/save": 347,
+	"pimenrich/js/job/product/edit/content": 348,
+	"pimenrich/js/job/product/edit/content/data": 349,
+	"pimenrich/js/job/product/edit/content/data/add-select/attribute/select": 350,
+	"pimenrich/js/job/product/edit/content/data/default-attribute-filters": 351,
+	"pimenrich/js/job/product/edit/content/readonly": 352,
+	"pimenrich/js/job/product/edit/content/structure": 353,
+	"pimenrich/js/job/product/edit/content/structure/attributes": 355,
+	"pimenrich/js/job/product/edit/content/structure/attributes-selector": 354,
+	"pimenrich/js/job/product/edit/content/structure/locales": 356,
+	"pimenrich/js/job/product/edit/content/structure/scope": 357,
+	"pimenrich/js/job/product/edit/field/date-format": 358,
+	"pimenrich/js/jquery.wizard": 536,
+	"pimenrich/js/jstree/jquery.jstree.nested_switch": 359,
 	"pimenrich/js/jstree/jquery.jstree.tree_selector": 90,
 	"pimenrich/js/manager/attribute-group-manager": 76,
 	"pimenrich/js/manager/attribute-manager": 24,
-	"pimenrich/js/manager/group-manager": 251,
-	"pimenrich/js/manager/history-item-manager": 524,
-	"pimenrich/js/manager/product-manager": 42,
-	"pimenrich/js/manager/variant-group-manager": 252,
+	"pimenrich/js/manager/group-manager": 360,
+	"pimenrich/js/manager/history-item-manager": 537,
+	"pimenrich/js/manager/product-manager": 58,
+	"pimenrich/js/manager/variant-group-manager": 361,
 	"pimenrich/js/page-title": 23,
-	"pimenrich/js/pim-async-tab": 253,
-	"pimenrich/js/pim-attributeoptionview": 525,
-	"pimenrich/js/pim-currencyfield": 526,
-	"pimenrich/js/pim-init": 254,
-	"pimenrich/js/pim-item-tableview": 527,
-	"pimenrich/js/pim-item-view": 528,
-	"pimenrich/js/pim-optionform": 475,
-	"pimenrich/js/pim-popinform": 529,
-	"pimenrich/js/pim-scopable": 530,
-	"pimenrich/js/product/create/create": 255,
-	"pimenrich/js/product/create/form": 256,
+	"pimenrich/js/pim-async-tab": 362,
+	"pimenrich/js/pim-attributeoptionview": 538,
+	"pimenrich/js/pim-currencyfield": 539,
+	"pimenrich/js/pim-init": 363,
+	"pimenrich/js/pim-item-tableview": 540,
+	"pimenrich/js/pim-item-view": 541,
+	"pimenrich/js/pim-optionform": 491,
+	"pimenrich/js/pim-popinform": 542,
+	"pimenrich/js/pim-scopable": 543,
+	"pimenrich/js/product/create/create": 364,
+	"pimenrich/js/product/create/form": 365,
 	"pimenrich/js/product/field-manager": 17,
-	"pimenrich/js/product/field/boolean-field": 531,
-	"pimenrich/js/product/field/date-field": 532,
-	"pimenrich/js/product/field/field": 85,
-	"pimenrich/js/product/field/media-field": 533,
-	"pimenrich/js/product/field/metric-field": 534,
-	"pimenrich/js/product/field/multi-select-field": 476,
-	"pimenrich/js/product/field/number-field": 535,
-	"pimenrich/js/product/field/price-collection-field": 536,
-	"pimenrich/js/product/field/simple-select-field": 477,
-	"pimenrich/js/product/field/text-field": 537,
-	"pimenrich/js/product/field/textarea-field": 538,
-	"pimenrich/js/product/field/wysiwyg-field": 539,
+	"pimenrich/js/product/field/boolean-field": 544,
+	"pimenrich/js/product/field/date-field": 545,
+	"pimenrich/js/product/field/field": 84,
+	"pimenrich/js/product/field/media-field": 546,
+	"pimenrich/js/product/field/metric-field": 547,
+	"pimenrich/js/product/field/multi-select-field": 492,
+	"pimenrich/js/product/field/number-field": 548,
+	"pimenrich/js/product/field/price-collection-field": 549,
+	"pimenrich/js/product/field/simple-select-field": 493,
+	"pimenrich/js/product/field/text-field": 550,
+	"pimenrich/js/product/field/textarea-field": 551,
+	"pimenrich/js/product/field/wysiwyg-field": 552,
 	"pimenrich/js/product/form": 3,
-	"pimenrich/js/product/form/associations": 257,
-	"pimenrich/js/product/form/attributes": 258,
-	"pimenrich/js/product/form/attributes/add-select/attribute/line": 259,
-	"pimenrich/js/product/form/attributes/add-select/attribute/select": 43,
-	"pimenrich/js/product/form/attributes/completeness": 260,
-	"pimenrich/js/product/form/attributes/locale-specific": 261,
-	"pimenrich/js/product/form/attributes/localizable": 262,
-	"pimenrich/js/product/form/attributes/validation": 264,
-	"pimenrich/js/product/form/attributes/validation-error": 263,
-	"pimenrich/js/product/form/attributes/variant-group": 265,
-	"pimenrich/js/product/form/categories": 266,
-	"pimenrich/js/product/form/delete": 267,
-	"pimenrich/js/product/form/download-pdf": 268,
+	"pimenrich/js/product/form/associations": 366,
+	"pimenrich/js/product/form/attributes": 367,
+	"pimenrich/js/product/form/attributes/add-select/attribute/line": 368,
+	"pimenrich/js/product/form/attributes/add-select/attribute/select": 41,
+	"pimenrich/js/product/form/attributes/completeness": 369,
+	"pimenrich/js/product/form/attributes/locale-specific": 370,
+	"pimenrich/js/product/form/attributes/localizable": 371,
+	"pimenrich/js/product/form/attributes/validation": 373,
+	"pimenrich/js/product/form/attributes/validation-error": 372,
+	"pimenrich/js/product/form/attributes/variant-group": 374,
+	"pimenrich/js/product/form/categories": 375,
+	"pimenrich/js/product/form/delete": 376,
+	"pimenrich/js/product/form/download-pdf": 377,
 	"pimenrich/js/product/form/locale-switcher": 77,
-	"pimenrich/js/product/form/mass-edit/attributes": 269,
-	"pimenrich/js/product/form/mass-edit/hidden-field-updater": 270,
-	"pimenrich/js/product/form/meta/change-family": 271,
-	"pimenrich/js/product/form/meta/family": 272,
-	"pimenrich/js/product/form/meta/groups": 273,
-	"pimenrich/js/product/form/panel/comments": 274,
-	"pimenrich/js/product/form/panel/completeness": 275,
-	"pimenrich/js/product/form/panel/history": 276,
-	"pimenrich/js/product/form/panel/panels": 277,
-	"pimenrich/js/product/form/panel/selector": 278,
-	"pimenrich/js/product/form/product-label": 279,
-	"pimenrich/js/product/form/save": 281,
-	"pimenrich/js/product/form/save-and-back": 280,
+	"pimenrich/js/product/form/mass-edit/attributes": 378,
+	"pimenrich/js/product/form/mass-edit/hidden-field-updater": 379,
+	"pimenrich/js/product/form/meta/change-family": 380,
+	"pimenrich/js/product/form/meta/family": 381,
+	"pimenrich/js/product/form/meta/groups": 382,
+	"pimenrich/js/product/form/panel/comments": 383,
+	"pimenrich/js/product/form/panel/completeness": 384,
+	"pimenrich/js/product/form/panel/history": 385,
+	"pimenrich/js/product/form/panel/panels": 386,
+	"pimenrich/js/product/form/panel/selector": 387,
+	"pimenrich/js/product/form/product-label": 388,
+	"pimenrich/js/product/form/save": 390,
+	"pimenrich/js/product/form/save-and-back": 389,
 	"pimenrich/js/product/form/scope-switcher": 78,
-	"pimenrich/js/product/form/sequential-edit": 282,
-	"pimenrich/js/product/form/status-switcher": 283,
+	"pimenrich/js/product/form/sequential-edit": 391,
+	"pimenrich/js/product/form/status-switcher": 392,
 	"pimenrich/js/provider/to-fill-field-provider": 79,
-	"pimenrich/js/remover/association-type-remover": 284,
+	"pimenrich/js/remover/association-type-remover": 393,
 	"pimenrich/js/remover/base-remover": 26,
-	"pimenrich/js/remover/channel": 285,
-	"pimenrich/js/remover/family": 286,
-	"pimenrich/js/remover/group-remover": 287,
-	"pimenrich/js/remover/group-type-remover": 288,
-	"pimenrich/js/remover/job-instance-export-remover": 289,
-	"pimenrich/js/remover/job-instance-import-remover": 290,
-	"pimenrich/js/remover/product-remover": 291,
-	"pimenrich/js/remover/variant-group-remover": 292,
-	"pimenrich/js/route-matcher": 293,
+	"pimenrich/js/remover/channel": 394,
+	"pimenrich/js/remover/family": 395,
+	"pimenrich/js/remover/group-remover": 396,
+	"pimenrich/js/remover/group-type-remover": 397,
+	"pimenrich/js/remover/job-instance-export-remover": 398,
+	"pimenrich/js/remover/job-instance-import-remover": 399,
+	"pimenrich/js/remover/product-remover": 400,
+	"pimenrich/js/remover/variant-group-remover": 401,
+	"pimenrich/js/route-matcher": 402,
 	"pimenrich/js/router": 13,
-	"pimenrich/js/saver/base-saver": 30,
-	"pimenrich/js/saver/channel": 294,
-	"pimenrich/js/saver/entity-saver": 295,
-	"pimenrich/js/saver/family": 296,
-	"pimenrich/js/saver/group-saver": 297,
-	"pimenrich/js/saver/job-instance-export-saver": 298,
-	"pimenrich/js/saver/job-instance-import-saver": 299,
-	"pimenrich/js/saver/product-saver": 300,
-	"pimenrich/js/saver/variant-group-saver": 301,
+	"pimenrich/js/saver/base-saver": 29,
+	"pimenrich/js/saver/channel": 403,
+	"pimenrich/js/saver/entity-saver": 404,
+	"pimenrich/js/saver/family": 405,
+	"pimenrich/js/saver/group-saver": 406,
+	"pimenrich/js/saver/job-instance-export-saver": 407,
+	"pimenrich/js/saver/job-instance-import-saver": 408,
+	"pimenrich/js/saver/product-saver": 409,
+	"pimenrich/js/saver/variant-group-saver": 410,
 	"pimenrich/js/security-context": 21,
 	"pimenrich/js/translator": 2,
-	"pimenrich/js/tree-associate.jstree": 302,
-	"pimenrich/js/tree-manage.jstree": 540,
-	"pimenrich/js/tree-view.jstree": 303,
-	"pimenrich/js/user-context": 7,
-	"pimenrich/js/variant-group/form/attributes/add-select/attribute/select": 304,
-	"pimenrich/js/variant-group/form/delete": 305,
-	"pimenrich/js/variant-group/form/no-attribute": 306,
-	"pimenrich/js/variant-group/form/properties/general": 307,
-	"pimenrich/js/variant-group/form/save": 308,
+	"pimenrich/js/tree-associate.jstree": 411,
+	"pimenrich/js/tree-manage.jstree": 553,
+	"pimenrich/js/tree-view.jstree": 412,
+	"pimenrich/js/user-context": 5,
+	"pimenrich/js/variant-group/form/attributes/add-select/attribute/select": 413,
+	"pimenrich/js/variant-group/form/delete": 414,
+	"pimenrich/js/variant-group/form/no-attribute": 415,
+	"pimenrich/js/variant-group/form/properties/general": 416,
+	"pimenrich/js/variant-group/form/save": 417,
 	"pimenrich/lib/translator": 80,
-	"pimenrich/templates/attribute-option/edit.html": 541,
-	"pimenrich/templates/attribute-option/form.html": 542,
-	"pimenrich/templates/attribute-option/index.html": 543,
-	"pimenrich/templates/attribute-option/show.html": 544,
-	"pimenrich/templates/attribute-option/validation-error.html": 545,
-	"pimenrich/templates/channel/tab/properties/conversion-unit.html": 546,
-	"pimenrich/templates/channel/tab/properties/general.html": 547,
-	"pimenrich/templates/channel/tab/properties/general/category-tree.html": 548,
-	"pimenrich/templates/channel/tab/properties/general/currencies.html": 549,
-	"pimenrich/templates/channel/tab/properties/general/locales.html": 550,
-	"pimenrich/templates/error/error.html": 551,
-	"pimenrich/templates/export/common/edit/field/field.html": 552,
-	"pimenrich/templates/export/common/edit/field/select.html": 553,
-	"pimenrich/templates/export/common/edit/field/switch.html": 554,
-	"pimenrich/templates/export/common/edit/field/text.html": 555,
-	"pimenrich/templates/export/common/edit/launch.html": 556,
-	"pimenrich/templates/export/common/edit/meta.html": 557,
-	"pimenrich/templates/export/common/edit/properties.html": 558,
-	"pimenrich/templates/export/common/edit/upload.html": 559,
-	"pimenrich/templates/export/common/edit/validation.html": 560,
-	"pimenrich/templates/export/product/edit/content.html": 561,
-	"pimenrich/templates/export/product/edit/content/data.html": 562,
-	"pimenrich/templates/export/product/edit/content/data/help.html": 563,
-	"pimenrich/templates/export/product/edit/content/structure.html": 564,
-	"pimenrich/templates/export/product/edit/content/structure/attribute-list.html": 565,
-	"pimenrich/templates/export/product/edit/content/structure/attributes-selector.html": 566,
-	"pimenrich/templates/export/product/edit/content/structure/attributes.html": 567,
-	"pimenrich/templates/export/product/edit/content/structure/locales.html": 568,
-	"pimenrich/templates/export/product/edit/content/structure/scope.html": 569,
-	"pimenrich/templates/family/tab/attributes.html": 570,
-	"pimenrich/templates/family/tab/attributes/attributes.html": 571,
-	"pimenrich/templates/family/tab/attributes/toolbar.html": 572,
-	"pimenrich/templates/family/tab/general/attribute-as-label.html": 573,
-	"pimenrich/templates/filter/attribute/boolean.html": 574,
-	"pimenrich/templates/filter/attribute/date.html": 575,
-	"pimenrich/templates/filter/attribute/media.html": 576,
-	"pimenrich/templates/filter/attribute/metric.html": 577,
-	"pimenrich/templates/filter/attribute/number.html": 578,
-	"pimenrich/templates/filter/attribute/price-collection.html": 579,
-	"pimenrich/templates/filter/attribute/select.html": 580,
-	"pimenrich/templates/filter/attribute/string.html": 581,
-	"pimenrich/templates/filter/filter.html": 582,
-	"pimenrich/templates/filter/product/category.html": 583,
-	"pimenrich/templates/filter/product/category/selector.html": 584,
-	"pimenrich/templates/filter/product/completeness.html": 585,
-	"pimenrich/templates/filter/product/enabled.html": 586,
-	"pimenrich/templates/filter/product/family.html": 587,
-	"pimenrich/templates/filter/product/identifier.html": 588,
-	"pimenrich/templates/filter/product/updated.html": 589,
-	"pimenrich/templates/filter/simpleselect.html": 590,
-	"pimenrich/templates/form/add-select/footer.html": 591,
-	"pimenrich/templates/form/add-select/line.html": 592,
-	"pimenrich/templates/form/add-select/select.html": 593,
-	"pimenrich/templates/form/back-to-grid.html": 594,
-	"pimenrich/templates/form/delete.html": 595,
-	"pimenrich/templates/form/download-file.html": 596,
-	"pimenrich/templates/form/edit-form.html": 597,
-	"pimenrich/templates/form/form-tabs.html": 598,
-	"pimenrich/templates/form/grid.html": 599,
-	"pimenrich/templates/form/group-selector.html": 600,
-	"pimenrich/templates/form/index/confirm-button.html": 601,
-	"pimenrich/templates/form/index/create-button.html": 602,
-	"pimenrich/templates/form/index/index.html": 603,
-	"pimenrich/templates/form/meta/created.html": 604,
-	"pimenrich/templates/form/meta/status.html": 605,
-	"pimenrich/templates/form/meta/updated.html": 606,
-	"pimenrich/templates/form/properties/general.html": 607,
-	"pimenrich/templates/form/properties/input.html": 608,
-	"pimenrich/templates/form/properties/translation.html": 609,
-	"pimenrich/templates/form/redirect.html": 610,
-	"pimenrich/templates/form/save-buttons.html": 611,
-	"pimenrich/templates/form/save.html": 612,
-	"pimenrich/templates/form/state.html": 613,
-	"pimenrich/templates/form/tab/attributes.html": 614,
-	"pimenrich/templates/form/tab/attributes/attribute-group-selector.html": 615,
-	"pimenrich/templates/form/tab/attributes/copy-field.html": 616,
-	"pimenrich/templates/form/tab/attributes/copy.html": 617,
-	"pimenrich/templates/form/tab/history.html": 618,
-	"pimenrich/templates/form/tab/properties.html": 619,
-	"pimenrich/templates/form/tab/section.html": 620,
-	"pimenrich/templates/grid/view-selector-create-view-label-input.html": 621,
-	"pimenrich/templates/grid/view-selector-create-view.html": 622,
-	"pimenrich/templates/grid/view-selector-current.html": 623,
-	"pimenrich/templates/grid/view-selector-line.html": 624,
-	"pimenrich/templates/grid/view-selector-remove-view.html": 625,
-	"pimenrich/templates/grid/view-selector-save-view.html": 626,
-	"pimenrich/templates/grid/view-selector.html": 627,
-	"pimenrich/templates/group/meta/product-count.html": 628,
-	"pimenrich/templates/group/tab/properties/general.html": 629,
-	"pimenrich/templates/i18n/flag.html": 630,
-	"pimenrich/templates/job-execution/auto-refresh.html": 631,
-	"pimenrich/templates/job-execution/download-archives-buttons.html": 632,
-	"pimenrich/templates/job-execution/summary-table.html": 633,
-	"pimenrich/templates/product/create-error.html": 634,
-	"pimenrich/templates/product/create-popin.html": 635,
-	"pimenrich/templates/product/download-pdf.html": 636,
-	"pimenrich/templates/product/field/boolean.html": 637,
-	"pimenrich/templates/product/field/date.html": 638,
-	"pimenrich/templates/product/field/field.html": 639,
-	"pimenrich/templates/product/field/media.html": 640,
-	"pimenrich/templates/product/field/metric.html": 641,
-	"pimenrich/templates/product/field/multi-select.html": 642,
-	"pimenrich/templates/product/field/number.html": 643,
-	"pimenrich/templates/product/field/price-collection.html": 644,
-	"pimenrich/templates/product/field/simple-select.html": 645,
-	"pimenrich/templates/product/field/text.html": 646,
-	"pimenrich/templates/product/field/textarea.html": 647,
-	"pimenrich/templates/product/form/add-select/attribute/line.html": 648,
-	"pimenrich/templates/product/locale-switcher.html": 649,
-	"pimenrich/templates/product/meta/change-family-modal.html": 650,
-	"pimenrich/templates/product/meta/family.html": 651,
-	"pimenrich/templates/product/meta/group-modal.html": 652,
-	"pimenrich/templates/product/meta/groups.html": 653,
-	"pimenrich/templates/product/panel/comments.html": 654,
-	"pimenrich/templates/product/panel/completeness.html": 655,
-	"pimenrich/templates/product/panel/container.html": 656,
-	"pimenrich/templates/product/panel/history.html": 657,
-	"pimenrich/templates/product/panel/selector.html": 658,
-	"pimenrich/templates/product/scope-switcher.html": 659,
-	"pimenrich/templates/product/sequential-edit.html": 660,
-	"pimenrich/templates/product/status-switcher.html": 661,
-	"pimenrich/templates/product/tab/association-panes.html": 662,
-	"pimenrich/templates/product/tab/associations.html": 663,
-	"pimenrich/templates/product/tab/attributes/validation-error.html": 664,
-	"pimenrich/templates/product/tab/attributes/variant-group.html": 665,
-	"pimenrich/templates/product/tab/categories.html": 666,
-	"pimenrich/templates/variant-group/form/no-attribute.html": 667,
-	"pimenrich/templates/variant-group/tab/properties/general.html": 668,
-	"pimimportexport/js/job-execution-view": 669,
-	"pimnavigation/js/navigation/abstract-view": 464,
-	"pimnavigation/js/navigation/collection": 465,
-	"pimnavigation/js/navigation/dotmenu/item-view": 478,
-	"pimnavigation/js/navigation/dotmenu/view": 479,
-	"pimnavigation/js/navigation/favorites/view": 670,
-	"pimnavigation/js/navigation/model": 459,
-	"pimnavigation/js/navigation/pinbar/collection": 480,
-	"pimnavigation/js/navigation/pinbar/item-view": 481,
-	"pimnavigation/js/navigation/pinbar/model": 466,
-	"pimnavigation/js/navigation/pinbar/view": 671,
-	"pimnavigation/lib/jquery-form/jquery.form": 309,
-	"pimnavigation/lib/url/url.min": 672,
-	"pimnotification/js/indicator": 482,
-	"pimnotification/js/notification-list": 483,
-	"pimnotification/js/notifications": 673,
-	"pimnotification/templates/notification/notification-footer.html": 674,
-	"pimnotification/templates/notification/notification-list.html": 675,
-	"pimnotification/templates/notification/notification.html": 676,
-	"pimreferencedata/js/product/field/reference-multi-select-field": 677,
-	"pimreferencedata/js/product/field/reference-simple-select-field": 678,
-	"pimui/js/app": 34,
+	"pimenrich/templates/attribute-option/edit.html": 466,
+	"pimenrich/templates/attribute-option/form.html": 106,
+	"pimenrich/templates/attribute-option/index.html": 467,
+	"pimenrich/templates/attribute-option/show.html": 468,
+	"pimenrich/templates/attribute-option/validation-error.html": 469,
+	"pimenrich/templates/channel/tab/properties/conversion-unit.html": 107,
+	"pimenrich/templates/channel/tab/properties/general.html": 108,
+	"pimenrich/templates/channel/tab/properties/general/category-tree.html": 109,
+	"pimenrich/templates/channel/tab/properties/general/currencies.html": 110,
+	"pimenrich/templates/channel/tab/properties/general/locales.html": 111,
+	"pimenrich/templates/error/error.html": 112,
+	"pimenrich/templates/export/common/edit/field/field.html": 113,
+	"pimenrich/templates/export/common/edit/field/select.html": 114,
+	"pimenrich/templates/export/common/edit/field/switch.html": 115,
+	"pimenrich/templates/export/common/edit/field/text.html": 116,
+	"pimenrich/templates/export/common/edit/launch.html": 117,
+	"pimenrich/templates/export/common/edit/meta.html": 118,
+	"pimenrich/templates/export/common/edit/properties.html": 119,
+	"pimenrich/templates/export/common/edit/upload.html": 120,
+	"pimenrich/templates/export/common/edit/validation.html": 121,
+	"pimenrich/templates/export/product/edit/content.html": 122,
+	"pimenrich/templates/export/product/edit/content/data.html": 123,
+	"pimenrich/templates/export/product/edit/content/data/help.html": 124,
+	"pimenrich/templates/export/product/edit/content/structure.html": 125,
+	"pimenrich/templates/export/product/edit/content/structure/attribute-list.html": 126,
+	"pimenrich/templates/export/product/edit/content/structure/attributes-selector.html": 127,
+	"pimenrich/templates/export/product/edit/content/structure/attributes.html": 128,
+	"pimenrich/templates/export/product/edit/content/structure/locales.html": 129,
+	"pimenrich/templates/export/product/edit/content/structure/scope.html": 130,
+	"pimenrich/templates/family/tab/attributes.html": 131,
+	"pimenrich/templates/family/tab/attributes/attributes.html": 132,
+	"pimenrich/templates/family/tab/attributes/toolbar.html": 133,
+	"pimenrich/templates/family/tab/general/attribute-as-label.html": 134,
+	"pimenrich/templates/filter/attribute/boolean.html": 135,
+	"pimenrich/templates/filter/attribute/date.html": 136,
+	"pimenrich/templates/filter/attribute/media.html": 137,
+	"pimenrich/templates/filter/attribute/metric.html": 138,
+	"pimenrich/templates/filter/attribute/number.html": 139,
+	"pimenrich/templates/filter/attribute/price-collection.html": 140,
+	"pimenrich/templates/filter/attribute/select.html": 141,
+	"pimenrich/templates/filter/attribute/string.html": 142,
+	"pimenrich/templates/filter/filter.html": 143,
+	"pimenrich/templates/filter/product/category.html": 144,
+	"pimenrich/templates/filter/product/category/selector.html": 145,
+	"pimenrich/templates/filter/product/completeness.html": 146,
+	"pimenrich/templates/filter/product/enabled.html": 147,
+	"pimenrich/templates/filter/product/family.html": 148,
+	"pimenrich/templates/filter/product/identifier.html": 149,
+	"pimenrich/templates/filter/product/updated.html": 150,
+	"pimenrich/templates/filter/simpleselect.html": 501,
+	"pimenrich/templates/form/add-select/footer.html": 151,
+	"pimenrich/templates/form/add-select/line.html": 152,
+	"pimenrich/templates/form/add-select/select.html": 153,
+	"pimenrich/templates/form/back-to-grid.html": 154,
+	"pimenrich/templates/form/delete.html": 155,
+	"pimenrich/templates/form/download-file.html": 156,
+	"pimenrich/templates/form/edit-form.html": 157,
+	"pimenrich/templates/form/form-tabs.html": 158,
+	"pimenrich/templates/form/grid.html": 159,
+	"pimenrich/templates/form/group-selector.html": 160,
+	"pimenrich/templates/form/index/confirm-button.html": 470,
+	"pimenrich/templates/form/index/create-button.html": 161,
+	"pimenrich/templates/form/index/index.html": 162,
+	"pimenrich/templates/form/meta/created.html": 163,
+	"pimenrich/templates/form/meta/status.html": 164,
+	"pimenrich/templates/form/meta/updated.html": 165,
+	"pimenrich/templates/form/properties/general.html": 166,
+	"pimenrich/templates/form/properties/input.html": 167,
+	"pimenrich/templates/form/properties/translation.html": 61,
+	"pimenrich/templates/form/redirect.html": 168,
+	"pimenrich/templates/form/save-buttons.html": 169,
+	"pimenrich/templates/form/save.html": 502,
+	"pimenrich/templates/form/state.html": 170,
+	"pimenrich/templates/form/tab/attributes.html": 171,
+	"pimenrich/templates/form/tab/attributes/attribute-group-selector.html": 172,
+	"pimenrich/templates/form/tab/attributes/copy-field.html": 173,
+	"pimenrich/templates/form/tab/attributes/copy.html": 174,
+	"pimenrich/templates/form/tab/history.html": 503,
+	"pimenrich/templates/form/tab/properties.html": 175,
+	"pimenrich/templates/form/tab/section.html": 176,
+	"pimenrich/templates/grid/view-selector-create-view-label-input.html": 177,
+	"pimenrich/templates/grid/view-selector-create-view.html": 178,
+	"pimenrich/templates/grid/view-selector-current.html": 179,
+	"pimenrich/templates/grid/view-selector-line.html": 180,
+	"pimenrich/templates/grid/view-selector-remove-view.html": 181,
+	"pimenrich/templates/grid/view-selector-save-view.html": 182,
+	"pimenrich/templates/grid/view-selector.html": 183,
+	"pimenrich/templates/group/meta/product-count.html": 184,
+	"pimenrich/templates/group/tab/properties/general.html": 185,
+	"pimenrich/templates/i18n/flag.html": 186,
+	"pimenrich/templates/job-execution/auto-refresh.html": 187,
+	"pimenrich/templates/job-execution/download-archives-buttons.html": 188,
+	"pimenrich/templates/job-execution/summary-table.html": 189,
+	"pimenrich/templates/product/create-error.html": 190,
+	"pimenrich/templates/product/create-popin.html": 191,
+	"pimenrich/templates/product/download-pdf.html": 192,
+	"pimenrich/templates/product/field/boolean.html": 471,
+	"pimenrich/templates/product/field/date.html": 472,
+	"pimenrich/templates/product/field/field.html": 193,
+	"pimenrich/templates/product/field/media.html": 473,
+	"pimenrich/templates/product/field/metric.html": 474,
+	"pimenrich/templates/product/field/multi-select.html": 475,
+	"pimenrich/templates/product/field/number.html": 476,
+	"pimenrich/templates/product/field/price-collection.html": 477,
+	"pimenrich/templates/product/field/simple-select.html": 478,
+	"pimenrich/templates/product/field/text.html": 479,
+	"pimenrich/templates/product/field/textarea.html": 454,
+	"pimenrich/templates/product/form/add-select/attribute/line.html": 194,
+	"pimenrich/templates/product/locale-switcher.html": 195,
+	"pimenrich/templates/product/meta/change-family-modal.html": 196,
+	"pimenrich/templates/product/meta/family.html": 197,
+	"pimenrich/templates/product/meta/group-modal.html": 198,
+	"pimenrich/templates/product/meta/groups.html": 199,
+	"pimenrich/templates/product/panel/comments.html": 200,
+	"pimenrich/templates/product/panel/completeness.html": 201,
+	"pimenrich/templates/product/panel/container.html": 202,
+	"pimenrich/templates/product/panel/history.html": 203,
+	"pimenrich/templates/product/panel/selector.html": 204,
+	"pimenrich/templates/product/scope-switcher.html": 205,
+	"pimenrich/templates/product/sequential-edit.html": 206,
+	"pimenrich/templates/product/status-switcher.html": 207,
+	"pimenrich/templates/product/tab/association-panes.html": 208,
+	"pimenrich/templates/product/tab/associations.html": 209,
+	"pimenrich/templates/product/tab/attributes/validation-error.html": 210,
+	"pimenrich/templates/product/tab/attributes/variant-group.html": 211,
+	"pimenrich/templates/product/tab/categories.html": 212,
+	"pimenrich/templates/variant-group/form/no-attribute.html": 213,
+	"pimenrich/templates/variant-group/tab/properties/general.html": 214,
+	"pimimportexport/js/job-execution-view": 554,
+	"pimnavigation/js/navigation/abstract-view": 459,
+	"pimnavigation/js/navigation/collection": 460,
+	"pimnavigation/js/navigation/dotmenu/item-view": 494,
+	"pimnavigation/js/navigation/dotmenu/view": 495,
+	"pimnavigation/js/navigation/favorites/view": 555,
+	"pimnavigation/js/navigation/model": 452,
+	"pimnavigation/js/navigation/pinbar/collection": 496,
+	"pimnavigation/js/navigation/pinbar/item-view": 497,
+	"pimnavigation/js/navigation/pinbar/model": 461,
+	"pimnavigation/js/navigation/pinbar/view": 556,
+	"pimnavigation/lib/jquery-form/jquery.form": 418,
+	"pimnavigation/lib/url/url.min": 557,
+	"pimnotification/js/indicator": 498,
+	"pimnotification/js/notification-list": 499,
+	"pimnotification/js/notifications": 558,
+	"pimnotification/templates/notification/notification-footer.html": 480,
+	"pimnotification/templates/notification/notification-list.html": 481,
+	"pimnotification/templates/notification/notification.html": 482,
+	"pimreferencedata/js/product/field/reference-multi-select-field": 559,
+	"pimreferencedata/js/product/field/reference-simple-select-field": 560,
+	"pimui/js/app": 33,
 	"pimui/js/delete-confirmation": 81,
-	"pimui/js/error": 86,
-	"pimui/js/form/state.js": 679,
-	"pimui/js/form/system/group/loading-message": 680,
-	"pimui/js/init-layout": 310,
-	"pimui/js/jquery-setup": 681,
-	"pimui/js/jquery.sidebarize": 311,
-	"pimui/js/layout": 312,
+	"pimui/js/error": 85,
+	"pimui/js/form/state.js": 561,
+	"pimui/js/form/system/group/loading-message": 562,
+	"pimui/js/init-layout": 419,
+	"pimui/js/jquery-setup": 563,
+	"pimui/js/jquery.sidebarize": 420,
+	"pimui/js/layout": 421,
 	"pimui/js/mediator": 8,
 	"pimui/js/messenger": 12,
-	"pimui/js/modal": 37,
-	"pimui/js/pim-datepicker": 46,
+	"pimui/js/modal": 36,
+	"pimui/js/pim-datepicker": 44,
 	"pimui/js/pim-dialog": 14,
 	"pimui/js/pim-dialogform": 91,
-	"pimui/js/pim-fileinput": 484,
-	"pimui/js/pim-formupdatelistener": 682,
-	"pimui/js/pim-initselect2": 31,
-	"pimui/js/pim-saveformstate": 313,
+	"pimui/js/pim-fileinput": 500,
+	"pimui/js/pim-formupdatelistener": 564,
+	"pimui/js/pim-initselect2": 30,
+	"pimui/js/pim-saveformstate": 422,
 	"pimui/js/pim-ui": 92,
 	"pimui/js/pim-wysiwyg": 93,
-	"pimui/js/templates/system/group/loading-message.html": 683,
+	"pimui/js/templates/system/group/loading-message.html": 483,
 	"pimui/js/tools": 94,
-	"pimui/lib/backbone.bootstrap-modal": 684,
+	"pimui/lib/backbone.bootstrap-modal": 565,
 	"pimui/lib/backbone/backbone": 6,
-	"pimui/lib/base64/base64": 685,
-	"pimui/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker": 314,
-	"pimui/lib/bootstrap-switch/bootstrap.switch": 45,
-	"pimui/lib/bootstrap/js/bootstrap": 36,
-	"pimui/lib/dropzonejs/dist/dropzone-amd-module.js": 686,
-	"pimui/lib/jquery-numeric/jquery.numeric": 315,
-	"pimui/lib/jquery-ui/jquery-ui-1.11.4.custom.min": 60,
+	"pimui/lib/base64/base64": 566,
+	"pimui/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker": 423,
+	"pimui/lib/bootstrap-switch/bootstrap.switch": 43,
+	"pimui/lib/bootstrap/js/bootstrap": 35,
+	"pimui/lib/dropzonejs/dist/dropzone-amd-module.js": 567,
+	"pimui/lib/jquery-numeric/jquery.numeric": 424,
+	"pimui/lib/jquery-ui/jquery-ui-1.11.4.custom.min": 59,
 	"pimui/lib/jquery/jquery-1.10.2": 1,
-	"pimui/lib/json2/json2": 316,
-	"pimui/lib/jstree/jquery.hotkeys": 687,
-	"pimui/lib/jstree/jquery.jstree": 48,
+	"pimui/lib/json2/json2": 425,
+	"pimui/lib/jstree/jquery.hotkeys": 568,
+	"pimui/lib/jstree/jquery.jstree": 46,
 	"pimui/lib/select2/select2": 11,
-	"pimui/lib/slimbox2/slimbox2": 467,
-	"pimui/lib/text/text": 487,
+	"pimui/lib/slimbox2/slimbox2": 462,
+	"pimui/lib/text/text": 504,
 	"pimui/lib/underscore/underscore": 0,
-	"pimuser/js/init-user": 317,
-	"undefined": 318
+	"pimuser/js/init-user": 426,
+	"undefined": 427
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -564,10 +564,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 456;
+webpackContext.id = 449;
 
 /***/ }),
-/* 457 */
+/* 450 */
 /* unknown exports provided */
 /* all exports used */
 /*!**********************************************************************************************!*\
@@ -576,7 +576,7 @@ webpackContext.id = 456;
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/translator */ 2), __webpack_require__(/*! oro/datafilter/abstract-filter */ 87), __webpack_require__(/*! oro/multiselect-decorator */ 460)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, __, AbstractFilter, MultiselectDecorator) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/translator */ 2), __webpack_require__(/*! oro/datafilter/abstract-filter */ 86), __webpack_require__(/*! oro/multiselect-decorator */ 455)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, __, AbstractFilter, MultiselectDecorator) {
     'use strict';
 
     /**
@@ -917,7 +917,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 
 
 /***/ }),
-/* 458 */
+/* 451 */
 /* unknown exports provided */
 /* all exports used */
 /*!**************************************************************************************************!*\
@@ -1012,7 +1012,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jslint browser
 
 
 /***/ }),
-/* 459 */
+/* 452 */
 /* unknown exports provided */
 /* all exports used */
 /*!*********************************************************************************!*\
@@ -1021,7 +1021,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jslint browser
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! underscore */ 0), __webpack_require__(/*! routing */ 5), __webpack_require__(/*! backbone */ 6)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, routing, Backbone) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! underscore */ 0), __webpack_require__(/*! routing */ 7), __webpack_require__(/*! backbone */ 6)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, routing, Backbone) {
     'use strict';
 
     /**
@@ -1055,7 +1055,29 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 
 
 /***/ }),
-/* 460 */
+/* 453 */
+/* unknown exports provided */
+/* all exports used */
+/*!****************************************************************************************************!*\
+  !*** ./src/Pim/Bundle/DataGridBundle/Resources/public/templates/filter/select2-choice-filter.html ***!
+  \****************************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"AknFilterChoice choicefilter\">\n    <div class=\"AknFilterChoice-operator AknDropdown\">\n        <% if (emptyChoice) { %>\n            <button type=\"button\" class=\"AknActionButton AknActionButton--big AknActionButton--noRightBorder dropdown-toggle\" data-toggle=\"dropdown\">\n                <%= selectedOperatorLabel %>\n                <span class=\"AknCaret\"></span>\n            </button>\n            <ul class=\"dropdown-menu\">\n                <% _.each(operatorChoices, function (label, operator) { %>\n                    <li<% if (selectedOperator == operator) { %> class=\"active\"<% } %>>\n                        <a class=\"operator_choice\" href=\"#\" data-value=\"<%= operator %>\"><%= label %></a>\n                    </li>\n                <% }); %>\n            </ul>\n        <% } %>\n    </div>\n    <input type=\"text\" name=\"value\" class=\"AknTextField AknTextField--select2 AknTextField--noRadius AknFilterChoice-field select-field\">\n    <button type=\"button\" class=\"AknFilterChoice-button AknButton AknButton--apply AknButton--noLeftRadius filter-update\"><%- _.__('Update') %></button>\n</div>\n"
+
+/***/ }),
+/* 454 */
+/* unknown exports provided */
+/* all exports used */
+/*!********************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/textarea.html ***!
+  \********************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<textarea id=\"<%- fieldId %>\" class=\"AknTextareaField\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" <%- editMode === 'view' ? 'disabled' : '' %>><%- value.data %></textarea>\n"
+
+/***/ }),
+/* 455 */
 /* unknown exports provided */
 /* all exports used */
 /*!************************************************************************************!*\
@@ -1064,7 +1086,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! jquery.multiselect */ 462), __webpack_require__(/*! jquery.multiselect.filter */ 461)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, mediator) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! jquery.multiselect */ 457), __webpack_require__(/*! jquery.multiselect.filter */ 456)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, mediator) {
     'use strict';
 
     /**
@@ -1257,7 +1279,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 
 
 /***/ }),
-/* 461 */
+/* 456 */
 /* unknown exports provided */
 /* all exports used */
 /*!*****************************************************************************************************!*\
@@ -1453,7 +1475,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
 
 
 /***/ }),
-/* 462 */
+/* 457 */
 /* unknown exports provided */
 /* all exports used */
 /*!**********************************************************************************************!*\
@@ -2198,7 +2220,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
 
 
 /***/ }),
-/* 463 */
+/* 458 */
 /* unknown exports provided */
 /* all exports used */
 /*!************************************************************************************!*\
@@ -2213,10 +2235,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
         __webpack_require__(/*! jquery */ 1),
         __webpack_require__(/*! underscore */ 0),
         __webpack_require__(/*! backbone */ 6),
-        __webpack_require__(/*! routing */ 5),
+        __webpack_require__(/*! routing */ 7),
         __webpack_require__(/*! pim/form-builder */ 16),
         __webpack_require__(/*! oro/messenger */ 12),
-        __webpack_require__(/*! text-loader!pim/template/attribute-option/validation-error */ 694)
+        __webpack_require__(/*! pim/template/attribute-option/validation-error */ 469)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
         $,
         _,
@@ -2308,7 +2330,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 464 */
+/* 459 */
 /* unknown exports provided */
 /* all exports used */
 /*!*****************************************************************************************!*\
@@ -2316,7 +2338,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
   \*****************************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! oro/navigation/dotmenu/view */ 479), __webpack_require__(/*! pim/router */ 13)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, Backbone, DotmenuView, router) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! oro/navigation/dotmenu/view */ 495), __webpack_require__(/*! pim/router */ 13)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, Backbone, DotmenuView, router) {
     'use strict';
 
     /**
@@ -2419,7 +2441,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 465 */
+/* 460 */
 /* unknown exports provided */
 /* all exports used */
 /*!**************************************************************************************!*\
@@ -2428,7 +2450,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! backbone */ 6), __webpack_require__(/*! oro/navigation/model */ 459)], __WEBPACK_AMD_DEFINE_RESULT__ = function(Backbone, NavigationModel) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! backbone */ 6), __webpack_require__(/*! oro/navigation/model */ 452)], __WEBPACK_AMD_DEFINE_RESULT__ = function(Backbone, NavigationModel) {
     'use strict';
 
     /**
@@ -2444,7 +2466,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 
 
 /***/ }),
-/* 466 */
+/* 461 */
 /* unknown exports provided */
 /* all exports used */
 /*!****************************************************************************************!*\
@@ -2453,7 +2475,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! oro/navigation/model */ 459)], __WEBPACK_AMD_DEFINE_RESULT__ = function(NavigationModel) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! oro/navigation/model */ 452)], __WEBPACK_AMD_DEFINE_RESULT__ = function(NavigationModel) {
     'use strict';
 
     /**
@@ -2477,7 +2499,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 
 
 /***/ }),
-/* 467 */
+/* 462 */
 /* unknown exports provided */
 /* all exports used */
 /*!***************************************************************************!*\
@@ -2566,7 +2588,238 @@ var E = w(window), u, f, F = -1, n, x, D, v, y, L, r, m = !window.XMLHttpRequest
 
 
 /***/ }),
+/* 463 */
+/* unknown exports provided */
+/* all exports used */
+/*!************************************************************************************************!*\
+  !*** ./src/Pim/Bundle/DataGridBundle/Resources/public/templates/configure-columns-action.html ***!
+  \************************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"AknColumnConfigurator-column\">\n    <div class=\"AknColumnConfigurator-columnHeader\"></div>\n    <div class=\"AknColumnConfigurator-listContainer\">\n        <ul class=\"AknVerticalList nav-list\">\n            <li class=\"AknVerticalList-item AknVerticalList-item--selectable tab active\">\n                <%- _.__(\"pim_datagrid.column_configurator.all_groups\") %>\n                <span class=\"badge badge-transparent pull-right\"><%- columns.length %></span>\n            </li>\n            <% _.each(groups, function(group) { %>\n            <li class=\"AknVerticalList-item AknVerticalList-item--selectable tab\" data-value=\"<%- group.name %>\">\n                <%- group.name %>\n                <span class=\"AknBadge\"><%- group.itemCount %></span>\n            </li>\n            <% }); %>\n        </ul>\n    </div>\n</div>\n\n<div class=\"AknColumnConfigurator-column\">\n    <div class=\"AknColumnConfigurator-columnHeader\">\n        <i class=\"AknColumnConfigurator-searchIcon icon-search\"></i>\n        <input class=\"AknTextField AknColumnConfigurator-searchInput\" type=\"search\" placeholder=\"<%- _.__('pim_datagrid.column_configurator.search') %>\"/>\n    </div>\n    <div class=\"AknColumnConfigurator-listContainer\">\n        <ul id=\"column-list\" class=\"AknVerticalList connected-sortable\">\n            <% _.each(_.where(columns, {displayed: false}), function(column) { %>\n            <li class=\"AknVerticalList-item AknVerticalList-item--movable\" data-value=\"<%- column.code %>\" data-group=\"<%- column.group %>\">\n                <div>\n                    <i class=\"icon-th\"></i>\n                    <%- column.label %>\n                </div>\n                <a href=\"javascript:void(0);\" class=\"AknIconButton AknIconButton--small AknIconButton--grey action\" title=\"<%- _.__('pim_datagrid.column_configurator.remove_column') %>\">\n                    <i class=\"icon-trash\"></i>\n                </a>\n            </li>\n            <% }); %>\n        </ul>\n    </div>\n</div>\n\n<div class=\"AknColumnConfigurator-column\">\n    <div class=\"AknColumnConfigurator-columnHeader\">\n        <%- _.__(\"pim_datagrid.column_configurator.displayed_columns\") %>\n        <button class=\"AknButton AknButton--grey reset\">\n            <%- _.__(\"pim_datagrid.column_configurator.clear\") %>\n        </button>\n    </div>\n    <div class=\"AknColumnConfigurator-listContainer\">\n        <ul id=\"column-selection\" class=\"AknVerticalList connected-sortable\">\n            <% _.each(_.sortBy(_.where(columns, {displayed: true}), 'position'), function(column) { %>\n            <li class=\"AknVerticalList-item AknVerticalList-item--movable\" data-value=\"<%- column.code %>\" data-group=\"<%- column.group %>\">\n                <div>\n                    <i class=\"icon-th\"></i>\n                    <%- column.label %>\n                </div>\n                <a href=\"javascript:void(0);\" class=\"AknIconButton AknIconButton--small AknIconButton--grey action\" title=\"<%- _.__('pim_datagrid.column_configurator.remove_column') %>\">\n                    <% if (column.removable) { %><i class=\"icon-trash\"></i><% } %>\n                </a>\n            </li>\n            <% }); %>\n            <div class=\"AknMessageBox AknMessageBox--error AknMessageBox--hide alert alert-error\"><%- _.__(\"datagrid_view.columns.min_message\") %></div>\n        </ul>\n    </div>\n</div>\n"
+
+/***/ }),
+/* 464 */
+/* unknown exports provided */
+/* all exports used */
+/*!******************************************************************************************!*\
+  !*** ./src/Pim/Bundle/DataGridBundle/Resources/public/templates/filter/date-filter.html ***!
+  \******************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"AknFilterDate\">\n    <select class=\"AknFilterDate-select type\" name=\"<%= name %>\">\n        <% _.each(choices, function (option) { %>\n        <option value=\"<%= option.value %>\"<% if (option.value == selectedChoice) { %> selected=\"selected\"<% } %>><%= option.label %></option>\n        <% }); %>\n    </select>\n    <div class=\"AknFilterDate-dates\">\n        <span class=\"AknFilterDate-start\">\n            <input type=\"text\" value=\"\" class=\"<%= inputClass %> add-on\" name=\"start\" placeholder=\"<%- _.__('from') %>\" size=\"1\">\n        </span>\n        <span class=\"AknFilterDate-separator\">-</span>\n        <span class=\"AknFilterDate-end\">\n            <input type=\"text\" value=\"\" class=\"<%= inputClass %> add-on\" name=\"end\" placeholder=\"<%- _.__('to') %>\" size=\"1\">\n        </span>\n    </div>\n    <div class=\"AknButtonList AknButtonList--right\">\n        <button class=\"AknButtonList-item AknButton AknButton--apply filter-update\" type=\"button\"><%- _.__('Update') %></button>\n    </div>\n</div>\n"
+
+/***/ }),
+/* 465 */
+/* unknown exports provided */
+/* all exports used */
+/*!********************************************************************************************!*\
+  !*** ./src/Pim/Bundle/DataGridBundle/Resources/public/templates/filter/metric-filter.html ***!
+  \********************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"AknFilterChoice metricfilter choicefilter\">\n    <div class=\"AknFilterChoice-operator AknDropdown btn-group\">\n        <button class=\"AknActionButton AknActionButton--big AknActionButton--noRightBorder dropdown-toggle\" data-toggle=\"dropdown\">\n            <%= _.__('Action') %>\n            <span class=\"AknCaret caret\"></span>\n        </button>\n        <ul class=\"dropdown-menu\">\n            <% _.each(choices, function (choice) { %>\n            <li><a class=\"choice_value\" href=\"#\" data-value=\"<%= choice.value %>\"><%= choice.label %></a></li>\n            <% }); %>\n            </ul>\n        <input class=\"name_input\" type=\"hidden\" name=\"metric_type\" value=\"\"/>\n        </div>\n\n    <input class=\"AknTextField AknTextField--noRadius AknFilterChoice-field\" type=\"text\" name=\"value\" value=\"\">\n\n    <div class=\"AknFilterChoice-operator AknDropdown\">\n        <button class=\"AknActionButton AknActionButton--big AknActionButton--noRightBorder AknActionButton--noLeftBorder dropdown-toggle\" data-toggle=\"dropdown\">\n            <%= _.__('Unit') %>\n            <span class=\"AknCaret caret\"></span>\n        </button>\n        <ul class=\"dropdown-menu\">\n            <% _.each(units, function (symbol, code) { %>\n                <li><a class=\"choice_value\" href=\"#\" data-value=\"<%= code %>\"><%= _.__(code) %></a></li>\n            <% }); %>\n            </ul>\n        <input class=\"name_input\" type=\"hidden\" name=\"metric_unit\" value=\"\"/>\n        </div>\n    <button class=\"AknButton AknButton--apply AknFilterChoice-button AknButton--noLeftRadius filter-update\" type=\"button\"><%= _.__(\"Update\") %></button>\n</div>\n"
+
+/***/ }),
+/* 466 */
+/* unknown exports provided */
+/* all exports used */
+/*!*******************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/attribute-option/edit.html ***!
+  \*******************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<td class=\"AknGrid-bodyCell field-cell\">\n    <div class=\"AknFieldContainer AknFieldContainer--withoutMargin\">\n        <div class=\"AknFieldContainer-inputContainer\">\n            <% if (item.id) { %>\n                <input type=\"hidden\" class=\"attribute_option_code\" value=\"<%- item.code %>\"/>\n                <span class=\"option-code\"><%- item.code %></span>\n            <% } else { %>\n                <input type=\"text\" class=\"AknTextField attribute_option_code exclude\" value=\"<%- item.code %>\"/>\n                <div class=\"AknFieldContainer-iconsContainer\">\n                    <i class=\"AknIconButton AknIconButton--important AknIconButton--hide icon-warning-sign validation-tooltip\" data-placement=\"top\" data-toggle=\"tooltip\"></i>\n                </div>\n            <% } %>\n        </div>\n    </div>\n</td>\n<% _.each(locales, function (locale) { %>\n    <td class=\"AknGrid-bodyCell field-cell\">\n        <% if (item.optionValues[locale]) { %>\n            <input type=\"text\" class=\"AknTextField attribute-option-value exclude\" data-locale=\"<%- locale %>\"\n                value=\"<%- item.optionValues[locale].value %>\"/>\n        <% } else { %>\n            <input type=\"text\" class=\"AknTextField attribute-option-value exclude\" data-locale=\"<%- locale %>\"\n        value=\"\"/>\n        <% } %>\n    </td>\n<% }); %>\n<td class=\"AknGrid-bodyCell\">\n    <div class=\"AknButtonList AknButtonList--right\">\n        <span class=\"AknButtonList-item AknIconButton AknIconButton--small AknIconButton--apply update-row\"><i class=\"icon-ok\"></i></span>\n        <span class=\"AknButtonList-item AknIconButton AknIconButton--small AknIconButton--important show-row\"><i class=\"icon-remove\"></i></span>\n    </div>\n</td>\n"
+
+/***/ }),
+/* 467 */
+/* unknown exports provided */
+/* all exports used */
+/*!********************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/attribute-option/index.html ***!
+  \********************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<colgroup>\n    <col class=\"code\" span=\"1\">\n    <col class=\"fields\" span=\"<%- locales.length %>\"/>\n    <col class=\"action\" span=\"1\"/>\n</colgroup>\n<thead>\n    <tr>\n        <th class=\"AknGrid-headerCell\"><%- code_label %></th>\n        <% _.each(locales, function (locale) { %>\n            <th class=\"AknGrid-headerCell\">\n                <%- locale %>\n            </th>\n        <% }); %>\n        <th class=\"AknGrid-headerCell AknGrid-headerCell--right\"><%- _.__('pim_enrich.entity.attribute_option.actions') %></th>\n    </tr>\n</thead>\n<tbody></tbody>\n<tfoot>\n    <tr class=\"AknGrid-bodyRow\">\n        <td class=\"AknGrid-bodyCell\" colspan=\"<%- 2 + locales.length %>\">\n            <span class=\"AknButton AknButton--grey AknButton--small option-add\"><%- add_option_label %></span>\n        </td>\n    </tr>\n</tfoot>\n"
+
+/***/ }),
 /* 468 */
+/* unknown exports provided */
+/* all exports used */
+/*!*******************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/attribute-option/show.html ***!
+  \*******************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<td class=\"AknGrid-bodyCell\">\n    <span class=\"handle\"><i class=\"icon-reorder\"></i></span>\n    <span class=\"option-code\"><%- item.code %></span>\n</td>\n<% _.each(locales, function (locale) { %>\n    <td class=\"AknGrid-bodyCell\">\n        <% if (item.optionValues[locale]) { %>\n            <span title=\"<%- item.optionValues[locale].value %>\">\n                <%- item.optionValues[locale].value %>\n            </span>\n        <% } %>\n    </td>\n<% }); %>\n<td class=\"AknGrid-bodyCell\">\n    <div class=\"AknButtonList AknButtonList--right\">\n        <span class=\"AknButtonList-item AknIconButton AknIconButton--small AknIconButton--apply edit-row\"><i class=\"icon-pencil\"></i></span>\n        <span class=\"AknButtonList-item AknIconButton AknIconButton--small AknIconButton--important delete-row\"><i class=\"icon-trash\"></i></span>\n    </div>\n</td>\n"
+
+/***/ }),
+/* 469 */
+/* unknown exports provided */
+/* all exports used */
+/*!*******************************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/attribute-option/validation-error.html ***!
+  \*******************************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"AknFieldContainer-validationErrors validation-errors\">\n    <% _.each(errors, function(error) { %>\n        <span class=\"AknFieldContainer-validationError\">\n            <i class=\"icon-warning-sign\"></i>\n            <span class=\"error-message\"><%- error %></span>\n        </span>\n    <% }) %>\n</div>\n"
+
+/***/ }),
+/* 470 */
+/* unknown exports provided */
+/* all exports used */
+/*!***********************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/index/confirm-button.html ***!
+  \***********************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<a class=\"AknButton AknButton--withIcon <%- buttonClass %>\" title=\"<%- buttonLabel %>\" data-title=\" <%- title %>\"\n   data-dialog=\"confirm\" data-method=\"POST\"\n   data-message=\"<%- message %>\" data-url=\"<%- url %>\" data-redirect-url=\"<%- redirectUrl %>\"\n   data-error-message=\"<%- errorMessage %>\" data-success-message=\"<%- successMessage %>\">\n    <i class=\"AknButton-icon icon-<%- iconName %>\"></i>\n    <%- buttonLabel %>\n</a>\n"
+
+/***/ }),
+/* 471 */
+/* unknown exports provided */
+/* all exports used */
+/*!*******************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/boolean.html ***!
+  \*******************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"switch switch-small\" data-on-label=\"<%- _.__('switch_on') %>\" data-off-label=\"<%- _.__('switch_off') %>\">\n    <input id=\"<%- fieldId %>\" type=\"checkbox\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" <%- value.data ? 'checked' : '' %> <%- editMode === 'view' ? 'disabled' : '' %>>\n</div>\n"
+
+/***/ }),
+/* 472 */
+/* unknown exports provided */
+/* all exports used */
+/*!****************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/date.html ***!
+  \****************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"datetimepicker\">\n    <input id=\"<%- fieldId %>\" class=\"AknTextField datepicker-field add-on\" type=\"text\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" value=\"<%- value.data %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n</div>\n"
+
+/***/ }),
+/* 473 */
+/* unknown exports provided */
+/* all exports used */
+/*!*****************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/media.html ***!
+  \*****************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"AknMediaField <%- value.data && value.data.filePath ? 'has-file' : '' %>\" >\n    <% if (!value.data || value.data.filePath === null) { %>\n        <input class=\"AknMediaField-fileUploaderInput\" id=\"<%- fieldId %>\" type=\"file\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n        <div class=\"AknMediaField-emptyContainer\">\n            <img src=\"/bundles/pimui/images/upload.png\" alt=\"upload icon\" class=\"AknMediaField-uploadIcon\"/>\n            <span><%- _.__('pim_enrich.entity.product.media.upload')%></span>\n        </div>\n    <% } else { %>\n        <div class=\"AknMediaField-preview preview\">\n            <% mediaThumbnailUrl = mediaUrlGenerator.getMediaShowUrl(value.data.filePath, 'thumbnail_small') %>\n            <% mediaPreviewUrl   = mediaUrlGenerator.getMediaShowUrl(value.data.filePath, 'preview') %>\n            <% mediaDownloadUrl  = mediaUrlGenerator.getMediaDownloadUrl(value.data.filePath) %>\n            <% if ('pim_catalog_image' === attribute.type && null != mediaThumbnailUrl) { %>\n                <div class=\"AknMediaField-thumb file\"><img src=\"<%- mediaThumbnailUrl %>\" class=\"AknMediaField-image\"/></div>\n            <% } else { %>\n                <div class=\"AknMediaField-thumb file\"><i class=\"AknMediaField-icon icon icon-file\"></i></div>\n            <% } %>\n            <div class=\"AknMediaField-info info\">\n                <div class=\"filename\" title=\"<%- value.data.originalFilename %>\"><%- value.data.originalFilename %></div>\n                <div class=\"AknButtonList AknButtonList--centered actions\">\n                    <% if ('pim_catalog_image' === attribute.type && null != mediaPreviewUrl) { %>\n                        <span class=\"AknButtonList-item AknIconButton AknIconButton--grey open-media\"><i class=\"icon icon-eye-open\"></i></span>\n                    <% } %>\n                    <a href=\"<%- mediaDownloadUrl %>\" class=\"AknButtonList-item AknIconButton AknIconButton--grey download-file\" download><i class=\"icon icon-cloud-download\"></i></a>\n                    <span class=\"AknButtonList-item AknIconButton AknIconButton--grey clear-field <%- editMode === 'view' ? 'AknIconButton--hide' : '' %>\"><i class=\"icon icon-trash\"></i></span>\n                </div>\n            </div>\n        </div>\n    <% } %>\n    <div class=\"AknMediaField-progress AknProgress AknProgress--micro progress\">\n        <div class=\"AknProgress-bar bar\"></div>\n    </div>\n</div>\n"
+
+/***/ }),
+/* 474 */
+/* unknown exports provided */
+/* all exports used */
+/*!******************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/metric.html ***!
+  \******************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"AknMetricField metric-container\">\n    <input class=\"AknTextField AknTextField--noRightRadius data\" id=\"<%- fieldId %>\" type=\"text\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" value=\"<%- value.data.amount %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n    <select class=\"AknMetricField-unit unit select-field\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" <%- editMode === 'view' ? 'disabled' : '' %>>\n        <% _.each(_.keys(measures[attribute.metric_family].units), function(unit) { %>\n            <option value=\"<%- unit %>\"<% if (value.data.unit === unit) { %> selected<% } %>><%- _.__(unit) %></option>\n        <% }); %>\n    </select>\n</div>\n"
+
+/***/ }),
+/* 475 */
+/* unknown exports provided */
+/* all exports used */
+/*!************************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/multi-select.html ***!
+  \************************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<input id=\"<%- fieldId %>\" type=\"hidden\" class=\"select-field\" value=\"<%- value.data.join(',') %>\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n<% if (userCanAddOption) { %>\n    <div class=\"AknFieldContainer-iconsContainer\">\n        <span class=\"AknIconButton AknIconButton--dark add-attribute-option\" data-toggle=\"tooltip\" data-placement=\"top\" data-original-title=\"<%- _.__('label.attribute_option.add_option') %>\">\n            <i class=\"icon-plus\"></i>\n        </span>\n    </div>\n<% } %>\n"
+
+/***/ }),
+/* 476 */
+/* unknown exports provided */
+/* all exports used */
+/*!******************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/number.html ***!
+  \******************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<input id=\"<%- fieldId %>\" class=\"AknTextField\" type=\"text\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" value=\"<%- value.data %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n"
+
+/***/ }),
+/* 477 */
+/* unknown exports provided */
+/* all exports used */
+/*!****************************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/price-collection.html ***!
+  \****************************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"AknPriceList\">\n    <% if (!value.data) { %>\n        <% _.each(currencies, function (currency) { %>\n            <div class=\"AknPriceList-item price-input\">\n                <input class=\"AknTextField AknTextField--noRightRadius\" type=\"text\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" data-currency=\"<%- currency.code %>\" value=\"\" <%- editMode === 'view' ? 'disabled' : '' %> size=\"1\">\n                <span class=\"AknPriceList-currency\"><%- currency.code %></span>\n            </div>\n        <% }) %>\n    <% } else { %>\n        <% _.each(value.data, function (price) { %>\n            <div class=\"AknPriceList-item price-input\">\n                <input class=\"AknTextField AknTextField--noRightRadius\" type=\"text\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" data-currency=\"<%- price.currency %>\" value=\"<%- price.amount %>\" <%- editMode === 'view' ? 'disabled' : '' %> size=\"1\">\n                <span class=\"AknPriceList-currency\"><%- price.currency %></span>\n            </div>\n        <% }) %>\n    <% } %>\n</div>\n"
+
+/***/ }),
+/* 478 */
+/* unknown exports provided */
+/* all exports used */
+/*!*************************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/simple-select.html ***!
+  \*************************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<input id=\"<%- fieldId %>\" type=\"hidden\" class=\"select-field\" value=\"<%- value.data %>\" data-min-input-length=\"0\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n<% if (userCanAddOption) { %>\n    <div class=\"AknFieldContainer-iconsContainer\">\n        <span class=\"AknIconButton AknIconButton--dark add-attribute-option\" data-toggle=\"tooltip\" data-placement=\"top\" data-original-title=\"<%- _.__('label.attribute_option.add_option') %>\">\n            <i class=\"icon-plus\"></i>\n        </span>\n    </div>\n<% } %>\n"
+
+/***/ }),
+/* 479 */
+/* unknown exports provided */
+/* all exports used */
+/*!****************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/text.html ***!
+  \****************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<input id=\"<%- fieldId %>\" class=\"AknTextField <%- context.isRequired ? 'AknTextField--required' : '' %>\" type=\"text\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" value=\"<%- value.data %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n"
+
+/***/ }),
+/* 480 */
+/* unknown exports provided */
+/* all exports used */
+/*!************************************************************************************************************!*\
+  !*** ./src/Pim/Bundle/NotificationBundle/Resources/public/templates/notification/notification-footer.html ***!
+  \************************************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<p class=\"AknNotificationList-footer\">\n    <% if (loading) { %>\n        <img src=\"<%= options.imgUrl %>\" alt=\"<%= options.loadingText %>\"/>\n    <% } %>\n\n    <% if (!loading && !hasNotifications && !hasMore) { %>\n        <span><%= options.noNotificationsMessage %></span>\n    <% } %>\n\n    <% if (hasNotifications && hasUnread) { %>\n        <button class=\"AknButton AknButton--grey mark-as-read\"><%= options.markAsReadMessage %></button>\n    <% } %>\n</p>\n"
+
+/***/ }),
+/* 481 */
+/* unknown exports provided */
+/* all exports used */
+/*!**********************************************************************************************************!*\
+  !*** ./src/Pim/Bundle/NotificationBundle/Resources/public/templates/notification/notification-list.html ***!
+  \**********************************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<a href=\"<%= url ? '#' + url : 'javascript: void(0);' %>\" class=\"AknNotification-link <%= viewed ? '' : 'AknNotification-link--new new' %>\">\n    <div class=\"AknNotification-header\">\n        <div class=\"AknNotification-icon AknNotification-icon--<%= actionType %>\">\n            <i class=\"AknNotification-status AknNotification-status--<%= type %> icon-<%= icon %>\"></i>\n        </div>\n        <div class=\"AknNotification-metas\">\n            <time class=\"AknNotification-time\"><%= createdAt %></time>\n            <span class=\"AknNotification-title\"><%= actionTypeMessage %></span>\n        </div>\n        <i class=\"AknIconButton AknIconButton--light icon-<%= viewed ? 'trash' : 'eye-close' %> action\"></i>\n    </div>\n    <div class=\"AknNotification-message\"><%= message %></div>\n    <% if (comment) { %> <div class=\"AknNotification-comment\"><%= comment %></div> <% } %>\n    <% if (showReportButton) { %>\n    <button class=\"AknNotification-button AknButton AknButton--micro AknButton--grey AknButton--withIcon\"><i class=\"AknButton-icon icon-file-text-alt\"></i><%- _.__(buttonLabel) %></button>\n    <% } %>\n</a>\n"
+
+/***/ }),
+/* 482 */
+/* unknown exports provided */
+/* all exports used */
+/*!*****************************************************************************************************!*\
+  !*** ./src/Pim/Bundle/NotificationBundle/Resources/public/templates/notification/notification.html ***!
+  \*****************************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<a href=\"javascript:void(0);\" class=\"AknBell-link dropdown-toggle\" data-toggle=\"dropdown\">\n    <i class=\"AknBell-icon icon-bell\"></i>\n    <span class=\"AknBell-countContainer\"></span>\n</a>\n\n<ul class=\"AknNotificationList AknDropdown-menu AknDropdown-menu--right\"></ul>\n"
+
+/***/ }),
+/* 483 */
+/* unknown exports provided */
+/* all exports used */
+/*!*************************************************************************************************!*\
+  !*** ./src/Pim/Bundle/UIBundle/Resources/public/js/templates/system/group/loading-message.html ***!
+  \*************************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"AknFormContainer AknFormContainer--withPadding system-loading-message-field\">\n    <div class=\"AknFieldContainer\">\n        <div class=\"AknFieldContainer-header\">\n            <label class=\"AknFieldContainer-label\" for=\"loading_message_enabled\"><%- _.__('oro_config.form.config.group.loading_message.label') %></label>\n        </div>\n        <div class=\"AknFieldContainer-inputContainer system-loading-message-enabled-field\">\n            <div class=\"switch switch-small\" data-on-label=\"<%- _.__('pim_enrich.form.entity.switch.yes') %>\" data-off-label=\"<%- _.__('pim_enrich.form.entity.switch.no') %>\">\n                <input type=\"checkbox\" id=\"loading_message_enabled\" <%- loading_message_enabled === '1' ? 'checked' : '' %> />\n            </div>\n        </div>\n    </div>\n\n    <div class=\"AknFieldContainer\">\n        <div class=\"AknFieldContainer-header\">\n            <label class=\"AknFieldContainer-label\" for=\"loading_messages\"><%- _.__('oro_config.form.config.group.loading_messages.label') %></label>\n        </div>\n        <div class=\"AknFieldContainer-inputContainer system-loading-messages-field\">\n            <textarea class=\"AknTextareaField\" id=\"loading_messages\"><%- loading_messages %></textarea>\n        </div>\n    </div>\n</div>\n"
+
+/***/ }),
+/* 484 */
 /* unknown exports provided */
 /* all exports used */
 /*!****************************************************************************************************!*\
@@ -2575,7 +2828,7 @@ var E = w(window), u, f, F = -1, n, x, D, v, y, L, r, m = !window.XMLHttpRequest
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/datafilter/filters-manager */ 471)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, FiltersManager) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/datafilter/filters-manager */ 487)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, FiltersManager) {
     'use strict';
 
     /**
@@ -2729,7 +2982,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 
 
 /***/ }),
-/* 469 */
+/* 485 */
 /* unknown exports provided */
 /* all exports used */
 /*!********************************************************************************************!*\
@@ -2743,10 +2996,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
         __webpack_require__(/*! underscore */ 0),
         __webpack_require__(/*! oro/translator */ 2),
         __webpack_require__(/*! oro/datafilter/choice-filter */ 89),
-        __webpack_require__(/*! datepicker */ 46),
-        __webpack_require__(/*! pim/date-context */ 44),
-        __webpack_require__(/*! pim/formatter/date */ 61),
-        __webpack_require__(/*! text-loader!pim/template/datagrid/filter/date-filter */ 689)
+        __webpack_require__(/*! datepicker */ 44),
+        __webpack_require__(/*! pim/date-context */ 42),
+        __webpack_require__(/*! pim/formatter/date */ 60),
+        __webpack_require__(/*! pim/template/datagrid/filter/date-filter */ 464)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function(
     $,
     _,
@@ -3086,7 +3339,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 
 
 /***/ }),
-/* 470 */
+/* 486 */
 /* unknown exports provided */
 /* all exports used */
 /*!***************************************************************************************************!*\
@@ -3095,7 +3348,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/translator */ 2), __webpack_require__(/*! oro/datafilter/select-filter */ 457)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, __, SelectFilter) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/translator */ 2), __webpack_require__(/*! oro/datafilter/select-filter */ 450)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, __, SelectFilter) {
     'use strict';
 
     /**
@@ -3168,7 +3421,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 
 
 /***/ }),
-/* 471 */
+/* 487 */
 /* unknown exports provided */
 /* all exports used */
 /*!*****************************************************************************************!*\
@@ -3177,7 +3430,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/multiselect-decorator */ 460)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, Backbone, mediator, MultiselectDecorator) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/multiselect-decorator */ 455)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, Backbone, mediator, MultiselectDecorator) {
     'use strict';
 
     /**
@@ -3570,7 +3823,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 
 
 /***/ }),
-/* 472 */
+/* 488 */
 /* unknown exports provided */
 /* all exports used */
 /*!*********************************************************************************************************!*\
@@ -3579,7 +3832,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*global define*/
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/translator */ 2), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/modal */ 37), __webpack_require__(/*! oro/datagrid/abstract-listener */ 458)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, __, mediator, Modal, AbstractListener) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/translator */ 2), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/modal */ 36), __webpack_require__(/*! oro/datagrid/abstract-listener */ 451)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, __, mediator, Modal, AbstractListener) {
     'use strict';
 
     /**
@@ -3824,7 +4077,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*global define*
 
 
 /***/ }),
-/* 473 */
+/* 489 */
 /* unknown exports provided */
 /* all exports used */
 /*!************************************************************************************!*\
@@ -3840,7 +4093,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
     __webpack_require__(/*! underscore */ 0),
     __webpack_require__(/*! oro/translator */ 2),
     __webpack_require__(/*! backbone */ 6),
-    __webpack_require__(/*! text-loader!pim/template/datagrid/configure-columns-action */ 688)
+    __webpack_require__(/*! pim/template/datagrid/configure-columns-action */ 463)
 ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
     $,
     _,
@@ -4011,7 +4264,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 474 */
+/* 490 */
 /* unknown exports provided */
 /* all exports used */
 /*!******************************************************************************************!*\
@@ -4025,7 +4278,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
         __webpack_require__(/*! jquery */ 1),
         __webpack_require__(/*! underscore */ 0),
-        __webpack_require__(/*! routing */ 5)
+        __webpack_require__(/*! routing */ 7)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
         $,
         _,
@@ -4069,7 +4322,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 475 */
+/* 491 */
 /* unknown exports provided */
 /* all exports used */
 /*!***************************************************************************!*\
@@ -4077,7 +4330,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
   \***************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! pim/dialogform */ 91), __webpack_require__(/*! oro/messenger */ 12), __webpack_require__(/*! pim/initselect2 */ 31), __webpack_require__(/*! jquery.select2 */ 11)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, DialogForm, messenger, initSelect2) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! pim/dialogform */ 91), __webpack_require__(/*! oro/messenger */ 12), __webpack_require__(/*! pim/initselect2 */ 30), __webpack_require__(/*! jquery.select2 */ 11)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, DialogForm, messenger, initSelect2) {
         'use strict';
 
         var init = function (fieldId) {
@@ -4118,7 +4371,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 476 */
+/* 492 */
 /* unknown exports provided */
 /* all exports used */
 /*!*********************************************************************************************!*\
@@ -4138,14 +4391,14 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
  */
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
         __webpack_require__(/*! jquery */ 1),
-        __webpack_require__(/*! pim/field */ 85),
+        __webpack_require__(/*! pim/field */ 84),
         __webpack_require__(/*! underscore */ 0),
-        __webpack_require__(/*! text-loader!pim/template/product/field/multi-select */ 700),
-        __webpack_require__(/*! routing */ 5),
-        __webpack_require__(/*! pim/attribute-option/create */ 463),
+        __webpack_require__(/*! pim/template/product/field/multi-select */ 475),
+        __webpack_require__(/*! routing */ 7),
+        __webpack_require__(/*! pim/attribute-option/create */ 458),
         __webpack_require__(/*! pim/security-context */ 21),
-        __webpack_require__(/*! pim/initselect2 */ 31),
-        __webpack_require__(/*! pim/user-context */ 7),
+        __webpack_require__(/*! pim/initselect2 */ 30),
+        __webpack_require__(/*! pim/user-context */ 5),
         __webpack_require__(/*! pim/i18n */ 9),
         __webpack_require__(/*! pim/attribute-manager */ 24)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
@@ -4335,7 +4588,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 477 */
+/* 493 */
 /* unknown exports provided */
 /* all exports used */
 /*!**********************************************************************************************!*\
@@ -4355,14 +4608,14 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
  */
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
         __webpack_require__(/*! jquery */ 1),
-        __webpack_require__(/*! pim/field */ 85),
+        __webpack_require__(/*! pim/field */ 84),
         __webpack_require__(/*! underscore */ 0),
-        __webpack_require__(/*! text-loader!pim/template/product/field/simple-select */ 703),
-        __webpack_require__(/*! routing */ 5),
-        __webpack_require__(/*! pim/attribute-option/create */ 463),
+        __webpack_require__(/*! pim/template/product/field/simple-select */ 478),
+        __webpack_require__(/*! routing */ 7),
+        __webpack_require__(/*! pim/attribute-option/create */ 458),
         __webpack_require__(/*! pim/security-context */ 21),
-        __webpack_require__(/*! pim/initselect2 */ 31),
-        __webpack_require__(/*! pim/user-context */ 7),
+        __webpack_require__(/*! pim/initselect2 */ 30),
+        __webpack_require__(/*! pim/user-context */ 5),
         __webpack_require__(/*! pim/i18n */ 9)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext, initSelect2, UserContext, i18n) {
         return Field.extend({
@@ -4523,7 +4776,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 478 */
+/* 494 */
 /* unknown exports provided */
 /* all exports used */
 /*!*********************************************************************************************!*\
@@ -4577,7 +4830,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 479 */
+/* 495 */
 /* unknown exports provided */
 /* all exports used */
 /*!****************************************************************************************!*\
@@ -4586,7 +4839,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/navigation/dotmenu/item-view */ 478)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, Backbone, mediator, DotmenuItemView) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/navigation/dotmenu/item-view */ 494)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, Backbone, mediator, DotmenuItemView) {
     'use strict';
 
     /**
@@ -4766,7 +5019,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 
 
 /***/ }),
-/* 480 */
+/* 496 */
 /* unknown exports provided */
 /* all exports used */
 /*!*********************************************************************************************!*\
@@ -4775,7 +5028,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! oro/navigation/collection */ 465), __webpack_require__(/*! oro/navigation/pinbar/model */ 466)], __WEBPACK_AMD_DEFINE_RESULT__ = function(NavigationCollection, PinbarModel) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! oro/navigation/collection */ 460), __webpack_require__(/*! oro/navigation/pinbar/model */ 461)], __WEBPACK_AMD_DEFINE_RESULT__ = function(NavigationCollection, PinbarModel) {
     'use strict';
 
     /**
@@ -4809,7 +5062,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 
 
 /***/ }),
-/* 481 */
+/* 497 */
 /* unknown exports provided */
 /* all exports used */
 /*!********************************************************************************************!*\
@@ -4817,7 +5070,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
   \********************************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! oro/app */ 34), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/error */ 86)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, Backbone, app, mediator, error) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! oro/app */ 33), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/error */ 85)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, Backbone, app, mediator, error) {
     'use strict';
 
     /**
@@ -4920,7 +5173,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 482 */
+/* 498 */
 /* unknown exports provided */
 /* all exports used */
 /*!****************************************************************************!*\
@@ -4978,7 +5231,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 483 */
+/* 499 */
 /* unknown exports provided */
 /* all exports used */
 /*!************************************************************************************!*\
@@ -4990,9 +5243,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
         __webpack_require__(/*! backbone */ 6),
         __webpack_require__(/*! jquery */ 1),
         __webpack_require__(/*! underscore */ 0),
-        __webpack_require__(/*! routing */ 5),
+        __webpack_require__(/*! routing */ 7),
         __webpack_require__(/*! pim/router */ 13),
-        __webpack_require__(/*! text-loader!pim/template/notification/notification-list */ 706)
+        __webpack_require__(/*! pim/template/notification/notification-list */ 481)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (Backbone, $, _, Routing, router, template) {
         'use strict';
 
@@ -5195,7 +5448,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 484 */
+/* 500 */
 /* unknown exports provided */
 /* all exports used */
 /*!**********************************************************************!*\
@@ -5203,7 +5456,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
   \**********************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! jquery.slimbox */ 467)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! jquery.slimbox */ 462)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($) {
         'use strict';
 
         var maxFilenameLength = 20;
@@ -5274,29 +5527,40 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 485 */
+/* 501 */
 /* unknown exports provided */
 /* all exports used */
-/*!********************************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/DataGridBundle/Resources/public/templates/filter/select2-choice-filter.html ***!
-  \********************************************************************************************************************/
+/*!*****************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/simpleselect.html ***!
+  \*****************************************************************************************/
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"AknFilterChoice choicefilter\">\n    <div class=\"AknFilterChoice-operator AknDropdown\">\n        <% if (emptyChoice) { %>\n            <button type=\"button\" class=\"AknActionButton AknActionButton--big AknActionButton--noRightBorder dropdown-toggle\" data-toggle=\"dropdown\">\n                <%= selectedOperatorLabel %>\n                <span class=\"AknCaret\"></span>\n            </button>\n            <ul class=\"dropdown-menu\">\n                <% _.each(operatorChoices, function (label, operator) { %>\n                    <li<% if (selectedOperator == operator) { %> class=\"active\"<% } %>>\n                        <a class=\"operator_choice\" href=\"#\" data-value=\"<%= operator %>\"><%= label %></a>\n                    </li>\n                <% }); %>\n            </ul>\n        <% } %>\n    </div>\n    <input type=\"text\" name=\"value\" class=\"AknTextField AknTextField--select2 AknTextField--noRadius AknFilterChoice-field select-field\">\n    <button type=\"button\" class=\"AknFilterChoice-button AknButton AknButton--apply AknButton--noLeftRadius filter-update\"><%- _.__('Update') %></button>\n</div>\n"
+module.exports = "<label class=\"control-label required\"><%- field %></label>\n<div class=\"controls\">\n    <input type=\"text\" name=\"filter-operator\" value=\"<%- operator %>\"/>\n    <input\n        class=\"select2\"\n        name=\"filter-value\"\n        type=\"hidden\"\n        value=\"<%- value ? value : '' %>\"\n    />\n    <% if (removable) { %><i class=\"remove icon-trash\"></i><% } %>\n</div>\n"
 
 /***/ }),
-/* 486 */
+/* 502 */
 /* unknown exports provided */
 /* all exports used */
-/*!************************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/textarea.html ***!
-  \************************************************************************************************************/
+/*!*******************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/save.html ***!
+  \*******************************************************************************/
 /***/ (function(module, exports) {
 
-module.exports = "<textarea id=\"<%- fieldId %>\" class=\"AknTextareaField\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" <%- editMode === 'view' ? 'disabled' : '' %>><%- value.data %></textarea>\n"
+module.exports = "<button class=\"AknButton AknButton--apply AknButton--withIcon save\">\n    <i class=\"AknButton-icon icon-ok\"></i>\n    <%- label %>\n</button>\n"
 
 /***/ }),
-/* 487 */
+/* 503 */
+/* unknown exports provided */
+/* all exports used */
+/*!**************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/tab/history.html ***!
+  \**************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"grid-drop\" data-type=\"datagrid\"></div>\n"
+
+/***/ }),
+/* 504 */
 /* unknown exports provided */
 /* all exports used */
 /*!********************************!*\
@@ -5312,40 +5576,7 @@ module.exports = function (content) {
 
 
 /***/ }),
-/* 488 */
-/* unknown exports provided */
-/* all exports used */
-/*!********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/DashboardBundle/Resources/public/templates/completeness-widget.html ***!
-  \********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/DashboardBundle/Resources/public/templates/completeness-widget.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <% var chunkedChannels = _.toArray(_.groupBy(data, function(element, index) { return Math.floor(index / options.channelsPerRow); })); %>\n| <% _.each(chunkedChannels, function (channels) { %>\n|     <div class=\"AknGridsLine channels\" style=\"display:none\">");
-
-/***/ }),
-/* 489 */
-/* unknown exports provided */
-/* all exports used */
-/*!***********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/DashboardBundle/Resources/public/templates/last-operations-widget.html ***!
-  \***********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/DashboardBundle/Resources/public/templates/last-operations-widget.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <% if (!_.isEmpty(data)) { %>\n|     <thead>\n|         <tr>");
-
-/***/ }),
-/* 490 */
-/* unknown exports provided */
-/* all exports used */
-/*!*************************************************************************************!*\
-  !*** ./src/Pim/Bundle/DashboardBundle/Resources/public/templates/view-all-btn.html ***!
-  \*************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/DashboardBundle/Resources/public/templates/view-all-btn.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <a href=\"javascript:void(0);\" class=\"AknButtonList-item AknButton AknButton--grey AknButton--small view-all-btn\" title=\"<%- _.isUndefined(title) ? _.__('pim_dashboard.widget.header.view_all') : title %>\">\n|     <%= _.__(\"pim_dashboard.widget.header.view_all\") %>\n| </a>");
-
-/***/ }),
-/* 491 */
+/* 505 */
 /* unknown exports provided */
 /* all exports used */
 /*!*********************************************************************************!*\
@@ -5353,7 +5584,7 @@ throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-comm
   \*********************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/tools */ 94), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/datafilter/collection-filters-manager */ 468)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, tools,  mediator, FiltersManager) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/tools */ 94), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/datafilter/collection-filters-manager */ 484)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, tools,  mediator, FiltersManager) {
     'use strict';
 
     var initialized = false,
@@ -5439,7 +5670,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 492 */
+/* 506 */
 /* unknown exports provided */
 /* all exports used */
 /*!***************************************************************************************************!*\
@@ -5447,7 +5678,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
   \***************************************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/datafilter/multiselect-filter */ 470), __webpack_require__(/*! routing */ 5)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, MultiSelectFilter, Routing) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/datafilter/multiselect-filter */ 486), __webpack_require__(/*! routing */ 7)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, MultiSelectFilter, Routing) {
         'use strict';
 
         return MultiSelectFilter.extend({
@@ -5531,7 +5762,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 493 */
+/* 507 */
 /* unknown exports provided */
 /* all exports used */
 /*!************************************************************************************************!*\
@@ -5540,7 +5771,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/datafilter/date-filter */ 469), __webpack_require__(/*! pim/date-context */ 44)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, DateFilter, DateContext) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/datafilter/date-filter */ 485), __webpack_require__(/*! pim/date-context */ 42)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, DateFilter, DateContext) {
     'use strict';
     /**
      * Datetime filter: filter type as option + interval begin and end dates
@@ -5576,7 +5807,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 
 
 /***/ }),
-/* 494 */
+/* 508 */
 /* unknown exports provided */
 /* all exports used */
 /*!**********************************************************************************************!*\
@@ -5587,9 +5818,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
         __webpack_require__(/*! jquery */ 1),
         __webpack_require__(/*! underscore */ 0),
-        __webpack_require__(/*! oro/datafilter/number-filter */ 88),
-        __webpack_require__(/*! oro/app */ 34),
-        __webpack_require__(/*! text-loader!pim/template/datagrid/filter/metric-filter */ 690)
+        __webpack_require__(/*! oro/datafilter/number-filter */ 87),
+        __webpack_require__(/*! oro/app */ 33),
+        __webpack_require__(/*! pim/template/datagrid/filter/metric-filter */ 465)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, NumberFilter, app, template) {
         'use strict';
 
@@ -5784,7 +6015,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 495 */
+/* 509 */
 /* unknown exports provided */
 /* all exports used */
 /*!********************************************************************************************!*\
@@ -5793,7 +6024,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/translator */ 2), __webpack_require__(/*! oro/datafilter/abstract-filter */ 87)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, __, AbstractFilter) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/translator */ 2), __webpack_require__(/*! oro/datafilter/abstract-filter */ 86)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, __, AbstractFilter) {
     'use strict';
 
     /**
@@ -6064,7 +6295,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 
 
 /***/ }),
-/* 496 */
+/* 510 */
 /* unknown exports provided */
 /* all exports used */
 /*!*********************************************************************************************!*\
@@ -6072,7 +6303,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
   \*********************************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/datafilter/number-filter */ 88), __webpack_require__(/*! oro/app */ 34)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, NumberFilter, app) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/datafilter/number-filter */ 87), __webpack_require__(/*! oro/app */ 33)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, NumberFilter, app) {
         'use strict';
 
         /**
@@ -6305,7 +6536,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 497 */
+/* 511 */
 /* unknown exports provided */
 /* all exports used */
 /*!************************************************************************************************************!*\
@@ -6313,7 +6544,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
   \************************************************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/datafilter/select-filter */ 457)], __WEBPACK_AMD_DEFINE_RESULT__ = function (_, SelectFilter) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/datafilter/select-filter */ 450)], __WEBPACK_AMD_DEFINE_RESULT__ = function (_, SelectFilter) {
         'use strict';
 
         /**
@@ -6333,7 +6564,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 498 */
+/* 512 */
 /* unknown exports provided */
 /* all exports used */
 /*!*****************************************************************************************************!*\
@@ -6341,7 +6572,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
   \*****************************************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/datafilter/select-filter */ 457), __webpack_require__(/*! pim/user-context */ 7), __webpack_require__(/*! pim/datagrid/state */ 35)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, mediator, SelectFilter, UserContext, DatagridState) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/datafilter/select-filter */ 450), __webpack_require__(/*! pim/user-context */ 5), __webpack_require__(/*! pim/datagrid/state */ 34)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, mediator, SelectFilter, UserContext, DatagridState) {
         'use strict';
 
         /**
@@ -6475,7 +6706,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 499 */
+/* 513 */
 /* unknown exports provided */
 /* all exports used */
 /*!**************************************************************************************************!*\
@@ -6484,7 +6715,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! oro/datafilter/select-filter */ 457)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, Backbone, SelectFilter) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! oro/datafilter/select-filter */ 450)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, Backbone, SelectFilter) {
     'use strict';
 
     /**
@@ -6590,7 +6821,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 
 
 /***/ }),
-/* 500 */
+/* 514 */
 /* unknown exports provided */
 /* all exports used */
 /*!******************************************************************************************************!*\
@@ -6601,11 +6832,11 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
         __webpack_require__(/*! jquery */ 1),
         __webpack_require__(/*! underscore */ 0),
-        __webpack_require__(/*! oro/datafilter/text-filter */ 59),
-        __webpack_require__(/*! routing */ 5),
-        __webpack_require__(/*! text-loader!pim/template/datagrid/filter/select2-choice-filter */ 485),
-        __webpack_require__(/*! pim/initselect2 */ 31),
-        __webpack_require__(/*! pim/user-context */ 7),
+        __webpack_require__(/*! oro/datafilter/text-filter */ 57),
+        __webpack_require__(/*! routing */ 7),
+        __webpack_require__(/*! pim/template/datagrid/filter/select2-choice-filter */ 453),
+        __webpack_require__(/*! pim/initselect2 */ 30),
+        __webpack_require__(/*! pim/user-context */ 5),
         __webpack_require__(/*! jquery.select2 */ 11)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, TextFilter, Routing, template, initSelect2, UserContext) {
         'use strict';
@@ -6874,7 +7105,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 501 */
+/* 515 */
 /* unknown exports provided */
 /* all exports used */
 /*!***********************************************************************************************************!*\
@@ -6889,12 +7120,12 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
         __webpack_require__(/*! jquery */ 1),
         __webpack_require__(/*! underscore */ 0),
         __webpack_require__(/*! oro/translator */ 2),
-        __webpack_require__(/*! routing */ 5),
-        __webpack_require__(/*! oro/datafilter/text-filter */ 59),
-        __webpack_require__(/*! pim/formatter/choices/base */ 47),
-        __webpack_require__(/*! pim/user-context */ 7),
-        __webpack_require__(/*! text-loader!pim/template/datagrid/filter/select2-choice-filter */ 485),
-        __webpack_require__(/*! pim/initselect2 */ 31),
+        __webpack_require__(/*! routing */ 7),
+        __webpack_require__(/*! oro/datafilter/text-filter */ 57),
+        __webpack_require__(/*! pim/formatter/choices/base */ 45),
+        __webpack_require__(/*! pim/user-context */ 5),
+        __webpack_require__(/*! pim/template/datagrid/filter/select2-choice-filter */ 453),
+        __webpack_require__(/*! pim/initselect2 */ 30),
         __webpack_require__(/*! jquery.select2 */ 11)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, __, Routing, TextFilter, ChoicesFormatter, UserContext, template, initSelect2) {
         return TextFilter.extend({
@@ -7122,7 +7353,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 502 */
+/* 516 */
 /* unknown exports provided */
 /* all exports used */
 /*!******************************************************************************************************!*\
@@ -7181,7 +7412,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/* global define */
 
 
 /***/ }),
-/* 503 */
+/* 517 */
 /* unknown exports provided */
 /* all exports used */
 /*!*******************************************************************************************************!*\
@@ -7194,12 +7425,12 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
         __webpack_require__(/*! underscore */ 0),
         __webpack_require__(/*! oro/translator */ 2),
         __webpack_require__(/*! backbone */ 6),
-        __webpack_require__(/*! routing */ 5),
+        __webpack_require__(/*! routing */ 7),
         __webpack_require__(/*! oro/loading-mask */ 15),
-        __webpack_require__(/*! pim/datagrid/state */ 35),
-        __webpack_require__(/*! pim/common/column-list-view */ 473),
-        __webpack_require__(/*! bootstrap-modal */ 39),
-        __webpack_require__(/*! jquery-ui */ 60)
+        __webpack_require__(/*! pim/datagrid/state */ 34),
+        __webpack_require__(/*! pim/common/column-list-view */ 489),
+        __webpack_require__(/*! bootstrap-modal */ 38),
+        __webpack_require__(/*! jquery-ui */ 59)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function(
         $,
         _,
@@ -7380,7 +7611,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 504 */
+/* 518 */
 /* unknown exports provided */
 /* all exports used */
 /*!*****************************************************************************************!*\
@@ -7443,7 +7674,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 
 
 /***/ }),
-/* 505 */
+/* 519 */
 /* unknown exports provided */
 /* all exports used */
 /*!*****************************************************************************************!*\
@@ -7492,7 +7723,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 
 
 /***/ }),
-/* 506 */
+/* 520 */
 /* unknown exports provided */
 /* all exports used */
 /*!****************************************************************************************!*\
@@ -7532,7 +7763,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 
 
 /***/ }),
-/* 507 */
+/* 521 */
 /* unknown exports provided */
 /* all exports used */
 /*!****************************************************************************************!*\
@@ -7582,7 +7813,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 
 
 /***/ }),
-/* 508 */
+/* 522 */
 /* unknown exports provided */
 /* all exports used */
 /*!**************************************************************************************************!*\
@@ -7591,7 +7822,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(_) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! oro/datagrid/abstract-listener */ 458)], __WEBPACK_AMD_DEFINE_RESULT__ = function(AbstractListener) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! oro/datagrid/abstract-listener */ 451)], __WEBPACK_AMD_DEFINE_RESULT__ = function(AbstractListener) {
     'use strict';
 
     /**
@@ -7637,7 +7868,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! underscore */ 0)))
 
 /***/ }),
-/* 509 */
+/* 523 */
 /* unknown exports provided */
 /* all exports used */
 /*!*****************************************************************************************************!*\
@@ -7645,7 +7876,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
   \*****************************************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/datagrid/column-form-listener */ 472)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, mediator, OroColumnFormListener) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/datagrid/column-form-listener */ 488)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, mediator, OroColumnFormListener) {
         'use strict';
 
         /**
@@ -7734,7 +7965,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 510 */
+/* 524 */
 /* unknown exports provided */
 /* all exports used */
 /*!**************************************************************************************!*\
@@ -7742,7 +7973,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
   \**************************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/datagrid/abstract-listener */ 458), __webpack_require__(/*! pim/datagrid/state */ 35)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, mediator, AbstractListener, DatagridState) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/datagrid/abstract-listener */ 451), __webpack_require__(/*! pim/datagrid/state */ 34)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, mediator, AbstractListener, DatagridState) {
         'use strict';
 
         /**
@@ -7820,7 +8051,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 511 */
+/* 525 */
 /* unknown exports provided */
 /* all exports used */
 /*!********************************************************************************************!*\
@@ -7860,84 +8091,67 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 512 */
-/* unknown exports provided */
-/* all exports used */
-/*!************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/DataGridBundle/Resources/public/templates/configure-columns-action.html ***!
-  \************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/DataGridBundle/Resources/public/templates/configure-columns-action.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknColumnConfigurator-column\">\n|     <div class=\"AknColumnConfigurator-columnHeader\"></div>\n|     <div class=\"AknColumnConfigurator-listContainer\">");
-
-/***/ }),
-/* 513 */
-/* unknown exports provided */
-/* all exports used */
-/*!*******************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/DataGridBundle/Resources/public/templates/datagrid/action-launcher-button.html ***!
-  \*******************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/DataGridBundle/Resources/public/templates/datagrid/action-launcher-button.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <% hidden = !icon && !iconClassName && !label %>\n| <<%- tagName %> href=\"<%= link %>\" class=\"<%- className %><% if (hidden) { %> AknIconButton--hide<% } %><% if (!enabled) { %> disabled<% } %>\"\n|     <% _.each(attributes, function(attribute, name) { %>");
-
-/***/ }),
-/* 514 */
-/* unknown exports provided */
-/* all exports used */
-/*!**********************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/DataGridBundle/Resources/public/templates/datagrid/action-launcher-list-item.html ***!
-  \**********************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/DataGridBundle/Resources/public/templates/datagrid/action-launcher-list-item.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <li>\n|     <<%- tagName %> href=\"<%= link %>\" class=\"<%- className %><% if (!enabled) { %> disabled<% } %>\"\n|         <% _.each(attributes, function(attribute, name) { %>");
-
-/***/ }),
-/* 515 */
-/* unknown exports provided */
-/* all exports used */
-/*!**********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/DataGridBundle/Resources/public/templates/datagrid/actions-group.html ***!
-  \**********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/DataGridBundle/Resources/public/templates/datagrid/actions-group.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknGridToolbar-actionButton AknDropdown <%- classname %> btn-group\">\n|     <button class=\"AknActionButton\" title=\"<%- group.title %>\" data-toggle=\"dropdown\">\n|         <% if (group.icon) { %><i class=\"icon-<%- group.icon %>\"></i><% } %>");
-
-/***/ }),
-/* 516 */
-/* unknown exports provided */
-/* all exports used */
-/*!******************************************************************************************!*\
-  !*** ./src/Pim/Bundle/DataGridBundle/Resources/public/templates/filter/date-filter.html ***!
-  \******************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/DataGridBundle/Resources/public/templates/filter/date-filter.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknFilterDate\">\n|     <select class=\"AknFilterDate-select type\" name=\"<%= name %>\">\n|         <% _.each(choices, function (option) { %>");
-
-/***/ }),
-/* 517 */
+/* 526 */
 /* unknown exports provided */
 /* all exports used */
 /*!********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/DataGridBundle/Resources/public/templates/filter/metric-filter.html ***!
+  !*** ./src/Pim/Bundle/DataGridBundle/Resources/public/js/fetcher/datagrid-view-fetcher.js ***!
   \********************************************************************************************/
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/DataGridBundle/Resources/public/templates/filter/metric-filter.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknFilterChoice metricfilter choicefilter\">\n|     <div class=\"AknFilterChoice-operator AknDropdown btn-group\">\n|         <button class=\"AknActionButton AknActionButton--big AknActionButton--noRightBorder dropdown-toggle\" data-toggle=\"dropdown\">");
+"use strict";
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+/**
+ * Datagrid View Fetcher.
+ * We override the default fetcher to add additional methods
+ * to fetch default columns & default user datagrid view.
+ */
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
+        __webpack_require__(/*! jquery */ 1),
+        __webpack_require__(/*! routing */ 7),
+        __webpack_require__(/*! pim/base-fetcher */ 56)
+    ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
+        $,
+        Routing,
+        BaseFetcher
+    ) {
+        return BaseFetcher.extend({
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (options) {
+                BaseFetcher.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * Fetch default columns for grid with given alias
+             *
+             * @param {string} alias
+             *
+             * @return Promise
+             */
+            defaultColumns: function (alias) {
+                return $.getJSON(Routing.generate(this.options.urls.columns, { alias: alias }));
+            },
+
+            /**
+             * Fetch default datagrid view for given alias of the current user
+             *
+             * @param {string} alias
+             *
+             * @return Promise
+             */
+            defaultUserView: function (alias) {
+                return $.getJSON(Routing.generate(this.options.urls.userDefaultView, { alias: alias }));
+            }
+        });
+    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
 
 /***/ }),
-/* 518 */
-/* unknown exports provided */
-/* all exports used */
-/*!****************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/DataGridBundle/Resources/public/templates/filter/select2-choice-filter.html ***!
-  \****************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/DataGridBundle/Resources/public/templates/filter/select2-choice-filter.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknFilterChoice choicefilter\">\n|     <div class=\"AknFilterChoice-operator AknDropdown\">\n|         <% if (emptyChoice) { %>");
-
-/***/ }),
-/* 519 */
+/* 527 */
 /* unknown exports provided */
 /* all exports used */
 /*!********************************************************************************!*\
@@ -7948,7 +8162,7 @@ throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-comm
 "use strict";
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! controllers */ 320)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, module) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! controllers */ 429)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, module) {
         var controllers       = controllers || {}
         var defaultController = module.config().defaultController;
 
@@ -7964,7 +8178,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
                 var deferred = $.Deferred();
 
                 var controller = controllers[name] || defaultController;
-                __webpack_require__.e/* require */(2).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! . */ 455)(controller.module)]; (function (Controller) {
+                __webpack_require__.e/* require */(2).then(function() { var __WEBPACK_AMD_REQUIRE_ARRAY__ = [__webpack_require__(/*! . */ 448)(controller.module)]; (function (Controller) {
                     controller.class = Controller;
 
                     deferred.resolve(controller);
@@ -7978,7 +8192,141 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 520 */
+/* 528 */
+/* unknown exports provided */
+/* all exports used */
+/*!**************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/fetcher/attribute-fetcher.js ***!
+  \**************************************************************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! pim/base-fetcher */ 56), __webpack_require__(/*! routing */ 7)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, BaseFetcher, Routing) {
+    return BaseFetcher.extend({
+        identifierPromise: null,
+        fetchByTypesPromises: [],
+
+        /**
+         * Return the identifier attribute
+         *
+         * @return {Promise}
+         */
+        getIdentifierAttribute: function () {
+            if (null === this.identifierPromise) {
+                this.identifierPromise = $.Deferred();
+
+                return this.fetchByTypes([this.options.identifier_type])
+                    .then(function (attributes) {
+                        if (attributes.length > 0) {
+                            this.identifierPromise.resolve(attributes[0]).promise();
+
+                            return this.identifierPromise;
+                        }
+
+                        return this.identifierPromise
+                            .reject()
+                            .promise();
+                    }.bind(this));
+            }
+
+            return this.identifierPromise;
+        },
+
+        /**
+         * Fetch attributes by types
+         *
+         * @param {Array} attributeTypes
+         *
+         * @return {Promise}
+         */
+        fetchByTypes: function (attributeTypes) {
+            var cacheKey = attributeTypes.sort().join('');
+
+            if (!_.has(this.fetchByTypesPromises, cacheKey)) {
+                this.fetchByTypesPromises[cacheKey] = this.getJSON(
+                    this.options.urls.list,
+                    {types: attributeTypes.join(',')}
+                )
+                .then(_.identity)
+                .promise();
+            }
+
+            return this.fetchByTypesPromises[cacheKey];
+        },
+
+        /**
+         * This method overrides the base method, to send a POST query instead of a GET query, because the request
+         * URI can be too long.
+         * TODO Should be deleted to set it back to GET.
+         *
+         * {@inheritdoc}
+         */
+        getJSON: function (url, parameters) {
+            return $.post(Routing.generate(url), parameters, null, 'json');
+        },
+
+        /**
+         * {@inheritdoc}
+         */
+        clear: function () {
+            BaseFetcher.prototype.clear.apply(this, arguments);
+
+            this.identifierPromise = null;
+        }
+    });
+}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ }),
+/* 529 */
+/* unknown exports provided */
+/* all exports used */
+/*!********************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/fetcher/attribute-group-fetcher.js ***!
+  \********************************************************************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+/**
+ * Attribute group fetcher
+ *
+ * @author    Alexandr Jeliuc <alex@jeliuc.com>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
+    __webpack_require__(/*! jquery */ 1),
+    __webpack_require__(/*! pim/base-fetcher */ 56),
+    __webpack_require__(/*! routing */ 7)
+], __WEBPACK_AMD_DEFINE_RESULT__ = function (
+    $,
+    BaseFetcher,
+    Routing
+) {
+    return BaseFetcher.extend({
+        /**
+         * Overrides base method, to send query using POST instead GET,
+         * because the request URI can be too long.
+         * TODO Should be deleted to set it back to GET.
+         * SEE attribute fetcher
+         *
+         * {@inheritdoc}
+         */
+        getJSON: function (url, parameters) {
+            return $.post(Routing.generate(url), parameters, null, 'json');
+        }
+    });
+}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ }),
+/* 530 */
 /* unknown exports provided */
 /* all exports used */
 /*!*****************************************************************************************!*\
@@ -7989,7 +8337,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 "use strict";
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! routing */ 5), __webpack_require__(/*! pim/base-fetcher */ 28)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, Routing, BaseFetcher) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! routing */ 7), __webpack_require__(/*! pim/base-fetcher */ 56)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, Routing, BaseFetcher) {
     return BaseFetcher.extend({
         /**
          * Fetch completenesses for the given product id
@@ -8022,7 +8370,209 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 521 */
+/* 531 */
+/* unknown exports provided */
+/* all exports used */
+/*!***********************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/fetcher/locale-fetcher.js ***!
+  \***********************************************************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
+        __webpack_require__(/*! jquery */ 1),
+        __webpack_require__(/*! underscore */ 0),
+        __webpack_require__(/*! pim/base-fetcher */ 56),
+        __webpack_require__(/*! routing */ 7)
+
+    ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
+        $,
+        _,
+        BaseFetcher,
+        Routing
+    ) {
+        return BaseFetcher.extend({
+            entityActivatedListPromise: null,
+            /**
+             * @param {Object} options
+             */
+            initialize: function (options) {
+                this.options = options || {};
+            },
+
+            /**
+             * Fetch an element based on its identifier
+             *
+             * @param {string} identifier
+             *
+             * @return {Promise}
+             */
+            fetchActivated: function () {
+                if (!this.entityActivatedListPromise) {
+                    if (!_.has(this.options.urls, 'list')) {
+                        return $.Deferred().reject().promise();
+                    }
+
+                    this.entityActivatedListPromise = $.getJSON(
+                        Routing.generate(this.options.urls.list),
+                        {activated: true}
+                    ).then(_.identity).promise();
+                }
+
+                return this.entityActivatedListPromise;
+            },
+
+            /**
+             * {inheritdoc}
+             */
+            clear: function () {
+                this.entityActivatedListPromise = null;
+
+                BaseFetcher.prototype.clear.apply(this, arguments);
+            }
+        });
+    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ }),
+/* 532 */
+/* unknown exports provided */
+/* all exports used */
+/*!************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/fetcher/product-fetcher.js ***!
+  \************************************************************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
+        __webpack_require__(/*! jquery */ 1),
+        __webpack_require__(/*! backbone */ 6),
+        __webpack_require__(/*! module-config */ 10),
+        __webpack_require__(/*! routing */ 7),
+        __webpack_require__(/*! oro/mediator */ 8),
+        __webpack_require__(/*! pim/cache-invalidator */ 88),
+        __webpack_require__(/*! pim/product-manager */ 58)
+    ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
+        $,
+        Backbone,
+        module,
+        Routing,
+        mediator,
+        CacheInvalidator,
+        ProductManager
+    ) {
+        return Backbone.Model.extend({
+            /**
+             * @param {Object} options
+             */
+            initialize: function (options) {
+                this.options = options || {};
+            },
+
+            /**
+             * Fetch an element based on its identifier
+             *
+             * @param {string} identifier
+             *
+             * @return {Promise}
+             */
+            fetch: function (identifier) {
+                return $.getJSON(Routing.generate(this.options.urls.get, { id: identifier }))
+                    .then(function (product) {
+                        var cacheInvalidator = new CacheInvalidator();
+                        cacheInvalidator.checkStructureVersion(product);
+
+                        return ProductManager.generateMissing(product);
+                    }.bind(this))
+                    .then(function (product) {
+                        mediator.trigger('pim_enrich:form:product:post_fetch', product);
+
+                        return product;
+                    })
+                    .promise();
+            }
+        });
+    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ }),
+/* 533 */
+/* unknown exports provided */
+/* all exports used */
+/*!******************************************************************************************!*\
+  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/fetcher/variant-group-fetcher.js ***!
+  \******************************************************************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
+        __webpack_require__(/*! jquery */ 1),
+        __webpack_require__(/*! pim/base-fetcher */ 56),
+        __webpack_require__(/*! module-config */ 10),
+        __webpack_require__(/*! routing */ 7),
+        __webpack_require__(/*! oro/mediator */ 8),
+        __webpack_require__(/*! pim/cache-invalidator */ 88),
+        __webpack_require__(/*! pim/product-manager */ 58)
+    ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
+        $,
+        BaseFetcher,
+        module,
+        Routing,
+        mediator,
+        CacheInvalidator,
+        ProductManager
+    ) {
+        return BaseFetcher.extend({
+            /**
+             * @param {Object} options
+             */
+            initialize: function (options) {
+                this.options = options || {};
+            },
+
+            /**
+             * Fetch an element based on its identifier
+             *
+             * @param {string} identifier
+             * @param {Object} options
+             *
+             * @return {Promise}
+             */
+            fetch: function (identifier, options) {
+                options = options || {};
+
+                options.code = identifier;
+                var promise = BaseFetcher.prototype.fetch.apply(this, [identifier, options]);
+
+                return promise
+                    .then(function (variantGroup) {
+                        var cacheInvalidator = new CacheInvalidator();
+                        cacheInvalidator.checkStructureVersion(variantGroup);
+
+                        return variantGroup;
+                    })
+                    .then(ProductManager.generateMissing.bind(ProductManager))
+                    .then(function (variantGroup) {
+                        mediator.trigger('pim_enrich:form:variant_group:post_fetch', variantGroup);
+
+                        return variantGroup;
+                    });
+            }
+        });
+    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+
+/***/ }),
+/* 534 */
 /* unknown exports provided */
 /* all exports used */
 /*!*********************************************************************************************!*\
@@ -8044,8 +8594,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
         __webpack_require__(/*! underscore */ 0),
         __webpack_require__(/*! oro/translator */ 2),
         __webpack_require__(/*! pim/form */ 3),
-        __webpack_require__(/*! routing */ 5),
-        __webpack_require__(/*! text-loader!pim/template/form/index/confirm-button */ 695)
+        __webpack_require__(/*! routing */ 7),
+        __webpack_require__(/*! pim/template/form/index/confirm-button */ 470)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
         _,
         __,
@@ -8091,7 +8641,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 522 */
+/* 535 */
 /* unknown exports provided */
 /* all exports used */
 /*!****************************************************************************!*\
@@ -8270,7 +8820,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 523 */
+/* 536 */
 /* unknown exports provided */
 /* all exports used */
 /*!**************************************************************************!*\
@@ -8324,7 +8874,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 524 */
+/* 537 */
 /* unknown exports provided */
 /* all exports used */
 /*!*****************************************************************************************!*\
@@ -8339,7 +8889,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! routing */ 5)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, Routing) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! routing */ 7)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, Routing) {
         return {
             /**
              * Saves a history item.
@@ -8361,7 +8911,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 525 */
+/* 538 */
 /* unknown exports provided */
 /* all exports used */
 /*!************************************************************************************!*\
@@ -8374,14 +8924,14 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
         __webpack_require__(/*! underscore */ 0),
         __webpack_require__(/*! backbone */ 6),
         __webpack_require__(/*! oro/translator */ 2),
-        __webpack_require__(/*! routing */ 5),
+        __webpack_require__(/*! routing */ 7),
         __webpack_require__(/*! oro/mediator */ 8),
         __webpack_require__(/*! oro/loading-mask */ 15),
         __webpack_require__(/*! pim/dialog */ 14),
-        __webpack_require__(/*! text-loader!pim/template/attribute-option/index */ 692),
-        __webpack_require__(/*! text-loader!pim/template/attribute-option/edit */ 691),
-        __webpack_require__(/*! text-loader!pim/template/attribute-option/show */ 693),
-        __webpack_require__(/*! jquery-ui */ 60)
+        __webpack_require__(/*! pim/template/attribute-option/index */ 467),
+        __webpack_require__(/*! pim/template/attribute-option/edit */ 466),
+        __webpack_require__(/*! pim/template/attribute-option/show */ 468),
+        __webpack_require__(/*! jquery-ui */ 59)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
         $,
         _,
@@ -8873,7 +9423,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 526 */
+/* 539 */
 /* unknown exports provided */
 /* all exports used */
 /*!******************************************************************************!*\
@@ -8881,7 +9431,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
   \******************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! bootstrap */ 36)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, Backbone, _, mediator) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! bootstrap */ 35)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, Backbone, _, mediator) {
         'use strict';
         /**
          * Allow expanding/collapsing currency fields
@@ -9116,7 +9666,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 527 */
+/* 540 */
 /* unknown exports provided */
 /* all exports used */
 /*!*******************************************************************************!*\
@@ -9124,7 +9674,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
   \*******************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! oro/translator */ 2), __webpack_require__(/*! routing */ 5), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/loading-mask */ 15), __webpack_require__(/*! pim/dialog */ 14)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, Backbone, __, Routing, mediator, LoadingMask, Dialog) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! oro/translator */ 2), __webpack_require__(/*! routing */ 7), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/loading-mask */ 15), __webpack_require__(/*! pim/dialog */ 14)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, Backbone, __, Routing, mediator, LoadingMask, Dialog) {
         'use strict';
 
         return Backbone.View.extend({
@@ -9249,7 +9799,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 528 */
+/* 541 */
 /* unknown exports provided */
 /* all exports used */
 /*!**************************************************************************!*\
@@ -9306,7 +9856,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 529 */
+/* 542 */
 /* unknown exports provided */
 /* all exports used */
 /*!**************************************************************************!*\
@@ -9314,7 +9864,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
   \**************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! jquery.multiselect */ 462), __webpack_require__(/*! jquery.multiselect.filter */ 461)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, Backbone) {
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! jquery.multiselect */ 457), __webpack_require__(/*! jquery.multiselect.filter */ 456)], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, Backbone) {
         'use strict';
 
         return function (elementId) {
@@ -9391,7 +9941,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 530 */
+/* 543 */
 /* unknown exports provided */
 /* all exports used */
 /*!*************************************************************************!*\
@@ -9405,10 +9955,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
         __webpack_require__(/*! underscore */ 0),
         __webpack_require__(/*! oro/mediator */ 8),
         __webpack_require__(/*! wysiwyg */ 93),
-        __webpack_require__(/*! pim/optionform */ 475),
-        __webpack_require__(/*! pim/fileinput */ 484),
-        __webpack_require__(/*! bootstrap */ 36),
-        __webpack_require__(/*! bootstrap.bootstrapswitch */ 45),
+        __webpack_require__(/*! pim/optionform */ 491),
+        __webpack_require__(/*! pim/fileinput */ 500),
+        __webpack_require__(/*! bootstrap */ 35),
+        __webpack_require__(/*! bootstrap.bootstrapswitch */ 43),
         __webpack_require__(/*! jquery.select2 */ 11)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, Backbone, _, mediator, wysiwyg, optionform, fileinput) {
         'use strict';
@@ -9755,7 +10305,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 531 */
+/* 544 */
 /* unknown exports provided */
 /* all exports used */
 /*!****************************************************************************************!*\
@@ -9773,7 +10323,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! pim/field */ 85), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! text-loader!pim/template/product/field/boolean */ 696), __webpack_require__(/*! bootstrap.bootstrapswitch */ 45)], __WEBPACK_AMD_DEFINE_RESULT__ = function (Field, _, fieldTemplate) {
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! pim/field */ 84), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! pim/template/product/field/boolean */ 471), __webpack_require__(/*! bootstrap.bootstrapswitch */ 43)], __WEBPACK_AMD_DEFINE_RESULT__ = function (Field, _, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
         events: {
@@ -9796,7 +10346,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 532 */
+/* 545 */
 /* unknown exports provided */
 /* all exports used */
 /*!*************************************************************************************!*\
@@ -9815,11 +10365,11 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-        __webpack_require__(/*! pim/field */ 85),
+        __webpack_require__(/*! pim/field */ 84),
         __webpack_require__(/*! underscore */ 0),
-        __webpack_require__(/*! text-loader!pim/template/product/field/date */ 697),
-        __webpack_require__(/*! datepicker */ 46),
-        __webpack_require__(/*! pim/date-context */ 44)
+        __webpack_require__(/*! pim/template/product/field/date */ 472),
+        __webpack_require__(/*! datepicker */ 44),
+        __webpack_require__(/*! pim/date-context */ 42)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
         Field,
         _,
@@ -9860,7 +10410,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 533 */
+/* 546 */
 /* unknown exports provided */
 /* all exports used */
 /*!**************************************************************************************!*\
@@ -9880,16 +10430,16 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
  */
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
         __webpack_require__(/*! jquery */ 1),
-        __webpack_require__(/*! pim/field */ 85),
+        __webpack_require__(/*! pim/field */ 84),
         __webpack_require__(/*! underscore */ 0),
-        __webpack_require__(/*! routing */ 5),
+        __webpack_require__(/*! routing */ 7),
         __webpack_require__(/*! pim/attribute-manager */ 24),
-        __webpack_require__(/*! text-loader!pim/template/product/field/media */ 698),
+        __webpack_require__(/*! pim/template/product/field/media */ 473),
         __webpack_require__(/*! pim/dialog */ 14),
         __webpack_require__(/*! oro/mediator */ 8),
         __webpack_require__(/*! oro/messenger */ 12),
-        __webpack_require__(/*! pim/media-url-generator */ 474),
-        __webpack_require__(/*! jquery.slimbox */ 467)
+        __webpack_require__(/*! pim/media-url-generator */ 490),
+        __webpack_require__(/*! jquery.slimbox */ 462)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, Field, _, Routing, AttributeManager, fieldTemplate, Dialog, mediator, messenger, MediaUrlGenerator) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
@@ -10021,7 +10571,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 534 */
+/* 547 */
 /* unknown exports provided */
 /* all exports used */
 /*!***************************************************************************************!*\
@@ -10041,11 +10591,11 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
  */
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
     __webpack_require__(/*! jquery */ 1),
-    __webpack_require__(/*! pim/field */ 85),
+    __webpack_require__(/*! pim/field */ 84),
     __webpack_require__(/*! underscore */ 0),
     __webpack_require__(/*! pim/fetcher-registry */ 4),
-    __webpack_require__(/*! text-loader!pim/template/product/field/metric */ 699),
-    __webpack_require__(/*! pim/initselect2 */ 31)
+    __webpack_require__(/*! pim/template/product/field/metric */ 474),
+    __webpack_require__(/*! pim/initselect2 */ 30)
 ], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, Field, _, FetcherRegistry, fieldTemplate, initSelect2) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
@@ -10086,7 +10636,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 535 */
+/* 548 */
 /* unknown exports provided */
 /* all exports used */
 /*!***************************************************************************************!*\
@@ -10105,9 +10655,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-        __webpack_require__(/*! pim/field */ 85),
+        __webpack_require__(/*! pim/field */ 84),
         __webpack_require__(/*! underscore */ 0),
-        __webpack_require__(/*! text-loader!pim/template/product/field/number */ 701)
+        __webpack_require__(/*! pim/template/product/field/number */ 476)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
         Field,
         _,
@@ -10136,7 +10686,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 536 */
+/* 549 */
 /* unknown exports provided */
 /* all exports used */
 /*!*************************************************************************************************!*\
@@ -10156,10 +10706,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
  */
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
         __webpack_require__(/*! jquery */ 1),
-        __webpack_require__(/*! pim/field */ 85),
+        __webpack_require__(/*! pim/field */ 84),
         __webpack_require__(/*! underscore */ 0),
         __webpack_require__(/*! pim/fetcher-registry */ 4),
-        __webpack_require__(/*! text-loader!pim/template/product/field/price-collection */ 702)
+        __webpack_require__(/*! pim/template/product/field/price-collection */ 477)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, Field, _, FetcherRegistry, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
@@ -10204,7 +10754,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 537 */
+/* 550 */
 /* unknown exports provided */
 /* all exports used */
 /*!*************************************************************************************!*\
@@ -10223,9 +10773,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-        __webpack_require__(/*! pim/field */ 85),
+        __webpack_require__(/*! pim/field */ 84),
         __webpack_require__(/*! underscore */ 0),
-        __webpack_require__(/*! text-loader!pim/template/product/field/text */ 704)
+        __webpack_require__(/*! pim/template/product/field/text */ 479)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
         Field,
         _,
@@ -10251,7 +10801,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 538 */
+/* 551 */
 /* unknown exports provided */
 /* all exports used */
 /*!*****************************************************************************************!*\
@@ -10270,9 +10820,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-        __webpack_require__(/*! pim/field */ 85),
+        __webpack_require__(/*! pim/field */ 84),
         __webpack_require__(/*! underscore */ 0),
-        __webpack_require__(/*! text-loader!pim/template/product/field/textarea */ 486)
+        __webpack_require__(/*! pim/template/product/field/textarea */ 454)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
         Field,
         _,
@@ -10313,7 +10863,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 539 */
+/* 552 */
 /* unknown exports provided */
 /* all exports used */
 /*!****************************************************************************************!*\
@@ -10332,10 +10882,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-        __webpack_require__(/*! pim/field */ 85),
+        __webpack_require__(/*! pim/field */ 84),
         __webpack_require__(/*! underscore */ 0),
-        __webpack_require__(/*! text-loader!pim/template/product/field/textarea */ 486),
-        __webpack_require__(/*! summernote */ 319)
+        __webpack_require__(/*! pim/template/product/field/textarea */ 454),
+        __webpack_require__(/*! summernote */ 428)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
         Field,
         _,
@@ -10393,7 +10943,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 540 */
+/* 553 */
 /* unknown exports provided */
 /* all exports used */
 /*!*******************************************************************************!*\
@@ -10405,11 +10955,11 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
         __webpack_require__(/*! jquery */ 1),
         __webpack_require__(/*! underscore */ 0),
         __webpack_require__(/*! backbone */ 6),
-        __webpack_require__(/*! routing */ 5),
+        __webpack_require__(/*! routing */ 7),
         __webpack_require__(/*! oro/loading-mask */ 15),
-        __webpack_require__(/*! oro/error */ 86),
+        __webpack_require__(/*! oro/error */ 85),
         __webpack_require__(/*! pim/ui */ 92),
-        __webpack_require__(/*! jquery.jstree */ 48),
+        __webpack_require__(/*! jquery.jstree */ 46),
         __webpack_require__(/*! jstree/jquery.jstree.tree_selector */ 90)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, _, Backbone, Routing, LoadingMask, OroError, UI) {
         'use strict';
@@ -10615,1415 +11165,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 541 */
-/* unknown exports provided */
-/* all exports used */
-/*!*******************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/attribute-option/edit.html ***!
-  \*******************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/attribute-option/edit.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <td class=\"AknGrid-bodyCell field-cell\">\n|     <div class=\"AknFieldContainer AknFieldContainer--withoutMargin\">\n|         <div class=\"AknFieldContainer-inputContainer\">");
-
-/***/ }),
-/* 542 */
-/* unknown exports provided */
-/* all exports used */
-/*!*******************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/attribute-option/form.html ***!
-  \*******************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/attribute-option/form.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"attribute-option-form form-inline\">\n|     <div class=\"row-fluid\">\n|         <div class=\"control-group\">");
-
-/***/ }),
-/* 543 */
-/* unknown exports provided */
-/* all exports used */
-/*!********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/attribute-option/index.html ***!
-  \********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/attribute-option/index.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <colgroup>\n|     <col class=\"code\" span=\"1\">\n|     <col class=\"fields\" span=\"<%- locales.length %>\"/>");
-
-/***/ }),
-/* 544 */
-/* unknown exports provided */
-/* all exports used */
-/*!*******************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/attribute-option/show.html ***!
-  \*******************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/attribute-option/show.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <td class=\"AknGrid-bodyCell\">\n|     <span class=\"handle\"><i class=\"icon-reorder\"></i></span>\n|     <span class=\"option-code\"><%- item.code %></span>");
-
-/***/ }),
-/* 545 */
-/* unknown exports provided */
-/* all exports used */
-/*!*******************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/attribute-option/validation-error.html ***!
-  \*******************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/attribute-option/validation-error.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknFieldContainer-validationErrors validation-errors\">\n|     <% _.each(errors, function(error) { %>\n|         <span class=\"AknFieldContainer-validationError\">");
-
-/***/ }),
-/* 546 */
-/* unknown exports provided */
-/* all exports used */
-/*!************************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/channel/tab/properties/conversion-unit.html ***!
-  \************************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/channel/tab/properties/conversion-unit.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"tabsection-title\"><%- label %></div>\n| <div class=\"tabsection-content\">\n|     <div class=\"AknFormContainer AknFormContainer--withPadding\">");
-
-/***/ }),
-/* 547 */
-/* unknown exports provided */
-/* all exports used */
-/*!****************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/channel/tab/properties/general.html ***!
-  \****************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/channel/tab/properties/general.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"tabsection-title\">\n|     <%- sectionTitle %>\n| </div>");
-
-/***/ }),
-/* 548 */
-/* unknown exports provided */
-/* all exports used */
-/*!******************************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/channel/tab/properties/general/category-tree.html ***!
-  \******************************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/channel/tab/properties/general/category-tree.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknFieldContainer-header\">\n|     <label class=\"AknFieldContainer-label control-label required\" for=\"pim_enrich_channel_form_category_tree\">\n|         <%- label %> <em><%- requiredLabel %></em>");
-
-/***/ }),
-/* 549 */
-/* unknown exports provided */
-/* all exports used */
-/*!***************************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/channel/tab/properties/general/currencies.html ***!
-  \***************************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/channel/tab/properties/general/currencies.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknFieldContainer-header\">\n|     <label class=\"AknFieldContainer-label control-label required\" for=\"pim_enrich_channel_form_currencies\">\n|         <%- label %> <em><%- requiredLabel %></em>");
-
-/***/ }),
-/* 550 */
-/* unknown exports provided */
-/* all exports used */
-/*!************************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/channel/tab/properties/general/locales.html ***!
-  \************************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/channel/tab/properties/general/locales.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknFieldContainer-header\">\n|     <label class=\"AknFieldContainer-label control-label required\" for=\"pim_enrich_channel_form_locales\">\n|         <%- label %> <em><%- requiredLabel %></em>");
-
-/***/ }),
-/* 551 */
-/* unknown exports provided */
-/* all exports used */
-/*!*********************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/error/error.html ***!
-  \*********************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/error/error.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknInfoBlock\">\n|     <img src=\"/bundles/pimui/images/unicorn-akeneo_128.png\"/>\n|     <h1>");
-
-/***/ }),
-/* 552 */
-/* unknown exports provided */
-/* all exports used */
-/*!****************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/common/edit/field/field.html ***!
-  \****************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/common/edit/field/field.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknFieldContainer\">\n|     <div class=\"AknFieldContainer-header\">\n|         <label class=\"AknFieldContainer-label\" for=\"jobInstance_<%- config.fieldCode.replace('.', '_') %>\"><%- __(config.label) %></label>");
-
-/***/ }),
-/* 553 */
-/* unknown exports provided */
-/* all exports used */
-/*!*****************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/common/edit/field/select.html ***!
-  \*****************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/common/edit/field/select.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <select class=\"select2\" id=\"jobInstance_<%- config.fieldCode.replace('.', '_') %>\" title=\"<%- __(config.label) %>\" <%- true === config.readOnly ? 'readonly disabled' : '' %>>\n|     <% _.each(config.options, function (label, code) { %>\n|         <option value=\"<%- code %>\" <%- value === code ? 'selected' : '' %>><%- __(label) %></option>");
-
-/***/ }),
 /* 554 */
-/* unknown exports provided */
-/* all exports used */
-/*!*****************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/common/edit/field/switch.html ***!
-  \*****************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/common/edit/field/switch.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"switch switch-small\" data-on-label=\"<%- __('switch_on') %>\" data-off-label=\"<%- __('switch_off') %>\">\n|     <input type=\"checkbox\" title=\"<%- __(config.label) %>\" id=\"jobInstance_<%- config.fieldCode.replace('.', '_') %>\" <%- value ? 'checked' : '' %> <%- true === config.readOnly ? 'readonly disabled' : '' %>/>\n| </div>");
-
-/***/ }),
-/* 555 */
-/* unknown exports provided */
-/* all exports used */
-/*!***************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/common/edit/field/text.html ***!
-  \***************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/common/edit/field/text.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <input class=\"AknTextField\" title=\"<%- __(config.label) %>\" id=\"jobInstance_<%- config.fieldCode.replace('.', '_') %>\" value=\"<%- value %>\" type=\"text\" name=\"jobInstance_<%- config.fieldCode.replace('.', '_') %>\" <%- true === config.readOnly ? 'readonly disabled' : '' %>/>\n| ");
-
-/***/ }),
-/* 556 */
-/* unknown exports provided */
-/* all exports used */
-/*!***********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/common/edit/launch.html ***!
-  \***********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/common/edit/launch.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <button class=\"AknButton AknButton--apply AknButton--withIcon AknButtonList-item\">\n|     <i class=\"AknButton-icon icon-cogs\"></i>\n|     <%- label %>");
-
-/***/ }),
-/* 557 */
-/* unknown exports provided */
-/* all exports used */
-/*!*********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/common/edit/meta.html ***!
-  \*********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/common/edit/meta.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <span class=\"AknTitleContainer-metaItem\"><%- __('pim_enrich.form.job_instance.meta.job') %>: <%- jobInstance.code %> | <%- __('pim_enrich.form.job_instance.meta.connector') %>: <%- jobInstance.connector %></span>\n| ");
-
-/***/ }),
-/* 558 */
-/* unknown exports provided */
-/* all exports used */
-/*!***************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/common/edit/properties.html ***!
-  \***************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/common/edit/properties.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"tabsections AknTabContainer-content\">\n|     <div class=\"tabsection\">\n|         <div class=\"tabsection-title\">");
-
-/***/ }),
-/* 559 */
-/* unknown exports provided */
-/* all exports used */
-/*!***********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/common/edit/upload.html ***!
-  \***********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/common/edit/upload.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknFormContainer AknFormContainer--withPadding AknFormContainer--centered\">\n|     <div class=\"AknMediaField <%- !file ? 'has-file' : '' %>\" >\n|         <% if (!file) { %>");
-
-/***/ }),
-/* 560 */
-/* unknown exports provided */
-/* all exports used */
-/*!***************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/common/edit/validation.html ***!
-  \***************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/common/edit/validation.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <span class=\"validation-container\">\n|     <span class=\"AknFieldContainer-validationErrors validation-errors\">\n|         <% errors.forEach(function (error) { %>");
-
-/***/ }),
-/* 561 */
-/* unknown exports provided */
-/* all exports used */
-/*!*************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/product/edit/content.html ***!
-  \*************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/product/edit/content.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"tabsections\">\n|     <div data-drop-zone=\"structure-filters\" class=\"tabsection\"></div>\n|     <div data-drop-zone=\"data-filters\" class=\"tabsection\"></div>");
-
-/***/ }),
-/* 562 */
-/* unknown exports provided */
-/* all exports used */
-/*!******************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/product/edit/content/data.html ***!
-  \******************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/product/edit/content/data.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"tabsection-title\">\n|     <div class=\"pull-right AknButtonList-item\" data-drop-zone=\"headings\"></div>\n|     <%- __('pim_enrich.export.product.data.title') %>");
-
-/***/ }),
-/* 563 */
-/* unknown exports provided */
-/* all exports used */
-/*!***********************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/product/edit/content/data/help.html ***!
-  \***********************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/product/edit/content/data/help.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <span class=\"AknFieldContainer-iconsContainer icons-container\">\n|     <i class=\"AknIconButton icon-info-sign\" data-toggle=\"tooltip\" data-placement=\"right\" data-original-title=\"<%- text %>\"></i>\n| </span>");
-
-/***/ }),
-/* 564 */
-/* unknown exports provided */
-/* all exports used */
-/*!***********************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/product/edit/content/structure.html ***!
-  \***********************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/product/edit/content/structure.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"tabsection-title\">\n|     <%- __('pim_enrich.export.product.structure.title') %>\n| </div>");
-
-/***/ }),
-/* 565 */
-/* unknown exports provided */
-/* all exports used */
-/*!**************************************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/product/edit/content/structure/attribute-list.html ***!
-  \**************************************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/product/edit/content/structure/attribute-list.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <% _.each(attributes, function (attribute) { %>\n| <li class=\"AknVerticalList-item AknVerticalList-item--movable\" data-attribute-code=\"<%- attribute.code %>\">\n|     <div>");
-
-/***/ }),
-/* 566 */
-/* unknown exports provided */
-/* all exports used */
-/*!*******************************************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/product/edit/content/structure/attributes-selector.html ***!
-  \*******************************************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/product/edit/content/structure/attributes-selector.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknColumnConfigurator-column attribute-groups\">\n|     <header class=\"AknColumnConfigurator-columnHeader\"><%- __('pim_enrich.export.product.filter.attributes_selector.attribute_group') %></header>\n|     <div data-scroll-container=\"attribute-groups\" class=\"AknColumnConfigurator-listContainer\">");
-
-/***/ }),
-/* 567 */
-/* unknown exports provided */
-/* all exports used */
-/*!**********************************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/product/edit/content/structure/attributes.html ***!
-  \**********************************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/product/edit/content/structure/attributes.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknFieldContainer-header\">\n|     <label class=\"AknFieldContainer-label control-label required\" for=\"pim_enrich.export.product.filter.attributes\"><%- __('pim_enrich.export.product.filter.attributes.title') %></label>\n| </div>");
-
-/***/ }),
-/* 568 */
-/* unknown exports provided */
-/* all exports used */
-/*!*******************************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/product/edit/content/structure/locales.html ***!
-  \*******************************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/product/edit/content/structure/locales.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknFieldContainer-header\">\n|     <label class=\"AknFieldContainer-label control-label required\" for=\"pim_enrich.export.product.filter.locales\">\n|         <%- __('pim_enrich.export.product.filter.locales.title') %> <em><%- __('pim_enrich.form.required') %></em>");
-
-/***/ }),
-/* 569 */
-/* unknown exports provided */
-/* all exports used */
-/*!*****************************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/product/edit/content/structure/scope.html ***!
-  \*****************************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/export/product/edit/content/structure/scope.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknFieldContainer-header\">\n|     <label class=\"AknFieldContainer-label control-label required\" for=\"pim_enrich.export.product.filter.channel\">\n|         <%- __('pim_enrich.export.product.filter.channel.title') %> <em><%- __('pim_enrich.form.required') %></em>");
-
-/***/ }),
-/* 570 */
-/* unknown exports provided */
-/* all exports used */
-/*!*******************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/family/tab/attributes.html ***!
-  \*******************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/family/tab/attributes.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"tabsections\">\n|     <div class=\"tabsection tab-pane tab-attribute\" data-drop-zone=\"attributes-content\">\n| ");
-
-/***/ }),
-/* 571 */
-/* unknown exports provided */
-/* all exports used */
-/*!******************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/family/tab/attributes/attributes.html ***!
-  \******************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/family/tab/attributes/attributes.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknGridContainer\">\n|     <table class=\"AknGrid AknGrid--unclickable groups\">\n|         <thead>");
-
-/***/ }),
-/* 572 */
-/* unknown exports provided */
-/* all exports used */
-/*!***************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/family/tab/attributes/toolbar.html ***!
-  \***************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/family/tab/attributes/toolbar.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknGridToolbar-right\">\n|     <div class=\"AknButtonList\" data-drop-zone=\"attributes-toolbar\">\n| ");
-
-/***/ }),
-/* 573 */
-/* unknown exports provided */
-/* all exports used */
-/*!***********************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/family/tab/general/attribute-as-label.html ***!
-  \***********************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/family/tab/general/attribute-as-label.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknFieldContainer-header\">\n|     <label class=\"AknFieldContainer-label control-label required\" for=\"<%- fieldBaseId + 'attribute_as_label' %>\">\n|         <%- label %> <em><%- requiredLabel %></em>");
-
-/***/ }),
-/* 574 */
-/* unknown exports provided */
-/* all exports used */
-/*!**********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/attribute/boolean.html ***!
-  \**********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/attribute/boolean.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"switch switch-small\" data-on-label=\"<%- labels.on %>\" data-off-label=\"<%- labels.off %>\">\n|     <input type=\"checkbox\" name=\"filter-value\" <%- value ? 'checked' : '' %> <%- editable ? '' : 'disabled' %>>\n| </div>");
-
-/***/ }),
-/* 575 */
-/* unknown exports provided */
-/* all exports used */
-/*!*******************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/attribute/date.html ***!
-  \*******************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/attribute/date.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <select class=\"select2 operator\" <%- isEditable ? '' : 'disabled' %> name=\"filter-operator\">\n|     <% _.each(operatorChoices, function (operatorChoice) { %>\n|         <option value=\"<%- operatorChoice %>\"<%- operator === operatorChoice ? ' selected' : '' %>>");
-
-/***/ }),
-/* 576 */
-/* unknown exports provided */
-/* all exports used */
-/*!********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/attribute/media.html ***!
-  \********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/attribute/media.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <select class=\"select2 operator\" <%- editable ? '' : 'disabled' %> name=\"filter-operator\">\n|     <% _.each(operators, function (operatorChoice) { %>\n|         <option value=\"<%- operatorChoice %>\"<%- operator === operatorChoice ? ' selected' : '' %>>");
-
-/***/ }),
-/* 577 */
-/* unknown exports provided */
-/* all exports used */
-/*!*********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/attribute/metric.html ***!
-  \*********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/attribute/metric.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <select class=\"select2 operator\" name=\"filter-operator\" <%- editable ? '' : 'disabled' %>>\n|     <% _.each(operators, function (operatorChoice) { %>\n|         <option value=\"<%- operatorChoice %>\"<%- operator === operatorChoice ? ' selected' : '' %>>");
-
-/***/ }),
-/* 578 */
-/* unknown exports provided */
-/* all exports used */
-/*!*********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/attribute/number.html ***!
-  \*********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/attribute/number.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <select class=\"select2 operator\" <%- editable ? '' : 'disabled' %> name=\"filter-operator\">\n|     <% _.each(operatorChoices, function (operatorChoice) { %>\n|         <option value=\"<%- operatorChoice %>\"<%- operator === operatorChoice ? ' selected' : '' %>>");
-
-/***/ }),
-/* 579 */
-/* unknown exports provided */
-/* all exports used */
-/*!*******************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/attribute/price-collection.html ***!
-  \*******************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/attribute/price-collection.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <select class=\"select2 operator\" <%- editable ? '' : 'disabled' %> name=\"filter-operator\">\n|     <% _.each(operators, function (operatorChoice) { %>\n|         <option value=\"<%- operatorChoice %>\"<%- operator === operatorChoice ? ' selected' : '' %>>");
-
-/***/ }),
-/* 580 */
-/* unknown exports provided */
-/* all exports used */
-/*!*********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/attribute/select.html ***!
-  \*********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/attribute/select.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <select class=\"select2 operator\" name=\"filter-operator\" <%- editable ? '' : 'disabled' %>>\n|     <% _.each(operators, function (operatorChoice) { %>\n|         <option value=\"<%- operatorChoice %>\"<%- operator === operatorChoice ? ' selected' : '' %>>");
-
-/***/ }),
-/* 581 */
-/* unknown exports provided */
-/* all exports used */
-/*!*********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/attribute/string.html ***!
-  \*********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/attribute/string.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <select class=\"select2 operator\" <%- editable ? '' : 'disabled' %> name=\"filter-operator\">\n|     <% _.each(operators, function (operatorChoice) { %>\n|         <option value=\"<%- operatorChoice %>\"<%- operator === operatorChoice ? ' selected' : '' %>>");
-
-/***/ }),
-/* 582 */
-/* unknown exports provided */
-/* all exports used */
-/*!***********************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/filter.html ***!
-  \***********************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/filter.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknFieldContainer-header\">\n|     <label class=\"AknFieldContainer-label control-label\">\n|         <%- label %>");
-
-/***/ }),
-/* 583 */
-/* unknown exports provided */
-/* all exports used */
-/*!*********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/product/category.html ***!
-  \*********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/product/category.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknTextField <%- isEditable ? 'AknTextField--withRightButton' : 'AknTextField--disabled' %>\">\n|     <%- labelInfo %>\n|     <% if (isEditable) { %>");
-
-/***/ }),
-/* 584 */
-/* unknown exports provided */
-/* all exports used */
-/*!******************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/product/category/selector.html ***!
-  \******************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/product/category/selector.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <h4><%- label %></h4>\n| <hr>\n| <div class=\"root categories-selector-tree\" data-tree-id=\"<%- tree.id %>\"></div>");
-
-/***/ }),
-/* 585 */
-/* unknown exports provided */
-/* all exports used */
-/*!*************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/product/completeness.html ***!
-  \*************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/product/completeness.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <select class=\"select2 operator\" <%- isEditable ? '' : 'disabled' %> name=\"filter-operator\">\n|     <% _.each(operatorChoices, function (operatorChoice) { %>\n|         <option value=\"<%- operatorChoice %>\"<%- operator === operatorChoice ? ' selected' : '' %>>");
-
-/***/ }),
-/* 586 */
-/* unknown exports provided */
-/* all exports used */
-/*!********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/product/enabled.html ***!
-  \********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/product/enabled.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <select class=\"select2 value\" name=\"filter-value\" <%- isEditable ? '' : 'disabled' %>>\n|     <option value=\"all\"<%- value === null ? ' selected' : '' %>><%- labels.valueChoices.all %></option>\n|     <option value=\"enabled\"<%- value === true ? ' selected' : '' %>><%- labels.valueChoices.enabled %></option>");
-
-/***/ }),
-/* 587 */
-/* unknown exports provided */
-/* all exports used */
-/*!*******************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/product/family.html ***!
-  \*******************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/product/family.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <input\n|     class=\"select2 value\"\n|     name=\"filter-value\"");
-
-/***/ }),
-/* 588 */
-/* unknown exports provided */
-/* all exports used */
-/*!***********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/product/identifier.html ***!
-  \***********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/product/identifier.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <textarea\n|     class=\"AknTextareaField identifier\"\n|     name=\"filter-value\"");
-
-/***/ }),
-/* 589 */
-/* unknown exports provided */
-/* all exports used */
-/*!********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/product/updated.html ***!
-  \********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/product/updated.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <select class=\"select2 operator\" <%- isEditable ? '' : 'disabled' %> name=\"filter-operator\">\n|     <% _.each(operatorChoices, function (operatorChoice) { %>\n|         <option value=\"<%- operatorChoice %>\"<%- operator === operatorChoice ? ' selected' : '' %>>");
-
-/***/ }),
-/* 590 */
-/* unknown exports provided */
-/* all exports used */
-/*!*****************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/simpleselect.html ***!
-  \*****************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/filter/simpleselect.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <label class=\"control-label required\"><%- field %></label>\n| <div class=\"controls\">\n|     <input type=\"text\" name=\"filter-operator\" value=\"<%- operator %>\"/>");
-
-/***/ }),
-/* 591 */
-/* unknown exports provided */
-/* all exports used */
-/*!********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/add-select/footer.html ***!
-  \********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/add-select/footer.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"ui-multiselect-footer\">\n|     <span class=\"item-counter\"><%- _.__(countTitle, {'itemsCount': numberOfItems}) %></span>\n|     <button class=\"AknButton AknButton--small AknButton--apply AknButton--withIcon\" type=\"button\">");
-
-/***/ }),
-/* 592 */
-/* unknown exports provided */
-/* all exports used */
-/*!******************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/add-select/line.html ***!
-  \******************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/add-select/line.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"select2-result-label-attribute\">\n|     <input data-code=\"<%- item.id %>\" type=\"checkbox\" <%- checked ? 'checked=\"checked\"' : '' %> />\n|     <span class=\"attribute-label\"><%- item.text %></span>");
-
-/***/ }),
-/* 593 */
-/* unknown exports provided */
-/* all exports used */
-/*!********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/add-select/select.html ***!
-  \********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/add-select/select.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <input type=\"hidden\" multiple=\"true\" class=\"select-field\"/>\n| ");
-
-/***/ }),
-/* 594 */
-/* unknown exports provided */
-/* all exports used */
-/*!***************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/back-to-grid.html ***!
-  \***************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/back-to-grid.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <i class=\"icon-chevron-left\"></i>\n| ");
-
-/***/ }),
-/* 595 */
-/* unknown exports provided */
-/* all exports used */
-/*!*********************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/delete.html ***!
-  \*********************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/delete.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <i class=\"AknButton-icon icon-trash\"></i>\n| <%- _.__('pim_enrich.entity.product.btn.delete') %>\n| ");
-
-/***/ }),
-/* 596 */
-/* unknown exports provided */
-/* all exports used */
-/*!****************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/download-file.html ***!
-  \****************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/download-file.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <a class=\"AknButton AknButton--grey AknButton--withIcon btn-download AknButtonList-item\" href=\"<%- url %>\">\n|     <i class=\"AknButton-icon icon-<%- btnIcon %>\"></i>\n|     <%- btnLabel %>");
-
-/***/ }),
-/* 597 */
-/* unknown exports provided */
-/* all exports used */
-/*!************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/edit-form.html ***!
-  \************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/edit-form.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"entity-edit-form edit-form\">\n|     <div data-drop-zone=\"sequential\"></div>\n|     <header class=\"AknTitleContainer\">");
-
-/***/ }),
-/* 598 */
-/* unknown exports provided */
-/* all exports used */
-/*!************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/form-tabs.html ***!
-  \************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/form-tabs.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <header class=\"AknHorizontalNavtab\">\n|     <ul class=\"AknHorizontalNavtab-list nav nav-tabs form-tabs\">\n|         <% _.each(tabs, function (tab) { %>");
-
-/***/ }),
-/* 599 */
-/* unknown exports provided */
-/* all exports used */
-/*!*******************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/grid.html ***!
-  \*******************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/grid.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"grid-drop\" data-type=\"datagrid\"></div>\n| <input type=\"hidden\" id=\"added_objects\"/>\n| <input type=\"hidden\" id=\"removed_objects\"/>");
-
-/***/ }),
-/* 600 */
-/* unknown exports provided */
-/* all exports used */
-/*!*****************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/group-selector.html ***!
-  \*****************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/group-selector.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <% _.each(elements, function (element) { %>\n|     <li class=\"AknVerticalNavtab-item <%- current === element.code ? 'active' : '' %>\" data-element=\"<%- element.code %>\">\n|         <a class=\"AknVerticalNavtab-link <%- current === element.code ? 'AknVerticalNavtab-link--active' : '' %>\">");
-
-/***/ }),
-/* 601 */
-/* unknown exports provided */
-/* all exports used */
-/*!***********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/index/confirm-button.html ***!
-  \***********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/index/confirm-button.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <a class=\"AknButton AknButton--withIcon <%- buttonClass %>\" title=\"<%- buttonLabel %>\" data-title=\" <%- title %>\"\n|    data-dialog=\"confirm\" data-method=\"POST\"\n|    data-message=\"<%- message %>\" data-url=\"<%- url %>\" data-redirect-url=\"<%- redirectUrl %>\"");
-
-/***/ }),
-/* 602 */
-/* unknown exports provided */
-/* all exports used */
-/*!**********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/index/create-button.html ***!
-  \**********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/index/create-button.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <a id=\"create-button-extension\" class=\"AknButton AknButton--apply AknButton--withIcon AknButtonList-item\" data-form-url=\"<%- url %>\">\n|     <i class=\"AknButton-icon icon-<%- iconName %>\"></i>\n|     <%- title %>");
-
-/***/ }),
-/* 603 */
-/* unknown exports provided */
-/* all exports used */
-/*!**************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/index/index.html ***!
-  \**************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/index/index.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <header class=\"AknTitleContainer navigation\">\n|     <div class=\"AknTitleContainer-backContainer\" data-drop-zone=\"back\">\n|     </div>");
-
-/***/ }),
-/* 604 */
-/* unknown exports provided */
-/* all exports used */
-/*!***************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/meta/created.html ***!
-  \***************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/meta/created.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <span title=\"<%- label %>: <%- loggedAt %> <%- labelBy %> <%- author %>\">\n|     <%- label %>: <%- loggedAt %> <%- labelBy %> <%- author %>\n| </span>");
-
-/***/ }),
-/* 605 */
-/* unknown exports provided */
-/* all exports used */
-/*!**************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/meta/status.html ***!
-  \**************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/meta/status.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <span title=\"<%- label %>: <%- value %>\" id=\"status\">\n|     <%- label %>: <%- value %>\n| </span>");
-
-/***/ }),
-/* 606 */
-/* unknown exports provided */
-/* all exports used */
-/*!***************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/meta/updated.html ***!
-  \***************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/meta/updated.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <span title=\"<%- label %>: <%- loggedAt %> <%- labelBy %> <%- author %>\">\n|     <%- label %>: <%- loggedAt %> <%- labelBy %> <%- author %>\n| </span>");
-
-/***/ }),
-/* 607 */
-/* unknown exports provided */
-/* all exports used */
-/*!*********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/properties/general.html ***!
-  \*********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/properties/general.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"tabsection-title\">\n|     <%- sectionTitle %>\n| </div>");
-
-/***/ }),
-/* 608 */
-/* unknown exports provided */
-/* all exports used */
-/*!*******************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/properties/input.html ***!
-  \*******************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/properties/input.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknFieldContainer\">\n|     <div class=\"AknFieldContainer-header\">\n|         <label class=\"AknFieldContainer-label control-label required\" for=\"<%- fieldName%>\">");
-
-/***/ }),
-/* 609 */
-/* unknown exports provided */
-/* all exports used */
-/*!*************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/properties/translation.html ***!
-  \*************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/properties/translation.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"tabsection-title\">\n|     <%- _.__(label) %>\n| </div>");
-
-/***/ }),
-/* 610 */
-/* unknown exports provided */
-/* all exports used */
-/*!***********************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/redirect.html ***!
-  \***********************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/redirect.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <button class=\"AknButton <%- buttonClass %> AknButton--withIcon AknButtonList-item\">\n|     <i class=\"AknButton-icon icon-<%- iconName %>\"></i>\n|     <%- label %>");
-
-/***/ }),
-/* 611 */
-/* unknown exports provided */
-/* all exports used */
-/*!***************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/save-buttons.html ***!
-  \***************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/save-buttons.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <% if ((primaryButton) && !(secondaryButtons && secondaryButtons.length)) { %>\n|     <button class=\"AknButton AknButton--apply AknButton--withIcon <%- primaryButton.className || '' %>\">\n|         <i class=\"AknButton-icon icon-ok\"></i>");
-
-/***/ }),
-/* 612 */
-/* unknown exports provided */
-/* all exports used */
-/*!*******************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/save.html ***!
-  \*******************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/save.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <button class=\"AknButton AknButton--apply AknButton--withIcon save\">\n|     <i class=\"AknButton-icon icon-ok\"></i>\n|     <%- label %>");
-
-/***/ }),
-/* 613 */
-/* unknown exports provided */
-/* all exports used */
-/*!********************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/state.html ***!
-  \********************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/state.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <span class=\"AknBadge AknBadge--warning\"><i class=\"icon icon-circle\"></i><%- message %></span>\n| ");
-
-/***/ }),
-/* 614 */
-/* unknown exports provided */
-/* all exports used */
-/*!*****************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/tab/attributes.html ***!
-  \*****************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/tab/attributes.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div data-drop-zone=\"sidebar\" class=\"sidebar\"></div>\n| <div class=\"AknTabContainer-content tab-content\">\n|     <header data-drop-zone=\"header\" class=\"AknTabHeader AknAttributeActions tab-header attribute-actions\">");
-
-/***/ }),
-/* 615 */
-/* unknown exports provided */
-/* all exports used */
-/*!******************************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/tab/attributes/attribute-group-selector.html ***!
-  \******************************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/tab/attributes/attribute-group-selector.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <li class=\"AknVerticalNavtab-item AknVerticalNavtab-header header\"></li>\n| <% _.each(elements, function (element) { %>\n|     <li class=\"AknVerticalNavtab-item <%- current === element.code ? 'active' : '' %>\" data-element=\"<%- element.code %>\">");
-
-/***/ }),
-/* 616 */
-/* unknown exports provided */
-/* all exports used */
-/*!****************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/tab/attributes/copy-field.html ***!
-  \****************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/tab/attributes/copy-field.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknComparableFields-copyContainer copy-container\">\n|     <input type=\"checkbox\" class=\"AknComparableFields-checkbox copy-field-selector\" <%- selected ? 'checked' : '' %>></input>\n|     <div class=\"<%- type %> AknFieldContainer AknComparableFields-item\">");
-
-/***/ }),
-/* 617 */
-/* unknown exports provided */
-/* all exports used */
-/*!**********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/tab/attributes/copy.html ***!
-  \**********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/tab/attributes/copy.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <% if (!copying) { %>\n|     <div class=\"AknButton AknButton--grey AknButton--small start-copying\"><%- _.__('pim_enrich.entity.product.btn.compare_translate') %></div>\n| <% } else { %>");
-
-/***/ }),
-/* 618 */
-/* unknown exports provided */
-/* all exports used */
-/*!**************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/tab/history.html ***!
-  \**************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/tab/history.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"grid-drop\" data-type=\"datagrid\"></div>\n| ");
-
-/***/ }),
-/* 619 */
-/* unknown exports provided */
-/* all exports used */
-/*!*****************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/tab/properties.html ***!
-  \*****************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/tab/properties.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"tabsections\" data-drop-zone=\"accordion\"></div>\n| ");
-
-/***/ }),
-/* 620 */
-/* unknown exports provided */
-/* all exports used */
-/*!**************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/tab/section.html ***!
-  \**************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/tab/section.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"tabsection-title\">\n|     <%- sectionTitle %>\n| </div>");
-
-/***/ }),
-/* 621 */
-/* unknown exports provided */
-/* all exports used */
-/*!****************************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/grid/view-selector-create-view-label-input.html ***!
-  \****************************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/grid/view-selector-create-view-label-input.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <input name=\"new-view-label\" type=\"text\" class=\"AknTextField\" placeholder=\"<%- placeholder %>\">\n| ");
-
-/***/ }),
-/* 622 */
-/* unknown exports provided */
-/* all exports used */
-/*!****************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/grid/view-selector-create-view.html ***!
-  \****************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/grid/view-selector-create-view.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <a class=\"AknIconButton AknIconButton--grey muted create\">\n|     <i class=\"icon-plus\" data-toggle=\"tooltip\" data-placement=\"top\" data-original-title=\"<%- label %>\"></i>\n| </a>");
-
-/***/ }),
-/* 623 */
-/* unknown exports provided */
-/* all exports used */
-/*!************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/grid/view-selector-current.html ***!
-  \************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/grid/view-selector-current.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <span class=\"select2-selection-label-view\">\n|     <span class=\"before\" data-drop-zone=\"before\"></span>\n|     <span class=\"current\"><%- view.text %> <%- dirtyColumns || dirtyFilters ? '*' : '' %></span>");
-
-/***/ }),
-/* 624 */
-/* unknown exports provided */
-/* all exports used */
-/*!*********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/grid/view-selector-line.html ***!
-  \*********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/grid/view-selector-line.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"select2-result-label-view\">\n|     <span class=\"view-label <%- isCurrent ? 'view-label-current' : '' %>\"><%- view.text %></span>\n| </div>");
-
-/***/ }),
-/* 625 */
-/* unknown exports provided */
-/* all exports used */
-/*!****************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/grid/view-selector-remove-view.html ***!
-  \****************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/grid/view-selector-remove-view.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <a class=\"AknIconButton AknIconButton--grey muted remove\">\n|     <i class=\"icon-remove\" data-toggle=\"tooltip\" data-placement=\"top\" data-original-title=\"<%- label %>\"></i>\n| </a>");
-
-/***/ }),
-/* 626 */
-/* unknown exports provided */
-/* all exports used */
-/*!**************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/grid/view-selector-save-view.html ***!
-  \**************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/grid/view-selector-save-view.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <a class=\"AknIconButton AknIconButton--grey muted save <%- dirty ? '' : 'AknIconButton--hide' %>\">\n|     <i class=\"icon-ok\" data-toggle=\"tooltip\" data-placement=\"top\" data-original-title=\"<%- label %>\"></i>\n| </a>");
-
-/***/ }),
-/* 627 */
-/* unknown exports provided */
-/* all exports used */
-/*!****************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/grid/view-selector.html ***!
-  \****************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/grid/view-selector.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknButtonList grid-view-selector\">\n|     <div class=\"AknDropdown AknDropdownButton AknDropdownButton--grey AknDropdownButton--stickedRight <%- displayViewSwitcher ? '' : 'AknDropdownButton--hide' %>\">\n|         <a class=\"AknDropdownButton-button view-selector-type-switcher\" data-toggle=\"dropdown\" href=\"#\">");
-
-/***/ }),
-/* 628 */
-/* unknown exports provided */
-/* all exports used */
-/*!**********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/group/meta/product-count.html ***!
-  \**********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/group/meta/product-count.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <span title=\"<%- label %>: <%- productCount %>\">\n|     <%- label %>: <%- productCount %>\n| </span>");
-
-/***/ }),
-/* 629 */
-/* unknown exports provided */
-/* all exports used */
-/*!**************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/group/tab/properties/general.html ***!
-  \**************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/group/tab/properties/general.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"tabsection-title\">\n|     <%- sectionTitle %>\n| </div>");
-
-/***/ }),
-/* 630 */
-/* unknown exports provided */
-/* all exports used */
-/*!*******************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/i18n/flag.html ***!
-  \*******************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/i18n/flag.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <span class=\"flag-language\">\n|     <i class=\"flag flag-<%- country %>\"></i>\n|     <% if (displayLanguage) { %><span class=\"language\"><%- language %></span><% } %>");
-
-/***/ }),
-/* 631 */
-/* unknown exports provided */
-/* all exports used */
-/*!************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/job-execution/auto-refresh.html ***!
-  \************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/job-execution/auto-refresh.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknGridToolbar\">\n|     <div class=\"AknGridToolbar-left\">\n|         <img src=\"/bundles/pimimportexport/images/loading.gif\" alt=\"<%- __('pim_enrich.form.job_execution.loading') %>\"");
-
-/***/ }),
-/* 632 */
-/* unknown exports provided */
-/* all exports used */
-/*!*************************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/job-execution/download-archives-buttons.html ***!
-  \*************************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/job-execution/download-archives-buttons.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <% _.each(archives, function (archive, archiver) { %>\n|     <% if (_.size(archive.files) === 1) { %>\n|         <% _.each(archive.files, function (file, key) { %>");
-
-/***/ }),
-/* 633 */
-/* unknown exports provided */
-/* all exports used */
-/*!*************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/job-execution/summary-table.html ***!
-  \*************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/job-execution/summary-table.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknGridContainer grid-container\">\n|     <table class=\"AknGrid AknGrid--unclickable grid job-execution\" id=\"job-execution\">\n|         <thead>");
-
-/***/ }),
-/* 634 */
-/* unknown exports provided */
-/* all exports used */
-/*!******************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/create-error.html ***!
-  \******************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/create-error.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"control-group\" data-code=\"identifier\">\n|     <div class=\"validation-errors\">\n|         <span>");
-
-/***/ }),
-/* 635 */
-/* unknown exports provided */
-/* all exports used */
-/*!******************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/create-popin.html ***!
-  \******************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/create-popin.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknFieldContainer\" data-code=\"identifier\">\n|     <div class=\"AknFieldContainer-header\">\n|         <label title=\"<%- labels.identifier %>\" class=\"AknFieldContainer-label control-label required truncate\" for=\"new-product-identifier\">");
-
-/***/ }),
-/* 636 */
-/* unknown exports provided */
-/* all exports used */
-/*!******************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/download-pdf.html ***!
-  \******************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/download-pdf.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <i class=\"AknButton-icon icon-download-alt\"></i>\n| <%- _.__('pim_enrich.entity.product.btn.download_pdf') %>\n| ");
-
-/***/ }),
-/* 637 */
-/* unknown exports provided */
-/* all exports used */
-/*!*******************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/boolean.html ***!
-  \*******************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/boolean.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"switch switch-small\" data-on-label=\"<%- _.__('switch_on') %>\" data-off-label=\"<%- _.__('switch_off') %>\">\n|     <input id=\"<%- fieldId %>\" type=\"checkbox\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" <%- value.data ? 'checked' : '' %> <%- editMode === 'view' ? 'disabled' : '' %>>\n| </div>");
-
-/***/ }),
-/* 638 */
-/* unknown exports provided */
-/* all exports used */
-/*!****************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/date.html ***!
-  \****************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/date.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"datetimepicker\">\n|     <input id=\"<%- fieldId %>\" class=\"AknTextField datepicker-field add-on\" type=\"text\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" value=\"<%- value.data %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n| </div>");
-
-/***/ }),
-/* 639 */
-/* unknown exports provided */
-/* all exports used */
-/*!*****************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/field.html ***!
-  \*****************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/field.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"<%- type %> AknComparableFields-item AknFieldContainer original-field <%- editMode %>\">\n|     <div class=\"AknFieldContainer-header\">\n|         <label class=\"AknFieldContainer-label\" for=\"<%- fieldId %>\">");
-
-/***/ }),
-/* 640 */
-/* unknown exports provided */
-/* all exports used */
-/*!*****************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/media.html ***!
-  \*****************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/media.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknMediaField <%- value.data && value.data.filePath ? 'has-file' : '' %>\" >\n|     <% if (!value.data || value.data.filePath === null) { %>\n|         <input class=\"AknMediaField-fileUploaderInput\" id=\"<%- fieldId %>\" type=\"file\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>");
-
-/***/ }),
-/* 641 */
-/* unknown exports provided */
-/* all exports used */
-/*!******************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/metric.html ***!
-  \******************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/metric.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknMetricField metric-container\">\n|     <input class=\"AknTextField AknTextField--noRightRadius data\" id=\"<%- fieldId %>\" type=\"text\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" value=\"<%- value.data.amount %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n|     <select class=\"AknMetricField-unit unit select-field\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" <%- editMode === 'view' ? 'disabled' : '' %>>");
-
-/***/ }),
-/* 642 */
-/* unknown exports provided */
-/* all exports used */
-/*!************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/multi-select.html ***!
-  \************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/multi-select.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <input id=\"<%- fieldId %>\" type=\"hidden\" class=\"select-field\" value=\"<%- value.data.join(',') %>\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n| <% if (userCanAddOption) { %>\n|     <div class=\"AknFieldContainer-iconsContainer\">");
-
-/***/ }),
-/* 643 */
-/* unknown exports provided */
-/* all exports used */
-/*!******************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/number.html ***!
-  \******************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/number.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <input id=\"<%- fieldId %>\" class=\"AknTextField\" type=\"text\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" value=\"<%- value.data %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n| ");
-
-/***/ }),
-/* 644 */
-/* unknown exports provided */
-/* all exports used */
-/*!****************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/price-collection.html ***!
-  \****************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/price-collection.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknPriceList\">\n|     <% if (!value.data) { %>\n|         <% _.each(currencies, function (currency) { %>");
-
-/***/ }),
-/* 645 */
-/* unknown exports provided */
-/* all exports used */
-/*!*************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/simple-select.html ***!
-  \*************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/simple-select.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <input id=\"<%- fieldId %>\" type=\"hidden\" class=\"select-field\" value=\"<%- value.data %>\" data-min-input-length=\"0\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n| <% if (userCanAddOption) { %>\n|     <div class=\"AknFieldContainer-iconsContainer\">");
-
-/***/ }),
-/* 646 */
-/* unknown exports provided */
-/* all exports used */
-/*!****************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/text.html ***!
-  \****************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/text.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <input id=\"<%- fieldId %>\" class=\"AknTextField <%- context.isRequired ? 'AknTextField--required' : '' %>\" type=\"text\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" value=\"<%- value.data %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n| ");
-
-/***/ }),
-/* 647 */
-/* unknown exports provided */
-/* all exports used */
-/*!********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/textarea.html ***!
-  \********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/textarea.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <textarea id=\"<%- fieldId %>\" class=\"AknTextareaField\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" <%- editMode === 'view' ? 'disabled' : '' %>><%- value.data %></textarea>\n| ");
-
-/***/ }),
-/* 648 */
-/* unknown exports provided */
-/* all exports used */
-/*!************************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/form/add-select/attribute/line.html ***!
-  \************************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/form/add-select/attribute/line.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"select2-result-label-attribute\">\n|     <input data-code=\"<%- item.id %>\" type=\"checkbox\" <%- checked ? 'checked=\"checked\"' : '' %> />\n|     <span class=\"attribute-label\"><%- item.text %></span>");
-
-/***/ }),
-/* 649 */
-/* unknown exports provided */
-/* all exports used */
-/*!*********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/locale-switcher.html ***!
-  \*********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/locale-switcher.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <a class=\"AknActionButton\" data-toggle=\"dropdown\" href=\"#\">\n|     <%= i18n.getFlag(currentLocale.code, false) %> <%- currentLocale.language %>\n|     <span class=\"AknActionButton-caret AknCaret\"></span>");
-
-/***/ }),
-/* 650 */
-/* unknown exports provided */
-/* all exports used */
-/*!******************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/meta/change-family-modal.html ***!
-  \******************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/meta/change-family-modal.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <p class=\"AknMessageBox AknMessageBox--centered\">\n|     <%- _.__('pim_enrich.form.product.change_family.modal.merge_attributes')%><br />\n|     <%- _.__('pim_enrich.form.product.change_family.modal.keep_attributes')%>");
-
-/***/ }),
-/* 651 */
-/* unknown exports provided */
-/* all exports used */
-/*!*****************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/meta/family.html ***!
-  \*****************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/meta/family.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <%- _.__('pim_enrich.entity.product.meta.family.title')%>:\n| <span class=\"product-family\"><%- familyLabel %></span>\n| ");
-
-/***/ }),
-/* 652 */
-/* unknown exports provided */
-/* all exports used */
-/*!**********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/meta/group-modal.html ***!
-  \**********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/meta/group-modal.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"clearfix\">\n|     <div class=\"container-fluid\">\n|         <div class=\"grid-container\">");
-
-/***/ }),
-/* 653 */
-/* unknown exports provided */
-/* all exports used */
-/*!*****************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/meta/groups.html ***!
-  \*****************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/meta/groups.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <%- label %>:\n| <% _.each(groups, function (group, index, list) {  %>\n|     <a href=\"javascript:void(0);\" data-group=\"<%- group.code %>\" data-variant=\"<%- group.isVariant ? 1 : 0 %>\">");
-
-/***/ }),
-/* 654 */
-/* unknown exports provided */
-/* all exports used */
-/*!********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/panel/comments.html ***!
-  \********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/panel/comments.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknCommentPanel comment-threads\">\n|     <ol>\n|         <li class=\"comment-create\">");
-
-/***/ }),
-/* 655 */
-/* unknown exports provided */
-/* all exports used */
-/*!************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/panel/completeness.html ***!
-  \************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/panel/completeness.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <% if (!hasFamily) { %>\n|     <p>\n|         <%- _.__('pim_enrich.form.product.panel.completeness.info.no_family') %>");
-
-/***/ }),
-/* 656 */
-/* unknown exports provided */
-/* all exports used */
-/*!*********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/panel/container.html ***!
-  \*********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/panel/container.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <header class=\"AknPanelContainer-header\">\n|     <button class=\"AknIconButton AknIconButton--grey close pull-right\">\n|         <i class=\"icon-remove\"></i>");
-
-/***/ }),
-/* 657 */
-/* unknown exports provided */
-/* all exports used */
-/*!*******************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/panel/history.html ***!
-  \*******************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/panel/history.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <% if (!expanded) { %>\n|     <div class=\"history-block\">\n|         <table class=\"AknGrid\">");
-
-/***/ }),
-/* 658 */
-/* unknown exports provided */
-/* all exports used */
-/*!********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/panel/selector.html ***!
-  \********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/panel/selector.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <% _.each(panels, function(panel) { %>\n|     <button class=\"AknButtonList-item AknButton AknButton--small AknButton--grey <%- panel.code === currentPanel ? 'AknButton--active active' : '' %>\" data-panel=\"<%- panel.code %>\">\n|         <%- panel.label %>");
-
-/***/ }),
-/* 659 */
-/* unknown exports provided */
-/* all exports used */
-/*!********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/scope-switcher.html ***!
-  \********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/scope-switcher.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <a class=\"AknActionButton\" data-toggle=\"dropdown\" href=\"#\">\n|     <%- currentScope %>\n|     <span class=\"AknActionButton-caret AknCaret\"></span>");
-
-/***/ }),
-/* 660 */
-/* unknown exports provided */
-/* all exports used */
-/*!*********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/sequential-edit.html ***!
-  \*********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/sequential-edit.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <span class=\"AknSequentialEdit-previous\">\n|     <% if (previousObject) { %>\n|         <a href=\"javascript:void(0);\" class=\"previous\" data-id=\"<%- previousObject.id %>\" data-original-title=\"<%- _.__('pim_enrich.form.product.sequential_edit.info.previous', { product: previousObject.label }) %>\" data-toggle=\"tooltip\" data-placement=\"bottom\">");
-
-/***/ }),
-/* 661 */
-/* unknown exports provided */
-/* all exports used */
-/*!*********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/status-switcher.html ***!
-  \*********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/status-switcher.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <a class=\"AknDropdownButton-button btn-status\" data-toggle=\"dropdown\" href=\"#\">\n|     <span class=\"product-status\" data-status=\"<%- status ? 'enabled' : 'disabled' %>\"><%- status ? _.__('pim_enrich.entity.product.btn.enabled') :  _.__('pim_enrich.entity.product.btn.disabled') %></span>\n|     <span class=\"AknDropdownButton-caretContainer\">");
-
-/***/ }),
-/* 662 */
-/* unknown exports provided */
-/* all exports used */
-/*!***************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/tab/association-panes.html ***!
-  \***************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/tab/association-panes.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <% _.each(associationTypes, function (associationType) { %>\n|     <div class=\"AknTabHeader association-type<% if (associationType.code !== currentAssociationType) { %> AknTitleContainer--hidden<% } %>\" data-association-type=\"<%- associationType.code %>\">\n|         <div>");
-
-/***/ }),
-/* 663 */
-/* unknown exports provided */
-/* all exports used */
-/*!**********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/tab/associations.html ***!
-  \**********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/tab/associations.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <% if (!associationTypes.length) { %>\n|     <div class=\"buffer-top buffer-left\">\n|         <span class=\"buffer-small-right\">");
-
-/***/ }),
-/* 664 */
-/* unknown exports provided */
-/* all exports used */
-/*!*************************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/tab/attributes/validation-error.html ***!
-  \*************************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/tab/attributes/validation-error.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <% _.each(errors, function(error) { %>\n|     <span class=\"AknFieldContainer-validationError\">\n|         <i class=\"icon-warning-sign\"></i>");
-
-/***/ }),
-/* 665 */
-/* unknown exports provided */
-/* all exports used */
-/*!**********************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/tab/attributes/variant-group.html ***!
-  \**********************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/tab/attributes/variant-group.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div><i class=\"icon-lock\"></i><%- _.__('pim_enrich.entity.product.variant_group.updated_by') %>: <%- variantGroup.code %></div>\n| ");
-
-/***/ }),
-/* 666 */
-/* unknown exports provided */
-/* all exports used */
-/*!********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/tab/categories.html ***!
-  \********************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/tab/categories.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"tabbable tabs-left\">\n|     <div class=\"sidebar\">\n|         <ul class=\"AknVerticalNavtab nav nav-tabs\" id=\"trees-list\">");
-
-/***/ }),
-/* 667 */
-/* unknown exports provided */
-/* all exports used */
-/*!*****************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/variant-group/form/no-attribute.html ***!
-  \*****************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/variant-group/form/no-attribute.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <span>\n|     <i class=\"icon-warning-sign\"></i> <%- label %>\n| </span>");
-
-/***/ }),
-/* 668 */
-/* unknown exports provided */
-/* all exports used */
-/*!**********************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/templates/variant-group/tab/properties/general.html ***!
-  \**********************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/templates/variant-group/tab/properties/general.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"tabsection-title\">\n|     <%- sectionTitle %>\n| </div>");
-
-/***/ }),
-/* 669 */
 /* unknown exports provided */
 /* all exports used */
 /*!*************************************************************************************!*\
@@ -12277,7 +11419,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 670 */
+/* 555 */
 /* unknown exports provided */
 /* all exports used */
 /*!******************************************************************************************!*\
@@ -12286,8 +11428,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! oro/app */ 34), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/error */ 86),
-    __webpack_require__(/*! oro/navigation/abstract-view */ 464), __webpack_require__(/*! oro/navigation/model */ 459), __webpack_require__(/*! oro/navigation/collection */ 465)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, Backbone, app, mediator, error,
+!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! oro/app */ 33), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/error */ 85),
+    __webpack_require__(/*! oro/navigation/abstract-view */ 459), __webpack_require__(/*! oro/navigation/model */ 452), __webpack_require__(/*! oro/navigation/collection */ 460)], __WEBPACK_AMD_DEFINE_RESULT__ = function(_, Backbone, app, mediator, error,
      AbstractView, NavigationModel, NavigationCollection) {
     'use strict';
 
@@ -12397,7 +11539,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
 
 
 /***/ }),
-/* 671 */
+/* 556 */
 /* unknown exports provided */
 /* all exports used */
 /*!***************************************************************************************!*\
@@ -12405,8 +11547,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global define
   \***************************************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/navigation/abstract-view */ 464),
-    __webpack_require__(/*! oro/navigation/pinbar/item-view */ 481), __webpack_require__(/*! oro/navigation/pinbar/collection */ 480), __webpack_require__(/*! oro/navigation/pinbar/model */ 466)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, Backbone, mediator, AbstractView,
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ 1), __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 6), __webpack_require__(/*! oro/mediator */ 8), __webpack_require__(/*! oro/navigation/abstract-view */ 459),
+    __webpack_require__(/*! oro/navigation/pinbar/item-view */ 497), __webpack_require__(/*! oro/navigation/pinbar/collection */ 496), __webpack_require__(/*! oro/navigation/pinbar/model */ 461)], __WEBPACK_AMD_DEFINE_RESULT__ = function($, _, Backbone, mediator, AbstractView,
     PinbarItemView, PinbarCollection, PinbarModel) {
     'use strict';
 
@@ -12741,7 +11883,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 672 */
+/* 557 */
 /* unknown exports provided */
 /* all exports used */
 /*!*****************************************************************************!*\
@@ -12753,7 +11895,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 673 */
+/* 558 */
 /* unknown exports provided */
 /* all exports used */
 /*!********************************************************************************!*\
@@ -12765,11 +11907,11 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
         __webpack_require__(/*! backbone */ 6),
         __webpack_require__(/*! jquery */ 1),
         __webpack_require__(/*! underscore */ 0),
-        __webpack_require__(/*! routing */ 5),
-        __webpack_require__(/*! pim/notification-list */ 483),
-        __webpack_require__(/*! pim/indicator */ 482),
-        __webpack_require__(/*! text-loader!pim/template/notification/notification */ 707),
-        __webpack_require__(/*! text-loader!pim/template/notification/notification-footer */ 705)
+        __webpack_require__(/*! routing */ 7),
+        __webpack_require__(/*! pim/notification-list */ 499),
+        __webpack_require__(/*! pim/indicator */ 498),
+        __webpack_require__(/*! pim/template/notification/notification */ 482),
+        __webpack_require__(/*! pim/template/notification/notification-footer */ 480)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (Backbone, $, _, Routing, NotificationList, Indicator, notificationTpl, notificationFooterTpl) {
         'use strict';
 
@@ -12928,40 +12070,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 674 */
-/* unknown exports provided */
-/* all exports used */
-/*!************************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/NotificationBundle/Resources/public/templates/notification/notification-footer.html ***!
-  \************************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/NotificationBundle/Resources/public/templates/notification/notification-footer.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <p class=\"AknNotificationList-footer\">\n|     <% if (loading) { %>\n|         <img src=\"<%= options.imgUrl %>\" alt=\"<%= options.loadingText %>\"/>");
-
-/***/ }),
-/* 675 */
-/* unknown exports provided */
-/* all exports used */
-/*!**********************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/NotificationBundle/Resources/public/templates/notification/notification-list.html ***!
-  \**********************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/NotificationBundle/Resources/public/templates/notification/notification-list.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <a href=\"<%= url ? '#' + url : 'javascript: void(0);' %>\" class=\"AknNotification-link <%= viewed ? '' : 'AknNotification-link--new new' %>\">\n|     <div class=\"AknNotification-header\">\n|         <div class=\"AknNotification-icon AknNotification-icon--<%= actionType %>\">");
-
-/***/ }),
-/* 676 */
-/* unknown exports provided */
-/* all exports used */
-/*!*****************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/NotificationBundle/Resources/public/templates/notification/notification.html ***!
-  \*****************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/NotificationBundle/Resources/public/templates/notification/notification.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <a href=\"javascript:void(0);\" class=\"AknBell-link dropdown-toggle\" data-toggle=\"dropdown\">\n|     <i class=\"AknBell-icon icon-bell\"></i>\n|     <span class=\"AknBell-countContainer\"></span>");
-
-/***/ }),
-/* 677 */
+/* 559 */
 /* unknown exports provided */
 /* all exports used */
 /*!**************************************************************************************************************!*\
@@ -12974,8 +12083,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
         __webpack_require__(/*! underscore */ 0),
-        __webpack_require__(/*! pim/multi-select-field */ 476),
-        __webpack_require__(/*! routing */ 5),
+        __webpack_require__(/*! pim/multi-select-field */ 492),
+        __webpack_require__(/*! routing */ 7),
         __webpack_require__(/*! pim/fetcher-registry */ 4)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (_, MultiselectField, Routing, FetcherRegistry) {
         return MultiselectField.extend({
@@ -13008,7 +12117,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 678 */
+/* 560 */
 /* unknown exports provided */
 /* all exports used */
 /*!***************************************************************************************************************!*\
@@ -13021,8 +12130,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
         __webpack_require__(/*! underscore */ 0),
-        __webpack_require__(/*! pim/simple-select-field */ 477),
-        __webpack_require__(/*! routing */ 5),
+        __webpack_require__(/*! pim/simple-select-field */ 493),
+        __webpack_require__(/*! routing */ 7),
         __webpack_require__(/*! pim/fetcher-registry */ 4)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (_, SimpleselectField, Routing, FetcherRegistry) {
         return SimpleselectField.extend({
@@ -13055,7 +12164,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 679 */
+/* 561 */
 /* unknown exports provided */
 /* all exports used */
 /*!*******************************************************************!*\
@@ -13176,7 +12285,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! jquery */ 1)))
 
 /***/ }),
-/* 680 */
+/* 562 */
 /* unknown exports provided */
 /* all exports used */
 /*!******************************************************************************************!*\
@@ -13191,8 +12300,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
         __webpack_require__(/*! underscore */ 0),
         __webpack_require__(/*! jquery */ 1),
         __webpack_require__(/*! pim/form */ 3),
-        __webpack_require__(/*! text-loader!pim/template/system/group/loading-message */ 708),
-        __webpack_require__(/*! bootstrap.bootstrapswitch */ 45)
+        __webpack_require__(/*! pim/template/system/group/loading-message */ 483),
+        __webpack_require__(/*! bootstrap.bootstrapswitch */ 43)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function (
         _,
         $,
@@ -13251,7 +12360,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
 
 /***/ }),
-/* 681 */
+/* 563 */
 /* unknown exports provided */
 /* all exports used */
 /*!*********************************************************************!*\
@@ -13284,7 +12393,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!(__WEBPACK_AMD_
 
 
 /***/ }),
-/* 682 */
+/* 564 */
 /* unknown exports provided */
 /* all exports used */
 /*!*******************************************************************************!*\
@@ -13368,18 +12477,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* global consol
 
 
 /***/ }),
-/* 683 */
-/* unknown exports provided */
-/* all exports used */
-/*!*************************************************************************************************!*\
-  !*** ./src/Pim/Bundle/UIBundle/Resources/public/js/templates/system/group/loading-message.html ***!
-  \*************************************************************************************************/
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-community-dev/src/Pim/Bundle/UIBundle/Resources/public/js/templates/system/group/loading-message.html Unexpected token (1:0)\nYou may need an appropriate loader to handle this file type.\n| <div class=\"AknFormContainer AknFormContainer--withPadding system-loading-message-field\">\n|     <div class=\"AknFieldContainer\">\n|         <div class=\"AknFieldContainer-header\">");
-
-/***/ }),
-/* 684 */
+/* 565 */
 /* unknown exports provided */
 /* all exports used */
 /*!**********************************************************************************!*\
@@ -13678,7 +12776,7 @@ throw new Error("Module parse failed: /Users/tamararobichet/Code/akeneo/pim-comm
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! underscore */ 0), __webpack_require__(/*! backbone */ 6)))
 
 /***/ }),
-/* 685 */
+/* 566 */
 /* unknown exports provided */
 /* all exports used */
 /*!***********************************************************************!*\
@@ -13792,7 +12890,7 @@ function base64_decode (data) {
 }
 
 /***/ }),
-/* 686 */
+/* 567 */
 /* unknown exports provided */
 /* all exports used */
 /*!*********************************************************************************************!*\
@@ -15549,7 +14647,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 687 */
+/* 568 */
 /* unknown exports provided */
 /* all exports used */
 /*!*******************************************************************************!*\
@@ -15669,237 +14767,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 })( this.jQuery );
 
-
-/***/ }),
-/* 688 */
-/* unknown exports provided */
-/* all exports used */
-/*!****************************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/DataGridBundle/Resources/public/templates/configure-columns-action.html ***!
-  \****************************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"AknColumnConfigurator-column\">\n    <div class=\"AknColumnConfigurator-columnHeader\"></div>\n    <div class=\"AknColumnConfigurator-listContainer\">\n        <ul class=\"AknVerticalList nav-list\">\n            <li class=\"AknVerticalList-item AknVerticalList-item--selectable tab active\">\n                <%- _.__(\"pim_datagrid.column_configurator.all_groups\") %>\n                <span class=\"badge badge-transparent pull-right\"><%- columns.length %></span>\n            </li>\n            <% _.each(groups, function(group) { %>\n            <li class=\"AknVerticalList-item AknVerticalList-item--selectable tab\" data-value=\"<%- group.name %>\">\n                <%- group.name %>\n                <span class=\"AknBadge\"><%- group.itemCount %></span>\n            </li>\n            <% }); %>\n        </ul>\n    </div>\n</div>\n\n<div class=\"AknColumnConfigurator-column\">\n    <div class=\"AknColumnConfigurator-columnHeader\">\n        <i class=\"AknColumnConfigurator-searchIcon icon-search\"></i>\n        <input class=\"AknTextField AknColumnConfigurator-searchInput\" type=\"search\" placeholder=\"<%- _.__('pim_datagrid.column_configurator.search') %>\"/>\n    </div>\n    <div class=\"AknColumnConfigurator-listContainer\">\n        <ul id=\"column-list\" class=\"AknVerticalList connected-sortable\">\n            <% _.each(_.where(columns, {displayed: false}), function(column) { %>\n            <li class=\"AknVerticalList-item AknVerticalList-item--movable\" data-value=\"<%- column.code %>\" data-group=\"<%- column.group %>\">\n                <div>\n                    <i class=\"icon-th\"></i>\n                    <%- column.label %>\n                </div>\n                <a href=\"javascript:void(0);\" class=\"AknIconButton AknIconButton--small AknIconButton--grey action\" title=\"<%- _.__('pim_datagrid.column_configurator.remove_column') %>\">\n                    <i class=\"icon-trash\"></i>\n                </a>\n            </li>\n            <% }); %>\n        </ul>\n    </div>\n</div>\n\n<div class=\"AknColumnConfigurator-column\">\n    <div class=\"AknColumnConfigurator-columnHeader\">\n        <%- _.__(\"pim_datagrid.column_configurator.displayed_columns\") %>\n        <button class=\"AknButton AknButton--grey reset\">\n            <%- _.__(\"pim_datagrid.column_configurator.clear\") %>\n        </button>\n    </div>\n    <div class=\"AknColumnConfigurator-listContainer\">\n        <ul id=\"column-selection\" class=\"AknVerticalList connected-sortable\">\n            <% _.each(_.sortBy(_.where(columns, {displayed: true}), 'position'), function(column) { %>\n            <li class=\"AknVerticalList-item AknVerticalList-item--movable\" data-value=\"<%- column.code %>\" data-group=\"<%- column.group %>\">\n                <div>\n                    <i class=\"icon-th\"></i>\n                    <%- column.label %>\n                </div>\n                <a href=\"javascript:void(0);\" class=\"AknIconButton AknIconButton--small AknIconButton--grey action\" title=\"<%- _.__('pim_datagrid.column_configurator.remove_column') %>\">\n                    <% if (column.removable) { %><i class=\"icon-trash\"></i><% } %>\n                </a>\n            </li>\n            <% }); %>\n            <div class=\"AknMessageBox AknMessageBox--error AknMessageBox--hide alert alert-error\"><%- _.__(\"datagrid_view.columns.min_message\") %></div>\n        </ul>\n    </div>\n</div>\n"
-
-/***/ }),
-/* 689 */
-/* unknown exports provided */
-/* all exports used */
-/*!**********************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/DataGridBundle/Resources/public/templates/filter/date-filter.html ***!
-  \**********************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"AknFilterDate\">\n    <select class=\"AknFilterDate-select type\" name=\"<%= name %>\">\n        <% _.each(choices, function (option) { %>\n        <option value=\"<%= option.value %>\"<% if (option.value == selectedChoice) { %> selected=\"selected\"<% } %>><%= option.label %></option>\n        <% }); %>\n    </select>\n    <div class=\"AknFilterDate-dates\">\n        <span class=\"AknFilterDate-start\">\n            <input type=\"text\" value=\"\" class=\"<%= inputClass %> add-on\" name=\"start\" placeholder=\"<%- _.__('from') %>\" size=\"1\">\n        </span>\n        <span class=\"AknFilterDate-separator\">-</span>\n        <span class=\"AknFilterDate-end\">\n            <input type=\"text\" value=\"\" class=\"<%= inputClass %> add-on\" name=\"end\" placeholder=\"<%- _.__('to') %>\" size=\"1\">\n        </span>\n    </div>\n    <div class=\"AknButtonList AknButtonList--right\">\n        <button class=\"AknButtonList-item AknButton AknButton--apply filter-update\" type=\"button\"><%- _.__('Update') %></button>\n    </div>\n</div>\n"
-
-/***/ }),
-/* 690 */
-/* unknown exports provided */
-/* all exports used */
-/*!************************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/DataGridBundle/Resources/public/templates/filter/metric-filter.html ***!
-  \************************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"AknFilterChoice metricfilter choicefilter\">\n    <div class=\"AknFilterChoice-operator AknDropdown btn-group\">\n        <button class=\"AknActionButton AknActionButton--big AknActionButton--noRightBorder dropdown-toggle\" data-toggle=\"dropdown\">\n            <%= _.__('Action') %>\n            <span class=\"AknCaret caret\"></span>\n        </button>\n        <ul class=\"dropdown-menu\">\n            <% _.each(choices, function (choice) { %>\n            <li><a class=\"choice_value\" href=\"#\" data-value=\"<%= choice.value %>\"><%= choice.label %></a></li>\n            <% }); %>\n            </ul>\n        <input class=\"name_input\" type=\"hidden\" name=\"metric_type\" value=\"\"/>\n        </div>\n\n    <input class=\"AknTextField AknTextField--noRadius AknFilterChoice-field\" type=\"text\" name=\"value\" value=\"\">\n\n    <div class=\"AknFilterChoice-operator AknDropdown\">\n        <button class=\"AknActionButton AknActionButton--big AknActionButton--noRightBorder AknActionButton--noLeftBorder dropdown-toggle\" data-toggle=\"dropdown\">\n            <%= _.__('Unit') %>\n            <span class=\"AknCaret caret\"></span>\n        </button>\n        <ul class=\"dropdown-menu\">\n            <% _.each(units, function (symbol, code) { %>\n                <li><a class=\"choice_value\" href=\"#\" data-value=\"<%= code %>\"><%= _.__(code) %></a></li>\n            <% }); %>\n            </ul>\n        <input class=\"name_input\" type=\"hidden\" name=\"metric_unit\" value=\"\"/>\n        </div>\n    <button class=\"AknButton AknButton--apply AknFilterChoice-button AknButton--noLeftRadius filter-update\" type=\"button\"><%= _.__(\"Update\") %></button>\n</div>\n"
-
-/***/ }),
-/* 691 */
-/* unknown exports provided */
-/* all exports used */
-/*!***********************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/attribute-option/edit.html ***!
-  \***********************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<td class=\"AknGrid-bodyCell field-cell\">\n    <div class=\"AknFieldContainer AknFieldContainer--withoutMargin\">\n        <div class=\"AknFieldContainer-inputContainer\">\n            <% if (item.id) { %>\n                <input type=\"hidden\" class=\"attribute_option_code\" value=\"<%- item.code %>\"/>\n                <span class=\"option-code\"><%- item.code %></span>\n            <% } else { %>\n                <input type=\"text\" class=\"AknTextField attribute_option_code exclude\" value=\"<%- item.code %>\"/>\n                <div class=\"AknFieldContainer-iconsContainer\">\n                    <i class=\"AknIconButton AknIconButton--important AknIconButton--hide icon-warning-sign validation-tooltip\" data-placement=\"top\" data-toggle=\"tooltip\"></i>\n                </div>\n            <% } %>\n        </div>\n    </div>\n</td>\n<% _.each(locales, function (locale) { %>\n    <td class=\"AknGrid-bodyCell field-cell\">\n        <% if (item.optionValues[locale]) { %>\n            <input type=\"text\" class=\"AknTextField attribute-option-value exclude\" data-locale=\"<%- locale %>\"\n                value=\"<%- item.optionValues[locale].value %>\"/>\n        <% } else { %>\n            <input type=\"text\" class=\"AknTextField attribute-option-value exclude\" data-locale=\"<%- locale %>\"\n        value=\"\"/>\n        <% } %>\n    </td>\n<% }); %>\n<td class=\"AknGrid-bodyCell\">\n    <div class=\"AknButtonList AknButtonList--right\">\n        <span class=\"AknButtonList-item AknIconButton AknIconButton--small AknIconButton--apply update-row\"><i class=\"icon-ok\"></i></span>\n        <span class=\"AknButtonList-item AknIconButton AknIconButton--small AknIconButton--important show-row\"><i class=\"icon-remove\"></i></span>\n    </div>\n</td>\n"
-
-/***/ }),
-/* 692 */
-/* unknown exports provided */
-/* all exports used */
-/*!************************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/attribute-option/index.html ***!
-  \************************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<colgroup>\n    <col class=\"code\" span=\"1\">\n    <col class=\"fields\" span=\"<%- locales.length %>\"/>\n    <col class=\"action\" span=\"1\"/>\n</colgroup>\n<thead>\n    <tr>\n        <th class=\"AknGrid-headerCell\"><%- code_label %></th>\n        <% _.each(locales, function (locale) { %>\n            <th class=\"AknGrid-headerCell\">\n                <%- locale %>\n            </th>\n        <% }); %>\n        <th class=\"AknGrid-headerCell AknGrid-headerCell--right\"><%- _.__('pim_enrich.entity.attribute_option.actions') %></th>\n    </tr>\n</thead>\n<tbody></tbody>\n<tfoot>\n    <tr class=\"AknGrid-bodyRow\">\n        <td class=\"AknGrid-bodyCell\" colspan=\"<%- 2 + locales.length %>\">\n            <span class=\"AknButton AknButton--grey AknButton--small option-add\"><%- add_option_label %></span>\n        </td>\n    </tr>\n</tfoot>\n"
-
-/***/ }),
-/* 693 */
-/* unknown exports provided */
-/* all exports used */
-/*!***********************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/attribute-option/show.html ***!
-  \***********************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<td class=\"AknGrid-bodyCell\">\n    <span class=\"handle\"><i class=\"icon-reorder\"></i></span>\n    <span class=\"option-code\"><%- item.code %></span>\n</td>\n<% _.each(locales, function (locale) { %>\n    <td class=\"AknGrid-bodyCell\">\n        <% if (item.optionValues[locale]) { %>\n            <span title=\"<%- item.optionValues[locale].value %>\">\n                <%- item.optionValues[locale].value %>\n            </span>\n        <% } %>\n    </td>\n<% }); %>\n<td class=\"AknGrid-bodyCell\">\n    <div class=\"AknButtonList AknButtonList--right\">\n        <span class=\"AknButtonList-item AknIconButton AknIconButton--small AknIconButton--apply edit-row\"><i class=\"icon-pencil\"></i></span>\n        <span class=\"AknButtonList-item AknIconButton AknIconButton--small AknIconButton--important delete-row\"><i class=\"icon-trash\"></i></span>\n    </div>\n</td>\n"
-
-/***/ }),
-/* 694 */
-/* unknown exports provided */
-/* all exports used */
-/*!***********************************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/attribute-option/validation-error.html ***!
-  \***********************************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"AknFieldContainer-validationErrors validation-errors\">\n    <% _.each(errors, function(error) { %>\n        <span class=\"AknFieldContainer-validationError\">\n            <i class=\"icon-warning-sign\"></i>\n            <span class=\"error-message\"><%- error %></span>\n        </span>\n    <% }) %>\n</div>\n"
-
-/***/ }),
-/* 695 */
-/* unknown exports provided */
-/* all exports used */
-/*!***************************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/index/confirm-button.html ***!
-  \***************************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<a class=\"AknButton AknButton--withIcon <%- buttonClass %>\" title=\"<%- buttonLabel %>\" data-title=\" <%- title %>\"\n   data-dialog=\"confirm\" data-method=\"POST\"\n   data-message=\"<%- message %>\" data-url=\"<%- url %>\" data-redirect-url=\"<%- redirectUrl %>\"\n   data-error-message=\"<%- errorMessage %>\" data-success-message=\"<%- successMessage %>\">\n    <i class=\"AknButton-icon icon-<%- iconName %>\"></i>\n    <%- buttonLabel %>\n</a>\n"
-
-/***/ }),
-/* 696 */
-/* unknown exports provided */
-/* all exports used */
-/*!***********************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/boolean.html ***!
-  \***********************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"switch switch-small\" data-on-label=\"<%- _.__('switch_on') %>\" data-off-label=\"<%- _.__('switch_off') %>\">\n    <input id=\"<%- fieldId %>\" type=\"checkbox\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" <%- value.data ? 'checked' : '' %> <%- editMode === 'view' ? 'disabled' : '' %>>\n</div>\n"
-
-/***/ }),
-/* 697 */
-/* unknown exports provided */
-/* all exports used */
-/*!********************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/date.html ***!
-  \********************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"datetimepicker\">\n    <input id=\"<%- fieldId %>\" class=\"AknTextField datepicker-field add-on\" type=\"text\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" value=\"<%- value.data %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n</div>\n"
-
-/***/ }),
-/* 698 */
-/* unknown exports provided */
-/* all exports used */
-/*!*********************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/media.html ***!
-  \*********************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"AknMediaField <%- value.data && value.data.filePath ? 'has-file' : '' %>\" >\n    <% if (!value.data || value.data.filePath === null) { %>\n        <input class=\"AknMediaField-fileUploaderInput\" id=\"<%- fieldId %>\" type=\"file\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n        <div class=\"AknMediaField-emptyContainer\">\n            <img src=\"/bundles/pimui/images/upload.png\" alt=\"upload icon\" class=\"AknMediaField-uploadIcon\"/>\n            <span><%- _.__('pim_enrich.entity.product.media.upload')%></span>\n        </div>\n    <% } else { %>\n        <div class=\"AknMediaField-preview preview\">\n            <% mediaThumbnailUrl = mediaUrlGenerator.getMediaShowUrl(value.data.filePath, 'thumbnail_small') %>\n            <% mediaPreviewUrl   = mediaUrlGenerator.getMediaShowUrl(value.data.filePath, 'preview') %>\n            <% mediaDownloadUrl  = mediaUrlGenerator.getMediaDownloadUrl(value.data.filePath) %>\n            <% if ('pim_catalog_image' === attribute.type && null != mediaThumbnailUrl) { %>\n                <div class=\"AknMediaField-thumb file\"><img src=\"<%- mediaThumbnailUrl %>\" class=\"AknMediaField-image\"/></div>\n            <% } else { %>\n                <div class=\"AknMediaField-thumb file\"><i class=\"AknMediaField-icon icon icon-file\"></i></div>\n            <% } %>\n            <div class=\"AknMediaField-info info\">\n                <div class=\"filename\" title=\"<%- value.data.originalFilename %>\"><%- value.data.originalFilename %></div>\n                <div class=\"AknButtonList AknButtonList--centered actions\">\n                    <% if ('pim_catalog_image' === attribute.type && null != mediaPreviewUrl) { %>\n                        <span class=\"AknButtonList-item AknIconButton AknIconButton--grey open-media\"><i class=\"icon icon-eye-open\"></i></span>\n                    <% } %>\n                    <a href=\"<%- mediaDownloadUrl %>\" class=\"AknButtonList-item AknIconButton AknIconButton--grey download-file\" download><i class=\"icon icon-cloud-download\"></i></a>\n                    <span class=\"AknButtonList-item AknIconButton AknIconButton--grey clear-field <%- editMode === 'view' ? 'AknIconButton--hide' : '' %>\"><i class=\"icon icon-trash\"></i></span>\n                </div>\n            </div>\n        </div>\n    <% } %>\n    <div class=\"AknMediaField-progress AknProgress AknProgress--micro progress\">\n        <div class=\"AknProgress-bar bar\"></div>\n    </div>\n</div>\n"
-
-/***/ }),
-/* 699 */
-/* unknown exports provided */
-/* all exports used */
-/*!**********************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/metric.html ***!
-  \**********************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"AknMetricField metric-container\">\n    <input class=\"AknTextField AknTextField--noRightRadius data\" id=\"<%- fieldId %>\" type=\"text\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" value=\"<%- value.data.amount %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n    <select class=\"AknMetricField-unit unit select-field\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" <%- editMode === 'view' ? 'disabled' : '' %>>\n        <% _.each(_.keys(measures[attribute.metric_family].units), function(unit) { %>\n            <option value=\"<%- unit %>\"<% if (value.data.unit === unit) { %> selected<% } %>><%- _.__(unit) %></option>\n        <% }); %>\n    </select>\n</div>\n"
-
-/***/ }),
-/* 700 */
-/* unknown exports provided */
-/* all exports used */
-/*!****************************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/multi-select.html ***!
-  \****************************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<input id=\"<%- fieldId %>\" type=\"hidden\" class=\"select-field\" value=\"<%- value.data.join(',') %>\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n<% if (userCanAddOption) { %>\n    <div class=\"AknFieldContainer-iconsContainer\">\n        <span class=\"AknIconButton AknIconButton--dark add-attribute-option\" data-toggle=\"tooltip\" data-placement=\"top\" data-original-title=\"<%- _.__('label.attribute_option.add_option') %>\">\n            <i class=\"icon-plus\"></i>\n        </span>\n    </div>\n<% } %>\n"
-
-/***/ }),
-/* 701 */
-/* unknown exports provided */
-/* all exports used */
-/*!**********************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/number.html ***!
-  \**********************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<input id=\"<%- fieldId %>\" class=\"AknTextField\" type=\"text\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" value=\"<%- value.data %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n"
-
-/***/ }),
-/* 702 */
-/* unknown exports provided */
-/* all exports used */
-/*!********************************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/price-collection.html ***!
-  \********************************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"AknPriceList\">\n    <% if (!value.data) { %>\n        <% _.each(currencies, function (currency) { %>\n            <div class=\"AknPriceList-item price-input\">\n                <input class=\"AknTextField AknTextField--noRightRadius\" type=\"text\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" data-currency=\"<%- currency.code %>\" value=\"\" <%- editMode === 'view' ? 'disabled' : '' %> size=\"1\">\n                <span class=\"AknPriceList-currency\"><%- currency.code %></span>\n            </div>\n        <% }) %>\n    <% } else { %>\n        <% _.each(value.data, function (price) { %>\n            <div class=\"AknPriceList-item price-input\">\n                <input class=\"AknTextField AknTextField--noRightRadius\" type=\"text\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" data-currency=\"<%- price.currency %>\" value=\"<%- price.amount %>\" <%- editMode === 'view' ? 'disabled' : '' %> size=\"1\">\n                <span class=\"AknPriceList-currency\"><%- price.currency %></span>\n            </div>\n        <% }) %>\n    <% } %>\n</div>\n"
-
-/***/ }),
-/* 703 */
-/* unknown exports provided */
-/* all exports used */
-/*!*****************************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/simple-select.html ***!
-  \*****************************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<input id=\"<%- fieldId %>\" type=\"hidden\" class=\"select-field\" value=\"<%- value.data %>\" data-min-input-length=\"0\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n<% if (userCanAddOption) { %>\n    <div class=\"AknFieldContainer-iconsContainer\">\n        <span class=\"AknIconButton AknIconButton--dark add-attribute-option\" data-toggle=\"tooltip\" data-placement=\"top\" data-original-title=\"<%- _.__('label.attribute_option.add_option') %>\">\n            <i class=\"icon-plus\"></i>\n        </span>\n    </div>\n<% } %>\n"
-
-/***/ }),
-/* 704 */
-/* unknown exports provided */
-/* all exports used */
-/*!********************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/text.html ***!
-  \********************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<input id=\"<%- fieldId %>\" class=\"AknTextField <%- context.isRequired ? 'AknTextField--required' : '' %>\" type=\"text\" data-locale=\"<%- value.locale %>\" data-scope=\"<%- value.scope %>\" value=\"<%- value.data %>\" <%- editMode === 'view' ? 'disabled' : '' %>/>\n"
-
-/***/ }),
-/* 705 */
-/* unknown exports provided */
-/* all exports used */
-/*!****************************************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/NotificationBundle/Resources/public/templates/notification/notification-footer.html ***!
-  \****************************************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<p class=\"AknNotificationList-footer\">\n    <% if (loading) { %>\n        <img src=\"<%= options.imgUrl %>\" alt=\"<%= options.loadingText %>\"/>\n    <% } %>\n\n    <% if (!loading && !hasNotifications && !hasMore) { %>\n        <span><%= options.noNotificationsMessage %></span>\n    <% } %>\n\n    <% if (hasNotifications && hasUnread) { %>\n        <button class=\"AknButton AknButton--grey mark-as-read\"><%= options.markAsReadMessage %></button>\n    <% } %>\n</p>\n"
-
-/***/ }),
-/* 706 */
-/* unknown exports provided */
-/* all exports used */
-/*!**************************************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/NotificationBundle/Resources/public/templates/notification/notification-list.html ***!
-  \**************************************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<a href=\"<%= url ? '#' + url : 'javascript: void(0);' %>\" class=\"AknNotification-link <%= viewed ? '' : 'AknNotification-link--new new' %>\">\n    <div class=\"AknNotification-header\">\n        <div class=\"AknNotification-icon AknNotification-icon--<%= actionType %>\">\n            <i class=\"AknNotification-status AknNotification-status--<%= type %> icon-<%= icon %>\"></i>\n        </div>\n        <div class=\"AknNotification-metas\">\n            <time class=\"AknNotification-time\"><%= createdAt %></time>\n            <span class=\"AknNotification-title\"><%= actionTypeMessage %></span>\n        </div>\n        <i class=\"AknIconButton AknIconButton--light icon-<%= viewed ? 'trash' : 'eye-close' %> action\"></i>\n    </div>\n    <div class=\"AknNotification-message\"><%= message %></div>\n    <% if (comment) { %> <div class=\"AknNotification-comment\"><%= comment %></div> <% } %>\n    <% if (showReportButton) { %>\n    <button class=\"AknNotification-button AknButton AknButton--micro AknButton--grey AknButton--withIcon\"><i class=\"AknButton-icon icon-file-text-alt\"></i><%- _.__(buttonLabel) %></button>\n    <% } %>\n</a>\n"
-
-/***/ }),
-/* 707 */
-/* unknown exports provided */
-/* all exports used */
-/*!*********************************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/NotificationBundle/Resources/public/templates/notification/notification.html ***!
-  \*********************************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<a href=\"javascript:void(0);\" class=\"AknBell-link dropdown-toggle\" data-toggle=\"dropdown\">\n    <i class=\"AknBell-icon icon-bell\"></i>\n    <span class=\"AknBell-countContainer\"></span>\n</a>\n\n<ul class=\"AknNotificationList AknDropdown-menu AknDropdown-menu--right\"></ul>\n"
-
-/***/ }),
-/* 708 */
-/* unknown exports provided */
-/* all exports used */
-/*!*****************************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/UIBundle/Resources/public/js/templates/system/group/loading-message.html ***!
-  \*****************************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"AknFormContainer AknFormContainer--withPadding system-loading-message-field\">\n    <div class=\"AknFieldContainer\">\n        <div class=\"AknFieldContainer-header\">\n            <label class=\"AknFieldContainer-label\" for=\"loading_message_enabled\"><%- _.__('oro_config.form.config.group.loading_message.label') %></label>\n        </div>\n        <div class=\"AknFieldContainer-inputContainer system-loading-message-enabled-field\">\n            <div class=\"switch switch-small\" data-on-label=\"<%- _.__('pim_enrich.form.entity.switch.yes') %>\" data-off-label=\"<%- _.__('pim_enrich.form.entity.switch.no') %>\">\n                <input type=\"checkbox\" id=\"loading_message_enabled\" <%- loading_message_enabled === '1' ? 'checked' : '' %> />\n            </div>\n        </div>\n    </div>\n\n    <div class=\"AknFieldContainer\">\n        <div class=\"AknFieldContainer-header\">\n            <label class=\"AknFieldContainer-label\" for=\"loading_messages\"><%- _.__('oro_config.form.config.group.loading_messages.label') %></label>\n        </div>\n        <div class=\"AknFieldContainer-inputContainer system-loading-messages-field\">\n            <textarea class=\"AknTextareaField\" id=\"loading_messages\"><%- loading_messages %></textarea>\n        </div>\n    </div>\n</div>\n"
 
 /***/ })
 ]));

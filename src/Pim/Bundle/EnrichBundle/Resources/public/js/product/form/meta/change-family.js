@@ -14,7 +14,7 @@ define(
         'pim/form',
         'pim/fetcher-registry',
         'pim/product-manager',
-        'text-loader!pim/template/product/meta/change-family-modal',
+        'pim/template/product/meta/change-family-modal',
         'pim/user-context',
         'pim/i18n',
         'routing',

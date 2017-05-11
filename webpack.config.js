@@ -139,13 +139,13 @@ module.exports = {
     },
     module: {
         rules: [
-            // {
-            //     test: /\.html$/,
-            //     use: [ {
-            //       loader: 'ejs-loader',
-            //       options: { }
-            //     }]
-            // },
+            {
+                test: /\.html$/,
+                use: [ {
+                  loader: 'raw-loader',
+                  options: { }
+                }]
+            },
             {
                 test: path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/backbone/backbone.js'),
                 use: 'imports-loader?this=>window'
