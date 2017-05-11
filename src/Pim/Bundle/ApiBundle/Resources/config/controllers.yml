@@ -80,6 +80,11 @@ services:
             - '@pim_serializer'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_catalog.factory.attribute_group'
+            - '@pim_catalog.updater.attribute_group'
+            - '@validator'
+            - '@router'
+            - '@pim_catalog.saver.attribute_group'
             - '%pim_api.configuration%'
 
     pim_api.controller.channel:

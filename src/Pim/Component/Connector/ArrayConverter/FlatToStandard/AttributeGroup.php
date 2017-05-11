@@ -55,7 +55,7 @@ class AttributeGroup implements ArrayConverterInterface
         $this->fieldChecker->checkFieldsPresence($item, ['code']);
         $this->fieldChecker->checkFieldsFilling($item, ['code']);
 
-        $convertedItem = ['labels' => []];
+        $convertedItem = [];
         foreach ($item as $field => $data) {
             $convertedItem = $this->convertField($convertedItem, $field, $data);
         }
@@ -75,6 +75,9 @@ class AttributeGroup implements ArrayConverterInterface
         if ('attributes' === $field) {
             $convertedItem[$field] = empty($data) ? [] : explode(',', $data);
         } elseif (preg_match('/^label-(?P<locale>[\w_]+)$/', $field, $matches)) {
+            if (!isset($convertedItem['labels'])) {
+                $convertedItem['labels'] = [];
+            }
             $convertedItem['labels'][$matches['locale']] = $data;
         } else {
             $convertedItem[$field] = $data;

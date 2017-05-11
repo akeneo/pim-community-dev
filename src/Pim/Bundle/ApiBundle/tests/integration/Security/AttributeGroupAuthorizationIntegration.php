@@ -82,6 +82,46 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
+    public function testAccessGrantedForCreatingAnAttributeGroup()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = <<<JSON
+{
+    "code":"fashion"
+}
+JSON;
+
+        $client->request('POST', '/api/rest/v1/attribute-groups', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+    }
+
+    public function testAccessDeniedForCreatingAnAttributeGroup()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
+
+        $data = <<<JSON
+{
+    "code":"tech"
+}
+JSON;
+
+        $client->request('POST', '/api/rest/v1/attribute-groups', [], [], [], $data);
+
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update attribute groups."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
     /**
      * {@inheritdoc}
      */
