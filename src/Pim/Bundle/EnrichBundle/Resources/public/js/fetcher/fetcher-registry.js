@@ -24,6 +24,7 @@ define(['module-config', 'jquery', 'underscore', 'pim/base-fetcher', 'fetcher-li
                         var moduleName = fetcherList[fetcher].module
                         var ResolvedModule = requireContext(moduleName);
                         fetchers[fetcher].loadedModule = new ResolvedModule(fetchers[fetcher].options)
+                        fetchers[fetcher].options = fetcherList[fetcher].options
                     }
 
                     this.fetchers = fetchers;
@@ -45,6 +46,8 @@ define(['module-config', 'jquery', 'underscore', 'pim/base-fetcher', 'fetcher-li
          */
         getFetcher: function (entityType) {
             var fetcher = (this.fetchers[entityType] || this.fetchers.default)
+            console.log(fetcher)
+            // fetcher options not set
             return fetcher.loadedModule;
         },
 
