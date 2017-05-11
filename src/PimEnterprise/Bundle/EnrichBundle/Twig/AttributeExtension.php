@@ -15,7 +15,7 @@ use Pim\Bundle\EnrichBundle\Twig\AttributeExtension as BaseAttributeExtension;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
- * Override Twig extension to allow to add Enterprise icons (as AssetCollectionType)
+ * Override Twig extension to add 'isAttributeLocalizable' method
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
@@ -23,14 +23,12 @@ class AttributeExtension extends BaseAttributeExtension
 {
     /**
      * @param AttributeRepositoryInterface $repository
-     * @param array                        $communityIcons
-     * @param array                        $eeIcons
      */
-    public function __construct(AttributeRepositoryInterface $repository, array $communityIcons, array $eeIcons)
+    public function __construct(AttributeRepositoryInterface $repository)
     {
         $this->repository = $repository;
 
-        parent::__construct(array_merge($communityIcons, $eeIcons), $repository);
+        parent::__construct($repository);
     }
 
     /**
@@ -44,8 +42,7 @@ class AttributeExtension extends BaseAttributeExtension
     }
 
     /**
-     * @param array $communityIcons
-     * @param array $eeIcons
+     * @param string $code
      *
      * @throws \LogicException
      *
