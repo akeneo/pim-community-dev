@@ -11,7 +11,8 @@ define([
         'oro/init-layout',
         'pimuser/js/init-signin',
         'pim/router',
-        'pim/page-title'
+        'pim/page-title',
+        'module-config'
     ], function (
         $,
         Backbone,
@@ -23,15 +24,17 @@ define([
         initLayout,
         initSignin,
         router,
-        pageTitle
+        pageTitle,
+        moduleConfig
     ) {
     return (function () {
         return {
             debug: false,
-            bootstrap: function (options) {
+            bootstrap: function (options, messages) {
                 initUser();
                 initLayout();
                 initSignin();
+
                 this.debug = !!options.debug;
 
                 FetcherRegistry.initialize().then(function () {

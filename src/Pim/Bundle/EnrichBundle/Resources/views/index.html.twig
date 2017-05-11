@@ -8,6 +8,10 @@
             <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
            {% placeholder head_style %}
         {% endblock %}
+          <script type="text/javascript">
+            {# Compile messages using webpack instead #}
+              window.messages = '{{ source(get_translations_file())|escape('js') }}'
+          </script>
             <script type="text/javascript" src="{{asset('app.min.js')}}"></script>
     {% endblock %}
 </head>
@@ -84,9 +88,10 @@
             window.location.hash = '{{ app.request.session.get('__target_path') }}';
             {% do app.request.session.remove('__target_path') %}
         {% endif %}
-        window.PimApp.bootstrap({
-            debug: {{ app.debug ? 'true' : 'false' }}
-        });
+           window.PimApp.bootstrap({
+               debug: {{ app.debug ? 'true' : 'false' }}
+           });
+
     </script>
 {% endblock %}
 {% if uservoice_key is not null %}
