@@ -8,8 +8,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(
-    ['jquery', 'underscore', 'pim/fetcher-registry', 'pim/form-config-provider', 'paths'],
-    function ($, _, FetcherRegistry, ConfigProvider, paths) {
+    ['jquery', 'underscore', 'pim/fetcher-registry', 'pim/form-config-provider', 'require-context'],
+    function ($, _, FetcherRegistry, ConfigProvider, requireContext) {
         var fields = {};
         var visibleFields = {};
         var loadedModules = {};
@@ -29,10 +29,8 @@ define(
                     throw new Error('No field defined for attribute type "' + attribute.field_type + '"');
                 }
 
-                var requestFetcher = require.context('./src/Pim/Bundle', true, /^\.\/.*\.js$/)
-
                 require.ensure([], function() {
-                    var ResolvedModule = requestFetcher(paths[fieldModule]);
+                    var ResolvedModule = requireContext(fieldModule);
                     loadedModules[attribute.field_type] = ResolvedModule;
                     deferred.resolve(ResolvedModule)
                 })

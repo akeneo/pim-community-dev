@@ -1,6 +1,6 @@
 'use strict';
 
-define(['module-config', 'jquery', 'underscore', 'pim/base-fetcher', 'fetcher-list', 'paths'], function (module, $, _, BaseFetcher, fetcherList, paths) {
+define(['module-config', 'jquery', 'underscore', 'pim/base-fetcher', 'fetcher-list', 'require-context'], function (module, $, _, BaseFetcher, fetcherList, requireContext) {
     return {
         fetchers: {},
         initializePromise: null,
@@ -21,9 +21,8 @@ define(['module-config', 'jquery', 'underscore', 'pim/base-fetcher', 'fetcher-li
 
                 require.ensure([], function () {
                     for (var fetcher in fetcherList) {
-                        var moduleName = paths[fetcherList[fetcher].module]
-                        var requestFetcher = require.context('./src/Pim/Bundle', true, /^\.\/.*\.js$/)
-                        var ResolvedModule = requestFetcher(moduleName);
+                        var moduleName = fetcherList[fetcher].module
+                        var ResolvedModule = requireContext(moduleName);
                         fetchers[fetcher].loadedModule = new ResolvedModule(fetchers[fetcher].options)
                     }
 

@@ -6,40 +6,6 @@ const paths = require('./web/js/paths')
 const ContextReplacementPlugin = require("webpack/lib/ContextReplacementPlugin")
 const glob = require('glob')
 
-// traverse with filewalker automatically later for any bundles
-// const bundles = [
-//     '/src/Pim/Bundle/Analytics',
-//     '/src/Pim/Bundle/Api',
-//     '/src/Pim/Bundle/Catalog',
-//     '/src/Pim/Bundle/Comment',
-//     '/src/Oro/Bundle/Config',
-//     '/src/Pim/Bundle/Connector',
-//     '/src/Pim/Bundle/Dashboard',
-//     '/src/Pim/Bundle/DataGrid',
-//     '/src/Pim/Bundle/Enrich',
-//     '/src/Pim/Bundle/Filter',
-//     '/src/Pim/Bundle/ImportExport',
-//     '/src/Pim/Bundle/Installer',
-//     '/src/Pim/Bundle/Localization',
-//     '/src/Pim/Bundle/Navigation',
-//     '/src/Pim/Bundle/Notification',
-//     '/src/Pim/Bundle/PdfGenerator',
-//     '/src/Pim/Bundle/ReferenceData',
-//     '/src/Pim/Bundle/UI',
-//     '/src/Pim/Bundle/User',
-//     'Versioning'
-// ]
-
-// const getAllRequireFiles = () => {
-//     const requires = glob.sync('./src/**/*requirejs.yml')
-//     for (let requirePath in requires) {
-//
-//     }
-//     console.log(requires)
-// }
-
-// getAllRequireFiles()
-
 const getImportPaths = () => {
     let paths = {}
     let originalPaths = {}
@@ -66,10 +32,6 @@ const getImportPaths = () => {
 const getControllers = () => {
     const enrichConfig = fs.readFileSync(path.join(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/config/requirejs.yml'), 'utf8')
     return yaml.parse(enrichConfig).config.config['pim/controller-registry'].controllers
-}
-
-const getModuleConfigs = () => {
-    // Get Resources/requirejs.yml:config:config of each bundle
 }
 
 
@@ -100,12 +62,12 @@ const replacePathSegments = (paths, bundle) => {
         loc.unshift(`${__dirname}/src/${resolved}Bundle/Resources/public`)
         paths[name] = loc.join('/')
     }
-    console.log(paths)
     return paths
 }
 
 const importedPaths = getImportPaths()
 
+// Store the overrides in a json file
 const importPaths = Object.assign(importedPaths.paths, {
     text: 'text-loader',
     'pimuser/js/init-signin': path.resolve(__dirname, './src/Pim/Bundle/UserBundle/Resources/public/js/init-signin.js'),
@@ -129,16 +91,15 @@ const importPaths = Object.assign(importedPaths.paths, {
     'require-context': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/require-context.js')
 })
 
-// console.log(importPaths['pim/family-edit-form/attributes/toolbar/add-select/attribute-group'])
 
 fs.writeFileSync('./web/js/paths.js', `module.exports = ${JSON.stringify(importedPaths.originalPaths)}`, 'utf8')
 
 const getRelativePaths = (absolutePaths) => {
     const replacedPaths = {}
     for ( let path in absolutePaths ) {
+        // Change this to just remove the /src/ if it's a pim dep
         replacedPaths[paths[path]] = absolutePaths[path].replace(__dirname + '/src/Pim/Bundle', './Pim/Bundle').replace(__dirname + '/src/Oro/Bundle', './Oro/Bundle' )
     }
-    // console.log(replacedPaths)
     return replacedPaths
 }
 

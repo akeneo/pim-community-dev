@@ -15,15 +15,6 @@ define(
                 }
 
                 require.ensure([], function() {
-                    // var formPath = paths[form.module]
-                    // var formContext = './src/Pim/Bundle'
-                    //
-                    // // Make an async fetcher module and put this kind of logic in there, load it from webpack
-                    //
-                    // if (formPath.indexOf('oroconfig') > -1) {
-                    //     formContext = './src/Oro/Bundle'
-                    // }
-                    // var requestFetcher = require.context(formContext, true, /^\.\/.*\.js$/)
                     var ResolvedModule = requireContext(form.module);
                     deferred.resolve(ResolvedModule)
                 })

@@ -23,7 +23,7 @@ define(
         'oro/datagrid-builder',
         'oro/pageable-collection',
         'pim/datagrid/state',
-        'paths'
+        'require-context'
     ],
     function (
         $,
@@ -40,7 +40,7 @@ define(
         datagridBuilder,
         PageableCollection,
         DatagridState,
-        paths
+        requireContext
     ) {
         var state = {};
 
@@ -325,14 +325,11 @@ define(
                     var gridModules = metadata.requireJSModules;
                     gridModules.push('pim/datagrid/state-listener');
 
-                    var requestFetcher = require.context('./src/Pim/Bundle', true, /^\.\/.*\.js$/)
-
                     require.ensure([], function() {
                         var resolvedModules = []
                         _.each(gridModules, function(module) {
-                            resolvedModules.push(requestFetcher(paths[module]));
+                            resolvedModules.push(requireContext(module));
                         })
-                        console.log('resolvedModules', resolvedModules)
                         datagridBuilder(resolvedModules)
                     })
                 }.bind(this));

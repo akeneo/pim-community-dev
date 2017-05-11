@@ -10,7 +10,7 @@ define([
         'pim/template/form/grid',
         'oro/pageable-collection',
         'pim/datagrid/state',
-        'paths'
+        'require-context'
     ],
     function (
         $,
@@ -22,7 +22,7 @@ define([
         template,
         PageableCollection,
         DatagridState,
-        paths
+        requireContext
     ) {
         return Backbone.View.extend({
             template: _.template(template),
@@ -95,11 +95,9 @@ define([
                     var modules = response.metadata.requireJSModules.concat('pim/datagrid/state-listener');
 
                     require.ensure([], function() {
-                        var requestFetcher = require.context('./src/Pim/Bundle', true, /^\.\/.*\.js$/)
-
                         var resolvedModules = []
                         _.each(modules, function(module) {
-                            resolvedModules.push(requestFetcher(paths[module]))
+                            resolvedModules.push(requireContext(module))
                         })
                         datagridBuilder(resolvedModules)
                     })

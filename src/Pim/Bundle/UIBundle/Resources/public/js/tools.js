@@ -1,5 +1,5 @@
-define(['underscore', 'paths'],
-function (_, paths) {
+define(['underscore', 'require-context'],
+function (_, requireContext) {
     'use strict';
 
     /**
@@ -16,11 +16,10 @@ function (_, paths) {
         loadModules: function (modules, callback) {
             var arrayArguments = _.object(requirements,  arguments)
             var requirements = _.values(modules);
-            var requestFetcher = require.context('./src/Pim/Bundle', true, /^\.\/.*\.js$/)
 
             require.ensure([], function () {
                 _.each(modules, _.bind(function (value, key) {
-                    var module = requestFetcher(paths[value])
+                    var module = requireContext(value)
                     modules[key] = module
                 }, arrayArguments));
                 callback(modules);
