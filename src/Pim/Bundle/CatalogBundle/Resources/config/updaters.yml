@@ -157,6 +157,7 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.attribute_group'
+            - '@pim_localization.updater.translatable'
 
     pim_catalog.updater.group_type:
         class: '%pim_catalog.updater.group_type.class%'
