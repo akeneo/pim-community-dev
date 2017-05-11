@@ -8,7 +8,7 @@
             <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
            {% placeholder head_style %}
         {% endblock %}
-
+            <script type="text/javascript" src="{{asset('app.min.js')}}"></script>
     {% endblock %}
 </head>
 <body class="{% block bodyClass %}{% endblock %}">
@@ -17,7 +17,7 @@
     <div id="top-page" class="AknDefault-topPage">
         {% block header %}
             <header class="AknHeader">
-                {% include 'OroNavigationBundle:ApplicationMenu:dotsMenu.html.twig' %}
+                {#{% include 'OroNavigationBundle:ApplicationMenu:dotsMenu.html.twig' %}#}
                 <div class="AknHeader-menus">
                     <div class="AknHeader-leftMenus">
                         {% include 'PimUIBundle:Default:logo.html.twig' %}
@@ -77,9 +77,8 @@
     </div>
 </div>
 {% block script %}
-    {% include 'OroNavigationBundle:Js:dot.menu.js.twig' %}
-    {% include 'OroNavigationBundle:Js:pinbar.js.twig' %}
-    <script type="text/javascript" src="{{asset('app.min.js')}}"></script>
+    {#{% include 'OroNavigationBundle:Js:dot.menu.js.twig' %}
+    {% include 'OroNavigationBundle:Js:pinbar.js.twig' %}#}
     <script type="text/javascript">
         {% if app.request.session.get('__target_path') %}
             window.location.hash = '{{ app.request.session.get('__target_path') }}';

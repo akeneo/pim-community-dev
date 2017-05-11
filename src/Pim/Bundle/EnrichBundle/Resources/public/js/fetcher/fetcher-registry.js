@@ -19,19 +19,16 @@ define(['module-config', 'jquery', 'underscore', 'pim/base-fetcher', 'fetcher-li
                     fetchers[name] = config;
                 });
 
-                // require.ensure([], function () {
-                    for (var fetcher in fetcherList) {
-                        var moduleName = fetcherList[fetcher].module
-                        var ResolvedModule = requireContext(moduleName);
-                        fetchers[fetcher].loadedModule = new ResolvedModule(fetchers[fetcher].options)
-                        fetchers[fetcher].options = fetcherList[fetcher].options
-                    }
+                for (var fetcher in fetcherList) {
+                    var moduleName = fetcherList[fetcher].module
+                    var ResolvedModule = requireContext(moduleName);
+                    fetchers[fetcher].loadedModule = new ResolvedModule(fetchers[fetcher].options)
+                    fetchers[fetcher].options = fetcherList[fetcher].options
+                }
 
-                    this.fetchers = fetchers;
-                    deferred.resolve();
-                // }.bind(this));
+                this.fetchers = fetchers;
+                deferred.resolve();
 
-                console.dir(this.fetchers)
                 this.initializePromise = deferred.promise();
             }
 
@@ -46,9 +43,8 @@ define(['module-config', 'jquery', 'underscore', 'pim/base-fetcher', 'fetcher-li
          * @return Fetcher
          */
         getFetcher: function (entityType) {
-            console.trace()
-            console.log('Get fetcher for ', entityType)
             var fetcher = (this.fetchers[entityType] || this.fetchers.default)
+
             return fetcher.loadedModule;
         },
 

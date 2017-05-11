@@ -581,7 +581,7 @@ var requirejs, require, define;
                     }
                 }
             },
-            'module-config': function (mod) {
+            'module': function (mod) {
                 if (mod.module) {
                     return mod.module;
                 } else {
@@ -1136,7 +1136,7 @@ var requirejs, require, define;
                     id = depMap.id;
                     mod = registry[id];
 
-                    //Skip special modules like 'require', 'exports', 'module-config'
+                    //Skip special modules like 'require', 'exports', 'module'
                     //Also, don't call enable if it is already enabled,
                     //important in circular dependency cases.
                     if (!hasProp(handlers, id) && mod && !mod.enabled) {
@@ -2037,7 +2037,7 @@ var requirejs, require, define;
                 //work though if it just needs require.
                 //REQUIRES the function to expect the CommonJS variables in the
                 //order listed below.
-                deps = (callback.length === 1 ? ['require'] : ['require', 'exports', 'module-config']).concat(deps);
+                deps = (callback.length === 1 ? ['require'] : ['require', 'exports', 'module']).concat(deps);
             }
         }
 
