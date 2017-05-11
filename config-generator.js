@@ -29,7 +29,6 @@ const getFormExtensionConfig = () => {
     const files = glob.sync('./src/Pim/Bundle/EnrichBundle/Resources/config/form_extensions/**/*.yml')
     _.each(files, (fileName) => {
         _.each(getParsedFile(fileName).extensions, (options, name) => {
-            options.resolvedModule = pascalCase(options.module)
             formExtensions[name] = options
         })
     })
@@ -69,7 +68,6 @@ const getModuleOutputs = (configFiles) => {
         _.each(configFiles, (file) => {
             const props = _.get(file, output.inputPath) || {}
             _.each(props, (prop, name) => {
-                prop.resolvedModule = pascalCase(prop.module)
                 if (typeof prop === 'string') {
                     contents[name] = { module: prop }
                 } else {

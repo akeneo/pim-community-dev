@@ -1,10 +1,10 @@
 'use strict';
 
 define(
-    ['jquery', 'controllers'],
-    function ($, module) {
+    ['jquery', 'require-context', 'controllers', 'module-config'],
+    function ($, requireContext, controllers, moduleConfig) {
         var controllers       = controllers || {}
-        var defaultController = module.config().defaultController;
+        var defaultController = moduleConfig.defaultController;
 
         return {
             /**
@@ -16,13 +16,10 @@ define(
              */
             get: function (name) {
                 var deferred = $.Deferred();
-
                 var controller = controllers[name] || defaultController;
-                require([controller.module], function (Controller) {
-                    controller.class = Controller;
-
-                    deferred.resolve(controller);
-                });
+                var Controller = requireContext(controller.module)
+                controller.class = Controller;
+                deferred.resolve(controller);
 
                 return deferred.promise();
             }
