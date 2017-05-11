@@ -170,10 +170,9 @@
 
                             var modules = resp.metadata.requireJSModules;
                             modules.push('pim/datagrid/state-listener');
-                            require(modules, function () {
-                                var builders = _.toArray(arguments);
+                            require(modules, function (resolvedModules) {
                                 $(function () {
-                                    datagridBuilder(builders);
+                                    datagridBuilder(resolvedModules);
                                 });
                             });
                         });

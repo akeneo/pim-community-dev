@@ -16,14 +16,9 @@ define(
 
                 require.ensure([], function() {
                     var requestFetcher = require.context('./src/Pim/Bundle', true, /^\.\/.*\.js$/)
-                    console.log(paths[form.module])
                     var ResolvedModule = requestFetcher(paths[form.module]);
                     deferred.resolve(ResolvedModule)
                 })
-
-                // require([form.module], function (Form) {
-                //     deferred.resolve(Form);
-                // });
 
                 return deferred.promise();
             });

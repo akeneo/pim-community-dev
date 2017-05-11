@@ -1,5 +1,5 @@
-define(['underscore', 'oro-dependencies'],
-function (_, oroDependencies) {
+define(['underscore', 'paths'],
+function (_, paths) {
     'use strict';
 
     /**
@@ -14,11 +14,18 @@ function (_, oroDependencies) {
          * @param {function (Object)} callback
          */
         loadModules: function (modules, callback) {
+            console.trace()
+            var arrayArguments = _.object(requirements,  arguments)
             var requirements = _.values(modules);
-            _.each(modules, _.bind(function (value, key) {
-                modules[key] = oroDependencies[value]
-            }, _.object(requirements, _.toArray(arguments))));
-            callback(modules);
+            var requestFetcher = require.context('./src/Pim/Bundle', true, /^\.\/.*\.js$/)
+
+            require.ensure([], function () {
+                _.each(modules, _.bind(function (value, key) {
+                    var module = requestFetcher(paths[value])
+                    modules[key] = module
+                }, arrayArguments));
+                callback(modules);
+            });
         }
     };
 });
