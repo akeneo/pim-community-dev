@@ -9,6 +9,7 @@
 - TIP-711: Rework job execution reporting page with the new PEF architecture
 - TIP-724: Refactoring of the 'Settings/Association types' index screen using 'pim/common/grid'
 - TIP-725: Generalization of the refactoring made in the TIP-724 for all screen containing a simple grid 
+- TIP-734: Menu and index page is now using the new PEF architecture
 
 ## BC breaks
 
@@ -19,6 +20,7 @@
 - Change the constructor of `Pim\Component\Catalog\Updater\AttributeUpdater` to add `Akeneo\Component\Localization\TranslatableUpdater`
 - Change the constructor of `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` to add `kernel.logs_dir`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Twig\AttributeExtension` to remove `pim_enrich.attribute_icons`
+- Romved OroNotificationBundle
 
 ## Requirements
 

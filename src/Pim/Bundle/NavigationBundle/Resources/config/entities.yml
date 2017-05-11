@@ -1,2 +1,0 @@
-parameters:
-    oro_navigation.entity.navigation_history_item.class: Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem

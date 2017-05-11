@@ -896,3 +896,43 @@ job_tracker:
         input:   Download read files
         invalid_xlsx: Download invalid data
         invalid_csv: Download invalid data
+
+pim_menu:
+    tab:
+        collect: Collect
+        enrich: Enrich
+        settings: Settings
+        system: System
+        spread: Spread
+    item:
+        association_type: Association types
+        attribute: Attributes
+        attribute_group: Attribute groups
+        category: Categories
+        channel: Channels
+        currency: Currencies
+        family: Families
+        group: Groups
+        group_type: Group types
+        locale: Locales
+        product: Products
+        variant_group: Variant groups
+        export_history: Exports history
+        export_profile: Export profiles
+        import_history: Imports history
+        import_profile: Import profiles
+        configuration: Configuration
+        user_management: Users Management
+        user: Users
+        user_group: Groups
+        user_role: Roles
+        info: System information
+        job_tracker: Process tracker
+
+pim_header:
+    user:
+        logout: Logout
+        user_account: My Account
+
+pim_notification:
+    mark_all_as_read: Mark all as read
