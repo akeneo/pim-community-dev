@@ -110,12 +110,12 @@ class Creation extends Form
     }
 
     /**
-     * Edit an attribute option
+     * Edit an attribute option code
      *
      * @param string $name
      * @param string $newValue
      */
-    public function editOption($name, $newValue)
+    public function editOptionCode($name, $newValue)
     {
         $row = $this->getOptionElement($name);
 
@@ -137,6 +137,25 @@ class Creation extends Form
         $row->find('css', '.edit-row')->click();
         $row->find('css', '.attribute_option_code')->setValue($newValue);
         $row->find('css', '.btn.show-row')->click();
+    }
+
+    /**
+     * Edit an attribute option
+     *
+     * @param string $code
+     * @param array  $labels
+     */
+    public function editOption($code, array $labels = [])
+    {
+        $row = $this->getOptionElement($code);
+
+        $row->find('css', '.edit-row')->click();
+
+        foreach ($labels as $locale => $value) {
+            $row->find('css', sprintf('.attribute-option-value[data-locale="%s"]', $locale))->setValue($value);
+        }
+
+        $row->find('css', '.btn.update-row')->click();
     }
 
     /**
