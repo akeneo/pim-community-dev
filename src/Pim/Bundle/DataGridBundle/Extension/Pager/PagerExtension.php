@@ -55,7 +55,7 @@ class PagerExtension extends AbstractExtension
     {
         return !in_array(
             $config->offsetGetByPath('name'),
-            ['product-grid', 'association-product-grid', 'product-variant-group-grid', 'product-group-grid']
+            ['product-grid', 'association-product-grid', 'product-variant-group-grid', 'product-group-grid', 'published-product-grid']
         );
     }
 
