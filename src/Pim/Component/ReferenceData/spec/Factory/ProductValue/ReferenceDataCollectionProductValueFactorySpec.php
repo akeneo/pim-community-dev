@@ -225,7 +225,7 @@ class ReferenceDataCollectionProductValueFactorySpec extends ObjectBehavior
         $exception = InvalidPropertyException::validEntityCodeExpected(
             'reference_data_multi_select_attribute',
             'reference data code',
-            'The reference data does not exists',
+            'The code of the reference data "fabrics" does not exist',
             ReferenceDataCollectionProductValueFactory::class,
             'foobar'
         );

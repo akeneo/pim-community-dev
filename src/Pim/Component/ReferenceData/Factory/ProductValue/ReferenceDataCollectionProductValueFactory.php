@@ -150,7 +150,7 @@ class ReferenceDataCollectionProductValueFactory implements ProductValueFactoryI
             throw InvalidPropertyException::validEntityCodeExpected(
                 $attribute->getCode(),
                 'reference data code',
-                'The reference data does not exists',
+                sprintf('The code of the reference data "%s" does not exist', $attribute->getReferenceDataName()),
                 static::class,
                 $referenceDataCode
             );

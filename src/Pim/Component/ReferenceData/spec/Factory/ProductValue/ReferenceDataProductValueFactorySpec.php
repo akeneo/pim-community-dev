@@ -197,7 +197,7 @@ class ReferenceDataProductValueFactorySpec extends ObjectBehavior
         $exception = InvalidPropertyException::validEntityCodeExpected(
             'reference_data_simple_select_attribute',
             'reference data code',
-            'The reference data does not exists',
+            'The code of the reference data "color" does not exist',
             ReferenceDataProductValueFactory::class,
             'foobar'
         );
