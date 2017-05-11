@@ -10,7 +10,6 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
          * @param {Object} options
          */
         initialize: function (options) {
-            console.log('Passed options', options)
             this.entityListPromise = null;
             this.entityPromises    = {};
             this.options           = options || {};
@@ -61,8 +60,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
 
             if (!(identifier in this.entityPromises) || false === options.cached) {
                 var deferred = $.Deferred();
-                console.log('base-fetcher options', this.options)
-                console.trace()
+
                 if (this.options.urls.get) {
                     $.getJSON(
                         Routing.generate(this.options.urls.get, _.extend({identifier: identifier}, options))

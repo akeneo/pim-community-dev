@@ -15,11 +15,11 @@ define(['module-config', 'jquery', 'underscore', 'pim/base-fetcher', 'fetcher-li
 
                 _.each(fetcherList, function (config, name) {
                     config = _.isString(config) ? { module: config } : config;
-                    config.options = config.options || {};
+                    config.options = config.options || { };
                     fetchers[name] = config;
                 });
 
-                require.ensure([], function () {
+                // require.ensure([], function () {
                     for (var fetcher in fetcherList) {
                         var moduleName = fetcherList[fetcher].module
                         var ResolvedModule = requireContext(moduleName);
@@ -29,8 +29,9 @@ define(['module-config', 'jquery', 'underscore', 'pim/base-fetcher', 'fetcher-li
 
                     this.fetchers = fetchers;
                     deferred.resolve();
-                }.bind(this));
+                // }.bind(this));
 
+                console.dir(this.fetchers)
                 this.initializePromise = deferred.promise();
             }
 
@@ -45,9 +46,9 @@ define(['module-config', 'jquery', 'underscore', 'pim/base-fetcher', 'fetcher-li
          * @return Fetcher
          */
         getFetcher: function (entityType) {
+            console.trace()
+            console.log('Get fetcher for ', entityType)
             var fetcher = (this.fetchers[entityType] || this.fetchers.default)
-            console.log(fetcher)
-            // fetcher options not set
             return fetcher.loadedModule;
         },
 
