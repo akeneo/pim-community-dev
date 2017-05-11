@@ -144,3 +144,12 @@ pimee_enrich:
             options:
                 width: %value%px width
                 height: %value%px height
+
+pim_menu:
+    item:
+        upload_asset: Upload Assets
+        asset: Assets
+        asset_category: Asset categories
+        proposal: Proposals
+        published_product: Published products
+        rule: Rules

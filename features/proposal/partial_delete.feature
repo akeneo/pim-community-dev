@@ -35,7 +35,8 @@ Feature: Delete only possible values
     And I edit the "sp-1" product
     And I switch the locale to "en_US"
     And I switch the scope to "mobile"
-    Then the "Description" field should contain ""
-    And the "Name" field should contain "South Park Hoodie - Timm"
+    And I visit the "Product information" group
+    Then the field Description should contain ""
+    And the field Name should contain "South Park Hoodie - Timm"
     When I visit the "Sizes" group
     Then the field Size should contain "M"
