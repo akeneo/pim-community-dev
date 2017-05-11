@@ -4,7 +4,7 @@
             {{ app.user.fullName|escape }}
             <i class="AknCaret AknCaret--inverse"></i>
         </a>
-    </li>update.html.twig
+    </li>
 {% else %}
     <li><a href="{{ path('oro_user_security_login') }}">{{ 'Login'|trans }}</a></li>
 {% endif %}

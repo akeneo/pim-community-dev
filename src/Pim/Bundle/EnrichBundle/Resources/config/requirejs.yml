@@ -330,7 +330,7 @@ config:
                 oro_user_create:
                     module: pim/controller/form
                 oro_user_update:
-                    module: pim/controller/form
+                    module: pim/controller/user
                 oro_user_profile_update:
                     module: pim/controller/user
                 oro_user_role_index:

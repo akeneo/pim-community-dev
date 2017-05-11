@@ -867,3 +867,7 @@ job_tracker:
     input: Télécharger les fichiers lus
     invalid_xlsx: Télécharger les données invalides
     invalid_csv: Télécharger les données invalides
+
+pim_menu:
+    tab:
+        collect: Collecter
