@@ -600,7 +600,15 @@ class AssertionContext extends RawMinkContext
             return;
         }
 
-        $notificationWidget->find('css', '.dropdown-toggle')->click();
+        $this->spin(function () use ($notificationWidget) {
+            $toggle = $notificationWidget->find('css', '.dropdown-toggle');
+
+            if (null !== $toggle && $toggle->isVisible()) {
+                $toggle->click();
+
+                return true;
+            }
+        }, 'Can not find the dropdown notification toggle');
 
         // Wait for the footer of the notification panel dropdown to be loaded
         $this->spin(function () {
