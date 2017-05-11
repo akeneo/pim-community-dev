@@ -1,511 +1,571 @@
 webpackJsonp([2],{
 
-/***/ 211:
+/***/ 455:
 /* unknown exports provided */
 /* all exports used */
-/*!********************************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/form/tab/attributes/copy-field.html ***!
-  \********************************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"AknComparableFields-copyContainer copy-container\">\n    <input type=\"checkbox\" class=\"AknComparableFields-checkbox copy-field-selector\" <%- selected ? 'checked' : '' %>></input>\n    <div class=\"<%- type %> AknFieldContainer AknComparableFields-item\">\n        <div class=\"AknFieldContainer-header\">\n            <label class=\"AknFieldContainer-label\"><%- label %></label>\n            <span class=\"AknFieldContainer-fieldInfo field-info\">\n                <% if (attribute.localizable || attribute.scopable) { %>\n                    <span class=\"field-context\">\n                        <% if (attribute.scopable) { %> <span><%- context.scopeLabel %></span> <% } %>\n                        <% if (attribute.localizable) { %> <span><%= i18n.getFlag(context.locale) %></span> <% } %>\n                    </span>\n                <% } %>\n            </span>\n        </div>\n        <div class=\"AknFieldContainer-inputContainer field-input\">\n        </div>\n    </div>\n</div>\n"
-
-/***/ }),
-
-/***/ 214:
-/* unknown exports provided */
-/* all exports used */
-/*!*********************************************************************************************************!*\
-  !*** ./~/text-loader!./src/Pim/Bundle/EnrichBundle/Resources/public/templates/product/field/field.html ***!
-  \*********************************************************************************************************/
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"<%- type %> AknComparableFields-item AknFieldContainer original-field <%- editMode %>\">\n    <div class=\"AknFieldContainer-header\">\n        <label class=\"AknFieldContainer-label\" for=\"<%- fieldId %>\">\n            <span class=\"badge-elements-container\"></span>\n            <%- label %>\n            <span class=\"label-elements-container\"></span>\n        </label>\n        <span class=\"AknFieldContainer-fieldInfo field-info\">\n            <% if (attribute.localizable || attribute.scopable) { %>\n                <span class=\"field-context\">\n                    <% if (attribute.scopable) { %> <span><%- context.scopeLabel %></span> <% } %>\n                    <% if (attribute.localizable) { %> <span><%= i18n.getFlag(context.locale) %></span> <% } %>\n                </span>\n            <% } %>\n        </span>\n        <% if (context.optional && context.removable && 'edit' === editMode) { %>\n            <i class=\"AknIconButton AknIconButton--small icon-remove remove-attribute\" data-attribute=\"<%- attribute.code %>\" data-toggle=\"tooltip\" title=\"<%- _.__('pim_enrich.entity.product.optional_attribute.remove') %>\"></i>\n        <% } %>\n    </div>\n    <div class=\"AknFieldContainer-inputContainer field-input\">\n    </div>\n    <footer>\n        <div class=\"AknFieldContainer-footer footer-elements-container\">\n\n        </div>\n    </footer>\n</div>\n<div class=\"AknComparableFields-item AknComparableFields-item--comparisonContainer AknFieldContainer comparison-elements-container\"></div>\n"
-
-/***/ }),
-
-/***/ 220:
-/* unknown exports provided */
-/* all exports used */
-/*!**********************************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/form/common/attributes/copy-field.js ***!
-  \**********************************************************************************************/
+/*!************************!*\
+  !*** ./src/Pim/Bundle ***!
+  \************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-/**
- * Copy field extension
- *
- * @author    Julien Sanchez <julien@akeneo.com>
- * @author    Filips Alpe <filips@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-        __webpack_require__(/*! backbone */ 2),
-        __webpack_require__(/*! underscore */ 0),
-        __webpack_require__(/*! pim/field */ 246),
-        __webpack_require__(/*! text-loader!pim/template/form/tab/attribute/copy-field */ 211),
-        __webpack_require__(/*! pim/i18n */ 18),
-        __webpack_require__(/*! oro/mediator */ 5)
-    ], __WEBPACK_AMD_DEFINE_RESULT__ = function (Backbone, _, Field, template, i18n, mediator) {
-        return Field.extend({
-            tagName: 'div',
-            field: null,
-            template: _.template(template),
-            selected: false,
-            events: {
-                'click': 'onSelect'
-            },
-
-            /**
-             * Initialize the view
-             */
-            initialize: function () {
-                this.selected = false;
-                this.field    = null;
-
-                Field.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
-             * Render the copy field view
-             * Delegates the render of the input itself to the Field.renderCopyInput() method
-             *
-             * @returns {Object}
-             */
-            render: function () {
-                this.$el.empty();
-
-                var templateContext = {
-                    type: this.field.attribute.field_type,
-                    label: this.field.getLabel(),
-                    config: this.field.config,
-                    attribute: this.field.attribute,
-                    selected: this.selected,
-                    context: this.context,
-                    i18n: i18n
-                };
-
-                mediator.trigger('pim_enrich:form:field:extension:add', {'field': this, 'promises': []});
-
-                this.$el.html(this.template(templateContext));
-                this.field.renderCopyInput(this.getCurrentValue())
-                    .then(function (render) {
-                        this.$('.field-input').html(render);
-                        this.renderElements();
-                    }.bind(this));
-
-                this.delegateEvents();
-
-                return this;
-            },
-
-            /**
-             * Render elements of this field in different available positions.
-             * In the copy case, only implements extension on input position.
-             */
-            renderElements: function () {
-                _.each(this.elements, function (elements, position) {
-                    if ('field-input' === position) {
-                        var $container = this.$('.field-input');
-                        $container.empty();
-
-                        _.each(elements, function (element) {
-                            if (typeof element.render === 'function') {
-                                $container.append(element.render().$el);
-                            } else {
-                                $container.append(element);
-                            }
-                        }.bind(this));
-                    }
-                }.bind(this));
-            },
-
-            /**
-             * Bound this copy field to the original field
-             *
-             * @param {Field} field
-             */
-            setField: function (field) {
-                this.field = field;
-            },
-
-            /**
-             * Callback called when the copy field is clicked, toggle the select checkbox state
-             */
-            onSelect: function () {
-                this.selected = !this.selected;
-                this.$('.copy-field-selector').prop('checked', this.selected);
-            },
-
-            /**
-             * Mark this copy field as selected or not
-             *
-             * @param {boolean} selected
-             */
-            setSelected: function (selected) {
-                this.selected = selected;
-            }
-        });
-    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-
-/***/ }),
-
-/***/ 246:
-/* unknown exports provided */
-/* all exports used */
-/*!********************************************************************************!*\
-  !*** ./src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/field.js ***!
-  \********************************************************************************/
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
-/**
- * Field abstract class
- *
- * @author    Julien Sanchez <julien@akeneo.com>
- * @author    Filips Alpe <filips@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
-!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-        __webpack_require__(/*! jquery */ 1),
-        __webpack_require__(/*! backbone */ 2),
-        __webpack_require__(/*! underscore */ 0),
-        __webpack_require__(/*! text-loader!pim/template/product/field/field */ 214),
-        __webpack_require__(/*! pim/attribute-manager */ 42),
-        __webpack_require__(/*! pim/i18n */ 18),
-        __webpack_require__(/*! oro/mediator */ 5)
-    ], __WEBPACK_AMD_DEFINE_RESULT__ = function ($, Backbone, _, fieldTemplate, AttributeManager, i18n, mediator) {
-        var FieldModel = Backbone.Model.extend({
-            values: []
-        });
-
-        return Backbone.View.extend({
-            tagName: 'div',
-            className: 'AknComparableFields field-container',
-            options: {},
-            attributes: function () {
-                return {
-                    'data-attribute': this.options ? this.options.code : null
-                };
-            },
-            attribute: null,
-            context: {},
-            model: FieldModel,
-            template: _.template(fieldTemplate),
-            elements: {},
-            editable: true,
-            ready: true,
-            valid: true,
-
-            /**
-             * Initialize this field
-             *
-             * @param {Object} attribute
-             *
-             * @returns {Object}
-             */
-            initialize: function (attribute) {
-                this.attribute = attribute;
-                this.model     = new FieldModel({values: []});
-                this.elements  = {};
-                this.context   = {};
-
-                return this;
-            },
-
-            /**
-             * Render this field
-             *
-             * @returns {Object}
-             */
-            render: function () {
-                this.setEditable(true);
-                this.setValid(true);
-                this.elements = {};
-                var promises  = [];
-                mediator.trigger('pim_enrich:form:field:extension:add', {'field': this, 'promises': promises});
-
-                $.when.apply($, promises)
-                    .then(this.getTemplateContext.bind(this))
-                    .then(function (templateContext) {
-                        this.$el.html(this.template(templateContext));
-
-                        this.$('.original-field .field-input').append(this.renderInput(templateContext));
-
-                        this.renderElements();
-                        this.postRender();
-                        this.delegateEvents();
-                    }.bind(this));
-
-                return this;
-            },
-
-            /**
-             * Render elements of this field in different available positions
-             */
-            renderElements: function () {
-                _.each(this.elements, function (elements, position) {
-                    var $container = 'field-input' === position ?
-                        this.$('.original-field .field-input') :
-                        this.$('.' + position + '-elements-container');
-
-                    $container.empty();
-
-                    _.each(elements, function (element) {
-                        if (typeof element.render === 'function') {
-                            $container.append(element.render().$el);
-                        } else {
-                            $container.append(element);
-                        }
-                    }.bind(this));
-
-                }.bind(this));
-            },
-
-            /**
-             * Render the input inside the field area
-             *
-             * @throws {Error} if this method is not implemented
-             */
-            renderInput: function () {
-                throw new Error('You should implement your field template');
-            },
-
-            /**
-             * Is called after rendering the input
-             */
-            postRender: function () {},
-
-            /**
-             * Render this input in copy mode
-             *
-             * @param {Object} value
-             *
-             * @returns {Promise}
-             */
-            renderCopyInput: function (value) {
-                return this.getTemplateContext()
-                    .then(function (context) {
-                        var copyContext = $.extend(true, {}, context);
-                        copyContext.value = value;
-                        copyContext.context.locale = value.locale;
-                        copyContext.context.scope = value.scope;
-                        copyContext.editMode = 'view';
-
-                        return this.renderInput(copyContext);
-                    }.bind(this));
-            },
-
-            /**
-             * Get the template context
-             *
-             * @returns {Promise}
-             */
-            getTemplateContext: function () {
-                var deferred = $.Deferred();
-
-                deferred.resolve({
-                    type: this.attribute.field_type,
-                    label: this.getLabel(),
-                    value: this.getCurrentValue(),
-                    fieldId: 'field-' + Math.random().toString(10).substring(2),
-                    context: this.context,
-                    attribute: this.attribute,
-                    info: this.elements,
-                    editMode: this.getEditMode(),
-                    i18n: i18n
-                });
-
-                return deferred.promise();
-            },
-
-            /**
-             * Update the model linked to this field
-             */
-            updateModel: function () {
-                this.valid = true;
-            },
-
-            /**
-             * Set values to the model linked to this field
-             *
-             * @param {Array} values
-             */
-            setValues: function (values) {
-                if (_.isUndefined(values) || values.length === 0) {
-                    /*global console: true */
-                    console.error('Value array is empty');
-                }
-
-                this.model.set('values', values);
-            },
-
-            /**
-             * Set the context of this field
-             *
-             * @param {Object} context
-             */
-            setContext: function (context) {
-                this.context = context;
-            },
-
-            /**
-             * Add an element to this field block
-             *
-             * @param {string} position 'footer', 'label' or 'comparison'
-             * @param {string} code
-             * @param {Object} element
-             */
-            addElement: function (position, code, element) {
-                if (!this.elements[position]) {
-                    this.elements[position] = {};
-                }
-                this.elements[position][code] = element;
-            },
-
-            /**
-             * Remove an element of this field block, with the given position & code
-             *
-             * @param {string} position
-             * @param {string} code
-             */
-            removeElement: function (position, code) {
-                if (this.elements[position] && this.elements[position][code]) {
-                    delete this.elements[position][code];
-                }
-            },
-
-            /**
-             * Set as valid
-             *
-             * @param {boolean} valid
-             */
-            setValid: function (valid) {
-                this.valid = valid;
-            },
-
-            /**
-             * Return whether is valid
-             *
-             * @returns {boolean}
-             */
-            isValid: function () {
-                return this.valid;
-            },
-
-            /**
-             * Set the focus on the input of this field
-             */
-            setFocus: function () {
-                this.$('input:first').focus();
-            },
-
-            /**
-             * Set this field as editable
-             *
-             * @param {boolean} editable
-             */
-            setEditable: function (editable) {
-                this.editable = editable;
-            },
-
-            /**
-             * Return whether this field is editable
-             *
-             * @returns {boolean}
-             */
-            isEditable: function () {
-                return this.editable;
-            },
-
-            /**
-             * Set this field as ready
-             *
-             * @param {boolean} ready
-             */
-            setReady: function (ready) {
-                this.ready = ready;
-            },
-
-            /**
-             * Return whether this field is ready
-             *
-             * @returns {boolean}
-             */
-            isReady: function () {
-                return this.ready;
-            },
-
-            /**
-             * Get the current edit mode (can be 'edit' or 'view')
-             *
-             * @returns {string}
-             */
-            getEditMode: function () {
-                if (this.editable) {
-                    return 'edit';
-                } else {
-                    return 'view';
-                }
-            },
-
-            /**
-             * Return whether this field can be seen
-             *
-             * @returns {boolean}
-             */
-            canBeSeen: function () {
-                return true;
-            },
-
-            /**
-             * Get current model value for this field, in this format:
-             * {locale: 'en_US', scope: null, data: 'stuff'}
-             *
-             * @returns {Object}
-             */
-            getCurrentValue: function () {
-                return AttributeManager.getValue(
-                    this.model.get('values'),
-                    this.attribute,
-                    this.context.locale,
-                    this.context.scope
-                );
-            },
-
-            /**
-             * Set current model value for this field
-             *
-             * @param {*} value
-             */
-            setCurrentValue: function (value) {
-                var productValue = this.getCurrentValue();
-
-                productValue.data = value;
-                mediator.trigger('pim_enrich:form:entity:update_state');
-            },
-
-            /**
-             * Get the label of this field (default is code surrounded by brackets)
-             *
-             * @returns {string}
-             */
-            getLabel: function () {
-                return this.attribute.labels[this.context.uiLocale] ?
-                    this.attribute.labels[this.context.uiLocale] :
-                    '[' + this.attribute.code + ']';
-            }
-        });
-    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
+var map = {
+	"pimanalytics/js/data-collector": 100,
+	"pimanalytics/js/patch-fetcher": 97,
+	"pimdashboard/js/abstract-widget": 62,
+	"pimdashboard/js/completeness-widget": 95,
+	"pimdashboard/js/last-operations-widget": 96,
+	"pimdashboard/js/widget-container": 99,
+	"pimdashboard/templates/completeness-widget.html": 488,
+	"pimdashboard/templates/last-operations-widget.html": 489,
+	"pimdashboard/templates/view-all-btn.html": 490,
+	"pimdatagrid/js/datafilter-builder": 491,
+	"pimdatagrid/js/datafilter/collection-filters-manager": 468,
+	"pimdatagrid/js/datafilter/filter/abstract-filter": 87,
+	"pimdatagrid/js/datafilter/filter/ajax-choice-filter": 492,
+	"pimdatagrid/js/datafilter/filter/choice-filter": 89,
+	"pimdatagrid/js/datafilter/filter/date-filter": 469,
+	"pimdatagrid/js/datafilter/filter/datetime-filter": 493,
+	"pimdatagrid/js/datafilter/filter/metric-filter": 494,
+	"pimdatagrid/js/datafilter/filter/multiselect-filter": 470,
+	"pimdatagrid/js/datafilter/filter/none-filter": 495,
+	"pimdatagrid/js/datafilter/filter/number-filter": 88,
+	"pimdatagrid/js/datafilter/filter/price-filter": 496,
+	"pimdatagrid/js/datafilter/filter/product_category-filter": 101,
+	"pimdatagrid/js/datafilter/filter/product_completeness-filter": 497,
+	"pimdatagrid/js/datafilter/filter/product_scope-filter": 498,
+	"pimdatagrid/js/datafilter/filter/select-filter": 457,
+	"pimdatagrid/js/datafilter/filter/select-row-filter": 499,
+	"pimdatagrid/js/datafilter/filter/select2-choice-filter": 500,
+	"pimdatagrid/js/datafilter/filter/select2-rest-choice-filter": 501,
+	"pimdatagrid/js/datafilter/filter/text-filter": 59,
+	"pimdatagrid/js/datafilter/filters-manager": 471,
+	"pimdatagrid/js/datafilter/formatter/abstract-formatter": 502,
+	"pimdatagrid/js/datagrid-builder": 49,
+	"pimdatagrid/js/datagrid/action-launcher": 102,
+	"pimdatagrid/js/datagrid/action/abstract-action": 40,
+	"pimdatagrid/js/datagrid/action/ajax-action": 103,
+	"pimdatagrid/js/datagrid/action/configure-columns-action": 503,
+	"pimdatagrid/js/datagrid/action/delete-action": 104,
+	"pimdatagrid/js/datagrid/action/mass-action": 105,
+	"pimdatagrid/js/datagrid/action/model-action": 50,
+	"pimdatagrid/js/datagrid/action/navigate-action": 63,
+	"pimdatagrid/js/datagrid/action/refresh-collection-action": 106,
+	"pimdatagrid/js/datagrid/action/reset-collection-action": 107,
+	"pimdatagrid/js/datagrid/action/tab-redirect-action": 108,
+	"pimdatagrid/js/datagrid/actions-panel": 109,
+	"pimdatagrid/js/datagrid/body": 110,
+	"pimdatagrid/js/datagrid/cell/action-cell": 111,
+	"pimdatagrid/js/datagrid/cell/boolean-cell": 504,
+	"pimdatagrid/js/datagrid/cell/date-cell": 112,
+	"pimdatagrid/js/datagrid/cell/datetime-cell": 113,
+	"pimdatagrid/js/datagrid/cell/html-cell": 114,
+	"pimdatagrid/js/datagrid/cell/integer-cell": 505,
+	"pimdatagrid/js/datagrid/cell/number-cell": 506,
+	"pimdatagrid/js/datagrid/cell/select-cell": 507,
+	"pimdatagrid/js/datagrid/cell/select-row-cell": 64,
+	"pimdatagrid/js/datagrid/cell/string-cell": 51,
+	"pimdatagrid/js/datagrid/column/action-column": 115,
+	"pimdatagrid/js/datagrid/formatter/cell-formatter": 116,
+	"pimdatagrid/js/datagrid/grid": 120,
+	"pimdatagrid/js/datagrid/grid-views/collection": 117,
+	"pimdatagrid/js/datagrid/grid-views/model": 118,
+	"pimdatagrid/js/datagrid/grid-views/view": 119,
+	"pimdatagrid/js/datagrid/header": 123,
+	"pimdatagrid/js/datagrid/header-cell/header-cell": 121,
+	"pimdatagrid/js/datagrid/header-cell/select-all-header-cell": 122,
+	"pimdatagrid/js/datagrid/listener/abstract-listener": 458,
+	"pimdatagrid/js/datagrid/listener/callback-listener": 508,
+	"pimdatagrid/js/datagrid/listener/column-form-listener": 509,
+	"pimdatagrid/js/datagrid/listener/oro-column-form-listener": 472,
+	"pimdatagrid/js/datagrid/page-size": 124,
+	"pimdatagrid/js/datagrid/pagination": 126,
+	"pimdatagrid/js/datagrid/pagination-input": 125,
+	"pimdatagrid/js/datagrid/row": 127,
+	"pimdatagrid/js/datagrid/state": 35,
+	"pimdatagrid/js/datagrid/state-listener": 510,
+	"pimdatagrid/js/datagrid/toolbar": 128,
+	"pimdatagrid/js/datagrid/widget/export-widget": 511,
+	"pimdatagrid/js/fetcher/datagrid-view-fetcher": 129,
+	"pimdatagrid/js/loading-mask": 15,
+	"pimdatagrid/js/multiselect-decorator": 460,
+	"pimdatagrid/js/pageable-collection": 38,
+	"pimdatagrid/js/remover/datagrid-view-remover": 130,
+	"pimdatagrid/js/saver/datagrid-view-saver": 65,
+	"pimdatagrid/lib/backbone-pageable": 131,
+	"pimdatagrid/lib/backgrid/backgrid": 20,
+	"pimdatagrid/lib/multiselect/jquery.multiselect": 462,
+	"pimdatagrid/lib/multiselect/jquery.multiselect.filter": 461,
+	"pimdatagrid/templates/configure-columns-action.html": 512,
+	"pimdatagrid/templates/datagrid/action-launcher-button.html": 513,
+	"pimdatagrid/templates/datagrid/action-launcher-list-item.html": 514,
+	"pimdatagrid/templates/datagrid/actions-group.html": 515,
+	"pimdatagrid/templates/filter/date-filter.html": 516,
+	"pimdatagrid/templates/filter/metric-filter.html": 517,
+	"pimdatagrid/templates/filter/select2-choice-filter.html": 518,
+	"pimenrich/js/app": 98,
+	"pimenrich/js/association-type/form/delete": 132,
+	"pimenrich/js/attribute-option/create": 463,
+	"pimenrich/js/attribute-option/form": 133,
+	"pimenrich/js/channel/form/delete": 134,
+	"pimenrich/js/channel/form/properties/conversion-unit": 135,
+	"pimenrich/js/channel/form/properties/general": 136,
+	"pimenrich/js/channel/form/properties/general/currencies": 137,
+	"pimenrich/js/channel/form/properties/general/locales": 138,
+	"pimenrich/js/channel/form/save": 139,
+	"pimenrich/js/common/column-list-view": 473,
+	"pimenrich/js/common/property": 18,
+	"pimenrich/js/controller/association-type": 140,
+	"pimenrich/js/controller/base": 19,
+	"pimenrich/js/controller/channel/edit": 141,
+	"pimenrich/js/controller/common/index": 142,
+	"pimenrich/js/controller/family": 143,
+	"pimenrich/js/controller/form": 52,
+	"pimenrich/js/controller/group": 66,
+	"pimenrich/js/controller/group-type": 144,
+	"pimenrich/js/controller/job-execution": 145,
+	"pimenrich/js/controller/job-instance": 146,
+	"pimenrich/js/controller/product": 147,
+	"pimenrich/js/controller/redirect": 148,
+	"pimenrich/js/controller/registry": 519,
+	"pimenrich/js/controller/role": 149,
+	"pimenrich/js/controller/system": 150,
+	"pimenrich/js/controller/template": 53,
+	"pimenrich/js/controller/user": 151,
+	"pimenrich/js/controller/variant-group": 152,
+	"pimenrich/js/date-context": 44,
+	"pimenrich/js/error/error": 22,
+	"pimenrich/js/family/form/attributes": 153,
+	"pimenrich/js/family/form/attributes/attributes": 67,
+	"pimenrich/js/family/form/attributes/toolbar": 154,
+	"pimenrich/js/family/form/attributes/toolbar/add-select/attribute-group/select": 155,
+	"pimenrich/js/family/form/attributes/toolbar/add-select/attribute/select": 68,
+	"pimenrich/js/family/form/delete": 156,
+	"pimenrich/js/family/form/properties/general": 157,
+	"pimenrich/js/family/form/properties/general/attribute-as-label": 158,
+	"pimenrich/js/family/form/properties/general/code": 159,
+	"pimenrich/js/family/form/properties/general/translation": 160,
+	"pimenrich/js/family/form/save": 161,
+	"pimenrich/js/family/mass-edit/attributes": 162,
+	"pimenrich/js/family/mass-edit/hidden-field-updater": 163,
+	"pimenrich/js/family/mass-edit/toolbar/add-select/attribute/select": 164,
+	"pimenrich/js/fetcher/attribute-fetcher": 165,
+	"pimenrich/js/fetcher/attribute-group-fetcher": 166,
+	"pimenrich/js/fetcher/base-fetcher": 28,
+	"pimenrich/js/fetcher/completeness-fetcher": 520,
+	"pimenrich/js/fetcher/fetcher-registry": 4,
+	"pimenrich/js/fetcher/locale-fetcher": 167,
+	"pimenrich/js/fetcher/product-fetcher": 168,
+	"pimenrich/js/fetcher/variant-group-fetcher": 169,
+	"pimenrich/js/filter/attribute/attribute": 29,
+	"pimenrich/js/filter/attribute/boolean": 170,
+	"pimenrich/js/filter/attribute/date": 171,
+	"pimenrich/js/filter/attribute/identifier": 172,
+	"pimenrich/js/filter/attribute/media": 173,
+	"pimenrich/js/filter/attribute/metric": 174,
+	"pimenrich/js/filter/attribute/number": 175,
+	"pimenrich/js/filter/attribute/price-collection": 176,
+	"pimenrich/js/filter/attribute/select": 177,
+	"pimenrich/js/filter/attribute/string": 178,
+	"pimenrich/js/filter/filter": 32,
+	"pimenrich/js/filter/product/category": 179,
+	"pimenrich/js/filter/product/category/selector": 180,
+	"pimenrich/js/filter/product/completeness": 181,
+	"pimenrich/js/filter/product/enabled": 182,
+	"pimenrich/js/filter/product/family": 183,
+	"pimenrich/js/filter/product/updated": 184,
+	"pimenrich/js/form/builder": 16,
+	"pimenrich/js/form/cache-invalidator": 54,
+	"pimenrich/js/form/common/add-select/footer": 185,
+	"pimenrich/js/form/common/add-select/line": 69,
+	"pimenrich/js/form/common/add-select/select": 70,
+	"pimenrich/js/form/common/attributes": 55,
+	"pimenrich/js/form/common/attributes/attribute-group-selector": 186,
+	"pimenrich/js/form/common/attributes/copy": 188,
+	"pimenrich/js/form/common/attributes/copy-field": 187,
+	"pimenrich/js/form/common/back-to-grid": 189,
+	"pimenrich/js/form/common/delete": 25,
+	"pimenrich/js/form/common/download-file": 190,
+	"pimenrich/js/form/common/edit-form": 191,
+	"pimenrich/js/form/common/form-tabs": 192,
+	"pimenrich/js/form/common/grid": 56,
+	"pimenrich/js/form/common/group-selector": 193,
+	"pimenrich/js/form/common/index/confirm-button": 521,
+	"pimenrich/js/form/common/index/create-button": 194,
+	"pimenrich/js/form/common/index/grid": 195,
+	"pimenrich/js/form/common/index/index": 196,
+	"pimenrich/js/form/common/label": 41,
+	"pimenrich/js/form/common/meta/created": 197,
+	"pimenrich/js/form/common/meta/status": 198,
+	"pimenrich/js/form/common/meta/updated": 199,
+	"pimenrich/js/form/common/properties/general": 200,
+	"pimenrich/js/form/common/properties/translation": 71,
+	"pimenrich/js/form/common/redirect": 72,
+	"pimenrich/js/form/common/save": 33,
+	"pimenrich/js/form/common/save-buttons": 201,
+	"pimenrich/js/form/common/save-form": 202,
+	"pimenrich/js/form/common/state": 203,
+	"pimenrich/js/form/common/tab/history": 204,
+	"pimenrich/js/form/common/tab/properties": 205,
+	"pimenrich/js/form/config-provider": 57,
+	"pimenrich/js/form/form-modal": 522,
+	"pimenrich/js/form/registry": 206,
+	"pimenrich/js/formatter/choices/base": 47,
+	"pimenrich/js/formatter/date-formatter": 61,
+	"pimenrich/js/generator/media-url-generator": 474,
+	"pimenrich/js/grid/view-selector": 212,
+	"pimenrich/js/grid/view-selector-create-view": 207,
+	"pimenrich/js/grid/view-selector-current": 208,
+	"pimenrich/js/grid/view-selector-line": 209,
+	"pimenrich/js/grid/view-selector-remove-view": 210,
+	"pimenrich/js/grid/view-selector-save-view": 211,
+	"pimenrich/js/group-type/form/delete": 213,
+	"pimenrich/js/group/form/delete": 214,
+	"pimenrich/js/group/form/meta/product-count": 215,
+	"pimenrich/js/group/form/products": 216,
+	"pimenrich/js/group/form/properties/general": 217,
+	"pimenrich/js/group/form/save": 218,
+	"pimenrich/js/i18n": 9,
+	"pimenrich/js/job/common/edit/content/data/help": 219,
+	"pimenrich/js/job/common/edit/field/decimal-separator": 220,
+	"pimenrich/js/job/common/edit/field/field": 58,
+	"pimenrich/js/job/common/edit/field/select": 73,
+	"pimenrich/js/job/common/edit/field/switch": 221,
+	"pimenrich/js/job/common/edit/field/text": 222,
+	"pimenrich/js/job/common/edit/label": 223,
+	"pimenrich/js/job/common/edit/launch": 74,
+	"pimenrich/js/job/common/edit/meta": 224,
+	"pimenrich/js/job/common/edit/properties": 225,
+	"pimenrich/js/job/common/edit/save": 75,
+	"pimenrich/js/job/common/edit/upload": 227,
+	"pimenrich/js/job/common/edit/upload-launch": 226,
+	"pimenrich/js/job/common/edit/validation": 228,
+	"pimenrich/js/job/common/label": 229,
+	"pimenrich/js/job/execution/auto-refresh": 230,
+	"pimenrich/js/job/execution/download-archives-buttons": 231,
+	"pimenrich/js/job/execution/download-log": 232,
+	"pimenrich/js/job/execution/show-profile": 233,
+	"pimenrich/js/job/execution/summary-table": 234,
+	"pimenrich/js/job/export/edit/delete": 235,
+	"pimenrich/js/job/export/edit/save": 236,
+	"pimenrich/js/job/import/edit/delete": 237,
+	"pimenrich/js/job/import/edit/save": 238,
+	"pimenrich/js/job/product/edit/content": 239,
+	"pimenrich/js/job/product/edit/content/data": 240,
+	"pimenrich/js/job/product/edit/content/data/add-select/attribute/select": 241,
+	"pimenrich/js/job/product/edit/content/data/default-attribute-filters": 242,
+	"pimenrich/js/job/product/edit/content/readonly": 243,
+	"pimenrich/js/job/product/edit/content/structure": 244,
+	"pimenrich/js/job/product/edit/content/structure/attributes": 246,
+	"pimenrich/js/job/product/edit/content/structure/attributes-selector": 245,
+	"pimenrich/js/job/product/edit/content/structure/locales": 247,
+	"pimenrich/js/job/product/edit/content/structure/scope": 248,
+	"pimenrich/js/job/product/edit/field/date-format": 249,
+	"pimenrich/js/jquery.wizard": 523,
+	"pimenrich/js/jstree/jquery.jstree.nested_switch": 250,
+	"pimenrich/js/jstree/jquery.jstree.tree_selector": 90,
+	"pimenrich/js/manager/attribute-group-manager": 76,
+	"pimenrich/js/manager/attribute-manager": 24,
+	"pimenrich/js/manager/group-manager": 251,
+	"pimenrich/js/manager/history-item-manager": 524,
+	"pimenrich/js/manager/product-manager": 42,
+	"pimenrich/js/manager/variant-group-manager": 252,
+	"pimenrich/js/page-title": 23,
+	"pimenrich/js/pim-async-tab": 253,
+	"pimenrich/js/pim-attributeoptionview": 525,
+	"pimenrich/js/pim-currencyfield": 526,
+	"pimenrich/js/pim-init": 254,
+	"pimenrich/js/pim-item-tableview": 527,
+	"pimenrich/js/pim-item-view": 528,
+	"pimenrich/js/pim-optionform": 475,
+	"pimenrich/js/pim-popinform": 529,
+	"pimenrich/js/pim-scopable": 530,
+	"pimenrich/js/product/create/create": 255,
+	"pimenrich/js/product/create/form": 256,
+	"pimenrich/js/product/field-manager": 17,
+	"pimenrich/js/product/field/boolean-field": 531,
+	"pimenrich/js/product/field/date-field": 532,
+	"pimenrich/js/product/field/field": 85,
+	"pimenrich/js/product/field/media-field": 533,
+	"pimenrich/js/product/field/metric-field": 534,
+	"pimenrich/js/product/field/multi-select-field": 476,
+	"pimenrich/js/product/field/number-field": 535,
+	"pimenrich/js/product/field/price-collection-field": 536,
+	"pimenrich/js/product/field/simple-select-field": 477,
+	"pimenrich/js/product/field/text-field": 537,
+	"pimenrich/js/product/field/textarea-field": 538,
+	"pimenrich/js/product/field/wysiwyg-field": 539,
+	"pimenrich/js/product/form": 3,
+	"pimenrich/js/product/form/associations": 257,
+	"pimenrich/js/product/form/attributes": 258,
+	"pimenrich/js/product/form/attributes/add-select/attribute/line": 259,
+	"pimenrich/js/product/form/attributes/add-select/attribute/select": 43,
+	"pimenrich/js/product/form/attributes/completeness": 260,
+	"pimenrich/js/product/form/attributes/locale-specific": 261,
+	"pimenrich/js/product/form/attributes/localizable": 262,
+	"pimenrich/js/product/form/attributes/validation": 264,
+	"pimenrich/js/product/form/attributes/validation-error": 263,
+	"pimenrich/js/product/form/attributes/variant-group": 265,
+	"pimenrich/js/product/form/categories": 266,
+	"pimenrich/js/product/form/delete": 267,
+	"pimenrich/js/product/form/download-pdf": 268,
+	"pimenrich/js/product/form/locale-switcher": 77,
+	"pimenrich/js/product/form/mass-edit/attributes": 269,
+	"pimenrich/js/product/form/mass-edit/hidden-field-updater": 270,
+	"pimenrich/js/product/form/meta/change-family": 271,
+	"pimenrich/js/product/form/meta/family": 272,
+	"pimenrich/js/product/form/meta/groups": 273,
+	"pimenrich/js/product/form/panel/comments": 274,
+	"pimenrich/js/product/form/panel/completeness": 275,
+	"pimenrich/js/product/form/panel/history": 276,
+	"pimenrich/js/product/form/panel/panels": 277,
+	"pimenrich/js/product/form/panel/selector": 278,
+	"pimenrich/js/product/form/product-label": 279,
+	"pimenrich/js/product/form/save": 281,
+	"pimenrich/js/product/form/save-and-back": 280,
+	"pimenrich/js/product/form/scope-switcher": 78,
+	"pimenrich/js/product/form/sequential-edit": 282,
+	"pimenrich/js/product/form/status-switcher": 283,
+	"pimenrich/js/provider/to-fill-field-provider": 79,
+	"pimenrich/js/remover/association-type-remover": 284,
+	"pimenrich/js/remover/base-remover": 26,
+	"pimenrich/js/remover/channel": 285,
+	"pimenrich/js/remover/family": 286,
+	"pimenrich/js/remover/group-remover": 287,
+	"pimenrich/js/remover/group-type-remover": 288,
+	"pimenrich/js/remover/job-instance-export-remover": 289,
+	"pimenrich/js/remover/job-instance-import-remover": 290,
+	"pimenrich/js/remover/product-remover": 291,
+	"pimenrich/js/remover/variant-group-remover": 292,
+	"pimenrich/js/route-matcher": 293,
+	"pimenrich/js/router": 13,
+	"pimenrich/js/saver/base-saver": 30,
+	"pimenrich/js/saver/channel": 294,
+	"pimenrich/js/saver/entity-saver": 295,
+	"pimenrich/js/saver/family": 296,
+	"pimenrich/js/saver/group-saver": 297,
+	"pimenrich/js/saver/job-instance-export-saver": 298,
+	"pimenrich/js/saver/job-instance-import-saver": 299,
+	"pimenrich/js/saver/product-saver": 300,
+	"pimenrich/js/saver/variant-group-saver": 301,
+	"pimenrich/js/security-context": 21,
+	"pimenrich/js/translator": 2,
+	"pimenrich/js/tree-associate.jstree": 302,
+	"pimenrich/js/tree-manage.jstree": 540,
+	"pimenrich/js/tree-view.jstree": 303,
+	"pimenrich/js/user-context": 7,
+	"pimenrich/js/variant-group/form/attributes/add-select/attribute/select": 304,
+	"pimenrich/js/variant-group/form/delete": 305,
+	"pimenrich/js/variant-group/form/no-attribute": 306,
+	"pimenrich/js/variant-group/form/properties/general": 307,
+	"pimenrich/js/variant-group/form/save": 308,
+	"pimenrich/lib/translator": 80,
+	"pimenrich/templates/attribute-option/edit.html": 541,
+	"pimenrich/templates/attribute-option/form.html": 542,
+	"pimenrich/templates/attribute-option/index.html": 543,
+	"pimenrich/templates/attribute-option/show.html": 544,
+	"pimenrich/templates/attribute-option/validation-error.html": 545,
+	"pimenrich/templates/channel/tab/properties/conversion-unit.html": 546,
+	"pimenrich/templates/channel/tab/properties/general.html": 547,
+	"pimenrich/templates/channel/tab/properties/general/category-tree.html": 548,
+	"pimenrich/templates/channel/tab/properties/general/currencies.html": 549,
+	"pimenrich/templates/channel/tab/properties/general/locales.html": 550,
+	"pimenrich/templates/error/error.html": 551,
+	"pimenrich/templates/export/common/edit/field/field.html": 552,
+	"pimenrich/templates/export/common/edit/field/select.html": 553,
+	"pimenrich/templates/export/common/edit/field/switch.html": 554,
+	"pimenrich/templates/export/common/edit/field/text.html": 555,
+	"pimenrich/templates/export/common/edit/launch.html": 556,
+	"pimenrich/templates/export/common/edit/meta.html": 557,
+	"pimenrich/templates/export/common/edit/properties.html": 558,
+	"pimenrich/templates/export/common/edit/upload.html": 559,
+	"pimenrich/templates/export/common/edit/validation.html": 560,
+	"pimenrich/templates/export/product/edit/content.html": 561,
+	"pimenrich/templates/export/product/edit/content/data.html": 562,
+	"pimenrich/templates/export/product/edit/content/data/help.html": 563,
+	"pimenrich/templates/export/product/edit/content/structure.html": 564,
+	"pimenrich/templates/export/product/edit/content/structure/attribute-list.html": 565,
+	"pimenrich/templates/export/product/edit/content/structure/attributes-selector.html": 566,
+	"pimenrich/templates/export/product/edit/content/structure/attributes.html": 567,
+	"pimenrich/templates/export/product/edit/content/structure/locales.html": 568,
+	"pimenrich/templates/export/product/edit/content/structure/scope.html": 569,
+	"pimenrich/templates/family/tab/attributes.html": 570,
+	"pimenrich/templates/family/tab/attributes/attributes.html": 571,
+	"pimenrich/templates/family/tab/attributes/toolbar.html": 572,
+	"pimenrich/templates/family/tab/general/attribute-as-label.html": 573,
+	"pimenrich/templates/filter/attribute/boolean.html": 574,
+	"pimenrich/templates/filter/attribute/date.html": 575,
+	"pimenrich/templates/filter/attribute/media.html": 576,
+	"pimenrich/templates/filter/attribute/metric.html": 577,
+	"pimenrich/templates/filter/attribute/number.html": 578,
+	"pimenrich/templates/filter/attribute/price-collection.html": 579,
+	"pimenrich/templates/filter/attribute/select.html": 580,
+	"pimenrich/templates/filter/attribute/string.html": 581,
+	"pimenrich/templates/filter/filter.html": 582,
+	"pimenrich/templates/filter/product/category.html": 583,
+	"pimenrich/templates/filter/product/category/selector.html": 584,
+	"pimenrich/templates/filter/product/completeness.html": 585,
+	"pimenrich/templates/filter/product/enabled.html": 586,
+	"pimenrich/templates/filter/product/family.html": 587,
+	"pimenrich/templates/filter/product/identifier.html": 588,
+	"pimenrich/templates/filter/product/updated.html": 589,
+	"pimenrich/templates/filter/simpleselect.html": 590,
+	"pimenrich/templates/form/add-select/footer.html": 591,
+	"pimenrich/templates/form/add-select/line.html": 592,
+	"pimenrich/templates/form/add-select/select.html": 593,
+	"pimenrich/templates/form/back-to-grid.html": 594,
+	"pimenrich/templates/form/delete.html": 595,
+	"pimenrich/templates/form/download-file.html": 596,
+	"pimenrich/templates/form/edit-form.html": 597,
+	"pimenrich/templates/form/form-tabs.html": 598,
+	"pimenrich/templates/form/grid.html": 599,
+	"pimenrich/templates/form/group-selector.html": 600,
+	"pimenrich/templates/form/index/confirm-button.html": 601,
+	"pimenrich/templates/form/index/create-button.html": 602,
+	"pimenrich/templates/form/index/index.html": 603,
+	"pimenrich/templates/form/meta/created.html": 604,
+	"pimenrich/templates/form/meta/status.html": 605,
+	"pimenrich/templates/form/meta/updated.html": 606,
+	"pimenrich/templates/form/properties/general.html": 607,
+	"pimenrich/templates/form/properties/input.html": 608,
+	"pimenrich/templates/form/properties/translation.html": 609,
+	"pimenrich/templates/form/redirect.html": 610,
+	"pimenrich/templates/form/save-buttons.html": 611,
+	"pimenrich/templates/form/save.html": 612,
+	"pimenrich/templates/form/state.html": 613,
+	"pimenrich/templates/form/tab/attributes.html": 614,
+	"pimenrich/templates/form/tab/attributes/attribute-group-selector.html": 615,
+	"pimenrich/templates/form/tab/attributes/copy-field.html": 616,
+	"pimenrich/templates/form/tab/attributes/copy.html": 617,
+	"pimenrich/templates/form/tab/history.html": 618,
+	"pimenrich/templates/form/tab/properties.html": 619,
+	"pimenrich/templates/form/tab/section.html": 620,
+	"pimenrich/templates/grid/view-selector-create-view-label-input.html": 621,
+	"pimenrich/templates/grid/view-selector-create-view.html": 622,
+	"pimenrich/templates/grid/view-selector-current.html": 623,
+	"pimenrich/templates/grid/view-selector-line.html": 624,
+	"pimenrich/templates/grid/view-selector-remove-view.html": 625,
+	"pimenrich/templates/grid/view-selector-save-view.html": 626,
+	"pimenrich/templates/grid/view-selector.html": 627,
+	"pimenrich/templates/group/meta/product-count.html": 628,
+	"pimenrich/templates/group/tab/properties/general.html": 629,
+	"pimenrich/templates/i18n/flag.html": 630,
+	"pimenrich/templates/job-execution/auto-refresh.html": 631,
+	"pimenrich/templates/job-execution/download-archives-buttons.html": 632,
+	"pimenrich/templates/job-execution/summary-table.html": 633,
+	"pimenrich/templates/product/create-error.html": 634,
+	"pimenrich/templates/product/create-popin.html": 635,
+	"pimenrich/templates/product/download-pdf.html": 636,
+	"pimenrich/templates/product/field/boolean.html": 637,
+	"pimenrich/templates/product/field/date.html": 638,
+	"pimenrich/templates/product/field/field.html": 639,
+	"pimenrich/templates/product/field/media.html": 640,
+	"pimenrich/templates/product/field/metric.html": 641,
+	"pimenrich/templates/product/field/multi-select.html": 642,
+	"pimenrich/templates/product/field/number.html": 643,
+	"pimenrich/templates/product/field/price-collection.html": 644,
+	"pimenrich/templates/product/field/simple-select.html": 645,
+	"pimenrich/templates/product/field/text.html": 646,
+	"pimenrich/templates/product/field/textarea.html": 647,
+	"pimenrich/templates/product/form/add-select/attribute/line.html": 648,
+	"pimenrich/templates/product/locale-switcher.html": 649,
+	"pimenrich/templates/product/meta/change-family-modal.html": 650,
+	"pimenrich/templates/product/meta/family.html": 651,
+	"pimenrich/templates/product/meta/group-modal.html": 652,
+	"pimenrich/templates/product/meta/groups.html": 653,
+	"pimenrich/templates/product/panel/comments.html": 654,
+	"pimenrich/templates/product/panel/completeness.html": 655,
+	"pimenrich/templates/product/panel/container.html": 656,
+	"pimenrich/templates/product/panel/history.html": 657,
+	"pimenrich/templates/product/panel/selector.html": 658,
+	"pimenrich/templates/product/scope-switcher.html": 659,
+	"pimenrich/templates/product/sequential-edit.html": 660,
+	"pimenrich/templates/product/status-switcher.html": 661,
+	"pimenrich/templates/product/tab/association-panes.html": 662,
+	"pimenrich/templates/product/tab/associations.html": 663,
+	"pimenrich/templates/product/tab/attributes/validation-error.html": 664,
+	"pimenrich/templates/product/tab/attributes/variant-group.html": 665,
+	"pimenrich/templates/product/tab/categories.html": 666,
+	"pimenrich/templates/variant-group/form/no-attribute.html": 667,
+	"pimenrich/templates/variant-group/tab/properties/general.html": 668,
+	"pimimportexport/js/job-execution-view": 669,
+	"pimnavigation/js/navigation/abstract-view": 464,
+	"pimnavigation/js/navigation/collection": 465,
+	"pimnavigation/js/navigation/dotmenu/item-view": 478,
+	"pimnavigation/js/navigation/dotmenu/view": 479,
+	"pimnavigation/js/navigation/favorites/view": 670,
+	"pimnavigation/js/navigation/model": 459,
+	"pimnavigation/js/navigation/pinbar/collection": 480,
+	"pimnavigation/js/navigation/pinbar/item-view": 481,
+	"pimnavigation/js/navigation/pinbar/model": 466,
+	"pimnavigation/js/navigation/pinbar/view": 671,
+	"pimnavigation/lib/jquery-form/jquery.form": 309,
+	"pimnavigation/lib/url/url.min": 672,
+	"pimnotification/js/indicator": 482,
+	"pimnotification/js/notification-list": 483,
+	"pimnotification/js/notifications": 673,
+	"pimnotification/templates/notification/notification-footer.html": 674,
+	"pimnotification/templates/notification/notification-list.html": 675,
+	"pimnotification/templates/notification/notification.html": 676,
+	"pimreferencedata/js/product/field/reference-multi-select-field": 677,
+	"pimreferencedata/js/product/field/reference-simple-select-field": 678,
+	"pimui/js/app": 34,
+	"pimui/js/delete-confirmation": 81,
+	"pimui/js/error": 86,
+	"pimui/js/form/state.js": 679,
+	"pimui/js/form/system/group/loading-message": 680,
+	"pimui/js/init-layout": 310,
+	"pimui/js/jquery-setup": 681,
+	"pimui/js/jquery.sidebarize": 311,
+	"pimui/js/layout": 312,
+	"pimui/js/mediator": 8,
+	"pimui/js/messenger": 12,
+	"pimui/js/modal": 37,
+	"pimui/js/pim-datepicker": 46,
+	"pimui/js/pim-dialog": 14,
+	"pimui/js/pim-dialogform": 91,
+	"pimui/js/pim-fileinput": 484,
+	"pimui/js/pim-formupdatelistener": 682,
+	"pimui/js/pim-initselect2": 31,
+	"pimui/js/pim-saveformstate": 313,
+	"pimui/js/pim-ui": 92,
+	"pimui/js/pim-wysiwyg": 93,
+	"pimui/js/templates/system/group/loading-message.html": 683,
+	"pimui/js/tools": 94,
+	"pimui/lib/backbone.bootstrap-modal": 684,
+	"pimui/lib/backbone/backbone": 6,
+	"pimui/lib/base64/base64": 685,
+	"pimui/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker": 314,
+	"pimui/lib/bootstrap-switch/bootstrap.switch": 45,
+	"pimui/lib/bootstrap/js/bootstrap": 36,
+	"pimui/lib/dropzonejs/dist/dropzone-amd-module.js": 686,
+	"pimui/lib/jquery-numeric/jquery.numeric": 315,
+	"pimui/lib/jquery-ui/jquery-ui-1.11.4.custom.min": 60,
+	"pimui/lib/jquery/jquery-1.10.2": 1,
+	"pimui/lib/json2/json2": 316,
+	"pimui/lib/jstree/jquery.hotkeys": 687,
+	"pimui/lib/jstree/jquery.jstree": 48,
+	"pimui/lib/select2/select2": 11,
+	"pimui/lib/slimbox2/slimbox2": 467,
+	"pimui/lib/text/text": 487,
+	"pimui/lib/underscore/underscore": 0,
+	"pimuser/js/init-user": 317,
+	"undefined": 318
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 455;
 
 /***/ })
 

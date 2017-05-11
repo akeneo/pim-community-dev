@@ -33,3 +33,5 @@ composer.lock
 .php_cs.cache
 node_modules/
 .grunt/
+
+npm-debug.log

@@ -59,6 +59,7 @@ const getModuleConfigs = () => {
     // Get Resources/requirejs.yml:config:config of each bundle
 }
 
+
 // Use case converter and do it with code later
 const resolvedPaths = {
     pimanalytics: 'Analytics',
@@ -106,12 +107,21 @@ const importPaths = Object.assign(importedPaths.paths, {
     'oro-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/oro-dependencies.js'),
     'widget-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/widget-dependencies.js'),
     'form-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/form-dependencies.js'),
-    'CodeMirror': path.resolve(__dirname, './node_modules/codemirror/lib/codemirror.js')
+    'CodeMirror': path.resolve(__dirname, './node_modules/codemirror/lib/codemirror.js'),
+    'fetcher-list': path.resolve(__dirname, './web/config/fetchers.js')
 })
 
 // console.log(importPaths['pim/family-edit-form/attributes/toolbar/add-select/attribute-group'])
 
 fs.writeFileSync('./web/js/paths.js', `module.exports = ${JSON.stringify(importedPaths.originalPaths)}`, 'utf8')
+
+const getRelativePaths = (absolutePaths) => {
+    const replacedPaths = {}
+    for ( let path in absolutePaths ) {
+        replacedPaths[paths[path]] = absolutePaths[path].replace(__dirname + '/src/Pim/Bundle', '.')
+    }
+    return replacedPaths
+}
 
 module.exports = {
     target: 'web',
@@ -129,6 +139,13 @@ module.exports = {
     },
     module: {
         rules: [
+            // {
+            //     test: /\.html$/,
+            //     use: [ {
+            //       loader: 'ejs-loader',
+            //       options: { }
+            //     }]
+            // },
             {
                 test: path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/backbone/backbone.js'),
                 use: 'imports-loader?this=>window'
@@ -188,9 +205,12 @@ module.exports = {
                     loader: 'expose-loader',
                     options: 'require'
                 }]
-            }
+            },
 
         ]
+    },
+    resolveLoader: {
+        moduleExtensions: ['-loader']
     },
     plugins: [
         new webpack.ProvidePlugin({
@@ -203,9 +223,12 @@ module.exports = {
             'require.specified': 'require.resolve',
         }),
         new ContextReplacementPlugin(
-          /bundles/,
-          path.resolve(__dirname, './web'),
-          paths
-        )
+          /src\/Pim\/Bundle/,
+          path.resolve(__dirname, './src/Pim/Bundle'),
+          getRelativePaths(importPaths)
+        //   {
+        //       'pimdatagrid/js/fetcher/datagrid-view-fetcher': './DataGridBundle/Resources/public/js/fetcher/datagrid-view-fetcher.js'
+        //   }
+        ),
     ]
 }
