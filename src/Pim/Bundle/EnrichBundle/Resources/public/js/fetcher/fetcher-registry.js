@@ -11,29 +11,23 @@ define(['module-config', 'jquery', 'underscore', 'pim/base-fetcher', 'fetcher-li
         initialize: function () {
             if (null === this.initializePromise) {
                 var deferred = $.Deferred();
-                // var fetchers = {};
+                var fetchers = {};
 
-                // console.log(fetcherConfig)
-                // _.each(fetcherConfig, function (config, name) {
-                //     config = _.isString(config) ? { module: config } : config;
-                //     config.options = config.options || {};
-                //     fetchers[name] = config;
-                // });
+                _.each(fetcherList, function (config, name) {
+                    config = _.isString(config) ? { module: config } : config;
+                    config.options = config.options || {};
+                    fetchers[name] = config;
+                });
 
                 require.ensure([], function () {
-                  for (var fetcher in fetcherList) {
-                      var moduleName = paths[fetcherList[fetcher].module]
-                      var grab = require.context('./src/Pim/Bundle', true, /^\.\/.*\.js$/)
-                      console.log(grab(moduleName))
-                  }
-                    // _.each(fetcherConfig, function (fetcher) {
-                    //   console.log(paths[fetcher.module])
-                    //   console.log(require('./bundles' + paths[fetcher.module] + '.js'))
-                    //     var Module = fetcher.resolvedModule || BaseFetcher
-                    //     fetcher.loadedModule = new (Module)(fetcher.options);
-                    // });
+                    for (var fetcher in fetcherList) {
+                        var moduleName = paths[fetcherList[fetcher].module]
+                        var requestFetcher = require.context('./src/Pim/Bundle', true, /^\.\/.*\.js$/)
+                        var ResolvedModule = requestFetcher(moduleName);
+                        fetchers.loadedModule = new ResolvedModule(fetchers[fetcher].options)
+                    }
 
-                    // this.fetchers = fetchers;
+                    this.fetchers = fetchers;
                     deferred.resolve();
                 }.bind(this));
 
