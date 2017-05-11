@@ -1,10 +1,12 @@
 'use strict';
 
 define(
-    ['jquery', 'require-context', 'controllers', 'module-config'],
-    function ($, requireContext, controllers, moduleConfig) {
+    ['jquery', 'require-context', 'controllers'],
+    function ($, requireContext, controllers) {
         var controllers       = controllers || {}
-        var defaultController = moduleConfig.defaultController;
+        var defaultController = {
+            module: 'pim/controller/template'
+        }
 
         return {
             /**
