@@ -1,8 +1,8 @@
 'use strict';
 
 define(
-    ['jquery', 'underscore', 'pim/form-config-provider', 'form-dependencies'],
-    function ($, _, ConfigProvider, formDependencies) {
+    ['jquery', 'underscore', 'pim/form-config-provider', 'paths'],
+    function ($, _, ConfigProvider, paths) {
         var getForm = function (formName) {
             return ConfigProvider.getExtensionMap().then(function (extensionMap) {
                 var form     = _.first(_.where(extensionMap, { code: formName }));
@@ -14,10 +14,12 @@ define(
                     );
                 }
 
-                console.log(formDependencies)
-                // require.ensure([], function() {
-                //     console.log(require(['bundle-loader!' + paths[form.module]]))
-                // })
+                require.ensure([], function() {
+                    var requestFetcher = require.context('./src/Pim/Bundle', true, /^\.\/.*\.js$/)
+                    console.log(paths[form.module])
+                    var ResolvedModule = requestFetcher(paths[form.module]);
+                    deferred.resolve(ResolvedModule)
+                })
 
                 // require([form.module], function (Form) {
                 //     deferred.resolve(Form);

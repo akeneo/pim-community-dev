@@ -24,7 +24,7 @@ define(['module-config', 'jquery', 'underscore', 'pim/base-fetcher', 'fetcher-li
                         var moduleName = paths[fetcherList[fetcher].module]
                         var requestFetcher = require.context('./src/Pim/Bundle', true, /^\.\/.*\.js$/)
                         var ResolvedModule = requestFetcher(moduleName);
-                        fetchers.loadedModule = new ResolvedModule(fetchers[fetcher].options)
+                        fetchers[fetcher].loadedModule = new ResolvedModule(fetchers[fetcher].options)
                     }
 
                     this.fetchers = fetchers;
@@ -45,7 +45,12 @@ define(['module-config', 'jquery', 'underscore', 'pim/base-fetcher', 'fetcher-li
          * @return Fetcher
          */
         getFetcher: function (entityType) {
-            return (this.fetchers[entityType] || this.fetchers.default).loadedModule;
+            var fetcher = (this.fetchers[entityType] || this.fetchers.default)
+            console.dir(this.fetchers)
+            // console.log('fetcher', fetcher)
+            // console.log('default', this.fetchers.default)
+
+            return fetcher.loadedModule;
         },
 
         /**
