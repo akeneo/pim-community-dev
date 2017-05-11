@@ -31,7 +31,7 @@ class UnknownPropertyException extends PropertyException
      */
     public static function unknownProperty($propertyName, \Exception $previous = null)
     {
-        return new self(
+        return new static(
             $propertyName,
             sprintf(
                 'Property "%s" does not exist.',

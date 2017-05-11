@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Factory;
 
+use Pim\Component\Catalog\Exception\InvalidAttributeException;
 use Pim\Component\Catalog\Factory\ProductValue\ProductValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -52,8 +53,12 @@ class ProductValueFactory
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
     {
-        $this->attributeValidatorHelper->validateScope($attribute, $channelCode);
-        $this->attributeValidatorHelper->validateLocale($attribute, $localeCode);
+        try {
+            $this->attributeValidatorHelper->validateScope($attribute, $channelCode);
+            $this->attributeValidatorHelper->validateLocale($attribute, $localeCode);
+        } catch (\LogicException $e) {
+            throw InvalidAttributeException::expectedFromPreviousException('attribute', self::class, $e);
+        }
 
         $factory = $this->getFactory($attribute->getType());
         $value = $factory->create($attribute, $channelCode, $localeCode, $data);

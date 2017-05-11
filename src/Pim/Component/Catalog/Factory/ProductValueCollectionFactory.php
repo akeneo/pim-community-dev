@@ -3,8 +3,11 @@
 namespace Pim\Component\Catalog\Factory;
 
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
+use Pim\Component\Catalog\Exception\InvalidAttributeException;
+use Pim\Component\Catalog\Exception\InvalidOptionException;
 use Pim\Component\Catalog\Model\ProductValueCollection;
 use Pim\Component\Catalog\Model\ProductValueCollectionInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Create a product value collection.
@@ -21,14 +24,22 @@ class ProductValueCollectionFactory
     /** @var CachedObjectRepositoryInterface */
     private $attributeRepository;
 
+    /** @var LoggerInterface */
+    private $logger;
+
     /**
      * @param ProductValueFactory             $valueFactory
      * @param CachedObjectRepositoryInterface $attributeRepository
+     * @param LoggerInterface                 $logger
      */
-    public function __construct(ProductValueFactory $valueFactory, CachedObjectRepositoryInterface $attributeRepository)
-    {
+    public function __construct(
+        ProductValueFactory $valueFactory,
+        CachedObjectRepositoryInterface $attributeRepository,
+        LoggerInterface $logger
+    ) {
         $this->valueFactory = $valueFactory;
         $this->attributeRepository = $attributeRepository;
+        $this->logger = $logger;
     }
 
     /**
@@ -60,9 +71,33 @@ class ProductValueCollectionFactory
                             $localeCode = null;
                         }
 
-                        $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data);
+                        try {
+                            $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data);
+                        } catch (InvalidOptionException $e) {
+                            $this->logger->warning(
+                                sprintf(
+                                    'Tried to load a product value with the option "%s" that does not exist.',
+                                    $e->getPropertyValue()
+                                )
+                            );
+                        } catch (InvalidAttributeException $e) {
+                            $this->logger->warning(
+                                sprintf(
+                                    'Tried to load a product value with an invalid attribute "%s". %s',
+                                    $attributeCode,
+                                    $e->getMessage()
+                                )
+                            );
+                        }
                     }
                 }
+            } else {
+                $this->logger->warning(
+                    sprintf(
+                        'Tried to load a product value with the attribute "%s" that does not exist.',
+                        $attributeCode
+                    )
+                );
             }
         }
 
