@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\Localization\TranslatableUpdater;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -27,16 +28,22 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
     /** @var AttributeGroupManager */
     protected $attributeGroupRepository;
 
+    /** @var TranslatableUpdater */
+    protected $translatableUpdater;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
      * @param AttributeGroupRepositoryInterface     $attributeGroupRepository
+     * @param TranslatableUpdater                   $translatableUpdater
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        AttributeGroupRepositoryInterface $attributeGroupRepository
+        AttributeGroupRepositoryInterface $attributeGroupRepository,
+        TranslatableUpdater $translatableUpdater
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->attributeGroupRepository = $attributeGroupRepository;
+        $this->translatableUpdater = $translatableUpdater;
     }
 
     /**
@@ -47,7 +54,7 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
      *     'code'       => 'sizes',
      *     'sort_order' => 1,
      *     'attributes' => ['size', 'main_color'],
-     *     'label'      => [
+     *     'labels'     => [
      *         'en_US' => 'Sizes',
      *         'fr_FR' => 'Tailles'
      *     ]
@@ -84,11 +91,8 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
             $attributeGroup->setSortOrder($data);
         } elseif ('attributes' == $field) {
             $this->setAttributes($attributeGroup, $data);
-        } elseif ('label' == $field) {
-            foreach ($data as $locale => $label) {
-                $attributeGroup->setLocale($locale);
-                $attributeGroup->setLabel($label);
-            }
+        } elseif ('labels' == $field) {
+            $this->translatableUpdater->update($attributeGroup, $data);
         }
     }
 

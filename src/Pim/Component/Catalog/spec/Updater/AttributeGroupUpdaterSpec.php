@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\Localization\TranslatableUpdater;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -14,11 +15,13 @@ class AttributeGroupUpdaterSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        AttributeGroupRepositoryInterface $attributeGroupRepository
+        AttributeGroupRepositoryInterface $attributeGroupRepository,
+        TranslatableUpdater $translatableUpdater
     ) {
         $this->beConstructedWith(
             $attributeRepository,
-            $attributeGroupRepository
+            $attributeGroupRepository,
+            $translatableUpdater
         );
     }
 
@@ -48,6 +51,7 @@ class AttributeGroupUpdaterSpec extends ObjectBehavior
     function it_updates_an_attribute_group(
         $attributeRepository,
         $attributeGroupRepository,
+        $translatableUpdater,
         AttributeGroupInterface $attributeGroup,
         AttributeGroupInterface $defaultGroup,
         AttributeInterface $size,
@@ -58,7 +62,7 @@ class AttributeGroupUpdaterSpec extends ObjectBehavior
             'code'       => 'sizes',
             'sort_order' => 1,
             'attributes' => ['size', 'main_color'],
-            'label'      => [
+            'labels'     => [
                 'en_US' => 'Sizes',
                 'fr_FR' => 'Tailles'
             ]
@@ -81,10 +85,7 @@ class AttributeGroupUpdaterSpec extends ObjectBehavior
         $attributeGroup->addAttribute($size)->shouldBeCalled();
         $attributeGroup->addAttribute($mainColor)->shouldBeCalled();
 
-        $attributeGroup->setLocale('en_US')->shouldBeCalled();
-        $attributeGroup->setLocale('fr_FR')->shouldBeCalled();
-        $attributeGroup->setLabel('Sizes')->shouldBeCalled();
-        $attributeGroup->setLabel('Tailles')->shouldBeCalled();
+        $translatableUpdater->update($attributeGroup, $values['labels'])->shouldBeCalled();
 
         $this->update($attributeGroup, $values, []);
     }
@@ -116,13 +117,14 @@ class AttributeGroupUpdaterSpec extends ObjectBehavior
 
     function it_does_not_update_attributes_from_the_default_group(
         $attributeGroupRepository,
+        $translatableUpdater,
         AttributeGroupInterface $attributeGroup
     ) {
         $values = [
             'code' => 'other',
             'sort_order' => 1,
             'attributes' => ['foo'],
-            'label' => [
+            'labels' => [
                 'en_US' => 'Other',
                 'fr_FR' => 'Autre'
             ]
@@ -133,11 +135,7 @@ class AttributeGroupUpdaterSpec extends ObjectBehavior
         $attributeGroup->setCode('other')->shouldBeCalled();
         $attributeGroup->setSortOrder(1)->shouldBeCalled();
 
-        $attributeGroup->setLocale('en_US')->shouldBeCalled();
-        $attributeGroup->setLocale('fr_FR')->shouldBeCalled();
-        $attributeGroup->setLabel('Other')->shouldBeCalled();
-        $attributeGroup->setLabel('Autre')->shouldBeCalled();
-
+        $translatableUpdater->update($attributeGroup, $values['labels'])->shouldBeCalled();
 
         $attributeGroupRepository->findDefaultAttributeGroup()->shouldNotBeCalled();
         $attributeGroup->getAttributes()->shouldNotBeCalled();
