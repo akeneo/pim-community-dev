@@ -9,6 +9,7 @@ use Context\FeatureContext;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
+use Pim\Behat\Decorator\Common\DropdownMenuDecorator;
 use Pim\Behat\Decorator\ElementDecorator;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -41,6 +42,7 @@ class Base extends Page
         'Active tab'             => ['css' => '.form-horizontal .tab-pane.active'],
         'Column navigation link' => ['css' => '.column-navigation-link'],
         'Current column link'    => ['css' => '.AknColumn-navigationLink--active'],
+        'Secondary actions'      => ['css' => '.secondary-actions', 'decorators' => [DropdownMenuDecorator::class]],
     ];
 
     /**

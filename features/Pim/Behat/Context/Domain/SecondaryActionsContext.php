@@ -2,7 +2,6 @@
 
 namespace Pim\Behat\Context\Domain;
 
-use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
 
@@ -17,10 +16,13 @@ class SecondaryActionsContext extends PimContext
      */
     public function iPressTheSecondaryAction($actionName)
     {
-        $module = $this->getModule();
-        $this->openModule($module);
+        $module = $this->spin(function () {
+            return $this->getCurrentPage()->getElement('Secondary actions');
+        }, 'Can not find the Secondary actions module');
+        $module->open();
+
         $this->spin(function () use ($module, $actionName) {
-            return $this->getAction($module, $actionName);
+            return $module->getMenuItem($actionName);
         }, sprintf('Could not find the secondary action "%s"', $actionName))->click();
     }
 
@@ -32,77 +34,18 @@ class SecondaryActionsContext extends PimContext
      */
     public function iShouldSeeTheSecondaryAction($not, $actionName)
     {
-        $module = $this->getModule();
-        $this->openModule($module);
-        $this->spin(function () use ($not, $module, $actionName) {
+        $module = $this->spin(function () {
+            return $this->getCurrentPage()->getElement('Secondary actions');
+        }, 'Can not find the Secondary actions module');
+        $module->open();
+
+        $this->spin(function () use ($module, $not, $actionName) {
             if ('' === $not) {
-                return null !== $this->getAction($module, $actionName);
+                return null !== $module->getMenuItem($actionName);
             } else {
-                return null === $this->getAction($module, $actionName);
+                return null === $module->getMenuItem($actionName);
             }
         }, sprintf('Secondary action "%s" was %sfound', $actionName, $not));
-        $this->closeModule($module);
-    }
-
-    /**
-     * Returns the DOM element containing the secondary actions
-     *
-     * @return NodeElement
-     */
-    protected function getModule()
-    {
-        return $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.AknSecondaryActions');
-        }, 'Could not find "Secondary Actions" module');
-    }
-
-    /**
-     * Opens the dropdown
-     *
-     * @param NodeElement $module
-     */
-    protected function openModule($module)
-    {
-        if (!$module->hasClass('open')) {
-            $this->spin(function () use ($module) {
-                $module->find('css', '.AknSecondaryActions-button')->click();
-
-                return true;
-            }, 'Could not find "Secondary Actions" button');
-        }
-
-    }
-
-    /**
-     * Closes the dropdown
-     *
-     * @param NodeElement $module
-     */
-    protected function closeModule($module)
-    {
-        if ($module->hasClass('open')) {
-            $this->getCurrentPage()->find('css', 'body')->click();
-        }
-    }
-
-    /**
-     * Returns the DOM element of the secondary action from its name.
-     * If no action is found, returns null.
-     *
-     * @param $module
-     * @param $actionName
-     *
-     * @return NodeElement|null
-     */
-    protected function getAction($module, $actionName)
-    {
-        $links = $module->findAll('css', '.AknDropdown-menuLink');
-        foreach ($links as $link) {
-            if (trim($link->getText()) === $actionName) {
-                return $link;
-            }
-        }
-
-        return null;
+        $module->close();
     }
 }
