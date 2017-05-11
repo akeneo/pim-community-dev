@@ -11,10 +11,12 @@ datagrid:
         columns:
             label:
                 label:         Label
-                data_name:     productLabel
+                data_name:     label
+                type:          field
             family:
                 label:         Family
                 data_name:     family
+                type:          field
             enabled:
                 label:         Status
                 frontend_type: enabled
@@ -29,6 +31,7 @@ datagrid:
                 type:          field
             groups:
                 label:         Groups
+                data_name:     groups
                 type:          field
         properties:
             id: ~

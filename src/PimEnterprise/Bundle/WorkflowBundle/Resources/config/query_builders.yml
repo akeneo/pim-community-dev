@@ -16,5 +16,5 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.query.filter.registry'
             - '@pim_catalog.query.sorter.registry'
-            - '@pim_catalog.factory.product_bounded_cursor'
+            - '@pim_catalog.factory.published_product_bounded_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_bounded_resolver'

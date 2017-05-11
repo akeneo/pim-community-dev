@@ -12,6 +12,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@pimee_workflow.manager.completeness'
             - '@event_dispatcher'
+            - '@pim_catalog.synchronizer.product_unique_data'
 
     # product draft saver
     pimee_workflow.saver.product_draft:
