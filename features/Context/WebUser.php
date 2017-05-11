@@ -1278,6 +1278,22 @@ class WebUser extends RawMinkContext
     /**
      * @param TableNode $table
      *
+     * @When /^I edit the following attribute options?:$/
+     */
+    public function iEditTheFollowingAttributeOptionValue(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $code = $data['Code'];
+            unset($data['Code']);
+
+            $this->getCurrentPage()->editOption($code, $data);
+            $this->wait();
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
      * @When /^I add an empty attribute option$/
      * @When /^I add the following attribute option:$/
      */
@@ -1306,11 +1322,11 @@ class WebUser extends RawMinkContext
      * @param string $oldOptionName
      * @param string $newOptionName
      *
-     * @Given /^I edit the "([^"]*)" option and turn it to "([^"]*)"$/
+     * @Given /^I edit the "([^"]*)" option code and turn it to "([^"]*)"$/
      */
-    public function iEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
+    public function iEditTheFollowingAttributeOptionCode($oldOptionName, $newOptionName)
     {
-        $this->getCurrentPage()->editOption($oldOptionName, $newOptionName);
+        $this->getCurrentPage()->editOptionCode($oldOptionName, $newOptionName);
         $this->wait();
     }
 
