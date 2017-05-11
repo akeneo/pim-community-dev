@@ -1,3 +1,9 @@
+# 1.5.21 (2017-04-28)
+
+## Bug fixes
+
+- #5941: Fix memory leak when importing variant groups, cheers @nei!
+
 # 1.5.20 (2017-02-09)
 
 # 1.5.19 (2017-02-06)
