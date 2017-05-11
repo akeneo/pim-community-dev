@@ -4,45 +4,58 @@ const yaml = require('yamljs')
 const fs = require('fs')
 const paths = require('./web/js/paths')
 const ContextReplacementPlugin = require("webpack/lib/ContextReplacementPlugin")
+const glob = require('glob')
 
 // traverse with filewalker automatically later for any bundles
-const bundles = [
-    'Analytics',
-    'Api',
-    'Catalog',
-    'Comment',
-    'Connector',
-    'Dashboard',
-    'DataGrid',
-    'Enrich',
-    'Filter',
-    'ImportExport',
-    'Installer',
-    'Localization',
-    'Navigation',
-    'Notification',
-    'PdfGenerator',
-    'ReferenceData',
-    'UI',
-    'User',
-    'Versioning'
-]
+// const bundles = [
+//     '/src/Pim/Bundle/Analytics',
+//     '/src/Pim/Bundle/Api',
+//     '/src/Pim/Bundle/Catalog',
+//     '/src/Pim/Bundle/Comment',
+//     '/src/Oro/Bundle/Config',
+//     '/src/Pim/Bundle/Connector',
+//     '/src/Pim/Bundle/Dashboard',
+//     '/src/Pim/Bundle/DataGrid',
+//     '/src/Pim/Bundle/Enrich',
+//     '/src/Pim/Bundle/Filter',
+//     '/src/Pim/Bundle/ImportExport',
+//     '/src/Pim/Bundle/Installer',
+//     '/src/Pim/Bundle/Localization',
+//     '/src/Pim/Bundle/Navigation',
+//     '/src/Pim/Bundle/Notification',
+//     '/src/Pim/Bundle/PdfGenerator',
+//     '/src/Pim/Bundle/ReferenceData',
+//     '/src/Pim/Bundle/UI',
+//     '/src/Pim/Bundle/User',
+//     'Versioning'
+// ]
+
+// const getAllRequireFiles = () => {
+//     const requires = glob.sync('./src/**/*requirejs.yml')
+//     for (let requirePath in requires) {
+//
+//     }
+//     console.log(requires)
+// }
+
+// getAllRequireFiles()
 
 const getImportPaths = () => {
     let paths = {}
     let originalPaths = {}
+    const bundles = glob.sync('./src/**/*requirejs.yml')
 
     for (const bundle of bundles) {
-        // Use node-glob instead
-        const configPath = path.join(__dirname, `/src/Pim/Bundle/${bundle}Bundle/Resources/config/requirejs.yml`)
         try {
-            const contents = fs.readFileSync(configPath, 'utf8')
+            const contents = fs.readFileSync(bundle, 'utf8')
             const bundlePaths = yaml.parse(contents).config.paths
             originalPaths = Object.assign(originalPaths, bundlePaths)
 
             const fixedBundlePaths = replacePathSegments(bundlePaths, bundle)
             paths = Object.assign(paths, bundlePaths)
-        } catch (e) {}
+        } catch (e) {
+            console.log('######################## ERROR ', bundle, e)
+        }
     }
     return {
         originalPaths,
@@ -62,26 +75,32 @@ const getModuleConfigs = () => {
 
 // Use case converter and do it with code later
 const resolvedPaths = {
-    pimanalytics: 'Analytics',
-    pimdashboard: 'Dashboard',
-    pimdatagrid: 'DataGrid',
-    pimenrich: 'Enrich',
-    pimimportexport: 'ImportExport',
-    pimnavigation: 'Navigation',
-    fosjsrouting: 'Enrich',
-    pimnotification: 'Notification',
-    pimreferencedata: 'ReferenceData',
-    pimui: 'UI',
-    pimuser: 'User'
+    pimanalytics: 'Pim/Bundle/Analytics',
+    pimdashboard: 'Pim/Bundle/Dashboard',
+    pimdatagrid: 'Pim/Bundle/DataGrid',
+    pimenrich: 'Pim/Bundle/Enrich',
+    pimimportexport: 'Pim/Bundle/ImportExport',
+    pimnavigation: 'Pim/Bundle/Navigation',
+    fosjsrouting: 'Pim/Bundle/Enrich',
+    pimnotification: 'Pim/Bundle/Notification',
+    pimreferencedata: 'Pim/Bundle/ReferenceData',
+    pimui: 'Pim/Bundle/UI',
+    pimuser: 'Pim/Bundle/User',
+    oroconfig: 'Oro/Bundle/Config'
 }
+
+const ignoredPaths = [
+    'bundles/orotest/js/test.js'
+]
 
 const replacePathSegments = (paths, bundle) => {
     for (const name in paths) {
         let loc = paths[name].split('/')
         const resolved = resolvedPaths[loc.shift()]
-        loc.unshift(`${__dirname}/src/Pim/Bundle/${resolved}Bundle/Resources/public`)
+        loc.unshift(`${__dirname}/src/${resolved}Bundle/Resources/public`)
         paths[name] = loc.join('/')
     }
+    console.log(paths)
     return paths
 }
 
@@ -106,7 +125,8 @@ const importPaths = Object.assign(importedPaths.paths, {
     'widget-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/widget-dependencies.js'),
     'form-dependencies': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/form-dependencies.js'),
     'CodeMirror': path.resolve(__dirname, './node_modules/codemirror/lib/codemirror.js'),
-    'fetcher-list': path.resolve(__dirname, './web/config/fetchers.js')
+    'fetcher-list': path.resolve(__dirname, './web/config/fetchers.js'),
+    'require-context': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/require-context.js')
 })
 
 // console.log(importPaths['pim/family-edit-form/attributes/toolbar/add-select/attribute-group'])
@@ -116,8 +136,9 @@ fs.writeFileSync('./web/js/paths.js', `module.exports = ${JSON.stringify(importe
 const getRelativePaths = (absolutePaths) => {
     const replacedPaths = {}
     for ( let path in absolutePaths ) {
-        replacedPaths[paths[path]] = absolutePaths[path].replace(__dirname + '/src/Pim/Bundle', '.')
+        replacedPaths[paths[path]] = absolutePaths[path].replace(__dirname + '/src/Pim/Bundle', './Pim/Bundle').replace(__dirname + '/src/Oro/Bundle', './Oro/Bundle' )
     }
+    // console.log(replacedPaths)
     return replacedPaths
 }
 
@@ -221,12 +242,9 @@ module.exports = {
             'require.specified': 'require.resolve',
         }),
         new ContextReplacementPlugin(
-          /src\/Pim\/Bundle/,
-          path.resolve(__dirname, './src/Pim/Bundle'),
+          /src/,
+          path.resolve(__dirname, './src/'),
           getRelativePaths(importPaths)
-        //   {
-        //       'pimdatagrid/js/fetcher/datagrid-view-fetcher': './DataGridBundle/Resources/public/js/fetcher/datagrid-view-fetcher.js'
-        //   }
         ),
     ]
 }

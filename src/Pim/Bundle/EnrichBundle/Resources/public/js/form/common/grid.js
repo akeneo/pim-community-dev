@@ -9,7 +9,8 @@ define([
         'oro/mediator',
         'pim/template/form/grid',
         'oro/pageable-collection',
-        'pim/datagrid/state'
+        'pim/datagrid/state',
+        'paths'
     ],
     function (
         $,
@@ -20,7 +21,8 @@ define([
         mediator,
         template,
         PageableCollection,
-        DatagridState
+        DatagridState,
+        paths
     ) {
         return Backbone.View.extend({
             template: _.template(template),
@@ -90,10 +92,17 @@ define([
                         data: JSON.parse(response.data)
                     });
 
-                    require(response.metadata.requireJSModules.concat('pim/datagrid/state-listener'),
-                        function () {
-                            datagridBuilder(_.toArray(arguments));
-                        });
+                    var modules = response.metadata.requireJSModules.concat('pim/datagrid/state-listener');
+
+                    require.ensure([], function() {
+                        var requestFetcher = require.context('./src/Pim/Bundle', true, /^\.\/.*\.js$/)
+
+                        var resolvedModules = []
+                        _.each(modules, function(module) {
+                            resolvedModules.push(requestFetcher(paths[module]))
+                        })
+                        datagridBuilder(resolvedModules)
+                    })
                 }.bind(this));
             },
 

@@ -9,6 +9,8 @@ define(
                 FormRegistry.getFormMeta(formName),
                 FormRegistry.getFormExtensions(formName)
             ).then(function (Form, formMeta, extensionMeta) {
+                console.trace()
+                console.log('for buildForm', Form)
                 var form = new Form(formMeta);
                 form.code = formName;
 

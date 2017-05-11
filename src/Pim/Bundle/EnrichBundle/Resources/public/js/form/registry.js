@@ -1,8 +1,8 @@
 'use strict';
 
 define(
-    ['jquery', 'underscore', 'pim/form-config-provider', 'paths'],
-    function ($, _, ConfigProvider, paths) {
+    ['jquery', 'underscore', 'pim/form-config-provider', 'paths', 'require-context'],
+    function ($, _, ConfigProvider, paths, requireContext) {
         var getForm = function (formName) {
             return ConfigProvider.getExtensionMap().then(function (extensionMap) {
                 var form     = _.first(_.where(extensionMap, { code: formName }));
@@ -15,8 +15,16 @@ define(
                 }
 
                 require.ensure([], function() {
-                    var requestFetcher = require.context('./src/Pim/Bundle', true, /^\.\/.*\.js$/)
-                    var ResolvedModule = requestFetcher(paths[form.module]);
+                    // var formPath = paths[form.module]
+                    // var formContext = './src/Pim/Bundle'
+                    //
+                    // // Make an async fetcher module and put this kind of logic in there, load it from webpack
+                    //
+                    // if (formPath.indexOf('oroconfig') > -1) {
+                    //     formContext = './src/Oro/Bundle'
+                    // }
+                    // var requestFetcher = require.context(formContext, true, /^\.\/.*\.js$/)
+                    var ResolvedModule = requireContext(form.module);
                     deferred.resolve(ResolvedModule)
                 })
 
