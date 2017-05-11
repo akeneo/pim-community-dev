@@ -54,12 +54,14 @@ class DatetimeProperty extends FieldProperty
      */
     protected function getRawValue(ResultRecordInterface $record)
     {
+        $value = null;
+
         try {
             $value = $record->getValue($this->getOr(self::DATA_NAME_KEY, $this->get(self::NAME_KEY)));
         } catch (\LogicException $e) {
             return null;
         }
 
-        return $this->format($value);
+        return $value;
     }
 }

@@ -43,15 +43,15 @@ class AssetEventSubscriberSpec extends ObjectBehavior
     ) {
         $event->getSubject()->willReturn($asset);
 
-        $asset->getId()->willReturn(42);
+        $asset->getCode()->willReturn('my_asset');
 
         $attributeRepository
             ->getAttributeCodesByType('pim_assets_collection')
             ->willReturn(['attribute_code_1', 'attribute_code_2']);
 
         $pqbFactory->create()->willReturn($pqb);
-        $pqb->addFilter('attribute_code_1.id', 'IN', [42])->willReturn($pqb);
-        $pqb->addFilter('attribute_code_2.id', 'IN', [42])->willReturn($pqb);
+        $pqb->addFilter('attribute_code_1', 'IN', ['my_asset'])->willReturn($pqb);
+        $pqb->addFilter('attribute_code_2', 'IN', ['my_asset'])->willReturn($pqb);
         $pqb->execute()->willReturn($publishedProducts);
 
         $publishedProducts->count()->willReturn(0);
@@ -69,14 +69,14 @@ class AssetEventSubscriberSpec extends ObjectBehavior
     ) {
         $event->getSubject()->willReturn($asset);
 
-        $asset->getId()->willReturn(42);
+        $asset->getCode()->willReturn('my_asset');
 
         $attributeRepository
             ->getAttributeCodesByType('pim_assets_collection')
             ->willReturn(['attribute_code_1']);
 
         $pqbFactory->create()->willReturn($pqb);
-        $pqb->addFilter('attribute_code_1.id', 'IN', [42])->willReturn($pqb);
+        $pqb->addFilter('attribute_code_1', 'IN', ['my_asset'])->willReturn($pqb);
         $pqb->execute()->willReturn($publishedProducts);
 
         $publishedProducts->count()->willReturn(2);
