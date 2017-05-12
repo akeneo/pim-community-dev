@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug Fixes
+
+- PIM-6394: Fix email validation when creating a user in order to be less restrictive
+
 # 1.7.4 (2017-05-10)
 
 ## Bug Fixes
