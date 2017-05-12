@@ -250,6 +250,8 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFollowingAttributeLabelTranslations(TableNode $table)
     {
+        $this->getEntityManager()->clear();
+
         foreach ($table->getHash() as $data) {
             $attribute = $this->getAttribute($data['attribute']);
             $standardData = [

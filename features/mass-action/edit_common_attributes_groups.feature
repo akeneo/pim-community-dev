@@ -15,9 +15,9 @@ Feature: Edit common attributes of many products at once
   Scenario: Successfully translate groups and labels
     Given I add the "french" locale to the "mobile" channel
     And the following attribute label translations:
-      | attribute | locale | label  | group | type             |
-      | name      | french | Nom    | other | pim_catalog_text |
-      | size      | french | Taille | other | pim_catalog_text |
+      | attribute | locale | label  |
+      | name      | french | Nom    |
+      | size      | french | Taille |
     And I am on the products page
     And I filter by "scope" with operator "equals" and value "Mobile"
     And I switch the locale to "fr_FR"
