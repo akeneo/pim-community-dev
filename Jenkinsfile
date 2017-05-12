@@ -66,6 +66,7 @@ stage("Checkout") {
             }
 
             docker.image('node').inside {
+                sh "npm install --verbose"
                 sh "npm run generate"
                 sh "npm run wp"
             }
