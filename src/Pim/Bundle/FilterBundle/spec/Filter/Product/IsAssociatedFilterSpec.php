@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 
-use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationTypeRepository;
 use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
@@ -35,7 +34,6 @@ class IsAssociatedFilterSpec extends ObjectBehavior
     function it_applies_a_filter_on_product_when_its_in_an_expected_association(
         FilterDatasourceAdapterInterface $datasource,
         $utility,
-        QueryBuilder $qb,
         $extractor,
         $assocRepository,
         AssociationTypeInterface $assocType,
@@ -57,7 +55,7 @@ class IsAssociatedFilterSpec extends ObjectBehavior
         $productAssociatedOne->getId()->willReturn(12);
         $productAssociatedTwo->getId()->willReturn(13);
 
-        $utility->applyFilter($datasource, 'id', 'IN', [12, 13])->shouldBeCalled();
+        $utility->applyFilter($datasource, 'id', 'IN', ['12', '13'])->shouldBeCalled();
 
         $this->apply($datasource, ['type' => null, 'value' => 1]);
     }

@@ -2452,30 +2452,6 @@ IS NOT EMPTY
 
 ::
 
-Associations
-************
-
-Data model
-~~~~~~~~~~
-.. code-block:: yaml
-
-    is_associated: true
-
-Filtering
-~~~~~~~~~
-No filtering expected on associations (no filter on the grid).
-
-Sorting
-~~~~~~~
-.. code-block:: php
-
-    sort => [
-        'is_associated' => [
-            'order'   => 'asc',
-            'missing' => '_last',
-        ]
-    ]
-
 Testing
 -------
 All queries above are (or should be) defined as integration tests under the namespace `Pim\Bundle\CatalogBundle\tests\integration\PQB`.

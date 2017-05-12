@@ -322,13 +322,6 @@ services:
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
 
-    pim_catalog.query.elasticsearch.sorter.is_associated:
-        class: '%pim_catalog.query.elasticsearch.sorter.base_field.class%'
-        arguments:
-            - ['is_associated']
-        tags:
-            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
-
     pim_catalog.query.elasticsearch.sorter.status:
         class: '%pim_catalog.query.elasticsearch.sorter.base_field.class%'
         arguments:

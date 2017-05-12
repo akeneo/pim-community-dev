@@ -173,7 +173,7 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
             throw new \Exception(sprintf('"%s" expects to be configured with "%s"', get_class($this), $key));
         }
 
-        return $this->configuration[$key];
+        return isset($this->configuration[$key]) ? $this->configuration[$key] : null;
     }
 
     /**
