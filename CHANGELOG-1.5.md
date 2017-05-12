@@ -1,3 +1,9 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-6395: Fix MongoDB query built to fetch products in a LazyCollection
+
 # 1.5.21 (2017-04-28)
 
 ## Bug fixes
