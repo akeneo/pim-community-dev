@@ -2,6 +2,7 @@ web/bundles/*
 web/media/*
 web/css/*
 web/js/*
+web/dist/*
 web/app_local.php
 app/AppKernel_local.php
 app/console_local
