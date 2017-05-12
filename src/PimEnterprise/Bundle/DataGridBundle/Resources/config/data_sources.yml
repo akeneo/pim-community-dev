@@ -15,7 +15,6 @@ services:
         class: '%pim_datagrid.datasource.product.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '@pim_datagrid.datasource.result_record.hydrator.product'
             - '@pimee_workflow.doctrine.query.published_product_query_bounded_factory'
             - '@pim_datagrid.normalizer.product'
         calls:
