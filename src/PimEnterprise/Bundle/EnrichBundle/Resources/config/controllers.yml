@@ -144,3 +144,14 @@ services:
             - '@router'
             - '@pim_enrich.provider.form.chained'
             - '@pim_catalog.filter.chained'
+
+    pim_enrich.controller.rest.attribute_group:
+        class: '%pim_enrich.controller.rest.attribute_group.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
+            - '@pim_enrich.repository.attribute_group.search'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.filter.chained'
+            - '@pimee_security.updater.attribute_group'
+            - '@validator'
+            - '@pim_catalog.saver.attribute_group'
