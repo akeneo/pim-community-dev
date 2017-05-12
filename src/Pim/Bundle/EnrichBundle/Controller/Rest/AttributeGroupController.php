@@ -3,11 +3,16 @@
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Attribute group controller
@@ -31,22 +36,40 @@ class AttributeGroupController
     /** @var CollectionFilterInterface */
     protected $collectionFilter;
 
+    /** @var ObjectUpdaterInterface */
+    protected $updater;
+
+    /** @var ValidatorInterface */
+    protected $validator;
+
+    /** @var SaverInterface */
+    protected $saver;
+
     /**
      * @param EntityRepository              $attributeGroupRepo
      * @param SearchableRepositoryInterface $attributeGroupSearchableRepository
      * @param NormalizerInterface           $normalizer
      * @param CollectionFilterInterface     $collectionFilter
+     * @param ObjectUpdaterInterface        $updater
+     * @param ValidatorInterface            $validator
+     * @param SaverInterface                $saver
      */
     public function __construct(
         EntityRepository $attributeGroupRepo,
         SearchableRepositoryInterface $attributeGroupSearchableRepository,
         NormalizerInterface $normalizer,
-        CollectionFilterInterface $collectionFilter
+        CollectionFilterInterface $collectionFilter,
+        ObjectUpdaterInterface $updater,
+        ValidatorInterface $validator,
+        SaverInterface $saver
     ) {
         $this->attributeGroupRepo = $attributeGroupRepo;
         $this->attributeGroupSearchableRepository = $attributeGroupSearchableRepository;
         $this->normalizer = $normalizer;
         $this->collectionFilter = $collectionFilter;
+        $this->updater = $updater;
+        $this->validator = $validator;
+        $this->saver = $saver;
     }
 
     /**
@@ -94,9 +117,84 @@ class AttributeGroupController
 
         foreach ($filteredAttributeGroups as $attributeGroup) {
             $normalizedAttributeGroups[$attributeGroup->getCode()] = $this->normalizer
-                ->normalize($attributeGroup, 'standard');
+                ->normalize($attributeGroup, 'internal_api');
         }
 
         return new JsonResponse($normalizedAttributeGroups);
+    }
+
+    /**
+     * Get a single attribute group
+     *
+     * @param string $identifier
+     *
+     * @return JsonResponse
+     */
+    public function getAction($identifier)
+    {
+        $attributeGroup = $this->attributeGroupRepo->findOneByIdentifier($identifier);
+
+        if (null === $attributeGroup) {
+            throw new NotFoundHttpException(sprintf('Attribute group with code "%s" not found', $identifier));
+        }
+
+        return new JsonResponse($this->normalizer->normalize($attributeGroup, 'internal_api'));
+    }
+
+    /**
+     * @param Request $request
+     * @param string $identifier
+     *
+     * @return JsonResponse
+     *
+     * @AclAncestor("pim_enrich_attributegroup_edit")
+     */
+    public function postAction(Request $request, $identifier)
+    {
+        $attributeGroup = $this->getAttributeGroupOr404($identifier);
+
+        $data = json_decode($request->getContent(), true);
+        $this->updater->update($attributeGroup, $data);
+
+        $violations = $this->validator->validate($attributeGroup);
+
+        if (0 < $violations->count()) {
+            $errors = $this->normalizer->normalize(
+                $violations,
+                'internal_api'
+            );
+
+            return new JsonResponse($errors, 400);
+        }
+
+        $this->saver->save($attributeGroup);
+
+        return new JsonResponse(
+            $this->normalizer->normalize(
+                $attributeGroup,
+                'internal_api'
+            )
+        );
+    }
+
+    /**
+     * Finds attribute group type by identifier or throws not found exception
+     *
+     * @param $identifier
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return AttributeGroupInterface
+     */
+    protected function getAttributeGroupOr404($identifier)
+    {
+        $attributeGroup = $this->attributeGroupRepo->findOneByIdentifier($identifier);
+        if (null === $attributeGroup) {
+            throw new NotFoundHttpException(
+                sprintf('Attribute group with identifier "%s" not found', $identifier)
+            );
+        }
+
+        return $attributeGroup;
     }
 }

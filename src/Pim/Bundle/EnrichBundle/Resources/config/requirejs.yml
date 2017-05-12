@@ -107,6 +107,7 @@ config:
                     options:
                         urls:
                             list: pim_enrich_attributegroup_rest_index
+                            get: pim_enrich_attributegroup_rest_get
                 attribute:
                     module: pim/attribute-fetcher
                     options:
@@ -227,7 +228,7 @@ config:
                     module: pim/controller/form
                     aclResourceId: pim_enrich_attributegroup_create
                 pim_enrich_attributegroup_edit:
-                    module: pim/controller/form
+                    module: pim/controller/attribute-group/edit
                     aclResourceId: pim_enrich_attributegroup_edit
                 pim_enrich_categorytree_create:
                     module: pim/controller/form
@@ -473,24 +474,25 @@ config:
         pim/init-translator:                pimenrich/js/init-translator
 
         # Controllers
-        pim/controller-registry:            pimenrich/js/controller/registry
-        pim/controller/base:                pimenrich/js/controller/base
-        pim/controller/template:            pimenrich/js/controller/template
-        pim/controller/form:                pimenrich/js/controller/form
-        pim/controller/product:             pimenrich/js/controller/product
-        pim/controller/family:              pimenrich/js/controller/family
-        pim/controller/channel/edit:        pimenrich/js/controller/channel/edit
-        pim/controller/common/index:        pimenrich/js/controller/common/index
-        pim/controller/association-type:    pimenrich/js/controller/association-type
-        pim/controller/redirect:            pimenrich/js/controller/redirect
-        pim/controller/job-instance:        pimenrich/js/controller/job-instance
-        pim/controller/group:               pimenrich/js/controller/group
-        pim/controller/variant-group:       pimenrich/js/controller/variant-group
-        pim/controller/role:                pimenrich/js/controller/role
-        pim/controller/job-execution:       pimenrich/js/controller/job-execution
-        pim/controller/group-type:          pimenrich/js/controller/group-type
-        pim/controller/system:              pimenrich/js/controller/system
-        pim/controller/user:                pimenrich/js/controller/user
+        pim/controller-registry:             pimenrich/js/controller/registry
+        pim/controller/base:                 pimenrich/js/controller/base
+        pim/controller/template:             pimenrich/js/controller/template
+        pim/controller/form:                 pimenrich/js/controller/form
+        pim/controller/product:              pimenrich/js/controller/product
+        pim/controller/family:               pimenrich/js/controller/family
+        pim/controller/channel/edit:         pimenrich/js/controller/channel/edit
+        pim/controller/common/index:         pimenrich/js/controller/common/index
+        pim/controller/association-type:     pimenrich/js/controller/association-type
+        pim/controller/redirect:             pimenrich/js/controller/redirect
+        pim/controller/job-instance:         pimenrich/js/controller/job-instance
+        pim/controller/group:                pimenrich/js/controller/group
+        pim/controller/variant-group:        pimenrich/js/controller/variant-group
+        pim/controller/role:                 pimenrich/js/controller/role
+        pim/controller/job-execution:        pimenrich/js/controller/job-execution
+        pim/controller/group-type:           pimenrich/js/controller/group-type
+        pim/controller/system:               pimenrich/js/controller/system
+        pim/controller/user:                 pimenrich/js/controller/user
+        pim/controller/attribute-group/edit: pimenrich/js/controller/attribute-group/edit
 
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector
@@ -635,6 +637,9 @@ config:
         pim/product-edit-form/status-switcher:             pimenrich/js/product/form/status-switcher
         pim/product-edit-form/download-pdf:                pimenrich/js/product/form/download-pdf
         pim/product-edit-form/attributes:                  pimenrich/js/product/form/attributes
+
+        # Attribute group
+        pim/attribute-group-form/tab/attribute: pimenrich/js/attribute-group/form/tab/attribute
 
         # Exports
         pim/job/product/edit/content:                                pimenrich/js/job/product/edit/content
@@ -839,6 +844,9 @@ config:
         pim/template/form/index/index:                            pimenrich/templates/form/index/index.html
         pim/template/form/index/create-button:                    pimenrich/templates/form/index/create-button.html
         pim/template/form/index/confirm-button:                   pimenrich/templates/form/index/confirm-button.html
+
+        # Attribute group
+        pim/template/form/attribute-group/tab/attribute:          pimenrich/templates/attribute-group/tab/attribute
 
         pim/template/channel/tab/properties/general:                pimenrich/templates/channel/tab/properties/general.html
         pim/template/channel/tab/properties/general/currencies:     pimenrich/templates/channel/tab/properties/general/currencies.html

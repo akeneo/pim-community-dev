@@ -179,37 +179,6 @@ class AttributeGroupController
     }
 
     /**
-     * Edit attribute group
-     *
-     * @param AttributeGroup $group
-     *
-     * @Template
-     * @AclAncestor("pim_enrich_attributegroup_edit")
-     *
-     * @return array
-     */
-    public function editAction(AttributeGroup $group)
-    {
-        $groups = $this->attributeGroupRepo->getIdToLabelOrderedBySortOrder();
-
-        if ($this->formHandler->process($group)) {
-            $this->request->getSession()->getFlashBag()
-                ->add('success', new Message('flash.attribute group.updated'));
-
-            return new JsonResponse(
-                ['route' => 'pim_enrich_attributegroup_edit', 'params' => ['id' => $group->getId()]]
-            );
-        }
-
-        return [
-            'groups'         => $groups,
-            'group'          => $group,
-            'form'           => $this->form->createView(),
-            'attributesForm' => $this->getAvailableAttributesForm($this->getGroupedAttributes())->createView(),
-        ];
-    }
-
-    /**
      * Edit AttributeGroup sort order
      *
      * @param Request $request

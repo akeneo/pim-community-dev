@@ -7,10 +7,9 @@ pim_enrich_attributegroup_create:
     defaults: { _controller: pim_enrich.controller.attribute_group:createAction }
 
 pim_enrich_attributegroup_edit:
-    path: /{id}/edit
-    defaults: { _controller: pim_enrich.controller.attribute_group:editAction }
+    path: /{identifier}/edit
     requirements:
-        id: \d+
+        identifier: '[a-zA-Z0-9_]+'
 
 pim_enrich_attributegroup_sort:
     path: /sort
@@ -43,3 +42,17 @@ pim_enrich_attributegroup_rest_index:
     path: /rest
     defaults: { _controller: pim_enrich.controller.rest.attribute_group:indexAction }
     methods: [GET, POST]
+
+pim_enrich_attributegroup_rest_get:
+    path: /rest/{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.attribute_group:getAction }
+    methods: [GET]
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+
+pim_enrich_attributegroup_rest_post:
+    path: /rest/{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.attribute_group:postAction }
+    methods: [POST]
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
