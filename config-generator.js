@@ -1,9 +1,10 @@
+/* eslint-env es6 */
+
 const path = require('path')
 const yaml = require('yamljs')
 const fs = require('fs')
 const _ = require('lodash')
 const pascalCase = require('pascal-case')
-const glob = require('glob')
 const configModuleTemplate = fs.readFileSync('./config-module-template.html', 'utf8')
 
 const bundleDirectory = './src/Pim/Bundle'
@@ -11,31 +12,28 @@ const requirePath = _.template(`${bundleDirectory}/<%=bundleName%>/Resources/con
 
 const moduleOutputs = {
     fetchers: {
-        inputPath: `config.config['pim/fetcher-registry'].fetchers`,
-        outputPath: `./web/config/fetchers.js`,
+        inputPath: 'config.config[\'pim/fetcher-registry\'].fetchers',
+        outputPath: './web/config/fetchers.js'
     },
     controllers: {
-        inputPath: `config.config['pim/controller-registry'].controllers`,
-        outputPath: `./web/config/controllers.js`
+        inputPath: 'config.config[\'pim/controller-registry\'].controllers',
+        outputPath: './web/config/controllers.js'
     }
-}
-
-const getBundleNames = () => {
-    return fs.readdirSync(bundleDirectory, 'utf8')
 }
 
 const getParsedFile = (fileName) => {
     try {
         const resolvedPath = path.resolve(__dirname, fileName)
+
         return yaml.parse(fs.readFileSync(resolvedPath, 'utf8'))
-    } catch(e) {
+    } catch (e) {
         // console.info(e, 'Error in getParsedFile')
         return {}
     }
 }
 
 const getConfigFiles = () => {
-    const bundles = getBundleNames()
+    const bundles = fs.readdirSync(bundleDirectory, 'utf8')
     const bundleConfigs = {}
 
     _.each(bundles, (bundleName) => {
@@ -64,7 +62,7 @@ const getModuleOutputs = (configFiles) => {
         return {
             fileName: output.outputPath,
             modules: contents
-         }
+        }
     })
 }
 

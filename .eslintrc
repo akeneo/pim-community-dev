@@ -7,6 +7,7 @@
     "require": true,
     "define": true,
     "module": false,
+    "__dirname": true
   },
   "rules": {
     "space-infix-ops": 2,

@@ -131,14 +131,6 @@ flash:
         updated: The import has been successfully updated
         running: The import is running
 
-# Menu entries
-pim_menu:
-    item:
-        export_history: Exports history
-        export_profile: Export profiles
-        import_history: Imports history
-        import_profile: Import profiles
-
 # Tabs
 General properties: General properties
 History: History

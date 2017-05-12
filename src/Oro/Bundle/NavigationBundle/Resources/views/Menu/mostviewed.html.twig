@@ -1,9 +1,0 @@
-{% extends 'OroNavigationBundle:Menu:history.html.twig' %}
-
-{% block linkElement %}
-    {%- if matcher.isCurrent(item) %}
-        <a class="menu-close" href="#"{{ oro_menu.attributes(linkAttributes) }}>{{ block('label') }}</a>
-    {%- else %}
-        <a href="{{ item.uri }}"{{ oro_menu.attributes(linkAttributes) }}>{{ block('label') }}</a>
-    {%- endif %}
-{% endblock %}

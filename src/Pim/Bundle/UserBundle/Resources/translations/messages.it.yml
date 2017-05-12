@@ -8,6 +8,10 @@ pim_user:
       business_unit.title: Business Unit
       email_synchronization.title: Impostazioni per la sincronizzazione email
       interfaces.title: Interfacce
+  group:
+    tab:
+      general.title: Generale
+      users.title: Utenti
 oro.user.controller:
   group.message.saved: "Gruppo salvato"
   role.message.saved: "Ruolo salvato"
@@ -70,6 +74,8 @@ Contact Information: Informazioni di contatto
 User name: Nome utente
 Birthday: Data di nascita
 API key: Chiave API
+Ui locale: Impostazioni locali dell'interfaccia utente
+UI locale: Impostazioni locali dell'interfaccia utente
 User salt: Salt utente
 Current password: Password attuale
 New password: Nuova password
@@ -78,6 +84,9 @@ Generate key: Genera chiave
 Primary: primaria
 Removed user: Utente rimosso
 user:
+  product_grid_filters: Filtri per la griglia prodotti
+  default_product_grid_view:
+    label: Visualizzazione predefinita griglia prodotti
   default_grid_view:
     none: Nessun
 Role: Ruolo

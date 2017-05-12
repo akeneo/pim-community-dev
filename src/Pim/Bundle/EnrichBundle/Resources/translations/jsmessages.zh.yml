@@ -301,7 +301,6 @@ pim_enrich:
   error:
     upload: 上传文件的过程中出错
   alert:
-    not_allowed: 你不是允许访问此页
     error_occured: 在页面加载时出错
   form:
     required: '（必填）'
@@ -664,8 +663,45 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: 使用产品网格中的本地化语言 <span class="highlight">{{ locale }}</span> 和通道 <span class="highlight">{{ channel }}</span>对应的数据，对所选的产品属性进行编辑
+  index:
+    group:
+      create_btn: 创建组
+    user:
+      title: 用户
+      create_btn: 创建用户
+    user_role:
+      title: 角色
+      create_btn: 创建角色
+    user_group:
+      title: 分组
+      create_btn: 创建组
+    process_tracker:
+      title: 过程跟踪器
 pim_enrich.error:
   exception.title: 我靠 ！{{ status_code }} 出错了...
+page_title:
+  oro_default: 主界面
+  pim_enrich_attributegroup_index: 属性组
+  pim_enrich_attributegroup_create: 属性组 |创建
+  pim_enrich_categorytree_index: 目录树
+  pim_enrich_categorytree_create: 目录树|创建
+  pim_enrich_categorytree_create_tree: 目录树|创建
+  pim_enrich_attribute_index: 属性
+  pim_enrich_attribute_create: 属性|创建
+  pim_enrich_product_index: 商品
+  pim_enrich_family_index: 品类
+  pim_enrich_channel_index: 渠道
+  pim_enrich_channel_create: 通道|创建
+  pim_enrich_currency_index: 货币
+  pim_enrich_locale_index: 本地化语言
+  pim_enrich_group_index: 分组
+  pim_enrich_variant_group_index: 款式组
+  pim_enrich_associationtype_index: 关联类型
+  pim_enrich_grouptype_index: 分组类型
+  pim_enrich_mass_edit_action_choose: 批量编辑|选择
+  pim_enrich_mass_edit_action_configure: 批量编辑|配置
+  pim_enrich_job_tracker_index: 过程跟踪器
+  pim_enrich_job_tracker_show: 过程跟踪器 |显示作业
 batch_jobs:
   add_product_value:
     label: 添加商品值

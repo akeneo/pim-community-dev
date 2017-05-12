@@ -307,7 +307,6 @@ pim_enrich:
   error:
     upload: Došlo je do pogreške tijekom prijenosa datoteke
   alert:
-    not_allowed: Ne možete pristupiti ovoj stranici
     error_occured: Došlo je do pogreške tijekom učitavanja stranice
   form:
     required: (obavezno)
@@ -695,8 +694,45 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: Atributi odabranih proizvoda u tabličnom prikazu proizvoda će se promijeniti s podacima za lokalizaciju <span class="highlight">{{ locale }}</span> i kanala <span class="highlight">{{ channel }}</span>.
+  index:
+    group:
+      create_btn: Kreiraj grupu
+    user:
+      title: Korisnik
+      create_btn: Kreiraj korisnika
+    user_role:
+      title: Rola
+      create_btn: Kreiraj rolu
+    user_group:
+      title: Grupe
+      create_btn: Kreiraj grupu
+    process_tracker:
+      title: Proces praćenja
 pim_enrich.error:
   exception.title: Ups! Pojavila se pogreška u {{ status_code }}...
+page_title:
+  oro_default: Nadzorna ploča
+  pim_enrich_attributegroup_index: Grupe atributa
+  pim_enrich_attributegroup_create: Atribut grupe | Kreiraj
+  pim_enrich_categorytree_index: Kategorija stabala
+  pim_enrich_categorytree_create: Kategorija stabala | Kreiraj
+  pim_enrich_categorytree_create_tree: Kategorija stabala | Kreiraj
+  pim_enrich_attribute_index: Atributi
+  pim_enrich_attribute_create: Atributi | Kreiraj
+  pim_enrich_product_index: Proizvodi
+  pim_enrich_family_index: Obitelji
+  pim_enrich_channel_index: Kanali
+  pim_enrich_channel_create: Kanali | Kreiraj
+  pim_enrich_currency_index: Valute
+  pim_enrich_locale_index: Lokalizacija
+  pim_enrich_group_index: Grupe
+  pim_enrich_variant_group_index: Varijante grupa
+  pim_enrich_associationtype_index: Tipovi pridruživanja
+  pim_enrich_grouptype_index: Tipovi grupa
+  pim_enrich_mass_edit_action_choose: Masovno uredi | Odaberi
+  pim_enrich_mass_edit_action_configure: Masovno uredi | Konfiguriraj
+  pim_enrich_job_tracker_index: Proces praćenja
+  pim_enrich_job_tracker_show: Proces praćenja | Pokaži posao
 batch_jobs:
   add_product_value:
     label: Dodaj vrijednosti proizvoda

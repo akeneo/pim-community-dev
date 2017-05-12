@@ -3,6 +3,11 @@
 {% block bodyClass %}AknLogin{% endblock %}
 
 {% block content %}
+<script type="text/javascript">
+    sessionStorage.clear();
+    document.title = '{{ 'Login'|trans }}';
+</script>
+
 <div class="AknLogin-mainContainer container">
     <div class="AknLogin-title">
         {% embed 'PimUIBundle::logo.html.twig' %}{% endembed %}
@@ -34,13 +39,4 @@
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
     </form>
 </div>
-
-<script type="text/javascript">
-    require(['oro/layout'], function (layout) {
-        $(function () {
-            layout.init();
-            document.title = '{{ 'Login'|trans }}';
-        });
-    });
-</script>
 {% endblock content %}

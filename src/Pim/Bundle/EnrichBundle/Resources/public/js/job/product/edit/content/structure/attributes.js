@@ -94,7 +94,7 @@ define(
             openSelector: function (e) {
                 e.preventDefault();
                 var loadingMask = new LoadingMask();
-                loadingMask.render().$el.appendTo($('#container'));
+                loadingMask.render().$el.appendTo(this.getRoot().$el);
                 loadingMask.show();
                 var selectedAttributes = this.getFilters().structure.attributes || [];
                 var attributeSelector = new AttributeSelector();

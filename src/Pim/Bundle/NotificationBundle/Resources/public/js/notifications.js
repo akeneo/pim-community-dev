@@ -12,9 +12,7 @@ define(
     function (Backbone, $, _, Routing, NotificationList, Indicator, notificationTpl, notificationFooterTpl) {
         'use strict';
 
-        var Notifications = Backbone.View.extend({
-            el: '#header-notification-widget',
-
+        return Backbone.View.extend({
             options: {
                 imgUrl:                 '',
                 loadingText:            null,
@@ -109,14 +107,16 @@ define(
                     clearTimeout(this.refreshTimeout);
                 }
 
-                this.refreshTimeout = setTimeout(_.bind(function () {
-                    this.refreshLocked = true;
-                    $.getJSON(Routing.generate('pim_notification_notification_count_unread'))
-                        .then(_.bind(function (count) {
-                            this.refreshLocked = false;
-                            this.collection.trigger('load:unreadCount', count, true);
-                        }, this));
-                }, this), this.options.refreshInterval);
+                this.refreshTimeout = setTimeout(this.refresh.bind(this), this.options.refreshInterval);
+            },
+
+            refresh: function () {
+                this.refreshLocked = true;
+                $.getJSON(Routing.generate('pim_notification_notification_count_unread'))
+                    .then(_.bind(function (count) {
+                        this.refreshLocked = false;
+                        this.collection.trigger('load:unreadCount', count, true);
+                    }, this));
             },
 
             onOpen: function () {
@@ -126,7 +126,6 @@ define(
             },
 
             render: function () {
-                this.setElement($('#header-notification-widget'));
                 this.$el.html(this.template());
                 this.collection.setElement(this.$('ul'));
                 this.indicator.setElement(this.$('.AknBell-countContainer'));
@@ -147,20 +146,5 @@ define(
                 );
             }
         });
-
-        var notifications;
-
-        return {
-            init: function (options) {
-                if (notifications) {
-                    notifications.render();
-                } else {
-                    notifications = new Notifications(options);
-                }
-                if (_.has(options, 'unreadCount')) {
-                    notifications.collection.trigger('load:unreadCount', options.unreadCount, true);
-                }
-            }
-        };
     }
 );

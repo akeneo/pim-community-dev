@@ -8,6 +8,10 @@ pim_user:
       business_unit.title: Бизнес-единицы
       email_synchronization.title: Параметры синхронизации email
       interfaces.title: Интерфейсы
+  group:
+    tab:
+      general.title: Основные
+      users.title: Пользователи
 oro.user.controller:
   group.message.saved: "Группа сохранена"
   role.message.saved: "Роль сохранена"

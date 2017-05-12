@@ -225,6 +225,10 @@ pim_enrich:
       title: Verbindungstyp
     group_type:
       info:
+        deletion_successful: Gruppentyp erfolgreich gelöscht.
+        deletion_failed: Gruppentyp konnte nicht gelöscht werden.
+        update_successful: Gruppentyp erfolgreich aktualisiert.
+        update_failed: Der Gruppentyp konnte nicht aktualisiert werden.
         field_not_ready:
           The group type cannot be saved right now. The following fields are not ready:
             - Felder
@@ -330,7 +334,6 @@ pim_enrich:
   error:
     upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
   alert:
-    not_allowed: Sie haben keine Berechtigung für diese Seite
     error_occured: Während des Ladens der Seite ist ein Fehler aufgetreten
   form:
     required: (erforderlich)
@@ -351,6 +354,7 @@ pim_enrich:
           info:
             search_attributes: Suche...
             no_available_attributes: Es können keine weiteren Attribute hinzugefügt werden
+            attributes_selected: "{{ itemsCount }} Attribut(e) ausgewählt"
             no_match: Keine Treffer gefunden
             load_more: Weitere Ergebnisse werden geladen...
         categories:
@@ -490,12 +494,15 @@ pim_enrich:
             no_available_attributes: Es können keine weiteren Attribute hinzugefügt werden
     job_execution:
       loading: Lädt...
+      title.details: Ausführungsdetails
       refreshBtn.title: Aktualisieren
       meta:
         status.title: Status
       button:
         show_profile.title: Profil anzeigen
         download_log.title: Log herunterladen
+        download_file.title: Generierte Datei herunterladen
+        download_archive.title: Generiertes Archiv herunterladen
       summary:
         fetching: Sammle Daten zur Ausführung des Jobs...
         warning: Warnung
@@ -731,8 +738,75 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: Die ausgewählten Produktattribute werden für die folgenden Daten des Gebietsschemas <span class="bold-purple">{{ locale }}</span> und dem Ausgabekanal <span class="bold-purple">{{ channel }}</span>, welche in der Produktübersicht ausgewählt sind, bearbeitet.
+  index:
+    association_type:
+      title: Verbindungstypen-Übersicht
+      create_btn: Verbindungstyp anlegen
+    import_profiles:
+      title: Übersicht Importprofil
+      create_btn: Importprofil anlegen
+    import_history:
+      title: Importberichte
+    variant_group:
+      title: Übersicht Variantengruppe
+      create_btn: Variantengruppe anlegen
+    group:
+      title: Übersicht Gruppe
+      create_btn: Gruppe anlegen
+    export_profiles:
+      title: Übersicht Exportprofil
+      create_btn: Exportprofil anlegen
+    export_history:
+      title: Exportberichte
+    family:
+      title: Übersicht Produktfamilie
+      create_btn: Produktfamilie anlegen
+    grouptype:
+      title: Übersicht Gruppentyp
+      create_btn: Gruppentyp anlegen
+    currency:
+      title: Übersicht Währung
+    locale:
+      title: Übersicht Gebietsschema
+    user:
+      title: Benutzer
+      create_btn: Benutzer anlegen
+    user_role:
+      title: Rolle
+      create_btn: Rolle anlegen
+    user_group:
+      title: Gruppen
+      create_btn: Gruppe anlegen
+    process_tracker:
+      title: Prozess-Tracker
+    channel:
+      title: Übersicht Ausgabekanäle
+      create_btn: Ausgabekanal anlegen
 pim_enrich.error:
   exception.title: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
+page_title:
+  oro_default: Dashboard
+  pim_enrich_attributegroup_index: Attributgruppen
+  pim_enrich_attributegroup_create: Attributgruppen | Anlegen
+  pim_enrich_categorytree_index: Kategorie-Strukturbäume
+  pim_enrich_categorytree_create: Kategorie-Strukturbäume | Anlegen
+  pim_enrich_categorytree_create_tree: Kategorie-Strukturbäume | Anlegen
+  pim_enrich_attribute_index: Attribute
+  pim_enrich_attribute_create: Attribute | Anlegen
+  pim_enrich_product_index: Produkte
+  pim_enrich_family_index: Produktfamilien
+  pim_enrich_channel_index: Ausgabekanäle
+  pim_enrich_channel_create: Ausgabekanäle | Anlegen
+  pim_enrich_currency_index: Währungen
+  pim_enrich_locale_index: Gebietsschemata
+  pim_enrich_group_index: Gruppen
+  pim_enrich_variant_group_index: Variantengruppen
+  pim_enrich_associationtype_index: Verbindungstypen
+  pim_enrich_grouptype_index: Gruppentypen
+  pim_enrich_mass_edit_action_choose: Massenbearbeitung | Auswählen
+  pim_enrich_mass_edit_action_configure: Massenbearbeitung | Konfigurieren
+  pim_enrich_job_tracker_index: Prozess-Tracker
+  pim_enrich_job_tracker_show: Prozess-Tracker | Job anzeigen
 batch_jobs:
   add_product_value:
     label: Produktwert hinzufügen
@@ -752,6 +826,22 @@ batch_jobs:
     label: Benötigte Attribute auswählen
     perform:
       label: Benötigte Attribute auswählen
+  csv_product_quick_export:
+    quick_export.label: CSV Produkt-Schnellexport
+    perform:
+      label: CSV Produkt-Schnellexport
+  csv_product_grid_context_quick_export:
+    quick_export.label: CSV Produkt-Schnellexport kontextabhängig
+    perform:
+      label: CSV Produkt-Schnellexport kontextabhängig
+  xlsx_product_quick_export:
+    quick_export.label: XLSX Produkt-Schnellexport
+    perform:
+      label: XLSX Produkt-Schnellexport
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: XLSX Produkt-Schnellexport kontextabhängig
+    perform:
+      label: XLSX Produkt-Schnellexport kontextabhängig
   add_to_variant_group:
     label: Zu einer Variantengruppe hinzufügen
     perform:

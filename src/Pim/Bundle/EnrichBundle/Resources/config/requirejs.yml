@@ -71,6 +71,22 @@ config:
             url: pim_enrich_job_instance_rest_import_put
         pim/saver/job-instance-export:
             url: pim_enrich_job_instance_rest_export_put
+        pim/form/common/attributes/create-button:
+            attribute_icons:
+                pim_catalog_identifier:          asterisk
+                pim_catalog_text:                font
+                pim_catalog_textarea:            file-text-alt
+                pim_catalog_number:              sort-by-order
+                pim_catalog_price_collection:    money
+                pim_catalog_multiselect:         tags
+                pim_catalog_simpleselect:        tag
+                pim_catalog_file:                file
+                pim_catalog_image:               camera-retro
+                pim_catalog_boolean:             check
+                pim_catalog_date:                calendar
+                pim_catalog_metric:              beaker
+                pim_reference_data_multiselect:  tags
+                pim_reference_data_simpleselect: tag
         pim/fetcher-registry:
             fetchers:
                 default: pim/base-fetcher
@@ -98,6 +114,11 @@ config:
                         urls:
                             list: pim_enrich_attribute_rest_index
                             get: pim_enrich_attribute_rest_get
+                attribute-type:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: pim_enrich_attribute_types_index
                 family:
                     module: pim/base-fetcher
                     options:
@@ -309,7 +330,7 @@ config:
                 oro_user_create:
                     module: pim/controller/form
                 oro_user_update:
-                    module: pim/controller/form
+                    module: pim/controller/user
                 oro_user_profile_update:
                     module: pim/controller/user
                 oro_user_role_index:
@@ -366,8 +387,10 @@ config:
                     config:
                         entity: locale
                 pim_enrich_attribute_index:
-                    module: pim/controller/template
+                    module: pim/controller/common/index
                     aclResourceId: pim_enrich_attribute_index
+                    config:
+                          entity: attribute
                 pim_enrich_attribute_sort:
                     module: pim/controller/template
                     aclResourceId: pim_enrich_attribute_sort
@@ -447,6 +470,7 @@ config:
         pim/router:                         pimenrich/js/router
         pim/route-matcher:                  pimenrich/js/route-matcher
         pim/page-title:                     pimenrich/js/page-title
+        pim/init-translator:                pimenrich/js/init-translator
 
         # Controllers
         pim/controller-registry:            pimenrich/js/controller/registry
@@ -501,7 +525,6 @@ config:
         pim/group-manager:           pimenrich/js/manager/group-manager
         pim/attribute-manager:       pimenrich/js/manager/attribute-manager
         pim/attribute-group-manager: pimenrich/js/manager/attribute-group-manager
-        pim/history-item-manager:    pimenrich/js/manager/history-item-manager
 
         # Fetcher
         pim/fetcher-registry:        pimenrich/js/fetcher/fetcher-registry
@@ -720,6 +743,8 @@ config:
         # Root
         pim/form/common/edit-form: pimenrich/js/form/common/edit-form
 
+        pim/app: pimenrich/js/app
+
         pim/form/common/label:                               pimenrich/js/form/common/label
         pim/form/common/group-selector:                      pimenrich/js/form/common/group-selector
         pim/form/common/attributes/attribute-group-selector: pimenrich/js/form/common/attributes/attribute-group-selector
@@ -736,11 +761,19 @@ config:
         pim/form/common/attributes:                          pimenrich/js/form/common/attributes
         pim/form/common/attributes/copy:                     pimenrich/js/form/common/attributes/copy
         pim/form/common/attributes/copy-field:               pimenrich/js/form/common/attributes/copy-field
+        pim/form/common/attributes/create-button:            pimenrich/js/form/common/attributes/create-button
         pim/form/common/download-file:                       pimenrich/js/form/common/download-file
         pim/form/common/index/index:                         pimenrich/js/form/common/index/index
         pim/form/common/index/grid:                          pimenrich/js/form/common/index/grid
         pim/form/common/index/create-button:                 pimenrich/js/form/common/index/create-button
         pim/form/common/index/confirm-button:                pimenrich/js/form/common/index/confirm-button
+        pim/menu/menu:                                       pimenrich/js/menu/menu
+        pim/menu/tab:                                        pimenrich/js/menu/tab
+        pim/menu/item:                                       pimenrich/js/menu/item
+        pim/header/header:                                   pimenrich/js/header/header
+        pim/header/logo:                                     pimenrich/js/header/logo
+        pim/header/user:                                     pimenrich/js/header/user
+
 
         # Fields
         pim/field:                  pimenrich/js/product/field/field
@@ -798,6 +831,8 @@ config:
         pim/template/form/tab/attribute/attribute-group-selector: pimenrich/templates/form/tab/attributes/attribute-group-selector.html
         pim/template/form/tab/attribute/copy:                     pimenrich/templates/form/tab/attributes/copy.html
         pim/template/form/tab/attribute/copy-field:               pimenrich/templates/form/tab/attributes/copy-field.html
+        pim/template/form/tab/attribute/create-button:            pimenrich/templates/form/tab/attributes/create-button.html
+        pim/template/form/tab/attribute/create-modal-content:     pimenrich/templates/form/tab/attributes/create-modal-content.html
         pim/template/form/redirect:                               pimenrich/templates/form/redirect.html
         pim/template/form/download-file:                          pimenrich/templates/form/download-file.html
         pim/template/form/index/index:                            pimenrich/templates/form/index/index.html
@@ -855,6 +890,14 @@ config:
         pim/template/attribute-option/show:                  pimenrich/templates/attribute-option/show.html
         pim/template/i18n/flag:                              pimenrich/templates/i18n/flag.html
         pim/template/error/error:                            pimenrich/templates/error/error.html
+
+        pim/template/menu/tab:                               pimenrich/templates/menu/tab.html
+        pim/template/menu/item:                              pimenrich/templates/menu/item.html
+        pim/template/header/header:                          pimenrich/templates/header/header.html
+        pim/template/header/logo:                            pimenrich/templates/header/logo.html
+        pim/template/header/user:                            pimenrich/templates/header/user.html
+        pim/template/app:                                    pimenrich/templates/app.html
+        pim/template/header/flash:                           pimenrich/templates/header/flash.html
 
         pim/template/variant-group/tab/properties/general:     pimenrich/templates/variant-group/tab/properties/general.html
         pim/template/variant-group/form/no-attribute:          pimenrich/templates/variant-group/form/no-attribute.html

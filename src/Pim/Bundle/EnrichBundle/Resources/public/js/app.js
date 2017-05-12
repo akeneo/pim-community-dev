@@ -1,55 +1,90 @@
-'use strict';
-
-define([
+/**
+ * Akeneo app
+ *
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+define(
+    [
         'jquery',
-        'backbone',
-        'oro/messenger',
         'underscore',
+        'backbone',
+        'pim/form',
+        'oro/messenger',
         'pim/fetcher-registry',
         'pim/init',
-        'oro/init-user',
+        'pim/init-translator',
         'oro/init-layout',
         'pimuser/js/init-signin',
         'pim/router',
+        'config',
         'pim/page-title',
-        'config'
+        'pim/template/app',
+        'pim/template/header/flash'
     ], function (
         $,
-        Backbone,
-        messenger,
         _,
+        Backbone,
+        BaseForm,
+        messenger,
         FetcherRegistry,
         init,
-        initUser,
+        initTranslator,
         initLayout,
         initSignin,
         router,
+        moduleConfig,
         pageTitle,
-        moduleConfig
+        template,
+        flashTemplate
     ) {
-    return (function () {
-        return {
-            debug: false,
-            bootstrap: function (options, messages) {
-                initUser();
+        return BaseForm.extend({
+            tagName: 'div',
+            className: 'app',
+            template: _.template(template),
+            flashTemplate: _.template(flashTemplate),
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function () {
                 initLayout();
                 initSignin();
 
-                this.debug = !!options.debug;
+                return BaseForm.prototype.initialize.apply(this, arguments);
+            },
 
-                FetcherRegistry.initialize().then(function () {
-                    messenger.setup({
-                        container: '#flash-messages .flash-messages-holder',
-                        template: _.template($.trim($('#message-item-template').html()))
-                    });
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                return $.when(FetcherRegistry.initialize(), initTranslator.fetch())
+                    .then(function () {
+                        messenger.setup({
+                            container: '.flash-messages-holder',
+                            template: this.flashTemplate
+                        });
 
-                    init();
+                        init();
 
-                    if (!Backbone.History.started) {
-                        Backbone.history.start();
-                    }
-                });
+                        if (!Backbone.History.started) {
+                            Backbone.history.start();
+                        }
+
+                        pageTitle.set('Akeneo PIM')
+
+                        return BaseForm.prototype.configure.apply(this, arguments);
+                    }.bind(this));
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            render: function () {
+                this.$el.html(this.template({}));
+
+                return BaseForm.prototype.render.apply(this, arguments);
             }
-        };
-    })();
-});
+        });
+    });

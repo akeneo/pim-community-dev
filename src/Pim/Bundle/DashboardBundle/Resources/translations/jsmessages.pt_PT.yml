@@ -14,3 +14,5 @@ pim_dashboard:
         quick_export: Exportação rápida
     header:
       view_all: Ver tudo
+page_title:
+  pim_dashboard_index: Painel

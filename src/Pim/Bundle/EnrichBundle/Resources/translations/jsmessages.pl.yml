@@ -270,7 +270,6 @@ pim_enrich:
   error:
     upload: Wystąpił błąd podczas przekazywania pliku
   alert:
-    not_allowed: Nie masz uprawnień do przeglądania tej strony
     error_occured: Wystąpił błąd podczas ładowania strony
   form:
     product:
@@ -571,8 +570,45 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: Atrybuty wybranych produktów będą edytowane z następującymi danymi dla ustawienia regionalnego <span class = "highlight"> {{ locale }} </span> oraz kanału <span class = "highlight"> {{ channel }} </span>, wybrane z listy produktów.
+  index:
+    group:
+      create_btn: Utwórz grupę
+    user:
+      title: Użytkownik
+      create_btn: Utwórz użytkownika
+    user_role:
+      title: Rola
+      create_btn: Utwórz rolę
+    user_group:
+      title: Grupy
+      create_btn: Utwórz grupę
+    process_tracker:
+      title: Śledzenie procesu
 pim_enrich.error:
   exception.title: O rany! Wystąpił błąd {{ status_code }}...
+page_title:
+  oro_default: Kokpit
+  pim_enrich_attributegroup_index: Grupy Atrybutów
+  pim_enrich_attributegroup_create: Grupy atrybutów | Utwórz
+  pim_enrich_categorytree_index: Drzewo kategorii
+  pim_enrich_categorytree_create: Drzewa kategorii | Utwórz
+  pim_enrich_categorytree_create_tree: Drzewa kategorii | Utwórz
+  pim_enrich_attribute_index: Atrybuty
+  pim_enrich_attribute_create: Atrybuty | Utwórz
+  pim_enrich_product_index: Produkty
+  pim_enrich_family_index: Rodziny
+  pim_enrich_channel_index: Kanały
+  pim_enrich_channel_create: Kanały | Utwórz
+  pim_enrich_currency_index: Waluty
+  pim_enrich_locale_index: Ustawienia regionalne
+  pim_enrich_group_index: Grupy
+  pim_enrich_variant_group_index: Grupy wariantów
+  pim_enrich_associationtype_index: Typy powiązań
+  pim_enrich_grouptype_index: Typy grup
+  pim_enrich_mass_edit_action_choose: Edycja Masowa | Wybierz
+  pim_enrich_mass_edit_action_configure: Edycja Masowa | Konfiguruj
+  pim_enrich_job_tracker_index: Śledzenie procesu
+  pim_enrich_job_tracker_show: Śledzenie procesu | Pokaż zadanie
 batch_jobs:
   update_product_value:
     label: Aktualizacja wartości produktu

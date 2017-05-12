@@ -303,7 +303,6 @@ pim_enrich:
   error:
     upload: Tiedoston lataamisen aikana tapahtui virhe
   alert:
-    not_allowed: Et saa käyttää tätä sivua
     error_occured: Virhe ladattaessa sivua
   form:
     required: (vaadittu)
@@ -690,8 +689,45 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: Tuoteruudukosta valitun tuotteen attribuutit muokataan seuraavilla tiedoilla lokaatiolle <span class="highlight">{{ locale }}</span> ja kanavalle <span class="highlight">{{ channel }}</span>.
+  index:
+    group:
+      create_btn: Luo ryhmä
+    user:
+      title: Käyttäjä
+      create_btn: Luo käyttäjä
+    user_role:
+      title: Rooli
+      create_btn: Luo rooli
+    user_group:
+      title: Ryhmät
+      create_btn: Luo ryhmä
+    process_tracker:
+      title: Prosessiseurain
 pim_enrich.error:
   exception.title: Voi ei! {{ status_code }} virhe tapahtui...
+page_title:
+  oro_default: Ohjauspaneeli
+  pim_enrich_attributegroup_index: Attribuuttiryhmät
+  pim_enrich_attributegroup_create: Attribuuttiryhmät | Luo
+  pim_enrich_categorytree_index: Kategoriahierarkia
+  pim_enrich_categorytree_create: Kategoriahierarkia | Luo
+  pim_enrich_categorytree_create_tree: Kategoriahierarkia | Luo
+  pim_enrich_attribute_index: Attribuutit
+  pim_enrich_attribute_create: Attribuutit | Luo
+  pim_enrich_product_index: Tuotteet
+  pim_enrich_family_index: Perheet
+  pim_enrich_channel_index: Kanavat
+  pim_enrich_channel_create: Kanavat | Luo
+  pim_enrich_currency_index: Valuutat
+  pim_enrich_locale_index: Alueet
+  pim_enrich_group_index: Ryhmät
+  pim_enrich_variant_group_index: Tuotevariaatioryhmät
+  pim_enrich_associationtype_index: Määritetyypit
+  pim_enrich_grouptype_index: Ryhmätyypit
+  pim_enrich_mass_edit_action_choose: Massaedit | Valitse
+  pim_enrich_mass_edit_action_configure: Massaedit | Määritä
+  pim_enrich_job_tracker_index: Prosessiseurain
+  pim_enrich_job_tracker_show: Prosessin tracker | Näytä työ
 batch_jobs:
   update_product_value:
     label: Päivitä tuotteen arvo

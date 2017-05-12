@@ -116,7 +116,7 @@ define(
              */
             displayModal: function (event) {
                 var loadingMask = new LoadingMask();
-                loadingMask.render().$el.appendTo($('#container')).show();
+                loadingMask.render().$el.appendTo(this.getRoot().$el).show();
 
                 GroupManager.getProductGroups(this.getFormData()).done(function (groups) {
                     var group = _.findWhere(groups, { code: event.currentTarget.dataset.group });

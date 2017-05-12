@@ -10,7 +10,7 @@ define([
              * {@inheritdoc}
              */
             afterSubmit: function () {
-                location.reload(); //TODO nav: reload the page to update the menu
+                window.location.reload(); //TODO nav: reload the page to update the menu
 
                 FormController.prototype.afterSubmit.apply(this, arguments);
             }

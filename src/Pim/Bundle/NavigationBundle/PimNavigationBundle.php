@@ -13,11 +13,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimNavigationBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'OroNavigationBundle';
-    }
 }

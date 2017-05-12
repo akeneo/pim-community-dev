@@ -450,4 +450,4 @@ if (typeof window.define === "function" && window.define.amd) {
     });
 }
 
-module.exports = Translator;
+module.exports = Translator

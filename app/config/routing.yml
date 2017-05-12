@@ -56,9 +56,6 @@ oro_config:
 oro_datagrid:
     resource: "@OroDataGridBundle/Resources/config/oro/routing.yml"
 
-oro_navigation:
-    resource: "@OroNavigationBundle/Resources/config/oro/routing.yml"
-
 oro_translation:
     resource: "@OroTranslationBundle/Resources/config/oro/routing.yml"
 
