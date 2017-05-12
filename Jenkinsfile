@@ -60,12 +60,16 @@ stage("Checkout") {
                 unstash "pim_community_dev"
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                sh "npm run generate"
-                sh "npm run wp"
                 sh "app/console assets:install"
 
                 stash "pim_community_dev_full"
             }
+
+            docker.image('node').inside {
+                sh "npm run generate"
+                sh "npm run wp"
+            }
+
             deleteDir()
         }
     }
