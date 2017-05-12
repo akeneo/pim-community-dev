@@ -60,7 +60,7 @@ stage("Checkout") {
                 unstash "pim_community_dev"
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                sh "node config-generator"
+                sh "node run generate"
                 sh "npm run wp"
                 sh "app/console assets:install"
 
