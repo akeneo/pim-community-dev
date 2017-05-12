@@ -66,9 +66,13 @@ stage("Checkout") {
             }
 
             docker.image('node').inside {
+                unstash "pim_community_dev"
+
                 sh "npm install --verbose"
                 sh "npm run generate"
                 sh "npm run wp"
+
+                stash "pim_community_dev_full"
             }
 
             deleteDir()

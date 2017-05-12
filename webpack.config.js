@@ -16,7 +16,11 @@ const glob = require('glob')
 const getImportPaths = () => {
     let paths = {}
     let originalPaths = {}
-    const bundles = glob.sync('./src/**/*requirejs.yml')
+    const bundles = glob.sync('./src/**/*requirejs.yml', {
+        ignore: './src/Oro/Bundle/RequireJSBundle/Tests/Unit/Fixtures/Resources/config/requirejs.yml'
+    })
+
+    console.log(bundles)
 
     for (const bundle of bundles) {
         try {

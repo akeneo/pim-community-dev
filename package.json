@@ -21,7 +21,7 @@
     "jquery": "^1.11.0",
     "lodash": "^4.17.4",
     "path-replace-loader": "^1.0.0",
-
+    "raw-loader": "^0.5.1",
     "summernote": "0.6.5",
     "text-loader": "0.0.1",
     "time-grunt": "~1.1.0",
