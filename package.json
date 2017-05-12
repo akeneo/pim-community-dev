@@ -5,9 +5,7 @@
   "homepage": "http://www.akeneo.com",
   "devDependencies": {
     "bundle-loader": "^0.5.5",
-    "camelcase": "^4.1.0",
     "cheerio": "^0.22.0",
-    "closure-loader": "^0.2.0",
     "codemirror": "^5.25.2",
     "eslint": "^3.19.0",
     "exports-loader": "^0.6.4",
@@ -23,7 +21,7 @@
     "jquery": "^1.11.0",
     "lodash": "^4.17.4",
     "path-replace-loader": "^1.0.0",
-    "raw-loader": "^0.5.1",
+
     "summernote": "0.6.5",
     "text-loader": "0.0.1",
     "time-grunt": "~1.1.0",
@@ -45,8 +43,6 @@
   },
   "dependencies": {
     "bundle-loader": "^0.5.5",
-    "detect-import-require": "^2.0.0",
-    "detective-amd": "^2.4.0",
     "pascal-case": "^2.0.1"
   }
 }

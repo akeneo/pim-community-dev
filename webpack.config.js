@@ -6,6 +6,11 @@ const paths = require('./web/js/paths')
 const ContextReplacementPlugin = require("webpack/lib/ContextReplacementPlugin")
 const glob = require('glob')
 
+// @TODO
+// - Refactor this file
+// - Load the conig files as json
+// - Add logging and error checking
+
 const getImportPaths = () => {
     let paths = {}
     let originalPaths = {}
@@ -29,13 +34,6 @@ const getImportPaths = () => {
     }
 }
 
-const getControllers = () => {
-    const enrichConfig = fs.readFileSync(path.join(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/config/requirejs.yml'), 'utf8')
-    return yaml.parse(enrichConfig).config.config['pim/controller-registry'].controllers
-}
-
-
-// Use case converter and do it with code later
 const resolvedPaths = {
     pimanalytics: 'Pim/Bundle/Analytics',
     pimdashboard: 'Pim/Bundle/Dashboard',
