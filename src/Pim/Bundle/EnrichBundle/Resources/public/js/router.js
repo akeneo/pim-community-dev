@@ -88,8 +88,15 @@ define(
                         this.currentController.remove();
                     }
 
+                    // Container doesn't appear until the first view render..
+                    $('.placeholder').remove()
                     $('#container').empty();
-                    var $view = $('<div>', {'class': 'view'}).appendTo($('#container'));
+
+                    var $view = $('<div class="view"/>').appendTo($('#container'));
+
+                    if ($('#container').length === 0) {
+                        $view = $('<div class="placeholder" />').appendTo($('body'));
+                    }
 
                     if (controller.aclResourceId && !securityContext.isGranted(controller.aclResourceId)) {
                         this.hideLoadingMask();

@@ -18,6 +18,10 @@ const moduleOutputs = {
     controllers: {
         inputPath: 'config.config[\'pim/controller-registry\'].controllers',
         outputPath: './web/config/controllers.js'
+    },
+    general: {
+        inputPath: 'config.config',
+        outputPath: './web/config/general.js'
     }
 }
 

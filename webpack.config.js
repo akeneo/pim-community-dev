@@ -9,7 +9,7 @@ const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
 const glob = require('glob')
 
 // @TODO
-// - Refactor this file
+// - Rewrite this file
 // - Load the conig files as json
 // - Add logging and error checking
 
@@ -19,8 +19,6 @@ const getImportPaths = () => {
     const bundles = glob.sync('./src/**/*requirejs.yml', {
         ignore: './src/Oro/Bundle/RequireJSBundle/Tests/Unit/Fixtures/Resources/config/requirejs.yml'
     })
-
-    console.log(bundles)
 
     for (const bundle of bundles) {
         try {
@@ -86,7 +84,8 @@ const importPaths = Object.assign(importedPaths.paths, {
     'paths': path.resolve(__dirname, './web/config/paths.js'),
     'CodeMirror': path.resolve(__dirname, './node_modules/codemirror/lib/codemirror.js'),
     'fetcher-list': path.resolve(__dirname, './web/config/fetchers.js'),
-    'require-context': path.resolve(__dirname, './web/config/require-context.js')
+    'require-context': path.resolve(__dirname, './web/config/require-context.js'),
+    'general': path.resolve(__dirname, './web/config/general.js')
 })
 
 

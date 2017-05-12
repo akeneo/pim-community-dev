@@ -1,11 +1,11 @@
-define([], function() {
+define(['general'], function(general) {
     return {
         config: function() {
-            return {
+            return _.extend({
                 defaultController: {
                     module: 'pim/controller/template'
                 }
-            }
+            }, general)
         }
     }
 });

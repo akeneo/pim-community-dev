@@ -19,7 +19,7 @@ define(
         'routing',
         'pim/fetcher-registry',
         'pim/router',
-        'module',
+        'config',
         'bootstrap-modal'
     ],
     function (
@@ -54,10 +54,12 @@ define(
             createModal: function (attributeTypesMap) {
                 var attributeTypes = this.formatAndSortAttributeTypesByLabel(attributeTypesMap);
 
+                var moduleConfig = module.config()['pim/form/common/attributes/create-button'];
+
                 var modal = null;
                 var modalContent = this.templateModal({
                     attributeTypes: attributeTypes,
-                    iconsMap: module.config().attribute_icons,
+                    iconsMap: moduleConfig.attribute_icons,
                     generateRoute: function (route, params) {
                         return Routing.generate(route, params);
                     }
