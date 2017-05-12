@@ -1,0 +1,11 @@
+extensions:
+     pim-attribute-group-edit-form-edit-permission:
+        module: pimee/common/tab/permission
+        parent: pim-attribute-group-edit-form-form-tabs
+        targetZone: container
+        aclResourceId: pimee_enrich_attribute_group_edit_permissions
+        position: 125
+        config:
+            title: pimee_enrich.form.attribute_group.tab.permission.title
+            tabCode: pim-attribute-group-permission
+            entity: attribute_group
