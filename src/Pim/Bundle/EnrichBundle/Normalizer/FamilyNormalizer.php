@@ -38,16 +38,13 @@ class FamilyNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $versionNormalizer;
 
-    /** @var bool */
-    protected $toBeFiltered = true;
-
     /**
-     * @param NormalizerInterface $familyNormalizer
-     * @param NormalizerInterface $translationNormalizer
-     * @param CollectionFilterInterface $collectionFilter
+     * @param NormalizerInterface          $familyNormalizer
+     * @param NormalizerInterface          $translationNormalizer
+     * @param CollectionFilterInterface    $collectionFilter
      * @param AttributeRepositoryInterface $attributeRepository
-     * @param VersionManager $versionManager
-     * @param NormalizerInterface $versionNormalizer
+     * @param VersionManager               $versionManager
+     * @param NormalizerInterface          $versionNormalizer
      */
     public function __construct(
         NormalizerInterface $familyNormalizer,
@@ -70,21 +67,20 @@ class FamilyNormalizer implements NormalizerInterface
      */
     public function normalize($family, $format = null, array $context = array())
     {
-        if (array_key_exists('no_filters', $context) &&
-            true === $context['no_filters']) {
-            $this->toBeFiltered = false;
-        }
+        $toBeFiltered = $this->getToBeFiltered($context);
+        unset($context['no_filters']);
 
         $normalizedFamily = $this->familyNormalizer->normalize(
             $family,
             'standard',
-            []
+            $context
         );
 
-        $normalizedFamily['attributes'] = $this->normalizeAttributes($family);
+        $normalizedFamily['attributes'] = $this->normalizeAttributes($family, $toBeFiltered);
 
         $normalizedFamily['attribute_requirements'] = $this->normalizeRequirements(
-            $normalizedFamily['attribute_requirements']
+            $normalizedFamily['attribute_requirements'],
+            $toBeFiltered
         );
 
         $firstVersion = $this->versionManager->getOldestLogEntry($family);
@@ -118,13 +114,14 @@ class FamilyNormalizer implements NormalizerInterface
      * Fetches attributes by code and normalizes them
      *
      * @param FamilyInterface $family
+     * @param boolean         $toBeFiltered
      *
      * @return array
      */
-    protected function normalizeAttributes(FamilyInterface $family)
+    protected function normalizeAttributes(FamilyInterface $family, $toBeFiltered)
     {
         $attributes = $this->attributeRepository->findAttributesByFamily($family);
-        $attributes = $this->applyFilters($attributes);
+        $attributes = $this->applyFilters($attributes, $toBeFiltered);
 
         $normalizedAttributes = [];
         foreach ($attributes as $attribute) {
@@ -146,16 +143,17 @@ class FamilyNormalizer implements NormalizerInterface
      * It filters the requirements to the viewable ones
      *
      * @param array $requirements
+     * @param bool  $toBeFiltered
      *
      * @return array
      */
-    protected function normalizeRequirements($requirements)
+    protected function normalizeRequirements($requirements, $toBeFiltered)
     {
         $result = [];
 
         foreach ($requirements as $channel => $attributeCodes) {
             $attributes = $this->attributeRepository->findBy(['code' => $attributeCodes]);
-            $attributes = $this->applyFilters($attributes);
+            $attributes = $this->applyFilters($attributes, $toBeFiltered);
 
             $result[$channel] = array_map(function ($attribute) {
                 return $attribute->getCode();
@@ -169,12 +167,13 @@ class FamilyNormalizer implements NormalizerInterface
      * Applies attribute view collection filters
      *
      * @param array $attributes
+     * @param bool  $toBeFiltered
      *
-     * @return array mixed
+     * @return array
      */
-    protected function applyFilters($attributes)
+    protected function applyFilters($attributes, $toBeFiltered)
     {
-        if (true === $this->toBeFiltered) {
+        if (true === $toBeFiltered) {
             return $this->collectionFilter->filterCollection(
                 $attributes,
                 'pim.internal_api.attribute.view'
@@ -182,5 +181,22 @@ class FamilyNormalizer implements NormalizerInterface
         }
 
         return $attributes;
+    }
+
+    /**
+     * Gets to be filtered state
+     *
+     * @param array $context
+     *
+     * @return bool
+     */
+    protected function getToBeFiltered($context)
+    {
+        if (array_key_exists('no_filters', $context) &&
+            true === $context['no_filters']) {
+            return false;
+        }
+
+        return true;
     }
 }
