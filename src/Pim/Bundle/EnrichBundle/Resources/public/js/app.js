@@ -12,7 +12,7 @@ define([
         'pimuser/js/init-signin',
         'pim/router',
         'pim/page-title',
-        'module-config'
+        'config'
     ], function (
         $,
         Backbone,

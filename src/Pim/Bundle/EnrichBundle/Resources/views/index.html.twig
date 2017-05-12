@@ -12,7 +12,7 @@
             {# Compile messages using webpack instead #}
               window.messages = '{{ source(get_translations_file())|escape('js') }}'
           </script>
-            <script type="text/javascript" src="{{asset('app.min.js')}}"></script>
+            <script type="text/javascript" src="{{asset('dist/app.min.js')}}"></script>
     {% endblock %}
 </head>
 <body class="{% block bodyClass %}{% endblock %}">

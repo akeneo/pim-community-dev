@@ -9,7 +9,7 @@
  */
 define(
     [
-        'module-config',
+        'config',
         'underscore',
         'oro/translator',
         'backbone',

@@ -2,7 +2,7 @@ const webpack = require('webpack')
 const path = require('path')
 const yaml = require('yamljs')
 const fs = require('fs')
-const paths = require('./web/js/paths')
+const paths = require('./web/config/paths')
 const ContextReplacementPlugin = require("webpack/lib/ContextReplacementPlugin")
 const glob = require('glob')
 
@@ -72,23 +72,22 @@ const importPaths = Object.assign(importedPaths.paths, {
     'bootstrap-modal': path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/bootstrap-modal.js'),
     summernote: path.resolve(__dirname, './node_modules/summernote/dist/summernote.min.js'),
     translator: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/lib/translator.js'),
-    'module-config': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/module-config.js'),
+    'config': path.resolve(__dirname, './web/config/module-config.js'),
     'fos-routing-base': path.resolve(__dirname, './vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js'),
     routing: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/fos-routing-wrapper.js'),
     routes: path.resolve(__dirname, './web/js/routes.js'),
     'pim/datagrid-view-fetcher': path.resolve(__dirname, './src/Pim/Bundle/DataGridBundle/Resources/public/js/fetcher/datagrid-view-fetcher.js'),
-    'fetchers': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/fetchers.js'),
-    'controllers': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/controllers.js'),
-    'require-polyfill': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/require-polyfill.js'),
+    'controllers': path.resolve(__dirname, './web/config/controllers.js'),
+    'require-polyfill': path.resolve(__dirname, './web/config/require-polyfill.js'),
     'pim-router': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/router.js'),
-    'paths': path.resolve(__dirname, './web/js/paths.js'),
+    'paths': path.resolve(__dirname, './web/config/paths.js'),
     'CodeMirror': path.resolve(__dirname, './node_modules/codemirror/lib/codemirror.js'),
     'fetcher-list': path.resolve(__dirname, './web/config/fetchers.js'),
-    'require-context': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/require-context.js')
+    'require-context': path.resolve(__dirname, './web/config/require-context.js')
 })
 
 
-fs.writeFileSync('./web/js/paths.js', `module.exports = ${JSON.stringify(importedPaths.originalPaths)}`, 'utf8')
+fs.writeFileSync('./web/config/paths.js', `module.exports = ${JSON.stringify(importedPaths.originalPaths)}`, 'utf8')
 
 const getRelativePaths = (absolutePaths) => {
     const replacedPaths = {}
@@ -103,7 +102,7 @@ module.exports = {
     target: 'web',
     entry: './src/Pim/Bundle/EnrichBundle/Resources/public/js/app.js',
     output: {
-        path: path.resolve(__dirname, './web/'),
+        path: path.resolve(__dirname, './web/dist'),
         publicPath: path.resolve(__dirname, '/'),
         filename: 'app.min.js',
         chunkFilename: '[name].bundle.js',
@@ -176,7 +175,7 @@ module.exports = {
                 }]
             },
             {
-                test: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/config/require-polyfill.js'),
+                test: path.resolve(__dirname, './web/config/require-polyfill.js'),
                 use: [{
                     loader: 'expose-loader',
                     options: 'require'

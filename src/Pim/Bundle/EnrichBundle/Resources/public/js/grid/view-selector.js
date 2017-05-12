@@ -22,7 +22,7 @@ define(
         'pim/datagrid/state',
         'pim/fetcher-registry',
         'pim/form-builder',
-        'module-config'
+        'config'
     ],
     function (
         $,

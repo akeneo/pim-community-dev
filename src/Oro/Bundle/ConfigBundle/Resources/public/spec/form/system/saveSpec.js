@@ -2,7 +2,7 @@
 'use strict';
 
 define(
-    ['pim/form/common/save', 'oro/form/system/config/save', 'routing', 'module-config'],
+    ['pim/form/common/save', 'oro/form/system/config/save', 'routing', 'config'],
     function (CommonSave, SaveForm, Routing, module) {
         describe('Save form', function () {
             var saveForm = new SaveForm({config: {config: {}}});

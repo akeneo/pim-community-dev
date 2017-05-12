@@ -3,7 +3,7 @@
 define([
         'underscore',
         'jquery',
-        'module-config',
+        'config',
         'routing',
         'pim/form/common/save',
         'pim/template/form/save'

@@ -10,7 +10,7 @@
 define([
         'underscore',
         'pim/remover/base',
-        'module-config',
+        'config',
         'routing'
     ], function (
         _,

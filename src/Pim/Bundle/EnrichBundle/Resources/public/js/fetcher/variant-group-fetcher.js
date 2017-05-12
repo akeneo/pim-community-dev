@@ -4,7 +4,7 @@ define(
     [
         'jquery',
         'pim/base-fetcher',
-        'module-config',
+        'config',
         'routing',
         'oro/mediator',
         'pim/cache-invalidator',

@@ -2,7 +2,7 @@
 
 define([
         'jquery',
-        'module-config',
+        'config',
         'routing'
     ], function (
         $,

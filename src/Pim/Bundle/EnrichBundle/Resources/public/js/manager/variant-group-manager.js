@@ -3,7 +3,7 @@
 define([
         'jquery',
         'underscore',
-        'module-config',
+        'config',
         'oro/mediator',
         'routing',
         'pim/attribute-manager',

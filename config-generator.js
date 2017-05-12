@@ -12,27 +12,12 @@ const requirePath = _.template(`${bundleDirectory}/<%=bundleName%>/Resources/con
 const moduleOutputs = {
     fetchers: {
         inputPath: `config.config['pim/fetcher-registry'].fetchers`,
-        outputPath: `${bundleDirectory}/EnrichBundle/Resources/public/js/config/fetchers.js`,
+        outputPath: `./web/config/fetchers.js`,
     },
     controllers: {
         inputPath: `config.config['pim/controller-registry'].controllers`,
-        outputPath: `${bundleDirectory}/EnrichBundle/Resources/public/js/config/controllers.js`
-    },
-    form_extensions: {
-        inputPath: 'extensions',
-        outputPath: `${bundleDirectory}/EnrichBundle/Resources/public/js/config/form-dependencies.js`
+        outputPath: `./web/config/controllers.js`
     }
-}
-
-const getFormExtensionConfig = () => {
-    const formExtensions = {}
-    const files = glob.sync('./src/Pim/Bundle/EnrichBundle/Resources/config/form_extensions/**/*.yml')
-    _.each(files, (fileName) => {
-        _.each(getParsedFile(fileName).extensions, (options, name) => {
-            formExtensions[name] = options
-        })
-    })
-    return formExtensions
 }
 
 const getBundleNames = () => {
@@ -85,11 +70,6 @@ const getModuleOutputs = (configFiles) => {
 
 const configFiles = getConfigFiles()
 const files = getModuleOutputs(configFiles)
-
-files.push({
-    fileName: moduleOutputs.form_extensions.outputPath,
-    modules: getFormExtensionConfig()
-})
 
 files.forEach((file) => {
     const fileTemplate = _.template(configModuleTemplate)

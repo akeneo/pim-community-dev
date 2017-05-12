@@ -1,6 +1,6 @@
 'use strict';
 
-define(['module-config', 'jquery', 'underscore', 'pim/fetcher-registry'], function (module, $, _, FetcherRegistry) {
+define(['config', 'jquery', 'underscore', 'pim/fetcher-registry'], function (module, $, _, FetcherRegistry) {
     return {
         getProductGroups: function (product) {
             var promises = _.map(product.groups, function (groupCode) {

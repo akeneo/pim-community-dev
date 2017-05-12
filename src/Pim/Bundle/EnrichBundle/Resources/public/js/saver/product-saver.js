@@ -3,7 +3,7 @@
 define([
         'underscore',
         'pim/saver/base',
-        'module-config',
+        'config',
         'routing'
     ], function (
         _,

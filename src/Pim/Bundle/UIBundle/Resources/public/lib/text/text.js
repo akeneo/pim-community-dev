@@ -8,7 +8,7 @@
   define, window, process, Packages,
   java, location, Components, FileUtils */
 
-define(['module-config'], function (module) {
+define(['config'], function (module) {
     'use strict';
 
     var text, fs, Cc, Ci, xpcIsWindows,

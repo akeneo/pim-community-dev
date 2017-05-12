@@ -1,4 +1,4 @@
-define(['module-config', 'underscore', 'translator', 'json'],
+define(['config', 'underscore', 'translator', 'json'],
 function (module, _, Translator) {
     'use strict';
     

@@ -10,7 +10,7 @@
 define([
         'underscore',
         'pim/saver/base',
-        'module-config',
+        'config',
         'routing',
         'oro/mediator',
         'jquery'

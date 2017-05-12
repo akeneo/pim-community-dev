@@ -1,4 +1,4 @@
-define(['fetchers'], function() {
+define([], function() {
     return {
         config: function() {
             return {
