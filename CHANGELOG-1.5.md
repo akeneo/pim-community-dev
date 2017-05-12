@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-6395: Fix MongoDB query built to fetch products in a LazyCollection
+- PIM:6405: display channel's label instead of channel's code in the completeness panel of the PEF
 
 # 1.5.21 (2017-04-28)
 
