@@ -145,35 +145,6 @@ module.exports = {
                     options: 'PimApp'
                 }]
             },
-            // Expose with original path names instead
-            {
-                test: path.resolve(__dirname, './src/Pim/Bundle/DashboardBundle/Resources/public/js/widget-container.js'),
-                use: [{
-                    loader: 'expose-loader',
-                    options: 'WidgetContainer'
-                }]
-            },
-            {
-                test: path.resolve(__dirname, './src/Pim/Bundle/DashboardBundle/Resources/public/js/last-operations-widget.js'),
-                use: [{
-                    loader: 'expose-loader',
-                    options: 'LastOperationsWidget'
-                }]
-            },
-            {
-                test: path.resolve(__dirname, './src/Pim/Bundle/DashboardBundle/Resources/public/js/completeness-widget.js'),
-                use: [{
-                    loader: 'expose-loader',
-                    options: 'CompletenessWidget'
-                }]
-            },
-            {
-                test: path.resolve(__dirname, './src/Pim/Bundle/AnalyticsBundle/Resources/public/js/patch-fetcher.js'),
-                use: [{
-                    loader: 'expose-loader',
-                    options: 'PatchFetcher'
-                }]
-            },
             {
                 test: path.resolve(__dirname, './web/config/require-polyfill.js'),
                 use: [{

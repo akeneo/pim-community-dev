@@ -2,20 +2,26 @@
     <div class="AknFooter-item last-version"><span>{{ 'pim_analytics.new_patch_available'|trans }}:</span><span></span></div>
 
     <script type="text/javascript">
-        try {
-            var updateServerUrl = '{{ get_update_server_url() }}';
-            window.PatchFetcher.fetch(updateServerUrl).then(function (patch) {
-                var currentVersionName = $('.current-version:first span:last').text();
-                var currentVersion = currentVersionName.split(' ')[0];
-                if (patch !== null && currentVersion < patch) {
-                    window.jQuery('.last-version span:last').text(patch);
-                } else {
-                    window.jQuery('.last-version').remove();
-                }
-            });
-        } catch (err) {
-            window.jQuery('.last-version').remove();
-        }
-
+        require(
+            ['jquery', 'pim/patch-fetcher'],
+            function ($, Fetcher) {
+                $(function() {
+                    try {
+                        var updateServerUrl = '{{ get_update_server_url() }}';
+                        Fetcher.fetch(updateServerUrl).then(function (patch) {
+                            var currentVersionName = $('.current-version:first span:last').text();
+                            var currentVersion = currentVersionName.split(' ')[0];
+                            if (patch !== null && currentVersion < patch) {
+                                $('.last-version span:last').text(patch);
+                            } else {
+                                $('.last-version').remove();
+                            }
+                        });
+                    } catch (err) {
+                        $('.last-version').remove();
+                    }
+                });
+            }
+        );
     </script>
 {% endif %}

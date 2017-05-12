@@ -6,8 +6,16 @@
     <table id="last-operations-widget" class="AknGrid AknGrid--unclickable"></table>
 
     <script type="text/javascript">
-        var options = {el: '#last-operations-widget', alias: 'last_operations'};
-        var widget = window.WidgetContainer.getWidget(options, window.LastOperationsWidget);
-        widget.render().delayedLoad();
+        require(
+            ['jquery', 'pim/dashboard/widget-container', 'pim/dashboard/last-operations-widget'],
+            function ($, widgetContainer, LastOperationsWidget) {
+                'use strict';
+                $(function () {
+                    var options = {el: '#last-operations-widget', alias: 'last_operations'};
+                    var widget = widgetContainer.getWidget(options, LastOperationsWidget);
+                    widget.render().delayedLoad();
+                });
+            }
+        );
     </script>
 {% endset %}

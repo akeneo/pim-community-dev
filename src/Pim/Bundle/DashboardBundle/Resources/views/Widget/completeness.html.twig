@@ -6,8 +6,16 @@
     <div id="completeness-widget" class="completeness-widget"></div>
 
     <script type="text/javascript">
-        var options = {el: '#completeness-widget', alias: 'completeness'};
-        var widget = window.WidgetContainer.getWidget(options, window.CompletenessWidget);
-        widget.render().delayedLoad();
+        require(
+            ['jquery', 'pim/dashboard/widget-container', 'pim/dashboard/completeness-widget'],
+            function ($, widgetContainer, CompletenessWidget) {
+                'use strict';
+                $(function () {
+                    var options = {el: '#completeness-widget', alias: 'completeness'};
+                    var widget = widgetContainer.getWidget(options, CompletenessWidget);
+                    widget.render().delayedLoad();
+                });
+            }
+        );
     </script>
 {% endset %}
