@@ -60,7 +60,8 @@ stage("Checkout") {
                 unstash "pim_community_dev"
 
                 sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
-                sh "app/console oro:requirejs:generate-config"
+                sh "node config-generator"
+                sh "npm run wp"
                 sh "app/console assets:install"
 
                 stash "pim_community_dev_full"

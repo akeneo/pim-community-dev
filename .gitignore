@@ -36,3 +36,5 @@ node_modules/
 .grunt/
 
 npm-debug.log
+
+web/dist/app.min.js
