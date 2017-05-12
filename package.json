@@ -32,7 +32,7 @@
   "scripts": {
     "test": "grunt test",
     "generate": "node config-generator.js",
-    "wp": "webpack --config webpack.config.js"
+    "webpack": "webpack --display-reasons --display-error-details --display-modules --config webpack.config.js"
   },
   "repository": {
     "type": "git",

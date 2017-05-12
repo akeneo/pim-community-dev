@@ -70,7 +70,7 @@ stage("Checkout") {
 
                 sh "npm install --verbose"
                 sh "npm run generate"
-                sh "npm run wp"
+                sh "npm run webpack"
 
                 stash "pim_community_dev_full"
             }
