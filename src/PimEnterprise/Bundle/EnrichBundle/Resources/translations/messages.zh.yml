@@ -189,6 +189,5 @@ job_execution.summary:
   mass_unpublished: 产品已撤回
   proposal: 提案已创建
   proposal_deleted: 已被删除
-pim_assets_collection: 资源集合
 pim_enrich_attribute_form:
   isReadOnly: 只读

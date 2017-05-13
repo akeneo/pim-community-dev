@@ -192,6 +192,5 @@ job_execution.summary:
   mass_unpublished: Produktveröffentlichung entzogen
   proposal: Vorschlag erstellt
   proposal_deleted: gelöscht
-pim_assets_collection: Sammlung von Assets
 pim_enrich_attribute_form:
   isReadOnly: Nur Lesezugriff

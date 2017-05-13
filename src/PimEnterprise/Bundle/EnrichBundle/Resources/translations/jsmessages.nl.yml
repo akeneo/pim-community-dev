@@ -82,3 +82,10 @@ pimee_enrich:
       options: Opties
     resolution:
       title: Resolutie
+pim_menu:
+  item:
+    asset: Kenmerken
+    asset_category: Kenmerk categorieën
+    proposal: Voorstellen
+    published_product: Gepubliceerde producten
+    rule: Regels
