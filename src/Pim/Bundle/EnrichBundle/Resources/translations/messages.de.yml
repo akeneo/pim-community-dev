@@ -269,9 +269,8 @@ pim_enrich:
         label: Wählen Sie den Referenz-Datentyp
 attribute:
   title: Attribut
-  overview: Attribute Übersicht
-  create: Attribut anlegen
   edit: Attribut bearbeiten
+  create: Attribut anlegen
 attribute group:
   title: Attributgruppe
   overview: Attributgruppen Übersicht
@@ -723,25 +722,6 @@ Current tab: Aktueller Reiter
 Group: Gruppe
 View group: Gruppe ansehen
 Products: Produkte
-pim_menu:
-  tab:
-    collect: Sammeln
-    enrich: Anreichern
-    settings: Einstellungen
-    spread: Ausleiten
-  item:
-    association_type: Verbindungstypen
-    attribute: Attribute
-    attribute_group: Attributgruppen
-    category: Kategorien
-    channel: Ausgabekanäle
-    currency: Währungen
-    family: Produktfamilien
-    group: Gruppen
-    group_type: Gruppentypen
-    locale: Gebietsschemata
-    product: Produkte
-    variant_group: Variantengruppen
 Properties: Eigenschaften
 History: Historie
 pane.accordion:

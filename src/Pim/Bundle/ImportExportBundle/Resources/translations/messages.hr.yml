@@ -96,12 +96,6 @@ flash:
     removed: Uvoz je uklonjen
     updated: Uvoz je uspješno ažuriran
     running: Uvoz se izvodi
-pim_menu:
-  item:
-    export_history: Povijest izvoza
-    export_profile: Izvoz profila
-    import_history: Povijest izvoza
-    import_profile: Uvoz profila
 General properties: Opća svojstva
 History: Povijest
 pane.accordion:

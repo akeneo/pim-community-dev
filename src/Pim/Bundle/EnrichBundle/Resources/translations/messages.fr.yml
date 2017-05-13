@@ -269,9 +269,8 @@ pim_enrich:
         label: Choisir un type de données référentielles
 attribute:
   title: attribut
-  overview: Liste des attributs
-  create: Créer un attribut
   edit: Modifier un attribut
+  create: Créer un attribut
 attribute group:
   title: groupe d'attributs
   overview: Liste des groupes d'attributs
@@ -723,25 +722,6 @@ Current tab: Onglet actif
 Group: Groupe
 View group: Afficher le groupe
 Products: Produits
-pim_menu:
-  tab:
-    collect: Collecter
-    enrich: Enrichir
-    settings: Paramètres
-    spread: Diffuser
-  item:
-    association_type: Types d'association
-    attribute: Attributs
-    attribute_group: Groupes d'attributs
-    category: Catégories
-    channel: Canaux
-    currency: Devises
-    family: Familles
-    group: Groupes
-    group_type: Types de groupe
-    locale: Locales
-    product: Produits
-    variant_group: Groupes de variantes
 Properties: Propriétés
 History: Historique
 pane.accordion:

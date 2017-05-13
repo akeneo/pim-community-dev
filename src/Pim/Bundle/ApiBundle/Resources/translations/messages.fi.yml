@@ -2,6 +2,8 @@ pim_api:
   acl:
     attribute:
       list: Listaa attribuutit
+    attribute_group:
+      list: Listaa määriteryhmät
     category:
       list: Listaa kategoriat
     family:
@@ -10,6 +12,7 @@ pim_api:
     locale.list: Lista lokaatioista
   acl_group:
     attribute: Attribuutit
+    attribute_group: Attribuuttiryhmät
     category: Kategoriat
     family: Perheet
     channel: Kanavat

@@ -255,9 +255,8 @@ pim_enrich:
         label: Wybierz typ danych referencyjnych
 attribute:
   title: atrybut
-  overview: Przegląd atrybutów
-  create: utwórz atrybut
   edit: edytuj atrybut
+  create: utwórz atrybut
 attribute group:
   title: grupa atrybutów
   overview: Przegląd grup atrybutów
@@ -705,25 +704,6 @@ Current tab: Bieżąca karta
 Group: Grupa
 View group: Zobacz grupę
 Products: Produkty
-pim_menu:
-  tab:
-    collect: Gromadzenie
-    enrich: Uzupełnianie
-    settings: Ustawienia
-    spread: Propagowanie
-  item:
-    association_type: Typy powiązań
-    attribute: Atrybuty
-    attribute_group: Grupy Atrybutów
-    category: Kategorie
-    channel: Kanały
-    currency: Waluty
-    family: Rodziny
-    group: Grupy
-    group_type: Typy grup
-    locale: Ustawienia regionalne
-    product: Produkty
-    variant_group: Grupy wariantów
 Properties: Właściwości
 History: Historia
 pane.accordion:

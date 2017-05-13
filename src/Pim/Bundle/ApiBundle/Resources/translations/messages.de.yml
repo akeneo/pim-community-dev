@@ -7,6 +7,8 @@ pim_api:
     attribute_option:
       edit: Erstellen und Aktualisieren von Attributoptionen
       list: Attributoptionen auflisten
+    attribute_group:
+      list: Attributgruppen auflisten
     category:
       edit: Erstellen und Aktualisieren von Kategorien
       list: Kategorien auflisten
@@ -19,6 +21,7 @@ pim_api:
     overall_access: Gesamtzugriff Web-API
     attribute: Attribute
     attribute_option: Attributoptionen
+    attribute_group: Attributgruppen
     category: Kategorien
     family: Produktfamilien
     channel: Ausgabekanäle
