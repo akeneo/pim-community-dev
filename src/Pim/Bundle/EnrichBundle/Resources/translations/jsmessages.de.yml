@@ -274,6 +274,21 @@ pim_enrich:
         updated_by: Aktualisiert von
       btn:
         save: Speichern
+    attribute_label:
+      pim_catalog_identifier: Kennung
+      pim_catalog_text: Text
+      pim_catalog_textarea: Textbereich
+      pim_catalog_number: Nummer
+      pim_catalog_price_collection: Preis
+      pim_catalog_multiselect: Mehrfachauswahl
+      pim_catalog_simpleselect: Einfachauswahl
+      pim_catalog_file: Datei
+      pim_catalog_image: Abbildung
+      pim_catalog_boolean: "Ja/Nein"
+      pim_catalog_date: Datum
+      pim_catalog_metric: Maßeinheit
+      pim_reference_data_simpleselect: Referenz-Datentyp Einfachauswahl
+      pim_reference_data_multiselect: Referenz-Datentyp Mehrfachauswahl
     attribute_option:
       code: Code
       label: Bezeichnung
@@ -782,6 +797,8 @@ pim_enrich:
     channel:
       title: Übersicht Ausgabekanäle
       create_btn: Ausgabekanal anlegen
+    attribute:
+      modal_title: Wählen Sie den Attributtyp aus
 pim_enrich.error:
   exception.title: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
 page_title:
@@ -846,3 +863,40 @@ batch_jobs:
     label: Zu einer Variantengruppe hinzufügen
     perform:
       label: Zu einer Variantengruppe hinzufügen
+pim_menu:
+  tab:
+    collect: Sammeln
+    enrich: Anreichern
+    settings: Einstellungen
+    system: System
+    spread: Ausleiten
+  item:
+    association_type: Verbindungstypen
+    attribute: Attribute
+    attribute_group: Attributgruppen
+    category: Kategorien
+    channel: Ausgabekanäle
+    currency: Währungen
+    family: Produktfamilien
+    group: Gruppen
+    group_type: Gruppentypen
+    locale: Gebietsschemata
+    product: Produkte
+    variant_group: Variantengruppen
+    export_history: Export-Historie
+    export_profile: Export-Profile
+    import_history: Import-Historie
+    import_profile: Import-Profile
+    configuration: Konfiguration
+    user_management: Benutzerverwaltung
+    user: Benutzer
+    user_group: Gruppen
+    user_role: Rollen
+    info: Systeminformationen
+    job_tracker: Prozess-Tracker
+pim_header:
+  user:
+    logout: Abmelden
+    user_account: Mein Konto
+pim_notification:
+  mark_all_as_read: Alle als gelesen markieren

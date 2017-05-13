@@ -98,12 +98,6 @@ flash:
     removed: De import is verwijderd
     updated: De import is succesvol bijgewerkt
     running: De import is bezig
-pim_menu:
-  item:
-    export_history: Exportgeschiedenis
-    export_profile: Exportprofielen
-    import_history: Importgeschiedenis
-    import_profile: Importprofielen
 General properties: Algemene eigenschappen
 History: Geschiedenis
 pane.accordion:

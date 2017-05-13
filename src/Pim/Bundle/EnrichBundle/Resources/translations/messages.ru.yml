@@ -269,9 +269,8 @@ pim_enrich:
         label: Выберите ссылочный тип данных
 attribute:
   title: атрибут
-  overview: обзор атрибутов
-  create: создать атрибут
   edit: редактировать атрибут
+  create: создать атрибут
 attribute group:
   title: группа атрибутов
   overview: Обзор групп атрибутов
@@ -723,25 +722,6 @@ Current tab: Текущая вкладка
 Group: Группа
 View group: Посмотреть группу
 Products: Продукты
-pim_menu:
-  tab:
-    collect: Собрать данные
-    enrich: Дополнить данные
-    settings: Настройки
-    spread: Распространить данные
-  item:
-    association_type: Типы ассоциаций
-    attribute: Атрибуты
-    attribute_group: Группы атрибутов
-    category: Категории
-    channel: Каналы
-    currency: Валюты
-    family: Семейства
-    group: Группы
-    group_type: Типы групп
-    locale: Локали
-    product: Продукты
-    variant_group: Вариативные группы
 Properties: Свойства
 History: Журнал
 pane.accordion:

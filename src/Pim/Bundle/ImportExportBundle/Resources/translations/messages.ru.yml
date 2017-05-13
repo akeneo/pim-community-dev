@@ -99,12 +99,6 @@ flash:
     removed: Импорт был успешно удален
     updated: Импорт был успешно обновлен
     running: Выполняется импорт
-pim_menu:
-  item:
-    export_history: История экспорта
-    export_profile: Профили экспорта
-    import_history: История импорта
-    import_profile: Профили импорта
 General properties: Общие свойства
 History: Журнал
 pane.accordion:
