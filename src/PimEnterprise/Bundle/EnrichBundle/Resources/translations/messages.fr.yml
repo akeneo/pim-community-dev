@@ -192,6 +192,5 @@ job_execution.summary:
   mass_unpublished: Produit dépublié
   proposal: Proposition(s) créée(s)
   proposal_deleted: supprimé
-pim_assets_collection: Collection de ressources
 pim_enrich_attribute_form:
   isReadOnly: Lecture seule

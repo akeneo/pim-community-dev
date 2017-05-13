@@ -13,6 +13,10 @@ permission-changes:
   job profile:
     grant: Die Gruppe <strong>{{ group }}</strong> wird <strong>{{ permission }}</strong> sein
     revoke: Die Gruppe <strong>{{ group }}</strong> wird nicht <strong>{{ permission }}</strong> sein
+pim_enrich:
+  entity:
+    attribute_label:
+      pim_assets_collection: Sammlung von Assets
 pimee_enrich:
   form:
     job_instance:
@@ -138,3 +142,10 @@ pimee_enrich:
       options:
         width: '%value%px Breite'
         height: '%value%px Höhe'
+pim_menu:
+  item:
+    asset: Assets
+    asset_category: Assetkategorien
+    proposal: Vorschläge
+    published_product: Veröffentlichte Produkte
+    rule: Regeln
