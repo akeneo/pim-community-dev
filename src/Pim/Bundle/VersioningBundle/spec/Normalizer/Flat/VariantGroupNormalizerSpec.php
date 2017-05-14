@@ -9,7 +9,6 @@ use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class VariantGroupNormalizerSpec extends ObjectBehavior
