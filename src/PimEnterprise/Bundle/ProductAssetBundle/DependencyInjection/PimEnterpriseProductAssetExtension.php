@@ -49,7 +49,6 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('datagrid/listeners.yml');
         $loader->load('datagrid/selectors.yml');
         $loader->load('datagrid_handlers.yml');
-        $loader->load('denormalizers.yml');
         $loader->load('events.yml');
         $loader->load('factories.yml');
         $loader->load('filters.yml');
