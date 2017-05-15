@@ -23,7 +23,7 @@ define(
                             return;
                         }
 
-                        PageTitle.set({'attribute group.identifier': _.escape(attributeGroup.labels[UserContext.get('catalogLocale')]) });
+                        PageTitle.set({'group.label': _.escape(attributeGroup.labels[UserContext.get('catalogLocale')]) });
 
                         FormBuilder.build('pim-attribute-group-edit-form')
                             .then(function (form) {

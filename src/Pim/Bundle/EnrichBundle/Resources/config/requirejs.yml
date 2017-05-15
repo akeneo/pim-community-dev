@@ -798,6 +798,7 @@ config:
         # Product add select
         pim/product/add-select/attribute:      pimenrich/js/product/form/attributes/add-select/attribute/select
         pim/product/add-select/attribute/line: pimenrich/js/product/form/attributes/add-select/attribute/line
+        pim/attribute-group/add-select/attribute: pimenrich/js/attribute-group/form/tab/select
 
         # Formatters
         pim/formatter/choices/base: pimenrich/js/formatter/choices/base

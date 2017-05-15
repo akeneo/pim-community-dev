@@ -40,14 +40,14 @@ class AttributeGroupNormalizer implements NormalizerInterface
     {
         $standardAttributeGroup = $this->normalizer->normalize($attributeGroup, 'standard', $context);
 
-        $standardAttributeGroup['attributes'] = $this->attributeRepository->findBy(
+        $attributes = $this->attributeRepository->findBy(
             ['code' => $standardAttributeGroup['attributes']]
         );
-
-        $standardAttributeGroup['attributes'] = array_map(function (AttributeInterface $attribute) {
-            return $this->normalizer->normalize($attribute, 'standard');
-        }, $standardAttributeGroup['attributes']);
-
+        $sortOrder = [];
+        foreach ($attributes as $attribute) {
+            $sortOrder[$attribute->getCode()] = $attribute->getSortOrder();
+        }
+        $standardAttributeGroup['attributes_sort_order'] = $sortOrder;
         $standardAttributeGroup['meta'] = [
             'id' => $attributeGroup->getId()
         ];

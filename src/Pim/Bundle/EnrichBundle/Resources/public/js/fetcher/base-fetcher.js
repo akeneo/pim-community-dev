@@ -95,7 +95,8 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
          *
          * @return {Promise}
          */
-        fetchByIdentifiers: function (identifiers) {
+        fetchByIdentifiers: function (identifiers, options) {
+            options = options || {};
             if (0 === identifiers.length) {
                 return $.Deferred().resolve([]).promise();
             }
@@ -106,7 +107,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
             }
 
             return $.when(
-                    this.getJSON(this.options.urls.list, { identifiers: uncachedIdentifiers.join(',') })
+                    this.getJSON(this.options.urls.list, _.extend({ identifiers: uncachedIdentifiers.join(',') }, options))
                         .then(_.identity),
                     this.getIdentifierField()
                 ).then(function (entities, identifierCode) {

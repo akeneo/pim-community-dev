@@ -221,6 +221,9 @@ pim_enrich:
                     family: Choose a family
                     save: Save
                     cancel: Cancel
+        attribute:
+            scopable: Scopable
+            global: Global
         association_type:
             info:
                 deletion_successful: Association type successfully deleted.
@@ -341,12 +344,17 @@ pim_enrich:
             info:
                 update_failed: The job profile could not be updated.
                 update_successful: The job profile has been successfully updated.
+        attribute_group:
+            info:
+                update_failed: Attribute group could not be updated
+                update_successful: Attribute group successfully updated
     confirmation:
         leave:           Are you sure you want to leave this page?
         discard_changes: You will lose changes to the {{ entity }} if you leave the page.
         delete_item:     Confirm deletion
         delete:
             attribute: Are you sure you want to delete this attribute from the product?
+            attribute_group: Are you sure you want to remove the attribute {{ attribute }} from this attribute group?
     info:
         not_applicable: N/A
         entity:
@@ -505,6 +513,21 @@ pim_enrich:
                     title: History
                 products:
                     title: Products
+        attribute_group:
+            tab:
+                properties:
+                    title: Properties
+                    general: General properties
+                    code: Code
+                    label_translations: Label translations
+                attribute:
+                    title: Attributes
+                    table:
+                        name: Name
+                        type: Type
+                        scope: Scope
+                        localizable: Localizable
+                history.title: History
         common:
             tab:
                 attributes:

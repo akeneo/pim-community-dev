@@ -83,6 +83,9 @@ class AttributeController
         if ($request->request->has('attribute_groups')) {
             $options['attribute_groups'] = explode(',', $request->request->get('attribute_groups'));
         }
+        if ($request->request->has('rights')) {
+            $options['rights'] = (bool) $request->request->get('rights');
+        }
 
         if (empty($options)) {
             $options = $request->request->get(
@@ -100,7 +103,6 @@ class AttributeController
         );
 
         $normalizedAttributes = $this->normalizer->normalize($attributes, 'internal_api', $context);
-
         return new JsonResponse($normalizedAttributes);
     }
 

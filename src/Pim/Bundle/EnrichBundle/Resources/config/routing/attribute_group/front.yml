@@ -7,7 +7,7 @@ pim_enrich_attributegroup_create:
     defaults: { _controller: pim_enrich.controller.attribute_group:createAction }
 
 pim_enrich_attributegroup_edit:
-    path: /{identifier}/edit
+    path: /{identifier}
     requirements:
         identifier: '[a-zA-Z0-9_]+'
 
@@ -37,22 +37,3 @@ pim_enrich_attributegroup_removeattribute:
         groupId: \d+
         attributeId: \d+
     methods: [DELETE]
-
-pim_enrich_attributegroup_rest_index:
-    path: /rest
-    defaults: { _controller: pim_enrich.controller.rest.attribute_group:indexAction }
-    methods: [GET, POST]
-
-pim_enrich_attributegroup_rest_get:
-    path: /rest/{identifier}
-    defaults: { _controller: pim_enrich.controller.rest.attribute_group:getAction }
-    methods: [GET]
-    requirements:
-        identifier: '[a-zA-Z0-9_]+'
-
-pim_enrich_attributegroup_rest_post:
-    path: /rest/{identifier}
-    defaults: { _controller: pim_enrich.controller.rest.attribute_group:postAction }
-    methods: [POST]
-    requirements:
-        identifier: '[a-zA-Z0-9_]+'

@@ -110,7 +110,17 @@ extensions:
         targetZone: container
         position: 120
         config:
-            label: pim_enrich.form.attribute_group.tab.attribute.title
+            title: pim_enrich.form.attribute_group.tab.attribute.title
+            confirmation:
+                title: pim_enrich.confirmation.delete_item
+                message: pim_enrich.confirmation.delete.attribute_group
+            removeAttributeACL: pim_enrich_attributegroup_remove_attribute
+
+    pim-attribute-group-edit-form-attribute-add-attribute:
+        module: pim/attribute-group/add-select/attribute
+        parent: pim-attribute-group-edit-form-attribute
+        targetZone: actions
+        aclResourceId: pim_enrich_attributegroup_add_attribute
 
     pim-attribute-group-edit-form-history:
         module: pim/common/tab/history

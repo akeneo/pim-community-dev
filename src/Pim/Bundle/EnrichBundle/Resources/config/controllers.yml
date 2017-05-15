@@ -299,6 +299,10 @@ services:
             - '@pim_catalog.updater.attribute_group'
             - '@validator'
             - '@pim_catalog.saver.attribute_group'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@pim_catalog.saver.attribute'
+            - '@oro_security.security_facade'
 
     pim_enrich.controller.rest.category:
         class: '%pim_enrich.controller.rest.category.class%'
