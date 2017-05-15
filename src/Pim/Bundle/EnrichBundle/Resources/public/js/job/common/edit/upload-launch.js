@@ -45,7 +45,7 @@ define(
                     var formData = new FormData();
                     formData.append('file', this.getFormData().file);
 
-                    this.showLoadingMask();
+                    router.showLoadingMask();
 
                     $.ajax({
                         url: this.getUrl(),
@@ -61,7 +61,7 @@ define(
                     .fail(function () {
                         messenger.notificationFlashMessage('error', __('pim_enrich.form.job_instance.fail.launch'));
                     })
-                    .always(this.hideLoadingMask.bind(this));
+                    .always(router.hideLoadingMask());
                 } else {
                     $.post(this.getUrl(), {method: 'POST'}).
                         then(function (response) {
