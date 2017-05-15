@@ -1,3 +1,9 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-6400: Fix MongoDB query done to remove an asset from normalized data
+
 # 1.5.21 (2017-04-28)
 
 ## Bug fixes
