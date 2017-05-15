@@ -13,7 +13,7 @@ define([
              * {@inheritdoc}
              */
             configure: function () {
-                _.each(module.config().events, function (event) {
+                _.each(module.config(__moduleName).events, function (event) {
                     this.listenTo(mediator, event, this.checkStructureVersion);
                 }.bind(this));
 

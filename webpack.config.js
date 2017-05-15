@@ -68,24 +68,24 @@ const importedPaths = getImportPaths()
 
 const importPaths = Object.assign(importedPaths.paths, {
     text: 'text-loader',
-    'pimuser/js/init-signin': path.resolve(__dirname, './src/Pim/Bundle/UserBundle/Resources/public/js/init-signin.js'),
-    'bootstrap-modal': path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/bootstrap-modal.js'),
-    summernote: path.resolve(__dirname, './node_modules/summernote/dist/summernote.min.js'),
-    'translator-lib': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/lib/translator.js'),
-    translator: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/translator.js'),
-    'config': path.resolve(__dirname, './web/config/module-config.js'),
-    'fos-routing-base': path.resolve(__dirname, './vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js'),
-    routing: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/fos-routing-wrapper.js'),
-    routes: path.resolve(__dirname, './web/js/routes.js'),
-    'pim/datagrid-view-fetcher': path.resolve(__dirname, './src/Pim/Bundle/DataGridBundle/Resources/public/js/fetcher/datagrid-view-fetcher.js'),
-    'controllers': path.resolve(__dirname, './web/config/controllers.js'),
-    'require-polyfill': path.resolve(__dirname, './web/config/require-polyfill.js'),
-    'pim-router': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/router.js'),
-    'paths': path.resolve(__dirname, './web/config/paths.js'),
-    'CodeMirror': path.resolve(__dirname, './node_modules/codemirror/lib/codemirror.js'),
-    'fetcher-list': path.resolve(__dirname, './web/config/fetchers.js'),
-    'require-context': path.resolve(__dirname, './web/config/require-context.js'),
-    'general': path.resolve(__dirname, './web/config/general.js')
+    'pimuser/js/init-signin': path.resolve(__dirname, './src/Pim/Bundle/UserBundle/Resources/public/js/init-signin'),
+    'bootstrap-modal': path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/bootstrap-modal'),
+    summernote: path.resolve(__dirname, './node_modules/summernote/dist/summernote.min'),
+    'translator-lib': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/lib/translator'),
+    translator: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/translator'),
+    'config': path.resolve(__dirname, './web/config/module-config'),
+    'fos-routing-base': path.resolve(__dirname, './vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router'),
+    routing: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/fos-routing-wrapper'),
+    routes: path.resolve(__dirname, './web/js/routes'),
+    'pim/datagrid-view-fetcher': path.resolve(__dirname, './src/Pim/Bundle/DataGridBundle/Resources/public/js/fetcher/datagrid-view-fetcher'),
+    'controllers': path.resolve(__dirname, './web/config/controllers'),
+    'require-polyfill': path.resolve(__dirname, './web/config/require-polyfill'),
+    'pim-router': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/router'),
+    'paths': path.resolve(__dirname, './web/config/paths'),
+    'CodeMirror': path.resolve(__dirname, './node_modules/codemirror/lib/codemirror'),
+    'fetcher-list': path.resolve(__dirname, './web/config/fetchers'),
+    'require-context': path.resolve(__dirname, './web/config/require-context'),
+    'general': path.resolve(__dirname, './web/config/general')
 })
 
 
@@ -117,6 +117,13 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+                test: /\.js$/,
+                use: [{
+                    loader: path.resolve('./config-loader'),
+                    options: { }
+                }]
+            },
             {
                 test: /\.html$/,
                 use: [{

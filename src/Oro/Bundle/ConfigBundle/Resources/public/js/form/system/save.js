@@ -53,7 +53,7 @@ define([
              * {@inheritdoc}
              */
             getSaveUrl: function () {
-                return Routing.generate(module.config().route);
+                return Routing.generate(module.config(__moduleName).route);
             },
 
             /**

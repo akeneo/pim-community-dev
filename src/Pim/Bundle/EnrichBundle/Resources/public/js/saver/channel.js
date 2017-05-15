@@ -28,10 +28,10 @@ define([
              */
             getUrl: function (code) {
                 if (null === code) {
-                    return Routing.generate(module.config().postUrl);
+                    return Routing.generate(module.config(__moduleName).postUrl);
                 }
 
-                return Routing.generate(module.config().putUrl, {code: code});
+                return Routing.generate(module.config(__moduleName).putUrl, {code: code});
             },
 
             /**

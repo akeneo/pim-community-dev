@@ -16,7 +16,7 @@ define([
              * {@inheritdoc}
              */
             getUrl: function (id) {
-                return Routing.generate(module.config().url, {id: id});
+                return Routing.generate(module.config(__moduleName).url, {id: id});
             }
         });
     }

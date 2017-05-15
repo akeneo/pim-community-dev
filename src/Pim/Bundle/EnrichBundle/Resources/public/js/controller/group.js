@@ -16,7 +16,7 @@ define(
     function (_, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, Error, i18n, module) {
         return BaseController.extend({
             initialize: function () {
-                this.config = module.config();
+                this.config = module.config(__moduleName);
             },
 
             /**

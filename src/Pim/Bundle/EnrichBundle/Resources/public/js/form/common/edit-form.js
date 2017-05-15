@@ -40,8 +40,8 @@ define(
                 mediator.clear('pim_enrich:form');
                 Backbone.Router.prototype.once('route', this.unbindEvents);
 
-                if (_.has(module.config(), 'forwarded-events')) {
-                    this.forwardMediatorEvents(module.config()['forwarded-events']);
+                if (_.has(module.config(__moduleName), 'forwarded-events')) {
+                    this.forwardMediatorEvents(module.config(__moduleName)['forwarded-events']);
                 }
 
                 this.onExtensions('save-buttons:register-button', function (button) {

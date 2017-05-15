@@ -20,7 +20,7 @@ define([
              * @returns {Promise}
              */
             save: function (datagridView, gridAlias) {
-                var saveRoute = Routing.generate(module.config().url, {alias: gridAlias});
+                var saveRoute = Routing.generate(module.config(__moduleName).url, {alias: gridAlias});
 
                 return $.post(saveRoute, {view: datagridView});
             }

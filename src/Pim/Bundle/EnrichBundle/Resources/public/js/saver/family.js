@@ -23,7 +23,7 @@ define([
              * {@inheritdoc}
              */
             getUrl: function (code) {
-                return Routing.generate(module.config().putUrl, {code: code});
+                return Routing.generate(module.config(__moduleName).putUrl, {code: code});
             }
         });
     }

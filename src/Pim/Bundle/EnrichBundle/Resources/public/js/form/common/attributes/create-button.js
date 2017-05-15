@@ -54,7 +54,7 @@ define(
             createModal: function (attributeTypesMap) {
                 var attributeTypes = this.formatAndSortAttributeTypesByLabel(attributeTypesMap);
 
-                var moduleConfig = module.config()['pim/form/common/attributes/create-button'];
+                var moduleConfig = module.config(__moduleName);
 
                 var modal = null;
                 var modalContent = this.templateModal({

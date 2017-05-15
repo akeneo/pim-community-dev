@@ -8,7 +8,7 @@ define(
     function (BaseController, module) {
         return BaseController.extend({
             initialize: function () {
-                this.config = module.config();
+                this.config = module.config(__moduleName);
             }
         });
     }
