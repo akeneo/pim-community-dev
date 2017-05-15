@@ -3,6 +3,7 @@
 ## Bug Fixes
 
 - PIM-6394: Fix email validation when creating a user in order to be less restrictive
+- GITHUB-6161: Fix JobInstance class hardcoded in `Akeneo\Bundle\BatchBundle\Command\BatchCommand::execute`
 
 # 1.7.4 (2017-05-10)
 
@@ -17,7 +18,6 @@
 - PIM-6381: Fix `Delete` button is visible on channel create screen
 - PIM-6398: Fix Summernote (WYSIWYG) style (backport GITHUB-6101 into 1.7)
 - PIM-6402: Clean attribute properties according to new validation rules during migration
-- PIM-6159: Fix JobInstance class hardcoded in Akeneo\Bundle\BatchBundle\Command\BatchCommand::execute
 
 # 1.7.3 (2017-04-14)
 
