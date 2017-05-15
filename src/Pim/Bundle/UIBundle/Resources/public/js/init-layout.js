@@ -89,7 +89,7 @@ define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/me
 
         var adjustReloaded = function () {
             content = false;
-            adjustHeight();
+            // adjustHeight();
         };
 
         if (!anchor.length) {
@@ -108,11 +108,11 @@ define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/me
             if (debugBar.length) {
                 waitForDebugBar();
             } else {
-                adjustHeight();
+                // adjustHeight();
             }
         });
 
-        $(window).on('resize', adjustHeight);
+        // $(window).on('resize', adjustHeight);
 
         mediator.bind('route_complete', adjustReloaded);
 
