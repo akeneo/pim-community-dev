@@ -23,8 +23,8 @@
                     </div>
                     <script>
                         require(
-                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error'],
-                            function($, FetcherRegistry, FormBuilder, UserContext, Dialog, mediator, Error) {
+                            ['underscore', 'jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error'],
+                            function(_, $, FetcherRegistry, FormBuilder, UserContext, Dialog, mediator, Error) {
                                 $(function() {
                                     FetcherRegistry.initialize().done(function () {
                                         FetcherRegistry.getFetcher('association-type').fetch('{{ code }}', {cached: false, generateMissing: true})

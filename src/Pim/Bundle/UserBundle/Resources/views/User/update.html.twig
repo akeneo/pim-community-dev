@@ -12,8 +12,8 @@
 
 {% block head_script %}
     <script type="text/javascript">
-        require(['jquery', 'pim/initselect2', 'datepicker', 'pim/date-context', 'jquery.jstree', 'jstree/jquery.hotkeys'],
-        function ($, initSelect2, datepicker, dateContext) {
+        require(['underscore', 'jquery', 'pim/initselect2', 'datepicker', 'pim/date-context', 'jquery.jstree', 'jstree/jquery.hotkeys'],
+        function (_, $, initSelect2, datepicker, dateContext) {
             $(function() {
                 $('#{{ form.vars.id }}').find('select').addClass('select2');
                 initSelect2.init($('#{{ form.vars.id }}'));
