@@ -1,7 +1,0 @@
-services:
-    pim_navigation.saver.navigation_history_item:
-        class: '%pim_catalog.saver.base.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@event_dispatcher'
-            - '%oro_navigation.entity.navigation_history_item.class%'

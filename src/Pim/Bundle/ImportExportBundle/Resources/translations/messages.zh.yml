@@ -96,12 +96,6 @@ flash:
     removed: 导入已被删除
     updated: 导入已成功更新
     running: 导入正在进行
-pim_menu:
-  item:
-    export_history: 导出历史
-    export_profile: 导出配置文件
-    import_history: 导入历史
-    import_profile: 导入方案
 General properties: 常规属性
 History: 历史
 pane.accordion:

@@ -55,7 +55,13 @@ class WebUser extends RawMinkContext
     public function iCreateANew($entity)
     {
         $entity = implode('', array_map('ucfirst', explode(' ', $entity)));
-        $this->getPage(sprintf('%s index', $entity))->clickCreationLink();
+
+        $this->spin(function () use ($entity) {
+            $this->getPage(sprintf('%s index', $entity))->clickCreationLink();
+
+            return true;
+        }, sprintf('Cannot create a new %s', $entity));
+
         $this->getNavigationContext()->currentPage = sprintf('%s creation', $entity);
         $this->wait();
     }
@@ -82,7 +88,7 @@ class WebUser extends RawMinkContext
      */
     public function iChooseTheAttributeType($type)
     {
-        $this->getCurrentPage()->clickLink($type);
+        $this->getCurrentPage()->selectAttributeType($type);
         $this->wait();
     }
 
@@ -1440,14 +1446,22 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $button
+     * $modalWait is a temporary solution waiting for Attributes PEFization
+     * TODO Remove the $modalWait parameter after the merge of TIP-732
      *
-     * @Given /^I press the "([^"]*)" button$/
+     * @param string      $button
+     * @param string|null $modalWait
+     *
+     * @Given /^I press the "([^"]*)" button( and wait for modal)?$/
      */
-    public function iPressTheButton($button)
+    public function iPressTheButton($button, $modalWait = null)
     {
-        $this->spin(function () use ($button) {
+        $this->spin(function () use ($button, $modalWait) {
             $this->getCurrentPage()->pressButton($button, true);
+
+            if (null !== $modalWait) {
+                return null !== $this->getCurrentPage()->find('css', '.modal');
+            }
 
             return true;
         }, sprintf("Can not find any '%s' button", $button));

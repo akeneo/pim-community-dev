@@ -1,0 +1,23 @@
+extensions:
+    pim-attribute-index:
+        module: pim/form/common/index/index
+        config:
+            title: pim_enrich.index.attribute.title
+
+    pim-attribute-index-grid:
+        module: pim/form/common/index/grid
+        parent: pim-attribute-index
+        position: 1000
+        targetZone: content
+        config:
+            alias: attribute-grid
+
+    pim-attribute-index-create-button:
+        module: pim/form/common/attributes/create-button
+        parent: pim-attribute-index
+        targetZone: buttons
+        position: 100
+        aclResourceId: pim_enrich_attribute_create
+        config:
+            buttonTitle: pim_enrich.index.attribute.create_btn
+            modalTitle: pim_enrich.index.attribute.modal_title

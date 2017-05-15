@@ -7,6 +7,8 @@ pim_api:
     attribute_option:
       edit: Crea e aggiorna opzioni attributi
       list: Elenca le opzioni degli attributi
+    attribute_group:
+      list: Elenco attributi di gruppo
     category:
       edit: Crea e aggiorna categorie
       list: Lista Categorie
@@ -19,6 +21,7 @@ pim_api:
     overall_access: Accesso globale alle API Web
     attribute: Attributi
     attribute_option: Opzioni degli attributi
+    attribute_group: Gruppi di attributi
     category: Categorie
     family: Famiglie
     channel: Canali

@@ -24,7 +24,7 @@ define(
             var preventFirst       = selectedNode > 0;
             var loadingMask        = new LoadingMask();
 
-            loadingMask.render().$el.appendTo($('#container'));
+            loadingMask.render().$el.appendTo($('#category-tree-container'));
 
             this.config = {
                 core: {

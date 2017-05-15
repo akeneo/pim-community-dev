@@ -17,13 +17,13 @@ Feature: Attribute group creation
 
   Scenario: Successfully delete an attribute group
     Given I am on the "sizes" attribute group page
-    When I press the "Delete" button
+    When I press the "Delete" button and wait for modal
     And I confirm the deletion
     Then I should see the flash message "Attribute group successfully removed"
 
   @javascript @skip
   Scenario: Fail to delete an attribute group that contains attributes
     Given I am on the "colors" attribute group page
-    When I press the "Delete" button
+    When I press the "Delete" button and wait for modal
     And I confirm the deletion
     Then I should see the flash message "Attribute group can't be removed as it contains attributes"

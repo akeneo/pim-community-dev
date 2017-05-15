@@ -252,6 +252,21 @@ pim_enrich:
         updated_by: Actualitzat per
       btn:
         save: Desar
+    attribute_label:
+      pim_catalog_identifier: Identificador
+      pim_catalog_text: Texte
+      pim_catalog_textarea: Àrea de Text
+      pim_catalog_number: Nombre
+      pim_catalog_price_collection: Preu
+      pim_catalog_multiselect: Selecció múltiple
+      pim_catalog_simpleselect: Selecció simple
+      pim_catalog_file: Arxiu
+      pim_catalog_image: Imatge
+      pim_catalog_boolean: "Sí/No"
+      pim_catalog_date: Data
+      pim_catalog_metric: Mètrica
+      pim_reference_data_simpleselect: Selecció simple de dades de referència
+      pim_reference_data_multiselect: Selecció múltiple de dades de referència
     attribute_option:
       code: Codi
       label: Etiqueta
@@ -708,6 +723,8 @@ pim_enrich:
       create_btn: Crear grup
     process_tracker:
       title: Seguiment del procés
+    attribute:
+      modal_title: Trieu el tipus d'atribut
 pim_enrich.error:
   exception.title: Oh no! S'ha produït un error de {{ status_code }}...
 page_title:
@@ -756,3 +773,40 @@ batch_jobs:
     label: Afegir a un grup de variants
     perform:
       label: Afegir a un grup de variants
+pim_menu:
+  tab:
+    collect: Recollir
+    enrich: Enriquir
+    settings: Preferències
+    system: Sistema
+    spread: Dispersió
+  item:
+    association_type: Tipus d'associació
+    attribute: Atributs
+    attribute_group: Grups d'atribut
+    category: Categories
+    channel: Canals
+    currency: Monedes
+    family: Famílies
+    group: Grups
+    group_type: Tipus de grup
+    locale: Configuracions regionals
+    product: Productes
+    variant_group: Grups de variants
+    export_history: Històric d'exportacions
+    export_profile: Perfils d'exportació
+    import_history: Històric d'importacions
+    import_profile: Perfils d'importació
+    configuration: Configuració
+    user_management: Gestió d'usuaris
+    user: Usuaris
+    user_group: Grups
+    user_role: Rols
+    info: Informació del sistema
+    job_tracker: Seguiment del procés
+pim_header:
+  user:
+    logout: Tanca sessió
+    user_account: El meu compte
+pim_notification:
+  mark_all_as_read: Marcar tots com a llegits

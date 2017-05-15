@@ -252,6 +252,21 @@ pim_enrich:
         updated_by: Обновлена
       btn:
         save: Сохранить
+    attribute_label:
+      pim_catalog_identifier: Идентификатор
+      pim_catalog_text: Текст
+      pim_catalog_textarea: Текст
+      pim_catalog_number: Число
+      pim_catalog_price_collection: Цена
+      pim_catalog_multiselect: Множественный выбор
+      pim_catalog_simpleselect: Простой выбор
+      pim_catalog_file: Файл
+      pim_catalog_image: Изображение
+      pim_catalog_boolean: "Да/Нет"
+      pim_catalog_date: Дата
+      pim_catalog_metric: Метрическая
+      pim_reference_data_simpleselect: Простой раскрывающийся список справочныx данныx
+      pim_reference_data_multiselect: Множественный раскрывающийся список справочныx данныx
     attribute_option:
       code: Код
       label: Метка
@@ -703,6 +718,8 @@ pim_enrich:
       create_btn: Создать группу
     process_tracker:
       title: Трекер процессов
+    attribute:
+      modal_title: Выберите тип атрибута
 pim_enrich.error:
   exception.title: Ах, нет! Произошла ошибка {{ status_code }}...
 page_title:
@@ -751,3 +768,40 @@ batch_jobs:
     label: Добавить в группу вариантов
     perform:
       label: Добавить в группу вариантов
+pim_menu:
+  tab:
+    collect: Собрать данные
+    enrich: Дополнить данные
+    settings: Настройки
+    system: Система
+    spread: Распространить данные
+  item:
+    association_type: Типы ассоциаций
+    attribute: Атрибуты
+    attribute_group: Группы атрибутов
+    category: Категории
+    channel: Каналы
+    currency: Валюты
+    family: Семейства
+    group: Группы
+    group_type: Типы групп
+    locale: Локали
+    product: Продукты
+    variant_group: Вариативные группы
+    export_history: История экспорта
+    export_profile: Профили экспорта
+    import_history: История импорта
+    import_profile: Профили импорта
+    configuration: Настройки
+    user_management: Управление пользователями
+    user: Пользователи
+    user_group: Группы
+    user_role: Роли
+    info: Информация о системе
+    job_tracker: Трекер процессов
+pim_header:
+  user:
+    logout: Выйти
+    user_account: Мой аккаунт
+pim_notification:
+  mark_all_as_read: Пометить все как прочитанное

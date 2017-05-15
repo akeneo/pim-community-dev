@@ -269,9 +269,8 @@ pim_enrich:
         label: Triar el tipus de dades de referència
 attribute:
   title: atribut
-  overview: resum de l'atribut
-  create: crear atribut
   edit: editar atribut
+  create: crear atribut
 attribute group:
   title: grup d'atributs
   overview: resum de grup d'atributs
@@ -723,25 +722,6 @@ Current tab: Pestanya actual
 Group: Grup
 View group: Veure grup
 Products: Productes
-pim_menu:
-  tab:
-    collect: Recollir
-    enrich: Enriquir
-    settings: Preferències
-    spread: Dispersió
-  item:
-    association_type: Tipus d'associació
-    attribute: Atributs
-    attribute_group: Grups d'atribut
-    category: Categories
-    channel: Canals
-    currency: Monedes
-    family: Famílies
-    group: Grups
-    group_type: Tipus de grup
-    locale: Configuracions regionals
-    product: Productes
-    variant_group: Grups de variants
 Properties: Propietats
 History: Històric
 pane.accordion:

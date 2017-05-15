@@ -229,6 +229,21 @@ pim_enrich:
         updated: Zaktualizowano
       btn:
         save: Zapisz
+    attribute_label:
+      pim_catalog_identifier: Identyfikator
+      pim_catalog_text: Tekst
+      pim_catalog_textarea: Pole tekstowe
+      pim_catalog_number: Liczba
+      pim_catalog_price_collection: Cena
+      pim_catalog_multiselect: Wielokrotny wybór
+      pim_catalog_simpleselect: Pojedynczy wybór
+      pim_catalog_file: Plik
+      pim_catalog_image: Obrazek
+      pim_catalog_boolean: "Tak/Nie"
+      pim_catalog_date: Data
+      pim_catalog_metric: Miara
+      pim_reference_data_simpleselect: Referencja pojedynczy wybór
+      pim_reference_data_multiselect: Referencja wielokrotny wybór
     attribute_option:
       code: Kod
       label: Etykieta
@@ -584,6 +599,8 @@ pim_enrich:
       create_btn: Utwórz grupę
     process_tracker:
       title: Śledzenie procesu
+    attribute:
+      modal_title: Wybierz typ atrybutu
 pim_enrich.error:
   exception.title: O rany! Wystąpił błąd {{ status_code }}...
 page_title:
@@ -622,3 +639,40 @@ batch_jobs:
     label: Określ wymagania atrybutów
     perform:
       label: Określ wymagania atrybutów
+pim_menu:
+  tab:
+    collect: Gromadzenie
+    enrich: Uzupełnianie
+    settings: Ustawienia
+    system: System
+    spread: Propagowanie
+  item:
+    association_type: Typy powiązań
+    attribute: Atrybuty
+    attribute_group: Grupy Atrybutów
+    category: Kategorie
+    channel: Kanały
+    currency: Waluty
+    family: Rodziny
+    group: Grupy
+    group_type: Typy grup
+    locale: Ustawienia regionalne
+    product: Produkty
+    variant_group: Grupy wariantów
+    export_history: Historia eksportów
+    export_profile: Profile eksportu
+    import_history: Historia importów
+    import_profile: Profile importu
+    configuration: Konfiguracja
+    user_management: Zarządzanie użytkownikami
+    user: Użytkownicy
+    user_group: Grupy
+    user_role: Role
+    info: Informacje o systemie
+    job_tracker: Śledzenie procesu
+pim_header:
+  user:
+    logout: Wyloguj się
+    user_account: Moje konto
+pim_notification:
+  mark_all_as_read: Oznacz wszystkie jako przeczytane

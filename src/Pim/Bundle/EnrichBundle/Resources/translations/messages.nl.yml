@@ -233,9 +233,8 @@ pim_enrich:
     product: Producten
 attribute:
   title: attribuut
-  overview: Attribuutoverzicht
-  create: Attribuut aanmaken
   edit: attribuut bewerken
+  create: Attribuut aanmaken
 attribute group:
   title: attribuutgroep
   overview: Attribuutgroep overzicht
@@ -655,25 +654,6 @@ Current tab: Huidige tabblad
 Group: Groep
 View group: Bekijk groep
 Products: Producten
-pim_menu:
-  tab:
-    collect: Verzamelen
-    enrich: Verrijken
-    settings: Instellingen
-    spread: Verspreiden
-  item:
-    association_type: Associatietypes
-    attribute: Attributen
-    attribute_group: Attribuutgroepen
-    category: Categorieën
-    channel: Kanalen
-    currency: Valuta
-    family: Families
-    group: Groepen
-    group_type: Groepstypen
-    locale: Lokalisaties
-    product: Producten
-    variant_group: Variantgroepen
 Properties: Eigenschappen
 History: Geschiedenis
 pane.accordion:
