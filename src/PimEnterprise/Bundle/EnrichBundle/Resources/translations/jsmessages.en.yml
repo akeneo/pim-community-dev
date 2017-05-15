@@ -34,6 +34,14 @@ pimee_enrich:
             tab:
                 asset-transformation:
                     title: Asset transformations
+        attribute_group:
+            tab:
+                permission:
+                    title: Permissions
+                    view.label: Allowed to view attributes
+                    edit.label: Allowed to edit attributes
+                    removed: The group {{ group }} will not be allowed to {{ permission }} attribute group
+                    added: The group {{ group }} will be allowed to {{ permission }} attribute group
     entity:
         product:
             history:
