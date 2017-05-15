@@ -132,8 +132,7 @@ Feature: Editing attribute values of a variant group also updates products
     When I change the "Simple" to "blue"
     And I save the variant group
     Then I should not see the text "There are unsaved changes."
-    When I am on "enrich/product/"
-    And I click on the "boot" row
+    When I am on the "boot" product page
     And I visit the "[marketing]" group
     And I switch the scope to "mobile"
     And I switch the locale to "en_US"
