@@ -32,7 +32,6 @@
   },
   "scripts": {
     "test": "grunt test",
-    "generate": "node config-generator.js",
     "webpack": "webpack --display-reasons --display-error-details --display-modules --config webpack.config.js"
   },
   "repository": {
@@ -45,6 +44,7 @@
   },
   "dependencies": {
     "bundle-loader": "^0.5.5",
+    "merge-objects": "^1.0.5",
     "pascal-case": "^2.0.1"
   }
 }

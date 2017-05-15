@@ -70,7 +70,6 @@ stage("Checkout") {
                 unstash "pim_community_dev"
 
                 sh "npm install --verbose"
-                sh "npm run generate"
                 sh "npm run webpack"
 
                 stash "pim_community_dev_full"

@@ -5,12 +5,22 @@ const path = require('path')
 const yaml = require('yamljs')
 const fs = require('fs')
 const _ = require('lodash')
+var deepMerge = require('merge-objects');
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
 const pathOverrides = require('./web/config/path-overrides')
 const requireConfigPaths = require('./web/js/require-config')
 
+const getRelativePaths = (absolutePaths) => {
+    const replacedPaths = {}
+    for (let absolutePath in absolutePaths) {
+        const pathValue = absolutePaths[absolutePath]
+        replacedPaths[pathValue] = pathValue.replace(__dirname + '/src', './')
+    }
 
-const getAbsolute = (relativePaths, configPath) => {
+    return replacedPaths
+}
+
+const getAbsolutePaths = (relativePaths, configPath) => {
     const absolutePaths = {}
 
     for (let relativePathName in relativePaths) {
@@ -23,35 +33,37 @@ const getAbsolute = (relativePaths, configPath) => {
     return absolutePaths
 }
 
-const getPathsFromRequires = (requirePaths) => {
+const getRequireConfig = (requirePaths) => {
     let modulePaths = {}
+    let config = {}
+
     requirePaths.forEach((requirePath) => {
         try {
             const contents = fs.readFileSync(requirePath, 'utf8')
-            const bundlePaths = yaml.parse(contents).config.paths
-            const absolutePaths = getAbsolute(bundlePaths, requirePath)
-            modulePaths = Object.assign(modulePaths, absolutePaths)
+            const parsedFile = yaml.parse(contents)
+            const bundlePaths = parsedFile.config.paths
+            const bundleConfig = parsedFile.config.config
+            const absolutePaths = getAbsolutePaths(bundlePaths, requirePath)
+            modulePaths = deepMerge(modulePaths, absolutePaths)
+            config = deepMerge(config, bundleConfig)
         } catch (e) { }
     })
 
-    return modulePaths
-}
-
-const getRelativePaths = (absolutePaths) => {
-    const replacedPaths = {}
-    for (let absolutePath in absolutePaths) {
-        const pathValue = absolutePaths[absolutePath]
-        replacedPaths[pathValue] = pathValue.replace(__dirname + '/src', './')
+    return {
+        config,
+        modulePaths
     }
-
-    return replacedPaths
 }
 
-const importedPaths = getPathsFromRequires(requireConfigPaths)
+const requireConfig = getRequireConfig(requireConfigPaths)
+const importedPaths = requireConfig.modulePaths
+const generalConfig = requireConfig.config
 const overrides = _.mapValues(pathOverrides, override => path.resolve(override))
 const importPaths = Object.assign(importedPaths, overrides)
 
-fs.writeFileSync('./web/config/paths.js', `module.exports = ${JSON.stringify(importedPaths)}`, 'utf8')
+fs.writeFileSync('./web/config/general.js', `module.exports = ${JSON.stringify(generalConfig)}`, 'utf8')
+
+fs.writeFileSync('./web/config/paths.js', `module.exports = ${JSON.stringify(importPaths)}`, 'utf8')
 
 module.exports = {
     target: 'web',

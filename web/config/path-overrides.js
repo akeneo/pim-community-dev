@@ -9,12 +9,10 @@ module.exports = {
     routing: 'src/Pim/Bundle/EnrichBundle/Resources/public/js/fos-routing-wrapper',
     routes: 'web/js/routes',
     'pim/datagrid-view-fetcher': 'src/Pim/Bundle/DataGridBundle/Resources/public/js/fetcher/datagrid-view-fetcher',
-    'controllers': 'web/config/controllers',
     'require-polyfill': 'web/config/require-polyfill',
     'pim-router': 'src/Pim/Bundle/EnrichBundle/Resources/public/js/router',
     'paths': 'web/config/paths',
     'CodeMirror': 'node_modules/codemirror/lib/codemirror',
-    'fetcher-list': 'web/config/fetchers',
     'require-context': 'web/config/require-context',
     'general': 'web/config/general'
 }

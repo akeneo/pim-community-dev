@@ -1,6 +1,6 @@
 'use strict';
 
-define(['config', 'jquery', 'underscore', 'pim/base-fetcher', 'fetcher-list', 'require-context'], function (module, $, _, BaseFetcher, fetcherList, requireContext) {
+define(['config', 'jquery', 'underscore', 'pim/base-fetcher', 'require-context'], function (module, $, _, BaseFetcher, requireContext) {
     return {
         fetchers: {},
         initializePromise: null,
@@ -10,7 +10,9 @@ define(['config', 'jquery', 'underscore', 'pim/base-fetcher', 'fetcher-list', 'r
          */
         initialize: function () {
             if (null === this.initializePromise) {
+                var fetcherList = module.config(__moduleName).fetchers
                 var deferred = $.Deferred();
+                var defaultFetcher = 'pim/base-fetcher'
                 var fetchers = {};
 
                 _.each(fetcherList, function (config, name) {
@@ -20,7 +22,7 @@ define(['config', 'jquery', 'underscore', 'pim/base-fetcher', 'fetcher-list', 'r
                 });
 
                 for (var fetcher in fetcherList) {
-                    var moduleName = fetcherList[fetcher].module
+                    var moduleName = fetcherList[fetcher].module || defaultFetcher
                     var ResolvedModule = requireContext(moduleName);
                     fetchers[fetcher].loadedModule = new ResolvedModule(fetchers[fetcher].options)
                     fetchers[fetcher].options = fetcherList[fetcher].options
