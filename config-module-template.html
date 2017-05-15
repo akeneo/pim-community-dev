@@ -1,1 +1,0 @@
-define([], function () { return { <% _.forEach(modules, function(options, key) { %>"<%- key %>": { <% _.forEach(options, function(value, key) { %> <% if (key === 'resolvedModule') { %> "<%- key %>": <%= value %>, <% } else { %> "<%- key %>": <%= JSON.stringify(value) %>, <% }%> <% }) %> }, <% }) %> } });

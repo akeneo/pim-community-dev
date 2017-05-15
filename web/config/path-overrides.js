@@ -14,5 +14,6 @@ module.exports = {
     'paths': 'web/config/paths',
     'CodeMirror': 'node_modules/codemirror/lib/codemirror',
     'require-context': 'web/config/require-context',
-    'general': 'web/config/general'
+    'general': 'web/config/general',
+    'jquery-setup': 'src/Pim/Bundle/UIBundle/Resources/public/js/jquery-setup.js'
 }
