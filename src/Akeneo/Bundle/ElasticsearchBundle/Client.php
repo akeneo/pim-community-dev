@@ -47,34 +47,37 @@ class Client
     }
 
     /**
-     * @param string $indexType
-     * @param string $id
-     * @param array  $body
+     * @param string  $indexType
+     * @param string  $id
+     * @param array   $body
+     * @param Refresh $refresh
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_index_a_document}
      */
-    public function index($indexType, $id, array $body)
+    public function index($indexType, $id, array $body, Refresh $refresh)
     {
         $params = [
             'index' => $this->indexName,
-            'type'  => $indexType,
-            'id'    => $id,
-            'body'  => $body
+            'type' => $indexType,
+            'id' => $id,
+            'body' => $body,
+            'refresh' => $refresh->getType(),
         ];
 
         return $this->client->index($params);
     }
 
     /**
-     * @param string $indexType
-     * @param array  $documents
-     * @param string $keyAsId
+     * @param string  $indexType
+     * @param array   $documents
+     * @param string  $keyAsId
+     * @param Refresh $refresh
      *
      * @throws MissingIdentifierException
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_indexing_documents.html#_bulk_indexing}
      */
-    public function bulkIndexes($indexType, $documents, $keyAsId)
+    public function bulkIndexes($indexType, $documents, $keyAsId, Refresh $refresh)
     {
         $params = [];
 
@@ -86,12 +89,13 @@ class Client
             $params['body'][] = [
                 'index' => [
                     '_index' => $this->indexName,
-                    '_type'  => $indexType,
-                    '_id'    => $document[$keyAsId]
-                ]
+                    '_type' => $indexType,
+                    '_id' => $document[$keyAsId],
+                ],
             ];
 
             $params['body'][] = $document;
+            $params['refresh'] = $refresh->getType();
         }
 
         return $this->client->bulk($params);
@@ -107,8 +111,8 @@ class Client
     {
         $params = [
             'index' => $this->indexName,
-            'type'  => $indexType,
-            'id'    => $id,
+            'type' => $indexType,
+            'id' => $id,
         ];
 
         return $this->client->get($params);
@@ -124,8 +128,8 @@ class Client
     {
         $params = [
             'index' => $this->indexName,
-            'type'  => $indexType,
-            'body'  => $body
+            'type' => $indexType,
+            'body' => $body,
         ];
 
         return $this->client->search($params);
@@ -141,8 +145,8 @@ class Client
     {
         $params = [
             'index' => $this->indexName,
-            'type'  => $indexType,
-            'id'    => $id
+            'type' => $indexType,
+            'id' => $id,
         ];
 
         return $this->client->delete($params);
@@ -162,9 +166,9 @@ class Client
             $params['body'][] = [
                 'delete' => [
                     '_index' => $this->indexName,
-                    '_type'  => $indexType,
-                    '_id'    => $identifier
-                ]
+                    '_type' => $indexType,
+                    '_id' => $identifier,
+                ],
             ];
         }
 
@@ -188,7 +192,7 @@ class Client
     {
         $params = [
             'index' => $this->indexName,
-            'body'  => $body,
+            'body' => $body,
         ];
 
         return $this->client->indices()->create($params);

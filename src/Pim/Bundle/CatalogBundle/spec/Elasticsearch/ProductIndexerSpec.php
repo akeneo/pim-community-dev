@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
@@ -88,7 +89,7 @@ class ProductIndexerSpec extends ObjectBehavior
     function it_indexes_a_single_product($normalizer, $indexer, ProductInterface $product)
     {
         $normalizer->normalize($product, 'indexing')->willReturn(['id' => 'foobar', 'a key' => 'a value']);
-        $indexer->index('an_index_type_for_test_purpose', 'foobar', ['id' => 'foobar', 'a key' => 'a value'])->shouldBeCalled();
+        $indexer->index('an_index_type_for_test_purpose', 'foobar', ['id' => 'foobar', 'a key' => 'a value'], Refresh::waitFor())->shouldBeCalled();
 
         $this->index($product);
     }
@@ -105,7 +106,7 @@ class ProductIndexerSpec extends ObjectBehavior
         $indexer->bulkIndexes('an_index_type_for_test_purpose', [
             ['id' => 'foo', 'a key' => 'a value'],
             ['id' => 'bar', 'a key' => 'another value']
-        ], 'id')->shouldBeCalled();
+        ], 'id', Refresh::waitFor())->shouldBeCalled();
 
         $this->indexAll([$product1, $product2]);
     }
