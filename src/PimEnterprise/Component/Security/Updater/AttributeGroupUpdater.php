@@ -47,11 +47,12 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
      */
     public function update($attributeGroup, array $data, array $options = [])
     {
-        $this->attributeGroupUpdater->update($attributeGroup, $data, $options);
-
         foreach ($data as $field => $value) {
             $this->setData($attributeGroup, $field, $value);
         }
+        unset($data['permissions']);
+
+        $this->attributeGroupUpdater->update($attributeGroup, $data, $options);
     }
 
     /**
