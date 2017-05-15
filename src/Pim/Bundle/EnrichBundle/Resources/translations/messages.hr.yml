@@ -269,9 +269,8 @@ pim_enrich:
         label: Odaberi tip reference podataka
 attribute:
   title: atribut
-  overview: pregled atributa
-  create: kreiraj atribut
   edit: uredi atribut
+  create: kreiraj atribut
 attribute group:
   title: grupa atributa
   overview: pregled grupe atributa
@@ -722,25 +721,6 @@ Current tab: Trenutna kartica
 Group: Grupa
 View group: Prikaz grupe
 Products: Proizvodi
-pim_menu:
-  tab:
-    collect: Prikupi
-    enrich: Obogati
-    settings: Postavke
-    spread: Proširi
-  item:
-    association_type: Tipovi pridruživanja
-    attribute: Atributi
-    attribute_group: Grupe atributa
-    category: Kategorije
-    channel: Kanali
-    currency: Valute
-    family: Obitelji
-    group: Grupe
-    group_type: Tipovi grupa
-    locale: Lokalizacija
-    product: Proizvodi
-    variant_group: Varijante grupa
 Properties: Svojstva
 History: Povijest
 pane.accordion:

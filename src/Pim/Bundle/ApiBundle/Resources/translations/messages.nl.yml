@@ -7,6 +7,8 @@ pim_api:
     attribute_option:
       edit: Attribuutopties aanmaken en bijwerken
       list: Attribuutopties oplijsten
+    attribute_group:
+      list: Attritbuutgroepen oplijsten
     category:
       edit: Categorieën aanmaken en bijwerken
       list: Categorieën weergeven
@@ -19,6 +21,7 @@ pim_api:
     overall_access: Algemene Web API-toegang
     attribute: Attributen
     attribute_option: Attribuutopties
+    attribute_group: Attribuutgroepen
     category: Categorieën
     family: Families
     channel: Kanalen

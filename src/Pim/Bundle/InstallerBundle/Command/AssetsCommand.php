@@ -50,11 +50,11 @@ class AssetsCommand extends ContainerAwareCommand
         $this->getEventDispatcher()->dispatch(InstallerEvents::PRE_ASSETS_DUMP);
 
         $this->commandExecutor
-            ->runCommand('oro:navigation:init')
             ->runCommand('fos:js-routing:dump', ['--target' => 'web/js/routes.js'])
             ->runCommand('assets:install')
             ->runCommand('assetic:dump')
-            ->runCommand('oro:assetic:dump');
+            ->runCommand('oro:assetic:dump')
+            ->runCommand('oro:requirejs:generate-config');
         $defaultLocales = ['en', 'fr', 'nl', 'de', 'ru', 'ja', 'pt', 'it'];
         $this->commandExecutor->runCommand('oro:translation:dump', ['locale' => $defaultLocales]);
 

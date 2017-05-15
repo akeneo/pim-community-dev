@@ -274,6 +274,21 @@ pim_enrich:
         updated_by: Aggiornato da
       btn:
         save: Salva
+    attribute_label:
+      pim_catalog_identifier: Identificatore
+      pim_catalog_text: Testo
+      pim_catalog_textarea: Area di testo
+      pim_catalog_number: Numero
+      pim_catalog_price_collection: Prezzo
+      pim_catalog_multiselect: Selezione multipla
+      pim_catalog_simpleselect: Selezione singola
+      pim_catalog_file: File
+      pim_catalog_image: Immagine
+      pim_catalog_boolean: "Sì/No"
+      pim_catalog_date: Data
+      pim_catalog_metric: Metrico
+      pim_reference_data_simpleselect: Seleziona un singolo riferimento dati
+      pim_reference_data_multiselect: Seleziona un riferimento dati multiplo
     attribute_option:
       code: Codice
       label: Etichetta
@@ -755,6 +770,8 @@ pim_enrich:
       create_btn: Crea gruppo
     process_tracker:
       title: Tracker di processo
+    attribute:
+      modal_title: Scegliere il tipo di attributo
 pim_enrich.error:
   exception.title: Accidenti! Si è verificato un errore con il codice {{ status_code }}...
 page_title:
@@ -819,3 +836,40 @@ batch_jobs:
     label: Aggiungi al gruppo di varianti
     perform:
       label: Aggiungi al gruppo di varianti
+pim_menu:
+  tab:
+    collect: Importazioni
+    enrich: Catalogo
+    settings: Impostazioni
+    system: Sistema
+    spread: Esportazioni
+  item:
+    association_type: Tipi di associazione
+    attribute: Attributi
+    attribute_group: Gruppi di attributi
+    category: Categorie
+    channel: Canali
+    currency: Valute
+    family: Famiglie
+    group: Gruppi
+    group_type: Tipi di gruppo
+    locale: Impostazioni locali
+    product: Articoli
+    variant_group: Gruppi varianti
+    export_history: Cronologia esportazioni
+    export_profile: Profili di esportazione
+    import_history: Cronologia importazioni
+    import_profile: Profili di importazione
+    configuration: Configurazione
+    user_management: Gestione degli utenti
+    user: Utenti
+    user_group: Gruppi
+    user_role: Ruoli
+    info: Informazioni sistema
+    job_tracker: Tracker di processo
+pim_header:
+  user:
+    logout: Disconnetti
+    user_account: Il mio profilo
+pim_notification:
+  mark_all_as_read: Segna tutti come già letti

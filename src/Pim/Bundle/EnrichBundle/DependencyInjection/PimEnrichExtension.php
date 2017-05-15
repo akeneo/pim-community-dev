@@ -31,7 +31,6 @@ class PimEnrichExtension extends Extension
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('attribute_icons.yml');
         $loader->load('category_counters.yml');
         $loader->load('colors.yml');
         $loader->load('command.yml');

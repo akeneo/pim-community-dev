@@ -93,12 +93,6 @@ flash:
     removed: Import został usunięty
     updated: Import został pomyślnie zaktualizowany
     running: Import jest uruchomiony
-pim_menu:
-  item:
-    export_history: Historia eksportów
-    export_profile: Profile eksportu
-    import_history: Historia importów
-    import_profile: Profile importu
 General properties: Ustawienia ogólne
 History: Historia
 pane.accordion:

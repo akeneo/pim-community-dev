@@ -1,0 +1,264 @@
+extensions:
+    pim-menu:
+        module: pim/menu/menu
+        parent: pim-header
+        position: 110
+        targetZone: left
+
+    pim-menu-collect:
+        module: pim/menu/tab
+        parent: pim-menu
+        position: 100
+        config:
+            title: pim_menu.tab.collect
+
+    pim-menu-collect-import-profile:
+        module: pim/menu/item
+        parent: pim-menu-collect
+        targetZone: item
+        aclResourceId: pim_importexport_import_profile_index
+        config:
+            title: pim_menu.item.import_profile
+            to: pim_importexport_import_profile_index
+
+    pim-menu-collect-import-execution:
+        module: pim/menu/item
+        parent: pim-menu-collect
+        targetZone: item
+        aclResourceId: pim_importexport_import_execution_index
+        config:
+            title: pim_menu.item.import_history
+            to: pim_importexport_import_execution_index
+
+    pim-menu-enrich:
+        module: pim/menu/tab
+        parent: pim-menu
+        position: 110
+        config:
+            title: pim_menu.tab.enrich
+
+    pim-menu-enrich-product:
+        module: pim/menu/item
+        parent: pim-menu-enrich
+        targetZone: item
+        aclResourceId: pim_enrich_product_index
+        position: 100
+        config:
+            title: pim_menu.item.product
+            to: pim_enrich_product_index
+
+    pim-menu-enrich-product-category:
+        module: pim/menu/item
+        parent: pim-menu-enrich
+        targetZone: item
+        aclResourceId: pim_enrich_product_category_list
+        position: 110
+        config:
+            title: pim_menu.item.category
+            to: pim_enrich_categorytree_index
+
+    pim-menu-enrich-variant-group:
+        module: pim/menu/item
+        parent: pim-menu-enrich
+        targetZone: item
+        aclResourceId: pim_enrich_variant_group_index
+        position: 120
+        config:
+            title: pim_menu.item.variant_group
+            to: pim_enrich_variant_group_index
+
+    pim-menu-enrich-group:
+        module: pim/menu/item
+        parent: pim-menu-enrich
+        targetZone: item
+        aclResourceId: pim_enrich_group_index
+        position: 130
+        config:
+            title: pim_menu.item.group
+            to: pim_enrich_group_index
+
+    pim-menu-spread:
+        module: pim/menu/tab
+        parent: pim-menu
+        position: 120
+        config:
+            title: pim_menu.tab.spread
+
+    pim-menu-spread-export-profile:
+        module: pim/menu/item
+        parent: pim-menu-spread
+        targetZone: item
+        aclResourceId: pim_importexport_export_profile_index
+        config:
+            title: pim_menu.item.export_profile
+            to: pim_importexport_export_profile_index
+
+    pim-menu-spread-export-execution:
+        module: pim/menu/item
+        parent: pim-menu-spread
+        targetZone: item
+        aclResourceId: pim_importexport_export_execution_index
+        config:
+            title: pim_menu.item.export_history
+            to: pim_importexport_export_execution_index
+
+    pim-menu-settings:
+        module: pim/menu/tab
+        parent: pim-menu
+        position: 130
+        config:
+            title: pim_menu.tab.settings
+
+    pim-menu-settings-attribute-group:
+        module: pim/menu/item
+        parent: pim-menu-settings
+        targetZone: item
+        aclResourceId: pim_enrich_attributegroup_index
+        position: 100
+        config:
+            title: pim_menu.item.attribute_group
+            to: pim_enrich_attributegroup_index
+
+    pim-menu-settings-attribute:
+        module: pim/menu/item
+        parent: pim-menu-settings
+        targetZone: item
+        aclResourceId: pim_enrich_attribute_index
+        position: 110
+        config:
+            title: pim_menu.item.attribute
+            to: pim_enrich_attribute_index
+
+    pim-menu-settings-family:
+        module: pim/menu/item
+        parent: pim-menu-settings
+        targetZone: item
+        aclResourceId: pim_enrich_family_index
+        position: 120
+        config:
+            title: pim_menu.item.family
+            to: pim_enrich_family_index
+
+    pim-menu-settings-association-type:
+        module: pim/menu/item
+        parent: pim-menu-settings
+        targetZone: item
+        aclResourceId: pim_enrich_associationtype_index
+        position: 130
+        config:
+            title: pim_menu.item.association_type
+            to: pim_enrich_associationtype_index
+
+    pim-menu-settings-group-type:
+        module: pim/menu/item
+        parent: pim-menu-settings
+        targetZone: item
+        aclResourceId: pim_enrich_grouptype_index
+        position: 140
+        config:
+            title: pim_menu.item.group_type
+            to: pim_enrich_grouptype_index
+
+    pim-menu-settings-currency:
+        module: pim/menu/item
+        parent: pim-menu-settings
+        targetZone: item
+        aclResourceId: pim_enrich_currency_index
+        position: 150
+        config:
+            title: pim_menu.item.currency
+            to: pim_enrich_currency_index
+
+    pim-menu-settings-locale:
+        module: pim/menu/item
+        parent: pim-menu-settings
+        targetZone: item
+        aclResourceId: pim_enrich_locale_index
+        position: 160
+        config:
+            title: pim_menu.item.locale
+            to: pim_enrich_locale_index
+
+    pim-menu-settings-channel:
+        module: pim/menu/item
+        parent: pim-menu-settings
+        targetZone: item
+        aclResourceId: pim_enrich_channel_index
+        position: 170
+        config:
+            title: pim_menu.item.channel
+            to: pim_enrich_channel_index
+
+    pim-menu-system:
+        module: pim/menu/tab
+        parent: pim-menu
+        position: 140
+        config:
+            title: pim_menu.tab.system
+
+    pim-menu-system-configuration:
+        module: pim/menu/item
+        parent: pim-menu-system
+        targetZone: item
+        aclResourceId: oro_config_system
+        position: 100
+        config:
+            title: pim_menu.item.configuration
+            to: oro_config_configuration_system
+
+    pim-menu-system-user:
+        module: pim/menu/item
+        parent: pim-menu-system
+        targetZone: item
+        position: 110
+        config:
+            title: pim_menu.item.user_management
+
+    pim-menu-system-user-user:
+        module: pim/menu/item
+        parent: pim-menu-system-user
+        targetZone: item
+        aclResourceId: pim_user_user_index
+        position: 100
+        config:
+            title: pim_menu.item.user
+            to: oro_user_index
+
+    pim-menu-system-user-group:
+        module: pim/menu/item
+        parent: pim-menu-system-user
+        targetZone: item
+        aclResourceId: pim_user_group_index
+        position: 110
+        config:
+            title: pim_menu.item.user_group
+            to: oro_user_group_index
+
+    pim-menu-system-user-role:
+        module: pim/menu/item
+        parent: pim-menu-system-user
+        targetZone: item
+        aclResourceId: pim_user_role_index
+        position: 120
+        config:
+            title: pim_menu.item.user_role
+            to: oro_user_role_index
+
+    pim-menu-system-info:
+        module: pim/menu/item
+        parent: pim-menu-system
+        targetZone: item
+        aclResourceId: pim_analytics_system_info_index
+        position: 120
+        config:
+            title: pim_menu.item.info
+            to: pim_analytics_system_info_index
+
+    pim-menu-system-job-tracker:
+        module: pim/menu/item
+        parent: pim-menu-system
+        targetZone: item
+        position: 130
+        config:
+            title: pim_menu.item.job_tracker
+            to: pim_enrich_job_tracker_index

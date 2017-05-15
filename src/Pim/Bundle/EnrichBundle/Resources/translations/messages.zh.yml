@@ -269,9 +269,8 @@ pim_enrich:
         label: 选择引用的数据类型
 attribute:
   title: 属性
-  overview: 属性概述
-  create: 创建属性
   edit: 编辑属性
+  create: 创建属性
 attribute group:
   title: 属性组
   overview: 属性组概述
@@ -723,25 +722,6 @@ Current tab: 当前选项卡
 Group: 分组
 View group: 查看组
 Products: 商品
-pim_menu:
-  tab:
-    collect: 收集
-    enrich: 添加
-    settings: 设置 
-    spread: 传播
-  item:
-    association_type: 关联类型
-    attribute: 属性
-    attribute_group: 属性组
-    category: 分类
-    channel: 渠道
-    currency: 货币
-    family: 品类
-    group: 分组
-    group_type: 分组类型
-    locale: 本地化语言
-    product: 商品
-    variant_group: 款式组
 Properties: 属性
 History: 历史
 pane.accordion:

@@ -7,6 +7,8 @@ pim_api:
         attribute_option:
             edit: Create and update attribute options
             list: List attribute options
+        attribute_group:
+            list: List attribute groups
         category:
             edit: Create and update categories
             list: List categories
@@ -19,6 +21,7 @@ pim_api:
         overall_access: Overall Web API access
         attribute: Attributes
         attribute_option: Attribute options
+        attribute_group: Attribute groups
         category: Categories
         family: Families
         channel: Channels

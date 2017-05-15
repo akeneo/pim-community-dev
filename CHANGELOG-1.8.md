@@ -9,6 +9,7 @@
 - TIP-711: Rework job execution reporting page with the new PEF architecture
 - TIP-724: Refactoring of the 'Settings/Association types' index screen using 'pim/common/grid'
 - TIP-725: Generalization of the refactoring made in the TIP-724 for all screen containing a simple grid 
+- TIP-734: Menu and index page is now using the new PEF architecture
 
 ## BC breaks
 
@@ -20,6 +21,7 @@
 - Change the constructor of `Pim\Component\Catalog\Updater\FamilyUpdater` to add `Akeneo\Component\Localization\TranslatableUpdater`
 - Change the constructor of `Pim\Component\Catalog\Updater\AttributeUpdater` to add `Akeneo\Component\Localization\TranslatableUpdater`
 - Change the constructor of `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` to add `kernel.logs_dir`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Twig\AttributeExtension` to remove `pim_enrich.attribute_icons`
 - Change the constructor of `Pim\Component\Catalog\Model\AbstractMetric` to replace `id` by `family`, `unit`, `data`, `baseUnit` and `baseData` (strings)
 - Change the constructor of `Pim\Component\Catalog\Factory\MetricFactory` to add `Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter` and `Akeneo\Bundle\MeasureBundle\Manager\MeasureManager`
 - Change the constructor of `Pim\Component\Catalog\Denormalizer\Standard\ProductValue\MetricDenormalizer` to remove `Akeneo\Component\Localization\Localizer\LocalizerInterface`
@@ -53,6 +55,8 @@
 
 ### Others
 
+- Remvove OroNotificationBundle
+- Extract and rename method `valueExists` of `Pim\Component\Catalog\Repository\ProductRepositoryInterface` into `Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface`::`uniqueDataExistsInAnotherProduct`.
 - Remove methods `searchAfterOffset`, `searchAfterIdentifier` and `count` of `Pim\Component\Api\Repository\ProductRepositoryInterface`
 - Extract methods `schedule*` of `Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface` into a `Pim\Component\Catalog\Completeness\CompletenessRemoverInterface`. Methods `schedule`, `scheduleForFamily` and `scheduleForChannelAndLocale` have been renamed respectively `removeForProduct`, `removeForFamily` and `removeForChannelAndLocale`.
 - Remove method `findOneById` of `Pim\Component\Catalog\Repository\ProductRepositoryInterface`.
@@ -122,6 +126,6 @@
 
 - GITHUB-5937: Remove the need to have mcrypt installed
 
-## Bug Fixes
+## Bug Fixes
 
 - GITHUB-6101: Fix Summernote (WYSIWYG) style

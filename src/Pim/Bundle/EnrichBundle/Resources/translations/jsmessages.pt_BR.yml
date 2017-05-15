@@ -240,6 +240,21 @@ pim_enrich:
         updated: Atualizado
       btn:
         save: Salvar
+    attribute_label:
+      pim_catalog_identifier: Identificador
+      pim_catalog_text: Texto
+      pim_catalog_textarea: Área de texto
+      pim_catalog_number: Número
+      pim_catalog_price_collection: Preço
+      pim_catalog_multiselect: Seleção múltipla
+      pim_catalog_simpleselect: Seleção simples
+      pim_catalog_file: Arquivo
+      pim_catalog_image: Imagem
+      pim_catalog_boolean: "Sim/Não"
+      pim_catalog_date: Data
+      pim_catalog_metric: Métrico
+      pim_reference_data_simpleselect: Selecione os dados de referência simples
+      pim_reference_data_multiselect: Referência de dados multi selecionáveis
     attribute_option:
       code: Código
       label: Rótulo
@@ -652,6 +667,8 @@ pim_enrich:
       create_btn: Criar grupo
     process_tracker:
       title: Visualizador de processos
+    attribute:
+      modal_title: Escolher tipo de atributo
 pim_enrich.error:
   exception.title: Oh snap! Um {{ status_code }} erro aconteceu...
 page_title:
@@ -696,3 +713,40 @@ batch_jobs:
     label: Adicionar a grupo variante
     perform:
       label: Adicionar a grupo variante
+pim_menu:
+  tab:
+    collect: Importar
+    enrich: Atualizar
+    settings: Configurações
+    system: Sistema
+    spread: Exportar
+  item:
+    association_type: Tipos de associação
+    attribute: Atributos
+    attribute_group: Grupo de atributos
+    category: Categorias
+    channel: Canais
+    currency: Moedas
+    family: Famílias
+    group: Grupos
+    group_type: Tipos de grupos
+    locale: Localidades
+    product: Produtos
+    variant_group: Grupos de variantes
+    export_history: Histórico de exportações
+    export_profile: Perfis de exportação
+    import_history: Histórico de importações
+    import_profile: Perfis de importação
+    configuration: Configuração
+    user_management: Gerenciamento de usuários
+    user: Usuários
+    user_group: Grupos
+    user_role: Funções
+    info: Informações do Sistema
+    job_tracker: Visualizador de processos
+pim_header:
+  user:
+    logout: Sair
+    user_account: Minha Conta
+pim_notification:
+  mark_all_as_read: Marca todas como lida

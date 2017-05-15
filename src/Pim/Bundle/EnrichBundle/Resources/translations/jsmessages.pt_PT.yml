@@ -233,6 +233,21 @@ pim_enrich:
         updated: Atualizado
       btn:
         save: Guardar
+    attribute_label:
+      pim_catalog_identifier: Identificador
+      pim_catalog_text: Texto
+      pim_catalog_textarea: Área de Texto
+      pim_catalog_number: Número
+      pim_catalog_price_collection: Preço
+      pim_catalog_multiselect: Seleção múltipla
+      pim_catalog_simpleselect: Seleção simples
+      pim_catalog_file: Ficheiro
+      pim_catalog_image: Imagem
+      pim_catalog_boolean: "Sim/Não"
+      pim_catalog_date: Data
+      pim_catalog_metric: Métrica
+      pim_reference_data_simpleselect: Selecione os dados de referência simples
+      pim_reference_data_multiselect: Referência de dados multi selecionáveis
     attribute_option:
       code: Código
       label: Rótulo
@@ -602,6 +617,8 @@ pim_enrich:
       create_btn: Criar grupo
     process_tracker:
       title: Visualizador de processos
+    attribute:
+      modal_title: Escolha o tipo de atributo
 pim_enrich.error:
   exception.title: Ora bolas! Ocorreu o erro {{ status_code }}...
 page_title:
@@ -646,3 +663,40 @@ batch_jobs:
     label: Adicionar a grupo variante
     perform:
       label: Adicionar a grupo variante
+pim_menu:
+  tab:
+    collect: Recolher
+    enrich: Enriquecer
+    settings: Preferências
+    system: Sistema
+    spread: Propagação
+  item:
+    association_type: Tipos de associação
+    attribute: Atributos
+    attribute_group: Grupos de atributos
+    category: Categorias
+    channel: Canais
+    currency: Moedas
+    family: Famílias
+    group: Grupos
+    group_type: Tipos de grupo
+    locale: Linguagens
+    product: Produtos
+    variant_group: Grupos variantes
+    export_history: Histórico de exportações
+    export_profile: Perfis de exportação
+    import_history: Histórico de importações
+    import_profile: Perfis de importação
+    configuration: Configuração
+    user_management: Gestão de Utilizadores
+    user: Utilizadores
+    user_group: Grupos
+    user_role: Funções
+    info: Informações do Sistema
+    job_tracker: Visualizador de processos
+pim_header:
+  user:
+    logout: Terminar sessão
+    user_account: A minha conta
+pim_notification:
+  mark_all_as_read: Marcar tudo como lido

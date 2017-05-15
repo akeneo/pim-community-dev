@@ -2,6 +2,8 @@ pim_api:
   acl:
     attribute:
       list: Przeglądanie atrybutów
+    attribute_group:
+      list: Przeglądanie grup atrybutów
     category:
       list: Przeglądanie kategorii
     family:
@@ -10,6 +12,7 @@ pim_api:
     locale.list: Przeglądanie ustawień regionalnych
   acl_group:
     attribute: Atrybuty
+    attribute_group: Grupy Atrybutów
     category: Kategorie
     family: Rodziny
     channel: Kanały

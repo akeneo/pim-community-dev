@@ -108,12 +108,6 @@ flash:
     removed: L'importazione è stata rimossa
     updated: L'importazione è stato caricata con successo
     running: L'importazione è in esecuzione
-pim_menu:
-  item:
-    export_history: Cronologia esportazioni
-    export_profile: Profili di esportazione
-    import_history: Cronologia importazioni
-    import_profile: Profili di importazione
 General properties: Proprietà generali
 History: Cronologia
 pane.accordion:

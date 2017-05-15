@@ -269,9 +269,8 @@ pim_enrich:
         label: Seleccione el tipo de información de referencia
 attribute:
   title: atributo
-  overview: Lista de atributos
-  create: Crear atributo
   edit: editar atributo
+  create: Crear atributo
 attribute group:
   title: grupo de atributos
   overview: resumen de grupo de atributo
@@ -723,25 +722,6 @@ Current tab: Pestaña actual
 Group: Grupo
 View group: Ver grupo
 Products: Productos
-pim_menu:
-  tab:
-    collect: Colectar
-    enrich: Enriquecer
-    settings: Configuración
-    spread: Distribuir
-  item:
-    association_type: Tipos de asociaciones
-    attribute: Atributos
-    attribute_group: Grupos de atributos
-    category: Categorías
-    channel: Canales
-    currency: Monedas
-    family: Familias
-    group: Grupos
-    group_type: Tipos de grupo
-    locale: Locales
-    product: Productos
-    variant_group: Grupos de variantes
 Properties: Propiedades
 History: Histórico
 pane.accordion:

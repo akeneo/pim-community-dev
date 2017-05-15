@@ -2,6 +2,11 @@ pim_enrich_attribute_index:
     path: ''
     defaults: { _controller: pim_enrich.controller.attribute:indexAction }
 
+pim_enrich_attribute_types_index:
+    path: /types
+    defaults: { _controller: pim_enrich.controller.attribute:getTypesAction }
+    methods: [GET]
+
 pim_enrich_attribute_create:
     path: /create
     defaults: { _controller: pim_enrich.controller.attribute:createAction }
