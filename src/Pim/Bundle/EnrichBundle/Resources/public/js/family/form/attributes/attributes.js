@@ -46,7 +46,6 @@ define([
             errors: [],
             catalogLocale: UserContext.get('catalogLocale'),
             channels: null,
-            attributeGroups: null,
             events: {
                 'click .group': 'toggleGroup',
                 'click .attribute-requirement i': 'toggleAttribute',
@@ -93,28 +92,28 @@ define([
                     return this;
                 }
 
+                var data = this.getFormData();
+                var groupedAttributes = _.groupBy(data.attributes, function (attribute) {
+                    return attribute.group_code;
+                });
+                var attributeGroupCodes = Object.getOwnPropertyNames(groupedAttributes);
+
                 $.when(
                     FetcherRegistry.getFetcher('channel').fetchAll(),
-                    FetcherRegistry.getFetcher('attribute-group').fetchAll()
+                    FetcherRegistry.getFetcher('attribute-group').fetchByIdentifiers(attributeGroupCodes)
                 ).then(function (channels, attributeGroups) {
                     this.channels = channels;
-                    this.attributeGroups = attributeGroups;
 
-                    var data = this.getFormData();
-                    var groupedAttributes = _.groupBy(data.attributes, function (attribute) {
-                        return attribute.group_code;
-                    });
+                    _.sortBy(groupedAttributes, function (attributes, groupCode) {
+                        var group = _.findWhere(attributeGroups, {code: groupCode});
 
-                    _.sortBy(groupedAttributes, function (attributes, group) {
-                        return this.attributeGroups[group].sort_order;
+                        return group.sort_order;
                     }.bind(this));
 
-                    _.each(groupedAttributes, function (attributes, group) {
-                        attributes = _.sortBy(attributes, function (attribute) {
+                    _.each(groupedAttributes, function (attributes, groupCode) {
+                        groupedAttributes[groupCode] = _.sortBy(attributes, function (attribute) {
                             return attribute.sort_order;
                         });
-
-                        groupedAttributes[group] = attributes;
                     });
 
                     this.$el.html(this.template({
@@ -124,7 +123,7 @@ define([
                         groupedAttributes: groupedAttributes,
                         attributeRequirements: data.attribute_requirements,
                         channels: this.channels,
-                        attributeGroups: this.attributeGroups,
+                        attributeGroups: attributeGroups,
                         colspan: (this.channels.length + 2),
                         i18n: i18n,
                         identifierAttribute: this.identifierAttribute,
