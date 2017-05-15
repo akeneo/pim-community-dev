@@ -102,7 +102,7 @@ Feature: List proposals
   Scenario: Successfully display a proposal even when an attribute has been deleted
     Given I am logged in as "Julia"
     And I am on the "name" attribute page
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I press the "OK" button in the popin
     When I am on the proposals page
     Then I should see the following proposals:
@@ -120,10 +120,10 @@ Feature: List proposals
   Scenario: Does not display a proposal when all of its attributes have been deleted
     Given I am logged in as "Julia"
     And I am on the "name" attribute page
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I press the "OK" button in the popin
     And I am on the "description" attribute page
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I press the "OK" button in the popin
     When I am on the proposals page
     Then I should see the text "There is no proposal to review"

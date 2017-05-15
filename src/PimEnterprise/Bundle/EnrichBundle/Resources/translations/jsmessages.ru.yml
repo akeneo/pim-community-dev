@@ -13,6 +13,10 @@ permission-changes:
   job profile:
     grant: Группа <strong>{{ group }} будет {{ permission }}</strong>
     revoke: Группа <strong>{{ group }} не будет {{ permission }}</strong>
+pim_enrich:
+  entity:
+    attribute_label:
+      pim_assets_collection: Коллекция медиафайлов
 pimee_enrich:
   form:
     job_instance:
@@ -136,3 +140,10 @@ pimee_enrich:
       options:
         width: Ширина %value%px 
         height: Высота %value%px
+pim_menu:
+  item:
+    asset: Медиафайлы
+    asset_category: Категории медиафайлов
+    proposal: Предложения
+    published_product: Опубликованные продукты
+    rule: Правила

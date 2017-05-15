@@ -189,6 +189,5 @@ job_execution.summary:
   mass_unpublished: Продукт снят с публикации
   proposal: Предложение создано
   proposal_deleted: удалено
-pim_assets_collection: Коллекция медиафайлов
 pim_enrich_attribute_form:
   isReadOnly: Только для чтения

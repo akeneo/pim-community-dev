@@ -87,6 +87,9 @@ config:
                     module: pim/controller/template
                     aclResourceId: pimee_workflow_published_product_index
 
+        pim/form/common/attributes/create-button:
+            attribute_icons:
+                pim_assets_collection: paper-clip
 
     map:
         '*':
