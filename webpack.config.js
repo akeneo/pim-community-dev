@@ -5,17 +5,18 @@ const path = require('path')
 const yaml = require('yamljs')
 const fs = require('fs')
 const _ = require('lodash')
-const mkdirp = require('mkdirp');
-const deepMerge = require('merge-objects');
+const mkdirp = require('mkdirp')
+const deepMerge = require('merge-objects')
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
 const pathOverrides = require('./frontend/path-overrides')
 const requireConfigPaths = require('./web/js/require-config')
 
 const getRelativePaths = (absolutePaths) => {
-    const replacedPaths = {}
+    let replacedPaths = {}
+
     for (let absolutePath in absolutePaths) {
         const pathValue = absolutePaths[absolutePath]
-        replacedPaths[pathValue] = pathValue.replace(__dirname + '/src', './')
+        replacedPaths[pathValue] = pathValue.replace(__dirname + '/src', '.')
     }
 
     return replacedPaths
@@ -67,7 +68,7 @@ mkdirp('web/dist', function () {
     fs.writeFileSync('web/dist/general.js', `module.exports = ${JSON.stringify(generalConfig)}`, 'utf8')
 
     fs.writeFileSync('web/dist/paths.js', `module.exports = ${JSON.stringify(importPaths)}`, 'utf8')
-});
+})
 
 module.exports = {
     target: 'web',
@@ -140,7 +141,8 @@ module.exports = {
         new webpack.ProvidePlugin({
             '_': 'underscore',
             'Backbone': 'backbone',
-            '$': 'jquery'
+            '$': 'jquery',
+            'jQuery': 'jquery'
         }),
         // This is needed until summernote is updated
         new webpack.DefinePlugin({
