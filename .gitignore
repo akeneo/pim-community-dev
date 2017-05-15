@@ -38,3 +38,5 @@ node_modules/
 npm-debug.log
 
 web/dist/app.min.js
+
+web/config/paths.js

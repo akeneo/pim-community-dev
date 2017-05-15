@@ -133,4 +133,19 @@ class Config
         }
         return $config;
     }
+
+    public function collectConfigPaths()
+    {
+        $config = $this->container->getParameter('oro_require_js');
+        $bundles = $this->container->getParameter('kernel.bundles');
+        $paths = array();
+
+        foreach ($bundles as $bundle) {
+            $reflection = new \ReflectionClass($bundle);
+            $fileName = dirname($reflection->getFilename()) . '/Resources/config/requirejs.yml';
+            $paths[] = $fileName;
+        }
+
+        return $paths;
+    }
 }

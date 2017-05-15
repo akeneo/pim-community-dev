@@ -4,102 +4,54 @@ const webpack = require('webpack')
 const path = require('path')
 const yaml = require('yamljs')
 const fs = require('fs')
-const paths = require('./web/config/paths')
+const _ = require('lodash')
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
-const glob = require('glob')
+const pathOverrides = require('./web/config/path-overrides')
+const requireConfigPaths = require('./web/js/require-config')
 
-// @TODO
-// - Rewrite this file
-// - Load the conig files as json
-// - Add logging and error checking
 
-const getImportPaths = () => {
-    let paths = {}
-    let originalPaths = {}
-    const bundles = glob.sync('./src/**/*requirejs.yml', {
-        ignore: './src/Oro/Bundle/RequireJSBundle/Tests/Unit/Fixtures/Resources/config/requirejs.yml'
+const getAbsolute = (relativePaths, configPath) => {
+    const absolutePaths = {}
+
+    for (let relativePathName in relativePaths) {
+        let relativePath = relativePaths[relativePathName].split('/')
+        relativePath.shift()
+        const resourcePath = path.resolve(configPath, '../../')
+        absolutePaths[relativePathName] = resourcePath + '/public/' + relativePath.join('/')
+    }
+
+    return absolutePaths
+}
+
+const getPathsFromRequires = (requirePaths) => {
+    let modulePaths = {}
+    requirePaths.forEach((requirePath) => {
+        try {
+            const contents = fs.readFileSync(requirePath, 'utf8')
+            const bundlePaths = yaml.parse(contents).config.paths
+            const absolutePaths = getAbsolute(bundlePaths, requirePath)
+            modulePaths = Object.assign(modulePaths, absolutePaths)
+        } catch (e) { }
     })
 
-    for (const bundle of bundles) {
-        try {
-            const contents = fs.readFileSync(bundle, 'utf8')
-            const bundlePaths = yaml.parse(contents).config.paths
-            originalPaths = Object.assign(originalPaths, bundlePaths)
-            replacePathSegments(bundlePaths, bundle)
-            paths = Object.assign(paths, bundlePaths)
-        } catch (e) {
-            console.log('######################## ERROR ', bundle, e)
-        }
-    }
-
-    return {
-        originalPaths,
-        paths
-    }
+    return modulePaths
 }
-
-const resolvedPaths = {
-    pimanalytics: 'Pim/Bundle/Analytics',
-    pimdashboard: 'Pim/Bundle/Dashboard',
-    pimdatagrid: 'Pim/Bundle/DataGrid',
-    pimenrich: 'Pim/Bundle/Enrich',
-    pimimportexport: 'Pim/Bundle/ImportExport',
-    pimnavigation: 'Pim/Bundle/Navigation',
-    fosjsrouting: 'Pim/Bundle/Enrich',
-    pimnotification: 'Pim/Bundle/Notification',
-    pimreferencedata: 'Pim/Bundle/ReferenceData',
-    pimui: 'Pim/Bundle/UI',
-    pimuser: 'Pim/Bundle/User',
-    oroconfig: 'Oro/Bundle/Config'
-}
-
-const replacePathSegments = (paths) => {
-    for (const name in paths) {
-        let loc = paths[name].split('/')
-        const resolved = resolvedPaths[loc.shift()]
-        loc.unshift(`${__dirname}/src/${resolved}Bundle/Resources/public`)
-        paths[name] = loc.join('/')
-    }
-
-    return paths
-}
-
-const importedPaths = getImportPaths()
-
-const importPaths = Object.assign(importedPaths.paths, {
-    text: 'text-loader',
-    'pimuser/js/init-signin': path.resolve(__dirname, './src/Pim/Bundle/UserBundle/Resources/public/js/init-signin'),
-    'bootstrap-modal': path.resolve(__dirname, './src/Pim/Bundle/UIBundle/Resources/public/lib/bootstrap-modal'),
-    summernote: path.resolve(__dirname, './node_modules/summernote/dist/summernote.min'),
-    'translator-lib': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/lib/translator'),
-    translator: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/translator'),
-    'config': path.resolve(__dirname, './web/config/module-config'),
-    'fos-routing-base': path.resolve(__dirname, './vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router'),
-    routing: path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/fos-routing-wrapper'),
-    routes: path.resolve(__dirname, './web/js/routes'),
-    'pim/datagrid-view-fetcher': path.resolve(__dirname, './src/Pim/Bundle/DataGridBundle/Resources/public/js/fetcher/datagrid-view-fetcher'),
-    'controllers': path.resolve(__dirname, './web/config/controllers'),
-    'require-polyfill': path.resolve(__dirname, './web/config/require-polyfill'),
-    'pim-router': path.resolve(__dirname, './src/Pim/Bundle/EnrichBundle/Resources/public/js/router'),
-    'paths': path.resolve(__dirname, './web/config/paths'),
-    'CodeMirror': path.resolve(__dirname, './node_modules/codemirror/lib/codemirror'),
-    'fetcher-list': path.resolve(__dirname, './web/config/fetchers'),
-    'require-context': path.resolve(__dirname, './web/config/require-context'),
-    'general': path.resolve(__dirname, './web/config/general')
-})
-
-
-fs.writeFileSync('./web/config/paths.js', `module.exports = ${JSON.stringify(importedPaths.originalPaths)}`, 'utf8')
 
 const getRelativePaths = (absolutePaths) => {
     const replacedPaths = {}
-    for (let path in absolutePaths) {
-        // Change this to just remove the /src/ if it's a pim dep
-        replacedPaths[paths[path]] = absolutePaths[path].replace(__dirname + '/src/Pim/Bundle', './Pim/Bundle').replace(__dirname + '/src/Oro/Bundle', './Oro/Bundle')
+    for (let absolutePath in absolutePaths) {
+        const pathValue = absolutePaths[absolutePath]
+        replacedPaths[pathValue] = pathValue.replace(__dirname + '/src', './')
     }
 
     return replacedPaths
 }
+
+const importedPaths = getPathsFromRequires(requireConfigPaths)
+const overrides = _.mapValues(pathOverrides, override => path.resolve(override))
+const importPaths = Object.assign(importedPaths, overrides)
+
+fs.writeFileSync('./web/config/paths.js', `module.exports = ${JSON.stringify(importedPaths)}`, 'utf8')
 
 module.exports = {
     target: 'web',
@@ -180,7 +132,7 @@ module.exports = {
         }),
         new ContextReplacementPlugin(
           /src/,
-          path.resolve(__dirname, './src/'),
+          path.resolve(__dirname, './src'),
           getRelativePaths(importPaths)
         )
     ]

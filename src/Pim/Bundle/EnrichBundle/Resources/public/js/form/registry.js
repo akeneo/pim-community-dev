@@ -1,8 +1,8 @@
 'use strict';
 
 define(
-    ['jquery', 'underscore', 'pim/form-config-provider', 'paths', 'require-context'],
-    function ($, _, ConfigProvider, paths, requireContext) {
+    ['jquery', 'underscore', 'pim/form-config-provider', 'require-context'],
+    function ($, _, ConfigProvider, requireContext) {
         var getForm = function (formName) {
             return ConfigProvider.getExtensionMap().then(function (extensionMap) {
                 var form     = _.first(_.where(extensionMap, { code: formName }));

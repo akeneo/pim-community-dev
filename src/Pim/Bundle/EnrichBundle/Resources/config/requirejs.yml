@@ -686,7 +686,6 @@ config:
         pim/filter/attribute/select:           pimenrich/js/filter/attribute/select
         pim/filter/attribute/media:            pimenrich/js/filter/attribute/media
         pim/filter/attribute/date:             pimenrich/js/filter/attribute/date
-        pim/filter/text: pimdatagrid/js/datafilter/filter/text-filter
 
         # Product edit form
         pim/field-manager: pimenrich/js/product/field-manager

@@ -24,7 +24,6 @@
 require(['jquery', 'pim/form-builder'], function ($, formBuilder) {
     formBuilder.build('pim-app')
         .then(function (form) {
-            console.log('form', form)
             form.setElement($('.app'));
             form.render();
         });
