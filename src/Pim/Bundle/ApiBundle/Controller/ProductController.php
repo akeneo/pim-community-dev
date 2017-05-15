@@ -705,7 +705,11 @@ class ProductController
         $pqb->addSorter('id', $direction);
 
         $productCursor = $pqb->execute();
-        $products = iterator_to_array($productCursor);
+        $products = [];
+        foreach ($productCursor as $product) {
+            $products[] = $product;
+        }
+
         if (isset($queryParameters['search_before'])) {
             $products = array_reverse($products);
         }
