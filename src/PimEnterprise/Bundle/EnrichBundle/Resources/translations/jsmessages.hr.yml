@@ -12,6 +12,10 @@ permission-changes:
   job profile:
     grant: Grupa <strong>{{ group }}</strong> će <strong>biti {{ permission }}</strong>
     revoke: Grupa <strong>{{ group }}</strong> neće <strong>biti {{ permission }}</strong>
+pim_enrich:
+  entity:
+    attribute_label:
+      pim_assets_collection: Popis imovine
 pimee_enrich:
   form:
     job_instance:
@@ -123,3 +127,8 @@ pimee_enrich:
       options:
         width: '% value%px širina'
         height: '% value%px visina'
+pim_menu:
+  item:
+    asset: Imovine
+    asset_category: Kategorije imovine
+    rule: Pravila

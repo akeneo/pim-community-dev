@@ -14,7 +14,7 @@ Feature: Ensure that a published product is safe
   @skip @jira https://akeneo.atlassian.net/browse/PIM-6314
   Scenario: Fail to remove a product that has been published
     Given I am on the "my-jacket" product page
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I confirm the removal
     Then I am on the products page
     And I should see product my-jacket
@@ -22,35 +22,35 @@ Feature: Ensure that a published product is safe
   @skip @jira https://akeneo.atlassian.net/browse/PIM-6314
   Scenario: Fail to remove a category that is linked to a published product
     Given I am on the "jackets" category page
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I confirm the removal
     Then I should see the "jackets" category under the "summer_collection" category
 
   @skip @jira https://akeneo.atlassian.net/browse/PIM-6314
   Scenario: Fail to remove a category if one of these children is linked to a published product
     Given I am on the "summer_collection" category page
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I confirm the removal
     Then I am on the "jackets" category page
     And I should see the "jackets" category under the "summer_collection" category
 
   Scenario: Successfully remove a category that is not linked to a published product
     Given I am on the "winter_top" category page
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I confirm the removal
     Then I should not see the "winter_top" category under the "winter_collection" category
 
   @skip @jira https://akeneo.atlassian.net/browse/PIM-6314
   Scenario: Fail to remove a family that is linked to a published product
     Given I am on the "jackets" family page
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I confirm the removal
     Then I am on the families page
     And I should see family jackets
 
   Scenario: Successfully remove a family that is not linked to a published product
     Given I am on the "pants" family page
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I confirm the removal
     When I am on the families page
     Then I should not see family pants
@@ -58,27 +58,27 @@ Feature: Ensure that a published product is safe
   @skip @jira https://akeneo.atlassian.net/browse/PIM-6314
   Scenario: Fail to remove a group that is linked to a published product
     Given I edit the "similar_jackets" product group
-    When I press the "Delete" button
+    When I press the "Delete" button and wait for modal
     And I confirm the deletion
     Then I should see "Similar jackets"
 
   Scenario: Successfully remove a group that is not linked to a published product
     Given I am on the "hm_jackets" variant group page
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I confirm the removal
     When I am on the variant groups page
     Then I should not see group hm_jackets
 
   Scenario: Fail to remove an attribute that is linked to a published product
     Given I am on the "handmade" attribute page
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I confirm the removal
     Then I am on the attributes page
     And I should see attribute handmade
 
   Scenario: Successfully remove an attribute that is not linked to a published product
     Given I am on the "comment" attribute page
-    And I press the "Delete" button
+    And I press the "Delete" button and wait for modal
     And I confirm the removal
     Then I am on the attributes page
     And I should not see attribute comment
