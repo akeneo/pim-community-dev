@@ -5,7 +5,8 @@ const path = require('path')
 const yaml = require('yamljs')
 const fs = require('fs')
 const _ = require('lodash')
-var deepMerge = require('merge-objects');
+const mkdirp = require('mkdirp');
+const deepMerge = require('merge-objects');
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
 const pathOverrides = require('./frontend/path-overrides')
 const requireConfigPaths = require('./web/js/require-config')
@@ -61,9 +62,12 @@ const generalConfig = requireConfig.config
 const overrides = _.mapValues(pathOverrides, override => path.resolve(override))
 const importPaths = Object.assign(importedPaths, overrides)
 
-fs.writeFileSync('./web/dist/general.js', `module.exports = ${JSON.stringify(generalConfig)}`, 'utf8')
 
-fs.writeFileSync('./web/dist/paths.js', `module.exports = ${JSON.stringify(importPaths)}`, 'utf8')
+mkdirp('web/dist', function () {
+    fs.writeFileSync('web/dist/general.js', `module.exports = ${JSON.stringify(generalConfig)}`, 'utf8')
+
+    fs.writeFileSync('web/dist/paths.js', `module.exports = ${JSON.stringify(importPaths)}`, 'utf8')
+});
 
 module.exports = {
     target: 'web',
