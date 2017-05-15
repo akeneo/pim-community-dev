@@ -150,7 +150,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iTypeInTheManageFilterInput($text)
     {
-        $this->datagrid->typeInManageFilterInput($text);
+        $this->spin(function () use ($text) {
+            $this->datagrid->typeInManageFilterInput($text);
+
+            return true;
+        }, sprintf('Cannot find the filter "%s" in the filter list', $text));
     }
 
 
@@ -163,7 +167,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iCouldSeeInTheManageFiltersList($title)
     {
-        $filterElement = $this->datagrid->getElement('Manage filters')->find('css', sprintf('input[title="%s"]', $title));
+        $filterElement = $this->spin(function () use ($title) {
+            return $this->datagrid->getElement('Manage filters')->find('css', sprintf('input[title="%s"]', $title));
+        }, sprintf('Cannot find the filter "%s" in the filter list', $title));
 
         if ($filterElement == null || !$filterElement->isVisible()) {
             throw $this->createExpectationException(

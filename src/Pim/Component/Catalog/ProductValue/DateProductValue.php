@@ -45,6 +45,6 @@ class DateProductValue extends AbstractProductValue implements DateProductValueI
      */
     public function __toString()
     {
-        return null !== $this->data ? $this->data->format(\DateTime::ISO8601) : '';
+        return null !== $this->data ? $this->data->format('Y-m-d') : '';
     }
 }

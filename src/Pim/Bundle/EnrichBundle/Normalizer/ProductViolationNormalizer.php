@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Validator\Constraints\UniqueValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -40,9 +41,17 @@ class ProductViolationNormalizer implements NormalizerInterface
             }
 
             $attribute = explode('-', $matches['attribute']);
+            $attributeCode = $attribute[0];
+
+            // TODO: TIP-722 - to revert once the identifier product value is dropped.
+            if ($attributeCode === $this->attributeRepository->getIdentifierCode() &&
+                $violation->getConstraint() instanceof UniqueValue
+            ) {
+                return [];
+            }
 
             $normalizedViolation = [
-                'attribute' => $attribute[0],
+                'attribute' => $attributeCode,
                 'locale'    => '<all_locales>' === $attribute[2] ? null : $attribute[2],
                 'scope'     => '<all_channels>' === $attribute[1] ? null : $attribute[1],
                 'message'   => $violation->getMessage(),
