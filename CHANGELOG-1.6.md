@@ -1,3 +1,9 @@
+# 1.6.x
+
+## Bug fixes
+
+- PIM-6376: MongoDB timeout on attribute option import
+
 # 1.6.14 (2017-04-21)
 
 ## Bug fixes
